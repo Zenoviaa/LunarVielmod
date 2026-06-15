@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -25,7 +26,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         int FrameCounter;
 
 
-        public PrimitiveTrail BeamDrawer;
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -186,30 +186,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                     return true;
             }
 
-            return false;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            if (Connections.Count == 0)
-                return false;
-
-            Texture2D chainTexture = ModContent.Request<Texture2D>(Texture).Value;
-            int frameCount = 8;
-            int frameTime = 2;
-            Rectangle animationFrame = chainTexture.AnimationFrame(
-                ref FrameCounter, ref FrameTick, frameTime, frameCount, true);
-
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            TrailRegistry.LaserShader.UseColor(Color.Orange);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.VortexTrail);
-
-            for (int i = 0; i < LightningPos.Count; i++)
-            {
-                BeamDrawer.DrawPixelated(LightningPos[i], -Main.screenPosition, LightningPos[i].Length);
-            }
-
-            Main.spriteBatch.ExitShaderRegion();
             return false;
         }
     }

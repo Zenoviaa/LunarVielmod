@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Core;
 using Stellamod.NPCs;
@@ -20,7 +21,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Rek
     {
         //Draw Code
         private string BaseTexturePath => "Stellamod/NPCs/Bosses/GothiviaTheSun/REK/";
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private float SegmentStretch = 0.66f;
         private float ChargeTrailOpacity;
         private bool DrawChargeTrail;
@@ -533,15 +533,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Rek
         {
             if (Segments == null)
                 return false;
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
-            Vector2 size = new Vector2(90, 90);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:BasicTrail"];
-            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
 
             //Draw all the segments
             for (int i = Segments.Length - 1; i > -1; i--)

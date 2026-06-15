@@ -1,4 +1,5 @@
-﻿using Stellamod.Dusts;
+﻿using Stellamod.Assets;
+using Stellamod.Dusts;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun;
 
-public class WaterGunConnectorProj : ModProjectile,
-     IPixelPrimitiveDrawer
+public class WaterGunConnectorProj : ModProjectile
 {
     private Vector2[] TrailPoints = new Vector2[1];
     private List<Projectile> Projectiles = new List<Projectile>();
@@ -131,32 +131,4 @@ public class WaterGunConnectorProj : ModProjectile,
         return false;
     }
 
-    public PrimDrawer TrailDrawer2 { get; private set; } = null;
-    public float WidthFunction2(float completionRatio)
-    {
-        float baseWidth = Projectile.scale * Projectile.width;
-        if (Timer % 6 == 0)
-        {
-            baseWidth *= 1.2f;
-        }
-        return MathHelper.SmoothStep(baseWidth, baseWidth, completionRatio) * 0.8f;
-    }
-
-    public Color ColorFunction2(float completionRatio)
-    {
-        Color color = Color.CadetBlue;
-        if (Timer % 6 == 0)
-        {
-            color = Color.LightGoldenrodYellow;
-        }
-        return Color.Lerp(color, color, completionRatio);
-    }
-
-    public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-    {
-        TrailDrawer2 ??= new PrimDrawer(WidthFunction2, ColorFunction2, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-        GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-        TrailDrawer2.DrawPixelPrims(TrailPoints, -Main.screenPosition, Smooth);
-        Main.spriteBatch.ExitShaderRegion();
-    }
 }

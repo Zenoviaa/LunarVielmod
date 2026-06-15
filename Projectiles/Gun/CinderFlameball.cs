@@ -1,16 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Fenix.Projectiles;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Core.Effects.ITrailer;
 
 namespace Stellamod.Projectiles.Gun
 {
@@ -47,7 +42,7 @@ namespace Stellamod.Projectiles.Gun
                 {
                     innerColor = Color.OrangeRed,
                     outerColor = Color.DarkRed,
-                    gravity=0f
+                    gravity = 0f
                 };
                 DustParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
             }

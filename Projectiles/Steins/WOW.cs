@@ -68,7 +68,7 @@ public class WOW : ModProjectile
             }
             for (int i = 0; i < 4; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.Purple, 1f).noGravity = true;
+             //   Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.Purple, 1f).noGravity = true;
             }
             for (int i = 0; i < 4; i++)
             {

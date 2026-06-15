@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -234,8 +235,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                         SoundEngine.PlaySound(SoundRegistry.StingBoom2, Projectile.position);
                         break;
                 }
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
-                    ModContent.ProjectileType<LilStingerExplosionProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+
             }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
@@ -249,33 +249,5 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             }
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.0f;
-            return MathHelper.SmoothStep(baseWidth, 0.35f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.LightYellow, Color.ForestGreen, completionRatio) * 0.2f;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            if (Juggler.CatchCount >= 5)
-            {
-                if (State == ActionState.Thrown)
-                {
-                    Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-                    Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-                    TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-                    GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-                    TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-                }
-            }
-            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.White * 0.2f, Color.Transparent, ref lightColor);
-            return base.PreDraw(ref lightColor);
-        }
     }
 }

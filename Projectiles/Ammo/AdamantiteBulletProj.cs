@@ -1,15 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Trails;
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    public class AdamantiteBulletProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class AdamantiteBulletProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -37,7 +33,7 @@ namespace Stellamod.Projectiles.Ammo
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            int damage = (int)((float)damageDone * 0.33f);
+            int damage = (int)(damageDone * 0.33f);
             target.SimpleStrikeNPC(damage, hit.HitDirection);
         }
 
@@ -61,18 +57,6 @@ namespace Stellamod.Projectiles.Ammo
         {
             // This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.Red);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

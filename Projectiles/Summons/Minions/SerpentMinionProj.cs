@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -43,7 +44,6 @@ namespace Stellamod.Projectiles.Summons.Minions
     public class SerpentMinionProj : ModProjectile
     {
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private float SegmentStretch = 0.66f;
         private float ChargeTrailOpacity;
         private bool DrawChargeTrail;
@@ -468,15 +468,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!IsMainSerpent)
                 return false;
 
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
             SpriteBatch spriteBatch = Main.spriteBatch;
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             Vector2 size = new Vector2(90, 90);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:BasicTrail"];
-            TrailDrawer.DrawPrims(Projectile.oldPos, size * 0.5f - Main.screenPosition, 155);
 
             //Draw all the segments
             for (int i = Segments.Length - 1; i > -1; i--)

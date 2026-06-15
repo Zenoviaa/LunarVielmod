@@ -171,9 +171,6 @@ namespace Stellamod.Buffs.Minions
     }
 
     public class VoidMinionBuff : MinionBuff<VoidMinionProj> { }
-
-    public class ProbeMinionBuff : MinionBuff<ProbeMinionProj> { }
-
     public class PotOfGreedMinionBuff : MinionBuff<PotOfGreedMinionProj> { }
 
     public class AlcadWandMinionBuff : MinionBuff<AlcadWandMinionProj> { }

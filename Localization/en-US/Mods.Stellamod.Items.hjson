@@ -1,4 +1,11 @@
 Common: {
+	CombatToolHelp: Choose a combat tool! These are replenshible consumables that can turn the tide of battle...
+	CombatTool: Combat Tool
+	CombatToolItemHelp: Yeah.
+	QuiverItemHelp: Yeah.
+	MagicQuiver: Magic Quiver
+	QuiverHelp: Choose an ammo type! This functions as endless ammunition!
+	DragHelp: Click and drag left and right to scroll
 	ScrollHelp:
 		'''
 		Use to enchant a weapon with a special move! 
@@ -216,7 +223,6 @@ Common: {
 		'''
 	Necronomicon: Necronomicon Weapon Type
 	Stamina: Uses {0} stamina
-	CombatTool: Combat Tool Weapon Type
 	BossDamagePercent: "{0} boss max life damage"
 	EnemyDamagePercent: "{0} enemy max life damage"
 	CombatToolCount: x{0} carrying capacity
@@ -11587,4 +11593,14 @@ MagmaPendant: {
 		Provides heat resistance during an unavoidable sun
 		Makes your stamina cost double, but doubles the damage of it
 		'''
+}
+
+ElementalQuiver: {
+	DisplayName: Elemental Quiver
+	Tooltip: ""
+}
+
+FossilLauncher: {
+	DisplayName: Fossil Launcher
+	Tooltip: ""
 }

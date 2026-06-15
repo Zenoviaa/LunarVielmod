@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -12,7 +13,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
     public class RekFireBlowtorchBlastDeathProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         public override string Texture => TextureRegistry.EmptyTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
@@ -70,21 +70,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             target.AddBuff(BuffID.OnFire3, 60);
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float mult = 1;
-            if (Projectile.timeLeft < LifeTime / 3f)
-            {
-                mult = Projectile.timeLeft / (float)LifeTime / 3f;
-            }
-            return Projectile.width * Projectile.scale * 1.3f * mult * MathF.Sin((1f - completionRatio) * 0.5f);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Orange, Color.RoyalBlue, completionRatio);
-        }
-
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -103,15 +88,5 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             return false;
         }
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.OrangeRed, 0.3f));
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
-            BeamDrawer.DrawPixelated(LinePos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
-            return false;
-        }
     }
 }

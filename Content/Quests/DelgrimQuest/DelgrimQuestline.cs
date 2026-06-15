@@ -1,8 +1,6 @@
 ﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Terraria;
 using Terraria.Audio;
@@ -45,7 +43,7 @@ namespace Stellamod.Content.Quests.DelgrimQuest
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            AddReward(ModContent.ItemType<VillagersBroochA>(), 1);
+          //  AddReward(ModContent.ItemType<VillagersBroochA>(), 1);
             IsAutoQuest = true;
         }
 
@@ -83,7 +81,7 @@ namespace Stellamod.Content.Quests.DelgrimQuest
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            AddReward(ModContent.ItemType<Maelstrom>(), 1);
+            //AddReward(ModContent.ItemType<Maelstrom>(), 1);
             IsAutoQuest = true;
         }
 
@@ -102,7 +100,7 @@ namespace Stellamod.Content.Quests.DelgrimQuest
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            AddReward(ModContent.ItemType<MagicalBroochA>(), 1);
+           // AddReward(ModContent.ItemType<MagicalBroochA>(), 1);
             IsAutoQuest = true;
         }
 

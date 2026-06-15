@@ -1,5 +1,4 @@
 ﻿using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -54,15 +53,7 @@ namespace Stellamod.UI.Dialogue
             }
             else
             {
-                foreach (NPC npc in Main.ActiveNPCs)
-                {
-                    if (npc.type == ModContent.NPCType<StartGoth>())
-                    {
-                        StartGoth verlia = npc.ModNPC as StartGoth;
-                        verlia.State = StartGoth.ActionState.Death;
-                        verlia.ResetTimers();
-                    }
-                }
+
             }
 
             base.Complete();

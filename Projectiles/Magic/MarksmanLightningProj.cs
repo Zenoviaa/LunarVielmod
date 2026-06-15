@@ -92,11 +92,6 @@ namespace Stellamod.Projectiles.Magic
                         ModContent.GoreType<FableRock4>());
                 }
 
-                if (Main.myPlayer == Projectile.owner)
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), lightningHitPos + new Vector2(0, 24), Vector2.Zero,
-                        ModContent.ProjectileType<GroundCracking>(), 0, 0, Projectile.owner);
-                }
             }
 
             for (int i = 0; i < Lightning.Trails.Length; i++)

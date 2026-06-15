@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Trails;
+﻿using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -38,11 +36,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Projectile.velocity *= 1.2f;
             Projectile.rotation = Projectile.velocity.ToRotation();
             Projectile.frameCounter++;
-            if(Projectile.frameCounter >= 2)
+            if (Projectile.frameCounter >= 2)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
-                if(Projectile.frame >= 8)
+                if (Projectile.frame >= 8)
                 {
                     Projectile.frame = 0;
                 }

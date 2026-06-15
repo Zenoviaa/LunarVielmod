@@ -1,9 +1,9 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;

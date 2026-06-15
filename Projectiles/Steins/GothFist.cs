@@ -458,7 +458,7 @@ namespace Stellamod.Projectiles.Steins
 
                         for (int i = 0; i < 4; i++)
                         {
-                            Dust.NewDustPerfect(target.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.Purple, 1f).noGravity = true;
+                          //  Dust.NewDustPerfect(target.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.Purple, 1f).noGravity = true;
                         }
                         for (int i = 0; i < 4; i++)
                         {
@@ -527,65 +527,9 @@ namespace Stellamod.Projectiles.Steins
             }
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 0.5f;
-            return MathHelper.SmoothStep(baseWidth, 1.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Turquoise, Color.Transparent, completionRatio) * 0.7f;
-        }
 
-
-        public TrailRenderer SwordSlash;
-        public TrailRenderer SwordSlash2;
-        public TrailRenderer SwordSlash3;
-        public TrailRenderer SwordSlash4;
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.spriteBatch.End();
-
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SkiTrail").Value;
-            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/WaterTrail").Value;
-            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/WaterTrail").Value;
-            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SkiTrail").Value;
-            Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
-
-
-
-            if (SwordSlash == null)
-            {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(25f), (p) => new Color(2, 150, 255, 90) * (1f - p));
-                SwordSlash.drawOffset = Projectile.Size / 1.8f;
-            }
-            if (SwordSlash2 == null)
-            {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(40f), (p) => new Color(255, 255, 0, 100) * (1f - p));
-                SwordSlash2.drawOffset = Projectile.Size / 1.9f;
-
-            }
-            if (SwordSlash3 == null)
-            {
-                SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(255, 100, 25, 90) * (1f - p));
-                SwordSlash3.drawOffset = Projectile.Size / 2f;
-
-            }
-
-            if (SwordSlash4 == null)
-            {
-                SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(40f), (p) => new Color(255, 255, 255, 90) * (1f - p));
-                SwordSlash4.drawOffset = Projectile.Size / 2.2f;
-
-            }
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-
-
-            SwordSlash.Draw(Projectile.oldPos);
-            SwordSlash2.Draw(Projectile.oldPos);
-            SwordSlash3.Draw(Projectile.oldPos);
-            SwordSlash4.Draw(Projectile.oldPos);
 
 
 
@@ -602,15 +546,6 @@ namespace Stellamod.Projectiles.Steins
             Main.EntitySpriteDraw(texture,
                Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0); // drawing the sword itself
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture2 = TextureAssets.Projectile[Projectile.type].Value;
-
-            // Redraw the projectile with the color not influenced by light
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-
-            Main.spriteBatch.End();
-
-            Main.spriteBatch.Begin();
 
 
             return false;

@@ -1,3 +1,4 @@
+using Stellamod.Assets;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
@@ -402,14 +403,11 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             return Color.Lerp(Color.Transparent, Color.Lerp(Color.White, Color.Goldenrod, completionRatio), Easing.SpikeOutCirc(completionRatio) * Timer / 60f);
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
+     
         protected override void DrawSlashTrail(Vector2[] trailPoints, Vector2 drawOffset)
         {
             base.DrawSlashTrail(trailPoints, drawOffset);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
-            TrailDrawer.DrawPrims(trailPoints, drawOffset, 155);
+
         }
     }
 

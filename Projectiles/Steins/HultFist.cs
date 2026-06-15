@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
@@ -260,11 +261,6 @@ namespace Stellamod.Projectiles.Steins
             return Color.White * inRatio * outRatio;
         }
 
-
-        public TrailRenderer SwordSlash;
-        public TrailRenderer SwordSlash2;
-        public TrailRenderer SwordSlash3;
-        public TrailRenderer SwordSlash4;
         private void DrawPixelatedTrails(GraphicsDevice gDevice)
         {
             BlackFireShader blackFireShader = BlackFireShader.Instance;
@@ -285,76 +281,6 @@ namespace Stellamod.Projectiles.Steins
         public override bool PreDraw(ref Color lightColor)
         {
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrails);
-            /*
-            Main.spriteBatch.End();
-
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/MetalTrail").Value;
-            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/MetalTrail").Value;
-            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DirnTrail").Value;
-            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DirnTrail").Value;
-            Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
-
-
-
-            if (SwordSlash == null)
-            {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(25f), (p) => new Color(150, 110, 152, 90) * (1f - p));
-                SwordSlash.drawOffset = Projectile.Size / 1.8f;
-            }
-            if (SwordSlash2 == null)
-            {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(40f), (p) => new Color(10, 150, 250, 100) * (1f - p));
-                SwordSlash2.drawOffset = Projectile.Size / 1.9f;
-
-            }
-            if (SwordSlash3 == null)
-            {
-                SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(250, 25, 251, 90) * (1f - p));
-                SwordSlash3.drawOffset = Projectile.Size / 2f;
-
-            }
-
-            if (SwordSlash4 == null)
-            {
-                SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(30f), (p) => new Color(255, 255, 255, 90) * (1f - p));
-                SwordSlash4.drawOffset = Projectile.Size / 2.2f;
-
-            }
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-
-
-            SwordSlash.Draw(Projectile.oldPos);
-            SwordSlash2.Draw(Projectile.oldPos);
-            SwordSlash3.Draw(Projectile.oldPos);
-            SwordSlash4.Draw(Projectile.oldPos);
-
-
-
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
-
-            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
-            int startY = frameHeight * Projectile.frame;
-
-            Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
-            Vector2 origin = sourceRectangle.Size() / 2f;
-            Color drawColor = Projectile.GetAlpha(lightColor);
-
-
-            Main.EntitySpriteDraw(texture,
-               Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-               sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0); // drawing the sword itself
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture2 = TextureAssets.Projectile[Projectile.type].Value;
-
-            // Redraw the projectile with the color not influenced by light
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-
-            Main.spriteBatch.End();
-
-            Main.spriteBatch.Begin();
-            */
-
-
             return false;
 
         }

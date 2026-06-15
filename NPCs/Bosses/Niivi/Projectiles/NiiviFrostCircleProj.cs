@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -8,8 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    public class NiiviFrostCircleProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class NiiviFrostCircleProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private float CircleRadius => 768;
@@ -62,24 +62,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public Color ColorFunction(float completionRatio)
         {
             return Color.LightCyan * Alpha;
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true,
-                TrailRegistry.LaserShader);
-            // Some visuals here
-            BeamDrawer.SpecialShader = TrailRegistry.FireWhiteVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.LightSkyBlue);
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            DrawHelper.DrawCircle(Projectile.Center, CircleRadius * Alpha * 4, CirclePos);
-            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-
-            DrawHelper.DrawCircle(Projectile.Center, CircleRadius * Alpha * 4, CirclePos, MathHelper.PiOver2);
-            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

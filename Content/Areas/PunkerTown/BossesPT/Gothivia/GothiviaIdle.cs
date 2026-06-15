@@ -1,16 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Core;
+﻿using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.NPCs;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -222,9 +217,9 @@ public class GothiviaIdle : VeilTownNPC
         NPC.spriteDirection = NPC.direction;
         Player target = Main.player[NPC.target];
 
-        if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()))
+        if (NPC.AnyNPCs(ModContent.NPCType<Gothivia>()))
         {
-            NPC.Kill();
+            NPC.active = false;
         }
 
         Vector3 RGB = new(2.30f, 2.21f, 2.72f);

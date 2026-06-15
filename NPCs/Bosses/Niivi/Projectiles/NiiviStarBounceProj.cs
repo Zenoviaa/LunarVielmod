@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Projectiles;
 using Stellamod.Trails;
@@ -15,7 +15,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
     public class NiiviStarBounceProj : ModProjectile
     {
         private Vector2 OldVelocity;
-        private PrimitiveTrail TrailDrawer;
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private ref float Timer => ref Projectile.ai[0];
@@ -95,12 +94,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            TrailDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            TrailDrawer.SpecialShader = TrailRegistry.FireWhiteVertexShader;
-            TrailDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.LightBlue, 0.3f));
-            TrailDrawer.SpecialShader.SetShaderTexture(TrailRegistry.CausticTrail);
-            TrailDrawer.Draw(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
-
             var textureAsset = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect);
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Vector2 drawSize = textureAsset.Size();

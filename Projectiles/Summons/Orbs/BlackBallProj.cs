@@ -351,8 +351,6 @@ namespace Stellamod.Projectiles.Summons.Orbs
             }
         }
 
-        public TrailRenderer SwordSlash;
-        public TrailRenderer SwordSlash2;
         public override bool PreDraw(ref Color lightColor)
         {
             Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
@@ -364,35 +362,6 @@ namespace Stellamod.Projectiles.Summons.Orbs
             var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarTrail").Value;
             var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StringTrail").Value;
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
-            if (SwordSlash == null)
-            {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p),
-                    (p) => ColorFunctions.MiracleVoid * (1f - p));
-                SwordSlash.drawOffset = Projectile.Size / 2f;
-            }
-            if (SwordSlash2 == null)
-            {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p),
-                    (p) => new Color(0, 0, 0, 100) * (1f - p));
-                SwordSlash2.drawOffset = Projectile.Size / 2f;
-            }
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
-
-            float[] rotation = new float[Projectile.oldRot.Length];
-            for (int i = 0; i < rotation.Length; i++)
-            {
-                rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
-            }
-
-            SwordSlash.Draw(Projectile.oldPos, rotation);
-            SwordSlash2.Draw(Projectile.oldPos, rotation);
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
 
 
             DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, lightColor, 1);

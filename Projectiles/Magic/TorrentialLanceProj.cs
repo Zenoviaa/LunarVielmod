@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -68,7 +69,6 @@ namespace Stellamod.Projectiles.Magic
         private ref float Timer => ref Projectile.ai[0];
         private bool SpawnBubbles;
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private float HoldOffset => 30;
         private float SwingTime => 60;
         private Player Owner => Main.player[Projectile.owner];
@@ -207,31 +207,9 @@ namespace Stellamod.Projectiles.Magic
             SpawnBubbles = true;
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = 36;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Transparent, Color.Aquamarine, Easing.SpikeOutExpo(completionRatio)) * 0.7f;
-        }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Vector2 textureSize = texture.Size();
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            }
 
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            TrailDrawer.DrawPrims(_oldPos, -Main.screenPosition, 255);
-
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            TrailDrawer.DrawPrims(_oldPos, -Main.screenPosition, 255);
             return true;
         }
     }

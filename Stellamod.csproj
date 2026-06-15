@@ -13,6 +13,7 @@
 	  <Folder Include="Content\Areas\Underground\BunnyStormBoss\Gores\" />
 	  <Folder Include="Effects\Palettes\" />
 	  <Folder Include="Items\Weapons\Melee\Hammer\" />
+	  <Folder Include="Projectiles\Slashers\Swingers\" />
 	  <Folder Include="Properties\" />
 	  <Folder Include="Structures\Mineshafts\" />
 	</ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Stellamod.Assets;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -22,8 +22,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public virtual Color TrailEndColor => Color.Transparent;
 
         public virtual Color AuraColor => Color.White;
-
-        private PrimitiveTrail TrailDrawer;
         protected ref float Timer => ref NPC.ai[0];
         public override void SetStaticDefaults()
         {
@@ -63,16 +61,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             return false;
         }
 
-        private Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(TrailStartColor, TrailEndColor, completionRatio) * (1f - completionRatio);
-        }
-
-        private float WidthFunction(float completionRatio)
-        {
-            return (NPC.width * NPC.scale * 1f - completionRatio) * 0.5f;
-        }
-
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Draw After-Image
@@ -97,15 +85,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             //Draw Trail
             Vector2 drawPosition = NPC.Center - Main.screenPosition;
-
-            TrailDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            TrailDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            TrailDrawer.SpecialShader.UseColor(Color.DarkCyan);
-            TrailDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
-
-
-            TrailDrawer.Draw(NPC.oldPos, -Main.screenPosition + drawOrigin, 32);
-
 
 
             spriteBatch.End();

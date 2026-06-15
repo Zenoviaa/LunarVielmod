@@ -3,7 +3,6 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Quests.DelgrimQuest;
 using Stellamod.Core;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
@@ -18,9 +17,6 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Town
 {
-    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-    //[AutoloadHead]
-    [AutoloadBossHead]
     public class Delgrim : VeilTownNPC
     {
         public int NumberOfTimesTalkedTo = 0;
@@ -117,24 +113,10 @@ namespace Stellamod.NPCs.Town
         {
             var npcShop = new NPCShop(Type, ShopName)
             //.Add(new Item(ItemID.WaterBolt) { shopCustomPrice = Item.buyPrice(gold: 40) })
-            .Add<BlankCard>()
-            .Add<BlankAccessory>()
-            .Add<BlankBag>()
-            .Add<BlankBow>()
-            .Add<BlankSword>()
-            .Add<BlankGun>()
-            .Add<BlankJuggler>()
-            .Add<BlankStaff>()
-            .Add<BlankStein>()
-            .Add<BlankSafunai>()
-            .Add<BlankRune>()
-            .Add<BlankBrooch>()
-            .Add<BlankOrb>()
             .Add<GunHolster>()
             .Add<Pulsing>()
 
             .Add<Hitme>()
-            .Add<VillagersBroochA>()
             .Add<CogBomber>(Condition.Hardmode)
             .Add<TheTingler>(Condition.Hardmode)
             .Add<GearGutter>(Condition.Hardmode)

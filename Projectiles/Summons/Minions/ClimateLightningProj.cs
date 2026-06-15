@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    public class ClimateLightningProj : ModProjectile, IPixelPrimitiveDrawer
+    public class ClimateLightningProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
@@ -23,9 +24,6 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         private float Lifetime => 24;
         private Vector2[] LightningPos;
-
-        public PrimitiveTrail BeamDrawer;
-
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Summon;
@@ -87,21 +85,6 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * 16;
-            float progress = Timer / (float)Lifetime;
-            float easedProgress = Easing.InOutExpo(progress);
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio) * (1f - easedProgress);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color startColor = Color.DarkGoldenrod;
-            Color endColor = Color.Transparent;
-            return Color.Lerp(startColor, endColor, completionRatio);
-        }
-
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             //This damages everything in the trail
@@ -117,19 +100,6 @@ namespace Stellamod.Projectiles.Summons.Minions
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            if (LightningPos == null || LightningPos.Length == 0)
-                return;
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.VortexTrail);
-
-            BeamDrawer.DrawPixelated(LightningPos, -Main.screenPosition, LightningPos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

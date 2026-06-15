@@ -9,7 +9,6 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Stellamod.Visual.Explosions;
 using Stellamod.Visual.Particles;
 using System;

@@ -165,37 +165,9 @@ namespace Stellamod.Projectiles.Thrown
             }
         }
 
-        public TrailRenderer Trail;
+
         public override bool PreDraw(ref Color lightColor)
         {
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarTrail").Value;
-
-            if (Trail == null)
-            {
-                Trail = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(90), Vector2.Zero, p),
-                    (p) => ColorFunctions.MiracleVoid * (1f - p));
-                Trail.drawOffset = Projectile.Size / 2f;
-            }
-
-            DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Transparent, ref lightColor);
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-
-            Trail.Draw(Projectile.oldPos);
-            Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;
-            for (int i = 0; i < 2; i++)
-            {
-                Main.spriteBatch.Draw(spinTexture, Projectile.Center - Main.screenPosition, null,
-                    ColorFunctions.MiracleVoid * (Timer / Charge_Time) * 0.4f,
-                    Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
-            }
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
-
-
-
             return true;
         }
 

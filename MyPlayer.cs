@@ -5,13 +5,11 @@ using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Core.ToolsSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Projectiles.Swords;
 using System.Collections.Generic;
@@ -352,7 +350,7 @@ namespace Stellamod
         }
 
 
-     
+
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
         {
             if (StealthRune && StealthTime >= 1800)
@@ -731,13 +729,7 @@ namespace Stellamod
             }
 
             bool expertMode = Main.expertMode;
-            if (
-                NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) ||
-                NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
-            {
-                SingularityFragment = true;
-            }
-            else if (ZoneIlluria)
+             if (ZoneIlluria)
             {
                 SingularityFragment = true;
             }

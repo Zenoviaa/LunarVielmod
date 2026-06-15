@@ -8,10 +8,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Visual
 {
-    public class SplashProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class SplashProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         public Color SplashColor;
         ref float Timer => ref Projectile.ai[0];
         ref float Color => ref Projectile.ai[2];
@@ -105,26 +103,6 @@ namespace Stellamod.Projectiles.Visual
             g.position += oldVelocity * 1.3f;
             g.rotation = oldVelocity.ToRotation() - MathHelper.PiOver2;
             return base.OnTileCollide(oldVelocity);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return SplashColor;
-        }
-
-
-        public float WidthFunction(float completionRatio)
-        {
-            return MathHelper.Lerp(3, 0, completionRatio);
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true);
-
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -11,7 +12,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 {
     public class BabySwarmerMinionProj : ModProjectile
     {
-        public PrimDrawer TrailDrawer { get; private set; } = null;
+
         Player Owner => Main.player[Projectile.owner];
         private float Speed
         {
@@ -152,33 +153,10 @@ namespace Stellamod.Projectiles.Summons.Minions
             Visuals();
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 0.5f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.OrangeRed * 0.3f, Color.Transparent, completionRatio);
-        }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
 
-            TrailDrawer.WidthFunc = WidthFunction;
-            TrailDrawer.ColorFunc = ColorFunction;
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
-
-            Vector2 frameSize = Projectile.Frame().Size();
-
-            //Could also set this manually like
-            //frameSize = new Vector2(58, 34);
-            TrailDrawer.DrawPrims(Projectile.oldPos, frameSize * 0.5f - Main.screenPosition, 155);
             return base.PreDraw(ref lightColor);
         }
 

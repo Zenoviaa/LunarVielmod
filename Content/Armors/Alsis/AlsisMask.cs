@@ -1,6 +1,7 @@
 ﻿using Microsoft.Build.Framework;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Armors.Veldrin;
@@ -15,6 +16,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Stellamod.Content.Armors.Alsis;
 
@@ -131,6 +133,36 @@ public class AlsisAura : ModProjectile
     }
 }
 
+public class AlsisGlobalWeapon : GlobalItem
+{
+    public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
+    {
+        base.ModifyWeaponDamage(item, player, ref damage);
+
+    }
+
+    public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+    {
+        base.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
+        AlsisPlayer alsisPlayer = player.GetModPlayer<AlsisPlayer>();
+        if ( alsisPlayer.hasSetBonus)
+        {
+            Projectile p = Projectile.NewProjectileDirect(player.GetSource_FromThis(), Vector2.Zero, Vector2.Zero, type, damage, knockback, player.whoAmI);
+            p.active = false;
+            p.timeLeft = 0;
+            int manaCost = p.arrow ? 20 : 10;
+            if (alsisPlayer.hasSetBonus && !alsisPlayer.exhausted && player.CheckMana(manaCost, true))
+            {
+                if (player.manaRegenDelay < 140)
+                    player.manaRegenDelay = 140;
+                alsisPlayer.enchantedThisFrame = true;
+                damage *= 3;
+            }
+ 
+         
+        }
+    }
+}
 public class AlsisGlobalProjectile : GlobalProjectile
 {
     public bool isEnchanted;
@@ -141,20 +173,16 @@ public class AlsisGlobalProjectile : GlobalProjectile
         isEnchanted = false;
     }
 
+    public override void OnSpawn(Projectile projectile, IEntitySource source)
+    {
+        base.OnSpawn(projectile, source);
+        Player player = Main.player[projectile.owner];
+        if (player.GetModPlayer<AlsisPlayer>().enchantedThisFrame)
+            isEnchanted = true;
+    }
     public override bool PreAI(Projectile projectile)
     {
-        Player player = Main.player[projectile.owner];
-        AlsisPlayer alsisPlayer = player.GetModPlayer<AlsisPlayer>();
-        if (!isEnchanted && alsisPlayer.hasSetBonus && projectile.friendly)
-        {
-            int manaCost = projectile.arrow ? 20 : 10;
-            if(alsisPlayer.hasSetBonus && !alsisPlayer.exhausted && player.CheckMana(manaCost, true))
-            {
-                if(player.manaRegenDelay < 140)
-                    player.manaRegenDelay = 140;
-                isEnchanted = true;
-            }
-        }
+
         return base.PreAI(projectile);
     }
     public override void PostAI(Projectile projectile)
@@ -167,17 +195,14 @@ public class AlsisGlobalProjectile : GlobalProjectile
         if (isEnchanted && projectile.type != ModContent.ProjectileType<AlsisAura>())
         {
             Projectile.NewProjectile(projectile.GetSource_FromThis(), target.Center, Vector2.Zero, 
-                ModContent.ProjectileType<AlsisAura>(), projectile.damage, projectile.knockBack, projectile.owner);
+                ModContent.ProjectileType<AlsisAura>(), projectile.damage / 3, projectile.knockBack, projectile.owner);
         }
     }
 
     public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
     {
         base.ModifyHitNPC(projectile, target, ref modifiers);
-        if (isEnchanted)
-        {
-            modifiers.FinalDamage *= 3;
-        }
+
     }
 }
 
@@ -189,6 +214,7 @@ public class AlsisPlayer : ModPlayer
     public bool exhausted;
     public float alphaTimer;
     public float frameTimer;
+    public bool enchantedThisFrame;
     public override void Unload()
     {
         base.Unload();
@@ -199,6 +225,7 @@ public class AlsisPlayer : ModPlayer
     {
         base.ResetEffects();
         hasSetBonus = false;
+        enchantedThisFrame = false;
     }
 
     
@@ -329,7 +356,7 @@ public class AlsisChestplate : ModItem
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.rangedDamage += 0.56f;
+        stats.rangedDamage += 0.3f;
         stats.defenseBonus += 19;
         stats.accessorySlots++;
     }

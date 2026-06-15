@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Terraria;
 
 namespace Stellamod.Common.Shaders.MagicTrails

@@ -7,7 +7,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;

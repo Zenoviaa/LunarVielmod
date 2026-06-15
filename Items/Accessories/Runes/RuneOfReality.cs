@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -79,34 +80,6 @@ namespace Stellamod.Items.Accessories.Runes
                 }
             }
 
-        }
-
-        public float WidthFunction(float completionRatio)
-        {
-            return MathHelper.Lerp(0f, 64, Easing.SpikeOutCirc(completionRatio) * Timer / 60f);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Transparent, Color.BlueViolet, Easing.SpikeOutCirc(completionRatio) * Timer / 60f);
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public override bool PreDraw(ref Color lightColor)
-        {
-            //Draw Trail
-            Projectile.oldPos = _fieldPos;
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            }
-
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
-            Vector2 trailOffset = -Main.screenPosition;
-            TrailDrawer.DrawPrims(_fieldPos, trailOffset, 155);
-
-            return false;
         }
     }
 

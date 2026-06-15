@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -10,7 +11,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    public class ElectrifyingProj : ModProjectile, IPixelPrimitiveDrawer
+    public class ElectrifyingProj : ModProjectile
     {
         float Timer;
         bool FadeOut;
@@ -131,18 +132,6 @@ namespace Stellamod.Projectiles.GunHolster
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightCyan);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

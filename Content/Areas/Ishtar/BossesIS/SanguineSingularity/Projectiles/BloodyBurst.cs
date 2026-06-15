@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;

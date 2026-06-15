@@ -1,5 +1,4 @@
-﻿using Iced.Intel;
-using ReLogic.Utilities;
+﻿using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
@@ -22,7 +21,6 @@ using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
-using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Windmillion;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
@@ -297,7 +295,7 @@ public partial class StellaWorld : ModSystem
         //So just pick a random point, decide to go left and right, and go from there
         //Then sprinkle vertical caves so you can actually move down in the place
         float numCaves = Main.maxTilesX * Main.maxTilesY * 0.000004f;
-        for(float f = 0; f < numCaves; f++)
+        for (float f = 0; f < numCaves; f++)
         {
             //Reset the seed for each cave
             topFNL.SetSeed(genRand.Next(0, int.MaxValue));
@@ -416,7 +414,7 @@ public partial class StellaWorld : ModSystem
     private void AddNewGenerationPasses(List<GenPass> tasks, ref double totalWeight)
     {
         PassWriter passWriter = new PassWriter(tasks);
-       // passWriter.DisablePass("Grass");
+        // passWriter.DisablePass("Grass");
 
         passWriter.SetInsertionIndex("Ocean Sand");
         passWriter.NextPass(new ReworkedOceanSandPass());
@@ -441,7 +439,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
         passWriter.NextPass(new PassLegacy("Cinderspark Caves", CindersparkCavesPass));
         passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
- 
+
 
         passWriter.SetInsertionIndex("Shimmer");
         passWriter.NextPass(new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
@@ -481,7 +479,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
         passWriter.NextPass(new PassLegacy("Icey Caverns", WorldGenIceCaverns));
         passWriter.NextPass(new PassLegacy("Ice Housing 3", SurfaceIceHouses));
- 
+
 
         passWriter.SetInsertionIndex("Jungle");
         passWriter.NextPass(new MarshJungleMudPass());
@@ -494,7 +492,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Vanilla Caves", ExtraCavesPass));
         passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
         passWriter.NextPass(new PassLegacy("Black Stones", WorldGenDarkstone));
-     
+
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
         passWriter.ReplacePass(new PassLegacy("Full Desert Rework", LockDesert));
@@ -535,7 +533,7 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Treasure Trove";
         Point caveOrigin = AbyssCenter;
-  
+
         caveOrigin.Y -= 800;
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("TreasureTrove");
         Rectangle bounds = prefab.GetBounds(caveOrigin.X, caveOrigin.Y, PrefabPlacementType.FromTopCenter);
@@ -600,7 +598,7 @@ public partial class StellaWorld : ModSystem
         //Fill up area with random tiles fr
         for (int x = bounds.Left; x < bounds.Right; x++)
         {
-            for(int y = bounds.Top; y < bounds.Bottom; y++)
+            for (int y = bounds.Top; y < bounds.Bottom; y++)
             {
                 Tile tile = Main.tile[x, y];
                 if (!Main.rand.NextBool(16))
@@ -1468,9 +1466,9 @@ public partial class StellaWorld : ModSystem
                     continue;
 
                 int adjacentCount = 0;
-                for(int i = -1; i <= 1; i++)
+                for (int i = -1; i <= 1; i++)
                 {
-                    for(int j = -1; j <= 1; j++)
+                    for (int j = -1; j <= 1; j++)
                     {
                         //Ignore diagonals
                         if (i != 0 && j != 0)
@@ -1538,7 +1536,7 @@ public partial class StellaWorld : ModSystem
                 tile.TileType = (ushort)grass;
                 tile.TileFrameX = -1;
                 tile.TileFrameY = -1;
-              //  WorldGen.PlaceTile(tileX, innerY, grass, forced: true);
+                //  WorldGen.PlaceTile(tileX, innerY, grass, forced: true);
             }
         }
 
@@ -1735,7 +1733,7 @@ public partial class StellaWorld : ModSystem
                 bottomLeft.Y += tileY;
                 bottomLeft.Y -= map[0].bounds.Height;
                 Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
-                if(r == 0)
+                if (r == 0)
                 {
                     Rectangle rect = Structurizer.ReadRectangle(room.prefab);
                     rect.Location = bottomLeft;
@@ -1772,7 +1770,7 @@ public partial class StellaWorld : ModSystem
         GenVars.skipDesertTileCheck = true;
         DesertBiome desertBiome = GenVars.configuration.CreateBiome<DesertBiome>();
         var genRand = WorldGen.genRand;
-        
+
         int desertOffset = -1200;
         int x = (Main.maxTilesX / 2 + desertOffset);
         DesertLocation = new Point(x, (int)GenVars.worldSurfaceHigh + genRand.Next(25, 75));
@@ -1918,7 +1916,7 @@ public partial class StellaWorld : ModSystem
 
         var genRand = WorldGen.genRand;
         int yMax = CindersparkStart - 600;
-        if(CindersparkStart == 0)
+        if (CindersparkStart == 0)
         {
             throw new ArgumentException("The Cinderspark is at the top of the world for some reason.");
         }
@@ -1938,8 +1936,8 @@ public partial class StellaWorld : ModSystem
         //Instead of using GenActions or PlaceTile we can just set the tile directly, fastest way to do it.
         for (int x = 0; x < Main.maxTilesX; x++)
         {
-            int dyMin = yMin + (int)MathF.Sin((float)x) * 8 + genRand.Next(-2, 2);
-            int dyMax = yMax + (int)MathF.Sin((float)x * 0.05f) * 8 + genRand.Next(-2, 2);
+            int dyMin = yMin + (int)MathF.Sin(x) * 8 + genRand.Next(-2, 2);
+            int dyMax = yMax + (int)MathF.Sin(x * 0.05f) * 8 + genRand.Next(-2, 2);
             for (int y = dyMin; y < dyMax; y++)
             {
                 Tile tile = Main.tile[x, y];
@@ -2014,7 +2012,7 @@ public partial class StellaWorld : ModSystem
             VeilGen.Walker(x, yMid + heightToUse, genRand.Next(32, 128), TileID.Granite, 10);
         }
 
-        for(int x = 0; x < Main.maxTilesX; x++)
+        for (int x = 0; x < Main.maxTilesX; x++)
         {
             if (!genRand.NextBool(4))
                 continue;
@@ -2025,7 +2023,7 @@ public partial class StellaWorld : ModSystem
         //Again, not going to use gen actions here
         //Just going to create squares of shimmer water since it gets settled in a later pass
         int shimmerBlotchCount = 0;
-        for(int x = 0; x < Main.maxTilesX;x++)
+        for (int x = 0; x < Main.maxTilesX; x++)
         {
             //1 in X chance per tile to generate shimmer pool
             if (!genRand.NextBool(128))
@@ -2034,9 +2032,9 @@ public partial class StellaWorld : ModSystem
             int shimmerBlotchSize = genRand.Next(8, 16);
             Rectangle shimmerRect = new Rectangle(x - shimmerBlotchSize, yMid - shimmerBlotchSize, shimmerBlotchSize * 2, shimmerBlotchSize * 2);
             shimmerRect = TileUtilities.Clamp(shimmerRect);
-            for(int tx = shimmerRect.Left; tx < shimmerRect.Right; tx++)
+            for (int tx = shimmerRect.Left; tx < shimmerRect.Right; tx++)
             {
-                for(int ty = shimmerRect.Top; ty < shimmerRect.Bottom; ty++)
+                for (int ty = shimmerRect.Top; ty < shimmerRect.Bottom; ty++)
                 {
                     Tile tile = Main.tile[tx, ty];
                     tile.LiquidType = LiquidID.Shimmer;
@@ -3085,7 +3083,7 @@ public partial class StellaWorld : ModSystem
                 Tile tile = Main.tile[x, y];
                 if (!tile.HasTile)
                     continue;
-                if (!VeilGen.IsTileExposedToAirCardinal(x, y)) 
+                if (!VeilGen.IsTileExposedToAirCardinal(x, y))
                     continue;
 
                 if ((tile.TileType == TileID.Dirt || tile.TileType == TileID.Stone || tile.TileType == TileID.Grass))
@@ -3172,10 +3170,10 @@ public partial class StellaWorld : ModSystem
         int end = Main.UnderworldLayer;
         int[] wallTypes = new int[]
         {
-            (int)WallID.ObsidianBackUnsafe,
-            (int)WallID.RocksUnsafe1,
-            (int)WallID.Cave4Unsafe,
-            (int)WallID.Cave5Unsafe
+            WallID.ObsidianBackUnsafe,
+            WallID.RocksUnsafe1,
+            WallID.Cave4Unsafe,
+            WallID.Cave5Unsafe
         };
 
 
@@ -3184,7 +3182,7 @@ public partial class StellaWorld : ModSystem
         int padding = 2;
         for (int x = padding; x < Main.maxTilesX - padding; x++)
         {
-            for(int y = start; y < end; y++)
+            for (int y = start; y < end; y++)
             {
                 Tile tile = Main.tile[x, y];
                 if (tile.TileType == charredStoneTypeInt && tile.HasTile && VeilGen.IsTileExposedToAirCardinal(x, y))
@@ -3194,11 +3192,11 @@ public partial class StellaWorld : ModSystem
                         int steps = genRand.Next(30, 90);
                         int maxDist = 3;
                         VeilGen.WallWalker(x, y, steps, wallTypes[genRand.Next(4)], maxDist, PaintID.BlackPaint);
-                    }       
+                    }
                 }
             }
 
-            progress.Set(((float)x - (float)padding) / ((float)Main.maxTilesX - (float)padding));
+            progress.Set((x - (float)padding) / (Main.maxTilesX - (float)padding));
         }
     }
 
@@ -3211,9 +3209,9 @@ public partial class StellaWorld : ModSystem
         HeatedDepthsStart = start;
         HeatedDepthsEnd = CindersparkStart;
         ushort charredStoneType = (ushort)ModContent.TileType<CharredStone>();
-        for(int x = 0; x < Main.maxTilesX;x++)
+        for (int x = 0; x < Main.maxTilesX; x++)
         {
-            for(int y = start; y < end; y++)
+            for (int y = start; y < end; y++)
             {
                 Tile tile = Main.tile[x, y];
                 if (tile.TileType == TileID.Stone || tile.TileType == TileID.Dirt)
@@ -3222,7 +3220,7 @@ public partial class StellaWorld : ModSystem
         }
 
         int charredStoneTypeInt = ModContent.TileType<CharredStone>();
-        for(int x = 0; x < Main.maxTilesX; x++)
+        for (int x = 0; x < Main.maxTilesX; x++)
         {
             if (!genRand.NextBool(8))
                 continue;
@@ -3245,14 +3243,14 @@ public partial class StellaWorld : ModSystem
         }
 
         //Turn some of the charred stones to obsidian
-        for(int x = 0; x < Main.maxTilesX; x++)
+        for (int x = 0; x < Main.maxTilesX; x++)
         {
             if (!genRand.NextBool(16))
                 continue;
 
             int y = (int)MathHelper.Lerp(start, end, genRand.NextFloat());
             Tile tile = Main.tile[x, y];
-            if(tile.TileType == charredStoneTypeInt)
+            if (tile.TileType == charredStoneTypeInt)
             {
                 int steps = genRand.Next(30, 90);
                 int maxDist = 4;
@@ -3267,7 +3265,7 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Cave Waters...";
         var genRand = WorldGen.genRand;
-        float maxCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.0000003f;
+        float maxCount = Main.maxTilesX * Main.maxTilesY * 0.0000003f;
         float maxAttemptCount = maxCount * 10;
         float placed = 0;
         int padding = 250;
@@ -3305,7 +3303,7 @@ public partial class StellaWorld : ModSystem
     private void RavinesPass(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Giant Ravines";
-        
+
         int walkerWidth = 64;
         int walkerSteps = 4000;
         var genRand = WorldGen.genRand;
@@ -3345,7 +3343,7 @@ public partial class StellaWorld : ModSystem
         }
 
         float numRavines = 5;
-        for(float ravines =0; ravines < numRavines; ravines++)
+        for (float ravines = 0; ravines < numRavines; ravines++)
         {
             for (int s = 0; s < Main.maxTilesX; s += 4)
             {
@@ -3381,7 +3379,7 @@ public partial class StellaWorld : ModSystem
         bottomFNL.SetDomainWarpAmp(10);
         bottomFNL.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
 
-        float numCaves = (float)Main.maxTilesX * (float)Main.maxTilesY * 0.00012f;
+        float numCaves = Main.maxTilesX * (float)Main.maxTilesY * 0.00012f;
         for (float f = 0; f < numCaves; f++)
         {
             //Reset the seed for each cave
@@ -3470,11 +3468,11 @@ public partial class StellaWorld : ModSystem
             int depth = genRand.Next(5, 12);
             int left = sx - width / 2;
             int right = sx + width / 2;
-            for(int x = left; x < right; x++)
+            for (int x = left; x < right; x++)
             {
                 float numSteps = right - left;
-                int d = (int)MathHelper.Lerp(0, depth, EasingFunction.QuadraticBump((float)(x - left) / numSteps));
-                for(int y = sy; y < sy + d; y++)
+                int d = (int)MathHelper.Lerp(0, depth, EasingFunction.QuadraticBump((x - left) / numSteps));
+                for (int y = sy; y < sy + d; y++)
                 {
                     Tile tile = Main.tile[x, y];
                     tile.ClearTile();
@@ -3494,7 +3492,7 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Blackening Stones for racist effect";
         var genRand = WorldGen.genRand;
-        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.00008f;
+        float maxCaveCount = Main.maxTilesX * Main.maxTilesY * 0.00008f;
         for (int k = 0; k < maxCaveCount; k++)
         {
             int x = genRand.Next(0, Main.maxTilesX);
@@ -3510,7 +3508,7 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Simple Caves";
         var genRand = WorldGen.genRand;
-        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.00001f;
+        float maxCaveCount = Main.maxTilesX * Main.maxTilesY * 0.00001f;
         float maxAttemptCount = maxCaveCount * 10;
         float placedCaves = 0;
         int padding = 2000;
@@ -3536,16 +3534,16 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Stay Shimmering";
         Rectangle rec = new Rectangle(0, DarkspaceStart, Main.maxTilesX, DarkspaceEnd - DarkspaceStart);
-        for(int x = rec.Left; x < rec.Right; x++)
+        for (int x = rec.Left; x < rec.Right; x++)
         {
-            for(int y = rec.Top; y < rec.Bottom; y++)
+            for (int y = rec.Top; y < rec.Bottom; y++)
             {
                 Tile tile = Main.tile[x, y];
                 bool isAethirumBlock = (tile.HasTile && tile.TileType == TileID.ShimmerBlock);
                 if (tile.LiquidType == LiquidID.Lava || tile.LiquidType == LiquidID.Water)
                 {
                     tile.LiquidType = LiquidID.Shimmer;
-                   // tile.LiquidAmount = (byte)WorldGen.genRand.Next(125, 255);
+                    // tile.LiquidAmount = (byte)WorldGen.genRand.Next(125, 255);
                 }
             }
         }
@@ -3560,7 +3558,7 @@ public partial class StellaWorld : ModSystem
         //First we should generate corridors starting from the top of the stone layer all the way to darkspace
         //Actually they just cut through the whole world, ignoring ice and jungle / desert
         var genRand = WorldGen.genRand;
-        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000005f;
+        float maxCaveCount = Main.maxTilesX * Main.maxTilesY * 0.000005f;
         float maxAttemptCount = maxCaveCount * 10;
         float placedCaves = 0;
         int padding = 1000;
@@ -3585,7 +3583,7 @@ public partial class StellaWorld : ModSystem
                 Vector2 initialDirection = Vector2.UnitY.RotateRandom(MathHelper.Pi);
                 int caveSteps = 800;
                 int walkerSteps = genRand.Next(200, 400);
-                int walkerWidth = (int)MathHelper.Lerp(2, 5, (float)((float)y - (float)GenVars.rockLayerHigh) / ((float)DarkspaceStart - (float)GenVars.rockLayerHigh));
+                int walkerWidth = (int)MathHelper.Lerp(2, 5, (float)(y - (float)GenVars.rockLayerHigh) / (DarkspaceStart - (float)GenVars.rockLayerHigh));
                 VeilGen.PlaceDeepCuttingCave(new Point(x, y).ToWorldCoordinates(), initialDirection, caveSteps, walkerSteps, walkerWidth, genRand, fnl);
                 placedCaves++;
                 if (placedCaves >= maxCaveCount)
@@ -3602,19 +3600,19 @@ public partial class StellaWorld : ModSystem
         //Alright so here's our algorithm
         int padding = 1700;
         float placedShafts = 0;
-        float shaftCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.0000005f;
+        float shaftCount = Main.maxTilesX * Main.maxTilesY * 0.0000005f;
         float maxAttemptCount = shaftCount * 10;
 
         //Generate all mienshafts in advance, generating them late is much slower
         //If you're going to do prepare rooms, have them all at the same time
         Queue<(Rectangle mapBounds, Room[] map)> mineshaftQueue = new Queue<(Rectangle mapBounds, Room[] map)>();
-        for(int i = 0; i < shaftCount; i++)
+        for (int i = 0; i < shaftCount; i++)
         {
             mineshaftQueue.Enqueue(VeilGen.GenerateMineshaft(genRand));
         }
 
         (Rectangle mapBounds, Room[] map) = mineshaftQueue.Dequeue();
-        for(float n = 0; n < maxAttemptCount; n++)
+        for (float n = 0; n < maxAttemptCount; n++)
         {
             int x = genRand.Next(padding, Main.maxTilesX - padding);
             int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart - 200);
@@ -4159,10 +4157,10 @@ public partial class StellaWorld : ModSystem
             for (int y = 0; y < height; y++)
             {
                 WorldGen.PlaceTile(x, startHillTile.Y - y, TileID.Dirt);
-               //  WorldGen.PlaceTile(x, y, TileID.Dirt);
+                //  WorldGen.PlaceTile(x, y, TileID.Dirt);
             }
         }
-      //  WorldGen
+        //  WorldGen
 
         //Place the fable
         Point placementTile = new Point();
@@ -4195,7 +4193,7 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                 WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
+                WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
 
@@ -4231,8 +4229,8 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                 WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
-               // WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
+                WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
+                // WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
 
@@ -4322,7 +4320,7 @@ for (int beamX = structureRectangle.Location.X;
         {
             int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 20));
             int yMin = yMax - 150;
-            
+
             CindersparkStart = Math.Min(CindersparkStart, yMin);
             CindersparkEnd = Math.Max(CindersparkEnd, yMax);
 
@@ -4815,8 +4813,8 @@ for (int beamX = structureRectangle.Location.X;
         progress.Message = "Set Xix Village";
         string path = "Structures/WitchTown";
         var rectangle = Structurizer.ReadRectangle(path);
-       // int yOffset = Structurizer.OffsetToGround(path);
-      //  Mod.Logger.Debug($"Witch Town Offset to Ground {yOffset}");
+        // int yOffset = Structurizer.OffsetToGround(path);
+        //  Mod.Logger.Debug($"Witch Town Offset to Ground {yOffset}");
 
         bool placed = false;
         int attempts = 0;
@@ -6178,7 +6176,7 @@ for (int beamX = structureRectangle.Location.X;
 
 
                         case 7:
-                            itemsToAdd.Add((ModContent.ItemType<GovheilHolsterBroochA>(), Main.rand.Next(1, 1)));
+      
                             itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
                             itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
                             itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -6491,7 +6489,7 @@ for (int beamX = structureRectangle.Location.X;
         // Dig big chasm at top
 
 
-        
+
 
         for (int daa = 0; daa < 30; daa++)
         {
@@ -7789,7 +7787,6 @@ for (int beamX = structureRectangle.Location.X;
                         break;
 
                     case 5:
-                        itemsToAdd.Add((ModContent.ItemType<AurelusBlightBroochA>(), Main.rand.Next(1, 1)));
                         itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                         itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -7956,7 +7953,7 @@ for (int beamX = structureRectangle.Location.X;
                             break;
 
                         case 5:
-                            itemsToAdd.Add((ModContent.ItemType<AurelusBlightBroochA>(), Main.rand.Next(1, 1)));
+                      
                             itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
                             itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                             itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(100, 1500)));
@@ -8460,187 +8457,6 @@ for (int beamX = structureRectangle.Location.X;
         }
     }
 
-    private void WorldGenWorshipingTowers(GenerationProgress progress, GameConfiguration configuration)
-    {
-        progress.Message = "Praising our lord and savior Niivi";
-
-        int leftmostJungleTileX = int.MaxValue;
-        int rightmostJungleTileX = int.MinValue;
-        for (int x = 500; x < Main.maxTilesX - 500; x++)
-        {
-            int jungleY = (int)(Main.worldSurface - 50);
-            while (!WorldGen.SolidTile(x, jungleY) && jungleY <= Main.worldSurface)
-            {
-                jungleY++;
-            }
-
-            Tile tile = Main.tile[x, jungleY];
-            if (tile.TileType == TileID.Mud)
-            {
-                if (leftmostJungleTileX > x)
-                    leftmostJungleTileX = x;
-                if (rightmostJungleTileX < x)
-                    rightmostJungleTileX = x;
-            }
-        }
-
-        string[] structures = new string[]
-        {
-            "Struct/Jungle/WorshipingTower1",
-            "Struct/Jungle/WorshipingTower2",
-            "Struct/Jungle/WorshipingTower3"
-        };
-
-        int[] tileBlend = new int[]
-        {
-            TileID.RubyGemspark
-        };
-
-
-        int numberToPlace = Main.rand.Next(10, 17);
-        int attempts = 0;
-        int maxAttempts = 100000;
-        for (int k = 0; k < numberToPlace; k++)
-        {
-            bool placed = false;
-            if (attempts > maxAttempts)
-                break;
-
-            while (!placed)
-            {
-                attempts++;
-                if (attempts > maxAttempts)
-                    break;
-                int xa = WorldGen.genRand.Next(leftmostJungleTileX, rightmostJungleTileX);
-                int ya = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
-                Point Loc = new Point(xa, ya);
-
-                // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-                Tile tile = Main.tile[Loc.X, Loc.Y];
-
-                if (!(tile.TileType == TileID.Mud))
-                {
-                    continue;
-                }
-
-                if (!tile.HasTile)
-                    continue;
-
-                string randomStructure = structures[Main.rand.Next(0, structures.Length)];
-
-
-                //Avoid the temple
-                Rectangle structureRect = StructureLoader.ReadRectangle(randomStructure);
-                structureRect.Location = Loc;
-                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, randomStructure))
-                    continue;
-
-                int[] ChestIndexs = StructureLoader.ReadStruct(Loc, randomStructure, tileBlend);
-
-                //GUARDS!!!
-                //IllurianGuardSpawnSystem.Add(Loc, randomStructure);
-                placed = true;
-                foreach (int chestIndex in ChestIndexs)
-                {
-                    var chest = Main.chest[chestIndex];
-                    int tileType = Main.tile[chest.x, chest.y].TileType;
-                    // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                    var itemsToAdd = new List<(int type, int stack)>();
-
-                    if (tileType == ModContent.TileType<IlluriaChest>())
-                    {
-                        //Illura Chest Loot here
-                        switch (Main.rand.Next(6))
-                        {
-                            case 0:
-                                //Illuria Brooch
-                                itemsToAdd.Add((ModContent.ItemType<IllurianBroochA>(), 1));
-                                break;
-                            case 1:
-                                //Alcalite Set
-                                itemsToAdd.Add((ModContent.ItemType<AlcaliteMask>(), 1));
-                                itemsToAdd.Add((ModContent.ItemType<AlcaliteRobe>(), 1));
-                                itemsToAdd.Add((ModContent.ItemType<AlcaliteTrunks>(), 1));
-                                break;
-                            case 2:
-                                //Illurite Dril
-                                itemsToAdd.Add((ModContent.ItemType<IlluriteDrill>(), 1));
-                                break;
-                            case 3:
-                                itemsToAdd.Add((ModContent.ItemType<IllurianLoveLocket>(), 1));
-                                break;
-                            case 4:
-                                itemsToAdd.Add((ModContent.ItemType<MsFreeze>(), 1));
-                                break;
-                            case 5:
-                                itemsToAdd.Add((ModContent.ItemType<IllurianBible>(), 1));
-                                break;
-                        }
-
-                        switch (Main.rand.Next(1))
-                        {
-                            case 0:
-                                itemsToAdd.Add((ModContent.ItemType<IllurineScale>(), Main.rand.Next(2, 5)));
-                                itemsToAdd.Add((ItemID.LifeFruit, Main.rand.Next(1, 4)));
-                                itemsToAdd.Add((ItemID.Ectoplasm, Main.rand.Next(2, 5)));
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        //Jungle Loot Here
-                        int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-                            Tuple.Create((int)ItemID.AnkletoftheWind, 0.5),
-                            Tuple.Create((int)ItemID.StaffofRegrowth, 0.5),
-                            Tuple.Create((int)ItemID.FlowerBoots, 0.5),
-                            Tuple.Create((int)ItemID.Boomstick, 0.5)
-                            );
-
-                        itemsToAdd.Add((specialItem, 1));
-                        switch (Main.rand.Next(4))
-                        {
-                            case 0:
-                                itemsToAdd.Add((ModContent.ItemType<FlowerBatch>(), Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.JungleSpores, Main.rand.Next(2, 5)));
-                                itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(3, 7)));
-                                break;
-                            case 1:
-                                itemsToAdd.Add((ItemID.Vine, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.JungleSpores, Main.rand.Next(2, 5)));
-                                itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(3, 7)));
-                                break;
-                            case 2:
-                                itemsToAdd.Add((ModContent.ItemType<FlowerBatch>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ItemID.Vine, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.CalmingPotion, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
-                                break;
-                            case 3:
-                                itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(3, 7)));
-                                itemsToAdd.Add((ItemID.RecallPotion, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
-                                break;
-                        }
-                    }
-
-                    // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                    int chestItemIndex = 0;
-                    foreach (var itemToAdd in itemsToAdd)
-                    {
-                        Item item = new Item();
-                        item.SetDefaults(itemToAdd.type);
-                        item.stack = itemToAdd.stack;
-                        chest.item[chestItemIndex] = item;
-                        chestItemIndex++;
-                        if (chestItemIndex >= 40)
-                            break; // Make sure not to exceed the capacity of the chest
-                    }
-                }
-            }
-        }
-    }
 
     #endregion
 
@@ -8660,16 +8476,16 @@ for (int beamX = structureRectangle.Location.X;
                 continue;
 
             VeilGen.QuickOrePatch(x, y, tileType);
-            progress.Set((float)k / (float)count);
+            progress.Set(k / (float)count);
         }
     }
 
     private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
-    {     
+    {
         progress.Message = "Scorching Gild and Arnchar burning into the world";
         int tileType = ModContent.TileType<VerianoreTile>();
         for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
-        {   
+        {
             int x = WorldGen.genRand.Next(0, Main.maxTilesX);
             int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -65,22 +66,6 @@ namespace Stellamod.Projectiles.Summons.Minions
             return Color.Lerp(Color.CadetBlue, Color.Transparent, completionRatio);
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        private void DrawTrail()
-        {
-            Main.spriteBatch.RestartDefaults();
-            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.ColorFunc = ColorFunction;
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
-
-            TrailDrawer.DrawPrims(Projectile.oldPos, drawOffset, 155);
-            TrailDrawer.ColorFunc = ColorFunction2;
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2Outline);
-            TrailDrawer.DrawPrims(Projectile.oldPos, drawOffset, 155);
-        }
-
         private void DrawEnergyBall(ref Color lightColor)
         {
             //Draw Code for the orb
@@ -128,7 +113,6 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawTrail();
             DrawEnergyBall(ref lightColor);
             return false;
         }

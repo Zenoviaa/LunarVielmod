@@ -1,8 +1,10 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -422,6 +424,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     {
                         SwitchState(ActionState.Stomp);
                     }
+  
                 }
             }
         }
@@ -762,17 +765,26 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     //Give some initial velocity
                     if (Timer == 1)
                     {
-
-                        NPC.velocity.Y = 1;
+                        NPC.velocity.Y = -9;
+                       
                     }
 
                     //Calculate Stomp Velocity
-                    if (Timer < 8)
+                    
+                    if(NPC.velocity.Y > 1)
                     {
-                        NPC.velocity.Y *= 1.5f;
+                        NPC.velocity.Y *= MathHelper.Lerp(1.01f, 1.12f, EasingFunction.InExpo(Timer / 30f));
+                        if(Timer % 5 == 0)
+                        {
+                            LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero));
+                        }
+                    }                  
+                    else
+                    {
+                        NPC.velocity.Y += 0.5f;
                     }
 
-                    if (NPC.collideY || Timer > 60)
+                    if ((NPC.collideY && Timer > 45) || Timer > 160)
                     {
                         for (int i = 0; i < 16; i++)
                         {
@@ -844,10 +856,10 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                             Vector2 velocity = Vector2.UnitX;
                             velocity *= 4;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                                ModContent.ProjectileType<StarSuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                                ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer, ai2: 1);
                             velocity = -velocity;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                                ModContent.ProjectileType<StarSuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                                ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer, ai2: 1);
                         }
 
                         //Stomp happens, so the code would be here

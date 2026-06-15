@@ -1,16 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
+﻿using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    public class NLUX : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class NLUX : ModProjectile
     {
         //Don't change the sample points, 3 is good enough
         private const int NumSamplePoints = 3;
@@ -19,7 +15,7 @@ namespace Stellamod.Projectiles.GunHolster
 
         public float BeamLength;
         public List<Vector2> BeamPoints;
-        public PrimitiveTrail BeamDrawer;
+
 
         //No texture for this
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -95,41 +91,7 @@ namespace Stellamod.Projectiles.GunHolster
             return averageLengthSample;
         }
 
-
-        public float WidthFunction(float completionRatio)
-        {
-            float osc = VectorHelper.Osc(0.75f, 1f);
-
-            float width = (float)Projectile.timeLeft / 20f;
-            return (Projectile.width * Projectile.scale) * osc * width * 0.4f;
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color color = Color.Lerp(Color.Turquoise, Color.Green, VectorHelper.Osc(0, 1));
-            return color;
-        }
-
         public override bool PreDraw(ref Color lightColor) => false;
         public override bool ShouldUpdatePosition() => false;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.Turquoise);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.CrystalTrail);
-
-            //Put in the points
-            //This is just a straight beam that collides with tiles
-            BeamPoints.Clear();
-            Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-            for (int i = 0; i <= 8; i++)
-            {
-                BeamPoints.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, i / 8f));
-            }
-
-            BeamDrawer.DrawPixelated(BeamPoints, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
-        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Swords;
-using Stellamod.Trails;
 using System.IO;
 using Terraria;
 using Terraria.Audio;

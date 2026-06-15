@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -9,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 {
-    public class GoldenChildren : ModProjectile, IPixelPrimitiveDrawer
+    public class GoldenChildren : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -71,18 +72,6 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                 d.noGravity = true;
             }
         }
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * 8;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color startColor = Color.DarkGoldenrod;
-            Color endColor = Color.Transparent;
-            return Color.Lerp(startColor, endColor, completionRatio);
-        }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -97,22 +86,6 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            Color middleColor = Color.Lerp(Color.LightGoldenrodYellow, Color.YellowGreen, 0.6f);
-            Color middleColor2 = Color.Lerp(Color.Gold, Color.Goldenrod, 0.5f);
-            Color finalColor = Color.Lerp(middleColor, middleColor2, AI_Timer / 600);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightCyan);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.SpikyTrail2);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

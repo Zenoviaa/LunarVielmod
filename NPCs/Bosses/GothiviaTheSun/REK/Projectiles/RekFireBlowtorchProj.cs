@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -12,7 +13,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
     public class RekFireBlowtorchProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         public override string Texture => TextureRegistry.EmptyTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
@@ -68,21 +68,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             target.AddBuff(ModContent.BuffType<GothivianFlames>(), 4 * 70);
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float mult = 1;
-            if (Projectile.timeLeft < 60)
-            {
-                mult = Projectile.timeLeft / (float)60;
-            }
-            return Projectile.width * Projectile.scale * 1.3f * mult * MathF.Sin((1f - completionRatio) * 0.5f);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Orange, Color.RoyalBlue, completionRatio);
-        }
-
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -102,16 +87,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             return false;
         }
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.OrangeRed, 0.3f));
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
-            BeamDrawer.DrawPixelated(LinePos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
-            return false;
-        }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {

@@ -12,7 +12,6 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trailing;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -421,7 +420,7 @@ public class TheIrradiaspearP : ModProjectile,
         Owner.itemAnimation = 2;
         Owner.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
 
-        if (Timer == ChargeTime)
+        if ((int)Timer == (int)ChargeTime)
         {
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Teleport");
             SoundEngine.PlaySound(soundStyle, Projectile.position);

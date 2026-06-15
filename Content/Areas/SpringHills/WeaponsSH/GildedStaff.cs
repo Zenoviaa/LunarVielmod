@@ -4,7 +4,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;

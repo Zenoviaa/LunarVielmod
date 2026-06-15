@@ -5,7 +5,6 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;

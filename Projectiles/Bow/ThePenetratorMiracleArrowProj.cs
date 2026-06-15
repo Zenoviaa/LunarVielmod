@@ -11,7 +11,6 @@ namespace Stellamod.Projectiles.Bow
 {
     public class ThePenetratorMiracleArrowProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         ref float Timer => ref Projectile.ai[0];
 
         public override void SetStaticDefaults()

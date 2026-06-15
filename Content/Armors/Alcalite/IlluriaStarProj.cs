@@ -1,5 +1,5 @@
-﻿using Stellamod.Helpers;
-using Stellamod.Trails;
+﻿using Stellamod.Assets;
+using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;

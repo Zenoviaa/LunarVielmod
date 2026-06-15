@@ -1,9 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Helpers;
-using Stellamod.Trails;
-using System;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -12,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    public class RadiantArrowProj : ModProjectile, IPixelPrimitiveDrawer
+    public class RadiantArrowProj : ModProjectile
     {
         private Vector2 _originalVelocity;
         public override void SetStaticDefaults()
@@ -140,18 +135,6 @@ namespace Stellamod.Projectiles.Ammo
             }
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color color = Color.Lerp(Color.DarkGoldenrod, Color.GreenYellow, 0.65f);
-            return color * Projectile.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f);
-        }
-
         public override void OnKill(int timeLeft)
         {
             // This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
@@ -208,21 +191,6 @@ namespace Stellamod.Projectiles.Ammo
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            if (Homing_Timer < 45)
-                return;
-
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.SpikyTrail2);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

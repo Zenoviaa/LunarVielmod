@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
@@ -779,30 +780,9 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             return false;
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Pink, Color.CadetBlue, completionRatio);
-        }
-
-
-
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            //     spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.Green.MultiplyRGB(lightColor), Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.GlowTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.8f - Main.screenPosition, 155);
 
             return true;
         }

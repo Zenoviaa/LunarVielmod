@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
@@ -731,8 +732,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             return color * NPC.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f) * ChargeTrailOpacity * (1f - completionRatio);
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public PrimitiveTrail BeamDrawer;
         Vector2 HitboxFixer = new Vector2(90, 90) / 2;
         int warningFrameCounter;
         int warningFrameTick;
@@ -751,36 +750,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                 Lighting.AddLight(target.Center + drawOffset, Color.Red.ToVector3() * 2.25f);
             }
 
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
 
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            Vector2 size = new Vector2(90, 90);
-            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
-
-            //Draw Chain
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-            for (int i = 1; i < Segments.Length; i++)
-            {
-                HavocSegment segment = Segments[i - 1];
-                HavocSegment nextSegment = Segments[i];
-                List<Vector2> points = new();
-                for (int j = 0; j <= 8; j++)
-                {
-                    points.Add(Vector2.Lerp(segment.Position, nextSegment.Position, j / 8f));
-                }
-                BeamDrawer.Draw(points, -Main.screenPosition + HitboxFixer, 32);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             //Draw all the segments
             for (int i = Segments.Length - 1; i > -1; i--)

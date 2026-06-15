@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
@@ -44,7 +45,6 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
         private float TrailAlpha;
 
         public bool Slowdown;
-        public PrimDrawer Trail { get; set; }
 
         public override void SetStaticDefaults()
         {

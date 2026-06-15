@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core;
+﻿using Stellamod.Core;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Fenix;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -212,21 +209,7 @@ namespace Stellamod.NPCs.RoyalCapital
         {
             if (firstButton)
             {
-                Player target = Main.player[NPC.target];
-                NPC.alpha = 255;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)target.Center.X, (int)target.Center.Y - 5,
-                        ModContent.NPCType<Fenix>());
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return;
 
-                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-                        ModContent.NPCType<Fenix>(), (int)target.Center.X, (int)target.Center.Y - 5);
-                }
                 NPC.Kill();
             }
         }

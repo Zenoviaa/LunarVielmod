@@ -284,8 +284,6 @@ public class SpiritCapsuleP : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawTrail);
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Draw2(Projectile, ref lightColor, rotationOffset: Timer * 0.05f);
         return false;
     }
 

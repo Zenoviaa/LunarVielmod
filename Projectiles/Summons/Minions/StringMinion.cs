@@ -11,8 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    public class StringMinion : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class StringMinion : ModProjectile
     {
         private List<Vector2> StringPos = new List<Vector2>();
         private ref float Timer => ref Projectile.ai[0];
@@ -108,24 +107,5 @@ namespace Stellamod.Projectiles.Summons.Minions
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
         }
 
-
-
-        public float WidthFunction(float completionRatio)
-        {
-            return Projectile.scale;
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.White;
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true);
-            BeamDrawer.DrawPixelated(StringPos.ToArray(), -Main.screenPosition, 64);
-            Main.spriteBatch.ExitShaderRegion();
-        }
     }
 }

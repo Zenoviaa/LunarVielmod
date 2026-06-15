@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Assets;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Visual;
-using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -15,7 +12,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
     public class RekFireBlowtorchBlastProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         public override string Texture => TextureRegistry.EmptyTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
@@ -44,8 +40,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
             if (Timer == LifeTime / 2)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<SmallCircleExplosionProj>(), 0, 0, Projectile.owner);
 
                 //Effects
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
@@ -145,12 +139,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
             }
 
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.OrangeRed, 0.3f));
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
-            BeamDrawer.DrawPixelated(LinePos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
             return false;
         }
 

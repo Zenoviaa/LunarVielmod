@@ -13,7 +13,6 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Town;
@@ -344,15 +343,6 @@ namespace Stellamod
 
                     break;
                 case DialogueType.Start_Goth:
-                    foreach (NPC npc in Main.ActiveNPCs)
-                    {
-                        if (npc.type == ModContent.NPCType<StartGoth>())
-                        {
-                            StartGoth verlia = npc.ModNPC as StartGoth;
-                            verlia.State = StartGoth.ActionState.Death;
-                            verlia.ResetTimers();
-                        }
-                    }
 
                     break;
             }

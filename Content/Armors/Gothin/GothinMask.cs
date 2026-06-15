@@ -6,7 +6,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Visual;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -47,12 +46,6 @@ public class GothinBlast : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-            if (this.OwnedByLocalClient())
-            {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<SmallCircleExplosionProj>(), 0, 0, Projectile.owner);
-            }
-
 
             for (float f = 0; f < 7; f++)
             {
@@ -109,7 +102,7 @@ public class GothinBlast : ModProjectile
     public float WidthFunction(float completionRatio)
     {
         float inScale = EasingFunction.OutExpo(Timer / 15f);
-        float outScale = EasingFunction.InOutSine((float)Projectile.timeLeft / 15f);
+        float outScale = EasingFunction.InOutSine(Projectile.timeLeft / 15f);
         float w = Projectile.width * 0.5f;
         float width = MathHelper.Lerp(w, w * 0.15f, MathHelper.SmoothStep(0f, 1f, completionRatio));
         return width * outScale * inScale;
@@ -163,7 +156,7 @@ public class GothinBlast : ModProjectile
         Color drawColor = Color.Red;
         drawColor.A = 0;
 
-        float width = (float)Projectile.timeLeft / 30f;
+        float width = Projectile.timeLeft / 30f;
         float outWidth = EasingFunction.InOutSine(width);
         float scale = outWidth;
         Vector2 flashScale = Vector2.One;
@@ -294,7 +287,7 @@ public class GothinMask : ModItem
     {
         var stats = player.GetStats();
         stats.defenseBonus += 20;
-        stats.accessorySlots++;
+        stats.accessorySlots+=2;
     }
 
     public override bool IsArmorSet(Item head, Item body, Item legs)

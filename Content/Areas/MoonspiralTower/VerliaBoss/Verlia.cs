@@ -12,7 +12,6 @@ using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;

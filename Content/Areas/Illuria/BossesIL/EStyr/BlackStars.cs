@@ -1,14 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Dusts;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
@@ -63,7 +54,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Main.debuff[Type] = true;
             Main.pvpBuff[Type] = true;
             Main.buffNoTimeDisplay[Type] = false;
-       
+
         }
 
         public override void Update(Player player, ref int buffIndex)

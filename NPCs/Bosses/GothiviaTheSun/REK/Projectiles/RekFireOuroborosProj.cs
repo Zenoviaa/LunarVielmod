@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -14,7 +15,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
     public class RekFireOuroborosProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         public override string Texture => TextureRegistry.EmptyTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
@@ -106,12 +106,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.OrangeRed, 0.3f));
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
-            BeamDrawer.DrawPixelated(LinePos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
+
             return false;
         }
     }

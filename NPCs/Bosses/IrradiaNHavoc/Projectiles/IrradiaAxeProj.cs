@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -12,7 +13,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
     public class IrradiaAxeProj : ModProjectile
     {
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private ref float Timer => ref Projectile.ai[0];
         private ref float Timer2 => ref Projectile.ai[1];
         private ref float AlphaTimer => ref Projectile.ai[2];
@@ -124,19 +124,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;
             }
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
 
 
             Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47").Value;
             Color drawColor = (Color)GetLineAlpha(lightColor);
             drawColor *= AlphaTimer;
-
-            Vector2 drawOrigin = texture.Size() / 2;
 
             float drawScale = Projectile.scale;
             Vector2 velocity;
@@ -155,8 +147,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 
             float rotation1 = velocity.ToRotation() + MathHelper.PiOver2;
             float rotation2 = velocityRotated.ToRotation() + MathHelper.PiOver2;
-            Main.spriteBatch.Draw(lineTexture, Projectile.Center - Main.screenPosition, null, drawColor, rotation1, drawOrigin, drawScale, SpriteEffects.None, 0);
-            Main.spriteBatch.Draw(lineTexture, Projectile.Center - Main.screenPosition, null, drawColor, rotation2, drawOrigin, drawScale, SpriteEffects.None, 0);
             return false;
         }
     }

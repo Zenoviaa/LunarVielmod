@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.WeaponTypes;
+using Stellamod.Common.WeaponTypes.CombatTools;
 using Stellamod.Helpers;
 using System.IO;
 using Terraria;

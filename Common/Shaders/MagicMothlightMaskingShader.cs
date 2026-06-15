@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Trails;
+using Stellamod.Assets;
 using Terraria;
 using Terraria.Graphics.Shaders;
 

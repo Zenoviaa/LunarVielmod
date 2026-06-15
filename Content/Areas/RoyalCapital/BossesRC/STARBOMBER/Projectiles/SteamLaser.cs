@@ -9,7 +9,6 @@ using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

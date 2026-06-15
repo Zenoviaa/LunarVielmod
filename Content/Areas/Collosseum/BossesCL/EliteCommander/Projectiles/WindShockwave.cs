@@ -21,6 +21,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
         private float FadeTime => 15f;
         private ref float Timer => ref Projectile.ai[0];
         private ref float DeathTimer => ref Projectile.ai[1];
+        private ref float Style => ref Projectile.ai[2];
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
@@ -43,6 +44,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
         public override void AI()
         {
             base.AI();
+            
             Timer++;
             if (Timer % 16 == 0)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -13,7 +14,6 @@ namespace Stellamod.Projectiles.Magic
     public class IllurianBibleProj : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private Vector2 OriginalVelocity;
         private Vector2 OriginalPosition;
 
@@ -189,36 +189,8 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool PreDraw(ref Color lightColor)
         {
-            //Draw the texture
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-            Vector2 drawSize = texture.Size();
-            Vector2 drawOrigin = drawSize / 2;
 
-            //Draw the trail
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
 
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
-
-            Vector2 frameSize = new Vector2(32, 32);
-            //Could also set this manually like
-            //frameSize = new Vector2(58, 34);
-            TrailDrawer.DrawPrims(Projectile.oldPos, frameSize * 0.5f - Main.screenPosition, 155);
-
-            float scale = 1.2f;
-            Color drawColor = (Color)GetAlpha(lightColor);
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            for (int i = 0; i < 2; i++)
-            {
-                float rotOffset = MathHelper.TwoPi * (i / 4f);
-                rotOffset += Timer * 0.003f;
-                float drawScale = scale * (i / 4f);
-                spriteBatch.Draw(texture, drawPosition, null, drawColor, Projectile.rotation + rotOffset,
-                    drawOrigin, drawScale, SpriteEffects.None, 0f);
-            }
             return false;
         }
 

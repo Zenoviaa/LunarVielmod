@@ -1,19 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Assets;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    public class NiiviLaserSpikeProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class NiiviLaserSpikeProj : ModProjectile
     {
         //Visuals
         public override string Texture => TextureRegistry.EmptyTexture;
-        public PrimitiveTrail BeamDrawer;
         private List<Vector2> LaserSpikePos;
 
         //AI
@@ -56,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             float numPoints = 24f;
             for (int i = 0; i < numPoints; i++)
             {
-                float progress = (float)i / numPoints;
+                float progress = i / numPoints;
                 progress *= Progress;
                 Vector2 start = Projectile.Center;
                 Vector2 end = Projectile.Center + velocity.RotatedBy(MathHelper.PiOver2 * progress);
@@ -100,17 +96,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override bool ShouldUpdatePosition()
         {
             return false;
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.White);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.FadedStreak);
-
-            BeamDrawer.DrawPixelated(LaserSpikePos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

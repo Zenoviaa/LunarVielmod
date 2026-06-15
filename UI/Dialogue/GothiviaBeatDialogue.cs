@@ -1,5 +1,4 @@
-﻿using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.UI.Dialogue
@@ -131,15 +130,7 @@ namespace Stellamod.UI.Dialogue
 
         public override void Complete()
         {
-            foreach (NPC npc in Main.ActiveNPCs)
-            {
-                if (npc.type == ModContent.NPCType<GothiviaDeath>())
-                {
-                    GothiviaDeath zui = npc.ModNPC as GothiviaDeath;
-                    zui.DM = true;
 
-                }
-            }
             //Do something when the dialogue is completely finished
 
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
@@ -9,7 +10,6 @@ using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.IO;

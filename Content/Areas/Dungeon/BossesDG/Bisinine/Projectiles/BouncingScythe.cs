@@ -6,7 +6,6 @@ using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 
 using Terraria;

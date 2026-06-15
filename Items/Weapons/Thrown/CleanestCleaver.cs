@@ -1,15 +1,10 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Ores;
-using Stellamod.NPCs.Bosses.Fenix.Projectiles;
-using Stellamod.Projectiles.Thrown;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -78,11 +73,11 @@ public class CleanestCleaverSlash : BaseSwingProjectileV2
 
     public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
     {
- //       base.RenderSwingTrail(ref lightColor, points);
+        //       base.RenderSwingTrail(ref lightColor, points);
         var shader = BlackFireShader.Instance;
-        shader.InnerColor = Color.White ;
-        shader.OuterColor = Color.Silver ;
-        shader.BackColor = Color.Black ;
+        shader.InnerColor = Color.White;
+        shader.OuterColor = Color.Silver;
+        shader.BackColor = Color.Black;
         TrailDrawer.Draw(Main.spriteBatch, points, Projectile.oldRot, DefaultColorFunction, DefaultWidthFunction, shader);
     }
 
@@ -272,7 +267,7 @@ public class CleanestCleaverProg : ModProjectile
             }
             for (int i = 0; i < 7; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<BloodDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
+              //  Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<BloodDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
             }
             for (float i = 0; i < 4; i++)
             {
@@ -287,7 +282,7 @@ public class CleanestCleaverProg : ModProjectile
             }
             for (int i = 0; i < 16; i++)
             {
-                float p = (float)i / 16f;
+                float p = i / 16f;
                 float rot = p * MathHelper.ToRadians(360);
                 Vector2 vel = rot.ToRotationVector2() * 6;
                 Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Dirt, vel * 0.2f);
@@ -342,7 +337,7 @@ public class CleanestCleaverProg : ModProjectile
             for (int i = 0; i < 7; i++)
             {
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-                Dust.NewDust(target.position, target.width, target.height, ModContent.DustType<BloodDust>());
+            //    Dust.NewDust(target.position, target.width, target.height, ModContent.DustType<BloodDust>());
             }
             Hit = true;
             ProjectileVelocityBeforeHit = Projectile.velocity;

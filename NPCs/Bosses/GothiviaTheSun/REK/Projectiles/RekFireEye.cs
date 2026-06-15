@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -12,7 +13,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
     public class RekFireEye : ModNPC
     {
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private ref float Timer => ref NPC.ai[0];
         private NPC Owner
         {
@@ -155,15 +155,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
-            Vector2 frameSize = new Vector2(200, 200);
-            TrailDrawer.DrawPrims(NPC.oldPos, frameSize * 0.5f - screenPos, 155);
-
             //Draw Telegraph Line like on the axe
             if (AttackTimer == 1)
             {

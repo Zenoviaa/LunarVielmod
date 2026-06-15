@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
@@ -59,14 +60,10 @@ namespace Stellamod.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Color drawColor = Color.White;
-            drawColor.A = 0;
 
-            Rectangle animationFrame = Projectile.Frame();
-            spriteBatch.Draw(texture, drawPos, animationFrame, drawColor, Projectile.rotation, animationFrame.Size() / 2, 1, SpriteEffects.None, 0);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+            drawer.scale *= 2;
+            Main.spriteBatch.Draw(drawer);
             return false;
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
