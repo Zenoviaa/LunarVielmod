@@ -44,16 +44,22 @@ public class FossilLauncherShard : ModProjectile,
     {
         base.AI();
         Timer++;
+
+        if(Timer == 1)
+        {
+            Projectile.frame = Main.rand.Next(4);
+        }
         if(Timer >= 20)
         {
             Projectile.tileCollide = true;
         }
-        if (Main.rand.NextBool(3))
+        if (Main.rand.NextBool(16))
         {
-            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin);
+    
         }
 
-        Projectile.rotation += MathF.Sign(Projectile.velocity.X) * 0.05f;
+        Projectile.velocity *= 0.96f;
+        Projectile.rotation += MathF.Sign(Projectile.velocity.X) * 0.15f;
     }
 
     public override bool PreDraw(ref Color lightColor)
@@ -67,11 +73,7 @@ public class FossilLauncherShard : ModProjectile,
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        for(float n = 0; n < 20; n++)
-        {
-            Vector2 v = Main.rand.NextVector2Circular(8, 8);
-            Dust.NewDustPerfect(Projectile.Center, DustID.CopperCoin, v);
-        }
+
     }
 
     public void DrawToRenderTargets()
@@ -89,8 +91,8 @@ public class FossilLauncher : BaseGun
         Item.DamageType = DamageClass.Ranged;
         Item.width = 40;
         Item.height = 40;
-        Item.useTime = 32;
-        Item.useAnimation = 32;
+        Item.useTime = 8;
+        Item.useAnimation = 8;
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.knockBack = 6;
         Item.value = Item.sellPrice(0, 0, 20, 0);
@@ -101,6 +103,7 @@ public class FossilLauncher : BaseGun
         Item.shootSpeed = 4f;
         Item.useAmmo = AmmoID.Bullet;
         Item.noMelee = true;
+        muzzleOrigin = new Vector2(55, 10);
     }
 
     public override void SetMagazine(ref GunReloadParams fireParams)
@@ -110,9 +113,10 @@ public class FossilLauncher : BaseGun
         fireParams.reloadWindow = 60;
     }
 
+
     public override Vector2? HoldoutOffset()
     {
-        return new Vector2(8, 0);
+        return new Vector2(16, 0);
     }
 
     public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -156,7 +160,7 @@ public class FossilLauncher : BaseGun
         for(float f = 0; f < numShots; f++)
         {
             Vector2 v = velocity.RotatedByRandom(MathHelper.ToRadians(10));
-            v *= Main.rand.NextFloat(0.75f, 1.25f);
+            v *= Main.rand.NextFloat(2.25f, 4f);
             Projectile.NewProjectile(source, position, v, type, damage, knockback, player.whoAmI);
         }
         return false;

@@ -37,8 +37,8 @@ public class AmmoToolMenuUIState : UIState
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        backButton.Left.Pixels = RelativeLeft + 128;
-        backButton.Top.Pixels = RelativeTop - 92;
+        backButton.Left.Pixels = RelativeLeft - backButton.Width.Pixels / 2;
+        backButton.Top.Pixels = RelativeTop + 256;
         if (FullyClosed())
         {
             ModContent.GetInstance<AmmoToolUISystem>().CloseUI();

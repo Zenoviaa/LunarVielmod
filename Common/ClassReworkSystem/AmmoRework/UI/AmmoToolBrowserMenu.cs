@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.UI;
+﻿using Stellamod.Assets;
+using Stellamod.Common.UI;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -90,6 +91,12 @@ public class AmmoToolBrowserMenu : UIPanel
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
         base.DrawSelf(spriteBatch);
+        Rectangle r = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        SpritebatchDrawer d = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile.Value, Vector2.Zero);
+        d.dstRect = r;
+        d.drawOrigin = Vector2.Zero;
+        d.color = Color.Black * textAlpha * 0.8f;
+        spriteBatch.Draw(d);
 
         string text = LangText.Common("DragHelp");
         Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
@@ -99,15 +106,15 @@ public class AmmoToolBrowserMenu : UIPanel
         string text2 = LangText.Common("QuiverHelp");
         Vector2 size2 = FontAssets.MouseText.Value.MeasureString(text2);
         ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text2,
-            centerPos + new Vector2(0, -32), Color.White * ExtraMath.Osc(0.8f, 1f, speed: 3) * textAlpha, 0f, size2 * 0.5f, new Vector2(1f), -1f, 1f);
+            centerPos + new Vector2(0, -412), Color.White * ExtraMath.Osc(0.8f, 1f, speed: 3) * textAlpha, 0f, size2 * 0.5f, new Vector2(1f), -1f, 1f);
 
         ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text,
-            centerPos, Color.Lerp(Color.White, Color.Black, 0.5f) * ExtraMath.Osc(0.8f, 1f, speed: 3) * textAlpha, 0f, size * 0.5f, new Vector2(1f), -1f, 1f);
+            centerPos + new Vector2(0, -382), Color.Lerp(Color.White, Color.Black, 0.5f) * ExtraMath.Osc(0.8f, 1f, speed: 3) * textAlpha, 0f, size * 0.5f, new Vector2(1f), -1f, 1f);
 
         string text3 = LangText.Common("MagicQuiver");
         Vector2 size3 = FontAssets.DeathText.Value.MeasureString(text3);
         ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.DeathText.Value, text3,
-            centerPos + new Vector2(0, -384),  Color.White * textAlpha, 0f, size3 * 0.5f, new Vector2(1f), -1f, 1f);
+            centerPos + new Vector2(0, -452),  Color.White * textAlpha, 0f, size3 * 0.5f, new Vector2(1f), -1f, 1f);
 
 
     }

@@ -124,7 +124,6 @@ namespace Stellamod.Common.UI
                 Main.hoverItemName = HoveringItem.HoverName;
             }
 
-            BackgroundColor = Color.Red;
             Vector2 topLeft = rectangle.TopLeft();
             topLeft += _offset;
             topLeft.X += 512;
@@ -197,11 +196,19 @@ namespace Stellamod.Common.UI
                 iconCenterPos -= diff * lerp2 * 0.1f;
                 float extraScaleMul = MathHelper.Lerp(0.8f, 1f, 1f - lerp);
                 bool isUnlocked = ViewFunction(item);
-                spriteBatch.Draw(slotTexture, iconCenterPos - new Vector2(0, slotTexture.Height / 2), null, drawColor * transitionInterpolant, 0f, drawOrigin, _scale * _scales[i] * extraScaleMul, SpriteEffects.None, 0f);
 
+                Color bannerColor = Color.Lerp(Color.White, Color.Black, 0.75f);
                 Color iconColor = Color.White;
                 if (!isUnlocked)
                     iconColor = Color.Lerp(iconColor, Color.Black, 0.8f);
+                else
+                {
+                    bannerColor = Color.Lerp(bannerColor, Color.Transparent, lerp);
+                    iconColor = Color.Lerp(iconColor, Color.Transparent, lerp);
+                }
+       
+                spriteBatch.Draw(slotTexture, iconCenterPos - new Vector2(0, slotTexture.Height / 2), null, bannerColor * transitionInterpolant, 0f, drawOrigin, _scale * _scales[i] * extraScaleMul, SpriteEffects.None, 0f);
+
                 ItemSlot.DrawItemIcon(item, _context, spriteBatch, iconCenterPos, drawScale * _scales[i] * extraScaleMul, 32, iconColor * transitionInterpolant);
                 if (HoveringItem.stack > 1)
                 {
@@ -226,13 +233,14 @@ namespace Stellamod.Common.UI
             }
             Vector2 tl2 = rectangle.TopLeft();
             tl2.Y -= 16;
+            tl2.X -= 64;
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ClothesLineTextureAsset, Main.screenPosition + tl2);
             drawer.color = Color.White * transitionInterpolant;
             drawer.drawOrigin = Vector2.Zero;
             drawer.sourceRect = new Rectangle(0, 0, 16, drawer.texture.Height);
             spriteBatch.Draw(drawer);
 
-            Rectangle dstRect = new Rectangle((int)tl2.X + 16, (int)tl2.Y, Main.screenWidth - 16, drawer.texture.Height);
+            Rectangle dstRect = new Rectangle((int)tl2.X + 16, (int)tl2.Y, Main.screenWidth + 64, drawer.texture.Height);
             drawer.sourceRect = new Rectangle(16, 0, 16, drawer.texture.Height);
             drawer.dstRect = dstRect;
             spriteBatch.Draw(drawer);
