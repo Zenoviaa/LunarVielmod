@@ -83,7 +83,12 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
                 return;
             if (target.HasBuff(BuffID.OnFire))
                 return;
+        
             target.AddBuff(BuffID.OnFire, 120);
+
+            if (target.boss)
+                return;
+
             if (target.life + damageDone >= target.lifeMax)
             {
                 int damage = (int)(target.lifeMax * 0.3f);
