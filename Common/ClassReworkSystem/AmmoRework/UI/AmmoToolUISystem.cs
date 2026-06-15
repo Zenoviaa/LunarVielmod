@@ -62,12 +62,15 @@ public class AmmoToolUISystem : BaseUISystem
     {
         if (_userInterface.CurrentState != null)
         {
+            menuUIState.isOpen = false;
+            /*
             SoundStyle soundStyle = SoundID.MenuClose;
             SoundEngine.PlaySound(soundStyle);
-            CloseUI();
+            CloseUI();*/
         }
         else
         {
+            menuUIState.isOpen = true;
             SoundStyle soundStyle = SoundID.MenuOpen;
             SoundEngine.PlaySound(soundStyle);
             OpenUI();

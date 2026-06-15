@@ -12,6 +12,7 @@ using Terraria.UI.Chat;
 
 namespace Stellamod.Common.UI
 {
+
     /// <summary>
     /// Creates a grid view of a collection of items
     /// </summary>
@@ -23,8 +24,8 @@ namespace Stellamod.Common.UI
         //Basically, instead of ceratgin 6800 slots or whatever
         //We have a single view that takes an array of items
         //Uses that to calculate draw offsets for each item and draws them
-        public GridItemBrowserView(Item[] items, Asset<Texture2D> slotTextureAsset, 
-            Action<Item> selectFunction, 
+        public GridItemBrowserView(Item[] items, Asset<Texture2D> slotTextureAsset,
+            Action<Item> selectFunction,
             Func<Item, bool> viewFunction)
         {
             _scale = 1f;
@@ -63,7 +64,7 @@ namespace Stellamod.Common.UI
 
         private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
         {
-            SelectFunction(HoveringItem);    
+            SelectFunction(HoveringItem);
         }
 
         private bool NeedsUpdateCollection()
@@ -199,5 +200,5 @@ namespace Stellamod.Common.UI
             Main.inventoryScale = oldScale;
         }
     }
-    
+
 }

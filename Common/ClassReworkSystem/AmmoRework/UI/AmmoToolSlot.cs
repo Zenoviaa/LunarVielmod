@@ -69,6 +69,11 @@ public class AmmoToolSlot : UIElement
 
         ItemSlot.DrawItemIcon(_item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
 
+        Vector2 miniSpot = centerPos + new Vector2(24);
+        var classReworkPalyer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
+        if(!classReworkPalyer.QuiverAmmoItem.IsAir)
+            ItemSlot.DrawItemIcon(classReworkPalyer.QuiverAmmoItem, _context, spriteBatch, miniSpot, _scale, 32, Color.White);
+
 
         Main.inventoryScale = oldScale;
     }

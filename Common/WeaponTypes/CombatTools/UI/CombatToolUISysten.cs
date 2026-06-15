@@ -63,12 +63,12 @@ namespace Stellamod.Common.WeaponTypes.CombatTools.UI
         {
             if (_userInterface.CurrentState != null)
             {
-                SoundStyle soundStyle = SoundID.MenuClose;
-                SoundEngine.PlaySound(soundStyle);
-                CloseUI();
+                menuUIState.isOpen = false;
+              
             }
             else
             {
+                menuUIState.isOpen = true;
                 SoundStyle soundStyle = SoundID.MenuOpen;
                 SoundEngine.PlaySound(soundStyle);
                 OpenUI();
