@@ -24,7 +24,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
             MineResist = 4f;
             MinPick = 200;
 
-            DustType = ModContent.DustType<Dusts.CryoDust>();
+        
             AdjTiles = new int[] { TileID.Bookcases };
             Main.tileFrameImportant[Type] = true;
             Main.tileNoAttach[Type] = true;

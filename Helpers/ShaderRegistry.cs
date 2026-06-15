@@ -56,9 +56,6 @@ namespace Stellamod.Helpers
         {
             ScreenShaders = new List<string>();
 
-            Asset<Effect> glowingDustShader = Assets.Request<Effect>("Effects/GlowingDust");
-            GameShaders.Misc[ShaderRegistry.GlowingDustShader] = new MiscShaderData(glowingDustShader, "GlowingDustPass");
-
             Asset<Effect> DaedusRobeRef = Assets.Request<Effect>("Effects/DaedusRobe");
             GameShaders.Misc["LunarVeil:DaedusRobe"] = new MiscShaderData(DaedusRobeRef, "PixelPass");
 

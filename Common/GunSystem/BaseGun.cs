@@ -305,7 +305,7 @@ namespace Stellamod.Common.GunSystem
         {
             SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew7");
             shootSound.PitchVariance = 0.3f;
-            shootSound.Volume = 0.15f;
+            shootSound.Volume = 0.05f;
             SoundEngine.PlaySound(shootSound, position);
             BasicMuzzleFlash(position, velocity, Color.Yellow, Color.Red);
         }

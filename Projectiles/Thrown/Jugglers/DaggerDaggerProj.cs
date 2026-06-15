@@ -99,7 +99,6 @@ public class DaggerDaggerProj : BaseJugglerProjectile
         for (int i = 0; i < 8; i++)
         {
             SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-            Dust.NewDust(target.position, target.width, target.height, ModContent.DustType<BloodDust>());
         }
 
         FXUtil.GlowCircleBoom(target.Center,

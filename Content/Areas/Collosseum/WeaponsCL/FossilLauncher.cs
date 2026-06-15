@@ -1,8 +1,10 @@
 ﻿using Stellamod.Common.GunSystem;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,7 @@ public class FossilLauncherShard : ModProjectile,
     {
         base.SetStaticDefaults();
         Main.projFrames[Type] = 4;
-        ProjectileID.Sets.TrailCacheLength[Type] = 16;
+        ProjectileID.Sets.TrailCacheLength[Type] = 8;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
     public override void SetDefaults()
@@ -44,8 +46,7 @@ public class FossilLauncherShard : ModProjectile,
     {
         base.AI();
         Timer++;
-
-        if(Timer == 1)
+        if (Timer == 1)
         {
             Projectile.frame = Main.rand.Next(4);
         }
@@ -58,7 +59,9 @@ public class FossilLauncherShard : ModProjectile,
     
         }
 
-        Projectile.velocity *= 0.96f;
+        Projectile.velocity.X *= 0.96f;
+        if(Timer > 10)
+            Projectile.velocity.Y += 0.25f;
         Projectile.rotation += MathF.Sign(Projectile.velocity.X) * 0.15f;
     }
 
@@ -73,12 +76,30 @@ public class FossilLauncherShard : ModProjectile,
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-
+        var d = DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(45)) * 0.8f);
+        d.Scale *= 0.35f;
+        d.innerColor = Color.SandyBrown;
+        d.outerColor = Color.Red;
     }
 
+    private float WidthFunction(float ratio)
+    {
+        return MathHelper.SmoothStep(3, 1, ratio);
+    }
+    private Color ColorFunction(float ratio)
+    {
+        return Color.Lerp(Color.Yellow, Color.Red, ratio);
+    }
+
+    private void DrawTrail(GraphicsDevice gDevice)
+    {
+        var shader = RichLaserShader.Instance;
+        shader.LaserColor = Color.Gold;
+        TrailDrawer.Draw(Projectile.oldPos, ColorFunction, WidthFunction, shader, Projectile.Size * 0.5f);
+    }
     public void DrawToRenderTargets()
     {
-      
+        PixelationManager.QueuePrimitivesDrawAction(DrawTrail);
     }
 }
 
@@ -121,6 +142,7 @@ public class FossilLauncher : BaseGun
 
     public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
+        muzzleOrigin = new Vector2(55, 15);
         type = ModContent.ProjectileType<FossilLauncherShard>();
         Vector2 Offset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y - 1)) * 20f;
         if (Collision.CanHit(position, 0, 0, position + Offset, 0, 0))

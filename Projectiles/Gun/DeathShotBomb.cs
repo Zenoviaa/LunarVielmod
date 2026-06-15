@@ -88,10 +88,7 @@ namespace Stellamod.Projectiles.Gun
                     ModContent.ProjectileType<PericarditisBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
 
-            if (Timer == 22)
-            {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSkullDust>(), Vector2.Zero, 0, Color.Purple, 1f).noGravity = true;
-            }
+ 
         }
     }
 }

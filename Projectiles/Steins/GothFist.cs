@@ -458,7 +458,7 @@ namespace Stellamod.Projectiles.Steins
 
                         for (int i = 0; i < 4; i++)
                         {
-                            Dust.NewDustPerfect(target.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.Purple, 1f).noGravity = true;
+                          //  Dust.NewDustPerfect(target.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.Purple, 1f).noGravity = true;
                         }
                         for (int i = 0; i < 4; i++)
                         {

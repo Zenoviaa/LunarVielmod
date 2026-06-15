@@ -287,7 +287,7 @@ public class GothinMask : ModItem
     {
         var stats = player.GetStats();
         stats.defenseBonus += 20;
-        stats.accessorySlots++;
+        stats.accessorySlots+=2;
     }
 
     public override bool IsArmorSet(Item head, Item body, Item legs)

@@ -267,7 +267,7 @@ public class CleanestCleaverProg : ModProjectile
             }
             for (int i = 0; i < 7; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<BloodDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
+              //  Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<BloodDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
             }
             for (float i = 0; i < 4; i++)
             {
@@ -337,7 +337,7 @@ public class CleanestCleaverProg : ModProjectile
             for (int i = 0; i < 7; i++)
             {
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-                Dust.NewDust(target.position, target.width, target.height, ModContent.DustType<BloodDust>());
+            //    Dust.NewDust(target.position, target.width, target.height, ModContent.DustType<BloodDust>());
             }
             Hit = true;
             ProjectileVelocityBeforeHit = Projectile.velocity;
