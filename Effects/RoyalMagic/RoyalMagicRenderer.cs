@@ -264,16 +264,6 @@ public class CometTrailShader : CrystalShader<CometTrailShader>
         Time = Main.GlobalTimeWrappedHourly * 24;
     }
 }
-public class StarMixShader : CrystalShader<StarMixShader>
-{
-    public Texture2D MixTexture
-    {
-        set
-        {
-            Effect.Parameters["mixTexture"].SetValue(value);
-        }
-    }
-}
 
 public class RoyalMagicStarsShader : CrystalShader<RoyalMagicStarsShader>
 {

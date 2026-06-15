@@ -15,8 +15,8 @@ public class FontLoader : ModSystem
     public override void OnModLoad()
     {
         base.OnModLoad();
-        _deathText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}DeathText");
-        _mouseText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}MouseText");
+        _deathText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}DeathText", AssetRequestMode.ImmediateLoad);
+        _mouseText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}MouseText", AssetRequestMode.ImmediateLoad);
         On_Main.Update += LoadFonts;
     }
 
@@ -33,6 +33,12 @@ public class FontLoader : ModSystem
     private void LoadFonts(On_Main.orig_Update orig, Main self, GameTime gameTime)
     {
         orig(self, gameTime);
+        if (_deathText == null || _mouseText == null)
+            return;
+        if (!_deathText.IsLoaded || !_mouseText.IsLoaded)
+            return;
+  
+
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
         if (FontAssets.DeathText == _deathText && (!config.fontReplace))
         {
