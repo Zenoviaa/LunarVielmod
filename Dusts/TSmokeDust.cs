@@ -12,7 +12,7 @@ namespace Stellamod.Dusts
             dust.noGravity = true;
             dust.frame = new Rectangle(0, 64 * Main.rand.Next(4), 64, 64);
             dust.rotation = Main.rand.NextFloat(-2f, 2f);
-            dust.shader = new Terraria.Graphics.Shaders.ArmorShaderData(AssetReferences.Effects.SmokeDust.Asset, "PixelPass");
+            dust.shader = new Terraria.Graphics.Shaders.ArmorShaderData(ModContent.Request<Effect>("Stellamod/Effects/SmokeDust"), "PixelPass");
             dust.scale *= 1.5f;
         }
 

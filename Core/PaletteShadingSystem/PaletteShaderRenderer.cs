@@ -72,7 +72,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         {
             if (Main.gameMenu)
                 return;
-
+         
             Effect paletteEffect = null;
             PalettePriority priority = PalettePriority.Low;
             float fade = 0f;

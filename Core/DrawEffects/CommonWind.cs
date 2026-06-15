@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.ID;
 
 namespace Stellamod.Core.DrawEffects
 {
@@ -172,6 +173,7 @@ namespace Stellamod.Core.DrawEffects
             shader.Speed = 5.2f;
             shader.Distortion = 0.15f;
             shader.Power = 0.25f;
+       
 
             //This just applis the shader changes
             for (int i = 0; i < _windSlashes.Count; i++)

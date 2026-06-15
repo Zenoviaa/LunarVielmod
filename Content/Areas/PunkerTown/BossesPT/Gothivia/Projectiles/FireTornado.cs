@@ -75,27 +75,19 @@ public class FireTornado : ModProjectile,
 
     private void DrawPixelatedTornado(SpriteBatch sb, Vector2 sp)
     {
-        var pass = AssetReferences.Effects.GothinFlames.FireTornado.CreatePixelPass();
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.1f;
-        pass.Parameters.resolution = new Vector2(Main.screenWidth, Main.screenHeight);
-        pass.Parameters.gradientTopColor = new Color(224, 187, 122).ToVector4();
-        pass.Parameters.gradientBottomColor = new Color(59, 19, 13).ToVector4();
-
-        HlslSampler sampler = new();
-        sampler.Texture = AssetManager.Noise.FlamethrowerNoise.Value;
-        sampler.Sampler = SamplerState.LinearWrap;
-        pass.Parameters.uImage1 = sampler;
-
-
-        HlslSampler sampler2 = new();
-        sampler.Texture = AssetManager.Noise.Whirly.Value;
-        sampler.Sampler = SamplerState.LinearWrap;
-        pass.Parameters.uImage2 = sampler2;
+        var fireTornad = ShaderContent.GetInstance<FireTornadoShader>();
+        //var pass = AssetReferences.Effects.GothinFlames.FireTornado.CreatePixelPass();
+        fireTornad.Time = Main.GlobalTimeWrappedHourly * 0.1f;
+        fireTornad.Resolution = new Vector2(Main.screenWidth, Main.screenHeight);
+        fireTornad.GradientTopColor = new Color(224, 187, 122);
+        fireTornad.GradientBottomColor = new Color(59, 19, 13);
+        fireTornad.FlameyTexture  = AssetManager.Noise.FlamethrowerNoise.Value;
+        fireTornad.NoiseTexture = AssetManager.Noise.Whirly.Value;
 
         sb.End();
         sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, 
-            DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        pass.Apply();
+            DepthStencilState.None, RasterizerState.CullNone, fireTornad.Effect, Main.GameViewMatrix.TransformationMatrix);
+  
         //sb.Restart(effect: effect.Value);
 
         SpritebatchDrawer drawer2 = SpritebatchDrawer.FromProjectile(Projectile);
@@ -135,13 +127,16 @@ public class FireTornado : ModProjectile,
         drawer5.color.A = 0;
         sb.Draw(drawer5);
 
-        sampler = new();
-        sampler.Texture = AssetManager.Noise.PainterlyNoise.Value;
-        sampler.Sampler = SamplerState.LinearWrap;
-        pass.Parameters.uImage1 = sampler;
+        sb.End();
+
+        fireTornad.FlameyTexture = AssetManager.Noise.PainterlyNoise.Value;
+        sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
+            DepthStencilState.None, RasterizerState.CullNone, fireTornad.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+
         drawer5.color *= 1.25f;
         drawer5.scale *= 0.5f;
-        pass.Apply();
+   
         sb.Draw(drawer5);
 
 

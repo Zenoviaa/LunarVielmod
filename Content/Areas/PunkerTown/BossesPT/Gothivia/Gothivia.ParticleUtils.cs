@@ -35,7 +35,7 @@ public partial class Gothivia
         }
 
         ShakeScreenPosition.Shake = 4;
-        SoundStyle fireShoot = AssetReferences.Assets.Sounds.Fire.FireballShoot1.Asset;
+        SoundStyle fireShoot = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballShoot1");  //AssetReferences.Assets.Sounds.Fire.FireballShoot1.Asset;
         fireShoot.PitchVariance = 0.5f;
         fireShoot.MaxInstances = 0;
         SoundEngine.PlaySound(fireShoot, position);
