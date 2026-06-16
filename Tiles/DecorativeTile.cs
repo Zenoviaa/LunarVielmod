@@ -160,6 +160,20 @@ namespace Stellamod.Tiles
         {
         }
     }
+
+    public class DecorativeWallGlobals : ModSystem
+    {
+        public static bool ShouldDarken;
+        public static float Darken;
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            ShouldDarken = NPC.AnyDanger();
+            Darken += ShouldDarken ? 0.02f : -0.02f;
+            Darken = MathHelper.Clamp(Darken, 0f, 1f);
+        }
+    }
+
     public abstract class SpecialDecorativeWall : BaseSpecialWall
     {
         public enum DrawOrigin
@@ -310,6 +324,7 @@ namespace Stellamod.Tiles
                     break;
             }
             Color drawColor = StructureColor;
+            drawColor = Color.Lerp(drawColor, Color.Lerp(drawColor, Color.Black, 0.5f), DecorativeWallGlobals.Darken);
             if (!IgnoreLightning)
             {
                 drawColor = drawColor.MultiplyRGB(color2);
@@ -443,14 +458,8 @@ namespace Stellamod.Tiles
                 drawFrame, drawColor, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
 
             }
-
-            /*
-            ToolsUISystem uiSystem = ModContent.GetInstance<ToolsUISystem>();
-            if (uiSystem.ShowHitboxes)
-            {
-                TileHelper.DrawInvisTileNoAdj(i, j, spriteBatch);
-            }*/
         }
+
         private bool _drawAlpha;
         public override void DrawPreview(int i, int j)
         {

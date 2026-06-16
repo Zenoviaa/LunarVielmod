@@ -65,8 +65,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            TrailCacheLength = 7;
-            SmokeTrailCacheLength = 12;
+            TrailCacheLength = 15;
+            SmokeTrailCacheLength = 25;
             Projectile.width = 11;
             Projectile.height = 11;
             Projectile.hostile = true;
@@ -310,7 +310,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
             BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
             TrailDrawer.Draw(Main.spriteBatch, SmokeOldCenterPos, OldCenterRot, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
-            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            BlackFireOldShader blackFireShader = BlackFireOldShader.Instance;
             blackFireShader.Time = _fireTime;
             TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, OldCenterRot, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
             return false;

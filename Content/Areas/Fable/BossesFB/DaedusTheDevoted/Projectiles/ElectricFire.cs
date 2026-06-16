@@ -310,7 +310,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
             TrailDrawer.Draw(Main.spriteBatch, SmokeOldCenterPos, OldCenterRot, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
         
-            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            BlackFireOldShader blackFireShader = BlackFireOldShader.Instance;
             blackFireShader.Time = _fireTime;
        //     blackFireShader.InnerEmitColor = Color.White;
             TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, OldCenterRot, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);

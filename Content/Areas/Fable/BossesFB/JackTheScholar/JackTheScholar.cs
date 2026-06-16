@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles;
 using Stellamod.Core;
@@ -241,6 +242,15 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, effects, 0);
+
+            Vector2 firePos = NPC.Center;
+            firePos.Y -= 24;
+            firePos = firePos.RotatedBy(NPC.rotation, NPC.Center);
+            SpritebatchDrawer fireDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, firePos);
+            fireDrawer.color = Color.Red * 0.2f;
+            fireDrawer.scale *= 0.25f * ExtraMath.Osc(0.95f, 1f, speed: 12);
+            fireDrawer.color.A = 0;
+            Main.spriteBatch.Draw(fireDrawer);
             return false;
         }
 
@@ -301,6 +311,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     AI_Death();
                     break;
             }
+
+            Lighting.AddLight(NPC.position, TorchID.Torch);
 
             //Some uh visual stuff
             //Change rotation
