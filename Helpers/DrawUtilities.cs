@@ -1,12 +1,6 @@
-﻿using Microsoft.CodeAnalysis.Operations;
-using ReLogic.Content;
-using Stellamod.Trails;
+﻿using ReLogic.Content;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 
@@ -20,6 +14,7 @@ public static class DrawUtilities
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
 
+
     public static Vector2 RandomPositionInNPCRect(this NPC npc)
     {
         Vector2 pos = new Vector2();
@@ -27,6 +22,46 @@ public static class DrawUtilities
         pos.Y = Main.rand.Next(0, npc.height);
         pos += npc.position;
         return pos;
+    }
+
+    public static Vector2 TexelSize => Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+    public static Vector2 WorldToScreenCoordinates(Vector2 worldPos)
+    {
+        Vector2 screenPos = new Vector2();
+        screenPos.X = (worldPos.X - Main.screenPosition.X) / (float)Main.screenWidth;
+        screenPos.Y = (worldPos.Y - Main.screenPosition.Y) / (float)Main.screenHeight;
+        return screenPos;
+    }
+    public static Vector2 WorldToScreenCoordinates(Vector2 worldPos, Rectangle worldDrawRect)
+    {
+        Vector2 screenPos = new Vector2();
+        screenPos.X = (worldPos.X - worldDrawRect.X) / (float)worldDrawRect.Width;
+        screenPos.Y = (worldPos.Y - worldDrawRect.Y) / (float)worldDrawRect.Height;
+        return screenPos;
+    }
+    public static void DrawScreenRectangle(this SpriteBatch sb, Color? overrideColor = null)
+    {
+        Color drawColor = overrideColor.HasValue ? overrideColor.Value : Color.White;
+        Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        sb.Draw(TextureAssets.BlackTile.Value, drawRect, drawColor);
+    }
+
+    public static Rectangle CenterRectangle(Rectangle rectangle, int newWidth, int newHeight)
+    {
+        Vector2 center = rectangle.Center();
+        return CenterRectangle(center, newWidth, newHeight);
+    }
+    public static Rectangle CenterRectangle(Vector2 worldPosition, int width, int height)
+    {
+        int top = (int)worldPosition.Y - height / 2;
+        int left = (int)worldPosition.X - width / 2;
+        return new Rectangle(left, top, width, height);
+    }
+
+    public static void DrawScreenRectangle(this SpriteBatch sb, Rectangle screenRect, Color? overrideColor = null)
+    {
+        Color drawColor = overrideColor.HasValue ? overrideColor.Value : Color.White;
+        sb.Draw(TextureAssets.BlackTile.Value, screenRect, drawColor);
     }
 
     public static SpritebatchDrawer GetDrawer(this Asset<Texture2D> textureAsset, Vector2 worldPosition)
@@ -60,7 +95,7 @@ public static class DrawUtilities
         //Gonna extract this to a function
         for (int i = 0; i < projectile.oldPos.Length; i++)
         {
-            float ratio = (float)i / (float)projectile.oldPos.Length;
+            float ratio = i / (float)projectile.oldPos.Length;
             Color afterImageColor = getTrailColor(ratio);
             float afterImageScale = getTrailWidth(ratio);
 
@@ -77,7 +112,7 @@ public static class DrawUtilities
         //Gonna extract this to a function
         for (int i = 0; i < npc.oldPos.Length; i++)
         {
-            float ratio = (float)i / (float)npc.oldPos.Length;
+            float ratio = i / (float)npc.oldPos.Length;
             Color afterImageColor = getTrailColor(ratio);
             float afterImageScale = getTrailWidth(ratio);
 
@@ -96,7 +131,7 @@ public static class DrawUtilities
         //Gonna extract this to a function
         for (int i = 0; i < projectile.oldPos.Length; i++)
         {
-            float ratio = (float)i / (float)projectile.oldPos.Length;
+            float ratio = i / (float)projectile.oldPos.Length;
             Color afterImageColor = getTrailColor(ratio);
             float afterImageScale = getTrailWidth(ratio);
 
@@ -107,7 +142,7 @@ public static class DrawUtilities
             spriteBatch.Draw(spritebatchDrawer);
         }
     }
-} 
+}
 
 /// <summary>
 /// Accesses the current parameters of the spritebatch
@@ -201,7 +236,7 @@ public struct SpritebatchParams
         return starter;
     }
 
-    
+
     public void Begin(SpriteBatch spriteBatch)
     {
         spriteBatch.Begin(
@@ -244,9 +279,9 @@ public struct SpritebatchStarter :
     private SpriteBatch? _spriteBatch;
 
     public required SpritebatchParams spriteBatchParameters;
- 
+
     //TODO: check if parameters match and do not restart the spritebatch if they do
-    
+
     /// <summary>
     /// Begins a spritebatch with these parameters, if begin has already been called it will be ended
     /// </summary>
@@ -274,7 +309,7 @@ public struct SpritebatchStarter :
         if (_oldParameters.HasValue)
         {
             spriteBatch.Begin(_oldParameters.Value);
-            _oldParameters = null;         
+            _oldParameters = null;
         }
     }
 

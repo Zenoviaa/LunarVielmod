@@ -46,6 +46,12 @@ namespace Stellamod.Assets
         {
             private static string Path => "Stellamod/Assets/Sounds/";
 
+            public static class Ereshkigal
+            {
+                public static readonly SoundStyle EreshkigalsFinisherCannon = new SoundStyle($"{Path}Ereshkigal/EreshkigalsFinisherCannon");
+                public static readonly SoundStyle HeavenlyShot1 = new SoundStyle($"{Path}Ereshkigal/HeavenlyShot");
+                public static readonly SoundStyle HeavenlyShot2 = new SoundStyle($"{Path}Ereshkigal/HeavenlyShot2");
+            }
             public static class Fire
             {
                 public static readonly SoundStyle Sungrow3 = new SoundStyle($"{Path}Fire/Sungrow3") with { PitchVariance = 0.5f };
@@ -314,6 +320,7 @@ namespace Stellamod.Assets
             }
             public static class Gun
             {
+                public static SoundStyle FossilLauncher = new SoundStyle($"{Path}Gun/FossilLauncher") with { PitchVariance = 0.6f };
                 public static SoundStyle ShockLineShock = new SoundStyle($"{Path}Gun/ShockLineShock");
                 public static SoundStyle ShockLineShoot = new SoundStyle($"{Path}Gun/ShockLineShoot");
                 public static SoundStyle GrappleWindWhoosh = new SoundStyle($"{Path}Gun/GrappleWindWhoosh");

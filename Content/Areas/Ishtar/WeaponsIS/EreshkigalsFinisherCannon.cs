@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using ReLogic.Utilities;
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
@@ -8,13 +9,16 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
+using Stellamod.Effects.Ereshkigal;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -89,8 +93,15 @@ public class EreshkigalCrack : ModProjectile
             if(Style != 1)
             {
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 64);
-                SoundStyle spawnSound = AssetRegistry.Sounds.Celestia.ArrowCrash with { PitchVariance = 0.3f };
-                SoundEngine.PlaySound(spawnSound, Projectile.position);
+
+                SoundStyle shootSound = AssetRegistry.Sounds.Ereshkigal.HeavenlyShot1;
+                switch (Main.rand.Next(2))
+                {
+                    case 1:
+                        shootSound = AssetRegistry.Sounds.Ereshkigal.HeavenlyShot2;
+                        break;
+                }
+                SoundEngine.PlaySound(shootSound, Projectile.position);
             }
 
  
@@ -409,6 +420,27 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
     private Vector2 _shakeOffset;
     private float _recoil;
     private Player Owner => Main.player[Projectile.owner];
+
+    private VortexParticleSystem _vortexParticleSystemBackingField;
+    private VortexParticleSystem VortexParticleSystem
+    {
+        get
+        {
+            _vortexParticleSystemBackingField ??= new(48);
+            return _vortexParticleSystemBackingField;
+        }
+    }
+    private VortexParticleSystem _vortexParticleSystemBackingField2;
+    private VortexParticleSystem DustParticleSystem
+    {
+        get
+        {
+            _vortexParticleSystemBackingField2 ??= new(48);
+            return _vortexParticleSystemBackingField2;
+        }
+    }
+
+    private SlotId _chargeSoundSlotID;
     private Asset<Texture2D> _partsTextureAsset;
     private Asset<Texture2D> _partsOutlineTextureAsset;
     private Asset<Texture2D> _partsWhiteTextureAsset;
@@ -463,7 +495,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
             d.noGravity = true;
         }
 
-        if (Timer % 10 == 0)
+        if (Timer % 6 == 0)
         {
             SirestiasSmokeParticle sp = SirestiasSmokeParticle.SpawnInAlphaLayer(ParticleChargePoint + Main.rand.NextVector2Circular(32, 32), Vector2.Zero);
             sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Blue, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f));
@@ -474,7 +506,8 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
             sp.parent = Projectile;
             sp.behindLayer = true;
         }
-
+        DustParticleSystem.Update();
+        VortexParticleSystem.Update();
         switch (State)
         {
             case AIState.Charging:
@@ -519,20 +552,9 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
     }
     private void PlayStartupSound()
     {
-        SoundStyle s;
-        switch (Main.rand.Next(2))
-        {
-            default:
-            case 0:
-                s = new SoundStyle("Stellamod/Assets/Sounds/GoldenStart1");
-                break;
-            case 1:
-                s = new SoundStyle("Stellamod/Assets/Sounds/GoldenStart2");
-                break;
-        }
-        s.Volume = 0.8f;
-        s.PitchVariance = 0.5f;
-        SoundEngine.PlaySound(s, Projectile.position);
+        SoundStyle s = AssetRegistry.Sounds.Ereshkigal.EreshkigalsFinisherCannon;
+        _chargeSoundSlotID = SoundEngine.PlaySound(s, Projectile.position);
+
     }
     private void SwitchState(AIState state)
     {
@@ -564,6 +586,13 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
     {
         Hold();
         _shootTimer++;
+        if(_shootTimer == 1)
+        {
+            if (SoundEngine.TryGetActiveSound(_chargeSoundSlotID, out ActiveSound? result))
+            {
+                result.Stop();
+            }
+        }
         if (_shootTimer == 1)
             _recoil = 1;
         if (this.OwnedByLocalClient())
@@ -653,6 +682,23 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
             var fx = FXUtil.GlowStretch(pos, vel);
             fx.VectorScale *= 0.5f;
             fx.OuterGlowColor = Color.Gold;
+
+            Vector2 vortexSpawnPos = Main.rand.NextVector2CircularEdge(252, 252);
+            Vector2 outwardVelocity = vortexSpawnPos - Vector2.Zero;
+            outwardVelocity = outwardVelocity.SafeNormalize(Vector2.Zero);
+            VortexParticleSystem.SpawnParticle(vortexSpawnPos, outwardVelocity);
+
+
+        }
+
+        if(Timer % 3 == 0)
+        {
+
+
+            Vector2 vortexSpawnPos = Main.rand.NextVector2CircularEdge(300, 300);
+            Vector2 outwardVelocity = vortexSpawnPos - Vector2.Zero;
+            outwardVelocity = outwardVelocity.SafeNormalize(Vector2.Zero);
+            DustParticleSystem.SpawnParticle(vortexSpawnPos, outwardVelocity * 3);
         }
 
         if (Timer % 4 == 0)
@@ -731,10 +777,10 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
         Main.spriteBatch.Draw(backGlowDrawer);
 ;
 
-        Vector2 topPosition = pos + Vector2.Lerp(Vector2.Zero, left * dir * 32, easing + shrinkIn);
+        Vector2 topPosition = pos + Vector2.Lerp(Vector2.Zero, left * 32, easing + shrinkIn);
         SpritebatchDrawer handleDrawer = backDrawer;
         handleDrawer.VerticalFrame(0, 3);
-        handleDrawer.worldPosition = topPosition + Vector2.Lerp(right * dir * 100, Vector2.Zero, easing);
+        handleDrawer.worldPosition = topPosition + Vector2.Lerp(right * 100, Vector2.Zero, easing);
         handleDrawer.color *= alpha;
         //  handleDrawer.worldPosition = Projectile.Center + Vector2.Lerp(Vector2.Zero, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 32, easing);
         Main.spriteBatch.Draw(handleDrawer);
@@ -811,6 +857,55 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
 
     }
 
+    private void DrawParticles(SpriteBatch sb, Vector2 screenPos, VortexParticleSystem particleSystem)
+    {
+        Rectangle worldRectangle = DrawUtilities.CenterRectangle(ParticleChargePoint, 768, 768);
+        Vector2[] particles = new Vector2[particleSystem.particles.Length];
+        for (int i = 0; i < particles.Length; i++)
+        {
+            ref Vector2 pos = ref particles[i];
+            pos = particleSystem.particles.positions[i];
+
+
+            if (!particleSystem.particles.active[i])
+            {
+                //Invalidate position if the paritcle is not active
+                //They'll have 0 contribution if there this far away from the rectangle
+                pos = new Vector2(-9999);
+                continue;
+            }
+
+            pos += Projectile.Center;
+
+            //Normalize to screen coordinates
+            pos = DrawUtilities.WorldToScreenCoordinates(pos, worldRectangle);
+        }
+
+        Rectangle screenRectangle = worldRectangle;
+        screenRectangle.X -= (int)Main.screenPosition.X;
+        screenRectangle.Y -= (int)Main.screenPosition.Y;
+
+        int size = (int)MathHelper.Lerp(768, 32, Charge);
+        screenRectangle = DrawUtilities.CenterRectangle(screenRectangle, size, size);
+
+        float particleRadius = MathF.Max(DrawUtilities.TexelSize.X, DrawUtilities.TexelSize.Y);
+        particleRadius *= 100;
+        bool drawDust = particleSystem == DustParticleSystem;
+        if (drawDust)
+            particleRadius *= 0.1f;
+        StarSuckShader suckShader = ShaderContent.GetInstance<StarSuckShader>();
+        suckShader.FarColor = Color.Lerp(Color.Purple, Color.White, 0.35f);
+        suckShader.CloseColor = Color.Lerp(Color.White, Color.Gold, ExtraMath.Osc(0f, 1f, speed: 12));
+        suckShader.BloomColor = Color.White;
+        suckShader.CenterNormalizedCoord = DrawUtilities.WorldToScreenCoordinates(Projectile.Center);
+        suckShader.ParticleRadius = particleRadius;
+        suckShader.Particles = particles;
+        suckShader.Time = Main.GlobalTimeWrappedHourly * 12f;
+        suckShader.Swirliness = drawDust ? 1 : 8;
+        sb.Restart(effect: suckShader.Effect);
+        sb.Draw(TextureAssets.BlackTile.Value, screenRectangle, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0); ;
+        sb.RestartDefaults();
+    }
     private void DrawPixelatedEffects(SpriteBatch sb, Vector2 screenPos)
     {
         float inEasing = EasingFunction.InOutSine(Timer / 30f);
@@ -820,8 +915,14 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
         circleDrawer.color = glowColor * 0.16f * alpha;
         circleDrawer.color.A = 0;
         circleDrawer.scale = Vector2.Lerp(Vector2.One * 3f, Vector2.Zero, Charge);
-   //     circleDrawer.rotation = Projectile.rotation;
         Main.spriteBatch.Draw(circleDrawer);
+
+        DrawParticles(sb, screenPos, VortexParticleSystem);
+
+        DrawParticles(sb, screenPos, DustParticleSystem); 
+
+
+        //   sb.DrawScreenRectangle();
     }
 
     public void DrawToRenderTargets()

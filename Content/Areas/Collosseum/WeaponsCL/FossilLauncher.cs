@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.GunSystem;
+﻿using Stellamod.Assets;
+using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
@@ -163,17 +164,7 @@ public class FossilLauncher : BaseGun
 
         //generate the remaining projectiles
         int Sound = Main.rand.Next(1, 3);
-        SoundStyle shootSound;
-        if (Sound == 1)
-        {
-            shootSound = new SoundStyle("Stellamod/Assets/Sounds/BrokenWrath2");
-        }
-        else
-        {
-            shootSound = new SoundStyle("Stellamod/Assets/Sounds/BrokenWrath1");
-
-        }
-        shootSound.PitchVariance = 0.3f;
+        SoundStyle shootSound = AssetRegistry.Sounds.Gun.FossilLauncher;
         shootSound.Volume = 0.5f;
         SoundEngine.PlaySound(shootSound, player.position);
 
