@@ -132,6 +132,8 @@ namespace Stellamod.Common.GunSystem
             Item.noUseGraphic = true;
         }
 
+        public virtual bool UseDefaultHoldAnimation() => true;
+
         /// <summary>
         /// Set the max ammo and reload window counts for this weapon
         /// If none is set, defaults to 6 max ammo and 30 reload window
@@ -399,7 +401,7 @@ namespace Stellamod.Common.GunSystem
             }
 
             if (Main.myPlayer == Player.whoAmI &&
-                Player.ownedProjectileCounts[ModContent.ProjectileType<GunHold>()] == 0 && (Player.channel || Player.controlUseItem))
+                Player.ownedProjectileCounts[ModContent.ProjectileType<GunHold>()] == 0 && (Player.channel || Player.controlUseItem) && HeldGun.UseDefaultHoldAnimation())
             {
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<GunHold>(), 1, 1, Player.whoAmI);
@@ -505,6 +507,11 @@ namespace Stellamod.Common.GunSystem
             if (Owner.HeldItem.ModItem is BaseGun && (Owner.channel || Owner.controlUseItem))
             {
                 Projectile.timeLeft = 120;
+            }
+
+            if(Owner.HeldItem.ModItem is BaseGun gun && !gun.UseDefaultHoldAnimation())
+            {
+                Projectile.Kill();
             }
 
             if (Main.myPlayer == Projectile.owner)

@@ -375,6 +375,41 @@ public static class PixelPrimitiveCircleFactory
         circle.position = position;
         ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
     }
+    public static void CreateEreshkigalSuck(Entity parent)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(0, 32, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.Goldenrod, ExtraMath.Osc(0.5f, 1f, speed: 8));
+                lerp1 = Color.Lerp(Color.Blue, lerp1, completionRatio);
+                lerp1 = Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(completionRatio));
+                return lerp1;
+            }
+            ;
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerColor = Color.White;
+            blackFireShader.OuterColor = Color.DarkGray;
+            blackFireShader.BackColor = Color.Black;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+            BloomTrailShader bloomTrail = BloomTrailShader.Instance;
+            bloomTrail.InnerColor = Color.White;
+            bloomTrail.OuterColor = Color.Goldenrod;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, bloomTrail);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 333;
+        circle.circleParams.maxRadius = 0;
+        circle.circleParams.time = 30;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.parent = parent;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
     public static void CreateEelSiningSuck(Entity parent)
     {
         void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)

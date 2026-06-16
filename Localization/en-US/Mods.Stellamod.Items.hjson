@@ -11604,3 +11604,53 @@ FossilLauncher: {
 	DisplayName: Fossil Launcher
 	Tooltip: ""
 }
+
+EreshkigalsFinisherCannon: {
+	DisplayName: Ereshkigals Finisher Cannon
+	Tooltip: ""
+}
+
+SolsticeWarriorBody: {
+	DisplayName: Solstice Warrior Body
+	Tooltip: ""
+}
+
+SolsticeWarriorHead: {
+	DisplayName: Solstice Warrior Head
+	Tooltip: ""
+}
+
+SolsticeWarriorLegs: {
+	DisplayName: Solstice Warrior Legs
+	Tooltip: ""
+}
+
+SilverChariotBody: {
+	DisplayName: Silver Chariot Body
+	Tooltip: ""
+}
+
+SilverChariotHead: {
+	DisplayName: Silver Chariot Head
+	Tooltip: ""
+}
+
+SilverChariotLegs: {
+	DisplayName: Silver Chariot Legs
+	Tooltip: ""
+}
+
+TribiliastBody: {
+	DisplayName: Tribiliast Body
+	Tooltip: ""
+}
+
+TribiliastHead: {
+	DisplayName: Tribiliast Head
+	Tooltip: ""
+}
+
+TribiliastLegs: {
+	DisplayName: Tribiliast Legs
+	Tooltip: ""
+}

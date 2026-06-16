@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -31,6 +33,20 @@ namespace Stellamod.Helpers
             }
             return false;
         }
+        public static bool? OldPosColliding(IList<Vector2> positions, Rectangle projHitbox, Rectangle targetHitbox, float lineWidth = 6)
+        {
+            float collisionPoint = 0;
+            for (int i = 1; i < positions.Count; i++)
+            {
+                Vector2 position = positions[i];
+                Vector2 previousPosition = positions[i - 1];
+
+                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, lineWidth, ref collisionPoint))
+                    return true;
+            }
+            return false;
+        }
+
 
 
         public static float PerformBeamHitscan(Vector2 startPosition, Vector2 velocity, float maxBeamLength, int numSamplePoints = 3)
