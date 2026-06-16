@@ -527,6 +527,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                         HasDonePhase2Transition = true;
                     }
                     SwitchState(nextAttack);
+
+                    SwitchState(AIState.Super_Jump); 
                 }
             }
         }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -28,6 +30,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
             Projectile.hostile = false;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 120;
+            Projectile.light = 0.6f;
         }
 
         public override void AI()
@@ -59,8 +62,9 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 {
                     Vector2 newVelocity = InitialVelocity.RotatedByRandom(MathHelper.ToRadians(7));
                     newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                    Dust.NewDust(Projectile.Bottom, 0, 0, DustID.Smoke, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
+                    Dust.NewDust(Projectile.Bottom, 0, 0, DustID.Torch, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
                 }
+
                 SoundEngine.PlaySound(SoundID.Item73, Projectile.position);
             }
 
@@ -79,15 +83,21 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
 
         private void Visuals()
         {
+            if (!Main.rand.NextBool(3))
+                return;
+
             float radius = 1 / 6f;
             for (int i = 0; i < 1; i++)
             {
                 float speedX = Main.rand.NextFloat(-radius, radius);
                 float speedY = Main.rand.NextFloat(-radius, radius);
                 float scale = Main.rand.NextFloat(0.66f, 1f);
-                int d = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork,
-                    speedX, speedY, Scale: scale);
-                Main.dust[d].noGravity = true;
+                Vector2 pos = Projectile.Center;
+                pos += Main.rand.NextVector2Circular(8, 8);
+                Vector2 vel = -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.5f, 2.5f);
+                vel = vel.RotatedByRandom(0.6f);
+                var d = Dust.NewDustPerfect(pos, DustID.InfernoFork, vel);
+                d.noGravity = true;
             }
         }
 
@@ -103,50 +113,42 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
 
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+            
+            return MathHelper.SmoothStep(12, 0, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White * 0.6f, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.Yellow, Color.Red, completionRatio) * MathHelper.Lerp(0.6f, 0f, completionRatio);
         }
 
+
+        private void DrawFlameTrail(GraphicsDevice gDevice)
+        {
+            var laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+            laserShader.OuterColor = Color.Red;
+            laserShader.InnerColor = Color.Yellow;
+            laserShader.LaserColor = Color.LightGoldenrodYellow;
+            TrailDrawer.Draw(Projectile.oldPos, ColorFunction, WidthFunction, laserShader, Projectile.Size * 0.5f);
+        }
         //Visual Stuffs
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail);
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            Color drawColor = Color.White.MultiplyRGB(lightColor);
-            float drawRotation = Projectile.rotation;
-            float drawScale = 1f;
+            PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail);
+            //FixedRichLaserShader laserShader = ShaderContent.getin
+            SpritebatchDrawer flameDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+            Main.spriteBatch.Draw(flameDrawer);
 
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            for (int i = 0; i < 4; i++)
+            for(float f = 0; f < MathHelper.TwoPi; f+= MathHelper.ToRadians(90))
             {
-                float rot = i / 4f;
-                Vector2 vel = rot.ToRotationVector2() * VectorHelper.Osc(0f, 4f, speed: 16);
-                Vector2 flameDrawPos = drawPos + vel + Main.rand.NextVector2Circular(2, 2);
-                flameDrawPos -= Vector2.UnitY * 4;
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
+                SpritebatchDrawer glowDrawer = flameDrawer;
+                glowDrawer.color = Color.Red * 0.3f;
+                glowDrawer.color.A = 0;
+                glowDrawer.worldPosition += (f+Main.GlobalTimeWrappedHourly).ToRotationVector2() * 4;
+                Main.spriteBatch.Draw(glowDrawer);
             }
 
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            return base.PreDraw(ref lightColor);
+            return false;
         }
 
         public override void PostDraw(Color lightColor)

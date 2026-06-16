@@ -1,7 +1,6 @@
 ﻿using Stellamod.Common.ArmorRework;
 using Stellamod.Content.Achievements;
 using Stellamod.Content.Items.MoonlightMagic;
-using Stellamod.Helpers;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -11,24 +10,11 @@ using Terraria.ModLoader.IO;
 namespace Stellamod.Core.PlayerLevelingSystem;
 
 
-public class RocketTimeBooster : ModSystem
-{
-    public override void Load()
-    {
-        base.Load();
-        On_Player.RefreshMovementAbilities += IncreaseRocketTime;
-    }
 
-    private void IncreaseRocketTime(On_Player.orig_RefreshMovementAbilities orig, Player self, bool doubleJumps)
-    {
-
-        orig(self, doubleJumps);
-
-    }
-}
 public class LevelingPlayer : ModPlayer
 {
     public float[] stats = new float[7];
+    public float[] statModifiers = new float[7];
     public ref float Strength => ref stats[0];
     public ref float Endurance => ref stats[1];
     public ref float Agility => ref stats[2];
@@ -36,6 +22,14 @@ public class LevelingPlayer : ModPlayer
     public ref float Focus => ref stats[4];
     public ref float Resourcefulness => ref stats[5];
     public ref float Veil => ref stats[6];
+
+    public float FinalStrength => Strength + statModifiers[0];
+    public float FinalEndurance => Endurance + statModifiers[1];
+    public float FinalAgility => Agility + statModifiers[2];
+    public float FinalDexterity => Dexterity + statModifiers[3];
+    public float FinalFocus => Focus + statModifiers[4];
+    public float FinalResourcefulness => Resourcefulness + statModifiers[5];
+    public float FinalVeil => Veil + statModifiers[6];
 
     public float AppliedPoints
     {
@@ -87,34 +81,42 @@ public class LevelingPlayer : ModPlayer
 
     }
 
+    public override void ResetEffects()
+    {
+        base.ResetEffects();
+        for (int i = 0; i < statModifiers.Length; i++)
+        {
+            statModifiers[i] = 0;
+        }
+    }
     public override void PostUpdateBuffs()
     {
         base.PostUpdateBuffs();
         var stats = Player.GetStats();
         //Strength
-        Player.GetDamage(DamageClass.Generic) += 0.01f * Strength;
+        Player.GetDamage(DamageClass.Generic) += 0.01f * FinalStrength;
 
 
         //Endurance
-        stats.generalEndurance += 0.01f * Endurance;
+        stats.generalEndurance += 0.01f * FinalEndurance;
 
         //Agility
         //We apply this in post update buffs because that happens before armorstats player applies affects
-        Player.moveSpeed += 0.01f * Agility;
-        Player.runAcceleration += 0.01f * Agility;
+        Player.moveSpeed += 0.01f * FinalAgility;
+        Player.runAcceleration += 0.01f * FinalAgility;
 
 
         //Dexteriyt
-        Player.GetAttackSpeed(DamageClass.Generic) += Dexterity * 0.01f;
+        Player.GetAttackSpeed(DamageClass.Generic) += FinalDexterity * 0.01f;
 
         //Focus attributes
-        stats.criticalStrikeDamage += 0.05f * Focus;
-        stats.criticalStrikeChance += 0.005f * Focus;
+        stats.criticalStrikeDamage += 0.05f * FinalFocus;
+        stats.criticalStrikeChance += 0.005f * FinalFocus;
 
         //Veil
         //The debuff reduction time is in a separate class, since we have to override the hook for applying debuff tiem
-        Player.statDefense += (int)Veil;
-        Player.luck += 0.05f * Veil;
+        Player.statDefense += (int)FinalVeil;
+        Player.luck += 0.05f * FinalVeil;
 
 
     }
@@ -123,17 +125,17 @@ public class LevelingPlayer : ModPlayer
     {
         base.PostUpdateEquips();
         float wingTimeMax = Player.wingTimeMax;
-        float wingTimeToIncrease = wingTimeMax * 0.01f * Dexterity;
+        float wingTimeToIncrease = wingTimeMax * 0.01f * FinalDexterity;
         wingTimeMax += wingTimeToIncrease;
         Player.wingTimeMax = (int)wingTimeMax;
 
 
         //TODO: Hardcode base rocket time max and increase based off dexterity
         float rocketTimeMax = 7;
-        float r = rocketTimeMax * 0.01f * Player.GetModPlayer<LevelingPlayer>().Dexterity;
+        float r = rocketTimeMax * 0.01f * FinalDexterity;
         rocketTimeMax += r;
         Player.rocketTimeMax = (int)rocketTimeMax;
-        if(AppliedPoints > 0 && Main.netMode != NetmodeID.Server)
+        if (AppliedPoints > 0 && Main.netMode != NetmodeID.Server)
         {
             ModContent.GetInstance<Level2>().LevelCountCondition.Value = (int)(AppliedPoints + 1);
         }
@@ -144,7 +146,7 @@ public class LevelingPlayer : ModPlayer
         //TOOD: Apply Elemental Damage Bonus Here
         if (item.ModItem is AbstractMagicWand magicWand)
         {
-            damage += Veil * 0.02f;
+            damage += FinalVeil * 0.02f;
         }
     }
 

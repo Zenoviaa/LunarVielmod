@@ -5331,6 +5331,16 @@ FireResistanceInsource: {
 	DisplayName: Fire Resistance Insource
 }
 
+StaminaInsource: {
+	Tooltip: Gives back 1 stamina
+	DisplayName: Stamina Insource
+}
+
+StatInsource: {
+	Tooltip: Grants +8 to all of your shard attributes!
+	DisplayName: Stat Insource
+}
+
 HealthyInsource: {
 	Tooltip:
 		'''
@@ -11677,5 +11687,10 @@ RecordHead: {
 
 StrawHat: {
 	DisplayName: Straw Hat
+	Tooltip: ""
+}
+
+GustbeakHat: {
+	DisplayName: Gustbeak Hat
 	Tooltip: ""
 }

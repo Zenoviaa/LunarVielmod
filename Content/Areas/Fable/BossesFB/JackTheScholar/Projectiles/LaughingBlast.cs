@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -30,6 +32,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
             Projectile.hostile = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
+            Projectile.light = 0.6f;
         }
 
         public override void AI()
@@ -119,24 +122,46 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
         {
             return Color.White;
         }
-
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+
+            return MathHelper.SmoothStep(12, 0, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.7f;
+            return Color.Lerp(Color.Yellow, Color.Red, completionRatio) * MathHelper.Lerp(0.6f, 0f, completionRatio);
         }
 
+
+        private void DrawFlameTrail(GraphicsDevice gDevice)
+        {
+            var laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+            laserShader.OuterColor = Color.Red;
+            laserShader.InnerColor = Color.Yellow;
+            laserShader.LaserColor = Color.LightGoldenrodYellow;
+            TrailDrawer.Draw(Projectile.oldPos, ColorFunction, WidthFunction, laserShader, Projectile.Size * 0.5f);
+        }
+        //Visual Stuffs
         public override bool PreDraw(ref Color lightColor)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
-            Main.spriteBatch.Draw(drawer);
+            PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail);
+            //FixedRichLaserShader laserShader = ShaderContent.getin
+            SpritebatchDrawer flameDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+            Main.spriteBatch.Draw(flameDrawer);
+
+            for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.ToRadians(90))
+            {
+                SpritebatchDrawer glowDrawer = flameDrawer;
+                glowDrawer.color = Color.Red * 0.3f;
+                glowDrawer.color.A = 0;
+                glowDrawer.worldPosition += (f + Main.GlobalTimeWrappedHourly).ToRotationVector2() * 4;
+                Main.spriteBatch.Draw(glowDrawer);
+            }
+
             return false;
         }
+
 
         public override void PostDraw(Color lightColor)
         {

@@ -1177,3 +1177,8 @@ Poison: {
 	DisplayName: Poison
 	Description: Your attacks inflict poison!
 }
+
+StatInsourceBuff: {
+	DisplayName: Stat Insource Buff
+	Description: Mods.Stellamod.Buffs.StatInsourceBuff.Description
+}

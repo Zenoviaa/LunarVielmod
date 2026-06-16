@@ -12,7 +12,7 @@ namespace Stellamod.Items.Insources
 {
     public class StrengthInsourcePlayer : ModPlayer
     {
-        public int stacks;
+        public float stacks;
         public Asset<Texture2D> BubbleTextureAsset;
 
         public override void PostUpdateEquips()
@@ -20,23 +20,18 @@ namespace Stellamod.Items.Insources
             base.PostUpdateEquips();
             if (stacks > 0)
             {
-                Player.GetDamage(DamageClass.Generic) += 0.25f;
+                Player.GetDamage(DamageClass.Generic) += stacks * 0.1f;
             }
         }
         public override void PostUpdateBuffs()
         {
             base.PostUpdateBuffs();
-            if (stacks > 0)
+            if (!Player.HasBuff<StrengthInsourceBuff>())
             {
-                Player.AddBuff(ModContent.BuffType<StrengthInsourceBuff>(), 2);
+                stacks = 0;
             }
         }
-        public override void OnHurt(Player.HurtInfo info)
-        {
-            base.OnHurt(info);
 
-            stacks = 0;
-        }
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
             base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
@@ -82,7 +77,7 @@ namespace Stellamod.Items.Insources
             useSound.PitchVariance = 0.1f;
             SoundEngine.PlaySound(useSound, flaskPlayer.Player.position);
 
-
+            flaskPlayer.Player.AddBuff(ModContent.BuffType<StrengthInsourceBuff>(), 60 * 10);
 
             FXUtil.ShakeCamera(flaskPlayer.Player.Center, 1024, 8);
             FXUtil.GlowCircleBoom(flaskPlayer.Player.Center,

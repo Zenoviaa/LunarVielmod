@@ -21,6 +21,7 @@ namespace Stellamod.Common.XixianFlaskSystem
         public bool unlockedFlask;
         public bool openedFlask;
         public float insourceSecondsBonusPerInsource;
+        public Dictionary<int, int> Stacks = new Dictionary<int, int>();
         public static event Action<Player> OnProc;
         public override void ResetEffects()
         {
@@ -29,6 +30,35 @@ namespace Stellamod.Common.XixianFlaskSystem
             insourceTime = 0;
             insourceSecondsBonusPerInsource = 0;
         }
+
+        /// <summary>
+        /// Adds a stack of the insource to the active ones
+        /// </summary>
+        /// <param name="insourceType"></param>
+        private void AddStack(int insourceType)
+        {
+            if (!Stacks.ContainsKey(insourceType))
+                Stacks.Add(insourceType, 1);
+            else
+            {
+                Stacks[insourceType]++;
+            }
+        }
+
+        /// <summary>
+        /// Clear stacks
+        /// </summary>
+        /// <param name="insourceType"></param>
+        public void ClearStacks(int insourceType)
+        {
+            if (Stacks.ContainsKey(insourceType))
+            {
+                Stacks[insourceType] = 0;
+            }
+        }
+
+        public bool HasActiveStacks(int insourceType) => Stacks.ContainsKey(insourceType) && Stacks[insourceType] > 0;
+
 
         public override void PostUpdateMiscEffects()
         {
@@ -109,6 +139,7 @@ namespace Stellamod.Common.XixianFlaskSystem
                 if (item.ModItem is InsourceItem myInsource)
                 {
                     myInsource.PreUseInsource(this);
+                    AddStack(item.type);
                 }
             }
 

@@ -21,7 +21,7 @@ public class DebuffReduction : ModSystem
         if (Main.debuff[type])
         {
             float baseTime = time1;
-            float strength = self.GetModPlayer<LevelingPlayer>().Resourcefulness * 0.015f;
+            float strength = self.GetModPlayer<LevelingPlayer>().FinalResourcefulness * 0.015f;
             float amountToRemove = baseTime * strength;
             float newTime = baseTime - amountToRemove;
             time1 = (int)newTime;
@@ -30,7 +30,7 @@ public class DebuffReduction : ModSystem
         {
             //Positive Effect :)
             float baseTime = time1;
-            float strength = self.GetModPlayer<LevelingPlayer>().Resourcefulness * 0.05f;
+            float strength = self.GetModPlayer<LevelingPlayer>().FinalResourcefulness * 0.05f;
             float amountToAdd = baseTime * strength;
             float newTime = baseTime + amountToAdd;
             time1 = (int)newTime;

@@ -1,7 +1,9 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -130,9 +132,29 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
         {
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
+        public float WidthFunction(float completionRatio)
+        {
 
+            return MathHelper.SmoothStep(32, 0, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Yellow, Color.Red, completionRatio) * MathHelper.Lerp(0.6f, 0f, completionRatio);
+        }
+
+
+        private void DrawFlameTrail(GraphicsDevice gDevice)
+        {
+            var laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+            laserShader.OuterColor = Color.Red;
+            laserShader.InnerColor = Color.Yellow;
+            laserShader.LaserColor = Color.LightGoldenrodYellow;
+            TrailDrawer.Draw(Projectile.oldPos, ColorFunction, WidthFunction, laserShader, Projectile.Size * 0.5f);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
+            PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail);
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawOrigin = texture.Size() / 2f;
