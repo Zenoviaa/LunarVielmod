@@ -495,6 +495,13 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
             d.noGravity = true;
         }
 
+        if (Timer % 12 == 0)
+        {
+            var d = Dust.NewDustPerfect(ParticleChargePoint + Main.rand.NextVector2Circular(80, 80), ModContent.DustType<TSmokeDust>(), Vector2.Zero, Scale: 0.5f);
+            d.color = Color.Black;
+            d.noGravity = true;
+        }
+
         if (Timer % 6 == 0)
         {
             SirestiasSmokeParticle sp = SirestiasSmokeParticle.SpawnInAlphaLayer(ParticleChargePoint + Main.rand.NextVector2Circular(32, 32), Vector2.Zero);
