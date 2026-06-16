@@ -99,6 +99,7 @@ public class SwarmerArtifact : ModItem
     }
 }
 
+
 public class StaffWaveHold : ModProjectile
 {
     private Vector2 _holdDirection;

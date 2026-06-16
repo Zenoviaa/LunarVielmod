@@ -6,6 +6,7 @@ using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -169,6 +170,21 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         private float _scale;
         private Vector2 InitialVelocity;
         private Vector2 TargetVelocity;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(InitialVelocity);
+            writer.WriteVector2(TargetVelocity);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            InitialVelocity = reader.ReadVector2();
+            TargetVelocity = reader.ReadVector2();
+        }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -186,6 +202,9 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Projectile.light = 0.278f;
             Projectile.timeLeft = 180;
             Projectile.tileCollide = false;
+            Projectile.penetrate = 1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
 
 
@@ -232,9 +251,8 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
                 if (npcToChase != null)
                 {
-                    Vector2 dirToNpc = (npcToChase.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-                    Projectile.velocity += dirToNpc;
-                    Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, npcToChase.Center, degreesToRotate: 10);
+                    Projectile.velocity = Projectile.velocity.MoveTowards((npcToChase.Center-Projectile.Center).SafeNormalize(Vector2.Zero) * 10, 0.5f);
+                    Projectile.velocity *= 1.05f;
                 }
 
 
@@ -244,50 +262,24 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
 
-        public float WidthFunction(float completionRatio)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1.2f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.LightGoldenrodYellow * 0.1361f, Color.Transparent, completionRatio);
+            base.OnHitNPC(target, hit, damageDone);
+            Projectile.Kill();
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail);
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            Color drawColor = Color.White.MultiplyRGB(lightColor);
-            float drawRotation = Projectile.rotation;
-            float drawScale = _scale;
+            DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.Red, Color.Transparent, alpha: 0.05f);
+            SpritebatchDrawer flameDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+            Main.spriteBatch.Draw(flameDrawer);
 
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            for (int i = 0; i < 4; i++)
-            {
-                float rot = (float)i / 4f;
-                Vector2 vel = rot.ToRotationVector2() * VectorHelper.Osc(0f, 4f, speed: 16);
-                Vector2 flameDrawPos = drawPos + vel + Main.rand.NextVector2Circular(2, 2);
-                flameDrawPos -= Vector2.UnitY * 4;
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
+            glintDrawer.color = Color.Lerp(Color.Yellow, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16));
+            glintDrawer.color.A = 0;
+            glintDrawer.rotation = MathHelper.Lerp(1.54f, 0f, EasingFunction.InOutCirc(Timer / 30f));
+            glintDrawer.scale *= MathHelper.Lerp(6, 0f, EasingFunction.InOutSine(Timer / 60f));
+            Main.spriteBatch.Draw(glintDrawer);
             return false;
         }
 

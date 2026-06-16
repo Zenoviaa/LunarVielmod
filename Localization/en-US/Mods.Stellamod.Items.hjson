@@ -2666,7 +2666,7 @@ ShadeHandTome: {
 }
 
 StaffOFlame: {
-	DisplayName: Staff O Flame
+	DisplayName: Pumpkin Artifact
 	Tooltip:
 		'''
 		Summons 2 cute lil' flames that home into enemies after a short time!
@@ -11652,5 +11652,30 @@ TribiliastHead: {
 
 TribiliastLegs: {
 	DisplayName: Tribiliast Legs
+	Tooltip: ""
+}
+
+JoakaCoat: {
+	DisplayName: Joaka Coat
+	Tooltip: ""
+}
+
+JoakaHat: {
+	DisplayName: Joaka Hat
+	Tooltip: ""
+}
+
+PerfectWash: {
+	DisplayName: Perfect Wash
+	Tooltip: ""
+}
+
+RecordHead: {
+	DisplayName: Record Head
+	Tooltip: ""
+}
+
+StrawHat: {
+	DisplayName: Straw Hat
 	Tooltip: ""
 }

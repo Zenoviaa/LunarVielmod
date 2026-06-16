@@ -13,6 +13,26 @@ public static class DrawUtilities
 {
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
+    public static void DrawSpriteAfterImage(SpriteBatch spriteBatch, Projectile projectile, Color startColor, Color endColor, float alpha)
+    {
+        SpritebatchDrawer spriteDrawer = SpritebatchDrawer.FromProjectile(projectile);
+        DrawSpriteAfterImage(spriteBatch, spriteDrawer, projectile.oldPos, projectile.oldRot, startColor, endColor, alpha, projectile.Size * 0.5f);
+    }
+
+    public static void DrawSpriteAfterImage(SpriteBatch spriteBatch, SpritebatchDrawer spriteDrawer, Vector2[] oldPos, float[] oldRot, Color startColor, Color endColor, float alpha, Vector2? offset = null)
+    {
+        Vector2 o = offset.HasValue ? offset.Value : Vector2.Zero;
+        for (int i = 0; i < oldPos.Length; i++)
+        {
+            Vector2 pos = oldPos[i] + o;
+            spriteDrawer.rotation = oldRot[i];
+            spriteDrawer.worldPosition = pos;
+            float ratio = (float)i / (float)oldPos.Length;
+            spriteDrawer.color = Color.Lerp(startColor, endColor, ratio) * alpha;
+            spriteBatch.Draw(spriteDrawer);
+        }
+    }
+
     public static Vector2[] TrailLocalRectanglePoints(in Vector2[] oldPos, in Vector2 center, Rectangle worldRectangle)
     {
 
