@@ -1,0 +1,43 @@
+﻿using Stellamod.Common.Shaders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Stellamod.Effects.Generic;
+
+public class GlowyTrailShader : CrystalShader<GlowyTrailShader>
+{
+    public Vector2[] Particles
+    {
+        set
+        {
+            Effect.Parameters["particles"].SetValue(value);
+        }
+    }
+
+    public Color InsideColor
+    {
+        set
+        {
+            Effect.Parameters["insideColor"].SetValue(value.ToVector4());
+        }
+    }
+
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["bloomColor"].SetValue(value.ToVector4());
+        }
+    }
+
+    public float ParticleRadius
+    {
+        set
+        {
+            Effect.Parameters["particleRadius"].SetValue(value);
+        }
+    }
+}

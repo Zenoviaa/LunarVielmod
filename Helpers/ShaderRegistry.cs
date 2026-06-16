@@ -80,7 +80,6 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:DarknessCurve", "Effects/DarknessCurve", EffectPriority.High);
             RegisterScreenShader("LunarVeil:Blur", "Effects/Blur", EffectPriority.High);
             RegisterScreenShader("LunarVeil:BlackWhite", "Effects/BlackWhite");
-            RegisterScreenShader("LunarVeil:Bloom", "Effects/Bloom");
             RegisterScreenShader("LunarVeil:BlackSea", "Effects/BlackSea");
             RegisterScreenShader("LunarVeil:DomainExpansion", "Effects/DomainExpansion");
             RegisterScreenShader("LunarVeil:Invert", "Effects/Invert");

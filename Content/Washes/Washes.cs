@@ -156,3 +156,4 @@ public class BumbleBeeWash : AbstractWash { }
 public class HotrodWash : AbstractWash { }
 
 public class MoodyWash : AbstractWash { }
+public class PerfectWash : AbstractWash { }

@@ -13,8 +13,70 @@ public static class DrawUtilities
 {
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
+    public static Vector2[] TrailLocalRectanglePoints(in Vector2[] oldPos, in Vector2 center, Rectangle worldRectangle)
+    {
+
+        Vector2[] particles = new Vector2[oldPos.Length];
+        for (int i = 0; i < particles.Length; i++)
+        {
+            ref Vector2 particle = ref particles[i];
+            particle = oldPos[i];
+            particle = DrawUtilities.WorldToScreenCoordinates(particle, worldRectangle);
+        };
+        return (particles);
+    }
 
 
+    /// <summary>
+    /// Returns normalized trail coordinates between 0-1 within the rectangle boundaries of the projectile
+    /// This allow for rendering a trail in a single quad with some shaders, no vertices required!
+    /// </summary>
+    /// <param name="projectile"></param>
+    /// <param name="padding"></param>
+    /// <returns></returns>
+    public static (Vector2[], Rectangle) TrailLocalRectanglePoints(Projectile projectile, float padding = 32)
+    {
+        return TrailLocalRectanglePoints(projectile.oldPos, projectile.Center, padding);
+    }
+
+    /// <summary>
+    /// Returns normalized trail coordinates between 0-1 within the rectangle boundaries of the projectile
+    /// This allow for rendering a trail in a single quad with some shaders, no vertices required!
+    /// </summary>
+    /// <param name="projectile"></param>
+    /// <param name="padding"></param>
+    /// <returns></returns>
+    public static (Vector2[], Rectangle) TrailLocalRectanglePoints(in Vector2[] oldPos, in Vector2 center, in float padding = 32)
+    {
+        Vector2 min = center;
+        Vector2 max = center;
+        for (int i = 0; i < oldPos.Length; i++)
+        {
+            min = Vector2.Min(min, oldPos[i]);
+            max = Vector2.Max(max, oldPos[i]);
+        }
+        min -= new Vector2(padding);
+        max += new Vector2(padding);
+
+        int sizeX = (int)(max.X - min.X);
+        int sizeY = (int)(max.Y - min.Y);
+        int size = Math.Max(sizeX, sizeY);
+
+        Rectangle worldRectangle = new Rectangle(
+            (int)min.X, (int)min.Y, size, size);
+
+        Vector2[] particles = new Vector2[oldPos.Length];
+        for (int i = 0; i < particles.Length; i++)
+        {
+            ref Vector2 particle = ref particles[i];
+            particle = oldPos[i];
+            particle = DrawUtilities.WorldToScreenCoordinates(particle, worldRectangle);
+        }
+        Rectangle screenRectangle = worldRectangle;
+        screenRectangle.X -= (int)Main.screenPosition.X;
+        screenRectangle.Y -= (int)Main.screenPosition.Y;
+        return (particles, screenRectangle);
+    }
     public static Vector2 RandomPositionInNPCRect(this NPC npc)
     {
         Vector2 pos = new Vector2();

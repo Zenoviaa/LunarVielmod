@@ -339,6 +339,20 @@ public class MagicCircleRenderer
         TexturedQuad.SetColor(color);
         TexturedQuad.DrawWithShader(magicCircleShader);
     }
+    public void DrawRing(Vector2 center, Vector2 velocity, int frame, float numFrames, Color color, float perpsectiveRotation, float size)
+    {
+        MagicCircleShader magicCircleShader = MagicCircleShader.Instance;
+        //Here we need to prepare the shader
+        float f = frame;
+        Vector2 tiling = new Vector2(1f, 1f / numFrames);
+        Vector2 offset = new Vector2(0, f * 1f / numFrames);
+        Vector4 tilingOffset = new Vector4(offset.X, offset.Y, tiling.X, tiling.Y);
+        magicCircleShader.TilingOffset = tilingOffset;
+        magicCircleShader.RingTexture = ringTextureAsset;
+        TexturedQuad.CalculatePerspectiveCenterVertices(center, size, size, velocity.ToRotation(), perpsectiveRotation);
+        TexturedQuad.SetColor(color);
+        TexturedQuad.DrawWithShader(magicCircleShader);
+    }
 }
 public class WintershardClump : ModProjectile
 {

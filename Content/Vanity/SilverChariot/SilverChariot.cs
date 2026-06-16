@@ -31,7 +31,7 @@ public class SilverChariotHeadDrawLayer : PlayerDrawLayer
 
     }
 
-    public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.ProjectileOverArm);
+    public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Head);
     protected override void Draw(ref PlayerDrawSet drawInfo)
     {
         var position = drawInfo.Center - Main.screenPosition;
