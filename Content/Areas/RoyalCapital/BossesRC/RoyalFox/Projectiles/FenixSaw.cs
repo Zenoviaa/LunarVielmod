@@ -2,15 +2,8 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Effects.RoyalMagic;
-using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.Actions.Sprites;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
 
@@ -27,14 +20,22 @@ public class FenixSaw : ModProjectile,
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 333;
-        Projectile.height = 333;
+        Projectile.width = 1;
+        Projectile.height = 1;
         Projectile.hostile = false;
         Projectile.timeLeft = 900;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
     }
 
+    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+    {
+        //Circular hitbox
+        float collisionRadius = 256;
+        Vector2 centerPoint = targetHitbox.Center();
+        Vector2 myPoint = projHitbox.Center();
+        return Vector2.Distance(myPoint, centerPoint) <= collisionRadius;
+    }
     public override void AI()
     {
         base.AI();
@@ -44,13 +45,13 @@ public class FenixSaw : ModProjectile,
             Projectile.netUpdate = true;
         }
 
-        if(shouldDie && Projectile.timeLeft > 60)
+        if (shouldDie && Projectile.timeLeft > 60)
         {
             Projectile.timeLeft = 60;
         }
 
         //Main.NewText("E");
-        if(SpinTimer > 100 && this.OwnedByLocalClient())
+        if (SpinTimer > 100 && this.OwnedByLocalClient())
         {
             SpinTimer = 45;
             Projectile.netUpdate = true;
@@ -58,7 +59,7 @@ public class FenixSaw : ModProjectile,
         if (!Parent.active)
             Projectile.active = false;
 
-        if(SpinTimer > 0)
+        if (SpinTimer > 0)
         {
             SpinTimer--;
         }
@@ -67,18 +68,18 @@ public class FenixSaw : ModProjectile,
         Projectile.velocity = (Parent.Center - Projectile.Center);
         Projectile.rotation -= (0.35f + MathHelper.Lerp(0f, 0.35f, SpinTimer / 45));
         float inAlpha = EasingFunction.InOutSine(Timer / 130);
-        float outAlpha = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+        float outAlpha = EasingFunction.InOutSine(Projectile.timeLeft / 30f);
         float alpha = inAlpha * outAlpha;
         _swingTrailAlpha = alpha;
-        if(Timer >= 100)
+        if (Timer >= 100)
         {
             Projectile.hostile = true;
         }
     }
-  
+
     private float GetTrailWidth(float ratio)
     {
-        return MathHelper.Lerp(150, 89, ratio) * 0.8f ;
+        return MathHelper.Lerp(150, 89, ratio) * 0.8f;
     }
     private float GetTrailWidth2(float ratio)
     {
@@ -105,7 +106,7 @@ public class FenixSaw : ModProjectile,
         Color c3 = Color.Lerp(c1, c2, ratio);
         c3 *= 0.5f;
         c3 *= _swingTrailAlpha;
-       // c3.A = 0;
+        // c3.A = 0;
         return c3;
     }
 
@@ -121,7 +122,7 @@ public class FenixSaw : ModProjectile,
         Color c = Color.White;
         c = Color.Lerp(Color.Blue, c, ratio);
         c = Color.Lerp(c, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 9));
-        c *= _swingTrailAlpha ;// * EasingFunction.QuadraticBump(_swingTrailAlpha);                                                                                                                     // c.A = 0;
+        c *= _swingTrailAlpha;// * EasingFunction.QuadraticBump(_swingTrailAlpha);                                                                                                                     // c.A = 0;
         return c;
     }
 
@@ -138,9 +139,9 @@ public class FenixSaw : ModProjectile,
         glowSword.color.A = 0;
         glowSword.scale *= 1.6f;
 
-        for(int i = 0; i < 16; i++)
+        for (int i = 0; i < 16; i++)
         {
-            float ratio = (float)i / 16f;
+            float ratio = i / 16f;
             glowSword.worldPosition = Parent.Center + CalculateSwingOffset(MathHelper.Lerp(0.5f, 1f, ratio));
             glowSword.rotation = (glowSword.worldPosition - Parent.Center).ToRotation() + MathHelper.PiOver2;
             glowSword.color = Color.Lerp(Color.White, Color.Transparent, ratio) * 0.15f * _swingTrailAlpha;
@@ -148,7 +149,7 @@ public class FenixSaw : ModProjectile,
             sb.Draw(glowSword);
         }
         glowSword.worldPosition = Parent.Center + CalculateSwingOffset(1f);
-        glowSword.rotation = (point - Parent.Center).ToRotation()  + MathHelper.PiOver2;
+        glowSword.rotation = (point - Parent.Center).ToRotation() + MathHelper.PiOver2;
         glowSword.color = mixColor * ExtraMath.Osc(0.8f, 1f, speed: 3) * _swingTrailAlpha;
         glowSword.color.A = 0;
         sb.Draw(glowSword);
@@ -179,7 +180,7 @@ public class FenixSaw : ModProjectile,
         for (int i = 0; i < position.Length; i++)
         {
             //Here we use parent.center cause projectil.center might be the wrong spottt
-            float ratio = (float)i / (float)position.Length;
+            float ratio = i / (float)position.Length;
             Vector2 v = CalculateSwingOffset(ratio);
             v = v.RotatedBy(MathHelper.ToRadians(180));
             Vector2 point = Parent.Center + v;
@@ -195,18 +196,18 @@ public class FenixSaw : ModProjectile,
         shader.Time = Main.GlobalTimeWrappedHourly * 24;
         shader.TransformMatrix = TrailDrawer.WorldViewPoint2;
         shader.Distortion = 0.15f;
-       TrailDrawer.Draw(position, GetTrailColor, GetTrailWidth, shader);
-     TrailDrawer.Draw(position, GetTrailColor, GetTrailWidth2, shader);
+        TrailDrawer.Draw(position, GetTrailColor, GetTrailWidth, shader);
+        TrailDrawer.Draw(position, GetTrailColor, GetTrailWidth2, shader);
 
         FixedRichLaserShader shader2 = ShaderContent.GetInstance<FixedRichLaserShader>();
         shader2.LaserTexture = TrailRegistry.BeamTrail;
         shader2.LaserColor = Color.Lerp(Color.Cyan, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 8));
-         TrailDrawer.Draw(position, GetTrailColor2, GetTrailWidth3, shader2);
+        TrailDrawer.Draw(position, GetTrailColor2, GetTrailWidth3, shader2);
 
         for (int i = 0; i < position.Length; i++)
         {
             //Here we use parent.center cause projectil.center might be the wrong spottt
-            float ratio = (float)i / (float)position.Length;
+            float ratio = i / (float)position.Length;
             Vector2 v = CalculateSwingOffset(MathHelper.Lerp(0.75f, 1f, ratio), 244);
             v = v.RotatedBy(MathHelper.ToRadians(180 - 45));
             Vector2 point = Parent.Center + v;

@@ -53,6 +53,15 @@ public class RoyalMagicMiniStar : ModProjectile,
             FlashTimer--;
         }
 
+        if(Mode == 0)
+        {
+            Player closest = PlayerHelper.FindClosestPlayer(Projectile.Center, 2048);
+            if (closest != null)
+            {
+                Vector2 vel = (Projectile.Center - closest.Center).SafeNormalize(Vector2.Zero);
+                Projectile.velocity += vel * 0.1f;
+            }
+        }
 
         if(Mode == 1)
         {

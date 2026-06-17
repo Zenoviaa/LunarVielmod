@@ -531,6 +531,7 @@ public partial class RoyalFox : ScarletBoss,
             }
         }
         PreUpdateRig();
+
         _swingTrailAlpha = MathHelper.Lerp(_swingTrailAlpha, 0f, 0.1f);
         _gravityFieldAlpha = MathHelper.Lerp(_gravityFieldAlpha, 0f, 0.1f);
         _spiralDashTrailAlpha = MathHelper.Lerp(_spiralDashTrailAlpha, 0f, 0.1f);
@@ -595,9 +596,15 @@ public partial class RoyalFox : ScarletBoss,
                     break;
             }
         }
- 
+        /*
+        if (LunarVeilKeybinds.FlaskKeybind.JustPressed)
+        {
+            _phase2 = true;
+            NPC.life = 400;
+            SwitchState(AIState.Zoom_DashDance);
+        }*/
         //  AddAngularVelocity();
-        if(State == AIState.Precision_Beyblade)
+        if (State == AIState.Precision_Beyblade)
             FakeButtTail2();
         else
             FakeButtTail();
@@ -1908,6 +1915,7 @@ public partial class RoyalFox : ScarletBoss,
         AnimateFlying();
         AnimateStanding();
         SwitchState(AIState.Zoom_SparkleStarRain);
+
     }
 
  
@@ -2545,7 +2553,7 @@ public partial class RoyalFox : ScarletBoss,
                     _dashLineVelocity = _dashLineVelocity.MoveTowards(directionToTarget, 0.5f);
                     _startDashPoint = NPC.Center;
 
-                    RegularRotation = MathHelper.Lerp(RegularRotation, _dashLineVelocity.ToRotation(), 0.1f);
+                    RegularRotation = Utils.AngleLerp(RegularRotation, _dashLineVelocity.ToRotation(), 0.1f);
 
                     float ratio = Timer / CometStarDashPrepTime;
                     _roaringCircleScale = MathHelper.SmoothStep(5f, 0f, ratio);

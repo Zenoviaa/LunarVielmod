@@ -178,6 +178,7 @@ public class RoyalMagicCometStarsRenderer : ModSystem
 public class RoyalMagicComet : ModProjectile,
     IDrawToRenderTarget
 {
+    private float _alpha;
 
     private ref float Timer => ref Projectile.ai[0];
     private ref float Style => ref Projectile.ai[1];
@@ -260,12 +261,14 @@ public class RoyalMagicComet : ModProjectile,
             }
         }
 
+        float targetAlpha = Projectile.hostile ? 1f : 0.2f;
+        _alpha = MathHelper.Lerp(_alpha, targetAlpha, 0.2f);
         float ratio = (Size - 0.66f) / 0.66f;
-        float gravity = MathHelper.SmoothStep(1f, 0.15f, ratio);
+        float gravity = MathHelper.SmoothStep(1f, 0.1f, ratio);
         if(Projectile.velocity.Y < 20)
             Projectile.velocity.Y += gravity;
         Projectile.velocity.X *= 0.98f;
-        if(Projectile.velocity.Y > 0)
+        if(Projectile.velocity.Y > 0 && Timer > 55)
             Projectile.hostile = true;
         Projectile.scale = ExtraMath.Osc(0.5f, 0.75f, speed: 3, Projectile.whoAmI);
     }
@@ -287,6 +290,7 @@ public class RoyalMagicComet : ModProjectile,
     private Color StarryTrailColorFunction(float completionRatio)
     {
         Color trailColorFunction = Color.Lerp(Color.White, GetCometColor(), completionRatio) * 0.3f * MathHelper.Lerp(1f, 0f, EasingFunction.OutSine(completionRatio));
+        trailColorFunction *= Alpha;
         trailColorFunction.A = 0;
         return trailColorFunction;
     }
@@ -299,7 +303,7 @@ public class RoyalMagicComet : ModProjectile,
     private void RenderStarryDashTrail(GraphicsDevice gDevice)
     {
         CometTrailShader cometTrail = ShaderContent.GetInstance<CometTrailShader>();
-        cometTrail.BloomColor = GetCometColor();
+        cometTrail.BloomColor = GetCometColor() * Alpha;
         TrailDrawer.Draw(Projectile.oldPos, StarryTrailColorFunction, StarryTrailWidthFunction, cometTrail, Projectile.Size * 0.5f);
 
 
@@ -307,8 +311,11 @@ public class RoyalMagicComet : ModProjectile,
         TrailDrawer.Draw(Projectile.oldPos, StarryTrailColorFunction, StarryTrailWidthFunction, cometTrail, Projectile.Size * 0.5f);
     }
 
+    private float Alpha => _alpha;
     public override bool PreDraw(ref Color lightColor)
     {
+
+        float alpha = Alpha;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         drawer.scale *= 0.4f;
 
@@ -316,7 +323,7 @@ public class RoyalMagicComet : ModProjectile,
         {
             float ratio = i / (float)Projectile.oldPos.Length;
             drawer.worldPosition = Projectile.oldPos[i] + Projectile.Size * 0.5f;
-            drawer.color = Color.Lerp(Color.White, Color.Black, ratio) * 0.025f;
+            drawer.color = Color.Lerp(Color.White, Color.Black, ratio) * 0.025f * alpha;
             drawer.color.A = 0;
 
 
@@ -324,14 +331,14 @@ public class RoyalMagicComet : ModProjectile,
             Main.spriteBatch.Draw(drawer);
         }
         drawer.scale =  Vector2.One * 0.4f * Size;
-        drawer.color = Color.Blue * 0.35f * ExtraMath.Osc(0.75f, 1f, speed: 18, offset: Projectile.whoAmI);
+        drawer.color = Color.Blue * 0.35f * ExtraMath.Osc(0.75f, 1f, speed: 18, offset: Projectile.whoAmI) * alpha;
         drawer.color.A = 0;
 
         drawer.worldPosition = Projectile.Center;
         Main.spriteBatch.Draw(drawer);
 
 
-        drawer.color = Color.White;
+        drawer.color = Color.White * alpha;
         drawer.color.A = 0;
         drawer.scale *= 0.6f;
 
@@ -341,13 +348,13 @@ public class RoyalMagicComet : ModProjectile,
 
 
         drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
-        drawer.color = Color.White * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 9, Projectile.whoAmI);
+        drawer.color = Color.White * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 9, Projectile.whoAmI) * alpha;
         drawer.color.A = 0;
         drawer.scale *= 0.4f * Size;
         Main.spriteBatch.Draw(drawer);
 
         SpritebatchDrawer blackStar = SpritebatchDrawer.FromProjectile(Projectile);
-        blackStar.color = Color.Black;
+        blackStar.color = Color.Black * alpha;
         blackStar.scale = Vector2.One * ExtraMath.Osc(0.75f, 1f, speed: 9, Projectile.whoAmI) * 0.6f * Size;
         Main.spriteBatch.Draw(blackStar);
 
