@@ -119,8 +119,8 @@ namespace Stellamod.Trails
         {
             PrimaryTexture = TrailRegistry.LightningTrail2;
             NoiseTexture = TrailRegistry.LightningTrail3;
-            PrimaryColor = Color.Yellow;
-            NoiseColor = Color.DarkGoldenrod;
+            PrimaryColor = Color.DarkGoldenrod;
+            NoiseColor = Color.Red;
             Speed = 5;
             Distortion = 0.2f;
             Power = 1.5f;
@@ -183,8 +183,8 @@ namespace Stellamod.Trails
 
 
             var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.DarkGoldenrod;
-            shader.OuterColor = Color.Red;
+            shader.LaserColor = PrimaryColor;
+            shader.OuterColor = NoiseColor;
             shader.InnerColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Gold, 0.5f), ExtraMath.Osc(0f, 1f, speed: 128));
             TrailDrawer.Draw(lightningTrailPos, colorFunc, widthFunc, shader);
             /*

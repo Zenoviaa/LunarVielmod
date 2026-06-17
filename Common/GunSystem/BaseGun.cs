@@ -275,7 +275,7 @@ namespace Stellamod.Common.GunSystem
                     break;
                 }
             }
-            return ShootProjectile(player, source, position, velocity, type, damage, knockback);
+            return ShootProjectile(player, source, muzzlePosition, velocity, type, damage, knockback);
         }
 
         public void BasicMuzzleFlash(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor)

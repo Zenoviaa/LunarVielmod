@@ -20,7 +20,7 @@ public class CogBomber : BaseGun
     {
         base.SetDefaults();
         Item.noUseGraphic = true;
-        Item.damage = 60;
+        Item.damage = 72;
         Item.DamageType = DamageClass.Ranged;
         Item.width = 62;
         Item.height = 34;

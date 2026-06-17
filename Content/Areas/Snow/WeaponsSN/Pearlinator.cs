@@ -46,6 +46,10 @@ public class Pearlinator : BaseGun
         fireParams.maxAmmo = 32;
         fireParams.reloadWindow = 120;
     }
+    public override Vector2? HoldoutOffset()
+    {
+        return new Vector2(16, 0);
+    }
 
     public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
@@ -56,13 +60,15 @@ public class Pearlinator : BaseGun
 
     public override void ShootEffects(Vector2 position, Vector2 velocity)
     {
-        for (int i = 0; i < 2; i++)
-        {
-            DustParticle dp = Particle<DustParticle>.Spawn(position, velocity.RotatedByRandom(MathHelper.ToRadians(22)) * Main.rand.NextFloat(3f, 8f), Color.White, Scale: Main.rand.NextFloat(0.3f, 0.5f));
-            dp.gravity = 0;
-            dp.dampening = 0.1f;
-            dp.outerColor = Color.Blue;
-        }
+        muzzleOrigin = new Vector2(64, 10);
+        BasicMuzzleFlash(position, velocity, Color.SkyBlue, Color.Purple);
+    }
+
+    public override void ModifyMuzzleFlashColors(ref Color hottestColor, ref Color coldestColor)
+    {
+        base.ModifyMuzzleFlashColors(ref hottestColor, ref coldestColor);
+        hottestColor = Color.White;
+        coldestColor = Color.SkyBlue;
     }
 
     public override void AddRecipes()
@@ -170,13 +176,11 @@ public class PearlinatorFlame : ModProjectile,
 
     private void DrawMainShader(Vector2[] oldPos)
     {
-        BlackFireShader blackFireShader = BlackFireShader.Instance;
+        BlackFireOldShader blackFireShader = BlackFireOldShader.Instance;
         blackFireShader.InnerColor = Color.LightCyan;
         blackFireShader.OuterColor = Color.Blue;
         blackFireShader.PrimaryTexture2 = TrailRegistry.StarTrail;
         blackFireShader.BackColor = Color.Violet;
-        blackFireShader.InnerEmitColor = Color.White;
-        blackFireShader.OuterEmiteColor = Color.LightGray;
         TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
     }
 

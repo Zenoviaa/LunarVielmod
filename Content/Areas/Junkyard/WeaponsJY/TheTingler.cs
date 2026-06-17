@@ -20,7 +20,7 @@ public class TheTingler : BaseGun
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.damage = 28;
+        Item.damage = 22;
         Item.DamageType = DamageClass.Ranged;
         Item.width = 50;
         Item.height = 24;
@@ -128,7 +128,7 @@ public class CogNeedle : ModProjectile,
         {
             var smokeParticle = FaintSmokeParticle.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(0.5f));
             smokeParticle.fadeToColor = Color.Black * 0.3f;
-            smokeParticle.color = Color.RosyBrown;
+            smokeParticle.color = Color.RosyBrown * 0.3f;
             smokeParticle.Scale *= 0.3f;
         }
 
