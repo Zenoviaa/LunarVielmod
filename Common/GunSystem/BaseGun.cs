@@ -21,6 +21,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
+
 namespace Stellamod.Common.GunSystem
 {
     public class ReloadBar : ModProjectile
@@ -223,11 +224,9 @@ namespace Stellamod.Common.GunSystem
             }
         }
 
-        public virtual bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public Vector2 GetMuzzlePosition(Player player, Vector2 velocity)
         {
-            GunCasingEffects(player, source, position, velocity, type, damage, knockback);
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
+            Texture2D texture = TextureAssets.Item[Type].Value;
             Vector2? holdOutOffset = HoldoutOffset();
             Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
             offset = offset.RotatedBy(velocity.ToRotation());
@@ -241,20 +240,15 @@ namespace Stellamod.Common.GunSystem
                 muzzleOffset.Y = TextureAssets.Item[Type].Height() - muzzleOffset.Y;
             muzzleOffset -= new Vector2(texture.Width, texture.Height) * 0.5f;
             muzzleOffset = muzzleOffset.RotatedBy(velocity.ToRotation());
+            Vector2 muzzlePosition = player.MountedCenter - new Vector2(0, 7) + offset + muzzleOffset;
+            return muzzlePosition;
+        }
 
-
-            /*
-            if (spriteEffects.HasFlag(SpriteEffects.FlipVertically))
-            {
-                muzzleOffset = new Vector2(muzzleOffset.X, texture.Height - muzzleOffset.Y);
-            }
-            
-            if (spriteEffects.HasFlag(SpriteEffects.FlipHorizontally))
-            {
-                muzzleOffset = new Vector2(texture.Width - muzzleOffset.X, muzzleOffset.Y);
-            }*/
-
-            Vector2 muzzlePosition = player.MountedCenter - new Vector2(0, 7) + offset + muzzleOffset;// + muzzleOffset;
+        public virtual bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            GunCasingEffects(player, source, position, velocity, type, damage, knockback);
+        
+            Vector2 muzzlePosition = GetMuzzlePosition(player, velocity);
 
             //ctor2 muzzlePosition = player.MountedCenter + velocity.SafeNormalize(Vector2.Zero) * texture.Width / 2;
             ShootEffects(muzzlePosition, velocity);
