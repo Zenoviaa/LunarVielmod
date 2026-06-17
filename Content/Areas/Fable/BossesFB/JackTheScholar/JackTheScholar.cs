@@ -361,6 +361,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             {
                 NPC.active = false;
             }
+
         }
 
         private void AI_Death()

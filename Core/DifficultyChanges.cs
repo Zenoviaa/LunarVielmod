@@ -21,9 +21,9 @@ namespace Stellamod.Core
 
             if (Main.netMode == NetmodeID.SinglePlayer)
             {
-                if(!NPC.AnyDanger() && Player.respawnTimer > 2)
+                if(!NPC.AnyDanger() && Player.respawnTimer > 180)
                 {
-                    Player.respawnTimer = 2;
+                    Player.respawnTimer = 180;
                 }
                 return;
             }

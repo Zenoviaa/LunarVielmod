@@ -29,10 +29,10 @@ public class BlackEye : ModItem
 
     public override void SetDefaults()
     {
-        Item.damage = 330;
+        Item.damage = 666;
         Item.DamageType = DamageClass.Magic;
         Item.width = 32;
-        Item.mana = 75;
+        Item.mana = 50;
         Item.height = 25;
         Item.useTime = 80;
         Item.useAnimation = 80;

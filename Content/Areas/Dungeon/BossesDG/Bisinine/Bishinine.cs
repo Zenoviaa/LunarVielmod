@@ -13,7 +13,7 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
-
+using System.Diagnostics;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -1903,6 +1903,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 SwitchState(state);
             }
+            //SwitchState(AIState.BellFall_Start);
           //  SwitchState(AIState.CometJump_Startup);
         }
         #endregion

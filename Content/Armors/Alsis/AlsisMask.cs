@@ -144,6 +144,10 @@ public class AlsisGlobalWeapon : GlobalItem
     public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
     {
         base.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
+
+        if (player.HeldItem.DamageType != DamageClass.Ranged)
+            return;
+
         AlsisPlayer alsisPlayer = player.GetModPlayer<AlsisPlayer>();
         if ( alsisPlayer.hasSetBonus)
         {
@@ -177,6 +181,9 @@ public class AlsisGlobalProjectile : GlobalProjectile
     {
         base.OnSpawn(projectile, source);
         Player player = Main.player[projectile.owner];
+        if (player.HeldItem.DamageType != DamageClass.Ranged)
+            return;
+
         if (player.GetModPlayer<AlsisPlayer>().enchantedThisFrame)
             isEnchanted = true;
     }

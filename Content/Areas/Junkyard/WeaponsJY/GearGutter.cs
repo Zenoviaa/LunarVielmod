@@ -47,7 +47,7 @@ public class GearGutter : BaseGun
         Item.knockBack = 6;
         Item.value = Item.buyPrice(0, 15, 0, 0);
         Item.rare = ItemRarityID.LightRed;
-        Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2") with { PitchVariance = 0.7f };
+     //   Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew7") with { PitchVariance = 0.7f, Volume = 0.9f };
         Item.autoReuse = true;
         Item.shootSpeed = 50f;
         Item.shoot = ModContent.ProjectileType<GearSniper>();
@@ -81,6 +81,9 @@ public class GearGutter : BaseGun
     public override void ShootEffects(Vector2 position, Vector2 velocity)
     {
         base.ShootEffects(position, velocity);
+   
+        SoundStyle snipeSound = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew7") with { PitchVariance = 0.7f, Volume = 0.25f };
+        SoundEngine.PlaySound(snipeSound, position);
     }
     public override void AddRecipes()
     {

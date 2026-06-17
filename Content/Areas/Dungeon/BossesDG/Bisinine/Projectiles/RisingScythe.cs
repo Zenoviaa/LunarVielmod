@@ -22,6 +22,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
     public class FallingBell : ModProjectile,
         IDrawOutlines
     {
+        private float _realTimer;
         private int _textureIndex;
         private float _bounceDirection;
         private float _randScale;
@@ -68,7 +69,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         public override void AI()
         {
             base.AI();
- 
+            _realTimer++;
             if(this.OwnedByLocalClient() && _randScale== 0f)
             {
                 _randScale = Main.rand.NextFloat(0.6f, 1.6f);
@@ -115,7 +116,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Projectile.tileCollide = true;
                 }
             }
-               
+            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -75);
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
 
             if(BounceCount > 0)
@@ -124,7 +125,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             }
             else
             {
-                _lineAlpha = MathHelper.Lerp(_lineAlpha, 1f, 0.5f);
+                _lineAlpha = MathHelper.Lerp(_lineAlpha, 1f, 0.1f);
             }
             if (Main.rand.NextBool(8))
             {
@@ -212,16 +213,29 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
             spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor) * _alpha, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
 
+            /*
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, _spawnPoint);
+            glowDrawer.color = Color.White * _lineAlpha * 0.7f;
+            glowDrawer.color.A = 0;
+            glowDrawer.scale.X *= 0.27f;
+            glowDrawer.scale.Y *= 4;
+            glowDrawer.BottomCenterOrigin();
+            glowDrawer.rotation = MathHelper.Pi;
+            spriteBatch.Draw(glowDrawer);
+            */
+            
             texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
             drawOrigin = new Vector2(texture.Width / 2f, 0f);
             Color glowColor = Color.White;
-            glowColor *= _lineAlpha;
-            glowColor *= 0.3f;
+            glowColor *= EasingFunction.QuadraticBump(_realTimer / 40f);
+            glowColor *= 0.7f;
             glowColor.A = 0;
-            drawScale = new Vector2(0.2f, 0.45f);
+            drawScale = new Vector2(0.2f, 0.8f);
             drawScale.Y *= _lineAlpha;
-            spriteBatch.Draw(texture, _spawnPoint - Main.screenPosition, null, glowColor, 0, drawOrigin, drawScale, spriteEffects, 0f);
-
+            Vector2 pos = _spawnPoint;
+     //       pos.Y += MathHelper.Lerp(0f, 1200, EasingFunction.InExpo(_realTimer / 25f));
+            spriteBatch.Draw(texture, pos - Main.screenPosition, null, glowColor, 0, drawOrigin, drawScale, spriteEffects, 0f);
+            
             return false;
         }
 
@@ -355,6 +369,53 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             }
         }
 
+        private Vector2 MaxBounds()
+        {
+
+            Vector2 pos = Projectile.Center;
+            Player player = PlayerHelper.FindClosestPlayer(Projectile.Center, 2048);
+            if (player != null)
+            {
+                pos = player.Center;
+            }
+
+   
+            pos.Y += 16;
+
+
+            Point tilePoint = pos.ToTileCoordinates();
+            int minX = tilePoint.X;
+            int maxX = tilePoint.X;
+            for (int x = 0; x < 100; x++)
+            {
+                Point left = tilePoint;
+                left.X -= x;
+                Tile tile = Main.tile[left];
+                minX = left.X;
+                if (tile.HasTile && Main.tileSolid[tile.TileType])
+                {
+                
+                    break;
+                }
+               
+            }
+            for (int x = 0; x < 100; x++)
+            {
+                Point right = tilePoint;
+                right.X += x;
+                Tile tile = Main.tile[right];
+                maxX = right.X;
+                if (tile.HasTile && Main.tileSolid[tile.TileType])
+                {
+            
+                    break;
+                }
+          
+            }
+
+            return new Vector2(minX * 16, maxX * 16);
+        }
+
         private void AI_FallingBells()
         {
             Projectile.hostile = false;
@@ -391,7 +452,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 SoundEngine.PlaySound(bellHitSound, Projectile.position);
 
             }
-            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -150);
+  
             Projectile.velocity.X = MathHelper.Lerp(-5, 0, EasingFunction.InOutSine(Timer / 30f));
             if (!_bounced)
             {
@@ -417,7 +478,44 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Player target = PlayerHelper.FindClosestPlayer(Projectile.position, 80000);
                     if(target != null)
                     {
-                        pos.X = target.Center.X + Main.rand.NextFloat(-1000, 1000);
+                        if (AttackNumber == 1)
+                        {
+                            pos.X = target.Center.X;
+                        }
+                        else
+                        {
+                            float rangeMult = AttackNumber / 7f;
+                            float spawnOffset = Main.rand.NextFloat(400 * rangeMult, 600 * rangeMult);
+                            float dir = Main.rand.NextBool(2) ? -1 : 1;
+                            pos.X = target.Center.X + spawnOffset * dir;
+                            Vector2 bounds = MaxBounds();
+                            bool isValid = true;
+                            if(pos.X < bounds.X || pos.X > bounds.Y)
+                            {
+                                isValid = false;
+                            }
+
+                            if (!isValid)
+                            {
+                                for (int i = 0; i < 100; i++)
+                                {
+                                    spawnOffset = Main.rand.NextFloat(400 * rangeMult, 600 * rangeMult);
+                                    dir = Main.rand.NextBool(2) ? -1 : 1;
+                                    pos.X = target.Center.X + spawnOffset * dir;
+                                    bounds = MaxBounds();
+                                    isValid = true;
+                                    if (pos.X < bounds.X || pos.X > bounds.Y)
+                                    {
+                                        isValid = false;
+                                    }
+                            
+                                    if (isValid)
+                                        break;
+                                }
+                            }
+                
+                        }
+                  
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, Vector2.Zero,
                             ModContent.ProjectileType<FallingBell>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai2: _bounceHeight);
                     }

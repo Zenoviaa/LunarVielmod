@@ -380,6 +380,7 @@ namespace Stellamod.Common.GunSystem
                 SoundStyle jamSound = AssetRegistry.Sounds.Gun.GunJam;
                 jamSound.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(jamSound, Player.position);
+                reloadTimer = 0;
                 doFailAnimation = true;
                 successfulReloads--;
                 if (successfulReloads <= 0)

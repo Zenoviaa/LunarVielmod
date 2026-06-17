@@ -513,6 +513,7 @@ public partial class RoyalFox : ScarletBoss,
                 NPC.active = false;
         
             }
+            return;
         }
 
         if (!NPC.HasValidTarget)
@@ -520,16 +521,22 @@ public partial class RoyalFox : ScarletBoss,
             NPC.TargetClosest();
             if (!NPC.HasValidTarget)
             {
+            
                 if (IsAClone)
                 {
+                  //  Main.NewText("IM A CLONE");
                     _killYoSelf = true;
                 }
-                if(State != AIState.Despawn)
+      
+                if (State != AIState.Despawn)
                 {
                     SwitchState(AIState.Despawn);
+                  
                 }
+           
             }
         }
+
         PreUpdateRig();
 
         _swingTrailAlpha = MathHelper.Lerp(_swingTrailAlpha, 0f, 0.1f);
@@ -596,12 +603,17 @@ public partial class RoyalFox : ScarletBoss,
                     break;
             }
         }
+        
+        if (State == AIState.Despawn)
+        {
+            AI_Despawn();
+        }
         /*
         if (LunarVeilKeybinds.FlaskKeybind.JustPressed)
         {
             _phase2 = true;
             NPC.life = 400;
-            SwitchState(AIState.Zoom_DashDance);
+            SwitchState(AIState.Zoom_CometStarDash);
         }*/
         //  AddAngularVelocity();
         if (State == AIState.Precision_Beyblade)
