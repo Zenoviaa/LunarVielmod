@@ -174,7 +174,7 @@ public class CogNeedle : ModProjectile,
     {
         float GetTrailWidth(float progress)
         {
-            return MathHelper.SmoothStep(16, 0, progress);
+            return MathHelper.SmoothStep(5, 0, progress);
         }
 
         float GetTrailWidth2(float progress)

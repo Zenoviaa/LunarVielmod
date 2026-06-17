@@ -94,9 +94,14 @@ public class CogBomb : ModProjectile
         Projectile.hostile = false;
         Projectile.tileCollide = true;
         Projectile.timeLeft = 3600;
-        Projectile.penetrate = 1;
+     
     }
 
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        Projectile.Kill();
+    }
     public override bool PreDraw(ref Color lightColor)
     {
         DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.Red, Color.Transparent, 0.3f);
@@ -150,11 +155,7 @@ public class CogBombBoom : ModProjectile,
         Projectile.tileCollide = false;
         Projectile.light = 1;
     }
-    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-    {
-        base.OnHitNPC(target, hit, damageDone);
-        Projectile.Kill();
-    }
+
     public override void AI()
     {
         base.AI();

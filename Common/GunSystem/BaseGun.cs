@@ -147,6 +147,13 @@ namespace Stellamod.Common.GunSystem
 
         }
 
+
+        public virtual bool UseHeatShader() => true;
+        public virtual void ModifyMuzzleFlashColors(ref Color hottestColor, ref Color coldestColor)
+        {
+            hottestColor = Color.Yellow;
+            coldestColor = Color.DarkRed;
+        }
         public int GetMaxAmmo(Player player)
         {
             //We can use local player here can reloading is never checked over clients, I think
@@ -489,6 +496,7 @@ namespace Stellamod.Common.GunSystem
         private Vector2 HoldDirection => HoldRotation.ToRotationVector2();
         private Player Owner => Main.player[Projectile.owner];
         private GunHoldPlayer GunHoldPlayer => Owner.GetModPlayer<GunHoldPlayer>(); 
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -641,16 +649,30 @@ namespace Stellamod.Common.GunSystem
             if (Owner.direction == -1)
                 spriteEffects |= SpriteEffects.FlipVertically;
 
-            GunHeatShader gunHeatShader = ShaderContent.GetInstance<GunHeatShader>();
-            gunHeatShader.Time = _heatTimer;
-            gunHeatShader.HottestColor = Color.Yellow;
-            gunHeatShader.ColdestColor = Color.DarkRed;
-            SpritebatchParams spritebatchParams = SpritebatchParams.InWorldAndZoomed() with { effect = gunHeatShader, sortMode = SpriteSortMode.Immediate };
-            using(SpritebatchStarter.Begin(Main.spriteBatch, spritebatchParams))
+            if (GunHoldPlayer.HeldGun == null)
+                return false;
+
+            bool useHeatShader = GunHoldPlayer.HeldGun.UseHeatShader();
+            if (useHeatShader)
+            {
+                GunHeatShader gunHeatShader = ShaderContent.GetInstance<GunHeatShader>();
+                gunHeatShader.Time = _heatTimer;
+
+                Color hottestColor = Color.Yellow;
+                Color coldestColor = Color.DarkRed;
+                GunHoldPlayer.HeldGun.ModifyMuzzleFlashColors(ref hottestColor, ref coldestColor);
+                gunHeatShader.HottestColor = hottestColor;
+                gunHeatShader.ColdestColor = coldestColor;
+                SpritebatchParams spritebatchParams = SpritebatchParams.InWorldAndZoomed() with { effect = gunHeatShader, sortMode = SpriteSortMode.Immediate };
+                using (SpritebatchStarter.Begin(Main.spriteBatch, spritebatchParams))
+                {
+                    spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, texture.Size() / 2f, Projectile.scale, spriteEffects, 0);
+                }
+            }
+            else
             {
                 spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, texture.Size() / 2f, Projectile.scale, spriteEffects, 0);
             }
-
 
             /*
             Vector2? holdOutOffset = Owner.HeldItem.ModItem.HoldoutOffset();
