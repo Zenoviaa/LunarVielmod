@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.QuestSystem;
+using Stellamod.Content.Areas.Junkyard.WeaponsJY;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Quests.DelgrimQuest;
 using Stellamod.Core;
