@@ -47,6 +47,20 @@ public static class DrawUtilities
     }
 
 
+    public static Vector2[] TrailLocalRectanglePoints(in Vector2[] oldPos, in Vector2 center, Rectangle worldRectangle, Vector2 offset)
+    {
+
+        Vector2[] particles = new Vector2[oldPos.Length];
+        for (int i = 0; i < particles.Length; i++)
+        {
+            ref Vector2 particle = ref particles[i];
+            particle = oldPos[i] + offset;
+            particle = DrawUtilities.WorldToScreenCoordinates(particle, worldRectangle);
+        }
+        ;
+        return (particles);
+    }
+
     /// <summary>
     /// Returns normalized trail coordinates between 0-1 within the rectangle boundaries of the projectile
     /// This allow for rendering a trail in a single quad with some shaders, no vertices required!

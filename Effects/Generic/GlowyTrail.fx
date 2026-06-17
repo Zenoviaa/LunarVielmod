@@ -24,6 +24,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
         falloff -= falloffFactor;
     }
     
+
     //Calculate the particle color based on the contribution
     float4 iColor = lerp(insideColor, float4(1.0, 1.0, 1.0, 1.0), contribution * 0.25);
 

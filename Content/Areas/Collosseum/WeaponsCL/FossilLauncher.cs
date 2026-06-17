@@ -165,7 +165,7 @@ public class FossilLauncher : BaseGun
         //generate the remaining projectiles
         int Sound = Main.rand.Next(1, 3);
         SoundStyle shootSound = AssetRegistry.Sounds.Gun.FossilLauncher;
-        shootSound.Volume = 0.5f;
+      //  shootSound.Volume = 0.5f;
         SoundEngine.PlaySound(shootSound, player.position);
 
 
