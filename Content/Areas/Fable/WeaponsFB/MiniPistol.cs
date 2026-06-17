@@ -2,6 +2,7 @@
 using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -54,10 +55,19 @@ public class MiniPistol : BaseGun
         float spread = 0.4f;
         muzzleOrigin = new Vector2(68, 9);
         Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
-
+        Item.useTime = (int)MathHelper.Lerp(4, 32, MathHelper.Clamp((float)(remainingAmmo - 75) / 25, 0f, 1f));
+        Item.useAnimation = Item.useTime;
         _comboCounter++;
-        if (_comboCounter > 100)
+        if (remainingAmmo == 1)
         {
+            for(int k = 0; k < 7; k++)
+            {
+                var faintSmokeParticle = FaintSmokeParticle.SpawnInAlphaLayer(position, Main.rand.NextVector2Circular(12, 12));
+                faintSmokeParticle.fadeToColor = Color.Black * 0.2f;
+                faintSmokeParticle.color = Color.RosyBrown * 0.2f;
+                faintSmokeParticle.Scale *= 0.5f;
+                faintSmokeParticle.dampening = 0.1f;
+            }
             SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2");
             shootSound = shootSound with { PitchVariance = 0.66f, Volume = 0.4f };
             SoundEngine.PlaySound(shootSound, position);
@@ -67,11 +77,8 @@ public class MiniPistol : BaseGun
         }
 
 
-        if (Item.useAnimation > 4)
-        {
-            Item.useTime--;
-            Item.useAnimation--;
-        }
+
+
 
         for (int p = 0; p < 1; p++)
         {

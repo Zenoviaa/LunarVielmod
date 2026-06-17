@@ -9,7 +9,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     float progress = saturate((uv.x - 0.5) / 0.5);
     float3 heatColor = lerp(coldestColor, hottestColor, pow(progress * time, 2.0));
     float4 spriteColor = tex2D(uImage0, uv);
-    float3 newRGB = lerp(spriteColor.rgb, heatColor, uv.x * time) * spriteColor.a;
+    float3 newRGB = lerp(spriteColor.rgb, heatColor, time * progress) * spriteColor.a;
     newRGB = floor(newRGB * 4.0) / 4.0;
     spriteColor.rgb = newRGB;
     spriteColor *= tintColor;
