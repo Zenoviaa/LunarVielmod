@@ -99,6 +99,9 @@ namespace Stellamod.Core.Particles
 
         private void RenderAlphaParticles(SpriteBatch spriteBatch)
         {
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, default, default, null,
+                Main.GameViewMatrix.TransformationMatrix);
             BaseShader myCustomShader = null;
             for (int i = 0; i < AlphaBlendedParticles.Count; i++)
             {
@@ -113,6 +116,7 @@ namespace Stellamod.Core.Particles
 
                 if (particle.customShader != myCustomShader)
                 {
+
                     spriteBatch.End();
                     myCustomShader = particle.customShader;
                     if (myCustomShader == null)

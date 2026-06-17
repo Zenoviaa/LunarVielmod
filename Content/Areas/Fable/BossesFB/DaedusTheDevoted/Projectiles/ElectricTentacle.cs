@@ -73,8 +73,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 var trail = Lightning.Trails[i];
                 trail.LightningRandomOffsetRange = MathHelper.Lerp(8, 2, progress);
                 trail.LightningRandomExpand = MathHelper.Lerp(16, 4, progress);
-                trail.PrimaryColor = Color.Lerp(Color.White, Color.Yellow, progress);
-                trail.NoiseColor = Color.Lerp(Color.White, Color.Yellow, progress);
+                trail.PrimaryColor = Color.Lerp(Color.Gold, Color.Yellow, progress);
+                trail.NoiseColor = Color.Lerp(Color.Red, Color.DarkRed, progress);
             }
 
 

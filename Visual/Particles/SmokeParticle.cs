@@ -31,6 +31,7 @@ namespace Stellamod.Visual.Particles
 
         private void InnerUpdate()
         {
+            float time = 120;
             Velocity *= Main.rand.NextFloat(0.97f, 0.999f);
             Velocity *= (1f - dampening);
             Rotation += MathF.Sign(Velocity.X) * 0.01f;
@@ -49,12 +50,12 @@ namespace Stellamod.Visual.Particles
             }
             color = Color.Lerp(initialColor, fadeToColor, fadeIn / 90f);
 
-            float ratio = fadeIn / 180f;
+            float ratio = fadeIn / time;
             float alpha = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(ratio));
             color *= alpha;
 
             fadeIn++;
-            if (fadeIn > 180)
+            if (fadeIn > time)
                 active = false;
         }
         public override void Update()

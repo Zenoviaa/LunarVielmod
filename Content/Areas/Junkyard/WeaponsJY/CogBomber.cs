@@ -178,7 +178,7 @@ public class CogBombBoom : ModProjectile,
                 var smokeParitcle = SmokeParticle.SpawnInAlphaLayer(pos, vel);
                 smokeParitcle.dampening = 0.09f;
                 smokeParitcle.fadeToColor = Color.Black * 0.5f;
-                smokeParitcle.color = Color.RosyBrown * 0.5f;
+                smokeParitcle.initialColor = Color.DarkRed * 0.5f;
                 smokeParitcle.Scale *= 2f;
             }
 
