@@ -32,7 +32,7 @@ public class MiniPistol : BaseGun
         Item.shootSpeed = 35f;
         Item.useAmmo = AmmoID.Bullet;
         Item.noMelee = true;
-        muzzleOrigin = new Vector2(55, 10);
+        muzzleOrigin = new Vector2(68, 9);
     }
 
     public override void SetMagazine(ref GunReloadParams fireParams)
@@ -52,20 +52,12 @@ public class MiniPistol : BaseGun
         Item.ArmorPenetration = 15;
         float rot = velocity.ToRotation();
         float spread = 0.4f;
-
+        muzzleOrigin = new Vector2(68, 9);
         Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
 
         _comboCounter++;
         if (_comboCounter > 100)
         {
-            for (int k = 0; k < 7; k++)
-            {
-                Vector2 direction = offset.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-                Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
-                Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
-                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.IndianRed, Main.rand.NextFloat(0.5f, 0.8f));
-            }
             SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2");
             shootSound = shootSound with { PitchVariance = 0.66f, Volume = 0.4f };
             SoundEngine.PlaySound(shootSound, position);
@@ -73,11 +65,7 @@ public class MiniPistol : BaseGun
             Item.useAnimation = 31;
             _comboCounter = 0;
         }
-        if (_comboCounter > 75)
-        {
-            Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(),
-                Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
-        }
+
 
         if (Item.useAnimation > 4)
         {
@@ -93,7 +81,7 @@ public class MiniPistol : BaseGun
             Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
         }
 
-        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 12f);
+        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 4);
         int Sound = Main.rand.Next(1, 3);
         if (Sound == 1)
         {
@@ -112,17 +100,6 @@ public class MiniPistol : BaseGun
 
         //Dust Burst Towards Mouse
 
-
-        for (int k = 0; k < 7; k++)
-        {
-            Vector2 direction = offset.RotatedByRandom(spread);
-
-
-            Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, new Color(180, 50, 40), Main.rand.NextFloat(0.7f, 1f));
-        }
-
-        //   Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-        Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
         return false;
        // return base.ShootProjectile(player, source, position, velocity, type, damage, knockback);
     }

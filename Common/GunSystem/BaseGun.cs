@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -213,7 +214,10 @@ namespace Stellamod.Common.GunSystem
         {
             for (int i = 0; i < 1; i++)
             {
-                Gore.NewGore(player.GetSource_FromThis(), position, velocity * -1,
+                Vector2 vel = velocity.SafeNormalize(Vector2.Zero);
+                vel *= -4;
+                vel.Y -= 4;
+                Gore.NewGore(player.GetSource_FromThis(), position, vel,
                     ModContent.GoreType<BulletCasing>());
             }
         }
@@ -227,13 +231,16 @@ namespace Stellamod.Common.GunSystem
             Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
             offset = offset.RotatedBy(velocity.ToRotation());
 
-            Vector2 muzzleOffset = muzzleOrigin;
-            muzzleOffset -= new Vector2(texture.Width, texture.Height) * 0.5f;
-            muzzleOffset = muzzleOffset.RotatedBy(velocity.ToRotation());
-
             SpriteEffects spriteEffects = player.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             if (player.direction == -1)
                 spriteEffects |= SpriteEffects.FlipVertically;
+
+            Vector2 muzzleOffset = muzzleOrigin;
+            if (spriteEffects.HasFlag(SpriteEffects.FlipVertically))
+                muzzleOffset.Y = TextureAssets.Item[Type].Height() - muzzleOffset.Y;
+            muzzleOffset -= new Vector2(texture.Width, texture.Height) * 0.5f;
+            muzzleOffset = muzzleOffset.RotatedBy(velocity.ToRotation());
+
 
             /*
             if (spriteEffects.HasFlag(SpriteEffects.FlipVertically))
@@ -277,18 +284,17 @@ namespace Stellamod.Common.GunSystem
             var sp = SmokeParticle.SpawnInAlphaLayer(position, velocity * 0.2f, Color.DarkGray);
             sp.initialColor = Color.Lerp(Color.Red, Color.Black, 0.6f);
             sp.fast = true;
+            sp.dampening = 0.08f;
 
-            MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(position, velocity, innerColor);
+            MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(position + velocity.SafeNormalize(Vector2.Zero) * 16, velocity.SafeNormalize(Vector2.Zero), innerColor);
             flashParticle.innerColor = innerColor;
             flashParticle.bloomColor = outerColor;
-            flashParticle.Scale *= Main.rand.NextFloat(0.15f, 0.3f);
+            flashParticle.Scale *= Main.rand.NextFloat(0.3f, 0.6f);
+           // flashParticle.Scale *= Main.rand.NextFloat(0.15f, 0.3f);
 
 
-            FaintSmokeParticle faintSmoke = FaintSmokeParticle.SpawnInAlphaLayer(position, velocity, Scale: Main.rand.NextFloat(0.2f, 0.4f));
-            faintSmoke.color = Color.Lerp(Color.Lerp(Color.Orange, Color.Red, Main.rand.NextFloat(0f, 1f)), Color.Black, 0.7f);
-            faintSmoke.fadeToColor = Color.DarkGray;
-            faintSmoke.Scale = Main.rand.NextFloat(0.15f, 0.3f);
-            for (float f = 0; f < 4; f++)
+  
+            for (float f = 0; f < 3; f++)
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                 {
@@ -297,8 +303,9 @@ namespace Stellamod.Common.GunSystem
                     outerColor = outerColor,
                     scaleRange = new Vector2(0.3f, 1f)
                 };
-                var dp = DustParticle.Spawn(position, velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
-                dp.dampening = 0.1f;
+                var dp = DustParticle.Spawn(position, velocity.RotatedByRandom(0.35f) * Main.rand.NextFloat(0.25f, 0.6f), spawnParams);
+                dp.dampening = 0.15f;
+                dp.fast = true;
             }
         }
 
@@ -610,7 +617,8 @@ namespace Stellamod.Common.GunSystem
             float recoilTime = 10f;
             float ratio = Timer / recoilTime;
             float ease = EasingFunction.QuadraticBump(ratio);
-            float shootRadians = MathHelper.ToRadians(-5);
+            
+            float shootRadians = MathHelper.ToRadians(-5 * Owner.direction);
             float offset = MathHelper.Lerp(0f, shootRadians, ease);
             Projectile.rotation = _startRotation + offset;
 

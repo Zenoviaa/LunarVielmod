@@ -18,6 +18,7 @@ namespace Stellamod.Visual.Particles
         public int extraUpdates;
         public bool expand;
         public bool fast;
+        public float dampening;
         public override void OnSpawn()
         {
             fast = false;
@@ -25,11 +26,13 @@ namespace Stellamod.Visual.Particles
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
             customShader = null;
             Rotation = Main.rand.NextFloat(0f, MathHelper.TwoPi);
+            dampening = 0f;
         }
 
         private void InnerUpdate()
         {
             Velocity *= Main.rand.NextFloat(0.97f, 0.999f);
+            Velocity *= (1f - dampening);
             Rotation += MathF.Sign(Velocity.X) * 0.01f;
             if (expand)
             {

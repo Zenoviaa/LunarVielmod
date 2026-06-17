@@ -58,6 +58,7 @@ namespace Stellamod.Visual.Particles
         public Color fadeToColor;
         public float alpha;
         public bool noShrink;
+        public float dampening;
         public override void OnSpawn()
         {
             noShrink = false;
@@ -68,6 +69,7 @@ namespace Stellamod.Visual.Particles
             color = Color.White;
             Rotation = Main.rand.NextFloat(0f, MathHelper.TwoPi);
             expand = false;
+            dampening = 0f;
         }
 
         public override void Update()
@@ -85,7 +87,8 @@ namespace Stellamod.Visual.Particles
                     Scale *= 0.96f;
                 }
             }
-         
+
+            Velocity *= (1.0f - dampening);
 
             alpha *= 0.98f;
             fadeIn++;
