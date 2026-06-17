@@ -265,7 +265,7 @@ namespace Stellamod.Content.Areas.Underground.WeaponsUG
         private Color ColorFunction(float completionRatio)
         {
             Color baseColor = Color.Lerp(Color.White, Color.LightGray, completionRatio);
-            float shockRatio = _shockTimer / 60f;
+            float shockRatio = EasingFunction.InOutSine(_shockTimer / 60f);
             Color finalColor = Color.Lerp(baseColor, Color.Yellow, shockRatio);
             return finalColor;
         }
@@ -273,7 +273,7 @@ namespace Stellamod.Content.Areas.Underground.WeaponsUG
         private float WidthFunction(float completionRatio)
         {
             float width = 2f;
-            float shockRatio = _shockTimer / 60f;
+            float shockRatio = EasingFunction.InOutSine(_shockTimer / 60f);
             float finalWidth = MathHelper.SmoothStep(width, width * 4, shockRatio);
             return finalWidth;
         }
@@ -341,6 +341,8 @@ namespace Stellamod.Content.Areas.Underground.WeaponsUG
             Item.shootSpeed = 15;
             Item.noMelee = true;
             Item.noUseGraphic = true;
+
+            muzzleOrigin = new Vector2(105, 12);
         }
 
         public override void SetMagazine(ref GunReloadParams fireParams)
@@ -349,7 +351,14 @@ namespace Stellamod.Content.Areas.Underground.WeaponsUG
             fireParams.maxAmmo = 4;
             fireParams.reloadWindow = 60;
         }
-        
+        public override Vector2? HoldoutOffset()
+        {
+            muzzleOrigin = new Vector2(105, 12);
+            return new Vector2(40, 0);
+        }
+
+
+
         public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             return base.ShootProjectile(player, source, position, velocity, type, damage, knockback);
@@ -357,6 +366,7 @@ namespace Stellamod.Content.Areas.Underground.WeaponsUG
 
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
+            base.ShootEffects(position, velocity);
             SoundStyle shootSound = AssetRegistry.Sounds.Gun.ShockLineShoot;
             shootSound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(shootSound, position);

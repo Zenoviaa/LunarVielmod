@@ -127,17 +127,18 @@ namespace Stellamod.Core.Utilities
                 float distance = MathF.Sqrt(dx * dx + dy * dy);
                 if(distance > segmentLength)
                 {
-                    float difference = segmentLength - distance;
+                    float difference = distance - segmentLength;
                     float percent = difference / distance / 2f;
+
                     float offsetX = dx * percent;
                     float offsetY = dy * percent;
 
 
-                    p1.position.X -= offsetX;
-                    p1.position.Y -= offsetY;
+                    p1.position.X += offsetX;
+                    p1.position.Y += offsetY;
 
-                    p2.position.X += offsetX;
-                    p2.position.Y += offsetY;
+                    p2.position.X -= offsetX;
+                    p2.position.Y -= offsetY;
 
                 }
 

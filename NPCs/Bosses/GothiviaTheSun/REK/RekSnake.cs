@@ -7,7 +7,6 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;

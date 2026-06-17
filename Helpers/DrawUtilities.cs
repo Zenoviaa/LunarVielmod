@@ -13,6 +13,17 @@ public static class DrawUtilities
 {
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
+
+    public static Vector2[] InterpolateBetweenPoints(Vector2 start, Vector2 end, float numPoints)
+    {
+        Vector2[] points = new Vector2[(int)numPoints];
+        for(int i = 0; i < points.Length; i++)
+        {
+            ref Vector2 p = ref points[i];
+            p = Vector2.Lerp(start, end, (float)i / (float)points.Length);
+        }
+        return points;
+    }
     public static void DrawSpriteAfterImage(SpriteBatch spriteBatch, Projectile projectile, Color startColor, Color endColor, float alpha)
     {
         SpritebatchDrawer spriteDrawer = SpritebatchDrawer.FromProjectile(projectile);

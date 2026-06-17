@@ -7952,7 +7952,7 @@ VoidalPassageway: {
 }
 
 BlackEye: {
-	DisplayName: The Black Eye
+	DisplayName: The Black Eye Artifact
 	Tooltip: Summons Rek's Eye to blast lasers towards your cursor!
 }
 
