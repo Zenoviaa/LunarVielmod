@@ -8,6 +8,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
+using Stellamod.Effects.Generic;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -471,6 +472,7 @@ namespace Stellamod.Common.GunSystem
 
     public class GunHold : ModProjectile
     {
+        private float _heatTimer;
         private float _oldItemTime;
         private float _startRotation;
         private Vector2 _recoilOffset;
@@ -545,6 +547,7 @@ namespace Stellamod.Common.GunSystem
                 GunHoldPlayer.doCoolReloadAnimation = false;
             }
 
+            _heatTimer *= 0.95f;
             switch (State)
             {
                 case AIState.Hold:
@@ -621,6 +624,7 @@ namespace Stellamod.Common.GunSystem
             float shootRadians = MathHelper.ToRadians(-5 * Owner.direction);
             float offset = MathHelper.Lerp(0f, shootRadians, ease);
             Projectile.rotation = _startRotation + offset;
+            _heatTimer = 1f;
 
             _recoilOffset = Vector2.Lerp(-HoldDirection * 8, Vector2.Zero, EasingFunction.InOutSine(ratio));
             if(Timer >= recoilTime)
@@ -642,7 +646,40 @@ namespace Stellamod.Common.GunSystem
             SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             if (Owner.direction == -1)
                 spriteEffects |= SpriteEffects.FlipVertically;
-            spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, texture.Size() / 2f, Projectile.scale, spriteEffects, 0);
+
+            GunHeatShader gunHeatShader = ShaderContent.GetInstance<GunHeatShader>();
+            gunHeatShader.Time = _heatTimer;
+            gunHeatShader.HottestColor = Color.Yellow;
+            gunHeatShader.ColdestColor = Color.DarkRed;
+            SpritebatchParams spritebatchParams = SpritebatchParams.InWorldAndZoomed() with { effect = gunHeatShader, sortMode = SpriteSortMode.Immediate };
+            using(SpritebatchStarter.Begin(Main.spriteBatch, spritebatchParams))
+            {
+                spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, texture.Size() / 2f, Projectile.scale, spriteEffects, 0);
+            }
+
+
+            /*
+            Vector2? holdOutOffset = Owner.HeldItem.ModItem.HoldoutOffset();
+            Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
+            offset = offset.RotatedBy(Projectile.rotation);
+
+
+            Vector2 muzzleOffset = (Owner.HeldItem.ModItem as BaseGun).muzzleOrigin;
+            if (spriteEffects.HasFlag(SpriteEffects.FlipVertically))
+                muzzleOffset.Y = TextureAssets.Item[Type].Height() - muzzleOffset.Y;
+            muzzleOffset -= new Vector2(texture.Width, texture.Height) * 0.5f;
+            muzzleOffset = muzzleOffset.RotatedBy(Projectile.rotation);
+            Vector2 muzzlePosition = Owner.MountedCenter - new Vector2(0, 7) + offset + muzzleOffset;// + muzzleOffset;
+
+
+
+            SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.JumbledGlowCircle.Asset, muzzlePosition);
+            flareDrawer.color = Color.OrangeRed * _heatTimer * 0.4f;
+            flareDrawer.worldPosition += new Vector2(0, 0);
+            flareDrawer.color.A = 0;
+            flareDrawer.scale *= 0.15f;
+            spriteBatch.Draw(flareDrawer);
+    */
             return false;
         }
     }

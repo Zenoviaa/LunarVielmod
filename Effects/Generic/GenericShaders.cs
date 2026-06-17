@@ -7,6 +7,32 @@ using System.Threading.Tasks;
 
 namespace Stellamod.Effects.Generic;
 
+public class GunHeatShader : CrystalShader<GunHeatShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public Color HottestColor
+    {
+        set
+        {
+            Effect.Parameters["hottestColor"].SetValue(value.ToVector3());
+        }
+    }
+
+    public Color ColdestColor
+    {
+        set
+        {
+            Effect.Parameters["coldestColor"].SetValue(value.ToVector3());
+        }
+    }
+}
 public class GlowyTrailShader : CrystalShader<GlowyTrailShader>
 {
     public Vector2[] Particles
