@@ -14,6 +14,7 @@ using Stellamod.Projectiles.Swords;
 using Stellamod.Trailing;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -28,7 +29,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 9;
+            Item.damage = 4;
             Item.shoot = ModContent.ProjectileType<CinderBreakerSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<CinderBreakerStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Knives;
@@ -44,14 +45,42 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
     public class CinderBreakerSlash : BaseSwingProjectileV2
     {
+        private FireTrailRenderer _fireTrailRenderer;
+
         private bool _hit;
         private bool _hasSpawnedSecondKnife;
         public override void DefineCombo()
         {
             base.DefineCombo();
             SwingV2Helper.AddKnivesSwingStyle(this);
-            Trailer = TrailPresets.CinderBreaker;
+            outlineColor = Color.Yellow;
+
+            //Bloom
+            useBloom = true;
+            bloom.innerBloomColor = Color.OrangeRed;
+            bloom.outerBloomColor = Color.DarkRed;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+
+            _fireTrailRenderer = new FireTrailRenderer();
+            _fireTrailRenderer.SlashTrailer.TrailWidthFunction = GetTrailWidth;
+            additive = true;
+            Trailer = _fireTrailRenderer.SlashTrailer;
             useAfterImage = true;
+            glowAfterImageColor = Color.Red;
+        }
+        public float GetTrailWidth(float interpolant)
+        {
+            return MathHelper.SmoothStep(4, 24, interpolant) * MathF.Sin(interpolant * 8);
+        }
+
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(8, 32, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
         }
 
         public override void AI()
@@ -63,8 +92,9 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 _hasSpawnedSecondKnife = true;
             }
 
-            glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
-            growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
+            bloomScale = MathHelper.Lerp(0.12f, 0f, EasingFunction.InExpo(Interpolant));
+            glowColor = Color.Lerp(Color.Transparent, Color.Red * 0.5f, EasingFunction.QuadraticBump(Interpolant));
+            growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -72,7 +102,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.OnHitNPC(target, hit, damageDone);
             if (!_hit)
             {
-                FXUtil.ShakeCamera(target.Center, 1024, 4);
+                FXUtil.ShakeCamera(target.Center, 1024, 1);
                 Vector2 position = target.Center;
                 Vector2 lvelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4;
                 for (float f = 0; f < 4; f++)
@@ -125,6 +155,8 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
     public class CinderBreakerStaminaSlash : BaseSwingProjectileV2
     {
+        private FireTrailRenderer _fireTrailRenderer;
+
         public bool Hit;
         public bool AuroraProj2;
         public override void DefineCombo()
@@ -132,20 +164,45 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.DefineCombo();
             SoundStyle swingSound1 = SoundRegistry.HeavySwordSlash1;
             swingSound1.PitchVariance = 0.5f;
-
-            Trailer = TrailPresets.CinderBreaker;
             Add(new OvalSwing
             {
                 Duration = 44,
                 XSwingRadius = 160 / 1.5f,
                 YSwingRadius = 80 / 1.5f,
                 SwingDegrees = 270,
-                Easing = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = (lerpValue) =>  EasingFunction.GreatswordAnticipation(lerpValue),
                 Sound = swingSound1,
 
             });
 
+            outlineColor = Color.Yellow;
+
+            //Bloom
+            useBloom = true;
+            bloom.innerBloomColor = Color.OrangeRed;
+            bloom.outerBloomColor = Color.DarkRed;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+
+            _fireTrailRenderer = new FireTrailRenderer();
+            _fireTrailRenderer.SlashTrailer.TrailWidthFunction = GetTrailWidth;
+            additive = true;
+            Trailer = _fireTrailRenderer.SlashTrailer;
             useAfterImage = true;
+            glowAfterImageColor = Color.Red;
+        }
+        public float GetTrailWidth(float interpolant)
+        {
+            return MathHelper.SmoothStep(4, 24, interpolant) * MathF.Sin(interpolant * 8);
+        }
+
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(8, 32, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
         }
         private bool _thrust;
         public float thrustSpeed = 5;
@@ -153,8 +210,9 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AI()
         {
             base.AI();
-            glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
-            growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
+            bloomScale = MathHelper.Lerp(0.12f, 0f, EasingFunction.InExpo(Interpolant));
+            glowColor = Color.Lerp(Color.Transparent, Color.Red * 0.5f, EasingFunction.QuadraticBump(Interpolant));
+            growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
             Vector2 swingDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
             if (Interpolant > 0.5f && !AuroraProj2)
             {
