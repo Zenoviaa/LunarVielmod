@@ -27,7 +27,7 @@ public class Orion : ModItem
         Item.DefaultToArtifact();
         Item.width = 44;
         Item.height = 58;
-        Item.damage = 400;
+        Item.damage = 540;
         Item.DamageType = DamageClass.Magic;
 
         Item.useTime = 32;
@@ -41,7 +41,7 @@ public class Orion : ModItem
         Item.autoReuse = true;
         Item.shoot = ModContent.ProjectileType<OrionProj>();
         Item.shootSpeed = 15;
-        Item.mana = 25;
+        Item.mana = 16;
     }
 
     public override void AddRecipes()
@@ -117,16 +117,21 @@ public class OrionProj : ModProjectile
 
         }
 
+        SoundStyle sound;
         //Play Sound
         switch (Main.rand.Next(2))
         {
-            case 0:
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb1"), Projectile.position);
+            default:
+                sound = new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb1");
+                //SoundEngine.PlaySound(, Projectile.position);
                 break;
             case 1:
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb2"), Projectile.position);
+                sound = new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb2");
                 break;
         }
+
+        sound.PitchVariance = 0.7f;
+        SoundEngine.PlaySound(sound, Projectile.position);
     }
 
     public float WidthFunction(float completionRatio)
@@ -216,7 +221,9 @@ public class OrionStarProj : ModProjectile
 
             }
 
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
+            var sound = SoundID.DD2_ExplosiveTrapExplode with { PitchVariance = 0.7f };
+            sound.Volume = 0.4f;
+            SoundEngine.PlaySound(sound, Projectile.position);
             for (float f = 0; f < 8; f++)
             {
                 var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(20, 20));
