@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Projectiles;
 using System;
 using Terraria;
@@ -94,6 +95,12 @@ namespace Stellamod.Items.Accessories
             //Increased Crit Chance
             player.GetCritChance(DamageClass.Generic) += 4f;
             player.GetModPlayer<VampireCritPlayer>().hasVampireCharm = true;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<TerrorFragments, BlankAccessory>();
         }
     }
 }

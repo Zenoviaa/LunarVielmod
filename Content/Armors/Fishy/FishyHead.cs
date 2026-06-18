@@ -1,7 +1,7 @@
 using ReLogic.Content;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Content.Areas.WaterSide.AccWS;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Catacombs;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

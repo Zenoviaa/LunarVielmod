@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Content.CommonMaterials;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -31,6 +32,11 @@ namespace Stellamod.Items.Accessories.Catacombs
             player.ClearBuff(BuffID.Poisoned);
             player.ClearBuff(BuffID.Venom);
             player.statLifeMax2 += 40;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<EreshkinCandle, BlankAccessory>();
         }
     }
 }

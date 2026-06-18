@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Armors.Artisan;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -8,16 +9,6 @@ namespace Stellamod.Items.Accessories.PicturePerfect
 {
     public class PicturePerfectI : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Book of Wooden Illusion");
-            /* Tooltip.SetDefault("Increased Regeneration!" +
-				"\n +3% damage" +
-				"\n Increases crit strike change by 5% "); */
-
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
-
         public override void SetDefaults()
         {
             Item.width = 24;
@@ -25,8 +16,6 @@ namespace Stellamod.Items.Accessories.PicturePerfect
             Item.value = Item.sellPrice(gold: 10);
             Item.rare = ItemRarityID.LightPurple;
             Item.accessory = true;
-
-
         }
 
 
@@ -34,19 +23,25 @@ namespace Stellamod.Items.Accessories.PicturePerfect
         {
 
             Main.LocalPlayer.GetModPlayer<ArtisanPlayer>().Cameraaa = true;
-            player.GetModPlayer<ArtisanPlayer>().PPDMG = 10;
-            player.GetModPlayer<ArtisanPlayer>().PPDefense = 5;
-            player.GetModPlayer<ArtisanPlayer>().PPCrit = 5;
-            player.GetModPlayer<ArtisanPlayer>().PPSpeed = 0.5f;
+            player.GetModPlayer<ArtisanPlayer>().PPDMG = 20;
+            player.GetModPlayer<ArtisanPlayer>().PPDefense = 25;
+            player.GetModPlayer<ArtisanPlayer>().PPCrit = 15;
+            player.GetModPlayer<ArtisanPlayer>().PPSpeed = 1f;
             player.GetModPlayer<ArtisanPlayer>().PPPaintI = true;
-            player.GetModPlayer<ArtisanPlayer>().PPPaintDMG = 0.5f;
-            player.GetModPlayer<ArtisanPlayer>().PPPaintDMG2 = 5;
-            player.GetModPlayer<ArtisanPlayer>().PPPaintTime = 60;
-            player.GetModPlayer<ArtisanPlayer>().PPFrameTime = 2;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintII = true;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintIII = true;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintDMG = 1.75f;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintDMG2 = 50;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintTime = 240;
+            player.GetModPlayer<ArtisanPlayer>().PPFrameTime = 8;
         }
 
 
 
-
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<KaleidoscopicInk, BlankAccessory>();
+        }
     }
 }

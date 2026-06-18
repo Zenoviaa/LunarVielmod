@@ -335,6 +335,7 @@ namespace Stellamod.Common.GunSystem
 
         public bool doCoolReloadAnimation;
         public bool doFailAnimation;
+        public bool forgivingReload;
         public int numberOfReloadsNeeded;
         public int successfulReloads;
         public float reloadRatio => reloadTimer / reloadTime;
@@ -355,6 +356,7 @@ namespace Stellamod.Common.GunSystem
         public override void ResetEffects()
         {
             base.ResetEffects();
+            forgivingReload = false;
             isReloading = false;
             numberOfReloadsNeeded = 1;
               marginOfError = 10;
@@ -380,7 +382,8 @@ namespace Stellamod.Common.GunSystem
                 SoundStyle jamSound = AssetRegistry.Sounds.Gun.GunJam;
                 jamSound.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(jamSound, Player.position);
-                reloadTimer = 0;
+                if(!forgivingReload)
+                    reloadTimer = 0;
                 doFailAnimation = true;
                 successfulReloads--;
                 if (successfulReloads <= 0)
@@ -410,6 +413,10 @@ namespace Stellamod.Common.GunSystem
                 return;
             }
 
+            if(heldGun.remainingAmmo > heldGun.GetMaxAmmo(Player))
+            {
+                heldGun.remainingAmmo = heldGun.GetMaxAmmo(Player);
+            }
             if (Main.myPlayer == Player.whoAmI &&
                 Player.ownedProjectileCounts[ModContent.ProjectileType<GunHold>()] == 0 && (Player.channel || Player.controlUseItem) && HeldGun.UseDefaultHoldAnimation())
             {

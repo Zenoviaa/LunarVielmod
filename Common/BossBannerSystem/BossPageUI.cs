@@ -198,9 +198,10 @@ public class BossPageUI : RightPageUI
         _bossRecordButton.Top.Set(0, 0.1f);
 
         _bossPhotoUI.Top.Pixels = 32;
-        _bossPhotoUI.Left.Pixels = 0;
+        _bossPhotoUI.Left.Pixels = 16;
 
         _displayNameText.Top.Pixels = 8;
+        _displayNameText.Left.Pixels = 8;
         _glassUI.Top.Pixels = 210;
         _bossLoreUI.Top.Pixels = _glassUI.Top.Pixels;
         _bossLoreUI.Left.Pixels = _glassUI.Left.Pixels + 48;

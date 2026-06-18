@@ -96,10 +96,14 @@ namespace Stellamod.Common.BossBannerSystem
             zuiGlowColor.A = 0;
 
             Vector2 topLeft = rectangle.TopLeft();
+
+            topLeft.X -= 16;
+            topLeft.Y -= 8;
+
             Vector2 glowPos = topLeft + BossIconTextureAsset.Size() / 2f;
             glowPos.Y += 8;
             zuiGlowColor *= ExtraMath.Osc(0.5f, 1f);
-            spriteBatch.Draw(zuiGlow, glowPos, null, zuiGlowColor, 0f, zuiGlow.Size() / 2f, 0.5f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(zuiGlow, glowPos, null, zuiGlowColor, 0f, zuiGlow.Size() / 2f, 0.75f, SpriteEffects.None, 0f);
 
             Color drawColor = Color.White;
             if (isHidden)
@@ -111,6 +115,7 @@ namespace Stellamod.Common.BossBannerSystem
             {
                 UIHelper.QuickOutline(spriteBatch, BossIconTextureAsset.Value, topLeft, Main.DiscoColor, 1);
             }
+
             spriteBatch.Draw(BossIconTextureAsset.Value, topLeft, null, drawColor, 0f, default, 1, SpriteEffects.None, 0f);
 
         }

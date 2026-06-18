@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Buffs;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
@@ -51,10 +52,6 @@ namespace Stellamod.Items.Accessories
 
     public class IridineNecklace : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            ItemID.Sets.ItemNoGravity[Item.type] = true;
-        }
 
         public override void SetDefaults()
         {
@@ -97,6 +94,12 @@ namespace Stellamod.Items.Accessories
             float y = VectorHelper.Osc(-hoverRange, hoverRange, hoverSpeed);
             Vector2 position = new Vector2(Item.position.X, Item.position.Y + y);
             Item.position = position;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<GhastlySpirit, BlankAccessory>();
         }
     }
 }

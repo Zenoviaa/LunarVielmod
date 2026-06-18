@@ -28,16 +28,21 @@ namespace Stellamod.Items.Accessories
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<PearlescentScrap>());
+            this.RegisterBrew(
+                mold: ModContent.ItemType<BlankAccessory>(), 
+                material: ModContent.ItemType<PearlescentScrap>());
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             base.UpdateAccessory(player, hideVisual);
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-            dashPlayer.DashVelocity += 7;
+            dashPlayer.DashVelocity += 15;
+            dashPlayer.extraStaminaCost++;
+            dashPlayer.ExtraImmunityFramesBonus += 1;
             player.moveSpeed *= 1.3f;
             player.maxRunSpeed *= 1.3f;
             player.statLifeMax2 += 10;
+     
         }
     }
 }

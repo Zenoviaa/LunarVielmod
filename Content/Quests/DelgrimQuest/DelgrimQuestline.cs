@@ -62,7 +62,7 @@ namespace Stellamod.Content.Quests.DelgrimQuest
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            AddReward(ModContent.ItemType<CinderedQuiver>(), 1);
+          //  AddReward(ModContent.ItemType<CinderedQuiver>(), 1);
             IsAutoQuest = true;
         }
 

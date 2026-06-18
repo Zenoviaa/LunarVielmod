@@ -1,4 +1,5 @@
 ﻿using Stellamod.Buffs;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,11 +12,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         private int _counter;
         public override void SetDefaults()
         {
-            Item.width = 28;
-            Item.height = 60;
-            Item.accessory = true;
-            Item.rare = ItemRarityID.LightRed;
-            Item.value = Item.sellPrice(gold: 2);
+            Item.DefaultToAccessory();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
@@ -24,6 +21,7 @@ namespace Stellamod.Items.Accessories.Catacombs
             if (player.wingTime <= 2 && player.controlJump && !player.HasBuff<Zuid>())
             {
                 player.AddBuff(BuffID.OnFire, 2);
+                player.lifeRegen -= 32;
                 player.wingTime = 2;
                 player.wingRunAccelerationMult /= 2;
                 player.runAcceleration /= 2;
@@ -42,5 +40,12 @@ namespace Stellamod.Items.Accessories.Catacombs
                 }
             }
         }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<RadiantNectar, BlankAccessory>();
+        }
+
     }
 }

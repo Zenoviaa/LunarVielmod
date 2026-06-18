@@ -2157,8 +2157,8 @@ LunarBand: {
 }
 
 OceanScroll: {
-	DisplayName: Ocean Scroll
-	Tooltip: Increased Magical Critical strike chance by 10%
+	DisplayName: Piece of Paper
+	Tooltip: Grants 20% artifact mana reduction
 }
 
 OceansTrinket: {
@@ -2216,7 +2216,7 @@ RuneOfStealth: {
 
 ShadeCharm: {
 	DisplayName: Shade Charm
-	Tooltip: Decreases Mana Cost and lights up in the night
+	Tooltip: Only at night, you will have 20% reduced mana cost and emit a small light
 }
 
 ShadeScarf: {
@@ -5058,7 +5058,7 @@ TyphoonInABottle: {
 
 WaterproofHeadphones: {
 	DisplayName: Waterproof Headphones
-	Tooltip: Increases life by 40 and gain 4% more resistance to attacks!
+	Tooltip: You have a 25% chance to restore 1 point of stamina whenever you consume your stamina
 }
 
 BurningFlask: {
@@ -7943,7 +7943,7 @@ CentipedeStaff: {
 
 SirestiasMask: {
 	DisplayName: Sirestias's Mask
-	Tooltip: 30% increased damage while at full health!
+	Tooltip: 20% increased damage while at full health!
 }
 
 VoidalPassageway: {
@@ -8001,12 +8001,7 @@ JianxinPants: {
 
 IllurineHoops: {
 	DisplayName: Illurine Hoops
-	Tooltip:
-		'''
-		Nearby lunar enemies are striked, cutting their health in half
-		+10% Magic Damage
-		Increased mana regeneration and reduce mana cost
-		'''
+	Tooltip: Nearby moth enemies are striked, cutting their health in half
 }
 
 IridineNecklace: {
@@ -9079,7 +9074,11 @@ MysteryInsource: {
 }
 
 GlyphOfShade: {
-	Tooltip: Great for mobility!
+	Tooltip:
+		'''
+		Enemies are much less likely to target you
+		5% increased movement speed and jump speed
+		'''
 	Effect:
 		'''
 		Enemies are much less likely to target you
@@ -11617,7 +11616,7 @@ FossilLauncher: {
 
 EreshkigalsFinisherCannon: {
 	DisplayName: Ereshkigals Finisher Cannon
-	Tooltip: ""
+	Tooltip: Ereshkigal just finished on whoever you just shot...
 }
 
 SolsticeWarriorBody: {
@@ -11693,4 +11692,9 @@ StrawHat: {
 GustbeakHat: {
 	DisplayName: Gustbeak Hat
 	Tooltip: ""
+}
+
+ReloadCanister: {
+	DisplayName: Reload Canister
+	Tooltip: If you mistime a reload, it will not reset the bar
 }

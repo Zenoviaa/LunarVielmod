@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 
@@ -21,7 +22,7 @@ namespace Stellamod.Items.Accessories
             {
                 if (Player.statLife == Player.statLifeMax2)
                 {
-                    Player.GetDamage(DamageClass.Generic) += 0.30f;
+                    Player.GetDamage(DamageClass.Generic) += 0.2f;
                     float num = 16;
                     for (int i = 0; i < num; i++)
                     {
@@ -40,14 +41,19 @@ namespace Stellamod.Items.Accessories
 
     public class SirestiasMask : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ItemSets.IsSoldBySirestias[Type] = true;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 28;
             Item.height = 36;
             Item.accessory = true;
-            Item.value = Item.sellPrice(silver: 12);
-            Item.maxStack = 1;
-            Item.value = Item.sellPrice(0, 15, 0, 0);
+            Item.shopSpecialCurrency = Stellamod.NoHitCrystalCurrencyID;
+            Item.shopCustomPrice = 5;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -26,7 +27,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                     Vector2 bubbleVel = target.DirectionFrom(position) * 2;
 
                     //Bubbles deal a percent of the base damage
-                    float newDamage = (float)hit.SourceDamage;
+                    float newDamage = (float)(hit.SourceDamage * 0.25f);
                     Projectile p = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), position, bubbleVel,
                        ProjectileID.Bubble, (int)newDamage, 1, Player.whoAmI);
 
@@ -53,16 +54,17 @@ namespace Stellamod.Items.Accessories.Catacombs
     {
         public override void SetDefaults()
         {
-            Item.width = 30;
-            Item.height = 34;
-            Item.accessory = true;
-            Item.rare = ItemRarityID.LightRed;
-            Item.value = Item.sellPrice(gold: 2);
+            Item.DefaultToAccessory();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<AquaticEmblemPlayer>().hasAquaticEmblem = true;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<MusicalHarmonise, BlankAccessory>();
         }
     }
 }

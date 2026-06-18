@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -29,6 +30,11 @@ namespace Stellamod.Items.Accessories
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             dashPlayer.DashVelocity += 7;
             dashPlayer.DashRegenerationBonus += 0.05f;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<WinterbornShard, BlankAccessory>();
         }
     }
 }

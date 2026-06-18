@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Dusts;
+using Stellamod.Items;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories.Catacombs
+namespace Stellamod.Content.Areas.WaterSide.AccWS
 {
     public class TyphoonJump : ExtraJump
     {
@@ -93,6 +95,7 @@ namespace Stellamod.Items.Accessories.Catacombs
     {
         public override void SetDefaults()
         {
+            Item.DefaultToAccessory();
             Item.width = 20;
             Item.height = 28;
             Item.accessory = true;
@@ -105,6 +108,12 @@ namespace Stellamod.Items.Accessories.Catacombs
             player.GetJumpState<TyphoonJump>().Enable();
             player.moveSpeed += 0.05f;
             player.jumpSpeedBoost *= 1.2f;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<MusicalHarmonise, BlankAccessory>();
         }
     }
 }

@@ -261,7 +261,7 @@ public class RoyalMagicComet : ModProjectile,
             }
         }
 
-        float targetAlpha = Projectile.hostile ? 1f : 0.5f;
+        float targetAlpha = Projectile.hostile ? 1f : 0.35f;
         _alpha = MathHelper.Lerp(_alpha, targetAlpha, 0.2f);
         float ratio = (Size - 0.66f) / 0.66f;
         float gravity = MathHelper.SmoothStep(1f, 0.1f, ratio);

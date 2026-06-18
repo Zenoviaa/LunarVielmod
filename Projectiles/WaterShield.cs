@@ -10,8 +10,8 @@ namespace Stellamod.Projectiles
     {
         public override void SetDefaults()
         {
-            Projectile.width = 50;
-            Projectile.height = 50;
+            Projectile.width = 96;
+            Projectile.height = 96;
             Projectile.timeLeft = 60;
             Projectile.friendly = false;
             Projectile.hostile = false;
@@ -26,17 +26,18 @@ namespace Stellamod.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            if (Main.rand.NextBool(2))
+            {
+                SoundEngine.PlaySound(SoundID.Item112, Projectile.position);
+            }
+            else
+            {
+                SoundEngine.PlaySound(SoundID.Item111, Projectile.position);
+            }
             for (int i = 0; i < 20; i++)
             {
                 float A = Main.rand.Next(0, 2);
-                if (A == 0)
-                {
-                    SoundEngine.PlaySound(SoundID.Item112, Projectile.position);
-                }
-                else
-                {
-                    SoundEngine.PlaySound(SoundID.Item111, Projectile.position);
-                }
+
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 512f, 10f);
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Water, 0f, -2f, 0, default, .8f);

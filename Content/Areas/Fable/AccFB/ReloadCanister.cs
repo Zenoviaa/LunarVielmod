@@ -1,30 +1,27 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Items;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories
+namespace Stellamod.Content.Areas.Fable.AccFB
 {
-    public class ClamsPearl : ModItem
+    public class ReloadCanister : ModItem
     {
-
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.DefaultToAccessory();
         }
-
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            Lighting.AddLight(player.Center, Color.LightBlue.ToVector3() * 1.75f * Main.essScale);
+            base.UpdateAccessory(player, hideVisual);
+            player.GetModPlayer<GunHoldPlayer>().forgivingReload = true;
         }
-
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew<Mushroom, BlankAccessory>();
+            this.RegisterBrew<AlcadizScrap, BlankAccessory>();
         }
     }
 }
-
-

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -51,6 +52,12 @@ namespace Stellamod.Items.Accessories.Catacombs
         {
             player.GetModPlayer<SpikedEmblemPlayer>().hasSpikedEmblem = true;
             player.GetDamage(DamageClass.Generic) += 0.08f;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<MinersGold, BlankAccessory>();
         }
     }
 }

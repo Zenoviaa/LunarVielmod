@@ -1,17 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.ArmorRework;
+using Stellamod.Content.CommonMaterials;
+using Stellamod.Items;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories
+namespace Stellamod.Content.Areas.WaterSide.AccWS
 {
     public class OceanScroll : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Aquatic Healing Necklace");
-            // Tooltip.SetDefault("Speeds up life Regen");
-        }
         public override void SetDefaults()
         {
             Item.Size = new Vector2(20);
@@ -22,7 +20,13 @@ namespace Stellamod.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetCritChance(DamageClass.Magic) += 10f;
+            player.GetStats().artifactManaReduction += 0.2f;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<ConvulgingMater, BlankAccessory>();
         }
     }
 }

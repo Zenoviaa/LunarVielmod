@@ -136,6 +136,8 @@ namespace Stellamod.Items.Accessories.Players
         public bool DashedThisFrame;
         public bool doubleStaminaCost;
         public bool justConsumedStamina;
+        public int extraStaminaCost;
+        public int dashRestoreChance;
         private HashSet<NPC> _dashedThroughSetBacking;
         public HashSet<NPC> DashedThroughSet
         {
@@ -164,7 +166,8 @@ namespace Stellamod.Items.Accessories.Players
             doubleStaminaCost = false;
             justConsumedStamina = false;
             IsDashing = DashTimer > 0;
-
+            extraStaminaCost = 0;
+            dashRestoreChance = 0;
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
             // When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
             // If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
@@ -229,12 +232,13 @@ namespace Stellamod.Items.Accessories.Players
         public override void PreUpdateMovement()
         {
             // if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
-            if (Main.myPlayer == Player.whoAmI && CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0 && DashCount > 0)
+            if (Main.myPlayer == Player.whoAmI && CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0 && DashCount > extraStaminaCost)
             {
                 float dashVelocity = DashVelocity;
                 dashVelocity *= (1.0f + DashRegenerationBonus);
                 DashedThroughSet.Clear();
-                DashCount--;
+                Consume(1 + extraStaminaCost);
+                //DashCount-= (1 + extraStaminaCost);
                 DashCountTimer = 0;
                 DashedThisFrame=true;
 
@@ -309,6 +313,9 @@ namespace Stellamod.Items.Accessories.Players
         {
             if (doubleStaminaCost)
                 amount *= 2;
+            int rand = Main.rand.Next(0, 100);
+            if (rand < dashRestoreChance)
+                DashCount++;
             justConsumedStamina = true;
             DashCount -= amount;
             OnUseStamina?.Invoke(Player, amount);

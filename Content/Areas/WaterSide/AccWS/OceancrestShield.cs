@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
+using Stellamod.Items;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories.Catacombs
+namespace Stellamod.Content.Areas.WaterSide.AccWS
 {
     public class OceanShieldPlayer : ModPlayer
     {
@@ -85,7 +87,12 @@ namespace Stellamod.Items.Accessories.Catacombs
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<OceanShieldPlayer>().hasOceanShield = true;
-            player.AddBuff(BuffID.Gills, 2);
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<MusicalHarmonise, BlankAccessory>();
         }
     }
 }

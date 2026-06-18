@@ -86,7 +86,7 @@ namespace Stellamod.Content.Areas.Collosseum.AccCL
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Transparent, Color.White, Easing.SpikeOutCirc(completionRatio));
+            return Color.Lerp(Color.Transparent, Color.White, Easing.SpikeOutCirc(completionRatio)) * 0.5f;
         }
 
 

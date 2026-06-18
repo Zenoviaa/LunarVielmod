@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.CommonMaterials;
-using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Projectiles.Thrown;
 using System.Collections.Generic;
@@ -101,37 +97,8 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override bool CanUseItem(Player player)
         {
-            if (!player.GetModPlayer<SewingKitPlayer>().hasSewingKit && _attackStyle == 1)
-            {
-                ChangeForm(0);
-            }
 
-            if (player.altFunctionUse == 2 && player.GetModPlayer<SewingKitPlayer>().hasSewingKit)
-            {
-                if (_attackStyle == 0)
-                {
-                    ChangeForm(1);
-                }
-                else
-                {
-                    ChangeForm(0);
-                }
 
-                int sound = Main.rand.Next(0, 3);
-                switch (sound)
-                {
-                    case 0:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), player.position);
-                        break;
-                    case 1:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia2"), player.position);
-                        break;
-                    case 2:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3"), player.position);
-                        break;
-                }
-                return false;
-            }
 
             return base.CanUseItem(player);
         }

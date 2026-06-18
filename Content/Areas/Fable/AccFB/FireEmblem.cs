@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.CommonMaterials;
-using Stellamod.Core.Utilities;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
@@ -8,82 +6,82 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.Fable.AccFB
+namespace Stellamod.Content.Areas.Fable.AccFB;
+
+
+public class FireEmblemPlayer : ModPlayer
 {
-    public class FireEmblemPlayer : ModPlayer
+    public bool hasFireEmblem;
+    public int fireEmblemCooldown;
+    public override void ResetEffects()
     {
-        public bool hasFireEmblem;
-        public int fireEmblemCooldown;
-        public override void ResetEffects()
-        {
-            hasFireEmblem = false;
-        }
-
-        public override void PostUpdateEquips()
-        {
-            if (fireEmblemCooldown > 0)
-                fireEmblemCooldown--;
-        }
-
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (hasFireEmblem && fireEmblemCooldown <= 0)
-            {
-                if (Main.rand.NextBool(6))
-                {
-                    switch (Main.rand.Next(0, 4))
-                    {
-                        case 0:
-                            target.AddBuff(BuffID.OnFire3, 120);
-                            break;
-                        case 1:
-                            target.AddBuff(BuffID.ShadowFlame, 120);
-                            break;
-                        case 2:
-                            target.AddBuff(BuffID.CursedInferno, 120);
-                            break;
-                        case 3:
-                            target.AddBuff(BuffID.Daybreak, 60);
-                            break;
-                    }
-                }
-
-
-                if (hit.Crit && Main.rand.NextBool(2))
-                {
-                    ShakeScreenPosition.Shake = 10;
-                    SoundStyle soundStyle = new SoundStyle($"Stellamod/Assets/Sounds/Kaboom");
-                    soundStyle.PitchVariance = 0.15f;
-                    SoundEngine.PlaySound(soundStyle, target.position);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center, Vector2.Zero,
-                        ModContent.ProjectileType<FireBoom>(), damageDone / 2, hit.Knockback, Player.whoAmI);
-                }
-
-                fireEmblemCooldown = 120;
-            }
-        }
+        hasFireEmblem = false;
     }
 
-    public class FireEmblem : ModItem
+    public override void PostUpdateEquips()
     {
-        public override void SetDefaults()
-        {
-            Item.width = 30;
-            Item.height = 28;
-            Item.rare = ItemRarityID.LightRed;
-            Item.accessory = true;
-            Item.value = Item.sellPrice(gold: 2);
-        }
+        if (fireEmblemCooldown > 0)
+            fireEmblemCooldown--;
+    }
 
-        public override void UpdateAccessory(Player player, bool hideVisual)
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        if (hasFireEmblem && fireEmblemCooldown <= 0)
         {
-            player.GetModPlayer<FireEmblemPlayer>().hasFireEmblem = true;
+            if (Main.rand.NextBool(6))
+            {
+                switch (Main.rand.Next(0, 4))
+                {
+                    case 0:
+                        target.AddBuff(BuffID.OnFire3, 120);
+                        break;
+                    case 1:
+                        target.AddBuff(BuffID.ShadowFlame, 120);
+                        break;
+                    case 2:
+                        target.AddBuff(BuffID.CursedInferno, 120);
+                        break;
+                    case 3:
+                        target.AddBuff(BuffID.Daybreak, 60);
+                        break;
+                }
+            }
+
+
+            if (hit.Crit && Main.rand.NextBool(2))
+            {
+                ShakeScreenPosition.Shake = 10;
+                SoundStyle soundStyle = new SoundStyle($"Stellamod/Assets/Sounds/Kaboom");
+                soundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(soundStyle, target.position);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center, Vector2.Zero,
+                    ModContent.ProjectileType<FireBoom>(), damageDone / 2, hit.Knockback, Player.whoAmI);
+            }
+
+            fireEmblemCooldown = 120;
         }
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<AlcadizScrap>());
-        }
+    }
+}
+
+public class FireEmblem : ModItem
+{
+    public override void SetDefaults()
+    {
+        Item.width = 30;
+        Item.height = 28;
+        Item.rare = ItemRarityID.LightRed;
+        Item.accessory = true;
+        Item.value = Item.sellPrice(gold: 2);
+    }
+
+    public override void UpdateAccessory(Player player, bool hideVisual)
+    {
+        player.GetModPlayer<FireEmblemPlayer>().hasFireEmblem = true;
+    }
+    public override void AddRecipes()
+    {
+        base.AddRecipes();
+        this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<AlcadizScrap>());
     }
 }

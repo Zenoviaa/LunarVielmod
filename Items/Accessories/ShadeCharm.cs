@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,9 +28,15 @@ namespace Stellamod.Items.Accessories
             if (!Main.dayTime)
             {
                 Lighting.AddLight(player.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
-                player.manaCost -= 0.3f;
+                player.manaCost -= 0.2f;
                 player.manaRegen += 2;
             }
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<HypnotizedSoul, BlankAccessory>();
         }
     }
 }

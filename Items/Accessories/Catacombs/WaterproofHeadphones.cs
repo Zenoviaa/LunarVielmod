@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Accessories.Players;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,8 +18,8 @@ namespace Stellamod.Items.Accessories.Catacombs
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.endurance += 0.04f;
-            player.statLifeMax2 += 40;
+            player.GetModPlayer<DashPlayer>().dashRestoreChance += 25;
         }
+    
     }
 }

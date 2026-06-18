@@ -1340,6 +1340,13 @@ public class EreshkigalsFinisherCannon : BaseGun
         return false;
     }
 
+    public override void SetMagazine(ref GunReloadParams fireParams)
+    {
+        base.SetMagazine(ref fireParams);
+        fireParams.maxAmmo = 1;
+        fireParams.reloadWindow = 200;
+    }
+
     public override void ShootEffects(Vector2 position, Vector2 velocity)
     {
         //base.ShootEffects(position, velocity);
