@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Illuria.WeaponsIL;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
@@ -43,6 +45,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
         public override bool PreAI()
         {
+            Timer++;
             if (++_frameTick >= 1)
             {
                 _frameTick = 0;
@@ -74,7 +77,14 @@ namespace Stellamod.Projectiles.IgniterExplosions
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color)GetAlpha(lightColor), 0f, origin, 1.2f, SpriteEffects.None, 0f);
+                (Color)GetAlpha(lightColor), 0f, origin, 2f, SpriteEffects.None, 0f);
+
+            SpritebatchDrawer blackStarDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<OrionStarProj>()], Projectile.Center);
+            blackStarDrawer.VerticalFrame(0, 2);
+            blackStarDrawer.CenterOrigin();
+            blackStarDrawer.color = Color.Black;
+            blackStarDrawer.scale *= MathHelper.Lerp(2f, 0f, Timer / 30f);
+            spriteBatch.Draw(blackStarDrawer);
             return false;
         }
     }

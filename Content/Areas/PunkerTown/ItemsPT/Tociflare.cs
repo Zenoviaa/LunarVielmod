@@ -182,7 +182,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
            // TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
-            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            BlackFireOldShader blackFireShader = BlackFireOldShader.Instance;
             blackFireShader.InnerColor = Color.Blue;
             blackFireShader.OuterColor = Color.DarkGreen;
             blackFireShader.PrimaryTexture2 = TrailRegistry.DNATrail;

@@ -7017,7 +7017,7 @@ IshtarCard: {
 }
 
 Orion: {
-	DisplayName: Orion
+	DisplayName: Orion Artifact
 	Tooltip:
 		'''
 		Leaves behind a trail of exploding stars!
@@ -11697,4 +11697,9 @@ GustbeakHat: {
 ReloadCanister: {
 	DisplayName: Reload Canister
 	Tooltip: If you mistime a reload, it will not reset the bar
+}
+
+TerrorMinigun: {
+	DisplayName: Terror Minigun
+	Tooltip: ""
 }
