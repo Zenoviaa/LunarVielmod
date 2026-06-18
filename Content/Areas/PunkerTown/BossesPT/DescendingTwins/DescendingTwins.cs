@@ -202,7 +202,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 NPC.TargetClosest();
                 if (!NPC.HasValidTarget)
                 {
-                    SwitchState(TwinAttackState.Despawn);
+                    if(State != TwinAttackState.Despawn)
+                        SwitchState(TwinAttackState.Despawn);
                 }
             }
             NPC.Center = MyTarget.Center;

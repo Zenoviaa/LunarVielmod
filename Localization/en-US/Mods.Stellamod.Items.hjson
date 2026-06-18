@@ -2211,6 +2211,7 @@ RuneOfStealth: {
 		'''
 		You slowly gain damage over time, up to a max of 1.15x damage
 		However, taking a hit resets your bonus!
+		It takes 45 seconds to fully charge...
 		'''
 }
 

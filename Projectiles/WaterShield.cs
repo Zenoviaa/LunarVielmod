@@ -26,20 +26,11 @@ namespace Stellamod.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            if (Main.rand.NextBool(2))
-            {
-                SoundEngine.PlaySound(SoundID.Item112, Projectile.position);
-            }
-            else
-            {
-                SoundEngine.PlaySound(SoundID.Item111, Projectile.position);
-            }
             for (int i = 0; i < 20; i++)
             {
                 float A = Main.rand.Next(0, 2);
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 512f, 10f);
-                SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Water, 0f, -2f, 0, default, .8f);
                 Main.dust[num1].noGravity = true;
                 Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;

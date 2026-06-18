@@ -93,7 +93,8 @@ namespace Stellamod.Content.Areas.Terror.AccTR
         public bool hasStealthRune;
         public bool hideVisual;
         public float stealthRuneTimer;
-        public float stealthProgress => stealthRuneTimer / 900f;
+        public float stealthProgress => stealthRuneTimer / StealthRuneChargeTime;
+        private float StealthRuneChargeTime => 60 * 45;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -125,7 +126,7 @@ namespace Stellamod.Content.Areas.Terror.AccTR
             base.ModifyWeaponDamage(item, ref damage);
             if (hasStealthRune)
             {
-                float progress = stealthRuneTimer / 900f;
+                float progress = stealthRuneTimer / StealthRuneChargeTime;
                 float maxDamageMultiplier = 1.15f;
                 float damageMultiplier = MathHelper.Lerp(1f, maxDamageMultiplier, progress);
                 damage *= damageMultiplier;
@@ -135,7 +136,7 @@ namespace Stellamod.Content.Areas.Terror.AccTR
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
             base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
-            float progress = stealthRuneTimer / 900f;
+            float progress = stealthRuneTimer / StealthRuneChargeTime;
             float multiplier = MathHelper.Lerp(1f, 0.75f, progress);
             r *= multiplier;
             g *= multiplier;

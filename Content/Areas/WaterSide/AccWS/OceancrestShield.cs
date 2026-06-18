@@ -56,9 +56,6 @@ namespace Stellamod.Content.Areas.WaterSide.AccWS
 
                 _cooldown = cooldownInTicks;
                 modifiers.FinalDamage *= 0f;
-                SoundStyle e = SoundID.NPCDeath58;
-                e.Volume = 0.3f;
-                SoundEngine.PlaySound(e, Player.position);
 
                 int count = 48;
                 float degreesPer = 360 / (float)count;
