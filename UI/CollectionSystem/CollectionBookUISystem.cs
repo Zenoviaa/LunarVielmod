@@ -84,17 +84,14 @@ namespace Stellamod.UI.CollectionSystem
 
         public override void UpdateUI(GameTime gameTime)
         {
-
             if (LunarVeilKeybinds.QuestKeybind.JustPressed)
             {
-                if (!Main.playerInventory)
-                {
-                    Main.playerInventory = true;
-                }
                 ToggleUI();
             }
-            //Close if inventory isn't open lol
-            if (!Main.playerInventory && _userInterface.CurrentState != null)
+
+
+            //Close the inventory when you open the quest book
+            if (Main.playerInventory && _userInterface.CurrentState != null)
             {
                 CloseBookUI();
             }
@@ -154,6 +151,7 @@ namespace Stellamod.UI.CollectionSystem
         {
             //Set State
             TakeSlot();
+            Main.playerInventory = false;
             _userInterface.SetState(collectionBookUI);
             collectionBookUI.bookUI.book.Open();
         }

@@ -43,6 +43,7 @@ namespace Stellamod.UI.CollectionSystem
             return _open;
         }
         public Vector2 Offset;
+        public float alpha => 1f - _closeTimer;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -134,6 +135,7 @@ namespace Stellamod.UI.CollectionSystem
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
+     
             }
 
             //Draw Backing

@@ -13,6 +13,8 @@ namespace Stellamod.Common.UI;
 
 public class CommonBackButton : UIPanel
 {
+    private readonly Asset<Texture2D> _commonXBigTextureAsset;
+
     private readonly Asset<Texture2D> _commonXTextureAsset;
     private float _scale;
     private Action _closeFunction;
@@ -20,12 +22,14 @@ public class CommonBackButton : UIPanel
     public CommonBackButton(Action closeFunction) : base()
     {
         alpha = 1f;
+        _commonXBigTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/CommonXBig");
         _commonXTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/CommonX");
         _closeFunction = closeFunction;
         _backText = new UIText("Back", large: true);
     }
 
     public bool asXButton;
+    public bool axXBigButton;
     public float alpha;
     public override void OnInitialize()
     {
@@ -63,13 +67,22 @@ public class CommonBackButton : UIPanel
         {
             Width.Pixels = 24;
             Height.Pixels = 24;
+            if (axXBigButton)
+            {
+                Width.Pixels = 54;
+                Height.Pixels = 54;
+                //BackgroundColor = Color.Red;
+            }
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
             _backText.ShadowColor = Color.Transparent;
             _backText.TextColor = Color.Transparent;
 
+            Asset<Texture2D> textureAsset = _commonXTextureAsset;
+            if (axXBigButton)
+                textureAsset = _commonXBigTextureAsset;
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_commonXTextureAsset, Main.screenPosition + GetDimensions().ToRectangle().TopLeft());
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, Main.screenPosition + GetDimensions().ToRectangle().TopLeft());
             drawer.drawOrigin = Vector2.Zero;
             int frame = IsMouseHovering ? 1 : 0;
             drawer.VerticalFrame(frame, 2);
