@@ -62,7 +62,9 @@ namespace Stellamod.Projectiles
         {
 
             SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
-            drawer.scale *= 2;
+            drawer.scale *= 1;
+            drawer.color = Color.White;
+            drawer.color.A = 0;
             Main.spriteBatch.Draw(drawer);
             return false;
         }

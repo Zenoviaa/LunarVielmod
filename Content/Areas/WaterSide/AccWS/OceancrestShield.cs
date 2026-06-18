@@ -22,6 +22,8 @@ namespace Stellamod.Content.Areas.WaterSide.AccWS
 
         public override void UpdateEquips()
         {
+            if (Main.myPlayer != Player.whoAmI)
+                return;
             if (hasOceanShield)
             {
                 if (_cooldown != 0)
@@ -54,7 +56,9 @@ namespace Stellamod.Content.Areas.WaterSide.AccWS
 
                 _cooldown = cooldownInTicks;
                 modifiers.FinalDamage *= 0f;
-                SoundEngine.PlaySound(SoundID.NPCDeath58, Player.position);
+                SoundStyle e = SoundID.NPCDeath58;
+                e.Volume = 0.3f;
+                SoundEngine.PlaySound(e, Player.position);
 
                 int count = 48;
                 float degreesPer = 360 / (float)count;

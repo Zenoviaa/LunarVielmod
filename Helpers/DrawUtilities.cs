@@ -3,8 +3,19 @@ using System;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
+using System;
 
 namespace Stellamod.Helpers;
+
+
+public static class ColorExtensions
+{
+    public static Vector3 ToHSV(this Color color) => DrawUtilities.RgbToHsv(color);
+    public static void ScrollHue(this ref Color color, float degrees)
+    {
+        DrawUtilities.IncreaseHueBy(ref color, degrees);
+    }
+}
 
 /// <summary>
 /// A collection of utility functions for drawing simple visual effects
@@ -13,6 +24,118 @@ public static class DrawUtilities
 {
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
+
+    public static void IncreaseHueBy(ref Color color, float value)
+    {
+        float h, s, v;
+
+        Vector3 hsv = RgbToHsv(color.R, color.G, color.B);
+        hsv.X += value;
+
+        float r, g, b;
+
+        Vector3 rgb = HsvToRgb(hsv);
+
+
+        color.R = (byte)(rgb.X);
+        color.G = (byte)(rgb.Y);
+        color.B = (byte)(rgb.Z);
+    }
+
+    //Reference: https://www.geeksforgeeks.org/dsa/program-change-rgb-color-model-hsv-color-model/
+
+    public static Vector3 RgbToHsv(Color color) => RgbToHsv(color.ToVector3());
+    public static Vector3 RgbToHsv(Vector3 rgb) => RgbToHsv(rgb.X, rgb.Y, rgb.Z);
+    public static Vector3 RgbToHsv(float r, float g, float b)
+    {
+        Vector3 hsv;
+        float min, max, delta;
+        min = Math.Min(Math.Min(r, g), b);
+        max = Math.Max(Math.Max(r, g), b);
+        hsv.Z = max;         
+        delta = max - min;
+        if (max != 0)
+        {
+            hsv.Y = delta / max;     
+
+            if (r == max)
+                hsv.X = (g - b) / delta;      
+            else if (g == max)
+                hsv.X = 2 + (b - r) / delta; 
+            else
+                hsv.X = 4 + (r - g) / delta;   
+            hsv.X *= 60;
+            if (hsv.X < 0)
+                hsv.X += 360;
+        }
+        else
+        {
+            hsv.Y = 0;
+            hsv.X = -1;
+        }
+        return hsv;
+
+    }
+    public static Vector3 HsvToRgb(Vector3 hsv)
+    {
+        float h = hsv.X;
+        float s = hsv.Y;
+        float v = hsv.Z;
+
+        float r, g, b;
+
+
+        h = h - ((int)(h / 360) * 360);
+
+        int i;
+        float f, p, q, t;
+        if (s == 0)
+        {
+            r = g = b = v;
+            return new Vector3(r, g, b);
+        }
+        h /= 60;          
+
+        i = (int)h;
+        f = h - i;     
+        p = v * (1 - s);
+        q = v * (1 - s * f);
+        t = v * (1 - s * (1 - f));
+        switch (i)
+        {
+            case 0:
+                r = v;
+                g = t;
+                b = p;
+                break;
+            case 1:
+                r = q;
+                g = v;
+                b = p;
+                break;
+            case 2:
+                r = p;
+                g = v;
+                b = t;
+                break;
+            case 3:
+                r = p;
+                g = q;
+                b = v;
+                break;
+            case 4:
+                r = t;
+                g = p;
+                b = v;
+                break;
+            default:    
+                r = v;
+                g = p;
+                b = q;
+                break;
+        }
+        return new Vector3(r, g, b);
+    }
 
     public static Vector2[] InterpolateBetweenPoints(Vector2 start, Vector2 end, float numPoints)
     {

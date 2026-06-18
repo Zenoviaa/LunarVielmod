@@ -7888,8 +7888,8 @@ IllurineBrew: {
 }
 
 IllurianBible: {
-	DisplayName: Illurian Bible
-	Tooltip: Summons prismatic comets to chase your enemies!
+	DisplayName: Illurian Bible Artifact
+	Tooltip: Summons two prismatic comets to chase your enemies!
 }
 
 SupernovaBag: {
