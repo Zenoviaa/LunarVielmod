@@ -11738,3 +11738,12 @@ WoodlandTalisman: {
 		+5% increased jump height
 		'''
 }
+
+BackstepTalisman: {
+	DisplayName: Backstep Talisman
+	Tooltip:
+		'''
+		Replaces your dash with a quick backstep!
+		You have greatly reduced immunity time, but your dash no longer costs stamina...
+		'''
+}

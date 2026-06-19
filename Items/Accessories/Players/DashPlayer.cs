@@ -142,6 +142,7 @@ namespace Stellamod.Items.Accessories.Players
         public bool justConsumedStamina;
         public int extraStaminaCost;
         public int dashRestoreChance;
+        public bool noRoll;
         private HashSet<NPC> _dashedThroughSetBacking;
         public HashSet<NPC> DashedThroughSet
         {
@@ -165,6 +166,7 @@ namespace Stellamod.Items.Accessories.Players
             DashItem = null;
             DashAugmentEquipped = false;
             DoubleTapped = false;
+            noRoll = false;
             DashVelocity = 10;
             DashDuration = 40;
             DashCooldown = 44;
@@ -289,8 +291,12 @@ namespace Stellamod.Items.Accessories.Players
                 float rollProgress = (float)DashTimer / (float)DashDuration;
                 rollProgress = 1f - rollProgress;
                 float easedRollProgress = rollProgress;
-                Player.fullRotation = Player.direction == -1 ? MathHelper.Lerp(MathHelper.TwoPi, 0, easedRollProgress) : MathHelper.Lerp(0, MathHelper.TwoPi, easedRollProgress);
-                Player.fullRotationOrigin = new Vector2(Player.width / 2, Player.height / 2);
+                if (!noRoll)
+                {
+                    Player.fullRotation = Player.direction == -1 ? MathHelper.Lerp(MathHelper.TwoPi, 0, easedRollProgress) : MathHelper.Lerp(0, MathHelper.TwoPi, easedRollProgress);
+                    Player.fullRotationOrigin = new Vector2(Player.width / 2, Player.height / 2);
+                }
+ 
                 Player.armorEffectDrawShadowEOCShield = true;
                 Player.velocity *= 0.98f;
                 DashItem?.UpdateDash(Player);
