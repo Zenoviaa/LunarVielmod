@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
@@ -898,10 +899,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     Vector2 velocity = Vector2.UnitX;
                     velocity *= 4;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                        ModContent.ProjectileType<StarSuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                        ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
                     velocity = -velocity;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                        ModContent.ProjectileType<StarSuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                        ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
                 }
                 SwitchState(AIState.BouncingIdle);
             }
