@@ -81,17 +81,19 @@ public class SunLightManager : ModSystem
 
         Vector2 sunPosition = Main.Camera.Center + new Vector2(0, 0);
         SunColor = Main.ColorOfTheSkies * interpolant;
-        ShadowDirection = sunDirection;
+        ShadowDirection = sunDirection.SafeNormalize(Vector2.Zero);
         ShadowColor = Color.Black * 0.05f * shadowDaylightFadeInterpolant;
 
+        /*
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
         if (!config.SunShadows)
             return;
 
         if (Main.GameUpdateCount % 4 == 0)
-            ScanShadows();
+            ScanShadows();*/
     }
 
+    /*
     public static void RenderSunLight()
     {
 
@@ -238,5 +240,5 @@ public class SunLightManager : ModSystem
                 //    AddQuad(topRight, bottomLeft);
             }
         }
-    }
+    }*/
 }

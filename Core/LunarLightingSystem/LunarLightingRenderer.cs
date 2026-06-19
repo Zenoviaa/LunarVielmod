@@ -45,11 +45,22 @@ namespace Stellamod.Core.LunarLightingSystem
         }
     }
 
+    public class SunLightShader : CrystalShader<SunLightShader>
+    {
+        public Vector2 StepSize
+        {
+            set
+            {
+                Effect.Parameters["stepSize"].SetValue(value);
+            }
+        }
+    }
 
     [Autoload(Side = ModSide.Client)]
     public class LunarLightingRenderer : ModSystem,
         IPostProcessingPass
     {
+        private float _overSunTimer;
         //We're using 255 lights because that's how many values are in the alpha channel in color
         //We're using the alpha channel to mask which shadows it checks for in the shadow map
         //We could make a custom vertex structure if we need to have more
@@ -57,7 +68,6 @@ namespace Stellamod.Core.LunarLightingSystem
         public const float POINT_LIGHT_DIAMETER = 800;
         public int PostProcessPriority => 15;
 
-        private Texture2D _lightMapTexture;
         private PointLights _pointLights;
         private ShadowMap _shadowMap;
 
@@ -75,6 +85,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private RenderTarget2D _tileShadowMap;
         private RenderTarget2D _tileBlurRT;
         private RenderTarget2D _tileSunShadowRT;
+        private ManagedRenderTarget _tileRenderTarget;
 
 
         private List<ILightEmitter> _emitters;
@@ -99,28 +110,58 @@ namespace Stellamod.Core.LunarLightingSystem
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
         }
 
+
         private void Test()
         {
-            GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-            SpriteBatch sb = Main.spriteBatch;
-            gDevice.SetRenderTarget(Main.screenTargetSwap);
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                null);
-            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-            sb.End();
-
-            var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
-            // glowMaskBloomShader.Threshold = 0.5f;
-            glowMaskBloomShader.Threshold = 1F;
-            //   glowMaskBloomShader.Gamma = 2.2f;
-
-            gDevice.SetRenderTarget(Main.screenTarget);
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                glowMaskBloomShader.Effect);
-            sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-            sb.End();
 
         }
+        private void RenderSolidTileMask()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            TileDrawing tilesRenderer = Main.instance.TilesRenderer;
+
+
+            graphicsDevice.SetRenderTarget(_tileBlurRT);
+            graphicsDevice.Clear(Color.Transparent);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+            Main.screenPosition += new Vector2(Main.offScreenRange);
+            LightingPreDrawEdit.DontRenderPreDraw = true;
+            tilesRenderer.Draw(true, true, true);
+            spriteBatch.End();
+            LightingPreDrawEdit.DontRenderPreDraw = false;
+            Main.screenPosition -= new Vector2(Main.offScreenRange);
+
+            graphicsDevice.SetRenderTarget(_tileRenderTarget);
+            graphicsDevice.Clear(Color.Transparent);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp,
+                DepthStencilState.None, RasterizerState.CullNone, null);
+
+            Vector2 drawPosition = Vector2.Zero;
+            spriteBatch.Draw(_tileBlurRT, drawPosition, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.End();
+        }
+
+        private void RenderSunLight()
+        {
+            Vector2 stepSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+            stepSize *= 4 * -SunLightManager.ShadowDirection;
+
+            var shader = ShaderContent.GetInstance<SunLightShader>();
+            shader.StepSize = stepSize;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp,
+                DepthStencilState.None, RasterizerState.CullNone, shader.Effect);
+
+            Vector2 drawPosition = Vector2.Zero;
+            spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, 
+                SunLightManager.SunColor , 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.End();
+        }
+
         private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
         {
             if (!Main.gameMenu && IsLightingEnabled)
@@ -237,12 +278,15 @@ namespace Stellamod.Core.LunarLightingSystem
 
             //      FastParallel.For(0, _pointLights.UsedLightCount, (int start, int end, ))
             //_shadowMap.RayMarch(0, Main.LocalPlayer.Center, PointLightSize);
+            //RenderSolidTileMask();
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_lightsRT);
             graphicsDevice.Clear(_backLightColor);
 
             //Render Sun
-            SunLightManager.RenderSunLight();
+            RenderSunLight();
+
+            //SunLightManager.RenderSunLight();
             _emitters.Clear();
             foreach (var proj in Main.ActiveProjectiles)
             {
@@ -351,12 +395,13 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
         {
-
+            SpriteBatch spriteBatch = Main.spriteBatch;
             if (behindTiles && DrawSunShadows2() && IsActive && _isLoaded)
             {
-                SpriteBatch spriteBatch = Main.spriteBatch;
+            
                 spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, Color.White);
             }
+//            spriteBatch.Draw(_tileRenderTarget, Vector2.Zero, Color.Red);
             orig(self, npcCache, behindTiles);
         }
 
@@ -366,6 +411,7 @@ namespace Stellamod.Core.LunarLightingSystem
             _pixelLightTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetHalfScreenTargetSize);
             _lightsRT = ManagedRenderTarget.New();
             _tileLightRT = ManagedRenderTarget.New();
+            _tileRenderTarget = ManagedRenderTarget.New();
             PostProcessingRenderer.AddPass(this);
         }
 
@@ -425,9 +471,10 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             base.PostUpdateWorld();
             UpdateFog();
-
         }
 
+
+        
         public Fog SetupFog(Point position, Action<Fog> createFogFunc)
         {
             if (_fogIndex.ContainsKey(position))
@@ -540,11 +587,14 @@ namespace Stellamod.Core.LunarLightingSystem
             if (Main.gameMenu)
                 return;
 
+            //TODO: optimize this
+            
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             TileDrawing tilesRenderer = Main.instance.TilesRenderer;
             WallDrawing wallsRenderer = Main.instance.WallsRenderer;
 
+            
             graphicsDevice.SetRenderTarget(_tileShadowMap);
             graphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
@@ -557,7 +607,7 @@ namespace Stellamod.Core.LunarLightingSystem
             tilesRenderer.Draw(false, true, true);
             spriteBatch.End();
             LightingPreDrawEdit.DontRenderPreDraw = false;
-
+            
             graphicsDevice.SetRenderTarget(_tileBlurRT);
             graphicsDevice.Clear(Color.Transparent);
 
