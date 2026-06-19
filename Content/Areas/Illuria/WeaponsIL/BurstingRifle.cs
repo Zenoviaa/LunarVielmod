@@ -1,11 +1,10 @@
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
-using Stellamod.Effects.Generic;
+using Stellamod.Core.Rendering.Materials;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -14,30 +13,32 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.Terror.WeaponsTR;
+namespace Stellamod.Content.Areas.Illuria.WeaponsIL;
 
-public class TerrorMinigun : BaseGun
+public class BurstingRifle : BaseGun
 {
+
+    private int _style;
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.damage = 12;
+        Item.damage = 34;
         Item.ArmorPenetration = 15;
         Item.DamageType = DamageClass.Ranged;
         Item.width = 40;
         Item.height = 40;
-        Item.useTime = 3;
-        Item.useAnimation = 3;
+        Item.useTime = 5;
+        Item.useAnimation = 15;
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.knockBack = 6;
         Item.value = 100000;
         Item.rare = ItemRarityID.LightPurple;
         Item.autoReuse = true;
         Item.shoot = ProjectileID.Bullet;
-        Item.shootSpeed = 35f;
+        Item.shootSpeed = 16;
         Item.useAmmo = AmmoID.Bullet;
         Item.noMelee = true;
-        muzzleOrigin = new Vector2(135, 24);
+        muzzleOrigin = new Vector2(76, 21);
     }
 
     public override Vector2? HoldoutOffset()
@@ -50,12 +51,25 @@ public class TerrorMinigun : BaseGun
 
         return base.CanUseItem(player);
     }
+    public override void UseAnimation(Player player)
+    {
+        base.UseAnimation(player);
+        _style++;
+        _style %= 2;
+    }
+
+    public override float UseSpeedMultiplier(Player player)
+    {
+        float interp = MathHelper.Clamp((float)(remainingAmmo) / (float)GetMaxAmmo(player), 0f, 1f);
+        float speedMultiplier = MathHelper.Lerp(1.5f, 1f, interp);
+        return speedMultiplier;
+    }
 
     public override void SetMagazine(ref GunReloadParams fireParams)
     {
         base.SetMagazine(ref fireParams);
         fireParams.maxAmmo = 64;
-        fireParams.reloadWindow = 150;
+        fireParams.reloadWindow = 240;
     }
 
     public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
@@ -67,7 +81,19 @@ public class TerrorMinigun : BaseGun
     public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
     {
         base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-        type = ModContent.ProjectileType<XX4160Shot>();
+
+
+        switch (_style)
+        {
+            default:
+            case 0:
+                type = ModContent.ProjectileType<BurstingRifleLaser>();
+                break;
+            case 1:
+                break;
+        }
+  
+    
     }
 
     public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -79,29 +105,40 @@ public class TerrorMinigun : BaseGun
         //        base.ShootEffects(position, velocity);
         int Sound2 = Main.rand.Next(1, 3);
 
-        SoundStyle s;
-        if (Sound2 == 1)
+
+        if (_style == 0)
         {
-            s = new SoundStyle("Stellamod/Assets/Sounds/XX4160");
+            SoundStyle s;
+            if (Sound2 == 1)
+            {
+                s = new SoundStyle("Stellamod/Assets/Sounds/XX4160");
+            }
+            else
+            {
+                s = new SoundStyle("Stellamod/Assets/Sounds/XX41602");
+            }
+            s = s with { PitchVariance = 0.6f, Volume = 0.7f };
+            SoundEngine.PlaySound(s, position);
+            BasicMuzzleFlash(position, velocity, Color.White, Color.DarkRed);
         }
         else
         {
-            s = new SoundStyle("Stellamod/Assets/Sounds/XX41602");
+            base.ShootEffects(position, velocity);
         }
-        s = s with { PitchVariance = 0.6f, Volume = 0.7f };
-        SoundEngine.PlaySound(s, position);
-        BasicMuzzleFlash(position, velocity, Color.White, Color.DarkRed);
+
+
+
     }
 
     public override void AddRecipes()
     {
         base.AddRecipes();
-        this.RegisterBrew<MarshScrap, BlankGun>();
+        this.RegisterBrew<IllurineScale, BlankGun>();
     }
 
 }
 
-public class XX4160Shot : ModProjectile,
+public class BurstingRifleLaser : ModProjectile,
     IDrawToRenderTarget
 {
     private Player Owner => Main.player[Projectile.owner];
@@ -124,14 +161,13 @@ public class XX4160Shot : ModProjectile,
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
         Projectile.extraUpdates = 3;
-        Projectile.penetrate = 2;
+      //  Projectile.penetrate = 2;
     }
 
     public override void AI()
     {
-        ProjectileID.Sets.TrailCacheLength[Projectile.type] = 16;
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             Owner.AddRecoil(-Projectile.velocity.SafeNormalize(Vector2.Zero) * 0.35f);
             FXUtil.ShakeCamera(Projectile.Center, 1024, 2);
@@ -159,12 +195,13 @@ public class XX4160Shot : ModProjectile,
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         target.AddBuff(BuffID.Slow, 300);
+        Projectile.Kill();
     }
 
     public override void OnKill(int timeLeft)
     {
         FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Red, Color.DarkRed, duration: 12, baseSize: 0.07f);
-        for(float f =0; f < 3; f++)
+        for (float f = 0; f < 3; f++)
         {
             var dp = DustParticle.Spawn(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(0.5f));
             dp.dampening = 0.12f;
@@ -186,23 +223,6 @@ public class XX4160Shot : ModProjectile,
         return false;
     }
 
-    private void DrawTrail(GraphicsDevice gDevice)
-    {
-        float GetTrailWidth(float completionRatio)
-        {
-            return MathHelper.SmoothStep(16 * RandScale, 0, completionRatio);
-        }
-        Color GetTrailColor(float completionRatio)
-        {
-            Color additive = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 32) * 0.5f);
-            return additive;
-        }
-        BasicGlowTrailShader glowTrailShader = ShaderContent.GetInstance<BasicGlowTrailShader>();
-        glowTrailShader.InsideColor = Color.White;
-        glowTrailShader.BloomColor = Color.DarkRed;
-        glowTrailShader.GlowColor = Color.Red;
-        TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth, glowTrailShader, Projectile.Size * 0.5f);
-    }
 
     private void DrawRed(SpriteBatch sb, Vector2 sp)
     {
@@ -221,8 +241,18 @@ public class XX4160Shot : ModProjectile,
     }
     public void DrawToRenderTargets()
     {
-      //  PixelationManager.QueuePrimitivesDrawAction(DrawTrail, DrawLayer.OverNPCs);
-        PixelationManager.QueuePrimitivesDrawAction(DrawTrail, DrawLayer.OverNPCs);
+        Color GetTrailColor(float ratio)
+        {
+            return Color.White;
+        }
+
+        float GetTrailWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(12, 0, ratio);
+        }
+
+        RedBeamMaterial.PrepareRender(TrailDrawer.PrepareVertices(Projectile.oldPos,
+            GetTrailColor, GetTrailWidth, useSmoothing: false, offset: Projectile.Size * 0.5f));
         PixelationManager.QueueSpritebatchDrawAction(DrawRed, DrawLayer.OverPlayers);
     }
 }

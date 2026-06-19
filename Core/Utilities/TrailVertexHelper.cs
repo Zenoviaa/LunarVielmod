@@ -155,7 +155,7 @@ namespace Stellamod.Core.Utilities
         /// <param name="colorFunc"></param>
         /// <param name="widthFunc"></param>
         /// <returns></returns>
-        public VertexPositionColorTexture[] FillVertexArray(Vector2[] trailingPoints, Func<float, Color> colorFunc, Func<float, float> widthFunc)
+        public VertexPositionColorTexture[] FillVertexArray(Vector2[] trailingPoints, Func<float, Color> colorFunc, Func<float, float> widthFunc, Vector2 offset)
         {
             const float coord1 = 0;
             const float coord2 = 1;
@@ -165,13 +165,22 @@ namespace Stellamod.Core.Utilities
             VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[numVertices];
             for (int i = 0; i < trailingPoints.Length - 1; i++)
             {
-                float uv = i / (float)trailingPoints.Length;
-                float uv2 = (i + 1) / (float)trailingPoints.Length;
-                Vector2 width = widthFunc(uv) * Vector2.One;
-                Vector2 width2 = widthFunc(uv2) * Vector2.One;
+
                 Vector2 pos1 = trailingPoints[i];
                 Vector2 pos2 = trailingPoints[i + 1];
-                
+                Vector2 diff = pos2 - pos1;
+                if (diff.Length() > 1000)
+                    continue;
+
+                float uv = i / (float)trailingPoints.Length;
+                float uv2 = (i + 1) / (float)trailingPoints.Length;
+
+                Vector2 width = widthFunc(uv) * Vector2.One;
+                Vector2 width2 = widthFunc(uv2) * Vector2.One;
+
+                pos2 += offset;
+                pos1 += offset;
+
 
                 Vector2 off1 = MathUtil.GetRotation(trailingPoints, i) * width;
                 Vector2 off2 = MathUtil.GetRotation(trailingPoints, i + 1) * width2;

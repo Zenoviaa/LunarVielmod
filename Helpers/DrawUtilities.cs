@@ -25,6 +25,24 @@ public static class DrawUtilities
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
 
+
+    public static int[] QuadIndices(int vertexCount)
+    {
+        int connectIndex = 0;
+        int[] indices = new int[vertexCount * 6];
+        for (int i = 0; i < indices.Length; i += 6)
+        {
+            indices[i] = connectIndex + 0;
+            indices[i + 1] = connectIndex + 1;
+            indices[i + 2] = connectIndex + 2;
+            indices[i + 3] = connectIndex + 2;
+            indices[i + 4] = connectIndex + 3;
+            indices[i + 5] = connectIndex + 1;
+            connectIndex += 4;
+        }
+        return indices;
+    }
+
     public static void IncreaseHueBy(ref Color color, float value)
     {
         float h, s, v;

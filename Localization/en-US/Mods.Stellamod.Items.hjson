@@ -2222,7 +2222,12 @@ ShadeCharm: {
 
 ShadeScarf: {
 	DisplayName: Shadei
-	Tooltip: Greatly increased dash distance and mobility
+	Tooltip:
+		'''
+		Greatly increases your dash distance and velocity
+		You have 1 extra immunity frame while rolling
+		Rolling now costs 2 stamina instead of 1
+		'''
 }
 
 ShellSheid: {
@@ -11702,5 +11707,10 @@ ReloadCanister: {
 
 TerrorMinigun: {
 	DisplayName: Terror Minigun
+	Tooltip: ""
+}
+
+BurstingRifle: {
+	DisplayName: Bursting Rifle
 	Tooltip: ""
 }

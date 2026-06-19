@@ -134,6 +134,27 @@ namespace Stellamod.Common.Shaders
             Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
             VertexSection section = trailVertexCache.FillVertexArrayNonAlloc(trailingPoints, colorFunc, widthFunc, trailOffset);
         }
+        public static VertexPositionColorTexture[] PrepareVertices(Vector2[] oldPos,
+            Func<float, Color> colorFunc,
+            Func<float, float> widthFunc,
+            bool useSmoothing= true,
+            Vector2? offset = null)
+        {
+            TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
+            Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+            float numPoints = oldPos.Length * 2;
+            Vector2[] trailingPoints;
+            if (useSmoothing)
+            {
+                trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+            }
+            else
+            {
+                trailingPoints = oldPos;
+            }
+               
+            return trailVertexCache.FillVertexArray(trailingPoints, colorFunc, widthFunc, trailOffset);
+        }
 
         public static void DrawCached(BaseShader shader)
         {

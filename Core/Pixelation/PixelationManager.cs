@@ -238,6 +238,7 @@ namespace Stellamod.Core.Pixelation
     public class PrepareRenderTargetDrawsSystem : ModSystem
     {
         public static event Action OnRenderTargetDrawsReady;
+        public static event Action OnFinalTargetsReady;
         public override void Load()
         {
             base.Load();
@@ -260,6 +261,7 @@ namespace Stellamod.Core.Pixelation
                         drawToRenderTarget.DrawToRenderTargets();
                 }
                 OnRenderTargetDrawsReady?.Invoke();
+                OnFinalTargetsReady?.Invoke();
             }
 
             orig();
@@ -282,7 +284,7 @@ namespace Stellamod.Core.Pixelation
         private PixelTarget _overPlayersPixelTarget;
         private PixelTarget _behindTilesPixelTarget;
         private PixelTarget _behindTilesOutlinePixelTarget;
-        private PixelTarget _behindNPCsPixelTarget;
+
         //This one needs to go last
         public int Priority => 10;
         public static event Action OnBehindGrass;
@@ -291,7 +293,7 @@ namespace Stellamod.Core.Pixelation
         public override void Load()
         {
             base.Load();
-            PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += Render;
+            PrepareRenderTargetDrawsSystem.OnFinalTargetsReady += Render;
             On_FilterManager.EndCapture += RenderToPixelRTs;
             On_Main.DoDraw_Tiles_NonSolid += RenderBehindTiles2;
             On_Main.DoDraw_DrawNPCsBehindTiles += RenderBehindTiles;
@@ -360,7 +362,6 @@ namespace Stellamod.Core.Pixelation
         {
             base.Unload();
             ZTileMap.OnRenderForeground -= RenderLater;
-            _behindNPCsPixelTarget = null;
             _overNPCsPixelTarget = null;
             _overNPCsPixelTargetWithOutline = null;
             _behindNPCsPixelTargetWithOutline = null;
@@ -477,7 +478,6 @@ namespace Stellamod.Core.Pixelation
             _backGrassPixelTarget.Render();
             _overPlayersPixelTarget.Render();
             _behindTilesPixelTarget.Render();
-
             _behindTilesOutlinePixelTarget.outlineColor = Color.Black;
             _behindTilesOutlinePixelTarget.Render(); 
         }
