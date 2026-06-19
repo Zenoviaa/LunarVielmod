@@ -26,7 +26,7 @@ public class BackstepTalisman : AbstractDashItem
         _timer++;
         if(_timer == 1)
         {
-            player.velocity.X *= -3f;
+            player.velocity.X *= -5f;
             int rand = Main.rand.Next(2);
             SoundStyle backStepSound;
             switch (rand)

@@ -126,7 +126,17 @@ namespace Stellamod.Items.Accessories.Players
         public bool DoubleTapped = false;
         public bool DashAugmentEquipped = false;
         public bool IsDashing { get; private set; }
-        public AbstractDashItem DashItem;
+
+        private List<AbstractDashItem> _dashItems;
+        public List<AbstractDashItem> DashItems
+        {
+            get
+            {
+                _dashItems ??= new List<AbstractDashItem>();
+                return _dashItems;
+            }
+        }
+
         public float DashCountTimer;
         public float MaxDashCountTimer;
         public int DashCount;
@@ -157,13 +167,14 @@ namespace Stellamod.Items.Accessories.Players
         public static event Action<Player> OnStaminaEffects;
         public override void ResetEffects()
         {
+            DashItems.Clear();
             DashedThisFrame = false;
             ExtraImmunityFramesBonus = 0;
             DashRegenerationBonus = 0f;
             DashRegenerationPenalty = 0f;
             MaxDashCountTimer = 140;
             MaxDashCount = 3;
-            DashItem = null;
+           
             DashAugmentEquipped = false;
             DoubleTapped = false;
             noRoll = false;
@@ -267,7 +278,11 @@ namespace Stellamod.Items.Accessories.Players
 
 
                 Player.SetImmuneTimeForAllTypes(DashDuration + ExtraImmunityFramesBonus);
-                DashItem?.BeginDash(Player);
+                foreach(var dashItem in DashItems)
+                {
+                    dashItem.BeginDash(Player);
+                }
+              //  DashItem?.BeginDash(Player);
                 OnDash?.Invoke(Player);
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<DashProjectile>(), 0, 0, Player.whoAmI);
@@ -299,12 +314,18 @@ namespace Stellamod.Items.Accessories.Players
  
                 Player.armorEffectDrawShadowEOCShield = true;
                 Player.velocity *= 0.98f;
-                DashItem?.UpdateDash(Player);
+                foreach (var dashItem in DashItems)
+                {
+                    dashItem.UpdateDash(Player);
+                }
                 if (DashTimer == 0)
                 {
                     Player.immune = false;
                     _isImmune = false;
-                    DashItem?.EndDash(Player);
+                    foreach (var dashItem in DashItems)
+                    {
+                        dashItem.EndDash(Player);
+                    }
                 }
             }
         }
@@ -333,7 +354,7 @@ namespace Stellamod.Items.Accessories.Players
                 {
                     Vector2 pos = Player.position;
                     pos.X += Main.rand.Next(0, Player.width);
-                    pos.Y += Main.rand.Next(0, Player.head);
+                    pos.Y += Main.rand.Next(0, Player.height);
                     var dp = DustParticle.Spawn(pos, -Vector2.UnitY * Main.rand.NextFloat(1f, 10f));
                     dp.gravity = 0;
                     dp.noTileCollide = true;

@@ -17,7 +17,7 @@ public class EelInfinite : BaseGun
         Item.width = 114;
         Item.height = 36;
         Item.rare = ItemRarityID.LightRed;
-        Item.damage = 34;
+        Item.damage = 26;
         Item.DamageType = DamageClass.Ranged;
         Item.useAnimation = 5;
         Item.useTime = 5;

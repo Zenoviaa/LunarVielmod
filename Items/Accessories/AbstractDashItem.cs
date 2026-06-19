@@ -14,6 +14,7 @@ namespace Stellamod.Items.Accessories
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)
         {
+            return true;
             Item itemToSwapWith = player.armor[slot];
             if (itemToSwapWith.IsAir)
                 return true;
@@ -34,7 +35,7 @@ namespace Stellamod.Items.Accessories
             //These things are gonna be powerful so
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             dashPlayer.DashAugmentEquipped = true;
-            dashPlayer.DashItem = this;
+            dashPlayer.DashItems.Add(this);
         }
 
         public virtual void BeginDash(Player player)
