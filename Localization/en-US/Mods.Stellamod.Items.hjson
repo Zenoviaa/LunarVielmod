@@ -6106,6 +6106,11 @@ KilliaBroochA: {
 		'''
 }
 
+Superboots: {
+	DisplayName: Superboots
+	Tooltip: If you are at your maximum running speed, your health and stamina regenerate 2x faster!
+}
+
 IvythornShuriken: {
 	DisplayName: Ivythorn Shuriken
 	Tooltip:
