@@ -76,6 +76,11 @@ public class LeafGliderPlayer : ModPlayer
 
         if (Player.velocity.Y == 0)
             holdingOut = false;
+
+        if(holdingOut && Player.controlDown)
+        {
+            Player.velocity.Y += 1f;
+        }
     }
 
     public override void PreUpdateMovement()

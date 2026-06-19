@@ -37,8 +37,23 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
                 SoundEngine.PlaySound(sound, Player.position);
 
                 Vector2 velocity = (npc.Center - Player.Center);
-                ThrustParticle thrustParticle = ThrustParticle.Spawn(Player.Center, velocity * 2, Color.Red, Scale: 1f);
-                thrustParticle.bloomColor = Color.Red;
+                velocity = velocity.SafeNormalize(Vector2.Zero);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 thornVel = velocity;
+                    thornVel = thornVel.RotatedByRandom(0.1f);
+                    thornVel *= Main.rand.NextFloat(2f, 10f) * 10;
+
+                    Vector2 pos = Player.position;
+                    pos.X += Main.rand.Next(0, Player.width);
+                    pos.Y += Main.rand.Next(0, Player.height);
+                    var fx = FXUtil.GlowStretch(pos, thornVel);
+                    fx.VectorScale.X *= 1.5f;
+                    fx.VectorScale.Y *= 0.75f;
+                    fx.OuterGlowColor = Color.Red;
+                }
+            
             }
         }
     }
@@ -64,7 +79,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Ivythorn>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GintzlMetal>());
         }
     }
 }

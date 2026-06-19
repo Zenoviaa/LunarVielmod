@@ -61,7 +61,7 @@ public class BurstingRifle : BaseGun
     public override float UseSpeedMultiplier(Player player)
     {
         float interp = MathHelper.Clamp((float)(remainingAmmo) / (float)GetMaxAmmo(player), 0f, 1f);
-        float speedMultiplier = MathHelper.Lerp(1.5f, 1f, interp);
+        float speedMultiplier = MathHelper.Lerp(1.5f, 0.5f, interp);
         return speedMultiplier;
     }
 

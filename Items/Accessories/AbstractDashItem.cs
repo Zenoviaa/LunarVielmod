@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-    public abstract class BaseDashItem : ModItem
+    public abstract class AbstractDashItem : ModItem
     {
         public override void SetDefaults()
         {
@@ -17,7 +17,7 @@ namespace Stellamod.Items.Accessories
             Item itemToSwapWith = player.armor[slot];
             if (itemToSwapWith.IsAir)
                 return true;
-            if (itemToSwapWith.ModItem is BaseDashItem)
+            if (itemToSwapWith.ModItem is AbstractDashItem)
                 return true;
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             if (dashPlayer.DashAugmentEquipped)

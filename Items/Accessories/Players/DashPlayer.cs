@@ -126,7 +126,7 @@ namespace Stellamod.Items.Accessories.Players
         public bool DoubleTapped = false;
         public bool DashAugmentEquipped = false;
         public bool IsDashing { get; private set; }
-        public BaseDashItem DashItem;
+        public AbstractDashItem DashItem;
         public float DashCountTimer;
         public float MaxDashCountTimer;
         public int DashCount;

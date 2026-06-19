@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Accessories
 {
     [AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
-    public class ShadeScarf : BaseDashItem
+    public class ShadeScarf : AbstractDashItem
     {
         public override void SetStaticDefaults()
         {

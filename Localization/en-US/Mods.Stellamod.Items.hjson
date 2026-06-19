@@ -11728,3 +11728,13 @@ LeafGlider: {
 	DisplayName: Leaf Glider
 	Tooltip: Slows your fall if you are going to take fall damage!
 }
+
+WoodlandTalisman: {
+	DisplayName: Woodland Talisman
+	Tooltip:
+		'''
+		Replaces your dash with a high vertical somersault! 
+		You also have a increased immunity time while dashing and a longer cooldown
+		+5% increased jump height
+		'''
+}
