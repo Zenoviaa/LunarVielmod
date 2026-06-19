@@ -4,10 +4,12 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Cinderspark.AccCS;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -318,7 +320,24 @@ namespace Stellamod.Items.Accessories.Players
                 amount *= 2;
             int rand = Main.rand.Next(0, 100);
             if (rand < dashRestoreChance)
+            {
+                SoundStyle balls = new SoundStyle("Stellamod/Assets/Sounds/Balls") with { PitchVariance = 0.6f };
+                SoundEngine.PlaySound(balls, Player.position);
+                for(int i = 0; i < 16; i++)
+                {
+                    Vector2 pos = Player.position;
+                    pos.X += Main.rand.Next(0, Player.width);
+                    pos.Y += Main.rand.Next(0, Player.head);
+                    var dp = DustParticle.Spawn(pos, -Vector2.UnitY * Main.rand.NextFloat(1f, 10f));
+                    dp.gravity = 0;
+                    dp.noTileCollide = true;
+                    dp.fast = true;
+                    dp.innerColor = Color.LightGoldenrodYellow;
+                    dp.outerColor = Color.Gold;
+                }
                 DashCount++;
+            }
+           
             justConsumedStamina = true;
             DashCount -= amount;
             OnUseStamina?.Invoke(Player, amount);

@@ -11716,10 +11716,15 @@ ReloadCanister: {
 
 TerrorMinigun: {
 	DisplayName: Terror Minigun
-	Tooltip: ""
+	Tooltip: Shoots extremely fast!!! Pew pew pew!!!
 }
 
 BurstingRifle: {
 	DisplayName: Bursting Rifle
-	Tooltip: ""
+	Tooltip: Shoots a burst of 3 bullets and then a burst of 3 laser bolts, slowly accelerating over time...
+}
+
+LeafGlider: {
+	DisplayName: Leaf Glider
+	Tooltip: Slows your fall if you are going to take fall damage!
 }
