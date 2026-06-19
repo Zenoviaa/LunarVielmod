@@ -87,6 +87,7 @@ public abstract class BaseCrossbowItem : ModItem,
             {
                 crossbowPlayer.usingStamina = true; 
                 crossbowPlayer.takeAim = true;
+                player.GetModPlayer<DashPlayer>().StaminaEffects(player);
                 return true;
             } else
             {
@@ -104,6 +105,7 @@ public abstract class BaseCrossbowItem : ModItem,
     {
         DashPlayer comboPlayer = player.GetModPlayer<DashPlayer>();
         comboPlayer.Consume(staminaCost);
+      
         Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
             player.whoAmI);
     }

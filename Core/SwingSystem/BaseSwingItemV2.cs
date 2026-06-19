@@ -200,6 +200,7 @@ namespace Stellamod.Core.SwingSystem
                 if (dashPlayer.CanConsume(staminaCost))
                 {
                     dashPlayer.Consume(staminaCost);
+                    player.GetModPlayer<DashPlayer>().StaminaEffects(player);
                     ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
                 }
 

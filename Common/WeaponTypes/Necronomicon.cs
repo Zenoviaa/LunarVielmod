@@ -278,6 +278,7 @@ namespace Stellamod.Common.WeaponTypes
             {
                 player.GetModPlayer<DashPlayer>().Consume(necronomiconStaminaCost);
                         Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<NecronomiconHold>(), damage, knockback, player.whoAmI);
+                player.GetModPlayer<DashPlayer>().StaminaEffects(player);
                 return false;
             }
             return base.Shoot(item, player, source, position, velocity, type, damage, knockback);

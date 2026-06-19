@@ -70,7 +70,7 @@ namespace Stellamod.Core.Bases
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
             comboPlayer.ComboWaitTime = comboWaitTime;
             dashPlayer.Consume(Special_Move_Cost);
-
+            player.GetModPlayer<DashPlayer>().StaminaEffects(player);
             int combo = comboPlayer.StaminaComboCounter;
             if (combo >= maxStaminaCombo)
                 combo = 0;

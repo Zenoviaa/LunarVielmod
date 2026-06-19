@@ -6108,7 +6108,11 @@ KilliaBroochA: {
 
 IvythornShuriken: {
 	DisplayName: Ivythorn Shuriken
-	Tooltip: Will hit enemies! Crazy
+	Tooltip:
+		'''
+		When you use a stamina attack, throw out 3 shurikens!
+		The shurikens will home to nearby enemies after a short time
+		'''
 }
 
 SewingKit: {

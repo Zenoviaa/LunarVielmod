@@ -350,6 +350,7 @@ public class ScrollGlobalItem : GlobalItem
                 if (dashPlayer.CanConsume(StaminaCost))
                 {
                     dashPlayer.Consume(StaminaCost);
+                    player.GetModPlayer<DashPlayer>().StaminaEffects(player);
                 }
                 else
                 {

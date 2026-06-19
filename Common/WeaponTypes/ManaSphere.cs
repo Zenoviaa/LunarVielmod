@@ -72,6 +72,7 @@ namespace Stellamod.Common.WeaponTypes
                 if (player.altFunctionUse == 2 && dashPlayer.CanConsume(staminaCost))
                 {
                     dashPlayer.Consume(staminaCost);
+                    player.GetModPlayer<DashPlayer>().StaminaEffects(player);
                     type = staminaProj;
                 }
 

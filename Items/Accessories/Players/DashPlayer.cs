@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Cinderspark.AccCS;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
@@ -99,6 +100,7 @@ namespace Stellamod.Items.Accessories.Players
         }
     }
 
+
     public class DashPlayer : ModPlayer
     {
         private bool _isImmune;
@@ -149,6 +151,7 @@ namespace Stellamod.Items.Accessories.Players
         }
         public static event Action<Player> OnDash;
         public static event Action<Player, int> OnUseStamina;
+        public static event Action<Player> OnStaminaEffects;
         public override void ResetEffects()
         {
             DashedThisFrame = false;
@@ -321,6 +324,10 @@ namespace Stellamod.Items.Accessories.Players
             OnUseStamina?.Invoke(Player, amount);
         }
 
+        public void StaminaEffects(Player player)
+        {
+            OnStaminaEffects?.Invoke(player);
+        }
         public override bool CanUseItem(Item item)
         {
             return !_isImmune;

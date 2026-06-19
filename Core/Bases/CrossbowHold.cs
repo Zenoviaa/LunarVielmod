@@ -308,20 +308,6 @@ namespace Stellamod.Core.Bases
 
         public void DrawAimingLines(ref Color lightColor)
         {
-            PixelationManager.QueueSpritebatchDrawAction(PixelatedAimingLineDraw, DrawLayer.OverNPCsWithOutline);
-        }
-
-        public void DrawCrosshair(ref Color lightColor)
-        {
-            if (Main.myPlayer != Projectile.owner)
-                return;
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            PixelationManager.QueueSpritebatchDrawAction(PixelatedCrosshairDraw, DrawLayer.OverNPCsWithOutline);
-        }
-
-        private void PixelatedAimingLineDraw(SpriteBatch spriteBatch, Vector2 screenPos)
-        {
             _bloomlineTextureAsset ??= ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine");
             Vector2 centerPos = Owner.Center - Main.screenPosition;
             Vector2 aimLineOrigin = new Vector2(_bloomlineTextureAsset.Size().X / 2, 0);
@@ -336,8 +322,22 @@ namespace Stellamod.Core.Bases
             drawColor *= MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(AimProgress));
             drawColor *= 0.15f;
 
-            spriteBatch.Draw(_bloomlineTextureAsset.Value, Projectile.Center - Main.screenPosition, null, drawColor, rotation,
+            Main.spriteBatch.Draw(_bloomlineTextureAsset.Value, Projectile.Center - Main.screenPosition, null, drawColor, rotation,
                aimLineOrigin, scale, SpriteEffects.None, 0);
+        }
+
+        public void DrawCrosshair(ref Color lightColor)
+        {
+            if (Main.myPlayer != Projectile.owner)
+                return;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            PixelationManager.QueueSpritebatchDrawAction(PixelatedCrosshairDraw, DrawLayer.OverNPCsWithOutline);
+        }
+
+        private void PixelatedAimingLineDraw(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+           
         }
         private void DrawPixelatedRings(GraphicsDevice graphicsDevice)
         {
