@@ -17,7 +17,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
         float pixel = tex2D(heightMapSampler, stepCoord).a;
         if (pixel > 0)
         {
-            float factor = 0.6 * (1.0 - saturate(distanceTraveled / 0.1));
+            float factor = 0.23 * (1.0 - saturate(distanceTraveled / 0.1));
             luminance.r -= factor;
             luminance.g -= factor;
             luminance.b -= factor * 0.75;

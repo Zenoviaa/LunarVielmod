@@ -5,6 +5,7 @@ using Stellamod.Content.Biomes;
 using Stellamod.Core.Foggy;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Tiles;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -144,6 +145,26 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
         }
 
+
+        public Color GetSunColor()
+        {
+            Color[] sunColors = new Color[]
+            {
+                new Color(8, 79, 126),
+                new Color(46, 95, 175),
+                new Color(145, 84, 255),
+                new Color(255, 173, 63),
+                new Color(253, 255, 130),
+                Color.White,
+                new Color(253, 255, 130),
+                new Color(255, 173, 63),
+                new Color(145, 84, 255),
+                new Color(46, 95, 175),
+                new Color(8, 79, 126),
+            };
+
+            return Color.White;
+        }
         private void RenderSunLight()
         {
             Vector2 stepSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
@@ -156,9 +177,12 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp,
                 DepthStencilState.None, RasterizerState.CullNone, shader.Effect);
 
+
+       
             Vector2 drawPosition = Vector2.Zero;
             spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, 
-                SunLightManager.SunColor , 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                Color.SkyBlue, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+
             spriteBatch.End();
         }
 
@@ -603,8 +627,8 @@ namespace Stellamod.Core.LunarLightingSystem
             tilesRenderer.PreDrawTiles(true, true, true);
             tilesRenderer.Draw(true, true, true);
 
-            tilesRenderer.PreDrawTiles(false, true, true);
-            tilesRenderer.Draw(false, true, true);
+        //    tilesRenderer.PreDrawTiles(false, true, true);
+    //        tilesRenderer.Draw(false, true, true);
             spriteBatch.End();
             LightingPreDrawEdit.DontRenderPreDraw = false;
             

@@ -11747,3 +11747,13 @@ BackstepTalisman: {
 		You have greatly reduced immunity time, but your dash no longer costs stamina...
 		'''
 }
+
+FlowerArrowItem: {
+	DisplayName: Flower Arrow Item
+	Tooltip: ""
+}
+
+VoidArrowItem: {
+	DisplayName: Void Arrow Item
+	Tooltip: ""
+}

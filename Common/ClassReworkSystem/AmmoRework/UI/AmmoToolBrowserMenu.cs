@@ -4,6 +4,7 @@ using Stellamod.Core;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -45,14 +46,13 @@ public class AmmoToolBrowserMenu : UIPanel
         {
             RemoveAllChildren();
             List<Item> itemList = new List<Item>();
-            for (int i = 0; i < ItemLoader.ItemCount; i++)
-            {
-                Item item = new Item(i);
-                if (item.ammo == AmmoID.None)
-                    continue;
-                itemList.Add(new Item(i));
-            }
-            View = new(itemList.ToArray(), SelectCombatTool, ViewCombatTool);
+            ActSystem actSystem = ModContent.GetInstance<ActSystem>();
+            itemList.AddRange(ItemHelper.Act1Ammos);
+            if (actSystem.act2)
+                itemList.AddRange(ItemHelper.Act2Ammos);
+            if (actSystem.act3)
+                itemList.AddRange(ItemHelper.Act3Ammos);
+            View = new(itemList.ToArray(), SelectCombatTool, ViewCombatTool, HasSelectedCombatTool);
             View.Width.Pixels = Width.Pixels;
             View.Height.Pixels = Height.Pixels;
             View.Activate();
@@ -63,6 +63,15 @@ public class AmmoToolBrowserMenu : UIPanel
         base.Recalculate();
     }
 
+    private bool HasSelectedCombatTool(Item item)
+    {
+        ClassReworkPlayer combatToolPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
+        if (combatToolPlayer.QuiverAmmoItem == null)
+            return false;
+        if (combatToolPlayer.QuiverAmmoItem.type == item.type)
+            return true;
+        return false;
+    }
 
     private void SelectCombatTool(Item item)
     {
@@ -72,6 +81,8 @@ public class AmmoToolBrowserMenu : UIPanel
 
         combatToolPlayer.QuiverAmmoItem = item.Clone();
         combatToolPlayer.QuiverAmmoItem.stack = 9999;
+        SoundStyle selectedSound = new SoundStyle("Stellamod/Assets/Sounds/Gun/GunReload");
+        SoundEngine.PlaySound(selectedSound);
     }
 
     private bool ViewCombatTool(Item item)

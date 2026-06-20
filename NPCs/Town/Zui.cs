@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.QuestSystem;
+using Stellamod.Content.Ammo;
 using Stellamod.Content.Areas.Snow.AccsSN;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Currencies;
@@ -8,7 +9,6 @@ using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Ammo;
 using Stellamod.Items.Armors.Vanity.Nyxia;
 using Stellamod.Items.Armors.Vanity.Solarian;
 using Stellamod.Items.Armors.Witchen;

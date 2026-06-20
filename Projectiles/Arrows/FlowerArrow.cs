@@ -10,6 +10,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Arrows
 {
+    public class FlowerArrowItem : AbstractArrowItem<FlowerArrow>
+    {
+
+    }
     public class FlowerArrow : ModProjectile
     {
         private int _particleTimer;

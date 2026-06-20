@@ -1,12 +1,11 @@
-﻿using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Ammo;
+﻿using Stellamod.Projectiles.Arrows;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Ammo
+namespace Stellamod.Content.Ammo
 {
-    public class RadiantArrow : ModItem
+    public class LiliumArrow : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -15,7 +14,7 @@ namespace Stellamod.Items.Ammo
 
         public override void SetDefaults()
         {
-            Item.damage = 24; // The damage for projectiles isn't actually 12, it actually is the damage combined with the projectile and the item together.
+            Item.damage = 12; // The damage for projectiles isn't actually 12, it actually is the damage combined with the projectile and the item together.
             Item.DamageType = DamageClass.Ranged;
             Item.width = 8;
             Item.height = 8;
@@ -24,20 +23,13 @@ namespace Stellamod.Items.Ammo
             Item.knockBack = 1.5f;
             Item.value = 10;
             Item.rare = ItemRarityID.LightPurple;
-            Item.shoot = ModContent.ProjectileType<RadiantArrowProj>(); // The projectile that weapons fire when using this item as ammunition.
+            Item.shoot = ModContent.ProjectileType<FlowerArrow>(); // The projectile that weapons fire when using this item as ammunition.
             Item.shootSpeed = 16f; // The speed of the projectile.
             Item.ammo = AmmoID.Arrow; // The ammo class this ammo belongs to.
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-        public override void AddRecipes()
-        {
-            CreateRecipe(100)
-                .AddIngredient(ItemID.WoodenArrow, 100)
-                .AddIngredient(ModContent.ItemType<RadianuiBar>(), 2)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
+
 
     }
 }

@@ -13,7 +13,10 @@ namespace Stellamod.Tiles
         {
             Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
             Main.tileOreFinderPriority[Type] = 200; // Metal Detector value, see https://terraria.gamepedia.com/Metal_Detector
-                                                    // How often tiny dust appear off this tile. Larger is less frequently
+
+
+ 
+            // How often tiny dust appear off this tile. Larger is less frequently
             Main.tileMergeDirt[Type] = true;
             Main.tileSolid[Type] = true;
             Main.tileBlockLight[Type] = true;

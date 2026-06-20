@@ -9,6 +9,35 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Arrows
 {
+    public abstract class AbstractArrowItem<T> : ModItem where T : ModProjectile
+    {
+        public override string Texture => ModContent.GetInstance<T>().Texture;
+        public override void SetStaticDefaults()
+        {
+            Item.ResearchUnlockCount = 99;
+        }
+
+        public override void SetDefaults()
+        {
+            Item.damage = 24; 
+            Item.DamageType = DamageClass.Ranged;
+            Item.width = 8;
+            Item.height = 8;
+            Item.maxStack = Item.CommonMaxStack;
+            Item.consumable = true; 
+            Item.knockBack = 1.5f;
+            Item.value = 10;
+            Item.rare = ItemRarityID.Green;
+            Item.shoot = ModContent.ProjectileType<T>();
+            Item.shootSpeed = 16f;
+            Item.ammo = AmmoID.Arrow; 
+        }
+    }
+
+    public class VoidArrowItem : AbstractArrowItem<VoidArrow>
+    {
+        
+    }
     public class VoidArrow : ModProjectile
     {
         private int _particleTimer;
