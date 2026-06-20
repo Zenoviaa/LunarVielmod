@@ -63,7 +63,7 @@ float GetOcclusionFactorV3(float2 coords)
             alpha += dir / STEP_DIVISOR;
         }
     }
-    return alpha;
+    return alpha * 0.5;
 }
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0

@@ -1703,7 +1703,7 @@ public partial class StellaWorld : ModSystem
             for (int r = 1; r < map.Length; r++)
             {
                 Room room = map[r];
-                int padding = 10;
+                int padding = 80;
                 Rectangle roomRectangle = Structurizer.ReadRectangle(room.prefab);
                 int outlineWidth = roomRectangle.Width + padding;
                 int outlineHeight = roomRectangle.Height + padding;
@@ -1711,7 +1711,8 @@ public partial class StellaWorld : ModSystem
                 //This hsould give us an outline of bricks, I think
                 Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
                 Point offset = rectangle.Top().ToPoint();
-                offset.Y -= outlineHeight;
+                topLeftRoom.Y -= map[0].bounds.Height;
+            
                 topLeftRoom += offset;
                 WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
                    Actions.Chain(

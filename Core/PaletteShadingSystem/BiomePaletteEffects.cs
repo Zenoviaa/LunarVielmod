@@ -92,6 +92,7 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public override bool IsActive(Player player)
         {
+
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             return myPlayer.ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<RoyalFox>());
         }

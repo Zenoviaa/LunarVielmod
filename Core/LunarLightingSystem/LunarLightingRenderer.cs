@@ -203,7 +203,12 @@ namespace Stellamod.Core.LunarLightingSystem
                                         new Color(255, 173, 63),
 
               
-              
+
+                Color.White,
+               Color.White,
+                    Color.White,
+                         Color.White,
+                              Color.White,
                 Color.White,
                Color.White,
                     Color.White,
@@ -229,6 +234,7 @@ namespace Stellamod.Core.LunarLightingSystem
         }
         private void RenderSunLight()
         {
+
             Vector2 stepSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
             stepSize *= 4 * -SunLightManager.ShadowDirection;
 
