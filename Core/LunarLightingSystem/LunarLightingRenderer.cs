@@ -8,6 +8,7 @@ using Stellamod.Helpers;
 using Stellamod.Tiles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.Graphics.Effects;
@@ -100,10 +101,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private bool _isLoaded;
 
-        private ManagedRenderTarget _pixelLightTarget;
         private ManagedRenderTarget _lightsRT;
-        private ManagedRenderTarget _tileLightRT;
-        private RenderTarget2D _tileShadowMap;
+
         private RenderTarget2D _tileBlurRT;
         private RenderTarget2D _tileSunShadowRT;
         private ManagedRenderTarget _tileRenderTarget;
@@ -229,12 +228,11 @@ namespace Stellamod.Core.LunarLightingSystem
             if (!Main.dayTime)
                 interpolatedColor = sunColors[0];
             if (!Main.LocalPlayer.ZoneOverworldHeight && !Main.LocalPlayer.ZoneSkyHeight)
-                interpolatedColor = Color.Black;
+                interpolatedColor = SmoothedBackLightColor;
             return interpolatedColor;
         }
         private void RenderSunLight()
         {
-
             Vector2 stepSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
             stepSize *= 4 * -SunLightManager.ShadowDirection;
 
@@ -247,7 +245,6 @@ namespace Stellamod.Core.LunarLightingSystem
                 DepthStencilState.None, RasterizerState.CullNone, shader.Effect, Main.GameViewMatrix.TransformationMatrix);
 
 
-       
             Vector2 drawPosition = Vector2.Zero;
             spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, 
                SunColor, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
@@ -496,20 +493,17 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (behindTiles && DrawSunShadows2() && IsActive && _isLoaded)
-            {
-            
+            {      
                 spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, Color.White);
             }
-//            spriteBatch.Draw(_tileRenderTarget, Vector2.Zero, Color.Red);
+
             orig(self, npcCache, behindTiles);
         }
 
         public override void OnModLoad()
         {
             base.OnModLoad();
-            _pixelLightTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetHalfScreenTargetSize);
             _lightsRT = ManagedRenderTarget.New();
-            _tileLightRT = ManagedRenderTarget.New();
             _tileRenderTarget = ManagedRenderTarget.New();
             PostProcessingRenderer.AddPass(this);
         }
@@ -533,47 +527,16 @@ namespace Stellamod.Core.LunarLightingSystem
             if (!_isLoaded)
                 return;
 
-            //PreviewLightMaps();
-            //  DrawAccumulatedLightMapToScreen();
 
-            /*
-            if (Keyboard.GetState().IsKeyDown(Keys.K))
-            {
-                _shadowMap.Output();
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
-                   null);
-                spriteBatch.Draw(_shadowMap.Texture, new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f, null, Color.White, 0f, new Vector2(_shadowMap.Texture.Width, _shadowMap.Texture.Height) * 0.5f, 4, SpriteEffects.None, 0f);
-                spriteBatch.End();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.H))
-            {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
-                   null);
-                spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-                spriteBatch.End();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.N))
-            {
-                Main.NewText(_pointLights.UsedLightCount);
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
-                   null);
-                spriteBatch.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-                spriteBatch.End();
-            }*/
             RenderFog();
-            //   DrawSoftGlows();
         }
+
         public override void PostUpdateWorld()
         {
             base.PostUpdateWorld();
             UpdateFog();
         }
 
-
-        
         public Fog SetupFog(Point position, Action<Fog> createFogFunc)
         {
             if (_fogIndex.ContainsKey(position))
@@ -634,6 +597,7 @@ namespace Stellamod.Core.LunarLightingSystem
             BaseShader currentShader = fogShader;
 
 
+
             spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
                 currentShader.Effect, Main.GameViewMatrix.TransformationMatrix);
 
@@ -686,27 +650,9 @@ namespace Stellamod.Core.LunarLightingSystem
             if (Main.gameMenu)
                 return;
 
-            //TODO: optimize this
-            
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            TileDrawing tilesRenderer = Main.instance.TilesRenderer;
-            WallDrawing wallsRenderer = Main.instance.WallsRenderer;
 
-            
-            graphicsDevice.SetRenderTarget(_tileShadowMap);
-            graphicsDevice.Clear(Color.Transparent);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-
-            LightingPreDrawEdit.DontRenderPreDraw = true;
-            tilesRenderer.PreDrawTiles(true, true, true);
-            tilesRenderer.Draw(true, true, true);
-
-        //    tilesRenderer.PreDrawTiles(false, true, true);
-    //        tilesRenderer.Draw(false, true, true);
-            spriteBatch.End();
-            LightingPreDrawEdit.DontRenderPreDraw = false;
-            
             graphicsDevice.SetRenderTarget(_tileBlurRT);
             graphicsDevice.Clear(Color.Transparent);
 
@@ -718,12 +664,8 @@ namespace Stellamod.Core.LunarLightingSystem
             effect.Parameters["falloff"].SetValue(0.1f);
             effect.Parameters["uScreenResolution"].SetValue(Main.ScreenSize.ToVector2());
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, effect);
-
-            Vector2 drawPosition = Vector2.Zero - new Vector2(196);
-            drawPosition += sunDirection * 16;
-            spriteBatch.Draw(_tileShadowMap, drawPosition, null, Color.Black * 0.9f, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, Color.Black * 0.9f, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
             spriteBatch.End();
-
 
 
             graphicsDevice.SetRenderTarget(_tileSunShadowRT);
@@ -732,12 +674,10 @@ namespace Stellamod.Core.LunarLightingSystem
             blurEffect.Parameters["mipBias"].SetValue(12);
             blurEffect.Parameters["uScreenResolution"].SetValue(Main.ScreenSize.ToVector2());
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, blurEffect);
-
             spriteBatch.Draw(_tileBlurRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-
             spriteBatch.End();
-
         }
+
         public override void PreUpdateNPCs()
         {
             base.PreUpdateNPCs();
@@ -765,11 +705,6 @@ namespace Stellamod.Core.LunarLightingSystem
 
             BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
             MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
-            /*if (myPlayer.ZoneDrakonic || myPlayer.ZoneCinder)
-            {
-                BackLightColor = Color.White * 0.7f;
-            }*/
-
             foreach (var backLightModifier in _backLightModifiers)
             {
                 backLightModifier.ModifyBackLight(ref BackLightColor);
@@ -810,11 +745,9 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void UnloadRenderTargets()
         {
-            _tileShadowMap?.Dispose();
             _tileBlurRT?.Dispose();
             _tileSunShadowRT?.Dispose();
 
-            _tileShadowMap = null;
             _tileBlurRT = null;
             _tileSunShadowRT = null;
             _isLoaded = false;
@@ -822,16 +755,13 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void ResizeRenderTargets()
         {
-            if (_tileShadowMap != null && !_tileShadowMap.IsDisposed)
-                _tileShadowMap.Dispose();
             if (_tileBlurRT != null && !_tileBlurRT.IsDisposed)
                 _tileBlurRT.Dispose();
             if (_tileSunShadowRT != null && !_tileSunShadowRT.IsDisposed)
                 _tileSunShadowRT.Dispose();
 
             _tileSunShadowRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-            _tileBlurRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-            _tileShadowMap = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth + Main.offScreenRange * 2, Main.screenHeight + Main.offScreenRange * 2);
+            _tileBlurRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);      
             _isLoaded = true;
         }
 

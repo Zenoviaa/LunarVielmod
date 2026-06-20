@@ -6,6 +6,7 @@ using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Terraria;
@@ -455,6 +456,7 @@ public class MoonWaterSystem : ModSystem
     {
         orig(self, spriteBatch, layer, beginSpriteBatch);
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
+
         if (!config.LiquidsToggle)
             return;
         if (Main.gameMenu)
@@ -558,9 +560,22 @@ public class MoonWaterSystem : ModSystem
         if (Main.gameMenu)
             return;
 
+
+        //var sw = Stopwatch.StartNew();
         CalculateHeightsToDraw();
+        //sw.Stop();
+        //Main.NewText($"Heights to draw {sw.ElapsedMilliseconds}ms"); ;
+
+
+        //sw = Stopwatch.StartNew();
         RenderIntoHeightMapTarget();
+        //sw.Stop();
+      //  Main.NewText($"Render Height Map Target {sw.ElapsedMilliseconds}ms"); ;
+
+        //sw = Stopwatch.StartNew();
         RenderIntoWaterTextureTarget();
+        //sw.Stop();
+       // Main.NewText($"Render Cool Water Target {sw.ElapsedMilliseconds}ms"); ;
 
     }
 
@@ -895,7 +910,8 @@ public class MoonWaterSystem : ModSystem
 
 
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["HeightDrawing"];
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,RasterizerState.CullNone, _waterEffect);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, 
+            SamplerState.PointClamp, DepthStencilState.None,RasterizerState.CullNone, _waterEffect);
         foreach (HeightDraw heightDraw in _heightsToDraw)
         {
             Point lightTilePoint = heightDraw.tilePoint.ToTileCoordinates();
@@ -910,89 +926,6 @@ public class MoonWaterSystem : ModSystem
         }
         spriteBatch.End();
         graphicsDevice.SetRenderTarget(null);
-    }
-
-    private void RenderIntoTileLightTarget()
-    {
-        /*
-        Texture2D heightTile = TextureAssets.BlackTile.Value;
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_waterLightMapRT);
-        graphicsDevice.Clear(Color.Black);
-        spriteBatch.Begin();
-        foreach (HeightDraw heightDraw in _heightsToDraw)
-        {
-            Point lightTilePoint = heightDraw.tilePoint.ToTileCoordinates();
-            Color lightColor = Lighting.GetColor(lightTilePoint);
-            Vector2 drawPosition = heightDraw.tilePoint - Main.screenPosition;
-            spriteBatch.Draw(heightTile, drawPosition + new Vector2(Main.offScreenRange), lightColor);
-        }
-        spriteBatch.End();
-        graphicsDevice.SetRenderTarget(null);*/
-    }
-    private void DrawWaterBaseToScreen()
-    {
-        //This is just for testing purposes to make sure the texture looks the way we want it to
-
-        //  Main.graphics.GraphicsDevice.Clear(Color.Transparent);
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-        spriteBatch.Draw(_waterTextureRT, Vector2.Zero, null, Color.White * 0.5f, 0f, Vector2.Zero, 2, SpriteEffects.None, 0f);
-        spriteBatch.End();
-    }
-
-
-    private void DrawWaterTargetToScreen()
-    {
-        //This is just for testing purposes to make sure the texture looks the way we want it to
-        if (Main.gameMenu)
-            return;
-
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        var device = spriteBatch.GraphicsDevice;
-        device.SetRenderTarget(null);
-        device.Clear(Color.Black);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-        spriteBatch.Draw(_waterLightMapRT, -new Vector2(Main.offScreenRange), null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-        spriteBatch.End();
-    }
-
-    private void DrawHeightMapToScreen()
-    {
-        //This is just for testing purposes to make sure the texture looks the way we want it to
-        if (Main.gameMenu)
-            return;
-
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        var device = spriteBatch.GraphicsDevice;
-        device.SetRenderTarget(null);
-        device.Clear(Color.Black);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-        spriteBatch.Draw(_waterHeightMapRT, -new Vector2(Main.offScreenRange), null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-        spriteBatch.End();
-    }
-    private void DrawLightMapToScreen()
-    {
-        //This is just for testing purposes to make sure the texture looks the way we want it to
-        if (Main.gameMenu)
-            return;
-
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        var device = spriteBatch.GraphicsDevice;
-        device.SetRenderTarget(null);
-        device.Clear(Color.Black);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-        spriteBatch.Draw(_waterLightMapRT, -new Vector2(Main.offScreenRange), null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-        spriteBatch.End();
-    }
-    private void DrawWaterTextureToScreen()
-    {
-        //This is just for testing purposes to make sure the texture looks the way we want it to
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-        spriteBatch.Draw(_waterTextureRTOutput, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-        spriteBatch.End();
     }
 
 }
