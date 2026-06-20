@@ -14,9 +14,29 @@ using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+    public class SSAOShader : CrystalShader<SSAOShader>
+    {
+        public Vector2 StepSize
+        {
+            set
+            {
+                Effect.Parameters["stepSize"].SetValue(value);
+            }
+        }
+
+        public Vector2[] Offsets
+        {
+            set
+            {
+                Effect.Parameters["offsets"].SetValue(value);
+            }
+        }
+    }
+
     public class LuminanceShader : CrystalShader<LuminanceShader>
     {
         private EffectParameter _thresholdParam;
@@ -111,7 +131,30 @@ namespace Stellamod.Core.LunarLightingSystem
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
         }
 
+        public override void PostDrawTiles()
+        {
+            base.PostDrawTiles();
+            SSAOShader ssaoShader = ShaderContent.GetInstance<SSAOShader>();
+            ssaoShader.StepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
 
+            List<Vector2> offsets = new List<Vector2>(16);
+            UnifiedRandom random = new UnifiedRandom(1337);
+            for(int i = 0; i < 16; i++)
+            {
+                offsets.Add(random.NextVector2Circular(16, 16));
+            }
+
+            ssaoShader.Offsets = offsets.ToArray();
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, 
+                ssaoShader.Effect, 
+                Main.GameViewMatrix.TransformationMatrix);
+
+            if(!Keyboard.GetState().IsKeyDown(Keys.L))
+                spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, Color.White);
+
+            spriteBatch.End();
+        }
         private void Test()
         {
 
@@ -180,6 +223,8 @@ namespace Stellamod.Core.LunarLightingSystem
             Color interpolatedColor = DrawUtilities.InterpolateColorArray(dayProgress, sunColors);
             if (!Main.dayTime)
                 interpolatedColor = sunColors[0];
+            if (!Main.LocalPlayer.ZoneOverworldHeight && !Main.LocalPlayer.ZoneSkyHeight)
+                interpolatedColor = Color.Black;
             return interpolatedColor;
         }
         private void RenderSunLight()
@@ -189,16 +234,17 @@ namespace Stellamod.Core.LunarLightingSystem
 
             var shader = ShaderContent.GetInstance<SunLightShader>();
             shader.StepSize = stepSize;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp,
-                DepthStencilState.None, RasterizerState.CullNone, shader.Effect);
+                DepthStencilState.None, RasterizerState.CullNone, shader.Effect, Main.GameViewMatrix.TransformationMatrix);
 
 
        
             Vector2 drawPosition = Vector2.Zero;
             spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, 
-               GetSunColor(), 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+               SunColor, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
 
             spriteBatch.End();
         }
@@ -725,7 +771,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
             SmoothedBackLightColor = _backLightColor;
-            SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.1f);
+            SunColor = Color.Lerp(SunColor, GetSunColor(), 0.1f);
         }
 
         public void AddBackLight(IBackLightModifier backLightModifier)
