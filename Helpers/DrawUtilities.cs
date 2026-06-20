@@ -15,6 +15,10 @@ public static class ColorExtensions
     {
         DrawUtilities.IncreaseHueBy(ref color, degrees);
     }
+    public static Color Towards(this Color color, Color target, float lerp)
+    {
+        return Color.Lerp(color, target, lerp);
+    }
 }
 
 /// <summary>
@@ -26,6 +30,25 @@ public static class DrawUtilities
     public delegate float GetTrailWidth(float completionRatio);
 
 
+    /// <summary>
+    /// Takes in a value between 0-1 and interpolates between colors throughout the input array
+    /// </summary>
+    /// <param name="lerpValue"></param>
+    /// <param name="colors"></param>
+    /// <returns></returns>
+    public static Color InterpolateColorArray(float lerpValue, params Color[] colors)
+    {
+        int currentIndex = (int)MathF.Floor(lerpValue * colors.Length) % colors.Length;
+        int nextIndex = (currentIndex + 1) % colors.Length;
+        float stepSize = 1f / (float)colors.Length;
+
+        Color currentColor = colors[currentIndex];
+        Color nextColor = colors[nextIndex];
+
+        float localProgress = (lerpValue - (stepSize * currentIndex)) / stepSize;
+        Color interpolatedColor = Color.Lerp(currentColor, nextColor, localProgress);
+        return interpolatedColor;
+    }
     public static int[] QuadIndices(int vertexCount)
     {
         int connectIndex = 0;

@@ -5,7 +5,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     //This shader handles screenspace sun lighting by doing a simple raymarching over the tile target
     //If it encounters an opaque tile then it is in shadow
     //If it doesn't, then it's lit by sunlight
-    const int MAX_STEPS = 32;
+    const int MAX_STEPS = 48;
 
     float2 stepCoord = coords;
     stepCoord += stepSize * 2.0;
@@ -17,7 +17,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
         float pixel = tex2D(heightMapSampler, stepCoord).a;
         if (pixel > 0)
         {
-            float factor = 0.23 * (1.0 - saturate(distanceTraveled / 0.1));
+            float factor = 0.33 * (1.0 - saturate(distanceTraveled / 0.25));
             luminance.r -= factor;
             luminance.g -= factor;
             luminance.b -= factor * 0.75;

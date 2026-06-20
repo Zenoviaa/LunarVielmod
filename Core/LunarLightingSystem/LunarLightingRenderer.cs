@@ -150,20 +150,37 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             Color[] sunColors = new Color[]
             {
-                new Color(8, 79, 126),
-                new Color(46, 95, 175),
-                new Color(145, 84, 255),
+                new Color(8, 79, 126).Towards(Color.White, 0.5f),
+              Color.SkyBlue,
+      
                 new Color(255, 173, 63),
-                new Color(253, 255, 130),
+                   new Color(255, 173, 63),
+                            new Color(255, 173, 63),
+                                     new Color(255, 173, 63),
+                                        new Color(255, 173, 63),
+
+              
+              
                 Color.White,
-                new Color(253, 255, 130),
+               Color.White,
+                    Color.White,
+                         Color.White,
+                              Color.White,
+
                 new Color(255, 173, 63),
-                new Color(145, 84, 255),
-                new Color(46, 95, 175),
-                new Color(8, 79, 126),
+               new Color(255, 173, 63),
+                        new Color(255, 173, 63),
+                                 new Color(255, 173, 63),
+                                    new Color(255, 173, 63),
+                 Color.SkyBlue,
+                new Color(8, 79, 126).Towards(Color.White, 0.5f),
             };
 
-            return Color.White;
+            float dayProgress = Main.dayTime ? (float)Main.time / (float)Main.dayLength : (float)Main.time / (float)Main.nightLength;
+            Color interpolatedColor = DrawUtilities.InterpolateColorArray(dayProgress, sunColors);
+            if (!Main.dayTime)
+                interpolatedColor = sunColors[0];
+            return interpolatedColor;
         }
         private void RenderSunLight()
         {
@@ -181,7 +198,7 @@ namespace Stellamod.Core.LunarLightingSystem
        
             Vector2 drawPosition = Vector2.Zero;
             spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, 
-                Color.SkyBlue, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+               GetSunColor(), 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
 
             spriteBatch.End();
         }
@@ -249,8 +266,13 @@ namespace Stellamod.Core.LunarLightingSystem
             }
         }
 
+        #region Light Render Loop
         private void RenderToLightsRT()
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                Main.time += 128;
+            }
             if (Main.gameMenu)
                 return;
 
@@ -403,6 +425,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         }
 
+        #endregion
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
             RenderToLightsRT();
