@@ -11765,12 +11765,16 @@ ExcalibursPhase: {
 
 GhastlyGlove: {
 	DisplayName: Ghastly Glove
-	Tooltip: "Spear thrusts throw forward a spectral version of the weapon!"
+	Tooltip: Spear thrusts throw forward a spectral version of the weapon!
 }
 
 BurningGlove: {
 	DisplayName: Burning Glove
-	Tooltip: "Attaches a flamethrower to your melee weapon...\nAttacks release flames and thrusts will spew little fireballs!"
+	Tooltip:
+		'''
+		Attaches a flamethrower to your melee weapon...
+		Attacks release flames and thrusts will spew little fireballs!
+		'''
 }
 
 RainbowShield: {
@@ -11827,7 +11831,7 @@ MoonramShield: {
 
 MoonSlasher: {
 	DisplayName: Moon Slasher
-	Tooltip: "Swords, hammers, and knives send out a flying slash projectile that hits for half damage!"
+	Tooltip: Swords, hammers, and knives send out a flying slash projectile that hits for half damage!
 }
 
 ThrowingFinish: {
@@ -11861,5 +11865,5 @@ SpiritualSong: {
 
 StarStorm: {
 	DisplayName: Star Storm
-	Tooltip: ""
+	Tooltip: Your scythes have a cloud of stars in between you and the scythe, damaging anything that comes within!
 }
