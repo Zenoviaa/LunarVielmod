@@ -57,7 +57,8 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     outerColor = Color.Red
                 };
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16) * 1.2f;
-                DustParticle.Spawn(Projectile.Center, velocity, spawnParams);
+                var dp = DustParticle.Spawn(Projectile.Center, velocity, spawnParams);
+                dp.superFast = true;
             }
             FXUtil.GlowCircleDetailedBoom1(Projectile.Center, Color.Yellow, Color.OrangeRed, Color.Red);
         }

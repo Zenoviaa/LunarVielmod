@@ -4492,12 +4492,16 @@ BottleOfGrail: {
 
 ReverieExtenderPowder: {
 	DisplayName: Reverie Extender Powder
-	Tooltip: Sets powder range to an increase of 130%
+	Tooltip:
+		'''
+		Increases card velocity by 100%!
+		Your cards also slightly home to nearby targets and have a golden glow around them
+		'''
 }
 
 GrailedExtenderPowder: {
 	DisplayName: Grailed Extender Powder
-	Tooltip: Sets powder range to an increase of 250%
+	Tooltip: Your igniter cards now act like a boomerang!
 }
 
 MidfortuneExtenderPowder: {
@@ -4542,7 +4546,11 @@ MorrowedJelliesBroochA: {
 
 BonedExtenderPowder: {
 	DisplayName: Boned Extender Powder
-	Tooltip: Sets powder range to an increase of 160%
+	Tooltip:
+		'''
+		Your card is a shotgun that throws a spread of 3-5 cards!
+		However, you lose 50% damage...
+		'''
 }
 
 GremoryExtenderPowder: {
@@ -4561,7 +4569,7 @@ MushyExtenderPowder: {
 
 TomedDustingFlames: {
 	DisplayName: Tomed Dusting Flames
-	Tooltip: ""
+	Tooltip: "Your igniter card explosions have a 10% chance to create a fire-y boom!"
 }
 
 TomedDustingMagic: {
@@ -11876,4 +11884,9 @@ AmmoPack: {
 ThePiercer: {
 	DisplayName: The Piercer
 	Tooltip: +2 ranged piercing
+}
+
+LuckyCardWinner: {
+	DisplayName: Lucky Card Winner
+	Tooltip: "You have a 25% chance for your igniter explosions to explode again"
 }

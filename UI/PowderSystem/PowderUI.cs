@@ -54,6 +54,7 @@ namespace Stellamod.UI.PowderSystem
 
         public void OpenUI(BaseIgniterCard card)
         {
+
             _grid.Clear();
             for (int i = 0; i < card.Powders.Count; i++)
             {

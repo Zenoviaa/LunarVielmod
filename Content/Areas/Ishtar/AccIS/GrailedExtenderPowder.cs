@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.IgnitersNPowders;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Items;
+using Stellamod.Items.Ores;
 using System.Collections.Generic;
 
 using Terraria;
@@ -8,33 +10,31 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-
-namespace Stellamod.Items.Accessories.Igniter
+namespace Stellamod.Content.Areas.Ishtar.AccIS
 {
-    public class ReverieExtenderPowder : ModItem
+    public class GrailedExtenderPowder : ModItem
     {
 
         public override void SetDefaults()
         {
+
             Item.DefaultToAccessory();
+
         }
-
-
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-
-            player.GetModPlayer<IgniterPlayer>().extenderBonus += 1.0f;
-            player.GetModPlayer<IgniterPlayer>().reverie = true;
-
+            base.UpdateAccessory(player, hideVisual);
+            player.GetModPlayer<IgniterPlayer>().boomerang = true;
         }
-
 
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<AlcaricMush>());
+            this.RegisterBrew<EreshkinCandle, BlankAccessory>();
         }
+
+
 
 
     }

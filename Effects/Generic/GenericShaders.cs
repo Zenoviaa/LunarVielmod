@@ -2,6 +2,23 @@
 
 namespace Stellamod.Effects.Generic;
 
+public class NoisyBoomShader : CrystalShader<NoisyBoomShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+    public Color NoiseColor
+    {
+        set
+        {
+            Effect.Parameters["bloomColor"].SetValue(value.ToVector3());
+        }
+    }
+}
 public class AuraShader : CrystalShader<AuraShader>
 {
     public float Time

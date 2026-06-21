@@ -15,19 +15,34 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Common.IgnitersNPowders
 {
+    public abstract class AbstractIgniterAddon : ModItem
+    {
+        public virtual void OnExplode(IgniterCardProjectile cardProj) { }
+    }
     public class IgniterPlayer : ModPlayer
     {
         public float extenderBonus;
         public float igniterDamageBonus;
         public bool hasLifesteal;
+        public bool boomerang;
+        public bool multishot;
+        public bool reverie;
+        public bool lucky;
+        public List<AbstractIgniterAddon> addons = new List<AbstractIgniterAddon>();
         public override void ResetEffects()
         {
             base.ResetEffects();
             extenderBonus = 0f;
             igniterDamageBonus = 0f;
             hasLifesteal = false;
+            boomerang = false;
+            multishot = false;
+            reverie = false;
+            lucky = false;
+            addons.Clear();
         }
     }
+
     public class IgniterTooltipDraw : GlobalItem
     {
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
@@ -77,7 +92,7 @@ namespace Stellamod.Common.IgnitersNPowders
                 while (_powders.Count < GetPowderSlotCount())
                 {
                     Item item = new Item();
-                    Item.SetDefaults(ItemID.None);
+                    item.SetDefaults(ItemID.None);
                     _powders.Add(item);
                 }
 
@@ -117,6 +132,7 @@ namespace Stellamod.Common.IgnitersNPowders
             Item.shoot = ModContent.ProjectileType<IgniterCardProjectile>();
             Item.crit = 4;
             Item.shootSpeed = 15;
+            Item.consumable = false;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -125,11 +141,20 @@ namespace Stellamod.Common.IgnitersNPowders
             velocity *= 1.0f + igniterPlayer.extenderBonus;
             damage = (int)(damage * (1.0f + igniterPlayer.igniterDamageBonus));
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+            if (igniterPlayer.multishot)
+            {
+                for(int i = 0; i < Main.rand.Next(2, 4); i++)
+                {
+                    Vector2 vel = velocity.RotateRandom(0.4);
+                    Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(8, 8), vel, type, damage, knockback, player.whoAmI);
+                }
+            }
             return false;
         }
         public override void RightClick(Player player)
         {
-            base.RightClick(player);
+            //base.RightClick(player);
+
             PowderUISystem uiSystem = ModContent.GetInstance<PowderUISystem>();
             uiSystem.Card = this;
             uiSystem.ToggleUI();

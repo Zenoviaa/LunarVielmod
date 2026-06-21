@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Assets;
 using Stellamod.Common.IgnitersNPowders;
-using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -39,6 +39,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public BaseIgniterCard Card;
 
         private Player Owner => Main.player[Projectile.owner];
+        private IgniterPlayer IgniterPlayer => Owner.GetModPlayer<IgniterPlayer>();
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
@@ -101,6 +102,31 @@ namespace Stellamod.Projectiles.IgniterExplosions
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.WhiteTorch);
             }
+
+            if (IgniterPlayer.boomerang && _dustTimer > 30)
+            {
+                Vector2 vel = ProjectileHelper.SimpleHomingVelocity(Projectile, Owner.Center, degreesToRotate: 7);
+                Projectile.velocity = vel;
+            }
+            if (IgniterPlayer.reverie)
+            {
+                if (Main.rand.NextBool(16))
+                {
+                    var sp = SparkleParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2, 2));
+                    sp.outerColor = Color.Gold;
+                    sp.Scale *= 0.5f;
+                    sp.flickering = true;
+                    sp.gravity = 0;
+                    sp.noTileCollide = true;
+                    sp.dampening = 0.05f;
+                }
+                NPC npc = NPCHelper.FindClosestNPC(Projectile.position, 256);
+                if (npc != null)
+                {
+                    Vector2 vel = ProjectileHelper.SimpleHomingVelocity(Projectile, Owner.Center, degreesToRotate: 3);
+                    Projectile.velocity = vel;
+                }
+            }
         }
 
         private void AI_Exploding()
@@ -111,13 +137,13 @@ namespace Stellamod.Projectiles.IgniterExplosions
             {
                 if (_powderIndex < Card.Powders.Count)
                 {
-            
+
                     for (int i = 0; i < 10; i++)
                     {
                         Vector2 vel = -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(33)) * Main.rand.NextFloat(0.2f, 1f) * 0.5f;
                         Dust.NewDustPerfect(Projectile.Center + Projectile.velocity, DustID.WhiteTorch, vel, Scale: Main.rand.NextFloat(0.5f, 2f));
                     }
-            
+
                     BasePowder powder = Card.Powders[_powderIndex].ModItem as BasePowder;
                     while ((powder == null || powder.Item.IsAir) && _powderIndex < Card.Powders.Count - 1)
                     {
@@ -128,9 +154,19 @@ namespace Stellamod.Projectiles.IgniterExplosions
                     if (Main.myPlayer == Projectile.owner && powder != null)
                     {
                         Projectile p = powder.NewProjectile(Projectile, _explosionPos);
+                        if(IgniterPlayer.lucky && Main.rand.NextBool(4))
+                        {
+                            powder.NewProjectile(Projectile, _explosionPos + Main.rand.NextVector2Circular(64, 64));
+                        }
+
+                        foreach (var addon in IgniterPlayer.addons)
+                        {
+                            addon.OnExplode(this);
+                        }
+
                         ExplosionTime = p.timeLeft / 2;
                         Projectile.netUpdate = true;
-                     
+
                     }
                     _powderIndex++;
                 }
@@ -139,12 +175,13 @@ namespace Stellamod.Projectiles.IgniterExplosions
                     Projectile.Kill();
                 }
 
-                    Timer = 0;
+                Timer = 0;
             }
 
 
             Projectile.velocity = Vector2.Zero;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
@@ -169,23 +206,29 @@ namespace Stellamod.Projectiles.IgniterExplosions
         {
             if (Card == null)
                 return false;
-            string texturePath = Card.Texture;
+
             //Draw Trail
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
+            Texture2D texture = TextureAssets.Item[Card.Type].Value;
             int trailLength = Projectile.oldPos.Length;
             Vector2 drawOrigin = texture.Size() / 2f;
 
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             float drawScale = 1f;
-
-
             if (DrawCard)
             {
+                if (IgniterPlayer.reverie)
+                {
+                    SpritebatchDrawer goldenAuraDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+                    goldenAuraDrawer.color = Color.Gold * ExtraMath.Osc(0.5f, 0.7f, speed: 9) * 0.4f;
+                    goldenAuraDrawer.color.A = 0;
+                    goldenAuraDrawer.scale *= 0.26f * ExtraMath.Osc(0.8f, 1f, speed: 6);
+                    Main.spriteBatch.Draw(goldenAuraDrawer);
+                }
                 for (int t = 0; t < trailLength; t++)
                 {
                     float l = trailLength;
-                    float interpolant = (float)t / l;
+                    float interpolant = t / l;
                     Vector2 oldPos = Projectile.oldPos[t];
                     oldPos -= Main.screenPosition;
                     oldPos += Projectile.Size / 2f;
