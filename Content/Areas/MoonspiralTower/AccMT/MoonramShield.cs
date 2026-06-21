@@ -5,10 +5,14 @@ using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
+using Stellamod.Dusts;
 using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
+using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -59,8 +63,8 @@ public class MoonramBoom : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 128;
-        Projectile.height = 128;
+        Projectile.width = 384;
+        Projectile.height = 384;
         Projectile.friendly = true;
         Projectile.timeLeft = 30;
         Projectile.usesLocalNPCImmunity = true;
@@ -73,7 +77,59 @@ public class MoonramBoom : ModProjectile
         Timer++;
         if(Timer == 1)
         {
+            SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/StarFlower3") with { PitchVariance = 0.5f, Volume = 0.5f };
+            SoundEngine.PlaySound(explosionSound, Projectile.position);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.White, 15, 256);
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
+            }
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+            }
 
+            for (int i = 0; i < 20; i++)
+            {
+                Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(100, 100);
+                Vector2 vel = Main.rand.NextVector2Circular(10, 10);
+                var sp = SmokeParticle.SpawnInAlphaLayer(pos, vel);
+                sp.dampening = 0.09f;
+                sp.fadeToColor = Color.Black * 0.5f;
+                sp.initialColor = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 32, offset: i), Color.Purple, Color.LightBlue, Color.Pink, Color.LightSkyBlue);
+                sp.Scale *= 3f;
+            }
+            for (int i = 0; i < 14; i++)
+            {
+                Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
+                Vector2 vel = Main.rand.NextVector2Circular(10, 10);
+                var sp = FaintSmokeParticle.SpawnInAlphaLayer(pos, vel);
+                sp.dampening = 0.09f;
+                sp.fadeToColor = Color.Black * 0.5f;
+
+                sp.color = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 32, offset: i), Color.Purple, Color.LightBlue, Color.Pink, Color.LightSkyBlue);
+                sp.color = Color.Lerp(sp.color, Color.Black, 0.6f);
+                sp.color *= 0.5f;
+
+                sp.Scale *= 0.9f;
+                sp.behindLayer = true;
+            }
+            for (int i = 0; i < 16; i++)
+            {
+                Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(100, 100);
+                Vector2 vel = Main.rand.NextVector2Circular(32, 32);
+                var dp = SparkleParticle.Spawn(pos, vel);
+                dp.dampening = 0.1f;
+                dp.innerColor = Color.White;
+                dp.fast = true;
+                dp.gravity = 0;
+
+            }
+            ShakeScreenPosition.Shake = 8;
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightSkyBlue, Color.Purple, duration: 12, baseSize: 0.24f);
+            fx.Scale *= 2;
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode with { PitchVariance = 0.6f }, Projectile.position);
         }
     }
     public override void OnKill(int timeLeft)
@@ -110,7 +166,24 @@ public class MoonramMoon : ModProjectile
     {
         base.AI();
         Timer++;
-        _targetScale = Vector2.Lerp(_targetScale, Vector2.One, 0.15f);
+        if(Timer == 1)
+        {
+            SoundStyle inSound = new SoundStyle("Stellamod/Assets/Sounds/Starrer") with { Pitch = -0.5f , Volume = 0.15f, PitchVariance = 0.3f };
+            SoundEngine.PlaySound(inSound, Projectile.position);
+        }
+        if(Timer < 30 && Timer % 5 == 0)
+        {
+            PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.White, Color.Transparent, 45, 256);
+        }
+
+        Projectile.velocity *= 0.999f;
+
+   //     Projectile.velocity.Y += 0.05f;
+        if(Timer >= 80)
+        {
+            Projectile.Kill();
+        }
+        _targetScale = Vector2.Lerp(Vector2.Zero, Vector2.One * 0.6f + Vector2.Lerp(Vector2.Zero, Vector2.One * 0.4f, EasingFunction.InOutExpo((Timer - 69)/ 20f)), EasingFunction.InOutExpo(Timer / 100f));
     }
     
     private void DrawPixelatedMoon(SpriteBatch sb, Vector2 screenPos)
@@ -148,7 +221,7 @@ public class MoonramMoon : ModProjectile
         //Draw the moon itself
         sb.Restart(effect: scrollingMoonShader.Effect);
         moonSprite.rotation = MathHelper.ToRadians(-12);
-        moonSprite.color = Color.Lerp(Color.White, Color.Black, 0.18f);
+        moonSprite.color = Color.Lerp(Color.SkyBlue, Color.Black, 0.48f);
         moonSprite.scale *= _targetScale;
         Main.spriteBatch.Draw(moonSprite);
         sb.RestartDefaults();
@@ -186,7 +259,7 @@ public class MoonramMoon : ModProjectile
 
 
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineMoonTextureAsset, Projectile.Center);
-        outlineDrawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, speed: 16);
+        outlineDrawer.color = Color.Green * ExtraMath.Osc(0.6f, 1f, speed: 16);
         outlineDrawer.scale *= _targetScale;
         Main.spriteBatch.Draw(outlineDrawer);
 

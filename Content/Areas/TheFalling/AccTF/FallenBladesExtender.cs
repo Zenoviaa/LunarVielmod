@@ -1,10 +1,13 @@
-﻿using Stellamod.Content.Areas.Abyss.AccAB;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Abyss.AccAB;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Items;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.TheFalling.AccTF;
@@ -40,10 +43,15 @@ public class FallenBladesExtender : AbstractMeleeAddon
 
     public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
     {
-        DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Gold);
+          DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Gold);
         return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
     }
 
+    public override void UpdateAccessory(Player player, bool hideVisual)
+    {
+        base.UpdateAccessory(player, hideVisual);
+        player.GetModPlayer<MeleeEffectsPlayer>().superExtender = true;
+    }
 
     public override void AddRecipes()
     {
@@ -71,8 +79,15 @@ public class FinalExtenderBlade : ModProjectile,
                 if (proj.identity == Parent)
                     return proj;
             }
+            Projectile.Kill();
             return Projectile;
         }
+    }
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        ProjectileID.Sets.TrailCacheLength[Type] = 256;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
     }
     public override void SetDefaults()
     {
@@ -86,6 +101,8 @@ public class FinalExtenderBlade : ModProjectile,
         Projectile.ignoreWater = true;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
+        Projectile.extraUpdates = 7;
+
     }
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
@@ -106,8 +123,8 @@ public class FinalExtenderBlade : ModProjectile,
         rotation -= MathHelper.PiOver4;
 
         Vector2 rotationVec = rotation.ToRotationVector2();
-        _hitboxStart = Projectile.Center - rotationVec * swordLength;
-        _hitboxSwordEnd = Projectile.Center + rotationVec * swordLength;
+        _hitboxStart = ParentProjectile.Center - rotationVec * swordLength;
+        _hitboxSwordEnd = ParentProjectile.Center + rotationVec * swordLength;
     }
     public override void AI()
     {
@@ -119,9 +136,13 @@ public class FinalExtenderBlade : ModProjectile,
                 Projectile.Kill();
         }
 
+
         UpdateHitbox();
         Timer++;
-        Projectile.Center = ParentProjectile.Center;
+
+        Vector2 dir = _hitboxSwordEnd - _hitboxStart;
+        dir = dir.SafeNormalize(Vector2.Zero);
+        Projectile.Center = ParentProjectile.Center + dir * 154;//ParentProjectile.rotation.ToRotationVector2() * 128;
         Projectile.rotation = ParentProjectile.rotation;
     }
     public override bool ShouldUpdatePosition()
@@ -130,21 +151,60 @@ public class FinalExtenderBlade : ModProjectile,
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        DrawBlade(Main.spriteBatch, Main.screenPosition);
+  //      DrawBlade(Main.spriteBatch, Main.screenPosition);
         return false;
         //return base.PreDraw(ref lightColor);
     }
 
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+    }
+    private Color GetTrailColor(float completionRatio)
+    {
+
+
+        Color trailColor = Color.Lerp(Color.Gold, Color.LightBlue, EasingFunction.InCirc(completionRatio)) * MathHelper.Lerp(0f, 1f, EasingFunction.InCirc(completionRatio));
+
+        return trailColor;
+    }
+    private float GetBigTrailWidth(float completionRatio)
+    {
+        return MathHelper.SmoothStep(264, 0, completionRatio);
+    }
+
+    private void DrawGlowTrail(GraphicsDevice gDevice)
+    {
+        /*
+        FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+        laserShader.LaserColor = Color.Gold;
+        laserShader.InnerColor = Color.DarkGoldenrod;
+        laserShader.OuterColor = Color.Black;
+        laserShader.BloomTexture = AssetManager.LaserTextures.Bloom;
+        laserShader.LaserTexture = TrailRegistry.StarTrail;
+        Vector2[] swingTrailCache = new Vector2[Projectile.oldRot.Length];
+        Vector2 root = Main.player[Projectile.owner].Center; 
+        for(int i = 0; i < swingTrailCache.Length; i++)
+        {
+            ref Vector2 swingPos = ref swingTrailCache[i];
+            float rot = Projectile.oldRot[i];
+            swingPos = root + rot.ToRotationVector2() * 192;
+        }
+        TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor, GetBigTrailWidth, laserShader);*/
+    }
     private void DrawBlade(SpriteBatch sb, Vector2 sp)
     {
+        /*
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
         drawer.color = Color.Gold * ExtraMath.Osc(0.5f, 1f, speed: 16);
         drawer.color.A = 0;
-        sb.Draw(drawer);
+        drawer.rotation += MathHelper.PiOver4;
+        sb.Draw(drawer);*/
     }
 
     public void DrawToRenderTargets()
     {
-   
+        PixelationManager.QueuePrimitivesDrawAction(DrawGlowTrail);
+        PixelationManager.QueueSpritebatchDrawAction(DrawBlade);
     }
 }

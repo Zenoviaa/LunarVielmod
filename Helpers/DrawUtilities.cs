@@ -35,16 +35,23 @@ public static class DrawUtilities
     {
 
         List<Vector2> prunedPoints = new List<Vector2>();
+        Vector2 prevAddedPoint = oldPos[0];
         for (int i = 0; i < oldPos.Length ; i++)
         {
             Vector2 cur = oldPos[i];
+
+
             if (cur == Vector2.Zero)
             {
                 break;
             }
             else
             {
-                prunedPoints.Add(cur);
+                float d = Vector2.DistanceSquared(cur, prevAddedPoint);
+                prevAddedPoint = cur;
+             
+                if(d > 2)
+                    prunedPoints.Add(cur);
             }
 
         }

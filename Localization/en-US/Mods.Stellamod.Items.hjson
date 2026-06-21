@@ -11826,7 +11826,7 @@ ChainAdder: {
 
 MoonramShield: {
 	DisplayName: Moonram Shield
-	Tooltip: ""
+	Tooltip: Dash through an enemy with shield and a giant moon will come crashing down on them for 3x damage!
 }
 
 MoonSlasher: {
@@ -11849,13 +11849,13 @@ BlizzardPendant: {
 }
 
 FallenBladesExtender: {
-	DisplayName: Fallen Blades Extender
-	Tooltip: ""
+	DisplayName: Final Blades' Extender
+	Tooltip: "Swords and greatswords now have a large extender resembling a golden angel sword..."
 }
 
 GhastlyShield: {
 	DisplayName: Ghastly Shield
-	Tooltip: ""
+	Tooltip: Enemies that touch this shield will take 25% more damage from all attacks!
 }
 
 SpiritualSong: {

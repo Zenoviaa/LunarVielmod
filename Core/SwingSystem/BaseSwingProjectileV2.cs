@@ -1,17 +1,17 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
+using Stellamod.Effects.RoyalMagic;
 using Stellamod.Visual.Particles;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Policy;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -32,7 +32,7 @@ public struct Bloom
             return Color.White;
         return bloomColorFunction(ratio);
     }
-    
+
     public float GetBloomWidth(float ratio)
     {
         if (bloomWidthFunction == null)
@@ -50,6 +50,7 @@ public class MeleeEffectsPlayer : ModPlayer
     public float projectionOnlyDamageBonus;
     public bool noOwnerHitCheck;
     public bool smokyPendant;
+    public bool superExtender;
 
     public override void ResetEffects()
     {
@@ -60,6 +61,7 @@ public class MeleeEffectsPlayer : ModPlayer
         projectionOnlyDamageBonus = 0f;
         steinWordBonus = 0;
         smokyPendant = false;
+        superExtender = false;
         addons ??= new List<AbstractMeleeAddon>();
         addons.Clear();
     }
@@ -116,7 +118,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     {
         get
         {
-            return (float)(ComboIndex + 1) / (float)ComboCount;
+            return (ComboIndex + 1) / (float)ComboCount;
         }
     }
     public float Interpolant { get; private set; }
@@ -150,7 +152,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public float bloomScale;
     public const int EXTRA_UPDATE_COUNT = 7;
     public float Size { get; private set; }
-   public MeleeWeaponType MeleeWeaponType
+    public MeleeWeaponType MeleeWeaponType
     {
         get
         {
@@ -199,7 +201,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         writer.Write(isAfterImageProjectile);
         writer.Write(isStaminaMove);
     }
-    
+
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
@@ -208,7 +210,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         isStaminaMove = reader.ReadBoolean();
     }
 
-    
+
 
     public virtual Asset<Texture2D> RequestHologramTexture()
     {
@@ -261,7 +263,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public override void OnSpawn(IEntitySource source)
     {
         base.OnSpawn(source);
-        foreach(var addon in MeleeEffectsPlayer.addons)
+        foreach (var addon in MeleeEffectsPlayer.addons)
         {
             addon.OnSpawn(this);
         }
@@ -282,7 +284,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             swingRotationCache = ArrayPool<float>.Shared.Rent(afterImageCacheLength);
             oldTime = ArrayPool<float>.Shared.Rent(cacheLength);
             DefineCombo();
-            foreach(var addon in MeleeEffectsPlayer.addons)
+            foreach (var addon in MeleeEffectsPlayer.addons)
             {
                 addon.DefineCombo(this);
             }
@@ -339,7 +341,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         //Check if the sword is colliding, this does a line check instead of terraria default box.
 
         float collisionPoint = 0f;
-        bool check = Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), 
+        bool check = Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(),
             _hitboxStart, _hitboxProjectionEnd, 16, ref collisionPoint);
         return check;
     }
@@ -390,7 +392,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
         if (IsTouchingONLYProjection(hitbox))
         {
-          
+
             modifiers.FinalDamage += MeleeEffectsPlayer.projectionOnlyDamageBonus;
             var sp = MoonSpiralParticle.Spawn(target.Center, Vector2.Zero);
             sp.gravity = 0;
@@ -401,7 +403,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             FXUtil.GlowStretch(target.Center, Main.rand.NextVector2Circular(1, 1));
         }
 
-        foreach(var addon in MeleeEffectsPlayer.addons)
+        foreach (var addon in MeleeEffectsPlayer.addons)
         {
             addon.OnModifyHitNPC(this, target, ref modifiers);
         }
@@ -418,6 +420,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         edgeLength *= 1.6f;
         edgeLength += swordBeamLength;
         edgeLength += extraLength;
+        if (MeleeEffectsPlayer.superExtender)
+            edgeLength += 152;
         float rotation = Projectile.rotation;
         rotation -= MathHelper.PiOver4;
 
@@ -447,7 +451,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         else
             HitstopTimer--;
 
-        foreach(AbstractMeleeAddon addon in MeleeEffectsPlayer.addons)
+        foreach (AbstractMeleeAddon addon in MeleeEffectsPlayer.addons)
         {
             addon.AI(this);
         }
@@ -526,7 +530,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
         }
 
-      //  Owner.GetModPlayer<SwingPlayerV2>().isSwinging = true;
+        //  Owner.GetModPlayer<SwingPlayerV2>().isSwinging = true;
         Owner.itemRotation = rotation * Owner.direction;
         Owner.itemTime = 2;
         Owner.itemAnimation = 2;
@@ -547,6 +551,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         RenderSwingTrail(ref lightColor, swingTrailCache);
         DrawSwingTrail(ref lightColor, swingTrailCache);
         DrawSwingTrail2(ref lightColor, bigSwingTrailCache);
+        DrawAngelSwingTrail(ref lightColor, bigSwingTrailCache);
     }
     public virtual void RenderSwingTrail(ref Color lightColor, Vector2[] points)
     {
@@ -591,6 +596,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             PixelationManager.QueuePrimitivesDrawAction(DrawBloom, DrawLayer.OverNPCs);
         }
 
+        DrawAngelSwordBeam(ref lightColor);
         DrawSwordBeam(ref lightColor);
         DrawSwordSprite(ref lightColor);
         foreach (var addon in MeleeEffectsPlayer.addons)
@@ -615,7 +621,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         if (Main.myPlayer == Projectile.owner)
         {
             ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
-            int combo = (int)(ComboIndex);
+            int combo = ComboIndex;
             int dir = comboPlayer.ComboDirection;
             var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
                 Type, (int)(Projectile.damage * 0.5f), Projectile.knockBack,
@@ -635,7 +641,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         if (Main.myPlayer == Projectile.owner)
         {
             ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
-            int combo = (int)(ComboIndex);
+            int combo = ComboIndex;
             int dir = comboPlayer.ComboDirection;
             var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
                 Type, Projectile.damage, Projectile.knockBack,
@@ -653,7 +659,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         if (Main.myPlayer == Projectile.owner)
         {
             ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
-            int combo = (int)(ComboIndex + 1);
+            int combo = ComboIndex + 1;
             int dir = comboPlayer.ComboDirection;
             var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
                 Type, Projectile.damage, Projectile.knockBack,
@@ -670,7 +676,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         if (Main.myPlayer == Projectile.owner)
         {
             ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
-            int combo = (int)(ComboIndex);
+            int combo = ComboIndex;
             int dir = -(int)SwingDirection;
             var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
                 Type, Projectile.damage, Projectile.knockBack,
@@ -724,7 +730,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         for (int a = 0; a < afterImageCache.Length; a++)
         {
             float interpolant = a;
-            interpolant /= (float)afterImageCache.Length;
+            interpolant /= afterImageCache.Length;
             Texture2D texture = GetTexture();
 
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
@@ -805,6 +811,34 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         Trailer.TrailColorFunction = oldColorFunc;
     }
 
+    public void DrawAngelSwingTrail(ref Color lightColor, Vector2[] swingTrailCache)
+    {
+        if (!MeleeEffectsPlayer.superExtender)
+            return;
+        AlcadSlashShader shader = ShaderContent.GetInstance<AlcadSlashShader>();
+        shader.ScrollingLaser = TrailRegistry.Beamlight.Value;
+        shader.Noise = AssetManager.Noise.Whirly.Value;
+        shader.Slash = AssetManager.GlowMask.SwordSlash.Value;
+        shader.BloomColor = Color.Gold;
+        shader.Time = Main.GlobalTimeWrappedHourly * 24;
+        shader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        shader.Distortion = 0.15f;
+        Color GetTrailColor(float completionRatio)
+        {
+            Color glowColor = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 16), Color.Gold, Color.White, Color.SkyBlue, Color.DarkGoldenrod);
+            Color trailColor = Color.Lerp(glowColor, Color.LightBlue, EasingFunction.InCirc(completionRatio))
+                * MathHelper.Lerp(0f, 1f, EasingFunction.InCirc(completionRatio));
+            return glowColor * ExtraMath.Osc(1f, 2f, speed: 32) * 0.6f;
+        }
+
+        float GetBigTrailWidth(float completionRatio)
+        {
+            return MathHelper.SmoothStep(0, 96, completionRatio);
+        }
+
+        TrailDrawer.Draw(swingTrailCache, GetTrailColor, GetBigTrailWidth, shader);
+    }
+
     public virtual void DrawSwordSprite(ref Color lightColor)
     {
         if (Keyboard.GetState().IsKeyDown(Keys.I))
@@ -883,6 +917,66 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     {
 
     }
+    public void DrawAngelSwordBeam(ref Color lightColor)
+    {
+        if (!MeleeEffectsPlayer.superExtender)
+            return;
+        SwordBeamShader swordBeamShader = SwordBeamShader.Instance;
+        swordBeamShader.InnerColor = Color.Gold;
+        swordBeamShader.OuterColor = glowAfterImageColor;
+
+        SpriteEffects spriteEffects = SpriteEffects.None;
+        if (SwingDirection == 1)
+        {
+            spriteEffects = SpriteEffects.FlipHorizontally;
+        }
+
+
+
+   
+
+        Vector2 pos = _hitboxSwordEnd + (_hitboxSwordEnd - _hitboxStart).SafeNormalize(Vector2.Zero) * 64;
+        float dist = Vector2.Distance(pos, Projectile.Center);
+        Vector2 drawPos = _hitboxSwordEnd - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+        drawPos += (_hitboxSwordEnd - _hitboxStart).SafeNormalize(Vector2.Zero) * 64;
+        
+        float rotationOffset = MathHelper.ToRadians(45);
+    //    drawPos += offset;
+
+
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        float drawScale = 1.15f + growScale;
+        spriteBatch.Restart(blendState: BlendState.AlphaBlend, effect: swordBeamShader.Effect);
+
+        Texture2D superExtender = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_AngelSword").Value;
+        Vector2 origin2 = superExtender.Size() * 0.5f;
+        for (int a = 0; a < afterImageCache.Length; a++)
+        {
+            float interpolant = a;
+            interpolant /= afterImageCache.Length;
+            interpolant = 1f - interpolant;
+            Color drawColor2 = Color.Gold * 0.05f;
+            drawColor2 *= EasingFunction.InOutSine(interpolant);
+            Vector2 position = afterImageCache[a];
+            float drawRotation = swingRotationCache[a];
+
+            Vector2 offset2 = (drawRotation + MathHelper.ToRadians(-45)).ToRotationVector2() * dist;
+            position += offset2;
+            spriteBatch.Draw(superExtender,
+              position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+                null, drawColor2, drawRotation + rotationOffset, origin2, drawScale, spriteEffects, 0); // drawing the sword itself
+        }
+  
+        
+
+        Color g = Color.Gold * 0.3f;
+        g.A = 0;
+        spriteBatch.Draw(superExtender,
+           drawPos,
+              null, g * ExtraMath.Osc(0.6f, 1f, speed: 32), Projectile.rotation + rotationOffset, origin2, drawScale, spriteEffects, 0);
+
+        spriteBatch.RestartDefaults();
+    }
     public virtual void DrawSwordBeam(ref Color lightColor)
     {
         if (swordBeamLength <= 0)
@@ -913,11 +1007,10 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         spriteBatch.Restart(blendState: BlendState.AlphaBlend, effect: swordBeamShader.Effect);
 
 
-
         for (int a = 0; a < afterImageCache.Length; a++)
         {
             float interpolant = a;
-            interpolant /= (float)afterImageCache.Length;
+            interpolant /= afterImageCache.Length;
             interpolant = 1f - interpolant;
             Color drawColor2 = glowAfterImageColor;
             drawColor2 *= EasingFunction.InOutSine(interpolant);
@@ -932,11 +1025,11 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         }
 
 
-
-
         spriteBatch.Draw(texture,
            drawPos,
               null, drawColor, Projectile.rotation + rotationOffset, origin, drawScale, spriteEffects, 0);
+
+
 
         spriteBatch.RestartDefaults();
     }
@@ -953,14 +1046,14 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             _hasHitStop = true;
         }
 
-        foreach(var addon in MeleeEffectsPlayer.addons)
+        foreach (var addon in MeleeEffectsPlayer.addons)
         {
             addon.OnHitNPC(this, target, hit, damageDone);
         }
         float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
         float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
         Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, speedXa * 0, speedYa * 0,
-            ModContent.ProjectileType<BaseHitEffect>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+            ModContent.ProjectileType<BaseHitEffect>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 
 
     }
