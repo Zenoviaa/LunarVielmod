@@ -82,7 +82,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             Trailer = devilsPeak;
 
             swordBeamLength = 180;
-            outlineColor = Color.Lerp(Color.SkyBlue, Color.BlueViolet, 0.5f);
+            outlineColor = Color.White;
             glowAfterImageColor = Color.SkyBlue * 0.2f;
 
 
