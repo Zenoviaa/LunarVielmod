@@ -21,7 +21,7 @@ public class SmokyPendant : AbstractMeleeAddon
         base.AI(projectile);
         _traveledSwingRotation += MathF.Abs(projectile.Projectile.rotation - _oldSwingRot);
         _oldSwingRot = projectile.Projectile.rotation;
-        if (_traveledSwingRotation <= 0.1f)
+        if (_traveledSwingRotation <= 0.25f)
             return;
         _traveledSwingRotation = 0f;
         int index = (int)(projectile.Interpolant * projectile.swingTrailCache.Length) % projectile.swingTrailCache.Length;
@@ -30,7 +30,7 @@ public class SmokyPendant : AbstractMeleeAddon
         sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.DarkOrange, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f));
         sp.color *= 0.5f;
         sp.fadeToColor = Color.Black * 0.5f;
-        sp.Scale *= 0.8f;
+        sp.Scale *= 0.4f;
 
         index = (int)(projectile.Interpolant * projectile.swingTrailCache.Length) % projectile.swingTrailCache.Length;
         int nextIndex = index + 4;
@@ -47,7 +47,7 @@ public class SmokyPendant : AbstractMeleeAddon
             Color color = new Color(41, 43, 66);
             var sp2 = FaintSmokeParticle.SpawnInAlphaLayer(spawnPos + Main.rand.NextVector2Circular(32, 32), spawnVelocity * 0.02f);
             sp2.color = Color.Lerp(color, Color.White, 0.25f) * 0.5f;
-            sp2.Scale *= 1;
+            sp2.Scale *= 0.25f;
             sp2.fadeToColor = Color.Black * 0.5f;
         }
 
@@ -131,7 +131,7 @@ public class PoisonousSmokeBoom : ModProjectile,
                 smokeParitcle.dampening = 0.09f;
                 smokeParitcle.fadeToColor = Color.Black * 0.5f;
                 smokeParitcle.color = Color.DarkRed * 0.5f;
-                smokeParitcle.Scale *= 2f;
+                smokeParitcle.Scale *= 0.9f;
                 smokeParitcle.behindLayer = true;
             }
             for (int i = 0; i < 8; i++)
@@ -171,7 +171,7 @@ public class PoisonousSmoke : ModBuff
     public override void Update(NPC npc, ref int buffIndex)
     {
         base.Update(npc, ref buffIndex);
-        npc.lifeRegen -= 24;
+        npc.lifeRegen -= 64;
 
     }
 }

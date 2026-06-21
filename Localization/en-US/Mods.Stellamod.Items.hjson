@@ -11798,7 +11798,7 @@ FirstWind: {
 
 SmokyPendant: {
 	DisplayName: Smoky Pendant
-	Tooltip: ""
+	Tooltip: "Surrounds your melee weapon in a smoky poisonous aura that deals great damage!\nFinishing swings will explode enemies and set them ablaze"
 }
 
 BuildersGlove: {
