@@ -894,8 +894,14 @@ public class SwordoftheFliesSuperSword : BaseSwingProjectileV2
                 int combo = ComboIndex + 1;
                 int dir = comboPlayer.ComboDirection;
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Main.MouseWorld - Owner.Center, Projectile.type, Projectile.damage, Projectile.knockBack,
+                var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Main.MouseWorld - Owner.Center, Projectile.type, Projectile.damage, Projectile.knockBack,
                             Projectile.owner, ai2: combo, ai1: dir);
+               
+                if(p.ModProjectile is BaseSwingProjectileV2 proj)
+                {
+                    proj.isStaminaMove = isStaminaMove;
+                    proj.Projectile.netUpdate = true;
+                }
                 comboPlayer.IncreaseCombo();
             }
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<FliesSuperBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);

@@ -196,6 +196,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         base.SendExtraAI(writer);
         writer.Write(bounceTimer);
         writer.Write(isAfterImageProjectile);
+        writer.Write(isStaminaMove);
     }
     
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -203,6 +204,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         base.ReceiveExtraAI(reader);
         bounceTimer = reader.ReadSingle();
         isAfterImageProjectile = reader.ReadBoolean();
+        isStaminaMove = reader.ReadBoolean();
     }
 
     
@@ -619,6 +621,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             BaseSwingProjectileV2 swingProj = p.ModProjectile as BaseSwingProjectileV2;
             swingProj.isChildProjectile = true;
             swingProj.isAfterImageProjectile = true;
+            swingProj.isStaminaMove = isStaminaMove;
+            swingProj.Projectile.netUpdate = true;
         }
     }
     public void TrueCloneProjectile()
@@ -636,6 +640,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
                            Owner.whoAmI, ai2: combo, ai1: dir);
             BaseSwingProjectileV2 swingProj = p.ModProjectile as BaseSwingProjectileV2;
             swingProj.isChildProjectile = true;
+
         }
     }
     public void CloneProjectile()
