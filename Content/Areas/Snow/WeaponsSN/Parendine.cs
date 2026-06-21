@@ -83,13 +83,14 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, target.Center);
+            SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath with { Volume = 0.124f }, target.Center);
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
             if (Slam)
             {
                 //Hit Sound
                 SoundStyle parendineHitSound = AssetRegistry.Sounds.Melee.Parendine;
+                parendineHitSound.Volume = 0.3f;
                 parendineHitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(parendineHitSound, target.Center);
 
@@ -139,6 +140,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                 }
                 SoundStyle parendineHitSound = AssetRegistry.Sounds.Melee.Parendine2;
                 parendineHitSound.PitchVariance = 0.2f;
+                parendineHitSound.Volume = 0.2f;
                 SoundEngine.PlaySound(parendineHitSound, target.Center);
             }
             if (Main.rand.NextBool(3))

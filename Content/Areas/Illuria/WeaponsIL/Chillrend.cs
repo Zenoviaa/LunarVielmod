@@ -49,7 +49,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             base.DefineCombo();
 
             SwingV2Helper.AddGreatswordSwingStyle(this);
-            BlackFireShader blackFireShader = new BlackFireShader();
+            BlackFireOldShader blackFireShader = new BlackFireOldShader();
             blackFireShader.SetDefaults();
             blackFireShader.InnerColor = Color.Gray;
             blackFireShader.OuterColor = Color.Cyan;
@@ -149,7 +149,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             base.DefineCombo();
             SoundStyle swingSound1 = SoundRegistry.HeavySwordSlash1;
             swingSound1.PitchVariance = 0.5f;
-            BlackFireShader blackFireShader = new BlackFireShader();
+            BlackFireOldShader blackFireShader = new BlackFireOldShader();
             blackFireShader.SetDefaults();
             blackFireShader.InnerColor = Color.Gray;
             blackFireShader.OuterColor = Color.Cyan;

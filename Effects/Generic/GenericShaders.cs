@@ -2,6 +2,17 @@
 
 namespace Stellamod.Effects.Generic;
 
+public class AuraShader : CrystalShader<AuraShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+}
+
 public class BasicGlowTrailShader : CrystalShader<BasicGlowTrailShader>
 {
     public Matrix TransformMatrix

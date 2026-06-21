@@ -101,6 +101,7 @@ public class TulahalSlash : BaseSwingProjectileV2
         glowAfterImageColor = Color.Violet * 0.1f;
         //   useAfterImage = true;
         hitStopTime = EXTRA_UPDATE_COUNT * 8;
+        //bigSwingTrailOffset = 132;
     }
     private Color GetTrailColor(float completionRatio)
     {

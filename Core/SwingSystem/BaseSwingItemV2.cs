@@ -176,6 +176,8 @@ namespace Stellamod.Core.SwingSystem
                 if (p.ModProjectile is BaseSwingProjectileV2 swingV2)
                 {
                     comboPlayer.IncreaseCombo();
+                    swingV2.isStaminaMove = true;
+                    swingV2.Projectile.netUpdate = true;
                 }
             }
             else

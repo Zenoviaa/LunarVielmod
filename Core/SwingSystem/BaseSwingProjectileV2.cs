@@ -1,15 +1,19 @@
-﻿using ReLogic.Content;
+﻿using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Policy;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
@@ -37,11 +41,62 @@ public struct Bloom
     }
 }
 
+public class MeleeEffectsPlayer : ModPlayer
+{
+    public List<AbstractMeleeAddon> addons = new List<AbstractMeleeAddon>();
+    public int safunaiChainBonus;
+    public int steinWordBonus;
+    public float noProjectionDamageBonus;
+    public float projectionOnlyDamageBonus;
+    public bool noOwnerHitCheck;
+    public bool smokyPendant;
+
+    public override void ResetEffects()
+    {
+        base.ResetEffects();
+        noOwnerHitCheck = false;
+        safunaiChainBonus = 0;
+        noProjectionDamageBonus = 0f;
+        projectionOnlyDamageBonus = 0f;
+        steinWordBonus = 0;
+        smokyPendant = false;
+        addons ??= new List<AbstractMeleeAddon>();
+        addons.Clear();
+    }
+}
+
+public abstract class AbstractMeleeAddon : ModItem
+{
+    public sealed override void SetDefaults()
+    {
+        base.SetDefaults();
+        Item.DefaultToAccessory();
+    }
+    public override void UpdateAccessory(Player player, bool hideVisual)
+    {
+        base.UpdateAccessory(player, hideVisual);
+        player.GetModPlayer<MeleeEffectsPlayer>().addons.Add(this);
+    }
+
+    public virtual void DefineCombo(BaseSwingProjectileV2 projectile) { }
+    public virtual void OnSpawn(BaseSwingProjectileV2 projectile) { }
+    public virtual void AI(BaseSwingProjectileV2 projectile) { }
+    public virtual void OnModifyHitNPC(BaseSwingProjectileV2 projectile, NPC target, ref NPC.HitModifiers modifiers) { }
+    public virtual void OnHitNPC(BaseSwingProjectileV2 projectile, NPC target, NPC.HitInfo hit, int damageDone) { }
+    public virtual void PreDrawEffects(BaseSwingProjectileV2 projectile, ref Color lightColor) { }
+    public virtual void PostDrawEffects(BaseSwingProjectileV2 projectile, ref Color lightColor) { }
+}
+
+
 public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     ISwingProjectile
 {
     public static int SwingTrailCacheLength => 128;
     public static int AfterImageCacheLength => 16;
+
+    private Vector2 _hitboxStart;
+    private Vector2 _hitboxProjectionEnd;
+    private Vector2 _hitboxSwordEnd;
 
     private bool _hasInitializedRendering;
     private bool _hasInitialized;
@@ -82,6 +137,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public Color glowAfterImageColor;
     public bool drawCentered;
     public bool isChildProjectile;
+    public bool isAfterImageProjectile;
+    public bool isStaminaMove;
     public bool additive;
     public float bigSwingTrailOffset;
     public float? trailOffsetOverride;
@@ -92,9 +149,19 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
     public float bloomScale;
     public const int EXTRA_UPDATE_COUNT = 7;
-
+   public MeleeWeaponType MeleeWeaponType
+    {
+        get
+        {
+            var swingItem = Owner.HeldItem.ModItem as BaseSwingItemV2;
+            if (swingItem == null)
+                return MeleeWeaponType.Sword;
+            return swingItem.meleeWeaponType;
+        }
+    }
     //Default to the item sprite of the texture, we can just predraw if we need to change it
     public override string Texture => TextureRegistry.EmptyTexture;
+    private MeleeEffectsPlayer MeleeEffectsPlayer => Owner.GetModPlayer<MeleeEffectsPlayer>();
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -115,6 +182,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
         Projectile.DamageType = DamageClass.Melee;
+        Projectile.ownerHitCheck = true;
         trailVisibilityOffset = 0.3f;
 
         //We're using extra updates to ensure the sword doesn't just pass through things
@@ -122,16 +190,22 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         hitStopTime = EXTRA_UPDATE_COUNT * 2;
         SetDefaults2();
     }
+
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.Write(bounceTimer);
+        writer.Write(isAfterImageProjectile);
     }
+    
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         bounceTimer = reader.ReadSingle();
+        isAfterImageProjectile = reader.ReadBoolean();
     }
+
+    
 
     public virtual Asset<Texture2D> RequestHologramTexture()
     {
@@ -146,6 +220,11 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public virtual void DefineCombo()
     {
 
+    }
+
+    public void MakeFinisher(ISwing swing)
+    {
+        _swings[_swings.Count - 1] = swing;
     }
 
     public bool IsFinishingSwing()
@@ -175,7 +254,16 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         }
     }
 
-  
+
+    public override void OnSpawn(IEntitySource source)
+    {
+        base.OnSpawn(source);
+        foreach(var addon in MeleeEffectsPlayer.addons)
+        {
+            addon.OnSpawn(this);
+        }
+    }
+
     private void AI_Initialize()
     {
         if (!_hasInitialized)
@@ -191,7 +279,10 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             swingRotationCache = ArrayPool<float>.Shared.Rent(afterImageCacheLength);
             oldTime = ArrayPool<float>.Shared.Rent(cacheLength);
             DefineCombo();
-
+            foreach(var addon in MeleeEffectsPlayer.addons)
+            {
+                addon.DefineCombo(this);
+            }
             ISwing swing = GetSwing();
             swing.SetDirection((int)SwingDirection);
             float hitCount = swing.GetHitCount();
@@ -238,28 +329,106 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         return false;
     }
 
+
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
 
         //Check if the sword is colliding, this does a line check instead of terraria default box.
+
+        float collisionPoint = 0f;
+        bool check = Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), 
+            _hitboxStart, _hitboxProjectionEnd, 16, ref collisionPoint);
+        return check;
+    }
+
+    public bool IsThrust()
+    {
+        ISwing swing = GetSwing();
+        if (swing == null)
+            return false;
+
+        return swing is ThrustSwing;
+    }
+
+    public bool IsTouchingSword(Rectangle hitbox)
+    {
+        float collisionPoint = 0f;
+        bool isTouchingSword = Collision.CheckAABBvLineCollision(hitbox.TopLeft(), hitbox.Size(),
+            _hitboxStart, _hitboxSwordEnd, 16, ref collisionPoint);
+        return isTouchingSword;
+    }
+
+    public bool IsTouchingONLYProjection(Rectangle hitbox)
+    {
+        if (swordBeamLength <= 0)
+            return false;
+        float collisionPoint = 0f;
+        bool isTouchingSword = Collision.CheckAABBvLineCollision(hitbox.TopLeft(), hitbox.Size(),
+            _hitboxSwordEnd, _hitboxProjectionEnd, 16, ref collisionPoint);
+        return isTouchingSword;
+    }
+
+
+
+    public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitNPC(target, ref modifiers);
+
+        Rectangle hitbox = target.getRect();
+        if (IsTouchingSword(hitbox))
+        {
+            modifiers.FinalDamage += MeleeEffectsPlayer.noProjectionDamageBonus;
+            var sp = SparkleParticle.Spawn(target.Center, Vector2.Zero);
+            sp.fast = true;
+            sp.gravity = 0;
+            sp.Scale *= 0.6f;
+            sp.color *= 0.7f;
+        }
+
+        if (IsTouchingONLYProjection(hitbox))
+        {
+          
+            modifiers.FinalDamage += MeleeEffectsPlayer.projectionOnlyDamageBonus;
+            var sp = MoonSpiralParticle.Spawn(target.Center, Vector2.Zero);
+            sp.gravity = 0;
+            sp.Scale *= 0.6f;
+            sp.color *= 0.7f;
+            sp.fast = true;
+
+            FXUtil.GlowStretch(target.Center, Main.rand.NextVector2Circular(1, 1));
+        }
+
+        foreach(var addon in MeleeEffectsPlayer.addons)
+        {
+            addon.OnModifyHitNPC(this, target, ref modifiers);
+        }
+    }
+
+    private void UpdateHitbox()
+    {
+        if (isAfterImageProjectile)
+            swordBeamLength = 0;
         Texture2D texture = GetTexture();
-        float length = texture.Width / 2 + texture.Height / 2;
-        length *= 1.6f;
-        length += swordBeamLength / 2;
-        length += extraLength;
+        float swordLength = texture.Width / 2 + texture.Height / 2;
+        float edgeLength = swordLength;
+        edgeLength *= 1.6f;
+        edgeLength += swordBeamLength;
+        edgeLength += extraLength;
         float rotation = Projectile.rotation;
         rotation -= MathHelper.PiOver4;
-        Vector2 start = Projectile.Center - rotation.ToRotationVector2() * length;
-        Vector2 end = Projectile.Center + rotation.ToRotationVector2() * length;
-        float collisionPoint = 0f;
-        bool check = Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 16, ref collisionPoint);
-        return check;
+
+        Vector2 rotationVec = rotation.ToRotationVector2();
+        _hitboxStart = Projectile.Center - rotationVec * swordLength;
+        _hitboxSwordEnd = Projectile.Center + rotationVec * swordLength;
+        _hitboxProjectionEnd = Projectile.Center + rotationVec * edgeLength;
     }
 
     public override void AI()
     {
         base.AI();
-        
+        UpdateHitbox();
+        if (MeleeEffectsPlayer.noOwnerHitCheck)
+            Projectile.ownerHitCheck = false;
 
         //We want to initalize like this for better MP compatibility, using a timer might not always be seen on all clients
         AI_Initialize();
@@ -273,6 +442,13 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             Timer++;
         else
             HitstopTimer--;
+
+        foreach(AbstractMeleeAddon addon in MeleeEffectsPlayer.addons)
+        {
+            addon.AI(this);
+        }
+
+        //SmokyPendantEffect();
         ISwing swing = GetSwing();
 
         //Now we need to calculate the time/interpolant for this swinging
@@ -293,6 +469,9 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         {
             _fade += 0.1f;
         }
+        if (isAfterImageProjectile)
+            if (_fade > 0.5f)
+                _fade = 0.5f;
         _canHurtThings = swing.CanHurt(this);
 
         //For the purposes of netcode,
@@ -322,19 +501,13 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             point = Vector2.Transform(point, translationMatrix);
         }
 
-
-
-
         Vector2 normal = Projectile.velocity.SafeNormalize(Vector2.Zero);
         Vector2 bigO = normal * bigSwingTrailOffset;
-
-
         for (int t = 0; t < bigSwingTrailCache.Length; t++)
         {
             ref Vector2 point = ref bigSwingTrailCache[t];
             point = Vector2.Transform(point, translationMatrix);
             point += bigO;
-
         }
     }
 
@@ -399,6 +572,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
         if (Timer <= 3)
             return false;
+        foreach (var addon in MeleeEffectsPlayer.addons)
+            addon.PreDrawEffects(this, ref lightColor);
         //Draw the texture, by 
         if (useAfterImage)
             DrawAfterImage(ref lightColor, OldCenterPos);
@@ -414,24 +589,38 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
         DrawSwordBeam(ref lightColor);
         DrawSwordSprite(ref lightColor);
+        foreach (var addon in MeleeEffectsPlayer.addons)
+            addon.PostDrawEffects(this, ref lightColor);
         return false;
     }
 
     private void DebugDrawHitboxCheck()
     {
-        Texture2D texture = GetTexture();
-        float length = texture.Width / 2 + texture.Height / 2;
-        length *= 1.6f;
-        length += swordBeamLength / 2;
-        length += extraLength;
-        float rotation = Projectile.rotation;
-        rotation -= MathHelper.PiOver4;
-        Vector2 start = Projectile.Center - rotation.ToRotationVector2() * length;
-        Vector2 end = Projectile.Center + rotation.ToRotationVector2() * length;
-        Primitives2D.DrawLine(Main.spriteBatch, start - Main.screenPosition, end - Main.screenPosition, Color.Green);
+        Primitives2D.DrawLine(Main.spriteBatch, _hitboxStart - Main.screenPosition, _hitboxSwordEnd - Main.screenPosition, Color.Green);
+    }
+    private void DebugDrawHitboxCheck2()
+    {
+        Primitives2D.DrawLine(Main.spriteBatch, _hitboxStart - Main.screenPosition, _hitboxProjectionEnd - Main.screenPosition, Color.Blue);
 
     }
+    public void AfterImageProjectile()
+    {
+        if (isChildProjectile)
+            return;
 
+        if (Main.myPlayer == Projectile.owner)
+        {
+            ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
+            int combo = (int)(ComboIndex);
+            int dir = comboPlayer.ComboDirection;
+            var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
+                Type, (int)(Projectile.damage * 0.5f), Projectile.knockBack,
+                           Owner.whoAmI, ai2: combo, ai1: dir);
+            BaseSwingProjectileV2 swingProj = p.ModProjectile as BaseSwingProjectileV2;
+            swingProj.isChildProjectile = true;
+            swingProj.isAfterImageProjectile = true;
+        }
+    }
     public void TrueCloneProjectile()
     {
         if (isChildProjectile)
@@ -611,6 +800,11 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
     public virtual void DrawSwordSprite(ref Color lightColor)
     {
+        if (Keyboard.GetState().IsKeyDown(Keys.I))
+            DebugDrawHitboxCheck();
+        if (Keyboard.GetState().IsKeyDown(Keys.U))
+            DebugDrawHitboxCheck2();
+
         Texture2D texture = GetTexture();
         int frameHeight = texture.Height / Main.projFrames[Projectile.type];
         int startY = frameHeight * Projectile.frame;
@@ -618,6 +812,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
         Vector2 origin = sourceRectangle.Size() / 2f;
         Color drawColor = Projectile.GetAlpha(lightColor);
+        if (isAfterImageProjectile)
+            drawColor *= 0.5f;
 
         SpriteBatch spriteBatch = Main.spriteBatch;
         float drawScale = 1 + growScale;
@@ -748,6 +944,11 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
             HitstopTimer = hitStopTime;
             _hasHitStop = true;
+        }
+
+        foreach(var addon in MeleeEffectsPlayer.addons)
+        {
+            addon.OnHitNPC(this, target, hit, damageDone);
         }
         float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
         float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;

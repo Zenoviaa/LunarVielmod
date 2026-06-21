@@ -21,32 +21,39 @@ namespace Stellamod.Core.Bases
         {
             if (isSafunai)
             {
+                SoundStyle safunai = AssetRegistry.Sounds.Melee.Safunais1;
                 _combo++;
                 if (_combo == 1)
                 {
-                    SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais1, position);
-
+                    safunai = AssetRegistry.Sounds.Melee.Safunais1;
                 }
                 if (_combo == 2)
                 {
-                    SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais2, position);
+                    safunai = AssetRegistry.Sounds.Melee.Safunais2;
+ //                   SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais2, position);
 
                 }
                 if (_combo == 3)
                 {
-                    SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais1, position);
+                    safunai = AssetRegistry.Sounds.Melee.Safunais1;
+                    //SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais1, position);
 
                 }
                 if (_combo == 4)
                 {
-                    SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais2, position);
+                    safunai = AssetRegistry.Sounds.Melee.Safunais2;
+                    //SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais2, position);
 
                 }
                 if (_combo == 5)
                 {
                     _combo = 0;
-                    SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais3, position);
+                    safunai = AssetRegistry.Sounds.Melee.Safunais3;
+                 //   SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais3, position);
                 }
+                safunai.PitchVariance = 0.25f;
+                safunai.Volume = 0.3f;
+                SoundEngine.PlaySound(safunai, position);
 
                 float distanceMult = Main.rand.NextFloat(0.8f, 1.2f);
                 float curvatureMult = 0.7f;
@@ -63,9 +70,11 @@ namespace Stellamod.Core.Bases
                     modProj.Flip = _combo % 2 == 1;
                     modProj.Slam = slam;
                     modProj.PreSlam = _combo % 5 == 3;
+                    modProj.Parent = true;
                     modProj.Projectile.netUpdate = true;
                 }
 
+         
                 return false;
             }
             else

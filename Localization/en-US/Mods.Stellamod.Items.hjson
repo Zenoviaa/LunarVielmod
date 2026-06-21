@@ -11757,3 +11757,97 @@ VoidArrowItem: {
 	DisplayName: Void Arrow Item
 	Tooltip: ""
 }
+
+ExcalibursPhase: {
+	DisplayName: Excalibur's Phase
+	Tooltip: Melee weapons now phase through walls
+}
+
+GhastlyGlove: {
+	DisplayName: Ghastly Glove
+	Tooltip: ""
+}
+
+BurningGlove: {
+	DisplayName: Burning Glove
+	Tooltip: ""
+}
+
+RainbowShield: {
+	DisplayName: Rainbow Shield
+	Tooltip: When enemies touch this shield, they become engulfed with love 10 seconds and fight for you!
+}
+
+WOWanizer: {
+	DisplayName: WOWanizer
+	Tooltip:
+		'''
+		"Not to be confused with womanizer, that’s me of course", 
+		..increases the amount of words you can get off a stein dash by 1 every time!
+		'''
+}
+
+FirstWind: {
+	DisplayName: First Wind
+	Tooltip: "A secondary melee weapons comes from behind you and deals half your weapon's damage!\nIt does not copy stamina attacks..."
+}
+
+SmokyPendant: {
+	DisplayName: Smoky Pendant
+	Tooltip: ""
+}
+
+BuildersGlove: {
+	DisplayName: Builder's Glove
+	Tooltip: Your melee weapon (no projections) do 50% more damage!
+}
+
+DaedenShield: {
+	DisplayName: Daeden Shield
+	Tooltip: While an enemy is touching your shield, they will do 75% less damage!
+}
+
+ChainAdder: {
+	DisplayName: Chain Adder
+	Tooltip: Adds 1 extra chain to safunais!
+}
+
+MoonramShield: {
+	DisplayName: Moonram Shield
+	Tooltip: ""
+}
+
+MoonSlasher: {
+	DisplayName: Moon Slasher
+	Tooltip: ""
+}
+
+ThrowingFinish: {
+	DisplayName: Throwing Finish
+	Tooltip: ""
+}
+
+BlizzardPendant: {
+	DisplayName: Blizzard Pendant
+	Tooltip: ""
+}
+
+FallenBladesExtender: {
+	DisplayName: Fallen Blades Extender
+	Tooltip: ""
+}
+
+GhastlyShield: {
+	DisplayName: Ghastly Shield
+	Tooltip: ""
+}
+
+SpiritualSong: {
+	DisplayName: Spiritual Song
+	Tooltip: Your melee weapon's projections do 25% more damage!
+}
+
+StarStorm: {
+	DisplayName: Star Storm
+	Tooltip: ""
+}

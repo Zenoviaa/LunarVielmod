@@ -45,7 +45,28 @@ namespace Stellamod.Helpers
         {
             return (tiles * 16);
         }
+        public static NPC[] FindNPCsInRange(Vector2 position, float maxDetectDistance)
+        {
+            List<NPC> npcs = new List<NPC>();
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+            foreach(var target in Main.ActiveNPCs)
+            {
+                if (target.CanBeChasedBy())
+                {
+                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, position);
 
+                    // Check if it is within the radius
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        npcs.Add(target);
+                    }
+                }
+            }
+
+            return npcs.ToArray();
+        }
         public static NPC[] FindNPCsInRange(Vector2 position, float maxDetectDistance, int npcType)
         {
             List<NPC> npcs = new List<NPC>();

@@ -202,7 +202,13 @@ namespace Stellamod.Core.SwingSystem
             float easedInterpolant = Easing(time);
             if (!_hasPlayedSound && easedInterpolant >= 0.35f && Sound != null)
             {
-                SoundEngine.PlaySound(Sound, position);
+                var sound = Sound;
+                var soundInstance = sound.Value;
+                if (!swingProjectile.isAfterImageProjectile)
+                {
+                    SoundEngine.PlaySound(soundInstance, position);
+                }
+              
                 _hasPlayedSound = true;
             }
             //Calculate the offset at this time

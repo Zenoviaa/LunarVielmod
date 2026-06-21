@@ -1182,3 +1182,28 @@ StatInsourceBuff: {
 	DisplayName: Stat Insource Buff
 	Description: Mods.Stellamod.Buffs.StatInsourceBuff.Description
 }
+
+PoisonousSmoke: {
+	DisplayName: Poisonous Smoke
+	Description: Mods.Stellamod.Buffs.PoisonousSmoke.Description
+}
+
+SkinNBones: {
+	DisplayName: Skin N Bones
+	Description: Mods.Stellamod.Buffs.SkinNBones.Description
+}
+
+BlizzardChill: {
+	DisplayName: Blizzard Chill
+	Description: Mods.Stellamod.Buffs.BlizzardChill.Description
+}
+
+BlizzardFreeze: {
+	DisplayName: Blizzard Freeze
+	Description: Mods.Stellamod.Buffs.BlizzardFreeze.Description
+}
+
+GhastlyWeakness: {
+	DisplayName: Ghastly Weakness
+	Description: Mods.Stellamod.Buffs.GhastlyWeakness.Description
+}

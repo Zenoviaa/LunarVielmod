@@ -229,6 +229,8 @@ namespace Stellamod.Core.LunarLightingSystem
                 interpolatedColor = sunColors[0];
             if (!Main.LocalPlayer.ZoneOverworldHeight && !Main.LocalPlayer.ZoneSkyHeight)
                 interpolatedColor = SmoothedBackLightColor;
+            if (ModContent.GetInstance<DomainExpansionManager>().hoveringPlatform)
+                interpolatedColor = Color.White;
             return interpolatedColor;
         }
         private void RenderSunLight()

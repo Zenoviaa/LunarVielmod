@@ -12,8 +12,10 @@ public class MoonSpiralParticle : Particle<MoonSpiralParticle>
     public Vector2 stretchScale;
     public float gravity;
     public float dampening;
+    public bool fast;
     public override void OnSpawn()
     {
+        fast = false;
         gravity = 0f;
         Frame = new Rectangle(0,
             FRAME_HEIGHT * Main.rand.Next(MAX_FRAME_COUNT),
@@ -27,7 +29,8 @@ public class MoonSpiralParticle : Particle<MoonSpiralParticle>
         Velocity *= 1.0f - dampening;
         Rotation += 0.2f;
         color *= 0.99f;
-
+        if (fast)
+            Scale *= 0.94f;
         fadeIn++;
         if (fadeIn > 180 || Scale < 0.1f)
             active = false;

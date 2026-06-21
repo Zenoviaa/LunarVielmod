@@ -1,11 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Stellamod.Core.Effects;
+﻿using Stellamod.Core.Effects;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Helpers;
 using System;
 using System.IO;
 using Terraria;
@@ -53,6 +49,7 @@ namespace Stellamod.Core.Bases
         public bool Flip = false;
         public bool Slam = false;
         public bool PreSlam = false;
+        public bool Parent;
 
         public Vector2 CurrentBase = Vector2.Zero;
 
@@ -132,7 +129,32 @@ namespace Stellamod.Core.Bases
             Vector2 position = Owner.MountedCenter;
             float progress = ++Timer / SwingTime; //How far the projectile is through its swing
             if (slamTimer == 5)
+            {
+
                 SoundEngine.PlaySound(SoundID.NPCDeath7, Projectile.Center);
+            }
+
+            if (Timer == 10 && Parent && this.OwnedByLocalClient())
+            {
+                MeleeEffectsPlayer meleeEffectsPlayer = Owner.GetModPlayer<MeleeEffectsPlayer>();
+                for (int i = 0; i < meleeEffectsPlayer.safunaiChainBonus; i++)
+                {
+                    float curvatureMult = 0.7f;
+                    Vector2 direction = Projectile.velocity.RotatedBy(Main.rand.NextFloat(-0.2f, 0.2f));
+                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), position, direction, Type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+
+                    if (proj.ModProjectile is BaseSafunaiProjectile modProj)
+                    {
+                        modProj.SwingTime = SwingTime;
+                        modProj.SwingDistance = SwingDistance;
+                        modProj.Curvature = 0.33f * curvatureMult;
+                        modProj.Flip = !Flip;
+                        modProj.Slam = Slam;
+                        modProj.PreSlam = PreSlam;
+                        modProj.Projectile.netUpdate = true;
+                    }
+                }
+            }
 
             Projectile.Center = position + GetSwingPosition(progress);
             _oval.CalculateTrailingPoints(progress, Projectile.velocity, ref swingTrailCache);
@@ -192,7 +214,7 @@ namespace Stellamod.Core.Bases
             scaleMult = scaleMult * 1.25f;
             spriteBatch.Draw(projTexture, projBottom - Main.screenPosition, null, lightColor, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
 
-       
+
             float glowProgress = EasingFunction.QuadraticBump(Timer / SwingTime);
             Color glowColor2 = Color.White * glowProgress;
             glowColor2.A = 0;
