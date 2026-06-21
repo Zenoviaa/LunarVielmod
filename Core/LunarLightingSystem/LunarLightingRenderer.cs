@@ -128,31 +128,43 @@ namespace Stellamod.Core.LunarLightingSystem
             On_FilterManager.EndCapture += ApplyLighting;
             On_Main.CheckMonoliths += RenderToLightMaps;
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
+            On_Main.DoDraw_Tiles_Solid += ApplySSAO;
         }
 
-        public override void PostDrawTiles()
+        private void ApplySSAO(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
         {
-            base.PostDrawTiles();
+            orig(self);
+            ApplySSAO();
+        }
+
+        private void ApplySSAO()
+        {
             SSAOShader ssaoShader = ShaderContent.GetInstance<SSAOShader>();
             ssaoShader.StepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
 
             List<Vector2> offsets = new List<Vector2>(16);
             UnifiedRandom random = new UnifiedRandom(1337);
-            for(int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
             {
                 offsets.Add(random.NextVector2Circular(16, 16));
             }
 
             ssaoShader.Offsets = offsets.ToArray();
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, 
-                ssaoShader.Effect, 
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                ssaoShader.Effect,
                 Main.GameViewMatrix.TransformationMatrix);
 
-            if(!Keyboard.GetState().IsKeyDown(Keys.L))
+            if (!Keyboard.GetState().IsKeyDown(Keys.L))
                 spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, Color.White);
 
             spriteBatch.End();
+        }
+
+        public override void PostDrawTiles()
+        {
+            base.PostDrawTiles();
+
         }
         private void Test()
         {

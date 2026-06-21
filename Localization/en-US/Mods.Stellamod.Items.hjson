@@ -4569,7 +4569,7 @@ MushyExtenderPowder: {
 
 TomedDustingFlames: {
 	DisplayName: Tomed Dusting Flames
-	Tooltip: "Your igniter card explosions have a 10% chance to create a fire-y boom!"
+	Tooltip: Your igniter card explosions have a 10% chance to create a fire-y boom!
 }
 
 TomedDustingMagic: {
@@ -11888,5 +11888,5 @@ ThePiercer: {
 
 LuckyCardWinner: {
 	DisplayName: Lucky Card Winner
-	Tooltip: "You have a 25% chance for your igniter explosions to explode again"
+	Tooltip: You have a 25% chance for your igniter explosions to explode again
 }
