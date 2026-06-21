@@ -49,9 +49,7 @@ public static class DrawUtilities
             {
                 float d2 = Vector2.DistanceSquared(cur, prevAddedPoint);
                 prevAddedPoint = cur;
-             
-                if(d2 > 2)
-                    prunedPoints.Add(cur);
+                prunedPoints.Add(cur);
             }
 
         }

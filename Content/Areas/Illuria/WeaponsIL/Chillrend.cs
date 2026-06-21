@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
@@ -15,6 +16,7 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -45,38 +47,47 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
     {
         private NPCSucker _npcSucker;
         private bool _hit;
-  
+      private FireTrailRenderer _fireTrailRenderer;
         public override void DefineCombo()
         {
             base.DefineCombo();
 
             SwingV2Helper.AddGreatswordSwingStyle(this);
-            BlackFireOldShader blackFireShader = new BlackFireOldShader();
+            BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
+            blackFireShader.PrimaryTexture2 = TrailRegistry.BeamTrail;
             blackFireShader.InnerColor = Color.White;
             blackFireShader.OuterColor = Color.Cyan;
+            blackFireShader.Distortion = 0.35f;
+            blackFireShader.InnerEmitColor = Color.White * 0.2f;
+            blackFireShader.OuterEmiteColor = Color.Blue;
+
 
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return MathHelper.SmoothStep(8, 100, interpolant);
+                    return MathHelper.SmoothStep(8, 54, interpolant);
                 },
                 TrailColorFunction = (interpolant) =>
                 {
-                    return Color.Lerp(Color.White, Color.Transparent, EasingFunction.InExpo(interpolant));
+                    return DrawUtilities.InterpolateColorArray(interpolant, Color.Purple, Color.Blue, Color.SkyBlue, Color.White);
+                    return Color.Lerp(Color.Blue, Color.White, interpolant);
                 }
 
             };
+
+            additive = true;
             Trailer = devilsPeak;
+
             swordBeamLength = 180;
             outlineColor = Color.Lerp(Color.SkyBlue, Color.BlueViolet, 0.5f);
-            glowAfterImageColor = Color.SkyBlue * 0.1f;
+            glowAfterImageColor = Color.SkyBlue * 0.2f;
 
 
             //Bloom
-            additive = true;
+      //      additive = true;
             useBloom = true;
             bloom.innerBloomColor = Color.SkyBlue;
             bloom.outerBloomColor = Color.DarkBlue;
@@ -87,12 +98,13 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         }
         private float GetBloomWidth(float ratio)
         {
-            return MathHelper.SmoothStep(8, 153, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+            return MathHelper.SmoothStep(8, 64, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
         }
         private Color GetBloomColor(float ratio)
         {
-            return Color.Lerp(Color.SkyBlue * 0.6f, Color.Transparent, EasingFunction.InExpo(ratio));
+            return Color.Lerp(Color.SkyBlue * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
         }
+
 
         public override Asset<Texture2D> RequestHologramTexture()
         {
@@ -168,29 +180,43 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             base.DefineCombo();
             SoundStyle swingSound1 = SoundRegistry.HeavySwordSlash1;
             swingSound1.PitchVariance = 0.5f;
-            BlackFireOldShader blackFireShader = new BlackFireOldShader();
+            BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
-            blackFireShader.InnerColor = Color.Gray;
+            blackFireShader.PrimaryTexture2 = TrailRegistry.BeamTrail;
+            blackFireShader.InnerColor = Color.White;
             blackFireShader.OuterColor = Color.Cyan;
+            blackFireShader.Distortion = 0.35f;
+            blackFireShader.InnerEmitColor = Color.White * 0.2f;
+            blackFireShader.OuterEmiteColor = Color.Blue;
+
+
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.InOutSine(interpolant) * 186 * EasingFunction.InOutSine(1f - Interpolant);
+                    return MathHelper.SmoothStep(8, 54, interpolant);
                 },
                 TrailColorFunction = (interpolant) =>
                 {
-                    Color lerp1 = Color.Lerp(Color.DarkViolet, Color.SkyBlue, interpolant);
-                    return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+                    return DrawUtilities.InterpolateColorArray(interpolant, Color.Purple, Color.Blue, Color.SkyBlue, Color.White);
                 }
 
             };
+
+            additive = true;
+            Trailer = devilsPeak;
+
             swordBeamLength = 180;
             outlineColor = Color.Cyan;
             glowAfterImageColor = Color.SkyBlue * 0.1f;
             useAfterImage = false;
             Trailer = devilsPeak;
+            useBloom = true;
+            bloom.innerBloomColor = Color.SkyBlue;
+            bloom.outerBloomColor = Color.DarkBlue;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
 
             Add(new OvalSwing
             {
@@ -206,6 +232,14 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
         public float thrustSpeed = 5;
         public float stabRange;
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(8, 64, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            return Color.Lerp(Color.SkyBlue * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
+        }
 
         public override Asset<Texture2D> RequestHologramTexture()
         {
