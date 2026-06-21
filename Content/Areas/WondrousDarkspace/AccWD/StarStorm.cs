@@ -14,7 +14,8 @@ public class StarStorm : AbstractMeleeAddon
         base.AI(projectile);
         if (!projectile.OwnedByLocalClient())
             return;
-
+        if (projectile.MeleeWeaponType != Core.Bases.MeleeWeaponType.Scythe)
+            return;
         if (projectile.Timer % 24 == 0)
         {
             var proj = projectile.Projectile;
@@ -78,10 +79,11 @@ public class StarStormDust : ModProjectile,
     }
     private void DrawOutline(SpriteBatch sb)
     {
+        /*
         SpritebatchDrawer smokeDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         smokeDrawer.color = Color.Yellow * Alpha * ExtraMath.Osc(0.6f, 1f, speed: 16, Projectile.identity);
         smokeDrawer.color.A = 0;
-        Main.spriteBatch.Draw(smokeDrawer);
+        Main.spriteBatch.Draw(smokeDrawer);*/
     }
 
     public override void OnKill(int timeLeft)

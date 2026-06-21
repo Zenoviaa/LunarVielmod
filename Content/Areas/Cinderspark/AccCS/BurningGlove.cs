@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS;
 
 public class BurningGlove : AbstractMeleeAddon
 {
+    private Dictionary<int, (float, float)> _fireTimer = new Dictionary<int, (float, float)>();
     private Dictionary<int, bool> _hasShotSwingProj = new Dictionary<int, bool>();
     public override void OnSpawn(BaseSwingProjectileV2 projectile)
     {
@@ -26,7 +27,14 @@ public class BurningGlove : AbstractMeleeAddon
             _hasShotSwingProj[id] = false;
         else
             _hasShotSwingProj.Add(id, false);
+
+
+        if (_fireTimer.ContainsKey(id))
+            _fireTimer[id] = (0, 0);
+        else
+            _fireTimer.Add(id, (0, 0));
     }
+
     
     public override void AI(BaseSwingProjectileV2 projectile)
     {
@@ -35,12 +43,22 @@ public class BurningGlove : AbstractMeleeAddon
             return;
         var proj = projectile.Projectile;
         int id = projectile.Projectile.identity;
-        if (projectile.Timer % 28 == 0)
-        {
 
-            Projectile.NewProjectile(proj.GetSource_FromAI(), proj.Center, proj.rotation.ToRotationVector2() * 12,
+        if (_fireTimer.ContainsKey(id))
+        {
+            (float oldRot, float traveled) = _fireTimer[id];
+            traveled += MathF.Abs( proj.rotation - oldRot);
+            oldRot = proj.rotation;
+
+            if(traveled >= 0.9f)
+            {
+                Projectile.NewProjectile(proj.GetSource_FromAI(), proj.Center, proj.rotation.ToRotationVector2() * 14,
                 ModContent.ProjectileType<BurningGloveFlamethrower>(), (int)(proj.damage * 0.1f), proj.knockBack, proj.owner);
+                traveled = 0;
+                _fireTimer[id] = (oldRot, traveled);
+            }
         }
+
         if (!projectile.IsThrust())
             return;
 
@@ -52,7 +70,7 @@ public class BurningGlove : AbstractMeleeAddon
             for(int i = 0; i < 2; i++)
             {
                 Projectile.NewProjectile(projectile.Projectile.GetSource_FromAI(), projectile.Owner.Center,
-                              projectile.Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(0.1) * 15, ModContent.ProjectileType<MoltenFireball>(),
+                              projectile.Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(0.1) * 15, ModContent.ProjectileType<MoltenManaBlast>(),
                               (int)(projectile.Projectile.damage * 0.45f), projectile.Projectile.knockBack,
                               projectile.Projectile.owner);
             }
@@ -88,11 +106,15 @@ public class BurningGloveFlamethrower : ModProjectile
         Projectile.usesIDStaticNPCImmunity = true;
         Projectile.tileCollide = false;
         Projectile.timeLeft = (int)LifeTime;
+        Projectile.light = 0.7f;
     }
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        return ProjectileHelper.OldPosColliding(IncineratorPos, projHitbox, targetHitbox, 64);
+        bool? e = base.Colliding(projHitbox, targetHitbox);
+        if (e.HasValue && e.Value)
+            return true;
+        return ProjectileHelper.OldPosColliding(IncineratorPos, projHitbox, targetHitbox, 16);
     }
     public override bool ShouldUpdatePosition()
     {
@@ -101,21 +123,9 @@ public class BurningGloveFlamethrower : ModProjectile
 
     public override void AI()
     {
-        float numPoints = NumPoints;
-        Vector2 start = Projectile.Center;
-        Vector2 end = start + Projectile.velocity * 100;
-
-        float progress = Timer / LifeTime;
-        float easeOut = EasingFunction.InOutSine(progress);
-        start = Vector2.Lerp(start, end, easeOut * 0.5f);
-        for (int i = 0; i < numPoints; i++)
-        {
-            float f = i;
-            float ratio = f / numPoints;
-            Vector2 point = Vector2.Lerp(start, end, ratio);
-            IncineratorPos[i] = point;
-        }
-
+        ProjectileID.Sets.TrailCacheLength[Type] = 32;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
+        IncineratorPos = Projectile.oldPos;
         Timer++;
         if (Timer == 1 && Main.rand.NextBool(8))
         {
@@ -123,7 +133,8 @@ public class BurningGloveFlamethrower : ModProjectile
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
         }
 
-        //   Lighting.AddLight(Projectile.Center + Projectile.velocity * 64, TorchID.Torch);
+        Projectile.velocity = Projectile.velocity.RotatedBy(0.12f);
+        //   Lighting.AddLight(Projectile.Center + Projectile.velocity * 64, TorchID.Torch); 
         Projectile.rotation += 0.05f;
     }
 
@@ -140,26 +151,12 @@ public class BurningGloveFlamethrower : ModProjectile
 
     private float WidthFunction(float completionRatio)
     {
-        float width = 300;
-        float w = MathHelper.SmoothStep(16, width, completionRatio);
-        float o = MathHelper.Lerp(1f, 0f, EasingFunction.InCirc(completionRatio));
-        float progress = Timer / LifeTime;
-        float o2 = MathHelper.Lerp(1f, 2f, progress);
-        float i = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(progress));
-        return w * o * o2 * i;
+        return MathHelper.Lerp(56, 0, completionRatio) * EasingFunction.QuadraticBump(Timer / LifeTime);
     }
 
     private Color ColorFunction(float completionRatio)
     {
-        Color tipColor = Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
-        Color finalColor = Color.Lerp(Color.Red, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
-        Color finalColor2 = Color.Lerp(Color.White, finalColor, EasingFunction.QuadraticBump(completionRatio));
-        finalColor2 *= EasingFunction.QuadraticBump(completionRatio);
-        float progress = Timer / LifeTime;
-        float o2 = MathHelper.Lerp(1f, 0f, progress);
-        finalColor2 *= o2;
-        finalColor2 *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(completionRatio));
-        return finalColor2;
+        return Color.White;
     }
     public float SmokeWidthFunction(float completionRatio)
     {
@@ -191,29 +188,60 @@ public class BurningGloveFlamethrower : ModProjectile
         float i = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(progress));
         return w * o * o2 * i;
     }
-
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(56, 8, ratio) * 1.5f * EasingFunction.QuadraticBump(Timer / LifeTime); ;
+    }
+    private Color GetBloomColor(float ratio)
+    {
+        return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
+    }
     private void DrawMainShader(Vector2[] oldPos)
     {
-        BlackFireOldShader blackFireShader = BlackFireOldShader.Instance;
-        TrailDrawer.Draw(Main.spriteBatch, oldPos, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
+        BlackFireShader blackFireShader = new BlackFireShader();
+        blackFireShader.SetDefaults();
+        TrailDrawer.Draw(Main.spriteBatch, oldPos, ColorFunction, WidthFunction, blackFireShader, Projectile.Size * 0.5f);
 
-        var shader = RichLaserShader.Instance;
-        shader.LaserColor = Color.Yellow * 0.2f;
-        shader.InnerColor = Color.Lerp(Color.Yellow, Color.Red, 0.75f) * 0.2f;
-        shader.OuterColor = Color.Yellow * 0.2f;
-        shader.LaserTexture = TrailRegistry.Beamlight;
-        shader.BloomTexture = TrailRegistry.SmallWhispyTrail;
-        TrailDrawer.Draw(Main.spriteBatch, oldPos, ColorFunction2, WidthFunction2, shader);
-
+        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
+        bloomTrailShader.InnerColor = Color.Yellow;
+        bloomTrailShader.OuterColor = Color.Red;
+        TrailDrawer.Draw(Main.spriteBatch, oldPos, GetBloomColor, GetBloomWidth, bloomTrailShader, Projectile.Size * 0.5f);
     }
 
     private void DrawPixelatedFlames(GraphicsDevice graphicsDevice)
     {
         DrawMainShader(IncineratorPos);
     }
+    private void DrawPixelatedCore(SpriteBatch sb, Vector2 screenPos)
+    {
+        float alpha = EasingFunction.QuadraticBump(Timer / LifeTime);
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        Vector2 drawPos = Projectile.Center - Main.screenPosition;
+        Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+        Vector2 glowDrawOrigin = glowMask.Size() / 2f;
+        Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
+        glowColor.A = 0;
+        spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.15f * alpha, SpriteEffects.None, 0);
+
+        Color innerGlowColor = Color.Goldenrod;
+        innerGlowColor.A = 0;
+        spriteBatch.Draw(glowMask, drawPos, null, innerGlowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.1f * alpha, SpriteEffects.None, 0);
+
+        // spriteBatch.RestartDefaults();
+
+
+        glowMask = AssetManager.GlowMask.SpiralVortex.Value;
+        glowDrawOrigin = glowMask.Size() / 2f;
+        glowColor = Color.Red * 0.3f;
+        glowColor.A = 0;
+        spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.3f * alpha, SpriteEffects.None, 0);
+    }
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedFlames, DrawLayer.OverNPCsWithOutline);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedCore, DrawLayer.OverNPCsWithOutline);
+
+
         return false;
     }
 }

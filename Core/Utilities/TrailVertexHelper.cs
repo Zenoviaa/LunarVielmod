@@ -99,11 +99,6 @@ namespace Stellamod.Core.Utilities
                 Vector2 pos1 = trailingPoints[i];
                 Vector2 pos2 = trailingPoints[i + 1];
 
-                //Cull trail points that are too far away from each other
-                Vector2 diff = pos2 - pos1;
-                if (diff.Length() > 1000)
-                    continue;
-
                 float uv = i / pointCount;
                 float uv2 = (i + 1) / pointCount;
 
@@ -168,9 +163,6 @@ namespace Stellamod.Core.Utilities
 
                 Vector2 pos1 = trailingPoints[i];
                 Vector2 pos2 = trailingPoints[i + 1];
-                Vector2 diff = pos2 - pos1;
-                if (diff.Length() > 1000)
-                    continue;
 
                 float uv = i / (float)trailingPoints.Length;
                 float uv2 = (i + 1) / (float)trailingPoints.Length;

@@ -1,9 +1,10 @@
 ﻿using ReLogic.Content;
 using System;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
-using System;
 
 namespace Stellamod.Helpers;
 
@@ -30,6 +31,28 @@ public static class DrawUtilities
     public delegate float GetTrailWidth(float completionRatio);
 
 
+    public static Vector2[] PruneFarPoints(Vector2[] oldPos)
+    {
+
+        List<Vector2> prunedPoints = new List<Vector2>();
+        for (int i = 0; i < oldPos.Length - 1; i++)
+        {
+            Vector2 cur = oldPos[i];
+            Vector2 next = oldPos[i + 1];
+            float diff = Vector2.DistanceSquared(cur, next);
+            if (diff > 10000)
+            {
+                break;
+            }
+            else
+            {
+                prunedPoints.Add(cur);
+            }
+
+        }
+return prunedPoints.ToArray();
+
+    }
     /// <summary>
     /// Takes in a value between 0-1 and interpolates between colors throughout the input array
     /// </summary>

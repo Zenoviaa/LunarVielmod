@@ -140,6 +140,10 @@ namespace Stellamod.Common.Shaders
             bool useSmoothing= true,
             Vector2? offset = null)
         {
+            oldPos = DrawUtilities.PruneFarPoints(oldPos);
+            if (oldPos.Length <= 2)
+                return new VertexPositionColorTexture[4];
+
             TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
             Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
             float numPoints = oldPos.Length * 2;
@@ -190,8 +194,14 @@ namespace Stellamod.Common.Shaders
             Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
             float numPoints = oldPos.Length * 2;
 
-            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+            oldPos = DrawUtilities.PruneFarPoints(oldPos);
+            if (oldPos.Length <= 2)
+                return;
 
+            numPoints = oldPos.Length * 2;
+
+            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+     
             TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
             trailVertexCache.Clear();
             VertexSection section = trailVertexCache.FillVertexArrayNonAlloc(trailingPoints, colorFunc, widthFunc, trailOffset);
@@ -224,6 +234,13 @@ namespace Stellamod.Common.Shaders
                     oldPos = filledPos;
                 }
             }
+
+
+            oldPos = DrawUtilities.PruneFarPoints(oldPos);
+            if (oldPos.Length <= 2)
+                return;
+
+
             Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
             float numPoints = oldPos.Length * 2;
 

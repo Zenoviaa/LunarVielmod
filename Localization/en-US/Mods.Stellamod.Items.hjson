@@ -11770,7 +11770,7 @@ GhastlyGlove: {
 
 BurningGlove: {
 	DisplayName: Burning Glove
-	Tooltip: ""
+	Tooltip: "Attaches a flamethrower to your melee weapon...\nAttacks release flames and thrusts will spew little fireballs!"
 }
 
 RainbowShield: {
@@ -11798,7 +11798,11 @@ FirstWind: {
 
 SmokyPendant: {
 	DisplayName: Smoky Pendant
-	Tooltip: "Surrounds your melee weapon in a smoky poisonous aura that deals great damage!\nFinishing swings will explode enemies and set them ablaze"
+	Tooltip:
+		'''
+		Surrounds your melee weapon in a smoky poisonous aura that deals great damage!
+		Finishing swings will explode enemies and set them ablaze
+		'''
 }
 
 BuildersGlove: {
@@ -11833,7 +11837,11 @@ ThrowingFinish: {
 
 BlizzardPendant: {
 	DisplayName: Blizzard Pendant
-	Tooltip: "Surrounds your melee weapons with a blizzarding aura!\nIt slows down enemies and finishing swings will freeze them in place!"
+	Tooltip:
+		'''
+		Surrounds your melee weapons with a blizzarding aura!
+		It slows down enemies and finishing swings will freeze them in place!
+		'''
 }
 
 FallenBladesExtender: {
