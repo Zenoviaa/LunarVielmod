@@ -11850,7 +11850,7 @@ BlizzardPendant: {
 
 FallenBladesExtender: {
 	DisplayName: Final Blades' Extender
-	Tooltip: "Swords and greatswords now have a large extender resembling a golden angel sword..."
+	Tooltip: Swords and greatswords now have a large extender resembling a golden angel sword...
 }
 
 GhastlyShield: {
