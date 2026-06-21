@@ -72,7 +72,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 },
                 TrailColorFunction = (interpolant) =>
                 {
-                    return DrawUtilities.InterpolateColorArray(interpolant, Color.Purple, Color.Blue, Color.SkyBlue, Color.White);
+                    return DrawUtilities.InterpolateColorArray(interpolant, Color.Purple, Color.Blue, Color.SkyBlue, Color.White) * MathHelper.SmoothStep(0f,  1f, EasingFunction.OutSine(interpolant));
                     return Color.Lerp(Color.Blue, Color.White, interpolant);
                 }
 
@@ -102,7 +102,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         }
         private Color GetBloomColor(float ratio)
         {
-            return Color.Lerp(Color.SkyBlue * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
+            return Color.SkyBlue * MathHelper.SmoothStep(0f, 1f, EasingFunction.OutSine(ratio));
         }
 
 
