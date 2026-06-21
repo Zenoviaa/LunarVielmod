@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         {
             base.SetDefaults();
             //Percent increase, 1 is +100% damage
-            DamageModifier = 0.5f;
+            DamageModifier = 1f;
             ExplosionType = ModContent.ProjectileType<MushyBoom>();
 
             SoundStyle explosionSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/Green");

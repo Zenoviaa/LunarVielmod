@@ -2,6 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Abyss.AccAB;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
+using Stellamod.Content.Areas.PunkerTown.ItemsPT;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
@@ -51,10 +52,10 @@ public class BurningGlove : AbstractMeleeAddon
             traveled += MathF.Abs( proj.rotation - oldRot);
             oldRot = proj.rotation;
 
-            if(traveled >= 0.9f)
+            if(traveled >= 0.4f)
             {
-                Projectile.NewProjectile(proj.GetSource_FromAI(), proj.Center, proj.rotation.ToRotationVector2() * 14,
-                ModContent.ProjectileType<BurningGloveFlamethrower>(), (int)(proj.damage * 0.1f), proj.knockBack, proj.owner);
+                Projectile.NewProjectile(proj.GetSource_FromAI(), proj.Center, proj.rotation.ToRotationVector2() * 2,
+                ModContent.ProjectileType<IncineratorProj>(), (int)(proj.damage * 0.1f), proj.knockBack, proj.owner);
                 traveled = 0;
                 _fireTimer[id] = (oldRot, traveled);
             }

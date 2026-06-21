@@ -39,7 +39,7 @@ public class GhastlyGlove : AbstractMeleeAddon
         if (!_hasShotSwingProj[projectile] && projectile.Interpolant >= 0.1f)
         {
             Projectile.NewProjectile(projectile.Projectile.GetSource_FromAI(), projectile.Owner.Center,
-                projectile.Projectile.velocity.SafeNormalize(Vector2.Zero) * 35, ModContent.ProjectileType<GhastlyThrust>(),
+                projectile.Projectile.velocity.SafeNormalize(Vector2.Zero) * 45, ModContent.ProjectileType<GhastlyThrust>(),
                 (int)(projectile.Projectile.damage * 0.45f), projectile.Projectile.knockBack, projectile.Projectile.owner, ai1: projectile.Owner.HeldItem.type);
             _hasShotSwingProj[projectile] = true;
         }

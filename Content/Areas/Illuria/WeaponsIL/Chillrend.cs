@@ -80,6 +80,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
             additive = true;
             Trailer = devilsPeak;
+            bigTrailAlpha = 0.9f;
 
             swordBeamLength = 180;
             outlineColor = Color.White;

@@ -115,6 +115,7 @@ namespace Stellamod.Core.SwingSystem
             }
 
             CalculateOffset(time, velocity, out Vector2 offset);
+            swingProjectile.EasedInterpolant = Easing(time);
             var projectile = swingProjectile.Projectile;
             projectile.Center = swingProjectile.Owner.Center + offset;
             projectile.rotation = (projectile.Center - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;

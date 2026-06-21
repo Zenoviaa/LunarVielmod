@@ -200,6 +200,7 @@ namespace Stellamod.Core.SwingSystem
 
             //Calculate easing
             float easedInterpolant = Easing(time);
+            swingProjectile.EasedInterpolant = easedInterpolant;
             if (!_hasPlayedSound && easedInterpolant >= 0.35f && Sound != null)
             {
                 var sound = Sound;

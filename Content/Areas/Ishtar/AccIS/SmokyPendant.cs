@@ -16,11 +16,19 @@ public class SmokyPendant : AbstractMeleeAddon
 {
     private float _oldSwingRot;
     private float _traveledSwingRotation;
+    public override void OnSpawn(BaseSwingProjectileV2 projectile)
+    {
+        base.OnSpawn(projectile);
+        _oldSwingRot = 0;
+        _traveledSwingRotation = 0;
+    }
+
     public override void AI(BaseSwingProjectileV2 projectile)
     {
         base.AI(projectile);
-        _traveledSwingRotation += MathF.Abs(projectile.Projectile.rotation - _oldSwingRot);
         _oldSwingRot = projectile.Projectile.rotation;
+        _traveledSwingRotation += MathF.Abs(projectile.Projectile.rotation - _oldSwingRot);
+     
         if (_traveledSwingRotation <= 0.25f)
             return;
         _traveledSwingRotation = 0f;

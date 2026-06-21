@@ -57,10 +57,10 @@ public class MoonSlasher : AbstractMeleeAddon
         if (!_hasShotSwingProj.ContainsKey(projectile))
             return;
 
-        if (!_hasShotSwingProj[projectile] && projectile.Interpolant >= 0.1f)
+        if (!_hasShotSwingProj[projectile] && projectile.EasedInterpolant >= 0.3f)
         {
             Projectile.NewProjectile(projectile.Projectile.GetSource_FromAI(), projectile.Owner.Center,
-                projectile.Projectile.velocity.SafeNormalize(Vector2.Zero) * 35, ModContent.ProjectileType<FlyingMoonSlash>(),
+                projectile.Projectile.velocity.SafeNormalize(Vector2.Zero) * 45, ModContent.ProjectileType<FlyingMoonSlash>(),
                 (int)(projectile.Projectile.damage * 0.45f), projectile.Projectile.knockBack, projectile.Projectile.owner, ai1: projectile.Type, ai2: projectile.Size);
             _hasShotSwingProj[projectile] = true;
         }

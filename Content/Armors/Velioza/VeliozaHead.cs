@@ -197,6 +197,7 @@ public class VeliozaPlayer : ModPlayer
             }
         }
         float scale = MathHelper.Clamp(stacks / 20f, 0f, 1f);
+      //  Main.NewText(scale);
         Player.GetAttackSpeed(DamageClass.Generic) += scale;
     }
 
@@ -204,8 +205,6 @@ public class VeliozaPlayer : ModPlayer
     {
         base.OnHitNPC(target, hit, damageDone);
         if (!hasSetBonus)
-            return;
-        if (hit.DamageType != DamageClass.Melee)
             return;
 
 

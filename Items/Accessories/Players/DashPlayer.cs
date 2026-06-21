@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Cinderspark.AccCS;
+using Stellamod.Content.Areas.MoonspiralTower.AccMT;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -287,6 +288,12 @@ namespace Stellamod.Items.Accessories.Players
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<DashProjectile>(), 0, 0, Player.whoAmI);
 
+                if (Player.GetModPlayer<MoonramPlayer>().hasMoonramShield)
+                {
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                        ModContent.ProjectileType<MoonramDashProjectile>(),
+                        1, 1, Player.whoAmI);
+                }
                 DashDelay = DashCooldown;
                 DashTimer = DashDuration;
                 Player.velocity = newVelocity;

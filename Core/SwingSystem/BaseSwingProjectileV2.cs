@@ -122,6 +122,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         }
     }
     public float Interpolant { get; private set; }
+    public float EasedInterpolant { get; set; }
     public Vector2[] afterImageCache;
     public Vector2[] swingTrailCache;
     public Vector2[] bigSwingTrailCache;
@@ -150,6 +151,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public float trailVisibilityOffset;
 
     public float bloomScale;
+    public float bigTrailAlpha;
     public const int EXTRA_UPDATE_COUNT = 7;
     public float Size { get; private set; }
     public MeleeWeaponType MeleeWeaponType
@@ -187,6 +189,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         Projectile.DamageType = DamageClass.Melee;
         Projectile.ownerHitCheck = true;
         trailVisibilityOffset = 0.3f;
+        bigTrailAlpha = 0.35f;
 
         //We're using extra updates to ensure the sword doesn't just pass through things
         Projectile.extraUpdates = EXTRA_UPDATE_COUNT - 1;
@@ -466,6 +469,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             swingTime = GetSwingTime(duration);
         }
 
+
         Interpolant = Timer / swingTime;
         Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
         for (int i = oldTime.Length - 1; i > 0; i--)
@@ -622,7 +626,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         {
             ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
             int combo = ComboIndex;
-            int dir = comboPlayer.ComboDirection;
+            float dir = SwingDirection;
             var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
                 Type, (int)(Projectile.damage * 0.5f), Projectile.knockBack,
                            Owner.whoAmI, ai2: combo, ai1: dir);
@@ -798,7 +802,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         }
         Color GetTrailColor(float interpolant)
         {
-            return oldColorFunc(interpolant) * 0.35f * EasingFunction.QuadraticBump(Interpolant) * _fade;
+            return oldColorFunc(interpolant) * bigTrailAlpha * EasingFunction.QuadraticBump(Interpolant) * _fade;
         }
 
         Trailer.TrailWidthFunction = GetTrailWidth;
@@ -825,8 +829,15 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         shader.Distortion = 0.15f;
         Color GetTrailColor(float completionRatio)
         {
-            Color glowColor = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 16), Color.Gold, Color.White, Color.SkyBlue, Color.DarkGoldenrod);
-            Color trailColor = Color.Lerp(glowColor, Color.LightBlue, EasingFunction.InCirc(completionRatio))
+            Color glowColor = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 4), Color.Gold, Color.White, Color.Orange, Color.DarkGoldenrod);
+            Color trailColor = Color.Lerp(glowColor, Color.Orange, completionRatio)
+                * MathHelper.Lerp(0f, 1f, EasingFunction.InCirc(completionRatio));
+            return glowColor * ExtraMath.Osc(1f, 2f, speed: 32) * 0.6f;
+        }
+        Color GetTrailColor2(float completionRatio)
+        {
+            Color glowColor = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 4), Color.Gold, Color.White, Color.Orange, Color.DarkGoldenrod);
+            Color trailColor = Color.Lerp(glowColor, Color.Orange, completionRatio)
                 * MathHelper.Lerp(0f, 1f, EasingFunction.InCirc(completionRatio));
             return glowColor * ExtraMath.Osc(1f, 2f, speed: 32) * 0.6f;
         }
@@ -836,7 +847,26 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             return MathHelper.SmoothStep(0, 96, completionRatio);
         }
 
-        TrailDrawer.Draw(swingTrailCache, GetTrailColor, GetBigTrailWidth, shader);
+
+        float GetBigTrailWidth2(float completionRatio)
+        {
+            return MathHelper.SmoothStep(0, 96, completionRatio) * 1.2f;
+        }
+
+        FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+        laserShader.LaserColor = Color.White;
+        laserShader.InnerColor = Color.Orange;
+        laserShader.OuterColor = Color.Orange;
+        laserShader.BloomTexture = AssetManager.LaserTextures.Bloom;
+        laserShader.LaserTexture = TrailRegistry.StarTrail;
+        TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor, GetBigTrailWidth, laserShader);
+
+        BloomTrailShader b = BloomTrailShader.Instance;
+        b.InnerColor = Color.Gold;
+        b.OuterColor = Color.Lerp(Color.Orange, Color.Black, 0.5f);
+        TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor2, GetBigTrailWidth2, b);
+
+       // TrailDrawer.Draw(swingTrailCache, GetTrailColor, GetBigTrailWidth, shader);
     }
 
     public virtual void DrawSwordSprite(ref Color lightColor)

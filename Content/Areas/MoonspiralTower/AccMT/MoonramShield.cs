@@ -1,11 +1,13 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
+using Stellamod.Effects.RoyalMagic;
 using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
@@ -14,9 +16,163 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Stellamod.Content.Areas.MoonspiralTower.AccMT;
+
+public class MoonramDashProjectile : ModProjectile,
+    IDrawToRenderTarget
+{
+    private Player Owner => Main.player[Projectile.owner];
+    private ref float Timer => ref Projectile.ai[0];
+    public override string Texture => TextureRegistry.EmptyTexture;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        ProjectileID.Sets.TrailCacheLength[Type] = 64;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 1;
+        Projectile.height = 1;
+        Projectile.friendly = true;
+        Projectile.tileCollide = false;
+        Projectile.penetrate = -1;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
+        Projectile.timeLeft = 60;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        Projectile.Center = Owner.Center;
+
+        if (Timer % 8 == 0)
+        {
+            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
+            var dp = DustParticle.Spawn(pos, Vector2.Zero, DustParticleSpawnParams.Default);
+            dp.Scale *= 0.5f;
+            dp.noTileCollide = true;
+            dp.gravity = 0;
+            dp.dampening = 0.05f;
+            dp.outerColor = Color.Blue;
+        }
+
+        if (Timer % 4 == 0)
+        {
+            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
+            var dp = SparkleParticle.Spawn(pos, Vector2.Zero);
+            dp.Scale *= 1f;
+            dp.noTileCollide = true;
+            dp.gravity = 0;
+            dp.dampening = 0.05f;
+            dp.outerColor = Color.Blue;
+            dp.flickering = true;
+            dp.fast = true;
+        }
+        if (Timer % 7 == 0)
+        {
+            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(96, 144);
+            var d = Dust.NewDustPerfect(pos, DustID.GemSapphire, Scale: 1f);
+            d.noGravity = true;
+        }
+
+        if (Timer % 2 == 0)
+        {
+            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            Vector2 vel = -Owner.velocity * 0.3f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.OuterGlowColor = Color.Blue;
+            fx.VectorScale *= 0.5f;
+        }
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        return false;
+    //    return base.PreDraw(ref lightColor);
+    }
+
+    private float GetTrailWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(32, 18, ratio);
+    }
+    private float GetTrailWidth2(float ratio)
+    {
+        return GetTrailWidth(ratio) * 1.5f;
+    }
+
+    private Color GetTrailColor(float ratio)
+    {
+        float fade = EasingFunction.InOutSine((float)Projectile.timeLeft / 60f);
+        return Color.Lerp(Color.White, Color.SkyBlue, ratio) * fade;
+    }
+
+    private void RenderTrail(GraphicsDevice graphicDevice)
+    {
+        AlcadSlashShader shader = ShaderContent.GetInstance<AlcadSlashShader>();
+        shader.ScrollingLaser = TrailRegistry.Beamlight.Value;
+        shader.Noise = AssetManager.Noise.Whirly.Value;
+        shader.Slash = AssetManager.GlowMask.SwordSlash.Value;
+        shader.BloomColor = Color.White;
+        shader.Time = Main.GlobalTimeWrappedHourly * 24;
+        shader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        shader.Distortion = 0.15f;
+        TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth, shader, offset: Projectile.Size * 0.5f);
+
+
+        var shader2 = ShaderContent.GetInstance<BasicLaserShader>();
+        shader2.SetDefaults();
+        shader2.LaserTexture = AssetManager.LaserTextures.SplittingTrail;
+        TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth2, shader2, offset: Projectile.Size * 0.5f);
+    }
+
+    private float GetSpiralDashTrailWidth(float completionRatio)
+    {
+        return MathHelper.SmoothStep(128, 96, completionRatio) * EasingFunction.QuadraticBump(completionRatio) * 0.5f;
+    }
+    private float GetSpiralDashTrailWidth2(float completionRatio)
+    {
+        return GetSpiralDashTrailWidth(completionRatio) * 1.3f;
+    }
+    private Color GetSpiralDashTrailColor(float completionRatio)
+    {
+        return Color.Lerp(Color.White, Color.Transparent, completionRatio) * EasingFunction.QuadraticBump((float)Projectile.timeLeft / 60f);
+    }
+
+    private void DrawSpiralDashTrail(GraphicsDevice gDevice)
+    {
+        BasicLaserShader bloomShader = ShaderContent.GetInstance<BasicLaserShader>();
+        bloomShader.LaserTexture = AssetManager.LaserTextures.CometTrail;
+        bloomShader.InnerColor = Color.SkyBlue;
+        bloomShader.OuterColor = Color.DarkBlue;
+        TrailDrawer.Draw(Projectile.oldPos, GetSpiralDashTrailColor, GetSpiralDashTrailWidth2, bloomShader, Projectile.Size * 0.5f);
+
+        BasicLaserShader basicLaserShader = ShaderContent.GetInstance<BasicLaserShader>();
+        basicLaserShader.LaserTexture = AssetManager.LaserTextures.Aura;
+        basicLaserShader.InnerColor = Color.SkyBlue;
+        basicLaserShader.OuterColor = Color.DarkBlue;
+        TrailDrawer.Draw(Projectile.oldPos, GetSpiralDashTrailColor, GetSpiralDashTrailWidth2, basicLaserShader, Projectile.Size * 0.5f);
+
+
+        basicLaserShader.InnerColor = Color.White;
+        basicLaserShader.OuterColor = Color.DarkGray;
+        TrailDrawer.Draw(Projectile.oldPos, GetSpiralDashTrailColor, GetSpiralDashTrailWidth, basicLaserShader, Projectile.Size * 0.5f);
+    }
+
+
+    public void DrawToRenderTargets()
+    {
+        PixelationManager.QueuePrimitivesDrawAction(DrawSpiralDashTrail, DrawLayer.OverNPCs);
+        PixelationManager.QueuePrimitivesDrawAction(RenderTrail);
+    }
+}
 
 public class MoonramShield : ModItem
 {
@@ -43,6 +199,7 @@ public class MoonramShieldHeld : AbstractShieldProjectile
     public override void OnBlockMovement(NPC npc)
     {
         base.OnBlockMovement(npc);
+        Owner.GetModPlayer<MoonramPlayer>().Ram(npc);
       //  npc.AddBuff(ModContent.BuffType<GhastlyWeakness>(), 60);
     }
 
@@ -139,6 +296,7 @@ public class MoonramBoom : ModProjectile
 }
 public class MoonramMoon : ModProjectile
 {
+    private float Time => 60;
     private float _flashAlpha;
     private Vector2 _targetScale;
     private Asset<Texture2D>? _shadowMoonTextureAsset;
@@ -158,7 +316,7 @@ public class MoonramMoon : ModProjectile
         Projectile.penetrate = -1;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
-        Projectile.timeLeft = 100;
+        Projectile.timeLeft = (int)Time;
         Projectile.tileCollide = false;
     }
 
@@ -179,11 +337,11 @@ public class MoonramMoon : ModProjectile
         Projectile.velocity *= 0.999f;
 
    //     Projectile.velocity.Y += 0.05f;
-        if(Timer >= 80)
+        if(Timer >= Time - 20)
         {
             Projectile.Kill();
         }
-        _targetScale = Vector2.Lerp(Vector2.Zero, Vector2.One * 0.6f + Vector2.Lerp(Vector2.Zero, Vector2.One * 0.4f, EasingFunction.InOutExpo((Timer - 69)/ 20f)), EasingFunction.InOutExpo(Timer / 100f));
+        _targetScale = Vector2.Lerp(Vector2.Zero, Vector2.One * 0.6f + Vector2.Lerp(Vector2.Zero, Vector2.One * 0.4f, EasingFunction.InOutExpo((Timer - (Time / 2))/ 20f)), EasingFunction.InOutExpo(Timer / Time));
     }
     
     private void DrawPixelatedMoon(SpriteBatch sb, Vector2 screenPos)
@@ -296,25 +454,30 @@ public class MoonramPlayer : ModPlayer
         if (Player.whoAmI != Main.myPlayer)
             return;
 
+
+
+    }
+
+    public void Ram(NPC npc)
+    {
+        DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
+
+        Rectangle playerRectangle = Player.getRect();
+        Rectangle npcRectangle = npc.getRect();
+
+        int type = ModContent.ProjectileType<MoonramMoon>();
+        int damage = Player.HeldItem.damage;
+
         if (!dashPlayer.IsDashing)
             return;
 
+        if (dashPlayer.DashedThroughSet.Contains(npc))
+            return;
 
-        Rectangle playerRectangle = Player.getRect();
-        int type = ModContent.ProjectileType<MoonramMoon>();
-        int damage = Player.HeldItem.damage;
-        foreach (var npc in Main.ActiveNPCs)
-        {
-            Rectangle npcRectangle = npc.getRect();
-            if (!playerRectangle.Intersects(npcRectangle))
-                continue;
-            if (dashPlayer.DashedThroughSet.Contains(npc))
-                continue;
-
-            dashPlayer.DashedThroughSet.Add(npc);
-            //Spawn falling projectile
-            Projectile.NewProjectile(Player.GetSource_FromThis(), npc.Top - new Vector2(0, 250),
-                Vector2.UnitY, type, damage * 3, 1, Player.whoAmI);
-        }
+        PixelPrimitiveCircleFactory.CreateGenericInBoom(npc.Center, Color.SkyBlue, Color.Transparent, 25, 128);
+        dashPlayer.DashedThroughSet.Add(npc);
+        //Spawn falling projectile
+        Projectile.NewProjectile(Player.GetSource_FromThis(), npc.Top - new Vector2(0, 64) + Player.velocity * 16,
+            Vector2.UnitY, type, damage * 3, 1, Player.whoAmI);
     }
 }

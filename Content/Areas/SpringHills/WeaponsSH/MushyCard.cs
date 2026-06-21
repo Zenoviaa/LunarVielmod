@@ -12,12 +12,12 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 3;
+            Item.damage = 6;
         }
 
         public override int GetPowderSlotCount()
         {
-            return 2;
+            return 1;
         }
 
         public override void AddRecipes()

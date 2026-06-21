@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.IgnitersNPowders;
 using Terraria;
 using Terraria.GameInput;
@@ -84,11 +85,14 @@ namespace Stellamod.UI.PowderSystem
             Color color2 = Main.inventoryBack;
             Vector2 pos = rectangle.TopLeft();
 
+
+
             Texture2D backingTexture = ModContent.Request<Texture2D>($"{PowderUISystem.RootTexturePath}PowderSlot").Value;
             int offset = (int)(backingTexture.Size().Y / 2);
             Vector2 centerPos = pos + rectangle.Size() / 2f;
-            spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
 
+           
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
 
             Main.inventoryScale = oldScale;

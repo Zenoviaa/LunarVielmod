@@ -231,6 +231,9 @@ public class TulahalSlash : BaseSwingProjectileV2
         if (Interpolant < 0.4f)
             return;
 
+        if (isAfterImageProjectile)
+            return;
+
         Vector2[] swingPos = new Vector2[swingTrailCache.Length];
         for (int i = 0; i < swingPos.Length; i++)
         {
@@ -256,6 +259,8 @@ public class TulahalSlash : BaseSwingProjectileV2
     {
         base.DrawSwingTrail2(ref lightColor, swingTrailCache);
         if (ComboIndex == 6)
+            return;
+        if (isAfterImageProjectile)
             return;
         FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
         laserShader.LaserColor = Color.IndianRed;
