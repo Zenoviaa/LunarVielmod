@@ -11827,7 +11827,7 @@ MoonramShield: {
 
 MoonSlasher: {
 	DisplayName: Moon Slasher
-	Tooltip: ""
+	Tooltip: "Swords, hammers, and knives send out a flying slash projectile that hits for half damage!"
 }
 
 ThrowingFinish: {

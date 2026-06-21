@@ -149,6 +149,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
     public float bloomScale;
     public const int EXTRA_UPDATE_COUNT = 7;
+    public float Size { get; private set; }
    public MeleeWeaponType MeleeWeaponType
     {
         get
@@ -412,6 +413,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             swordBeamLength = 0;
         Texture2D texture = GetTexture();
         float swordLength = texture.Width / 2 + texture.Height / 2;
+        Size = swordLength;
         float edgeLength = swordLength;
         edgeLength *= 1.6f;
         edgeLength += swordBeamLength;

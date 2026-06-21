@@ -35,12 +35,10 @@ public static class DrawUtilities
     {
 
         List<Vector2> prunedPoints = new List<Vector2>();
-        for (int i = 0; i < oldPos.Length - 1; i++)
+        for (int i = 0; i < oldPos.Length ; i++)
         {
             Vector2 cur = oldPos[i];
-            Vector2 next = oldPos[i + 1];
-            float diff = Vector2.DistanceSquared(cur, next);
-            if (diff > 10000)
+            if (cur == Vector2.Zero)
             {
                 break;
             }

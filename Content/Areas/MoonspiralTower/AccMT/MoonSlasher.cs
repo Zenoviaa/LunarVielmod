@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Areas.Abyss.AccAB;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Abyss.AccAB;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
@@ -39,7 +41,7 @@ public class MoonSlasher : AbstractMeleeAddon
                 return false;
             case MeleeWeaponType.Sword:
             case MeleeWeaponType.Knives:
-            case MeleeWeaponType.Greatsword:
+            case MeleeWeaponType.Hammer:
                 return true;
         }
     }
@@ -58,8 +60,8 @@ public class MoonSlasher : AbstractMeleeAddon
         if (!_hasShotSwingProj[projectile] && projectile.Interpolant >= 0.1f)
         {
             Projectile.NewProjectile(projectile.Projectile.GetSource_FromAI(), projectile.Owner.Center,
-                projectile.Projectile.velocity.SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<FlyingMoonSlash>(),
-                (int)(projectile.Projectile.damage * 0.45f), projectile.Projectile.knockBack, projectile.Projectile.owner, ai1: projectile.Type);
+                projectile.Projectile.velocity.SafeNormalize(Vector2.Zero) * 35, ModContent.ProjectileType<FlyingMoonSlash>(),
+                (int)(projectile.Projectile.damage * 0.45f), projectile.Projectile.knockBack, projectile.Projectile.owner, ai1: projectile.Type, ai2: projectile.Size);
             _hasShotSwingProj[projectile] = true;
         }
     }
@@ -77,6 +79,7 @@ public class FlyingMoonSlash : ModProjectile,
 {
     private ref float Timer => ref Projectile.ai[0];
     private int ParentProjectileType => (int)Projectile.ai[1];
+    private ref float Size => ref Projectile.ai[2];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -89,10 +92,11 @@ public class FlyingMoonSlash : ModProjectile,
         Projectile.width = 64;
         Projectile.height = 64;
         Projectile.friendly = true;
-        Projectile.timeLeft = 60;
+        Projectile.timeLeft = 30;
         Projectile.penetrate = -1;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
+        Projectile.tileCollide = false;
     }
     private Color GetPrimaryColor()
     {
@@ -110,10 +114,10 @@ public class FlyingMoonSlash : ModProjectile,
         base.AI();
         Timer++;
         Projectile.rotation = Projectile.velocity.ToRotation();
-        Projectile.velocity *= 0.96f;
+        Projectile.velocity *= 0.9f;
                
         
-        if (Timer % 8 == 0)
+        if (Timer % 16 == 0)
         {
             Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
             var dp = DustParticle.Spawn(pos, Vector2.Zero, DustParticleSpawnParams.Default);
@@ -124,11 +128,12 @@ public class FlyingMoonSlash : ModProjectile,
             dp.outerColor = GetPrimaryColor();
         }
 
-        if (Timer % 6 == 0)
+        if (Timer % 12 == 0)
         {
-            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 144);
-            Vector2 vel = -Projectile.velocity * 0.3f;
+            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
+            Vector2 vel = -Projectile.velocity * 4f;
             var fx = FXUtil.GlowStretch(pos, vel);
+            fx.VectorScale *= 0.5f;
             fx.OuterGlowColor = GetPrimaryColor();
         }
                
@@ -136,9 +141,45 @@ public class FlyingMoonSlash : ModProjectile,
 
     public override bool PreDraw(ref Color lightColor)
     {
-        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.Blue, Color.Transparent, alpha: 0.3f);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
-        Main.spriteBatch.Draw(drawer);
+        float scale = Size / 64;
+        float outAlpha = EasingFunction.InOutSine(Projectile.timeLeft / 30f);
+        SpritebatchDrawer afterDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        afterDrawer.scale = Vector2.One * scale;
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
+        {
+            Vector2 pos = Projectile.oldPos[i] + Projectile.Size * 0.5f;
+            float ratio = i / (float)Projectile.oldPos.Length;
+            afterDrawer.color = Color.Lerp(Color.LightBlue, Color.DarkBlue, ratio) * 0.15f * outAlpha;
+            afterDrawer.color.A = 0;
+            afterDrawer.worldPosition = pos;
+            Main.spriteBatch.Draw(afterDrawer);
+        }
+
+        GlowingSwordMaskShader shader = GlowingSwordMaskShader.Instance;
+        shader.TrailTexture = TrailRegistry.BulbTrail;
+        shader.Distortion = 0.02f;
+        shader.DistortionTexture = TrailRegistry.WhispyTrail;
+        shader.Time = Main.GlobalTimeWrappedHourly * 16;
+        shader.Bloom = MathHelper.Lerp(4f, 0f, EasingFunction.OutExpo(Timer / 30f));
+        shader.Tiling = Vector2.One * 0.75f;
+        shader.InnerColor = Color.Lerp(Color.LightBlue, Color.Lerp(Color.LightBlue, Color.Blue, 0.4f), ExtraMath.Osc(0f, 1f, 12)) * 0.5f;
+        shader.OuterColor = Color.DarkBlue * 0.5f;
+        Main.spriteBatch.Restart(effect: shader.Effect);
+
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        sbDrawer.scale *= 1.5f * scale;
+        sbDrawer.color = Color.LightBlue * 0.5f * outAlpha;
+        sbDrawer.color.A = 0;
+        //sbDrawer.worldPosition += _mirageOffset;
+        Main.spriteBatch.Draw(sbDrawer);
+
+        sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        sbDrawer.color = Color.White * outAlpha * 0.5f;
+        sbDrawer.color.A = 0;
+        sbDrawer.scale *= scale;
+        Main.spriteBatch.Draw(sbDrawer);
+
+        Main.spriteBatch.RestartDefaults();
         return false;
 //        return base.PreDraw(ref lightColor);
     }
