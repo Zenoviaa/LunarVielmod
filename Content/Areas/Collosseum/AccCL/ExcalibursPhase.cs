@@ -31,7 +31,7 @@ public class ExcalibursPhase : ModItem
     }
     public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
     {
-        DrawHelper.DrawAdvancedBroochGlow(Item, spriteBatch, position, Color.Gold);
+        DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Gold);
         return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
     }
 

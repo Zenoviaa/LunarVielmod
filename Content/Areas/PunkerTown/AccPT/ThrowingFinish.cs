@@ -1,4 +1,6 @@
-﻿using Stellamod.Core.SwingSystem;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.SwingSystem;
+using Stellamod.Items;
 using Terraria;
 using Terraria.Audio;
 
@@ -41,5 +43,10 @@ public class ThrowingFinish : AbstractMeleeAddon
             modifiers.FinalDamage += 0.25f;
         }
     }
- 
+
+    public override void AddRecipes()
+    {
+        base.AddRecipes();
+        this.RegisterBrew<MarshScrap, BlankAccessory>();
+    }
 }

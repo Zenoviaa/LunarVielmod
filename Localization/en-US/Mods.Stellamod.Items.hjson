@@ -11789,7 +11789,11 @@ WOWanizer: {
 
 FirstWind: {
 	DisplayName: First Wind
-	Tooltip: "A secondary melee weapons comes from behind you and deals half your weapon's damage!\nIt does not copy stamina attacks..."
+	Tooltip:
+		'''
+		A secondary melee weapons comes from behind you and deals half your weapon's damage!
+		It does not copy stamina attacks...
+		'''
 }
 
 SmokyPendant: {
@@ -11824,12 +11828,12 @@ MoonSlasher: {
 
 ThrowingFinish: {
 	DisplayName: Throwing Finish
-	Tooltip: ""
+	Tooltip: On each Greatsword finisher, throw your weapon out for 25% more damage!
 }
 
 BlizzardPendant: {
 	DisplayName: Blizzard Pendant
-	Tooltip: ""
+	Tooltip: "Surrounds your melee weapons with a blizzarding aura!\nIt slows down enemies and finishing swings will freeze them in place!"
 }
 
 FallenBladesExtender: {
