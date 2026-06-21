@@ -11867,3 +11867,13 @@ StarStorm: {
 	DisplayName: Star Storm
 	Tooltip: Your scythes have a cloud of stars in between you and the scythe, damaging anything that comes within!
 }
+
+AmmoPack: {
+	DisplayName: Ammo Pack
+	Tooltip: Increases magazine capacity by 50%!
+}
+
+ThePiercer: {
+	DisplayName: The Piercer
+	Tooltip: +2 ranged piercing
+}
