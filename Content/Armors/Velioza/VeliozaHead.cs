@@ -205,6 +205,9 @@ public class VeliozaPlayer : ModPlayer
         base.OnHitNPC(target, hit, damageDone);
         if (!hasSetBonus)
             return;
+        if (hit.DamageType != DamageClass.Melee)
+            return;
+
 
         float dist = Vector2.Distance(Player.Center, target.Center);
         stacks++;

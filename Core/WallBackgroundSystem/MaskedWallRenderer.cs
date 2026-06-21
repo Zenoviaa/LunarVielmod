@@ -212,8 +212,6 @@ namespace Stellamod.Core.WallBackgroundSystem
             if (_activeMaskedWallBackground == null)
                 return;
 
-            if (_drawQueue.Count <= 0)
-                return;
 
             RenderMask();
         }
@@ -223,11 +221,12 @@ namespace Stellamod.Core.WallBackgroundSystem
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_wallMaskRenderTarget);
+            graphicsDevice.Clear(Color.Transparent);
             if (_drawQueue.Count > 0)
             {
 
-                graphicsDevice.SetRenderTarget(_wallMaskRenderTarget);
-                graphicsDevice.Clear(Color.Transparent);
+
 
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, null,
                     Main.GameViewMatrix.TransformationMatrix);

@@ -14,6 +14,7 @@ namespace Stellamod.Helpers
         public static Nothin SimpleExplosionCircle(Projectile baseProjectile, Color explosionColor, float startRadius = 4, float endRadius = 64, float width = 24)
         {
 
+            PixelPrimitiveCircleFactory.CreateGenericBoom(baseProjectile.Center, explosionColor * 0.5f, explosionColor * 0.5f, 30, endRadius);
             return new Nothin();
         }
     }

@@ -19,7 +19,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.SetDefaults();
 
             //Percent increase, 1 is +100% damage
-            DamageModifier = 5;
+            DamageModifier = 0.5f;
             ExplosionType = ModContent.ProjectileType<AgreviBoom>();
 
             SoundStyle explosionSoundStyle = AssetManager.GetSound("Fire/FireExplosion1");
@@ -43,6 +43,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             DrawScale = 0.5f;
             Projectile.width = 132;
             Projectile.height = 132;
+   
         }
 
         public override void Start()
