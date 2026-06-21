@@ -39,8 +39,8 @@ public class GhastlyGlove : AbstractMeleeAddon
         if (!_hasShotSwingProj[projectile] && projectile.Interpolant >= 0.1f)
         {
             Projectile.NewProjectile(projectile.Projectile.GetSource_FromAI(), projectile.Owner.Center,
-                projectile.Projectile.velocity.SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<GhastlyThrust>(),
-                (int)(projectile.Projectile.damage * 0.45f), projectile.Projectile.knockBack, projectile.Projectile.owner, ai1: projectile.Type);
+                projectile.Projectile.velocity.SafeNormalize(Vector2.Zero) * 35, ModContent.ProjectileType<GhastlyThrust>(),
+                (int)(projectile.Projectile.damage * 0.45f), projectile.Projectile.knockBack, projectile.Projectile.owner, ai1: projectile.Owner.HeldItem.type);
             _hasShotSwingProj[projectile] = true;
         }
     }
@@ -85,12 +85,12 @@ public class GhastlyThrust : ModProjectile,
     {
         base.AI();
         Timer++;
-        if (_swordTextureAsset == null)
+        if (_swordTextureAsset == null || Timer == 1)
         {
-            _swordTextureAsset = TextureAssets.Projectile[ProjectileType];
+            _swordTextureAsset = TextureAssets.Item[ProjectileType];
         }
         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
-        Projectile.velocity *= 0.96f;
+        Projectile.velocity *= 0.92f;
     }
 
     public float WidthFunction(float completionRatio)
@@ -101,6 +101,7 @@ public class GhastlyThrust : ModProjectile,
 
     private Color GetColorFunction(float completionRatio)
     {
+
         Color inColor = Color.White;
         Color trailColor = Color.Lerp(Color.SpringGreen, Color.DarkBlue, completionRatio);
 
@@ -113,12 +114,12 @@ public class GhastlyThrust : ModProjectile,
         //DrawUtilities.IncreaseHueBy(ref rainbow, degrees, out float hue);
         trailColor = Color.Lerp(trailColor, rainbow, 0.5f);
         Color easeColor = Color.Lerp(inColor, trailColor, EasingFunction.InExpo(Timer / 60f));
-        return easeColor * 0.5f * Alpha;
+        return easeColor * 1f * Alpha * ExtraMath.Osc(0.4f, 0.6f, 32f) * EasingFunction.QuadraticBump(completionRatio);
     }
 
     private float GetWidthFunction(float completionRatio)
     {
-        return MathHelper.SmoothStep(10, 2, completionRatio);
+        return MathHelper.SmoothStep(54, 2, completionRatio);
     }
 
     private float GetWidthFunction2(float completionRatio)
@@ -128,26 +129,27 @@ public class GhastlyThrust : ModProjectile,
 
     private void DrawTrail(GraphicsDevice gDevice)
     {
-        var shader2 = RichLaserShader.Instance;
-        shader2.LaserColor = Color.White;
+        var shader2 = BasicLaserShader.Instance;
+
         shader2.LaserTexture = TrailRegistry.StarTrail;
         shader2.InnerColor = Color.Turquoise * 0.5f;
         shader2.OuterColor = Color.DarkTurquoise;
         TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetColorFunction, GetWidthFunction, shader2, Projectile.Size * 0.5f);
-
-        var bloom = BloomTrailShader.Instance;
-        bloom.InnerColor = Color.LightBlue * 0.5f;
-        bloom.OuterColor = Color.DarkBlue;
-        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetColorFunction, GetWidthFunction2, bloom, Projectile.Size * 0.5f);
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
         if (_swordTextureAsset == null)
             return false;
+     
         SpritebatchDrawer phaseDrawer = SpritebatchDrawer.FromTextureAsset(_swordTextureAsset, Projectile.Center);
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, phaseDrawer, Projectile.oldPos, Projectile.oldRot, Color.White, Color.Transparent, 0.1f * Alpha, offset: Projectile.Size * 0.5f);
         phaseDrawer.rotation = Projectile.rotation;
-        phaseDrawer.color = Color.White * ExtraMath.Osc(0.4f, 0.6f, speed: 16) * Alpha;
+        phaseDrawer.color = Color.White * ExtraMath.Osc(0.4f, 0.6f, speed: 64) * Alpha;
+        Main.spriteBatch.Draw(phaseDrawer);
+
+        phaseDrawer.color = Color.White * ExtraMath.Osc(0.8f, 0.9f, speed: 64) * Alpha;
+        phaseDrawer.color.A = 0;
         Main.spriteBatch.Draw(phaseDrawer);
         return false;
     }

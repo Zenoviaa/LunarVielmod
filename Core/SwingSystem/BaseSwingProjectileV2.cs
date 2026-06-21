@@ -422,7 +422,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         Vector2 rotationVec = rotation.ToRotationVector2();
         _hitboxStart = Projectile.Center - rotationVec * swordLength;
         _hitboxSwordEnd = Projectile.Center + rotationVec * swordLength;
-        _hitboxProjectionEnd = Projectile.Center + rotationVec * edgeLength;
+        _hitboxProjectionEnd = Projectile.Center + rotationVec * edgeLength / 1.6f;
     }
 
     public override void AI()

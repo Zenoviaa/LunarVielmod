@@ -6,6 +6,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Items;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -123,7 +124,15 @@ public class BurningGloveFlamethrower : ModProjectile
 
     public override void AI()
     {
-        ProjectileID.Sets.TrailCacheLength[Type] = 32;
+        if (Main.rand.NextBool(16))
+        {
+            Color color = new Color(41, 43, 66);
+            var sp2 = FaintSmokeParticle.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Vector2.Zero * 0.02f);
+            sp2.color = Color.Lerp(color, Color.White, 0.25f) * 0.5f;
+            sp2.Scale *= 0.35f;
+            sp2.fadeToColor = Color.Black * 0.5f;
+        }
+        ProjectileID.Sets.TrailCacheLength[Type] = 8;
         ProjectileID.Sets.TrailingMode[Type] = 2;
         IncineratorPos = Projectile.oldPos;
         Timer++;
@@ -190,11 +199,11 @@ public class BurningGloveFlamethrower : ModProjectile
     }
     private float GetBloomWidth(float ratio)
     {
-        return MathHelper.SmoothStep(56, 8, ratio) * 1.5f * EasingFunction.QuadraticBump(Timer / LifeTime); ;
+        return MathHelper.SmoothStep(44, 8, ratio) * 1.5f * EasingFunction.QuadraticBump(Timer / LifeTime); ;
     }
     private Color GetBloomColor(float ratio)
     {
-        return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
+        return Color.Lerp(Color.Transparent, Color.Red, EasingFunction.InOutSine(ratio));
     }
     private void DrawMainShader(Vector2[] oldPos)
     {
@@ -203,7 +212,7 @@ public class BurningGloveFlamethrower : ModProjectile
         TrailDrawer.Draw(Main.spriteBatch, oldPos, ColorFunction, WidthFunction, blackFireShader, Projectile.Size * 0.5f);
 
         BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
-        bloomTrailShader.InnerColor = Color.Yellow;
+        bloomTrailShader.InnerColor = Color.White;
         bloomTrailShader.OuterColor = Color.Red;
         TrailDrawer.Draw(Main.spriteBatch, oldPos, GetBloomColor, GetBloomWidth, bloomTrailShader, Projectile.Size * 0.5f);
     }
