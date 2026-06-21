@@ -5,10 +5,12 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Effects;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
+using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trailing;
@@ -51,19 +53,19 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             SwingV2Helper.AddGreatswordSwingStyle(this);
             BlackFireOldShader blackFireShader = new BlackFireOldShader();
             blackFireShader.SetDefaults();
-            blackFireShader.InnerColor = Color.Gray;
+            blackFireShader.InnerColor = Color.White;
             blackFireShader.OuterColor = Color.Cyan;
+
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.InOutSine(interpolant) * 200 * EasingFunction.InOutSine(1f - Interpolant);
+                    return MathHelper.SmoothStep(8, 100, interpolant);
                 },
                 TrailColorFunction = (interpolant) =>
                 {
-                    Color lerp1 = Color.Lerp(Color.DarkViolet, Color.SkyBlue, interpolant);
-                    return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+                    return Color.Lerp(Color.White, Color.Transparent, EasingFunction.InExpo(interpolant));
                 }
 
             };
@@ -71,10 +73,27 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             swordBeamLength = 180;
             outlineColor = Color.Lerp(Color.SkyBlue, Color.BlueViolet, 0.5f);
             glowAfterImageColor = Color.SkyBlue * 0.1f;
-            useAfterImage = false;
+
+
+            //Bloom
+            additive = true;
+            useBloom = true;
+            bloom.innerBloomColor = Color.SkyBlue;
+            bloom.outerBloomColor = Color.DarkBlue;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+
             hitStopTime = EXTRA_UPDATE_COUNT * 8;
         }
-        
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(8, 153, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            return Color.Lerp(Color.SkyBlue * 0.6f, Color.Transparent, EasingFunction.InExpo(ratio));
+        }
+
         public override Asset<Texture2D> RequestHologramTexture()
         {
             return TextureRegistry.GlowSword_Chillrend;
@@ -83,7 +102,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public override void AI()
         {
             base.AI();
-            glowColor = Color.Lerp(Color.Transparent, Color.Cyan, EasingFunction.QuadraticBump(Interpolant));
+            glowColor = Color.Lerp(Color.Cyan, Color.White, EasingFunction.QuadraticBump(Interpolant));
             growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
             _npcSucker ??= new NPCSucker();
             if (Interpolant > 0.5f)

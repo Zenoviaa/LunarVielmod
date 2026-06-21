@@ -3,10 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Visual.Particles;
 using System.IO;
@@ -37,11 +39,22 @@ namespace Stellamod.Content.Areas.Dock.WeaponsDK
             Item.shootSpeed = 5;
             Item.noMelee = true;
             Item.noUseGraphic = true;
+            muzzleOrigin = new Vector2(58, 9);
         }
 
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-4, 0);
+        }
+        public override void ShootEffects(Vector2 position, Vector2 velocity)
+        {
+            BasicMuzzleFlash(position, velocity, Color.SkyBlue, Color.DarkBlue);
+            //base.ShootEffects(position, velocity);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<MusicalHarmonise, BlankGun>();
         }
     }
 
