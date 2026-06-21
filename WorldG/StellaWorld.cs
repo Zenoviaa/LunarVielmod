@@ -476,7 +476,6 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Ice Spikes", MakingIcyRandomness));
         passWriter.NextPass(new PassLegacy("World Gen Abysm", WorldGenAbysm));
         passWriter.NextPass(new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
-        passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
         passWriter.NextPass(new PassLegacy("Icey Caverns", WorldGenIceCaverns));
         passWriter.NextPass(new PassLegacy("Ice Housing 3", SurfaceIceHouses));
 
@@ -8511,6 +8510,8 @@ for (int beamX = structureRectangle.Location.X;
 
             //Only spawn on ice/snow
             Tile tile = Main.tile[x, y];
+            if (!tile.HasTile)
+                continue;
             if (tile.TileType != TileID.IceBlock && tile.TileType != TileID.SnowBlock)
                 continue;
 
