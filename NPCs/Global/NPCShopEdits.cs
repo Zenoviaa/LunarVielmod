@@ -55,7 +55,6 @@ namespace Stellamod.NPCs.Global
             {
                 // Adding an item to a vanilla NPC is easy:
                 // This item sells for the normal price.
-                shop.Add(ModContent.ItemType<FlamePowder>());
                 shop.Add(ModContent.ItemType<ShottyPitol>());
                 if (Main.hardMode)
                 {

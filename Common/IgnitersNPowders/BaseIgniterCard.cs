@@ -173,6 +173,7 @@ namespace Stellamod.Common.IgnitersNPowders
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
             base.ModifyWeaponDamage(player, ref damage);
+            /*
             for (int i = 0; i < Powders.Count; i++)
             {
                 if (!Powders[i].IsAir)
@@ -181,7 +182,7 @@ namespace Stellamod.Common.IgnitersNPowders
                     damage += basePowder.DamageModifier;
                 }
 
-            }
+            }*/
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

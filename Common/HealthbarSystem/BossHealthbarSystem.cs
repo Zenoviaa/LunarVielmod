@@ -9,10 +9,8 @@ using Terraria.UI;
 namespace Stellamod.Common.HealthbarSystem
 {
     [Autoload(Side = ModSide.Client)]
-    public class BossHealthbarSystem : BaseUISystem
+    public class BossHealthbarSystem : ModSystem
     {
-        public override int uiSlot => Slot_MinorUI;
-
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
 
@@ -63,12 +61,6 @@ namespace Stellamod.Common.HealthbarSystem
             }
         }
 
-        public override void CloseThis()
-        {
-            base.CloseThis();
-            CloseUI();
-        }
-
         public void ToggleUI()
         {
             if (_userInterface.CurrentState != null)
@@ -84,13 +76,13 @@ namespace Stellamod.Common.HealthbarSystem
         public void OpenUI()
         {
             //Set State
-            TakeSlot();
+
             _userInterface.SetState(uiState);
         }
 
         public void CloseUI()
         {
-            ClearSlot();
+
             _userInterface.SetState(null);
         }
 

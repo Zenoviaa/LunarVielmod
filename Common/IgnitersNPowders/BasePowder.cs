@@ -20,13 +20,14 @@ namespace Stellamod.Common.IgnitersNPowders
             Item.width = 16;
             Item.height = 16;
             Item.rare = ItemRarityID.Green;
+            DamageModifier = 1f;
         }
 
         public virtual Projectile NewProjectile(Projectile igniterCardProjectile, Vector2 explosionPosition)
         {
             Vector2 offset = Main.rand.NextVector2Circular(32, 32);
             Projectile p = Projectile.NewProjectileDirect(igniterCardProjectile.GetSource_FromThis(), explosionPosition + offset, Vector2.Zero,
-               ExplosionType, igniterCardProjectile.damage, igniterCardProjectile.knockBack, igniterCardProjectile.owner);
+               ExplosionType, (int)(igniterCardProjectile.damage * DamageModifier), igniterCardProjectile.knockBack, igniterCardProjectile.owner);
 
             if (ExplosionSound.HasValue)
             {

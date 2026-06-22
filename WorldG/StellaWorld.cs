@@ -6112,7 +6112,7 @@ for (int beamX = structureRectangle.Location.X;
                     switch (Main.rand.Next(10))
                     {
                         case 0:
-                            itemsToAdd.Add((ModContent.ItemType<GovheilPowder>(), Main.rand.Next(1, 1)));
+
                             itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                             //   itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(5, 20)));
                             itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -6260,8 +6260,7 @@ for (int beamX = structureRectangle.Location.X;
                     // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                     int specialItem = new Terraria.Utilities.WeightedRandom<int>(
                             Tuple.Create((int)ItemID.Acorn, 0.1),
-                            Tuple.Create((int)ItemID.ManaCrystal, 0.1),
-                            Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.7)
+                            Tuple.Create((int)ItemID.ManaCrystal, 0.1)
 
                     );
                     if (specialItem != ItemID.None)
@@ -6364,8 +6363,7 @@ for (int beamX = structureRectangle.Location.X;
                     // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
                     int specialItem = new Terraria.Utilities.WeightedRandom<int>(
                         Tuple.Create((int)ItemID.Acorn, 0.1),
-                            Tuple.Create((int)ItemID.ManaCrystal, 0.1),
-                            Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.7)
+                            Tuple.Create((int)ItemID.ManaCrystal, 0.1)
 
                     );
                     if (specialItem != ItemID.None)
@@ -7796,7 +7794,7 @@ for (int beamX = structureRectangle.Location.X;
                         break;
 
                     case 6:
-                        itemsToAdd.Add((ModContent.ItemType<AbyssalPowder>(), Main.rand.Next(1, 1)));
+                     
                         itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                         itemsToAdd.Add((ItemID.Shiverthorn, Main.rand.Next(2, 15)));
                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
@@ -7963,7 +7961,7 @@ for (int beamX = structureRectangle.Location.X;
                             break;
 
                         case 6:
-                            itemsToAdd.Add((ModContent.ItemType<AbyssalPowder>(), Main.rand.Next(1, 1)));
+
                             itemsToAdd.Add((ItemID.Shiverthorn, Main.rand.Next(2, 15)));
                             itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
                             itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(100, 1500)));

@@ -153,7 +153,7 @@ Common: {
 	NotBeaten: Undefeated
 	CanSwapped: Can be changed to{0}!
 	TypeSwapped: Damage Type Swapped!
-	PowderDamage: Increases igniter card damage by {0}%!
+	PowderDamage: Does {0}% of your card's damage"
 	PowderEquip: Equip this powder to a card!
 	IgniterCard: When it hits an enemy, it explodes with the effects of all the powders equipped to it!
 	IgniterCardHelp: Right click in your inventory to put powders on your card!
@@ -11889,4 +11889,104 @@ ThePiercer: {
 LuckyCardWinner: {
 	DisplayName: Lucky Card Winner
 	Tooltip: You have a 25% chance for your igniter explosions to explode again
+}
+
+BloodyCard: {
+	DisplayName: Bloody Card
+	Tooltip: ""
+}
+
+ConvulgingCard: {
+	DisplayName: Convulging Card
+	Tooltip: ""
+}
+
+FableCard: {
+	DisplayName: Fable Card
+	Tooltip: ""
+}
+
+IvynCard: {
+	DisplayName: Ivyn Card
+	Tooltip: ""
+}
+
+RingedCard: {
+	DisplayName: Ringed Card
+	Tooltip: ""
+}
+
+WinterCard: {
+	DisplayName: Winter Card
+	Tooltip: ""
+}
+
+EreshkigalsCard: {
+	DisplayName: Ereshkigals Card
+	Tooltip: ""
+}
+
+FenixCard: {
+	DisplayName: Fenix Card
+	Tooltip: ""
+}
+
+FrozenPowder: {
+	DisplayName: Frozen Powder
+	Tooltip: ""
+}
+
+GhetsisCard: {
+	DisplayName: Ghetsis Card
+	Tooltip: ""
+}
+
+JunkyCard: {
+	DisplayName: Junky Card
+	Tooltip: ""
+}
+
+MiracleCard: {
+	DisplayName: Miracle Card
+	Tooltip: ""
+}
+
+MooneskCard: {
+	DisplayName: Moonesk Card
+	Tooltip: ""
+}
+
+RadiantCard: {
+	DisplayName: Radiant Card
+	Tooltip: ""
+}
+
+RadiantPowder: {
+	DisplayName: Radiant Powder
+	Tooltip: ""
+}
+
+RunicPowder: {
+	DisplayName: Runic Powder
+	Tooltip: ""
+}
+
+SiegfriedsCard: {
+	DisplayName: Siegfrieds Card
+	Tooltip: ""
+}
+
+WinglessPowder: {
+	DisplayName: Wingless Powder
+	Tooltip: ""
+}
+
+YaoiYuriCard: {
+	DisplayName: Yaoi Yuri Card
+	Tooltip: ""
+}
+
+AlcaricPowder: {
+	DisplayName: Alcaric Powder
+	Tooltip: ""
 }

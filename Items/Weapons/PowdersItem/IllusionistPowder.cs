@@ -1,30 +1,4 @@
-﻿using Stellamod.Common.IgnitersNPowders;
-using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.IgniterExplosions;
-using Terraria.Audio;
-using Terraria.ModLoader;
-
-namespace Stellamod.Items.Weapons.PowdersItem
+﻿namespace Stellamod.Items.Weapons.PowdersItem
 {
-    public class IllusionistPowder : BasePowder
-    {
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            //Percent increase, 1 is +100% damage
-            DamageModifier = 9;
-            ExplosionType = ModContent.ProjectileType<EldritchBoom>();
 
-            SoundStyle explosionSoundStyle = new SoundStyle($"Stellamod/Assets/Sounds/StormDragon_LightingZap");
-            explosionSoundStyle.PitchVariance = 0.15f;
-            ExplosionSound = explosionSoundStyle;
-            ExplosionScreenshakeAmt = 1.5f;
-        }
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankBag>(), material: ModContent.ItemType<ConvulgingMater>());
-        }
-    }
 }

@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         {
             base.SetDefaults();
             DrawScale = 2f;
-            FrameSpeed = 1f;
+          //  FrameSpeed = 1f;
             Projectile.width = 100;
             Projectile.height = 100;
             Projectile.friendly = true;
@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 FrameSpeed = 1f;
             }
 
-            float length = f * (1f / FrameSpeed);
+            float length = f * (1f / (float)FrameSpeed);
             Projectile.timeLeft = (int)length;
         }
 
@@ -62,6 +62,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override void AI()
         {
             base.AI();
+            Timer++;
             if (!_start)
             {
                 Start();
@@ -79,6 +80,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 }
             }
 
+            Projectile.frame = _frame;
             AI_Animate();
         }
 
@@ -92,7 +94,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             }
         }
 
-        private void DrawPixelExplosion(SpriteBatch spriteBatch, Vector2 screenPos)
+        protected virtual void DrawPixelExplosion(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             Texture2D texture = TextureAssets.Projectile[Type].Value;
             Vector2 drawPos = Projectile.Center - screenPos;

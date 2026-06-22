@@ -349,12 +349,6 @@ namespace Stellamod.NPCs.Town
                         shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
                     })
 
-                    .Add(new Item(ModContent.ItemType<FrostedPowder>())
-                    {
-                        shopCustomPrice = 3,
-                        shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
-                    })
-
                     .Add(new Item(ModContent.ItemType<PaperPaws>())
                     {
                         shopCustomPrice = 10,
@@ -393,10 +387,6 @@ namespace Stellamod.NPCs.Town
 
                     .Add(new Item(ModContent.ItemType<RuinMedal>()) { shopCustomPrice = Item.buyPrice(gold: 15) })
 
-
-
-
-                    .Add<Items.Weapons.PowdersItem.Verstidust>(Condition.DownedQueenBee)
 
                 ;
 

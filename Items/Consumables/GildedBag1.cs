@@ -46,10 +46,6 @@ namespace Stellamod.Items.Consumables
             // We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
 
             var entitySource = player.GetSource_OpenItem(Type);
-            if (Main.rand.NextBool(40))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
-            }
 
             if (Main.rand.NextBool(20))
             {

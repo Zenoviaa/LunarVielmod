@@ -54,7 +54,7 @@ float3 DitherV2(float2 uv)
     float ditherStrength = spread * (mul(bayerMatrix, modUV));
     return float3(ditherStrength, ditherStrength, ditherStrength) * ditherAlpha;
 }
-float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
+float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
 {
  
 
@@ -72,6 +72,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
   
     float4 colorToMapTo = tex3D(ColorSpectrumTextureSampler, baseColor.rgb);
     baseColor.rgb = lerp(baseColor.rgb, colorToMapTo.rgb, uProgress);
+    baseColor *= tintColor;
     return baseColor;
 }
 
