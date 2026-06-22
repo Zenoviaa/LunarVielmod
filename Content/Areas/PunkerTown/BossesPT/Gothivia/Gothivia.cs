@@ -2147,5 +2147,6 @@ public partial class Gothivia : ScarletBoss
     public override void OnKill()
     {
         base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.Gothivia);
     }
 }

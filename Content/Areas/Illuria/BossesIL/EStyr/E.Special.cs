@@ -925,8 +925,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    Vector2 spawnPoint = _boxCenter;
-                    spawnPoint.Y += Main.rand.NextFloat(-390, 390f);
+                    Vector2 spawnPoint = MyTarget.Center;
+                    spawnPoint.Y += Main.rand.NextFloat(64, 64f);
                     Projectile.NewProjectile(SourceFromThis, spawnPoint, Vector2.UnitX, ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
                         Main.myPlayer, ai1: i * 4);
                 }

@@ -37,7 +37,7 @@ public class TomedDustingFlames : AbstractIgniterAddon
         base.UpdateAccessory(player, hideVisual);
         player.GetModPlayer<IgniterPlayer>().addons.Add(this);
     }
-    public override void OnExplode(IgniterCardProjectile cardProj)
+    public override void OnExplode(IgniterBoom cardProj)
     {
         base.OnExplode(cardProj);
         if (Main.rand.NextBool(10))

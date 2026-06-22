@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.IgnitersNPowders;
+using Stellamod.Core.Pixelation;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -7,10 +8,102 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    public class IgniterCardProjectile : ModProjectile
+    public class IgniterBoom : ModProjectile
+    {
+        private int _powderIndex;
+        private bool _netUpdated;
+        public BaseIgniterCard Card;
+
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float ExplosionTime => ref Projectile.ai[2];
+        protected Player Owner => Main.player[Projectile.owner];
+        protected IgniterPlayer IgniterPlayer => Owner.GetModPlayer<IgniterPlayer>();
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 1;
+            Projectile.height = 1;
+            Projectile.friendly = false;
+            Projectile.timeLeft = 600;
+            Projectile.tileCollide = false;
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(_powderIndex);
+            ItemIO.Send(Card.Item, writer);
+        }
+        
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _powderIndex = reader.ReadInt32();
+            Item item = ItemIO.Receive(reader);
+            Card = (BaseIgniterCard)item.ModItem;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if (Card == null)
+                return;
+            if (!_netUpdated)
+            {
+                Projectile.netUpdate = true;
+                _netUpdated = true;
+            }
+            if (Timer >= ExplosionTime)
+            {
+                if (_powderIndex < Card.Powders.Count)
+                {
+                    BasePowder powder = Card.Powders[_powderIndex].ModItem as BasePowder;
+                    while ((powder == null || powder.Item.IsAir) && _powderIndex < Card.Powders.Count - 1)
+                    {
+                        powder = Card.Powders[_powderIndex].ModItem as BasePowder;
+                        _powderIndex++;
+                    }
+
+                    if (Main.myPlayer == Projectile.owner && powder != null)
+                    {
+                        Projectile p = powder.NewProjectile(Projectile, Projectile.Center);
+                        if (IgniterPlayer.lucky && Main.rand.NextBool(4))
+                        {
+                            powder.NewProjectile(Projectile, Projectile.Center + Main.rand.NextVector2Circular(64, 64));
+                        }
+
+                        foreach (var addon in IgniterPlayer.addons)
+                        {
+                            addon.OnExplode(this);
+                        }
+
+                        ExplosionTime = p.timeLeft / 2;
+                        Projectile.netUpdate = true;
+
+                    }
+                    _powderIndex++;
+                }
+                else
+                {
+                    Projectile.Kill();
+                }
+
+                Timer = 0;
+            }
+
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return base.PreDraw(ref lightColor);
+        }
+    }
+    public class IgniterCardProjectile : ModProjectile,
+        IDrawToRenderTarget
     {
         private enum CardState
         {
@@ -22,7 +115,6 @@ namespace Stellamod.Projectiles.IgniterExplosions
         private int _powderIndex;
         private Vector2 _explosionPos;
         private float _dustTimer;
-        private ref float Timer => ref Projectile.ai[0];
         private CardState State
         {
             get
@@ -35,11 +127,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
             }
         }
 
-        private ref float ExplosionTime => ref Projectile.ai[2];
         public BaseIgniterCard Card;
 
-        private Player Owner => Main.player[Projectile.owner];
-        private IgniterPlayer IgniterPlayer => Owner.GetModPlayer<IgniterPlayer>();
+        protected Player Owner => Main.player[Projectile.owner];
+        protected IgniterPlayer IgniterPlayer => Owner.GetModPlayer<IgniterPlayer>();
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
@@ -57,7 +148,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.timeLeft = 600;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = -1;
+            Projectile.localNPCHitCooldown = 24;
         }
 
 
@@ -131,57 +222,24 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
         private void AI_Exploding()
         {
-            Timer++;
-
-            if (Timer >= ExplosionTime)
+            if (this.OwnedByLocalClient() && Card != null)
             {
-                if (_powderIndex < Card.Powders.Count)
+                var d = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                    ModContent.ProjectileType<IgniterBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if(d.ModProjectile is IgniterBoom boom)
                 {
-
-                    for (int i = 0; i < 10; i++)
-                    {
-                        Vector2 vel = -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(33)) * Main.rand.NextFloat(0.2f, 1f) * 0.5f;
-                        Dust.NewDustPerfect(Projectile.Center + Projectile.velocity, DustID.WhiteTorch, vel, Scale: Main.rand.NextFloat(0.5f, 2f));
-                    }
-
-                    BasePowder powder = Card.Powders[_powderIndex].ModItem as BasePowder;
-                    while ((powder == null || powder.Item.IsAir) && _powderIndex < Card.Powders.Count - 1)
-                    {
-                        powder = Card.Powders[_powderIndex].ModItem as BasePowder;
-                        _powderIndex++;
-                    }
-
-                    if (Main.myPlayer == Projectile.owner && powder != null)
-                    {
-                        Projectile p = powder.NewProjectile(Projectile, _explosionPos);
-                        if(IgniterPlayer.lucky && Main.rand.NextBool(4))
-                        {
-                            powder.NewProjectile(Projectile, _explosionPos + Main.rand.NextVector2Circular(64, 64));
-                        }
-
-                        foreach (var addon in IgniterPlayer.addons)
-                        {
-                            addon.OnExplode(this);
-                        }
-
-                        ExplosionTime = p.timeLeft / 2;
-                        Projectile.netUpdate = true;
-
-                    }
-                    _powderIndex++;
+                    boom.Card = Card;
                 }
-                else
-                {
-                    Projectile.Kill();
-                }
-
-                Timer = 0;
+                OnExplode();
+                State = CardState.Thrown;
             }
-
-
-            Projectile.velocity = Vector2.Zero;
+      
         }
 
+        protected virtual void OnExplode()
+        {
+            Projectile.Kill();
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
@@ -251,6 +309,11 @@ namespace Stellamod.Projectiles.IgniterExplosions
         {
             base.OnKill(timeLeft);
 
+        }
+
+        public virtual void DrawToRenderTargets()
+        {
+        
         }
     }
 }

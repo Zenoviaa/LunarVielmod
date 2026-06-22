@@ -32,7 +32,10 @@ namespace Stellamod.Helpers
         Cariya=20,
         KingJellyfish=21,
         LeviathanEel=22,
-        VerliaPrison=23
+        VerliaPrison=23,
+        RoyalFox=24,
+        Gothivia=25,
+        E=26
     }
 
     public class Flawless : ModBuff

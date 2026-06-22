@@ -62,6 +62,9 @@ namespace Stellamod.Common.MagicSystem.UI
                 CloseUI();
             }
 
+            if (Main.mouseRight && Main.mouseRightRelease && Main.mouseItem.ModItem is BaseEnchantment e)
+                Main.mouseItem.TurnToAir();
+
             _lastUpdateUiGameTime = gameTime;
             if (_staffInterface?.CurrentState != null)
             {

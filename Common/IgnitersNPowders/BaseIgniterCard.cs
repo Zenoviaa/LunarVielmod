@@ -17,7 +17,7 @@ namespace Stellamod.Common.IgnitersNPowders
 {
     public abstract class AbstractIgniterAddon : ModItem
     {
-        public virtual void OnExplode(IgniterCardProjectile cardProj) { }
+        public virtual void OnExplode(IgniterBoom cardProj) { }
     }
     public class IgniterPlayer : ModPlayer
     {

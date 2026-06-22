@@ -141,3 +141,21 @@ LeviathanEelPage: {
 	WhereToFind: In Your Mom
 	Lore: Birthed by your mom
 }
+
+GothiviaPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}
+
+RoyalFoxPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}
+
+EPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}

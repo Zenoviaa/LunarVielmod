@@ -719,5 +719,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (NPC.life <= 0)
                 NPC.life = 1;
         }
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            DownedBossTracker.ClearFlag(DownedBossFlag.E);
+        }
     }
 }

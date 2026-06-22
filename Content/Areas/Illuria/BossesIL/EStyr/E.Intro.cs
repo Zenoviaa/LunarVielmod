@@ -32,6 +32,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //Face away the player
             NPC.direction = TargetDirection;
+            if (!SequencerPlayer.IsActive())
+            {
+                _startedFight = true;
+                SwitchState(AIState.Intro_DomainExpansion);
+            }
         }
         private void AI_IntroPreFight()
         {

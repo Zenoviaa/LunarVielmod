@@ -3184,5 +3184,6 @@ public partial class RoyalFox : ScarletBoss,
     public override void OnKill()
     {
         base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.RoyalFox);
     }
 }

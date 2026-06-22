@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.BossBannerSystem;
+using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.BossPages;
 using Stellamod.Core.Camera;
@@ -26,6 +27,7 @@ public abstract class AbstractRelicItem<ItemClass, TileClass> : ModItem
     where TileClass : ModTile
     where ItemClass : ModItem
 {
+
     public override void SetStaticDefaults()
     {
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
@@ -489,3 +491,122 @@ public class LeviathanEelRelic : AbstractRelicTile<LeviathanEelRelicItem, Leviat
 {
 
 }
+public class GothiviaRelicItem : AbstractRelicItem<GothiviaRelicItem, GothiviaRelic>
+{
+
+}
+public class GothiviaRelic : AbstractRelicTile<GothiviaRelicItem, GothiviaPage>
+{
+
+}
+public class RoyalFoxRelicItem : AbstractRelicItem<RoyalFoxRelicItem, RoyalFoxRelic>
+{
+
+}
+public class RoyalFoxRelic : AbstractRelicTile<RoyalFoxRelicItem, RoyalFoxPage>
+{
+
+}
+
+public class MinervaRelicItem : AbstractRelicItem<MinervaRelicItem, MinervaRelic>
+{
+
+}
+
+public class MinervaRelic : AbstractRelicTile<MinervaRelicItem, MinervaPage>
+{
+
+}
+
+public class JiitasRelicItem : AbstractRelicItem<JiitasRelicItem, JiitasRelic>
+{
+
+}
+
+public class JiitasRelic : AbstractRelicTile<JiitasRelicItem, JiitasPage>
+{
+
+}
+
+public class BishinineRelicItem : AbstractRelicItem<BishinineRelicItem, BishinineRelic>
+{
+
+}
+
+public class BishinineRelic : AbstractRelicTile<BishinineRelicItem, BishininePage>
+{
+
+}
+
+public class SingularityRelicItem : AbstractRelicItem<SingularityRelicItem, SingularityRelic>
+{
+
+}
+
+public class SingularityRelic : AbstractRelicTile<SingularityRelicItem, VerlianSingularityPage>
+{
+
+}
+
+public class EliteCommanderRelicItem : AbstractRelicItem<EliteCommanderRelicItem, EliteCommanderRelic>
+{
+
+}
+
+public class EliteCommanderRelic : AbstractRelicTile<EliteCommanderRelicItem, EliteCommanderPage>
+{
+
+}
+
+public class JackRelicItem : AbstractRelicItem<JackRelicItem, JackRelic>
+{
+
+}
+
+public class JackRelic : AbstractRelicTile<JackRelicItem, JackPage>
+{
+
+}
+
+public class StoneGolemRelicItem : AbstractRelicItem<StoneGolemRelicItem, StoneGolemRelic>
+{
+
+}
+
+public class StoneGolemRelic : AbstractRelicTile<StoneGolemRelicItem, StoneGolemPage>
+{
+
+}
+
+
+public class SanguineSingularityRelicItem : AbstractRelicItem<SanguineSingularityRelicItem, SanguineSingularityRelic>
+{
+
+}
+
+public class SanguineSingularityRelic : AbstractRelicTile<SanguineSingularityRelicItem, SanguineSingularityPage>
+{
+
+}
+
+public class GustbeakRelicItem : AbstractRelicItem<GustbeakRelicItem, GustbeakRelic> { }
+public class GustbeakRelic : AbstractRelicTile<GustbeakRelicItem, GustbeakPage> { }
+
+public class CommanderGintziaRelicItem : AbstractRelicItem<CommanderGintziaRelicItem, CommanderGintziaRelic> { }
+public class CommanderGintziaRelic : AbstractRelicTile<CommanderGintziaRelicItem, GintziaPage> { }
+
+public class StarbomberRelicItem : AbstractRelicItem<StarbomberRelicItem, StarbomberRelic> { }
+public class StarbomberRelic : AbstractRelicTile<StarbomberRelicItem, STARBOMBERPage> { }
+
+public class TowerofIlluriaRelicItem : AbstractRelicItem<TowerofIlluriaRelicItem, TowerofIlluriaRelic> { }
+
+public class TowerofIlluriaRelic : AbstractRelicTile<TowerofIlluriaRelicItem, TowerOfIlluriaPage> { }
+
+public class SkullrunnerRelicItem : AbstractRelicItem<SkullrunnerRelicItem, SkullrunnerRelic> { }
+public class SkullrunnerRelic : AbstractRelicTile<SkullrunnerRelicItem, SkullrunnerPage> { }
+
+public class ERelicItem : AbstractRelicItem<ERelicItem, ERelic> { }
+public class ERelic : AbstractRelicTile<ERelicItem, EPage> { }
+
+public class DaedusRelicItem : AbstractRelicItem<DaedusRelicItem, DaedusRelic> { }
+public class DaedusRelic : AbstractRelicTile<DaedusRelicItem, DaedusPage> { }

@@ -11027,17 +11027,17 @@ MiracleSilkTileBlock: {
 }
 
 VerliaRelicItem: {
-	DisplayName: Verlia Relic Item
+	DisplayName: Verlia Relic
 	Tooltip: ""
 }
 
 CelestiaRelicItem: {
-	DisplayName: Celestia Relic Item
+	DisplayName: Celestia Relic
 	Tooltip: ""
 }
 
 CariyaRelicItem: {
-	DisplayName: Cariya Relic Item
+	DisplayName: Cariya Relic
 	Tooltip: ""
 }
 
@@ -11988,5 +11988,90 @@ YaoiYuriCard: {
 
 AlcaricPowder: {
 	DisplayName: Alcaric Powder
+	Tooltip: ""
+}
+
+BishinineRelicItem: {
+	DisplayName: Bishinine Relic
+	Tooltip: ""
+}
+
+GothiviaRelicItem: {
+	DisplayName: Gothivia Relic
+	Tooltip: ""
+}
+
+JiitasRelicItem: {
+	DisplayName: Jiitas Relic
+	Tooltip: ""
+}
+
+MinervaRelicItem: {
+	DisplayName: Minerva Relic
+	Tooltip: ""
+}
+
+RoyalFoxRelicItem: {
+	DisplayName: Royal Fox Relic
+	Tooltip: ""
+}
+
+SingularityRelicItem: {
+	DisplayName: Singularity Relic
+	Tooltip: ""
+}
+
+CommanderGintziaRelicItem: {
+	DisplayName: Commander Gintzia Relic
+	Tooltip: ""
+}
+
+DaedusRelicItem: {
+	DisplayName: Daedus Relic
+	Tooltip: ""
+}
+
+EliteCommanderRelicItem: {
+	DisplayName: Elite Commander Relic
+	Tooltip: ""
+}
+
+ERelicItem: {
+	DisplayName: E Relic
+	Tooltip: ""
+}
+
+GustbeakRelicItem: {
+	DisplayName: Gustbeak Relic
+	Tooltip: ""
+}
+
+JackRelicItem: {
+	DisplayName: Jack Relic
+	Tooltip: ""
+}
+
+SanguineSingularityRelicItem: {
+	DisplayName: Sanguine Singularity Relic
+	Tooltip: ""
+}
+
+SkullrunnerRelicItem: {
+	DisplayName: Skullrunner Relic
+	Tooltip: ""
+}
+
+StarbomberRelicItem: {
+	DisplayName: Starbomber Relic
+	Tooltip: ""
+}
+
+StoneGolemRelicItem: {
+	DisplayName: Stone Golem Relic
+	Tooltip: ""
+}
+
+TowerofIlluriaRelicItem: {
+	DisplayName: Towerof Illuria Relic
 	Tooltip: ""
 }

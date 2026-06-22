@@ -92,6 +92,7 @@ namespace Stellamod.Common.MagicSystem.UI
 
                 ItemSlot.Handle(ref Item, _context);
 
+     
                 //Save Item 
                 if (Main.mouseLeftRelease && Main.mouseLeft)
                 {
@@ -99,6 +100,9 @@ namespace Stellamod.Common.MagicSystem.UI
                     SoundStyle place = AssetRegistry.Sounds.MagicWand.EnchantmentPlace;
                     place.PitchVariance = 0.15f;
                     SoundEngine.PlaySound(place);
+                    /*
+                    if (!Main.mouseItem.IsAir && !Item.IsAir)
+                        Main.mouseItem.TurnToAir();*/
                 }
             }
         }
