@@ -521,7 +521,7 @@ namespace Stellamod.Core.Tooltips
             {
                 int width = (int)zero.X + num17 * 2;
                 int height = (int)zero.Y + num18 + num18 / 2;
-                Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width * alpha), (int)(height * alpha)), new Color(23, 25, 81, 255) * 0.925f * alpha);
+                Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width ), (int)(height )), new Color(23, 25, 81, 255) * 0.925f * alpha);
             }
 
             for (int k = 0; k < lines.Count; k++)

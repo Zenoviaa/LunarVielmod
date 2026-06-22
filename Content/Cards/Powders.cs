@@ -385,18 +385,29 @@ public class FrozenBoom : BaseIgniterExplosion
     public override int FrameCount => 6;
     public override void SetDefaults()
     {
+        FrameSpeed = 0.25f;
         base.SetDefaults();
-        FrameSpeed = 0.5f;
+        DrawScale = 1f;
     }
 
     public override void Start()
     {
         base.Start();
         FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 24);
-        if (Main.myPlayer == Projectile.owner)
+        SoundStyle glowSound;
+        switch (Main.rand.Next(2))
         {
-            var circle = EffectsHelper.SimpleExplosionCircle(Projectile, Color.Cyan);
+            default:
+            case 0:
+                glowSound = new SoundStyle("Stellamod/Assets/Sounds/Illuria/IceImpact1");
+                break;
+            case 1:
+                glowSound = new SoundStyle("Stellamod/Assets/Sounds/Illuria/IceImpact2");
+                break;
         }
+        glowSound.Volume = 0.4f;
+        glowSound.PitchVariance = 0.6f;
+        SoundEngine.PlaySound(glowSound, Projectile.position);
     }
 
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -518,6 +529,7 @@ public class RadiantBoom : BaseIgniterExplosion
                 glowSound = new SoundStyle("Stellamod/Assets/Sounds/GoldenSlice3");
                 break;
         }
+        glowSound.Volume = 0.4f;
         glowSound.PitchVariance = 0.6f;
         SoundEngine.PlaySound(glowSound, Projectile.position);
 
@@ -762,7 +774,7 @@ public class AlcaricPowder : BasePowder
     {
         base.SetDefaults();
         //Percent increase, 1 is +100% damage
-        DamageModifier = 2.5f;
+        DamageModifier = 5f;
         ExplosionType = ModContent.ProjectileType<AlcaBoom>();
 
         ExplosionScreenshakeAmt = 2f;
@@ -825,7 +837,7 @@ public class AlcaBoom : BaseIgniterExplosion
             SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
             drawer.color = Color.White;
             drawer.color.A = 0;
-            drawer.scale *= 0.6f;
+            drawer.scale *= 1f;
             spriteBatch.Draw(drawer);
         }
     }

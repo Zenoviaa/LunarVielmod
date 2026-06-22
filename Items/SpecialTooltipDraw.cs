@@ -18,8 +18,9 @@ namespace Stellamod.Items
             {
                 var brew = cauldron.FindBrew(item);
                 TooltipLine tooltipLine;
-                tooltipLine = new TooltipLine(Mod, $"CauldronCraftHelp_{ModContent.GetModItem(brew.mold).Texture}_{ModContent.GetModItem(brew.material).Texture}_",
-                            LangText.Misc("CauldronCraft"));
+                string line = $"[i:{brew.mold}] [i:{brew.material}]";
+                tooltipLine = new TooltipLine(Mod, $"CauldronCraftHelp",
+                            LangText.Misc("CauldronCraft") + " " + line);
                 tooltipLine.OverrideColor = Color.Lerp(new Color(80, 187, 124), Color.Black, 0.5f);
                 tooltips.Add(tooltipLine);
             }

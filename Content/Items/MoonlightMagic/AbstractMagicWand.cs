@@ -274,17 +274,16 @@ namespace Stellamod.Content.Items.MoonlightMagic
             List<int> preferences = new List<int>();
             ModifyElementPreferences(preferences);
 
-            string preferenceString = "MoonPreferences_";
+            string preferenceString = "";
             if(preferences.Count > 0)
             {
                 for (int p = 0; p < preferences.Count; p++)
                 {
                     int preferenceType = preferences[p];
-                    ModItem element = ModContent.GetModItem(preferenceType);
-                    preferenceString += $"{element.Texture}_";
+                    preferenceString += $"[i:{preferenceType}]";
 
                 }
-                tooltipLine = new TooltipLine(Mod, preferenceString, "Preferences");
+                tooltipLine = new TooltipLine(Mod, "Preferences", "Preferences " + preferenceString);
                 tooltips.Add(tooltipLine);
             }
 
@@ -301,7 +300,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 var item = normalEnchantments[i];
                 if (item.ModItem is BaseEnchantment enchantment)
                 {
-                    tooltipLine = new TooltipLine(Mod, $"MoonMagicEnchant_{enchantment.Texture}_{i}", enchantment.DisplayName.Value);
+                    tooltipLine = new TooltipLine(Mod, $"MoonMagicEnchant_{i}", $"[i:{enchantment.Type}] " + enchantment.DisplayName.Value);
                     tooltips.Add(tooltipLine);
                 }
             }
@@ -310,7 +309,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 var item = timedEnchantments[i];
                 if (item.ModItem is BaseEnchantment enchantment)
                 {
-                    tooltipLine = new TooltipLine(Mod, $"MoonMagicEnchant_{enchantment.Texture}_{i+normalEnchantments.Count}", enchantment.DisplayName.Value);
+                    tooltipLine = new TooltipLine(Mod, $"MoonMagicEnchantT_{i+normalEnchantments.Count}", $"[i:{enchantment.Type}] " + enchantment.DisplayName.Value);
                     tooltips.Add(tooltipLine);
                 }
             }

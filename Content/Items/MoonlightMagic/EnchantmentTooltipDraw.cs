@@ -110,20 +110,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
 
-            if (line.Mod == "Stellamod" && line.Name.Contains("MoonMagicEnchant_"))
-            {
-
-                int startIndex = line.Name.IndexOf("_") + 1;
-                int endIndex = line.Name.LastIndexOf("_");
-                string textureName = line.Name.Substring(startIndex, endIndex - startIndex);
-                Texture2D texture = ModContent.Request<Texture2D>(textureName).Value;
-
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                Vector2 textPosition = new(line.X, line.Y);
-                Vector2 drawPos = textPosition + new Vector2(0, texture.Size().Y / 3.5f) - new Vector2(15, 6);
-                spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, texture.Size() * 0.5f, 0.75f, SpriteEffects.None, 0f);
-
-            }
             if (line.Mod == "Stellamod" && line.Name.Contains("MoonPreferences_"))
             {
 
