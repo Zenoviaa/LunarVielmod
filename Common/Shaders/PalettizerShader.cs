@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Palettes;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.Shaders
@@ -26,16 +28,14 @@ namespace Stellamod.Common.Shaders
         {
             set
             {
-                _ditherAlphaParam ??= Effect.Parameters["ditherAlpha"];
-                _ditherAlphaParam.SetValue(value);
+                Effect.Parameters["ditherAlpha"].SetValue(value);
             }
         }
         public float Spread
         {
             set
             {
-                _spreadParam ??= Effect.Parameters["spread"];
-                _spreadParam.SetValue(value);
+                Effect.Parameters["spread"].SetValue(value);
             }
         }
 
@@ -43,32 +43,45 @@ namespace Stellamod.Common.Shaders
         {
             set
             {
-                _colorSpectrumParam ??= Effect.Parameters["ColorSpectrumTexture"];
-                _colorSpectrumParam.SetValue(value);
+                Effect.Parameters["ColorSpectrumTexture"].SetValue(value);
+            }
+        }
+        public Texture2D DitherTexture
+        {
+            set
+            {
+                Main.graphics.GraphicsDevice.Textures[1] = value;
+                Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+                Effect.Parameters["ditherTexelSize"].SetValue(Vector2.One / (value.Size()));
             }
         }
         public float Progress
         {
             set
             {
-                _progressParam ??= Effect.Parameters["uProgress"];
-                _progressParam.SetValue(value);
+                Effect.Parameters["uProgress"].SetValue(value);
             }
         }
         public bool Dither
         {
             set
             {
-                _ditherParam ??= Effect.Parameters["dither"];
-                _ditherParam.SetValue(value);
+                Effect.Parameters["dither"].SetValue(value);
             }
         }
         public Vector2 ImageSize
         {
             set
             {
-                _sizeParam ??= Effect.Parameters["uImageSize1"];
-                _sizeParam.SetValue(value);
+                Effect.Parameters["uImageSize1"].SetValue(value);
+            }
+        }
+
+        public Vector2 ScreenOffset
+        {
+            set
+            {
+                Effect.Parameters["screenOffset"].SetValue(value);
             }
         }
         
@@ -80,6 +93,7 @@ namespace Stellamod.Common.Shaders
             palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
             palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
             palettizerShader.DitherAlpha = 0.125f;
+            palettizerShader.DitherTexture = AssetManager.Dithering.Dither8x8Double.Asset.Value;
             return palettizerShader;
         }
 

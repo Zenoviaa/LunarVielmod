@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 using Stellamod.Content.Biomes;
@@ -232,9 +233,10 @@ namespace Stellamod.Core.PaletteShadingSystem
             palettizerShader.PaletteTexture = PaletteHelper.GetColorSpectrum(palFile);
             palettizerShader.Progress = fade;
             palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
-            palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
-            //   palettizerShader.Spread = 5f;
-            palettizerShader.DitherAlpha = 0.125f;
+            palettizerShader.ImageSize = new Vector2(Main.screenWidth, Main.screenHeight);
+            palettizerShader.DitherTexture = AssetManager.Dithering.Dither8x8.Asset.Value;
+            palettizerShader.DitherAlpha = 0.05f;
+            palettizerShader.ScreenOffset = Main.screenPosition;
             return palettizerShader.Effect;
         }
 

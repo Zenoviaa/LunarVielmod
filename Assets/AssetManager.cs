@@ -8,6 +8,13 @@ namespace Stellamod.Assets
 {
     public class AssetManager : ModSystem
     {
+        public class Dithering
+        {
+            public static LazyAsset<Texture2D> Dither4x4;
+            public static LazyAsset<Texture2D> Dither4x4Double;
+            public static LazyAsset<Texture2D> Dither8x8;
+            public static LazyAsset<Texture2D> Dither8x8Double;
+        }
         public class Noise
         {
             public static LazyAsset<Texture2D> InvertedVoronoi;
@@ -90,6 +97,12 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            Dithering.Dither4x4 = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither4x4");
+            Dithering.Dither4x4Double = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither4x4DoubleScaled");
+            Dithering.Dither8x8 = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither8x8");
+            Dithering.Dither8x8Double = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither8x8DoubleScaled");
+
+
             GlowMask.JumbledGlowCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/JumbledGlowCircle");
             Noise.InvertedVoronoi = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/InvertedVoronoi");
             Noise.FlameVortexNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FlameVortexNoise");
@@ -156,6 +169,11 @@ namespace Stellamod.Assets
         public override void OnModUnload()
         {
             base.OnModUnload();
+            Dithering.Dither4x4?.Unload();
+            Dithering.Dither4x4Double?.Unload();
+            Dithering.Dither8x8?.Unload();
+            Dithering.Dither8x8Double?.Unload();
+            
             GlowMask.JumbledGlowCircle?.Unload();
             Noise.InvertedVoronoi?.Unload();
             Noise.FlameVortexNoise?.Unload();

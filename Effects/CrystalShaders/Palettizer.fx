@@ -33,6 +33,10 @@ sampler3D ColorSpectrumTextureSampler = sampler_state
     AddressV = clamp;
 };
 
+float2 ditherTexelSize;
+float2 screenOffset;
+
+/*
 //http://loopit.dk/banding_in_games.pdf
 //reference: https://www.shadertoy.com/view/4dcSRX
 float3 ScreenSpaceDither(float2 vScreenPos, float colorDepth)
@@ -53,16 +57,28 @@ float3 DitherV2(float2 uv)
     float2 modUV = float2(fmod(uv.x * 1920.0, n), fmod(uv.y * 1080.0 * -1.0, n));
     float ditherStrength = spread * (mul(bayerMatrix, modUV));
     return float3(ditherStrength, ditherStrength, ditherStrength) * ditherAlpha;
+}*/
+
+float Dither(float2 screenUV)
+{
+    //Here we multiple the screen uv by the image size to get it back to 0-1, and then multiple by the texel size of the dither to normalize it
+    float2 ditherTextureUV = screenUV * uImageSize1 * ditherTexelSize;
+    ditherTextureUV += screenOffset;
+    float dither = tex2D(uImage1, ditherTextureUV).r;
+    return dither;
 }
+
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
 {
- 
-
     float4 baseColor = tex2D(uImage0, coords);
-       //Dither as close as possible to the color quantization
+       
+    //Dither as close as possible to the color quantization
     if (dither)
     {
-        float3 ditheredColor = baseColor.rgb + ScreenSpaceDither(coords * uImageSize1, 1.0) * ditherAlpha;
+        float texBrightness = max(baseColor.r, max(baseColor.g, baseColor.b));
+        float ditherColor = Dither(coords);
+  
+        float3 ditheredColor = baseColor.rgb - ditherColor * ditherAlpha;
         baseColor.rgb = ditheredColor;
         baseColor.rgb = saturate(baseColor.rgb);
     }
