@@ -39,7 +39,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         IDrawOutlines
     {
 
-        private float _enrageTimer;
         private bool _contactDamage;
         private float _miniBounceCount;
         private int _heartCount;
@@ -52,9 +51,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private Vector2 _shakeOffset;
 
         private float _squishTimer;
+        private float _shootTimer;
         private Vector2 _squishScale;
         private Vector2 _startSquish;
 
+
+        private Vector2 _chargeScale;
+        private float _chargeAlpha;
         private Vector2 _startDeath;
         private Vector2 _rollVelocity;
         private TowerOfIlluraDraw _draw;
@@ -257,7 +260,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
-
+            if(_shootTimer > 0)
+            {
+                _shootTimer--;
+            }
             ManageTowerPosition();
             SummonHearts();
             Shine();
@@ -277,7 +283,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         }
         private void Inner_AI()
         {
-         //   NPC.Center = MyTarget.Center - Vector2.UnitY * 128;
+            //   NPC.Center = MyTarget.Center - Vector2.UnitY * 128;
+            _chargeAlpha = MathHelper.Lerp(_chargeAlpha, 0f, 0.1f);
+            _chargeScale = Vector2.Lerp(_chargeScale, Vector2.Zero, 0.1f);
             switch (State)
             {
                 case AIState.SpawnIdle:
@@ -1001,6 +1009,71 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
         }
+        public void ChargeParticles(Vector2 center, in float timer)
+        {
+            if (timer % 4 == 0)
+            {
+                Vector2 pos = center + Main.rand.NextVector2CircularEdge(252, 252);
+                Vector2 vel = (center - pos);
+                vel *= 0.05f;
+                var fx = FXUtil.GlowStretch(pos, vel);
+                fx.VectorScale *= 0.5f;
+            }
+
+            if (timer % 4 == 0)
+            {
+                Vector2 pos = center + Main.rand.NextVector2CircularEdge(252, 252);
+                Vector2 vel = (center - pos);
+                vel *= 0.15f;
+                var dp = DustParticle.Spawn(pos, vel);
+                dp.dampening = 0.15f;
+                dp.gravity = 0;
+                dp.noTileCollide = true;
+                dp.Scale *= 0.35f;
+                dp.outerColor = Color.Violet;
+            }
+        }
+        public void ChargeParticlesBig(Vector2 center, in float timer)
+        {
+            if (timer % 4 == 0)
+            {
+                Vector2 pos = center + Main.rand.NextVector2CircularEdge(768, 768);
+                Vector2 vel = (center - pos);
+                vel *= 0.09f;
+                var fx = FXUtil.GlowStretch(pos, vel);
+                fx.VectorScale *= 0.5f;
+            }
+            if (timer % 4 == 0)
+            {
+                Vector2 pos = center + Main.rand.NextVector2CircularEdge(768, 768);
+                Vector2 vel = (center - pos);
+                vel *= 0.09f;
+                var fx = FXUtil.GlowStretch(pos, vel);
+                //   fx.VectorScale *= 0.5f;
+            }
+            if (timer % 4 == 0)
+            {
+                Vector2 pos = center + Main.rand.NextVector2CircularEdge(768, 768);
+                Vector2 vel = (center - pos);
+                vel *= 0.09f;
+                var fx = FXUtil.GlowStretch(pos, vel);
+                //   fx.VectorScale *= 0.5f;
+            }
+
+            if (timer % 4 == 0)
+            {
+                Vector2 pos = center + Main.rand.NextVector2CircularEdge(768, 768);
+                Vector2 vel = (center - pos);
+                vel *= 0.09f;
+                var dp = DustParticle.Spawn(pos, vel);
+                dp.dampening = 0.1f;
+                dp.noTileCollide = true;
+                dp.Scale *= 0.35f;
+                dp.outerColor = Color.Violet;
+                dp.gravity = 0;
+            }
+        }
+
 
         private void AI_LaserBolt()
         {
@@ -1013,6 +1086,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             TargetOutlineColor = Color.Yellow;
             Hover();
 
+            _chargeScale = Vector2.Lerp(Vector2.One * 2, Vector2.Zero, Timer / 60f);
+            _chargeAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / 60f));
+
+            if(Timer < 60)
+            {
+                ChargeParticles(NPC.Center, Timer);
+            }
+
+            if(Timer == 60)
+            {
+                _shootTimer = 25;
+            }
             if (Timer == 60 && MultiplayerHelper.IsHost)
             {
                 Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitX * 8,
@@ -1041,6 +1126,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Hover();
             ShakeScreenPosition.Shake = 2;
             _shakeOffset = Main.rand.NextVector2Circular(3, 3);
+            if(Timer % 20 == 0)
+            {
+                _shootTimer = 25;
+            }
             if (Timer % 20 == 0 && MultiplayerHelper.IsHost)
             {
                 Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitX * 8,
@@ -1301,6 +1390,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             return false;
         }
 
+        private Vector2 ShootScale => Vector2.Lerp(Vector2.One, Vector2.One * 1.35f, _shootTimer / 60f);
+
         private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             int trailLength = NPC.oldPos.Length;
@@ -1326,12 +1417,41 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             spriteBatch.Draw(towerTexture, drawCenter, frame, drawColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
         }
 
+        private void DrawOnlySprite(SpriteBatch spriteBatch, Vector2 drawPosition, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Rectangle frame = NPC.frame;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, drawOrigin, _draw.scale * _squishScale * ShootScale, SpriteEffects.None, 0);
+
+        }
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 drawPosition, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;
-            spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, drawOrigin, _draw.scale * _squishScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, drawOrigin, _draw.scale * _squishScale * ShootScale, SpriteEffects.None, 0);
+
+            float hsootAlhpa = EasingFunction.InOutSine(_shootTimer / 25f);
+            Color flashColor = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 16), Color.Blue, Color.SkyBlue, Color.Purple, Color.White);
+            if (hsootAlhpa > 0)
+            {
+                SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = SpriteWhiteShader.Instance };
+                using(SpritebatchStarter.Begin(spriteBatch, @params))
+                {
+                    spriteBatch.Draw(texture, drawPosition, frame, flashColor * hsootAlhpa * 0.3f, NPC.rotation, drawOrigin, _draw.scale * _squishScale * ShootScale, SpriteEffects.None, 0);
+                }
+            }
+
+            if (_chargeAlpha <= 0)
+                return;
+            SpritebatchDrawer circle = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, NPC.Center);
+            circle.color = Color.Lerp(Color.Blue, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 16)) * 0.1f;
+            circle.color *= _chargeAlpha;
+            circle.color.A = 0;
+            circle.scale = _chargeScale;
+            spriteBatch.Draw(circle);
+   
         }
 
         private void DrawGlow(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -1356,10 +1476,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             float outlineOffset = 2;
             Vector2 v = Vector2.UnitX * outlineOffset;
             Vector2 h = Vector2.UnitY * outlineOffset;
-            DrawSprite(spriteBatch, NPC.Center - screenPos + v, _draw.outlineColor);
-            DrawSprite(spriteBatch, NPC.Center - screenPos - v, _draw.outlineColor);
-            DrawSprite(spriteBatch, NPC.Center - screenPos + h, _draw.outlineColor);
-            DrawSprite(spriteBatch, NPC.Center - screenPos - h, _draw.outlineColor);
+            DrawOnlySprite(spriteBatch, NPC.Center - screenPos + v, _draw.outlineColor);
+            DrawOnlySprite(spriteBatch, NPC.Center - screenPos - v, _draw.outlineColor);
+            DrawOnlySprite(spriteBatch, NPC.Center - screenPos + h, _draw.outlineColor);
+            DrawOnlySprite(spriteBatch, NPC.Center - screenPos - h, _draw.outlineColor);
         }
         #endregion
     }

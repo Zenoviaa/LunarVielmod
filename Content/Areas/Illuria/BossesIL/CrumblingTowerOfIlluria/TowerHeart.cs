@@ -67,7 +67,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 Timer += 0.02f;
                 _immuneTimer--;
             }
-            NPC.dontTakeDamage = _immuneTimer > 0 ? true : false;
+
                 Timer += 0.01f;
             float radians = Timer * 0.015f;
             float x = MathF.Sin(Timer) * OrbitRadiusX;

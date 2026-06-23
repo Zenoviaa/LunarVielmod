@@ -9,6 +9,12 @@ using Terraria.GameContent;
 namespace Stellamod.Helpers;
 
 
+public static class TextureExtensions
+{
+    public static Vector2 GetTexelSize(this Asset<Texture2D> textureAsset) => GetTexelSize(textureAsset.Value);
+    public static Vector2 GetTexelSize(this Texture2D texture) => Vector2.One / texture.Size();
+}
+
 public static class ColorExtensions
 {
     public static Vector3 ToHSV(this Color color) => DrawUtilities.RgbToHsv(color);

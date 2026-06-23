@@ -3,14 +3,17 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering.Materials;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles
@@ -27,8 +30,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
     */
 
 
-    public class IllurianSnipe : ScarletProjectile
+    public class IllurianSnipe : ModProjectile,
+        IDrawToRenderTarget
     {
+        private float _size;
         private float _telegraphLineAlpha;
         private float _telegraphLineRot;
         private ref float Timer => ref Projectile.ai[0];
@@ -49,10 +54,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         }
 
         public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.TrailCacheLength[Type] = 24;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();
-            TrailCacheLength = 24;
             Projectile.width = 8;
             Projectile.height = 8;
             Projectile.hostile = true;
@@ -74,7 +84,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             switch (State)
             {
                 case AIState.Charge:
-                    AI_Charge();
+                    SwitchState(AIState.Fire);
                     break;
                 case AIState.Fire:
                     AI_Fire();
@@ -127,6 +137,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Timer++;
             if(Timer == 1)
             {
+                _size = Main.rand.NextFloat(0.50f, 1.00f);
                 Player closest = PlayerHelper.FindClosestPlayer(Projectile.position, 4000);
                 Vector2 fireVelocity = (closest.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                 fireVelocity *= Projectile.velocity.Length();
@@ -142,25 +153,138 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), dustVelocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.3f, 0.8f));
                 }
 
-                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, newColor: Color.Cyan);
+       
                 SoundStyle fireSound = AssetRegistry.Sounds.Magic.AutomationCast1;
                 fireSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(fireSound, Projectile.position);
             }
-            Projectile.velocity *= 1.02f;
+
+            if(Timer % 5 == 0 && Timer < 19)
+            {
+                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, newColor: Color.Cyan);
+            }
+            if(Timer % 4 == 0)
+            {
+                var isp = IllurianSnowflakeParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero));
+                isp.Scale *= Main.rand.NextFloat(0.4f, 0.6f);
+                isp.color *= 0.85f;
+            }
+
+            if (Main.rand.NextBool(3))
+            {
+                var dp = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * 45);
+                dp.gravity = 0;
+                dp.noTileCollide = true;
+                dp.dampening = 0.2f;
+                dp.Scale *= 0.7f;
+                dp.outerColor = Color.Blue;
+                dp.superFast = true;
+            }
+
+            if (Main.rand.NextBool(3))
+            {
+                FlakeParticle dp = Particle<FlakeParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: Main.rand.NextFloat(0.2f, 0.35f));
+                //   dp.innerColor = Color.Goldenrod;
+                // dp.outerColor = Color.Red;
+                dp.parent = Projectile;
+           
+                dp.gravity = 0f;
+                dp.dampening = 0.05f;
+               
+                // dp.fast = true;
+                dp.Scale *= 0.8f;
+            }
+            if (Main.rand.NextBool(3))
+            {
+                FaintSmokeParticle dp = Particle<FaintSmokeParticle>.SpawnInAlphaLayer(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: Main.rand.NextFloat(0.2f, 0.35f));
+                //   dp.innerColor = Color.Goldenrod;
+                // dp.outerColor = Color.Red;
+                dp.parent = Projectile;
+                dp.behindLayer = true;
+                dp.fadeToColor = Color.White * 0f;
+                dp.color *= 0.2f;
+                // dp.gravity = 0f;
+                dp.dampening = 0.05f;
+                // dp.fast = true;
+                dp.Scale *= 0.5f;
+            }
+            if (Main.rand.NextBool(3))
+            {
+                FaintSmokeParticle dp = Particle<FaintSmokeParticle>.SpawnInAlphaLayer(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: 1f);
+                //   dp.innerColor = Color.Goldenrod;
+                // dp.outerColor = Color.Red;
+       
+                dp.behindLayer = true;
+
+                dp.fadeToColor = Color.White * 0f;
+                dp.color = Color.DarkGray * 0.4f;
+                // dp.gravity = 0f;
+                dp.dampening = 0.05f;
+                // dp.fast = true;
+                dp.Scale *= 0.45f;
+            }
+
+
+
+            if (Main.rand.NextBool(5))
+            {
+                switch (Main.rand.Next(2))
+                {
+                    case 0:
+                        DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 8), Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                        sp.gravity = 0f;
+                        sp.fast = true;
+                        sp.dampening = 0.1f;
+                        sp.Scale *= 0.25f;
+                        break;
+                    case 1:
+                        FlakeParticle sp2 = Particle<FlakeParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 8), Scale: Main.rand.NextFloat(0.1f, 0.2f));
+                        sp2.gravity = 0f;
+                        //sp2.fast = true;
+                        sp2.dampening = 0.1f;
+
+                        break;
+                }
+            }
+
+            if (Main.rand.NextBool(8))
+            {
+                FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f),
+                    color: Color.White, Scale: Main.rand.NextFloat(0.35f, 0.75f));
+                sp.gravity = 0f;
+                sp.fast = true;
+                sp.dampening = 0.1f;
+                sp.Scale *= 0.25f;
+            }
+
+
+            Projectile.extraUpdates = 0;
+            if(Projectile.velocity.Length() < 27)
+                Projectile.velocity *= MathHelper.Lerp(1f, 1.2f, EasingFunction.InExpo(Timer / 60f));
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            float numDust = 3;
-            for(float n = 0; n < numDust; n++)
+            float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
+            for (float n = 0; n < 2f; n++)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                velocity += -Projectile.oldVelocity * Main.rand.NextFloat(0.5f, 1f);
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.Cyan, Scale: Main.rand.NextFloat(0.4f, 0.75f));
+                var spawnParams = new DustParticleSpawnParams();
+                spawnParams.innerColor = Color.LightSkyBlue;
+                spawnParams.outerColor = Color.DarkBlue;
+                spawnParams.scaleRange = new Vector2(0.1f, 1f);
+                DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
             }
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 30, baseSize: 0.2f);
+            if (this.OwnedByLocalClient())
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.oldVelocity,
+                    ModContent.ProjectileType<IceCometBoom>(),0, Projectile.knockBack, Projectile.owner);
+            }
+            SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.White, Scale: 1f);
+            sp.initialColor = Color.White * 0.14f;
+
             var part = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Cyan, Color.Blue);
             part.Scale *= 0.66f;
 
@@ -170,62 +294,52 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             SoundEngine.PlaySound(hitSound, Projectile.position);
         }
 
-        private Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(new Color(69, 196, 182), Color.SpringGreen, completionRatio);
-        }
 
-        private float WidthFunction(float completionRatio)
-        {
-            return MathHelper.SmoothStep(8, 0, completionRatio);
-        }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D bloomlineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
-            Vector2 drawOrigin = new Vector2(bloomlineTexture.Width / 2f, 0f);
-            Color drawColor = Color.White;
-            drawColor.A = 0;
-            drawColor *= _telegraphLineAlpha;
-            drawColor *= 0.5f;
-            Vector2 scale = Vector2.One;
-            scale.Y *= 2;
-            scale.X *= 0.15f;
-            spriteBatch.Draw(bloomlineTexture, drawCenter, null, drawColor, _telegraphLineRot, drawOrigin, scale, SpriteEffects.None, 0);
-
-            if (State == AIState.Charge)
-            {
-                Texture2D glowballTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-                scale = Vector2.One * _telegraphLineAlpha;
-                drawOrigin = glowballTexture.Size() / 2f;
-                for (float r = 0; r < 4; r++)
-                    spriteBatch.Draw(glowballTexture, drawCenter, null, drawColor, 0, drawOrigin, scale, SpriteEffects.None, 0);
-
-            }
-
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
-
-        public void DrawPixelated(GraphicsDevice graphicsDevice)
+        private void DrawHead(SpriteBatch spriteBatch, Vector2 sp)
         {
+            SpritebatchDrawer haedDrawer = SpritebatchDrawer.FromTextureAsset(
+                AssetManager.GlowMask.StarFlare2, Projectile.Center);
+            haedDrawer.color = Color.White * ExtraMath.Osc(0.65f, 0.9f, speed: 12, offset: Projectile.whoAmI);
+            haedDrawer.color.A = 0;
+            haedDrawer.scale *= 0.3f * _size;
+            spriteBatch.Draw(haedDrawer);
 
-    
-            if(State == AIState.Fire)
+
+            haedDrawer = SpritebatchDrawer.FromTextureAsset(
+    AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            haedDrawer.color = Color.Blue * ExtraMath.Osc(0.65f, 0.9f, speed: 12, offset: Projectile.whoAmI) * 0.7f;
+            haedDrawer.color.A = 0;
+            haedDrawer.scale *= 0.5f * _size;
+            spriteBatch.Draw(haedDrawer);
+        }
+
+        public void DrawToRenderTargets()
+        {
+            if (State != AIState.Fire)
+                return;
+
+            Color GetTrailColor(float ratio)
             {
-                var shader = MagicNormalShader.Instance;
-                shader.PrimaryTexture = TrailRegistry.GlowTrail;
-                shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-                shader.BlendState = BlendState.Additive;
-                shader.SamplerState = SamplerState.PointWrap;
-                shader.Speed = 0.5f;
-                shader.Repeats = 1f;
-                //This just applis the shader changes
-                TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
+                Color t = DrawUtilities.InterpolateColorArray(ratio, Color.White, Color.LightSkyBlue, Color.Blue, Color.Purple);//.Lerp(Color.LightSkyBlue, Color.Purple, ratio);
+                t.A = 0;
+                return t;
             }
 
+            float GetTrailWidth(float ratio)
+            {
+                float lerp1 = MathHelper.Lerp(36, 0, EasingFunction.InOutSine(ratio));
+                float lerp2 = MathHelper.Lerp(0f, 1.4f, EasingFunction.OutExpo(ratio));
+                return lerp1 * lerp2 * _size;
+            }
+
+            BlizzardTrailMaterial.PrepareRender(TrailDrawer.PrepareVertices(Projectile.oldPos,
+                GetTrailColor, GetTrailWidth, useSmoothing: false, offset: Projectile.Size * 0.5f));
+            PixelationManager.QueueSpritebatchDrawAction(DrawHead, DrawLayer.OverPlayers);
         }
     }
 }

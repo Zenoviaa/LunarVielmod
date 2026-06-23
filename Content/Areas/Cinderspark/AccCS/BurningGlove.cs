@@ -55,7 +55,7 @@ public class BurningGlove : AbstractMeleeAddon
             if(traveled >= 0.4f)
             {
                 Projectile.NewProjectile(proj.GetSource_FromAI(), proj.Center, proj.rotation.ToRotationVector2() * 2,
-                ModContent.ProjectileType<IncineratorProj>(), (int)(proj.damage * 0.1f), proj.knockBack, proj.owner);
+                ModContent.ProjectileType<IncineratorProj>(), (int)(proj.damage * 0.25f), proj.knockBack, proj.owner);
                 traveled = 0;
                 _fireTimer[id] = (oldRot, traveled);
             }
