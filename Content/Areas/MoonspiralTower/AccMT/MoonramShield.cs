@@ -454,8 +454,18 @@ public class MoonramPlayer : ModPlayer
         if (Player.whoAmI != Main.myPlayer)
             return;
 
+        if (!dashPlayer.IsDashing)
+            return;
 
-
+        foreach (var npc in Main.ActiveNPCs)
+        {
+            Vector2 pos = (npc.Center);
+            float dist = Vector2.Distance(Player.Center, pos);
+            if(dist < 100)
+            {
+                Ram(npc);
+            }
+        }
     }
 
     public void Ram(NPC npc)
@@ -477,7 +487,7 @@ public class MoonramPlayer : ModPlayer
         PixelPrimitiveCircleFactory.CreateGenericInBoom(npc.Center, Color.SkyBlue, Color.Transparent, 25, 128);
         dashPlayer.DashedThroughSet.Add(npc);
         //Spawn falling projectile
-        Projectile.NewProjectile(Player.GetSource_FromThis(), npc.Top - new Vector2(0, 64) + Player.velocity * 16,
+        Projectile.NewProjectile(Player.GetSource_FromThis(), npc.Top - new Vector2(0, 64),
             Vector2.UnitY, type, damage * 3, 1, Player.whoAmI);
     }
 }
