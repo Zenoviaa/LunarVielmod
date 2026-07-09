@@ -1797,21 +1797,21 @@ GovheilMask: {
 
 GovheilHelmet: {
 	Tooltip: ""
-	DisplayName: Govheil Helmet
+	DisplayName: Govheil King Helmet
 }
 
 GovheilChainplate: {
 	Tooltip: ""
-	DisplayName: Govheil Chainplate
+	DisplayName: Govheil King Chainplate
 }
 
 GovheilBreastplate: {
 	Tooltip: ""
-	DisplayName: Govheil Breastplate
+	DisplayName: Govheil Queen Breastplate
 }
 
 GovheilThighs: {
-	DisplayName: Govheil Thighs
+	DisplayName: Govheil King Thighs
 	Tooltip: ""
 }
 

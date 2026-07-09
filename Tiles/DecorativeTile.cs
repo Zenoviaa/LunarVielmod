@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Helpers;
 using System;
 using Terraria;
@@ -168,7 +169,7 @@ namespace Stellamod.Tiles
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            ShouldDarken = NPC.AnyDanger();
+            ShouldDarken = NPC.AnyNPCs(ModContent.NPCType<DaedusTheDevoted>());
             Darken += ShouldDarken ? 0.02f : -0.02f;
             Darken = MathHelper.Clamp(Darken, 0f, 1f);
         }
