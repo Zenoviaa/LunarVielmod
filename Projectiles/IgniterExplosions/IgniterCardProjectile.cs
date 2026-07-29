@@ -198,6 +198,11 @@ namespace Stellamod.Projectiles.IgniterExplosions
             {
                 Vector2 vel = ProjectileHelper.SimpleHomingVelocity(Projectile, Owner.Center, degreesToRotate: 7);
                 Projectile.velocity = vel;
+                float dist = Vector2.Distance(Projectile.Center, Owner.Center);
+                if(dist <= 48)
+                {
+                    Projectile.Kill();
+                }
             }
             if (IgniterPlayer.reverie)
             {

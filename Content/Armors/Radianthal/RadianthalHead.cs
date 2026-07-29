@@ -157,7 +157,6 @@ public class RadianthalGlobalProjectile : GlobalProjectile
 
             if (player.stacks >= 3)
             {
-                FXUtil.ShakeCamera(target.Center, 1024, 8);
                 Projectile.NewProjectile(projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<RadianthalAura>(),
                     (int)(projectile.damage * 0.5f),
                     projectile.knockBack,

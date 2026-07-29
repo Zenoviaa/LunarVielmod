@@ -75,7 +75,7 @@ public class IrradiaspearSlash : BaseSwingProjectileV2
         hitStopTime = EXTRA_UPDATE_COUNT * 8;
         glowAfterImageColor = Color.Green * 0.13f;
         outlineColor = Color.Green;
-        useBloom = true;
+      //  useBloom = true;
         bloom.innerBloomColor = Color.White;
         bloom.outerBloomColor = Color.Violet;
         bloom.bloomWidthFunction = GetBloomWidth;
