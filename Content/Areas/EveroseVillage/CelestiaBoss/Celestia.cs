@@ -1551,7 +1551,6 @@ public class Celestia : ScarletBoss
         drawer.worldPosition.Y -= 2;
         drawer.scale *= _squishScale;
         spriteBatch.Draw(drawer);
-
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

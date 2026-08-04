@@ -278,6 +278,7 @@ namespace Stellamod.UI.DialogueTowning
             _text.Top.Pixels = 16;
             _text.IsWrapped = true;
             _text.MinWidth = _text.Width;
+
             Append(_text);
 
         }

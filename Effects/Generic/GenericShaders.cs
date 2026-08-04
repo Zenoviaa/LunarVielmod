@@ -2,6 +2,40 @@
 
 namespace Stellamod.Effects.Generic;
 
+public class BishinineTentacleShader : CrystalShader<BishinineTentacleShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public float Frequency
+    {
+        set
+        {
+            Effect.Parameters["frequency"].SetValue(value);
+        }
+    }
+
+    public float Amplitude
+    {
+        set
+        {
+            Effect.Parameters["amplitude"].SetValue(value);
+        }
+    }
+
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["bloomColor"].SetValue(value.ToVector3());
+        }
+    }
+}
 public class NoisyBoomShader : CrystalShader<NoisyBoomShader>
 {
     public float Time
