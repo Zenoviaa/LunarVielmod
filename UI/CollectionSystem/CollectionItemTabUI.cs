@@ -345,7 +345,13 @@ public class CollectionItemTabSlot : UIElement
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
         }
+        SamplerState p = SpritebatchParams.GetSamplerState(spriteBatch);
+        if (p != SamplerState.AnisotropicClamp)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, spriteBatch.GraphicsDevice.RasterizerState, null, Main.UIScaleMatrix);
 
+        }
         ItemSlot.DrawItemIcon(item, ItemSlot.Context.InventoryItem, spriteBatch, centerPos, _hoverScale.X, 32, Color.White);
 
 
@@ -613,6 +619,12 @@ public class CollectionItemTabUI : UIPanel
         {
             _scrollbar.Top.Set(0, 0f);
         }
+
+    }
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+
+        base.DrawSelf(spriteBatch);
 
     }
 }
