@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Melee
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
             Item.mana = 5;
-            Item.damage = 25;
+            Item.damage = 50;
         }
         public override void SetStaticDefaults()
 		{
@@ -57,11 +57,8 @@ namespace Stellamod.Items.Weapons.Melee
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
             recipe.AddIngredient(ModContent.ItemType<MooningSlicer>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 10);
-		
+            recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 10);	
 			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 12);
 
 			recipe.Register();
 		}

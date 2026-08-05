@@ -86,10 +86,8 @@ namespace Stellamod.Items.Weapons.Melee.Shields
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ItemID.Bone, 22);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
-            recipe.AddIngredient(ItemID.HallowedBar, 5);
 
 
             recipe.Register();

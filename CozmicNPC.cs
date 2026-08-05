@@ -53,7 +53,7 @@ namespace Stellamod
                 {
                     npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 1, 5));
                 }
-                npcLoot.Add(ItemDropRule.Common(ItemID.Leather, Main.rand.Next(1, 3)));
+                npcLoot.Add(ItemDropRule.Common(ItemID.Leather, Main.rand.Next(1, 9)));
             }
             if (npc.type == NPCID.DemonEye || npc.type == NPCID.DemonEye2 || npc.type == NPCID.DemonEyeOwl || npc.type == NPCID.DemonEyeSpaceship)
             {
@@ -63,7 +63,7 @@ namespace Stellamod
             }
             if (npc.type == NPCID.GreekSkeleton)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GladiatorSpear>(), 8, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GladiatorSpear>(), 3, 1, 1));
             }
 
             if (npc.type == NPCID.BloodZombie || npc.type == NPCID.Drippler)
@@ -82,14 +82,12 @@ namespace Stellamod
 
             if (npc.type == NPCID.Demon)
             {
-                LeadingConditionRule skeletronDropRule = new LeadingConditionRule(new SkeletronDropRule());
-                skeletronDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Infernis>(), 15, 1, 1));
-                npcLoot.Add(skeletronDropRule);
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Infernis>(), 5, 1, 1));
             }
 
             if (npc.type == NPCID.CaveBat)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheDeafen>(), 15, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheDeafen>(), 10, 1, 1));
             }
         }
         public override bool PreAI(NPC npc)

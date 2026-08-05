@@ -111,7 +111,6 @@ namespace Stellamod.Items.Weapons.Melee
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.Anvils);
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 12);
             recipe.AddIngredient(ItemID.FallenStar, 9);
             recipe.Register();

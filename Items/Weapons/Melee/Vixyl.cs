@@ -112,7 +112,7 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Item.width = 60;
             Item.height = 60;
-            Item.damage = 34;
+            Item.damage = 50;
             Item.DamageType = DamageClass.Generic;
 
             Item.useTime = 36;

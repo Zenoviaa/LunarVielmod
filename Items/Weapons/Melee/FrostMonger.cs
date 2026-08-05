@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 35;
+            Item.damage = 55;
            
         }
 
@@ -123,10 +123,8 @@ namespace Stellamod.Items.Weapons.Melee
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.BorealWood, 100);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 20);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();

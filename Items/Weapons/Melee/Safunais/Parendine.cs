@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Safunai.Parendine;
 using System.Collections.Generic;
@@ -63,8 +65,15 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.damage = 26;
 			Item.rare = ItemRarityID.Blue;
 		}
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<BlankSafunai>(), 1);
+            recipe.Register();
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             combo2++;
             combo++;

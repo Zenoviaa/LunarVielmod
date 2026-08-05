@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetDefaults()
         {
-            Item.damage = 13;
+            Item.damage = 22;
             Item.useTime = 19;
             Item.useAnimation = 19;
             Item.width = 50;
@@ -52,7 +52,6 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

@@ -50,7 +50,7 @@ namespace Stellamod.Items.Weapons.Melee.Shields
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Wood, 10);
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 1);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }

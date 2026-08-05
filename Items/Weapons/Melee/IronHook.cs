@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Melee
     {
         public override void SetDefaults()
         {
-            Item.damage = 23;
+            Item.damage = 16;
             Item.DamageType = DamageClass.Melee;
             Item.width = 54;
             Item.height = 48;

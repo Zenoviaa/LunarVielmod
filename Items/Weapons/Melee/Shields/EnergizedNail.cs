@@ -87,7 +87,6 @@ namespace Stellamod.Items.Weapons.Melee.Shields
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
             recipe.AddIngredient(ModContent.ItemType<HornedNail>(), 1);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 

@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Melee
         {
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
-            Item.damage = 23;
+            Item.damage = 80;
             Item.useAnimation = 20;
             Item.useTime = 20;
         }
@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetDefaults()
         {
-            Item.damage = 37;
+            Item.damage = 57;
             Item.DamageType = DamageClass.Melee/* tModPorter Suggestion: Consider MeleeNoSpeed for no attack speed scaling */;
             Item.width = 40;
             Item.height = 40;

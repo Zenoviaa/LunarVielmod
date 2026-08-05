@@ -48,7 +48,6 @@ namespace Stellamod.Items.Weapons.Melee
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Starfury, 1);
             recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 15);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();

@@ -92,10 +92,8 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<BlankSafunai>(), 1);
 			recipe.Register();
 		}

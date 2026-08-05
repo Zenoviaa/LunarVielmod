@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Melee.Yoyos
             Item.noUseGraphic = true; // Makes the item invisible while using it (the projectile is the visible part).
             Item.UseSound = SoundID.Item1; // The sound that will play when the item is used.
 
-            Item.damage = 21; // The amount of damage the item does to an enemy or player.
+            Item.damage = 40; // The amount of damage the item does to an enemy or player.
             Item.DamageType = DamageClass.MeleeNoSpeed; // The type of damage the weapon does. MeleeNoSpeed means the item will not scale with attack speed.
             Item.knockBack = 2.5f; // The amount of knockback the item inflicts.
             Item.crit = 4; // The percent chance for the weapon to deal a critical strike. Defaults to 4.

@@ -91,8 +91,6 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ItemID.Vine, 3);
-			recipe.AddIngredient(ItemID.Stinger, 8);
 			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<BlankSafunai>(), 1);

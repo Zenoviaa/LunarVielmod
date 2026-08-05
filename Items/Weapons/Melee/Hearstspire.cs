@@ -108,8 +108,6 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.Anvils);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 22);
-            recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 22);
             recipe.AddIngredient(ItemID.LifeCrystal, 10);
             recipe.Register();
         }

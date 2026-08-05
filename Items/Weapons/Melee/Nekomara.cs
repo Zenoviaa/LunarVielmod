@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Melee
 		{
 			//Do if(IsSwapped) if you want to check for the alternate class
 			//Stats to have when in the other class
-			Item.damage = 45;
+			Item.damage = 200;
 			Item.useTime = 5;
 			Item.useAnimation = 100;
 			Item.knockBack = 5;
@@ -70,7 +70,7 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 60;
+			Item.damage = 100;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 32;
 			Item.height = 32;

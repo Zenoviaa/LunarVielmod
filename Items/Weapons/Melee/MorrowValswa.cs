@@ -91,7 +91,6 @@ namespace Stellamod.Items.Weapons.Melee
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 25);
 		}
 	}
 }

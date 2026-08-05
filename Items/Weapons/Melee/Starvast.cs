@@ -79,7 +79,6 @@ namespace Stellamod.Items.Weapons.Melee
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 150);
             recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 15);
-            recipe.AddIngredient(ItemID.Starfury, 1);
             recipe.AddIngredient(ModContent.ItemType<StarKeeper>(), 1);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
