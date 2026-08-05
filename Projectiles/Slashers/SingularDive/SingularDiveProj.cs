@@ -189,7 +189,7 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                 SwordSlash4.drawOffset = Projectile.Size / 2.2f;
 
             }
-            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.TransformationMatrix);
 
 
             float[] rotation = new float[Projectile.oldRot.Length];
@@ -225,10 +225,7 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             // Redraw the projectile with the color not influenced by light
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 
-            Main.spriteBatch.End();
-
-            Main.spriteBatch.Begin();
-
+            Main.spriteBatch.RestartInWorldSpriteBatch();
 
             return false;
 

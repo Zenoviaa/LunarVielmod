@@ -100,7 +100,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
@@ -135,8 +135,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 spriteBatch.Draw(texture, drawPosition, null, (Color)GetAlpha(lightColor), drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             }
 
-            spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.RestartInWorldSpriteBatch();
             //I think that one texture will work
             //The vortex looking one
             //And make it spin

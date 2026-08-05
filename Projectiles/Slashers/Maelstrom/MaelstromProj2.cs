@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -167,7 +168,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
                 SwordSlash4.drawOffset = Projectile.Size / 2.2f;
 
             }
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
 
             float[] rotation = new float[Projectile.oldRot.Length];
@@ -201,11 +202,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
             // Redraw the projectile with the color not influenced by light
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 
-            Main.spriteBatch.End();
-
-            Main.spriteBatch.Begin();
-
-
+            Main.spriteBatch.RestartInWorldSpriteBatch();
             return false;
 
         }

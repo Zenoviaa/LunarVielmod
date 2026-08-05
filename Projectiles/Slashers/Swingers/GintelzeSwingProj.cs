@@ -140,9 +140,7 @@ namespace Stellamod.Projectiles.Test
             }
             SwordSlash.Draw(oldPos, rotation);
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
-
+            Main.spriteBatch.RestartInWorldSpriteBatch();
             //Texture
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];

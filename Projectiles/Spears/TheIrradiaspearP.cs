@@ -408,7 +408,7 @@ namespace Stellamod.Projectiles.Spears
 
             //Draw White Flash
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
 
             var shader = ShaderRegistry.MiscSilPixelShader;
@@ -426,9 +426,7 @@ namespace Stellamod.Projectiles.Spears
             shader.Apply(null);
 
             spriteBatch.Draw(texture, drawPos, drawRectangle, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
-            spriteBatch.End();
-            spriteBatch.Begin();
-
+            spriteBatch.RestartInWorldSpriteBatch();
 
             //Draw white overlay
             spriteBatch.Draw(whiteTexture, drawPos, drawRectangle, drawColor * whiteProgress, drawRotation, drawOrigin, drawScale, spriteEffects, 0);

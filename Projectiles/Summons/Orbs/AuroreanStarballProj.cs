@@ -351,7 +351,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             }
 
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.TransformationMatrix);
 
             float[] rotation = new float[Projectile.oldRot.Length];
             for (int i = 0; i < rotation.Length; i++)
@@ -362,9 +362,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             SwordSlash.Draw(Projectile.oldPos, rotation);
             SwordSlash2.Draw(Projectile.oldPos, rotation);
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
-
+            Main.spriteBatch.RestartInWorldSpriteBatch();
 
             DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, lightColor, 1);
             DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Transparent, ref lightColor);

@@ -281,7 +281,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
             else
             {
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
          
 
@@ -320,8 +320,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
 
 
-            spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.RestartInWorldSpriteBatch();
             //I think that one texture will work
             //The vortex looking one
             //And make it spin

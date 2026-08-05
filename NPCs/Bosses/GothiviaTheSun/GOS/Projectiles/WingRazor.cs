@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 using System.IO;
 using Stellamod.Dusts;
 using Stellamod.Trails;
+using Stellamod.Helpers;
 
 
 
@@ -250,10 +251,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 
 
-            Main.spriteBatch.End();
-
-            Main.spriteBatch.Begin();
-
+            Main.spriteBatch.RestartInWorldSpriteBatch();
 
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;

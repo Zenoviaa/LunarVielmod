@@ -151,7 +151,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }
 
-            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.TransformationMatrix);
             float[] rotation = new float[Projectile.oldRot.Length];
             for (int i = 0; i < rotation.Length; i++)
             {
@@ -172,8 +172,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
                Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0); // drawing the sword itself
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
+            Main.spriteBatch.RestartInWorldSpriteBatch();
             return false;
 
         }

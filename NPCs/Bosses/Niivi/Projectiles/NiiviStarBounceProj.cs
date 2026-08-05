@@ -112,7 +112,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
   
 
@@ -147,9 +147,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 float drawRotation = Projectile.rotation * (i / 4f);
                 spriteBatch.Draw(textureAsset.Value, drawPosition, null, Color.White, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             }
-
-            spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.RestartInWorldSpriteBatch();
             return true;
         }
 

@@ -955,7 +955,13 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
             if (Intro)
             {
-                if (!player.active || player.dead || !Main.dayTime || !player.ZoneDesert && !player.ZoneBeach) //despawns when player is ded
+                if (!NPC.HasValidTarget)
+                {
+                    NPC.TargetClosest();
+                    player = Main.player[NPC.target];
+                }
+
+                if (!player.active || player.dead || !Main.dayTime) //despawns when player is ded
                 {
                     NPC.spriteDirection = NPC.direction;
                     NPC.ai[0] = 0;

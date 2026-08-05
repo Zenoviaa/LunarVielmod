@@ -182,7 +182,7 @@ namespace Stellamod.Projectiles.Thrown
 
             DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Transparent, ref lightColor);
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             
             Trail.Draw(Projectile.oldPos);
             Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Spiin").Value;
@@ -193,9 +193,7 @@ namespace Stellamod.Projectiles.Thrown
                     Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
             }
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
-
+            Main.spriteBatch.RestartInWorldSpriteBatch();
 
 
             return true;

@@ -80,7 +80,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(textureAsset.Value, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             
             // Retrieve reference to shader
@@ -117,8 +117,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
             spriteBatch.Draw(textureAsset.Value, drawPosition, null, (Color)GetAlpha(lightColor), drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
 
-            spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.RestartInWorldSpriteBatch();
             return false;
         }
 
