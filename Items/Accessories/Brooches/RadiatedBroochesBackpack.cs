@@ -58,7 +58,7 @@ namespace Stellamod.Items.Accessories.Brooches
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 30);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 30);
 			recipe.AddIngredient(ItemID.Wood, 100);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
+			recipe.AddIngredient(ItemID.LunarBar, 10);
 			recipe.AddIngredient(ItemID.Seashell, 10);
 			recipe.AddIngredient(ItemID.Feather, 5);
 			recipe.AddIngredient(ItemID.SoulofMight, 20);

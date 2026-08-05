@@ -56,7 +56,6 @@ namespace Stellamod.Items.Accessories.Brooches
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 10);
 			recipe.AddIngredient(ItemID.Silk, 5);
 			recipe.AddIngredient(ItemID.CopperShortsword, 1);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());
