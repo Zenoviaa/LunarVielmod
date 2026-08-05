@@ -292,7 +292,7 @@ public class BellSpike : ModProjectile
             return false;
 
 
-
+        //TODO: BATCH THIS YA GOOBER
         BlackFireShader shader = BlackFireShader.Instance;
         shader.PrimaryTexture = TrailRegistry.WhispyTrail;
         shader.PrimaryTexture2 = TrailRegistry.StarTrail;
