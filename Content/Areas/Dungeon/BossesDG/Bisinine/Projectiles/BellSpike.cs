@@ -60,7 +60,7 @@ public class BellSpikeRenderer : ModSystem
         shader.Time = -Main.GlobalTimeWrappedHourly * 4;
         shader.Frequency = 8;
         shader.Amplitude = 0.1f;
-        shader.BloomColor = Color.Blue;
+        shader.BloomColor = Color.Lerp(Color.Blue, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 6));
         var beginner = SpritebatchParams.InWorldAndZoomed() with { effect = shader.Effect };
 
         using (SpritebatchStarter.Begin(spriteBatch, beginner))
@@ -71,7 +71,7 @@ public class BellSpikeRenderer : ModSystem
             }
             for (int i = 0; i < Draws.Count; i++)
             {
-                Draws[i].DrawTentacleFront(spriteBatch);
+             //   Draws[i].DrawTentacleFront(spriteBatch);
             }
         }
         spriteBatch.Begin(worldBeginner);
@@ -90,6 +90,10 @@ public class BellSpike : ModProjectile
     private float _pillarFlameScale;
     private float _randOffset;
     private float _bloomLine;
+
+    private float _flameTimer;
+    private Vector2 _scale;
+    private Vector2[] _spikePos;
     private ref float Timer => ref Projectile.ai[0];
     private enum AIState
     {
@@ -144,8 +148,29 @@ public class BellSpike : ModProjectile
         if (Main.netMode != NetmodeID.Server)
         {
             //Client only
-            BellSpikeRenderer.Draws.Add(new BellSpikeDraw(DrawBloomLine, DrawBackTentacle, DrawFrontTentacle, DrawGlow));
+              BellSpikeRenderer.Draws.Add(new BellSpikeDraw(DrawBloomLine, DrawBackTentacle, DrawFrontTentacle, DrawGlow));
         }
+        Timer++;
+        float numPoints = 100;
+        _spikePos ??= new Vector2[(int)numPoints];
+        Vector2 start = Projectile.Center;
+
+        float expandMult = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
+        Vector2 end = start + Projectile.velocity * expandMult *
+            ExtraMath.Osc(MathHelper.Lerp(0.9f, 1f, Timer / 100f), 1f, speed: 16, offset: Projectile.whoAmI) * _pillarFlameScale
+            * MathHelper.Lerp(3f, 1f, EasingFunction.InOutSine(Timer / 60f));
+        Vector2 end2 = start + Projectile.velocity * 0.3f;
+        for (float f = 0; f < numPoints; f++)
+        {
+            float interpolant = f / numPoints;
+
+            Vector2 e = Timer <= 5 ? end2 : end;
+            Vector2 point = Vector2.Lerp(start, e, interpolant);
+            point.X += MathF.Sin((-Timer * 0.1f) + interpolant * 18) * 3;
+            _spikePos[(int)f] = point;
+        }
+
+        _flameTimer += MathHelper.Lerp(0.5f, 0.1f, EasingFunction.InOutSine(Timer / 30f));
 
         float t = Timer + _randOffset;
         float scalar = 1;
@@ -154,7 +179,7 @@ public class BellSpike : ModProjectile
         scalar *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(t / 180f));
         _scalar = scalar;
         _pillarFlameScale = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / 180f));
-        Timer++;
+ 
         if (Timer == 1)
         {
             _randOffset = Main.rand.NextFloat(-15, 0);
@@ -185,7 +210,7 @@ public class BellSpike : ModProjectile
             sparkle.outerColor = Color.White;
             sparkle.Scale *= 0.6f;
         }
-
+        _scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.OutExpo(Timer / 30f));
         _bloomLine = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / 30f));
     }
 
@@ -206,7 +231,7 @@ public class BellSpike : ModProjectile
    private void DrawBackTentacle(SpriteBatch spriteBatch)
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(Assets.AssetManager.LaserTextures.Aura, Projectile.Center);
-        drawer.rotation = -Vector2.UnitY.ToRotation();
+        drawer.rotation = Projectile.velocity.ToRotation();
         drawer.LeftCenterOrigin();
         drawer.scale.Y *= 0.45f * _scalar;
         drawer.scale.X *= 2 * _scalar;
@@ -215,13 +240,13 @@ public class BellSpike : ModProjectile
 
         drawer.color = Color.White * 0.25f;
         drawer.color.A = 0;
-        spriteBatch.Draw(drawer);
+        //spriteBatch.Draw(drawer);
 
     }
     private void DrawFrontTentacle(SpriteBatch spriteBatch)
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(Assets.AssetManager.LaserTextures.TexturedLaser2, Projectile.Center);
-        drawer.rotation = -Vector2.UnitY.ToRotation();
+        drawer.rotation = Projectile.velocity.ToRotation();
         drawer.LeftCenterOrigin();
         drawer.scale.Y *= 0.2f * _scalar;
         drawer.scale.X *= 1 * _scalar;
@@ -240,9 +265,43 @@ public class BellSpike : ModProjectile
         spriteBatch.Draw(voxTexture, Projectile.Center - Main.screenPosition + new Vector2(0, 6), null, voxGlowColor
             * _scalar, 0, voxDrawOrigin, voxDrawScale * _scalar, SpriteEffects.None, 0);
     }
+    private Color ColorFunction(float completionRatio)
+    {
+        if (Timer <= 5)
+            return Color.White;
+        Color fadeColor = Color.Yellow;
+        fadeColor *= EasingFunction.InOutSine(Timer / 2f);
+
+        Color flameColor = Color.Lerp(Color.Gray, Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 8, offset: Projectile.whoAmI)), completionRatio) * EasingFunction.QuadraticBump(completionRatio);
+        Color finalColor = Color.Lerp(fadeColor, flameColor, Timer / 40f);
+        finalColor *= _pillarFlameScale;
+        finalColor *= EasingFunction.QuadraticBump(Timer / 180f);
+        return finalColor * 3;
+    }
+
+    private float WidthFunction(float completionRatio)
+    {
+        float width = MathHelper.SmoothStep(100, 0, completionRatio) * _scale.X;
+        width *= MathHelper.Lerp(1f, 3f, EasingFunction.InExpo(Timer / 180f));
+        return width;
+    }
 
     public override bool PreDraw(ref Color lightColor)
     {
+        if (_spikePos == null)
+            return false;
+
+
+
+        BlackFireShader shader = BlackFireShader.Instance;
+        shader.PrimaryTexture = TrailRegistry.WhispyTrail;
+        shader.PrimaryTexture2 = TrailRegistry.StarTrail;
+        shader.InnerColor = Color.Lerp(Color.Black, Color.Gray, MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / 170f)));
+        shader.OuterColor = Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 4, offset: Projectile.whoAmI));
+        shader.Distortion = MathHelper.Lerp(0.6f, 0.2f, EasingFunction.InOutSine(Timer / 30f)) * MathHelper.Lerp(1, 0, EasingFunction.InOutExpo(Timer / 90f));
+        shader.Time = _flameTimer;
+        TrailDrawer.Draw(Main.spriteBatch, _spikePos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
+
         return false;
     }
 

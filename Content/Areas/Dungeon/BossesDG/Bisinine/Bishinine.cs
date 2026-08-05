@@ -2010,7 +2010,7 @@ public class Bishinine : ScarletBoss
         {
             SwitchState(state);
         }
- 
+    //    SwitchState(AIState.GrimmSpikes_RunToPlayer);
 
     }
     #endregion
