@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 20;
+            Item.damage = 45;
             Item.mana = 0;
         }
         public override void SetStaticDefaults()
@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Mage
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 23;
+			Item.damage = 33;
 			Item.mana = 2;
 			Item.width = 40;
 			Item.height = 40;
@@ -54,13 +54,11 @@ namespace Stellamod.Items.Weapons.Mage
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
 
 
 
 			Recipe recipe2 = CreateRecipe();
 			recipe2.AddIngredient(ItemID.Ectoplasm, 10);
-			recipe2.AddIngredient(ItemID.RainbowRod, 1);
 			recipe2.AddTile(TileID.MythrilAnvil);
 			recipe2.Register();
 			recipe2.AddIngredient(ModContent.ItemType<FlameburstBalls>(), 1);

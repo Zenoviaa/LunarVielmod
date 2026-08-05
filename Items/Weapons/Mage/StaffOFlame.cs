@@ -16,8 +16,8 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 20;
-            Item.mana = 6;
+            Item.damage = 25;
+            Item.mana = 20;
         }
         public override void SetStaticDefaults()
         {
@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
             Item.staff[Item.type] = true;
-            Item.damage = 13;
+            Item.damage = 16;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;

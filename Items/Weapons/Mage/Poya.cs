@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 50;
+            Item.damage = 80;
             Item.mana = 6;
         }
         public override void SetStaticDefaults()
@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 45;
+            Item.damage = 60;
             Item.width = 50;
             Item.height = 50;
             Item.mana = 60;
@@ -57,10 +57,6 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 23);
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 9);
             recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
             recipe.Register();
         }

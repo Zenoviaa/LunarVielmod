@@ -49,10 +49,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
             recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-            recipe.AddIngredient(ItemID.FallenStar, 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

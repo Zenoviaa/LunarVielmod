@@ -39,7 +39,6 @@ namespace Stellamod.Items.Weapons.Mage
         {
             base.AddRecipes();
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Torch, 12);
 			recipe.AddTile(TileID.Anvils);
 			recipe.AddIngredient(ItemID.HellstoneBar, 12);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 7);

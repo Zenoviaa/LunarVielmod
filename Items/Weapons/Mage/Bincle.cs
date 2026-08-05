@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 100;
+            Item.damage = 160;
             Item.mana = 0;
             Item.useAmmo = AmmoID.Bullet;
         }
@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 120;
+            Item.damage = 140;
             Item.DamageType = DamageClass.Magic;
             Item.width = 32;
             Item.mana = 3;
@@ -60,7 +60,6 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<Relagis>(), 1);
             recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 250);
             recipe.Register();
         }

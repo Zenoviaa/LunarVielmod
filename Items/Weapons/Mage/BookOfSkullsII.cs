@@ -47,7 +47,6 @@ namespace Stellamod.Items.Weapons.Mage
 		public override void AddRecipes()
 		{
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Bone, 16);
 			recipe.AddIngredient(ItemType<EldritchSoul>(), 6);
             recipe.AddIngredient(ItemID.BookofSkulls, 1);
             recipe.AddTile(TileID.MythrilAnvil);

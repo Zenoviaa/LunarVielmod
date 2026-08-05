@@ -43,7 +43,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 19;
+            Item.damage = 21;
             Item.DamageType = DamageClass.Magic;
             Item.width = 0;
             Item.height = 0;
@@ -142,7 +142,6 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<CinderedLantern>(), 1);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 22);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 22);
             recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);

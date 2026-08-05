@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 16);
-            recipe.AddIngredient(ItemID.Ectoplasm, 8);
+            recipe.AddIngredient(ItemID.Ectoplasm, 3);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

@@ -35,8 +35,9 @@ namespace Stellamod.Items.Weapons.Mage
 
             // Weapon Properties
             Item.DamageType = DamageClass.Magic;
-            Item.damage = 40;
+            Item.damage = 60;
             Item.knockBack = 4;
+            Item.mana = 4;
             Item.noMelee = true;
 
             // Gun Properties

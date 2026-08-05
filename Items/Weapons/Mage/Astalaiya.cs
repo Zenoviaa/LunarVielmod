@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
         public int Star;
         public override void SetDefaults()
         {
-            Item.damage = 9;
+            Item.damage = 13;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -50,9 +50,6 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 14);
-
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
-            recipe.AddIngredient(ItemID.ManaCrystal, 1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 8;
+            Item.damage = 45;
             Item.mana = 6;
         }
         public override void SetDefaults()
@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.width = 30;
             Item.height = 42;
             Item.DamageType = DamageClass.Magic;
-            Item.damage = 9;
+            Item.damage = 25;
             Item.knockBack = 3;
             Item.value = Item.sellPrice(gold: 1);
             Item.shootSpeed = 15;

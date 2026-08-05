@@ -71,14 +71,6 @@ namespace Stellamod.Items.Weapons.Mage
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
-
-			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 100);
-			recipe.AddIngredient(ModContent.ItemType<Nekomara>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<CoralCrossbow>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 90);
-			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
 			recipe.AddIngredient(ItemID.SniperRifle, 1);
 			recipe.Register();

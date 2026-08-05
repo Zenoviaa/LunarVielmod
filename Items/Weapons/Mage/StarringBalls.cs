@@ -44,10 +44,7 @@ namespace Stellamod.Items.Weapons.Mage
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 160);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 16);
 			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}

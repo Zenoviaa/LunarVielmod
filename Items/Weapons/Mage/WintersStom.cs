@@ -44,7 +44,6 @@ namespace Stellamod.Items.Weapons.Mage
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 13);
             recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 8);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();

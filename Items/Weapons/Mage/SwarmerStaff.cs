@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
             Item.staff[Item.type] = true;
-            Item.damage = 12;
+            Item.damage = 25;
             Item.knockBack = 3f;
             Item.mana = 10;
             Item.width = 32;

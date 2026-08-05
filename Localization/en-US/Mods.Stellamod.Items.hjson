@@ -6269,7 +6269,11 @@ IllurianWarriorHelm: {
 
 IllurineScale: {
 	DisplayName: Illurine Scale
-	Tooltip: Radiating with Niivi's lunar energy!
+	Tooltip: '''
+		Obtained from hurting the ice dragon!
+		Radiating with her energy!
+		Maybe you can spare her some way...
+		'''
 }
 
 PureHeart: {

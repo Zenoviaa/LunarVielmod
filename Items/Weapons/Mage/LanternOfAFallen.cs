@@ -72,8 +72,6 @@ namespace Stellamod.Items.Weapons.Mage
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<GreekLantern>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 20);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.DataStructures;
@@ -70,6 +71,14 @@ namespace Stellamod.Items.Weapons.Mage
             
             position = Main.MouseWorld;
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 16);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

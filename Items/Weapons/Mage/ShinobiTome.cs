@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 		public override void SetDefaults()
 		{
-			Item.damage = 9;
+			Item.damage = 11;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 40;
 			Item.height = 40;
@@ -52,7 +52,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void AddRecipes()
 		{
             Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<GintzlMetal>(), 13);
+			recipe.AddIngredient(ItemType<GintzlMetal>(), 8);
 			recipe.AddTile(TileID.HeavyWorkBench);
 			recipe.Register();
 		}

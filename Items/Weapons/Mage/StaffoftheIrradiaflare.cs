@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class StaffoftheIrradiaflare : ModItem
+    internal class StaffoftheIrradiaflare : ClassSwapItem
     {
         public override void SetStaticDefaults()
         {
@@ -16,10 +16,18 @@ namespace Stellamod.Items.Weapons.Mage
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
+
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 60;
+            Item.mana = 20;
+        }
         public override void SetDefaults()
         {
             Item.staff[Item.type] = true;
-            Item.damage = 56;
+            Item.damage = 70;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;

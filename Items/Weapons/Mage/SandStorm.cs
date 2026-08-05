@@ -35,7 +35,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 		public override void SetDefaults()
 		{
-			Item.damage = 12;
+			Item.damage = 20;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 40;
 			Item.height = 40;
@@ -62,9 +62,7 @@ namespace Stellamod.Items.Weapons.Mage
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ItemID.SandBlock, 10);
 			recipe.AddIngredient(ItemID.AntlionMandible, 3);
-			recipe.AddIngredient(ItemID.Silk, 3);
 			recipe.Register();
 		}
 	}
