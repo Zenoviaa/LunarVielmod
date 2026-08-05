@@ -306,11 +306,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             SwordSlash4.Draw(Projectile.oldPos, rotation);
 
 
-
-            Main.spriteBatch.End();
-
-            Main.spriteBatch.Begin();
-
+            Main.spriteBatch.RestartInWorldSpriteBatch();
 
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;

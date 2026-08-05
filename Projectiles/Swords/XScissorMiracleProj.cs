@@ -226,7 +226,7 @@ namespace Stellamod.Projectiles.Swords
                 SwordSlash3.drawOffset = Projectile.Size / 2f;
             }
 
-            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.TransformationMatrix);
 
 
             float[] rotation = new float[Projectile.oldRot.Length];
@@ -263,8 +263,7 @@ namespace Stellamod.Projectiles.Swords
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
           sourceRectangle, drawColor * GetAlpha(), Projectile.rotation, origin, 1f, SpriteEffects.None, 0);
             */
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
+            Main.spriteBatch.RestartInWorldSpriteBatch();
             return false;
         }
     }

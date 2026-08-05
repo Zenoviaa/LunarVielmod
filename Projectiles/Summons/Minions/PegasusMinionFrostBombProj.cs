@@ -136,9 +136,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
 
 
-            spriteBatch.End();
-            spriteBatch.Begin();
-
+            spriteBatch.RestartInWorldSpriteBatch();
             return false;
         }
 

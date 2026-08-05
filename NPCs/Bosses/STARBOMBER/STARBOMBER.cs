@@ -528,7 +528,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.Center, RGB.X, RGB.Y, RGB.Z);
-			
+
+			NPC.noTileCollide = false;
 			NPC.TargetClosest();
 			if (!NPC.HasValidTarget)
 			{
@@ -1413,9 +1414,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			timer++;
 
 			constshoot++;
+            NPC.noTileCollide = true;
 
-		
-			Player player = Main.player[NPC.target];
+            Player player = Main.player[NPC.target];
 	
 			if(timer == 1 || timer == 241 || timer == 482)
 			{
@@ -1433,7 +1434,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if(timer >= 60)
 			{
 				NPC.damage = 100;
-                NPC.noTileCollide = true;
+
                 NPC.noGravity = true;
             }
 
@@ -1457,8 +1458,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			else
             {
                 DrawChargeTrail = false;
-                NPC.noTileCollide = false;
             }
+
 			NPC.rotation = NPC.velocity.X * 0.05f;
 
             if (constshoot == 70)

@@ -130,7 +130,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             base.PostDraw(lightColor);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             var shader = ShaderRegistry.MiscSilPixelShader;
 
@@ -158,8 +158,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             spriteBatch.Draw(texture, drawPosition, sourceRectangle, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
 
-            spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.RestartInWorldSpriteBatch();
         }
 
         public override void AI()

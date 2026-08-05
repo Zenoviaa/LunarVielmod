@@ -345,6 +345,12 @@ namespace Stellamod.Helpers
 			TrailDrawer.DrawPrims(npc.oldPos, npc.Size * 0.5f - Main.screenPosition, 155);
 		}
 
+		public static void RestartInWorldSpriteBatch(this SpriteBatch spriteBatch)
+		{
+			spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+        }
+
 		/// <summary>
 		/// Draws an after image for the projectile, this should be called in PreDraw
 		/// <br>Don't forget to set defaults for ProjectileID.Sets.TrailCacheLength and ProjectileID.Sets.TrailingMode on your projectile otherwise this will not work</br>
@@ -355,14 +361,13 @@ namespace Stellamod.Helpers
 		/// <param name="lightColor"></param>
 		public static void DrawAdditiveAfterImage(Projectile projectile, Color startColor, Color endColor, ref Color lightColor)
 		{
-			Main.spriteBatch.End();
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
 			Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
 			int projFrames = Main.projFrames[projectile.type];
 			int frameHeight = texture.Height / projFrames;
 			int startY = frameHeight * projectile.frame;
 
+			SpriteEffects direction = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 			Vector2 drawOrigin = sourceRectangle.Size() / 2f;
 			//drawOrigin.X = projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
@@ -370,11 +375,10 @@ namespace Stellamod.Helpers
 			{
 				Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
 				Color color = projectile.GetAlpha(Color.Lerp(startColor, endColor, 1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k));
-				Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
+				color.A = 0;
+				Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, direction, 0f);
 			}
 
-			Main.spriteBatch.End();
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 		}
         public static void DrawAdditiveAfterImage(NPC npc, Color startColor, Color endColor)
         {

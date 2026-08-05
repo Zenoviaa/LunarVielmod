@@ -176,9 +176,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             DrawSegments(spriteBatch, screenPos, drawColor, true);
 
-     
-            spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.RestartInWorldSpriteBatch();
 
             //Draw Normal Niivi
             DrawSegments(spriteBatch, screenPos, drawColor, false);
@@ -203,8 +201,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 DrawSegments(spriteBatch, screenPos, drawColor, true);
 
-                spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.RestartInWorldSpriteBatch();
             }
 
             if (SpecialTimer >= 2500 || State == ActionState.Laser_Blast_V2 || State == ActionState.Star_Wrath_V2 || State == ActionState.Space_Circle)
@@ -234,14 +231,13 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 DrawSegments(spriteBatch, screenPos, drawColor, false);
 
-                spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.RestartInWorldSpriteBatch();
             }
 
             if(State == ActionState.Transition_P2)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 shader = ShaderRegistry.MiscSilPixelShader;
 
                 //The color to lerp to
@@ -257,8 +253,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 DrawSegments(spriteBatch, screenPos, drawColor, true);
 
-                spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.RestartInWorldSpriteBatch();
             }
         }
 
@@ -524,7 +519,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
 
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             if (ChargeCrystals || ChargeCrystalTimer > 0f)
             {
@@ -562,7 +557,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 }
 
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
     }

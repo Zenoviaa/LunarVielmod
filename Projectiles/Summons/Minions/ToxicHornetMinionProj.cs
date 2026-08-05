@@ -145,7 +145,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 color28 = Projectile.GetAlpha(color28);
                 color28 *= 1f - num107;
                 Vector2 vector29 = Projectile.Center + (num103 / (float)num108 * 6.28318548f + Projectile.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - Projectile.velocity * num103;
-                Main.spriteBatch.Draw(TextureGlow, vector29, frame, color28, Projectile.rotation, frame.Size() / 2f, Projectile.scale, spriteEffects3, 0f);
+                Main.spriteBatch.Draw(TextureGlow, vector29, frame, color28, Projectile.rotation, frame.Size() / 2f, Projectile.scale, effects, 0f);
             }
         }
     }

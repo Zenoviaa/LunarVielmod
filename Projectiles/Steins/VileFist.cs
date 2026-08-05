@@ -1,24 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using System.IO;
-using Stellamod.Dusts;
-using Stellamod.Trails;
-using Stellamod.Utilis;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
-using Stellamod.Items.Accessories.Players;
 using ParticleLibrary;
-using Stellamod.Particles;
-using Stellamod.Projectiles.IgniterExplosions.Stein;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
+using Stellamod.Particles;
+using Stellamod.Projectiles.IgniterExplosions.Stein;
+using Stellamod.Trails;
+using Stellamod.Utilis;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Steins
 {
@@ -400,7 +401,7 @@ namespace Stellamod.Projectiles.Steins
 				SwordSlash4.drawOffset = Projectile.Size / 2.2f;
 
 			}
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
 
 			SwordSlash.Draw(Projectile.oldPos);
@@ -429,12 +430,9 @@ namespace Stellamod.Projectiles.Steins
 			// Redraw the projectile with the color not influenced by light
 			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 
-			Main.spriteBatch.End();
+			Main.spriteBatch.RestartInWorldSpriteBatch();
 
-			Main.spriteBatch.Begin();
-
-
-			return false;
+            return false;
 
 		}
 

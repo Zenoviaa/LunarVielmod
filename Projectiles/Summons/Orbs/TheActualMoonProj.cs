@@ -374,17 +374,14 @@ namespace Stellamod.Projectiles.Summons.Orbs
 
 
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.TransformationMatrix);
 
 
             SwordSlash.Draw(Projectile.oldPos, Projectile.oldRot);
             SwordSlash2.Draw(Projectile.oldPos, Projectile.oldRot);
             SwordSlash3.Draw(Projectile.oldPos, Projectile.oldRot);
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
-
-
+            Main.spriteBatch.RestartInWorldSpriteBatch();
 
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(85, 112, 188) * 0.4f, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
