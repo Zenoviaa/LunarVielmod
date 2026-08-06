@@ -61,17 +61,22 @@ namespace Stellamod.Helpers
             };
 
             //Temple Check
-            for (int j = 0; j < rectangle.Width; j++)
-            {
-                for (int i = 0; i < rectangle.Height; i++)
-                {
-                    int x = location.X + j;
-                    int y = location.Y - i;
-                    if(x >= Main.maxTilesX || y >= Main.maxTilesY)
-                    {
-                        return false;
-                    }
+            Rectangle tileRect = rectangle;
+            tileRect.Location += location;
 
+            int left = tileRect.Left;
+            int right = tileRect.Right;
+            int top = tileRect.Top;
+            int bottom = tileRect.Bottom;
+
+            left = (int)MathHelper.Clamp(left, 0, Main.maxTilesX - 1);
+            right = (int)MathHelper.Clamp(right, 0, Main.maxTilesX - 1);
+            top = (int)MathHelper.Clamp(top, 0, Main.maxTilesY - 1);
+            bottom = (int)MathHelper.Clamp(bottom, 0, Main.maxTilesY - 1);
+            for (int x = left; x < right; x++)
+            {
+                for (int y = top; y < bottom; y++)
+                {
                     Tile otherTile = Main.tile[x, y];
                     for(int t = 0; t < tilesToCheckFor.Length; t++)
                     {

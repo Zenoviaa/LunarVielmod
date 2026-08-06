@@ -7883,5 +7883,5 @@ SuperCompletionIdol: {
 
 ScryingIdol: {
 	DisplayName: Scrying Idol
-	Tooltip: ""
+	Tooltip: "Summons the Gintze Army"
 }

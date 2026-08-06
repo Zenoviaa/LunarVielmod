@@ -92,8 +92,7 @@ namespace Stellamod.WorldG
 
         private void TrySpawnGintzeArmy()
         {
-            if(DownedBossSystem.downedStoneGolemBoss)
-                _daysPassed++;
+
             if (Gintzing)
             {
                 if (Main.expertMode)
@@ -137,17 +136,19 @@ namespace Stellamod.WorldG
             }
 
             if (!Main.dayTime)
-            {
-               
+            {        
                 TryForGintze = false;
-                GintzeDayReset = false;
                 NetMessage.SendData(MessageID.WorldData);
             }
 
-            if (!TryForGintze && Main.dayTime && _daysPassed >= 3 && !GintzeDayReset)
+            if (!TryForGintze && Main.dayTime && !GintzeDayReset && DownedBossSystem.downedStoneGolemBoss && !DownedBossSystem.downedGintzlBoss)
             {
-
-                StartGinzteArmy();
+                _daysPassed++;
+                TryForGintze = true;
+                if(_daysPassed >= 3)
+                {
+                    StartGinzteArmy();
+                }
             }
         }
         public static void StartGinzteArmy()
@@ -166,7 +167,7 @@ namespace Stellamod.WorldG
                 Main.NewText(message, 34, 121, 100);
             }
             GintzingBoss = false;
-            TryForGintze = true;
+           
             GintzeDayReset = true;
             Gintzing = true;
             NetMessage.SendData(MessageID.WorldData);
@@ -347,10 +348,12 @@ namespace Stellamod.WorldG
             TryForGintze = false;
             GintzeKills = 0;
             GintzeDayReset = false;
+            _daysPassed = 0;
         }
 
         public override void LoadWorldData(TagCompound tag)
         {
+            _daysPassed = tag.GetInt("days");
             GreenSun = tag.GetBool("GreenSun");
             HasHadBloodMoon = tag.GetBool("HasHadBloodmoon");
             Aurorean = tag.GetBool("Aurorean");
@@ -363,6 +366,7 @@ namespace Stellamod.WorldG
 
         public override void SaveWorldData(TagCompound tag)
         {
+            tag["days"] = _daysPassed;
             tag["HasHadBloodmoon"] = HasHadBloodMoon;
             tag["Aurorean"] = Aurorean;
             tag["GreenSun"] = GreenSun;
