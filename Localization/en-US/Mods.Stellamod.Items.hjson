@@ -6269,7 +6269,8 @@ IllurianWarriorHelm: {
 
 IllurineScale: {
 	DisplayName: Illurine Scale
-	Tooltip: '''
+	Tooltip:
+		'''
 		Obtained from hurting the ice dragon!
 		Radiating with her energy!
 		Maybe you can spare her some way...

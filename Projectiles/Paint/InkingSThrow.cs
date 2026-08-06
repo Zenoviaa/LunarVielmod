@@ -46,6 +46,7 @@ namespace Stellamod.Projectiles.Paint
             player.RotatedRelativePoint(Projectile.Center);
             Projectile.rotation -= 0.5f;
 
+            
             if (Main.myPlayer == Projectile.owner && Main.mouseRight)
             {
                 Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
@@ -59,8 +60,13 @@ namespace Stellamod.Projectiles.Paint
                     Projectile.Kill();
                 }
             }
-           
 
+            if (Projectile.position.IsNaN())
+            {
+                Projectile.Kill();
+            }
+
+          //  Main.NewText(Projectile.position);
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);

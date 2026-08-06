@@ -8,6 +8,7 @@ namespace Stellamod
 {
     public static class VectorHelper
     {
+        public static bool IsNaN(this Vector2 vector2) => float.IsNaN(vector2.X) || float.IsNaN(vector2.Y);
         /// <summary>
         /// Returns a point on a heart
         /// </summary>

@@ -37,11 +37,9 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		}
 		public override void AI()
 		{
-			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
-			{
+			if(!NPC.HasValidTarget)
 				NPC.TargetClosest();
-			}
-			Player player = Main.player[NPC.target];
+            Player player = Main.player[NPC.target];
 			if (counter == 0)
 			{
 				if (npcCounter >= 4)
@@ -53,6 +51,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			counter++;
 
 
+			NPC.direction = player.Center.X < NPC.Center.X ? -1 : 1;
 			NPC.spriteDirection = NPC.direction;
 		
 			NPC.rotation = NPC.velocity.X * 0.1f;
