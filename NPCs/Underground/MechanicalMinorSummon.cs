@@ -49,7 +49,7 @@ namespace Stellamod.NPCs.Underground
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return SpawnRates.GetMechanicalEnemySpawnChance(spawnInfo);
+            return SpawnRates.GetMechanicalLavaLayerEnemySpawnChance(spawnInfo);
         }
     }
 }

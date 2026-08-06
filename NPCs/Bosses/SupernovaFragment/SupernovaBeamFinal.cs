@@ -37,6 +37,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void AI()
         {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 4000;
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
             Projectile.scale = MathF.Sin(Time / 15f * MathHelper.Pi) * 3f;
@@ -69,14 +70,13 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.width * Projectile.scale * 2f;
+            return Projectile.width * Projectile.scale * 4f * MathHelper.SmoothStep(1f, 0f, Time / 15f);
         }
 
 
         public Color ColorFunction(float completionRatio)
         {
-            Color color = Color.Lerp(Color.White, Color.White, 0.65f);
-            return color * Projectile.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f);
+            return Color.Red;
         }
 
         public override bool PreDraw(ref Color lightColor) => false;
@@ -96,11 +96,11 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             List<Vector2> points = new();
             for (int i = 0; i <= 8; i++)
             {
-                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * LaserLength, i / 8f));
+                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 9000, i / 8f));
                 originalRotations.Add(MathHelper.PiOver2);
             }
 
-            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 32);
+            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 144);
             Main.spriteBatch.ExitShaderRegion();
         }
 

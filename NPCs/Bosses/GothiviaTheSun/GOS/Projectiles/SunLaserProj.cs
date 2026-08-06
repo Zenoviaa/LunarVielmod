@@ -19,6 +19,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override string Texture => TextureRegistry.EmptyTexture;
         public const float LaserLength = 2400f;
 
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 4000;
+        }
 
         public override void SetDefaults()
         {

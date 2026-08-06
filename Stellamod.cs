@@ -294,7 +294,6 @@ namespace Stellamod
 
         public override void Unload()
         {
-            StellaMultiplayer.Unload();
             if (!Main.dedServ)
             {
                 UnloadTile(TileID.Dirt);

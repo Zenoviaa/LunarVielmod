@@ -1218,13 +1218,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<RekBossRel>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));    
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SerpentWings>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.OneFromOptions(1,
-                ModContent.ItemType<SerpentStaff>(),
-                ModContent.ItemType<Incinerator>(),
-                ModContent.ItemType<YourFired>(),
-                ModContent.ItemType<BlackEye>(),
-                ModContent.ItemType<VulcanBreaker>()
-                ));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SerpentStaff>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Incinerator>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<YourFired>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BlackEye>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VulcanBreaker>(), 1, 1, 1));
 
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));

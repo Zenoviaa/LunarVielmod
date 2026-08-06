@@ -18,6 +18,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         private PrimitiveTrail BeamDrawer;
         public override void SetStaticDefaults()
         {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 4000;
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }

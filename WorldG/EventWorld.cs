@@ -2,6 +2,7 @@
 using ReLogic.OS.Windows;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.Projectiles;
 using Stellamod.Utilis;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Stellamod.WorldG
 {
     public class EventWorld : ModSystem
     {
+        private int _daysPassed;
         //Gintzing--------------------------
         public static bool Gintzing;
         public static bool TryForGintze;
@@ -90,7 +92,8 @@ namespace Stellamod.WorldG
 
         private void TrySpawnGintzeArmy()
         {
-            int townNpcCount = CountTownNPCs();
+            if(DownedBossSystem.downedStoneGolemBoss)
+                _daysPassed++;
             if (Gintzing)
             {
                 if (Main.expertMode)
@@ -135,51 +138,49 @@ namespace Stellamod.WorldG
 
             if (!Main.dayTime)
             {
+               
                 TryForGintze = false;
                 GintzeDayReset = false;
                 NetMessage.SendData(MessageID.WorldData);
             }
 
-            if (!TryForGintze && Main.dayTime && townNpcCount >= 3 && DownedBossSystem.downedStoneGolemBoss 
-                && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
+            if (!TryForGintze && Main.dayTime && _daysPassed >= 3 && !GintzeDayReset)
             {
-                Gintzing = true;
-                string message = "The Gintze army is approaching...";
-                if(Main.netMode == NetmodeID.Server)
-                {
-                    NetworkText txt = NetworkText.FromLiteral(message);
-                    ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
-                }
-                else
-                {
-                    Main.NewText(message, 34, 121, 100);
-                }
-      
-                TryForGintze = true;
-                NetMessage.SendData(MessageID.WorldData);
-            }
 
-            if (!TryForGintze && Main.dayTime && townNpcCount >= 3 && !Main.hardMode && !GintzeDayReset && !GintzingBoss && DownedBossSystem.downedGintzlBoss)
+                StartGinzteArmy();
+            }
+        }
+        public static void StartGinzteArmy()
+        {
+            if (Gintzing)
+                return;
+
+            string message = "The Gintze army is approaching...";
+            if (Main.netMode == NetmodeID.Server)
             {
-                if (Main.rand.NextBool(40))
-                {
-                    Gintzing = true;
-                    string message = "The Gintze army is returning for another round...";
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        NetworkText txt = NetworkText.FromLiteral(message);
-                        ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
-                    }
-                    else
-                    {
-                        Main.NewText(message, 34, 121, 100);
-                    }
-                }
-                TryForGintze = true;
-                NetMessage.SendData(MessageID.WorldData);
-            }   
+                NetworkText txt = NetworkText.FromLiteral(message);
+                ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
+            }
+            else
+            {
+                Main.NewText(message, 34, 121, 100);
+            }
+            GintzingBoss = false;
+            TryForGintze = true;
+            GintzeDayReset = true;
+            Gintzing = true;
+            NetMessage.SendData(MessageID.WorldData);
         }
 
+        public static void HandleGintzeStartMessage(BinaryReader reader, int whoAmI)
+        {
+            reader.ReadByte();
+            reader.ReadByte();
+            if (Main.netMode == NetmodeID.Server)
+            {
+                StartGinzteArmy();
+            }
+        }
         private void TrySpawnAuroreanStarfall()
         {
             //If not eye of cthulu is killed then don't run aurorean starfall code

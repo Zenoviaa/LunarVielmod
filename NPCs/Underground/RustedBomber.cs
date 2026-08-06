@@ -45,14 +45,18 @@ namespace Stellamod.NPCs.Underground
 
         public override void AI()
         {
+            NPC.TargetClosest();
             //NPC.velocity.X *= 0.98f;
             //Syncing the attack to the animation
             int frame = (int)NPC.frameCounter;
             if(frame == 0)
             {
-                _attack = true;
+                Player player = Main.player[NPC.target];
+                float dist = Vector2.Distance(NPC.position, player.position);
+                if(dist < 16 * 8)
+                    _attack = true;
             }
-
+     
             if(frame == 7 && _attack)
             {
                 _attack = false;

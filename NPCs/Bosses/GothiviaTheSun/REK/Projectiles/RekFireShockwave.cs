@@ -52,6 +52,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.Orange, 0.4f);
         private Color BackCircleEndDrawColor => Color.Orange;
         private Vector2[] CirclePos;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 4000;
+        }
 
         public override void SetDefaults()
         {

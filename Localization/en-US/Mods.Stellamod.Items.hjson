@@ -7865,3 +7865,23 @@ Lihh: {
 	Tooltip: Shoots two arrows at once! Every third shot fires heat arrows!
 	DisplayName: Lihh
 }
+
+DreadfulCompletionIdol: {
+	DisplayName: Dreadful Completion Idol
+	Tooltip: An Idol forged from the souls of higher beings into a trophy. Give this to Sirestias in the Ice Biome!
+}
+
+IrradiatedCompletionIdol: {
+	DisplayName: Irradiated Completion Idol
+	Tooltip: An Idol forged from the souls of higher beings into a trophy. Give this to Sirestias in the Ice Biome!
+}
+
+SuperCompletionIdol: {
+	DisplayName: Super Completion Idol
+	Tooltip: An Idol forged from the souls of higher beings into a trophy. Give this to Sirestias in the Ice Biome!
+}
+
+ScryingIdol: {
+	DisplayName: Scrying Idol
+	Tooltip: ""
+}

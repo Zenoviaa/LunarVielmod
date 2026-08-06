@@ -211,7 +211,6 @@
     <None Remove="Items\Shrines\GovheilNAlca\ShrineLightsI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineSolMothI.png" />
     <None Remove="Items\Shrines\Underground\ShrineBridgetI.png" />
-    <None Remove="Items\Special\ExampleDialogueItem.png" />
     <None Remove="Items\Special\VeiledScriptureAzurerin.png" />
     <None Remove="Items\Special\VeiledScriptureCozmire.png" />
     <None Remove="Items\Special\VeiledScriptureLumi.png" />
@@ -483,8 +482,6 @@
     <None Remove="Projectiles\Swords\VoidBlasterSpawnEffect.png" />
     <None Remove="Projectiles\TestRay.png" />
     <None Remove="Projectiles\Test\ChainTestProj2.png" />
-    <None Remove="Projectiles\Test\ExampleDistortionProjectile.png" />
-    <None Remove="Projectiles\Test\ExampleSilhouetteProjectile.png" />
     <None Remove="Projectiles\Test\FigureEightTestProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\Thrown\Jugglers\BasicBaseballProj.png" />
