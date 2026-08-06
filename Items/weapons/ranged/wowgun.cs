@@ -64,7 +64,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 4);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			
