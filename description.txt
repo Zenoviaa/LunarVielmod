@@ -40,6 +40,22 @@ Nothing particularly, we are going to upload it as a seperate mod when 2.0 relea
 Also it's nice for people to be able to compare the old mod and the new one! And also for keeping old things alive I guess...
 
 
+
+
+[b]What mods should I play with this?[/b]
+Any really! But I can't ensure completely compatibility due to how many structures are in the mod, but heres a few that work really well:
+Thorium
+Split
+Magic Storage
+Boss Checklist (we have compatibility)
+Stars above
+Calamity
+Starlight river
+
+
+
+
+
 [b]Changelogs?[/b]
 Down below are just a bunch of grouped up big changes we did during each update, for a super detailed one, we have it in the server or github.
 
