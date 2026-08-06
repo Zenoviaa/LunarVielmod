@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
         {
-            Item.damage = 12;
+            Item.damage = 15;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 40;
             Item.noUseGraphic = true;
@@ -47,7 +47,6 @@ namespace Stellamod.Items.Weapons.Thrown
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.IronBar, 9);
-            recipe.AddIngredient(ItemID.Wood, 10);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

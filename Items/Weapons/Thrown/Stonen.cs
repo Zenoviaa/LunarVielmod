@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
 		{
-			Item.damage = 98;
+			Item.damage = 102 ;
 			Item.width = 20;
 			Item.height = 20;
 			Item.useTime = 40;
@@ -38,9 +38,7 @@ namespace Stellamod.Items.Weapons.Thrown
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.BeetleHusk, 5);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 25);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 25);
-			recipe.AddIngredient(ItemID.ThrowingKnife, 3);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 		}

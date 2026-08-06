@@ -26,8 +26,6 @@ namespace Stellamod.Items.Weapons.Whips
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
             recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 5);
-            recipe.AddIngredient(ItemID.ThornWhip, 1);
-            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

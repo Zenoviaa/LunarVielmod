@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Thrown
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 120;
+			Item.damage = 220;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.Swing;
@@ -51,16 +51,16 @@ namespace Stellamod.Items.Weapons.Thrown
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Ectoplasm, 35);
-			recipe.AddIngredient(ItemID.SoulofFlight, 35);
-			recipe.AddIngredient(ItemID.SoulofFright, 35);
-			recipe.AddIngredient(ItemID.SoulofSight, 35);
-			recipe.AddIngredient(ItemID.SoulofMight, 35);
-			recipe.AddIngredient(ItemID.SoulofLight, 35);
-			recipe.AddIngredient(ItemID.SoulofNight, 35);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 35);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 35);
-			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 35);
+			recipe.AddIngredient(ItemID.Ectoplasm, 1);
+			recipe.AddIngredient(ItemID.SoulofFlight, 1);
+			recipe.AddIngredient(ItemID.SoulofFright, 1);
+			recipe.AddIngredient(ItemID.SoulofSight, 1);
+			recipe.AddIngredient(ItemID.SoulofMight, 1);
+			recipe.AddIngredient(ItemID.SoulofLight, 1);
+			recipe.AddIngredient(ItemID.SoulofNight, 1);
+			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 1);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}
