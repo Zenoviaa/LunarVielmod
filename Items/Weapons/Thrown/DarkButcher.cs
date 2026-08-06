@@ -50,10 +50,7 @@ namespace Stellamod.Items.Weapons.Thrown
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.CursedFlame, 5);
-			recipe.AddIngredient(ItemID.ShadowScale, 5);
-			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 25);
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 25);
-			recipe.AddIngredient(ItemID.ThrowingKnife, 3);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}

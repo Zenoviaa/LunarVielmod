@@ -118,7 +118,7 @@ namespace Stellamod.NPCs.Global
                         npcLoot.Remove(rule);
                     }
                 }
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LilStinger>(), chanceDenominator: 4));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LilStinger>(), chanceDenominator: 2));
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyMold>()));
             }
 

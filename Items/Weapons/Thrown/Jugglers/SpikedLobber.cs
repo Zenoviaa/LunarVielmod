@@ -1,4 +1,5 @@
 ﻿using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Thrown.Jugglers;
 using System.Collections.Generic;
 using Terraria;
@@ -38,6 +39,13 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SpikedLobberProj>();
             Item.shootSpeed = 35;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.HallowedBar, 3);
+            recipe.Register();
         }
     }
 }

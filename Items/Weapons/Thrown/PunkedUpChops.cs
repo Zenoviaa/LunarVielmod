@@ -41,8 +41,8 @@ namespace Stellamod.Items.Weapons.Thrown
 
 		public override void AddRecipes()
 		{
-			Recipe recipe = CreateRecipe(250);
-			recipe.AddIngredient(ItemID.Cog, 5);
+			Recipe recipe = CreateRecipe(500);
+			recipe.AddIngredient(ItemID.Cog, 1);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 2);
 			recipe.AddTile(TileID.MythrilAnvil);

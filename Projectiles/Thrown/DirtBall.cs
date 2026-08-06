@@ -49,13 +49,13 @@ namespace Stellamod.Projectiles.Thrown
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.DarkSlateGray, Color.Transparent, completionRatio * 2);
+            return Color.Lerp(Color.RosyBrown, Color.Transparent, completionRatio * 2);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.TerraTrail);
-            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.SaddleBrown, Color.Transparent, ref lightColor);
+            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.RosyBrown, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
 

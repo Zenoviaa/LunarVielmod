@@ -345,7 +345,7 @@ namespace Stellamod.NPCs.Town
 			.Add<BlankRune>()
 			.Add<BlankBrooch>()
 			.Add<BlankOrb>()
-            .Add<BasicBaseball>(CustomConditions.PostSingularity)
+            .Add<BasicBaseball>()
             .Add<GunHolster>()
 			.Add<Pulsing>()
 			.Add<CogBomber>(Condition.Hardmode)

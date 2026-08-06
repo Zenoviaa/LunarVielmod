@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 
         public override void SetDefaults()
         {
-            Item.damage = 252;
+            Item.damage = 350;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
             Item.height = 24;

@@ -33,10 +33,8 @@ namespace Stellamod.Items.Weapons.Thrown
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 30);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
             recipe.AddIngredient(ModContent.ItemType<Ragsaw>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 7);
+            recipe.AddIngredient(ItemID.HallowedBar, 3);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

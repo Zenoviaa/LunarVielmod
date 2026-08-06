@@ -38,7 +38,7 @@ namespace Stellamod.NPCs.Global
                 }
 
                 LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LilStinger>(), chanceDenominator: 4));
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LilStinger>(), chanceDenominator: 2));
                 itemLoot.Add(notExpertRule);
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyMold>()));
             }
