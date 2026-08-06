@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
             NPC.height = 190;
             NPC.damage = 40;
             NPC.defense = 11;
-            NPC.lifeMax = 2000;
+            NPC.lifeMax = 1800;
             NPC.scale = 1f;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
             NPC.value = 60f;
