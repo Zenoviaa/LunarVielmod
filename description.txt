@@ -1,3 +1,60 @@
+
+
+ [h1]Welcome to Lunar Veil![/h1]
+ 
+ This is still an ongoing project with our upcoming 2.0 update!
+
+ I sincerely thank you for checking out this mod!, this mod as legacy is finalized so feel free to play with your friends, etc.
+ This is a large content mod finished to the end on it's legacy build, see FAQ below for questions :)
+
+
+
+
+ [h2]FAQ[/h2]
+
+[b]Is this mod dead?[/b]
+ Nope! Me and scolon are hard at work with 2.0! It'll be coming soon don't worry, and I'm sure you'll be pleasantly surprised with the scale of the update!
+ Afterall we did finish all of legacy within 8 months or so, and 2.0 has taken us 2 years by itself to do and we are in the endgame now, so hold tight!
+
+
+[b]Can I see 2.0?[/b]
+ We have plenty of spoilers in the discord server, and if you ask me (Zenovia), you can also see stuff behind the scenes as well! I'm very open to
+ showing people stuff even about 2.0, so come join the hype train! If you want to stalk us, we have a public github as well for devs and whatnot,
+ it is to hold us accountable for the things we do to ensure trust.
+
+
+ [b]Where's the discord server?[/b]
+ At the bottom of the page.
+
+
+[b]Release date?[/b]
+Whoooo knows, maybe late this year (2026) or early next year, not too sure yet!
+
+
+[b]Why this update?[/b]
+We just wanted to finalize legacy before we take it and turn it into it's own mod when it releases, keeping the mod up to date as well.
+
+
+[b]What will happen to legacy??[/b]
+Nothing particularly, we are going to upload it as a seperate mod when 2.0 releases, as the changes are so vast, we kind of have to. 
+Also it's nice for people to be able to compare the old mod and the new one! And also for keeping old things alive I guess...
+
+
+[b]Changelogs?[/b]
+Down below are just a bunch of grouped up big changes we did during each update, for a super detailed one, we have it in the server or github.
+
+
+
+
+
+
+
+
+
+
+[h1]Pre~ 2.0 Stuff[/h1]
+
+
 PLEASE PLAY MASTERMODE or EXPERTMODE FOR THIS MOD!
 MULTIPLAYER COMPATIBLE!!!
 NOT PLAYABLE IN SMALL WORLDS!
@@ -31,6 +88,10 @@ This is a content/quality of life mod which includes:
 Keep in mind this mod is still in progress!
 (WARNING: THIS MOD ENCOURAGES YOU TO WORK ON EVASION)
 Playable until Post-ML
+
+
+
+
 
 --------------------------------------------------------
 The Eternal Moon Update: 1.3 has been released finishng prehardmode and all of its glory!
@@ -72,6 +133,12 @@ Remirror Update: 1.7 has been released!
 As some issues arose in 1.6 due to complications of a member stealing a bunch of assets on merge, we split off and decided to resprite/redo many systems to keep the mod in tact.
 Stone golem has also gotten a much needed rework as well as a few new items and rebalancing! New visuals to many projectiles and bosses!
 If there are issues please let us know :)
+
+-----------------
+The Undying Wait Update: 1.8 has been released!
+As 2.0 has been in development, we wanted to fix some of the major issues of the mod to make it more playable, which means fixing up multiplayer, generation, weapons, progress, recipes, 
+bloat, etc! We also added a few things we forgot to add/ lost content, and we added them and made sure they worked!
+
 
 
 Please wishlist my game as well!: https://store.steampowered.com/app/2639870/Diari/
