@@ -400,6 +400,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			
 			return false;
 		}
+		float despawnTimer;
 
 		//Custom function so that I don't have to copy and paste the same thing in FindFrame
         int bee = 220;
@@ -431,8 +432,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 				NPC.velocity.Y -= 0.8f;
 				NPC.noTileCollide = true;
 				NPC.noGravity = false;
-				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-				NPC.EncourageDespawn(4);
+				despawnTimer++;
+				if(despawnTimer >= 90)
+				{
+					if (StellaMultiplayer.IsHost)
+					{
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(150, 150), Vector2.Zero,
+							ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
+                    }
+					NPC.active = false;
+				}
+			}
+			else
+			{
+				despawnTimer = 0;
 			}
 
 			FinishResetTimers();

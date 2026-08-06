@@ -30,6 +30,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
 
         private ref float AttackTimer => ref Projectile.ai[2];
+        private float _spawnTimer;
         private int TornadoIndex = -1;
         private Vector2 TargetPos;
         private Vector3 HuntrianColorXyz;
@@ -189,18 +190,17 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         private void AI_TornadoAttack()
         {
+            _spawnTimer++;
             _orbitCounter += 0.05f;
             //OK SO
             //WHAT WE NEED TO DO IS.
             //Have the guys move in a n ellipse, how do we do tahat?
             Projectile.Center = CalculateCirclePosition(Owner);
             int tornadoType = ModContent.ProjectileType<ClimateTornadoProj>();
-            if (TornadoIndex == -1
-                || !Main.projectile[TornadoIndex].active
-                || Main.projectile[TornadoIndex].type != tornadoType)
+            if(_spawnTimer % 60 == 0 && Main.myPlayer == Projectile.owner)
             {
-                TornadoIndex = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                 tornadoType, Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai0: Projectile.whoAmI);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                 tornadoType, Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai0: Projectile.identity);
             }
         }
 

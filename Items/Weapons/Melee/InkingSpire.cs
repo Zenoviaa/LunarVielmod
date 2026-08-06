@@ -45,14 +45,6 @@ namespace Stellamod.Items.Weapons.Melee
 		public override void ModifyShootStats(Player player, ref Vector2 position, 
 			ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
-			Vector2 Offset = Vector2.Normalize(velocity) * 1f;
-
-			if (Collision.CanHit(position, 0, 0, position + Offset, 0, 0))
-			{
-				position += Offset;
-			}
-
-
 			if(player.altFunctionUse == 2)
 			{
 				type = ModContent.ProjectileType<InkingSThrow>();

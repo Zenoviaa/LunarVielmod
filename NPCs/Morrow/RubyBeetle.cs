@@ -103,20 +103,21 @@ namespace Stellamod.NPCs.Morrow
 				moveSpeed++;
 			}
 
-			NPC.velocity.X = moveSpeed * 0.09f;
+			NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X,  moveSpeed * 0.09f, 0.1f);
+            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, moveSpeedY * 0.17f, 0.1f);
 
-			if (NPC.Center.Y >= player.Center.Y - NPC.ai[0] && moveSpeedY >= -50) 
+            if (NPC.Center.Y >= player.Center.Y - NPC.ai[0] && moveSpeedY >= -15) 
 			{
 				moveSpeedY--;
 				NPC.ai[0] = 150f;
 			}
 
-			if (NPC.Center.Y <= player.Center.Y - NPC.ai[0] && moveSpeedY <= 50)
+			if (NPC.Center.Y <= player.Center.Y - NPC.ai[0] && moveSpeedY <= 15)
 			{
 				moveSpeedY++;
 			}
 
-			NPC.velocity.Y = moveSpeedY * 0.17f;
+		
 			if (counter >= 110 && counter < 140)
 			{
 				dash = true;
@@ -125,21 +126,12 @@ namespace Stellamod.NPCs.Morrow
 
 			if (counter == 140)
 			{
-				if (Main.netMode != NetmodeID.MultiplayerClient)
-				{
-					Vector2 direction = player.Center - NPC.Center;
-					direction.Normalize();
-					direction.X *= 9f;
-					direction.Y *= 6f;
-					NPC.velocity = direction;
-				}
-			}
+
+            }
 
 			if (counter == 180)
 			{
-				if (Main.netMode != NetmodeID.MultiplayerClient)
-					NPC.ai[0] += -25f;
-				NPC.velocity = Vector2.Zero;
+                NPC.ai[0] += -25f;
 				counter = 0;
 				dash = false;
 			}

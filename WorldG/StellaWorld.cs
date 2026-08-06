@@ -3120,42 +3120,21 @@ namespace Stellamod.WorldG
 			int attempts = 0;
 			while (!placed && attempts++ < 1000000)
 			{
-				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
-
-				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmy = ((Main.maxTilesY / 2));
-
-				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
-				{
-					abysmy++;
-				}
-
-				// If we went under the world's surface, try again
-				if (abysmy > Main.UnderworldLayer - 50)
-				{
-					continue;
-				}
-				Tile tile = Main.tile[abysmx, abysmy];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == ModContent.TileType<AbyssalDirt>()))
-				{
-					continue;
-				}
-
-
-				// place the Rogue
 				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
 				//Main.npc[num].homeTileX = -1;
 				//	Main.npc[num].homeTileY = -1;
 				//	Main.npc[num].direction = 1;
 				//	Main.npc[num].homeless = true;
 
+				Point spawnPoint = new Point();
+				spawnPoint.X = GenVars.snowOriginLeft + GenVars.snowOriginRight;
+				spawnPoint.X /= 2;
+				spawnPoint.Y = Main.maxTilesY / 2;
 
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx - 150, abysmy + 100);
+					Point Loc = new Point(spawnPoint.X - 150, spawnPoint.Y + 100);
 					rectangle.Location = Loc;
 					StructureLoader.ProtectStructure(Loc, "Struct/Aurelus/AurelusTemple2");
 

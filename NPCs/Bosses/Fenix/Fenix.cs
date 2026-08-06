@@ -224,7 +224,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		private int _wingFrameCounter;
 		private int _wingFrameTick;
 		public bool Wingies = false;
-
+		float despawnTimer;
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			Player player = Main.player[NPC.target];
@@ -475,11 +475,20 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				NPC.alpha++;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(1);
-
+				despawnTimer++;
+				if(despawnTimer > 90)
+				{
+					NPC.active = false;
+				}
 				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 				{
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 				}
+				return;
+			}
+			else
+			{
+				despawnTimer--;
 			}
 
 

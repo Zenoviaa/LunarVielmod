@@ -11,9 +11,26 @@ namespace Stellamod.Projectiles.Summons.Minions
         private static Asset<Texture2D> VorTexture;
         private Projectile Parent
         {
-            get => Main.projectile[(int)Projectile.ai[0]];
+            get
+            {
+                foreach(Projectile projectile in Main.ActiveProjectiles)
+                {
+                    int identity = projectile.identity;
+                    if(identity == (int)Projectile.ai[0])
+                    {
+                        return projectile;
+                    }
+                }
+                return Projectile;
+            }
         }
+        private ref float Timer => ref Projectile.ai[1];
 
+        private bool ShouldDie()
+        {
+            Player owner = Main.player[Projectile.owner];
+            return Parent.type != ModContent.ProjectileType<CloudMinionProj>() || !Parent.active || owner.ownedProjectileCounts[ModContent.ProjectileType<CloudMinionProj>()] < 6;
+        }
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 18;
@@ -26,7 +43,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.width = 64;
             Projectile.height = 64;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = int.MaxValue;
+            Projectile.timeLeft = 90;
             Projectile.scale = 1.3f;
             Projectile.usesLocalNPCImmunity = true;
 
@@ -36,8 +53,9 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void AI()
         {
+            Timer++;
             Player owner = Main.player[Projectile.owner];
-            if (owner.ownedProjectileCounts[ModContent.ProjectileType<CloudMinionProj>()] <= 6)
+            if (ShouldDie())
             {
                 Projectile.Kill();
             }
@@ -96,6 +114,10 @@ namespace Stellamod.Projectiles.Summons.Minions
         public override bool PreDraw(ref Color lightColor)
         {
             Color drawColor = new(100, 255, 255, 0);
+            float inAlpha = MathHelper.SmoothStep(0f, 1f, Timer / 30f);
+            float outAlpha = MathHelper.SmoothStep(1f, 0f, (Timer - 60) / 30f);
+            drawColor *= inAlpha;
+            drawColor *= outAlpha;
             Main.EntitySpriteDraw(VorTexture.Value, Projectile.Center - Main.screenPosition,
                           VorTexture.Value.Bounds, drawColor, Projectile.rotation,
                           VorTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0);

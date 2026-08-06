@@ -74,6 +74,7 @@ namespace Stellamod.NPCs.Govheil
             if (games >= 1200)
             {
 
+                /*
                 float speedXB = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f);
                 float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
                 if (StellaMultiplayer.IsHost)
@@ -82,7 +83,7 @@ namespace Stellamod.NPCs.Govheil
                         ProjectileID.GreekFire3, 12, 0f, Owner: Main.myPlayer);
                 }
 
-
+                */
             }
             if (games >= 761)
             {
@@ -136,19 +137,15 @@ namespace Stellamod.NPCs.Govheil
 
                 if (counter == 140)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        Vector2 direction = player.Center - NPC.Center;
-                        direction.Normalize();
-                        direction.X *= 4f;
-                        direction.Y *= 4f;
-                        NPC.velocity = direction;
-                    }
+                    Vector2 direction = player.Center - NPC.Center;
+                    direction = direction.SafeNormalize(Vector2.Zero);
+                    direction.X *= 4f;
+                    direction.Y *= 4f;
+                    NPC.velocity = direction;
                 }
                 if (counter == 180)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        NPC.ai[0] += -25f;
+                    NPC.ai[0] += -25f;
                     NPC.velocity = Vector2.Zero;
                     counter = 0;
                     dash = false;
