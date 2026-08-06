@@ -17,6 +17,7 @@ using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.Caeva;
@@ -36,6 +37,7 @@ using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
+using Stellamod.Tiles.Ishtar;
 using Stellamod.UI.Dialogue;
 using Stellamod.WorldG;
 using System.Collections.Generic;
@@ -1060,8 +1062,15 @@ namespace Stellamod
                 HMArmorTime = 0;
             }
 
-
-
+			
+			/*
+			int xx = Player.position.ToTileCoordinates().X;
+			int yy = StellaWorld.SurfaceHighestY(xx);
+			Main.NewText(yy);
+			Vector2 p = new Point(xx, yy).ToWorldCoordinates();
+			Dust.NewDustPerfect(p, DustID.GemDiamond, Vector2.Zero, 0, Color.White, Scale: 10);
+			*/
+			//Player.position = p;
 			if (Cameraaa)
 			{
 				CameraaaTime++;
@@ -1139,10 +1148,28 @@ namespace Stellamod
 			{
 				player.AddBuff(ModContent.BuffType<DarkHold>(), 10);
 			}
-			
-			if (ZoneIshtar && !DownedBossSystem.downedZuiBoss)
+			Point ishtarCheckCenter = player.Center.ToTileCoordinates();
+
+            for (int i = -3; i <= 3; i++)
 			{
-				player.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 10);
+				for(int j = -3; j <= 3; j++)
+				{
+					Point offset = new Point(i, j);
+					Point pointToCheck = ishtarCheckCenter + offset;
+					if (!WorldGen.InWorld(pointToCheck.X, pointToCheck.Y))
+						continue;
+
+					Tile tile = Main.tile[pointToCheck];
+					if(tile.HasTile && tile.TileType == ModContent.TileType<IshtarMoss>())
+					{
+						if (!player.HasBuff<SigfriedsInsanity>())
+						{
+							SoundStyle awaySound = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune_SoulShot") with { PitchVariance = 0.3f };
+							SoundEngine.PlaySound(awaySound, player.position);
+						}
+                        player.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 10);
+                    }
+				}
 			}
 
 			if (CorsageTime >= 1)

@@ -17,7 +17,7 @@ namespace Stellamod.Buffs
 
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.lifeRegen -= 250;
+			npc.lifeRegen -= 125;
 			if (Main.rand.NextBool(2))
 			{
 				int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.BoneTorch);
