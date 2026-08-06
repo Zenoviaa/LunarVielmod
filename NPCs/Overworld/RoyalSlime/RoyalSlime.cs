@@ -36,7 +36,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
 			NPC.height = 24;
 			NPC.damage = 8;
 			NPC.defense = 4;
-			NPC.lifeMax = 500;
+			NPC.lifeMax = 300;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.value = 30f;
@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
         {
             if(EventWorld.Gintzing)
                 return 0;
-            return SpawnCondition.OverworldDaySlime.Chance * 0.02f;
+            return SpawnCondition.OverworldDaySlime.Chance * 0.005f;
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

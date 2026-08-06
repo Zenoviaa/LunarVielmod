@@ -50,7 +50,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 1; // The amount of damage that this npc deals
 			NPC.defense = 15; // The amount of defense that this npc has
-			NPC.lifeMax = 1500; // The amount of health that this npc has
+			NPC.lifeMax = 300; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
 			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
 			NPC.value = 5000f; // How many copper coins the NPC will drop when killed.
@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Morrow
 			{
 
 				case ActionState.Jump:
-					NPC.damage = 250;
+					NPC.damage = 200;
 					counter++;
 					Jump();
 					break;
@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Morrow
 					break;
 
 				case ActionState.Fall:
-					NPC.damage = 250;
+					NPC.damage = 0;
 					counter++;
 					if (NPC.velocity.Y == 0)
 					{
@@ -201,8 +201,6 @@ namespace Stellamod.NPCs.Morrow
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.BlackPearl, 3, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyfishTissue>(), 25, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowedJelliesBroochA>(), 25, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ItemID.SpelunkerGlowstick, 1, 1, 7));

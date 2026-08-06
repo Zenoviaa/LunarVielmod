@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.height = 32;
 			NPC.damage = 20;
 			NPC.defense = 10;
-			NPC.lifeMax = 80;
+			NPC.lifeMax = 30;
 			NPC.noGravity = true;
 			NPC.value = 90f;
 			NPC.noTileCollide = false;
@@ -142,9 +142,7 @@ namespace Stellamod.NPCs.Morrow
 	
 			npcLoot.Add(ItemDropRule.Common(ItemID.Ruby, 2, 1, 4));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Morrowshroom>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 3, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 5));
-            npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 3, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 5, 1, 1));
 		}
 

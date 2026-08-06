@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Underground
 
         public override void SetDefaults()
         {
-            NPC.lifeMax = 1000;
+            NPC.lifeMax = 750;
             NPC.width = 79;
             NPC.height = 140;
             NPC.damage = 150;

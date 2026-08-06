@@ -30,7 +30,7 @@ namespace Stellamod.NPCs.Ice.WinterSouls
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.defense = 3;
-            NPC.lifeMax = 40;
+            NPC.lifeMax = 70;
             NPC.damage = 15;
             NPC.value = 65f;
             NPC.knockBackResist = 0.55f;

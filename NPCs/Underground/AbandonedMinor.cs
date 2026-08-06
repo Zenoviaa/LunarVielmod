@@ -24,7 +24,7 @@ namespace Stellamod.NPCs.Underground
             NPC.aiStyle = 3;
             NPC.damage = 34;
             NPC.defense = 8;
-            NPC.lifeMax = 140;
+            NPC.lifeMax = 100;
             NPC.HitSound = SoundID.NPCHit48;
             NPC.DeathSound = SoundID.DD2_SkeletonDeath;
             NPC.value = 563f;

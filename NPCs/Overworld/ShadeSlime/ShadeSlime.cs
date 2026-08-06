@@ -47,7 +47,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
             NPC.height = 35;
             NPC.damage = 10;
             NPC.defense = 5;
-            NPC.lifeMax = 45;
+            NPC.lifeMax = 100;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath24;
             NPC.value = 60f;

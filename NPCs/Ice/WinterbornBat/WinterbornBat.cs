@@ -50,7 +50,7 @@ namespace Stellamod.NPCs.Ice.WinterbornBat
             NPC.height = 28;
 
             NPC.defense = 3;
-            NPC.lifeMax = 40;
+            NPC.lifeMax = 60;
             NPC.damage = 13;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath15;

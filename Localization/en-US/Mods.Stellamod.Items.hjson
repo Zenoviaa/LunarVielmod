@@ -347,8 +347,8 @@ JellyfishTissue: {
 	Tooltip:
 		'''
 		Woa really cool!
-		+40 Defense
-		But at the cost of 40% damage 
+		-5 Defense
+		But gives 10% more damage!
 		'''
 }
 

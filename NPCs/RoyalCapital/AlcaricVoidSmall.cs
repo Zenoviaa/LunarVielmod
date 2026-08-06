@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.height = 16;
 			NPC.damage = 40;
 			NPC.defense = 30;
-			NPC.lifeMax = 800;
+			NPC.lifeMax = 400;
 			NPC.HitSound = SoundID.NPCHit56;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 560f;

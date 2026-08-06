@@ -58,7 +58,7 @@ namespace Stellamod.NPCs.Underground
             NPC.aiStyle = -1;
             NPC.damage = 40; // The amount of damage that this npc deals
             NPC.defense = 12; // The amount of defense that this npc has
-            NPC.lifeMax = 300; // The amount of health that this npc has
+            NPC.lifeMax = 150; // The amount of health that this npc has
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.value = 50f; // How many copper coins the NPC will drop when killed.

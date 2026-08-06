@@ -42,9 +42,8 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe(50);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
-            recipe.AddIngredient(ItemID.ThrowingKnife, 50);
+            Recipe recipe = CreateRecipe(100);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 1);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }
