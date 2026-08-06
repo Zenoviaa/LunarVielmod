@@ -330,9 +330,9 @@ namespace Stellamod.NPCs.Town
 
 						case 4:
 
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ArncharChunk>(), 50);
+                            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Dunderbustion>(), 1);
 
-							break;
+                            break;
 
 						case 5:
 
@@ -396,8 +396,7 @@ namespace Stellamod.NPCs.Town
 
 						case 3:
 
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.AntlionMandible, 25);
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CondensedDirt>(), 250);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.LuckyHorseshoe, 1);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 50);
 
 							break;
@@ -791,8 +790,9 @@ namespace Stellamod.NPCs.Town
 						case 0:
 
 
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.IronOre, 100);
-							break;
+                            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MahoganyStorm>(), 1);
+
+                            break;
 						case 1:
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.EmptyBucket, 9);
@@ -818,8 +818,9 @@ namespace Stellamod.NPCs.Town
 
 						case 4:
 
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ArncharChunk>(), 50);
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Stinger, 30);
+                            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MahoganyStorm>(), 1);
+
+                            Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Stinger, 30);
 							break;
 
 						case 5:
