@@ -50,6 +50,12 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         {
             NPC.position = SupernovaFragment.SingularityPos;
             NPC.ai[0]++;
+            if (NPC.ai[0] == 1)
+            {
+                RotSpeed = 3.14f;
+            }
+
+
             NPC.rotation = RotSpeed + NPC.ai[1];
             alphaCounter = MathHelper.Lerp(alphaCounter, 0, 0.05f);
             if (RotSpeed >= 0)

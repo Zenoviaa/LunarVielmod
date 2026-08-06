@@ -6,6 +6,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
@@ -51,6 +52,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         private Color BackCircleStartDrawColor => Color.Lerp(Color.OrangeRed, Color.LightGoldenrodYellow, 0.4f);
         private Color BackCircleEndDrawColor => Color.Lerp(Color.LightGoldenrodYellow, Color.DarkGoldenrod, 0.7f);
         private Vector2[] CirclePos;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 4000;
+        }
 
         public override void SetDefaults()
         {

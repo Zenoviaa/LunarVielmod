@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
@@ -23,6 +24,17 @@ namespace Stellamod.NPCs
         public static float GetMechanicalEnemySpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.Player.InModBiome<DrakonicManor>() || 
+                spawnInfo.Player.InModBiome<CindersparkBiome>() ||
+                spawnInfo.Player.InModBiome<IshtarBiome>())
+                return 0;
+            return (SpawnCondition.Cavern.Chance * SpawnRates.Mechanical_Enemy_Spawn_Chance);
+        }
+
+        public static float GetMechanicalLavaLayerEnemySpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (spawnInfo.Player.position.ToTileCoordinates().Y < Main.UnderworldLayer - 400)
+                return 0;
+            if (spawnInfo.Player.InModBiome<DrakonicManor>() ||
                 spawnInfo.Player.InModBiome<CindersparkBiome>() ||
                 spawnInfo.Player.InModBiome<IshtarBiome>())
                 return 0;

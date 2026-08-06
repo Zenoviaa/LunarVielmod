@@ -151,6 +151,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             if (NPC.life <= 0)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 124f);
+
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0,
                            ModContent.ProjectileType<SupernovaExplosionSmall>(), NPC.damage, 1, Owner: Main.myPlayer);
                 SupernovaFragment.SingularityOrbs -= 1;

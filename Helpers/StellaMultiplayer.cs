@@ -21,39 +21,7 @@ namespace Stellamod
 {
     public static class StellaMultiplayer
 	{
-		private struct Wait
-		{
-			public Func<bool> Condition { get; set; }
-			public Action Result { get; set; }
-		}
-
-		private static List<Wait> _waits = new List<Wait>();
-
 		public static bool IsHost => Main.netMode != NetmodeID.MultiplayerClient;
-        public static void Load() => Main.OnTickForInternalCodeOnly += OnTick;
-
-		public static void Unload()
-		{
-			Main.OnTickForInternalCodeOnly -= OnTick;
-			_waits = null;
-		}
-
-		public static void OnTick()
-		{
-			if (_waits == null) return;
-
-			for (int i = 0; i < _waits.Count; i++)
-			{
-				Wait wait = _waits[i];
-				if (wait.Condition.Invoke())
-				{
-					wait.Result?.Invoke();
-					_waits.RemoveAt(i--);
-				}
-			}
-		}
-
-		public static void WaitUntil(Func<bool> condition, Action whenTrue) => _waits.Add(new Wait() { Condition = condition, Result = whenTrue });
 
 		// This is deprecated, DO NOT USE IT. Only here for compatability until later stages when we decide to swap it out for the new one.
 		public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
@@ -106,7 +74,10 @@ namespace Stellamod
 			var id = (MessageType)reader.ReadByte();
 			byte player;
 			switch (id)
-			{
+            {
+                case MessageType.STARTGINTZEFROMCLIENT:
+                    EventWorld.HandleGintzeStartMessage(reader, whoAmI);
+                    break;
                 case MessageType.Dodge:
                     VixylPlayer.HandleExampleDodgeMessage(reader, whoAmI);
                     break;

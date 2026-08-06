@@ -22,6 +22,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         //Draw Code
         private Vector2[] LinePos;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 4000;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 72;
