@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Desert.Projectiles
                 nextPointOnOval += velocity * 512 * progress;
 
                 Vector2 tornadoVelocity = pointOnOval.DirectionTo(nextPointOnOval) * 32 * progress;
-                Dust.NewDustPerfect(nextPointOnOval, ModContent.DustType<TSmokeTornadoDust>(), tornadoVelocity, 0, Color.Lerp(Color.WhiteSmoke, Color.DarkGray, progress), MathHelper.Lerp(0.4f, 0.7f, progress)).noGravity = true;
+                Dust.NewDustPerfect(nextPointOnOval, ModContent.DustType<TSmokeTornadoDust>(), tornadoVelocity, 0, Color.Lerp(Color.RosyBrown, Color.SandyBrown, progress), MathHelper.Lerp(0.4f, 0.7f, progress)).noGravity = true;
             }
 
             float suckingDistance = 4000;
@@ -70,7 +70,7 @@ namespace Stellamod.NPCs.Desert.Projectiles
                     {
                         Vector2 direction = npc.Center - center;
                         direction.Normalize();
-                        npc.velocity -= direction * 0.4f;
+                        npc.velocity -= direction * 0.2f;
                     }
                 }
             }

@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Desert
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
-			NPC.aiStyle = 38;
+			NPC.aiStyle = NPCAIStyleID.Snowman;
 			AIType = NPCID.MisterStabby;
 			NPC.noTileCollide = false;
 		}
@@ -110,7 +110,7 @@ namespace Stellamod.NPCs.Desert
 				case ActionState.Speed:
 					counter++;
 					Speed();
-					NPC.velocity *= 0.98f;
+					NPC.velocity *= 0.99f;
 					break;
 
 
@@ -123,9 +123,8 @@ namespace Stellamod.NPCs.Desert
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Amber, 5, 1, 5));
+
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ArncharChunk>(), 5, 1, 5));
 
 
 

@@ -213,14 +213,14 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
                         float rot = MathHelper.TwoPi * progress;
                         Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
                         Vector2 velocity = direction2 * 10;
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, velocity.X / 2, velocity.Y / 2, ModContent.ProjectileType<IrradiatedDeathSpray>(), 60, 0f, Owner: Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, velocity.X / 4, velocity.Y / 4, ModContent.ProjectileType<IrradiatedDeathSpray>(), 10, 0f, Owner: Main.myPlayer);
                     }
                 }
 
             }
 
 
-            if (Tti == 240)
+            if (Tti == 400)
             {
                 Tti = 0;
                 // TargetClosest sets npc.target to the player.whoAmI of the closest player.
@@ -249,7 +249,15 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
         public void Notice()
         {
             timer++;
-            if (timer >= 30)
+
+            if (timer >= 60)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), NPC.position);
+   
+
+            }
+
+            if (timer >= 120)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), NPC.position);
                 State = ActionState.Attack;

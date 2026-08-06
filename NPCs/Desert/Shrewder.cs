@@ -110,7 +110,6 @@ namespace Stellamod.NPCs.Desert
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.Amber, 5, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ArncharChunk>(), 5, 1, 5));
 		}
 
 		public void Wait()
@@ -135,7 +134,7 @@ namespace Stellamod.NPCs.Desert
 			if (timer > 50)
 			{
 
-				NPC.velocity.X *= 5f;
+				NPC.velocity.X *= 1.05f;
 				NPC.velocity.Y *= 0.5f;
 				for (int k = 0; k < 5; k++)
 				{

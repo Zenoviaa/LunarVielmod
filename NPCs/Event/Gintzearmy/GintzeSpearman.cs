@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
         {
             NPC.noGravity = false;
             NPC.noTileCollide = false;
-            NPC.lifeMax = 100;
+            NPC.lifeMax = 40;
             NPC.defense = 4;
             NPC.value = 65f;
             NPC.knockBackResist = 0.55f;

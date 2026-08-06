@@ -137,8 +137,8 @@ namespace Stellamod.NPCs.Desert
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ItemID.AntlionMandible, 3, 1, 2));
-            npcLoot.Add(ItemDropRule.ByCondition(new PlanteraDropRule(), ModContent.ItemType<BabySwarmerStaff>(), 20, 1, 1));
-            npcLoot.Add(ItemDropRule.ByCondition(new PlanteraDropRule(), ModContent.ItemType<AntlionWings>(), 40, 1, 1));
+            npcLoot.Add(ItemDropRule.ByCondition(new PlanteraDropRule(), ModContent.ItemType<BabySwarmerStaff>(), 15, 1, 1));
+            npcLoot.Add(ItemDropRule.ByCondition(new PlanteraDropRule(), ModContent.ItemType<AntlionWings>(), 15, 1, 1));
         }
     }
 }

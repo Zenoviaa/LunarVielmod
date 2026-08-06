@@ -45,7 +45,7 @@ namespace Stellamod.NPCs.Event.GreenSun
         {
             NPC.width = 32;
             NPC.height = 24;
-            NPC.damage = 24;
+            NPC.damage = 14;
             NPC.defense = 14;
             NPC.lifeMax = 800;
             NPC.HitSound = SoundID.NPCHit1;
@@ -168,17 +168,17 @@ namespace Stellamod.NPCs.Event.GreenSun
                 NPC.velocity.Y *= 5.5f;
                 if (StellaMultiplayer.IsHost)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.UnitX * 2,
-                        ModContent.ProjectileType<IrradiatedDeathSpray>(), 34, 1, Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, -Vector2.UnitX * 2,
-                        ModContent.ProjectileType<IrradiatedDeathSpray>(), 34, 1, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.UnitX * 1,
+                        ModContent.ProjectileType<IrradiatedDeathSpray>(), 14, 1, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, -Vector2.UnitX * 1,
+                        ModContent.ProjectileType<IrradiatedDeathSpray>(), 14, 1, Main.myPlayer);
                 }
             }
 
             if (NPC.collideY)
             {
                 DoJump = false;
-                JumpTimer = 15;
+                JumpTimer = 60;
             }
         }
 
