@@ -124,8 +124,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Bridget", WorldGenBridget));
 				tasks.Insert(CathedralGen2 + 32, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
                 tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Dread Monoliths", WorldGenDreadMonoliths));
-                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Graving", WorldGenGraving));
-                tasks.Insert(CathedralGen2 + 35, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
             }
 
 
