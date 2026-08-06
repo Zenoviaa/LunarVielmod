@@ -15,7 +15,6 @@ namespace Stellamod.Tiles
 			Main.tileBlockLight[Type] = true;
 
 			DustType = DustID.SilverCoin;
-			MineResist = 2f;
 			MinPick = 0;
 
 			RegisterItemDrop(ItemID.StoneBlock);

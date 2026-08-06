@@ -10,11 +10,9 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Govheil
 {
-
     public class GovheilProtector : ModNPC
     {
         public int moveSpeed = 0;
@@ -37,7 +35,7 @@ namespace Stellamod.NPCs.Govheil
                 new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "The last protectors of the govheil, and they are pretty formidable..."))
             });
         }
-      
+
         public override void SetDefaults()
         {
             NPC.width = 98;
@@ -59,7 +57,7 @@ namespace Stellamod.NPCs.Govheil
         int games = 0;
         public override void AI()
         {
-            games++; 
+            games++;
             if (games <= 760)
             {
                 NPC.velocity *= 0.99f;
