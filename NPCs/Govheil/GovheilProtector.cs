@@ -3,7 +3,9 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Placeable;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -42,9 +44,9 @@ namespace Stellamod.NPCs.Govheil
             NPC.height = 90;
             NPC.damage = 40;
             NPC.defense = 10;
-            NPC.lifeMax = 350;
-            NPC.HitSound = SoundID.Tink;
-            NPC.DeathSound = SoundID.Tink;
+            NPC.lifeMax = 250;
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1");
             NPC.value = 30f;
             NPC.buffImmune[BuffID.ShadowFlame] = true;
             NPC.knockBackResist = .2f;
@@ -157,9 +159,8 @@ namespace Stellamod.NPCs.Govheil
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 3, 1, 5));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LostScrap>(), 1, 1, 7));
-            
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 5, 1, 1));
 
 
         }

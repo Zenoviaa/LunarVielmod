@@ -463,7 +463,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             if (StellaMultiplayer.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, 
-                                    ModContent.ProjectileType<BouncySword>(), (int)(40 * 1f), 0f, Main.myPlayer);
+                                    ModContent.ProjectileType<BouncySword>(), (int)(20 * 1f), 0f, Main.myPlayer);
                             }
                            
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);

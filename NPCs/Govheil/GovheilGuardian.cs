@@ -55,9 +55,9 @@ namespace Stellamod.NPCs.Govheil
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 1; // The amount of damage that this npc deals
 			NPC.defense = 13; // The amount of defense that this npc has
-			NPC.lifeMax = 810; // The amount of health that this npc has
+			NPC.lifeMax = 310; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
-			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
+			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1");
 			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = true;
@@ -201,7 +201,7 @@ namespace Stellamod.NPCs.Govheil
 
 				for (int k = 0; k < 5; k++)
 				{
-					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
+					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Torch, NPC.direction, -1f, 1, default, .61f);
 
 					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
@@ -217,12 +217,12 @@ namespace Stellamod.NPCs.Govheil
 				for (int i = 0; i < 100; i++)
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(NPC.Center, speed * 10, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(NPC.Center, speed * 10, ParticleManager.NewInstance<morrowstar>(), Color.Red, Main.rand.NextFloat(0.2f, 0.8f));
 				}
 				for (int i = 0; i < 100; i++)
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
-					ParticleManager.NewParticle(NPC.Center, speed * 5, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(NPC.Center, speed * 5, ParticleManager.NewInstance<morrowstar>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
 				}
 				for (int i = 0; i < 100; i++)
 				{
@@ -247,11 +247,9 @@ namespace Stellamod.NPCs.Govheil
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 5, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
+
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 5, 1, 1));
+
 		
 			
 		}

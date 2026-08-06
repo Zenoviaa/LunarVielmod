@@ -34,7 +34,7 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
             NPC.height = 24;
             NPC.damage = 8;
             NPC.defense = 0;
-            NPC.lifeMax = 75;
+            NPC.lifeMax = 120;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath7;
             NPC.value = 30f;

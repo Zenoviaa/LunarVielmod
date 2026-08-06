@@ -1591,7 +1591,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					}
 				}
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1"));
+                //FoxRusher
+
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1"));
 				Grimber = 0;
 			}
 
@@ -1631,8 +1633,46 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					NPC.velocity = BaseVel.RotatedBy(MathHelper.ToRadians((timer - 600) * 4));
 				}
 
+                if (timer == 90)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        float speedXb = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f) + Main.rand.NextFloat(0f, 0f);
+                        float speedYb = NPC.velocity.Y * Main.rand.Next(-1, 1);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 2, speedYb * 2, ModContent.ProjectileType<FoxRusher>(), 0, 0f, Main.myPlayer, 0f, 0);
+                    }
 
-				if (timer > 620)
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FrostBringer"), NPC.position);
+
+
+                }
+
+                if (timer == 190)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        float speedXb = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f) + Main.rand.NextFloat(0f, 0f);
+                        float speedYb = NPC.velocity.Y * Main.rand.Next(-1, 1);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 2, speedYb * 2, ModContent.ProjectileType<FoxRusher>(), 0, 0f, Main.myPlayer, 0f, 0);
+                    }
+
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FrostBringer"), NPC.position);
+                }
+
+                if (timer == 390)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        float speedXb = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f) + Main.rand.NextFloat(0f, 0f);
+                        float speedYb = NPC.velocity.Y * Main.rand.Next(-1, 1);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 2, speedYb * 2, ModContent.ProjectileType<FoxRusher>(), 0, 0f, Main.myPlayer, 0f, 0);
+                    }
+
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FrostBringer"), NPC.position);
+                }
+
+
+                if (timer > 620)
                 {
                     ResetTimers();
                     State = ActionState.ReadySwordsDance;

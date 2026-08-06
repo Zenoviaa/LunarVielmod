@@ -60,10 +60,10 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 				float rotation = MathHelper.ToRadians(45);
                 if (StellaMultiplayer.IsHost)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25 * 0, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25 * 0, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, 0, ModContent.ProjectileType<NekoNeko>(), 80, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, 0, ModContent.ProjectileType<NekoNeko>(), 80, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25 * 0, -25, ModContent.ProjectileType<NekoNeko>(), 80, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25 * 0, 25, ModContent.ProjectileType<NekoNeko>(), 80, 1, Main.myPlayer, 0, 0);
                 }
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Yumiko3"));
@@ -73,10 +73,10 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 			{
 				if (StellaMultiplayer.IsHost)
 				{
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, 25, ModContent.ProjectileType<NekoNeko>(), 80, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, 25, ModContent.ProjectileType<NekoNeko>(), 80, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, -25, ModContent.ProjectileType<NekoNeko>(), 80, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, -25, ModContent.ProjectileType<NekoNeko>(), 80, 1, Main.myPlayer, 0, 0);
                 }
 
 				Timer = 0;

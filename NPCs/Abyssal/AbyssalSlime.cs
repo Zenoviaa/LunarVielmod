@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Abyssal
             NPC.height = 32;
             NPC.damage = 50;
             NPC.defense = 10;
-            NPC.lifeMax = 100;
+            NPC.lifeMax = 120;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath29;
             NPC.buffImmune[BuffType<AbyssalFlame>()] = false;

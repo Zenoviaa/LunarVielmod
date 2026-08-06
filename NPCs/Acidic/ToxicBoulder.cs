@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Acidic
             NPC.height = 35;
             NPC.damage = 23;
             NPC.defense = 6;
-            NPC.lifeMax = 110;
+            NPC.lifeMax = 140;
             NPC.HitSound = SoundID.NPCHit42;
             NPC.DeathSound = SoundID.NPCDeath4;
             NPC.value = 60f;

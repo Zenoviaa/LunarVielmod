@@ -87,11 +87,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         private Vector2 OldTargetPos;
 
         //Damage Values
-        private int DreadFireBombDamage => 31;
-        private int BoltDashDamage => 50;
-        private int DreadSineDamage => 20;
-        private int FinalLaserDamage => 500;
-        private int FinalLaserRedSkullDamage => 38;
+        private int DreadFireBombDamage => 11;
+        private int BoltDashDamage => 25;
+        private int DreadSineDamage => 10;
+        private int FinalLaserDamage => 200;
+        private int FinalLaserRedSkullDamage => 22;
 
         public override void SetStaticDefaults()
         {
@@ -131,7 +131,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override void SetDefaults()
         {
             NPC.noGravity = true;
-            NPC.lifeMax = 2300;
+            NPC.lifeMax = 1700;
             NPC.defense = 9;
             NPC.damage = 1;
             NPC.value = Item.buyPrice(gold: 4);
