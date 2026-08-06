@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override void SetDefaults()
 		{
 			Item.noMelee = true;
-			Item.damage = 11;
+			Item.damage = 13;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
@@ -72,9 +72,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
-            recipe.AddIngredient(ItemID.IllegalGunParts, 1);
             recipe.AddIngredient(ItemID.Minishark, 1);
             recipe.AddIngredient(ItemID.SharkFin, 3);
 			recipe.AddTile(TileID.Anvils);

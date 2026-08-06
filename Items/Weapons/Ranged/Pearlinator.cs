@@ -49,7 +49,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 8;
+			Item.damage = 10;
 			Item.knockBack = 4;
 			Item.noMelee = true;
 
@@ -76,7 +76,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddTile(TileID.Anvils);
 			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 9);
-			recipe.AddIngredient(ItemID.LifeCrystal, 1);
 
 			recipe.Register();
 		}

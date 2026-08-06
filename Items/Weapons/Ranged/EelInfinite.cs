@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 36;
+            Item.damage = 44;
             Item.mana = 4;
         }
 
@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.width = 114;
             Item.height = 36;
             Item.rare = ItemRarityID.LightRed;
-            Item.damage = 24;
+            Item.damage = 28;
             Item.DamageType = DamageClass.Ranged;
             Item.useAnimation = 9;
             Item.useTime = 9;
@@ -67,7 +67,7 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 1);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 10);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

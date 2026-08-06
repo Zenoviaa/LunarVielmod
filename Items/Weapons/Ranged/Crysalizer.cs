@@ -50,7 +50,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
-            recipe.AddIngredient(ModContent.ItemType<IceWalker>(), 1);
             recipe.AddIngredient(ItemID.CrystalShard, 5);
         }
         public override Vector2? HoldoutOffset()

@@ -75,8 +75,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			Recipe recipe = CreateRecipe();		
 			recipe.AddIngredient(ModContent.ItemType<ViolinStick>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();

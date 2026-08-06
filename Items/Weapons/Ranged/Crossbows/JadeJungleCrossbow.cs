@@ -51,7 +51,6 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.AddIngredient(ItemID.Stinger, 3);
             recipe.AddIngredient(ItemID.JungleSpores, 12);
-            recipe.AddIngredient(ItemID.WoodenBow, 1);
             recipe.Register();
 
         }

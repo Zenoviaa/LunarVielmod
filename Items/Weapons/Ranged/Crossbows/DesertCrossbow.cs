@@ -49,7 +49,6 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.AntlionMandible, 5);
-            recipe.AddIngredient(ItemID.SandBlock, 100);
             recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.Register();
         }

@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void SetDefaults()
         {
             Item.noMelee = true;
-            Item.damage = 132;
+            Item.damage = 167;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
             Item.height = 40;
@@ -92,7 +92,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.WaterGun);
+            recipe.AddIngredient(ItemID.Waterleaf, 1);
             recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 8);
             recipe.AddIngredient(ItemID.Ectoplasm, 4);
             recipe.AddTile(TileID.MythrilAnvil);

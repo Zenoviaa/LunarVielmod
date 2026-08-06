@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetDefaults()
         {
-            Item.damage = 82;
+            Item.damage = 120;
             Item.width = 44;
             Item.height = 80;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -87,7 +87,6 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 12);
             recipe.AddIngredient(ItemID.LunarTabletFragment, 6);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

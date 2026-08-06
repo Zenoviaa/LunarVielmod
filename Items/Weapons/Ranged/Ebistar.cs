@@ -42,8 +42,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddTile(TileID.Anvils);
 
             recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 9);
-			recipe.AddIngredient(ItemID.FallenStar, 3);
-			recipe.AddIngredient(ItemID.IceBlock, 10);
 
 			recipe.Register();
 		}

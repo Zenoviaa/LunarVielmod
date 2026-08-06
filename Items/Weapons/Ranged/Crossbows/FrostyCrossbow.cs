@@ -50,7 +50,6 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-            recipe.AddIngredient(ItemID.FrostDaggerfish, 10);
             recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.AddIngredient(ModContent.ItemType<WoodenCrossbow>(), 1);
             recipe.Register();

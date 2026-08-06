@@ -54,7 +54,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
             recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

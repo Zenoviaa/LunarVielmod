@@ -53,7 +53,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
             recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 5);
-            recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 5);
             recipe.AddIngredient(ItemID.PainterPaintballGun, 1);
             recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);

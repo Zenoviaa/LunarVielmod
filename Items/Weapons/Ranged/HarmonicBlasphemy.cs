@@ -42,14 +42,14 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void SetClassSwappedDefaults()
         {
             base.SetClassSwappedDefaults();
-            Item.damage = 28;
+            Item.damage = 50;
             Item.mana = 4;
             Item.shootSpeed = 21;
         }
 
         public override void SetDefaults()
         {
-            Item.damage = 20;
+            Item.damage = 30;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 32;
             Item.height = 25;

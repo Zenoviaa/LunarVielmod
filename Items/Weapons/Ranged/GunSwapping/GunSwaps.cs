@@ -219,7 +219,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 70;
+            Item.damage = 90;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterPoisonPistolProj>();
         }
@@ -387,10 +387,6 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 9);
             recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
             recipe.Register();
         }
@@ -412,7 +408,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 82;
+            Item.damage = 100;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterCarrotPatrolProj>();
         }
@@ -424,7 +420,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 86;
+            Item.damage = 120;
             LeftHand = true;
             RightHand = true;
             TwoHands = true;
@@ -466,13 +462,22 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 49;
+            Item.damage = 100;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterAzureWrathProj>();
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TON618");
             soundStyle.PitchVariance = 0.5f;
             Item.UseSound = soundStyle;
+        }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ModContent.ItemType<Superfragment>(), 5);
+            recipe.Register();
         }
     }
 }

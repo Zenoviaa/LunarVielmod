@@ -90,9 +90,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
 
             recipe.AddIngredient(ItemType<ArnchaliteBar>(), 20);
-			recipe.AddIngredient(ItemType<Cinderscrap>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 2);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

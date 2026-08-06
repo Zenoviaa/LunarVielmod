@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void SetDefaults() 
 		{
-			Item.damage = 25;
+			Item.damage = 30;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 84;
 			Item.height = 36;
@@ -63,12 +63,10 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ItemID.Shotgun, 1);
 			recipe.AddIngredient(ItemID.Cog, 5);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 35);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.Register();
 		}
 	}

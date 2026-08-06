@@ -51,7 +51,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 20);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

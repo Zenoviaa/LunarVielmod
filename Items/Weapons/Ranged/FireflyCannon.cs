@@ -97,8 +97,6 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.AddIngredient(ItemID.ChlorophyteBar, 12);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 4);
             recipe.AddIngredient(ItemID.SoulofLight, 5);
             recipe.AddIngredient(ItemID.Firefly, 3);
             recipe.Register();

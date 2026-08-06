@@ -61,9 +61,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
 			recipe.AddIngredient(ItemID.RedPaint, 200);
 			recipe.AddIngredient(ItemID.BlackPaint, 200);
 			recipe.AddIngredient(ItemID.PurplePaint, 200);

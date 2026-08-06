@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 11);
+            recipe.AddIngredient(ItemType<GintzlMetal>(), 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

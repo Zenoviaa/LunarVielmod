@@ -99,7 +99,6 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Shotgun);
-            recipe.AddIngredient(ModContent.ItemType<Teraciz>(), 1);
             recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

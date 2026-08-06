@@ -45,7 +45,6 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<ArchariliteEnergyShot>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
             recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
             recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 10);
             recipe.AddIngredient(ModContent.ItemType<VeroshotBow>(), 1);

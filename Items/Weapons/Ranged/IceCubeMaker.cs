@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void SetClassSwappedDefaults()
         {
             Item.mana = 12;
-            Item.damage = 32;
+            Item.damage = 40;
         }
 
         public override void SetDefaults()
@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.rare = ItemRarityID.Green;
 
             //Damage
-            Item.damage = 24;
+            Item.damage = 30;
             Item.DamageType = DamageClass.Ranged;
 
             Item.shoot = ModContent.ProjectileType<IceCubeMakerProj>();
@@ -79,7 +79,6 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
             recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 15);
             recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
             recipe.Register();
         }

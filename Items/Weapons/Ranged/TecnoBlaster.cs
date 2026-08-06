@@ -68,7 +68,6 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.FallenStar, 5);
             recipe.AddIngredient(ItemType<DarkEssence>(), 10);
             recipe.AddIngredient(ItemType<StarSilk>(), 3);
             recipe.AddTile(TileID.WorkBenches);

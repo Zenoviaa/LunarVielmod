@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Ranged
         private float _combo;
         public override void SetDefaults()
         {
-            Item.damage = 36;
+            Item.damage = 50;
             Item.width = 44;
             Item.height = 80;
             Item.useStyle = ItemUseStyleID.Shoot;

@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
 
         public override void SetDefaults()
         {
-            Item.damage = 9;
+            Item.damage = 12;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 32;
             Item.height = 25;
@@ -49,8 +49,6 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Coral, 10);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
             recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 15);
             recipe.AddIngredient(ModContent.ItemType<DesertCrossbow>(), 1);

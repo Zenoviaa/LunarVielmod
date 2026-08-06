@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public int WinterboundArrow;
         public override void SetDefaults()
         {
-            Item.damage = 58;
+            Item.damage = 70;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -40,10 +40,8 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 10);
             recipe.AddIngredient(ItemType<EldritchSoul>(), 12);
-            recipe.AddIngredient(ItemType<StarSilk>(), 5);
-            recipe.AddTile(TileID.Furnaces);
+            recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }
         public override Vector2? HoldoutOffset()

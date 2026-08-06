@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		private int _comboCounter;
 		public override void SetDefaults()
 		{
-			Item.damage = 17;
+			Item.damage = 19;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
@@ -112,8 +112,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
 			recipe.AddIngredient(ItemID.HallowedBar, 12);
 			recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 10);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
         }
