@@ -1670,7 +1670,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             if(BreathingTimer % 15 == 0)
             {
-                ParticleManager.NewParticle(NPC.Center, HeadRotation.ToRotationVector2(), ParticleManager.NewInstance<ForParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+                ParticleManager.NewParticle(NPC.Center, HeadRotation.ToRotationVector2(), ParticleManager.NewInstance<ForParticle2>(), Color.White, Main.rand.NextFloat(0.2f, 0.8f));
             }
 
             if(BreathingTimer % 150 == 0)
