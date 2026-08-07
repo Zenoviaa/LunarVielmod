@@ -22,8 +22,6 @@ namespace Stellamod.NPCs.Underground
 
         ref float Mommy => ref NPC.ai[0];
         ref float FollowingOffset => ref NPC.ai[1];
-        float Timer;
-        float TimerDirection;
         float PanicTimer;
         float PanicLength;
         Vector2 PanicDirection;

@@ -39,9 +39,6 @@ namespace Stellamod.NPCs.Morrow
 		// Current state's timer
 		public float timer;
 
-		// AI counter
-		public int counter;
-
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = 35;
@@ -82,22 +79,22 @@ namespace Stellamod.NPCs.Morrow
 			{
 				case ActionState.Asleep:
 					NPC.damage = 0;
-					counter++;
+			
 					FallAsleep();
 					break;
 				case ActionState.Notice:
 					NPC.damage = 0;
-					counter++;
+			
 					Notice();
 					break;
 				case ActionState.Jump:
 					NPC.damage = 0;
-					counter++;
+			
 					Jump();
 					break;
 				case ActionState.Fall:
 					NPC.damage = 50;
-					counter++;
+
 					if (NPC.velocity.Y == 0)
 					{
 						NPC.velocity.X = 0;
@@ -107,7 +104,7 @@ namespace Stellamod.NPCs.Morrow
 					}
 					break;
 				default:
-					counter++;
+
 					break;
 			}
 		}
@@ -191,22 +188,26 @@ namespace Stellamod.NPCs.Morrow
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-				switch (Main.rand.Next(4))
+				if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						NPC.velocity = new Vector2(NPC.direction * 5, -8f);
-						break;
-					case 1:
-						NPC.velocity = new Vector2(NPC.direction * 3, -7f);
-						break;
-					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 4, -10f);
-						break;
-					case 3:
+                    switch (Main.rand.Next(4))
+                    {
+                        case 0:
+                            NPC.velocity = new Vector2(NPC.direction * 5, -8f);
+                            break;
+                        case 1:
+                            NPC.velocity = new Vector2(NPC.direction * 3, -7f);
+                            break;
+                        case 2:
+                            NPC.velocity = new Vector2(NPC.direction * 4, -10f);
+                            break;
+                        case 3:
 
-						NPC.velocity = new Vector2(NPC.direction * 3, -9f);
-						break;
-				}
+                            NPC.velocity = new Vector2(NPC.direction * 3, -9f);
+                            break;
+                    }
+                }
+
 				NPC.netUpdate = true;
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 				

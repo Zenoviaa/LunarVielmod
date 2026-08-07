@@ -57,8 +57,7 @@ namespace Stellamod.NPCs.Acidic
             NPC.frame.Y = frameHeight * frame;
         }
 
-        private float Size;
-        private bool CheckSize;
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.Player;
@@ -165,12 +164,6 @@ namespace Stellamod.NPCs.Acidic
         }
         public override void AI()
         {
-            if (!CheckSize)
-            {
-                Size = Main.rand.NextFloat(0.75f, 1f);
-                CheckSize = true;
-            }
-
             Player player = Main.player[NPC.target];
             if (Main.dayTime || player.dead)
             {

@@ -11,6 +11,7 @@ using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Overworld.ShadowWraith;
 using Stellamod.Utilis;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -27,8 +28,24 @@ namespace Stellamod.NPCs.Acidic
         public int moveSpeed = 0;
         public int moveSpeedY = 0;
         public int counter;
-        public bool dash = false;
-        public short npcCounter = 0;
+        public float npcCounter;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(moveSpeed);
+            writer.Write(moveSpeedY);
+            writer.Write(counter);
+            writer.Write(npcCounter);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            moveSpeed = reader.ReadInt32();
+            moveSpeedY = reader.ReadInt32();
+            counter = reader.ReadInt32();
+            npcCounter = reader.ReadSingle();
+        }
 
         public override void SetStaticDefaults()
         {
@@ -141,7 +158,6 @@ namespace Stellamod.NPCs.Acidic
             NPC.velocity.Y = moveSpeedY * 0.23f;
             if (counter >= 110 && counter < 140)
             {
-                dash = true;
                 NPC.velocity *= 0.95f;
             }
 
@@ -150,7 +166,7 @@ namespace Stellamod.NPCs.Acidic
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     Vector2 direction = player.Center - NPC.Center;
-                    direction.Normalize();
+                    direction = direction.SafeNormalize(Vector2.Zero);
                     direction.X *= 5f;
                     direction.Y *= 5f;
                     NPC.velocity = direction;
@@ -162,7 +178,6 @@ namespace Stellamod.NPCs.Acidic
                     NPC.ai[0] += -25f;
                 NPC.velocity = Vector2.Zero;
                 counter = 0;
-                dash = false;
             }
             NPC.ai[3]++;
             if (NPC.ai[3] >= 300)
@@ -199,18 +214,14 @@ namespace Stellamod.NPCs.Acidic
         {
             Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 1.25f * Main.essScale);
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
                 Color color = NPC.GetAlpha(Color.Lerp(new Color(255, 253, 90), new Color(72, 131, 56), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                color.A = 0;
                 spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0f);
             }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
 

@@ -6,6 +6,7 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Utilis;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
@@ -23,6 +24,16 @@ namespace Stellamod.NPCs.Abyssal
         private bool CheckSize;
 
         int chargetimer = 0;
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(Size);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            Size = reader.ReadSingle();
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shiffting Skull");

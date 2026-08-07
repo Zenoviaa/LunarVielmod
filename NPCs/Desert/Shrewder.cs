@@ -28,8 +28,7 @@ namespace Stellamod.NPCs.Desert
 		// Current state's timer
 		public float timer;
 
-		// AI counter
-		public int counter;
+
 
 		public ActionState State = ActionState.Wait;
 		public override void SetDefaults()
@@ -89,18 +88,15 @@ namespace Stellamod.NPCs.Desert
 			switch (State)
 			{
 				case ActionState.Wait:
-					counter++;
 					Wait();
 					break;
 
 				case ActionState.Speed:
-					counter++;
 					Speed();
 					NPC.velocity *= 0.98f;
 					break;
 
 				default:
-					counter++;
 					break;
 			}
 		}
@@ -129,8 +125,6 @@ namespace Stellamod.NPCs.Desert
 		public void Speed()
 		{
 			timer++;
-
-
 			if (timer > 50)
 			{
 
@@ -139,15 +133,7 @@ namespace Stellamod.NPCs.Desert
 				for (int k = 0; k < 5; k++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
-
-					
-
 				}
-
-
-
-
-
 			}
 
 			if (timer == 100)

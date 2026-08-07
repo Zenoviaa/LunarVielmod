@@ -2,6 +2,7 @@
 using Stellamod.Assets.Biomes;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -13,6 +14,16 @@ namespace Stellamod.NPCs.RoyalCapital
     internal class CarianKnight : ModNPC
     {
         private float ai_Counter;
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(ai_Counter);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            ai_Counter = reader.ReadSingle();
+        }
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 15;

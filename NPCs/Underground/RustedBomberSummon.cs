@@ -34,10 +34,10 @@ namespace Stellamod.NPCs.Underground
                 if (Main.rand.NextBool(4))
                 {
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y,
-                        ModContent.NPCType<MechanicalMinor>());
+                        ModContent.NPCType<AbandonedMinor>());
 
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 45, (int)NPC.Center.Y,
-                        ModContent.NPCType<MechanicalMinor>());
+                        ModContent.NPCType<AbandonedMinor>());
                 }
 
                 _spawn = true;

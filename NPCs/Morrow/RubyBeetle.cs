@@ -5,6 +5,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Particles;
 using Stellamod.Utilis;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -19,10 +20,25 @@ namespace Stellamod.NPCs.Morrow
 		public int moveSpeed = 0;
 		public int moveSpeedY = 0;
 		public int counter;
-		public bool dash = false;
-		public short npcCounter = 0;
+		public int npcCounter = 0;
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(moveSpeed);
+            writer.Write(moveSpeedY);
+            writer.Write(counter);
+            writer.Write(npcCounter);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            moveSpeed = reader.ReadInt32();
+            moveSpeedY = reader.ReadInt32();
+            counter = reader.ReadInt32();
+            npcCounter = reader.ReadInt32();
+        }
 
-		public override void SetStaticDefaults()
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Ruby Beetle");
 			Main.npcFrameCount[NPC.type] = 6;
@@ -120,7 +136,7 @@ namespace Stellamod.NPCs.Morrow
 		
 			if (counter >= 110 && counter < 140)
 			{
-				dash = true;
+	
 				NPC.velocity *= 0.94f;
 			}
 
@@ -133,7 +149,7 @@ namespace Stellamod.NPCs.Morrow
 			{
                 NPC.ai[0] += -25f;
 				counter = 0;
-				dash = false;
+
 			}
 		}
 

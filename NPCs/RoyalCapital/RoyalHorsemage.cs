@@ -65,6 +65,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.noTileCollide = false;
 			NPC.noGravity = false;
 
+
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)

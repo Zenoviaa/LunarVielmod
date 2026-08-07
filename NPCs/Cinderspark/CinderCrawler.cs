@@ -21,10 +21,20 @@ namespace Stellamod.NPCs.Cinderspark
     // These three class showcase usage of the WormHead, WormBody and WormTail classes from Worm.cs
     internal class CinderCrawlerHead : WormHead
     {
-        private int _attackCounter;
-        private int _movementTimer;
-        private float _xDir;
-        private float _yDir;
+
+        private ref float _xDir => ref NPC.ai[0];
+        private ref float _yDir => ref NPC.ai[1];
+        private int _attackCounter
+        {
+            get => (int)NPC.ai[2];
+            set => NPC.ai[2] = value;
+        }
+        private int _movementTimer
+        {
+            get => (int)NPC.ai[3];
+            set => NPC.ai[3] = value;
+        }
+
         public override int BodyType => ModContent.NPCType<CinderCrawlerBody>();
 
         public override int TailType => ModContent.NPCType<CinderCrawlerTail>();

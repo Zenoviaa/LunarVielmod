@@ -40,9 +40,6 @@ namespace Stellamod.NPCs.Underground
         // Current state's timer
         public float timer;
 
-        // AI counter
-        public int counter;
-
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 1;
@@ -66,9 +63,31 @@ namespace Stellamod.NPCs.Underground
 
         }
 
-        public int dirX = 1;
-        public int dirY = 1;
-        private int attackCounter;
+
+        private int attackCounter
+        {
+            get
+            {
+                return (int)NPC.ai[0];
+            }
+            set => NPC.ai[0] = value;
+        }
+        private int dirY
+        {
+            get
+            {
+                return (int)NPC.ai[1];
+            }
+            set => NPC.ai[1] = value;
+        }
+        private int dirX
+        {
+            get
+            {
+                return (int)NPC.ai[2];
+            }
+            set => NPC.ai[2] = value;
+        }
         public override void AI()
         {
             NPC.TargetClosest();

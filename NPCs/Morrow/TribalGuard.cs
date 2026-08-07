@@ -2,6 +2,7 @@
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Utilis;
+using System.IO;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -29,10 +30,20 @@ namespace Stellamod.NPCs.Morrow
 		// Current state's timer
 		public float timer;
 
-		// AI counter
-		public int counter;
-
 		public ActionState State = ActionState.Wait;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+			writer.Write(timer);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+			timer = reader.ReadSingle();
+		}
+
 		public override void SetDefaults()
 		{
 			NPC.width = 46;
@@ -78,13 +89,14 @@ namespace Stellamod.NPCs.Morrow
 			NPC.frame.Y = frame * frameHeight;
 		}
 
-		public override void AI()
-		{
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
 			if (Main.dayTime)
-			{
-				NPC.damage = 0;
-				
-			}
+				return false;
+            return base.CanHitPlayer(target, ref cooldownSlot);
+        }
+		public override void AI()
+		{ 
 			timer++;
 			invsTimer++;
 			NPC.spriteDirection = NPC.direction;
@@ -119,21 +131,14 @@ namespace Stellamod.NPCs.Morrow
 
 			switch (State)
 			{
-
-				case ActionState.Wait:
-					counter++;
+				case ActionState.Wait:			
 					Wait();
 					break;
 
 				case ActionState.Speed:
-					counter++;
+			
 					Speed();
 					NPC.velocity *= 0.98f;
-					break;
-
-
-				default:
-					counter++;
 					break;
 			}
 		}
@@ -150,14 +155,9 @@ namespace Stellamod.NPCs.Morrow
 		public void Wait()
 		{
 			timer++;
-
 			if (timer > 50)
 			{
-
-				NPC.oldVelocity *= 0.99f;
-
-
-
+				NPC.velocity *= 0.99f;
 			}
 			else if (timer == 60)
 			{
@@ -169,20 +169,12 @@ namespace Stellamod.NPCs.Morrow
 		public void Speed()
 		{
 			timer++;
-
-
 			if (timer > 50)
 			{
-
 				for (int k = 0; k < 5; k++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
 				}
-
-
-
-
-
 			}
 
 			if (timer == 100)

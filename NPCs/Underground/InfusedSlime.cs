@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Underground
             {
                 float walkDirection = AI_Walk_Direction;
                 AI_Movement(walkDirection);
-                if (Main.rand.NextBool(300))
+                if (Main.rand.NextBool(300) && StellaMultiplayer.IsHost)
                 {
                     AI_Walk_Direction = Main.rand.Next(-1, 2);
                     NPC.netUpdate = true;

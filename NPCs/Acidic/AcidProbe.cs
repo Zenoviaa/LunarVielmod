@@ -25,18 +25,8 @@ namespace Stellamod.NPCs.Acidic
     public class AcidProbe : ModNPC
     {
         public bool Rocks;
-        public float Timer;
         public float RotSpeed = 0.3f;
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(Timer);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            Timer = reader.ReadSingle();
-        }
-
+        private ref float Timer => ref NPC.ai[2];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Acid Probe");
