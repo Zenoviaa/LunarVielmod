@@ -60,23 +60,20 @@ namespace Stellamod.Projectiles.Swords
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 				Color color = Projectile.GetAlpha(Color.Lerp(new Color(255, 255, 99), new Color(216, 66, 89), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+				color.A = 0;
 				Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 			}
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
 		}
 		public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-			for (int i = 0; i < 180; i++)
+			for (int i = 0; i < 90; i++)
 			{
 				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, -2f, 0, default(Color), 1.5f);
 				Main.dust[num].noGravity = true;
@@ -87,7 +84,7 @@ namespace Stellamod.Projectiles.Swords
 					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 10f;
 				}
 			}
-			for (int i = 0; i < 80; i++)
+			for (int i = 0; i < 40; i++)
 			{
 				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, -2f, 0, default(Color), 2.5f);
 				Main.dust[num].noGravity = true;

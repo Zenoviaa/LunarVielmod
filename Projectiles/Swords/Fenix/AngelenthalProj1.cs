@@ -74,70 +74,74 @@ namespace Stellamod.Projectiles.Swords.Fenix
         {
             Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
             death++;
-            if (death == 5)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-                p.rotation = direction.ToRotation();
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
+                if (death == 5)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    p.rotation = direction.ToRotation();
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
+
+
+                }
+
+                if (death == 15)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    p.rotation = direction.ToRotation();
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
+
+                }
+
+                if (death == 25)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    p.rotation = direction.ToRotation();
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
+
+
+                }
+
+                if (death == 35)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    p.rotation = direction.ToRotation();
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
+
+
+                }
+
+                if (death == 45)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    p.rotation = direction.ToRotation();
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
+
+
+
+                }
+
+                if (death == 55)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    p.rotation = direction.ToRotation();
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
+
+
+                }
+
+                if (death == 65)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP2>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+                    p.rotation = direction.ToRotation();
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia2"), Projectile.position);
+
+
+
+                }
 
 
             }
-
-            if (death == 15)
-            {
-                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-                p.rotation = direction.ToRotation();
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
-
-            }
-
-            if (death == 25)
-            {
-                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-                p.rotation = direction.ToRotation();
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
-
-
-            }
-
-            if (death == 35)
-            {
-                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-                p.rotation = direction.ToRotation();
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
-
-
-            }
-
-            if (death == 45)
-            {
-                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-                p.rotation = direction.ToRotation();
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
-
-
-
-            }
-
-            if (death == 55)
-            {
-                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-                p.rotation = direction.ToRotation();
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
-
-
-            }
-
-            if (death == 65)
-            {
-                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP2>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
-                p.rotation = direction.ToRotation();
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia2"), Projectile.position);
-
-
-
-            }
-
 
 
             Player player = Main.player[Projectile.owner];
@@ -267,23 +271,16 @@ namespace Stellamod.Projectiles.Swords.Fenix
 
 
 
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.LoadProjectile(Projectile.type);
-
-
             // Redraw the projectile with the color not influenced by light
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(93, 203, 243), new Color(59, 72, 168), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                color.A = 0;
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+     
             return false;
         }
 

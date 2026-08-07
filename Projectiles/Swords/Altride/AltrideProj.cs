@@ -52,31 +52,35 @@ namespace Stellamod.Projectiles.Swords.Altride
             }
             if (Projectile.ai[1] == 5 || Projectile.ai[1] == 10 || Projectile.ai[1] == 15 || Projectile.ai[1] == 20)
             {
-                var EntitySource = Projectile.GetSource_FromThis();
-                if (Main.rand.NextBool(8))
+                if(Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride2>(), Projectile.damage * 4, 1, Projectile.owner, 0, 0);
-
-                }
-
-                if (Main.rand.NextBool(3))
-                {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride3>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
-
-                }
-                else
-                {
-                    int Sound = Main.rand.Next(1, 3);
-                    if (Sound == 1)
+                    var EntitySource = Projectile.GetSource_FromThis();
+                    if (Main.rand.NextBool(8))
                     {
-                        
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride2>(), Projectile.damage * 4, 1, Projectile.owner, 0, 0);
+
+                    }
+
+                    if (Main.rand.NextBool(3))
+                    {
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride3>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
+
                     }
                     else
                     {
-                       
+                        int Sound = Main.rand.Next(1, 3);
+                        if (Sound == 1)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride1>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                     }
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride1>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                 }
+        
             }
             if (Projectile.ai[1] >= 0 && Projectile.ai[1] <= 20)
             {
@@ -99,6 +103,12 @@ namespace Stellamod.Projectiles.Swords.Altride
 
 
 
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Gold, 0f, 0f, 150, Color.Gold, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
 
         }
         public override void OnKill(int timeLeft)
@@ -125,16 +135,6 @@ namespace Stellamod.Projectiles.Swords.Altride
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Gold, 0f, 0f, 150, Color.Gold, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             // Redraw the projectile with the color not influenced by light
@@ -143,11 +143,10 @@ namespace Stellamod.Projectiles.Swords.Altride
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Gold) * (float)(((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) / 2);
+                color.A = 0;
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+ 
             return true;
         }
         public override void PostDraw(Color lightColor)

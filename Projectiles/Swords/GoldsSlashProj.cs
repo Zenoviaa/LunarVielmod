@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles.Swords
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashProj4"), Projectile.position);
                 }
 
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 8);
 
                 Projectile.rotation = Main.rand.Next(0, 360);
             }
@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Swords
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 12; i++)
             {
                 Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GoldCoin, 0, 60, 133);
             }

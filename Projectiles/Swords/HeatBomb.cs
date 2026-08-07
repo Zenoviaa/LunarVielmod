@@ -34,23 +34,27 @@ namespace Stellamod.Projectiles.Swords
 
             if (Projectile.ai[0] <= 160)
             {
-                {
-                    if (Main.rand.NextBool(2))
-                    {
-                        var entitySource = Projectile.GetSource_FromThis();
-                        NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<HeatBombLighting>());
-                    }
-                }
-                if (Projectile.ai[0] >= 50)
+                if (StellaMultiplayer.IsHost)
                 {
                     {
-                        if (Main.rand.NextBool(6))
+                        if (Main.rand.NextBool(2))
                         {
                             var entitySource = Projectile.GetSource_FromThis();
-                            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<HeatBombRayLight>());
+                            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<HeatBombLighting>());
+                        }
+                    }
+                    if (Projectile.ai[0] >= 50)
+                    {
+                        {
+                            if (Main.rand.NextBool(6))
+                            {
+                                var entitySource = Projectile.GetSource_FromThis();
+                                NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<HeatBombRayLight>());
+                            }
                         }
                     }
                 }
+  
             }
             else
             {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -113,8 +114,21 @@ namespace Stellamod.Projectiles.Swords
                 Rot = Main.rand.NextFloat(-0.05f, 0.05f);
                 Lightning = true;
                 NPC.rotation = Main.rand.NextFloat(360);
+                NPC.netUpdate = true;
             }
             NPC.rotation -= Rot;
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(Rot);
+
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            Rot = reader.ReadSingle();
         }
     }
 }

@@ -78,11 +78,14 @@ namespace Stellamod.Projectiles.Swords
             }
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 512f, 32f);
             var EntitySource = Projectile.GetSource_Death();
-            for (int i = 0; i < 5; i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Projectile.timeLeft = 2;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1), ModContent.ProjectileType<X3107Skull2>(), 5, 1, Projectile.owner, 0, 0);
+                for (int i = 0; i < 5; i++)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1), ModContent.ProjectileType<X3107Skull2>(), 5, 1, Projectile.owner, 0, 0);
+                }
             }
+
         }
 
         public override Color? GetAlpha(Color lightColor)

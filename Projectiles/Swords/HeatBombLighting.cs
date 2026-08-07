@@ -92,14 +92,10 @@ namespace Stellamod.Projectiles.Swords
             NPC.frame.Y = frameHeight * frame;
 
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            if (Main.rand.NextBool(2))
-            {
-                int dustnumber = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
+
             Lighting.AddLight(NPC.Center, Color.Yellow.ToVector3() * 2.25f * Main.essScale);
             int spOff = NPC.alpha / 6;
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
@@ -113,7 +109,12 @@ namespace Stellamod.Projectiles.Swords
         }
         public override void AI()
         {
-
+            if (Main.rand.NextBool(2))
+            {
+                int dustnumber = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
 
         }
     }

@@ -69,7 +69,12 @@ namespace Stellamod.Projectiles.Swords
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1048f, 16f);
             var entitySource = Projectile.GetSource_FromThis();
-            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<DreadFireBombG>());
+            if (StellaMultiplayer.IsHost)
+            {
+                NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<DreadFireBombG>());
+
+            }
+
         }
         public override Color? GetAlpha(Color lightColor) => Color.White;
 

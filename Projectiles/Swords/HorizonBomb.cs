@@ -85,7 +85,7 @@ namespace Stellamod.Projectiles.Swords
 
         public override void OnKill(int timeLeft)
         {
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 1212f, 62f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 1212f, 9);
             for (int i = 0; i < 14; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.BlueTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = true;
