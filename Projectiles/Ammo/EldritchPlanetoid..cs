@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles.Ammo
 
                         //Shoot the projectile
                         NPC npc = FindClosestNPC(float.MaxValue);
-                        if (npc != null)
+                        if (npc != null && Main.myPlayer == Projectile.owner)
                         {
                             Vector2 velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 16;
                             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,

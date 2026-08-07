@@ -187,8 +187,6 @@ namespace Stellamod.Projectiles.Ammo
             base.PostDraw(lightColor);
             if(Homing_Timer < 45)
             {
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
                 Projectile projectile = Projectile;
                 Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
@@ -204,11 +202,11 @@ namespace Stellamod.Projectiles.Ammo
                 {
                     Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
                     Color color = projectile.GetAlpha(Color.Lerp(Color.White, Color.White, (1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k)) * (Timer/45));
+                    color.A = 0;
                     Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
                 }
 
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
             }
         }
 

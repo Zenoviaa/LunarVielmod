@@ -65,8 +65,12 @@ namespace Stellamod.Projectiles.Ammo
             // This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
             ShakeModSystem.Shake = 2;
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom") { PitchVariance = 0.15f }, Projectile.position);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<FireBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+    ModContent.ProjectileType<FireBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
+
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
