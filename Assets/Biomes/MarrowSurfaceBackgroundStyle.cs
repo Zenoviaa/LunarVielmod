@@ -37,8 +37,7 @@ namespace Stellamod.Backgrounds
 
 		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
 		{
-			
-			scale = .66f;
+
 			parallax = 0.3;
 
 			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceClose");
