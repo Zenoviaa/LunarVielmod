@@ -9,10 +9,7 @@ namespace Stellamod.Projectiles.Bow
 {
     internal class WinterboundArrowFlake : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Fungal Flace Cloud");
-        }
+
 
         public override void SetDefaults()
         {
@@ -39,7 +36,7 @@ namespace Stellamod.Projectiles.Bow
             Lighting.AddLight(Projectile.Center, Color.LightSkyBlue.ToVector3() * 1.25f * Main.essScale);
             return true;
         }
-        float alphaCounter;
+
         public override void AI()
         {
             alphaCounter += 0.04f;

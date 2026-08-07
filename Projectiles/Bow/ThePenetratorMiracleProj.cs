@@ -67,10 +67,15 @@ namespace Stellamod.Projectiles.Bow
 
             if(Timer == 50)
             {
-                Vector2 velocity = Projectile.rotation.ToRotationVector2() * 15;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ModContent.ProjectileType<ThePenetratorMiracleArrowProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-                
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Vector2 velocity = Projectile.rotation.ToRotationVector2() * 15;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<ThePenetratorMiracleArrowProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+
+
+                }
+
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2"); 
                 soundStyle.PitchVariance = 0.15f;
                 soundStyle.Volume = 0.5f;

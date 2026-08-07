@@ -34,6 +34,13 @@ namespace Stellamod.Projectiles.Bow
 
         public override void AI()
         {
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
+                    ModContent.DustType<Sparkle>(), 0, 0, 0, Color.White, 1f);
+                Main.dust[dustnumber].noGravity = true;
+            }
+
             Timer++;
             Projectile.velocity.Y += 0.05f;
 
@@ -54,12 +61,6 @@ namespace Stellamod.Projectiles.Bow
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
-                    ModContent.DustType<Sparkle>(), 0, 0, 0, Color.White, 1f);
-                Main.dust[dustnumber].noGravity = true;
-            }
 
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
@@ -77,13 +78,17 @@ namespace Stellamod.Projectiles.Bow
                     (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.White, 1f).noGravity = false;
             }
 
-            for (int i = 0; i < Main.rand.Next(2, 5); i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Vector2 velocity = -Projectile.velocity;
-                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver4/ 2);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
-                             ProjectileID.BabySpider, Projectile.damage, Projectile.knockBack, Projectile.owner);
-            }         
+                for (int i = 0; i < Main.rand.Next(2, 5); i++)
+                {
+                    Vector2 velocity = -Projectile.velocity;
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver4 / 2);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
+                                 ProjectileID.BabySpider, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+            }
+         
         }
     }
 }
