@@ -183,91 +183,35 @@ namespace Stellamod
 
             if (!Main.dedServ && Main.netMode != NetmodeID.Server && ModContent.GetInstance<LunarVeilClientConfig>().VanillaTexturesToggle == true)
             {
-                Main.instance.LoadTiles(TileID.Dirt);
+            //    Main.instance.LoadTiles(TileID.Dirt);
                 TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtRE");
-
-                Main.instance.LoadTiles(TileID.IceBlock);
                 TextureAssets.Tile[TileID.IceBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/IceRE");
-
-                Main.instance.LoadTiles(TileID.SnowBlock);
                 TextureAssets.Tile[TileID.SnowBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowRE");
-
-                Main.instance.LoadWall(WallID.Dirt);
                 TextureAssets.Wall[WallID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtWallRE");
-
-                Main.instance.LoadTiles(TileID.Stone);
                 TextureAssets.Tile[TileID.Stone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneRE");
-
-                Main.instance.LoadTiles(TileID.Grass);
                 TextureAssets.Tile[TileID.Grass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GrassRE");
-
-                Main.instance.LoadTiles(TileID.ClayBlock);
                 TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/ClayRE");
-
-                Main.instance.LoadTiles(TileID.Sand);
                 TextureAssets.Tile[TileID.Sand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SandRE");
-
-                Main.instance.LoadTiles(TileID.HardenedSand);
                 TextureAssets.Tile[TileID.HardenedSand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/HardSandRE");
-
-                Main.instance.LoadTiles(TileID.Sandstone);
                 TextureAssets.Tile[TileID.Sandstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneSandRE");
-
-                Main.instance.LoadTiles(TileID.Mud);
                 TextureAssets.Tile[TileID.Mud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MudRE");
-
-                Main.instance.LoadTiles(TileID.CrimsonGrass);
                 TextureAssets.Tile[TileID.CrimsonGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrimGrassRE");
-
-                Main.instance.LoadTiles(TileID.JungleGrass);
                 TextureAssets.Tile[TileID.JungleGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MudGrassRE");
-
-                Main.instance.LoadTiles(TileID.CorruptGrass);
                 TextureAssets.Tile[TileID.CorruptGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpGrassRE");
-
-                Main.instance.LoadTiles(TileID.Crimstone);
                 TextureAssets.Tile[TileID.Crimstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrimStoneRE");
-
-                Main.instance.LoadTiles(TileID.WoodBlock);
                 TextureAssets.Tile[TileID.WoodBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/WoodRE");
-
-                Main.instance.LoadTiles(TileID.GrayBrick);
                 TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneBrickRE");
-
-                Main.instance.LoadTiles(TileID.Pearlstone);
                 TextureAssets.Tile[TileID.Pearlstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlstoneRE");
-
-                Main.instance.LoadTiles(TileID.GraniteBlock);
-                TextureAssets.Tile[TileID.GraniteBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GraniteRE");
-
-                Main.instance.LoadTiles(TileID.Granite);
+           //     TextureAssets.Tile[TileID.GraniteBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GraniteRE");
                 TextureAssets.Tile[TileID.Granite] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GraniteRE");
-
-                Main.instance.LoadTiles(TileID.MarbleBlock);
-                TextureAssets.Tile[TileID.MarbleBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MarbRE");
-
-                Main.instance.LoadTiles(TileID.Marble);
+         //       TextureAssets.Tile[TileID.MarbleBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MarbRE");
                 TextureAssets.Tile[TileID.Marble] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MarbRE");
-
-                Main.instance.LoadTiles(TileID.MushroomGrass);
                 TextureAssets.Tile[TileID.MushroomGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MushGrassRE");
-
-                Main.instance.LoadTiles(TileID.Ebonstone);
                 TextureAssets.Tile[TileID.Ebonstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpStoneRE");
-
-                Main.instance.LoadTiles(TileID.Ash);
                 TextureAssets.Tile[TileID.Ash] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/AshingRE");
-
-                Main.instance.LoadTiles(TileID.ObsidianBrick);
                 TextureAssets.Tile[TileID.ObsidianBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/AshedRE");
-
-                Main.instance.LoadTiles(TileID.Cloud);
                 TextureAssets.Tile[TileID.Cloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CloudRE");
-
-                Main.instance.LoadTiles(TileID.Pearlsand);
                 TextureAssets.Tile[TileID.Pearlsand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlSandRE");
-
-                Main.instance.LoadTiles(TileID.SnowCloud);
                 TextureAssets.Tile[TileID.SnowCloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowCloudRE");
             }
             
