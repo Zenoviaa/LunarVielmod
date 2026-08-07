@@ -67,9 +67,13 @@ namespace Stellamod.Projectiles.Slashers.Voyager
             {
                 ShakeModSystem.Shake = 4;
               
+                if(Main.myPlayer == Projectile.owner)
+                {
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                        ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+                }
+
                 SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, Projectile.position);
                 Projectile.Kill();
             }
@@ -80,23 +84,20 @@ namespace Stellamod.Projectiles.Slashers.Voyager
             Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);
 
 
-
-            //Projectile.netUpdate = true;
-
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
             if (Main.rand.NextBool(5))
             {
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.MediumPurple, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;
             }
+            //Projectile.netUpdate = true;
+
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+
             SpriteEffects Effects = Projectile.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             // Redraw the projectile with the color not influenced by light
@@ -105,10 +106,9 @@ namespace Stellamod.Projectiles.Slashers.Voyager
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(50, 150, 190), new Color(236, 118, 195), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                color.A = 0;
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, Effects, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             return true;
         }

@@ -84,7 +84,6 @@ namespace Stellamod.Projectiles.Slashers.Hyua
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			overPlayers.Add(index);
-			overWiresUI.Add(index);
 		}
 
 	

@@ -64,8 +64,9 @@ namespace Stellamod.Projectiles.Slashers.GrailAxe
             if (Projectile.ai[1] == 160)
             {
                 var EntitySource = Projectile.GetSource_Death();
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<KaBoomMagic2>(), Projectile.damage, 1,Projectile.owner, 0, 0);
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Rune"));
+                if(Main.myPlayer == Projectile.owner)
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<KaBoomMagic2>(), Projectile.damage, 1,Projectile.owner, 0, 0);
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Rune"), Projectile.position);
                 Projectile.Kill();
             }
             if (Projectile.timeLeft <= 50)

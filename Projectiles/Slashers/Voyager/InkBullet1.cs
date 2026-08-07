@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 			Timer2++;
 			Projectile.velocity *= 0.97f;
 			Timer++;
-			if (Timer == 4)
+			if (Timer == 4 && Main.myPlayer == Projectile.owner)
 			{
 
 				if (Main.rand.NextBool(2))

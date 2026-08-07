@@ -48,9 +48,13 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                 Timer++;
                 if (Timer > 92)
                 {
-                    Vector2 velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 12;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<EldritchBolt>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Vector2 velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 12;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                            ModContent.ProjectileType<EldritchBolt>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                    }
+
                     int Sound = Main.rand.Next(1, 3);
                     if (Sound == 1)
                     {

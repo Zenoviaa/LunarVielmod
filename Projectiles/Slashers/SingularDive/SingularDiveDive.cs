@@ -76,9 +76,13 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                     d.noGravity = true;
                 }
 
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-10, 10), 
-                    Projectile.Center.Y + Main.rand.Next(-10, 10), Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<SingularOrb>(), Projectile.damage * 2, 1, 
-                    Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-10, 10),
+                            Projectile.Center.Y + Main.rand.Next(-10, 10), Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<SingularOrb>(), Projectile.damage * 2, 1,
+                            Projectile.owner);
+                }
+    
                 Grenber = 0;
             }
 
@@ -289,10 +293,6 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             float rotation = Projectile.rotation;
 
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.LoadProjectile(Projectile.type);
-
 
             // Redraw the projectile with the color not influenced by light
             Vector2 Dorigin = sourceRectangle.Size() / 2f;
@@ -301,12 +301,10 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + Dorigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(93, 203, 243), new Color(59, 72, 168), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k / 0.2f));
+                color.A = 0;
                 Main.EntitySpriteDraw(texture, drawPos, null, color, rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-            return;
         }
     }
 }

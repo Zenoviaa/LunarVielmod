@@ -53,8 +53,12 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 			if (Timer == 254)
 			{
 				ShakeModSystem.Shake = 4;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-					ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+    ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+                }
+
 				SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, Projectile.position);
 				Projectile.Kill();
 			}
