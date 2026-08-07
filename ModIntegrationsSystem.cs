@@ -210,6 +210,7 @@ namespace Stellamod
 
 
             // The boss does not have a custom despawn message, so we omit it
+            int summonItem7 = ModContent.ItemType<Items.Consumables.VampiresTooth>();
 
             // By default, it draws the first frame of the boss, omit if you don't need custom drawing
             // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
@@ -222,7 +223,7 @@ namespace Stellamod
                 bossType3,
                 new Dictionary<string, object>()
                 {
-
+					["spawnItems"] = summonItem7
                     // Other optional arguments as needed are inferred from the wiki
                 }
             );

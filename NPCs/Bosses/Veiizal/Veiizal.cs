@@ -571,6 +571,10 @@ public class Veiizal : ModNPC
     {
         if(Main.bloodMoon && DownedBossSystem.downedDreadBoss && !NPC.AnyNPCs(Type))
         {
+            if (!DownedBossSystem.downedUmbrellaBoss)
+            {
+                return 0.1f;
+            }
             return 0.01f;
         }
         return 0f;

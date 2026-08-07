@@ -2,18 +2,17 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.NPCs.Bosses.DreadMire;
+using Stellamod.NPCs.Bosses.Veiizal;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class DreadMedalion : ModItem
+    internal class VampiresTooth : ModItem
     {
         public override void SetStaticDefaults()
         {
-
         }
 
         public override void SetDefaults()
@@ -46,26 +45,28 @@ namespace Stellamod.Items.Consumables
             return true;
         }
 
+
+
         public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
         {
             if (!Main.dayTime)
             {
-                if (NPC.AnyNPCs(ModContent.NPCType<Veii>()))
+                if (NPC.AnyNPCs(ModContent.NPCType<Veiizal>()))
                 {
                     return false;
                 }
-                if (!NPC.AnyNPCs(ModContent.NPCType<DreadMireR>()))
+                if (!NPC.AnyNPCs(ModContent.NPCType<Veiizal>()))
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        Main.NewText(LangText.Misc("DreadMedalion"), Color.Red);
-                        int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<DreadMireR>());
+                        Main.NewText(LangText.Misc("Veiizal"), Color.Red);
+                        int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<Veiizal>());
                         Main.npc[npcID].netUpdate2 = true;
                     }
                     else
                     {
-                        Main.NewText(LangText.Misc("DreadMedalion"), Color.Red);
-                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<DreadMireR>(), (int)player.position.X, (int)player.position.Y);
+                        Main.NewText(LangText.Misc("Veiizal"), Color.Red);
+                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Veiizal>(), (int)player.position.X, (int)player.position.Y);
                     }
                 }
             }
@@ -77,7 +78,7 @@ namespace Stellamod.Items.Consumables
         {
             base.AddRecipes();
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<DreadFragment>(), 3);
+            recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 15);
             recipe.Register();
         }
     }

@@ -231,12 +231,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             {
                 if (NPC.ai[1] >= 5)
                 {
-                    NPC.damage = 0;
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        _invincible = true;
-                        NPC.netUpdate = true;
-                    }
+
                 }
                 else
                 {

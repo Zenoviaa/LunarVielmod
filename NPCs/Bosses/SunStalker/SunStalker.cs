@@ -22,7 +22,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
     [AutoloadBossHead]
     public class SunStalker : ModNPC
     {
-        private bool _invincible;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Stalker");
@@ -73,7 +72,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         {
             writer.Write(TPChance);
             writer.Write(Attack);
-            writer.Write(_invincible);
             writer.WriteVector2(targetPos);
             writer.Write(moveSpeed);
             writer.Write(moveSpeedY);
@@ -91,7 +89,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         {
             TPChance = reader.ReadBoolean();
             Attack = reader.ReadInt32();
-            _invincible = reader.ReadBoolean();
             targetPos = reader.ReadVector2();
             moveSpeed = reader.ReadInt32();
             moveSpeedY = reader.ReadInt32();
@@ -124,7 +121,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.HitSound = SoundID.NPCHit28;
             NPC.DeathSound = SoundID.NPCDeath42;
             NPC.value = Item.buyPrice(silver: 25);
-            NPC.buffImmune[BuffID.OnFire] = true;
             NPC.alpha = 255;
             NPC.boss = true;
             NPC.knockBackResist = 0f;
@@ -172,8 +168,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             }
 
             Player player = Main.player[NPC.target];
-            NPC.dontTakeDamage = _invincible;
-            NPC.dontCountMe = _invincible;
             if (Attack == 0)
             {
 
@@ -217,7 +211,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 {
                     if (StellaMultiplayer.IsHost)
                     {
-                        _invincible = true;
+   
                         NPC.netUpdate = true;
                     }
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge"), NPC.position);
@@ -247,7 +241,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
                     if (StellaMultiplayer.IsHost)
                     {
-                        _invincible = false;
                         NPC.netUpdate = true;
                     }
 
@@ -269,15 +262,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 {
 
                     Intro = true;
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        _invincible = false;
-                        NPC.netUpdate = true;
-                    }
+                    
 
                     NPC.ai[0] = 0;
                     Attack = 5;
                     NPC.ai[2] = 1;
+                    NPC.netUpdate = true;
                 }
 
             }
@@ -717,7 +707,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             if (StellaMultiplayer.IsHost)
                             {
-                                _invincible = true;
                                 NPC.netUpdate = true;
                             }
 
@@ -798,7 +787,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             if (StellaMultiplayer.IsHost)
                             {
-                                _invincible = false;
+     
                                 NPC.netUpdate = true;
                             }
     
@@ -837,7 +826,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             if (StellaMultiplayer.IsHost)
                             {
-                                _invincible = true;
+        
                                 NPC.netUpdate = true;
                             }
                       
@@ -847,7 +836,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             if (StellaMultiplayer.IsHost)
                             {
-                                _invincible = false;
+                     
                                 NPC.netUpdate = true;
                             }
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_End"), NPC.position);
@@ -971,7 +960,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
                     if (StellaMultiplayer.IsHost)
                     {
-                        _invincible = true;
                         NPC.netUpdate = true;
                     }
 
