@@ -52,12 +52,23 @@ namespace Stellamod.WorldG
     public class StellaWorld : ModSystem
     {
 
+        private int[] _xToSurfaceHeight;
         private int _index;
         public static bool SoulStorm;
         private void Add(List<GenPass> tasks)
         {
 
         }
+        private void WorldGenSurfaceHeight(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Scanning Surface Height";
+            _xToSurfaceHeight = new int[Main.maxTilesX];
+            for(int x = 0;  x < Main.maxTilesX; x++)
+            {
+                _xToSurfaceHeight[x] = ScanSurfacePoint(x).Y;
+            }
+        }
+
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             int biomeSpots = tasks.FindIndex(genpass => genpass.Name.Equals("Marble"));
@@ -113,7 +124,7 @@ namespace Stellamod.WorldG
 
             if (CathedralGen2 != -1)
             {
-
+                Add(new PassLegacy("Surface Heights", WorldGenSurfaceHeight));
             }
             int structuresGen = tasks.FindIndex(genpass => genpass.Name.Equals("Micro Biomes"));
             _index = structuresGen + 1;
@@ -166,7 +177,7 @@ namespace Stellamod.WorldG
         private void WorldGenSmoothIceBiome(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Smoothing The Ice Surface";
-            int levels = 1000;
+            int levels = 4;
 
             Point snowBounds = SnowBounds();
             SmoothenSurface(snowBounds.X, snowBounds.Y, levels);
@@ -498,7 +509,7 @@ namespace Stellamod.WorldG
 
 
 
-            Point ishtarLocation = manorPoint + new Point( - 500, -100);
+            Point ishtarLocation = manorPoint + new Point(-500, -100);
             string path2 = "Struct/Underground/Ishtar";//
             attempts = 0;
             /*
@@ -612,11 +623,11 @@ namespace Stellamod.WorldG
                 int smy = Main.maxTilesY / 2;
                 string path = "Struct/Underground/StoneGolem";
                 Point Loc = new Point(smx, smy);
-                if(!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
                 {
                     continue;
                 }
-//
+                //
                 int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
                 foreach (int chestIndex in ChestIndexs)
                 {
@@ -698,7 +709,7 @@ namespace Stellamod.WorldG
                             break; // Make sure not to exceed the capacity of the chest
                     }
                 }
-                
+
 
                 placed = true;
 
@@ -2260,7 +2271,7 @@ namespace Stellamod.WorldG
             p.Y = 0;
             for (int x = GenVars.snowOriginLeft - 500; x < GenVars.snowOriginRight + 500; x++)
             {
-                int y = FindSurfacePoint(x).Y;
+                int y = ScanSurfacePoint(x).Y;
                 Tile tile = Main.tile[x, y];
                 if (tile.HasTile && tile.TileType == TileID.SnowBlock)
                 {
@@ -2293,6 +2304,15 @@ namespace Stellamod.WorldG
                 }
             }
           */
+            int lowestPoint = 0;
+            for (int x = left; x < right; x++)
+            {
+                //Calculate new heights
+                int y = ScanSurfacePoint(x).Y;
+                lowestPoint = Math.Max(lowestPoint, y);
+            }
+
+
             for (int i = 0; i < levels; i++)
             {
                 //Calculate new heights
@@ -2300,8 +2320,8 @@ namespace Stellamod.WorldG
                 int[] originalY = new int[heights.Length];
                 for (int x = left; x < right; x++)
                 {
-                    int y = FindSurfacePoint(x).Y;
-                    heights[x - left] = SmoothHeight(new Point(x, y));
+                    int y = ScanSurfacePoint(x).Y;
+                    heights[x - left] = (int)MathHelper.Lerp(y, lowestPoint, 0.075f);
                     originalY[x - left] = y;
                 }
 
@@ -2311,10 +2331,7 @@ namespace Stellamod.WorldG
                     int index = x - left;
                     SmoothenOut(x, originalY[index], heights[index]);
                 }
-
             }
-
-
         }
         private void WorldGenBridget(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -3498,8 +3515,7 @@ namespace Stellamod.WorldG
         Point pointL;
 
         Point pointLil;
-
-        private Point FindSurfacePoint(int x)
+        private Point ScanSurfacePoint(int x)
         {
             int y = (int)GenVars.worldSurfaceLow - 10;
             while (y < Main.worldSurface)
@@ -3514,6 +3530,11 @@ namespace Stellamod.WorldG
                 }
             }
             return new Point(x, y);
+        }
+
+        private Point FindSurfacePoint(int x)
+        {
+            return new Point(x, _xToSurfaceHeight[x]);
         }
 
         #region Royal Capital
@@ -3569,6 +3590,7 @@ namespace Stellamod.WorldG
             point.Y += offset;
             point.X -= rect.Width / 2;
             point.X -= 40;
+            point.Y -= 20;
             /*
             for (int x = rect.Left; x < rect.Right; x++)
             {
