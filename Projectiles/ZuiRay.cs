@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Stellamod.Projectiles
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 45;
             Projectile.alpha = 255;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
@@ -37,7 +38,9 @@ namespace Stellamod.Projectiles
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(_degrees);
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
-            Projectile.scale = MathF.Sin(Time / 120f * MathHelper.Pi) * 3f;
+            float inScale = MathHelper.Lerp(0, 1f, Easing.OutExpo(Time / 45f));
+            float outScale = MathHelper.Lerp(1f, 0f, Easing.InOutSine(Time / 45f));
+            Projectile.scale = inScale * outScale * 6;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
