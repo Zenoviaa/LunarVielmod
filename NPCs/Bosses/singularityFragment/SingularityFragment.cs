@@ -85,6 +85,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.scale = 0;
             NPC.width = 100;
             NPC.height = 60;

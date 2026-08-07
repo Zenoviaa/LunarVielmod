@@ -40,6 +40,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 4;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
+
             // DisplayName.SetDefault("Jack");
             Main.npcFrameCount[NPC.type] = 46;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
@@ -100,6 +101,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.alpha = 0;
             NPC.width = 230;
             NPC.height = 230;

@@ -115,6 +115,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.width = 100;
             NPC.height = 116;
             NPC.damage = 50;

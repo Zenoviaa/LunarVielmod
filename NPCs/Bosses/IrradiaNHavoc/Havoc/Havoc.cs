@@ -105,6 +105,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.width = 90;
             NPC.height = 90;
             NPC.lifeMax = 1000;

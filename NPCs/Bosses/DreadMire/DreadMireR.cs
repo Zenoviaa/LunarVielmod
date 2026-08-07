@@ -130,6 +130,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.noGravity = true;
             NPC.lifeMax = 1700;
             NPC.defense = 9;

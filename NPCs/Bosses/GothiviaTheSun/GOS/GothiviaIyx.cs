@@ -194,6 +194,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         private Vector2 FigureEightStartCenter;
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.Size = new Vector2(44, 80);
             NPC.damage = 1;
             NPC.defense = 150;

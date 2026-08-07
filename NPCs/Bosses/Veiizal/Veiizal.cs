@@ -61,6 +61,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
 
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.scale = 1;
             NPC.width = 80;
             NPC.height = 190;

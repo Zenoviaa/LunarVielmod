@@ -30,7 +30,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 
         public override void SetDefaults()
         {
-
+            NPC.netAlways = true;
             NPC.width = 200;
             NPC.height = 200;
             NPC.damage = 83;

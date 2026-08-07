@@ -225,6 +225,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             //Stats
             NPC.lifeMax = 222000;
             NPC.defense = 160;

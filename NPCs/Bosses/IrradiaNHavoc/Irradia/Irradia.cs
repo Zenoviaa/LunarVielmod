@@ -123,8 +123,9 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
         }
 
 		public override void SetDefaults()
-		{
-			NPC.Size = new Vector2(40, 45);
+        {
+            NPC.netAlways = true;
+            NPC.Size = new Vector2(40, 45);
 			NPC.damage = 1;
 			NPC.defense = 20;
 			NPC.lifeMax = 17000;
