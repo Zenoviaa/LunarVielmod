@@ -26,6 +26,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
     [AutoloadBossHead]
     public class DreadMire : ModNPC
     {
+        private bool _desp;
         private bool _invincible;
         private bool _spawnHeart;
         private int _heartKillCount;
@@ -118,6 +119,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             writer.Write(_invincible);
             writer.Write(_heartKillCount);
             writer.Write(_spawnHeart);
+            writer.Write(_desp);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -127,6 +129,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             _invincible = reader.ReadBoolean();
             _heartKillCount = reader.ReadInt32();
             _spawnHeart = reader.ReadBoolean();
+            _desp = reader.ReadBoolean();
         }
 
         private bool TryDespawn()
@@ -386,6 +389,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                                 if (StellaMultiplayer.IsHost)
                                 {
                                     Att = Main.rand.Next(1, AtackNum);
+                                    if(!_desp && NPC.life < NPC.lifeMax * 0.1f)
+                                    {
+                                        Att = 6;
+                                        _desp = true;
+                                    }
+
                                     if (Att == PrevAtack)
                                     {
                                         NPC.ai[0] = 39;
