@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Ranged
 	{
 		public override void SetDefaults()
 		{
-			Item.damage = 17;
+			Item.damage = 5;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 84;
 			Item.height = 36;
@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			int numProjectiles = Main.rand.Next(3, 8);
+			int numProjectiles = Main.rand.Next(3, 7);
 			for (int p = 0; p < numProjectiles; p++)
 			{
 				// Rotate the velocity randomly by 30 degrees at max.
@@ -54,7 +54,7 @@ namespace Stellamod.Items.Weapons.Ranged
 				Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
 			}
 
-			if (Main.rand.NextBool(4))
+			if (Main.rand.NextBool(5))
 			{
 				int numProjectiles2 = Main.rand.Next(2, 5);
 				for (int p = 0; p < numProjectiles2; p++)
