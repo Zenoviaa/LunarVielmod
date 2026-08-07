@@ -859,7 +859,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             sb.End();
 
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
 
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(85, 112, 188) * 0.4f, Color.Transparent, ref lightColor);
