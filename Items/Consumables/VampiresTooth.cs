@@ -60,13 +60,13 @@ namespace Stellamod.Items.Consumables
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
                         Main.NewText(LangText.Misc("Veiizal"), Color.Red);
-                        int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<Veiizal>());
+                        int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y - 500, ModContent.NPCType<Veiizal>());
                         Main.npc[npcID].netUpdate2 = true;
                     }
                     else
                     {
                         Main.NewText(LangText.Misc("Veiizal"), Color.Red);
-                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Veiizal>(), (int)player.position.X, (int)player.position.Y);
+                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Veiizal>(), (int)player.position.X, (int)player.position.Y - 500);
                     }
                 }
             }

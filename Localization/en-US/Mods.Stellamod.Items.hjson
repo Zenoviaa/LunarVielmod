@@ -7885,7 +7885,8 @@ ScryingIdol: {
 	DisplayName: Scrying Idol
 	Tooltip: Summons the Gintze Army
 }
+
 VampiresTooth: {
-	DisplayName: Vampires Tooth
+	DisplayName: Vampire's Tooth
 	Tooltip: Summons Veiizal
 }
