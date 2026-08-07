@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -213,9 +214,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 
 
 
-
-			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
 			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{

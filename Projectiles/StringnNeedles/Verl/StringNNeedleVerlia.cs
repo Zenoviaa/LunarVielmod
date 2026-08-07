@@ -73,11 +73,15 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 				float speedX = Projectile.velocity.X * 0;
 				float speedY = Projectile.velocity.Y * 0;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), Projectile.damage / 2, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CharmVerlia>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), Projectile.damage / 2, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CharmVerlia>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+
+                }
 
 
-			}
+            }
 
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
 

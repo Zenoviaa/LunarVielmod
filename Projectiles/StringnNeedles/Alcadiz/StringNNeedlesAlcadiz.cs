@@ -75,11 +75,15 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 				float speedX = Projectile.velocity.X * 0;
 				float speedY = Projectile.velocity.Y * 0;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), Projectile.damage * 4, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CharmSpragald>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), Projectile.damage * 4, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CharmSpragald>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+
+                }
 
 
-			}
+            }
 
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
 
@@ -98,10 +102,14 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			}
 			if (Timer >= 170)
 			{
-				float speedX = Projectile.velocity.X * 5;
-				float speedY = Projectile.velocity.Y * 2;
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    float speedX = Projectile.velocity.X * 5;
+                    float speedY = Projectile.velocity.Y * 2;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.5f, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.5f, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                }
+
 			}
 		}
 		public override bool PreDraw(ref Color lightColor)

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -137,8 +138,8 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
             afterImgColor.B = 255;
             afterImgColor.G = 215;
             afterImgColor.R = 96;
-            Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
             for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
             {
                 //if(i % 2 == 0)
@@ -177,7 +178,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy3>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
-            ShakeModSystem.Shake = 4;
+            ShakeModSystem.Shake = 2;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.5f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
             SoundEngine.PlaySound(SoundID.Item110, Projectile.position);
 
