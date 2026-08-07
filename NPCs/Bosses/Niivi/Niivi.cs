@@ -1668,6 +1668,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Tired, NPC.position);
             }
 
+            if(BreathingTimer % 15 == 0)
+            {
+                ParticleManager.NewParticle(NPC.Center, HeadRotation.ToRotationVector2(), ParticleManager.NewInstance<ForParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+            }
+
             if(BreathingTimer % 150 == 0)
             {
                 switch (Main.rand.Next(2))
@@ -1687,6 +1692,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             }
             NPC.velocity *= 0.8f;
+            NPC.velocity -= NPC.Center.DirectionTo(Target.Center).SafeNormalize(Vector2.Zero);
             LookDirection = DirectionToTarget;
             DefaultOrientation();
             //Put huffing and puffing sounds here
