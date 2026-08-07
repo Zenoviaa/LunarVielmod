@@ -6392,7 +6392,7 @@ VeilBanner2i: {
 
 CompletionIdol: {
 	DisplayName: Completion Idol
-	Tooltip: An Idol made after collecting scripts from the towers of higher beings and forged from those souls into a trophy.
+	Tooltip: This item doesn't do anything. Make a real completion idol!
 }
 
 VeiledScriptureGothivia: {

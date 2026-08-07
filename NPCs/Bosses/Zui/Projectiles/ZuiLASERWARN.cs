@@ -129,7 +129,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain3"));
 
                     }
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 10);
                     LightPos.X = NPC.Center.X;
                     LightPos.Y = NPC.Center.Y;
                     var EntitySource = NPC.GetSource_FromThis();

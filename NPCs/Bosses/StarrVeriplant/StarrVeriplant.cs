@@ -74,8 +74,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		}
 
 		public override void SetDefaults()
-		{
-			NPC.width = 80;
+        {
+            NPC.netAlways = true;
+            NPC.width = 80;
 			NPC.height = 44;
 			NPC.damage = 25;
 			NPC.defense = 5;

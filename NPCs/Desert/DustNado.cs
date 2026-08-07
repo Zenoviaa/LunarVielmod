@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Desert
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (Main.dayTime)
+            if (spawnInfo.Player.ZoneSandstorm)
             {
                 return SpawnCondition.OverworldDayDesert.Chance * 0.2f;
             }

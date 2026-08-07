@@ -1117,18 +1117,31 @@ namespace Stellamod
                     player.AddBuff(ModContent.BuffType<Irradiation>(), 50);
                 }
 
-				//Update Rain
-                Main.raining = true;
+				if (!EventWorld.GreenSun)
+                {
+               
+                    //Update Rain
+                    Main.raining = true;
 
-				//That way, if it is already raining, it won't be overriden
-				//And if it is not raining, it'll just be permanent until you leave the biome
-				if (Main.rainTime <= 2)
-					Main.rainTime = 2;
-				Main.maxRaining = 0.8f;
-                Main.maxRain = 140;
+                    //That way, if it is already raining, it won't be overriden
+                    //And if it is not raining, it'll just be permanent until you leave the biome
+                    if (Main.rainTime <= 2)
+                        Main.rainTime = 2;
+                    Main.maxRaining = 0.8f;
+                    Main.maxRain = 140;
+
+                }else
+				{
+					if (Main.raining)
+                    {
+				
+                        Main.rainTime = 2;
+                        Main.raining = false;
+					}
+				}
 
 
-				//Create Gores
+                //Create Gores
                 float goreScale = Main.rand.NextFloat(0.5f, 0.9f);
                 int x = (int)(Main.windSpeedCurrent > 0 ? Main.screenPosition.X - 100 : Main.screenPosition.X + Main.screenWidth + 100);
                 int y = (int)Main.screenPosition.Y + Main.rand.Next(-100, Main.screenHeight);
@@ -1454,83 +1467,87 @@ namespace Stellamod
 				RayCooldown++;
 
 
-
-				for (int j = 0; j < 1; j++)
+				if (Main.rand.NextBool(7))
 				{
-					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
-					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
-					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+                    for (int j = 0; j < 1; j++)
+                    {
+                        RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+                        RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+                        RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
-
-				}
-
-
-				for (int j = 0; j < 2; j++)
-				{
-					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
-					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
-					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
-
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<SparkleTrailParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+                        Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+                        Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+                        ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 
-				}
-
-				for (int j = 0; j < 1; j++)
-				{
-					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
-					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
-					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
-
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-					ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+                    }
 
 
-				}
-				if (GoldenRingCooldown > 2)
-                {
-					for (int j = 0; j < 1; j++)
-					{
-						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
-						RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
-						RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+                    for (int j = 0; j < 2; j++)
+                    {
+                        RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+                        RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+                        RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
-						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-						ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 1, ParticleManager.NewInstance<GoldRingParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-						GoldenRingCooldown = 0;
-					}
-				}
-
-				if (GoldenSparkleCooldown > 100)
-				{
-					for (int j = 0; j < 1; j++)
-					{
-						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
-						RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
-						RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
-
-						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-						ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldSparkleParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-						GoldenSparkleCooldown = 0;
-					}
-				}
+                        Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+                        Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+                        ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<SparkleTrailParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 
+                    }
+
+                    for (int j = 0; j < 1; j++)
+                    {
+                        RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+                        RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+                        RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+                        Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+                        Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+                        ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+                    }
+                    if (GoldenRingCooldown > 2)
+                    {
+                        for (int j = 0; j < 1; j++)
+                        {
+                            RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+                            RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+                            RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+                            Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+                            Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+                            ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 1, ParticleManager.NewInstance<GoldRingParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+                            GoldenRingCooldown = 0;
+                        }
+                    }
+
+                    if (GoldenSparkleCooldown > 100)
+                    {
+                        for (int j = 0; j < 1; j++)
+                        {
+                            RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+                            RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+                            RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+                            Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+                            Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+                            ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldSparkleParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+                            GoldenSparkleCooldown = 0;
+                        }
+                    }
+
+
+                }
 
 
 
-				if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneFable)
+
+                if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneFable)
 				{
 
 
@@ -2197,7 +2214,7 @@ namespace Stellamod
                 GoldenRingCooldown++;
                 GoldenSparkleCooldown++;
                 RayCooldown++;
-				if (Main.rand.NextBool(5))
+				if (Main.rand.NextBool(7))
 				{
 					for (int j = 0; j < 1; j++)
 					{
@@ -2222,7 +2239,7 @@ namespace Stellamod
 					}
 				}
 
-				if (Main.rand.NextBool(5))
+				if (Main.rand.NextBool(7))
 				{
 					for (int j = 0; j < 1; j++)
 					{
@@ -2267,7 +2284,7 @@ namespace Stellamod
 
                 if (GoldenRingCooldown > 2)
                 {
-					if (Main.rand.NextBool(3))
+					if (Main.rand.NextBool(6))
 					{
 						for (int j = 0; j < 2; j++)
 						{
@@ -2286,7 +2303,7 @@ namespace Stellamod
 
                 if (GoldenSparkleCooldown > 100)
                 {
-					if (Main.rand.NextBool(3))
+					if (Main.rand.NextBool(6))
 					{
 						for (int j = 0; j < 1; j++)
 						{

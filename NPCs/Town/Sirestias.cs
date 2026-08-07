@@ -375,79 +375,79 @@ namespace Stellamod.NPCs.Town
 
 
 
-												if (DownedBossSystem.downedSTARBoss)
+											
+
+
+												Main.npcChatText = LangText.Chat(this, "Downed12");
+
+
+
+												if (DownedBossSystem.downedSyliaBoss)
 												{
 
-													Main.npcChatText = LangText.Chat(this, "Downed12");
+													Main.npcChatText = LangText.Chat(this, "Downed13");
 
-
-
-													if (DownedBossSystem.downedSyliaBoss)
+													if (DownedBossSystem.downedZuiBoss)
 													{
 
-														Main.npcChatText = LangText.Chat(this, "Downed13");
+														Main.npcChatText = LangText.Chat(this, "Downed14");
 
-														if (DownedBossSystem.downedZuiBoss)
-														{
+                                                        if (DownedBossSystem.downedSupernovaFragmentBoss)
+                                                        {
 
-															Main.npcChatText = LangText.Chat(this, "Downed14");
+                                                            Main.npcChatText = LangText.Chat(this, "Downed15");
 
-                                                            if (DownedBossSystem.downedSupernovaFragmentBoss)
+
+
+                                                            if (DownedBossSystem.downedFenixBoss)
                                                             {
 
-                                                                Main.npcChatText = LangText.Chat(this, "Downed15");
+                                                                Main.npcChatText = LangText.Chat(this, "Downed16");
 
 
-
-                                                                if (DownedBossSystem.downedFenixBoss)
+                                                                if (DownedBossSystem.downedRekBoss)
                                                                 {
 
-                                                                    Main.npcChatText = LangText.Chat(this, "Downed16");
+                                                                    Main.npcChatText = LangText.Chat(this, "Downed17");
 
 
-                                                                    if (DownedBossSystem.downedRekBoss)
+                                                                    if (DownedBossSystem.downedNiiviBoss)
                                                                     {
 
-                                                                        Main.npcChatText = LangText.Chat(this, "Downed17");
+                                                                        Main.npcChatText = LangText.Chat(this, "Downed18");
 
 
-                                                                        if (DownedBossSystem.downedNiiviBoss)
+
+                                                                        if (DownedBossSystem.downedGothBoss)
                                                                         {
 
-                                                                            Main.npcChatText = LangText.Chat(this, "Downed18");
-
-
-
-                                                                            if (DownedBossSystem.downedGothBoss)
-                                                                            {
-
-                                                                                Main.npcChatText = LangText.Chat(this, "Downed19");
+                                                                            Main.npcChatText = LangText.Chat(this, "Downed19");
 
 
 
 
-
-                                                                            }
 
                                                                         }
-
 
                                                                     }
 
 
-                                                                   
-
                                                                 }
 
 
+                                                                   
 
                                                             }
 
-                                                           
-														}
-													}
 
+
+                                                        }
+
+                                                           
+													}
 												}
+
+												
 											}
 										}
 									}

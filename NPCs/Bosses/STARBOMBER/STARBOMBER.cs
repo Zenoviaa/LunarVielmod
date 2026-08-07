@@ -178,8 +178,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
         }
 
         public override void SetDefaults()
-		{
-			NPC.Size = new Vector2(96, 65);
+        {
+            NPC.netAlways = true;
+            NPC.Size = new Vector2(96, 65);
 			NPC.damage = 1;
 			NPC.defense = 45;
 			NPC.lifeMax = 11000;

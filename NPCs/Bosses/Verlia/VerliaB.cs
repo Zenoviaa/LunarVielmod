@@ -143,8 +143,9 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		}
 
 		public override void SetDefaults()
-		{
-			NPC.Size = new Vector2(24, 42);
+        {
+            NPC.netAlways = true;
+            NPC.Size = new Vector2(24, 42);
 			NPC.damage = 1;
 			NPC.defense = 15;
 			NPC.lifeMax = 6750;

@@ -34,6 +34,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
 
         public override void AI()
         {
+            if (Owner == null || !Owner.active)
+            {
+                Projectile.Kill();
+                return;
+            }
             Projectile.Center = Owner.Center;
             Projectile.velocity = Owner.rotation.ToRotationVector2();
             // Fade in.
@@ -77,6 +82,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Owner == null || !Owner.active)
+                return false;
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
             TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
@@ -86,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
             List<Vector2> points = new();
             for (int i = 0; i <= 8; i++)
             {
-                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * LaserLength, i / 8f));
+                points.Add(Vector2.Lerp(Owner.Center, Owner.Center + Projectile.velocity * LaserLength, i / 8f));
                 originalRotations.Add(MathHelper.PiOver2);
             }
 

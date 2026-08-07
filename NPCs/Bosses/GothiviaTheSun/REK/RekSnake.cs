@@ -155,6 +155,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.width = 90;
             NPC.height = 90;
             NPC.lifeMax = 101000;

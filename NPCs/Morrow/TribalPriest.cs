@@ -37,10 +37,14 @@ namespace Stellamod.NPCs.Morrow
 		// Current frame's progress
 		public int frameTick;
 		// Current state's timer
-		public float timer;
+		public ref float timer => ref NPC.ai[0];
 
 		// AI counter
-		public int counter;
+		public int counter
+		{
+			get => (int)NPC.ai[1];
+			set => NPC.ai[1] = value;
+		} 
 
 		public override void SetStaticDefaults()
 		{
@@ -75,6 +79,13 @@ namespace Stellamod.NPCs.Morrow
             }
 
             return 0f;
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+			if (State == ActionState.Asleep || State == ActionState.Notice)
+				return false;
+            return base.CanHitPlayer(target, ref cooldownSlot);
         }
 
         public override void AI()
@@ -180,26 +191,8 @@ namespace Stellamod.NPCs.Morrow
 
 			if (timer == 1)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(4))
-				{
-					case 0:
-						NPC.velocity = new Vector2(NPC.direction * 5, -0.1f);
-						break;
-					case 1:
-						NPC.velocity = new Vector2(NPC.direction * 5, -0.1f);
-						break;
-					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 5, -0.1f);
-						break;
-					case 3:
-
-						NPC.velocity = new Vector2(NPC.direction * 4, -0.1f);
-						break;
-				}
-				NPC.netUpdate = true;
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Slapin"));
+                NPC.velocity = new Vector2(NPC.direction * 4, -0.1f);
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Slapin") with { PitchVariance = 0.35f}, NPC.position);
 				ShakeModSystem.Shake = 4;
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 

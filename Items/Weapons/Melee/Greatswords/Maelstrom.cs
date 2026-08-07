@@ -122,7 +122,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
                 player.GetModPlayer<MyPlayer>().SwordComboR = 240;
             }
 
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyMael") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyMael") { PitchVariance = 0.3f }, player.Center);
             return false;
         }
 

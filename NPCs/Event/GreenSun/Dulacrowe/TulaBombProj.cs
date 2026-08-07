@@ -124,7 +124,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
 
                 screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { PitchVariance = 0.3f }, Projectile.Center);
                 float num = 4;
                 for (float i = 0; i < num; i++)
                 {
@@ -143,7 +143,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             if(Timer == 240)
             {
                 //   SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { PitchVariance = 0.3f }, Projectile.Center);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
 
                 screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
@@ -168,7 +168,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 SwapColor = true;
                 //   SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow2, Projectile.position);
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1") { PitchVariance = 0.3f }, Projectile.Center);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
 
                 screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
@@ -330,7 +330,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekShockwave") { Pitch = Main.rand.NextFloat(-10f, 10f) }, Projectile.Center);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekShockwave") { PitchVariance = 0.3f }, Projectile.Center);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 4000, 80);
             float num = 16;
             for(float i = 0; i < num; i++)

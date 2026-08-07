@@ -152,8 +152,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		}
 
 		public override void SetDefaults()
-		{
-			NPC.Size = new Vector2(63, 50);
+        {
+            NPC.netAlways = true;
+            NPC.Size = new Vector2(63, 50);
 			NPC.damage = 1;
 			NPC.defense = 75;
 			NPC.lifeMax = 79900;

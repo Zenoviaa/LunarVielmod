@@ -185,7 +185,12 @@ namespace Stellamod.Helpers
                                 bool Chest = reader.ReadBoolean();
                                 if (Chest)
                                 {
-                                    ChestIndexs.Add(Terraria.Chest.CreateChest(BottomLeft.X + i, BottomLeft.Y - j));
+                                    int chest = Terraria.Chest.CreateChest(BottomLeft.X + i, BottomLeft.Y - j);
+                                    if (chest != -1)
+                                    {
+                                        ChestIndexs.Add(chest);
+                                    }
+                                
                                 }
                                 //byte slope = reader.ReadByte();
 

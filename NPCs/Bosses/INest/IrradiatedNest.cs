@@ -72,6 +72,7 @@ namespace Stellamod.NPCs.Bosses.INest
         }
         public override void SetDefaults()
         {
+            NPC.netAlways = true;
             NPC.alpha = 255;
             NPC.width = 150;
             NPC.height = 60;

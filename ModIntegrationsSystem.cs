@@ -195,8 +195,40 @@ namespace Stellamod
                 }
 			);
 		}
+        private void DoVeiizalIntegration()
+        {
+            string internalName3 = "Veiizal";
 
-		private void DoCommanderGintziaIntegration()
+            // The NPC type of the boss
+            int bossType3 = ModContent.NPCType<NPCs.Bosses.Veiizal.Veiizal>();
+
+            // Value inferred from boss progression, see the wiki for details
+            float weight3 = 2.7f;
+
+            // Used for tracking checklist progress
+            Func<bool> downed3 = () => DownedBossSystem.downedUmbrellaBoss;
+
+
+            // The boss does not have a custom despawn message, so we omit it
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            bossChecklistMod.Call(
+                "LogMiniBoss",
+                Mod,
+                internalName3,
+                weight3,
+                downed3,
+                bossType3,
+                new Dictionary<string, object>()
+                {
+
+                    // Other optional arguments as needed are inferred from the wiki
+                }
+            );
+        }
+
+        private void DoCommanderGintziaIntegration()
         {
 			string internalName4 = "CommanderGintzia";
 
@@ -1091,7 +1123,9 @@ namespace Stellamod
 			DoJackIntegration();
 			DoDaedusIntegration();
 			DoDreadmireIntegration();
-			DoCommanderGintziaIntegration();
+			DoVeiizalIntegration();
+
+            DoCommanderGintziaIntegration();
 			DoSunStalkerIntegration();
 			DoSingularityFragmentIntegration();
 			DoVerliaIntegration();

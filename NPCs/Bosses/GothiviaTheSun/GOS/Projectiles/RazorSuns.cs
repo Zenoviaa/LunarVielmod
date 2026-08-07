@@ -154,7 +154,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
                     ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity, Color.White, scale);
 
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 5f) }, Projectile.Center);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { PitchVariance = 0.3f }, Projectile.Center);
 
                     Vector2 directionToProjectile = Projectile.Center.DirectionTo(p.Center);
                     p.velocity = directionToProjectile * 16;

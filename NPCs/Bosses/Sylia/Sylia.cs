@@ -150,8 +150,9 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         //AI Values
         public override void SetDefaults()
-		{
-			NPC.Size = new Vector2(24, 48);
+        {
+            NPC.netAlways = true;
+            NPC.Size = new Vector2(24, 48);
 
 			NPC.damage = 40;
 			NPC.defense = 26;

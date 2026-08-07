@@ -185,7 +185,6 @@ CloneV: {
 }
 
 Zapwarn.DisplayName: Zapwarn
-Veiizal.DisplayName: Veiizal
 VoidWall.DisplayName: Void Wall
 
 UnderworldRift: {
@@ -329,6 +328,12 @@ DreadMirePentagram.DisplayName: Dread Mire Pentagram
 DreadMire: {
 	DisplayName: Dread Mire
 	Bestiary: One of the three powerful cosmic deities that has been tainted by devilish intent
+}
+
+Veiizal: {
+	DisplayName: Veiizal
+	Bestiary: Some random succubus with an umbrella
+	BossChecklistIntegration.SpawnInfo: Randomly during a bloodmoon, after Dreadmire has been defeated
 }
 
 DreadFireCircle: {

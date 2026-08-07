@@ -120,8 +120,9 @@ namespace Stellamod.NPCs.Bosses.Zui
 		}
 
 		public override void SetDefaults()
-		{
-			NPC.Size = new Vector2(27, 42);
+        {
+            NPC.netAlways = true;
+            NPC.Size = new Vector2(27, 42);
 			NPC.damage = 1;
 			NPC.defense = 45;
 			NPC.lifeMax = 51250;
