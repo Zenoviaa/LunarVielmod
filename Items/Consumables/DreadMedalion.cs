@@ -50,7 +50,7 @@ namespace Stellamod.Items.Consumables
         {
             if (!Main.dayTime)
             {
-                if (NPC.AnyNPCs(ModContent.NPCType<Veii>()))
+                if (NPC.AnyNPCs(ModContent.NPCType<DreadMireR>()))
                 {
                     return false;
                 }
