@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles
 			float speedX = Projectile.velocity.X;
 			float speedY = Projectile.velocity.Y;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<BrackettThrough>(), (int)(Projectile.damage * 1.2), 0f, Projectile.owner, 0f, 0f);
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"));
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1") with { PitchVariance = 0.3f }, Projectile.position);
 			Projectile.Kill();
 
 		}

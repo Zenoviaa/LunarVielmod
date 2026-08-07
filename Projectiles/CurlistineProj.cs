@@ -137,7 +137,7 @@ namespace Stellamod.Projectiles
             afterImgColor.B = 255;
             afterImgColor.G = 215;
             afterImgColor.R = 96;
-            Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
+
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
             {

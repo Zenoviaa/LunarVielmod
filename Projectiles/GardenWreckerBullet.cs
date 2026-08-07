@@ -68,7 +68,6 @@ namespace Stellamod.Projectiles
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-			Main.instance.LoadProjectile(Projectile.type);
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
 			// Redraw the projectile with the color not influenced by light
@@ -90,16 +89,11 @@ namespace Stellamod.Projectiles
 			float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ProjectileID.DaybreakExplosion, Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<SkullShotKaboom>(), (int)(Projectile.damage * 1.1), 0f, Projectile.owner, 0f, 0f);
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"));
-
-
-			
-
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"), Projectile.position);		
 		}
+
 		public override void OnKill(int timeLeft)
 		{
-			// This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
-			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 			SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
 		}
 	}

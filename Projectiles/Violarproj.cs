@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -12,6 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
+
     public class Violarproj : ModProjectile
 	{
 		public float ExplodingTimer;
@@ -66,15 +66,17 @@ namespace Stellamod.Projectiles
 				Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
 			}
 			SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
-			for (int i = 0; i < Main.rand.Next(3, 7); i++)
+			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 10);
+
+			if(Main.myPlayer == Projectile.owner)
 			{
-				Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
-				int index = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-					ProjectileID.GreekFire3, Projectile.damage, 0f, Projectile.owner);
-				Main.projectile[index].friendly = true;
-				Main.projectile[index].hostile = false;
-			}
+                for (int i = 0; i < Main.rand.Next(3, 7); i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
+                    int index = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<GreekFireFriendly>(), Projectile.damage, 0f, Projectile.owner);
+                }
+            }
 		}
 
 

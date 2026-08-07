@@ -71,7 +71,7 @@ namespace Stellamod.Projectiles
 			Projectile.velocity *= 1.04f;
 			if (nigga < 2)
 			{
-				ShakeModSystem.Shake = 5;
+				ShakeModSystem.Shake = 2;
 			}
 
 
@@ -116,12 +116,8 @@ namespace Stellamod.Projectiles
 				target.AddBuff(BuffID.OnFire, 180);
 			}
 			var EntitySource = Projectile.GetSource_Death();
-
-			if (Main.netMode != NetmodeID.MultiplayerClient)
-			{
-				Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-			}
-		}
+            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+        }
 
 	}
 }

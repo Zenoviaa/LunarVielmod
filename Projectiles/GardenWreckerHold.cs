@@ -92,16 +92,20 @@ namespace Stellamod.Projectiles
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.9f, speedY * 2, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f , speedY * 0.5f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.9f, speedY * 2, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f, speedY * 0.5f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                }
+			
 				SoundEngine.PlaySound(SoundID.DD2_GoblinBomb, Projectile.position);
 				ShakeModSystem.Shake = 4;
 
 
 
-				for (int j = 0; j < 40; j++)
+				for (int j = 0; j < 20; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
 					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
@@ -125,24 +129,9 @@ namespace Stellamod.Projectiles
 				{
 					Projectile.frame = 0;
 				}
-			}
-
-			
+			}	
 		}
-        private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
-        {
-            Projectile.Center = playerhandpos;
-            Projectile.spriteDirection = Projectile.direction;
 
-            // Constantly resetting player.itemTime and player.itemAnimation prevents the player from switching items or doing anything else.
-            player.ChangeDir(Projectile.direction);
-            player.heldProj = Projectile.whoAmI;
-            player.itemTime = 3;
-            player.itemAnimation = 3;
-
-            player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-
-        }
         public override bool PreDraw(ref Color lightColor)
         {
             Player player = Main.player[Projectile.owner];

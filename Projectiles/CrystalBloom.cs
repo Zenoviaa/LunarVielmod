@@ -47,6 +47,7 @@ namespace Stellamod.Projectiles
 					Projectile.frame = 0;
 				}
 			}
+
 			return true;
 
 			

@@ -84,7 +84,7 @@ namespace Stellamod.Projectiles
 			{
 				float homingSpeedFactor = 25f;
 				Vector2 homingVect = targetPos - Projectile.Center;
-				homingVect.Normalize();
+				homingVect = homingVect.SafeNormalize(Vector2.Zero);
 				homingVect *= homingSpeedFactor;
 
 				Projectile.velocity = homingVect;

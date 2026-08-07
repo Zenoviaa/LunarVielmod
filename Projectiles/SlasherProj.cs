@@ -128,7 +128,7 @@ namespace Stellamod.Projectiles
 						}
 						SoundEngine.PlaySound(SoundID.NPCDeath7, Projectile.Center);
 						Projectile.ai[0]++;
-						ShakeModSystem.Shake = 12;
+						ShakeModSystem.Shake = 4;
 					}
 					if (DustType != -1)
 						Dust.NewDustPerfect(Projectile.Center, DustType, Vector2.One.RotatedByRandom(MathHelper.TwoPi));

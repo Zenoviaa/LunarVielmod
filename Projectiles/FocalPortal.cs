@@ -62,14 +62,10 @@ namespace Stellamod.Projectiles
         
 
             Rectangle myRect = Projectile.getRect();
-            for (int i = 0; i < Main.maxPlayers; i++)
+            foreach(Player player in Main.ActivePlayers)
             {
-                Player player = Main.player[i];
-                if (!player.active)
-                    continue;
-       
                 Rectangle playerRect = player.getRect();
-                if(Projectile.Colliding(myRect, playerRect))
+                if (Projectile.Colliding(myRect, playerRect))
                 {
                     //Teleport
                     Teleport(player);

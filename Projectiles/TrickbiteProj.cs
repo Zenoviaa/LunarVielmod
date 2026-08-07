@@ -38,18 +38,11 @@ namespace Stellamod.Projectiles
 			Vector3 RGB = new(0.1f, 1.2f, 2.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
-
-
-			
-
-			
 		}
 
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			overPlayers.Add(index);
-			overWiresUI.Add(index);
 		}
 
 		public override bool PreAI()

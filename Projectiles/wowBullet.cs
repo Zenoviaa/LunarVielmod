@@ -47,7 +47,6 @@ namespace Stellamod.Projectiles
 		}
 		public override bool PreDraw(ref Color lightColor)
 		{
-			Main.instance.LoadProjectile(Projectile.type);
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
 			// Redraw the projectile with the color not influenced by light

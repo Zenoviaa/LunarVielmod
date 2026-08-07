@@ -25,7 +25,8 @@ namespace Stellamod.Projectiles
 			Projectile.height = 220;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 56;
-			Projectile.scale = 1f;		
+			Projectile.scale = 1f;
+			Projectile.tileCollide = false;
 		}
 
         public override void AI()

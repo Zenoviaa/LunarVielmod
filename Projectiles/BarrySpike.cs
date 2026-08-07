@@ -77,7 +77,7 @@ namespace Stellamod.Projectiles
 
 			ParticleManager.NewParticle(target.Center, Vector2.Zero, ParticleManager.NewInstance<SparkleTrailParticle>(),
 								  Color.White, Main.rand.NextFloat(0.5f, 0.75f));
-			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"));
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
 			switch (Main.rand.Next(0, 3))
 			{
 				case 0:

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,7 +15,10 @@ namespace Stellamod.Projectiles
 		int rotationalSpeed = 4;
 		int afterImgCancelDrawCount = 0;
 		float t = 0;
-		public override void SetStaticDefaults()
+
+        bool initialized = false;
+        Vector2 initialSpeed = Vector2.Zero;
+        public override void SetStaticDefaults()
 		{
 
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
@@ -25,23 +29,15 @@ namespace Stellamod.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 300;
-			//projectile.extraUpdates = 1;
 			Projectile.width = Projectile.height = 11;
 			Projectile.hostile = false;
 			Projectile.friendly = true;
-
-
-
 		}
-		bool initialized = false;
-		float alphaCounter;
-		Vector2 initialSpeed = Vector2.Zero;
 
 		
 		public override void AI()
 		{
 			Projectile.velocity *= 0.991f;
-			alphaCounter += 0.04f;
 			int rightValue = (int)Projectile.ai[1] - 1;
 			if (rightValue < (double)Main.projectile.Length && rightValue != -1)
 			{
@@ -91,7 +87,7 @@ namespace Stellamod.Projectiles
 			afterImgColor.B = 100;
 			afterImgColor.G = 80;
 			afterImgColor.R = 70;
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+			Texture2D texture = TextureAssets.Projectile[Type].Value;//ModContent.Request<Texture2D>(Texture).Value;
 			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{
 				//if(i % 2 == 0)

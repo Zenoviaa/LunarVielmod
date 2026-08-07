@@ -58,6 +58,8 @@ namespace Stellamod.Projectiles
         {
             Lighting.AddLight(Projectile.Center, Color.LightBlue.ToVector3() * 1.75f * Main.essScale);
         }
+
+
     }
 }
 

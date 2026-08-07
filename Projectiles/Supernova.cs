@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles
 
 			if (Timer2 <= 2)
             {
-				ShakeModSystem.Shake = 5;
+				ShakeModSystem.Shake = 3;
 			}
 			
 		}

@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			ShakeModSystem.Shake = 4;
+			ShakeModSystem.Shake = 2;
 			for (int i = 0; i < 8; i++)
 			{
 				Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 0.5f).noGravity = true;

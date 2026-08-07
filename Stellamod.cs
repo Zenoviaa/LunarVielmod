@@ -5,7 +5,6 @@ using Stellamod.Backgrounds;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Skies;
-using Stellamod.WorldG;
 using System.IO;
 using System.Reflection;
 using Terraria;
@@ -40,14 +39,14 @@ namespace Stellamod
             Instance = this;
 
         }
-      
+
         public ModPacket GetPacket(MessageType type, int capacity)
         {
             ModPacket packet = GetPacket(capacity + 1);
             packet.Write((byte)type);
             return packet;
         }
-        
+
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
         public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
         {
@@ -81,14 +80,14 @@ namespace Stellamod
         }
 
 
-       
+
 
 
         public static Stellamod Instance;
         public static int MedalCurrencyID;
- 
-      
-        
+
+
+
         public static int MOKCurrencyID;
         public static int MOPCurrencyID;
 
@@ -99,7 +98,7 @@ namespace Stellamod
         public static int MOLCurrencyID;
         public override void Load()
         {
-           
+
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             if (Main.netMode != NetmodeID.Server)
@@ -183,7 +182,7 @@ namespace Stellamod
 
             if (!Main.dedServ && Main.netMode != NetmodeID.Server && ModContent.GetInstance<LunarVeilClientConfig>().VanillaTexturesToggle == true)
             {
-            //    Main.instance.LoadTiles(TileID.Dirt);
+                //    Main.instance.LoadTiles(TileID.Dirt);
                 TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtRE");
                 TextureAssets.Tile[TileID.IceBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/IceRE");
                 TextureAssets.Tile[TileID.SnowBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowRE");
@@ -202,9 +201,9 @@ namespace Stellamod
                 TextureAssets.Tile[TileID.WoodBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/WoodRE");
                 TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneBrickRE");
                 TextureAssets.Tile[TileID.Pearlstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlstoneRE");
-           //     TextureAssets.Tile[TileID.GraniteBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GraniteRE");
+                //     TextureAssets.Tile[TileID.GraniteBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GraniteRE");
                 TextureAssets.Tile[TileID.Granite] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GraniteRE");
-         //       TextureAssets.Tile[TileID.MarbleBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MarbRE");
+                //       TextureAssets.Tile[TileID.MarbleBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MarbRE");
                 TextureAssets.Tile[TileID.Marble] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MarbRE");
                 TextureAssets.Tile[TileID.MushroomGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MushGrassRE");
                 TextureAssets.Tile[TileID.Ebonstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpStoneRE");
@@ -214,8 +213,8 @@ namespace Stellamod
                 TextureAssets.Tile[TileID.Pearlsand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlSandRE");
                 TextureAssets.Tile[TileID.SnowCloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowCloudRE");
             }
-            
-            
+
+
             On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
             {
                 orig(self, spriteBatch);
@@ -258,9 +257,9 @@ namespace Stellamod
                 UnloadTile(TileID.WoodBlock);
                 UnloadTile(TileID.GrayBrick);
                 UnloadTile(TileID.Pearlstone);
-                UnloadTile(TileID.GraniteBlock);
+           //     UnloadTile(TileID.GraniteBlock);
                 UnloadTile(TileID.Granite);
-                UnloadTile(TileID.MarbleBlock);
+             //   UnloadTile(TileID.MarbleBlock);
                 UnloadTile(TileID.Marble);
                 UnloadTile(TileID.MushroomGrass);
                 UnloadTile(TileID.Ebonstone);
@@ -268,7 +267,7 @@ namespace Stellamod
                 UnloadTile(TileID.ObsidianBrick);
                 UnloadTile(TileID.Cloud);
                 UnloadTile(TileID.Pearlsand);
-                UnloadTile(TileID.SnowCloud);   
+                UnloadTile(TileID.SnowCloud);
             }
         }
 
@@ -314,7 +313,7 @@ namespace Stellamod
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Menutheme");
 
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
-       
+
         public override string DisplayName => "Lunar Veil Legacy";
         public override void OnSelected()
         {
@@ -323,7 +322,7 @@ namespace Stellamod
         }
         public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
         {
-           // drawColor = Main.DiscoColor * 2f ; // Changes the draw color of the logo
+            // drawColor = Main.DiscoColor * 2f ; // Changes the draw color of the logo
             return true;
 
 
