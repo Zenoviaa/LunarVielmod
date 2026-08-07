@@ -91,7 +91,7 @@ namespace Stellamod.Projectiles.Thrown
             Timer++;
             if(Timer == 1)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 6);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"), Projectile.position);
                 for (int i = 0; i < 4; i++)
                 {

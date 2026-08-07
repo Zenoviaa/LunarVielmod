@@ -50,15 +50,21 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
             if (Timer % 25 == 0)
             {
-                NPC closestNPC = NPCHelper.FindClosestNPC(Projectile.position, 1500);
-                Vector2 targetVelocity = Projectile.velocity.RotatedByRandom(MathHelper.TwoPi);
-                if (closestNPC != null)
-                {
-                    targetVelocity = Projectile.Center.DirectionTo(closestNPC.Center) * 12;
-                }
+ 
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, targetVelocity, ModContent.ProjectileType<DaggerDaggerKnifeProj>(),
-                    Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    NPC closestNPC = NPCHelper.FindClosestNPC(Projectile.position, 1500);
+                    Vector2 targetVelocity = Projectile.velocity.RotatedByRandom(MathHelper.TwoPi);
+                    if (closestNPC != null)
+                    {
+                        targetVelocity = Projectile.Center.DirectionTo(closestNPC.Center) * 12;
+                    }
+
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, targetVelocity, ModContent.ProjectileType<DaggerDaggerKnifeProj>(),
+                Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+            
             }
         }
 

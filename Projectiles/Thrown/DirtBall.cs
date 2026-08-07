@@ -29,15 +29,22 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.penetrate = 3;
         }
 
-        public override void PostDraw(Color lightColor)
-        {
 
+        public override void PostAI()
+        {
+            base.PostAI();
             if (Main.rand.NextBool(5))
             {
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt, 0f, 0f, 150, Color.White, 0.4f);
                 Main.dust[dustnumber].noGravity = false;
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
+        }
+
+        public override void PostDraw(Color lightColor)
+        {
+
+
         }
 
 
@@ -61,7 +68,7 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 12; i++)
             {
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);

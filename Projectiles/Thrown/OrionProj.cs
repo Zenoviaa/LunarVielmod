@@ -40,14 +40,19 @@ namespace Stellamod.Projectiles.Thrown
             Timer++;
             if(Timer % 6 == 0)
             {
-                int xRand = Main.rand.Next(0, Projectile.width);
-                int yRand = Main.rand.Next(0, Projectile.height);
-                Vector2 offset = new Vector2(xRand, yRand);
-                Vector2 velocity = Main.rand.NextVector2Circular(2, 2);
+       
 
-                //Spawn Star
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + offset, velocity,
-                   ModContent.ProjectileType<OrionStarProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    int xRand = Main.rand.Next(0, Projectile.width);
+                    int yRand = Main.rand.Next(0, Projectile.height);
+                    Vector2 offset = new Vector2(xRand, yRand);
+                    Vector2 velocity = Main.rand.NextVector2Circular(2, 2);
+                    //Spawn Star
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + offset, velocity,
+                       ModContent.ProjectileType<OrionStarProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+
             }
 
             if(Timer % 2 == 0)
@@ -60,9 +65,11 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<SiriusBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-
+            }
             //Play Sound
             switch (Main.rand.Next(2))
             {

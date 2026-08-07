@@ -186,7 +186,7 @@ namespace Stellamod.Projectiles.Thrown
                     Projectile.velocity.Y = -10;
                     Projectile.velocity.X = -Projectile.velocity.X / 2;
                 }
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 8);
                 for (int i = 0; i < 15; i++)
                 {
                     SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);

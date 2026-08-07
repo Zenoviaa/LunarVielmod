@@ -12,8 +12,6 @@ namespace Stellamod.Projectiles.Thrown
 {
     public class ComicalTridentP : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius2");
@@ -71,7 +69,6 @@ namespace Stellamod.Projectiles.Thrown
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             // Redraw the projectile with the color not influenced by light
@@ -91,10 +88,14 @@ namespace Stellamod.Projectiles.Thrown
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch);
             }
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                          ModContent.ProjectileType<FunBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+            }
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(),Projectile.Center, Vector2.Zero, 
-                ModContent.ProjectileType<FunBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ComicBoom"));
+      
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ComicBoom") with { PitchVariance = 0.3f }, Projectile.position);
         }
 
     }

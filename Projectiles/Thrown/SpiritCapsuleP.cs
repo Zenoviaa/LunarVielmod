@@ -80,7 +80,7 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 9; i++)
             {
 
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin);

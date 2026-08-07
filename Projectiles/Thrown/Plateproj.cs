@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Effects.Primitives;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Thrown
 {
@@ -74,11 +71,11 @@ namespace Stellamod.Projectiles.Thrown
         }
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.SilverCoin, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
             }
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num1].noGravity = true;
@@ -135,12 +132,7 @@ namespace Stellamod.Projectiles.Thrown
         {
             return Color.Lerp(Color.DarkRed, Color.Transparent, completionRatio) * 0.7f;
         }
-      
 
-        private Vector2 DrawOffset;
-        private float alphaCounter = 2;
-        private float counter = 3;
-       
     }
 }
 

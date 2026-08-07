@@ -63,10 +63,14 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(0, -120), Vector2.Zero,
-                ModContent.ProjectileType<ScatterBoom>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(0, -120), Vector2.Zero,
+                    ModContent.ProjectileType<ScatterBoom>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
+            }
+
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 14);
             for (int i = 0; i < Main.rand.Next(3, 7); i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);

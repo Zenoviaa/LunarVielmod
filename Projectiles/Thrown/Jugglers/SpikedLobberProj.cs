@@ -117,12 +117,15 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
             if(Juggler.CatchCount >= 5 && Timer % 5 == 0 && Timer < 30)
             {
-                //Spikes
-                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
-                velocity += new Vector2(0, -16);
-                SoundEngine.PlaySound(SoundID.Item108, Projectile.position);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SpikedLobberSpikeProj>(),
-                    Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    //Spikes
+                    Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                    velocity += new Vector2(0, -16);
+                    SoundEngine.PlaySound(SoundID.Item108, Projectile.position);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SpikedLobberSpikeProj>(),
+                        Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
             }
 
             //Don't take too long or else you lose your combo

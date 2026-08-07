@@ -45,8 +45,12 @@ namespace Stellamod.Projectiles.Thrown
             if(Timer >= 30)
             {
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<OrionStarBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                        ModContent.ProjectileType<OrionStarBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 3);
                 Projectile.Kill();
                 Timer = 0;

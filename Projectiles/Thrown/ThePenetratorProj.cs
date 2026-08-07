@@ -115,7 +115,7 @@ namespace Stellamod.Projectiles.Thrown
                             State = ActionState.Throw;
 
 
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 24f);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 12);
                             switch (Main.rand.Next(3))
                             {
                                 case 0:

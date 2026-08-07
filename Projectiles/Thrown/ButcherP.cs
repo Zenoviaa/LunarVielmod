@@ -96,7 +96,7 @@ namespace Stellamod.Projectiles.Thrown
 
                 SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             }
-            for (int i = 0; i < 180; i++)
+            for (int i = 0; i < 90; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Red, 0f, -2f, 0, default(Color), 1.5f);
                 Main.dust[num].noGravity = true;
@@ -107,7 +107,7 @@ namespace Stellamod.Projectiles.Thrown
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 10f;
                 }
             }
-            for (int i = 0; i < 80; i++)
+            for (int i = 0; i < 40; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Red, 0f, -2f, 0, default(Color), 2.5f);
                 Main.dust[num].noGravity = true;

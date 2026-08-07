@@ -67,7 +67,7 @@ namespace Stellamod.Projectiles.Thrown
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
+
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             // Redraw the projectile with the color not influenced by light
@@ -89,21 +89,22 @@ namespace Stellamod.Projectiles.Thrown
             }
 
             var EntitySource = Projectile.GetSource_Death();
-            for (int i = 0; i < 5; i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Projectile.timeLeft = 2;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<LarveinScriputeProg2>(), Projectile.damage / 2, 1, Projectile.owner, 0, 0);
+                for (int i = 0; i < 5; i++)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<LarveinScriputeProg2>(), Projectile.damage / 2, 1, Projectile.owner, 0, 0);
+                }
             }
 
-
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.BlueTorch, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
             }
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 10; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, 205, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
+                Dust.NewDustPerfect(base.Projectile.Center, DustID.VenomStaff, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
             }
 
 

@@ -119,15 +119,19 @@ namespace Stellamod.Projectiles.Thrown
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterReady"), Projectile.position);
             float num = 8;
             float maxDelay = 30;
-            for (int i = 0; i < num; i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                float clusterRadius = 256;
-                float progress = i / (float)num;
-                float delay = progress * maxDelay;
-                Vector2 randPosition = Projectile.Center + Main.rand.NextVector2Circular(clusterRadius, clusterRadius);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), randPosition, Vector2.Zero,
-                    ModContent.ProjectileType<YourFiredExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: delay);
+                for (int i = 0; i < num; i++)
+                {
+                    float clusterRadius = 256;
+                    float progress = i / (float)num;
+                    float delay = progress * maxDelay;
+                    Vector2 randPosition = Projectile.Center + Main.rand.NextVector2Circular(clusterRadius, clusterRadius);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), randPosition, Vector2.Zero,
+                        ModContent.ProjectileType<YourFiredExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: delay);
+                }
             }
+
         }
     }
 }
