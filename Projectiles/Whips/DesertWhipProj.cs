@@ -136,7 +136,7 @@ namespace Stellamod.Projectiles.Whips
 			target.AddBuff(ModContent.BuffType<MorrowWhipDebuff>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 			ShakeModSystem.Shake = 3;			
-			for (int j = 0; j < 10; j++)
+			for (int j = 0; j < 6; j++)
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
 				ParticleManager.NewParticle(npc.position, speed * 7, ParticleManager.NewInstance<DustaParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));

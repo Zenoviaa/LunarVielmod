@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Helpers;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -35,6 +36,22 @@ namespace Stellamod.Buffs
                 Main.dust[dust].scale = 1.5f;
                 Main.dust[dust].noGravity = true;
             }
+        }
+    }
+    public class Lacerate : ModBuff
+    {
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
+        {
+            Main.debuff[Type] = true;
+            Main.pvpBuff[Type] = true;
+            Main.buffNoTimeDisplay[Type] = false;
+        }
+
+        public override void Update(NPC npc, ref int buffIndex)
+        {
+
+
         }
     }
 }

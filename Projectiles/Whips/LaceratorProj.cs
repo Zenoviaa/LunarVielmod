@@ -13,6 +13,41 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Whips
 {
+	public class LaceratorGlobalNPC : GlobalNPC
+	{
+        public override void AI(NPC npc)
+        {
+            base.AI(npc);
+			if (StellaMultiplayer.IsHost)
+			{
+				if (npc.HasBuff<Lacerated>())
+					return;
+				var target = npc;
+				if (npc.HasBuff<Lacerate>())
+				{
+                    //The splitting effect itself
+                    int npcType = target.type;
+                    int splitCount = 2;
+                    float degreesPer = 360 / (float)splitCount;
+
+                    for (int i = 0; i < splitCount; i++)
+                    {
+                        float degrees = i * degreesPer;
+                        Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
+                        Vector2 vel = direction * 4;
+
+                        NPC splitNpc = NPC.NewNPCDirect(target.GetSource_FromThis(), target.position, npcType);
+                        splitNpc.lifeMax = target.life / 2;
+                        splitNpc.life = splitNpc.lifeMax;
+                        splitNpc.scale = 0.5f;
+                        splitNpc.Size *= 0.5f;
+                        splitNpc.velocity = vel;
+                        splitNpc.AddBuff(ModContent.BuffType<Lacerated>(), int.MaxValue);
+                    }
+                }
+			}
+        }
+	}
 	internal class LaceratorProj : ModProjectile
     {
 		public static readonly int[] Split_Immunity =
@@ -129,25 +164,8 @@ namespace Stellamod.Projectiles.Whips
 					target.position.Y + speedY, 0, 0, ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
 			}
 
-			//The splitting effect itself
-			int npcType = target.type;
-			int splitCount = 2;
-			float degreesPer = 360 / (float)splitCount;
 
-			for (int i =0;i < splitCount; i++)
-			{
-				float degrees = i * degreesPer;
-				Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
-				Vector2 vel = direction * 4;
-
-				NPC splitNpc = NPC.NewNPCDirect(target.GetSource_FromThis(), target.position, npcType);
-				splitNpc.lifeMax = target.life / 2;
-				splitNpc.life = splitNpc.lifeMax;
-				splitNpc.scale = 0.5f;
-				splitNpc.Size *= 0.5f;
-				splitNpc.velocity = vel;
-				splitNpc.AddBuff(ModContent.BuffType<Lacerated>(), int.MaxValue);
-			}
+			target.AddBuff(ModContent.BuffType<Lacerate>(), 120);
 
 			//Despawn the original NPC
 			//Idk if this is the correct way to do it, but it should work?
