@@ -104,9 +104,13 @@ namespace Stellamod.Projectiles.Summons.Sentries
                         }
 
                         Vector2 velocityToTarget = VectorHelper.VelocityDirectTo(Projectile.position, npcToTarget.position, 5);
-                        var proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocityToTarget,
-                            projToFire, Projectile.damage, Projectile.knockBack, owner.whoAmI);
-                        proj.DamageType = DamageClass.Summon;
+                        if(Main.myPlayer == Projectile.owner)
+                        {
+                            var proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocityToTarget,
+                                               projToFire, Projectile.damage, Projectile.knockBack, owner.whoAmI);
+                            proj.DamageType = DamageClass.Summon;
+                        }
+               
 
                         //Cool little circle visual
                         for (int i = 0; i < 16; i++)

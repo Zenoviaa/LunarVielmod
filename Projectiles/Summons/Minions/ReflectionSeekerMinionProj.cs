@@ -318,8 +318,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                 if (Grenns > 50)
                 {
                     Vector2 bulletVelocity = Projectile.Center.DirectionTo(targetCenter) * 52;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bulletVelocity,
-                        ModContent.ProjectileType<EldritchBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bulletVelocity,
+                            ModContent.ProjectileType<EldritchBolt>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
+
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Laserlock") {PitchVariance = 0.3f }, Projectile.Center);
 
 

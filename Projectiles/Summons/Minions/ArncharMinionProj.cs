@@ -81,12 +81,7 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
+
 
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
@@ -109,7 +104,12 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             if (!SummonHelper.CheckMinionActive<ArncharMinionBuff>(player, Projectile))
                 return;
-
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
             #region General behavior
             Vector2 idlePosition = player.Center;
             idlePosition.Y -= 1f; // Go up 48 coordinates (three tiles from the center of the player)
@@ -229,10 +229,11 @@ namespace Stellamod.Projectiles.Summons.Minions
                         {
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone2"), Projectile.position);
                         }
-                        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+                        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 6);
                         Projectile.velocity.Y -= 10;
                         var EntitySource = Projectile.GetSource_Death();
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 65, direction.Y * 65, ModContent.ProjectileType<ArchariliteArrowSmallSC>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
+                        if(Main.myPlayer == Projectile.owner)
+                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 65, direction.Y * 65, ModContent.ProjectileType<ArchariliteArrowSmallSC>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
                         Projectile.ai[1] = 0;
                     }
                 }
@@ -252,7 +253,8 @@ namespace Stellamod.Projectiles.Summons.Minions
                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
                         Projectile.velocity.Y -= 10;
                         var EntitySource = Projectile.GetSource_Death();
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 45, direction.Y * 45, ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                        if (Main.myPlayer == Projectile.owner)
+                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 45, direction.Y * 45, ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                         Projectile.ai[1] = 0;
                     }
                 }

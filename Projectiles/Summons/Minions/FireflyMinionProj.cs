@@ -120,12 +120,14 @@ namespace Stellamod.Projectiles.Summons.Minions
             _attackCooldown--;
             if (_attackCooldown <= 0 && foundTarget)
             {
-                //Fire Projectile
-                Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
-                Projectile projectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity,
-                    ModContent.ProjectileType<FireflyBomb>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
-                projectile.DamageType = DamageClass.Summon;
-
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    //Fire Projectile
+                    Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
+                    Projectile projectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<FireflyBomb>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
+                    projectile.DamageType = DamageClass.Summon;
+                }
                 //How many ticks between attacks?
                 _attackCooldown = attackCooldown;
                 //_scaleOffset += 0.1f;

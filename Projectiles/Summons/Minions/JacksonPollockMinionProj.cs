@@ -77,19 +77,22 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (_counter > Time_Between_Spills)
             {
                 Player owner = Main.player[Projectile.owner];
-                for (int i = 0; i < Spill_Count; i++)
+                if (Main.myPlayer == Projectile.owner)
                 {
-                    float x = Main.rand.NextFloat(-32f, 32f);
-                    float y = 16;
+                    for (int i = 0; i < Spill_Count; i++)
+                    {
+                        float x = Main.rand.NextFloat(-32f, 32f);
+                        float y = 16;
 
-                    Vector2 randOffset = new Vector2(x, y);
-                    Vector2 velocity = VectorHelper.VelocityDirectTo(
-                        Projectile.Center,
-                        Projectile.Center + randOffset, 4);
+                        Vector2 randOffset = new Vector2(x, y);
+                        Vector2 velocity = VectorHelper.VelocityDirectTo(
+                            Projectile.Center,
+                            Projectile.Center + randOffset, 4);
 
-                    Projectile projectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<JacksonPollockProj>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
-                    projectile.DamageType = DamageClass.Summon;
+                        Projectile projectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity,
+                            ModContent.ProjectileType<JacksonPollockProj>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
+                        projectile.DamageType = DamageClass.Summon;
+                    }
                 }
 
                 _counter = 0;

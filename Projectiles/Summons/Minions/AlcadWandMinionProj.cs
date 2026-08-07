@@ -91,9 +91,13 @@ namespace Stellamod.Projectiles.Summons.Minions
                 {
                     var entitySource = Projectile.GetSource_Death();
                     Vector2 velocity = new Vector2(0, 0.5f);
-                    Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y,
-                              velocity.X, velocity.Y,
-                              ModContent.ProjectileType<VoidRain>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y,
+                                  velocity.X, velocity.Y,
+                                  ModContent.ProjectileType<VoidRain>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    }
+
                     Projectile.ai[1] = 0;
                 }
 

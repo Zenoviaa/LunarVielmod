@@ -212,8 +212,10 @@ namespace Stellamod.Projectiles.Summons.Minions
                     {
                         Vector2 direction = targetCenter - Projectile.Center;
                         var EntitySource = Projectile.GetSource_Death();
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.FireArrow, 6, 1, Main.myPlayer, 0, 0);
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.FireArrow, 6, 1, Projectile.owner, 0, 0);
+                        }
                         Projectile.ai[1] = 0;
                     }
 

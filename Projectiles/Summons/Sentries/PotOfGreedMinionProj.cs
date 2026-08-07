@@ -226,15 +226,18 @@ namespace Stellamod.Projectiles.Summons.Sentries
 
                     //If we're here, then we have the thing that we want	
                     Vector2 shadowMinionSpawnPosition = Projectile.Center + new Vector2(0, -32);
-                    Projectile shadowMinion = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), shadowMinionSpawnPosition, Vector2.Zero,
-                        projectileToClone.type, Projectile.damage, projectileToClone.knockBack, Projectile.owner);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile shadowMinion = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), shadowMinionSpawnPosition, Vector2.Zero,
+                            projectileToClone.type, Projectile.damage, projectileToClone.knockBack, Projectile.owner);
+                        shadowMinion.minionSlots = 0;
 
-                    shadowMinion.minionSlots = 0;
-
-                    int shadowMinionIndex = GetNextShadowMinionIndex();
-                    _shadowMinions[shadowMinionIndex] = shadowMinion;
-                    _shadowMinionLifeTime[shadowMinionIndex] = Shadow_Minion_Lifetime;
-                    _newShadowMinionSpawnTimer = Time_Between_Shadow_Minions;
+                        int shadowMinionIndex = GetNextShadowMinionIndex();
+                        _shadowMinions[shadowMinionIndex] = shadowMinion;
+                        _shadowMinionLifeTime[shadowMinionIndex] = Shadow_Minion_Lifetime;
+                        _newShadowMinionSpawnTimer = Time_Between_Shadow_Minions;
+                    }
+     
                     SoundEngine.PlaySound(SoundID.Item117, Projectile.position);
 
                     int dustCircleCount = 48;

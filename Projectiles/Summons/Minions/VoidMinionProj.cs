@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Vector2 directionToTarget = Projectile.Center.DirectionTo(targetCenter);
                 Vector2 offset = -directionToTarget * 200;
                 Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter + offset, 8);
-                if (Timer == 1)
+                if (Timer == 1 && StellaMultiplayer.IsHost)
                 {
                     NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
                      ModContent.NPCType<SingularitySpark>());
@@ -122,8 +122,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
                     Vector2 velocity = directionToTarget * 16;
                     velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 2);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<VoidMinionSparkProj>(), Projectile.damage, Projectile.knockBack, Owner: Projectile.owner);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                            ModContent.ProjectileType<VoidMinionSparkProj>(), Projectile.damage, Projectile.knockBack, Owner: Projectile.owner);
+                    }
+ 
                 }
 
                 if (Timer > 100 && Timer < 150)

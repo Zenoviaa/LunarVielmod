@@ -215,8 +215,12 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 WhiteTimer = 1f;
                 Vector2 velocity = Projectile.Center.DirectionTo(targetCenter) * 24;
-                Projectile.NewProjectile(EntitySource, Projectile.Center, velocity, 
-                    ModContent.ProjectileType<PegasusMinionFrostBombProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center, velocity,
+     ModContent.ProjectileType<PegasusMinionFrostBombProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+ 
                 SoundStyle soundStyle = SoundRegistry.IceyWind;
                 soundStyle.PitchVariance = 0.33f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
@@ -238,13 +242,16 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 WhiteTimer = 1f;
                 Vector2 velocity = Projectile.Center.DirectionTo(targetCenter) * 96;
-                Projectile.NewProjectile(EntitySource, Projectile.Center, velocity,
+
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center, velocity,
                     ModContent.ProjectileType<PegasusMinionLightningProj>(), Projectile.damage * 8, Projectile.knockBack, Projectile.owner);
-                Projectile.NewProjectile(EntitySource, Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
-                   ModContent.ProjectileType<PegasusMinionLightningProj>(), Projectile.damage * 8, Projectile.knockBack, Projectile.owner);
-                Projectile.NewProjectile(EntitySource, Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
-                   ModContent.ProjectileType<PegasusMinionLightningProj>(), Projectile.damage * 8, Projectile.knockBack, Projectile.owner);
-                
+                    Projectile.NewProjectile(EntitySource, Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
+                       ModContent.ProjectileType<PegasusMinionLightningProj>(), Projectile.damage * 8, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectile(EntitySource, Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
+                       ModContent.ProjectileType<PegasusMinionLightningProj>(), Projectile.damage * 8, Projectile.knockBack, Projectile.owner);
+                }
                 SoundStyle soundStyle = SoundRegistry.Lightning2;
                 soundStyle.PitchVariance = 0.33f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
@@ -265,9 +272,12 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (Timer >= 60 && Timer % 8 == 0)
             {
                 WhiteTimer = 1f;
-                Vector2 velocity = Projectile.Center.DirectionTo(targetCenter) * 15;
-                Projectile.NewProjectile(EntitySource, Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4 / 3),
-                    ModContent.ProjectileType<PegasusMinionStarProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Vector2 velocity = Projectile.Center.DirectionTo(targetCenter) * 15;
+                    Projectile.NewProjectile(EntitySource, Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4 / 3),
+                        ModContent.ProjectileType<PegasusMinionStarProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
             }
             if(Timer >= 120)
             {

@@ -234,8 +234,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
 
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, directionToTarget * 10,
-                        ModContent.ProjectileType<SerpentMinionFireBreathProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, directionToTarget * 10,
+                  ModContent.ProjectileType<SerpentMinionFireBreathProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
+              
                 }
             }
             else

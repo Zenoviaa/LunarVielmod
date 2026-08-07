@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -89,10 +90,8 @@ namespace Stellamod.Projectiles.Summons.Glyph
 			afterImgColor.B = 200;
 			afterImgColor.G = 200;
 			afterImgColor.R = 200;
-
-			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+            for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{
 				//if(i % 2 == 0)
 				float rotationToDraw;

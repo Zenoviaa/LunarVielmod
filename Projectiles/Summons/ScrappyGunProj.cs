@@ -47,9 +47,13 @@ namespace Stellamod.Projectiles.Summons
                 if(ai_Kill == 1)
                 {
                     ai_Kill = 0;
-                    Vector2 velocity = Projectile.rotation.ToRotationVector2();
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<ScrappyGunLaser>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: Projectile.whoAmI);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Vector2 velocity = Projectile.rotation.ToRotationVector2();
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                            ModContent.ProjectileType<ScrappyGunLaser>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: Projectile.whoAmI);
+                    }
+
                     SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.position);
                 }
             
@@ -81,20 +85,17 @@ namespace Stellamod.Projectiles.Summons
                 spriteEffects = SpriteEffects.FlipVertically;
             }
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
 
             Vector2 drawOrigin = new Vector2(78 / 2, 38 / 2);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(Color.OrangeRed, Color.Transparent, 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                color.A = 0;
                 Main.spriteBatch.Draw(texture, drawPos, null, color, Projectile.oldRot[k], drawOrigin, Projectile.scale, spriteEffects, 0f);
             }
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation,
                drawOrigin, 1f, spriteEffects, 0);
             return false;

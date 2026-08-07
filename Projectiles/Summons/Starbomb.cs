@@ -50,12 +50,17 @@ namespace Stellamod.Projectiles.Summons
             {
                 ShakeModSystem.Shake = 6;
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"));
-                for (int j = 0; j < 40; j++)
+                if(Main.myPlayer == Projectile.owner)
                 {
+                    for (int j = 0; j < 40; j++)
+                    {
 
-                    Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, speed2 * 9 + Projectile.velocity, ModContent.ProjectileType<Starout>(), 320 + Projectile.damage, 0f, 0, 0f, 0f);
+                        Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, speed2 * 9 + Projectile.velocity, ModContent.ProjectileType<Starout>(), 320 + Projectile.damage, 0f, 0, 0f, 0f);
+                    }
+
                 }
+  
             }
             if (Projectile.timeLeft <= 180)
             {

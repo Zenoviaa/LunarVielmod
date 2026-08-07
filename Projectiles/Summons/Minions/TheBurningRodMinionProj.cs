@@ -169,7 +169,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 {
                     Projectile.velocity *= 0.9f;
                     Timer++;
-                    if (Timer >= 30 && distanceFromTarget < 252)
+                    if (Timer >= 30 && distanceFromTarget < 252 && Main.myPlayer == Projectile.owner)
                     {
                         Vector2 velocity = Projectile.Center.DirectionTo(targetCenter) * 8;
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4 / 3),

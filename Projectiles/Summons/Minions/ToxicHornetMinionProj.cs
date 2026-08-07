@@ -79,9 +79,13 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Projectile.ai[0]++;
                 if (Projectile.ai[0] > 30)
                 {
-                    Vector2 bulletVelocity = Projectile.Center.DirectionTo(targetCenter) * 62;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bulletVelocity,
-                        ModContent.ProjectileType<ToxicMissileFriendly>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        Vector2 bulletVelocity = Projectile.Center.DirectionTo(targetCenter) * 62;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bulletVelocity,
+                            ModContent.ProjectileType<ToxicMissileFriendly>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
+
                     SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
                     SoundEngine.PlaySound(SoundID.Zombie48, Projectile.position);
                     Projectile.ai[0] = 0;

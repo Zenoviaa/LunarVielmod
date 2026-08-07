@@ -82,10 +82,6 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(3))
-            {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkRed, 0.4f).noGravity = true;
-            }
 
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
@@ -100,6 +96,10 @@ namespace Stellamod.Projectiles.Summons.Minions
             Player player = Main.player[Projectile.owner];
             if (!SummonHelper.CheckMinionActive<ProbeMinionBuff>(player, Projectile))
                 return;
+            if (Main.rand.NextBool(3))
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkRed, 0.4f).noGravity = true;
+            }
 
 
             #region General behavior
@@ -229,8 +229,8 @@ namespace Stellamod.Projectiles.Summons.Minions
                         Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
 
                         var EntitySource = Projectile.GetSource_Death();
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.Bullet, 40, 1, Main.myPlayer, 0, 0);
+                        if (Main.myPlayer == Projectile.owner)
+                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.Bullet, 40, 1, Projectile.owner, 0, 0);
                         Projectile.ai[1] = 0;
                     }
                 }

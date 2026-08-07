@@ -71,17 +71,14 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(255, 136, 247), new Color(54, 64, 195), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                color.A = 0;
                 Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
         public override void AI()
@@ -199,8 +196,8 @@ namespace Stellamod.Projectiles.Summons.Minions
                 if (Projectile.ai[1] >= 20)
                 {
                     var EntitySource = Projectile.GetSource_Death();
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<MushroomStaveMinionProg>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                    if (Main.myPlayer == Projectile.owner)
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<MushroomStaveMinionProg>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                     Projectile.ai[1] = 0;
                 }
 

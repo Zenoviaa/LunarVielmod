@@ -101,13 +101,16 @@ namespace Stellamod.Projectiles.Summons.Minions
                     Vector2 directionToTarget = Projectile.Center.DirectionTo(targetCenter);
                     Vector2 velocityToTarget = directionToTarget * 1;
                     int numProjectiles = Main.rand.Next(1, 3);
-                    for (int p = 0; p < numProjectiles; p++)
+                    if (Main.myPlayer == Projectile.owner)
                     {
-                        // Rotate the velocity randomly by 30 degrees at max.
-                        Vector2 newVelocity = velocityToTarget.RotatedByRandom(MathHelper.ToRadians(6));
-                        newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                        Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, newVelocity,
-                            ModContent.ProjectileType<JellyStaffLightningProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        for (int p = 0; p < numProjectiles; p++)
+                        {
+                            // Rotate the velocity randomly by 30 degrees at max.
+                            Vector2 newVelocity = velocityToTarget.RotatedByRandom(MathHelper.ToRadians(6));
+                            newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                            Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, newVelocity,
+                                ModContent.ProjectileType<JellyStaffLightningProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        }
                     }
                     Timer = 0;
                 }

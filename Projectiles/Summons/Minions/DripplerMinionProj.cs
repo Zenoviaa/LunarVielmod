@@ -179,9 +179,11 @@ namespace Stellamod.Projectiles.Summons.Minions
 
                 SoundEngine.PlaySound(SoundID.NPCHit18, targetNpc.Center);
                 SoundEngine.PlaySound(SoundID.Item171, targetNpc.Center);
-
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), (int)targetNpc.Center.X, (int)targetNpc.Center.Y, speed.X, speed.Y,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), (int)targetNpc.Center.X, (int)targetNpc.Center.Y, speed.X, speed.Y,
                     ModContent.ProjectileType<BloodWaterProj>(), Projectile.damage / 2, 1f, Projectile.owner);
+                }
                 Timer = 0;
             }
         }

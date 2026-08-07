@@ -128,13 +128,15 @@ namespace Stellamod.Projectiles.Summons.Minions
                 AttackTimer++;
                 if (AttackTimer > 90)
                 {
-                    Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
 
-                    //Auroran Bullet Placeholder, it will be instanteous lightning projectile
-                    //Maybe just directly damage the target? idk
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<ClimateIceProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-
+                        //Auroran Bullet Placeholder, it will be instanteous lightning projectile
+                        //Maybe just directly damage the target? idk
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                            ModContent.ProjectileType<ClimateIceProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
                     AttackTimer = 0;
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer1"), Projectile.position);
                 }
@@ -170,16 +172,19 @@ namespace Stellamod.Projectiles.Summons.Minions
                 AttackTimer++;
                 if (AttackTimer > 55)
                 {
-                    Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
 
-                    //Auroran Bullet Placeholder, it will be instanteous lightning projectile
-                    //Maybe just directly damage the target? idk
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
-                      ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
-                      ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                        //Auroran Bullet Placeholder, it will be instanteous lightning projectile
+                        //Maybe just directly damage the target? idk
+                        Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                            ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                        Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
+                          ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                        Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f,
+                          ModContent.ProjectileType<ClimateLightningProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                    }
                     AttackTimer = 0;
                     SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap, Projectile.position);
                 }
@@ -199,8 +204,11 @@ namespace Stellamod.Projectiles.Summons.Minions
             int tornadoType = ModContent.ProjectileType<ClimateTornadoProj>();
             if(_spawnTimer % 60 == 0 && Main.myPlayer == Projectile.owner)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                  tornadoType, Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai0: Projectile.identity);
+                }
             }
         }
 

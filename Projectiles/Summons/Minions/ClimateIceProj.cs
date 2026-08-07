@@ -76,10 +76,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
                 ParticleManager.NewParticle(Projectile.Center, speed * 8, ParticleManager.NewInstance<IceyParticle>(), Color.White, Main.rand.NextFloat(.3f, .6f));
             }
-
-            //Explosion?
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            if (Main.myPlayer == Projectile.owner)
+            {
+                //Explosion?
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<ClimateIceProjExplosion>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
         }
     }
 }

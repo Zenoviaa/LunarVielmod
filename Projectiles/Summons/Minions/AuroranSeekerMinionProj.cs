@@ -77,10 +77,12 @@ namespace Stellamod.Projectiles.Summons.Minions
             TimerShoot++;
             if (TimerShoot >= 100)
             {
-
-                float speedXa = Projectile.velocity.X / 6 + Main.rand.NextFloat(-10f, 10f);
-                float speedYa = Projectile.velocity.Y / 6 + Main.rand.Next(-10, 10);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ProjectileType<SeekerProj>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    float speedXa = Projectile.velocity.X / 6 + Main.rand.NextFloat(-10f, 10f);
+                    float speedYa = Projectile.velocity.Y / 6 + Main.rand.Next(-10, 10);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ProjectileType<SeekerProj>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+                }
                 TimerShoot = 0;
             }
         }

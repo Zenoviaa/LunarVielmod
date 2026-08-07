@@ -72,7 +72,7 @@ namespace Stellamod.Projectiles.Summons
                     if (distance <= 200)
                     {
                         Vector2 direction = npc.Center - Projectile.Center;
-                        direction.Normalize();
+                        direction = direction.SafeNormalize(Vector2.Zero);
                         npc.velocity -= direction * 0.5f;
                     }
                 }
