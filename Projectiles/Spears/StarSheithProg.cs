@@ -30,21 +30,21 @@ namespace Stellamod.Projectiles.Spears
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Yellow, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
         }
 
 
         public override bool PreAI()
         {
-
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Yellow, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
             if (!Sounded)
             {
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarSheith"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarSheith"), Projectile.position);
                 Sounded = true;
             }
  

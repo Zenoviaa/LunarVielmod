@@ -55,7 +55,8 @@ namespace Stellamod.Projectiles.Spears
                 var EntitySource = Projectile.GetSource_FromThis();
                 if (Main.rand.NextBool(8))
                 {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProgRed>(), 40, 1, Projectile.owner, 0, 0);
+                    if (Main.myPlayer == Projectile.owner)
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProgRed>(), 40, 1, Projectile.owner, 0, 0);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirageRed"), Projectile.position);
                 }
                 else
@@ -69,7 +70,8 @@ namespace Stellamod.Projectiles.Spears
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage2"), Projectile.position);
                     }
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProg>(), 10, 1,Projectile.owner, 0, 0);
+                    if(Main.myPlayer == Projectile.owner)
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProg>(), 10, 1,Projectile.owner, 0, 0);
                 }
             }
             if (Projectile.ai[1] >= 0 && Projectile.ai[1] <= 20)

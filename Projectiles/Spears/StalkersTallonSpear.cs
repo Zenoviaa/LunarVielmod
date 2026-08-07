@@ -23,16 +23,17 @@ namespace Stellamod.Projectiles.Spears
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Yellow, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
         }
 
 
         public override bool PreAI()
         {
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Yellow, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
             Player player = Main.player[Projectile.owner]; // Since we access the owner player instance so much, it's useful to create a helper local variable for this
             int duration = player.itemAnimationMax; // Define the duration the projectile will exist in frames
             player.heldProj = Projectile.whoAmI; // Update the player's held projectile id

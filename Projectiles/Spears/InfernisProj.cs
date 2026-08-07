@@ -34,6 +34,13 @@ namespace Stellamod.Projectiles.Spears
 
         public override void AI()
         {
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 150, Color.OrangeRed, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
+
             Projectile.velocity *= .96f;
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
@@ -93,36 +100,41 @@ namespace Stellamod.Projectiles.Spears
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Infernis1"), Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 120f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 8);
             var EntitySource = Projectile.GetSource_FromThis();
-            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ProjectileID.DD2ExplosiveTrapT3Explosion, Projectile.damage * 2, 1, Projectile.owner, 0, 0);
 
-            if(Projectile.ai[1] >= 70)
+            if(Main.myPlayer == Projectile.owner)
             {
-                BombOffset.X = Projectile.Center.X - 50;
-                BombOffset.Y = Projectile.Center.Y - 100;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ProjectileID.DD2ExplosiveTrapT3Explosion, Projectile.damage * 2, 1, Projectile.owner, 0, 0);
 
-                BombOffset.X = Projectile.Center.X + 70;
-                BombOffset.Y = Projectile.Center.Y - 100;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                if (Projectile.ai[1] >= 70)
+                {
+                    BombOffset.X = Projectile.Center.X - 50;
+                    BombOffset.Y = Projectile.Center.Y - 100;
+                    Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
-                BombOffset.X = Projectile.Center.X - 150;
-                BombOffset.Y = Projectile.Center.Y - 400;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    BombOffset.X = Projectile.Center.X + 70;
+                    BombOffset.Y = Projectile.Center.Y - 100;
+                    Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
-                BombOffset.X = Projectile.Center.X + 170;
-                BombOffset.Y = Projectile.Center.Y - 400;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    BombOffset.X = Projectile.Center.X - 150;
+                    BombOffset.Y = Projectile.Center.Y - 400;
+                    Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
-                BombOffset.X = Projectile.Center.X - 250;
-                BombOffset.Y = Projectile.Center.Y - 700;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    BombOffset.X = Projectile.Center.X + 170;
+                    BombOffset.Y = Projectile.Center.Y - 400;
+                    Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
-                BombOffset.X = Projectile.Center.X + 270;
-                BombOffset.Y = Projectile.Center.Y - 700;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    BombOffset.X = Projectile.Center.X - 250;
+                    BombOffset.Y = Projectile.Center.Y - 700;
+                    Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+
+                    BombOffset.X = Projectile.Center.X + 270;
+                    BombOffset.Y = Projectile.Center.Y - 700;
+                    Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                }
             }
+
         }
 
         float alphaCounter = 0;
@@ -165,16 +177,6 @@ namespace Stellamod.Projectiles.Spears
             }
             Main.EntitySpriteDraw(texture, DrawOffset - Main.screenPosition, null, drawColor with { A = 250 }, Projectile.rotation, texture.Size() * 0.5f, scale, Effects, 0);
 
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 150, Color.OrangeRed, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.LoadProjectile(Projectile.type);
 
             // Redraw the projectile with the color not influenced by light
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
@@ -182,10 +184,9 @@ namespace Stellamod.Projectiles.Spears
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(254, 231, 97), new Color(247, 118, 34), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                color.A = 0;
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, Effects, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             return true;
         }

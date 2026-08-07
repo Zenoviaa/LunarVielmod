@@ -71,6 +71,11 @@ namespace Stellamod.Projectiles.Spears
 
         public override void AI()
         {
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
             FlashTimer -=0.02f;
             if (FlashTimer <= 0)
                 FlashTimer = 0;
@@ -436,11 +441,7 @@ namespace Stellamod.Projectiles.Spears
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.DarkSeaGreen.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
         }
     }
 }

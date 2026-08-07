@@ -28,7 +28,6 @@ namespace Stellamod.Projectiles.Spears
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             // Redraw the projectile with the color not influenced by light
@@ -44,6 +43,11 @@ namespace Stellamod.Projectiles.Spears
         }
         public override void AI()
         {
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Yellow, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
             Projectile.velocity.X /= 1.04f;
             Projectile.velocity.Y += 0.1f;
             Projectile.rotation += 0.2f;
@@ -52,11 +56,7 @@ namespace Stellamod.Projectiles.Spears
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Yellow, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
 
         }
 

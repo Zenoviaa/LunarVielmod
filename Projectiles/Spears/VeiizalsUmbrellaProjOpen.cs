@@ -57,7 +57,7 @@ namespace Stellamod.Projectiles.Spears
             {
                 // Our timer has finished, do something here:
                 // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.		
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
                 Timer = 0;
             }
 
@@ -88,7 +88,7 @@ namespace Stellamod.Projectiles.Spears
                 float speedX = Projectile.velocity.X * 10;
                 float speedY = Projectile.velocity.Y * 7;
 
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"));
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"), Projectile.position);
             }
 
             if (Timer == 80)
@@ -96,11 +96,15 @@ namespace Stellamod.Projectiles.Spears
 
 
                 //Funny Screenshake
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 6);
                 float speedX = Projectile.velocity.X * 10;
                 float speedY = Projectile.velocity.Y * 7;
-                Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, new Vector2(0,0), ModContent.ProjectileType<DreadSpawnEffect>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-                Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 32f, ModContent.ProjectileType<VeiizalsUmbrellaWaveProj>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, new Vector2(0, 0), ModContent.ProjectileType<DreadSpawnEffect>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+                    Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 32f, ModContent.ProjectileType<VeiizalsUmbrellaWaveProj>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
+                }
+       
                 SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, player.position);
                 float recoilStrength = 7;
                 Vector2 targetVelocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
@@ -126,18 +130,6 @@ namespace Stellamod.Projectiles.Spears
             }
         }
 
-        private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
-        {
-            Projectile.Center = playerhandpos;
-            Projectile.spriteDirection = Projectile.direction;
-
-            // Constantly resetting player.itemTime and player.itemAnimation prevents the player from switching items or doing anything else.
-            player.ChangeDir(Projectile.direction);
-            player.heldProj = Projectile.whoAmI;
-            player.itemTime = 3;
-            player.itemAnimation = 3;
-            player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-        }
 
         public override bool PreDraw(ref Color lightColor)
         {

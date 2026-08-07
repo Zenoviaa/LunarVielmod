@@ -86,8 +86,12 @@ namespace Stellamod.Projectiles.Spears
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<TheIrradiaspearExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+    ModContent.ProjectileType<TheIrradiaspearExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
+
         }
     }
 }
