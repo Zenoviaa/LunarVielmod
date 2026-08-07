@@ -67,17 +67,21 @@ namespace Stellamod.Projectiles.Steins
 			if (Explosion > 179)
 			{
 
-				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
+				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 4);
 
-				for (int i = 0; i < 5; i++)
+				if(Main.myPlayer == Projectile.owner)
 				{
-					float speedX = Main.rand.Next(-9, 9);
-					float speedY = Main.rand.Next(-9, 9);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<SHShot>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Purple, 1f).noGravity = true;
-				}
+                    for (int i = 0; i < 5; i++)
+                    {
+                        float speedX = Main.rand.Next(-9, 9);
+                        float speedY = Main.rand.Next(-9, 9);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<SHShot>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                        Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Purple, 1f).noGravity = true;
+                    }
 
-				Projectile.Kill();
+                }
+
+                Projectile.Kill();
 			}
 
 			Vector2 circlePosition = CalculateCirclePosition(owner);
