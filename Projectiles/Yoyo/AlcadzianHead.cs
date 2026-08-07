@@ -69,12 +69,16 @@ namespace Stellamod.Projectiles.Yoyo
 			if (gh == 20)
 			{
 
-				float speedXa = Main.rand.NextFloat(-9f, 9f);
-				float speedYa = Main.rand.NextFloat(-9f, 9f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa, speedYa, ProjectileID.NebulaArcanumExplosionShot, Projectile.damage / 4, 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    float speedXa = Main.rand.NextFloat(-9f, 9f);
+                    float speedYa = Main.rand.NextFloat(-9f, 9f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa, speedYa, ProjectileID.NebulaArcanumExplosionShot, Projectile.damage / 4, 0f, Projectile.owner, 0f, 0f);
+
+                }
 
 
-				gh = 0;
+                gh = 0;
 
 			}
 
