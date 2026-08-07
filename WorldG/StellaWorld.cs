@@ -2883,6 +2883,7 @@ namespace Stellamod.WorldG
                 // Select a place in the first 6th of the world, avoiding the oceans
                 int abysmy = FindSurfacePoint(abysmx).Y;
                 abysmy += 400;
+                abysmx -= 400;
                 Tile tile = Main.tile[abysmx, abysmy];
                 while (tile.HasTile)
                 {
@@ -5745,13 +5746,23 @@ namespace Stellamod.WorldG
             bool placed = false;
             int attempts = 0;
             string structure = "Struct/Ice/VerliasCathedral";
-            while (!placed && attempts < 1000)
+            Rectangle rect = StructureLoader.ReadRectangle(structure);
+            while (!placed && attempts < 10000)
             {
                 attempts++;
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int towerX = snowBounds.Y + WorldGen.genRand.Next(-125, 0);
+                int towerX = snowBounds.Y + WorldGen.genRand.Next(-125, 125);
                 int towerY = FindSurfacePoint(towerX).Y; //(int)Main.worldSurface - 200;
                 Point Loc = new Point(towerX, towerY - 50);
+
+                rect.Location = Loc;
+                while (rect.Location.Y - rect.Height <= 100)
+                {
+                    Loc.Y++;
+                    rect.Location = Loc;
+                }
+
+
                 if (!StructureLoader.TryPlaceAndProtectStructure(Loc, structure))
                     continue;
 
