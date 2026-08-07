@@ -29,7 +29,6 @@ namespace Stellamod.NPCs.Bosses.Veiizal
         {
             Projectile.width = 10;
             Projectile.height = 10;
-            Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.penetrate = 10;
             Projectile.timeLeft = 120;
@@ -64,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
         }
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Red, Color.Transparent, completionRatio) * 0.7f;
+            return Color.Lerp(Color.White, Color.Red, completionRatio) * 0.7f * MathHelper.Lerp(1f,0f, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)

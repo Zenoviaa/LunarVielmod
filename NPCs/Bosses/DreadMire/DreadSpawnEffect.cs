@@ -20,7 +20,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 		{
 			Projectile.aiStyle = 0;
             Projectile.alpha = 255;
-            Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = 1;
             Projectile.timeLeft = 400;

@@ -1692,7 +1692,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             }
             NPC.velocity *= 0.8f;
-            NPC.velocity -= NPC.Center.DirectionTo(Target.Center).SafeNormalize(Vector2.Zero);
+            NPC.velocity -= NPC.Center.DirectionTo(Target.Center).SafeNormalize(Vector2.Zero) * 0.2f;
             LookDirection = DirectionToTarget;
             DefaultOrientation();
             //Put huffing and puffing sounds here
