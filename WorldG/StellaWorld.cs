@@ -3076,6 +3076,7 @@ namespace Stellamod.WorldG
             int attempts = 0;
             Point acidBounds = TileBounds(ModContent.TileType<AcidialDirt>(), 0, Main.maxTilesX);
             Point placePoint = pointL;
+            placePoint.Y += 100;
             while (!placed && attempts < 1000)
             {
                 attempts++;

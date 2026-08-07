@@ -1117,18 +1117,31 @@ namespace Stellamod
                     player.AddBuff(ModContent.BuffType<Irradiation>(), 50);
                 }
 
-				//Update Rain
-                Main.raining = true;
+				if (!EventWorld.GreenSun)
+                {
+               
+                    //Update Rain
+                    Main.raining = true;
 
-				//That way, if it is already raining, it won't be overriden
-				//And if it is not raining, it'll just be permanent until you leave the biome
-				if (Main.rainTime <= 2)
-					Main.rainTime = 2;
-				Main.maxRaining = 0.8f;
-                Main.maxRain = 140;
+                    //That way, if it is already raining, it won't be overriden
+                    //And if it is not raining, it'll just be permanent until you leave the biome
+                    if (Main.rainTime <= 2)
+                        Main.rainTime = 2;
+                    Main.maxRaining = 0.8f;
+                    Main.maxRain = 140;
+
+                }else
+				{
+					if (Main.raining)
+                    {
+				
+                        Main.rainTime = 2;
+                        Main.raining = false;
+					}
+				}
 
 
-				//Create Gores
+                //Create Gores
                 float goreScale = Main.rand.NextFloat(0.5f, 0.9f);
                 int x = (int)(Main.windSpeedCurrent > 0 ? Main.screenPosition.X - 100 : Main.screenPosition.X + Main.screenWidth + 100);
                 int y = (int)Main.screenPosition.Y + Main.rand.Next(-100, Main.screenHeight);
@@ -2201,7 +2214,7 @@ namespace Stellamod
                 GoldenRingCooldown++;
                 GoldenSparkleCooldown++;
                 RayCooldown++;
-				if (Main.rand.NextBool(5))
+				if (Main.rand.NextBool(7))
 				{
 					for (int j = 0; j < 1; j++)
 					{
@@ -2226,7 +2239,7 @@ namespace Stellamod
 					}
 				}
 
-				if (Main.rand.NextBool(5))
+				if (Main.rand.NextBool(7))
 				{
 					for (int j = 0; j < 1; j++)
 					{
@@ -2271,7 +2284,7 @@ namespace Stellamod
 
                 if (GoldenRingCooldown > 2)
                 {
-					if (Main.rand.NextBool(3))
+					if (Main.rand.NextBool(6))
 					{
 						for (int j = 0; j < 2; j++)
 						{
@@ -2290,7 +2303,7 @@ namespace Stellamod
 
                 if (GoldenSparkleCooldown > 100)
                 {
-					if (Main.rand.NextBool(3))
+					if (Main.rand.NextBool(6))
 					{
 						for (int j = 0; j < 1; j++)
 						{

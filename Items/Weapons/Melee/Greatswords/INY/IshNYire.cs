@@ -391,7 +391,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 				if (player.HasBuff<YireShow>())
 				{
 					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<YireProj>(), damage * 3, knockback, player.whoAmI, 1, dir);
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyAr") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyAr") { PitchVariance = 0.3f }, player.Center);
 
                     float numberProjectiles = 3;
 					float rotation = MathHelper.ToRadians(20);

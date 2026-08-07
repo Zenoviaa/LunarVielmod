@@ -1167,8 +1167,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
             if (timer == 51)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") {PitchVariance = 0.3f  }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { PitchVariance = 0.3f  }, NPC.Center);
                 if (StellaMultiplayer.IsHost)
                 {
                     switch (Main.rand.Next(2))
@@ -1230,8 +1230,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
             if (timer == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") {PitchVariance = 0.3f  }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { PitchVariance = 0.3f  }, NPC.Center);
                 if (StellaMultiplayer.IsHost)
                 {
                     switch (Main.rand.Next(2))
@@ -1293,8 +1293,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
 
                 ShakeModSystem.Shake = 8;
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") {PitchVariance = 0.3f  }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { PitchVariance = 0.3f  }, NPC.Center);
                 if (StellaMultiplayer.IsHost)
                 {
                     switch (Main.rand.Next(2))

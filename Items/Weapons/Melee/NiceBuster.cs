@@ -76,7 +76,7 @@ namespace Stellamod.Items.Weapons.Melee
             {
                 dir = 1;
             }
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyAr") { Pitch = Main.rand.NextFloat(-10f, 1f) }, player.Center);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyAr") { PitchVariance = 0.3f }, player.Center);
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, dir);
             return false; // return false to prevent original projectile from being shot
         }

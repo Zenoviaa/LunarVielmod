@@ -262,7 +262,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 NPC.velocity *= 0f;
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GoldPrice2") { Pitch = Main.rand.NextFloat(-10f, 10f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GoldPrice2") { PitchVariance = 0.3f }, NPC.Center);
                 switch (Main.rand.Next(4))
                 {
                     case 0:

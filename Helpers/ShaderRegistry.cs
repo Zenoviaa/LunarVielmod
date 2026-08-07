@@ -57,7 +57,7 @@ namespace Stellamod.Helpers
                 Filters.Scene["Stellamod:VeilSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
                 SkyManager.Instance["Stellamod:VeilSky"] = new AuroranSky();
 
-                Filters.Scene["Stellamod:GreenSunSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.VeryHigh);
+                Filters.Scene["Stellamod:GreenSunSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.01f), EffectPriority.VeryHigh);
                 SkyManager.Instance["Stellamod:GreenSunSky"] = new GreenSunSky();
             }
 

@@ -149,7 +149,7 @@ namespace Stellamod
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();
 
-                Filters.Scene["Stellamod:GreenMoonSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.2f, 0.5f).UseOpacity(0.53f), EffectPriority.High);
+                Filters.Scene["Stellamod:GreenMoonSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.2f, 0.5f).UseOpacity(0.35f), EffectPriority.High);
                 SkyManager.Instance["Stellamod:GreenMoonSky"] = new GreenMoonSky();
 
                 SkyManager.Instance["Stellamod:GovheilSky"] = new GovheilSky();
