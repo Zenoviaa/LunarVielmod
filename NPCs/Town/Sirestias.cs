@@ -377,6 +377,7 @@ namespace Stellamod.NPCs.Town
 
 											
 
+
 												Main.npcChatText = LangText.Chat(this, "Downed12");
 
 

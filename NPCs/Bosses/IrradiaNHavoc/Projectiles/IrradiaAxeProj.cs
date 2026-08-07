@@ -136,9 +136,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             Color drawColor = (Color)GetLineAlpha(lightColor);
             drawColor *= AlphaTimer;
 
-            Vector2 drawOrigin = texture.Size() / 2;
+            Vector2 drawOrigin = lineTexture.Size() / 2;
 
-            float drawScale = Projectile.scale;
+       
+            Vector2 drawScale = Vector2.One;
+            drawScale.Y *= 3;
             Vector2 velocity;
             Vector2 velocityRotated;
 

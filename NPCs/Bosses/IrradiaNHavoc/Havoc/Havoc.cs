@@ -33,9 +33,9 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
     internal class Havoc : ModNPC
     {
         //Damage Values
-        private int ChargeDamage => 300;
-        private int LaserMiniDamage => 200;
-        private int LaserBigDamage => 500;
+        private int ChargeDamage => 115;
+        private int LaserMiniDamage => 40;
+        private int LaserBigDamage => 60;
 
         public enum ActionState
         {
@@ -322,14 +322,14 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
                 AI_MoveInOrbit();
                 NPC.velocity *= 0.8f;
-                NPC.rotation = MathHelper.Lerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
+                NPC.rotation = Utils.AngleLerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
             }
             else if (Timer < 150)
             {
                 ChargeDirection = NPC.Center.DirectionTo(target.Center);
                 AI_MoveInOrbit();
                 NPC.velocity *= 0.3f;
-                NPC.rotation = MathHelper.Lerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
+                NPC.rotation = Utils.AngleLerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
                 for (int i = 0; i < NPC.oldPos.Length; i++)
                 {
                     NPC.oldPos[i] = NPC.position;
