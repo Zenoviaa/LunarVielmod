@@ -54,12 +54,16 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 
         public override void OnKill(int timeLeft)
         {
-            //Spawn Projectiles
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
+            if(Main.myPlayer == Projectile.owner)
+            {            //Spawn Projectiles
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0.001f,
-                ModContent.ProjectileType<IronNailLodged>(), Projectile.damage, 1, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0.001f,
+                    ModContent.ProjectileType<IronNailLodged>(), Projectile.damage, 1, Projectile.owner);
+
+            }
+
 
             //Effects
             SoundEngine.PlaySound(SoundID.Dig, Projectile.position);

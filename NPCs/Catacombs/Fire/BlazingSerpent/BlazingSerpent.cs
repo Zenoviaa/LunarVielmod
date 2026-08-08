@@ -160,17 +160,21 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3, 
-						ProjectileID.BallofFire, 60, 0, Main.myPlayer);
-					int projectile2 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 2, 
-						ProjectileID.BallofFire, 60, 0, Main.myPlayer);
-					Main.projectile[projectile].timeLeft = 300;
-					Projectile ichor = Main.projectile[projectile];
-					ichor.hostile = true;
-					ichor.friendly = false;
+					if (StellaMultiplayer.IsHost)
+					{
+                        int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
+                            ProjectileID.BallofFire, 60, 0, Main.myPlayer);
+                        int projectile2 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 2,
+                            ProjectileID.BallofFire, 60, 0, Main.myPlayer);
+                        Main.projectile[projectile].timeLeft = 300;
+                        Projectile ichor = Main.projectile[projectile];
+                        ichor.hostile = true;
+                        ichor.friendly = false;
 
-					
-					attackCounter = 500;
+                    }
+
+
+                    attackCounter = 500;
 					NPC.netUpdate = true;
 				}
 			}

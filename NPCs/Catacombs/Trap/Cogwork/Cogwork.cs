@@ -268,8 +268,11 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 case AttackState.Rifle:
                     if (ai_Counter == 0)
                     {
-                        NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                             ModContent.NPCType<NeedleGun>(), ai2: NPC.whoAmI);
+                        }
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);

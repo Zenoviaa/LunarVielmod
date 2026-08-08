@@ -83,11 +83,17 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"));
-            int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"), Projectile.position);
+
+            if(Main.myPlayer == Projectile.owner)
+            {
+                int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<JungleBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-            Projectile projectile = Main.projectile[p];
-            projectile.hostile = true;
+                Projectile projectile = Main.projectile[p];
+                projectile.hostile = true;
+
+            }
+
             NetMessage.SendData(MessageID.SyncProjectile);
         }
     }

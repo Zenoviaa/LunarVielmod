@@ -1,20 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.NPCs.Catacombs.Fire;
+using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.NPCs.Catacombs.Trap.Cogwork;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
 using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
 using Stellamod.Particles;
+using Stellamod.Tiles.Catacombs;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using Stellamod.Tiles.Catacombs;
 
 namespace Stellamod.NPCs.Catacombs
 {
@@ -39,9 +38,9 @@ namespace Stellamod.NPCs.Catacombs
         {
             int searchRange = 50;
             Point start = NPC.position.ToTileCoordinates();
-            for(int i = start.X; i < start.X + searchRange && i < Main.maxTilesX; i++)
+            for (int i = start.X; i < start.X + searchRange && i < Main.maxTilesX; i++)
             {
-                for(int j = start.Y; j < start.Y + searchRange && j < Main.maxTilesY; j++)
+                for (int j = start.Y; j < start.Y + searchRange && j < Main.maxTilesY; j++)
                 {
                     if (Main.tile[i, j].TileType == tileType)
                         return true;
@@ -51,7 +50,7 @@ namespace Stellamod.NPCs.Catacombs
         }
         public override void AI()
         {
-            if(_bossType == -1)
+            if (_bossType == -1)
             {
                 if (InBiome(ModContent.TileType<CatacombStoneFire>()))
                 {
@@ -68,16 +67,16 @@ namespace Stellamod.NPCs.Catacombs
             }
 
             _centerSparkleSize += 0.02f;
-            if(ai_Timer == 0)
+            if (ai_Timer == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RisingSummon"));
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(NPC.Center, 9f);
             }
 
             ai_Timer++;
-            if(ai_Timer % 4 == 0)
+            if (ai_Timer % 4 == 0)
             {
-                for(int i = 0; i  < 6; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     Particle p = ParticleManager.NewParticle(NPC.Center, Vector2.Zero, ParticleManager.NewInstance<BurnParticle>(), default(Color), _centerSparkleSize);
                     p.timeLeft = 8;
@@ -87,7 +86,7 @@ namespace Stellamod.NPCs.Catacombs
             int duration = 180;
             if (ai_Timer < duration)
             {
-                ShakeModSystem.Shake = ai_Timer/18;
+                ShakeModSystem.Shake = ai_Timer / 18;
                 if (ai_Timer % 4 == 0)
                 {
                     for (int i = 0; i < Main.rand.Next(1, 3); i++)
@@ -116,8 +115,8 @@ namespace Stellamod.NPCs.Catacombs
                     var d = Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond, velocity, Scale: 1.5f);
                     d.noGravity = true;
                 }
-            } 
-            else if(ai_Timer > duration)
+            }
+            else if (ai_Timer > duration)
             {
 
                 for (int i = 0; i < 64; i++)
@@ -176,17 +175,17 @@ namespace Stellamod.NPCs.Catacombs
                 {
                     int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, bossType);
 
-			if(_bossType != 2)
-			{
-                    		Projectile.NewProjectile(NPC.GetSource_FromThis(), 
-                        (int)NPC.Center.X + offset.X, 
-                        (int)NPC.Center.Y + offset.Y, 0, 0,
-                        ModContent.ProjectileType<CatacombsBeamBarrier>(), 100, 1, Main.myPlayer);
-			}
+                    if (_bossType != 2)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(),
+                    (int)NPC.Center.X + offset.X,
+                    (int)NPC.Center.Y + offset.Y, 0, 0,
+                    ModContent.ProjectileType<CatacombsBeamBarrier>(), 100, 1, Main.myPlayer);
+                    }
                     Main.npc[npcID].netUpdate2 = true;
                 }
 
-         
+
 
                 NPC.Kill();
                 ai_Timer = 0;
