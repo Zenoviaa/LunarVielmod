@@ -119,7 +119,7 @@ namespace Stellamod.Projectiles.Nails
 			Main.dust[dust].scale = 1.2f;
 			ShakeModSystem.Shake = 5;
 
-			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Veriappear"));
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Veriappear"), Projectile.position);
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
