@@ -217,29 +217,12 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 
 			if (timer == 9)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                NPC.velocity = new Vector2(NPC.direction * 0, -10f);
+                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
-				switch (Main.rand.Next(4))
-				{
-					case 0:
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
-						break;
-					case 1:
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
-						break;
-					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
-						break;
-					case 3:
 
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
-						break;
-				}
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-				
-				
-			}
+            }
 			else if (timer > 27)
 			{
 				// after .66 seconds, we go to the hover state. //TODO, gravity?

@@ -136,7 +136,7 @@ namespace Stellamod.NPCs
                         break;
                 }
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"), NPC.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
                 NPC.active = false;
             }

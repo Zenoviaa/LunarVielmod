@@ -535,10 +535,14 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 				float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 				float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY, 
-					ModContent.ProjectileType<SpikeBullet>(), 15, 0f, Owner: Main.myPlayer);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY, 
-					ModContent.ProjectileType<SpikeBullet>(), 15, 0f, Owner: Main.myPlayer);
+				if (StellaMultiplayer.IsHost)
+				{
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY,
+						ModContent.ProjectileType<SpikeBullet>(), 15, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY,
+                        ModContent.ProjectileType<SpikeBullet>(), 15, 0f, Owner: Main.myPlayer);
+                }
+
 			}
 
 			if (timer == 20)

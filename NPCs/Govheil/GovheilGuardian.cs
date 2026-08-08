@@ -177,25 +177,10 @@ namespace Stellamod.NPCs.Govheil
 
 			if (timer == 1)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-				switch (Main.rand.Next(4))
-				{
-					case 0:
-						NPC.velocity = new Vector2(NPC.direction * 2, -0.1f);
-						break;
-					case 1:
-						NPC.velocity = new Vector2(NPC.direction * 2, -0.1f);
-						break;
-					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 2, -0.1f);
-						break;
-					case 3:
-
-						NPC.velocity = new Vector2(NPC.direction * 2, -0.1f);
-						break;
-				}
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CorsageRune1"));
+                NPC.velocity = new Vector2(NPC.direction * 2, -0.1f);
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CorsageRune1"));
 				ShakeModSystem.Shake = 8;
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
@@ -214,17 +199,17 @@ namespace Stellamod.NPCs.Govheil
 				}
 
 
-				for (int i = 0; i < 100; i++)
+				for (int i = 0; i < 33; i++)
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
 					ParticleManager.NewParticle(NPC.Center, speed * 10, ParticleManager.NewInstance<morrowstar>(), Color.Red, Main.rand.NextFloat(0.2f, 0.8f));
 				}
-				for (int i = 0; i < 100; i++)
+				for (int i = 0; i < 33; i++)
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
 					ParticleManager.NewParticle(NPC.Center, speed * 5, ParticleManager.NewInstance<morrowstar>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
 				}
-				for (int i = 0; i < 100; i++)
+				for (int i = 0; i < 33; i++)
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
 					ParticleManager.NewParticle(NPC.Center, speed * 7, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));

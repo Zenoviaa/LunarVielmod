@@ -245,38 +245,24 @@ namespace Stellamod.NPCs.Minibosses
 			timer++;
 			if (timer == 9)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-				switch (Main.rand.Next(4))
+
+                NPC.velocity = new Vector2(NPC.direction * 0, -5f);
+
+                if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						NPC.velocity = new Vector2(NPC.direction * 0, -5f);
-						break;
-					case 1:
-						NPC.velocity = new Vector2(NPC.direction * 0, -5f);
-						break;
-					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 0, -5f);
-						break;
-					case 3:
-
-						NPC.velocity = new Vector2(NPC.direction * 0, -5f);
-						break;
-
-				}
+					for (int k = 0; k < 5; k++)
+					{
 
 
-
-				for (int k = 0; k < 5; k++)
-				{
-
-
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
-					float speedY = NPC.velocity.Y + Main.rand.Next(-4, 4);
-                    int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 1.5f, speedY * 3, ProjectileID.CrystalShard, 13, 0f, 0, 0f, 0f);       
-					Projectile ichor = Main.projectile[fireball];
-					ichor.hostile = true;
-					ichor.friendly = false;
+						float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
+						float speedY = NPC.velocity.Y + Main.rand.Next(-4, 4);
+						int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 1.5f, speedY * 3, ProjectileID.CrystalShard, 13, 0f, 0, 0f, 0f);
+						Projectile ichor = Main.projectile[fireball];
+						ichor.hostile = true;
+						ichor.friendly = false;
+					}
 				}
 			}
 				if (timer > 50)
@@ -290,21 +276,25 @@ namespace Stellamod.NPCs.Minibosses
 
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
-				for (int k = 0; k < 5; k++)
+				if (StellaMultiplayer.IsHost)
 				{
+                    for (int k = 0; k < 5; k++)
+                    {
 
 
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
-					float speedY = NPC.velocity.Y + Main.rand.Next(-4, 4);
-					int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXB * 3f, speedY * 3, ProjectileID.CrystalShard, 13, 0f, 0, 0f, 0f);
-					Projectile ichor = Main.projectile[fireball];
-					ichor.hostile = true;
-					ichor.friendly = false;
-				}
+                        float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
+                        float speedY = NPC.velocity.Y + Main.rand.Next(-4, 4);
+                        int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXB * 3f, speedY * 3, ProjectileID.CrystalShard, 13, 0f, 0, 0f, 0f);
+                        Projectile ichor = Main.projectile[fireball];
+                        ichor.hostile = true;
+                        ichor.friendly = false;
+                    }
 
-				// GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
+                }
 
-			}
+                // GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
+
+            }
 
 				
 					

@@ -367,7 +367,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                             float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                             float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                             int damage = Main.expertMode ? 6 : 10;
-                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                            if (StellaMultiplayer.IsHost)
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<Gintzianado>(), damage, 1, Main.myPlayer, 0, 0);
                         }
                         if (NPC.ai[0] >= 90)

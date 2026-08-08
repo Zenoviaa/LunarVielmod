@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             NPC.ai[1]++;
             if (NPC.ai[1] >= 40)
             {
-                if (Main.rand.NextBool(9))
+                if (StellaMultiplayer.IsHost && Main.rand.NextBool(9))
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<OverworldRuneLightBig>());
