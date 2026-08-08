@@ -37,7 +37,8 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             if (Projectile.penetrate <= 0)
             {
                 Projectile.Kill();
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + -40, Projectile.position.Y + -50,  0, 0, ModContent.ProjectileType<DaedusBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f);
+                if(Main.myPlayer == Projectile.owner)
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + -40, Projectile.position.Y + -50,  0, 0, ModContent.ProjectileType<DaedusBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f);
             }
             else
             {
@@ -58,7 +59,8 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             ShakeModSystem.Shake = 5;
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<SummonSpawnEffect>(), 0, 0f, 0, 0f, 0f);
+            if (Main.myPlayer == Projectile.owner)
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<SummonSpawnEffect>(), 0, 0f, 0, 0f, 0f);
             return false;
         }
        

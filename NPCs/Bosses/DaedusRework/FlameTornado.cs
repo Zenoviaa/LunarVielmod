@@ -47,19 +47,27 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 				float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, -10f);
 				float speedYa = Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(-10, -9) * 1.0f;
 				int projectileType = ModContent.ProjectileType<DaedusFireball>();
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 0.3f, speedYa *- 0.2f, projectileType, 10, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -0.3f, speedYa * -0.2f, projectileType, 10, 0f, Projectile.owner, 0f, 0f);
 
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 0.6f, speedYa * -0.3f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -0.6f, speedYa * -0.3f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 0.8f, speedYa * -0.4f, projectileType, 15, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -0.8f, speedYa * -0.4f, projectileType, 15, 0f, Projectile.owner, 0f, 0f);
+					
+			
+				if (Main.myPlayer == Projectile.owner)
+				{
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 1f, speedYa * -0.5f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -1f, speedYa * -0.5f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 1.1f, speedYa * -0.5f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -1.1f, speedYa * -0.5f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 0.3f, speedYa * -0.2f, projectileType, 10, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -0.3f, speedYa * -0.2f, projectileType, 10, 0f, Projectile.owner, 0f, 0f);
+
+
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 0.6f, speedYa * -0.3f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -0.6f, speedYa * -0.3f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 0.8f, speedYa * -0.4f, projectileType, 15, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -0.8f, speedYa * -0.4f, projectileType, 15, 0f, Projectile.owner, 0f, 0f);
+
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 1f, speedYa * -0.5f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -1f, speedYa * -0.5f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 100, speedXa * 1.1f, speedYa * -0.5f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 103, speedXa * -1.1f, speedYa * -0.5f, projectileType, 20, 0f, Projectile.owner, 0f, 0f);
+                }
 			}
 			
 
