@@ -96,10 +96,13 @@ namespace Stellamod.Projectiles.Paint
             {
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 12f, ProjectileID.PainterPaintball, Projectile.damage * 1, Projectile.knockBack, Projectile.owner);
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 12f, ProjectileID.PainterPaintball, Projectile.damage * 1, Projectile.knockBack, Projectile.owner);
+                }
 
-				beens = 0;
+                beens = 0;
             }
 
 
@@ -107,10 +110,11 @@ namespace Stellamod.Projectiles.Paint
 			{
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
-
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 12f, 
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 12f,
 					ModContent.ProjectileType<PhotobombShot>(), Projectile.damage * 1, Projectile.knockBack, Projectile.owner);
-				
+				}
 				ShakeModSystem.Shake = 4;
 				SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
 			}
@@ -118,16 +122,22 @@ namespace Stellamod.Projectiles.Paint
 			if (Timer == 60)
 			{
 				ShakeModSystem.Shake = 4;
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 10f, 
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 10f,
 					ModContent.ProjectileType<PhotobombShot>(), Projectile.damage * 1, Projectile.knockBack, Projectile.owner);
+				}
 				SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
 			}
 
 			if (Timer == 100)
 			{
 				ShakeModSystem.Shake = 4;
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 10f, 
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 10f,
 					ModContent.ProjectileType<PhotobombShot>(), Projectile.damage * 1, Projectile.knockBack, Projectile.owner);
+				}
 				SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
 			}
 
