@@ -79,11 +79,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             {
                 float maxDetectDistance = 2000;
                 Player player = PlayerHelper.FindClosestPlayer(Projectile.Center, maxDetectDistance);
-                if(player != null)
+                if(player != null && Main.myPlayer == Projectile.owner)
                 {
                     Vector2 randOffset = Main.rand.NextVector2Circular(64, 64);
                     Vector2 predictiveOffset = player.velocity.SafeNormalize(Vector2.Zero) * 8;
                     Vector2 spawnPoint = player.Center + predictiveOffset + randOffset;
+
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPoint, Vector2.Zero,
                         ModContent.ProjectileType<NiiviStarFieldBombProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 

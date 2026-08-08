@@ -48,8 +48,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             if (Timer == LifeTime - 1)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<NiiviStarsBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,  
+                        ModContent.ProjectileType<NiiviStarsBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+                 
                 Projectile.Kill();
             }
         }

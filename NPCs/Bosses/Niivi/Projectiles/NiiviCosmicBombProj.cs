@@ -131,8 +131,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+    ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
+                }
+
                 screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
             }
             if(Timer > 120 && Timer < 240)
@@ -143,8 +147,13 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
+                }
+                    
+                 
                 screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
             }
             if (Timer > 240 && Timer < 360)
@@ -156,8 +165,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 SwapColor = true;
                 SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow2, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
+                }
+                 
                 screenShaderSystem.TintScreen(Color.White, 0.3f, timer: 15);
             }
             if (Timer > 360 && Timer < 480)
@@ -212,8 +225,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                         Vector2 projSpawn = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
                         Vector2 direction = projSpawn.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver4);
                         Vector2 velocity = direction * 22;
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), projSpawn, velocity,
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), projSpawn, velocity,
                             ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
+                        }
+                        
                     }
                     Vector2 diffVelocity = player.velocity - player.oldVelocity;
                     Projectile.position += diffVelocity;
@@ -335,8 +352,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 float rot = MathHelper.TwoPi * progress;
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 33;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, 
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                     ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
+                }
             }
 
             num = 16;
@@ -346,8 +366,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 float rot = MathHelper.TwoPi * progress;
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 15;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                     ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
+                }
             }
 
             num = 8;
@@ -357,8 +380,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 float rot = MathHelper.TwoPi * progress;
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 12;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                     ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
+                }
             }
 
             num = 4;
@@ -368,8 +394,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 float rot = MathHelper.TwoPi * progress;
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 6;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                     ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 7, Projectile.knockBack, Projectile.owner);
+                }
             }
 
             for (int i = 0; i < 150; i++)

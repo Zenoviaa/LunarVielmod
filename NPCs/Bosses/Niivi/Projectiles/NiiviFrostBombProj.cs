@@ -63,22 +63,26 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 }
             }
 
-
-            if(Timer == 150)
+            if (Main.myPlayer == Projectile.owner)
             {
-                Vector2 velocity = Vector2.Zero;
-                int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, type,
-                    0, 0, Main.myPlayer);
+                if (Timer == 150)
+                {
+                    Vector2 velocity = Vector2.Zero;
+                    int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, type,
+                        0, 0, Projectile.owner);
+                }
             }
-
             Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f);
         }
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<NiiviFrostBlastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
         }
 
         public override Color? GetAlpha(Color lightColor)

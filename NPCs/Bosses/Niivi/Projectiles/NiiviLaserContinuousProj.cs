@@ -96,8 +96,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     float progress = (float)i / spawnNum;
                     float rot = MathHelper.Lerp(0f, MathHelper.TwoPi, progress);
                     spikeVelocity = spikeVelocity.RotatedBy(rot);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, spikeVelocity * 1048,
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, spikeVelocity * 1048,
                         ModContent.ProjectileType<NiiviLaserSpikeProj>(), Projectile.damage / 5, Projectile.knockBack, Projectile.owner);
+                    }
                 }
             }
         }

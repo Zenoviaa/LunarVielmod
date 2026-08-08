@@ -50,20 +50,21 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
                     ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, scale);
                 }
-
-                for(int i = 0; i < Main.rand.Next(3, 6); i++)
+                if (Main.myPlayer == Projectile.owner)
                 {
-                    float speed = 12;
-                    Vector2 velocity = -Vector2.UnitY * speed;
-                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 * 1.5f);
+                    for (int i = 0; i < Main.rand.Next(3, 6); i++)
+                    {
+                        float speed = 12;
+                        Vector2 velocity = -Vector2.UnitY * speed;
+                        velocity = velocity.RotatedByRandom(MathHelper.PiOver4 * 1.5f);
 
-                    int type = ModContent.ProjectileType<NiiviIcicleProj>();
-                    int damage = Projectile.damage / 2;
-                    float knockback = Projectile.knockBack / 2;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        type, damage, knockback, Projectile.owner);
+                        int type = ModContent.ProjectileType<NiiviIcicleProj>();
+                        int damage = Projectile.damage / 2;
+                        float knockback = Projectile.knockBack / 2;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                            type, damage, knockback, Projectile.owner);
+                    }
                 }
-
                 //Explosion sound goes here
             }
 

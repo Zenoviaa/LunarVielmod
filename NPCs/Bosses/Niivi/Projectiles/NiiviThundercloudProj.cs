@@ -67,16 +67,20 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
             SoundEngine.PlaySound(soundStyle, Projectile.position);
 
-            for(int i = 0; i < 7; i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                int type = ModContent.ProjectileType<NiiviLightningProj>();
-                int damage = Projectile.damage;
-                int knockback = 1;
+                for (int i = 0; i < 7; i++)
+                {
+                    int type = ModContent.ProjectileType<NiiviLightningProj>();
+                    int damage = Projectile.damage;
+                    int knockback = 1;
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(0, -1200), Projectile.velocity,
-                    type, damage, knockback, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(0, -1200), Projectile.velocity,
+                        type, damage, knockback, Projectile.owner);
 
+                }
             }
+
 
         }
 

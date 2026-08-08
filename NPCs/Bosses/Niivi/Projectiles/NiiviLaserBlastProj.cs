@@ -56,20 +56,25 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 Vector2 explosionCenter = Projectile.Center + direction * BeamLength;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(explosionCenter, 2048, 64);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), explosionCenter, Vector2.Zero,
-                    ModContent.ProjectileType<NiiviLaserBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-
-                for (int i = 0; i < Main.rand.Next(12, 20); i++)
+                if (Main.myPlayer == Projectile.owner)
                 {
-                    float speed = 18;
-                    Vector2 velocity = -Vector2.UnitY * speed;
-                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 * 3f);
-                    velocity *= Main.rand.NextFloat(0.5f, 1f);
-                    int type = ModContent.ProjectileType<NiiviIcicleProj>();
-                    int damage = Projectile.damage / 12;
-                    float knockback = Projectile.knockBack / 2;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), explosionCenter, velocity,
-                        type, damage, knockback, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), explosionCenter, Vector2.Zero,
+                    ModContent.ProjectileType<NiiviLaserBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    for (int i = 0; i < Main.rand.Next(12, 20); i++)
+                    {
+                        float speed = 18;
+                        Vector2 velocity = -Vector2.UnitY * speed;
+                        velocity = velocity.RotatedByRandom(MathHelper.PiOver4 * 3f);
+                        velocity *= Main.rand.NextFloat(0.5f, 1f);
+                        int type = ModContent.ProjectileType<NiiviIcicleProj>();
+                        int damage = Projectile.damage / 12;
+                        float knockback = Projectile.knockBack / 2;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), explosionCenter, velocity,
+                            type, damage, knockback, Projectile.owner);
+                    }
                 }
 
                 //This gonna be crazy

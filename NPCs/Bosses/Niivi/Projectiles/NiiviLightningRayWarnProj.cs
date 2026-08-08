@@ -73,9 +73,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             int type = ModContent.ProjectileType<NiiviLightningRayProj>();
             int damage = Projectile.damage;
             int knockback = 1;
-
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(0, -1200), Projectile.velocity,
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(0, -1200), Projectile.velocity,
                 type, damage, knockback, Projectile.owner);
+            }
         }
 
         public override bool ShouldUpdatePosition()
