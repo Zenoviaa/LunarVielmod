@@ -48,23 +48,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				{
              
                     int fireball = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                        ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 0, 0f, Projectile.owner);
+                        ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 0, 0f, Projectile.owner, ai1: 1);
                     Projectile ichor = Main.projectile[fireball];
-                    ichor.hostile = true;
-                    ichor.friendly = false;
-					ichor.netUpdate = true;
                     Timer = 0;
                 }
 			}
 
 			Projectile.velocity *= 0.991f;
-			int rightValue = (int)Projectile.ai[1] - 1;
-			if (rightValue < (double)Main.projectile.Length && rightValue != -1)
-			{
-				Projectile other = Main.projectile[rightValue];
-				Vector2 direction9 = other.Center - Projectile.Center;
-				direction9.Normalize();
-			}
 
 			if (!initialized)
 			{

@@ -7,6 +7,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 {
     public class AlcaricMushBoom : ModProjectile
 	{
+		private ref float Style => ref Projectile.ai[1];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("FrostShotIN");
@@ -39,6 +40,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
 		public override bool PreAI()
 		{
+			if (Style == 1)
+				Projectile.hostile = true;
 			Projectile.tileCollide = false;
 			if (++Projectile.frameCounter >= 1)
 			{

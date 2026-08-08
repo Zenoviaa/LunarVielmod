@@ -13,11 +13,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
     public class STARBOMBERGUN : ModNPC
     {
-        private const int TELEPORT_DISTANCE = 200;
-        private float Size;
-        private bool CheckSize;
 
-        int chargetimer = 0;
         private float AlphaTimer=1f;
         public override void SetStaticDefaults()
         {

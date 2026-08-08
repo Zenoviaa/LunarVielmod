@@ -47,8 +47,14 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public float Timer2;
 
 		public override void AI()
-		{
-			Timer2++;
+        {
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
+            Timer2++;
 			Timer++;
 			Projectile.velocity *= 0.98f;
 			if (Timer == 2)
@@ -105,12 +111,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-			if (Main.rand.NextBool(5))
-			{
-				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch, 0f, 0f, 150, Color.White, 1f);
-				Main.dust[dustnumber].velocity *= 0.3f;
-				Main.dust[dustnumber].noGravity = true;
-			}
+		
 
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
