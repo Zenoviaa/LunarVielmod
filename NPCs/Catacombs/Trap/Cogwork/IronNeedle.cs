@@ -59,8 +59,9 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 
                 int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
+                Main.projectile[p].scale = 0.5f;
             }
-            Main.projectile[p].scale = 0.5f;
+        
             for (int i = 0; i < 16; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);

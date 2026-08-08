@@ -73,11 +73,12 @@ namespace Stellamod.Projectiles.Magic
                     Projectile.Kill();
                 }
                 else
-                { 
+                {
+                    Vector2 spawnPosition = PlayerCenter + Main.rand.NextVector2CircularEdge(80, 80);
                     if (Main.myPlayer == Projectile.owner)
                     {
                         //Spawn the projectile
-                        Vector2 spawnPosition = PlayerCenter + Main.rand.NextVector2CircularEdge(80, 80);
+              
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPosition, Vector2.Zero,
                             ModContent.ProjectileType<AzuretoothDragon>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     }

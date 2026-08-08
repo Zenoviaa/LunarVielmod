@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles.Bow
 
         public override void AI()
         {
-            alphaCounter += 0.04f;
+
             Projectile.rotation += 0.01f;
         }
         public override bool PreDraw(ref Color lightColor)
