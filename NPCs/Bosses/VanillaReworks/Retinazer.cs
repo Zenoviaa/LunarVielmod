@@ -51,22 +51,26 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                 {
                     SoundEngine.PlaySound(SoundID.Item72, npc.position);
 
-                    float speedVariance = 3;
-                    float speedVariance2 = 1;
-                    for (int i = 0; i < 3; i++)
+                    if (StellaMultiplayer.IsHost)
                     {
-                        float speedX = Main.rand.NextFloat(speedVariance2, speedVariance);
-                        float speedY = Main.rand.NextFloat(speedVariance2, speedVariance);
-                        Vector2 speed = new Vector2(speedX, speedY);
-                        Vector2 direction = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.UnitX);
-                        direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
+                        float speedVariance = 3;
+                        float speedVariance2 = 1;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            float speedX = Main.rand.NextFloat(speedVariance2, speedVariance);
+                            float speedY = Main.rand.NextFloat(speedVariance2, speedVariance);
+                            Vector2 speed = new Vector2(speedX, speedY);
+                            Vector2 direction = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.UnitX);
+                            direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-                        int projectile = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, direction * 3 * speed,
-                        ProjectileID.EyeLaser, 32, 0, Main.myPlayer);
-                        Main.projectile[projectile].timeLeft = 300;
-                        Projectile ichor = Main.projectile[projectile];
-                        ichor.hostile = true;
-                        ichor.friendly = false;
+                            int projectile = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, direction * 3 * speed,
+                            ProjectileID.EyeLaser, 32, 0, Main.myPlayer);
+                            Main.projectile[projectile].timeLeft = 300;
+                            Projectile ichor = Main.projectile[projectile];
+                            ichor.hostile = true;
+                            ichor.friendly = false;
+                        }
+
                     }
 
                     _passiveFireCounter = 0;

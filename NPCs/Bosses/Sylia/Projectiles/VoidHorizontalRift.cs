@@ -93,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation();
-            if (Main.rand.NextBool(50))
+            if (Main.rand.NextBool(50) && Projectile.owner == Main.myPlayer)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
                     ModContent.ProjectileType<VoidDrip>(), 30, 1, Projectile.owner);

@@ -119,18 +119,21 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            //Spawn Void Bolts
-            for(int i =0; i < 4; i++)
+            if(Projectile.owner == Main.myPlayer)
             {
-                Vector2 edge = Main.rand.NextVector2CircularEdge(48, 48);
-                Vector2 voidBoltPosition = new Vector2(
-                    Projectile.Center.X + edge.X,
-                    Projectile.Center.Y + edge.Y);
+                //Spawn Void Bolts
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 edge = Main.rand.NextVector2CircularEdge(48, 48);
+                    Vector2 voidBoltPosition = new Vector2(
+                        Projectile.Center.X + edge.X,
+                        Projectile.Center.Y + edge.Y);
 
-                Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, voidBoltPosition, 2);
-                int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), voidBoltPosition, velocity,
-                    ModContent.ProjectileType<VoidBolt>(), 30, 1);
-                Main.projectile[p].timeLeft = Main.rand.Next(200, 300);
+                    Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, voidBoltPosition, 2);
+                    int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), voidBoltPosition, velocity,
+                        ModContent.ProjectileType<VoidBolt>(), 30, 1);
+                }
+
             }
 
             //REPLACE SOUND AT SOME POINT

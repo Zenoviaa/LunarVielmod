@@ -48,14 +48,18 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                     SoundEngine.PlaySound(SoundID.Item73, npc.position);
 
                     float speedVariance = 2;
-                    for (int i = 0; i < 5; i++)
+                    if (StellaMultiplayer.IsHost)
                     {
-                        float speedX = Main.rand.NextFloat(-speedVariance, speedVariance);
-                        float speedY = Main.rand.NextFloat(-speedVariance, speedVariance);
-                        Vector2 speed = new Vector2(speedX, speedY);
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), (int)npc.Center.X, (int)npc.Center.Y, speed.X, speed.Y,
-                            ProjectileID.GreekFire1, 15, 1f);
+                        for (int i = 0; i < 5; i++)
+                        {
+                            float speedX = Main.rand.NextFloat(-speedVariance, speedVariance);
+                            float speedY = Main.rand.NextFloat(-speedVariance, speedVariance);
+                            Vector2 speed = new Vector2(speedX, speedY);
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), (int)npc.Center.X, (int)npc.Center.Y, speed.X, speed.Y,
+                                ProjectileID.GreekFire1, 15, 1f);
+                        }
                     }
+             
 
                     _passiveFireCounter = 0;
                 }
@@ -101,14 +105,18 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                             SoundEngine.PlaySound(SoundID.Item73, npc.position);
                             _fireCounter = 0;
                             float speedVariance = 5;
-                            for(int i =0; i < 20; i++)
+                            if (StellaMultiplayer.IsHost)
                             {
-                                float speedX = Main.rand.NextFloat(-speedVariance, speedVariance);
-                                float speedY = Main.rand.NextFloat(-speedVariance, speedVariance);
-                                Vector2 speed = new Vector2(speedX, speedY);
-                                Projectile.NewProjectile(npc.GetSource_FromThis(), (int)npc.Center.X, (int)npc.Center.Y, speed.X, speed.Y,
-                                    ProjectileID.GreekFire1, 15, 1f);
+                                for (int i = 0; i < 20; i++)
+                                {
+                                    float speedX = Main.rand.NextFloat(-speedVariance, speedVariance);
+                                    float speedY = Main.rand.NextFloat(-speedVariance, speedVariance);
+                                    Vector2 speed = new Vector2(speedX, speedY);
+                                    Projectile.NewProjectile(npc.GetSource_FromThis(), (int)npc.Center.X, (int)npc.Center.Y, speed.X, speed.Y,
+                                        ProjectileID.GreekFire1, 15, 1f);
+                                }
                             }
+                   
                         }
   
                         if (_counter >= 120 && npc.HasValidTarget)

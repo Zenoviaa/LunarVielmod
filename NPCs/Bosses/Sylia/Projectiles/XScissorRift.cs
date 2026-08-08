@@ -112,7 +112,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
-            if(Timer == 58)
+            if(Timer == 58 && Main.myPlayer == Projectile.owner)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, 
                     Projectile.velocity, ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0, Projectile.owner);
