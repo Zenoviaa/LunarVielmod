@@ -37,7 +37,8 @@ namespace Stellamod.NPCs.Bosses.INest
         public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_FromThis();
-            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<IrradiatedCreeper>());
+            if(StellaMultiplayer.IsHost)
+                NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<IrradiatedCreeper>());
 
             for (int i = 0; i < 15; i++)
 			{
@@ -52,8 +53,8 @@ namespace Stellamod.NPCs.Bosses.INest
 				Dust.NewDustPerfect(base.Projectile.Center, 74, (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
 			}
 
-			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Land"));
+			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Land"), Projectile.position);
 		}
 
 		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)

@@ -52,15 +52,15 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 		{
 			Texture2D tex = TextureAssets.Projectile[base.Projectile.type].Value;
 			Vector2 drawOrigin = new Vector2(22f, 22f) * 0.5f;
-            Main.spriteBatch.BeginBlendState(BlendState.Additive);
+
 			for (int i = 0; i < base.Projectile.oldPos.Length; i++)
 			{
 				Vector2 drawPos = base.Projectile.oldPos[i] - Main.screenPosition + drawOrigin + new Vector2(0f, base.Projectile.gfxOffY);
 				Color color = Color.FromNonPremultiplied(152, 208, 113, 255 - base.Projectile.alpha) * ((base.Projectile.oldPos.Length - i) / (float)base.Projectile.oldPos.Length);
+				color.A = 0;
                 Main.spriteBatch.Draw(tex, drawPos, new Rectangle(0, 0, 22, 70), color, base.Projectile.rotation, drawOrigin, base.Projectile.scale, SpriteEffects.None, 0f);
 			}
             Main.spriteBatch.Draw(tex, base.Projectile.position - Main.screenPosition + drawOrigin + new Vector2(0f, base.Projectile.gfxOffY), new Rectangle(0, 0, 22, 70), Color.FromNonPremultiplied(255, 255, 255, 255 - base.Projectile.alpha), base.Projectile.rotation, drawOrigin, base.Projectile.scale, SpriteEffects.None, 0f);
-			Main.spriteBatch.EndBlendState();
 			return false;
 		}
 

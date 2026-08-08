@@ -31,8 +31,6 @@ namespace Stellamod.NPCs.Bosses.INest
 			base.Projectile.penetrate = -1;
 			base.Projectile.scale = 1f;
 			Projectile.width = Projectile.height = 32;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 9;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
 
         float alphaCounter = 0;
