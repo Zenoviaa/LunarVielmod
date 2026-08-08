@@ -62,13 +62,16 @@ namespace Stellamod.Projectiles.GunHolster
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for(int i = 0; i < Main.rand.Next(2, 5); i++)
+            if (Main.myPlayer == Projectile.owner)
             {
-                Vector2 velocity = -Projectile.velocity;
-                velocity *= Main.rand.NextFloat(0.2f, 1f);
-                velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
-                    ModContent.ProjectileType<CarrotPatrolShardProj>(), Projectile.damage / 3, Projectile.knockBack, Projectile.owner);
+                for (int i = 0; i < Main.rand.Next(2, 5); i++)
+                {
+                    Vector2 velocity = -Projectile.velocity;
+                    velocity *= Main.rand.NextFloat(0.2f, 1f);
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
+                        ModContent.ProjectileType<CarrotPatrolShardProj>(), Projectile.damage / 3, Projectile.knockBack, Projectile.owner);
+                }
             }
         }
     }

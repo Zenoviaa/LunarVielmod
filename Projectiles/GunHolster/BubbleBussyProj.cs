@@ -74,8 +74,11 @@ namespace Stellamod.Projectiles.GunHolster
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + oldVelocity, Projectile.velocity,
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + oldVelocity, Projectile.velocity,
               ModContent.ProjectileType<BubbleBussyStickyProj2>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
             return base.OnTileCollide(oldVelocity);
         }
 

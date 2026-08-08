@@ -41,13 +41,14 @@ namespace Stellamod.Projectiles.GunHolster
 
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            if(Main.myPlayer == Projectile.owner)
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), Projectile.position);
 
 
             float rot = direction.ToRotation();
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"));
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), Projectile.position);
 
             Vector2 offset = new Vector2(2, -0.1f * player.direction).RotatedBy(rot);
             for (int k = 0; k < 15; k++)
@@ -72,8 +73,8 @@ namespace Stellamod.Projectiles.GunHolster
                 Vector2 newVelocity = direction.RotatedByRandom(MathHelper.ToRadians(25));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
 
-  
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, newVelocity * 12, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if (Main.myPlayer == Projectile.owner)
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, newVelocity * 12, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
 
         }

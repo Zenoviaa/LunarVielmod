@@ -36,14 +36,16 @@ namespace Stellamod.Projectiles.GunHolster
             }
 
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
-            for(int i = 0; i < Main.rand.Next(2, 5); i++)
+            if (Main.myPlayer == Projectile.owner)
             {
-                Vector2 velocity = direction * 16;
-                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
-                    ModContent.ProjectileType<MintyBlastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                for (int i = 0; i < Main.rand.Next(2, 5); i++)
+                {
+                    Vector2 velocity = direction * 16;
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
+                        ModContent.ProjectileType<MintyBlastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
             }
-
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 2f);
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunLaser");

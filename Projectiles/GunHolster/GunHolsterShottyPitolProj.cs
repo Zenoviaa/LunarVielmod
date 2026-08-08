@@ -39,14 +39,16 @@ namespace Stellamod.Projectiles.GunHolster
 
             Player player = Main.player[Projectile.owner];
             player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
-            for (int i = 0; i < Main.rand.Next(3, 7); i++)
+            if (Main.myPlayer == Projectile.owner)
             {
-                Vector2 velocity = direction * 16;
-                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 2);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
-                    projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
-            }   
-          
+                for (int i = 0; i < Main.rand.Next(3, 7); i++)
+                {
+                    Vector2 velocity = direction * 16;
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 2);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
+                        projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+            }
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), Projectile.position);
         }

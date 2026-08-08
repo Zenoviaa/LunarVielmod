@@ -39,9 +39,11 @@ namespace Stellamod.Projectiles.GunHolster
 
             Player player = Main.player[Projectile.owner];
 
-            int projectileType = ModContent.ProjectileType<CarrotPatrolProj>();
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 16, projectileType, Projectile.damage, Projectile.knockBack, Projectile.owner);
-
+            if (Main.myPlayer == Projectile.owner)
+            {
+                int projectileType = ModContent.ProjectileType<CarrotPatrolProj>();
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 16, projectileType, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
 
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)

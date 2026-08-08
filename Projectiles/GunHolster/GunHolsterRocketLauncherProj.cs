@@ -37,9 +37,13 @@ namespace Stellamod.Projectiles.GunHolster
             }
 
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 16,
+
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 16,
                 ProjectileID.RocketI, Projectile.damage, Projectile.knockBack, Projectile.owner);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
+            }
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 6f);
             SoundEngine.PlaySound(SoundID.Item11, Projectile.position);
         }
     }

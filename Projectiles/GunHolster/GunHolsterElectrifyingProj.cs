@@ -40,18 +40,19 @@ namespace Stellamod.Projectiles.GunHolster
 
             Player player = Main.player[Projectile.owner];
             player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
-
-            int numProjectiles = Main.rand.Next(1, 2);
-            for (int p = 0; p < numProjectiles; p++)
+            if (Main.myPlayer == Projectile.owner)
             {
-                // Rotate the velocity randomly by 30 degrees at max.
-                Vector2 velocity = direction * 8;
-                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(6));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), position, newVelocity, 
-                    ModContent.ProjectileType<ElectrifyingProj>(), Projectile.damage, Projectile.knockBack, player.whoAmI);
+                int numProjectiles = Main.rand.Next(1, 2);
+                for (int p = 0; p < numProjectiles; p++)
+                {
+                    // Rotate the velocity randomly by 30 degrees at max.
+                    Vector2 velocity = direction * 8;
+                    Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(6));
+                    newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), position, newVelocity,
+                        ModContent.ProjectileType<ElectrifyingProj>(), Projectile.damage, Projectile.knockBack, player.whoAmI);
+                }
             }
-
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunElectric");
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);

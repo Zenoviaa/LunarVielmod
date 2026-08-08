@@ -95,16 +95,18 @@ namespace Stellamod.Projectiles.GunHolster
                 Main.projectile[index].hostile = false;
             }
 
-
-            
-            for(int i = 0; i < Main.rand.Next(2, 7); i++)
+            if (Main.myPlayer == Projectile.owner)
             {
-                Vector2 velocity = Projectile.velocity;
-                velocity = -velocity;
-                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver2);
-                velocity *= Main.rand.NextFloat(0.5f, 1f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
-                    ModContent.ProjectileType<CinderFlameball>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+
+                for (int i = 0; i < Main.rand.Next(2, 7); i++)
+                {
+                    Vector2 velocity = Projectile.velocity;
+                    velocity = -velocity;
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver2);
+                    velocity *= Main.rand.NextFloat(0.5f, 1f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
+                        ModContent.ProjectileType<CinderFlameball>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
             }
         }
     }

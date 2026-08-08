@@ -56,17 +56,16 @@ namespace Stellamod.Projectiles.GunHolster
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-			Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+		
 			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 				Color color = Projectile.GetAlpha(Color.Lerp(new Color(255, 24, 255), new Color(167, 37, 172), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+				color.A = 0;
                 Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 			}
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        
 			return false;
 		}
 
@@ -86,7 +85,7 @@ namespace Stellamod.Projectiles.GunHolster
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
 	
-			for (int i = 0; i < 180; i++)
+			for (int i = 0; i < 80; i++)
 			{
 				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch, 0f, -2f, 0, default(Color), 1.5f);
 				Main.dust[num].noGravity = true;

@@ -44,9 +44,10 @@ namespace Stellamod.Projectiles.GunHolster
             player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
 
             projToShoot = Main.rand.Next(new int[] { ModContent.ProjectileType<FroBall2>(), ModContent.ProjectileType<FroBall1>() });
-
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
-
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/HarmonicBlasphemy1");
             soundStyle.PitchVariance = 0.5f;

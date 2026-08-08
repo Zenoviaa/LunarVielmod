@@ -41,9 +41,12 @@ namespace Stellamod.Projectiles.GunHolster
             Player player = Main.player[Projectile.owner];
             Vector2 velocity = direction * 16;
             velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 15);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
-            ModContent.ProjectileType<AzurewrathProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
+            ModContent.ProjectileType<AzurewrathProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/TON618");
             soundStyle.PitchVariance = 0.5f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);
