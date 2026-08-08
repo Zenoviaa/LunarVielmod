@@ -59,7 +59,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             if (NPC.ai[0] == 130)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 26);
                 if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()))
                 {
                     if (!text)

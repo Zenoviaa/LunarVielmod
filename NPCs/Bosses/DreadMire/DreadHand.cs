@@ -80,8 +80,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Main.EntitySpriteDraw(texture, drawPosition, null, drawColor with { A = 130 }, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
 
 
-            Main.instance.LoadProjectile(Projectile.type);
-
             return false;
         }
         public override void PostDraw(Color lightColor)
