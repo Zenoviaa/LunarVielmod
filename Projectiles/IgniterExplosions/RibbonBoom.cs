@@ -54,13 +54,17 @@ namespace Stellamod.Projectiles.IgniterExplosions
                         ModContent.GoreType<RibbonRed>());
                 }
 
-                for (int i = 0; i < Main.rand.Next(2, 5); i++)
+                if(Main.myPlayer == Projectile.owner)
                 {
-                    Vector2 velocity = Vector2.Zero;
-                    velocity.X = Main.rand.NextFloat(-16, 16);
-                    velocity.Y = Main.rand.NextFloat(-10, -20);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<RibbonStaffStreamerProj>(), Projectile.damage / 10, Projectile.knockBack / 10, Projectile.owner);
+                    for (int i = 0; i < Main.rand.Next(2, 5); i++)
+                    {
+                        Vector2 velocity = Vector2.Zero;
+                        velocity.X = Main.rand.NextFloat(-16, 16);
+                        velocity.Y = Main.rand.NextFloat(-10, -20);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                            ModContent.ProjectileType<RibbonStaffStreamerProj>(), Projectile.damage / 10, Projectile.knockBack / 10, Projectile.owner);
+                    }
+
                 }
 
                 for (int i = 0; i < 8; i++)

@@ -139,8 +139,12 @@ namespace Stellamod.Projectiles.Magic
             if(Timer == 45 && Main.myPlayer == Projectile.owner)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, 0,
-                     ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, 0,
+                                     ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner);
+                }
+            
                 Projectile.velocity = Projectile.Center.DirectionTo(Main.MouseWorld) * OriginalVelocity.Length();
                 Projectile.netUpdate = true;
             }
