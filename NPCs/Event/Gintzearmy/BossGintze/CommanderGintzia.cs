@@ -326,21 +326,11 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 		//Custom function so that I don't have to copy and paste the same thing in FindFrame
 
 
-		int bee = 220;
+
 		private Vector2 originalHitbox;
 		public override void AI()
 		{
 			
-			bee--;
-			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
-
-
-
-
-			if (bee == 0)
-			{
-				bee = 220;
-			}
 
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
@@ -409,18 +399,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 					NPC.damage = 0;
 					counter++;
 
-					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
 
-					}
-
-					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-					}
-					counter++;
 					SlammerGintze();
 					break;
 
@@ -526,6 +505,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			timer++;
 			if (timer == 1)
 			{
+				EffectsHelper.StartShockwave(ShockwaveParams.Default with { rippleCenter = NPC.Center });
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
 				ShakeModSystem.Shake = 8;
 			}
@@ -547,10 +527,6 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 			if (timer == 20)
 			{
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 
                 ResetTimers();
                 State = ActionState.Stop;
