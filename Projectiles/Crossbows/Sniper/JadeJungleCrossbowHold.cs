@@ -76,7 +76,11 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 				float speedY = Projectile.velocity.Y * 7;
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"), Projectile.position);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<GeaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<GeaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				}
 			}
 
 			
@@ -88,9 +92,13 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 
 			if (Timer >= 100)
             {
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 7;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 2, speedY, ModContent.ProjectileType<JadeJungleCrossbowBolt>(), Projectile.damage * 5, 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    float speedX = Projectile.velocity.X * 10;
+                    float speedY = Projectile.velocity.Y * 7;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 2, speedY, ModContent.ProjectileType<JadeJungleCrossbowBolt>(), Projectile.damage * 5, 0f, Projectile.owner, 0f, 0f);
+                }
+			
 			}
 
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position

@@ -48,10 +48,12 @@ namespace Stellamod.Projectiles.Crossbows
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 
         {
-            float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
-            float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY * 0, ProjectileID.SuperStarSlash, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-
+            if (Main.myPlayer == Projectile.owner)
+            {
+                float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
+                float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY * 0, ProjectileID.SuperStarSlash, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+            }
         }
 
 

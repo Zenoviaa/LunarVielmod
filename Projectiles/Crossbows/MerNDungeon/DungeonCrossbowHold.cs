@@ -83,8 +83,11 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 			{
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
-
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+				
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 				ShakeModSystem.Shake = 2;
 			}
@@ -93,26 +96,38 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 			{
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
-
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+					
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 			if (Timer == 46)
 			{
-
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+					
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 			if (Timer == 49)
 			{
-
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+				
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 			if (Timer == 52)
 			{
-
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+				
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 

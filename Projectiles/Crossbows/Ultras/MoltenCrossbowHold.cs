@@ -76,8 +76,10 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
 				float speedY = Projectile.velocity.Y * 7;
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"));
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MoltenCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MoltenCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				}
 			}
 
 			
@@ -95,18 +97,20 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
             {
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 10;
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.3f, speedY * 1.3f, ModContent.ProjectileType<MoltenCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<MoltenCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
-				
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.3f, speedY * 1.3f, ModContent.ProjectileType<MoltenCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<MoltenCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
+				}				
 			}
 			if (Timer == 61)
 			{
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 10;
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ProjectileID.DD2PhoenixBowShot, (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
-				
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ProjectileID.DD2PhoenixBowShot, (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
+				}
 			}
 
 

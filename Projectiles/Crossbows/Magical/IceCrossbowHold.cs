@@ -90,22 +90,27 @@ namespace Stellamod.Projectiles.Crossbows.Magical
             {
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 10;
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.9f, speedY * 2, ModContent.ProjectileType<IceCrossbowBolt>(), (int)(Projectile.damage * 0.3), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<IceCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f, speedY * 0.5f, ModContent.ProjectileType<IceCrossbowBolt>(), (int)(Projectile.damage * 0.2), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ModContent.ProjectileType<IceCrossbowBolt>(), (int)(Projectile.damage * 0.2), 0f, Projectile.owner, 0f, 0f);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.9f, speedY * 2, ModContent.ProjectileType<IceCrossbowBolt>(), (int)(Projectile.damage * 0.3), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<IceCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f, speedY * 0.5f, ModContent.ProjectileType<IceCrossbowBolt>(), (int)(Projectile.damage * 0.2), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ModContent.ProjectileType<IceCrossbowBolt>(), (int)(Projectile.damage * 0.2), 0f, Projectile.owner, 0f, 0f);
+				}
 			}
 
 			if (Timer == 35 )
-			{
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 10;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.9f, speedY * 2, ProjectileID.Blizzard, (int)(Projectile.damage * 0.3), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ProjectileID.Blizzard, (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f, speedY * 0.5f, ProjectileID.Blizzard, (int)(Projectile.damage * 0.2), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ProjectileID.Blizzard, (int)(Projectile.damage * 0.2), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, ProjectileID.Blizzard, (int)(Projectile.damage * 0.3), 0f, Projectile.owner, 0f, 0f);
+            {
+				if (Main.myPlayer == Projectile.owner)
+				{
+					float speedX = Projectile.velocity.X * 10;
+					float speedY = Projectile.velocity.Y * 10;
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.9f, speedY * 2, ProjectileID.Blizzard, (int)(Projectile.damage * 0.3), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ProjectileID.Blizzard, (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f, speedY * 0.5f, ProjectileID.Blizzard, (int)(Projectile.damage * 0.2), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ProjectileID.Blizzard, (int)(Projectile.damage * 0.2), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, ProjectileID.Blizzard, (int)(Projectile.damage * 0.3), 0f, Projectile.owner, 0f, 0f);
+				}
 			}
 
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position

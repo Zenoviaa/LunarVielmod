@@ -83,8 +83,12 @@ namespace Stellamod.Projectiles.Crossbows.Lead
 			{
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+				
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 				ShakeModSystem.Shake = 2;
 			}
@@ -93,26 +97,41 @@ namespace Stellamod.Projectiles.Crossbows.Lead
 			{
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
-
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+				
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 
 			if (Timer == 46)
-			{
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+            {
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+				
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 
 			if (Timer == 49)
-			{
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+            {
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+				
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 
 			if (Timer == 52)
-			{
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+            {
+				if (Main.myPlayer == Projectile.owner)
+				{
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
+				}
+				
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 
@@ -132,18 +151,6 @@ namespace Stellamod.Projectiles.Crossbows.Lead
 			}	
 		}
 
-        private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
-        {
-            Projectile.Center = playerhandpos;
-            Projectile.spriteDirection = Projectile.direction;
-
-            // Constantly resetting player.itemTime and player.itemAnimation prevents the player from switching items or doing anything else.
-            player.ChangeDir(Projectile.direction);
-            player.heldProj = Projectile.whoAmI;
-            player.itemTime = 3;
-            player.itemAnimation = 3;
-            player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-        }
 
         public override bool PreDraw(ref Color lightColor)
         {

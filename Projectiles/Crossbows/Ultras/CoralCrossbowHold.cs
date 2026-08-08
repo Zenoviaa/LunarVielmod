@@ -77,7 +77,11 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
 				float speedY = Projectile.velocity.Y * 7;
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"), Projectile.position);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CoralCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CoralCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                }
+			
 			}
 
 			if (Timer == 60)
@@ -88,21 +92,27 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
 
 			if (Timer >= 61)
             {
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 10;
+				if (Main.myPlayer == Projectile.owner)
+				{
+					float speedX = Projectile.velocity.X * 10;
+					float speedY = Projectile.velocity.Y * 10;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.3f, speedY * 1.3f, ModContent.ProjectileType<CoralCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<CoralCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.3f, speedY * 1.3f, ModContent.ProjectileType<CoralCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<CoralCrossbowBolt>(), (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f);
+				}
 			}
 
 			if (Timer >= 61 && Timer <73)
-			{
-				float speedX = Projectile.velocity.X * 10;
-				float speedY = Projectile.velocity.Y * 10;
+            {
+				if (Main.myPlayer == Projectile.owner)
+				{
+					float speedX = Projectile.velocity.X * 10;
+					float speedY = Projectile.velocity.Y * 10;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.3f, speedY * 1.3f, ModContent.ProjectileType<CoralBubble>(), (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ProjectileID.Bubble, (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1f, speedY, ProjectileID.FlaironBubble, (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.3f, speedY * 1.3f, ModContent.ProjectileType<CoralBubble>(), (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ProjectileID.Bubble, (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1f, speedY, ProjectileID.FlaironBubble, (int)(Projectile.damage * 1f), 0f, Projectile.owner, 0f, 0f);
+				}
 			}
 
 

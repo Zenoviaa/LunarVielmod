@@ -58,7 +58,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			timerz++;
 			if (timerz >= 40)
 			{
-				if (Main.rand.NextBool(9))
+				if (Main.rand.NextBool(9) && StellaMultiplayer.IsHost)
 				{
 					var entitySource = Projectile.GetSource_FromThis();
 					NPC.NewNPC(entitySource, (int)Projectile.Center.X / 2, (int)Projectile.Center.Y / 2, ModContent.NPCType<RedLightBig>(), ai1: Projectile.whoAmI);
@@ -130,7 +130,11 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY * 0, ModContent.ProjectileType<GenesisBoom3>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+			if (Main.myPlayer == Projectile.owner)
+			{
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY * 0, ModContent.ProjectileType<GenesisBoom3>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+			}
+			
 			Projectile.Kill();
 			return false;
 		}

@@ -36,7 +36,6 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
         {
             for (var i = 0; i < 6; i++)
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f, 0, default, 0.5f);
-            Collision.AnyCollision(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 
         }
         public override void AI()

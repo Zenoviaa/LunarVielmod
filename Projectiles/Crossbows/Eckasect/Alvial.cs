@@ -52,6 +52,11 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
         public override void AI()
         {
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
             Projectile.ai[1]++;
             Projectile.velocity *= 0.93f;
             if (Projectile.ai[1] == 1)
@@ -112,11 +117,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Gold.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
         }
     }
 }
