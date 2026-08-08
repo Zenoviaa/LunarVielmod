@@ -170,9 +170,12 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			timer++;
 			if (timer == 1)
 			{
-				int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<GhostCharger>());
-				NPC minionNPC = Main.npc[index];
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Upp"));
+				if (StellaMultiplayer.IsHost)
+				{
+                    int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<GhostCharger>());
+                }
+	
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Upp"), NPC.position);
 			}
 
 			if (timer == 39)

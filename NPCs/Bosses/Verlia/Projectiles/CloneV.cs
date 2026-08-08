@@ -139,7 +139,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<GhostCharger>());
                 }
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Upp"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Upp"), NPC.position);
 			}
 
 			if (timer == 39)

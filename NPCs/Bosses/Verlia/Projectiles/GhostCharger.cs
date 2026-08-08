@@ -94,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				if (StellaMultiplayer.IsHost)
 				{
 					Vector2 direction = player.Center - NPC.Center;
-					direction.Normalize();
+					direction = direction.SafeNormalize(Vector2.Zero);
 					direction.X *= (Main.rand.NextFloat(5f, 16f));
 					direction.Y *= (Main.rand.NextFloat(5f, 13f));
 					NPC.velocity = direction;

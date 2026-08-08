@@ -45,7 +45,6 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			behindNPCs.Add(index);
-			behindProjectiles.Add(index);
 		}
 
 	}

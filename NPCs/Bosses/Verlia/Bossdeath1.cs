@@ -115,7 +115,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			Shooting++;
 			if (Shooting == 1)
 			{
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BiggerCharge"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BiggerCharge"), NPC.position);
                 //NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
             }
 			NPC.noTileCollide = true;

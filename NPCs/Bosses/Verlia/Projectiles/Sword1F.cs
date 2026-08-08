@@ -33,20 +33,24 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 
 
-				
-					int index = NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<Sword1>());
-					NPC minionNPC = Main.npc[index];
 
-					// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
-					// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
+				if (StellaMultiplayer.IsHost)
+				{
+                    int index = NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<Sword1>());
+                    NPC minionNPC = Main.npc[index];
+
+                    // Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
+                    // This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
 
 
 
-					// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-					if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs)
-					{
-						NetMessage.SendData(MessageID.SyncNPC, number: index);
-					}
+                    // Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
+                    if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs)
+                    {
+                        NetMessage.SendData(MessageID.SyncNPC, number: index);
+                    }
+                }
+
 
 
 				

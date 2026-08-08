@@ -63,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 							ModContent.ProjectileType<MoonOut>(), Projectile.damage, 0f, Owner: Projectile.owner);
                     }
 					
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"));
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);
 				}
 			}
 			if (Projectile.timeLeft <= 180)

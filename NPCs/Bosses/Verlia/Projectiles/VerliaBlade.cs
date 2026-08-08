@@ -45,13 +45,18 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
 			float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
 
+			if(Main.myPlayer == Projectile.owner)
+			{
 
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc + 36, Projectile.position.Y + speedYabc + 36, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<MoonBladeTrail>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-			
-			
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc + 36, Projectile.position.Y + speedYabc + 36, speedXabc * 0, speedYabc * 0,
+                    ModContent.ProjectileType<MoonBladeTrail>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+
+            }
 
 
-			float maxDetectRadius = 1f; // The maximum radius at which a projectile can detect a target
+
+
+            float maxDetectRadius = 1f; // The maximum radius at which a projectile can detect a target
 			float projSpeed = 6f; // The speed at which the projectile moves towards the target
 
 			
