@@ -175,7 +175,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					dab.noGravity = false;
 				}
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARGROP"));
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARGROP"), NPC.position);
 				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 				{
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();

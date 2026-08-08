@@ -424,7 +424,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					break;
 			}
 
-			NPC.netUpdate2 = true;
+
 			return false;
 		}
 
@@ -1015,7 +1015,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					}
 				}
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
 			}
 
 			if (timer == 36)
@@ -1031,7 +1031,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
 					}
 				}
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"));
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
 			}
 
 			if (timer > 64)
@@ -1079,7 +1079,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				}
 
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"));
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
 			}
 
 			if (timer == 36)
@@ -1096,7 +1096,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					}
 				}
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
 			}
 
 
@@ -1130,7 +1130,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
 						}
 					}
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
 				}
 
 
@@ -1166,7 +1166,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
 						}
 					}
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"));
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
 				}
 
 				if (NPC.life < NPC.lifeMax / 2)
@@ -1203,7 +1203,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 						}
 
 					}
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash2"));
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash2"), NPC.position);
 				}
 
 				if (NPC.life < NPC.lifeMax / 2)
@@ -1594,7 +1594,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
                 //FoxRusher
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1"), NPC.position);
 				Grimber = 0;
 			}
 

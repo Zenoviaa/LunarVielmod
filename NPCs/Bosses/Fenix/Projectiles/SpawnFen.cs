@@ -15,6 +15,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 
 		public override void SetDefaults()
 		{
+			Projectile.hide = true;
 			Projectile.friendly = false;
 			Projectile.width = 348;
 			Projectile.height = 368;
@@ -54,9 +55,8 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
-			behindNPCsAndTiles.Add(index);
-			behindNPCs.Add(index);
-			overWiresUI.Add(index);
+			overPlayers.Add(index);
+			//d(index);
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{

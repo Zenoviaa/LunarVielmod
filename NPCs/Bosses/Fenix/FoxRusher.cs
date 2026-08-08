@@ -61,9 +61,13 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 				var entitySource = Projectile.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
-				NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y + 400, ModContent.NPCType<STARBOMBERLASERWARN>());
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+				if (StellaMultiplayer.IsHost)
+				{
+                    NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
+                    NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y + 400, ModContent.NPCType<STARBOMBERLASERWARN>());
+                }
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"), Projectile.position);
 
 				Timer = 0;
 

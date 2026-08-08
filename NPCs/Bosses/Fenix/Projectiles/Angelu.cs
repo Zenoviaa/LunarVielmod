@@ -55,9 +55,13 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
             }
 
             var entitySource = Projectile.GetSource_FromThis();
-            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
-            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 600, ModContent.NPCType<STARBOMBERLASERWARN>());
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+            if (StellaMultiplayer.IsHost)
+            {
+                NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
+                NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 600, ModContent.NPCType<STARBOMBERLASERWARN>());
+            }
+
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"), Projectile.position);
 
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.Center);
             for (int i = 0; i < 7; i++)
@@ -69,7 +73,8 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
             ShakeModSystem.Shake = 5;
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f, 0, 0f, 0f);
+            if(Main.myPlayer == Projectile.owner)
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f, 0, 0f, 0f);
             return false;
         }
 
