@@ -86,19 +86,7 @@ namespace Stellamod.NPCs.Bosses.INest
         public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if (NPC.ai[0] % 9 == 0)
-            {
-                DrugRidus = 20;
-                var entitySource = NPC.GetSource_FromThis();
-                SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, NPC.position);
-                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, NPC.position);
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
-                int OffSet = Main.rand.Next(-90, 90 + 1);
-                Vector2 NukePos;
-                NukePos.X = NPC.Center.X + OffSet;
-                NukePos.Y = NPC.Center.Y + OffSet / 2 + 30;
-                NPC.NewNPC(entitySource, (int)NukePos.X, (int)NukePos.Y, ModContent.NPCType<IRNDeathBomb>());
-            }
+
             if (GlowTexture is not null)
             {
                 SpriteEffects spriteEffects = SpriteEffects.None;
@@ -156,18 +144,16 @@ namespace Stellamod.NPCs.Bosses.INest
 
 
             Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 2.25f * Main.essScale);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+          
             var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
                 Color color = NPC.GetAlpha(Color.Lerp(new Color(152, 208, 113), new Color(53, 107, 112), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                color.A = 0;
                 spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0f);
             }
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
 
@@ -233,6 +219,22 @@ namespace Stellamod.NPCs.Bosses.INest
                         }
                         break;
                 }
+            }
+
+
+            if (NPC.ai[0] % 9 == 0)
+            {
+                DrugRidus = 20;
+                var entitySource = NPC.GetSource_FromThis();
+                SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, NPC.position);
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, NPC.position);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
+                int OffSet = Main.rand.Next(-90, 90 + 1);
+                Vector2 NukePos;
+                NukePos.X = NPC.Center.X + OffSet;
+                NukePos.Y = NPC.Center.Y + OffSet / 2 + 30;
+                if(StellaMultiplayer.IsHost)
+                    NPC.NewNPC(entitySource, (int)NukePos.X, (int)NukePos.Y, ModContent.NPCType<IRNDeathBomb>());
             }
         }
 

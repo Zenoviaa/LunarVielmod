@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.INest
 			if (Projectile.timeLeft == 1)
             {
                 int Spawn = Main.rand.Next(1, 4 + 1);
-				if(Spawn == 1)
+				if(Spawn == 1 && Main.myPlayer == Projectile.owner)
                 {
                     var entitySource = Projectile.GetSource_FromThis();
                     int SpawnPosX = Main.rand.Next(-800, 800 + 1);
