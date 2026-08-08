@@ -91,7 +91,8 @@ namespace Stellamod.Projectiles.Magic
 				float speedY = Projectile.velocity.Y * 7;
 
 				
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<RhamenthalProj>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				if(Main.myPlayer == Projectile.owner)
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<RhamenthalProj>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 			}
 
 
@@ -99,7 +100,8 @@ namespace Stellamod.Projectiles.Magic
 			{
 				float speedX = Projectile.velocity.X * 30;
 				float speedY = Projectile.velocity.Y * 30;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1f, speedY, ModContent.ProjectileType<RhamenthalShot>(), (int)(Projectile.damage * 12), 0f, Projectile.owner, 0f, 0f);
+                if (Main.myPlayer == Projectile.owner)
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1f, speedY, ModContent.ProjectileType<RhamenthalShot>(), (int)(Projectile.damage * 12), 0f, Projectile.owner, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Rhamenthal"), Projectile.position);
 				ShakeModSystem.Shake = 9;
 			}

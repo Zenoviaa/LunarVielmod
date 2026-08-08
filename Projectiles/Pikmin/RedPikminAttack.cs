@@ -44,8 +44,12 @@ namespace Stellamod.Projectiles.Pikmin
             }
             else if (!target.active)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
-                    ModContent.ProjectileType<RedPikminThrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+    ModContent.ProjectileType<RedPikminThrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+
                 Projectile.Kill();
             }
             else

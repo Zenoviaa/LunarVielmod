@@ -59,15 +59,17 @@ namespace Stellamod.Projectiles.Magic
 
             if(Timer == 30)
             {
-                float maxDetectDistance = 2400;
-                NPC npc = NPCHelper.FindClosestNPC(Projectile.position, maxDetectDistance);
-                if(npc != null)
+                if (Main.myPlayer == Projectile.owner)
                 {
-                    Vector2 velocity = Projectile.Center.DirectionTo(npc.Center);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                        ModContent.ProjectileType<BlackEyeLaserProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    float maxDetectDistance = 2400;
+                    NPC npc = NPCHelper.FindClosestNPC(Projectile.position, maxDetectDistance);
+                    if (npc != null)
+                    {
+                        Vector2 velocity = Projectile.Center.DirectionTo(npc.Center);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                            ModContent.ProjectileType<BlackEyeLaserProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
                 }
-              
             }
 
             if(Timer >= 120)

@@ -46,9 +46,13 @@ namespace Stellamod.Projectiles.Magic
 
             if (greb == 5)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-                    ModContent.ProjectileType<KaBoomFenix>(), Projectile.damage / 5, 0f, Projectile.owner, 0f, 0f);
-             
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+    ModContent.ProjectileType<KaBoomFenix>(), Projectile.damage / 5, 0f, Projectile.owner, 0f, 0f);
+
+                }
+
                 for (int i = 0; i < 5; i++)
                 {
                     ParticleManager.NewParticle(Projectile.Center, (Vector2.One * Main.rand.Next(1, 10)).RotatedByRandom(10.0), ParticleManager.NewInstance<morrowstar2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
@@ -102,21 +106,16 @@ namespace Stellamod.Projectiles.Magic
                 Vector2 drawOffset = Projectile.velocity * i * -0.34f;
                 Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, drawColor with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale * scaleFactor, 0, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.LoadProjectile(Projectile.type);
-
             // Redraw the projectile with the color not influenced by light
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.MediumPurple) * (float)(((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) / 2);
+                color.A = 0;
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+ 
             return true;
         }
         public override void PostDraw(Color lightColor)

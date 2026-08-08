@@ -73,8 +73,13 @@ namespace Stellamod.Projectiles.Magic
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 16f);
-            var entitySource = Projectile.GetSource_FromThis();
-            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<DreadFireBombG>());
+
+            if (StellaMultiplayer.IsHost)
+            {
+                var entitySource = Projectile.GetSource_FromThis();
+                NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<DreadFireBombG>());
+            }
+
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -95,33 +100,29 @@ namespace Stellamod.Projectiles.Magic
                 Vector2 drawOffset = Projectile.velocity * i * -0.34f;
                 Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, drawColor with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale * scaleFactor, 0, 0);
             }
-
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
             Main.EntitySpriteDraw(texture, drawPosition, null, drawColor with { A = 130 }, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
-            Main.instance.LoadProjectile(Projectile.type);
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Red) * (float)(((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) / 2);
+                color.A = 0;
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
 
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.DarkRed.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
         }
     }
 }

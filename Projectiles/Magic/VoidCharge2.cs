@@ -54,19 +54,23 @@ namespace Stellamod.Projectiles.Magic
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
             }
-            float spread = 45f * 0.0174f;
-            double startAngle = Math.Atan2(1, 0) - spread / 2;
-            double deltaAngle = spread / 8f;
-            double offsetAngle;
-            for (int i = 0; i < 4; i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f), 
-                    ModContent.ProjectileType<VoidCharge>(), 39, 0, Projectile.owner);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f), 
-                    ModContent.ProjectileType<VoidCharge>(), 39, 0, Projectile.owner);
+                float spread = 45f * 0.0174f;
+                double startAngle = Math.Atan2(1, 0) - spread / 2;
+                double deltaAngle = spread / 8f;
+                double offsetAngle;
+                for (int i = 0; i < 4; i++)
+                {
+                    offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f),
+                        ModContent.ProjectileType<VoidCharge>(), 39, 0, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f),
+                        ModContent.ProjectileType<VoidCharge>(), 39, 0, Projectile.owner);
 
+                }
             }
+
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {

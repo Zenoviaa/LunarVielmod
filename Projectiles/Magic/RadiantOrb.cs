@@ -89,8 +89,8 @@ namespace Stellamod.Projectiles.Magic
 
 				float speedX = Projectile.velocity.X * 12;
 				float speedY = Projectile.velocity.Y * 12;
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, speedX, speedY, ModContent.ProjectileType<GoldenHoes>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+                if (Main.myPlayer == Projectile.owner)
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, speedX, speedY, ModContent.ProjectileType<GoldenHoes>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
 				It = 0;
 			}
 

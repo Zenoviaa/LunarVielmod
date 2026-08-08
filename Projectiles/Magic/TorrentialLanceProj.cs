@@ -44,15 +44,19 @@ namespace Stellamod.Projectiles.Magic
 
         public override void AI()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 48;
             Timer++;
             if(SpawnBubbles && Timer % 8 == 0)
             {
                 SoundEngine.PlaySound(SoundID.Item85, Projectile.position);
-                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity, 
-                    ModContent.ProjectileType<TorrentialLanceBubbleProj>(), Projectile.damage / 2, Projectile.knockBack / 2, Projectile.owner);
+             
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
+                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
+                        ModContent.ProjectileType<TorrentialLanceBubbleProj>(), Projectile.damage / 2, Projectile.knockBack / 2, Projectile.owner);
+                }
+
             }
 
             AI_Dash();

@@ -76,7 +76,11 @@ namespace Stellamod.Projectiles.Magic
                     SoundEngine.PlaySound(SoundID.Item103, Projectile.position);
                 }
             }
-
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueTorch, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
 
             Projectile.alpha = Math.Max(0, Projectile.alpha - 25);
 
@@ -155,31 +159,24 @@ namespace Stellamod.Projectiles.Magic
             Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
 
 
-            Main.instance.LoadProjectile(Projectile.type);
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(106, 255, 255), new Color(151, 46, 175), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                color.A = 0;
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+         
             return false;
         }
 
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightBlue.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueTorch, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
         }
     }
 }

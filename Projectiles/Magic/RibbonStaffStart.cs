@@ -65,6 +65,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
+
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
@@ -75,7 +76,7 @@ namespace Stellamod.Projectiles.Magic
                     int buffIndex = npc.FindBuffIndex(BuffType);
                     npc.DelBuff(buffIndex);
 
-                    if (Timer > 60)
+                    if (Timer > 60 && Main.myPlayer == Projectile.owner)
                     {
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Vector2.Zero,
                             ModContent.ProjectileType<RibbonBoom>(), Projectile.damage * 7, Projectile.knockBack, Projectile.owner);

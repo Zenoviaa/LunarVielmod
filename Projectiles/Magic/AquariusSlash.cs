@@ -53,7 +53,7 @@ namespace Stellamod.Projectiles.Magic
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
             Timer++;
-            if(Timer == 6)
+            if(Timer == 6 && Main.myPlayer == Projectile.owner)
             {
 
                 for(int i = 0; i < Main.rand.Next(4, 9); i++)

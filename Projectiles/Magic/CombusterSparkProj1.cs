@@ -59,10 +59,14 @@ namespace Stellamod.Projectiles.Magic
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048, 4);
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<CombusterExplosionProj1>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+    ModContent.ProjectileType<CombusterExplosionProj1>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
-            for(int i = 0; i < 24; i++)
+            }
+
+            for (int i = 0; i < 24; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(16f, 16f);
                 ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<UnderworldParticle1>(),

@@ -106,12 +106,12 @@ namespace Stellamod.Projectiles.Magic
                 ParticleManager.NewParticle(Projectile.Center, speed * 6, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
             }
             var EntitySource = Projectile.GetSource_Death();
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (Main.myPlayer == Projectile.owner)
             {
                 Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj3>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
             }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 4);
             for (int i = 0; i < 2; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType<GlowDust>(), 0f, -2f, 0, default(Color), 1.5f);

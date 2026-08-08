@@ -46,11 +46,13 @@ namespace Stellamod.Projectiles.Magic
 
 			if (It >= 6)
             {
+				if (Main.myPlayer == Projectile.owner)
+				{
+					float speedX = Projectile.velocity.X * 12;
+					float speedY = Projectile.velocity.Y * 12;
 
-				float speedX = Projectile.velocity.X * 12;
-				float speedY = Projectile.velocity.Y * 12;
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, speedX, speedY, ModContent.ProjectileType<BrincShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, speedX, speedY, ModContent.ProjectileType<BrincShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+				}
 				It = 0;
             }
 

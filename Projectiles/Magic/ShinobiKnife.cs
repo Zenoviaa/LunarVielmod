@@ -11,7 +11,6 @@ namespace Stellamod.Projectiles.Magic
 {
     public class ShinobiKnife : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius2");
@@ -58,7 +57,6 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             // Redraw the projectile with the color not influenced by light

@@ -80,15 +80,19 @@ namespace Stellamod.Projectiles.Magic
                 else
                 {
                     //Make a slash
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 8);
                     SoundEngine.PlaySound(SoundID.Item21);
                     float maxSlashDistance = 1;
                     float slashDistance = Math.Min(maxSlashDistance, Vector2.Distance(player.Center, Main.MouseWorld));
     
                     Vector2 slashPosition = player.Center + player.Center.DirectionTo(Main.MouseWorld) * slashDistance;
                     Vector2 velocity = player.Center.DirectionTo(slashPosition) * 4;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), slashPosition, velocity,
-                        ModContent.ProjectileType<AquariusSlash>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    if(Main.myPlayer == Projectile.owner)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), slashPosition, velocity,
+                            ModContent.ProjectileType<AquariusSlash>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    }
+
                 }
             }
             if(Timer % 8 == 0)
@@ -103,11 +107,13 @@ namespace Stellamod.Projectiles.Magic
                     //Make a slash
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 2);
                     SoundEngine.PlaySound(SoundID.Item21);
-  
-                    Vector2 slashPosition = player.Center + Main.rand.NextVector2Circular(80, 80);
-                    Vector2 velocity = player.Center.DirectionTo(slashPosition) * 8;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), slashPosition, velocity,
-                        ModContent.ProjectileType<AquariusSlashMini>(), Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
+                    if (Main.myPlayer == Projectile.owner)
+                    {
+                        Vector2 slashPosition = player.Center + Main.rand.NextVector2Circular(80, 80);
+                        Vector2 velocity = player.Center.DirectionTo(slashPosition) * 8;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), slashPosition, velocity,
+                            ModContent.ProjectileType<AquariusSlashMini>(), Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
+                    }
                 }
             }
 

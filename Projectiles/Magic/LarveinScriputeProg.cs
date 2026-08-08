@@ -38,20 +38,27 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            var EntitySource = Projectile.GetSource_Death();
-            for (int i = 0; i < 5; i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Projectile.timeLeft = 2;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5),
-                    ModContent.ProjectileType<LarveinScriputeProg2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                var EntitySource = Projectile.GetSource_Death();
+                for (int i = 0; i < 5; i++)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5),
+                        ModContent.ProjectileType<LarveinScriputeProg2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                }
+
+
             }
 
 
-            Projectile.scale = 1.5f;
-            ShakeModSystem.Shake = 7;
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<MooningKaboom>(), (int)(0), 0f, Projectile.owner, 0f, 0f);
+            ShakeModSystem.Shake = 3;
+            if(Main.myPlayer == Projectile.owner)
+            {
+                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+                float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<MooningKaboom>(), (int)(0), 0f, Projectile.owner, 0f, 0f);
+
+            }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
             for (int i = 0; i < 20; i++)

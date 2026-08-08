@@ -52,8 +52,12 @@ namespace Stellamod.Projectiles.Magic
 
 		public override void OnKill(int timeLeft)
 		{
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-				ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+			if(Main.myPlayer == Projectile.owner)
+			{
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+            }
+
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);
 		}
 
@@ -73,12 +77,7 @@ namespace Stellamod.Projectiles.Magic
 		}
 		public override bool PreDraw(ref Color lightColor)
 		{
-			if (Main.rand.NextBool(5))
-			{
-				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Pink, 0f, 0f, 150, Color.White, 1f);
-				Main.dust[dustnumber].velocity *= 0.3f;
-				Main.dust[dustnumber].noGravity = true;
-			}
+
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
 			TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
@@ -102,9 +101,14 @@ namespace Stellamod.Projectiles.Magic
 		{
 			Timer2++;
 
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Pink, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
 
-
-			Timer++;
+            Timer++;
 
 			if (alphaCounter <= 2)
 			{

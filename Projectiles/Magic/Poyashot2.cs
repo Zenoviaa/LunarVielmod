@@ -47,9 +47,13 @@ namespace Stellamod.Projectiles.Magic
 
 
 			if (Timer == 3)
-			{
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-					ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 1, 0f, Projectile.owner);
+            {
+                if (Main.myPlayer == Projectile.owner)
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                      ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 1, 0f, Projectile.owner);
+                }
+  
 				Timer = 0;
 
 

@@ -127,11 +127,15 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void OnKill(int timeLeft)
         {
-            var entitySource = Projectile.GetSource_Death();
-            Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                var entitySource = Projectile.GetSource_Death();
+                Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
-            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
-             Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ITExplosionProj>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+
+                Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ITExplosionProj>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+            }
+
             int S1 = Main.rand.Next(0, 3);
             if (S1 == 0)
             {
@@ -145,7 +149,8 @@ namespace Stellamod.Projectiles.Magic
             {
                 SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb3"), Projectile.position);
             }
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 16f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 4);
+            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
         }
 
         public override bool PreDraw(ref Color lightColor)

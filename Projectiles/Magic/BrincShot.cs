@@ -104,7 +104,7 @@ namespace Stellamod.Projectiles.Magic
             }
             var EntitySource = Projectile.GetSource_Death();
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 6);
             for (int i = 0; i < 2; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType<GlowDust>(), 0f, -2f, 0, default(Color), 1.5f);

@@ -71,7 +71,7 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 30; i++)
             {
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num1].noGravity = true;

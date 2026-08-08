@@ -59,18 +59,20 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            var EntitySource = Projectile.GetSource_Death();
-            for (int i = 0; i < 3; i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Projectile.timeLeft = 2;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<WinterStormFragProg>(), 5, 1, Projectile.owner);
-            }
-            for (int i = 0; i < 4; i++)
-            {
+                var EntitySource = Projectile.GetSource_Death();
+                for (int i = 0; i < 3; i++)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<WinterStormFragProg>(), 5, 1, Projectile.owner);
+                }
+                for (int i = 0; i < 4; i++)
+                {
 
-                Projectile.timeLeft = 2;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Projectile.owner);
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Projectile.owner);
+                }
             }
+ 
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
             for (int i = 0; i < 20; i++)

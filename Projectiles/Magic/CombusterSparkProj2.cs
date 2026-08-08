@@ -2,7 +2,6 @@
 using ParticleLibrary;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -60,8 +59,17 @@ namespace Stellamod.Projectiles.Magic
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048, 8);
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"), Projectile.position);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<CombustionBoomMini>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    ModContent.ProjectileType<CombustionBoomMini>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                for (int i = 0; i < Main.rand.Next(3, 6); i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);
+                }
+            }
             for (int i = 0; i < 6; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
@@ -69,12 +77,7 @@ namespace Stellamod.Projectiles.Magic
                     Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
             }
 
-            for (int i = 0; i < Main.rand.Next(3, 6); i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);
-            }
+
         }
     }
 }

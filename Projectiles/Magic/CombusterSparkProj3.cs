@@ -59,25 +59,28 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048, 32);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048, 832);
             SoundEngine.PlaySound(SoundRegistry.CombusterBoom, Projectile.position);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<CombustionBoom>(), Projectile.damage * 8, Projectile.knockBack * 2, Projectile.owner);
-            for (int i = 0; i < Main.rand.Next(10, 15); i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);     
-            }
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+       ModContent.ProjectileType<CombustionBoom>(), Projectile.damage * 8, Projectile.knockBack * 2, Projectile.owner);
+                for (int i = 0; i < Main.rand.Next(10, 15); i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);
+                }
 
-            for (int i = 0; i < Main.rand.Next(3, 7); i++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
-                int index = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ProjectileID.GreekFire3, Projectile.damage, 0f, Projectile.owner);
-                Main.projectile[index].friendly = true;
-                Main.projectile[index].hostile = false;
+                for (int i = 0; i < Main.rand.Next(3, 7); i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
+                    int index = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<GreekFireFriendly>(), Projectile.damage, 0f, Projectile.owner);
+
+                }
             }
+   
 
             for (int i = 0; i < 18; i++)
             {

@@ -33,6 +33,12 @@ namespace Stellamod.Projectiles.Magic
 
         public override void AI()
         {
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+                Main.dust[dustnumber].noGravity = true;
+            }
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
@@ -71,11 +77,15 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void OnKill(int timeLeft)
         {
-            var EntitySource = Projectile.GetSource_Death();
-            for (int i = 0; i < 5; i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1), ModContent.ProjectileType<SunDeathGPar>(), 5, 1, Projectile.owner, 0, 0);
+                var EntitySource = Projectile.GetSource_Death();
+                for (int i = 0; i < 5; i++)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1), ModContent.ProjectileType<SunDeathGPar>(), 5, 1, Projectile.owner, 0, 0);
+                }
             }
+
             for (int i = 0; i < 50; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default, 1f).noGravity = false;
@@ -99,12 +109,7 @@ namespace Stellamod.Projectiles.Magic
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
-            }
+
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);

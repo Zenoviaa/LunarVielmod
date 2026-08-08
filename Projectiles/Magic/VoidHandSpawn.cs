@@ -55,10 +55,15 @@ namespace Stellamod.Projectiles.Magic
             }
             if (Projectile.ai[0] == 40)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 6);
                 var EntitySource = Projectile.GetSource_FromThis();
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, OldVelotcity.X, OldVelotcity.Y, 
-                    ModContent.ProjectileType<VoidHand>(), 40, 1, Projectile.owner, 0, 0);
+
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, OldVelotcity.X, OldVelotcity.Y,
+                        ModContent.ProjectileType<VoidHand>(), 40, 1, Projectile.owner, 0, 0);
+                }
+
                 Projectile.timeLeft = 2;
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
@@ -101,7 +106,7 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 30; i++)
             {
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num1].noGravity = true;

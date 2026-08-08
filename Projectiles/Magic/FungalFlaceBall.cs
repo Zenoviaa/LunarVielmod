@@ -23,11 +23,7 @@ namespace Stellamod.Projectiles.Magic
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Plantera_Pink, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
+
 
         }
         public override void SetDefaults()
@@ -46,7 +42,11 @@ namespace Stellamod.Projectiles.Magic
         }
         public override void AI()
         {
-
+            if (Main.rand.NextBool(5))
+            {
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Plantera_Pink, 0f, 0f, 150, Color.White, 1f);
+                Main.dust[dustnumber].velocity *= 0.3f;
+            }
             if (Projectile.ai[1] <= 3)
             {
                 int Sound = Main.rand.Next(1, 3);
