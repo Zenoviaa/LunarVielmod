@@ -163,10 +163,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 }
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/NStarblast"));
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
+
 			}
 
 
@@ -177,18 +174,6 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					counter++;
 					Wait();
 
-					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-					}
-
-					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-					}
-
 
 					break;
 
@@ -196,17 +181,6 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					counter++;
 					Speed();
 
-					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-					}
-
-					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-					}
 					break;
 
 
@@ -220,6 +194,10 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		public void Wait()
 		{
 			timer++;
+			if(timer == 1)
+			{
+                EffectsHelper.StartShockwave(ShockwaveParams.Default with { rippleCenter = NPC.Center });
+            }
 			if (timer > 50)
 			{
 
@@ -233,10 +211,6 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				timer = 0;
 
 
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 			}
 		}
 
@@ -250,10 +224,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				timer = 0;
 
 
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
+
 			}
 
 		}

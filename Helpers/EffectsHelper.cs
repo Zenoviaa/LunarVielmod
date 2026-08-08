@@ -32,28 +32,20 @@ public class EffectsHelper : ModSystem
         if (Main.netMode == NetmodeID.Server)
             return;
 
-        if(_bee <= 0)
-        {
-            if (ShockwaveFilter.IsActive())
-            {
-                ShockwaveFilter.Deactivate();
-            }
-            return;
-        }
 
         if(_bee > 0)
         {
             if (!ShockwaveFilter.IsActive())
             {
-                ShockwaveFilter.Activate(_rippleCenter);
-
+                Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", _rippleCenter).GetShader().UseColor(_rippleCount, _rippleSize, _rippleSpeed).UseTargetPosition(_rippleCenter);
             }
-            float progress = (180f - _bee) / 60f;
-            ShockwaveFilter.GetShader()
-                    .UseColor(_rippleCount, _rippleSize, _rippleSpeed)
-                    .UseTargetPosition(_rippleCenter)
-                    .UseProgress(progress)
-                    .UseOpacity(_distortStrength * (1 - progress / 3f));
+
+            if (ShockwaveFilter.IsActive())
+            {
+                float progress = (180f - _bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+                ShockwaveFilter.GetShader().UseProgress(progress).UseOpacity(_distortStrength * (1 - progress / 3f));
+            }
+
             _bee--;
         }
     }
@@ -67,6 +59,10 @@ public class EffectsHelper : ModSystem
         _rippleSpeed = shockwaveParams.rippleSpeed; ;
         _distortStrength = shockwaveParams.distortStrength;
         _rippleCount = shockwaveParams.rippleCount;
-        _bee = 220;
+        _bee = 180;
+        if (ShockwaveFilter.IsActive())
+        {
+            ShockwaveFilter.Deactivate();
+        }
     }
 }

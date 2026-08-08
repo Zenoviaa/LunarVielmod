@@ -54,18 +54,9 @@ namespace Stellamod.Projectiles.Summons
                     Projectile.ai[0] = 1; // Set state to exploded
                     Projectile.alpha = 255; // Make the Projectile invisible.
                   
-
-                    if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                    {
-                        Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", Projectile.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(Projectile.Center);
-                    }
+   
                 }
 
-                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                {
-                    float progress = (180f - Projectile.timeLeft) / 60f;
-                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-                }
             }
 
             if (Projectile.timeLeft == 0)
@@ -131,10 +122,7 @@ namespace Stellamod.Projectiles.Summons
 
         public override void OnKill(int timeLeft)
         {
-            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-            {
-                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-            }
+
         }    
     }
 }

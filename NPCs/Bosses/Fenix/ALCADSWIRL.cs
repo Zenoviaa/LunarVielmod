@@ -203,10 +203,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				timer = 0;
 
 
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 			}
 		}
 
@@ -233,11 +229,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				State = ActionState.Wait;
 				timer = 0;
 
-
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 			}
 
 		}

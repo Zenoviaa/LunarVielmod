@@ -541,11 +541,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				NPC.alpha++;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(2);
-
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 			}
 
 			FinishResetTimers();
@@ -561,17 +556,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					NPC.damage = 0;
 					counter++;
 
-					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-					}
-
-					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-					}
 
                     StarFieldOffset = true;
                     BombStar();
@@ -706,11 +690,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			{
 				int distanceY = Main.rand.Next(-150, -150);
                 Teleport(player.Center.X, player.Center.Y + distanceY);
-                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
-			}
+                EffectsHelper.StartShockwave(ShockwaveParams.Default with { rippleCenter = NPC.Center });
+            }
 
 			if (timer < 101)
             {
@@ -835,11 +816,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 			if (timer > 360)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 
                 ResetTimers();
 				if (StellaMultiplayer.IsHost)
@@ -894,11 +870,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer > 540)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 
                 ResetTimers();
                 State = ActionState.BreakdownStar;
@@ -1532,10 +1503,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
         public override void OnKill()
 		{
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedSTARBoss, -1);
-			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-			{
-				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-			}
 		}
 	}
 }

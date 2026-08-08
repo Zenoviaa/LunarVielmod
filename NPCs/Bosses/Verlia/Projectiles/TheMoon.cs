@@ -73,17 +73,9 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 					Projectile.ai[0] = 1; // Set state to exploded
 					Projectile.alpha = 255; // Make the Projectile invisible.
 
-					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", Projectile.position + new Vector2(150, 150)).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(Projectile.position + new Vector2(150, 150));
-					}
+
 				}
 
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					float progress = (180f - Projectile.timeLeft) / 60f;
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-				}
 			}
 		}
 		
@@ -109,10 +101,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 		public override void OnKill(int timeLeft)
 		{
-			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-			{
-				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-			}
+
 		}
 
 	}

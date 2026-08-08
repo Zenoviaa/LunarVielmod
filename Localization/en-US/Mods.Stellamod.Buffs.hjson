@@ -468,6 +468,11 @@ Lacerated: {
 	DisplayName: Lacerated
 }
 
+Lacerate: {
+	DisplayName: Lacerate
+	Description: Mods.Stellamod.Buffs.Lacerate.Description
+}
+
 Genesis: {
 	Description: Small bomb mode
 	DisplayName: Genesis

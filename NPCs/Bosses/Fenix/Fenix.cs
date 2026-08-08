@@ -481,10 +481,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				{
 					NPC.active = false;
 				}
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 				return;
 			}
 			else
@@ -727,10 +723,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
                     NPC.netUpdate = true;
                 }
 
-                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 			}
 
 			if (timer > 3)
@@ -759,10 +751,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer < 52)
 			{
 				NPC.alpha =- 5;
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
 			}
 
 			if (timer > 90)
@@ -803,10 +791,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer < 52)
 			{
 				NPC.alpha = -5;
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
+
 			}
 
 			if (timer > 53)
@@ -844,10 +829,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer < 52)
 			{
 				NPC.alpha = -5;
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
+
 			}
 
 			if (timer > 53)
@@ -2569,10 +2551,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		public override void OnKill()
 		{
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedFenixBoss, -1);
-			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-			{
-				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-			}
 		}
 	}
 }

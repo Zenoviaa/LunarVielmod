@@ -294,19 +294,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                     NPC.ai[0]++;
                                     if (NPC.scale >= 1)
                                     {
-                                        if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                                        {
-                                            Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-                                        }
-
-                                        if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                                        {
-                                            float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-                                            Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-
-
-                                        }
 
 
                                         float radius = 250;
@@ -407,10 +394,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                     }
                                     if (Attack == PrevAttac)
                                     {
-                                        if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                                        {
-                                            Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-                                        }
+            
                                         if (StellaMultiplayer.IsHost)
                                         {
                                             Attack = Main.rand.Next(1, 3);
@@ -820,25 +804,12 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             }
                             if (NPC.ai[0] == 270)
                             {
-                                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                                {
-                                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-                                }
+        
                             }
                             if (NPC.ai[0] == 170)
                             {
                                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2212f, 62f);
-                                if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                                {
-                                    Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-                                }
-
-                                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                                {
-                                    float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-                                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-                                }
+              
 
                                 if (StellaMultiplayer.IsHost)
                                 {

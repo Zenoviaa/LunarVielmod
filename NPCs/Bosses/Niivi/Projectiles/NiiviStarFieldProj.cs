@@ -55,24 +55,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Voidfield, Projectile.position);
             }
 
-            if(Timer == 300)
+            if (Timer == 300)
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Voidence, Projectile.position);
-            }
-
-            if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-            {
-                float rippleCount = 5;
-                float rippleSize = 25;
-                float rippleSpeed = 40;
-                Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", Projectile.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(Projectile.Center);
-            }
-
-            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-            {
-                float distortStrength = 500;
-                float progress = Timer / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
             }
 
             if(Timer % 12 == 0 && Timer >= 60)
@@ -195,10 +180,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             shaderSystem.TintScreen(Color.Black, 0.5f, timer: 60);
             SoundEngine.PlaySound(SoundRegistry.Niivi_PrimAm, Projectile.position);
-            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-            {
-                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-            }
         }
     }
 }

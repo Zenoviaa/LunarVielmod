@@ -1149,11 +1149,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
         public override void OnKill()
 		{
-			
-			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-			{
-				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-			}
+
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedGothBoss, -1);
 		}
 

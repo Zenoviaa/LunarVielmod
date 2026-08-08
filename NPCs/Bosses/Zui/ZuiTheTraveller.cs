@@ -512,16 +512,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
                 case ActionState.SonicGroundpound:
                     NPC.damage = 0;
-                    if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                    {
-                        Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-                    }
 
-                    if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                    {
-                        float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-                        Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-                    }
                     SonicGroundpound();
                     break;
             }
@@ -1924,13 +1915,11 @@ namespace Stellamod.NPCs.Bosses.Zui
                     NPC.noTileCollide = true;
                     if (yud >= 10)
                     {
+                        EffectsHelper.StartShockwave(ShockwaveParams.Default with { rippleCenter = NPC.Center });
                         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenFall"), NPC.position);
                         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
 
-                        if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                        {
-                            Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-                        }
+   
 
                         ResetTimers();
                         if (StellaMultiplayer.IsHost)
