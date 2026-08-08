@@ -812,7 +812,8 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 if (AITimer == 150)
                 {
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 424f);
-                    Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<SupernovaGodExplosion>(), 800, 0f, Owner: Main.myPlayer);
+                    if(StellaMultiplayer.IsHost)
+                        Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<SupernovaGodExplosion>(), 800, 0f, Owner: Main.myPlayer);
 
                 }
                 if (AITimer >= 200)

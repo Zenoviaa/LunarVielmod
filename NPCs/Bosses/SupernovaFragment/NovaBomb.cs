@@ -88,9 +88,13 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         }
         public override void OnKill(int timeLeft)
         {
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 124f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0,
-                       ModContent.ProjectileType<SupernovaExplosion>(), Projectile.damage, 1, Owner: Main.myPlayer);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 32);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0,
+           ModContent.ProjectileType<SupernovaExplosion>(), Projectile.damage, 1, Owner: Main.myPlayer);
+            }
+
         }
 
         public override Color? GetAlpha(Color lightColor)
