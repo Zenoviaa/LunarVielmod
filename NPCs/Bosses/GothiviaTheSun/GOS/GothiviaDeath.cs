@@ -1293,18 +1293,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") {PitchVariance = 0.3f  }, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { PitchVariance = 0.3f  }, NPC.Center);
 
-                switch (Main.rand.Next(2))
+                if (StellaMultiplayer.IsHost)
                 {
-                    case 0:
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomBurn>(), 700, 0f, Main.myPlayer, 0f, ai1);
-                        break;
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomBurn>(), 700, 0f, Main.myPlayer, 0f, ai1);
+                            break;
 
-                    case 1:
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomSun>(), 700, 0f, Main.myPlayer, 0f, ai1);
-                        break;
+                        case 1:
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomSun>(), 700, 0f, Main.myPlayer, 0f, ai1);
+                            break;
 
 
+                    }
                 }
+
 
 
             }
@@ -1362,19 +1366,21 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") {PitchVariance = 0.3f  }, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { PitchVariance = 0.3f  }, NPC.Center);
-                switch (Main.rand.Next(2))
+                if (StellaMultiplayer.IsHost)
                 {
-                    case 0:
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomBurn>(), 700, 0f, Main.myPlayer, 0f, ai1);
-                        break;
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomBurn>(), 700, 0f, Main.myPlayer, 0f, ai1);
+                            break;
 
-                    case 1:
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomSun>(), 700, 0f, Main.myPlayer, 0f, ai1);
-                        break;
+                        case 1:
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomSun>(), 700, 0f, Main.myPlayer, 0f, ai1);
+                            break;
 
 
+                    }
                 }
-
 
             }
 
@@ -1433,21 +1439,23 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 ShakeModSystem.Shake = 8;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") {PitchVariance = 0.3f  }, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { PitchVariance = 0.3f  }, NPC.Center);
-                switch (Main.rand.Next(2))
+                if (StellaMultiplayer.IsHost)
                 {
-                    case 0:
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<GothBlastExplosionProj2>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomBurn>(), 700, 0f, Main.myPlayer, 0f, ai1);
-                        break;
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<GothBlastExplosionProj2>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomBurn>(), 700, 0f, Main.myPlayer, 0f, ai1);
+                            break;
 
-                    case 1:
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<GothBlastExplosionProj>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomSun>(), 700, 0f, Main.myPlayer, 0f, ai1);
-                        break;
+                        case 1:
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<GothBlastExplosionProj>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomSun>(), 700, 0f, Main.myPlayer, 0f, ai1);
+                            break;
 
 
+                    }
                 }
-
 
             }
 
