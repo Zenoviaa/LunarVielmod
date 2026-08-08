@@ -44,8 +44,12 @@ namespace Stellamod.Projectiles.Pikmin
             }
             else if (!target.active)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
-                    ModContent.ProjectileType<BluePikminThrow>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                if(Main.myPlayer  == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+    ModContent.ProjectileType<BluePikminThrow>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                }
+
                 Projectile.Kill();
             }
             else
@@ -63,9 +67,11 @@ namespace Stellamod.Projectiles.Pikmin
 
             if (Attacktime >= 20)
             {
-                int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<NailKaboom>(), Projectile.damage, 0, Projectile.owner);
-
+                }
                 Attacktime = 0;
 
                 switch (Main.rand.Next(5))

@@ -69,8 +69,12 @@ namespace Stellamod.Projectiles.Pikmin
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0,
-              ModContent.ProjectileType<NailKaboom>(), Projectile.damage * 0, Projectile.knockBack, Projectile.owner);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0,
+  ModContent.ProjectileType<NailKaboom>(), Projectile.damage * 0, Projectile.knockBack, Projectile.owner);
+            }
+
             return base.OnTileCollide(oldVelocity);
         }
 
