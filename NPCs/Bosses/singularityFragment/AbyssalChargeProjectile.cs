@@ -73,11 +73,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             {
                 counter = -1440;
             }
-            for (int i = 0; i < 4; i++)
-            {
-                float x = Projectile.Center.X - Projectile.velocity.X / 10f * i;
-                float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * i;
-            }
+
 
         }
 		public override void OnKill(int timeLeft)

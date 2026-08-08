@@ -76,7 +76,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 counter = -1440;
             }
 
-            if(Projectile.timeLeft == 100)
+            if(Projectile.timeLeft == 100 && Main.myPlayer == Projectile.owner)
             {
                 Utilities.NewProjectileBetter(Projectile.Center.X, Projectile.Center.Y - 900, 0, 10, 
                     ModContent.ProjectileType<SoulBeam>(), 100, 0f, -1, 0, Projectile.whoAmI);
