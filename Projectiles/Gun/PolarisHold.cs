@@ -202,9 +202,12 @@ namespace Stellamod.Projectiles.Gun
 
                 float multiplier = chargeProgress * 3;
                 int damage = (int)(multiplier * (float)Projectile.damage);
-                //Shoot the laser
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    //Shoot the laser
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
                     ModContent.ProjectileType<PolarisLaserProj>(), damage, Projectile.knockBack, player.whoAmI, ai0: chargeProgress);
+                }
 
             }
 

@@ -66,8 +66,11 @@ namespace Stellamod.Projectiles.Gun
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
               ModContent.ProjectileType<WigglerStick2>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
             return base.OnTileCollide(oldVelocity);
         }
 

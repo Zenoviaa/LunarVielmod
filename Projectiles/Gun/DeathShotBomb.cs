@@ -59,11 +59,15 @@ namespace Stellamod.Projectiles.Gun
                     Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
                 }
 
-                for (int i = 0; i < 13; i++)
+                if(Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(EntitySource, ProjectilePos.X += Main.rand.Next(-10, 10), ProjectilePos.Y += Main.rand.Next(-10, 10), Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), 
-                        ModContent.ProjectileType<DeathShotBombFX>(), Projectile.damage / 2, 1, Projectile.owner, 0, 0);
+                    for (int i = 0; i < 7; i++)
+                    {
+                        Projectile.NewProjectile(EntitySource, ProjectilePos.X += Main.rand.Next(-10, 10), ProjectilePos.Y += Main.rand.Next(-10, 10), Main.rand.Next(-2, 2), Main.rand.Next(-2, 2),
+                            ModContent.ProjectileType<DeathShotBombFX>(), Projectile.damage / 2, 1, Projectile.owner, 0, 0);
+                    }
                 }
+ 
             }
 
             if (Projectile.ai[0] <= 100)

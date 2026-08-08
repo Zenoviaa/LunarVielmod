@@ -58,8 +58,11 @@ namespace Stellamod.Projectiles.Gun
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
+            }
         }
 
         public float WidthFunction(float completionRatio)

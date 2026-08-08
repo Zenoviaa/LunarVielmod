@@ -58,13 +58,14 @@ namespace Stellamod.Projectiles.Gun
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Teal, 1f).noGravity = true;
             }
 
-            float damage = Projectile.damage;
-            damage *= 0.5f;
-            var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<KaBoomMagic2>(), (int)damage, 3, Projectile.owner);
-            p.friendly = true;
-            p.usesLocalNPCImmunity = true;
-            p.localNPCHitCooldown = -1;
+            if(Main.myPlayer == Projectile.owner)
+            {
+                float damage = Projectile.damage;
+                damage *= 0.5f;
+                var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    ModContent.ProjectileType<KaBoomMagic2>(), (int)damage, 3, Projectile.owner, ai1: 1);
+
+            }
 
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)

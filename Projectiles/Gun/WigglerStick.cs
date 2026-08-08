@@ -42,8 +42,11 @@ namespace Stellamod.Projectiles.Gun
             } 
             else if (!target.active)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
                     ModContent.ProjectileType<WigglerShot>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
                 Projectile.Kill();
             } 
             else

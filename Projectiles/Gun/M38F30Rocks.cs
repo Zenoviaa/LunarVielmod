@@ -78,13 +78,16 @@ namespace Stellamod.Projectiles.Gun
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb1"), Projectile.position);
             }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 4);
             var EntitySource = Projectile.GetSource_Death();
-            for (int i = 0; i < 5; i++)
+            if (Main.myPlayer == Projectile.owner)
             {
-                Projectile.timeLeft = 2;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1),
-                    ModContent.ProjectileType<M38F30Rocks2>(), 5, 1, Projectile.owner, 0, 0);
+                for (int i = 0; i < 5; i++)
+                {
+                    Projectile.timeLeft = 2;
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1),
+                        ModContent.ProjectileType<M38F30Rocks2>(), 5, 1, Projectile.owner, 0, 0);
+                }
             }
         }
 

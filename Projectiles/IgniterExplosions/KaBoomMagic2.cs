@@ -7,6 +7,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 {
 	public class KaBoomMagic2 : ModProjectile
 	{
+		private ref float Style => ref Projectile.ai[1];
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("FrostShotIN");
@@ -30,7 +31,15 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		}
 		public override void AI()
 		{
-			Projectile.rotation -= 0.01f;
+			if(Style == 1)
+			{
+				Projectile.friendly = true;
+                Projectile.usesLocalNPCImmunity = true;
+                Projectile.localNPCHitCooldown = -1;
+
+            }
+
+            Projectile.rotation -= 0.01f;
 			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);

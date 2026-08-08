@@ -37,17 +37,16 @@ namespace Stellamod.Projectiles.Gun
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+          
             Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(241, 85, 64), new Color(133, 42, 42), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                color.A = 0;
                 Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+          
             return true;
         }
 
@@ -79,7 +78,7 @@ namespace Stellamod.Projectiles.Gun
             {
                 if (Projectile.ai[0] == 20)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher2") with {  Volume = 0.3f }, Projectile.position);
                 }
                 if (Projectile.ai[0] == 50)
                 {
@@ -109,9 +108,12 @@ namespace Stellamod.Projectiles.Gun
                     float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                     int damage = Main.expertMode ? 10 : 14;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (Main.myPlayer == Projectile.owner)
+                    {
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<DeathShotProj>(), Projectile.damage, 1,
-                            Main.myPlayer, 0, 0);
+                                  Projectile.owner, 0, 0);
+                    }
+      
                 }
             }
             else

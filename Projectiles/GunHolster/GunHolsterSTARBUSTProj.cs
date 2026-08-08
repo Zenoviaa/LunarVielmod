@@ -39,8 +39,13 @@ namespace Stellamod.Projectiles.GunHolster
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             Vector2 velocity = direction * 16;
             velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 15);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
-                ModContent.ProjectileType<STARBULLING>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
+           ModContent.ProjectileType<STARBULLING>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+
+            }
 
 
             int Sound = Main.rand.Next(1, 3);

@@ -76,9 +76,12 @@ namespace Stellamod.Projectiles.Magic
             }
             if (Projectile.ai[1] == 70)
             {
-                var EntitySource = Projectile.GetSource_Death();
-                Projectile.velocity = Vector2.Zero;
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    var EntitySource = Projectile.GetSource_Death();
+                    Projectile.velocity = Vector2.Zero;
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                }
             }
             if (Projectile.ai[1] == 110)
             {
