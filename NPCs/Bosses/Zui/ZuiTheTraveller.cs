@@ -1387,19 +1387,14 @@ namespace Stellamod.NPCs.Bosses.Zui
             }
             if (timer == 32)
             {
-
                 if (StellaMultiplayer.IsHost)
                 {
                     Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
                 }
 
-
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteSwing"));
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Hyuh"));
-
-
-
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteSwing"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Hyuh"), NPC.position);
 
                 for (int i = 0; i < 150; i++)
                 {
