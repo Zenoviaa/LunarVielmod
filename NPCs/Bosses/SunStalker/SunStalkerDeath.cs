@@ -52,12 +52,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.noGravity = true;
             NPC.scale = 1f;
         }
-        Vector2 targetPos;
-        public override void OnKill()
-        {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.SlimeCrown, 1, false, 0, false, false);
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.Gel, Main.rand.Next(0, 2));
-        }
+
         public override void AI()
         {
             NPC.dontTakeDamage = true;
@@ -185,7 +180,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             }
 
             Player player = Main.player[NPC.target];
-            targetPos = player.Center;
+
         }
         int frame = 0;
         public override void FindFrame(int frameHeight)

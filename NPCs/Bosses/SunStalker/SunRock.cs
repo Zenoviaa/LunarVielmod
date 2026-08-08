@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         }
         public override void OnKill(int timeLeft)
         {
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16);
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_DarkMageAttack, Projectile.position);
             for (int i = 0; i < 50; i++)

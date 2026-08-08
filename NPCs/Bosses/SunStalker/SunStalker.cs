@@ -1119,7 +1119,8 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             if (NPC.life <= 0)
             {
                 var entitySource = NPC.GetSource_FromThis();
-                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y + 50, ModContent.NPCType<SunStalkerDeath>());
+                if(StellaMultiplayer.IsHost)
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y + 50, ModContent.NPCType<SunStalkerDeath>());
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.CopperCoin, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.CopperCoin, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
 

@@ -43,18 +43,9 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             if (NPC.ai[0] == 100 && Main.dayTime)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge"), NPC.position);
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)(NPC.position.X), (int)(NPC.position.Y),
-                        ModContent.NPCType<SunStalker>(), NPC.whoAmI, NPC.whoAmI);
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return;
-
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, 
-                        ModContent.NPCType<SunStalker>(), (int)(NPC.position.X), (int)(NPC.position.Y));
+                    NPC.NewNPC(entitySource, (int)(NPC.position.X), (int)(NPC.position.Y), ModContent.NPCType<SunStalker>());
                 }
             }
             if (NPC.ai[0] == 200 && Main.dayTime)

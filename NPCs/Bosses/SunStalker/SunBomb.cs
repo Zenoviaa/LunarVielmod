@@ -72,17 +72,24 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 {
                     if (Main.rand.NextBool(2))
                     {
-                        var entitySource = Projectile.GetSource_FromThis();
-                        NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<SunStalkerLighting>());
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            var entitySource = Projectile.GetSource_FromThis();
+                            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<SunStalkerLighting>());
+                        }
+
                     }
                 }
                 if (Projectile.ai[0] >= 50)
                 {
                     {
-                        if (Main.rand.NextBool(6))
+                        if (StellaMultiplayer.IsHost)
                         {
-                            var entitySource = Projectile.GetSource_FromThis();
-                            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<SunStalkerRayLight>());
+                            if (Main.rand.NextBool(6))
+                            {
+                                var entitySource = Projectile.GetSource_FromThis();
+                                NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<SunStalkerRayLight>());
+                            }
                         }
                     }
                 }
