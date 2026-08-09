@@ -12075,3 +12075,8 @@ TowerofIlluriaRelicItem: {
 	DisplayName: Towerof Illuria Relic
 	Tooltip: ""
 }
+
+Punkerwallblock: {
+	DisplayName: Punkerwallblock
+	Tooltip: ""
+}
