@@ -204,8 +204,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.SetDefaults();
             //We can still keep fair hitbox sizes though
-            NPC.width = 100;
-            NPC.height = 100;
+            NPC.width = NPC.height = 350;
+
 
             //We have to upscale this boss cause he's really hard and you're not really supposed to be him lol
             NPC.damage = 1;
