@@ -192,10 +192,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 		public void Wait()
 		{
 			timer++;
-			if(timer == 1)
-			{
-                EffectsHelper.StartShockwave(ShockwaveParams.Default with { rippleCenter = NPC.Center });
-            }
+
 			if (timer > 50)
 			{
 

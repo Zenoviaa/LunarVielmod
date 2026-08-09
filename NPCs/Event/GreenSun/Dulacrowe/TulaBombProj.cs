@@ -202,7 +202,11 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             Timer++;
 
 
-            screenShaderSystem.TintScreen(Color.DarkSeaGreen, 0.2f);
+            if(Timer == 1)
+            {
+     
+            }
+         
             float maxDetectDistance = 3000;
             float maxSpeed = 4;
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
@@ -246,9 +250,6 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
             if(Timer >= 600)
             {
-                //KABOOM
-                screenShaderSystem.UnTintScreen();
-                screenShaderSystem.UnVignetteScreen();
                 Projectile.Kill();
             }
         }
