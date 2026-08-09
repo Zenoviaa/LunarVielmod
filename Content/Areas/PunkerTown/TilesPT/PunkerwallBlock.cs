@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 {
-    public class Punkerwallblock : ModItem
+    public class PunkerwallBlock : ModItem
     {
         public override void SetStaticDefaults()
         {
