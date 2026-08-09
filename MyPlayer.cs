@@ -26,6 +26,8 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
@@ -727,7 +729,9 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+
+			bool rekOrGothivia = NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) || NPC.AnyNPCs(ModContent.NPCType<RekSnake>());
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid && !rekOrGothivia);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
@@ -1032,8 +1036,12 @@ namespace Stellamod
                     var EntitySource = AssassinsSlashnpc.GetSource_FromThis();
 
 
-                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSpawnEffect>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSlashProj>(), 0, 1, Player.whoAmI, 0, 0);
+					if(Main.myPlayer == Player.whoAmI)
+					{
+                        Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSpawnEffect>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                        Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSlashProj>(), 0, 1, Player.whoAmI, 0, 0);
+                    }
+                   
                 }
             }
 
@@ -1049,9 +1057,11 @@ namespace Stellamod
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
 					var EntitySource = Player.GetSource_FromThis();
-
-					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRightProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeftProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+					if (Main.myPlayer == Player.whoAmI)
+					{
+						Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRightProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+						Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeftProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+					}
                     player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
                 }
 
@@ -1078,9 +1088,10 @@ namespace Stellamod
 				{
 					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Vomit3"), player.position);
 					var EntitySource = Player.GetSource_FromThis();
-
-					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<SmileForCamera>(), Player.HeldItem.damage * 0, 1, Player.whoAmI, 0, 0);
-				
+					if (Main.myPlayer == Player.whoAmI)
+					{
+						Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<SmileForCamera>(), Player.HeldItem.damage * 0, 1, Player.whoAmI, 0, 0);
+					}
 					player.AddBuff(ModContent.BuffType<CameraMinBuff>(), 99999);
 				}
 
@@ -1099,7 +1110,10 @@ namespace Stellamod
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1"), Player.position);
                     var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinionProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+					if (Main.myPlayer == Player.whoAmI)
+					{
+						Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinionProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+					}
                     player.AddBuff(ModContent.BuffType<FCMinionBuff>(), 99999);
                 }
 
@@ -1211,7 +1225,11 @@ namespace Stellamod
 
 			if (HikersBSpawn && HikersBCooldown <= 0)
 			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1.1f, ModContent.ProjectileType<Stump>(), 10, 1f, Player.whoAmI);
+				if (Main.myPlayer == Player.whoAmI)
+				{
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1.1f, ModContent.ProjectileType<Stump>(), 10, 1f, Player.whoAmI);
+				}
+				
 				HikersBCooldown = 30;
 			}
 
@@ -1224,7 +1242,11 @@ namespace Stellamod
 				for (int j = 0; j < 1; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Noti>(), 120, 1f, Player.whoAmI);
+					if (Main.myPlayer == Player.whoAmI)
+					{
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Noti>(), 120, 1f, Player.whoAmI);
+					}
+					
 				}
 
 
@@ -1245,15 +1267,19 @@ namespace Stellamod
 			if (Daedstruck && DaedstruckBCooldown == 0)
 			{
 				DaedstruckBCooldown = 600;
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 0f, ModContent.ProjectileType<LightBomb>(), 30, 1f, Player.whoAmI);
-
+				if (Main.myPlayer == Player.whoAmI)
+				{
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 0f, ModContent.ProjectileType<LightBomb>(), 30, 1f, Player.whoAmI);
+				}
 			}
 	
 			
 			if (MasteryMagic && MasteryMagicBCooldown <= 0)
 			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<MasteryofMagic>(), 0, 1f, Player.whoAmI);
-
+				if (Main.myPlayer == Player.whoAmI)
+				{
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<MasteryofMagic>(), 0, 1f, Player.whoAmI);
+				}
 				Player.AddBuff(ModContent.BuffType<MasteryMagic>(), 1000);
 				MasteryMagicBCooldown = 1000;
 			}
@@ -1266,11 +1292,14 @@ namespace Stellamod
 
 			if (GovheilB && GovheilBCooldown == 301)
 			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-				for (int j = 0; j < 1; j++)
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"), Player.position);
+				if (Main.myPlayer == Player.whoAmI)
 				{
-					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilBows>(), 20, 1f, Player.whoAmI);
+					for (int j = 0; j < 1; j++)
+					{
+						Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilBows>(), 20, 1f, Player.whoAmI);
+					}
 				}
 			}
 
@@ -1291,13 +1320,15 @@ namespace Stellamod
 
 			if (GovheilC && GovheilBCooldown == 301)
 			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-				for (int j = 0; j < 1; j++)
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"), Player.position);
+				if (Main.myPlayer == Player.whoAmI)
 				{
-					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilSwords>(), 25, 1f, Player.whoAmI);
+					for (int j = 0; j < 1; j++)
+					{
+						Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilSwords>(), 25, 1f, Player.whoAmI);
+					}
 				}
-
 
 			}
 
@@ -1312,12 +1343,15 @@ namespace Stellamod
 
 			if (DucanB && DucanBCooldown == 301)
 			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-				for (int j = 0; j < 1; j++)
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"), Player.position);
+				if (Main.myPlayer == Player.whoAmI)
 				{
-					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, 
-						ModContent.ProjectileType<Dulcans>(), 60, 1f, Player.whoAmI);
+					for (int j = 0; j < 1; j++)
+					{
+						Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3,
+							ModContent.ProjectileType<Dulcans>(), 60, 1f, Player.whoAmI);
+					}
 				}
 
 
@@ -1341,61 +1375,73 @@ namespace Stellamod
 
 			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 180)
 			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Three"));
-				for (int j = 0; j < 5; j++)
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Three"), Player.position);
+				if (Main.myPlayer == Player.whoAmI)
 				{
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
+					for (int j = 0; j < 5; j++)
+					{
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
+					}
 				}
-
 
 			}
 
 			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 120)
 			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Two"));
-				for (int j = 0; j < 5; j++)
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Two"), Player.position);
+				if (Main.myPlayer == Player.whoAmI)
 				{
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
+					for (int j = 0; j < 5; j++)
+					{
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
+					}
 				}
-
 
 			}
 
 			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 60)
 			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/One"));
-				for (int j = 0; j < 5; j++)
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/One"), Player.position);
+				if (Main.myPlayer == Player.whoAmI)
 				{
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
+					for (int j = 0; j < 5; j++)
+					{
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
+					}
+
 				}
-
-
 			}
 
 			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 0)
 			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/zero"));
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Spawn"));
-				for (int j = 0; j < 5; j++)
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/zero"), Player.position);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), Player.position);
+				if (Main.myPlayer == Player.whoAmI)
 				{
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
+					for (int j = 0; j < 5; j++)
+					{
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
 
-					
+
+					}
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<Artbar>(), 0, 1f, Player.whoAmI);
 				}
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<Artbar>(), 0, 1f, Player.whoAmI);
+				
 				ThreeTwoOneSmileBCooldown = 1720 + PPPaintTime;
 			}
 
 			if (ThreeTwoOneSmile && PaintdropBCooldown == 0)
             {
 				RandomOrig3 = new Vector2(-15, (Main.rand.NextFloat(0f, 20f)));
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f, 
+				if (Main.myPlayer == Player.whoAmI)
+				{
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f,
 					ModContent.ProjectileType<Meatball4>(), 0, 1f, Player.whoAmI);
-
+				}
 				PaintdropBCooldown = 25;
 			}
 
@@ -1729,10 +1775,12 @@ namespace Stellamod
 			
                         RandomOrig3 = new Vector2(xRand, yRand);
 
-						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1,
-							ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
-
+						if (Main.myPlayer == Player.whoAmI)
+						{
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1,
+								ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
+						}
 						RayCooldown = 0;
 					}
 
@@ -1746,10 +1794,12 @@ namespace Stellamod
                             yRand = -yRand;
                         }
                         RandomOrig3 = new Vector2(xRand, yRand);
-                        Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, 
-							ModContent.ProjectileType<CrystalRay2>(), 1, 1f, Player.whoAmI);
-
+						if (Main.myPlayer == Player.whoAmI)
+						{
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1,
+								ModContent.ProjectileType<CrystalRay2>(), 1, 1f, Player.whoAmI);
+						}
 						RayCooldown = 0;
 					}
 				}
@@ -1765,11 +1815,12 @@ namespace Stellamod
                         }
 
                         RandomOrig3 = new Vector2(xRand, yRand);
+						if (Main.myPlayer == Player.whoAmI)
+						{
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 
-                        Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay>(), 1, 1f, Player.whoAmI);
-
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay>(), 1, 1f, Player.whoAmI);
+						}
 						RayCooldown = 0;
 					}
 
@@ -1784,11 +1835,13 @@ namespace Stellamod
                         }
 
                         RandomOrig3 = new Vector2(xRand, yRand);
-                        Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+						if (Main.myPlayer == Player.whoAmI)
+						{
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, 
-							ModContent.ProjectileType<CrystalRay2>(), 1, 1f, Player.whoAmI);
-
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1,
+								ModContent.ProjectileType<CrystalRay2>(), 1, 1f, Player.whoAmI);
+						}
 						RayCooldown = 0;
 					}
 				}
@@ -1806,9 +1859,13 @@ namespace Stellamod
                         }
 
                         RandomOrig3 = new Vector2(xRand, yRand);
-						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, 
-							ModContent.ProjectileType<CrystalRay3>(), 1, 1f, Player.whoAmI);
+						if (Main.myPlayer == Player.whoAmI)
+						{
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1,
+								ModContent.ProjectileType<CrystalRay3>(), 1, 1f, Player.whoAmI);
+						}
+						
 					}
 
 
@@ -1822,12 +1879,14 @@ namespace Stellamod
                         }
 
                         RandomOrig3 = new Vector2(xRand, yRand);
-                        Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+						if (Main.myPlayer == Player.whoAmI)
+						{
+							Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, 
-							ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
-
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1,
+								ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
+						}
 
 					}
 				}
@@ -1844,10 +1903,13 @@ namespace Stellamod
                         }
 
                         RandomOrig3 = new Vector2(xRand, yRand);
-						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+						if (Main.myPlayer == Player.whoAmI)
+						{
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, 
-							ModContent.ProjectileType<CrystalRay3>(), 1, 1f, Player.whoAmI);
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1,
+								ModContent.ProjectileType<CrystalRay3>(), 1, 1f, Player.whoAmI);
+						}
 					}
 
 					for (int j = 0; j < 1; j++)
@@ -1860,9 +1922,12 @@ namespace Stellamod
                         }
 
                         RandomOrig3 = new Vector2(xRand, yRand);
-						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, 
-							ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
+						if (Main.myPlayer == Player.whoAmI)
+						{
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1,
+								ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
+						}
 					}
 				}
 
@@ -2510,7 +2575,7 @@ namespace Stellamod
 									player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
 									player.inventory[i].TurnToAir();
 									player.inventory[i] = item;
-									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"), Player.position);
 
 
 									Dice = false;
@@ -2535,7 +2600,7 @@ namespace Stellamod
 									player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 2));
 									player.inventory[i].TurnToAir();
 									player.inventory[i] = item;
-									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"), Player.position);
 
 
 									Dice = false;
@@ -2560,7 +2625,7 @@ namespace Stellamod
 									player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
 									player.inventory[i].TurnToAir();
 									player.inventory[i] = item;
-									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"), Player.position);
 
 
 									Dice = false;
@@ -2585,7 +2650,7 @@ namespace Stellamod
 
 									player.inventory[i].TurnToAir();
 									player.inventory[i] = item;
-									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"), Player.position);
 
 									Dice = false;
 									break;
@@ -2609,7 +2674,7 @@ namespace Stellamod
 									player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
 									player.inventory[i].TurnToAir();
 									player.inventory[i] = item;
-									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"), Player.position);
 
 
 									Dice = false;
@@ -3141,14 +3206,16 @@ namespace Stellamod
 						if (TericGramLevel == 1)
 						{
 							var EntitySource = Player.GetSource_FromThis();
-							NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC2>());
+							if(StellaMultiplayer.IsHost)
+								NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC2>());
 							TericGramLevel += 1;
 						}
 						else
 						{
 							Lighting.AddLight(Player.Center, Color.DarkRed.ToVector3() * 0.75f * Main.essScale);
 							var EntitySource = Player.GetSource_FromThis();
-							NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC>());
+							if(StellaMultiplayer.IsHost)
+								NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC>());
 							TericGramLevel += 1;
 						}
 					}

@@ -377,8 +377,26 @@ namespace Stellamod.NPCs.Town
 
                 else if (!NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) && !NPC.AnyNPCs(ModContent.NPCType<StartGoth>()) && EventWorld.GreenSun)
                 {
+                    Vector2 world = GothSpawnWorld;
+
+                    Point p = world.ToTileCoordinates();
+                    p.Y -= 300;
+                    if (p.Y <= 0)
+                        p.Y = 0;
+
+                    Tile tile = Main.tile[p];
+                    for(int t = 0; t < 600; t++)
+                    {
+                        p.Y++;
+                        tile = Main.tile[p];
+                        if (Main.tileSolid[tile.TileType] && tile.HasTile)
+                            break;
+                    }
+                    p.Y -= 30;
+                    world = p.ToWorldCoordinates();
+
                     NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)GothSpawnWorld.X, (int)GothSpawnWorld.Y,
+                        (int)world.X, (int)world.Y,
                         ModContent.NPCType<GothiviaIdle>());
                 }
                 else if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) && !NPC.AnyNPCs(ModContent.NPCType<RekSnakeIdle>()) && !DownedBossSystem.downedRekBoss)
