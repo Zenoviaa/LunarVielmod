@@ -2032,7 +2032,7 @@ namespace Stellamod.WorldG
                         continue;
                     }
 
-                    Point Loc = new Point(smx - 100, smy + 275 + yOffset);
+                    Point Loc = new Point(smx - 100, smy + 375 + yOffset);
 
                     if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
                     {
@@ -2130,7 +2130,7 @@ namespace Stellamod.WorldG
                         continue;
                     }
 
-                    Point Loc = new Point(smx - 100, smy + 275 + yOffset);
+                    Point Loc = new Point(smx - 100, smy + 375 + yOffset);
                     if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
                     {
                         yOffset++;
