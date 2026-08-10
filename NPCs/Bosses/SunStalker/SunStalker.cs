@@ -22,6 +22,9 @@ namespace Stellamod.NPCs.Bosses.SunStalker
     [AutoloadBossHead]
     public class SunStalker : ModNPC
     {
+
+        private ref float Timer => ref NPC.ai[0];
+        private ref float State => ref NPC.ai[3];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Stalker");
@@ -172,7 +175,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             {
 
                 NPC.spriteDirection = -NPC.direction;
-                NPC.ai[0]++;
+                Timer++;
            
                 if(NPC.ai[1] == 1)
                 {
@@ -207,7 +210,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                     dust.position = NPC.Center - vector2_3;
                     NPC.velocity.Y -= 0.01f;
                 }
-                if (NPC.ai[0] == 2)
+                if (Timer == 2)
                 {
                     if (StellaMultiplayer.IsHost)
                     {
@@ -255,16 +258,16 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge_Full_Note"), NPC.position);
                     NPC.ai[1] = 2;
-                    NPC.ai[0] = 5000;
+                    Timer = 5000;
                     NPC.alpha = 40;
                 }
-                if (NPC.ai[0] >= 5050 && NPC.ai[1] == 2)
+                if (Timer >= 5050 && NPC.ai[1] == 2)
                 {
 
                     Intro = true;
                     
 
-                    NPC.ai[0] = 0;
+                    Timer = 0;
                     Attack = 5;
                     NPC.ai[2] = 1;
                     NPC.netUpdate = true;
@@ -272,15 +275,15 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
             }
             targetPos = player.Center;
-            if (NPC.ai[2] == 1)
+            if (NPC.ai[2] >= 1)
             {
-                switch (NPC.ai[3])
+                switch (State)
                 {
                     case 0:
                         NPC.spriteDirection = -NPC.direction;
-                        NPC.ai[0]++;
+                        Timer++;
 
-                        if (NPC.ai[0] <= 100)
+                        if (Timer <= 100)
                         {
                             NPC.rotation = NPC.velocity.X * 0.07f;
 
@@ -310,7 +313,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             NPC.rotation = NPC.velocity.X * 0.07f;
                             NPC.velocity *= 0.90f;
                         }
-                        if (NPC.ai[0] == 100)
+                        if (Timer == 100)
                         {
                             int Sound = Main.rand.Next(1, 3);
                             if (Sound == 1)
@@ -323,11 +326,11 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             }
 
                         }
-                        if (NPC.ai[0] >= 100 && NPC.ai[0] <= 125)
+                        if (Timer >= 100 && Timer <= 125)
                         {
                             NPC.alpha += 1;
                         }
-                        if (NPC.ai[0] >= 125 && NPC.ai[0] <= 165)
+                        if (Timer >= 125 && Timer <= 165)
                         {
                             Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CopperCoin);
                             dust.velocity *= -1f;
@@ -347,7 +350,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
 
                         }
-                        if (NPC.ai[0] == 150 || NPC.ai[0] == 170 || NPC.ai[0] == 190)
+                        if (Timer == 150 || Timer == 170 || Timer == 190)
                         {
                             int Sound = Main.rand.Next(1, 3);
                             if (Sound == 1)
@@ -369,21 +372,21 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                     ModContent.ProjectileType<SunRock>(), damage, 0, Owner: Main.myPlayer);
                             }
                         }
-                        if (NPC.ai[0] == 210)
+                        if (Timer == 210)
                         {
                             NPC.alpha = 0;
                             if (StellaMultiplayer.IsHost)
                             {
-                                NPC.ai[3] = Main.rand.Next(1, Attacks);
+                                State = Main.rand.Next(1, Attacks);
                                 NPC.netUpdate = true;
                             }
                 
-                            NPC.ai[0] = 0;
+                            Timer = 0;
                         }
                         break;
                     case 1:
                         NPC.spriteDirection = -NPC.direction;
-                        NPC.ai[0]++;
+                        Timer++;
 
                         NPC.rotation = NPC.velocity.X * 0.07f;
 
@@ -408,7 +411,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
                         NPC.velocity.Y = moveSpeedY * 0.13f;
 
-                        if (NPC.ai[0] >= 75)
+                        if (Timer >= 75)
                         {
                             if (NPC.alpha > 0)
                             {
@@ -416,7 +419,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             }
 
                         }
-                        if (NPC.ai[0] == 100 || NPC.ai[0] == 160 || NPC.ai[0] == 220)
+                        if (Timer == 100 || Timer == 160 || Timer == 220)
                         {
                             NPC.alpha += 30;
                             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
@@ -454,19 +457,19 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 }              
                             }
                         }
-                        if (NPC.ai[0] == 280)
+                        if (Timer == 280)
                         {
                             PrevAttack = 1;
-                            NPC.ai[3] = 10;
+                            State = 10;
                         }
                         break;
                     case 2:
-                        NPC.ai[0]++;
-                        if (NPC.ai[0] <= 50)
+                        Timer++;
+                        if (Timer <= 50)
                         {
-                            NPC.ai[0] = 80;
+                            Timer = 80;
                         }
-                        if (NPC.ai[0] <= 150)
+                        if (Timer <= 150)
                         {
                             NPC.rotation = NPC.velocity.X * 0.07f;
 
@@ -494,7 +497,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             NPC.velocity *= 0.90f;
                         }
-                        if (NPC.ai[0] == 150)
+                        if (Timer == 150)
                         {
                             Dashing = true;
                             NPC.alpha = 40;
@@ -526,7 +529,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Dash2"), NPC.position);
                             }
                         }
-                        if (NPC.ai[0] >= 150)
+                        if (Timer >= 150)
                         {
 
                             NPC.rotation = NPC.velocity.X * 0.07f;
@@ -541,8 +544,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 if (NPC.position.X >= player.position.X)
                                 {
                                     NPC.alpha = 40;
-
-                                    NPC.ai[0] = 151;
                                 }
                                 else
                                 {
@@ -556,7 +557,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 if (NPC.position.X <= player.position.X)
                                 {
                                     NPC.alpha = 40;
-                                    NPC.ai[0] = 151;
                                 }
                                 else
                                 {
@@ -570,20 +570,19 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         {
                             NPC.spriteDirection = -NPC.direction;
                         }
-                        if (NPC.ai[0] == 260)
+                        if (Timer >= 260)
                         {
                             DashSpeed = 9;
                             Dashing = false;
                             PrevAttack = 2;
-                            NPC.ai[3] = 10;
-
+                            State = 10;
                         }
                         break;
                     case 3:
                         NPC.spriteDirection = -NPC.direction;
-                        NPC.ai[0]++;
+                        Timer++;
 
-                        if (NPC.ai[0] <= 100)
+                        if (Timer <= 100)
                         {
                             NPC.rotation = NPC.velocity.X * 0.07f;
                             if (NPC.Center.X >= player.Center.X && moveSpeed >= -120) // flies to players x position
@@ -608,19 +607,19 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         }
                         else
                         {
-                            if (NPC.ai[0] == 100)
+                            if (Timer == 100)
                             {
                                 DrugRidus = 1;
                             }
 
-                            if (NPC.ai[0] >= 100 && NPC.ai[0] <= 150)
+                            if (Timer >= 100 && Timer <= 150)
                             {
                                 if (DrugRidus <= 26)
                                 {
                                     DrugRidus += 1.08f;
                                 }
                             }
-                            if (NPC.ai[0] >= 190 && NPC.ai[0] <= 210)
+                            if (Timer >= 190 && Timer <= 210)
                             {
                                 if (DrugRidus >= 0)
                                 {
@@ -631,7 +630,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             NPC.rotation = NPC.velocity.X * 0.07f;
                             NPC.velocity *= 0.90f;
                         }
-                        if (NPC.ai[0] == 100)
+                        if (Timer == 100)
                         {
                             int Sound = Main.rand.Next(1, 3);
                             if (Sound == 1)
@@ -644,11 +643,11 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             }
 
                         }
-                        if (NPC.ai[0] >= 100 && NPC.ai[0] <= 125)
+                        if (Timer >= 100 && Timer <= 125)
                         {
                             NPC.alpha += 1;
                         }
-                        if (NPC.ai[0] >= 125 && NPC.ai[0] <= 165)
+                        if (Timer >= 125 && Timer <= 165)
                         {
                             Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CopperCoin);
                             dust.velocity *= -1f;
@@ -666,7 +665,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 NPC.alpha -= 1;
                             }
                         }
-                        if (NPC.ai[0] == 150 || NPC.ai[0] == 170 || NPC.ai[0] == 190)
+                        if (Timer == 150 || Timer == 170 || Timer == 190)
                         {
                             int Sound = Main.rand.Next(1, 3);
                             if (Sound == 1)
@@ -688,22 +687,22 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                     ModContent.ProjectileType<SunBomb>(), damage, 0, Owner: Main.myPlayer);
                             }
                         }
-                        if (NPC.ai[0] == 210)
+                        if (Timer >= 210)
                         {
                             DrugRidus = 0;
                             NPC.alpha = 0;
                             PrevAttack = 3;
-                            NPC.ai[3] = 10;
+                            State = 10;
                         }
                         break;
 
                     case 4:
-                        NPC.ai[0]++;
-                        if (NPC.ai[0] <= 10)
+                        Timer++;
+                        if (Timer <= 10)
                         {
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge_TP_Out"), NPC.position);
                         }
-                        if (NPC.ai[0] <= 50)
+                        if (Timer <= 50)
                         {
                             if (StellaMultiplayer.IsHost)
                             {
@@ -740,7 +739,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         }
                         else
                         {
-                            if (NPC.ai[0] == 51)
+                            if (Timer == 51)
                             {
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge_TP_In"), NPC.position);
                                 if (NPC.position.X >= player.position.X)
@@ -755,7 +754,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 }
                             }
 
-                            if (NPC.ai[0] >= 52)
+                            if (Timer >= 52)
                             {
                                 if (NPC.alpha >= 0)
                                 {
@@ -783,7 +782,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             }
                         }
 
-                        if (NPC.ai[0] == 90)
+                        if (Timer >= 90)
                         {
                             if (StellaMultiplayer.IsHost)
                             {
@@ -794,21 +793,21 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             Glow = true;
                             NPC.alpha = 0;
                             PrevAttack = 4;
-                            NPC.ai[3] = 10;
+                            State = 10;
                         }
                         break;
                     case 5:
-                        NPC.ai[0]++;
+                        Timer++;
                         if (StellaMultiplayer.IsHost)
                         {
-                            if (Main.rand.NextBool(6) && NPC.ai[0] <= 240)
+                            if (Main.rand.NextBool(6) && Timer <= 240)
                             {
                                 NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
                                     ModContent.NPCType<SunStalkerRayLightBig>());
                             }
                         }
         
-                        if (NPC.ai[0] <= 240)
+                        if (Timer <= 240)
                         {
                             NPC.rotation = NPC.velocity.X * 0.07f;
                             NPC.velocity *= 0.90f;
@@ -822,7 +821,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 alphaCounter += 0.1f;
                             }
                         }
-                        if (NPC.ai[0] == 20)
+                        if (Timer == 20)
                         {
                             if (StellaMultiplayer.IsHost)
                             {
@@ -832,7 +831,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                       
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Start"), NPC.position);
                         }
-                        if (NPC.ai[0] == 250)
+                        if (Timer == 250)
                         {
                             if (StellaMultiplayer.IsHost)
                             {
@@ -841,7 +840,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             }
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_End"), NPC.position);
                         }
-                        if (NPC.ai[0] >= 240)
+                        if (Timer >= 240)
                         {
                             if (NPC.alpha >= 0)
                             {
@@ -853,13 +852,13 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 alphaCounter -= 0.1f;
                             }
                         }
-                        if (NPC.ai[0] == 380)
+                        if (Timer >= 380)
                         {
                             PrevAttack = 5;
-                            NPC.ai[3] = 10;
+                            State = 10;
                         }
 
-                        if (NPC.ai[0] == 240 || NPC.ai[0] == 180 || NPC.ai[0] == 60 || NPC.ai[0] == 120)
+                        if (Timer == 240 || Timer == 180 || Timer == 60 || Timer == 120)
                         {
                             int Sound = Main.rand.Next(1, 3);
                             if (Sound == 1)
@@ -896,36 +895,36 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
                         break;
                     case 10:
-                        NPC.ai[0]++;
+                        Timer++;
 
-                        if (NPC.ai[0] >= 2 && StellaMultiplayer.IsHost)
+                        if (Timer >= 2 && StellaMultiplayer.IsHost)
                         {
                             if (Main.rand.NextBool(2))
                             {
                                 if(TPChance)
                                 {
-                                    NPC.ai[0] = 0;
+                                    Timer = 0;
                                     Attack = 5;
                                 }
                                 else
                                 {
-                                    NPC.ai[0] = 0;
+                                    Timer = 0;
                                 }
              
                             }
                             else
                             {
 
-                                if (NPC.ai[3] == PrevAttack)
+                                if (State == PrevAttack)
                                 {
                                     TPChance = false;
-                                    NPC.ai[0] = 0;
+                                    Timer = 0;
                                 }
                                 else
                                 {
                                     TPChance = true;
-                                    NPC.ai[0] = 0;
-                                    NPC.ai[3] = Main.rand.Next(1, Attacks);
+                                    Timer = 0;
+                                    State = Main.rand.Next(1, Attacks);
                                 }
                             }
 
@@ -954,7 +953,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 if (!player.active || player.dead || !Main.dayTime) //despawns when player is ded
                 {
                     NPC.spriteDirection = NPC.direction;
-                    NPC.ai[0] = 0;
+                    Timer = 0;
                     NPC.ai[2]++;
                     Attack = -1;
 
@@ -1016,7 +1015,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             int spOff = NPC.alpha / 6;
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 
-            if (NPC.ai[3] == 3 && NPC.ai[0] >= 100)
+            if (State == 3 && Timer >= 100)
             {
                 Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
                 Vector2 frameOrigin = NPC.frame.Size();

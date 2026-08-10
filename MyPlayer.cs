@@ -1177,29 +1177,33 @@ namespace Stellamod
 			}
 			Point ishtarCheckCenter = player.Center.ToTileCoordinates();
 
-            for (int i = -3; i <= 3; i++)
+			if (!DownedBossSystem.downedZuiBoss)
 			{
-				for(int j = -3; j <= 3; j++)
-				{
-					Point offset = new Point(i, j);
-					Point pointToCheck = ishtarCheckCenter + offset;
-					if (!WorldGen.InWorld(pointToCheck.X, pointToCheck.Y))
-						continue;
+                for (int i = -3; i <= 3; i++)
+                {
+                    for (int j = -3; j <= 3; j++)
+                    {
+                        Point offset = new Point(i, j);
+                        Point pointToCheck = ishtarCheckCenter + offset;
+                        if (!WorldGen.InWorld(pointToCheck.X, pointToCheck.Y))
+                            continue;
 
-					Tile tile = Main.tile[pointToCheck];
-					if(tile.HasTile && tile.TileType == ModContent.TileType<IshtarMoss>())
-					{
-						if (!player.HasBuff<SigfriedsInsanity>())
-						{
-							SoundStyle awaySound = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune_SoulShot") with { PitchVariance = 0.3f };
-							SoundEngine.PlaySound(awaySound, player.position);
-						}
-                        player.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 10);
+                        Tile tile = Main.tile[pointToCheck];
+                        if (tile.HasTile && tile.TileType == ModContent.TileType<IshtarMoss>())
+                        {
+                            if (!player.HasBuff<SigfriedsInsanity>())
+                            {
+                                SoundStyle awaySound = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune_SoulShot") with { PitchVariance = 0.3f };
+                                SoundEngine.PlaySound(awaySound, player.position);
+                            }
+                            player.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 10);
+                        }
                     }
-				}
-			}
+                }
 
-			if (CorsageTime >= 1)
+            }
+
+            if (CorsageTime >= 1)
             {
                 var entitySource = Player.GetSource_FromThis();
                 if (Main.rand.NextBool(5))
