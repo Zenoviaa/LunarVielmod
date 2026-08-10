@@ -14,7 +14,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             Main.wallHouse[Type] = true;
 
             DustType = ModContent.DustType<Solution>();
-            RegisterItemDrop(ModContent.ItemType<PunkerwallBlock>());
+            RegisterItemDrop(ModContent.ItemType<PunkWallBlock>());
 
             AddMapEntry(new Color(200, 200, 200));
         }
