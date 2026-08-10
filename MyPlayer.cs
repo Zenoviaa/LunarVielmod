@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
@@ -832,8 +833,7 @@ namespace Stellamod
                 SwordComboSlash = 0;
             }
 
-
-
+     
 
 
             if (ZoneAcid || ZoneLab)

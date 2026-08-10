@@ -24,7 +24,9 @@ internal class AsepriteAssetLoader : ModSystem
         {
             if (NPCSets.UseAseprite[i])
             {
-                AsepriteAssets.Npc[i] = ModContent.Request<AseSprite>(ModContent.GetModNPC(i).Texture + "_Sprite");
+                ModNPC modNpc = ModContent.GetModNPC(i);
+                string texture = $"{modNpc.GetType().Namespace}.{modNpc.Name}".Replace('.', '/');
+                AsepriteAssets.Npc[i] = ModContent.Request<AseSprite>(texture);
             }
         }
     }

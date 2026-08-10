@@ -10,7 +10,7 @@ namespace Stellamod.Content.Areas.Underground.NPCsUG;
 public class GoldDigger : ModNPC
 {
     private ref float Timer => ref NPC.ai[0];
-
+    public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
