@@ -157,13 +157,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 {
                     _patternManagerBackingField = new PatternManager<AIState>(
                         new Tuple<AIState, float>(AIState.ForwardSlash_Start, 1.0f),
-                         new Tuple<AIState, float>(AIState.RippingGeyser_Start, 1.0f),
-                          new Tuple<AIState, float>(AIState.Grab_Start, 1.0f),
-                           new Tuple<AIState, float>(AIState.Tornado_Start, 1.0f),
-                            new Tuple<AIState, float>(AIState.ScreenSlash_Start, 1.0f),
-                             new Tuple<AIState, float>(AIState.SwordStarPlosion_Start, 1.0f),
-                             new Tuple<AIState, float>(AIState.JevilScythes_Start, 1.0f),
-                             new Tuple<AIState, float>(AIState.SingularBaseball_Start, 1.0f));
+                        new Tuple<AIState, float>(AIState.RippingGeyser_Start, 1.0f),
+                        new Tuple<AIState, float>(AIState.Grab_Start, 1.0f),
+                        new Tuple<AIState, float>(AIState.Tornado_Start, 1.0f),
+                        new Tuple<AIState, float>(AIState.ScreenSlash_Start, 1.0f),
+                        new Tuple<AIState, float>(AIState.SwordStarPlosion_Start, 1.0f),
+                        new Tuple<AIState, float>(AIState.JevilScythes_Start, 1.0f),
+                        new Tuple<AIState, float>(AIState.SingularBaseball_Start, 1.0f));
 
                     //Always start with the forward slash attack
                     _patternManagerBackingField.QueueSetPattern(AIState.ForwardSlash_Start);
@@ -175,8 +175,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
-
-
         private void SwitchState(AIState state)
         {
             if (MultiplayerHelper.IsHost)

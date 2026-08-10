@@ -2,6 +2,7 @@
 global using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
+using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Assets.Videos;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas;
@@ -309,6 +310,7 @@ namespace Stellamod
             if (!Main.dedServ)
             {
                 AddContent(new VideoReader());
+                AddContent(new AseFileReader());
             }
 
             return base.CreateDefaultContentSource();

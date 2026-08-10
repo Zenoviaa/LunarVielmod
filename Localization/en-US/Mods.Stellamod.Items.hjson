@@ -12080,3 +12080,8 @@ Punkerwallblock: {
 	DisplayName: Punkerwallblock
 	Tooltip: ""
 }
+
+PunkWallBlock: {
+	DisplayName: Punk Wall Block
+	Tooltip: ""
+}
