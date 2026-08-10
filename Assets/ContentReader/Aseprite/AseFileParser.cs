@@ -247,10 +247,6 @@ public static class AseFileParser
                                         cel.pixels = new Color[cel.pixelWidth * cel.pixelHeight];
                                         BytesToPixels(buffer, cel.pixels, header.colorDepth, null);
                                         CelToFrame(frame, cel);
-
-                                        //Clear buffer
-                                        for (i = 0; i < buffer.Length; i++)
-                                            buffer[i] = default;
                                     }
 
                                     break;

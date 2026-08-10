@@ -1,4 +1,5 @@
 ﻿using Stellamod.Core.ZTileSystem;
+using Terraria.ID;
 
 namespace Stellamod.Content.Areas.Junkyard.TilesJY;
 
@@ -9,5 +10,6 @@ public class JunkyRefrigerator : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.BottomUp;
+      
     }
 }
