@@ -100,6 +100,7 @@ namespace Stellamod.Core.Particles
 
         private void RenderAlphaParticles(SpriteBatch spriteBatch)
         {
+            //EWWWWWWWWWWWWW ??? ?? What is this
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, default, default, null,
                 Main.GameViewMatrix.TransformationMatrix);

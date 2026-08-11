@@ -494,6 +494,7 @@ namespace Stellamod.Core.Pixelation
              BackGrassTarget=5,
              OverPlayers=6,
              BehindTiles,
-             BehindTilesOutline
+             BehindTilesOutline,
+             None
     }
 }
