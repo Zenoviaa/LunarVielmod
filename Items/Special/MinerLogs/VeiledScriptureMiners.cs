@@ -40,7 +40,17 @@ namespace Stellamod.Items.Special.MinerLogs
     }
 
     //These are the actual items, text is automatically grabbed from the localization
-    internal class VeiledScriptureMiner1 : VeiledScriptureMiner { }
+    internal class VeiledScriptureMiner1 : VeiledScriptureMiner
+    {
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.IronBar, 5);
+            recipe.AddIngredient(ItemID.Wood, 5);
+            recipe.Register();
+        }
+    }
 
     internal class VeiledScriptureMiner2 : VeiledScriptureMiner { }
 

@@ -1,4 +1,4 @@
 displayName = Lunar Veil Legacy
 author = Zenovia
-version = 1.8.1
+version = 1.8.2
 modReferences = ParticleLibrary

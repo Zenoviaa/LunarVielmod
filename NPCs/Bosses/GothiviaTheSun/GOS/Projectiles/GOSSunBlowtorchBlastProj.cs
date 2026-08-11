@@ -138,7 +138,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 lineDrawColor *= progress;
 
                 Vector2 lineDrawOrigin = lineTexture.Size();
-                float lineDrawScale = 1f;
+                Vector2 lineDrawScale = Vector2.One;
+                lineDrawScale.Y = BlowtorchDistance / (float)lineTexture.Height;
                 float lineDrawRotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
                 Main.spriteBatch.Draw(lineTexture, Projectile.Center - Main.screenPosition, null,
                     lineDrawColor,

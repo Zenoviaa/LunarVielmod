@@ -18,7 +18,12 @@ namespace Stellamod.Projectiles
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 2400f;
-       
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2400;
+        }
 
         public override void SetDefaults()
         {
@@ -34,8 +39,7 @@ namespace Stellamod.Projectiles
 
         public override void AI()
         {
-            if (Owner == null || !Owner.active)
-                return;
+//            Projectile.Center = Owner.Center;
             // Fade in.
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(_degrees);
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
@@ -96,9 +100,6 @@ namespace Stellamod.Projectiles
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            if (Owner == null || !Owner.active)
-                return;
-
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
             Color middleColor = Color.Lerp(Color.White, Color.LightYellow, 0.6f);
@@ -112,7 +113,7 @@ namespace Stellamod.Projectiles
             List<Vector2> points = new();
             for (int i = 0; i <= 8; i++)
             {
-                points.Add(Vector2.Lerp(Owner.Center, Owner.Center + Projectile.velocity * LaserLength, i / 8f));
+                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * LaserLength, i / 8f));
                 originalRotations.Add(MathHelper.PiOver2);
             }
 
