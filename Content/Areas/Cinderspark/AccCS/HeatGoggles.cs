@@ -35,7 +35,7 @@ public class InfraredRenderer : ModSystem
         orig();
         if (!IsActive)
         {
-            _tileRenderTarget?.Dispose();
+            _tileRenderTarget?.active = false;
             _tileRenderTarget = null;
             return;
         }
