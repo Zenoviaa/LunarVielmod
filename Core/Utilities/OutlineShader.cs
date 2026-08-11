@@ -15,3 +15,17 @@ public class OutlineShader : CrystalShader<OutlineShader>
     }
 
 }
+
+public class WhiteOutlineShader : CrystalShader<WhiteOutlineShader>
+{
+    private EffectParameter _texelSizeParam;
+    public Vector2 TexelSize
+    {
+        set
+        {
+            _texelSizeParam ??= Effect.Parameters["texelSize"];
+            _texelSizeParam.SetValue(value);
+        }
+    }
+
+}

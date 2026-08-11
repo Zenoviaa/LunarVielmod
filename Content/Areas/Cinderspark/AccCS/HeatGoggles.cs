@@ -4,6 +4,7 @@ using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using System;
+using System.Reflection;
 using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
@@ -17,9 +18,7 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS;
 [Autoload(Side = ModSide.Client)]
 public class InfraredRenderer : ModSystem
 {
-    private ManagedRenderTarget _infraredMask;
     private ManagedRenderTarget _tileRenderTarget;
-    //private float infraredTimer;
     public bool IsActive => !Main.gameMenu && Main.LocalPlayer.GetModPlayer<HeatGogglesPlayer>().hasHeatGoggles;
     public override void Load()
     {
@@ -28,44 +27,52 @@ public class InfraredRenderer : ModSystem
         On_Main.DrawPlayers_AfterProjectiles += DrawToScreen;
     }
 
-
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        _infraredMask = ManagedRenderTarget.New();
-        _tileRenderTarget = ManagedRenderTarget.New();
-    }
-
+    private Type[] _invokeTypes;
+    private object[] _invokeParams;
+    private MethodInfo _drawWatersMethod;
     private void RenderMask(On_Main.orig_CheckMonoliths orig)
     {
         orig();
         if (!IsActive)
+        {
+            _tileRenderTarget?.Dispose();
+            _tileRenderTarget = null;
             return;
+        }
 
+        _tileRenderTarget ??= ManagedRenderTarget.New();
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        TileDrawing tilesRenderer = Main.instance.TilesRenderer;
 
-        //Capture NPCs
-        spriteBatch.GraphicsDevice.SetRenderTarget(_infraredMask);
+        spriteBatch.GraphicsDevice.SetRenderTarget(_tileRenderTarget);
         spriteBatch.GraphicsDevice.Clear(Color.Transparent);
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-       
+
 
         //TODO:
-        //Main.instance.DrawNPCs();
+        try
+        {
+
+            _invokeTypes ??= new Type[]
+            {
+                    typeof(bool)
+            };
+            _invokeParams ??= new object[]
+            {
+                false
+            };
+
+            //Cache the method info so we're not spamming reflection calls
+            _drawWatersMethod ??= typeof(Main).GetMethod("DrawNPCs", BindingFlags.NonPublic | BindingFlags.Instance, _invokeTypes);
+            _drawWatersMethod.Invoke(Main.instance, _invokeParams);
+        }
+        catch
+        {
+        }
+
+//        Main.instance.DrawNPCs();
+     
         spriteBatch.End();
-
-
-        graphicsDevice.SetRenderTarget(_tileRenderTarget);
-        graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-
-        LightingPreDrawEdit.DontRenderPreDraw = true;
-        tilesRenderer.PreDrawTiles(true, true, true);
-        tilesRenderer.Draw(true, true, true);
-        spriteBatch.End();
-        LightingPreDrawEdit.DontRenderPreDraw = false;
     }
 
     private void DrawToScreen(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
@@ -73,16 +80,20 @@ public class InfraredRenderer : ModSystem
         orig(self);
         if (!IsActive)
             return;
+        if (_tileRenderTarget == null)
+            return;
 
+        var target = Main.instance.tileTarget;
         SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
         SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, effect : whiteShader.Effect);
-        spriteBatch.Draw(_infraredMask, Vector2.Zero, null, Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+        var outlineShader = ShaderContent.GetInstance<WhiteOutlineShader>();
+        outlineShader.TexelSize = Vector2.One / target.Size();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, effect: outlineShader.Effect);
+        spriteBatch.Draw(target, Main.sceneTilePos - Main.screenPosition, null, Color.Orange, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         spriteBatch.End();
 
-        OutlineShader outlineShader = ShaderContent.GetInstance<OutlineShader>();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, effect: outlineShader.Effect);
-        spriteBatch.Draw(_tileRenderTarget, Vector2.Zero - new Vector2(Main.offScreenRange), null, Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, effect: whiteShader.Effect);
+        spriteBatch.Draw(_tileRenderTarget, Vector2.Zero, null, Color.Orange * ExtraMath.Osc(0.5f, 1f, speed: 3), 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         spriteBatch.End();
     }
 }
