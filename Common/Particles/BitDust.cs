@@ -59,9 +59,14 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
     public override void Unload()
     {
         base.Unload();
-        _vertexBuffer?.Dispose();
-        _indexBuffer?.Dispose();
-        _instanceBuffer?.Dispose();
+        void UnloadBuffers()
+        {
+            _vertexBuffer?.Dispose();
+            _indexBuffer?.Dispose();
+            _instanceBuffer?.Dispose();
+        }
+        Main.QueueMainThreadAction(UnloadBuffers);
+
     }
 
     public override void OnSpawn(ref BitDustParticleData particle)
