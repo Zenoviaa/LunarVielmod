@@ -12085,3 +12085,18 @@ PunkWallBlock: {
 	DisplayName: Punk Wall Block
 	Tooltip: ""
 }
+
+Test2x2TileItem: {
+	DisplayName: Test2x2 Tile Item
+	Tooltip: ""
+}
+
+ScarletBrick: {
+	DisplayName: Scarlet Brick
+	Tooltip: ""
+}
+
+ScarletDiamondBrick: {
+	DisplayName: Scarlet Diamond Brick
+	Tooltip: ""
+}

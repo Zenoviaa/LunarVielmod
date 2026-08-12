@@ -31,6 +31,7 @@ public class IshtarTempleBlock : ModTile
         AddMapEntry(new Color(6, 5, 7));
         MineResist = 8f;
         MinPick = 200;
+        
 
     }
 

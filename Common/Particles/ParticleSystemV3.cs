@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Pixelation;
+﻿using Stellamod.Content.Areas.Terror.TilesTR;
+using Stellamod.Core.Pixelation;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -68,6 +69,7 @@ public sealed class Particles : ModSystem
         {
             _particleUpdaters[i].Update();
         }
+
     }
 
     public override void PostDrawTiles()

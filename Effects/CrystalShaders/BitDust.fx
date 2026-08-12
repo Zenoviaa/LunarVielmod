@@ -57,7 +57,6 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input, Particle p)
     
     vertexPosition.xy *= p.trans.xy;
     vertexPosition.xy = RotatedBy(vertexPosition.xy, p.TilingOffsetRotation.z);
-
     vertexPosition.xy += p.trans.zw;
     
     output.Position = mul(vertexPosition, projection);
