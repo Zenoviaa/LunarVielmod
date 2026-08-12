@@ -10,9 +10,7 @@ sampler2D spriteTex = sampler_state
     AddressV = clamp;
 };
 
-
 float4x4 projection;
-float2 screenPosition;
 struct VertexShaderInput
 {
     float4 Position : POSITION0;
@@ -73,14 +71,8 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input, Particle p)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-   // return float4(1.0, 0.0, 0.0, 1.0);
-    //All we have to do is sample the white to black of the texture, using that as an interpolant for the colors
-    //Then using the time we can oscillate and add some glow with power?
     float sample = tex2D(spriteTex, input.TextureCoordinates).r;
     float3 color = lerp(input.OuterColor, input.InnerColor, sample);
-    
-    //Apply Bloom
-   // color = pow(color, 0.75);
     color *= input.Color;
     color *= sample;
     return float4(color * 0.8, 1.0);

@@ -10,7 +10,7 @@ public class BitDustShader : CrystalShader<BitDustShader>
     {
         set
         {
-            _projectionParam = Effect.Parameters["projection"];
+            _projectionParam ??= Effect.Parameters["projection"];
             _projectionParam.SetValue(value);
         }
     }
@@ -18,15 +18,8 @@ public class BitDustShader : CrystalShader<BitDustShader>
     {
         set
         {
-            _spriteTextureParam = Effect.Parameters["spriteTexture"];
+            _spriteTextureParam ??= Effect.Parameters["spriteTexture"];
             _spriteTextureParam.SetValue(value);
-        }
-    }
-    public Vector2 ScreenPos
-    {
-        set
-        {
-            Effect.Parameters["screenPosition"].SetValue(value);
         }
     }
 }

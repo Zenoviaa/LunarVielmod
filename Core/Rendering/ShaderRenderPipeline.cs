@@ -28,6 +28,7 @@ public class ShaderRenderPipeline : ModSystem
 
     private void Render()
     {
+        
         while(_drawBatches.Count > 0)
         {
             IDrawBatch batch = _drawBatches.Dequeue();

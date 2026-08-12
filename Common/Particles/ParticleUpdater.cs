@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Core.Pixelation;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -9,28 +10,30 @@ namespace Stellamod.Common.Particles;
 //Probably having an external atlas generating tool
 
 [Autoload(false)]
-public abstract class ParticleUpdater<T> : IParticleUpdater, ILoadable
-    where T : struct, IParticleData
+public abstract class ParticleUpdater<ParticleStructType> : 
+    IParticleUpdater, 
+    ILoadable
+    where ParticleStructType : struct, IParticleData
 {
 
     protected int _length;
-    private T _dummyParticle;
-    protected readonly T[] _particles;
+    protected ParticleStructType _dummyParticle;
+    protected readonly ParticleStructType[] _particles;
     protected Asset<Texture2D> _particleTextureAsset;
     public ParticleUpdater()
     {
-        _particles = new T[GetPoolSize()];
-        ElapsedString = string.Empty;
+        _particles = new ParticleStructType[GetPoolSize()];
+        elapsedString = string.Empty;
     }
-    public string ElapsedString;
+
+    public string elapsedString;
     public virtual void Load(Mod mod)
     {
-
+        _particleTextureAsset = ModContent.Request<Texture2D>(FrameData.Texture);
     }
-  
-
     public virtual void Unload()
     {
+        //idk if this is necessary or not
         _particleTextureAsset?.Dispose();
         _particleTextureAsset = null;
     }
@@ -45,6 +48,7 @@ public abstract class ParticleUpdater<T> : IParticleUpdater, ILoadable
 
     public virtual (Texture2D texture, Rectangle frame) GetParticleFrame(in int frameIndex)
     {
+        //This function can be changed to use an atlas later
         var frameData = FrameData;
         int frameHeight = _particleTextureAsset.Height() / frameData.FrameCount;
         Rectangle frame = new Rectangle(0, frameIndex * frameHeight, _particleTextureAsset.Width(), frameHeight);
@@ -55,33 +59,24 @@ public abstract class ParticleUpdater<T> : IParticleUpdater, ILoadable
     public virtual int GetPoolSize() => 200;
     public void Update()
     {
-        //var watch = Stopwatch.StartNew();
-        var frameData = FrameData;
-        _particleTextureAsset ??= ModContent.Request<Texture2D>(frameData.Texture);
-
-
+        var watch = Stopwatch.StartNew();
         UpdateParticles();
         for (int i = 0; i < _length; i++)
         {
-            ref T particleData = ref _particles[i];
+            ref ParticleStructType particleData = ref _particles[i];
             if (!particleData.IsActive)
             {
                 KillParticle(i);
                 i--;
             }
         }
-        //watch.Stop();
-        //ElapsedString = $"~{(float)watch.ElapsedTicks / 10000f}ms ::: Particle Count: {_length}";
-
-        //  Main.NewText(_length);
+        watch.Stop();
+        elapsedString = $"~{(float)watch.ElapsedTicks / 10000f}ms ::: Particle Count: {_length}";
     }
 
-    protected virtual void UpdateParticles()
-    {
+    protected virtual void UpdateParticles() { }
 
-    }
-
-    public ref T Spawn(in T particleData)
+    public ref ParticleStructType Spawn(in ParticleStructType particleData)
     {
         //If too many particles just return a reference to one that's not being used or drawn to the screen
         //That way we don't interrupt anything that's happening
@@ -91,7 +86,7 @@ public abstract class ParticleUpdater<T> : IParticleUpdater, ILoadable
         int index = _length;
         _length++;
         _particles[index] = particleData;
-        OnSpawn(ref _particles[index]);
+        OnSpawn(ref _particles[index], index);
         return ref _particles[index];
     }
 
@@ -104,7 +99,7 @@ public abstract class ParticleUpdater<T> : IParticleUpdater, ILoadable
         _length--;
     }
 
-    public abstract void OnSpawn(ref T particle);
+    public virtual void OnSpawn(ref ParticleStructType particle, in int index) { }
     public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         for (int i = 0; i < _length; i++)
@@ -114,6 +109,6 @@ public abstract class ParticleUpdater<T> : IParticleUpdater, ILoadable
         }
     }
 
-    public abstract void Draw(SpriteBatch spriteBatch, ref T particle);
+    public abstract void Draw(SpriteBatch spriteBatch, ref ParticleStructType particle);
 
 }

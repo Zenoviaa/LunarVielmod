@@ -47,8 +47,6 @@ namespace Stellamod.Common.Shaders
 
         public MiscShaderData Data => GameShaders.Misc[$"LunarVeil:{EffectPath}"];
         public Effect Effect => Data.Shader;
-        public Effect Effect2 =>
-            ModContent.Request<Effect>($"Stellamod/Effects/CrystalShaders/{EffectPath}", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
         public BlendState BlendState { get; set; } = BlendState.Additive;
         public SamplerState SamplerState { get; set; } = SamplerState.LinearWrap;
         public bool FillShape { get; set; }

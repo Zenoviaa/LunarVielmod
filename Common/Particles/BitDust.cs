@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Common.Particles;
 
+
 public class BitDust : ParticleUpdater<BitDustParticleData>
 {
     private VertexBuffer _vertexBuffer;
@@ -12,11 +13,11 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
     private VertexBuffer _instanceBuffer;
     private BitDustInstanceData[] _instances;
     private VertexBufferBinding[] _bindings;
-    //ok, time to try gpu instancing...
+
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 3 };
     public override int GetPoolSize()
     {
-        return 1_000;
+        return 1_000_000;
     }
 
     public override void Load(Mod mod)
@@ -69,13 +70,17 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
 
     }
 
-    public override void OnSpawn(ref BitDustParticleData particle)
+
+    public ref BitDustParticleData Spawn(in BitDustFactory factory)
     {
-        //particle.gravity = 0.2f;
-        //particle.innerColor = Vector4.One;
-        //particle.outerColor = new Vector4(1f, 0f, 0f, 1f);
-        particle.frameIndex = Main.rand.Next(3);
-        particle.stretchScale = Vector2.One;
+        if (_length >= _particles.Length)
+            return ref _dummyParticle;
+
+        int index = _length;
+        _length++;
+        factory.CreateInstance(ref _particles[index], ref _instances[index]);
+        OnSpawn(ref _particles[index], index);
+        return ref _particles[index];
     }
 
     protected override void UpdateParticles()
@@ -86,65 +91,54 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
             for (int i = start; i < end; i++)
             {
                 ref BitDustParticleData particle = ref _particles[i];
+                particle.velocity.Y += 0.2f;
+
                 particle.timeLeft--;
-                particle.Position += particle.Velocity;
+                particle.position += particle.velocity;
 
-
-                particle.Velocity.Y += 0.2f;
-                
-                if (particle.Scale.X < 0.1f)
-                    particle.timeLeft = 0;
-                particle.Rotation = particle.Velocity.ToRotation();
-                particle.Scale *= 0.97f;
-                particle.Velocity.Y += 0.2f;
-
-                particle.Scale *= 0.97f;
+                particle.rotation = particle.velocity.ToRotation();
+                particle.scale *= 0.97f;
                 particle.color *= 0.99f;
 
-                float stretchInterp = particle.Velocity.LengthSquared() / 25f;
+                float stretchInterp = particle.velocity.LengthSquared() / 25f;
                 particle.stretchScale.X = MathHelper.Lerp(1f, 1.5f, stretchInterp);
                 particle.stretchScale.Y = 1f;
-                if (particle.Scale.X < 0.1f)
-                    particle.timeLeft = 0;
 
-                particle.timeLeft--;
-                particle.Position += particle.Velocity;
+                //This gets expensive kinda quickly, so probably should just have a separate particle system that doesn't collide with tiles at all and one that does
 
-                Vector2 collisionVelocity = Collision.TileCollision(particle.Position, particle.Velocity, 2, 2);
-                if (particle.Velocity.X != collisionVelocity.X)
-                    particle.Velocity.X = -collisionVelocity.X * 0.7f;
-                if (particle.Velocity.Y != collisionVelocity.Y)
-                    particle.Velocity.Y = -collisionVelocity.Y * 0.7f;
+                //Trying to minimize branching as much as possible
+                //Perf tests were done without this tile collision check
+                /*
+     Vector2 collisionVelocity = Collision.TileCollision(particle.position, particle.velocity, 2, 2);
+     if (particle.velocity.X != collisionVelocity.X)
+         particle.velocity.X = -collisionVelocity.X * 0.7f;
+     if (particle.velocity.Y != collisionVelocity.Y)
+         particle.velocity.Y = -collisionVelocity.Y * 0.7f;*/
             }
         });
-
     }
 
 
     private void UpdateInstances()
     {
         var drawData = GetParticleFrame(0);
-        float frameHeight = (float)drawData.frame.Height;
+        float frameHeight = drawData.frame.Height;
         float textureHeight = frameHeight * FrameData.FrameCount;
         float yTiling = frameHeight / textureHeight;
         for (int i = 0; i < _length; i++)
         {
-
             ref BitDustParticleData particle = ref _particles[i];
             ref BitDustInstanceData instance = ref _instances[i];
-            Vector2 scale = particle.Scale * particle.stretchScale;
-            instance.Transformation = new Vector4(scale.X, scale.Y, particle.Position.X, particle.Position.Y);
-            instance.InnerColor = particle.innerColor;
-            instance.OuterColor = particle.outerColor;
+            Vector2 scale = particle.scale * particle.stretchScale;
+            instance.Transformation = new Vector4(scale.X, scale.Y, particle.position.X, particle.position.Y);
             instance.Color = particle.color;
-
             float yOffset = (particle.frameIndex * frameHeight) / textureHeight;
-            instance.TilingOffsetRotation = new Vector3(yTiling, yOffset, particle.Rotation);
 
-
+            //ytiling and yoffset are static and should be moved out of here
+            //Then rotation becomes a separate variable
+            instance.TilingOffsetRotation = new Vector3(yTiling, yOffset, particle.rotation);
         }
 
-        //  Main.NewText(_instances[0].Transformation);
         _instanceBuffer.SetData(_instances);
     }
 
@@ -163,18 +157,16 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
         graphicsDevice.BlendState = BlendState.Additive;
         graphicsDevice.SetVertexBuffers(_bindings);
         graphicsDevice.Indices = _indexBuffer;
-        // shader.ScreenPos = Main.screenPosition;
 
         shader.SpriteTexture = _particleTextureAsset.Value;
         shader.Projection = TrailDrawer.WorldViewPoint2;
 
-  
+
         shader.Effect.CurrentTechnique.Passes[0].Apply();
         graphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2, _length);
 
 
         spriteBatch.Begin(SpritebatchParams.InWorldAndZoomed());
-        //  base.Draw(spriteBatch, screenPos);
     }
     public override void Draw(SpriteBatch spriteBatch, ref BitDustParticleData particle)
     {
