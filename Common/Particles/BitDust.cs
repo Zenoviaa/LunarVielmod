@@ -17,7 +17,8 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 3 };
     public override int GetPoolSize()
     {
-        return 1_000_000;
+        //Perf tests were done with 1,000,000 max particles
+        return 2_000;
     }
 
     public override void Load(Mod mod)
@@ -65,6 +66,9 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
             _vertexBuffer?.Dispose();
             _indexBuffer?.Dispose();
             _instanceBuffer?.Dispose();
+            _vertexBuffer = null;
+            _indexBuffer = null;
+            _instanceBuffer = null;
         }
         Main.QueueMainThreadAction(UnloadBuffers);
 
