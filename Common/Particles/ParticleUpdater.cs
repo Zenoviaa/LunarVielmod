@@ -27,15 +27,33 @@ public abstract class ParticleUpdater<ParticleStructType> :
     }
 
     public string elapsedString;
-    public virtual void Load(Mod mod)
+
+    public virtual void LoadSafe()
     {
-        _particleTextureAsset = ModContent.Request<Texture2D>(FrameData.Texture);
+
     }
-    public virtual void Unload()
+    public virtual void UnloadSafe()
     {
-        //idk if this is necessary or not
-        _particleTextureAsset?.Dispose();
-        _particleTextureAsset = null;
+
+    }
+    public  void Load(Mod mod)
+    {
+        Main.QueueMainThreadAction(() =>
+        {
+            _particleTextureAsset = ModContent.Request<Texture2D>(FrameData.Texture);
+            LoadSafe();
+        });
+
+    }
+    public void Unload()
+    {
+        Main.QueueMainThreadAction(() =>
+        {
+            //idk if i have to null out the particle asset
+            _particleTextureAsset?.Dispose();
+            _particleTextureAsset = null;
+            UnloadSafe();
+        });
     }
 
     public virtual ParticleFrameData FrameData

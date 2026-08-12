@@ -21,59 +21,44 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
         return 2_000;
     }
 
-    public override void Load(Mod mod)
+    public override void LoadSafe()
     {
-        base.Load(mod);
-        void LoadBuffers()
-        {
-            //Prepare buffers for GPU Instancing
-            var vertices = new VertexPositionTexture[4];
+        base.LoadSafe();
+        //Prepare buffers for GPU Instancing
+        var vertices = new VertexPositionTexture[4];
 
-            float halfWidth = 64 * 0.5f;
-            float halfHeight = 64 * 0.5f;
-            vertices[0] = new VertexPositionTexture(new Vector3(-halfWidth, -halfHeight, 0), new Vector2(0, 0));
-            vertices[1] = new VertexPositionTexture(new Vector3(halfWidth, -halfHeight, 0), new Vector2(1, 0));
-            vertices[2] = new VertexPositionTexture(new Vector3(-halfWidth, halfHeight, 0), new Vector2(0, 1));
-            vertices[3] = new VertexPositionTexture(new Vector3(halfWidth, halfHeight, 0), new Vector2(1, 1));
+        float halfWidth = 64 * 0.5f;
+        float halfHeight = 64 * 0.5f;
+        vertices[0] = new VertexPositionTexture(new Vector3(-halfWidth, -halfHeight, 0), new Vector2(0, 0));
+        vertices[1] = new VertexPositionTexture(new Vector3(halfWidth, -halfHeight, 0), new Vector2(1, 0));
+        vertices[2] = new VertexPositionTexture(new Vector3(-halfWidth, halfHeight, 0), new Vector2(0, 1));
+        vertices[3] = new VertexPositionTexture(new Vector3(halfWidth, halfHeight, 0), new Vector2(1, 1));
 
-            _vertexBuffer = new VertexBuffer(Main.graphics.GraphicsDevice, typeof(VertexPositionTexture), 4, BufferUsage.WriteOnly);
-            _vertexBuffer.SetData<VertexPositionTexture>(vertices);
+        _vertexBuffer = new VertexBuffer(Main.graphics.GraphicsDevice, typeof(VertexPositionTexture), 4, BufferUsage.WriteOnly);
+        _vertexBuffer.SetData<VertexPositionTexture>(vertices);
 
-            _indexBuffer = new IndexBuffer(Main.graphics.GraphicsDevice, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly);
-            _indexBuffer.SetData(new ushort[] {
+        _indexBuffer = new IndexBuffer(Main.graphics.GraphicsDevice, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly);
+        _indexBuffer.SetData(new ushort[] {
                     0, 2, 3,
                     0, 1, 3
                 });
 
-            _instanceBuffer = new VertexBuffer(Main.graphics.GraphicsDevice, typeof(BitDustInstanceData),
-                _particles.Length, BufferUsage.WriteOnly);
+        _instanceBuffer = new VertexBuffer(Main.graphics.GraphicsDevice, typeof(BitDustInstanceData),
+            _particles.Length, BufferUsage.WriteOnly);
 
-            _instances = new BitDustInstanceData[_particles.Length];
+        _instances = new BitDustInstanceData[_particles.Length];
 
-            _bindings = new VertexBufferBinding[2];
-            _bindings[0] = new VertexBufferBinding(_vertexBuffer);
-            _bindings[1] = new VertexBufferBinding(_instanceBuffer, 0, 1);
-        }
-        Main.QueueMainThreadAction(LoadBuffers);
+        _bindings = new VertexBufferBinding[2];
+        _bindings[0] = new VertexBufferBinding(_vertexBuffer);
+        _bindings[1] = new VertexBufferBinding(_instanceBuffer, 0, 1);
     }
-
-
-    public override void Unload()
+    public override void UnloadSafe()
     {
-        base.Unload();
-        void UnloadBuffers()
-        {
-            _vertexBuffer?.Dispose();
-            _indexBuffer?.Dispose();
-            _instanceBuffer?.Dispose();
-            _vertexBuffer = null;
-            _indexBuffer = null;
-            _instanceBuffer = null;
-        }
-        Main.QueueMainThreadAction(UnloadBuffers);
-
+        base.UnloadSafe();
+        _vertexBuffer?.Dispose();
+        _indexBuffer?.Dispose();
+        _instanceBuffer?.Dispose();
     }
-
 
     public ref BitDustParticleData Spawn(in BitDustFactory factory)
     {
