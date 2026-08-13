@@ -122,5 +122,5 @@ As 2.0 has been in development, we wanted to fix some of the major issues of the
 bloat, etc! We also added a few things we forgot to add/ lost content, and we added them and made sure they worked!
 
 
-Discord: https://discord.gg/admUnCkvCU 
+Discord: https://discord.gg/HmYzmWv2mK
 

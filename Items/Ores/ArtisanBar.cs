@@ -31,7 +31,7 @@ namespace Stellamod.Items.Ores
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe(2);
-			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 1);
 			recipe.AddTile(TileID.AdamantiteForge);
