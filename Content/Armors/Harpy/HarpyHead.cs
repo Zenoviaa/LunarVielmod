@@ -261,7 +261,7 @@ public class HarpyLegs : ModItem
         var stats = player.GetStats();
         stats.insourceSlots += 7;
         stats.defenseBonus += 12;
-        stats.accessorySlots++;
+        stats.accessorySlots+=2;
         stats.movementSpeedBonus += 0.6f;
     }
 }

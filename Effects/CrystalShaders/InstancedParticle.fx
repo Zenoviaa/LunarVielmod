@@ -20,8 +20,6 @@ struct VertexShaderInput
 struct Particle
 {
     float4 Color : COLOR0;
-    float4 InnerColor : COLOR1;
-    float4 OuterColor : COLOR2;
     float4 trans : TEXCOORD1;
     float3 TilingOffsetRotation : TEXCOORD2;
 };
@@ -29,8 +27,6 @@ struct Particle
 struct VertexShaderOutput
 {
     float4 Color : COLOR0;
-    float4 InnerColor : COLOR1;
-    float4 OuterColor : COLOR2;
     float4 Position : SV_POSITION;
     float2 TextureCoordinates : TEXCOORD0;
 };
@@ -58,9 +54,7 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input, Particle p)
     
     output.Position = mul(vertexPosition, projection);
     output.Color = p.Color;
-    output.InnerColor = p.InnerColor;
-    output.OuterColor = p.OuterColor;
-    
+
     float2 texCoords = input.TextureCoordinates;
     texCoords.y *= p.TilingOffsetRotation.x;
     texCoords.y += p.TilingOffsetRotation.y;
@@ -70,11 +64,8 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input, Particle p)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    float sample = tex2D(spriteTex, input.TextureCoordinates).r;
-    float3 color = lerp(input.OuterColor, input.InnerColor, sample);
-    color *= input.Color;
-    color *= sample;
-    return float4(color * 0.8, 1.0);
+    float4 sample = tex2D(spriteTex, input.TextureCoordinates);
+    return sample * input.Color;
 }
 
 technique SpriteDrawing

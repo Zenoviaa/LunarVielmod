@@ -1,10 +1,6 @@
-﻿using Stellamod.Content.Areas.Terror.TilesTR;
-using Stellamod.Core.Pixelation;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
-using Terraria.UI.Chat;
 
 namespace Stellamod.Common.Particles;
 
@@ -15,16 +11,28 @@ public sealed class Particles : ModSystem
     private List<IParticleUpdater> _particleUpdaters;
 
     public static BitDust BitDust;
+    public static RagingFlameDust RagingFlameDust;
+    public static CloudDust CloudBackgroundDust;
+    public static CloudDust CloudBackgroundDust2;
+    public static CloudDust CloudBackgroundDust3;
     public override void Load()
     {
         base.Load();
-        On_Main.DrawDust += DrawParticles;
+
         BitDust = new();
+        RagingFlameDust = new();
+        CloudBackgroundDust = new();
+        CloudBackgroundDust2 = new();
+        CloudBackgroundDust3 = new();
         _particleUpdaters = new List<IParticleUpdater>
         {
-            BitDust
+            BitDust,
+            RagingFlameDust,
+            CloudBackgroundDust,
+            CloudBackgroundDust2,
+            CloudBackgroundDust3
         };
-       
+
         for (int i = 0; i < _particleUpdaters.Count; i++)
         {
             if (_particleUpdaters[i] is ILoadable loadable)
@@ -51,23 +59,29 @@ public sealed class Particles : ModSystem
         _particleUpdaters = null;
     }
 
-    private void DrawParticles(On_Main.orig_DrawDust orig, Main self)
+
+    private void UpdateParticles(object? state)
     {
-        orig(self);
-        for (int i = 0; i < _particleUpdaters.Count; i++)
+
+        void UpdateParticles_Inner()
         {
-            IParticleUpdater particleUpdater = _particleUpdaters[i];
-            if (particleUpdater.PixelationDrawLayer != DrawLayer.None)
+            double oldUpdate = Main.GameUpdateCount;
+
+            while (true)
             {
-                PixelationManager.QueueSpritebatchDrawAction(_particleUpdaters[i].Draw, particleUpdater.PixelationDrawLayer);
-            }
-            else
-            {
-                _particleUpdaters[i].Draw(Main.spriteBatch, Main.screenPosition);
+                double newUpdate = Main.GameUpdateCount;
+                if (newUpdate != oldUpdate)
+                {
+                    oldUpdate = newUpdate;
+                    for (int i = 0; i < _particleUpdaters.Count; i++)
+                    {
+                        _particleUpdaters[i].Update();
+                    }
+                }
             }
         }
+        UpdateParticles_Inner();
     }
-
     public override void PostUpdateDusts()
     {
         base.PostUpdateDusts();
@@ -75,27 +89,129 @@ public sealed class Particles : ModSystem
         {
             _particleUpdaters[i].Update();
         }
+        //     RagingFlameDustTest();
 
-        /*
-        if (Main.mouseLeft && Main.mouseLeftRelease)
+        return;
+
+
+        for(int i = 0; i < 6; i++)
         {
-            BitDustFactory factory = BitDustFactory.Default;
-            factory.position = Main.MouseWorld;
-            for (int i = 0; i < 15_000; i++)
-            {
+            float depth = 0;
+            Rectangle rect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+            CloudBackgroundDust.bottomLeft = rect.BottomLeft();
+            CloudBackgroundDust.bottomRight = rect.BottomRight();
+            CloudBackgroundDust.topRight = rect.TopRight();
+            CloudBackgroundDust.topRight.X -= 384;
 
-     
-                factory.velocity = Main.rand.NextVector2Circular(16, 16);
-                BitDust.Spawn(factory);
+            Color DepthColor()
+            {
+                return DrawUtilities.InterpolateColorArray(depth, Color.LightPink, Color.DarkRed, Color.Black) * 0.3f;
             }
-        }*/
+
+            depth = 0.2f;
+            Color color = DepthColor();
+
+            CloudBackgroundDust.Spawn(CloudDustParticleData.Default with
+            {
+                position = new Vector2(-256),
+                color = color.ToVector4(),
+                velocity = -Vector2.UnitY,
+                frameIndex = Main.rand.Next(4),
+                rotation = Main.rand.NextFloat(0f, 6f),
+                timeLeft = 960,
+                originPoint = Main.rand.NextFloat(0f, 0.1f)
+            });
+
+            CloudBackgroundDust2.bottomLeft = rect.BottomLeft();
+            CloudBackgroundDust2.bottomLeft.X -= 333;
+            CloudBackgroundDust2.bottomRight = rect.BottomRight();
+            CloudBackgroundDust2.bottomRight.X -= 333;
+            CloudBackgroundDust2.topRight = rect.TopRight();
+            CloudBackgroundDust2.topRight.X -= 666;
+
+
+            depth = 0.8f;
+            color = DepthColor();
+
+
+            CloudBackgroundDust2.Spawn(CloudDustParticleData.Default with
+            {
+                position = new Vector2(-256),
+                color = color.ToVector4(),
+                velocity = -Vector2.UnitY,
+                frameIndex = Main.rand.Next(4),
+                rotation = Main.rand.NextFloat(0f, 6f),
+                timeLeft = 960,
+                originPoint = Main.rand.NextFloat(0f, 0.1f)
+            });
+
+
+
+
+            CloudBackgroundDust3.bottomLeft = rect.BottomLeft();
+            CloudBackgroundDust3.bottomLeft.X -= 444;
+            CloudBackgroundDust3.bottomLeft.Y -= 128;
+            CloudBackgroundDust3.bottomRight = rect.BottomRight();
+            CloudBackgroundDust3.bottomRight.X -= 444;
+            CloudBackgroundDust3.bottomRight.Y -= 128;
+            CloudBackgroundDust3.topRight = rect.TopRight();
+            CloudBackgroundDust3.topRight.X -= 666;
+            CloudBackgroundDust3.topRight.Y -= 128;
+
+            depth = 0.5f;
+            color = DepthColor();
+
+
+            CloudBackgroundDust3.Spawn(CloudDustParticleData.Default with
+            {
+                position = new Vector2(-256),
+                color = color.ToVector4(),
+                velocity = -Vector2.UnitY,
+                frameIndex = Main.rand.Next(4),
+                rotation = Main.rand.NextFloat(0f, 6f),
+                timeLeft = 960,
+                originPoint = Main.rand.NextFloat(0f, 0.1f)
+            });
+        }
+        if(Main.GameUpdateCount % 1 == 0)
+        {
+
+
+
+        }
 
     }
 
+    private void RagingFlameDustTest()
+    {
+        if (Main.mouseLeft && Main.GameUpdateCount % 2 == 0)
+        {
+            RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = Main.MouseWorld, timeleft = 70 });
+        }
+    }
+
+    private void BitDustPerfTest()
+    {
+        if (Main.mouseLeft)
+        {
+            BitDustFactory factory = BitDustFactory.Default;
+            factory.position = Main.MouseWorld;
+            factory.outerColor = Main.DiscoColor.ToVector4();
+            factory.innerColor = factory.outerColor;
+            for (int i = 0; i < 100; i++)
+            {
+
+
+                factory.velocity = Main.rand.NextVector2Circular(16, 16);
+                BitDust.Spawn(factory);
+            }
+        }
+
+    }
     public override void PostDrawTiles()
     {
         base.PostDrawTiles();
-        
+
         //Just for testing the atlas
         /*
         Main.spriteBatch.Begin();

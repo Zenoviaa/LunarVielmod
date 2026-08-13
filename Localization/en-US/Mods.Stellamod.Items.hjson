@@ -12100,3 +12100,8 @@ ScarletDiamondBrick: {
 	DisplayName: Scarlet Diamond Brick
 	Tooltip: ""
 }
+
+RagingScarletTorch: {
+	DisplayName: Raging Scarlet Torch
+	Tooltip: ""
+}

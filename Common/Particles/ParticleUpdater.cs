@@ -77,7 +77,7 @@ public abstract class ParticleUpdater<ParticleStructType> :
     public virtual int GetPoolSize() => 200;
     public void Update()
     {
-        var watch = Stopwatch.StartNew();
+        //var watch = Stopwatch.StartNew();
         UpdateParticles();
         for (int i = 0; i < _length; i++)
         {
@@ -88,8 +88,8 @@ public abstract class ParticleUpdater<ParticleStructType> :
                 i--;
             }
         }
-        watch.Stop();
-        elapsedString = $"~{(float)watch.ElapsedTicks / 10000f}ms ::: Particle Count: {_length}";
+        //watch.Stop();
+        //elapsedString = $"~{(float)watch.ElapsedTicks / 10000f}ms ::: Particle Count: {_length}";
     }
 
     protected virtual void UpdateParticles() { }
