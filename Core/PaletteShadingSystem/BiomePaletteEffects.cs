@@ -5,6 +5,7 @@ using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Palettes;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.PaletteShadingSystem
@@ -48,8 +49,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
-         
-           
+      
             BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
             return myPlayer.ZoneMoonspiralTower;
         }

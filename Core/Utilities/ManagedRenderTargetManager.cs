@@ -22,7 +22,9 @@ namespace Stellamod.Core.Utilities
         private bool _mipMap;
         private SurfaceFormat _surfaceFormat;
         private DepthFormat _depthFormat;
-        private ManagedRenderTarget(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = false, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
+        private RenderTargetUsage _usage;
+        private ManagedRenderTarget(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = false, SurfaceFormat surfaceFormat = SurfaceFormat.Color, 
+            DepthFormat depthFormat = DepthFormat.None, RenderTargetUsage usage = RenderTargetUsage.PlatformContents)
         {
  
             _resizeFunction = resizeFunction;
@@ -30,6 +32,7 @@ namespace Stellamod.Core.Utilities
             _surfaceFormat = surfaceFormat;
             _depthFormat = depthFormat;
             _downSamples = downSamples;
+            _usage = usage;
             if (resizeFunction == null)
                 _resizeFunction = GetScreenTargetSize;
             active = true;
@@ -67,7 +70,8 @@ namespace Stellamod.Core.Utilities
             Point screenSize = _resizeFunction();
             Point newSize = new Point(screenSize.X / _downSamples, screenSize.Y / _downSamples);
             _renderTarget.Release();
-            _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y, mipMap: _mipMap, _surfaceFormat, _depthFormat,0, RenderTargetUsage.PlatformContents );
+            _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y, mipMap: _mipMap, _surfaceFormat, _depthFormat,0,
+                _usage);
 
             Width = newSize.X;
             Height = newSize.Y;
@@ -105,10 +109,11 @@ namespace Stellamod.Core.Utilities
             DummyTarget = new RenderTarget2D(Main.instance.GraphicsDevice, 1, 1);
         }
 
-        public static ManagedRenderTarget New(ResizeFunction resizeFunction = null, int downSamples = 1, bool mipMap = false, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
+        public static ManagedRenderTarget New(ResizeFunction resizeFunction = null, int downSamples = 1, bool mipMap = false, SurfaceFormat surfaceFormat = SurfaceFormat.Color, 
+            DepthFormat depthFormat = DepthFormat.None, RenderTargetUsage preserve = RenderTargetUsage.PlatformContents)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            ManagedRenderTarget managedRenderTarget = new ManagedRenderTarget(resizeFunction, downSamples, mipMap, surfaceFormat, depthFormat);
+            ManagedRenderTarget managedRenderTarget = new ManagedRenderTarget(resizeFunction, downSamples, mipMap, surfaceFormat, depthFormat, preserve);
 
             ManagedRenderTargetManager managedRenderTargetManager = ModContent.GetInstance<ManagedRenderTargetManager>();
             managedRenderTargetManager.AddManagedRenderTarget(managedRenderTarget);
