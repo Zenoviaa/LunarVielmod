@@ -1,4 +1,5 @@
 ﻿using ReLogic.Graphics;
+using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -17,7 +18,9 @@ public class UIInputTextField : UITextPanel<string>
     {
         _mText = text;
         SetPadding(4);
+    
     }
+    public event Action<string> OnUpdateText;
     public override void OnDeactivate()
     {
         base.OnDeactivate();
@@ -28,6 +31,7 @@ public class UIInputTextField : UITextPanel<string>
         Focus();
         base.LeftClick(evt);
     }
+
 
     public void Unfocus()
     {
@@ -69,6 +73,10 @@ public class UIInputTextField : UITextPanel<string>
         base.SetText(text);
         this._cursor = text.Length;
         Recalculate();
+        if (changed)
+        {
+            OnUpdateText?.Invoke(text);
+        }
     }
 
 

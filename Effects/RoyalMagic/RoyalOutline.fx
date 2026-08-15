@@ -34,7 +34,7 @@ float4 SampleMixedColor(float2 coords)
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
-    return SampleMixedColor(coords);
+    return SampleMixedColor(coords) * sampleColor;
 }
 
 technique Technique1

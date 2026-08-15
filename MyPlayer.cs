@@ -1,17 +1,12 @@
-﻿using Microsoft.Xna.Framework.Input;
-using ReLogic.Content;
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
-using Stellamod.Core.ToolsSystem;
 using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Projectiles.Swords;
 using System.Collections.Generic;
 using Terraria;
@@ -572,20 +567,6 @@ namespace Stellamod
         private bool _pressed;
         public override void PostUpdate()
         {
-            Keys keys = Keys.OemTilde;
-            if (!_pressed)
-            {
-                _pressed = Main.keyState.IsKeyDown(keys);
-            }
-            else if (_pressed)
-            {
-                if (Main.keyState.IsKeyUp(keys))
-                {
-                    ToolsUISystem uiSystem = ModContent.GetInstance<ToolsUISystem>();
-                    uiSystem.ToggleUI();
-                    _pressed = false;
-                }
-            }
 
 
             /*
@@ -730,7 +711,7 @@ namespace Stellamod
             }
 
             bool expertMode = Main.expertMode;
-             if (ZoneIlluria)
+            if (ZoneIlluria)
             {
                 SingularityFragment = true;
             }
@@ -833,7 +814,7 @@ namespace Stellamod
                 SwordComboSlash = 0;
             }
 
-     
+
 
 
             if (ZoneAcid || ZoneLab)

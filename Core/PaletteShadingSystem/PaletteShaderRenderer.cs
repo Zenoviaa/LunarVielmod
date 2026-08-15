@@ -1,6 +1,7 @@
 ﻿using Stellamod.Core.Utilities;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.PaletteShadingSystem

@@ -155,8 +155,8 @@ namespace Stellamod.Core.LunarLightingSystem
                 ssaoShader.Effect,
                 Main.GameViewMatrix.TransformationMatrix);
 
-            if (!Keyboard.GetState().IsKeyDown(Keys.L))
-                spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, Color.White);
+                
+            spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, Color.White);
 
             spriteBatch.End();
         }

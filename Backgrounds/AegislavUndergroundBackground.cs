@@ -47,7 +47,7 @@ public partial class AegislavUndergroundBackground : CustomBG
 
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_cloudTextureAsset, Main.screenPosition);
         drawer.drawOrigin = Vector2.Zero;
-        drawer.scale = Vector2.One * 2;
+//        drawer.scale = Vector2.One * 2;
         drawer.color = Color.White;
         drawer.dstRect = drawRect;
         spriteBatch.Draw(drawer);
@@ -56,7 +56,7 @@ public partial class AegislavUndergroundBackground : CustomBG
     }
     public override bool IsActive()
     {
-        return true;
+        return false;
       //  return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneAegislavSurface;
     }
 

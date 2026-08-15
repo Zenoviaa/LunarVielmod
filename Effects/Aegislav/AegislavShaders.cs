@@ -1,8 +1,13 @@
-﻿using Stellamod.Assets;
+﻿using Newtonsoft.Json.Linq;
+using ReLogic.Peripherals.RGB;
+using Stellamod.Assets;
+using Stellamod.Common.ConsoleMenu;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
+using Stellamod.Effects.RoyalMagic;
 using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace Stellamod.Effects.Aegislav;
@@ -11,8 +16,12 @@ namespace Stellamod.Effects.Aegislav;
 [Autoload(Side = ModSide.Client)]
 public class AegisCloudsRenderer : ModSystem
 {
+    private Vector2 _parallax;
+    private Vector2 _lastCameraPos;
+    private Vector2 _movementDiff;
     private ManagedRenderTarget _rt;
     private ManagedRenderTarget _rtSwap;
+    private ManagedRenderTarget _cloudsRT;
     private int _lastRender;
     private bool _frameOne;
 
@@ -23,42 +32,71 @@ public class AegisCloudsRenderer : ModSystem
             return _lastRender == 0 ? _rtSwap : _rt;
         }
     }
+    private Point GetScreenSize()
+    {
+        return new Point(Main.screenWidth, Main.screenHeight);
+    }
+
     public override void Load()
     {
         base.Load();
         On_Main.CheckMonoliths += RenderAegisClouds;
         _rt = ManagedRenderTarget.New(preserve: RenderTargetUsage.PreserveContents);
         _rtSwap = ManagedRenderTarget.New(preserve: RenderTargetUsage.PreserveContents);
+        _cloudsRT = ManagedRenderTarget.New(GetScreenSize);
+    }
+    private Vector2 GetScreenOffset(float scale)
+    {
+        //Apply an offset so the texture doesn't move when you're moving
+        //This will wrap inside the shader
+        Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+        Vector2 screenoffset = Main.screenPosition * texelSize;
+        screenoffset *= (1f / scale);
+        return screenoffset;
+    }
+    private void Parallax()
+    {
+        Vector2 parallaxAmt = new Vector2(0.5f, 0.5f);
+        Vector2 refPosition = Main.Camera.UnscaledPosition;
+        Vector2 diff = _lastCameraPos - refPosition;
+        _parallax += diff * parallaxAmt;
+        _movementDiff = diff * parallaxAmt;
+        _lastCameraPos = refPosition;
     }
     private void RenderAegisClouds(On_Main.orig_CheckMonoliths orig)
     {
         orig();
         if (Main.gameMenu)
             return;
-        return;
+        if (!LunarDebugging.clouds)
+            return;
 
         int steps = 1;
-        if (Main.mouseLeft)
+        if (Main.mouseLeft && LunarDebugging.clouds)
         {
             steps += 16;
         }
-        for(int i = 0; i < steps; i++)
+
+        var shader = AegisCurlingCloudsShader.Instance;
+        shader.FirstFrame = 1;
+        if (Main.mouseRight && LunarDebugging.clouds)
+        {
+            shader.FirstFrame = 0;
+        }
+        Parallax();
+
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        shader.ConvectionTexture = AssetManager.LoadBackground("AegislavCloudConvection").Value;
+        shader.Time = Main.GlobalTimeWrappedHourly * 4;
+        shader.Res = new Vector2(Main.screenWidth, Main.screenHeight);
+        shader.Parallax = -_movementDiff * 24;
+        for (int i = 0; i < steps; i++)
         {
             var target = _lastRender == 0 ? _rtSwap : _rt;
             var draw = _lastRender == 0 ? _rt : _rtSwap;
-            SpriteBatch spriteBatch = Main.spriteBatch;
+
             spriteBatch.GraphicsDevice.SetRenderTarget(target);
 
-            var shader = AegisCurlingCloudsShader.Instance;
-            shader.FirstFrame = 1;
-            if (Main.mouseRight)
-            {
-                shader.FirstFrame = 0;
-            }
-
-            shader.ConvectionTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/NormalNoise1").Value;
-            shader.Time = Main.GlobalTimeWrappedHourly * 4;
-            shader.Res = new Vector2(Main.screenWidth, Main.screenHeight);
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
@@ -67,7 +105,7 @@ public class AegisCloudsRenderer : ModSystem
                 RasterizerState.CullNone,
                 effect: shader.Effect);
 
-            spriteBatch.Draw(draw, Vector2.Zero, Color.White);
+            spriteBatch.Draw(draw, Vector2.Zero, Color.Lerp(Color.White, Color.Red, 0.8f));
 
             spriteBatch.End();
 
@@ -75,7 +113,62 @@ public class AegisCloudsRenderer : ModSystem
             _lastRender++;
             _lastRender %= 2;
         }
+        spriteBatch.GraphicsDevice.SetRenderTarget(_cloudsRT);
+        spriteBatch.GraphicsDevice.Clear(Color.Transparent);
 
+        BackgroundParallaxShader parallaxShader = ShaderContent.GetInstance<BackgroundParallaxShader>();
+        parallaxShader.Parallax = Main.Camera.Center * 0.00025f * new Vector2(1f, 0.2f);
+
+        Texture2D tex = AssetManager.LoadBackground("AegislavJail").Value;
+        Texture2D texGlow = AssetManager.LoadBackground("AegislavJailGlow").Value;
+        Rectangle dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+
+        spriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointClamp,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            effect: parallaxShader.Effect);
+        spriteBatch.Draw(tex, dstRect, Color.White);
+        spriteBatch.End();
+
+
+        Color outlineColor = Color.Lerp(Color.DarkBlue, Color.Black, 0.5f);
+        Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
+        RoyalOutlineShader mixerShader2 = ShaderContent.GetInstance<RoyalOutlineShader>();
+        mixerShader2.TexelSize = texelSize;
+        mixerShader2.OutlineColor = outlineColor;
+
+        Vector2 centerPos = new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f;
+        centerPos += _parallax * new Vector2(0.005f);
+        spriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointClamp,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            effect: null);
+
+        spriteBatch.Draw(OnScreen, Vector2.Zero, null, Color.White * 0.7f, 0, new Vector2(Main.screenWidth, Main.screenHeight) * 0f, 1, SpriteEffects.None, 0);
+        Color glowColor = Color.White;
+     
+        spriteBatch.End();
+
+        spriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointClamp,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            effect: null);
+
+      //  spriteBatch.Draw(OnScreen, Vector2.Zero, null, Color.White * 0.7f, 0, new Vector2(Main.screenWidth, Main.screenHeight) * 0f, 1, SpriteEffects.None, 0);
+
+
+        spriteBatch.Draw(texGlow, dstRect, glowColor);
+        spriteBatch.End();
+        spriteBatch.GraphicsDevice.SetRenderTarget(null);
     }
 
     public override void PostDrawTiles()
@@ -83,7 +176,9 @@ public class AegisCloudsRenderer : ModSystem
         base.PostDrawTiles();
         if (Main.gameMenu)
             return;
-        return;
+        if (!LunarDebugging.clouds)
+            return;
+
         Main.spriteBatch.Begin(
             SpriteSortMode.Deferred,
             BlendState.AlphaBlend,
@@ -91,10 +186,34 @@ public class AegisCloudsRenderer : ModSystem
             DepthStencilState.None,
             RasterizerState.CullNone,
             effect: null);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(OnScreen, Main.screenPosition);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_cloudsRT, Main.screenPosition);
         drawer.drawOrigin = Vector2.Zero;
+        drawer.color = Color.White;
         Main.spriteBatch.Draw(drawer);
         Main.spriteBatch.End();
+
+
+
+        var starsTexture = TextureRegistry.StarNoise2;
+        var noiseTexture = TextureRegistry.BlurryPerlinNoise2;
+        MiscShaderData eff = GameShaders.Misc["LunarVeil:RoyalCapitalStars"];
+
+        eff.Shader.Parameters["primaryTexture"].SetValue(starsTexture.Value);
+        eff.Shader.Parameters["primaryTextureSize"].SetValue(starsTexture.Value.Size());
+        eff.Shader.Parameters["resolution"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+        eff.Shader.Parameters["screenOffset"].SetValue(GetScreenOffset(scale: 1));
+        eff.UseImage2(noiseTexture);
+        eff.Shader.Parameters["parallax"].SetValue(-_parallax * 0.00005f);
+        eff.Shader.Parameters["gradientFade"].SetValue(0f);
+        eff.UseOpacity(1f);
+        eff.Apply();
+
+        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader);
+        Main.spriteBatch.Draw(starsTexture.Value,
+           new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
+            null, Color.White * 0.3f);
+        Main.spriteBatch.End();
+
     }
 }
 
@@ -149,12 +268,35 @@ public class AegisCurlingCloudsShader : CrystalShader<AegisCurlingCloudsShader>
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicClamp;
         }
     }
+    public Texture2D MaskTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[2] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.AnisotropicClamp;
+        }
+    }
+    public Texture2D SwirlNormalTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[3] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.AnisotropicWrap;
+        }
+    }
 
     public Vector2 Res
     {
         set
         {
             Effect.Parameters["res"].SetValue(value);
+        }
+    }
+    public Vector2 Parallax
+    {
+        set
+        {
+            Effect.Parameters["cameraMovement"].SetValue(value);
         }
     }
 

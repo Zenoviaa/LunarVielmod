@@ -1,8 +1,11 @@
 sampler buffer : register(s0);
 sampler convectionNormalSampler : register(s1);
+sampler convectionMaskSampler : register(s2);
+sampler swirlNormalSampler : register(s3);
 float time;
 float2 res;
 float firstFrame;
+float2 cameraMovement;
 
 //Adapted and learning from
 //http://petewerner.blogspot.com/2015/02/intro-to-curl-noise.html
@@ -32,6 +35,7 @@ float3 ConvectionCurrent(float2 coords)
 {
     //Have the normal coordinates between -1 and 1 instead of 0-1
     float3 normalVec = tex2D(convectionNormalSampler, coords).rgb * 2.0 - 1.0;
+    normalVec.x *= -1;
     return normalVec;
 }
 
@@ -45,6 +49,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     float2 fragCoord = uv * res;
     float2 offset = float2(0.0, 0.0);
     float2 e = float2(.01, 0.0);
+    
+    float mask = tex2D(convectionMaskSampler, coords).r;
     
     
     float2 p = (2. * fragCoord - res.xy) / res.y;
@@ -64,7 +70,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
    // offset.y += coords.y * 5.0;
    // offset.x -= coords.x * 4.0;
     //Generaly movement current from the normal map
-    offset += convection.xy * 4.2;
+    offset += convection.xy * 2.2;
+    offset += cameraMovement * 0.05;
     // displace buffer sampler coordinates
     uv += offset * .0004 * float2(res.y / res.x, 1);
   //  uv += convection.xy * 0.0005;
@@ -80,7 +87,9 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     if (spawn)
     {
         color = .5 + .5 * cos(float3(1.0, 2.0, 3.0) * 5.5 + time * 0.03 + (uv.x + uv.y) * 6.);
-       // color.xyz = sin(time * 0.03 + (uv.x + uv.y) * 6.0) * 0.5 + 0.5;
+
+        // color.xyz = sin(time * 0.03 + (uv.x + uv.y) * 6.0) * 0.5 + 0.5;
+        color *= sampleColor;
     }
     else
     {
@@ -89,6 +98,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     
     }
      
+//    color *= lerp(0.85, 1.0, mask);
     return float4(color, 1.0);
  }
 

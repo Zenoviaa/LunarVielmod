@@ -1,10 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Foggy;
 using Stellamod.Core.LunarLightingSystem;
-using Stellamod.Core.ToolsSystem;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -55,12 +51,6 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
             Fog fog = fogSystem.SetupFog(point, FogCreateFunction);
             fog.updateFunc = FogUpdateFunction;
             fog.shaderFunc = FogShaderFunction;
-
-            ToolsUISystem uiSystem = ModContent.GetInstance<ToolsUISystem>();
-            if (uiSystem.ShowHitboxes)
-            {
-                TileHelper.DrawInvisTile(i, j, spriteBatch);
-            }
             return false;
         }
 

@@ -10,6 +10,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.PaletteShadingSystem
 {
+    public class VilepiperPaletteEffect : PaletteEffect
+    {
+        public override PaletteType PaletteType => PaletteType.LunarShader;
+        public override PalettePriority Priority => PalettePriority.Medium;
+        public override bool IsActive(Player player)
+        {
+            return false;
+        }
+    }
+
     public class EvildemonsPaletteEffect : PaletteEffect
     {
         public override PaletteType PaletteType => PaletteType.LunarShader;

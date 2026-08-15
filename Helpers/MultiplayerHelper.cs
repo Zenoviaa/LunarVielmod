@@ -107,7 +107,9 @@ namespace Stellamod
                         float ai1 = reader.ReadSingle();
                         float ai2 = reader.ReadSingle();
                         float ai3 = reader.ReadSingle();
-                        NPC.NewNPC(new EntitySource_Misc("Dragon"), x, y, type, ai0: ai0, ai1: ai1, ai2: ai2, ai3: ai3);
+                        int n = NPC.NewNPC(new EntitySource_Misc("Dragon"), x, y, type, ai0: ai0, ai1: ai1, ai2: ai2, ai3: ai3);
+                        Main.npc[n].netUpdate = true;
+                        Main.npc[n].netUpdate2 = true;
                     }
                     break;
                 case MessageType.CompleteMerenaQuest:
@@ -388,8 +390,9 @@ namespace Stellamod
                     break;
             }
         }
-
-        public static void SpawnBossFromClient(byte whoAmI, int type, int x, int y) =>
-            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BossSpawnFromClient, whoAmI, type, x, y).Send(-1);
+        public static void SpawnNPCFromClient(byte whoAmI, int type, int x, int y, float ai0 = 0, float ai1 = 0, float ai2 = 0, float ai3 = 0) =>
+            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.SpawnNPC, whoAmI, type, x, y, ai0, ai1, ai2, ai3).Send(-1);
+        public static void SpawnBossFromClient(byte whoAmI, int type, int x, int y, float ai0 = 0, float ai1 = 0, float ai2 = 0, float ai3 = 0) =>
+            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BossSpawnFromClient, whoAmI, type, x, y, ai0, ai1, ai2, ai3).Send(-1);
     }
 }

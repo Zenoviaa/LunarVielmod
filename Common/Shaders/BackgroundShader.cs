@@ -50,9 +50,10 @@ namespace Stellamod.Common.Shaders
             Parallax = Vector2.Zero;
         }
     }
-    public class BackgroundParallaxShader : BaseShader
+    
+    public class BackgroundParallaxShader : CrystalShader<BackgroundParallaxShader>
     {
-        private EffectParameter _parallaxParam;
+        private EffectParameter? _parallaxParam;
         public Vector2 Parallax
         {
             set
@@ -61,22 +62,8 @@ namespace Stellamod.Common.Shaders
                 _parallaxParam.SetValue(value);
             }
         }
-        private static BackgroundParallaxShader _instance;
-        public static BackgroundParallaxShader Instance
-        {
-            get
-            {
-                _instance ??= new BackgroundParallaxShader();
-                _instance.SetDefaults();
-                return _instance;
-            }
-        }
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            Parallax = Vector2.Zero;
-        }
     }
+
     public class ForegroundParallaxShader : CrystalShader<ForegroundParallaxShader>
     {
         private EffectParameter _parallaxParam;

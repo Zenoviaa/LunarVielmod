@@ -291,6 +291,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 SoundEngine.PlaySound(explosionSound);
             }
             _intro = true;
+
             float domainShrinkTime = 60f;
             float completionRatio = Timer / domainShrinkTime;
             float ease = EasingFunction.InOutExpo(completionRatio);

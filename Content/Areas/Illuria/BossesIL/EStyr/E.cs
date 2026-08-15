@@ -106,7 +106,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Special_SlashEndOutBlack,
 
             Death_Start,
-            Death_FlyOff
+            Death_FlyOff,
         }
 
         private bool _drawDarkened;
@@ -322,6 +322,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         
             UpdateClient();
 
+            if(State >= AIState.Intro_HandOut)
+            {
+                _startedFight = true;
+            }
             _contactDamage = false;
             _isGrabbing = false;
             _hoverTimer++;
