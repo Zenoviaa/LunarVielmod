@@ -117,7 +117,7 @@ public class AegisCloudsRenderer : ModSystem
         spriteBatch.GraphicsDevice.Clear(Color.Transparent);
 
         BackgroundParallaxShader parallaxShader = ShaderContent.GetInstance<BackgroundParallaxShader>();
-        parallaxShader.Parallax = Main.Camera.Center * 0.00025f * new Vector2(1f, 0.2f);
+        parallaxShader.Parallax = Main.Camera.Center * 0.00025f * new Vector2(0.33f, 0.18f) * 0.83f;
 
         Texture2D tex = AssetManager.LoadBackground("AegislavJail").Value;
         Texture2D texGlow = AssetManager.LoadBackground("AegislavJailGlow").Value;
