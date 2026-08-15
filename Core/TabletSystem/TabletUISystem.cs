@@ -31,7 +31,7 @@ public class TabletUISystem : BaseUISystem
     public TabletUIState tabletUIState;
     public float Duration { get; set; }
 
-    public ManagedRenderTarget UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
+    public RenderTarget2D UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
     public override int uiSlot => Slot_MinorUI;
     public override void OnModLoad()
     {

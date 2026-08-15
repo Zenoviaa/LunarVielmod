@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Shaders;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using Terraria;
@@ -15,14 +16,8 @@ namespace Stellamod.Common.SummonerSystem
     [Autoload(Side = ModSide.Client)]
     public class SpectralSummonDrawSystem : ModSystem
     {
-        private ManagedRenderTarget _spectralRenderTarget;
+        private RenderTargetProvider _spectralRenderTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         private static List<IDrawSpectral> _spectralDraws = new();
-        public override void OnModLoad()
-        {
-            base.OnModLoad();
-            _spectralRenderTarget = ManagedRenderTarget.New();
-        }
-
         public override void Load()
         {
             On_Main.CheckMonoliths += DrawToCustomRenderTargets;
@@ -35,7 +30,6 @@ namespace Stellamod.Common.SummonerSystem
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRenderTarget;
             _spectralDraws?.Clear();
             _spectralDraws = null;
-            _spectralRenderTarget = null;
         }
 
 

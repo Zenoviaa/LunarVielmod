@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using Terraria;
@@ -14,9 +15,9 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         IRenderer
     {
 
-        private ManagedRenderTarget _icicleMaskRT;
-        private ManagedRenderTarget _iceRT;
-        private ManagedRenderTarget _icicleRT;
+        private RenderTargetProvider _icicleMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private RenderTargetProvider _iceRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private RenderTargetProvider _icicleRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         private Queue<PixelTarget.SpritebatchDrawAction> _drawActionQueue;
         private bool _ices;
 
@@ -26,17 +27,6 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         {
             base.OnModLoad();
             _drawActionQueue = new Queue<PixelTarget.SpritebatchDrawAction>(100);
-            _iceRT = ManagedRenderTarget.New();
-            _icicleMaskRT = ManagedRenderTarget.New();
-            _icicleRT = ManagedRenderTarget.New();
-        }
-
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            _iceRT = null;
-            _icicleMaskRT = null;   
-            _icicleRT = null;
         }
 
         public void Render()

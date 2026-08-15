@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -16,13 +17,11 @@ namespace Stellamod.Common.Shaders;
 public class AuroraEffectRenderer : ModSystem
 {
     private float _activeTimer;
-    private ManagedRenderTarget _auroraRT;
-    public override void OnModLoad()
+    private RenderTargetProvider _auroraRT = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with
     {
-        base.OnModLoad();
-        _auroraRT = ManagedRenderTarget.New(downSamples: 4);
-    }
-
+        Width = Main.screenWidth / 4,
+        Height = Main.screenHeight / 4
+    });
     public override void Load()
     {
         base.Load();
@@ -34,7 +33,6 @@ public class AuroraEffectRenderer : ModSystem
     {
         if (Main.gameMenu)
         {
-
             orig(self, spriteBatch, layer, beginSpriteBatch);
             return;
         }
@@ -72,8 +70,6 @@ public class AuroraEffectRenderer : ModSystem
                     new Rectangle((int)-_parallax.X, (int)-_parallax.Y, Main.screenWidth, Main.screenHeight), Color.White * 0.3f);
                 */
                 spriteBatch.End();
-
-          //      spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred,
                       BlendState.AlphaBlend,
                       SamplerState.PointWrap,
@@ -91,8 +87,6 @@ public class AuroraEffectRenderer : ModSystem
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 
             }
-
-
 
         }
 
@@ -150,8 +144,6 @@ public class AuroraEffectRenderer : ModSystem
         }
 
         _activeTimer = Math.Clamp(_activeTimer, 0f, 60f);
-
-
     }
 
 
@@ -160,7 +152,6 @@ public class AuroraEffectRenderer : ModSystem
         base.Unload();
         On_OverlayManager.Draw -= DrawAurora;
         On_Main.CheckMonoliths -= RenderToAuroraRT;
-        _auroraRT = null;
     }
 
     private void RenderToAuroraRT(On_Main.orig_CheckMonoliths orig)

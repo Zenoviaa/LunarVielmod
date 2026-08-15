@@ -3,6 +3,7 @@ using ReLogic.Threading;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Foggy;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Tiles;
@@ -82,7 +83,6 @@ namespace Stellamod.Core.LunarLightingSystem
     public class LunarLightingRenderer : ModSystem,
         IPostProcessingPass
     {
-        private float _overSunTimer;
         //We're using 255 lights because that's how many values are in the alpha channel in color
         //We're using the alpha channel to mask which shadows it checks for in the shadow map
         //We could make a custom vertex structure if we need to have more
@@ -100,13 +100,12 @@ namespace Stellamod.Core.LunarLightingSystem
         private Vector2 _previousScreenSize;
 
         private bool _isLoaded;
-
-        private ManagedRenderTarget _lightsRT;
+        private RenderTargetProvider _lightsRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private RenderTargetProvider _tileRenderTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
 
         private RenderTarget2D _tileBlurRT;
         private RenderTarget2D _tileSunShadowRT;
-        private ManagedRenderTarget _tileRenderTarget;
-
+   
 
         private List<ILightEmitter> _emitters;
         private List<IBackLightModifier> _backLightModifiers;
@@ -162,15 +161,6 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
         }
 
-        public override void PostDrawTiles()
-        {
-            base.PostDrawTiles();
-
-        }
-        private void Test()
-        {
-
-        }
         private void RenderSolidTileMask()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -518,8 +508,6 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void OnModLoad()
         {
             base.OnModLoad();
-            _lightsRT = ManagedRenderTarget.New();
-            _tileRenderTarget = ManagedRenderTarget.New();
             PostProcessingRenderer.AddPass(this);
         }
 

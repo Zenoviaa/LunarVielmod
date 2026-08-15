@@ -2,6 +2,7 @@
 using Stellamod.Common.WeaponUpgrade;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using System;
 using System.Reflection;
@@ -18,7 +19,7 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS;
 [Autoload(Side = ModSide.Client)]
 public class InfraredRenderer : ModSystem
 {
-    private ManagedRenderTarget _tileRenderTarget;
+    private RenderTargetProvider _tileRenderTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public bool IsActive => !Main.gameMenu && Main.LocalPlayer.GetModPlayer<HeatGogglesPlayer>().hasHeatGoggles;
     public override void Load()
     {
@@ -35,16 +36,9 @@ public class InfraredRenderer : ModSystem
         orig();
         if (!IsActive)
         {
-            if(_tileRenderTarget != null)
-            {
-                _tileRenderTarget.active = false;
-                _tileRenderTarget = null;
-            }
-  
             return;
         }
 
-        _tileRenderTarget ??= ManagedRenderTarget.New();
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
 
@@ -83,8 +77,6 @@ public class InfraredRenderer : ModSystem
     {
         orig(self);
         if (!IsActive)
-            return;
-        if (_tileRenderTarget == null)
             return;
 
         var target = Main.instance.tileTarget;

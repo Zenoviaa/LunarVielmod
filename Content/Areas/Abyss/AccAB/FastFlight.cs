@@ -4,6 +4,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Terraria;
@@ -21,14 +22,11 @@ public class MoonFlightRenderer : ModSystem
     private Asset<Texture2D> _wingTextureAsset;
     private Asset<Texture2D> _wingOutlineTextureAsset;
     private Asset<Texture2D> _wingTextureAsset2;
-    public ManagedRenderTarget moonFlightRT;
-    public ManagedRenderTarget moonFlightSwapRT;
+    public RenderTargetProvider moonFlightRT = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Width = 256, Height = 256 });
+    public RenderTargetProvider moonFlightSwapRT = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Width = 256, Height = 256 });
     public override void OnModLoad()
     {
         base.OnModLoad();
-
-        moonFlightRT = ManagedRenderTarget.New(() => new Point(256, 256));
-        moonFlightSwapRT = ManagedRenderTarget.New(() => new Point(256, 256));
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += RenderWings;
     }
 
@@ -145,7 +143,7 @@ public class MoonFlightRenderer : ModSystem
 
     private Vector2 GetDrawPosition()
     {
-        return Main.screenPosition + moonFlightRT.Size() * 0.5f;
+        return Main.screenPosition + moonFlightRT.Size * 0.5f;
     }
 
     private void DrawWings_Inner(SpriteBatch spriteBatch)

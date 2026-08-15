@@ -7,6 +7,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -74,30 +75,30 @@ public class PieceOfArtRenderer : ModSystem
             position = new Vector2[length];
             velocity = new Vector2[length];
             time = new float[length];
-            active = new bool[length];
+            Length = length;
         }
 
         public Vector2[] position;
         public Vector2[] velocity;
-        public bool[] active;
         public float[] time;
+        public readonly int Length;
     }
     public delegate void DrawAction(GraphicsDevice gDevice);
     private Asset<Texture2D> _blobTextureAsset;
-    private Queue<DrawAction> _drawActions;
-    private ManagedRenderTarget _blobRT;
-    private ManagedRenderTarget _maskRT;
+    private Queue<DrawAction> _drawActions = new Queue<DrawAction>();
+
+    private int _length;
+
+    private RenderTargetProvider _blobRTProvider = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _maskRTProvider = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private BlobParticle _particles;
     public const int MAX_BLOB_COUNT = 400;
     public override void Load()
     {
         base.Load();
-        _drawActions =new Queue<DrawAction>();
         _particles = new BlobParticle(MAX_BLOB_COUNT);
         On_Main.CheckMonoliths += Render;
     }
-
-
     public override void Unload()
     {
         base.Unload();
@@ -108,12 +109,8 @@ public class PieceOfArtRenderer : ModSystem
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_blobTextureAsset, Vector2.Zero);
 
-        for (int i = 0; i < MAX_BLOB_COUNT; i++)
+        for (int i = 0; i < _length; i++)
         {
-            ref bool isActive = ref _particles.active[i];
-            if (!isActive)
-                continue;
-
             ref Vector2 position = ref _particles.position[i];
 
             int frame = (int)ExtraMath.Osc(0f, 4f, speed: 0, offset: i);
@@ -136,11 +133,12 @@ public class PieceOfArtRenderer : ModSystem
         {
             GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            gDevice.SetRenderTarget(_maskRT);
+
+            gDevice.SetRenderTarget(_maskRTProvider);
             gDevice.Clear(Color.Transparent);
             DrawDusts(spriteBatch);
  
-            gDevice.SetRenderTarget(_blobRT);
+            gDevice.SetRenderTarget(_blobRTProvider);
             gDevice.Clear(Color.Transparent);
 
 
@@ -158,60 +156,56 @@ public class PieceOfArtRenderer : ModSystem
 
     private void DrawToScreen(SpriteBatch sb, Vector2 screenPos)
     {
-     //   sb.Draw(_maskRT, Vector2.Zero, Color.White);
         var shader = PieceOfArtShader.Instance;
-        shader.Blob = _maskRT;
+        shader.Blob = _maskRTProvider;
         shader.Levels = 4;
         sb.Restart(effect: shader.Effect, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
 
         Color fogColor = Color.White;
-        sb.Draw(_blobRT, Vector2.Zero, fogColor);
+        sb.Draw(_blobRTProvider, Vector2.Zero, fogColor);
         sb.RestartDefaults();
-   //     sb.Draw(_blobRT, Vector2.Zero, fogColor);
+
     }
 
     public override void OnModLoad()
     {
         base.OnModLoad();
-        _blobRT = ManagedRenderTarget.New();
-        _maskRT = ManagedRenderTarget.New();
         _blobTextureAsset = ModContent.Request<Texture2D>(ModContent.GetInstance<PieceOfArtArtifact>().Texture + "_Blob");
     }
+
 
     public override void PostUpdateDusts()
     {
         base.PostUpdateDusts();
-        for(int i = 0; i < MAX_BLOB_COUNT; i++)
+        for(int i = 0; i < _length; i++)
         {
-            ref bool isActive = ref _particles.active[i];
-            if (!isActive)
-                continue;
-
             ref Vector2 position = ref _particles.position[i];
             ref Vector2 velocity = ref _particles.velocity[i];
             ref float time = ref _particles.time[i];
-
             position += velocity;
             velocity *= 0.99f;
             time--;
+        }
+
+
+        //Kill particles
+        for (int i = 0; i < _length; i++)
+        {
+            ref float time = ref _particles.time[i];
             if (time <= 0)
-                isActive = false;
+            {
+                KillBlob(i);
+                i--;
+            }
         }
     }
 
     public void SpawnBlob(Vector2 startPosition, Vector2 startVelocity, float timeLeft)
     {
-        int indexToUse = 0;
-        for(int i = 0; i < MAX_BLOB_COUNT; i++)
-        {
-            if (!_particles.active[i])
-            {
-                indexToUse = i;
-                break;
-            }
-        }
+        int indexToUse = _length;
+        if (indexToUse >= _particles.Length)
+            return;
 
-        ref bool isActive = ref _particles.active[indexToUse];
         ref Vector2 position = ref _particles.position[indexToUse];
         ref Vector2 velocity = ref _particles.velocity[indexToUse];
         ref float time = ref _particles.time[indexToUse];
@@ -219,7 +213,15 @@ public class PieceOfArtRenderer : ModSystem
         position = startPosition;
         velocity = startVelocity;
         time = timeLeft;
-        isActive = true;
+        _length++;
+    }
+
+    public void KillBlob(int index)
+    {
+        _particles.position[index] = _particles.position[_length - 1];
+        _particles.velocity[index] = _particles.velocity[_length - 1];
+        _particles.time[index] = _particles.time[_length - 1];
+        _length--;
     }
 
     public void QueueMaskDraw(DrawAction drawAction)

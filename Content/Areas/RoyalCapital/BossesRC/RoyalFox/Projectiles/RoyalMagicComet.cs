@@ -4,10 +4,9 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
+using Stellamod.Core.Rendering;
 using Stellamod.Dusts;
 using Stellamod.Effects.RoyalMagic;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -21,8 +20,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
 public class RoyalMagicCometStarsRenderer : ModSystem
 {
     private Asset<Texture2D> _royalSmokeMaskTextureAsset;
-    private ManagedRenderTarget _starsRT;
-    private ManagedRenderTarget _maskRT;
+    private RenderTargetProvider _starsRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private readonly RoyalMagicRenderer.Particles _particles = new(252);
     private bool _activeParticles;
     public override void Load()
@@ -35,13 +34,6 @@ public class RoyalMagicCometStarsRenderer : ModSystem
     {
         base.Unload();
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady -= RenderStars;
-    }
-
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        _starsRT = ManagedRenderTarget.New();
-        _maskRT = ManagedRenderTarget.New();
     }
 
     public override void PostUpdateDusts()
@@ -125,10 +117,10 @@ public class RoyalMagicCometStarsRenderer : ModSystem
 
     private void RenderStars()
     {
-        
+
         if (!_activeParticles)
             return;
-        
+
         GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
         SpriteBatch sb = Main.spriteBatch;
         gDevice.SetRenderTarget(_maskRT);
@@ -152,7 +144,7 @@ public class RoyalMagicCometStarsRenderer : ModSystem
             BlendState.AlphaBlend,
             SamplerState.PointWrap,
             DepthStencilState.None,
-            RasterizerState.CullNone, 
+            RasterizerState.CullNone,
             starsShader.Effect);
 
         sb.Draw(AssetManager.Noise.CometStars.Value, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Blue);
@@ -170,7 +162,7 @@ public class RoyalMagicCometStarsRenderer : ModSystem
         sb.Draw(_maskRT, Vector2.Zero, Color.White);
         sb.RestartDefaults();
 
-  
+
     }
 }
 
@@ -213,7 +205,7 @@ public class RoyalMagicComet : ModProjectile,
         base.AI();
 
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             if (this.OwnedByLocalClient())
             {
@@ -251,7 +243,7 @@ public class RoyalMagicComet : ModProjectile,
 
             if (Main.rand.NextBool(15))
             {
-                LightningSparkParticle dp = Particle<LightningSparkParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), 
+                LightningSparkParticle dp = Particle<LightningSparkParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8),
                     color: Color.Blue,
                     Scale: Main.rand.NextFloat(0.2f, 0.35f));
                 dp.parent = Projectile;
@@ -265,10 +257,10 @@ public class RoyalMagicComet : ModProjectile,
         _alpha = MathHelper.Lerp(_alpha, targetAlpha, 0.2f);
         float ratio = (Size - 0.66f) / 0.66f;
         float gravity = MathHelper.SmoothStep(1f, 0.1f, ratio);
-        if(Projectile.velocity.Y < 20)
+        if (Projectile.velocity.Y < 20)
             Projectile.velocity.Y += gravity;
         Projectile.velocity.X *= 0.98f;
-        if(Projectile.velocity.Y > 0 && Timer > 55)
+        if (Projectile.velocity.Y > 0 && Timer > 55)
             Projectile.hostile = true;
         Projectile.scale = ExtraMath.Osc(0.5f, 0.75f, speed: 3, Projectile.whoAmI);
     }
@@ -330,7 +322,7 @@ public class RoyalMagicComet : ModProjectile,
             drawer.scale = Vector2.Lerp(Vector2.One, Vector2.One * 0.5f, ratio) * 0.4f * Size;
             Main.spriteBatch.Draw(drawer);
         }
-        drawer.scale =  Vector2.One * 0.4f * Size;
+        drawer.scale = Vector2.One * 0.4f * Size;
         drawer.color = Color.Blue * 0.35f * ExtraMath.Osc(0.75f, 1f, speed: 18, offset: Projectile.whoAmI) * alpha;
         drawer.color.A = 0;
 
@@ -344,7 +336,7 @@ public class RoyalMagicComet : ModProjectile,
 
         drawer.worldPosition = Projectile.Center;
         Main.spriteBatch.Draw(drawer);
-    //    Main.spriteBatch.Draw(drawer);
+        //    Main.spriteBatch.Draw(drawer);
 
 
         drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);

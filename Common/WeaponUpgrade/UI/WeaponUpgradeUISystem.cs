@@ -96,7 +96,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
             orig();
         }
 
-        public ManagedRenderTarget UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
+        public RenderTarget2D UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
         public override void UpdateUI(GameTime gameTime)
         {
             ForgeGlow = MathHelper.Lerp(ForgeGlow, 0f, (float)gameTime.ElapsedGameTime.TotalSeconds * 3);

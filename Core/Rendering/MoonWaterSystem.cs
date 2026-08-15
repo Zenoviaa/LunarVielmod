@@ -207,11 +207,11 @@ public class IcePixelWaterStyle : PixelWaterStyle
         base.ModifyPixelWater(ref pixelWater);
         pixelWater.StartGradientColor = Color.White;
         pixelWater.EndGradientColor = Color.Cyan;
-        pixelWater.BackgroundColor = Color.DarkBlue;
+        pixelWater.BackgroundColor = Color.Blue;
         pixelWater.CausticsColor = Color.Cyan * 0.75f;
         pixelWater.NoiseTexture = AssetRegistry.Textures.Noise.IceWaterCaustics;
         pixelWater.CausticsTexture = AssetRegistry.Textures.Noise.IceWaterCaustics;
-        pixelWater.TilingMultiplier = new Vector2(0.3f, 0.5f);
+        pixelWater.TilingMultiplier = Vector2.One;
     }
 }
 
@@ -323,13 +323,28 @@ public class MoonWaterSystem : ModSystem
         public Vector2 tilePoint;
         public float height;
     }
+    private static Point GetWaterTargetSize()
+    {
+        return new Point(Main.waterTarget.Width, Main.waterTarget.Height);
+    }
 
-    private ManagedRenderTarget _waterHeightMapRT;
-    private ManagedRenderTarget _waterTextureRT;
-    private ManagedRenderTarget _waterTextureRTSwap;
-    private ManagedRenderTarget _waterTextureRTOutput;
-    private ManagedRenderTarget _reflectionRT;
-    private ManagedRenderTarget _waterLightMapRT;
+    private RenderTargetProvider _reflectionRT = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
+    private RenderTargetProvider _waterTextureRT = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
+    private RenderTargetProvider _waterTextureRTSwap = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
+
+    private RenderTargetProvider _waterTextureRTOutput = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 1));
+    private RenderTargetProvider _waterLightMapRT = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 1));
+
+    private RenderTargetProvider _waterHeightMapRT = new RenderTargetProvider(() =>
+    {
+        RenderTargetParameters p = RenderTargetParameters.DefaultScreenTarget;
+        p.Width = GetWaterTargetSize().X;
+        p.Height = GetWaterTargetSize().Y;
+        p.SurfaceFormat = SurfaceFormat.Alpha8;
+        return p;
+    });
+
+
 
     private PixelWaterStyle[] _pixelWaterStyles;
     private PixelWaterStyle _activePixelWaterStyle;
@@ -379,32 +394,17 @@ public class MoonWaterSystem : ModSystem
     {
         base.OnModLoad();
         LoadAssets();
-        InitializeRenderTargets();
-
         //Get all of our available pixel water styles and sort them
         _pixelWater = new PixelWater();
         _pixelWaterStyles = ModContent.GetContent<PixelWaterStyle>().ToArray();
     }
 
 
-    public ManagedRenderTarget GetReflectionRenderTarget()
+    public RenderTarget2D GetReflectionRenderTarget()
     {
         return _reflectionRT;
     }
 
-    private Point GetWaterTargetSize()
-    {
-        return new Point(Main.waterTarget.Width, Main.waterTarget.Height);
-    }
-    private void InitializeRenderTargets()
-    {
-        _reflectionRT = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
-        _waterTextureRT = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
-        _waterTextureRTSwap = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
-        _waterLightMapRT = ManagedRenderTarget.New(GetWaterTargetSize);
-        _waterHeightMapRT = ManagedRenderTarget.New(GetWaterTargetSize, surfaceFormat: SurfaceFormat.Alpha8);
-        _waterTextureRTOutput = ManagedRenderTarget.New(GetWaterTargetSize);
-    }
     private PixelWaterStyle GetActivePixelWaterStyle()
     {
         for (int i = 0; i < _pixelWaterStyles.Length; i++)
@@ -460,6 +460,8 @@ public class MoonWaterSystem : ModSystem
         if (!config.LiquidsToggle)
             return;
         if (Main.gameMenu)
+            return;
+        if (_waterEffect == null)
             return;
 
         if (layer == RenderLayers.ForegroundWater)
@@ -546,7 +548,6 @@ public class MoonWaterSystem : ModSystem
         if (Main.gameMenu)
             return;
 
-        _waterEffect = GameShaders.Misc["LunarVeil:MoonWaters"].Shader;
         _waterNoise1 = LoadTexture("WaterNoise1");
         _perlinNoise = LoadTexture("PerlinNoise");
     }
@@ -558,6 +559,10 @@ public class MoonWaterSystem : ModSystem
         if (!config.LiquidsToggle)
             return;
         if (Main.gameMenu)
+            return;
+
+        _waterEffect = ModContent.Request<Effect>("Stellamod/Effects/MoonWaters").Value;
+        if (_waterEffect == null)
             return;
 
 
@@ -637,41 +642,39 @@ public class MoonWaterSystem : ModSystem
         _waterEffect.Parameters["time"].SetValue(_time);
         _waterEffect.Parameters["levels"].SetValue(18);
         _waterEffect.Parameters["distortion"].SetValue(0.05f);
-        //          ApplyScreenOffset();
-
+        _waterEffect.Parameters["startGradient"].SetValue(_pixelWater.StartGradientColor.ToVector3());
+        _waterEffect.Parameters["endGradient"].SetValue(_pixelWater.EndGradientColor.ToVector3());
+        _waterEffect.Parameters["causticsColor"].SetValue(_pixelWater.CausticsColor.ToVector4());
+        _waterEffect.Parameters["foamLava"].SetValue(_pixelWater.affectsLava ? 0 : 1);
+        ApplyScreenOffset(scale: 2);
         Vector2 stretchScale = new Vector2(1, 0.5f);
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
         graphicsDevice.Clear(Color.LightSeaGreen);
 
+        Main.graphics.GraphicsDevice.Textures[1] = _pixelWater.NoiseTexture.Value;
+        Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+
+        Main.graphics.GraphicsDevice.Textures[2] = _pixelWater.CausticsTexture.Value;
+        Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+
+        Main.graphics.GraphicsDevice.Textures[3] = _perlinNoise;
+        Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.PointWrap;
+
         //Draw the base texture
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+        spriteBatch.Begin(SpriteSortMode.Deferred,
+            BlendState.AlphaBlend, 
+            SamplerState.PointClamp,
+            DepthStencilState.None, 
+            RasterizerState.CullNone, 
+            _waterEffect);
 
         Color baseColor = _pixelWater.BackgroundColor * 0.75f;
-       // Main.NewText(baseColor);
         if (!_pixelWater.ignoreSkyColor)
         {
             baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
         }
         spriteBatch.Draw(_waterNoise1, _drawLocation, null, baseColor);
-        spriteBatch.End();
-
-        //Brigthten it up a bit
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_pixelWater.NoiseTexture.Value, _drawLocation, null, Color.White * 0.5f);
-        spriteBatch.End();
-
-
-
-        graphicsDevice.SetRenderTarget(_waterTextureRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["WrapDrawing"];
-        ApplyScreenOffset(scale: 2);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-            _waterEffect);
-        spriteBatch.Draw(_waterTextureRTSwap, _drawLocation, null, baseColor);
         spriteBatch.End();
     }
 
@@ -682,8 +685,7 @@ public class MoonWaterSystem : ModSystem
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         //Set gradient effect values
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["GradientDrawing"];
-        _waterEffect.Parameters["startGradient"].SetValue(_pixelWater.StartGradientColor.ToVector3());
-        _waterEffect.Parameters["endGradient"].SetValue(_pixelWater.EndGradientColor.ToVector3());
+    
         //  ApplyScreenOffset();
         //Draw gradient
         graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
@@ -788,7 +790,7 @@ public class MoonWaterSystem : ModSystem
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["PosterizeDrawing"];
         _waterEffect.Parameters["levels"].SetValue(10);
 
-
+   
 
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_waterTextureRTOutput);
@@ -823,20 +825,11 @@ public class MoonWaterSystem : ModSystem
     private void RenderIntoWaterTextureTarget()
     {
         LoadAssets();
-        _drawLocation = new Rectangle(0, 0, _waterTextureRT.Width, _waterTextureRT.Height);
+        _drawLocation = new Rectangle(0, 0, _waterTextureRTSwap.Width, _waterTextureRTSwap.Height);
         SpriteBatch spriteBatch = Main.spriteBatch;
-
+        
         UpdatePixelWater();
-
         DrawWaterBase(spriteBatch);
-
-
-
-        DrawWaterGradient(spriteBatch);
-        DrawWaterCaustics(spriteBatch);
-        //  DrawWaterSparkle(spriteBatch);
-        if(!_pixelWater.affectsLava)
-            DrawWaterFoam(spriteBatch);
         if(!_pixelWater.noReflection)
             DrawReflection(spriteBatch);
         // 
@@ -894,6 +887,7 @@ public class MoonWaterSystem : ModSystem
     }
     private void RenderIntoHeightMapTarget()
     {
+        var _waterEffect = ModContent.Request<Effect>("Stellamod/Effects/MoonWaters").Value;
         if (_waterEffect == null)
             return;
 

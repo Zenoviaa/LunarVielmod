@@ -27,7 +27,7 @@ public class ReforgeUISystem : BaseUISystem
     public float flashTimer;
     public float inTimer;
     public bool open;
-    public ManagedRenderTarget UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
+    public RenderTarget2D UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
     public float InterpolationTime => 0.5f;
     public override int uiSlot => Slot_MajorUI;
     public override void OnModLoad()

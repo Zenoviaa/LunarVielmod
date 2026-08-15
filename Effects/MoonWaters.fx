@@ -39,6 +39,9 @@ sampler2D NoiseTextureSampler = sampler_state
     AddressV = wrap;
 };
 
+sampler brightenNoiseSampler : register(s1);
+sampler causticsNoiseSampler : register(s2);
+sampler foamNoiseSampler : register(s3);
 struct VertexShaderOutput
 {
     float4 Position : SV_POSITION;
@@ -58,9 +61,10 @@ float levels;
 float distortion;
 float3 startGradient;
 float3 endGradient;
+float4 causticsColor;
 float2 tiling;
 float2 screenOffset;
-
+float foamLava;
 
 float reflectionDistance;
 float2 reflectionTexelSize;
@@ -72,7 +76,7 @@ float posterize(float v, float k)
 }
 
 
-float4 MainPS(VertexShaderOutput input) : COLOR
+float4 SampleSpriteNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
 {
     float2 coords = input.TextureCoordinates;
         
@@ -87,6 +91,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     float4 sample1 = tex2D(SpriteTextureSampler, coords + offset);
     float4 sample2 = tex2D(SpriteTextureSampler, coords + offset2);
+    
+    
     float4 color = (sample1 + sample2) / 2.0;
     float4 finalColor = color * input.Color;
     
@@ -94,6 +100,62 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     finalColor.g = posterize(finalColor.g, levels);
     finalColor.b = posterize(finalColor.b, levels);
     return finalColor;
+}
+
+float4 SampleCausticsNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
+{
+    float2 coords = input.TextureCoordinates;
+    coords *= tiling * 3.0;
+    
+    float t = time;
+    t *= 2.0;
+    
+    float d = tex2D(SpriteSampler, coords + float2(t * -0.02, t * -0.04)).r;
+    float rotOffset = d * 3.14;
+    float2 distortionOffset = float2(sin(rotOffset), cos(rotOffset)) * distortion;
+ 
+    float2 distortedCoords = coords + distortionOffset;
+    float2 offset = float2(t * -0.05, 0.0);
+    float2 offset2 = float2(t * 0.05, 0.3);
+    
+    float4 sample1 = tex2D(SpriteSampler, distortedCoords + offset);
+    float4 sample2 = tex2D(SpriteSampler, distortedCoords + offset2);
+    float4 color = (sample1 + sample2) / 2.0;
+    float4 finalColor = color;
+    return finalColor;
+}
+
+float4 SampleFoam(float2 coords)
+{
+    float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);
+    float2 offsetCoords = (coords * tiling * 2.0) + float2(0.0, time * -0.05);
+    offsetCoords += screenOffset * 4.0;
+    
+    float foam = tex2D(foamNoiseSampler, offsetCoords);
+    float power = lerp(8.0, 0.3, heightMapColor.a);
+    foam = pow(foam, power);
+    float4 foamColor = float4(foam, foam, foam, 1.0);
+    return foamColor * foam * 2.0;
+}
+
+float4 MainPS(VertexShaderOutput input) : COLOR
+{
+    float2 coords = input.TextureCoordinates;
+    input.TextureCoordinates += screenOffset;
+    input.TextureCoordinates = frac(input.TextureCoordinates);
+    float4 baseColor = SampleSpriteNoise(input, SpriteTextureSampler) + SampleSpriteNoise(input, brightenNoiseSampler) * 0.5;
+    
+    float4 gradientColor = baseColor;
+    float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);
+    float3 gradient = lerp(endGradient, startGradient, heightMapColor.a);
+    gradient *= gradient;
+    gradientColor.rgb *= gradient;
+    
+    float4 caustics = SampleCausticsNoise(input, causticsNoiseSampler);
+    
+    float4 foam = SampleFoam(coords);
+    foam *= foamLava;
+    return gradientColor + caustics * causticsColor + foam;
 }
 
 float4 WrapPS(VertexShaderOutput input) : COLOR

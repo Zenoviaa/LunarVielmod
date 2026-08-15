@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Illuria.WeaponsIL;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
@@ -55,17 +56,17 @@ namespace Stellamod.Core.Pixelation
         public delegate void SpritebatchDrawAction(SpriteBatch spriteBatch, Vector2 screenPos);
 
         private int _renderCount = 0;
-        private ManagedRenderTarget _downscaleRenderTarget;
-        private ManagedRenderTarget _originalRenderTarget;
+        private RenderTargetProvider _downscaleRenderTarget;
+        private RenderTargetProvider _originalRenderTarget;
         private Queue<SpritebatchDrawAction> _spritebatchActionsQueue;
         private Queue<PrimitivesDrawAction> _primitivesActionsQueue;
         private float _downSamples;
         private BlendState _blendState;
-        public PixelTarget(ManagedRenderTarget downScaleRenderTarget, int downSamples = 2, BlendState blendState = null, bool mipMap = false)
+        public PixelTarget(RenderTargetProvider downScaleRenderTarget, int downSamples = 2, BlendState blendState = null, bool mipMap = false)
         {
             _downSamples = downSamples;
             _downscaleRenderTarget = downScaleRenderTarget;
-            _originalRenderTarget = ManagedRenderTarget.New(mipMap: mipMap);
+            _originalRenderTarget = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { MipMap = mipMap });//ManagedRenderTarget.New(mipMap: mipMap);
             _spritebatchActionsQueue = new Queue<SpritebatchDrawAction>(100);
             _primitivesActionsQueue = new Queue<PrimitivesDrawAction>(100);
             _blendState = blendState == null ? BlendState.AlphaBlend : blendState;
@@ -273,7 +274,7 @@ namespace Stellamod.Core.Pixelation
     [Autoload(Side = ModSide.Client)]
     public class PixelationManager : ModSystem
     {
-        private ManagedRenderTarget _downscaledTarget;
+        private RenderTargetProvider _downscaledTarget = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(2));
 
         private PixelTarget _overNPCsPixelTarget;
         private PixelTarget _overNPCsPixelTargetAdditive;
@@ -336,7 +337,6 @@ namespace Stellamod.Core.Pixelation
         public override void OnModLoad()
         {
             base.OnModLoad();
-            _downscaledTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetHalfScreenTargetSize);
             _overNPCsPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
             _overNPCsPixelTargetWithOutline = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
             _overNPCsPixelTargetWithOutline.outlineColor = Color.Black;
@@ -390,7 +390,6 @@ namespace Stellamod.Core.Pixelation
 
         private void RenderBehindTiles(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
         {
-
             _backGrassPixelTarget.DrawToScreen();
             orig(self);
         }

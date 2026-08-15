@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Terraria;
@@ -213,10 +214,9 @@ public class CrystalSkyMixShader :
 [Autoload(Side = ModSide.Client)]
 public class EdgeofTheMoonRenderer : ModSystem
 {
-
-    public ManagedRenderTarget MaskRT { get; private set; }
-    public ManagedRenderTarget CloudsRT { get; private set; }
-    public ManagedRenderTarget DarkCloudsRT { get; private set; }
+    public RenderTargetProvider MaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    public RenderTargetProvider CloudsRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    public RenderTargetProvider DarkCloudsRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void Load()
     {
         base.Load(); On_OverlayManager.Draw += DrawBackgrounds;
@@ -428,13 +428,6 @@ public class EdgeofTheMoonRenderer : ModSystem
     public override void Unload()
     {
         base.Unload();
-    }
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        MaskRT = ManagedRenderTarget.New();
-        CloudsRT = ManagedRenderTarget.New();
-        DarkCloudsRT = ManagedRenderTarget.New();
     }
 }
 

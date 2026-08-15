@@ -2,6 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
@@ -17,7 +18,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 [Autoload(Side = ModSide.Client)]
 public class RoyalFoxCloneRenderer : ModSystem
 {
-    private ManagedRenderTarget _cloneRT;
+    private RenderTargetProvider _cloneRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private readonly Queue<Action> _cloneDrawActions = new();
     public override void Load()
     {
@@ -39,12 +40,6 @@ public class RoyalFoxCloneRenderer : ModSystem
     {
         base.Unload();
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady -= RenderClones;
-    }
-
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        _cloneRT = ManagedRenderTarget.New();
     }
     private void RenderClones()
     {

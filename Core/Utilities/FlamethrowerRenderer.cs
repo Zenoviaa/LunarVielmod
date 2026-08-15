@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -107,8 +108,8 @@ public class FlamethrowerShader : CrystalShader<FlamethrowerShader>
 [Autoload(Side = ModSide.Client)]
 public class FlamethrowerRenderer : ModSystem
 {
-    private ManagedRenderTarget _metaballTarget;
-    private ManagedRenderTarget _fireTarget;
+    private RenderTargetProvider _metaballTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _fireTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private Vector4[] _metaballPositions;
     private List<Vector2> _metaballWorldPositions;
     private int _index;
@@ -125,12 +126,7 @@ public class FlamethrowerRenderer : ModSystem
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady -= RenderFull;
     }
 
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        _fireTarget = ManagedRenderTarget.New();
-        _metaballTarget = ManagedRenderTarget.New();
-    }
+
 
     private void RenderFlameNoise()
     {

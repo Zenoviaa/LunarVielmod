@@ -5,6 +5,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -459,9 +460,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     [Autoload(Side = ModSide.Client)]
     public class BlackRiverRenderer : ModSystem
     {
-        private ManagedRenderTarget _riverRT;
-        private ManagedRenderTarget _riverMaskRT;
-        private ManagedRenderTarget _pixelRT;
+        private RenderTargetProvider _riverRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private RenderTargetProvider _riverMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private RenderTargetProvider _pixelRT = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with
+        {
+            Width = Main.screenWidth / 2, Height = Main.screenHeight / 2
+        });
         private Queue<IDrawBlackRiverMask> _draws;
         private Queue<IDrawBlackRiverMask> _postDraws;
         private Asset<Texture2D> _noiseTextureAsset;
@@ -475,9 +479,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             base.OnModLoad();
             _draws = new Queue<IDrawBlackRiverMask>(100);
             _postDraws = new Queue<IDrawBlackRiverMask>(100);
-            _riverRT = ManagedRenderTarget.New(GetScreenSize);
-            _riverMaskRT = ManagedRenderTarget.New(GetScreenSize);
-            _pixelRT = ManagedRenderTarget.New(GetScreenSize, 2);
 
             On_Main.CheckMonoliths += RenderRiverRT;
             On_Main.DrawPlayers_BehindNPCs += DrawRiverToScreenBehindNPCs;

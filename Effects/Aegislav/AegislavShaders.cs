@@ -5,6 +5,7 @@ using Stellamod.Common.ConsoleMenu;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Rendering;
 using Stellamod.Effects.RoyalMagic;
 using System;
 using Terraria;
@@ -20,11 +21,10 @@ public class AegisCloudsRenderer : ModSystem
     private Vector2 _parallax;
     private Vector2 _lastCameraPos;
     private Vector2 _movementDiff;
-    private ManagedRenderTarget _rt;
-    private ManagedRenderTarget _rtSwap;
-    private ManagedRenderTarget _cloudsRT;
+    private RenderTargetProvider _rt = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Usage = RenderTargetUsage.PreserveContents });
+    private RenderTargetProvider _rtSwap = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Usage = RenderTargetUsage.PreserveContents });
+    private RenderTargetProvider _cloudsRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private int _lastRender;
-    private bool _frameOne;
 
     private RenderTarget2D OnScreen
     {
@@ -33,20 +33,14 @@ public class AegisCloudsRenderer : ModSystem
             return _lastRender == 0 ? _rtSwap : _rt;
         }
     }
-    private Point GetScreenSize()
-    {
-        return new Point(Main.screenWidth, Main.screenHeight);
-    }
 
     public Texture2D BackgroundTexture => _cloudsRT;
     public override void Load()
     {
         base.Load();
         On_Main.CheckMonoliths += RenderAegisClouds;
-        _rt = ManagedRenderTarget.New(preserve: RenderTargetUsage.PreserveContents);
-        _rtSwap = ManagedRenderTarget.New(preserve: RenderTargetUsage.PreserveContents);
-        _cloudsRT = ManagedRenderTarget.New(GetScreenSize);
     }
+
     private Vector2 GetScreenOffset(float scale)
     {
         //Apply an offset so the texture doesn't move when you're moving

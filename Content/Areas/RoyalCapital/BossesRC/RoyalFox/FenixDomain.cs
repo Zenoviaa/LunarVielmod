@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
@@ -16,13 +17,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 [Autoload(Side = ModSide.Client)]
 public class FenixDomain : ModSystem
 {
-    private ManagedRenderTarget _domainRTSwap;
-    private ManagedRenderTarget _domainRT;
+    private RenderTargetProvider _domainRTSwap = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _domainRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public bool drawFenix;
     public override void OnModLoad()
     {
-        _domainRT = ManagedRenderTarget.New();
-        _domainRTSwap = ManagedRenderTarget.New();
         On_Main.DrawNPCs += DrawBlack;
 
     }

@@ -3,6 +3,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.GothinFlames;
 using Stellamod.Helpers;
@@ -16,15 +17,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 public class GothiviaDomain : ModSystem
 {
     private float _darkenAlpha;
-    private ManagedRenderTarget _domainSwapRT;
-    private ManagedRenderTarget _domainRT;
+    private RenderTargetProvider _domainSwapRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _domainRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public bool drawGothivia;
     public bool darken;
 
     public override void OnModLoad()
     {
-        _domainSwapRT = ManagedRenderTarget.New();
-        _domainRT = ManagedRenderTarget.New();
         On_Main.DrawNPCs += DrawBlack;
 
     }
@@ -119,7 +118,6 @@ public class GothiviaDomain : ModSystem
 
         */
 
-        _domainSwapRT ??= ManagedRenderTarget.New();
         graphicsDevice.SetRenderTarget(_domainSwapRT);
         graphicsDevice.Clear(Color.Lerp(Color.Red, Color.Black, 0.9f));
 
@@ -141,9 +139,6 @@ public class GothiviaDomain : ModSystem
         spriteBatch.Begin();
         spriteBatch.Draw(_domainSwapRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
         spriteBatch.End();
-
-
-
     }
 
     public override void Unload()

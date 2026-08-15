@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Shaders;
+using Stellamod.Core.Rendering;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -9,7 +10,7 @@ namespace Stellamod.Core.Utilities;
 public class OutlineRenderer : ModSystem
 {
     public delegate void DrawAction(SpriteBatch spriteBatch);
-    private ManagedRenderTarget _outlineRT;
+    private RenderTargetProvider _outlineRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private Queue<DrawAction> _drawQueue;
     private int _screenDrawTimer;
     public override void Load()
@@ -26,19 +27,6 @@ public class OutlineRenderer : ModSystem
             return;
 
         _screenDrawTimer--;
-        if (_screenDrawTimer <= 0 && _outlineRT != null)
-        {
-            _outlineRT.active = false;
-            _outlineRT = null;
-        }
-        SpriteBatch sb = Main.spriteBatch;
-        GraphicsDevice graphicsDevice = sb.GraphicsDevice;
-        if (_outlineRT != null)
-        {
- 
-            graphicsDevice.SetRenderTarget(_outlineRT);
-            graphicsDevice.Clear(Color.Transparent);
-        }
 
 
 
@@ -49,14 +37,10 @@ public class OutlineRenderer : ModSystem
         if (_drawQueue.Count <= 0)
             return;
 
-        //Lazy Loading Render Target since this is only going to be used for one boss
-        //We don't need to have it active all the time
-        if (_outlineRT == null)
-        {
-            _outlineRT = ManagedRenderTarget.New();
-        }
-
-  
+        SpriteBatch sb = Main.spriteBatch;
+        GraphicsDevice graphicsDevice = sb.GraphicsDevice;
+        graphicsDevice.SetRenderTarget(_outlineRT);
+        graphicsDevice.Clear(Color.Transparent);
 
         var whiteShader = SpriteWhiteShader.Instance;
         sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, 

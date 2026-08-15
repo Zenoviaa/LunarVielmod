@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -418,11 +419,12 @@ public class RoyalMagicRenderer : ModSystem
 
     private Vector2 _oldMouseWorld;
     private readonly Particles _smearParticles = new Particles(384);
-    private ManagedRenderTarget _directionRT;
-    private ManagedRenderTarget _swirlRT;
-    private ManagedRenderTarget _maskRT;
 
-    private ManagedRenderTarget _outlineRT;
+    private RenderTargetProvider _directionRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _swirlRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _outlineRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+
     private Queue<PrimitiveDrawAction> _primitiveDrawActions;// = new Queue<PrimitiveDrawAction>();
 
     private Asset<Texture2D> _royalSmokeMaskTextureAsset;
@@ -439,25 +441,11 @@ public class RoyalMagicRenderer : ModSystem
         _royalSmokeMaskTextureAsset = null;
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady -= RenderSwirls;
     }
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        //Temporary, delete later cause these render targest aren't always needed
-        PrepareRenderTargets();
-    }
 
     public static void Queue(PrimitiveDrawAction drawAction)
     {
         RoyalMagicRenderer magicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
         magicRenderer._primitiveDrawActions.Enqueue(drawAction);
-    }
-
-    private void PrepareRenderTargets()
-    {
-        _maskRT = ManagedRenderTarget.New();
-        _directionRT = ManagedRenderTarget.New();
-        _swirlRT = ManagedRenderTarget.New();
-        _outlineRT = ManagedRenderTarget.New();
     }
 
     public override void PostUpdateDusts()

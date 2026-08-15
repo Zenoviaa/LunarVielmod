@@ -5,6 +5,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -38,11 +39,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
     [Autoload(Side = ModSide.Client)]
     public class SanguineBloodRenderManager : ModSystem
     {
-
-        private Point _oldScreenSize;
-        private ManagedRenderTarget _bloodBGRenderRT;
-        private ManagedRenderTarget _pixelRenderRT;
-        private ManagedRenderTarget _pixelScreenRenderRT;
+        private RenderTargetProvider _bloodBGRenderRT  = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private RenderTargetProvider _pixelRenderRT = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(4));
+        private RenderTargetProvider _pixelScreenRenderRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         private List<IDrawSanguineBlood> _draws = new List<IDrawSanguineBlood>(100);
 
         public int DownSamples => 4;
@@ -51,22 +50,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         public override void OnModLoad()
         {
             base.OnModLoad();
-            _bloodBGRenderRT = ManagedRenderTarget.New();
-            _pixelRenderRT = ManagedRenderTarget.New(null, 4);
-            _pixelScreenRenderRT = ManagedRenderTarget.New();
-
             On_Main.CheckMonoliths += RenderToPixelationRT;
             On_Main.DrawNPCs += DrawBlack;
             On_Main.DoDraw_WallsTilesNPCs += DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
-
-        }
-        public override void Unload()
-        {
-            base.Unload();
-            _bloodBGRenderRT = null;
-            _pixelRenderRT = null;
-            _pixelScreenRenderRT = null;
         }
 
         public override void OnModUnload()
@@ -148,7 +135,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
 
-            Vector2 centerOrigin = _bloodBGRenderRT.Size() / 2f;
+            Vector2 centerOrigin = _bloodBGRenderRT.Size / 2f;
             spriteBatch.Draw(_bloodBGRenderRT, centerOrigin, null, Color.White * alpha * 0.55f, 0f, centerOrigin, _scale, SpriteEffects.None, 0f);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
@@ -161,11 +148,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodStormShader.Effect, Main.Transform);
 
-            Vector2 centerOrigin = _bloodBGRenderRT.Size() / 2f;
+            Vector2 centerOrigin = _bloodBGRenderRT.Size / 2f;
 
             float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
             Texture2D vortexTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics.Value;
-            Vector2 scaleMult = _bloodBGRenderRT.Size() / vortexTexture.Size();
+            Vector2 scaleMult = _bloodBGRenderRT.Size / vortexTexture.Size();
             spriteBatch.Draw(vortexTexture, centerOrigin, null, Color.White * alpha, 0f, vortexTexture.Size() / 2f, scaleMult * _scale, SpriteEffects.None, 0f);
 
             spriteBatch.End();

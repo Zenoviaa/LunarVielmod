@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Utilities;
+﻿using Stellamod.Core.Rendering;
+using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Renderers;
@@ -43,8 +44,7 @@ namespace Stellamod.Common.Shaders
     {
         private List<IDrawOutlines> _outlinesToDraw;
         private List<Color> _lightColors;
-        private ManagedRenderTarget _playerOutlineRenderRT;
-        private Vector2 _previousScreenSize;
+        private RenderTargetProvider _playerOutlineRenderRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         public bool canDrawNPCOutlines;
         public override void OnModLoad()
         {
@@ -52,7 +52,6 @@ namespace Stellamod.Common.Shaders
             On_Main.DrawNPCs += DrawOutlines;
             On_Main.CheckMonoliths += DrawToPlayerOutlineRT;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPlayerOutlineRTToScreen;
-            _playerOutlineRenderRT = ManagedRenderTarget.New();
         }
 
 

@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.TilesNew.RainforestTiles;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -57,14 +59,12 @@ public class AegislavDustRenderer : ModSystem
     private Asset<Texture2D> _maskTexture;
     private Asset<Texture2D> _cloudTexture;
     private Queue<Point> _pointsToRenderer;
-    private ManagedRenderTarget _maskRT;
-    private ManagedRenderTarget _cloudRT;
+    private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private RenderTargetProvider _cloudRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void OnModLoad()
     {
         base.OnModLoad();
         _pointsToRenderer = new();
-        _maskRT = ManagedRenderTarget.New();
-        _cloudRT = ManagedRenderTarget.New();
     }
 
     public override void Load()

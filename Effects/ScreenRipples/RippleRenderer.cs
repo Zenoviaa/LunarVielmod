@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -95,12 +96,11 @@ public sealed class RippleParticleManager : ParticleManager
 public sealed class RippleRenderer : ModSystem
 {
     private RippleParticleManager _particleManager;
-    private ManagedRenderTarget _rippleRT;
+    private RenderTargetProvider _rippleRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void Load()
     {
         base.Load();
         _particleManager = new RippleParticleManager();
-        _rippleRT = ManagedRenderTarget.New();
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += RenderRipples;
     }
     public override void Unload()

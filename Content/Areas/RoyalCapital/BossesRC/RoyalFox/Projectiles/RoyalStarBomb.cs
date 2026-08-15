@@ -4,6 +4,7 @@ using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
@@ -175,7 +176,7 @@ public class RoyalStarBombRenderer : ModSystem
 {
     public delegate void SpritebatchDrawAction(SpriteBatch sb);
 
-    private ManagedRenderTarget _bombRT;
+    private RenderTargetProvider _bombRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private Queue<SpritebatchDrawAction> _drawQueue;
     public override void Load()
     {
@@ -220,11 +221,6 @@ public class RoyalStarBombRenderer : ModSystem
         sb.Draw(_bombRT, Vector2.Zero, Color.White);
     }
 
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        _bombRT = ManagedRenderTarget.New();
-    }
 
     public static void Queue(SpritebatchDrawAction drawAction)
     {

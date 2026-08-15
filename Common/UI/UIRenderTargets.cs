@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Utilities;
+﻿using Stellamod.Core.Rendering;
+using Stellamod.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,5 @@ namespace Stellamod.Common.UI;
 [Autoload(Side = ModSide.Client)]
 public class UIRenderTargets : ModSystem
 {
-    public ManagedRenderTarget uiTarget;
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        uiTarget = ManagedRenderTarget.New();
-    }
-
-
+    public RenderTargetProvider uiTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
 }

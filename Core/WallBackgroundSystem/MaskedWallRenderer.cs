@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,8 +90,8 @@ namespace Stellamod.Core.WallBackgroundSystem
     {
         private int _renderTimer;
         private Queue<Point> _drawQueue;
-        private ManagedRenderTarget _wallMaskRenderTarget;
-        private ManagedRenderTarget _backgroundTarget;
+        private RenderTargetProvider _wallMaskRenderTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private RenderTargetProvider _backgroundTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
 
         private MaskedWallBackground[] _maskedWallBackgrounds;
         private MaskedWallBackground _activeMaskedWallBackground;
@@ -100,9 +101,6 @@ namespace Stellamod.Core.WallBackgroundSystem
         {
             base.OnModLoad();
             _drawQueue = new Queue<Point>();
-            _wallMaskRenderTarget = ManagedRenderTarget.New();
-            _backgroundTarget = ManagedRenderTarget.New();
-
             _maskedWallBackgrounds = ModContent.GetContent<MaskedWallBackground>().ToArray();
             On_Main.DoDraw_WallsTilesNPCs += DrawWalls;
         }

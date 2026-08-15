@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Utilities;
+﻿using Stellamod.Core.Rendering;
+using Stellamod.Core.Utilities;
 using System.Linq;
 using Terraria;
 using Terraria.GameContent;
@@ -29,7 +30,7 @@ namespace Stellamod.Core.PaletteShadingSystem
     {
         public int PostProcessPriority => 10;
         private PaletteEffect[] _paletteEffects;
-        private ManagedRenderTarget _paletteRenderRT;
+        private RenderTargetProvider _paletteRenderRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         public override void Unload()
         {
             base.Unload();
@@ -41,7 +42,6 @@ namespace Stellamod.Core.PaletteShadingSystem
         {
             base.OnModLoad();
             _paletteEffects = ModContent.GetContent<PaletteEffect>().ToArray();
-            _paletteRenderRT = ManagedRenderTarget.New();
             PostProcessingRenderer.AddPass(this);
         }
 

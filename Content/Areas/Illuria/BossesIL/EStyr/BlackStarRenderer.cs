@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -14,16 +15,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     public class BlackStarRenderer : ModSystem
     {
         private Queue<IDrawBlackStar> _blackStarDraws;
-        private ManagedRenderTarget _maskTarget;
-        private ManagedRenderTarget _blackStarTarget;
+        private RenderTargetProvider _maskTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private RenderTargetProvider _blackStarTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         private BlackStarParticleManager _particleManager;
         private bool _renderStars;
         public override void OnModLoad()
         {
             base.OnModLoad();
             _blackStarDraws = new Queue<IDrawBlackStar>(100);
-            _blackStarTarget = ManagedRenderTarget.New(GetScreenSize);
-            _maskTarget = ManagedRenderTarget.New(GetScreenSize);
             _particleManager = new BlackStarParticleManager(200, 30);
             On_Main.CheckMonoliths += Render;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawBlackStarToScreen;
