@@ -45,15 +45,23 @@ namespace Stellamod.Core.NPCHelpers
 
 
         }
-        public static bool[] Heavy= NPCID.Sets.Factory.CreateBoolSet();
-        public static bool[] ResistedByFlamecrestShield = NPCID.Sets.Factory.CreateBoolSet();
-        public static bool[] CannotBeBubbled = NPCID.Sets.Factory.CreateBoolSet();
 
+        public override void ResizeArrays()
+        {
+            base.ResizeArrays();
+            Heavy = NPCID.Sets.Factory.CreateBoolSet();
+            ResistedByFlamecrestShield = NPCID.Sets.Factory.CreateBoolSet();
+            CannotBeBubbled = NPCID.Sets.Factory.CreateBoolSet();
+            UseAseprite = NPCID.Sets.Factory.CreateBoolSet(false);
+        }
+        public static bool[] Heavy;
+        public static bool[] ResistedByFlamecrestShield;
+        public static bool[] CannotBeBubbled;
 
         /// <summary>
         /// When set to true, attempts to load an aseprite asset for the associated NPC
         /// </summary>
-        public static bool[] UseAseprite = NPCID.Sets.Factory.CreateBoolSet(false);
+        public static bool[] UseAseprite;
     }
 
 }

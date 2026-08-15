@@ -6,11 +6,10 @@ namespace Stellamod.Common
 {
     public class ItemSets : ModSystem
     {
-        public override void SetupContent()
+        public override void ResizeArrays()
         {
+            base.ResizeArrays();
             IsSoldBySirestias = ItemID.Sets.Factory.CreateBoolSet();
-            base.SetupContent();
-
         }
         public static bool[] IsSoldBySirestias;
     }
