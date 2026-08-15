@@ -8,6 +8,7 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
+using Stellamod.Effects.GothinFlames;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -16,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -292,6 +294,7 @@ public class BunnyStorm : ScarletBoss
     private Asset<Texture2D> _bunnyMaskTextureAsset;
     private Asset<Texture2D> _earTextureAsset;
     private Asset<Texture2D> _whiskersTextureAsset;
+    private VortexParticleSystem _vortexPS;
     private ref float Timer => ref NPC.ai[0];
     private AIState State
     {
@@ -376,9 +379,23 @@ public class BunnyStorm : ScarletBoss
         return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
     }
 
+    private void SimulateBunnyParticles()
+    {
+        _vortexPS ??= new VortexParticleSystem(64);
+        _vortexPS.centerPoint = -NPC.velocity * 16;
+        for(int i = 0; i < 2; i++)
+        {
+
+            _vortexPS.SpawnParticle(Vector2.Zero + Main.rand.NextVector2CircularEdge(64, 64), Main.rand.NextVector2Circular(2, 2));
+        }
+
+        _vortexPS.Update();
+    }
+
     public override void AI()
     {
         base.AI();
+        SimulateBunnyParticles();
         if (!NPC.HasValidTarget)
         {
             NPC.TargetClosest();
@@ -392,24 +409,12 @@ public class BunnyStorm : ScarletBoss
             pos.X = Main.rand.Next(0, NPC.width);
             pos.Y = Main.rand.Next(0, NPC.height);
             pos += NPC.position;
-            var sp = SparkleParticle.Spawn(pos, -Vector2.UnitY * 0.3f, Scale: 0.3f);
-            sp.outerColor = Color.SkyBlue;
-            sp.noTileCollide = true;
-            sp.gravity = 0;
+            Dust.NewDustPerfect(pos, DustID.GemDiamond, Main.rand.NextVector2Circular(1, 1), Scale: 1.2f);
         }
 
         _showTrail = false;
         _contactDamage = false;
         _outliner.SetDefaults();
-        /*
-        if(MultiplayerHelper.IsHost && Main.rand.NextBool(120))
-        {
-            Vector2 offset = new Vector2();
-            offset.X = Main.rand.NextFloat(-512, 512);
-            offset.Y -= 252;
-            Projectile.NewProjectile(NPC.GetSource_FromThis(), _boundPoint  + offset, Vector2.Zero,
-                ModContent.ProjectileType<BunnyStormBunny>(), ShockwaveDamage, 1, Main.myPlayer);
-        }*/
         switch (State)
         {
             case AIState.Spawn:
@@ -524,7 +529,7 @@ public class BunnyStorm : ScarletBoss
 
                     float speed = MathHelper.Lerp(0.5f, 9f, Vector2.Distance(NPC.Center, MyTarget.Center) / 384f);
                     NPC.velocity = Vector2.Lerp(NPC.velocity, slowMoveVelocity.SafeNormalize(Vector2.Zero) * speed, EasingFunction.InOutSine(Timer / 24f));
-                    _outliner.attacking = true;
+                    _outliner.warning = true;
                     float targetRotation = (MyTarget.Center - NPC.Center).ToRotation();
         
 
@@ -957,7 +962,7 @@ public class BunnyStorm : ScarletBoss
         NPC.rotation = NPC.velocity.X * 0.05f;
         _stormFrame = 0;
         _stormScale = Vector2.Lerp(_stormScale, Vector2.One, 0.1f);
-        _stormRotation += 0.05f;
+        _stormRotation = Utils.AngleLerp(_stormRotation, 0, 0.02f);
         if(Timer >= IdleTime)
         {
             ChooseAttack();
@@ -1145,33 +1150,64 @@ public class BunnyStorm : ScarletBoss
     private void DrawMask(SpriteBatch sb, int frameOffset, Color color)
     {
         _bunnyMaskTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Hand");
+
+        FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
+        flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
+        flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
+        flamebowShader.InsideColor = Color.White;
+        flamebowShader.BloomColor = Color.Cyan;
+        flamebowShader.DissipateThreshold = MathHelper.Lerp(1f, 0f, 0.75f);
+        flamebowShader.DistortionStrength = 0.1f;
+
+        sb.Restart(effect: flamebowShader.Effect, samplerState: SamplerState.AnisotropicClamp);
         SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(_bunnyMaskTextureAsset, NPC.Center);
-        maskDrawer.VerticalFrame(_stormFrame + frameOffset, 12);
+        maskDrawer.VerticalFrame(_stormFrame + frameOffset, 4);
         maskDrawer.CenterOrigin();
-        maskDrawer.scale = _stormScale * ExtraMath.Osc(0.85f, 1.1f, speed: 3);
+        maskDrawer.scale = _stormScale * ExtraMath.Osc(0.85f, 1.1f, speed: 3) * 1.1f;
         maskDrawer.rotation = _stormRotation;
-        maskDrawer.color = color;
+        maskDrawer.color = color * 0.3f;
+        maskDrawer.color.A = 0;
         sb.Draw(maskDrawer);
 
+        maskDrawer.color = Color.Violet * 0.3f;
+        maskDrawer.color.A = 0;
+        sb.Draw(maskDrawer);
+
+
+        maskDrawer.color = Color.LightBlue *ExtraMath.Osc(0.8f, 1.2f, speed: 4);
+        maskDrawer.color.A = 0;
+        sb.Draw(maskDrawer);
+        sb.RestartDefaults();
+
+    }
+
+    private void DrawGlow(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+
+
+        DrawMask(spriteBatch, 0, Color.White);
     }
     private void DrawCrystal(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, _boundPoint);
-        glowDrawer.scale *= 0.3f;
-        glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.2f, 0.6f, speed: 3);
-        glowDrawer.color.A = 0;
-        spriteBatch.Draw(glowDrawer);
 
         NPC.spriteDirection = 1;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
-        drawer.worldPosition = _boundPoint;
+        drawer.worldPosition = NPC.Center;
         drawer.worldPosition.Y += ExtraMath.Osc(-2f, 2f, speed: 3);
+        drawer.rotation += NPC.velocity.X * 0.05f;
         spriteBatch.Draw(drawer);
 
         drawer.color = Color.Green * ExtraMath.Osc(0.1f, 0.25f, speed: 2);
         drawer.color.A = 0;
         drawer.VerticalFrame(1, 3);
         spriteBatch.Draw(drawer);
+
+
+
+        drawer.color = Color.LightBlue * ExtraMath.Osc(0.6f, 1f, speed: 2) * 0.4f;
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
+
     }
     private Color DashTrailColorFunction(float completionRatio)
     {
@@ -1189,6 +1225,36 @@ public class BunnyStorm : ScarletBoss
         laserShader.InnerColor = Color.White;
         laserShader.OuterColor = Color.DarkGray;
         TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, DashTrailColorFunction, DashTrailWidthFunction, laserShader, NPC.Size * 0.5f);
+    }
+    private void DrawBunnyParticles(SpriteBatch spriteBatch)
+    {
+        SpritebatchDrawer bunnyDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BunnyStormBunny>()], NPC.Center);
+        bunnyDrawer.VerticalFrame(0, 6);
+        bunnyDrawer.CenterOrigin();
+        bunnyDrawer.color = _outliner.outlineColor;
+        for (int i = 0; i < _vortexPS.particles.Length; i++)
+        {
+            ref Vector2 pos = ref _vortexPS.particles.positions[i];
+            bunnyDrawer.worldPosition = NPC.Center + pos;
+            bunnyDrawer.rotation = Main.GlobalTimeWrappedHourly * 4 + i * 8;
+            spriteBatch.Draw(bunnyDrawer);
+        }
+    }
+    private void RenderBunnyParticles(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        if (_vortexPS == null)
+            return;
+        SpritebatchDrawer bunnyDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BunnyStormBunny>()], NPC.Center);
+        bunnyDrawer.VerticalFrame(0, 6);
+        bunnyDrawer.CenterOrigin();
+       
+        for (int i = 0; i < _vortexPS.particles.Length; i++)
+        {
+            ref Vector2 pos = ref _vortexPS.particles.positions[i];
+            bunnyDrawer.worldPosition = NPC.Center + pos;
+            bunnyDrawer.rotation = Main.GlobalTimeWrappedHourly * 4 + i * 8;
+            spriteBatch.Draw(bunnyDrawer);
+        }
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -1209,37 +1275,17 @@ public class BunnyStorm : ScarletBoss
             Vector2 pos = NPC.oldPos[i];
 
             SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(_bunnyMaskTextureAsset, pos + NPC.Size * 0.5f);
-            maskDrawer.VerticalFrame(_stormFrame, 12);
+            maskDrawer.VerticalFrame(_stormFrame, 4);
             maskDrawer.CenterOrigin();
             maskDrawer.scale = _stormScale * ExtraMath.Osc(0.85f, 1.1f, speed: 3);
             maskDrawer.rotation = _stormRotation;
-            maskDrawer.color = Color.Lerp(Color.White, Color.Black, (float)i / (float)NPC.oldPos.Length) * 0.05f;
+            maskDrawer.color = Color.Lerp(Color.CadetBlue, Color.Black, (float)i / (float)NPC.oldPos.Length) * 0.05f;
             maskDrawer.color.A = 0;
             spriteBatch.Draw(maskDrawer);
         }
         DrawCrystal(spriteBatch);
 
-        DrawMask(spriteBatch, 4, Color.Black);
 
-        DrawMask(spriteBatch, 4, _outliner.outlineColor);
-        BunnyStormShader combineShader = ShaderContent.GetInstance<BunnyStormShader>();
-        combineShader.MixTexture = _bunnyNoiseTextureAsset.Value;
-        combineShader.Offset = new Vector2(Main.GlobalTimeWrappedHourly, 0);
-        combineShader.Tiling = new Vector2(1f, 12f) * 2;
-        spriteBatch.Restart(SpriteSortMode.Immediate,effect: combineShader.Effect, samplerState: SamplerState.PointClamp);
-
-        combineShader.Offset = new Vector2(-Main.GlobalTimeWrappedHourly, 0.3f);
-        DrawMask(spriteBatch, 0, Color.DarkGray);
-
-        combineShader.Offset = new Vector2(Main.GlobalTimeWrappedHourly, 0);
-        DrawMask(spriteBatch, 0, Color.White);
-
-
-  
-        spriteBatch.RestartDefaults();
-
-
-        DrawMask(spriteBatch, 8, Color.Black * 0.5f);
 
         float offset = 32;
         SpritebatchDrawer earDrawer = SpritebatchDrawer.FromTextureAsset(_earTextureAsset, NPC.Center);
@@ -1248,6 +1294,7 @@ public class BunnyStorm : ScarletBoss
         earDrawer.drawOrigin.Y -= 16;
         earDrawer.worldPosition.X += offset;
         earDrawer.worldPosition.Y -= 64;
+        earDrawer.worldPosition += -NPC.velocity * 4;
         earDrawer.rotation = NPC.velocity.X * 0.05f + ExtraMath.Osc(-0.3f, 0.3f);
         earDrawer.scale *= _stormScale;
         spriteBatch.Draw(earDrawer);
@@ -1260,13 +1307,27 @@ public class BunnyStorm : ScarletBoss
         spriteBatch.Draw(earDrawer);
 
 
+
+        RenderBunnyParticles(spriteBatch, screenPos, drawColor);
+
+
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        glowDrawer.scale *= 0.3f;
+        glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.2f, 0.6f, speed: 3);
+        glowDrawer.color.A = 0;
+        spriteBatch.Draw(glowDrawer);
+
         SpritebatchDrawer whiskersDrawer = SpritebatchDrawer.FromTextureAsset(_whiskersTextureAsset, NPC.Center);
         whiskersDrawer.CenterOrigin();
         whiskersDrawer.rotation = NPC.velocity.X * 0.05f + ExtraMath.Osc(-0.3f, 0.3f);
         whiskersDrawer.scale *= _stormScale;
         spriteBatch.Draw(whiskersDrawer);
 
-        PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
+
+        PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail, DrawLayer.BehindNPCsWithOutline);
+
+        PixelationManager.QueueSpritebatchDrawAction(DrawGlow);
+        OutlineRenderer.Queue(DrawBunnyParticles);
         /*
         drawer.color = Color.LightGreen * ExtraMath.Osc(0.5f, 1f, speed: 16);
         drawer.color.A = 0;

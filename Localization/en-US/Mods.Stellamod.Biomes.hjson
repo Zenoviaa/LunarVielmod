@@ -242,3 +242,8 @@ EdgeofTheMoonBiome: {
 	DisplayName: Edgeof The Moon Biome
 	TownNPCDialogueName: the Edgeof The Moon Biome
 }
+
+CrimsonBridewellBiome: {
+	DisplayName: Crimson Bridewell Biome
+	TownNPCDialogueName: the Crimson Bridewell Biome
+}

@@ -1,6 +1,8 @@
-﻿using Stellamod.Buffs;
+﻿using Microsoft.Xna.Framework.Input;
+using Stellamod.Buffs;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
+using Stellamod.Core.Camera;
 using Stellamod.Dusts;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
@@ -565,9 +567,34 @@ namespace Stellamod
         }
 
         private bool _pressed;
+        private Vector2 _lockPos;
         public override void PostUpdate()
         {
 
+            if (!_pressed)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.J))
+                {
+                    _pressed = true;
+                }
+            } else if (_pressed && Keyboard.GetState().IsKeyUp(Keys.J))
+            {
+                _pressed = false;
+                if(_lockPos == Vector2.Zero)
+                {
+                    _lockPos = Main.Camera.Center;
+                }
+                else
+                {
+                    _lockPos = Vector2.Zero;
+                }
+
+            }
+            if(_lockPos != Vector2.Zero)
+            {
+                CameraTargetSystem.AddTarget(_lockPos);
+                // OffsetCameraModifier.FocusTargetOffset = (_lockPos - Main.Camera.Center);
+            }
 
             /*
             if (Main.netMode != NetmodeID.Server)

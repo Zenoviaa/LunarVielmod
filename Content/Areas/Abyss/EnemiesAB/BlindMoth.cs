@@ -31,7 +31,7 @@ public class BlindMothOrb : ModProjectile
         Projectile.hostile = true;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 240;
+        Projectile.timeLeft = 180;
     }
 
     public override void AI()
@@ -109,7 +109,9 @@ public class BlindMothOrb : ModProjectile
             float alpha = MathHelper.SmoothStep(1f, 0f, ease);
             spriteBatch.Draw(textureToDraw, oldCenter - screenPos, null, drawCoolr * alpha, 0, drawOrigin, 1f, SpriteEffects.None, 0);
         }
+        spriteBatch.Draw(textureToDraw, Projectile.Center - screenPos, null, drawCoolr, 0, drawOrigin, 1f, SpriteEffects.None, 0);
         spriteBatch.Draw(textureToDraw, Projectile.Center - screenPos, null, drawCoolr, 0, drawOrigin, 1f, SpriteEffects.None, 0); ;
+    //    spriteBatch.Draw(textureToDraw, Projectile.Center - screenPos, null, drawCoolr, 0, drawOrigin, 1f, SpriteEffects.None, 0); ;
     }
 
     public override bool PreDraw(ref Color lightColor)
@@ -178,6 +180,7 @@ public class BlindMoth : ModNPC,
     private Color _targetOutlineColor;
     private Color _outlineColor;
     private bool _contactDamage;
+    private bool _followCharge;
     private Player PlayerTarget => Main.player[NPC.target];
     private int BlindMothOrbDamage => 20;
     public override void SendExtraAI(BinaryWriter writer)
@@ -459,6 +462,10 @@ public class BlindMoth : ModNPC,
     private void AI_ChargeAttack()
     {
         Timer++;
+        if(Timer == 1)
+        {
+            _followCharge = true;
+        }
         if (Timer < 120)
         {
             //Line up on y axis
@@ -470,27 +477,62 @@ public class BlindMoth : ModNPC,
             float ySpeed = 8;
             if (yDist < 8)
                 ySpeed = yDist;
-            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, ySpeed * yNormal, 0.3f);
+
+            if (!_followCharge)
+            {
+                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, 0, 0.03f);
+            }
+            if (_followCharge)
+            {
+                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, ySpeed * yNormal, 0.05f);
+            }
+      
+            if (yDist < 8)
+            {
+                _followCharge = false;
+            } else if (yDist > 24)
+            {
+                _followCharge = true;
+            }
+
             NPC.velocity.X *= 0.98f;
 
             float xDiff = (PlayerTarget.Center.X - NPC.Center.X);
             float xDist = MathF.Abs(xDiff);
             float xNormal = xDiff / xDist;
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, xNormal, 0.1f);
+
+            float xDir = PlayerTarget.Center.X > NPC.Center.X ? 1 : -1;
+            if (xDist < 16)
+            {
+                NPC.velocity.X -= xDir;
+            }
             _targetOutlineColor = Color.Yellow;
             NPC.spriteDirection = PlayerTarget.Center.X > NPC.Center.X ? 1 : -1;
             Vector2 targetVelocity = PlayerTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
             _dashLineRotation = targetVelocity.ToRotation();
             _dashLineAlpha = MathHelper.Lerp(_dashLineAlpha, 1f, 0.1f);
         }
-        else if (Timer < 140)
+        else if (Timer < 180)
         {
             NPC.spriteDirection = PlayerTarget.Center.X > NPC.Center.X ? 1 : -1;
             Vector2 targetVelocity = PlayerTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
             targetVelocity *= 15;
             _dashVelocity = targetVelocity;
             _dashLineAlpha *= 0.9f;
-            NPC.velocity *= 0.8f;
+
+            float xDir = PlayerTarget.Center.X > NPC.Center.X ? 1 : -1;
+            if(Timer < 210)
+            {
+                NPC.velocity.Y *= 0.8f;
+                NPC.velocity.X -= xDir * 0.08f;
+            }
+            else
+            {
+
+                NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.05f);
+            }
+
 
             if(Timer == 139)
             {
@@ -498,7 +540,7 @@ public class BlindMoth : ModNPC,
                 SoundEngine.PlaySound(chargeSound, NPC.position);
             }
         }
-        else if (Timer < 200)
+        else if (Timer < 220)
         {
             _dashLineAlpha = 0f;
 
@@ -506,7 +548,7 @@ public class BlindMoth : ModNPC,
             _contactDamage = true;
             _targetOutlineColor = Color.Red;
         }
-        else if (Timer < 300)
+        else if (Timer < 280)
         {
             NPC.velocity *= 0.9f;
             float targetYSpeed = MathHelper.Lerp(-1f, 1f, ExtraMath.Osc(0f, 1f));

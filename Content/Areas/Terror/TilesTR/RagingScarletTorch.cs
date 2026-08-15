@@ -212,6 +212,10 @@ public class RagingScarletTorchTile : ModTile
             r = 0.9f;
             g = 0.3f;
             b = 0.3f;
+
+            r *= 4.0f;
+            g *= 4.0f;
+            b *= 4.0f;
         }
     }
 

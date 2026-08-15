@@ -133,6 +133,11 @@ namespace Stellamod
 
         public int AegislavCount;
         public static bool InAegislav => ModContent.GetInstance<BiomeTileCounts>().AegislavCount >= 50;
+
+
+
+        public int CrimsonBridewellCount;
+        public static bool InCrimsonBridewell => ModContent.GetInstance<BiomeTileCounts>().CrimsonBridewellCount >= 50;
         public int ForestCount;
         public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25 || InSpringHills;
 
@@ -146,6 +151,7 @@ namespace Stellamod
         public static bool InHeatedDepths => ModContent.GetInstance<BiomeTileCounts>().HeatedDepthsCount >= 50;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            CrimsonBridewellCount = tileCounts[ModContent.TileType<BridewellTile>()];
             HeatedDepthsCount = tileCounts[ModContent.TileType<CharredStone>()];
             AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
             SacredUnknownsCount = tileCounts[ModContent.TileType<MimicTileBlock>()];

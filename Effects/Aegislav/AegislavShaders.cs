@@ -3,6 +3,7 @@ using ReLogic.Peripherals.RGB;
 using Stellamod.Assets;
 using Stellamod.Common.ConsoleMenu;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Effects;
 using Stellamod.Effects.RoyalMagic;
 using System;
@@ -37,6 +38,7 @@ public class AegisCloudsRenderer : ModSystem
         return new Point(Main.screenWidth, Main.screenHeight);
     }
 
+    public Texture2D BackgroundTexture => _cloudsRT;
     public override void Load()
     {
         base.Load();
@@ -68,7 +70,7 @@ public class AegisCloudsRenderer : ModSystem
         orig();
         if (Main.gameMenu)
             return;
-        if (!LunarDebugging.clouds)
+        if (!LunarDebugging.clouds && !Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell)
             return;
 
         int steps = 1;

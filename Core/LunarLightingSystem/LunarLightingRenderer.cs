@@ -155,7 +155,8 @@ namespace Stellamod.Core.LunarLightingSystem
                 ssaoShader.Effect,
                 Main.GameViewMatrix.TransformationMatrix);
 
-                
+           
+            
             spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, Color.White);
 
             spriteBatch.End();

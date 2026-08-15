@@ -77,8 +77,6 @@ public class AegislavDustRenderer : ModSystem
     {
         _cloudTexture ??= ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds2");
         AegislavDustShader dustShader = AegislavDustShader.Instance;
-       // dustShader.Time = 0;
-     //   dustShader.TexelSize = Vector2.One / new Vector2(_cloudTexture.Width(), _cloudTexture.Height());
         dustShader.Tiling = new Vector2(1f, 1f);
 
       
@@ -103,13 +101,14 @@ public class AegislavDustRenderer : ModSystem
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             int tileType = ModContent.TileType<AegislavSandTile>(); ;
+            int bridewellTileType = ModContent.TileType<BridewellTile>();
             (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(252);
-            int iterator = 0;
             for(int i = topLeft.X; i < bottomRight.X; i++)
             {
                 for(int j = topLeft.Y; j < bottomRight.Y; j++)
                 {
-                    if (Main.tile[i, j].TileType == tileType && ExtraMath.Osc(0, 1, 0, offset: i + j) <= 0.1f && WorldGen.TileIsExposedToAir(i, j))
+                    int thisTileType = Main.tile[i, j].TileType;
+                    if ((thisTileType == tileType || thisTileType == bridewellTileType) && ExtraMath.Osc(0, 1, 0, offset: i + j) <= 0.1f && WorldGen.TileIsExposedToAir(i, j))
                         _pointsToRenderer.Enqueue(new Point(i, j));
                 }
             }

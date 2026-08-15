@@ -51,6 +51,7 @@ namespace Stellamod.Content.Biomes
                 return localPlayer.Center.ToTileCoordinates().Y > biomeRect.Bottom - 400 && localPlayer.Center.ToTileCoordinates().Y < biomeRect.Bottom;
             }
         }
+        public bool ZoneCrimsonBridewell;
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
