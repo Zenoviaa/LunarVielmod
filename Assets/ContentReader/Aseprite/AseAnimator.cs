@@ -65,6 +65,7 @@ public class AnimatorGlobalNPC : GlobalNPC
             SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
             drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             drawer.rotation = npc.rotation;
+            drawer.color = drawColor;
             if (npc.spriteDirection == -1)
             {
                 drawer.drawOrigin.X = drawer.sourceRect!.Value.Width - drawer.drawOrigin.X;
@@ -83,6 +84,8 @@ public class AnimatorGlobalNPC : GlobalNPC
         else
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
     }
+
+
 }
 
 public record struct AnimationParams(bool IsLooping = false)
