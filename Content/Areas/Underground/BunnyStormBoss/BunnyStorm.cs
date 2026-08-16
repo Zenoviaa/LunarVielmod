@@ -1170,10 +1170,12 @@ public class BunnyStorm : ScarletBoss
                         _stormScale *= 1.1f;
                         if (MultiplayerHelper.IsHost)
                         {
+                            ProjFirer firer = ProjFirer.From<BunnyStormBunny>(NPC); 
                             Vector2 offset = new Vector2();
                             offset.X = Main.rand.NextFloat(-64, 64);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + offset, Vector2.Zero,
-                                ModContent.ProjectileType<BunnyStormBunny>(), ShockwaveDamage, 1, Main.myPlayer);
+                            firer.position += offset;
+                            firer.damage = ShockwaveDamage;
+                            firer.New();
                         }
                     }
 
@@ -1257,6 +1259,7 @@ public class BunnyStorm : ScarletBoss
             vecFromBind += Vector2.UnitY * MaxIdleHoverDistance * 0.5f;
         }
 
+
       //  vecFromBind *= MathHelper.Lerp(0.5f, 1f, MathF.Sin(Timer * 0.05f) * 0.5f + 0.5f);
         Vector2 newPoint = _boundPoint + vecFromBind;
         Vector2 velocityToNewPoint = (newPoint - NPC.Center);
@@ -1281,8 +1284,13 @@ public class BunnyStorm : ScarletBoss
 
         if(Timer % 10 == 0 && MultiplayerHelper.IsHost)
         {
-            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + Main.rand.NextVector2CircularEdge(600, 600), Vector2.Zero, ModContent.ProjectileType<BunnyStormBunny>(), 1, 1, Main.myPlayer, ai1: 2, ai2: NPC.whoAmI);
+            ProjFirer firer = ProjFirer.From<BunnyStormBunny>(NPC);
+            firer.ai1 = 2;
+            firer.ai2 = NPC.whoAmI;
+            firer.position += Main.rand.NextVector2CircularEdge(600, 600);
+            firer.New();
         }
+
         CreateSuckLines();
         CameraTargetSystem.AddTarget(NPC.Center);
         CameraTargetSystem.SetLingerTime(120);
@@ -1312,6 +1320,8 @@ public class BunnyStorm : ScarletBoss
             float range = Main.rand.NextFloat(384, 666);
             Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
             Vector2 vel = (NPC.Center - pos);
+
+            
             vel *= 0.1f;
             var fx = FXUtil.GlowStretch(pos, vel);
             fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
