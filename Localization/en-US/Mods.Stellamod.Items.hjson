@@ -12110,3 +12110,13 @@ BridewellTileItem: {
 	DisplayName: Bridewell Brick
 	Tooltip: ""
 }
+
+ThickSnow: {
+	DisplayName: Thick Snow
+	Tooltip: ""
+}
+
+BunnyStormRelicItem: {
+	DisplayName: Bunny Storm Relic Item
+	Tooltip: ""
+}

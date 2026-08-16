@@ -206,7 +206,7 @@ public partial class Gothivia : ScarletBoss
         NPC.height = 60;
         NPC.damage = 1;
         NPC.defense = 150;
-        NPC.lifeMax = 340000;
+        NPC.lifeMax = 272_000;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0f;

@@ -40,7 +40,7 @@ namespace Stellamod.Content.Areas.Snow.AccsSN
             if (floorTile.HasValue)
             {
                 Tile tile = floorTile.Value;
-                if (ClimbableTiles[tile.TileType])
+                if (ClimbableTiles[tile.TileType] || TileSets.ThickSnow[tile.TileType])
                 {
                     Player.moveSpeed += 0.25f;
                     Player.maxRunSpeed *= 1.2f;

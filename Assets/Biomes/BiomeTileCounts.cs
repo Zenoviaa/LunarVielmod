@@ -129,7 +129,7 @@ namespace Stellamod
         public static bool InMoonspiralTower => ModContent.GetInstance<BiomeTileCounts>().MoonspiralTowerCount >= 50;
 
         public int SacredUnknownsCount;
-        public static bool InSacredUnknowns => ModContent.GetInstance<BiomeTileCounts>().SacredUnknownsCount >= 50;
+        public static bool InSacredUnknowns => ModContent.GetInstance<BiomeTileCounts>().SacredUnknownsCount >= 10;
 
         public int AegislavCount;
         public static bool InAegislav => ModContent.GetInstance<BiomeTileCounts>().AegislavCount >= 50;

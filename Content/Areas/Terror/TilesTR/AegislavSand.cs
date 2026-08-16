@@ -38,6 +38,7 @@ public class AegislavSandTile : ModTile
         Main.tileBlendAll[Type] = true;
         Main.tileLighted[Type] = true;
         Main.tileBlockLight[Type] = true;
+        TileSets.AegisMisty[Type] = true;
         RegisterItemDrop(ModContent.ItemType<AegislavSand>());
         AddMapEntry(new Color(40, 40, 40));
     }
@@ -52,26 +53,45 @@ public class AegislavSandTile : ModTile
     }
 }
 
+public class AegislavDustGlobalTile : GlobalTile
+{
+    public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+    {
+        base.DrawEffects(i, j, type, spriteBatch, ref drawData);
+        if (TileSets.AegisMisty[type] &&
+            ExtraMath.Osc(0, 1, 0, offset: i + j) <= 0.1f &&
+            WorldGen.TileIsExposedToAir(i, j))
+        {
+            AegislavDustRenderer.DustPoints.Add(new Point(i, j));
+        }
+    }
+}
 
 [Autoload(Side = ModSide.Client)]
 public class AegislavDustRenderer : ModSystem
 {
     private Asset<Texture2D> _maskTexture;
     private Asset<Texture2D> _cloudTexture;
-    private Queue<Point> _pointsToRenderer;
+    public static readonly HashSet<Point> DustPoints = new();
     private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private RenderTargetProvider _cloudRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        _pointsToRenderer = new();
-    }
 
     public override void Load()
     {
         base.Load();
         On_Main.CheckMonoliths += RenderDustMask;
+        On_Main.RenderTiles += ResetDustPoints;
     }
+
+    private void ResetDustPoints(On_Main.orig_RenderTiles orig, Main self)
+    {
+        if (!Main.drawToScreen)
+        {
+            DustPoints.Clear();
+        }
+        orig(self);
+    }
+
 
     private void RenderDustClouds(SpriteBatch sb, Vector2 screenPos)
     {
@@ -91,52 +111,36 @@ public class AegislavDustRenderer : ModSystem
         sb.RestartDefaults();
     }
 
+  
+
     private void RenderDustMask(On_Main.orig_CheckMonoliths orig)
     {
-        if (!Main.gameMenu)
+        if (!Main.gameMenu && DustPoints.Count > 0)
         {
             GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
             gDevice.SetRenderTarget(_maskRT);
             gDevice.Clear(Color.Transparent);
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            int tileType = ModContent.TileType<AegislavSandTile>(); ;
-            int bridewellTileType = ModContent.TileType<BridewellTile>();
-            (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(252);
-            for(int i = topLeft.X; i < bottomRight.X; i++)
+            bool renderClouds = true;
+            _maskTexture = AssetManager.GlowMask.SimpleGlowCircle;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null,
+                Main.GameViewMatrix.TransformationMatrix); ;
+
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(_maskTexture, Vector2.Zero);
+            sbDrawer.color = Color.White;
+            sbDrawer.color.A = 0;
+            sbDrawer.scale *= 0.5f;
+            foreach(Point point in DustPoints)
             {
-                for(int j = topLeft.Y; j < bottomRight.Y; j++)
-                {
-                    int thisTileType = Main.tile[i, j].TileType;
-                    if ((thisTileType == tileType || thisTileType == bridewellTileType) && ExtraMath.Osc(0, 1, 0, offset: i + j) <= 0.1f && WorldGen.TileIsExposedToAir(i, j))
-                        _pointsToRenderer.Enqueue(new Point(i, j));
-                }
+                Vector2 worldCoordinates = point.ToWorldCoordinates();
+                sbDrawer.worldPosition = worldCoordinates;
+                spriteBatch.Draw(sbDrawer);
             }
 
-            bool renderClouds = false;
-            if (_pointsToRenderer.Count > 0)
-            {
-                renderClouds = true;
-                _maskTexture = AssetManager.GlowMask.SimpleGlowCircle;
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, 
-                    Main.GameViewMatrix.TransformationMatrix); ;
+            spriteBatch.End();
+            PixelationManager.QueueSpritebatchDrawAction(RenderDustClouds, DrawLayer.OverPlayers);
 
-                SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(_maskTexture, Vector2.Zero);
-                sbDrawer.color = Color.White;
-                sbDrawer.color.A = 0;
-                sbDrawer.scale *= 0.5f;
-                while (_pointsToRenderer.Count > 0)
-                {
-                    Point point = _pointsToRenderer.Dequeue();
-                    Vector2 worldCoordinates = point.ToWorldCoordinates();
-                    sbDrawer.worldPosition = worldCoordinates;
-             
-                    spriteBatch.Draw(sbDrawer);
-                }
-
-                spriteBatch.End();
-                PixelationManager.QueueSpritebatchDrawAction(RenderDustClouds, DrawLayer.OverPlayers);
-            }
             gDevice.SetRenderTarget(_cloudRT);
             gDevice.Clear(Color.Transparent);
 
@@ -169,10 +173,5 @@ public class AegislavDustRenderer : ModSystem
     public override void Unload()
     {
         base.Unload();
-    }
-
-    public void QueueMaskDraw(Point point)
-    {
-        _pointsToRenderer.Enqueue(point);
     }
 }

@@ -15,4 +15,12 @@ public class TileSets : ModSystem
         BlockMineshafts[TileID.Mud] = true;
         BlockMineshafts[TileID.IceBlock] = true;
     }
+    public static bool[] ThickSnow;
+    public static bool[] AegisMisty;
+    public override void ResizeArrays()
+    {
+        base.ResizeArrays();
+        AegisMisty = TileID.Sets.Factory.CreateBoolSet();
+        ThickSnow = TileID.Sets.Factory.CreateBoolSet();
+    }
 }

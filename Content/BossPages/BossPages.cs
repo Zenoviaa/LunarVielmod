@@ -24,6 +24,7 @@ using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
+using Stellamod.Content.Areas.Underground.BunnyStormBoss;
 using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Content.Armors.Ravaging;
@@ -80,6 +81,20 @@ namespace Stellamod.Content.BossPages
             flag = DownedBossFlag.Daedus;
             StarRanking = 2;
             AddMasterModeReward<DaedusRelicItem>();
+        }
+    }
+    
+    public class BunnyStormPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.Miniboss;
+            bossNPC = ModContent.GetInstance<BunnyStorm>();
+            progression = 4;
+            flag = DownedBossFlag.BunnyStorm;
+            StarRanking = 2;
+            AddMasterModeReward<BunnyStormRelicItem>();
         }
     }
 

@@ -610,3 +610,7 @@ public class ERelic : AbstractRelicTile<ERelicItem, EPage> { }
 
 public class DaedusRelicItem : AbstractRelicItem<DaedusRelicItem, DaedusRelic> { }
 public class DaedusRelic : AbstractRelicTile<DaedusRelicItem, DaedusPage> { }
+
+
+public class BunnyStormRelicItem : AbstractRelicItem<BunnyStormRelicItem, BunnyStormRelic> { }
+public class BunnyStormRelic : AbstractRelicTile<BunnyStormRelicItem, BunnyStormPage> { }

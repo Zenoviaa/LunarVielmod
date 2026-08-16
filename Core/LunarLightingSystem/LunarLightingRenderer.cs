@@ -150,7 +150,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             ssaoShader.Offsets = offsets.ToArray();
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone,
                 ssaoShader.Effect,
                 Main.GameViewMatrix.TransformationMatrix);
 

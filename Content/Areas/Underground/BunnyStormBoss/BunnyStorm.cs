@@ -3,10 +3,14 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.DialogueSystem;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.GothinFlames;
 using Stellamod.Helpers;
@@ -264,6 +268,274 @@ public class BunnyStormBunny : ModProjectile
         Gore.NewGore(Projectile.GetSource_Death(), Projectile.Center, Main.rand.NextVector2Circular(8, 8) + new Vector2(0, -8), headGore, 1f);
     }
 }
+public class BunnyStormCrystal : ModNPC,
+    INPCSpawnCondition
+{
+    private ref float Timer => ref NPC.ai[0];
+    private ref float WiggleTimer => ref NPC.ai[1];
+    private ref float IsDying => ref NPC.ai[2];
+    public override string Texture => ModContent.GetInstance<BunnyStorm>().Texture;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        Main.npcFrameCount[Type] = 3;
+        NPCID.Sets.ImmuneToAllBuffs[Type] = true;
+        NPCSets.Heavy[Type] = true;
+    }
+
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        NPC.width = 32;
+        NPC.height = 64;
+        NPC.damage = 50;
+        NPC.defense = 999999;
+        NPC.lifeMax = 5;
+        NPC.HitSound = SoundID.DD2_CrystalCartImpact with { PitchVariance = 0.5f };
+        NPC.DeathSound = SoundID.DD2_WitherBeastCrystalImpact;
+        NPC.knockBackResist = 0f;
+        NPC.dontCountMe = true;
+        NPC.noGravity = true;
+        NPC.noTileCollide = false;
+        NPC.scale = 1f;
+        NPC.aiStyle = -1;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        Vector2 velocity = new Vector2();
+        velocity.Y = MathF.Sin(Timer * 0.05f) * 0.2f;
+        NPC.velocity = velocity;
+        if (DownedBossTracker.IsDowned(DownedBossFlag.BunnyStorm))
+            NPC.active = false;
+
+        if (Main.rand.NextBool(16))
+        {
+            var sp = SparkleParticle.Spawn(
+                NPC.Center + Main.rand.NextVector2Circular(64, 64),
+                -Vector2.UnitY);
+            sp.Scale *= 0.4f;
+            sp.gravity = 0;
+            sp.noTileCollide = true;
+            sp.outerColor = Color.Blue;
+        }
+
+        if (WiggleTimer > 0)
+            WiggleTimer--;
+
+        float radians = MathHelper.Lerp(0f, 0.28f, WiggleTimer / 15f);
+        NPC.rotation = MathHelper.Lerp(-radians, radians,
+            MathF.Sin(WiggleTimer * 0.5f) * 0.5f + 0.5f);
+
+        if (IsDying > 0)
+        {
+            AI_Dying();
+        }
+    }
+
+    private void AI_Dying()
+    {
+        ShakeScreenPosition.Shake = 2;
+        CameraTargetSystem.AddTarget(NPC.Center);
+        CameraTargetSystem.SetLingerTime(30);
+        if (IsDying % 8 == 0)
+        {
+            Vector2 pos = NPC.Center + Vector2.One.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(100, 250);
+            Vector2 vel = (NPC.Center - pos) * 0.03f;
+            SparkleParticle sp = SparkleParticle.Spawn(pos, vel, Color.Red, 0.3f);
+            sp.outerColor = Color.Blue;
+            sp.innerColor = Color.White;
+            sp.fast = true;
+            sp.noTileCollide = true;
+            sp.gravity = 0;
+
+            pos = NPC.Center + Vector2.One.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(100, 250);
+            vel = (NPC.Center - pos) * 0.03f;
+            var gp = FXUtil.GlowStretch(pos, vel);
+            gp.OuterGlowColor = Color.Blue;
+        }
+        IsDying++;
+        if (IsDying % 30 == 0)
+        {
+
+        }
+
+        if (IsDying >= 30)
+        {
+            ShakeScreenPosition.Shake = 16;
+            FXUtil.ShakeCamera(NPC.Center, 2048, 32);
+            if (MultiplayerHelper.IsHost)
+            {
+                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<BunnyStorm>());
+            }
+
+            FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 35, baseSize: 0.24f);
+            for (float f = 0; f < 12f; f++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(18, 18);
+                var dp = DustParticle.Spawn(NPC.Center, velocity);
+                dp.Scale *= 0.75f;
+                dp.gravity = 0;
+                dp.dampening = 0.05f;
+                dp.outerColor = Color.Blue;
+            }
+            for (float f = 0; f < 4f; f++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(18, 18);
+                var dp = FXUtil.GlowStretch(NPC.Center, velocity);
+                dp.VectorScale *= 0.5f;
+            }
+
+            var part = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightBlue, Color.Purple, baseSize: 0.2f);
+            part.Scale *= 6;
+
+            var part3 = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightBlue, Color.Purple, baseSize: 0.15f);
+            part3.Scale *= 4;
+
+            var part2 = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightBlue, Color.Purple);
+            part2.Scale *= 3;
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ShadowExplosion"), NPC.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb"), NPC.position);
+            for (float f = 0; f < 42; f++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(128, 128);
+                FXUtil.GlowStretch(NPC.Center, velocity);
+            }
+
+            for (float i = 0; i < 8; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(NPC.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.LightCyan,
+                    outerGlowColor: Color.Blue,
+                    baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                    duration: Main.rand.NextFloat(15, 25));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+                particle.Scale *= 4;
+            }
+
+            var b = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 45, baseSize: 0.2f);
+            b.Scale *= 2;
+
+
+            float numDust = 48;
+            for (float f = 0; f < numDust; f++)
+            {
+                Vector2 vel = Vector2.One.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(8f, 12f);
+                SparkleParticle sp = SparkleParticle.Spawn(NPC.Center, vel, Color.Blue, Main.rand.NextFloat(0.6f, 1f));
+                sp.outerColor = Color.Blue;
+                sp.innerColor = Color.White;
+                sp.fast = true;
+                sp.dampening = 0.05f;
+                sp.noTileCollide = true;
+                sp.gravity = 0;
+            }
+            for (float f = 0; f < numDust; f++)
+            {
+                Dust d = Dust.NewDustPerfect(NPC.Center, DustID.GemSapphire, Main.rand.NextVector2Circular(24, 24), Scale: Main.rand.NextFloat(0.6f, 2f));
+                d.noGravity = true;
+            }
+            NPC.Kill();
+        }
+
+    }
+    private void RenderGlowingBall(SpriteBatch sb, Vector2 sp)
+    {
+        Asset<Texture2D> glowBallAsset = AssetManager.GlowMask.SimpleGlowCircle;
+        float ratio = IsDying / 165;
+        float ease = EasingFunction.InOutSine(ratio);
+        Color color = Color.Lerp(Color.Blue * 0.5f, Color.Blue, ease);
+        Vector2 scale = Vector2.Lerp(Vector2.Zero, Vector2.One, ease);
+        SpritebatchDrawer dw = SpritebatchDrawer.FromTextureAsset(glowBallAsset, NPC.Center);
+        dw.color = color;
+        dw.color.A = 0;
+        dw.scale = scale;
+        sb.Draw(dw);
+        dw.color = Color.White;
+        dw.color.A = 0;
+        dw.scale *= 0.5f;
+        sb.Draw(dw);
+    }
+    public bool CanSpawn()
+    {
+        return
+            !NPC.AnyNPCs(ModContent.NPCType<BunnyStorm>()) &&
+            !NPC.AnyNPCs(ModContent.NPCType<BunnyStormCrystal>()) &&
+            !DownedBossTracker.IsDowned(DownedBossFlag.BunnyStorm);
+    }
+
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+        WiggleTimer = 15;
+        if (NPC.life <= 0)
+        {
+            if (IsDying < 1)
+            {
+                IsDying = 1;
+                FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 35, baseSize: 0.24f);
+                PixelPrimitiveCircleFactory.CreateVerliaMoonBoom2(NPC.Center);
+                NPC.netUpdate = true;
+            }
+          
+            NPC.life = 1;
+        }
+        else
+        {
+            for (float f = 0; f < 6f; f++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(13, 13);
+                var dp = DustParticle.Spawn(NPC.Center, velocity);
+                dp.Scale *= 0.5f;
+                dp.gravity = 0;
+                dp.dampening = 0.05f;
+                dp.outerColor = Color.Blue;
+            }
+        }
+    }
+
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        if (IsDying > 1)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(RenderGlowingBall);
+        }
+        NPC.spriteDirection = 1;
+
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.5f, 1f, speed: 3);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.65f;
+        spriteBatch.Draw(glowDrawer);
+        SpritebatchDrawer crystalDrawer = SpritebatchDrawer.FromNPC(NPC);
+        spriteBatch.Draw(crystalDrawer);
+
+        crystalDrawer.VerticalFrame(2, 3);
+        crystalDrawer.color = Color.Lerp(Color.Transparent, Color.White, ExtraMath.Osc(0f, 1f, speed: 3));
+        crystalDrawer.color.A = 0;
+        spriteBatch.Draw(crystalDrawer);
+        return false;
+    }
+
+    public override void OnKill()
+    {
+        base.OnKill();
+    }
+}
+
+
 public class BunnyStorm : ScarletBoss
 {
     private enum AIState
@@ -357,7 +629,7 @@ public class BunnyStorm : ScarletBoss
         NPC.height = 100;
         NPC.damage = 50;
         NPC.defense = 10;
-        NPC.lifeMax = 2000;
+        NPC.lifeMax = 1700;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0f;
@@ -403,14 +675,7 @@ public class BunnyStorm : ScarletBoss
                 SwitchState(AIState.Despawn);
         }
 
-        if (Main.rand.NextBool(16))
-        {
-            Vector2 pos = new Vector2();
-            pos.X = Main.rand.Next(0, NPC.width);
-            pos.Y = Main.rand.Next(0, NPC.height);
-            pos += NPC.position;
-            Dust.NewDustPerfect(pos, DustID.GemDiamond, Main.rand.NextVector2Circular(1, 1), Scale: 1.2f);
-        }
+        Lighting.AddLight(NPC.Center, TorchID.Ice);
 
         _showTrail = false;
         _contactDamage = false;
@@ -459,7 +724,7 @@ public class BunnyStorm : ScarletBoss
     {
         SoundStyle readySound = new SoundStyle($"Stellamod/Assets/Sounds/OverGrowth_TP{Main.rand.Next(1, 3)}");
         readySound = readySound with { PitchVariance = 0.5f };
-        readySound.Volume = 0.3f;
+        readySound.Volume = 0.6f;
         SoundEngine.PlaySound(readySound, NPC.position);
     }
 
@@ -521,6 +786,9 @@ public class BunnyStorm : ScarletBoss
                 {
                     if(Timer == 1)
                     {
+                        SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage1");
+                        boom2.PitchVariance = 0.3f;
+                        SoundEngine.PlaySound(boom2, MyTarget.position);
                         _stormFrame = 1;
                         _startRotation = _stormRotation;
                     }
@@ -599,7 +867,7 @@ public class BunnyStorm : ScarletBoss
     private bool IsGrounded()
     {
         Point solidTileBelow = NPC.Bottom.ToTileCoordinates();
-        solidTileBelow.Y++;
+        solidTileBelow.Y+=2;
         bool tileSolid = Main.tileSolid[Main.tile[solidTileBelow].TileType] || Main.tileSolidTop[Main.tile[solidTileBelow].TileType];
         bool isGrounded = Main.tile[solidTileBelow].HasTile && tileSolid;
         return isGrounded;
@@ -615,6 +883,7 @@ public class BunnyStorm : ScarletBoss
                 {
                     if (Timer == 1)
                     {
+   
                         PlayReadySound();
                         _initialVelocity = NPC.velocity;
                         NPC.TargetClosest();
@@ -650,7 +919,7 @@ public class BunnyStorm : ScarletBoss
                     startupPoint.Y -= MathHelper.Lerp(0f, 100, EasingFunction.InExpo(ratio));
                     Vector2 velocityToPoint = (startupPoint - NPC.Center);
 
-                    NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToPoint, EasingFunction.InOutExpo(ratio2));
+                    NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToPoint, EasingFunction.InOutQuad(ratio2));
 
                     if (Timer >= fistingTime / 2f)
                     {
@@ -659,7 +928,7 @@ public class BunnyStorm : ScarletBoss
                     _outliner.warning = true;
           
                   
-                    _stormRotation = MathHelper.Lerp(0, MathHelper.TwoPi * 2, EasingFunction.InOutExpo(ratio)) + MathHelper.PiOver2;
+                    _stormRotation = MathHelper.Lerp(0, MathHelper.TwoPi * 2, EasingFunction.InOutQuad(ratio)) + MathHelper.PiOver2;
                     if(Timer >= fistingTime)
                     {
                         Timer = 0;
@@ -670,6 +939,12 @@ public class BunnyStorm : ScarletBoss
                 break;
             case 1:
                 {
+                    if(Timer == 1)
+                    {
+                        SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage2");
+                        boom2.PitchVariance = 0.3f;
+                        SoundEngine.PlaySound(boom2, MyTarget.position);
+                    }
                     _contactDamage = true;
                     _outliner.attacking = true;
                     if (NPC.velocity.Y < 25)
@@ -746,6 +1021,14 @@ public class BunnyStorm : ScarletBoss
                         }
 
 
+                        if(AttackCounter == 3)
+                        {
+                            ShakeScreenPosition.Shake = 16;
+                            FXUtil.ShakeCamera(NPC.position, 1024, 129);
+                            SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/RocketExplosion");
+                            boom2.PitchVariance = 0.3f;
+                            SoundEngine.PlaySound(boom2, MyTarget.position);
+                        }
                         if (MultiplayerHelper.IsHost)
                         {
                             int shockwaveDamage = ShockwaveDamage;
@@ -844,7 +1127,7 @@ public class BunnyStorm : ScarletBoss
                         NPC.TargetClosest();
                     }
 
-                    float fistingTime = 120;
+                    float fistingTime = 160;
                     float ratio = Timer / fistingTime;
                     float ease = EasingFunction.InOutSine(ratio);
                     Vector2 s1 = Vector2.Lerp(Vector2.One, Vector2.Zero, ease);
@@ -856,15 +1139,15 @@ public class BunnyStorm : ScarletBoss
                         _stormFrame = 2;
                     }
 
-                    float inTime = 90;
+                    float inTime = 120;
                     float ratio2 = Timer / inTime;
                     Vector2 upOffset = Vector2.UnitY * MathHelper.Lerp(352, 232, EasingFunction.InOutSine(ratio2));
                     Vector2 startupPoint = MyTarget.Center - upOffset;
                     _stormRotation *= 0.98f;
                     //    startupPoint -= Vector2.UnitX * MathHelper.Lerp(0, 300, EasingFunction.InOutSine(ratio2));
-                    startupPoint.Y -= MathHelper.Lerp(0f, 100, EasingFunction.InExpo(ratio));
+                    startupPoint.Y -= MathHelper.Lerp(0f, 100, EasingFunction.InOutQuad(ratio));
                     Vector2 velocityToPoint = (startupPoint - NPC.Center);
-                    NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToPoint, EasingFunction.InOutExpo(ratio2));
+                    NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToPoint, EasingFunction.InOutQuad(ratio2));
                     if (Timer >= fistingTime)
                     {
                         Timer = 0;
@@ -881,6 +1164,9 @@ public class BunnyStorm : ScarletBoss
 
                     if (Timer % 15 == 0)
                     {
+                        SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/BasicMagicHit2");
+                        boom2.PitchVariance = 0.3f;
+                        SoundEngine.PlaySound(boom2, MyTarget.position);
                         _stormScale *= 1.1f;
                         if (MultiplayerHelper.IsHost)
                         {
@@ -899,13 +1185,19 @@ public class BunnyStorm : ScarletBoss
 
                     Vector2 targetScale = Vector2.Lerp(Vector2.One, Vector2.Zero, Timer / 400f);
                     _stormScale = Vector2.Lerp(_stormScale, targetScale, 0.2f);
-                    _outliner.attacking = true;
+                    _outliner.warning = true;
                     NPC.velocity *= 0.9f;
                 }
                 break;
             case 2:
                 {
                     _stormFrame = 0;
+                    if(Timer == 1)
+                    {
+                        SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirageRed");
+                        boom2.PitchVariance = 0.3f;
+                        SoundEngine.PlaySound(boom2, MyTarget.position);
+                    }
                     if(Timer % 10 == 0 && Timer < 60)
                     {
                         PixelPrimitiveCircleFactory.CreateInWhiteSuck(NPC.Center);
@@ -930,17 +1222,27 @@ public class BunnyStorm : ScarletBoss
                     _stormScale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.InExpo(Timer / 80f));
                     if(Timer >= 80f)
                     {
+                        SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/GSummon");
+                        boom2.PitchVariance = 0.3f;
+                        SoundEngine.PlaySound(boom2, MyTarget.position);
                         SwitchState(AIState.Idle);
                     }
                 }
                 break;
         }
     }
+
+    public override bool AllowNameplateToBeShown()
+    {
+        return State != AIState.Spawn;
+    }
+
     private void AI_Idle()
     {
         Timer++;
         if(Timer == 1)
         {
+            _initialVelocity = NPC.velocity;
             NPC.TargetClosest();
         }
 
@@ -958,7 +1260,7 @@ public class BunnyStorm : ScarletBoss
       //  vecFromBind *= MathHelper.Lerp(0.5f, 1f, MathF.Sin(Timer * 0.05f) * 0.5f + 0.5f);
         Vector2 newPoint = _boundPoint + vecFromBind;
         Vector2 velocityToNewPoint = (newPoint - NPC.Center);
-        NPC.velocity = NPC.velocity.MoveTowards(velocityToNewPoint, MathHelper.Lerp(0f, 2f, EasingFunction.InOutExpo(Timer / 120f)));
+        NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToNewPoint, EasingFunction.InOutQuad(Timer / 240f));
         NPC.rotation = NPC.velocity.X * 0.05f;
         _stormFrame = 0;
         _stormScale = Vector2.Lerp(_stormScale, Vector2.One, 0.1f);
@@ -1063,6 +1365,16 @@ public class BunnyStorm : ScarletBoss
         CameraTargetSystem.SetLingerTime(120);
         if (Timer >= 180)
         {
+            for(int i = 0; i < 64; i++)
+            {
+                CreateBunnyGore(NPC.Center, Main.rand.NextVector2Circular(16, 16));
+                _stormScale *= 1.25f;
+            }
+
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ShadowExplosion"), NPC.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb"), NPC.position);
+            FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 35, baseSize: 0.24f);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.SkyBlue, 60, 256);
             FXUtil.GlowCircleBoom(NPC.Center,
                innerColor: Color.White,
                glowColor: Color.Black,
@@ -1099,7 +1411,7 @@ public class BunnyStorm : ScarletBoss
     {
         Timer++;
         NPC.velocity.X *= 0.98f;
-        NPC.velocity.Y += 0.05f;
+        NPC.velocity.Y -= 0.3f;
         if(Timer >= DespawnTime)
         {
             NPC.active = false;
@@ -1343,4 +1655,9 @@ public class BunnyStorm : ScarletBoss
         DrawMask(sb, 0);
     }
 
+    public override void OnKill()
+    {
+        base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.BunnyStorm);
+    }
 }

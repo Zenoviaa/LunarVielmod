@@ -159,3 +159,9 @@ EPage: {
 	WhereToFind: In Your Mom
 	Lore: Birthed by your mom
 }
+
+BunnyStormPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}

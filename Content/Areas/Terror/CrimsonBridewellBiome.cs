@@ -37,6 +37,7 @@ namespace Stellamod.Content.Areas.Terror
             player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell = true;
             if (Main.netMode == NetmodeID.Server)
                 return;
+            return;
 
             SkyManager.Instance.Activate("Stellamod:AegislavSky", player.Center);
         }
@@ -46,6 +47,7 @@ namespace Stellamod.Content.Areas.Terror
             player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell = false;
             if (Main.netMode == NetmodeID.Server)
                 return;
+            return;
 
             SkyManager.Instance.Deactivate("Stellamod:AegislavSky", player.Center);
         }

@@ -23,6 +23,7 @@ public class BridewellTile : ModTile
         //Main.tileFrameImportant[Type] = true;
         Main.tileLargeFrames[Type] = 2;
         TileID.Sets.ChecksForMerge[Type] = true;
+        TileSets.AegisMisty[Type] = true;
         MineResist = 2f;
         MinPick = 225;
         RegisterItemDrop(ModContent.ItemType<BridewellTileItem>());

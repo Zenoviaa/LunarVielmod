@@ -35,7 +35,8 @@ namespace Stellamod.Helpers
         VerliaPrison=23,
         RoyalFox=24,
         Gothivia=25,
-        E=26
+        E=26,
+        BunnyStorm=27
     }
 
     public class Flawless : ModBuff
