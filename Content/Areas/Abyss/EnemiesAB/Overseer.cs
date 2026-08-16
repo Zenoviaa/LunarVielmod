@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Common;
 using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
@@ -88,6 +89,7 @@ public class Overseer : ModNPC,
     {
         base.SetStaticDefaults();
         Main.npcFrameCount[Type] = 24;
+        this.AddToAbyss();
     }
 
     public override void SetDefaults()

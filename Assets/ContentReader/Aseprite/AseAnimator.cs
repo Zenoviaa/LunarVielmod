@@ -63,7 +63,7 @@ public class AnimatorGlobalNPC : GlobalNPC
         if (NPCSets.UseAseprite[npc.type] && Animator != null)
         {
             SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
-            drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.FlipVertically;
+            drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             drawer.rotation = npc.rotation;
             if (npc.spriteDirection == -1)
             {

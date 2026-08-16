@@ -1,5 +1,7 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Common;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
@@ -203,6 +205,9 @@ public class BlindMoth : ModNPC,
         Main.npcFrameCount[Type] = 10;
         NPCID.Sets.TrailCacheLength[Type] = 16;
         NPCID.Sets.TrailingMode[Type] = 3;
+        NPCSets.Heavy[Type] = true;
+        this.AddToAbyss();
+        SpawnSets.ModifiedWeights[Type] = 0.1f;
     }
 
     public override void SetDefaults()
@@ -262,12 +267,12 @@ public class BlindMoth : ModNPC,
         }
         if(NPC.life <= 0)
         {
-
-            for(int i = 0; i < 16; i++)
+            PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.SkyBlue, 30, 128);
+            for (int i = 0; i < 16; i++)
             {
                 EmberParticle ep = LegacyParticle.NewParticle<EmberParticle>(NPC.position + 
                     new Vector2(Main.rand.Next(0, NPC.width), Main.rand.Next(0, NPC.height)), 
-                    -Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi), Color.White, Main.rand.NextFloat(0.9f, 1.5f));
+                    -Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(1f, 4f), Color.White, Main.rand.NextFloat(0.9f, 1.5f));
                 ep.innerColor = Color.White;
                 ep.outerColor = Color.SkyBlue;
             }
@@ -607,9 +612,8 @@ public class BlindMoth : ModNPC,
     {
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
         Vector2 glowCircleDrawOrigin = glowCircle.Size() * 0.5f;
-
-
-        DrawDashLine(spriteBatch, screenPos, drawColor);
+   
+       // DrawDashLine(spriteBatch, screenPos, drawColor);
         Texture2D npcTexture = TextureAssets.Npc[Type].Value;
         Vector2 drawOrigin = NPC.frame.Size() * 0.5f;
         Vector2 drawCenter = NPC.Center - screenPos;

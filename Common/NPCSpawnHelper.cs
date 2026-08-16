@@ -24,6 +24,7 @@ public class SpawnSets : ModSystem
         AegislavSurfaceEnemy = new List<int>();
         HeatedDepthsEnemy = new List<int>();
         FableEnemy = new List<int>();
+        AbyssEnemy = new List<int>();
         ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
         base.SetupContent();
 
@@ -34,6 +35,7 @@ public class SpawnSets : ModSystem
     public static List<int> AegislavSurfaceEnemy;
     public static List<int> HeatedDepthsEnemy;
     public static List<int> FableEnemy;
+    public static List<int> AbyssEnemy;
     public static float[] ModifiedWeights;
 }
 
@@ -64,6 +66,11 @@ public static class NPCSpawnExtensions
     {
         SpawnSets.FableEnemy.Add(npc.Type);
     }
+    public static void AddToAbyss(this ModNPC npc)
+    {
+        SpawnSets.AbyssEnemy.Add(npc.Type);
+    }
+
 
     public static void ModifySpawnWeight(this ModNPC npc, float multiplier)
     {
@@ -126,6 +133,10 @@ public class NPCSpawnHelper : GlobalNPC
         if (spawnInfo.Player.InModBiome<FableBiome>())
         {
             AddEnemiesFromSpawnSet(SpawnSets.FableEnemy, pool, spawnInfo);
+        }
+        if (spawnInfo.Player.InModBiome<AbyssBiome>())
+        {
+            AddEnemiesFromSpawnSet(SpawnSets.AbyssEnemy, pool, spawnInfo);
         }
     }
 }
