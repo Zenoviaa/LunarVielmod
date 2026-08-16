@@ -58,15 +58,15 @@ internal class BlastingBlossom : ModNPC
     public override void SetDefaults()
     {
         base.SetDefaults();
-        NPC.width = 40;
-        NPC.height = 37;
+        NPC.width = 36;
+        NPC.height = 36;
         NPC.damage = 34;
         NPC.defense = 8;
         NPC.lifeMax = 140;
-        NPC.HitSound = SoundID.NPCHit48;
-        NPC.DeathSound = SoundID.DD2_SkeletonDeath;
+        NPC.HitSound = SoundID.NPCHit1;
+        NPC.DeathSound = SoundID.NPCDeath1;
         NPC.value = 563f;
-        NPC.knockBackResist = .45f;
+        NPC.knockBackResist = 0f;
         NPC.aiStyle = -1;
     }
 
@@ -314,7 +314,7 @@ public class BlastingBlossomBeam : ModProjectile
             for (int i = 0; i < BeamPoints.Length; i++)
             {
                 Vector2 beamPoint = BeamPoints[i];
-                if (Main.rand.NextBool(2))
+                if (Main.rand.NextBool(3))
                 {
                     DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                     {
@@ -326,7 +326,7 @@ public class BlastingBlossomBeam : ModProjectile
                     var dp = DustParticle.Spawn(beamPoint, Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.1f, 0.5f), spawnParams);
                     dp.dampening = 0.1f;
                 }
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(4))
                 {
                     var dp = SparkleParticle.Spawn(beamPoint, Projectile.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(0.25f, 0.5f));
                     dp.Scale *= 0.85f;
@@ -427,7 +427,7 @@ public class BlastingBlossomBeam : ModProjectile
 
     private float GetTrailWidth(float completionRatio)
     {
-        return 24 * EasingFunction.QuadraticBump(Timer / Lifetime);
+        return 32 * EasingFunction.QuadraticBump(Timer / Lifetime);
     }
 
     private void DrawPixelGlows(SpriteBatch spriteBatch, Vector2 screenPos)
@@ -468,10 +468,12 @@ public class BlastingBlossomBeam : ModProjectile
     private void DrawPixelatedBeam(GraphicsDevice graphicsDevice)
     {
         var shader2 = RichLaserShader.Instance;
-        shader2.LaserColor = Color.White;
-        shader2.InnerColor = Color.Turquoise * 0.5f;
-        shader2.OuterColor = Color.Blue;
+        shader2.LaserColor = Color.LightBlue;
+        shader2.InnerColor = Color.Blue;
+        shader2.OuterColor = Color.DarkBlue;
+        shader2.LaserTexture = TrailRegistry.SpikyTrail1;
         TrailDrawer.Draw(Main.spriteBatch, BeamPoints, GetTrailColor, GetTrailWidth, shader2);
+    
     }
 
     public override bool PreDraw(ref Color lightColor)
