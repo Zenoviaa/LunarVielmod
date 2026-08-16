@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Reflection;
+using Terraria;
 
 namespace Stellamod.Core.Rendering;
 
+
+
+
 public class RenderTargetProvider(Func<RenderTargetParameters> RenderTargetCreationFunc)
 {
-    private PooledRenderTarget _rentedTarget = null!;
-    public PooledRenderTarget GetTarget()
+    private RenderTargetPrepper _rentedTarget = null!;
+    public RenderTargetPrepper GetTarget()
     {
         var parameters = RenderTargetCreationFunc();
         if (_rentedTarget == null ||
@@ -17,6 +22,7 @@ public class RenderTargetProvider(Func<RenderTargetParameters> RenderTargetCreat
         return _rentedTarget;
     }
 
+    public Func<RenderTargetParameters> RenderTargetParametersCreationFunc => RenderTargetCreationFunc;
     public int Width
     {
         get

@@ -3,11 +3,10 @@ using Terraria;
 
 namespace Stellamod.Core.Rendering;
 
-public class PooledRenderTarget :
+public class RenderTargetPrepper :
     IDisposable
 {
-
-    public PooledRenderTarget(in RenderTargetParameters parameters)
+    public RenderTargetPrepper(in RenderTargetParameters parameters)
     {
         Parameters = parameters;
         target = null!;
@@ -62,14 +61,14 @@ public class PooledRenderTarget :
     {
         DateTime now = DateTime.Now;
         TimeSpan diff = now.Subtract(lastAccessedTime);
-        if (diff.TotalSeconds > 30)
+        if (diff.TotalSeconds > 10)
         {
             return true;
         }
         return false;
     }
 
-    public static implicit operator RenderTarget2D(PooledRenderTarget pooledRenderTarget)
+    public static implicit operator RenderTarget2D(RenderTargetPrepper pooledRenderTarget)
     {
         pooledRenderTarget.lastAccessedTime = DateTime.Now;
         if (pooledRenderTarget.target == null)

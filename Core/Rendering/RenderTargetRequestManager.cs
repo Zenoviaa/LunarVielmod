@@ -8,9 +8,8 @@ namespace Stellamod.Core.Rendering;
 [Autoload(Side = ModSide.Client)]
 public class RenderTargetRequestManager : ModSystem
 {
-    private static readonly HashSet<PooledRenderTarget> _rentedTargets = new();
-    private static readonly HashSet<PooledRenderTarget> _renderTargetPool = new();
-    public static RenderTarget2D UselessTarget;
+    private static readonly HashSet<RenderTargetPrepper> _activeTargets = new();
+    public static RenderTarget2D UselessTarget=null!;
     public override void OnModLoad()
     {
         base.OnModLoad();
@@ -30,22 +29,14 @@ public class RenderTargetRequestManager : ModSystem
         });
         Main.QueueMainThreadAction(() =>
         {
-            foreach (var target in _rentedTargets)
+            foreach (var target in _activeTargets)
             {
                 Main.QueueMainThreadAction(() =>
                 {
                     target.Dispose();
                 });
             }
-            foreach (var target in _renderTargetPool)
-            {
-                Main.QueueMainThreadAction(() =>
-                {
-                    target.Dispose();
-                });
-            }
-            _rentedTargets.Clear();
-            _renderTargetPool.Clear();
+            _activeTargets.Clear();
         });
     }
 
@@ -53,19 +44,10 @@ public class RenderTargetRequestManager : ModSystem
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
-        IEnumerable<PooledRenderTarget> oldTargets = _rentedTargets.Where(x => x.ImOld());
+        IEnumerable<RenderTargetPrepper> oldTargets = _activeTargets.Where(x => x.ImTooOld());
         foreach (var target in oldTargets)
         {
-            _rentedTargets.Remove(target);
-            _renderTargetPool.Add(target);
-            Mod.Logger.Info($"Return Rented Target");
-        }
-
-        IEnumerable<PooledRenderTarget> tooOldTargets = _renderTargetPool.Where(x => x.ImTooOld());
-        foreach (var target in tooOldTargets)
-        {
-            Mod.Logger.Info($"Dispose Rented Target");
-            _renderTargetPool.Remove(target);
+            _activeTargets.Remove(target);
             Main.QueueMainThreadAction(() =>
             {
                 target.Dispose();
@@ -73,29 +55,10 @@ public class RenderTargetRequestManager : ModSystem
         }
     }
 
-    public static PooledRenderTarget Request(RenderTargetParameters parameters)
+    public static RenderTargetPrepper Request(RenderTargetParameters parameters)
     {
-
-
-        PooledRenderTarget pooledRenderTarget = null!;
-        foreach (var target in _renderTargetPool)
-        {
-            if (parameters.Matches(target))
-            {
-                pooledRenderTarget = target;
-                break;
-            }
-        }
-
-        if (pooledRenderTarget != null)
-        {
-            _renderTargetPool.Remove(pooledRenderTarget);
-            _rentedTargets.Add(pooledRenderTarget);
-            return pooledRenderTarget;
-        }
-        Stellamod.Instance.Logger.Info($"New Rented Target");
-        PooledRenderTarget newPooledTarget = new PooledRenderTarget(parameters);
-        _rentedTargets.Add(newPooledTarget);
+        RenderTargetPrepper newPooledTarget = new RenderTargetPrepper(parameters);
+        _activeTargets.Add(newPooledTarget);
         return newPooledTarget;
     }
 }

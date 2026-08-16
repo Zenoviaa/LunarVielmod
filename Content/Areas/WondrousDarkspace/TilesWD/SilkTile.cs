@@ -6,6 +6,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
+using Stellamod.Effects.Darkspace;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
@@ -22,7 +23,7 @@ public class SilkGlobalTile : GlobalTile
     public override void RandomUpdate(int i, int j, int type)
     {
         base.RandomUpdate(i, j, type);
-        if (type == ModContent.TileType<SilkTile>())
+        if (type == ModContent.TileType<SilkTile>() && WorldGen.TileIsExposedToAir(i, j))
         {
             if (Main.rand.NextBool(16))
             {
@@ -67,6 +68,7 @@ public class SilkTile : ModTile
 [Autoload(Side = ModSide.Client)]
 public class MiracleSilkRenderer : ModSystem
 {
+    public static float renderSilk;
     public override void Load()
     {
         base.Load();
@@ -76,17 +78,22 @@ public class MiracleSilkRenderer : ModSystem
     private void DrawSilk(On_Main.orig_DrawDust orig, Main self)
     {
         orig(self);
-        PixelationManager.QueueSpritebatchDrawAction(DrawSilkStrands);
-
-
- //       throw new NotImplementedException();
+        renderSilk--;
+        if (renderSilk > 0 || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder) 
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawSilkStrands, DrawLayer.OverPlayers);
+        }
     }
 
     private void DrawSilkStrands(SpriteBatch sb, Vector2 screenPos)
     {
         (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(256);
         MiracleSilkTile miracleSilkTile = ModContent.GetInstance<MiracleSilkTile>();
-
+        Color rgbColor = Color.Lerp(Color.White, Color.Pink, MathUtil.Osc(0f, 1f, speed: 1));
+        SilkStrandShader strandShader = SilkStrandShader.Instance;
+        strandShader.Time = Main.GlobalTimeWrappedHourly * 3;
+        strandShader.BloomColor = rgbColor * 1f;
+        sb.Restart(effect: strandShader.Effect);
         for (int x = topLeft.X; x < bottomRight.X; x++)
         {
             for (int y = topLeft.Y; y < bottomRight.Y; y++)
@@ -98,6 +105,7 @@ public class MiracleSilkRenderer : ModSystem
               //  miracleSilkTile.MakeDust(x, y);
             }
         }
+        sb.RestartDefaults();
     }
 }
 public class MiracleSilkTile : ModTile
@@ -119,6 +127,11 @@ public class MiracleSilkTile : ModTile
         // SetModTree(new Trees.ExampleTree());
     }
 
+    public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+    {
+        MiracleSilkRenderer.renderSilk = 30;
+        return base.PreDraw(i, j, spriteBatch);
+    }
     public override void NumDust(int i, int j, bool fail, ref int num)
     {
         num = fail ? 1 : 3;
@@ -189,59 +202,32 @@ public class MiracleSilkTile : ModTile
 
     public void DrawString(int i, int j, SpriteBatch spriteBatch)
     {
-
-        SimpleTrailShader trailShader = SimpleTrailShader.Instance;
-        trailShader.TrailingTexture = TrailRegistry.SilkTrail;
-        trailShader.SecondaryTrailingTexture = TrailRegistry.StarTrail;
-        trailShader.TertiaryTrailingTexture = TrailRegistry.SilkTrail;
-        trailShader.BlendState = BlendState.AlphaBlend;
-
         Point start = new Point(i, j);
         Point end = GetConnectedTile(i, j);
-
         Color lightColor = Lighting.GetColor(start.X, end.Y);
 
-        Color rgbColor = Color.Lerp(Color.White, Color.Pink, MathUtil.Osc(0f, 1f, speed: 1));
-    //    rgbColor = rgbColor.MultiplyRGB(lightColor);
-        trailShader.PrimaryColor = rgbColor;
-        trailShader.SecondaryColor = rgbColor * 1f;
 
-        Vector2[] trailingPoints = GetTrail(start, end);
-        TrailDrawer.Draw(spriteBatch, trailingPoints, null, GetColor, GetWidth, trailShader);
+        Vector2 startWorld = start.ToWorldCoordinates();
+        Vector2 endWorld = end.ToWorldCoordinates();
+        Vector2 center = startWorld + endWorld;
+        center *= 0.5f;
+        float rot = (endWorld - startWorld).ToRotation();
 
+        var trail = TrailRegistry.WhispyTrail;
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(trail, center);
+        drawer.rotation = rot;
+        drawer.scale.X = Vector2.Distance(endWorld, startWorld) / (float)trail.Width();
+        drawer.scale.Y *= 0.2f;
+        drawer.color = Color.White;
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
 
-
-        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
-        bloomTrailShader.InnerColor = Color.Lerp(Color.White, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 1f)) * 0.5f;
-        bloomTrailShader.OuterColor = Color.Lerp(Color.Pink, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 1)) * 0.5f;
-        TrailDrawer.Draw(spriteBatch, trailingPoints, null, GetColor, GetBloomWidth, bloomTrailShader);
-
-
-
-        Asset<Texture2D> silkEnd = TrailRegistry.SilkEnd;
-        Vector2 startPoint = start.ToWorldCoordinates();
-        Vector2 endPoint = end.ToWorldCoordinates();
-
-        float drawRotation = (endPoint - startPoint).ToRotation();
-        Vector2 drawPoint = startPoint - Main.screenPosition;
-        Color drawColor = Color.White.MultiplyRGB(lightColor) * 0.75f;
-        drawColor.A = 0;
-        Vector2 origin = silkEnd.Size() / 2f;
-        Vector2 drawScale = Vector2.One;
-
-
-     //   spriteBatch.Draw(silkEnd.Value, drawPoint, null, drawColor, drawRotation, origin, drawScale, SpriteEffects.None, 0);
-
-        Vector2 drawPoint2 = endPoint - Main.screenPosition;
-        drawPoint2 += (startPoint - endPoint).SafeNormalize(Vector2.Zero) * 32;
-        float drawRotation2 = (startPoint - endPoint).ToRotation();
-  //      spriteBatch.Draw(silkEnd.Value, drawPoint2, null, drawColor, drawRotation2, origin, drawScale, SpriteEffects.None, 0);
+        drawer.scale.Y *= 1.5f;
+        drawer.color = Color.DarkBlue;
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
     }
-    public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
-    {
 
-        return base.PreDraw(i, j, spriteBatch);
-    }
     public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
     {
         base.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
