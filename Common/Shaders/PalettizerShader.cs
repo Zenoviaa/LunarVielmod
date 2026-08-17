@@ -88,7 +88,7 @@ namespace Stellamod.Common.Shaders
         public static PalettizerShader Use(string palette)
         {
             PalettizerShader palettizerShader = ShaderContent.GetInstance<PalettizerShader>();
-            palettizerShader.PaletteTexture = PaletteHelper.GetColorSpectrum(palette);
+            palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(palette).Value.ColorAtlas;
             palettizerShader.Progress = 1f;
             palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
             palettizerShader.ImageSize = new Vector2(131, 312) * 4f;

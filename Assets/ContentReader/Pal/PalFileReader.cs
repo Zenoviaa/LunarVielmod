@@ -1,86 +1,70 @@
-﻿using System;
+﻿using ReLogic.Content;
+using ReLogic.Content.Readers;
+using ReLogic.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.Palettes;
-public static class PaletteAssets
+namespace Stellamod.Assets.ContentReader.Pal;
+
+public record class Palette(Vector3[] Colors, Texture3D ColorAtlas);
+
+[Autoload(false)]
+public class PalFileReader :
+    IAssetReader,
+    ILoadable
 {
-    public const string ABYSS = "Abyss.pal";
-    public const string PERFECT = "Perfect.pal";
-    public const string AEGISLAV = "Aegislav.pal";
-    public const string BlackHurricane = "BlackHurricane.pal";
-    public const string BLOODHOUND = "BloodHound.pal";
-    public const string DESERT = "Desert.pal";
-    public const string DESERTTOP = "DesertTop.pal";
-    public const string DUNGEON = "Dungeon.pal";
-    public const string FABLE = "Fable.pal";
-    public const string FIRESTORM = "FireStorm.pal";
-    public const string HELL = "Hell.pal";
-    public const string ILLURIANMISTYDUNGEON = "IllurianMistyDungeon.pal";
-    public const string MISTYDUNGEON = "MistyDungeon.pal";
-    public const string MOONSPIRALTOWER = "MoonspiralTower.pal";
-    
-    public const string ROYALCAPITAL = "RoyalCapital.pal";
-    public const string RUSTY = "Rusty.pal";
-    public const string SANGUINESINGULARITY = "SanguineSingularity.pal";
-    public const string VILEPIPESNGARDEN = "VilepipesNGarden.pal";
-    public const string WITCHTOWN = "Witchtown.pal";
-}
-
-[Autoload(Side = ModSide.Client)]
-public class PaletteHelper : ModSystem
-{
-    private Dictionary<string, Texture3D> _colorAtlas;
-    public override void Load()
+    public const string FILE_EXTENSION = ".pal";
+    private static readonly Type type = typeof(Palette);
+    public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class
     {
-        base.Load();
-        LoadPalettes();
-    }
 
-    public override void Unload()
-    {
-        base.Unload();
-        if (_colorAtlas == null)
-            return;
-        Main.QueueMainThreadAction(DisposeColorSpectrumTextures);
-    }
-
-    private void DisposeColorSpectrumTextures()
-    {
-        foreach (var kvp in _colorAtlas)
+        if (typeof(T) != type)
         {
-            kvp.Value?.Dispose();
+            throw AssetLoadException.FromInvalidReader<PalFileReader, T>();
         }
-        _colorAtlas = null;
-    }
-    public static Texture3D GetColorSpectrum(string path)
-    {
-        return ModContent.GetInstance<PaletteHelper>()._colorAtlas[path];
+
+        await mainThreadCtx;
+
+        var result = CreatePalette(stream);
+
+        return (result as T)!;
     }
 
-    public void LoadPalettes()
+    private Palette CreatePalette(Stream stream)
     {
-        _colorAtlas = new Dictionary<string, Texture3D>();
-        Mod mod = Stellamod.Instance;
-        foreach (var file in mod.GetFileNames())
+        Vector3[] palette = ReadPaletteVector3(stream);
+        Texture3D colorSpectrum = CreateColorSpectrumTexture(palette);
+        return new Palette(palette, colorSpectrum);
+    }
+
+    public void Load(Mod mod)
+    {
+        var readers = Main.instance.Services.Get<AssetReaderCollection>();
+        if (!readers.TryGetReader(FILE_EXTENSION, out var reader) || reader != this)
         {
-            if (file.Contains(".pal"))
-            {
-                Main.QueueMainThreadAction(() =>
-                {
-                    using (var stream = mod.GetFileStream(file))
-                    {
-                        string fileName = new FileInfo(file).Name; ;
-                        Vector3[] palette = ReadPaletteVector3(stream);
-                        Texture3D colorSpectrum = CreateColorSpectrumTexture(palette);
-                        _colorAtlas.Add(fileName, colorSpectrum);
-                    }
-                });
-            }
+            readers.RegisterReader(this, FILE_EXTENSION);
+        }
+    }
+
+    public void Unload()
+    {
+        //guh kinda messy
+        var readers = Main.instance.Services.Get<AssetReaderCollection>();
+        Dictionary<string, IAssetReader> readersByExtension = (Dictionary<string, IAssetReader>)
+            typeof(AssetReaderCollection).GetField("_readersByExtension", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .GetValue(readers);
+        if (readersByExtension.ContainsKey(FILE_EXTENSION))
+        {
+            readersByExtension.Remove(FILE_EXTENSION);
+            typeof(AssetReaderCollection).GetField("_extensions", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .SetValue(readers, readersByExtension.Keys.ToArray());
         }
     }
     public static Vector3[] ReadPaletteVector3(Stream stream)
@@ -344,7 +328,6 @@ public class PaletteHelper : ModSystem
         }
 
         colorSpectrumTexture.SetData(pixelsToSet);
-        Console.WriteLine($"Created Color Spectrum, with color dimension {colorDimension}, {pixelsToSet.Length}");
         return colorSpectrumTexture;
     }
     public static Texture3D CreateColorSpectrumTexture(Vector3[] palette)
@@ -367,9 +350,9 @@ public class PaletteHelper : ModSystem
                     //Calculate RGB values based on the size of the texture
 
                     Vector3 rgb = new Vector3();
-                    rgb.X = ((float)x / dimension) * 255f;
-                    rgb.Y = ((float)y / dimension) * 255f;
-                    rgb.Z = ((float)z / dimension) * 255f;
+                    rgb.X = (x / dimension) * 255f;
+                    rgb.Y = (y / dimension) * 255f;
+                    rgb.Z = (z / dimension) * 255f;
 
 
                     if (palette != null)
@@ -384,8 +367,6 @@ public class PaletteHelper : ModSystem
         }
 
         colorSpectrumTexture.SetData(pixelsToSet);
-        Console.WriteLine($"Created Color Spectrum, with color dimension {colorDimension}, {pixelsToSet.Length}");
         return colorSpectrumTexture;
     }
-
 }

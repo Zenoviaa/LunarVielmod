@@ -254,14 +254,14 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public virtual string GetPaletteFile()
         {
-            return this.GetType().Name.Replace("PaletteEffect", ".pal");
+            return this.GetType().Name.Replace("PaletteEffect", string.Empty);
         }
 
         public Effect GetShader()
         {
             string palFile = GetPaletteFile();
             PalettizerShader palettizerShader = PalettizerShader.Instance;
-            palettizerShader.PaletteTexture = PaletteHelper.GetColorSpectrum(palFile);
+            palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(palFile).Value.ColorAtlas;
             palettizerShader.Progress = fade;
             palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
             palettizerShader.ImageSize = new Vector2(Main.screenWidth, Main.screenHeight);

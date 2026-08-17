@@ -123,7 +123,7 @@ public class GothiviaDomain : ModSystem
 
 
         PalettizerShader palettizerShader = PalettizerShader.Instance;
-        palettizerShader.PaletteTexture = PaletteHelper.GetColorSpectrum("Hell.pal");
+        palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(PaletteAssets.HELL).Value.ColorAtlas;//PaletteHelper.GetColorSpectrum("Hell.pal");
         palettizerShader.Progress = 1f;
         palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
         palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
