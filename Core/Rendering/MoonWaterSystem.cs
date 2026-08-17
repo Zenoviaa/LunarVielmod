@@ -464,6 +464,8 @@ public class MoonWaterSystem : ModSystem
         if (_waterEffect == null)
             return;
 
+        if (!Lighting.UsingNewLighting)
+            return;
         if (layer == RenderLayers.ForegroundWater)
         {
             //This is called right before the front water gets drawn
@@ -565,6 +567,8 @@ public class MoonWaterSystem : ModSystem
         if (_waterEffect == null)
             return;
 
+        if (!Lighting.UsingNewLighting)
+            return;
 
         //var sw = Stopwatch.StartNew();
         CalculateHeightsToDraw();
