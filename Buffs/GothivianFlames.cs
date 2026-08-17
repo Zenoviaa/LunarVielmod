@@ -1,5 +1,4 @@
 ﻿using Stellamod.Dusts;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -26,7 +25,7 @@ namespace Stellamod.Buffs
                     _timer = 0;
                 }
             }
-            if ((!NPC.AnyNPCs(ModContent.NPCType<RekSnake>())) || Player.dead)
+            if (Player.dead)
             {
                 _maxHealthLoss = 0;
             }

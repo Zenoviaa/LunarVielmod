@@ -202,13 +202,13 @@ internal class BlastingBlossom : ModNPC
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-   
-        return base.PreDraw(spriteBatch, screenPos, drawColor);
+        NPC.DrawAnimator(spriteBatch, drawColor);
+        return false;
     }
 
     private void DrawWhite(SpriteBatch spriteBatch)
     {
-        NPC.GetGlobalNPC<AnimatorGlobalNPC>().PreDraw(NPC, spriteBatch, Main.screenPosition, _outliner.outlineColor);
+        NPC.DrawAnimator(spriteBatch, _outliner.outlineColor);
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {

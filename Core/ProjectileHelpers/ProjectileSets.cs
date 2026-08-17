@@ -1,11 +1,37 @@
-﻿using Terraria.ID;
+﻿using System;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace Stellamod.Core.ProjectileHelpers
+namespace Stellamod.Core.ProjectileHelpers;
+
+[Flags]
+public enum DebuffFlags
 {
-    public static class ProjectileSets
+    None = 0,
+    Burning_Serpent = 1
+}
+
+public class ProjectileSets : ModSystem
+{
+    public static bool[] ResistedByFlamecrestShield;
+    public static bool[] ResetBossMultihitDamageFalloff;
+    public static bool[] BossMultihitDamageFalloff;
+    public static DebuffFlags[] CommonDebuffs;
+    public override void ResizeArrays()
     {
-        public static bool[] ResistedByFlamecrestShield = ProjectileID.Sets.Factory.CreateBoolSet(false);
-        public static bool[] ResetBossMultihitDamageFalloff = ProjectileID.Sets.Factory.CreateBoolSet(false);
-        public static bool[] BossMultihitDamageFalloff = ProjectileID.Sets.Factory.CreateBoolSet(false);
+        base.ResizeArrays();
+        ResistedByFlamecrestShield = ProjectileID.Sets.Factory.CreateBoolSet(false);
+        ResetBossMultihitDamageFalloff = ProjectileID.Sets.Factory.CreateBoolSet(false);
+        BossMultihitDamageFalloff = ProjectileID.Sets.Factory.CreateBoolSet(false);
+        CommonDebuffs = ProjectileID.Sets.Factory.CreateCustomSet<DebuffFlags>(DebuffFlags.None);
+    }
+}
+
+
+public static class ProjectileSetExtensions
+{
+    public static void AddCommonDebuff(this ModProjectile proj, DebuffFlags flags)
+    {
+        ProjectileSets.CommonDebuffs[proj.Type] |= flags;
     }
 }

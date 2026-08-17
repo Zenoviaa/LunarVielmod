@@ -1,9 +1,8 @@
-﻿using Microsoft.CodeAnalysis.Text;
-using ReLogic.Content;
+﻿using ReLogic.Content;
+using Stellamod.Common.Animations;
 using Stellamod.Core.NPCHelpers;
 using Terraria;
 using Terraria.ModLoader;
-using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Assets.ContentReader.Aseprite;
 
@@ -26,6 +25,24 @@ public static class AnimationExtensions
     {
         ref DrawEffects drawEffects = ref modNpc.GetAnimator().drawEffects;
         drawEffects.Scale = scale;
+    }
+
+    public static void DrawAnimator(this NPC npc, SpriteBatch spriteBatch, Color drawColor)
+    {
+        var Animator = npc.GetAnimator();
+        SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
+        drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        drawer.rotation = npc.rotation;
+        drawer.color = drawColor;
+        if (npc.spriteDirection == -1)
+        {
+            drawer.drawOrigin.X = drawer.sourceRect!.Value.Width - drawer.drawOrigin.X;
+        }
+
+        //Offset it even with the draw origin so the sprite is still in the center of the hitbox
+        Vector2 offset = drawer.drawOrigin - Animator.centerDrawOrigin;
+        drawer.worldPosition += offset;
+        spriteBatch.Draw(drawer);
     }
 }
 
@@ -57,35 +74,6 @@ public class AnimatorGlobalNPC : GlobalNPC
             return true && lateInstantiation;
         return false;
     }
-
-    public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        if (NPCSets.UseAseprite[npc.type] && Animator != null)
-        {
-            SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
-            drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            drawer.rotation = npc.rotation;
-            drawer.color = drawColor;
-            if (npc.spriteDirection == -1)
-            {
-                drawer.drawOrigin.X = drawer.sourceRect!.Value.Width - drawer.drawOrigin.X;
-            }
-
-            //Offset it even with the draw origin so the sprite is still in the center of the hitbox
-            Vector2 offset = drawer.drawOrigin - Animator.centerDrawOrigin;
-            drawer.worldPosition += offset;
-            spriteBatch.Draw(drawer);
-
-            /*
-            SpritebatchDrawer testSheetDrawer = SpritebatchDrawer.FromTextureAsset(Animator.Sprite.Value.sheet, npc.Center);
-            spriteBatch.Draw(testSheetDrawer);*/
-            return false;
-        }
-        else
-            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
-    }
-
-
 }
 
 public record struct AnimationParams(bool IsLooping = false)
@@ -105,7 +93,7 @@ public class AseAnimator
     {
         Sprite = sprite;
         drawEffects = default;
-        centerDrawOrigin =  new Vector2(sprite.Value.FrameWidth * 0.5f, sprite.Value.FrameHeight * 0.5f);
+        centerDrawOrigin = new Vector2(sprite.Value.FrameWidth * 0.5f, sprite.Value.FrameHeight * 0.5f);
     }
     public readonly Asset<AseSprite> Sprite;
     public AseTags playingTag;
@@ -141,13 +129,15 @@ public class AseAnimator
     {
         if (playingTag == null)
             return;
-        //TODO: delta time?
+        //TODO: instead take in an elapsed time and calculate the current frame
+        //That would be better net synced.
+
         //rn just increasing by 1 / 60 since that's the game's tick rate
         _frameCounter += 1f / 60f;
         float ft = Sprite.Value.frames[_frameIndex].frameTime;
         while (_frameCounter >= ft)
         {
-            _frameCounter-=ft;
+            _frameCounter -= ft;
             _frameIndex++;
             if (isLooping)
             {

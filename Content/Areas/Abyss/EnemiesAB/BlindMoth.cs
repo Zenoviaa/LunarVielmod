@@ -524,13 +524,13 @@ public class BlindMoth : ModNPC,
         {
             _dashLineAlpha = 0f;
 
-            NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity, 0.3f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, _dashVelocity * 2, MathHelper.Lerp(0.02f, 0.14f, EasingFunction.InOutSine((Timer - 180) / 40f)));
             _contactDamage = true;
             _targetOutlineColor = Color.Red;
         }
         else if (Timer < 280)
         {
-            NPC.velocity *= 0.9f;
+            NPC.velocity *= 0.96f;
             float targetYSpeed = MathHelper.Lerp(-1f, 1f, ExtraMath.Osc(0f, 1f));
             NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, targetYSpeed, 0.1f);
         }

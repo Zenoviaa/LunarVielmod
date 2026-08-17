@@ -322,11 +322,6 @@ Train1: {
 	Bestiary: A part of gothivia's largest creations
 }
 
-Rek: {
-	DisplayName: Havoc
-	Bestiary: A loving little pet of the sun goddess Gothivia
-}
-
 Gothiviabb: {
 	DisplayName: Gothiviabb
 	Bestiary: I guess she knows you destroyed her singularity inside Daedus, oops
@@ -1367,3 +1362,4 @@ GoldDigger.DisplayName: Gold Digger
 BunnyStormCrystal.DisplayName: Bunny Storm Crystal
 BlindWanderer.DisplayName: Blind Wanderer
 BlastingBlossom.DisplayName: Blasting Blossom
+RekBoss.DisplayName: Rek, the Burning Serpent

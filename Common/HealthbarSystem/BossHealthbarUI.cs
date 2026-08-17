@@ -168,8 +168,7 @@ namespace Stellamod.Common.HealthbarSystem
                 _bossNameText.SetText(GetBossTitle());
                 Asset<Texture2D> bossIconTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossIcon);
                 Asset<Texture2D> bossFillTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossBar);
-                spriteBatch.Draw(bossIconTexture.Value, topLeft + new Vector2(50, 58) / 2 + new Vector2(2), null, Color.White * _easeInAlpha, 0f, bossIconTexture.Size() / 2, 1f, SpriteEffects.None, 0f);
-
+  
                 var shader = BossHealthbarShader.Instance;
                 shader.InnerColor = Color.Transparent;
                 shader.OuterColor = Color.White;
@@ -179,7 +178,7 @@ namespace Stellamod.Common.HealthbarSystem
 
 
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, shader.Effect, Main.UIScaleMatrix);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, default, default, default, shader.Effect, Main.UIScaleMatrix);
 
         
                 spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White * _easeInAlpha, 0f, default, _barFillScale, SpriteEffects.None, 0f);
@@ -199,6 +198,8 @@ namespace Stellamod.Common.HealthbarSystem
                     Vector2 edgeDraw = EdgeTextureAsset.Size() / 2f;
                     spriteBatch.Draw(EdgeTextureAsset.Value, drawPos + edgeDraw, null, Color.White * 0.25f * _easeInAlpha, 0f, edgeDraw, _easeInAlpha, SpriteEffects.None, 0f);
                 }
+                spriteBatch.Draw(bossIconTexture.Value, topLeft + new Vector2(50, 58) / 2 + new Vector2(2), null, Color.White * _easeInAlpha, 0f, bossIconTexture.Size() / 2, 1f, SpriteEffects.None, 0f);
+
             }
 
 

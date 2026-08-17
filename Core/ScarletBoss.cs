@@ -156,8 +156,8 @@ public abstract class ScarletBoss : ModNPC
     public float FacingDirectionToTarget => MyTarget.Center.X < NPC.Center.X ? -1 : 1;
     public int TargetDirection => (int)FacingDirectionToTarget;
     public IEntitySource SourceFromThis => NPC.GetSource_FromThis();
-    public string Texture_BossIcon => Texture + "_BossIcon";
-    public string Texture_BossBar => Texture + "_BossBar";
+    public string Texture_BossIcon => base.Texture + "_BossIcon";
+    public string Texture_BossBar => base.Texture + "_BossBar";
 
     public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
     {

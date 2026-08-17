@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Core.NPCHelpers;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.ContentReader.Aseprite;

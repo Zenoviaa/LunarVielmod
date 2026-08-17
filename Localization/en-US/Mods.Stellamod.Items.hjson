@@ -12117,6 +12117,6 @@ ThickSnow: {
 }
 
 BunnyStormRelicItem: {
-	DisplayName: Bunny Storm Relic Item
+	DisplayName: Bunny Storm Relic
 	Tooltip: ""
 }

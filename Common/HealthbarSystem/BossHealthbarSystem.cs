@@ -107,6 +107,7 @@ namespace Stellamod.Common.HealthbarSystem
                     {
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
+                           
                             _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
                         return true;

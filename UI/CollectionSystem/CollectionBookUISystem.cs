@@ -293,11 +293,12 @@ namespace Stellamod.UI.CollectionSystem
                     "LunarVeil: Collection Book UI",
                     delegate
                     {
-                        SpriteBatch spriteBatch = Main.spriteBatch;
-                        spriteBatch.End();
-                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, spriteBatch.GraphicsDevice.RasterizerState, default, Main.UIScaleMatrix);
+                      
                         if (_lastUpdateUiGameTime != null && _hudUserInterface?.CurrentState != null)
                         {
+                            SpriteBatch spriteBatch = Main.spriteBatch;
+                            spriteBatch.End();
+                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, spriteBatch.GraphicsDevice.RasterizerState, default, Main.UIScaleMatrix);
                             _hudUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
                         return true;
