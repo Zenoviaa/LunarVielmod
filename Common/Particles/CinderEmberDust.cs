@@ -21,6 +21,7 @@ public struct CinderEmberDustData : IParticleData
     public Vector2 startScale;
     public float timeleft;
     public float turn;
+    public float parallaxStrength;
     public bool IsActive => timeleft > 0;
 }
 
@@ -89,6 +90,7 @@ public class CinderEmberDust : ParticleUpdater<CinderEmberDustData>
         {
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
+            particle.position += (Main.screenPosition - Main.screenLastPosition) * -particle.parallaxStrength;
             particle.timeleft--;
 
 
@@ -101,6 +103,7 @@ public class CinderEmberDust : ParticleUpdater<CinderEmberDustData>
             color *= EasingFunction.QuadraticBump(interpolant);
             particle.color = color;
             particle.velocity.X += particle.turn;
+
             particle.turn *= 0.99f;
         }
     }

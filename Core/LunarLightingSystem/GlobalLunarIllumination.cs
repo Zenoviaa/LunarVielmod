@@ -32,7 +32,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             if(Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneDrakonic || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder)
             {
-                GlobalLum = 0.5f;
+                GlobalLum = 0.65f;
             }
             GlobalLightStrength = MathHelper.Lerp(GlobalLightStrength, GlobalLum, 0.1f);
   

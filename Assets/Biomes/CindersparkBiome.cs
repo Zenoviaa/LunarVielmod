@@ -23,7 +23,7 @@ namespace Stellamod.Assets.Biomes
         public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneCinder = false;
         public void ModifyBackLight(ref Color backLightColor)
         {
-            backLightColor = Color.Lerp(backLightColor, Color.White, 0.8f);
+            backLightColor = Color.Lerp(backLightColor, Color.White, 0.58f);
         }
     }
 }

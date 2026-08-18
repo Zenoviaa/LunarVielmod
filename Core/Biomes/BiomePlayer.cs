@@ -124,7 +124,7 @@ namespace Stellamod.Content.Biomes
                 pos.X = Main.rand.Next(0, Main.screenWidth * 2);
                 pos.Y = Main.rand.Next(0, Main.screenHeight);
                 pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-                Particles.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f });
+                Particles.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
             }
             if (Main.rand.NextBool(2))
             {
