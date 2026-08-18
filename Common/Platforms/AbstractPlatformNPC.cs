@@ -22,7 +22,7 @@ public abstract class AbstractPlatformNPC : ModNPC
         NPC.height = platformSize.Y;
         NPC.friendly = true;
         NPC.noTileCollide = true;
-        NPC.noGravity = true;
+
         NPC.damage = 1;
         NPC.defense = 1;
         NPC.lifeMax = 100;
@@ -41,13 +41,29 @@ public abstract class AbstractPlatformNPC : ModNPC
         {
             Point tilePoint = NPC.Center.ToTileCoordinates();
             Tile tile = Main.tile[tilePoint];
-            for (int i = 0; i < 100; i++)
+            Tile tileBelow = Main.tile[tilePoint + new Point(0, 1)];
+
+            if(tileBelow.LiquidAmount <= 0)
             {
-                tile = Main.tile[tilePoint];
-                if (tile.LiquidAmount <= 0)
-                    break;
-                tilePoint.Y--;
+                for (int i = 0; i < 100; i++)
+                {
+                    tile = Main.tile[tilePoint];
+                    if (tile.LiquidAmount > 0)
+                        break;
+                    tilePoint.Y++;
+                }
             }
+            else
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    tile = Main.tile[tilePoint];
+                    if (tile.LiquidAmount <= 0)
+                        break;
+                    tilePoint.Y--;
+                }
+            }
+   
 
             Vector2 pointToMoveTo = tilePoint.ToWorldCoordinates();
             Vector2 normalVel = pointToMoveTo - NPC.Center;
@@ -55,14 +71,19 @@ public abstract class AbstractPlatformNPC : ModNPC
             float dist = Vector2.Distance(NPC.Center, pointToMoveTo);
             if (dist < 16)
             {
-                NPC.velocity *= 0.8f;
+                NPC.velocity *= 0.82f;
             }
             else
             {
-                NPC.velocity = NPC.velocity.MoveTowards(normalVel, 2);
+            
+                Vector2 v = NPC.velocity.MoveTowards(normalVel * 8, 8);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, v, 0.1f);
             }
-        }
 
+            NPC.noGravity = true;
+
+        }
+   
 
         Vector2 movement = NPC.position - NPC.oldPosition;
         Rectangle platformRectangle = GetPlatformRectangle();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets.Biomes;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Biomes;
 using Stellamod.Core.LunarLightingSystem;
@@ -11,7 +12,7 @@ using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Assets.Biomes
+namespace Stellamod.Content.Areas.WondrousDarkspace
 {
     public class WonderousPlayer : ModPlayer
     {

@@ -25,7 +25,8 @@ float2 offsets[16];
 
 float4 fadeToColor;
 float2 tiling;
-
+float time;
+float heatDistortion;
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     
@@ -46,10 +47,46 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     return spriteColor * sampleColor;
 }
 
+float4 HeatDistortionFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
+{
+    
+    float yTiling = 1.0 / tiling.y;
+    int parallaxIndex = coords.y / yTiling;
+    
+    //Since frac takes the number after decimal point we need to convert the coords to 0-1 to wrap it and then set it back
+    //It would not work otherwise
+    float2 parallaxingCoords = coords;
+    parallaxingCoords *= tiling;
+    parallaxingCoords += parallax[parallaxIndex];
+    parallaxingCoords = frac(parallaxingCoords);
+    parallaxingCoords /= tiling;
+    
+    float2 finalCoords = offsets[parallaxIndex] + parallaxingCoords;
+    
+    float2 normalCoords = coords + float2(0.0, time * 0.05 + finalCoords.y);
+   // normalCoords = frac(normalCoords);
+    
+    float3 normalVec = tex2D(uImage1, normalCoords).rgb;
+    normalVec *= 2.0;
+    normalVec -= 1.0;
+    finalCoords.x += normalVec.x * heatDistortion;
+    float4 spriteColor = tex2D(uImage0, finalCoords);
+    spriteColor.rgb = lerp(spriteColor.rgb, fadeToColor.rgb, finalCoords.y * fadeToColor.a);
+    return spriteColor * sampleColor;
+}
+
 technique SpriteDrawing
 {
     pass PixelPass
     {
         PixelShader = compile ps_3_0 PixelShaderFunction();
+    }
+};
+
+technique HeatDrawing
+{
+    pass HeatPass
+    {
+        PixelShader = compile ps_3_0 HeatDistortionFunction();
     }
 };

@@ -7,7 +7,7 @@ public class BigMoltenPlatform : AbstractPlatformNPC
 {
     public override Point GetPlatformSize()
     {
-        return new Point(416, 64);
+        return new Point(1202, 64);
     }
 }
 

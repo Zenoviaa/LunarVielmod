@@ -9,7 +9,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.Graphics.Effects;
@@ -128,6 +130,12 @@ public class SuperLavaShader : CrystalShader<SuperLavaShader>
     }
 }
 
+public static class WaterHelpers
+{
+    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "DrawWaters")]
+    public static extern void DrawWaters(Main instance, bool isBackground);
+
+}
 public abstract class PixelWaterStyle : ModType
 {
     /// <summary>
@@ -496,9 +504,6 @@ public class MoonWaterSystem : ModSystem
     }
 
 
-    private Type[] _invokeTypes;
-    private object[] _invokeParams;
-    private MethodInfo _drawWatersMethod;
     private void CopyWaterTarget()
     {
         //So we'er copying the water target here cause it doesn't render every frame
@@ -511,19 +516,7 @@ public class MoonWaterSystem : ModSystem
         spriteBatch.Begin();
         try
         {
-
-            _invokeTypes ??= new Type[]
-            {
-                    typeof(bool)
-            };
-            _invokeParams ??= new object[]
-            {
-                false
-            };
-
-            //Cache the method info so we're not spamming reflection calls
-            _drawWatersMethod ??= typeof(Main).GetMethod("DrawWaters", BindingFlags.NonPublic | BindingFlags.Instance, _invokeTypes);
-            _drawWatersMethod.Invoke(Main.instance, _invokeParams);
+            WaterHelpers.DrawWaters(Main.instance, isBackground: false);
         }
         catch
         {

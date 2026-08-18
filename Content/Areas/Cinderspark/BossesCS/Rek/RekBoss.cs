@@ -498,6 +498,8 @@ public class RekBoss : ScarletBoss
         Timer++;
         Vector2 eruptionLeft = FindEruptionLeft();
         Vector2 eruptionRight = FindEruptionRight();
+        eruptionLeft.Y -= 384;
+        eruptionRight.Y -= 384;
         switch (AttackCycle)
         {
             case 0:

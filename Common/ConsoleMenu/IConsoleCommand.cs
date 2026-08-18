@@ -1,39 +1,21 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
-using Stellamod.Content.Areas.Collosseum.Event.Common;
-using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
-using Stellamod.Core.PlayerLevelingSystem;
-using Stellamod.Core.StructureSelector;
-using Stellamod.Tiles;
 using Stellamod.UI;
-using Stellamod.WorldG.StructureManager;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace Stellamod.Common.ConsoleMenu;
 
 public static class LunarDebugging
 {
     public static bool clouds;
-}
-
-public abstract class ConsoleCommand : ModType
-{
-    protected override void Register()
-    {
-        ModTypeLookup<ConsoleCommand>.Register(this);
-    }
-
-    public abstract string GetCommandName();
-    public abstract Arguments GetArguments();
-    public abstract bool Invoke(params string[] args);
 }
 
 
@@ -45,223 +27,6 @@ public class Arguments
     }
     public HashSet<string> potentialArguments;
     public Arguments next;
-}
-
-public class CloudsCommand : ConsoleCommand
-{
-    public override string GetCommandName()
-    {
-        return "clouds";
-    }
-
-    public override Arguments GetArguments()
-    {
-        return null;
-    }
-    public override bool Invoke(params string[] args)
-    {
-        LunarDebugging.clouds = !LunarDebugging.clouds;
-        return true;
-    }
-}
-public class StyrCommand : ConsoleCommand
-{
-    public override string GetCommandName()
-    {
-        return "styr";
-    }
-
-    public override Arguments GetArguments()
-    {
-        return null;
-    }
-    public override bool Invoke(params string[] args)
-    {
-        Vector2 tempSpawnPoint = Main.LocalPlayer.Center;
-        tempSpawnPoint.Y -= 32;
-        if (MultiplayerHelper.IsHost)
-        {
-            int npcIndex = NPC.NewNPC(new EntitySource_Misc("cutscene"), (int)tempSpawnPoint.X, (int)tempSpawnPoint.Y, ModContent.NPCType<E>(), ai1: 3);
-        }
-        else
-        {
-            MultiplayerHelper.SpawnNPCFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<E>(), (int)tempSpawnPoint.X, (int)tempSpawnPoint.Y, ai1: 3);
-        }
-
-        return true;
-    }
-}
-public class StyrCutsceneCommand : ConsoleCommand
-{
-    public override string GetCommandName()
-    {
-        return "styrscene";
-    }
-
-    public override Arguments GetArguments()
-    {
-        return null;
-    }
-
-    public override bool Invoke(params string[] args)
-    {
-        return false;
-    }
-}
-public class StructuresCommand : ConsoleCommand
-{
-    public override string GetCommandName()
-    {
-        return "structures";
-    }
-    public override Arguments GetArguments()
-    {
-        return null;
-    }
-    public override bool Invoke(params string[] args)
-    {
-        StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
-        uiSystem.ToggleUI();
-        return true;
-    }
-}
-
-public class LavaPlatformCommand : ConsoleCommand
-{
-    public override string GetCommandName()
-    {
-        return "lavaplatform";
-    }
-    public override Arguments GetArguments()
-    {
-        return null;
-    }
-    public override bool Invoke(params string[] args)
-    {
-        NPC.NewNPC(Main.LocalPlayer.GetSource_FromThis(), (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, ModContent.NPCType<BigMoltenPlatform>());
-        return true;
-    }
-}
-public class LavaArenaCommand : ConsoleCommand
-{
-    public override string GetCommandName()
-    {
-        return "lavaarena";
-    }
-    public override Arguments GetArguments()
-    {
-        return null;
-    }
-    public override bool Invoke(params string[] args)
-    {
-        Point center = Main.LocalPlayer.Center.ToTileCoordinates();
-        int width = 175;
-        int height = 100;
-        var bounds = TileUtilities.CenterTileBoundsTileSpace(Main.LocalPlayer.Center, width + 10, height + 10);
-
-        //Not world gen idc if slow
-        for (int x = bounds.topLeft.X; x < bounds.bottomRight.X; x++)
-        {
-            for (int y = bounds.topLeft.Y; y < bounds.bottomRight.Y; y++)
-            {
-                WorldGen.PlaceTile(x, y, ModContent.TileType<CindersparkDirt>(), mute: true, forced: true);
-            }
-        }
-
-        //Not world gen idc if slow
-        bounds = TileUtilities.CenterTileBoundsTileSpace(Main.LocalPlayer.Center, width, height);
-        for(int x = bounds.topLeft.X; x < bounds.bottomRight.X; x++)
-        {
-            for(int y = bounds.topLeft.Y; y<  bounds.bottomRight.Y; y++)
-            {
-                WorldGen.KillTile(x, y, noItem: true);
-            }
-        }
-
-        //Fill With Lava
-        bounds = TileUtilities.CenterTileBoundsTileSpace(Main.LocalPlayer.Center, width, height / 2);
-
-        for (int x = bounds.topLeft.X; x < bounds.bottomRight.X; x++)
-        {
-            for (int y = bounds.topLeft.Y; y < bounds.bottomRight.Y; y++)
-            {
-                WorldGen.PlaceLiquid(x, y + height / 2, (byte)LiquidID.Lava, 255);
-            }
-        }
-
-      
-        return true;
-    }
-}
-public class UndoCommand : ConsoleCommand
-{
-    public override string GetCommandName()
-    {
-        return "undo";
-    }
-    public override Arguments GetArguments()
-    {
-        return null;
-    }
-    public override bool Invoke(params string[] args)
-    {
-        SnapshotSystem system = ModContent.GetInstance<SnapshotSystem>();
-        system.Undo();
-        return true;
-    }
-}
-public class ResetCommand : ConsoleCommand
-{
-    public override string GetCommandName()
-    {
-        return "reset";
-    }
-
-    public override Arguments GetArguments()
-    {
-        Arguments arguments0 = new Arguments();
-        arguments0.potentialArguments = new()
-        {
-            "level",
-            "boss",
-            "gintze"
-        };
-
-        return arguments0;
-    }
-
-    public override bool Invoke(params string[] args)
-    {
-        if (args.Length <= 0)
-            return false;
-        Player player = Main.LocalPlayer;
-        switch (args[0])
-        {
-            case "level":
-
-                player.GetModPlayer<LevelingPlayer>().ResetStats();
-                return true;
-            case "boss":
-                DownedBossSystem.ResetFlags();
-                DownedBossTracker.ResetFlags();
-                DownedBossRewardPlayer rewardPlayer = player.GetModPlayer<DownedBossRewardPlayer>();
-                rewardPlayer.ResetFlags();
-                return true;
-            case "gintze":
-                if (MultiplayerHelper.IsHost)
-                {
-                    ColosseumSystem colosseumSystem = ModContent.GetInstance<ColosseumSystem>();
-                    colosseumSystem.Reset();
-                }
-                else
-                {
-                    Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.ResetColosseum).Send(-1);
-                }
-                return true;
-        }
-
-        return false;
-    }
 }
 public class ConsoleUI : UIPanel
 {
@@ -352,7 +117,6 @@ public class ConsoleUI : UIPanel
 
     private void Orient()
     {
-
         Left.Pixels = RelativeLeft + 100;
         Top.Pixels = RelativeTop;
     }
@@ -365,11 +129,21 @@ public class ConsoleUI : UIPanel
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
         base.DrawSelf(spriteBatch);
-        /*
-        Vector2 position = GetDimensions().ToRectangle().TopLeft();
-        Rectangle rectangle = ExpandableTooltip.GetBGRectangle((int)position.X, (int)position.Y, (int)Width.Pixels, (int)Height.Pixels);
-        Utils.DrawInvBG(spriteBatch, rectangle, new Color(23, 25, 81, 255) * 0.925f);*/
         this.QuickMouseInteraction();
+
+        //Get all commands that could potential match this
+        string[] potentialCommands = ConsoleSystem.GetMatches(_textField.Text);
+
+        //Now draw them upwards from the text field, showing what command you might want
+        for(int i = 0; i < potentialCommands.Length; i++)
+        {
+            ref var text = ref potentialCommands[i];
+            Vector2 pos = _textField.GetDimensions().ToRectangle().TopLeft();
+            pos.Y -= i * 18;
+            pos.Y -= 32;
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, 
+                FontAssets.MouseText.Value, text, pos, Color.Lerp(Color.LightGreen, Color.LightGreen * 0.5f, ExtraMath.Osc(0f, 1f, speed: 1, i)), 0, Vector2.Zero, Vector2.One);
+        }
     }
 
 }
@@ -430,6 +204,18 @@ public class ConsoleSystem : ModSystem
             arg = args[index];
         }
         return arguments;
+    }
+
+    public string[] GetMatches(string command)
+    {
+        command = command.ToLower();
+        List<string> matches = new List<string>();
+        foreach(var kvp in commandLookup)
+        {
+            if (kvp.Key.StartsWith(command))
+                matches.Add(kvp.Key);
+        }
+        return matches.ToArray();
     }
 
     public (string name, string[] arguments) ParseCommand(in string command)

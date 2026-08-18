@@ -1,4 +1,6 @@
-﻿namespace Stellamod.Common.Shaders;
+﻿using Terraria;
+
+namespace Stellamod.Common.Shaders;
 
 public class AtlassedParallaxingBackgroundShader : CrystalShader<AtlassedParallaxingBackgroundShader>
 {
@@ -39,6 +41,32 @@ public class AtlassedParallaxingBackgroundShader : CrystalShader<AtlassedParalla
         {
             _fadeToColorParam = Effect.Parameters["fadeToColor"];
             _fadeToColorParam.SetValue(value.ToVector4());
+        }
+    }
+
+
+   public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly);
+        }
+    }
+
+    public float HeatDistortion
+    {
+        set
+        {
+            Effect.Parameters["heatDistortion"].SetValue(value);
+        }
+    }
+
+    public Texture2D NormalNoise1
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicWrap;
         }
     }
 }

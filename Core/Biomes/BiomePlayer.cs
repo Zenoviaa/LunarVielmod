@@ -118,7 +118,7 @@ namespace Stellamod.Content.Biomes
                 pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
                 Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
             }
-            if (Main.rand.NextBool(2))
+            if (Main.rand.NextBool(6))
             {
                 Vector2 pos = new Vector2();
                 pos.X = Main.rand.Next(0, Main.screenWidth * 2);
