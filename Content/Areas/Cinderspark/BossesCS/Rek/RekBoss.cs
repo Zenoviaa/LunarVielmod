@@ -1,12 +1,18 @@
 ﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Assets.ContentReader.Aseprite;
+using Stellamod.Common.Animations;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -31,7 +37,8 @@ public class RekBoss : ScarletBoss
         public float scale;
         public float rotation;
         public bool isBurning;
-     
+        public bool isBurningNoWarning;
+
         public float burnAlpha;
         public int bodyFrame;
     }
@@ -106,10 +113,10 @@ public class RekBoss : ScarletBoss
     private Outliner _outliner;
 
 
-
+  
     private int _phase;
     private int _patternIndex;
-
+    private bool _roar;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -323,7 +330,10 @@ public class RekBoss : ScarletBoss
         }
 
         _outliner.SetDefaults();
-
+        for (int i = 0; i < Segments.Length; i++)
+        {
+            Segments[i].isBurningNoWarning = false;
+        }
         switch (State)
         {
             case AIState.Despawn:
@@ -388,7 +398,19 @@ public class RekBoss : ScarletBoss
         }
         _outliner.Update();
         NPC.spriteDirection = 1;
-
+        if (NPC.velocity.X < 0)
+            NPC.direction = -1;
+        else
+            NPC.direction = 1;
+        if(NPC.rotation < 0)
+        {
+            this.SetSpriteEffects(SpriteEffects.FlipVertically);
+        }
+        else
+        {
+            this.SetSpriteEffects(SpriteEffects.None);
+        }
+     
         Chain.points[0] = NPC.Center;
         Chain.pinned[0] = true;
         for (int i = 0; i < 32; i++)
@@ -396,12 +418,12 @@ public class RekBoss : ScarletBoss
             Chain.ResolveBackToRoot();
         }
 
-        for(int i = 0; i < Segments.Length; i++)
+        for (int i = 0; i < Segments.Length; i++)
         {
             var segment = Segments[i];
-            segment.burnAlpha = MathHelper.Lerp(segment.burnAlpha, segment.isBurning ? 1f : 0f, 0.05f);
+            segment.burnAlpha = MathHelper.Lerp(segment.burnAlpha, (segment.isBurning || segment.isBurningNoWarning) ? 1f : 0f, 0.05f);
             segment.position = Chain.points[i];
-            if (segment.isBurning && Main.rand.NextBool(5))
+            if ((segment.isBurning || segment.isBurningNoWarning) && Main.rand.NextBool(5))
             {
                 Dust.NewDustPerfect(segment.position + Main.rand.NextVector2Circular(48, 48),DustID.Torch, -Vector2.UnitY, Scale: 2f);
             }
@@ -410,6 +432,8 @@ public class RekBoss : ScarletBoss
         {
             Segments[i].isBurning = false;
         }
+
+
 
         for (int i = Segments.Length - 1; i >= 0; i--)
         {
@@ -506,36 +530,29 @@ public class RekBoss : ScarletBoss
                 {
                     if (Timer == 1)
                     {
-                        NPC.TargetClosest();
-
-                    }
-
-                    //Here I want rek to go on the left side of the arena and go along the floor
-                    //So from left to right, and then wiggling up and down
-                    //Move like worm motion might be enouugh but if it doesn't look cool we'll just calculate it
-
-                    //It reks idle state he's perched up and wiggling side to side like a cobra
-                    //SO we just make him go down and out in this case
-                    NPC.velocity.X += NPC.direction;
-                    NPC.velocity.Y += 0.05f;
-                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
-             
-                    if (Timer >= Eruption_PrepTime)
-                    {
-                        Timer = 0;
-                        AttackCycle++;
-                    }
-                }
-                break;
-            case 1:
-                {
-                    if (Timer == 1)
-                    {
+                        var sound = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
+                        SoundEngine.PlaySound(sound, NPC.position);
+                        ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                    //    screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, scrollSpeed: new Vector2(0.0005f), timer: Eruption_SinTime, blend: 0.02f );
+                        screenShaderSystem.TintScreen(Color.Red,0.05f, timer: Eruption_SinTime);
                         Teleport(eruptionLeft);
                     }
 
                     if (Timer >= Eruption_GraceTime)
                     {
+                        if (Timer >= Eruption_GraceTime * 5)
+                        {
+                            this.GetAnimator().PlayAnimation(ANIM_MOUTH_BIG_OPEN_HOLD, AnimationParams.Default with { IsLooping = true });
+                        }
+                        else if (Timer >= Eruption_GraceTime * 4)
+                        {
+                            this.GetAnimator().PlayAnimation(ANIM_MOUTH_BIG_OPEN_READY, AnimationParams.Default with { IsLooping = false });
+                        }
+                        else
+                        {
+                            this.GetAnimator().PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
+                        }
+                
                         if (Timer % 40 == 0)
                         {
                             if (MultiplayerHelper.IsHost)
@@ -565,8 +582,9 @@ public class RekBoss : ScarletBoss
                     }
                 }
                 break;
-            case 2:
+            case 1:
                 {
+                    this.GetAnimator().PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
                     NPC.velocity.X += NPC.direction;
                     NPC.velocity.Y += 0.05f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
@@ -640,7 +658,7 @@ public class RekBoss : ScarletBoss
 
     public override bool AllowNameplateToBeShown()
     {
-        return State != AIState.Spawn;
+        return _roar;
     }
 
     private void NextState()
@@ -660,17 +678,135 @@ public class RekBoss : ScarletBoss
     private void AI_Spawn()
     {
         Timer++;
-        if(Timer >= 180)
+
+        switch (AttackCycle)
         {
-            SwitchState(AIState.Idle);
+            case 0:
+                {
+                    Vector2 eruptionLeft = FindEruptionLeft();
+                    Vector2 eruptionRight = FindEruptionRight();
+
+                    CameraTargetSystem.AddTarget(NPC.Center);
+
+                    eruptionRight.Y -= 384;
+                    eruptionLeft.Y -= 384;
+                    //Vector2 moveToPoint = Vector2.Lerp(eruptionLeft, eruptionRight, 0.7f);
+
+                    Vector2 midPoint = Vector2.Lerp(eruptionLeft, eruptionRight, 0.5f);
+
+                    float moveTime = 180;
+                    float xRadius = 512;
+                    float yRadius = 384;
+                    float ratio = Timer / moveTime;
+                    float ease = EasingFunction.InOutSine(ratio);
+                    float x = MathF.Sin(ease * MathHelper.Pi) * xRadius;
+                    float y = MathF.Cos(ease * MathHelper.Pi) * yRadius;
+
+                    Vector2 moveToPoint = midPoint + new Vector2(x, y);
+                    Vector2 targetVel = moveToPoint - NPC.Center;
+                    NPC.velocity = targetVel;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+
+
+                    if (Timer == 1)
+                    {
+                        Teleport(eruptionLeft);
+                    }
+
+                    if (Timer >= moveTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+
+                    }
+                }
+                break;
+            case 1:
+                {
+                    CameraTargetSystem.AddTarget(NPC.Center);
+
+                    float ratio = Timer / 64;
+                    float ease = EasingFunction.InOutSine(ratio);
+                    int max = (int)(Segments.Length * ease);
+                    max = Segments.Length - max;
+                    for(int i = Segments.Length - 1; i >= max; i--)
+                    {
+                        Segments[i].isBurningNoWarning = true;
+                    }
+
+                    var animator = this.GetAnimator();
+                    if(Timer < 18)
+                    {
+                        animator.PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
+                    } else if (Timer < 36)
+                    {
+                        animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN, AnimationParams.Default with { IsLooping = false });
+                    }
+                    else if (Timer < 64)
+                    {
+                        animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN_READY, AnimationParams.Default with { IsLooping = false });
+                    }
+                    else
+                    {
+                        if (Timer % 10 == 0)
+                        {
+                            LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                        }
+                        ShakeScreenPosition.Shake = 8;
+
+                        Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(128, 128);
+                        Vector2 vel = pos - NPC.Center;
+                        DustParticle sp = Particle<DustParticle>.Spawn(pos, vel * Main.rand.NextFloat(0.1f, 0.3f), Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                        sp.gravity = 0f;
+                        sp.fast = true;
+                        sp.dampening = 0.1f;
+
+                        if (!_roar)
+                        {
+                            var sound = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
+                            SoundEngine.PlaySound(sound);
+
+                            var sound2 = new SoundStyle("Stellamod/Assets/Sounds/RekSummon");
+                            SoundEngine.PlaySound(sound2);
+
+                            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                            screenShaderSystem.TintScreen(Color.Red, 0.5f, 50);
+                        }
+                        _roar = true;
+                        animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN_HOLD, AnimationParams.Default with { IsLooping = true });
+                    }
+
+                    NPC.velocity *= 0.96f;
+                    if(Timer >= 180)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    var animator = this.GetAnimator();
+                    animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
+                    NPC.velocity.X += -0.2f;
+                    NPC.velocity.Y += 0.5f;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+                    if (Timer >= 90)
+                    {
+                        NextState();
+                    }
+                }
+                break;
         }
+
+
     }
 
     private void AI_Idle()
     {
         _patternIndex = 0;
         Timer++;
-        if(Timer >= 180)
+        if(Timer >= 20)
         {
             NextState();
         }
@@ -733,6 +869,8 @@ public class RekBoss : ScarletBoss
     private void DrawSegmentWhite(int index)
     {
         ref RekSegment segment = ref Segments[index];
+        if (segment.isBurningNoWarning)
+            return;
         Asset<Texture2D> textureAsset = BodySegmentsTextures[segment.bodyFrame];
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
         drawer.rotation = segment.rotation;
@@ -751,12 +889,28 @@ public class RekBoss : ScarletBoss
         drawer.color = color;
         Main.spriteBatch.Draw(drawer);
     }
+    private void DrawSegmentHeat(int index)
+    {
+        ref RekSegment segment = ref Segments[index];
+        if (!segment.isBurningNoWarning)
+            return;
+        var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, segment.position);
+        glowDrawer.scale *= 0.48f;
+        glowDrawer.color = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12)) * ExtraMath.Osc(0.5f, 0.75f, speed: 8) * segment.burnAlpha * 0.2f;
+        glowDrawer.color.A = 0;
+        Main.spriteBatch.Draw(glowDrawer);
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         //Ok, so we draw everything here yah?
-        for(int i = 0; i < Segments.Length; i++)
+        for(int i = 1; i < Segments.Length; i++)
         {
             DrawSegment(i);
+        }
+        for (int i = 1; i < Segments.Length; i++)
+        {
+            DrawSegmentHeat(i);
         }
 
         NPC.DrawAnimator(spriteBatch, drawColor);
@@ -767,7 +921,7 @@ public class RekBoss : ScarletBoss
     private void DrawWhite(SpriteBatch spriteBatch)
     {
         NPC.DrawAnimator(spriteBatch, _outliner.outlineColor);
-        for (int i = 0; i < Segments.Length; i++)
+        for (int i = 1; i < Segments.Length; i++)
         {
             DrawSegmentWhite(i);
         }

@@ -26,12 +26,16 @@ public static class AnimationExtensions
         ref DrawEffects drawEffects = ref modNpc.GetAnimator().drawEffects;
         drawEffects.Scale = scale;
     }
-
+    public static void SetSpriteEffects(this ModNPC modNpc, SpriteEffects spriteEffects)
+    {
+        var Animator = modNpc.GetAnimator().spriteEffects = spriteEffects;
+    }
     public static void DrawAnimator(this NPC npc, SpriteBatch spriteBatch, Color drawColor)
     {
         var Animator = npc.GetAnimator();
         SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
         drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        drawer.spriteEffects |= Animator.spriteEffects;
         drawer.rotation = npc.rotation;
         drawer.color = drawColor;
         if (npc.spriteDirection == -1)
@@ -100,6 +104,7 @@ public class AseAnimator
     public string currentAnimation;
     public bool isLooping;
     public DrawEffects drawEffects;
+    public SpriteEffects spriteEffects;
     public Vector2 centerDrawOrigin;
     public SpritebatchDrawer GetSprite() => GetSprite(Vector2.Zero);
     public SpritebatchDrawer GetSprite(Vector2 worldPosition)
@@ -107,6 +112,7 @@ public class AseAnimator
         var sprite = Sprite.Value.GetSprite(_frameIndex, worldPosition);
         sprite.drawOrigin = drawEffects.DrawOrigin.HasValue ? drawEffects.DrawOrigin.Value : sprite.drawOrigin;
         sprite.scale = drawEffects.Scale.HasValue ? drawEffects.Scale.Value : sprite.scale;
+        sprite.spriteEffects = spriteEffects;
         return sprite;
     }
     public void PlayAnimation(string name, AnimationParams? animationParams = null)
