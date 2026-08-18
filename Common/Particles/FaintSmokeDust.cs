@@ -70,6 +70,7 @@ public class FaintSmokeDust : ParticleUpdater<FaintSmokeDustData>
         drawer.color = Color.Lerp(Color.Transparent, particle.color, interpolant);
         drawer.color *= interpolant;
         drawer.color.A = 0;
+        drawer.scale *= 1.26f;
         spriteBatch.Draw(drawer);
     }
 }
