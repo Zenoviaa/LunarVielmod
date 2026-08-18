@@ -9,6 +9,7 @@ using Stellamod.Core.Utilities;
 using Stellamod.Visual.Particles;
 using Stellamod.WorldG;
 using Terraria;
+using Terraria.GameContent.Liquid;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -110,6 +111,7 @@ namespace Stellamod.Content.Biomes
         }
         private void FlameParticles2()
         {
+
             if (Main.rand.NextBool(2))
             {
                 Vector2 pos = new Vector2();

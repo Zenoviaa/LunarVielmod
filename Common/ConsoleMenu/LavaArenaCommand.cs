@@ -70,8 +70,8 @@ public class LavaArenaCommand : ConsoleCommand
         }
 
         MakeSmallerPlatform(0.1f);
-        MakeSmallerPlatform(0.3f);
-        MakeSmallerPlatform(0.7f);
+        MakeSmallerPlatform(0.2f);
+        MakeSmallerPlatform(0.8f);
         MakeSmallerPlatform(0.9f);
         return true;
     }
