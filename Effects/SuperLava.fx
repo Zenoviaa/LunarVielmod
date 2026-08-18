@@ -38,7 +38,13 @@ sampler2D NoiseTextureSampler = sampler_state
     AddressU = wrap;
     AddressV = wrap;
 };
-
+Texture2D RockTexture;
+sampler2D RockTextureSampler = sampler_state
+{
+    Texture = <RockTexture>;
+    AddressU = wrap;
+    AddressV = wrap;
+};
 float3 InnerColor;
 float3 BloomColor;
 
@@ -114,6 +120,26 @@ float4 SampleSpriteNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
 }
 
 
+float4 SampleRocks(in VertexShaderOutput input, sampler2D SpriteSampler)
+{
+    float2 coords = input.TextureCoordinates;
+        
+    //Here we'll distort the texture with a scrolling normal noise texture, this should create cool and interesting movements
+    float3 normalVec = tex2D(NormalNoiseSampler, coords).rgb;
+    normalVec *= 2.0;
+    normalVec -= 1.0;
+    
+    float2 normalOffset = normalVec.xy;
+    float2 distortionOffset = normalOffset * NormalDistortionStrength;
+    coords *= Tiling * 2.0 * float2(0.5, 1.0);
+    coords += distortionOffset;
+
+    float2 offset = float2(Time * -0.015, 0.0);
+    float4 sample1 = tex2D(RockTextureSampler, frac(coords + offset));
+    return sample1;
+}
+
+
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float2 coords = input.TextureCoordinates;
@@ -124,21 +150,14 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 gradientColor = baseColor;
     float4 heightMapColor = tex2D(HeightMapSampler, coords);
     float3 gradient = lerp(EndGradient, StartGradient, heightMapColor.a);
-  //  gradient *= gradient;
-
+    float4 rocksColor = SampleRocks(input, RockTextureSampler);
+    float rockAlpha = 1.0 - heightMapColor.a;
+    rocksColor *= rockAlpha;
+    rocksColor.rgb = lerp(rocksColor.rgb, gradientColor.rgb, 0.5);
     float4 finalColor = gradientColor  + float4(gradient, 1.0);
     return finalColor;
 }
 
-float4 WrapPS(VertexShaderOutput input) : COLOR
-{
-    float2 coords = input.TextureCoordinates;
-    coords += ScreenOffset;
-    coords = frac(coords);
-    //Distort the coordinates
-    float4 finalColor = tex2D(SpriteTextureSampler, coords);
-    return finalColor;
-}
 
 float4 ReflectPS(VertexShaderOutput input) : COLOR
 {
@@ -197,13 +216,6 @@ technique SpriteDrawing
     pass P0
     {
         PixelShader = compile PS_SHADERMODEL MainPS();
-    }
-};
-technique WrapDrawing
-{
-    pass P1
-    {
-        PixelShader = compile PS_SHADERMODEL WrapPS();
     }
 };
 technique ReflectionDrawing
