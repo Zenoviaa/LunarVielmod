@@ -78,7 +78,7 @@ namespace Stellamod.Content.Biomes
                 Player.ManageSpecialBiomeVisuals("Stellamod:HeatedDepths", ZoneHeatedDepths);
 
 
-                if ((Player.GetModPlayer<MyPlayer>().ZoneCinder || ZoneHeatedDepths) && !Player.GetModPlayer<MyPlayer>().ZoneWonder)
+                if ((Player.GetModPlayer<MyPlayer>().ZoneCinder || ZoneHeatedDepths || Player.ZoneUnderworldHeight) && !Player.GetModPlayer<MyPlayer>().ZoneWonder)
                 {
                     WorldDepthGradient depthGradient = ScreenShader.GetInstance<WorldDepthGradient>();
                     depthGradient.alpha = 1;

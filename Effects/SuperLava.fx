@@ -85,7 +85,7 @@ float4 SampleSpriteNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
     float2 distortionOffset = normalOffset * NormalDistortionStrength;
     coords *= Tiling;
     coords += distortionOffset;
-    
+
     float2 offset = float2(Time * -0.05, 0.0);
     float2 offset2 = float2(Time * 0.05, 0.2);
     float2 offset3 = float2(Time * -0.05, 0.6);
@@ -112,28 +112,7 @@ float4 SampleSpriteNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
 
     return finalColor;
 }
-float4 GetBlurCoords(float2 uv, float lod)
-{
-    float4 blurredCoords = float4(uv.x, uv.y, 0.0, lod);
-    return blurredCoords;
-}
-float4 HeightBlurPS(float2 coords) : COLOR
-{
-    const float lod = 4.0;
-    const float samples = 6.0;
-    
 
-
-    float4 currentColor = tex2Dlod(HeightMapSampler, GetBlurCoords(coords, lod));
-    float2 d = float2(0.0, 0.001);
-    for (float i = 1.0; i < samples; i++)
-    {
-        currentColor += tex2Dlod(HeightMapSampler, GetBlurCoords(coords + d * i, lod));
-        currentColor += tex2Dlod(HeightMapSampler, GetBlurCoords(coords - d * i, lod));
-
-    }
-    return currentColor / (samples * 2.0);
-}
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {

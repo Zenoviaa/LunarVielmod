@@ -566,7 +566,7 @@ public class MoonWaterSystem : ModSystem
             lavaShader.Distortion = 0.05f;
             lavaShader.StartGradient = _pixelWater.StartGradientColor;
             lavaShader.EndGradient = _pixelWater.EndGradientColor;
-            lavaShader.NormalDistortionStrength = 0.26f;
+            lavaShader.NormalDistortionStrength = 0.25f;
             lavaShader.NormalNoiseTexture = _pixelWater.NoiseTexture.Value;
             lavaShader.InnerColor = Color.Lerp(Color.Yellow, Color.Red, 0.5f);
             lavaShader.BloomColor = Color.Red;

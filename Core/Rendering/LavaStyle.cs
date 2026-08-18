@@ -33,7 +33,7 @@ public class LavaStyle : PixelWaterStyle
         pixelWater.CausticsColor = Color.Lerp(Color.Orange, Color.Red, 0.5f);
         pixelWater.BackgroundColor = Color.White;
         pixelWater.StartGradientColor = Color.Gold;
-        pixelWater.EndGradientColor = Color.Black;
+        pixelWater.EndGradientColor = Color.Lerp(Color.DarkRed, Color.Black, 0.5f);
         pixelWater.affectsLava = true;
         pixelWater.noReflection = true;
         pixelWater.ignoreSkyColor = true;

@@ -103,7 +103,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override bool IsActive(Player player)
         {
 
-            
+            return false;
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneCinder)
                 return false;
