@@ -78,7 +78,7 @@ public class CinderEmberDust : ParticleUpdater<CinderEmberDustData>
         particle.velocity.Y = Main.rand.NextFloat(-5, -2.5f);
         particle.velocity.X = Main.rand.NextFloat(1.5f, 3f);
 
-        particle.startScale = Vector2.One * Main.rand.NextFloat(0.05f, 0.1f);
+        particle.startScale = Vector2.One * Main.rand.NextFloat(0.025f, 0.3f);
         particle.startScale.Y += Main.rand.NextFloat(0f, 0.05f);
         particle.startScale *= 0.8f;
     }
@@ -122,7 +122,7 @@ public class CinderEmberDust : ParticleUpdater<CinderEmberDustData>
         drawer.CenterOrigin();
         drawer.scale = (particle.startScale + stretchScale) * outScaler;
         drawer.rotation = particle.velocity.ToRotation();
-        drawer.color = particle.color;
+        drawer.color = particle.color * 2.0f;
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
     }

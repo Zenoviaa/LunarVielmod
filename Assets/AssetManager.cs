@@ -78,6 +78,7 @@ namespace Stellamod.Assets
  
         public class LaserTextures
         {
+            public static Asset<Texture2D> SilkStrand;
             public static Asset<Texture2D> Aura;
             public static Asset<Texture2D> CometTrail;
             public static Asset<Texture2D> SplittingTrail;
@@ -160,7 +161,9 @@ namespace Stellamod.Assets
             LaserTextures.SplittingTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SplittingTrail");
             LaserTextures.CometTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/CometTrail");
             LaserTextures.Aura = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Aura");
+            LaserTextures.SilkStrand = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SilkStrand");
             Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
+
             Noise.CometStars = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/CometStars");
             Noise.AuroraRays = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/AuroraRays");
             Noise.FlamethrowerNoise = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/FlameNoise");
@@ -235,6 +238,7 @@ namespace Stellamod.Assets
             LaserTextures.HeavenlySlashTrail = null;
             LaserTextures.Bloom = null;
             LaserTextures.SplittingTrail = null;
+            LaserTextures.SilkStrand = null;
 
     Noise.Whirly = null;
             Noise.AuroraRays = null;

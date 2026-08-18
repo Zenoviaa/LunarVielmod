@@ -96,6 +96,23 @@ namespace Stellamod.Core.PaletteShadingSystem
             return false;
         }
     }
+    public class CindersparkPaletteEffect : PaletteEffect
+    {
+        public override PaletteType PaletteType => PaletteType.LunarShader;
+        public override bool IsActive(Player player)
+        {
+            return false;
+            MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
+            if (myPlayer.ZoneCinder)
+                return true;
+            if (myPlayer.ZoneDrakonic)
+                return true;
+            if (player.ZoneUnderworldHeight)
+                return true;
+
+            return false;
+        }
+    }
 
     public class HellPaletteEffect : PaletteEffect
     {

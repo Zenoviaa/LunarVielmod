@@ -170,7 +170,7 @@ namespace Stellamod.Core.Palettes
             screenShaderData.UseProgress(darknessCurve);
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
             screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
-            ToggleScreenShader("LunarVeil:DarknessCurve", darknessCurve != 0);
+            ToggleScreenShader("LunarVeil:DarknessCurve", false);
       //      Main.NewText(darknessCurve);
        //     Main.NewText(darknessCurve);
             if (hellPaletteActive || desertPaletteActive || desertTopPaletteActive)
@@ -248,6 +248,9 @@ namespace Stellamod.Core.Palettes
             {
                 darkness = 0;
             }
+            if (Player.GetModPlayer<MyPlayer>().ZoneCinder || Player.GetModPlayer<MyPlayer>().ZoneWonder || Player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon)
+                darkness = 0;
+
             _targetVignetteStrength = darkness;
         }
 
