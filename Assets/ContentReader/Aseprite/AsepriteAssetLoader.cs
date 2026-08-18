@@ -39,10 +39,14 @@ internal class AsepriteAssetLoader : ModSystem
     public override void OnModUnload()
     {
         base.OnModUnload();
-        for (int i = 0; i < AsepriteAssets.Npc.Length; i++)
+        if(AsepriteAssets.Npc != null)
         {
-            AsepriteAssets.Npc[i]?.Dispose();
+            for (int i = 0; i < AsepriteAssets.Npc.Length; i++)
+            {
+                AsepriteAssets.Npc[i]?.Dispose();
+            }
+            AsepriteAssets.Npc = null;
         }
-        AsepriteAssets.Npc = null;
+
     }
 }

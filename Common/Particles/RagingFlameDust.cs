@@ -96,3 +96,4 @@ public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
         spriteBatch.Draw(drawer);
     }
 }
+

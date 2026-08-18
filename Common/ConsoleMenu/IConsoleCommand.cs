@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Core.PlayerLevelingSystem;
 using Stellamod.Core.StructureSelector;
+using Stellamod.Tiles;
 using Stellamod.UI;
 using Stellamod.WorldG.StructureManager;
 using System.Collections.Generic;
@@ -120,6 +122,74 @@ public class StructuresCommand : ConsoleCommand
     {
         StructureSelectorUISystem uiSystem = ModContent.GetInstance<StructureSelectorUISystem>();
         uiSystem.ToggleUI();
+        return true;
+    }
+}
+
+public class LavaPlatformCommand : ConsoleCommand
+{
+    public override string GetCommandName()
+    {
+        return "lavaplatform";
+    }
+    public override Arguments GetArguments()
+    {
+        return null;
+    }
+    public override bool Invoke(params string[] args)
+    {
+        NPC.NewNPC(Main.LocalPlayer.GetSource_FromThis(), (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, ModContent.NPCType<BigMoltenPlatform>());
+        return true;
+    }
+}
+public class LavaArenaCommand : ConsoleCommand
+{
+    public override string GetCommandName()
+    {
+        return "lavaarena";
+    }
+    public override Arguments GetArguments()
+    {
+        return null;
+    }
+    public override bool Invoke(params string[] args)
+    {
+        Point center = Main.LocalPlayer.Center.ToTileCoordinates();
+        int width = 175;
+        int height = 100;
+        var bounds = TileUtilities.CenterTileBoundsTileSpace(Main.LocalPlayer.Center, width + 10, height + 10);
+
+        //Not world gen idc if slow
+        for (int x = bounds.topLeft.X; x < bounds.bottomRight.X; x++)
+        {
+            for (int y = bounds.topLeft.Y; y < bounds.bottomRight.Y; y++)
+            {
+                WorldGen.PlaceTile(x, y, ModContent.TileType<CindersparkDirt>(), mute: true, forced: true);
+            }
+        }
+
+        //Not world gen idc if slow
+        bounds = TileUtilities.CenterTileBoundsTileSpace(Main.LocalPlayer.Center, width, height);
+        for(int x = bounds.topLeft.X; x < bounds.bottomRight.X; x++)
+        {
+            for(int y = bounds.topLeft.Y; y<  bounds.bottomRight.Y; y++)
+            {
+                WorldGen.KillTile(x, y, noItem: true);
+            }
+        }
+
+        //Fill With Lava
+        bounds = TileUtilities.CenterTileBoundsTileSpace(Main.LocalPlayer.Center, width, height / 2);
+
+        for (int x = bounds.topLeft.X; x < bounds.bottomRight.X; x++)
+        {
+            for (int y = bounds.topLeft.Y; y < bounds.bottomRight.Y; y++)
+            {
+                WorldGen.PlaceLiquid(x, y + height / 2, (byte)LiquidID.Lava, 255);
+            }
+        }
+
+      
         return true;
     }
 }

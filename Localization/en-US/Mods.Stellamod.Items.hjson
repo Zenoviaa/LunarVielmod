@@ -12120,3 +12120,13 @@ BunnyStormRelicItem: {
 	DisplayName: Bunny Storm Relic
 	Tooltip: ""
 }
+
+MoltenCrustedRock: {
+	DisplayName: Molten Crusted Rock
+	Tooltip: ""
+}
+
+MoltenCrustedWall: {
+	DisplayName: Molten Crusted Wall
+	Tooltip: ""
+}

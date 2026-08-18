@@ -152,4 +152,14 @@ public static class TileUtilities
         bottomRightTile = Clamp(bottomRightTile);
         return (topLeftTile, bottomRightTile);
     }
+    public static (Point topLeft, Point bottomRight) CenterTileBoundsTileSpace(Vector2 centerWorld, int width, int height)
+    {
+        Point p = centerWorld.ToTileCoordinates();
+        Point topLeftTile = p - new Point(width / 2, height/ 2);
+        Point bottomRightTile = p + new Point(width / 2, height / 2);
+
+        topLeftTile = Clamp(topLeftTile);
+        bottomRightTile = Clamp(bottomRightTile);
+        return (topLeftTile, bottomRightTile);
+    }
 }

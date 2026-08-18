@@ -82,7 +82,7 @@ namespace Stellamod.Backgrounds
                 return false;
             if (!Main.PlayerLoaded)
                 return false;
-            return Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder;
+            return Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder;
         }
     }
 }

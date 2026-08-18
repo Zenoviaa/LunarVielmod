@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Gores.Foreground;
@@ -76,13 +77,8 @@ namespace Stellamod.Content.Biomes
                 Player.ManageSpecialBiomeVisuals("Stellamod:Aegislav", ZoneAegislavSurface);
                 Player.ManageSpecialBiomeVisuals("Stellamod:HeatedDepths", ZoneHeatedDepths);
 
-                if (Player.GetModPlayer<MyPlayer>().ZoneCinder)
-                {
-                    FlameParticles();
-                        return;
-                }
 
-                if (ZoneHeatedDepths && !Player.GetModPlayer<MyPlayer>().ZoneWonder)
+                if ((Player.GetModPlayer<MyPlayer>().ZoneCinder || ZoneHeatedDepths) && !Player.GetModPlayer<MyPlayer>().ZoneWonder)
                 {
                     WorldDepthGradient depthGradient = ScreenShader.GetInstance<WorldDepthGradient>();
                     depthGradient.alpha = 1;
@@ -101,13 +97,44 @@ namespace Stellamod.Content.Biomes
                     depthGradient.gradientColor = Color.Red.ToVector3();
                 }
 
+                if (Player.GetModPlayer<MyPlayer>().ZoneCinder)
+                {
+                    FlameParticles2();
+                    return;
+                }
                 if (ZoneHeatedDepths)
                 {
                     FlameParticles();
                 }
             }
         }
-
+        private void FlameParticles2()
+        {
+            if (Main.rand.NextBool(2))
+            {
+                Vector2 pos = new Vector2();
+                pos.X = Main.rand.Next(0, Main.screenWidth * 2);
+                pos.Y = Main.rand.Next(0, Main.screenHeight);
+                pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
+                Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
+            }
+            if (Main.rand.NextBool(1))
+            {
+                Vector2 pos = new Vector2();
+                pos.X = Main.rand.Next(0, Main.screenWidth * 2);
+                pos.Y = Main.rand.Next(0, Main.screenHeight);
+                pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
+                Particles.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f });
+            }
+            if (Main.rand.NextBool(2))
+            {
+                Vector2 pos = new Vector2();
+                pos.X = Main.rand.Next(0, Main.screenWidth * 2);
+                pos.Y = Main.rand.Next(0, Main.screenHeight);
+                pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
+                Particles.CinderEmberDustBackground.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f });
+            }
+        }
         private void FlameParticles()
         {
             if (Main.rand.NextBool(12))

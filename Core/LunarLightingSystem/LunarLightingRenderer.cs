@@ -327,13 +327,16 @@ namespace Stellamod.Core.LunarLightingSystem
                 BackLightColor = finalColor * 0.8f;
             }
 
+
             BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
             MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+
+
             foreach (var backLightModifier in _backLightModifiers)
             {
                 backLightModifier.ModifyBackLight(ref BackLightColor);
             }
-
+   
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
             SmoothedBackLightColor = _backLightColor;
             SunColor = Color.Lerp(SunColor, GetSunColor(), 0.1f);
