@@ -2032,3 +2032,5 @@ VulcanFireball.DisplayName: Vulcan Fireball
 VulcanLaserBoom.DisplayName: Vulcan Laser Boom
 RekFlameTrail.DisplayName: Rek Flame Trail
 VolcanicMeteor.DisplayName: Volcanic Meteor
+PacmanBoom.DisplayName: Pacman Boom
+PacmanSegment.DisplayName: Pacman Segment

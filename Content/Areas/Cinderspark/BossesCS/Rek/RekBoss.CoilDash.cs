@@ -16,7 +16,16 @@ public partial class RekBoss
     private int Coil_Dash_Damage => 60;
     private float Coil_Coil_Time => 120;
     private float Coil_Dash_Time => 12;
-
+    private void AllNoWorm()
+    {
+        foreach (var seg in Segments)
+            seg.noWorm = true;
+    }
+    private void ResetWorm()
+    {
+        foreach (var seg in Segments)
+            seg.noWorm = false;
+    }
     private float LavaSurface()
     {
         Point t = _arenaCenter.ToTileCoordinates();
@@ -321,6 +330,7 @@ public partial class RekBoss
                     //Explode Magic
                     if(Timer == 1)
                     {
+                        AllNoWorm();
                         var sound = new SoundStyle("Stellamod/Assets/Sounds/RekShockwave") with { PitchVariance = 0.3f };
                         SoundEngine.PlaySound(sound, NPC.position);
                         ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
@@ -349,8 +359,6 @@ public partial class RekBoss
                     NPC.velocity.Y += 0.4f;
                     NPC.rotation += MathF.Sign(NPC.velocity.X) * 0.05f;
 
-                    _noWorm = true;
-
                     float surface = LavaSurface();
                     MakeSegmentsFallIntoLavaAndFloat();
                     float dy = NPC.Center.Y;
@@ -363,7 +371,6 @@ public partial class RekBoss
                 break;
             case 6:
                 {
-                    _noWorm = true;
                     NPC.velocity.X *= 0.94f;
                     NPC.rotation *= 0.99f;
 
@@ -392,36 +399,7 @@ public partial class RekBoss
                 break;
             case 7:
                 {
-                    _noWorm = true;
-                    _outliner.warning = true;
-                    int i = 0;
-                    //All parts should glow and float up
-                    foreach(var segment in Segments)
-                    {
-                        float time = Timer - i * 3;
-                        float ratio = EasingFunction.InOutExpo(time / 40f);
-                        segment.velocity.Y -= ratio * 0.15f;
-                        segment.rotation += 0.05f * ratio;
-                        if(time > 0)
-                            segment.isBurning = true;
-                        i++;
-                    }
-                    NPC.velocity.Y -= 0.15f;
-                    NPC.rotation -= 0.05f;
-                    foreach (var segment in Segments)
-                    {
-                        segment.position += segment.velocity;
-                    }
-                    if (Timer >= 280)
-                    {
-                        Timer = 0;
-                        AttackCycle++;
-                    }
-                }
-                break;
-            case 8:
-                {
-                    SwitchState(AIState.VolcanicMeteor);
+                    SwitchState(AIState.Pacman);
                 }
                 break;
         }

@@ -47,6 +47,7 @@ public partial class RekBoss : ScarletBoss
         public bool isBurningNoWarning;
         public bool inLava;
         public bool deadly;
+        public bool noWorm;
         public float burnAlpha;
         public int bodyFrame;
     }
@@ -78,6 +79,7 @@ public partial class RekBoss : ScarletBoss
         Eruption,
         CoilDash,
         VolcanicMeteor,
+        Pacman,
         Ouroboros,
 
         FireBreath,
@@ -121,6 +123,8 @@ public partial class RekBoss : ScarletBoss
 
     private Outliner _outliner;
 
+        
+    private AseAnimator Animator => this.GetAnimator();
 
 
     private int _phase;
@@ -341,7 +345,6 @@ public partial class RekBoss : ScarletBoss
             segment.isBurningNoWarning = false;
         }
         _showAfterImages = false;
-        _noWorm = false;
         switch (State)
         {
             case AIState.Despawn:
@@ -372,7 +375,9 @@ public partial class RekBoss : ScarletBoss
             case AIState.VolcanicMeteor:
                 AI_VolcanicMeteor();
                 break;
-
+            case AIState.Pacman:
+                AI_Pacman();
+                break;
             case AIState.Ouroboros:
                 AI_Ouroboros();
                 break;
@@ -405,6 +410,7 @@ public partial class RekBoss : ScarletBoss
                 AI_Death();
                 break;
         }
+
         if (_showAfterImages)
         {
             _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 1f, 0.3f);
@@ -450,11 +456,11 @@ public partial class RekBoss : ScarletBoss
             Segments[i].isBurning = false;
         }
 
-        if (!_noWorm)
+        for (int i = Segments.Length - 1; i >= 0; i--)
         {
-            for (int i = Segments.Length - 1; i >= 0; i--)
+            var segment = Segments[i];
+            if (!segment.noWorm)
             {
-                var segment = Segments[i];
                 segment.position = Chain.points[i];
                 if (i == 0)
                 {
@@ -466,6 +472,7 @@ public partial class RekBoss : ScarletBoss
 
                 }
             }
+
         }
     }
 

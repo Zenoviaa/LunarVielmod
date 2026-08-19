@@ -13,6 +13,48 @@ public class LavaSilShader : CrystalShader<LavaSilShader>
         }
     }
 }
+public class RekFireballShader : CrystalShader<RekFireballShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public float Strength
+    {
+        set
+        {
+            Effect.Parameters["strength"].SetValue(value);
+        }
+    }
+
+    public Color InnerColor
+    {
+        set
+        {
+            Effect.Parameters["innerColor"].SetValue(value.ToVector3());
+        }
+    }
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["bloomColor"].SetValue(value.ToVector3());
+        }
+    }
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+}
+
 
 public class RekTorchShader : CrystalShader<RekTorchShader>
 {

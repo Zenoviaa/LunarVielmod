@@ -20,7 +20,35 @@ public partial class RekBoss
         {
             case 0:
                 {
-                    _noWorm = true;
+                    _outliner.warning = true;
+                    int i = 0;
+                    //All parts should glow and float up
+                    foreach (var segment in Segments)
+                    {
+                        float time = Timer - i * 3;
+                        float ratio = EasingFunction.InOutExpo(time / 40f);
+                        segment.velocity.Y -= ratio * 0.15f;
+                        segment.rotation += 0.05f * ratio;
+                        if (time > 0)
+                            segment.isBurning = true;
+                        i++;
+                    }
+                    NPC.velocity.Y -= 0.15f;
+                    NPC.rotation -= 0.05f;
+                    AllNoWorm();
+                    foreach (var segment in Segments)
+                    {
+                        segment.position += segment.velocity;
+                    }
+                    if (Timer >= 280)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
@@ -67,7 +95,7 @@ public partial class RekBoss
                     }
                 }
                 break;
-            case 1:
+            case 2:
                 {
                     SwitchState(AIState.Idle);
                 }
