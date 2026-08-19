@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Shaders;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -274,7 +276,7 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private AIState TestAttack => AIState.Eruption;
+    private AIState TestAttack => AIState.Ouroboros;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -309,12 +311,33 @@ public partial class RekBoss : ScarletBoss
 
 
 
+    private void ProduceWaterRipples()
+    {
+        WaterShaderData shaderData = (WaterShaderData)Filters.Scene["WaterDistortion"].GetShader();
+        foreach(var segment in Segments)
+        {
+            // A universal time-based sinusoid which updates extremely rapidly. GlobalTime is 0 to 3600, measured in seconds.
+            float waveSine = 0.1f * (float)Math.Sin(Main.GlobalTimeWrappedHourly * 20f);
+            Vector2 rippleSize = new Vector2(32, 32);
+            Vector2 ripplePos = segment.position;
+
+            // WaveData is encoded as a Color.
+            Color waveData = new Color(2.5f, waveSine * 0.3f, 0, 1f) * Math.Abs(waveSine);
+            shaderData.QueueRipple(ripplePos, waveData, rippleSize, RippleShape.Square, rotation: 0);
+        }
+
+    }
+
     public override void AI()
     {
         base.AI();
         if (_arenaCenter == Vector2.Zero)
         {
             _arenaCenter = TileUtilities.GuessArenaCenter(NPC.Center);
+        }
+        if (Main.netMode != NetmodeID.Server)
+        {
+            ProduceWaterRipples();
         }
 
         if (!NPC.HasValidTarget)
