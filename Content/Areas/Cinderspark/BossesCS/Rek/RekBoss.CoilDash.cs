@@ -78,13 +78,14 @@ public partial class RekBoss
             {
                 segment.velocity.X *= 0.98f;
                 Point segmentTile = segment.position.ToTileCoordinates();
-                if (segment.position.Y >= surface + 64)
+                if (segment.position.Y >= surface + 128)
                 {
                     segment.velocity.Y -= 0.25f;
                 }
                 else
                 {
-                    segment.velocity.Y *= 0.9f;
+                    segment.velocity.Y *= 0.96f;
+                    segment.velocity.Y += 0.02f;
                 }
                 segment.rotation *= 0.98f;
             }
@@ -94,6 +95,7 @@ public partial class RekBoss
     }
     private void AI_CoilDash()
     {
+     
         var animator = this.GetAnimator();
         Timer++;
         switch (AttackCycle)
@@ -103,7 +105,7 @@ public partial class RekBoss
                     Vector2 eruptionLeft = FindEruptionLeft();
                     Vector2 eruptionRight = FindEruptionRight();
 
-
+                    ResetLavaSegments();
                     eruptionRight.Y -= 64;
                     eruptionLeft.Y -= 64;
                     //Vector2 moveToPoint = Vector2.Lerp(eruptionLeft, eruptionRight, 0.7f);
@@ -344,8 +346,8 @@ public partial class RekBoss
                     }
 
                     NPC.velocity.X *= 0.94f;
-                    NPC.velocity.Y += 0.5f;
-                    NPC.rotation += 0.05f;
+                    NPC.velocity.Y += 0.4f;
+                    NPC.rotation += MathF.Sign(NPC.velocity.X) * 0.05f;
 
                     _noWorm = true;
 
@@ -363,16 +365,21 @@ public partial class RekBoss
                 {
                     _noWorm = true;
                     NPC.velocity.X *= 0.94f;
-                    NPC.rotation *= 0.98f;
+                    NPC.rotation *= 0.99f;
 
                     float surface = LavaSurface();
-                    if (NPC.Center.Y >= surface )
+                    if (NPC.Center.Y >= surface + 64)
                     {
-                        NPC.velocity.Y -= 0.5f;
+                        NPC.velocity.Y *= 0.94f;
+                        if(NPC.velocity.Y < 1)
+                        {
+                            NPC.velocity.Y -= 0.3f;
+                        }
                     }
                     else
                     {
-                        NPC.velocity.Y *= 0.9f;
+                        NPC.velocity.Y *= 0.94f;
+                        NPC.velocity.Y += 0.02f;
                     }
 
                     MakeSegmentsFallIntoLavaAndFloat();
@@ -399,11 +406,13 @@ public partial class RekBoss
                             segment.isBurning = true;
                         i++;
                     }
+                    NPC.velocity.Y -= 0.15f;
+                    NPC.rotation -= 0.05f;
                     foreach (var segment in Segments)
                     {
                         segment.position += segment.velocity;
                     }
-                    if (Timer >= 200)
+                    if (Timer >= 280)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -412,7 +421,7 @@ public partial class RekBoss
                 break;
             case 8:
                 {
-                    SwitchState(AIState.Idle);
+                    SwitchState(AIState.VolcanicMeteor);
                 }
                 break;
         }

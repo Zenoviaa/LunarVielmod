@@ -50,7 +50,7 @@ public partial class RekBoss
                             this.GetAnimator().PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
                         }
 
-                        if (Timer % 40 == 0)
+                        if (Timer % 24 == 0)
                         {
                             if (MultiplayerHelper.IsHost)
                             {

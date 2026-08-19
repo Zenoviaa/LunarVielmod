@@ -46,7 +46,7 @@ public partial class RekBoss : ScarletBoss
         public bool isBurning;
         public bool isBurningNoWarning;
         public bool inLava;
-
+        public bool deadly;
         public float burnAlpha;
         public int bodyFrame;
     }
@@ -270,7 +270,7 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private AIState TestAttack => AIState.CoilDash;
+    private AIState TestAttack => AIState.Eruption;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -336,7 +336,9 @@ public partial class RekBoss : ScarletBoss
         _outliner.SetDefaults();
         for (int i = 0; i < Segments.Length; i++)
         {
-            Segments[i].isBurningNoWarning = false;
+            var segment = Segments[i];
+            segment.deadly = false;
+            segment.isBurningNoWarning = false;
         }
         _showAfterImages = false;
         _noWorm = false;
@@ -494,10 +496,6 @@ public partial class RekBoss : ScarletBoss
 
 
 
-    private void AI_Death()
-    {
-
-    }
 
     private void AI_Despawn()
     {

@@ -199,6 +199,8 @@ public partial class RekBoss : IWaterSilhouette
                 break;
         }
         Color color = Color.Yellow * segment.burnAlpha;
+        if (segment.deadly)
+            color = Color.Red * segment.burnAlpha;
         drawer.color = color;
         Main.spriteBatch.Draw(drawer);
     }

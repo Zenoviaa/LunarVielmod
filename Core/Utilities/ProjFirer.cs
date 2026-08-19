@@ -83,8 +83,8 @@ public record struct ProjFirer
             owner = projectile.owner,
             position = projectile.Center,
             velocity = Vector2.Zero,
-            damage = 1,
-            knockback = 1,
+            damage = projectile.damage,
+            knockback = projectile.knockBack,
             ai0 = 0,
             ai1 = 0,
             ai2 = 0
