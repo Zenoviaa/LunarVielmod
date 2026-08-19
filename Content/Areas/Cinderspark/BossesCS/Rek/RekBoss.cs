@@ -45,6 +45,7 @@ public partial class RekBoss : ScarletBoss
         public float rotation;
         public bool isBurning;
         public bool isBurningNoWarning;
+        public bool inLava;
 
         public float burnAlpha;
         public int bodyFrame;
@@ -125,6 +126,7 @@ public partial class RekBoss : ScarletBoss
     private int _phase;
     private int _patternIndex;
     private bool _roar;
+    private bool _noWorm;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -268,7 +270,7 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private AIState TestAttack => AIState.Eruption;
+    private AIState TestAttack => AIState.CoilDash;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -337,6 +339,7 @@ public partial class RekBoss : ScarletBoss
             Segments[i].isBurningNoWarning = false;
         }
         _showAfterImages = false;
+        _noWorm = false;
         switch (State)
         {
             case AIState.Despawn:
@@ -348,6 +351,7 @@ public partial class RekBoss : ScarletBoss
                 break;
 
             case AIState.Idle:
+          
                 AI_Idle();
                 break;
 
@@ -433,43 +437,38 @@ public partial class RekBoss : ScarletBoss
         {
             var segment = Segments[i];
             segment.burnAlpha = MathHelper.Lerp(segment.burnAlpha, (segment.isBurning || segment.isBurningNoWarning) ? 1f : 0f, 0.05f);
-            segment.position = Chain.points[i];
             if ((segment.isBurning || segment.isBurningNoWarning) && Main.rand.NextBool(15))
             {
                 Dust.NewDustPerfect(segment.position + Main.rand.NextVector2Circular(48, 48), DustID.Torch, -Vector2.UnitY, Scale: 2f);
             }
         }
+
         for (int i = 0; i < Segments.Length; i++)
         {
             Segments[i].isBurning = false;
         }
 
-
-
-        for (int i = Segments.Length - 1; i >= 0; i--)
+        if (!_noWorm)
         {
-            if (i == 0)
+            for (int i = Segments.Length - 1; i >= 0; i--)
             {
-                Segments[i].rotation = NPC.rotation;
-            }
-            else
-            {
-                Segments[i].rotation = (Chain.points[i] - Chain.points[i - 1]).ToRotation();
+                var segment = Segments[i];
+                segment.position = Chain.points[i];
+                if (i == 0)
+                {
+                    segment.rotation = NPC.rotation;
+                }
+                else
+                {
+                    segment.rotation = (Chain.points[i] - Chain.points[i - 1]).ToRotation();
 
+                }
             }
-
         }
     }
-    private void AI_BlowtorchBreath()
-    {
 
-    }
 
-   
-    private void AI_Enflame()
-    {
 
-    }
 
     private void SwitchState(AIState state)
     {
@@ -492,34 +491,14 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private void AI_VolcanicSpear()
-    {
 
-    }
-    private void AI_VolcanicMeteor()
-    {
 
-    }
-    private void AI_Ouroboros()
-    {
 
-    }
-    private void AI_Husk()
-    {
-
-    }
-    private void AI_FireBreathV2()
-    {
-
-    }
     private void AI_Death()
     {
 
     }
-    private void AI_FireBreath()
-    {
 
-    }
     private void AI_Despawn()
     {
         Timer++;
@@ -556,7 +535,7 @@ public partial class RekBoss : ScarletBoss
     private void AI_Idle()
     {
         _patternIndex = 0;
-
+        ResetLavaSegments();
         Timer++;
         if (Timer >= 20)
         {

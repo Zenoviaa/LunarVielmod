@@ -1,11 +1,13 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core.Camera;
+using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Animations;
 using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
@@ -14,6 +16,82 @@ public partial class RekBoss
     private int Coil_Dash_Damage => 60;
     private float Coil_Coil_Time => 120;
     private float Coil_Dash_Time => 12;
+
+    private float LavaSurface()
+    {
+        Point t = _arenaCenter.ToTileCoordinates();
+        for(int x = 0; x < 100; x++)
+        {
+            Tile tile = Main.tile[t];
+            if (tile.LiquidAmount > 0)
+                break;
+            t.Y++;
+        }
+
+        return t.ToWorldCoordinates().Y;
+    }
+    private bool AllSegmentsSubmerged()
+    {
+        float surface = LavaSurface();
+        foreach (var segment in Segments)
+        {
+            float diff = segment.position.Y - surface;
+            float a = MathF.Abs(diff);
+            if (a > 32)
+                return false;
+        }
+
+        return true;
+    }
+    private void ResetLavaSegments()
+    {
+        foreach(var segment in Segments)
+        {
+            segment.inLava = false;
+        }
+    }
+
+    private void MakeSegmentsFallIntoLavaAndFloat()
+    {
+        float surface = LavaSurface();
+        foreach (var segment in Segments)
+        {
+            if (!segment.inLava)
+            {
+                segment.velocity.X *= 0.98f;
+                segment.rotation += MathF.Sign(segment.velocity.X) * 0.05f;
+                if (segment.position.Y >= surface)
+                {
+                    segment.velocity.Y *= 0.92f;
+                    if(segment.velocity.Length() < 1)
+                    {
+                        segment.inLava = true;
+                    }
+                 
+                }
+                else
+                {
+                    segment.velocity.Y += 0.3f;
+                }
+            }
+            else
+            {
+                segment.velocity.X *= 0.98f;
+                Point segmentTile = segment.position.ToTileCoordinates();
+                if (segment.position.Y >= surface + 64)
+                {
+                    segment.velocity.Y -= 0.25f;
+                }
+                else
+                {
+                    segment.velocity.Y *= 0.9f;
+                }
+                segment.rotation *= 0.98f;
+            }
+            segment.position += segment.velocity;
+
+        }
+    }
     private void AI_CoilDash()
     {
         var animator = this.GetAnimator();
@@ -185,7 +263,7 @@ public partial class RekBoss
                     }
 
                     _showAfterImages = true;
-                    animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = true });
+                    animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
                     float ratio = Timer / Coil_Dash_Time;
                     float dashOut = EasingFunction.OutExpo(ratio);
                     Vector2 dashVelocity = _targetPoint - _coilStartPoint;
@@ -208,7 +286,16 @@ public partial class RekBoss
                     NPC.velocity.Y += MathHelper.Lerp(3f, 1f, Timer / 60f);
                     NPC.rotation = NPC.velocity.ToRotation();
                     float dy = NPC.Center.Y;
-                    if (dy >= _arenaCenter.Y + 384)
+
+                    if(AttackCount >= 2)
+                    {
+                        if(Timer >= 15)
+                        {
+                            Timer = 0;
+                            AttackCycle = 5;
+                        }
+                    }
+                    else if (dy >= _arenaCenter.Y + 384)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -224,12 +311,108 @@ public partial class RekBoss
                         Timer = 0;
                         AttackCycle = 1;
                         AttackCount++;
-                        if(AttackCount >= 3)
+                    }
+                }
+                break;
+            case 5:
+                {
+                    //Explode Magic
+                    if(Timer == 1)
+                    {
+                        var sound = new SoundStyle("Stellamod/Assets/Sounds/RekShockwave") with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(sound, NPC.position);
+                        ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                        screenShaderSystem.TintScreen(Color.Red, 0.25f, timer: 30);
+                        foreach (var segment in Segments)
                         {
-                            //TODO:
-                            SwitchState(AIState.Idle);
+                            //Little boom
+                            float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
+                            for (float n = 0; n < 2f; n++)
+                            {
+                                var spawnParams = new DustParticleSpawnParams();
+                                spawnParams.innerColor = Color.OrangeRed;
+                                spawnParams.outerColor = Color.Red;
+                                spawnParams.scaleRange = new Vector2(0.1f, 3f);
+                                DustParticle.Spawn(segment.position, Main.rand.NextVector2Circular(4, 4) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+                            }
+
+                            SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(segment.position, -Vector2.UnitY, Color.White, Scale: 1f);
+                            sp.initialColor = Color.White * 0.14f;
+                            segment.velocity = Main.rand.NextVector2Circular(16, 4);
+                            segment.velocity.Y -= 14;
                         }
                     }
+
+                    NPC.velocity.X *= 0.94f;
+                    NPC.velocity.Y += 0.5f;
+                    NPC.rotation += 0.05f;
+
+                    _noWorm = true;
+
+                    float surface = LavaSurface();
+                    MakeSegmentsFallIntoLavaAndFloat();
+                    float dy = NPC.Center.Y;
+                    if (dy >= surface)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 6:
+                {
+                    _noWorm = true;
+                    NPC.velocity.X *= 0.94f;
+                    NPC.rotation *= 0.98f;
+
+                    float surface = LavaSurface();
+                    if (NPC.Center.Y >= surface )
+                    {
+                        NPC.velocity.Y -= 0.5f;
+                    }
+                    else
+                    {
+                        NPC.velocity.Y *= 0.9f;
+                    }
+
+                    MakeSegmentsFallIntoLavaAndFloat();
+                    if ( Timer >= 200)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 7:
+                {
+                    _noWorm = true;
+                    _outliner.warning = true;
+                    int i = 0;
+                    //All parts should glow and float up
+                    foreach(var segment in Segments)
+                    {
+                        float time = Timer - i * 3;
+                        float ratio = EasingFunction.InOutExpo(time / 40f);
+                        segment.velocity.Y -= ratio * 0.15f;
+                        segment.rotation += 0.05f * ratio;
+                        if(time > 0)
+                            segment.isBurning = true;
+                        i++;
+                    }
+                    foreach (var segment in Segments)
+                    {
+                        segment.position += segment.velocity;
+                    }
+                    if (Timer >= 200)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 8:
+                {
+                    SwitchState(AIState.Idle);
                 }
                 break;
         }
