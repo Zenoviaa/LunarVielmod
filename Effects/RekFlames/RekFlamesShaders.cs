@@ -53,6 +53,14 @@ public class RekFireballShader : CrystalShader<RekFireballShader>
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
         }
     }
+    public Texture2D WNoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[2] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+        }
+    }
 }
 
 

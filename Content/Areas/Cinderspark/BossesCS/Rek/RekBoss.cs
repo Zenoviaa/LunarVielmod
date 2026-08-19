@@ -156,7 +156,7 @@ public partial class RekBoss : ScarletBoss
                         case 2:
                             return AIState.Ouroboros;
                         case 3:
-                            return AIState.VolcanicMeteor;
+                            return AIState.Pacman;
                         case 4:
                             return AIState.FireBreath;
                     }
@@ -188,7 +188,7 @@ public partial class RekBoss : ScarletBoss
                         case 1:
                             return AIState.Eruption;
                         case 2:
-                            return AIState.VolcanicMeteor;
+                            return AIState.Pacman;
                         case 3:
                             return AIState.Tired;
                         case 4:

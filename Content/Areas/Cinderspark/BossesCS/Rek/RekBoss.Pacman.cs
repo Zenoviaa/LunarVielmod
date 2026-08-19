@@ -163,7 +163,7 @@ public partial class RekBoss
                 break;
             case 3:
                 {
-                    SwitchState(AIState.Idle);
+                    SwitchState(AIState.FireBreath);
                 }
                 break;
         }
