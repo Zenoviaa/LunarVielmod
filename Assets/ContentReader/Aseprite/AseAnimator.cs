@@ -48,6 +48,24 @@ public static class AnimationExtensions
         drawer.worldPosition += offset;
         spriteBatch.Draw(drawer);
     }
+    public static void DrawAnimator(this NPC npc, SpriteBatch spriteBatch, Color drawColor, Vector2 position)
+    {
+        var Animator = npc.GetAnimator();
+        SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
+        drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        drawer.spriteEffects |= Animator.spriteEffects;
+        drawer.rotation = npc.rotation;
+        drawer.color = drawColor;
+        if (npc.spriteDirection == -1)
+        {
+            drawer.drawOrigin.X = drawer.sourceRect!.Value.Width - drawer.drawOrigin.X;
+        }
+
+        //Offset it even with the draw origin so the sprite is still in the center of the hitbox
+        Vector2 offset = drawer.drawOrigin - Animator.centerDrawOrigin;
+        drawer.worldPosition = position + offset;
+        spriteBatch.Draw(drawer);
+    }
 }
 
 public class AnimatorGlobalNPC : GlobalNPC

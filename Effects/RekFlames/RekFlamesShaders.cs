@@ -3,6 +3,17 @@ using Terraria;
 
 namespace Stellamod.Effects.RekFlames;
 
+public class LavaSilShader : CrystalShader<LavaSilShader>
+{
+    public Texture2D MaskTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+        }
+    }
+}
+
 public class RekTorchShader : CrystalShader<RekTorchShader>
 {
     public float Time
