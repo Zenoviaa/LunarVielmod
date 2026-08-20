@@ -288,7 +288,7 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private AIState TestAttack => AIState.VolcanicMeteor;
+    private AIState TestAttack => AIState.FireBreath;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {

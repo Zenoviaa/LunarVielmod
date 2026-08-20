@@ -9,6 +9,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    private float _segmentIndex;
     private float _ouroborosIndex;
     private float _eatProgress;
     private float _hitstopTimer;
@@ -17,7 +18,7 @@ public partial class RekBoss
     private int Pac_Boom_Damage => 50;
     private float Pac_Time_Between_Points_Spawning => 15;
     private float Pac_Dash_Time => 160f;
-    private float Pac_Delay_Time => 90;
+    private float Pac_Delay_Time => 120;
     private void AI_Pacman()
     {
         void PlacePacPoint(Vector2 position)
@@ -78,7 +79,7 @@ public partial class RekBoss
         {
             Vector2 circlePoint = VectorHelper.PointOnCircle(_arenaCenter,
                 xRadius: 800,
-                yRadius: 192,
+                yRadius: 384,
                 startRadians: 0,
                 endRadians: MathHelper.ToRadians(310), ratio);
             circlePoint = circlePoint.RotatedBy(_ouroborosIndex * MathHelper.ToRadians(60), _arenaCenter);
@@ -89,6 +90,7 @@ public partial class RekBoss
         _segmentTimer++;
         int numWaves = 3;
         int segmentsPerWave = Segments.Length / numWaves;
+        segmentsPerWave += numWaves;
         switch (AttackCycle)
         {
             case 0:
@@ -117,16 +119,20 @@ public partial class RekBoss
                 {
                     if(Timer == 1)
                     {
-                        _initialVelocity = NPC.Center;
+                        _initialVelocity = NPC.velocity;
+                        _centerPoint = NPC.Center;
                     }
                     Animator.PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
- 
-                    Vector2 targetPoint = GetPointOnPath(-0.2f);
+                    SegmentsMeteorFloat();
+                    Vector2 targetPoint = GetPointOnPath(0f);
+                    targetPoint -= new Vector2(0, 154);
                     float headRatio = Timer / Pac_Delay_Time;
                     float headEase = EasingFunction.InOutExpo(headRatio);
-                    Vector2 pos = Vector2.Lerp(_initialVelocity, targetPoint, headEase);
-                    NPC.Center = pos;
-                    NPC.velocity = Vector2.Zero;
+                    Vector2 pos = Vector2.Lerp(_centerPoint, targetPoint, headEase);
+                    Vector2 vel = pos - NPC.Center;
+                    Vector2 easedVel = Vector2.Lerp(_initialVelocity, vel, headEase);
+                
+                    NPC.velocity = easedVel;
                     var seg = GetNextSegmentToEat();
                     if(seg != null)
                     {
@@ -153,20 +159,21 @@ public partial class RekBoss
                 {
                     if (Timer == 1)
                     {
-          
+                        _segmentIndex = 0;
+                        _hitstopTimer = 0;
                     }
 
-                    _hitstopTimer++;
+       
                     _outliner.attacking = true;
                     _showAfterImages = true;
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
-          
+                    SegmentsMeteorFloat();
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
                     var seg = GetNextSegmentToEat();
                     if(seg != null)
                     {
                         float travelSpeed = MathHelper.Lerp(0f, 45f, EasingFunction.InOutExpo(Timer / 120f));
-                        travelSpeed += MathHelper.Lerp(-21, 3, EasingFunction.InOutExpo(_hitstopTimer / 30f));
+                     //   travelSpeed += MathHelper.Lerp(-21, 3, EasingFunction.InOutExpo(_hitstopTimer / 30f));
                         Vector2 velToTarget = (seg.Projectile.Center - NPC.Center);
                         velToTarget = velToTarget.SafeNormalize(Vector2.Zero);
                         Vector2 travelVelocity = velToTarget * travelSpeed;
@@ -176,33 +183,32 @@ public partial class RekBoss
                             travelVelocity = velToTarget * distToTarget;
                             if (MultiplayerHelper.IsHost)
                             {
-                                for(int i = 0; i < 7; i++)
-                                {
-                                    float ratio = (float)i / 7f;
-                                    var segment = Segments[i];
-                                    var firer = ProjFirer.From<PacMeteorBoom>(NPC);
-                                    firer.velocity = (segment.rotation - MathHelper.PiOver2).ToRotationVector2() * 1024 * ratio;
-                                    firer.position = segment.position;
-                                    firer.damage = Pac_Boom_Damage;
-                                    firer.ai1 = NPC.whoAmI;
-                                    firer.ai2 = i;
-                                    firer.New();
-                                }
-             
+                                int i = (int)_segmentIndex;
+                                float ratio = (float)i / (float)Segments.Length;
+                                ratio = 1f - ratio;
+                                var segment = Segments[i + 3];
+                                var firer = ProjFirer.From<PacMeteorBoom>(NPC);
+                                firer.velocity = (segment.rotation - MathHelper.PiOver2).ToRotationVector2() * 1000 * ratio;
+                                firer.position = segment.position;
+                                firer.damage = Pac_Boom_Damage;
+                                firer.ai1 = NPC.whoAmI;
+                                firer.ai2 = i;
+                                firer.New();
                             }
-
+                            _segmentIndex++;
                             seg.Projectile.ai[2] = 1;
                             seg.Projectile.Kill();
-                            _hitstopTimer = 0;
+       
                             if (IsFull())
                             {
-                                AttackCycle++;
+                                Timer = 0;
+                                AttackCycle +=2;
                             }
                             else if(ShouldStopEating())
                             {
                                 _ouroborosIndex++;
                                 Timer = 0;
-                                AttackCycle = 1;
+                                AttackCycle++;
                             }
                         }
                         NPC.velocity = travelVelocity;
@@ -212,8 +218,28 @@ public partial class RekBoss
                 }
                 break;
             case 3:
+
                 {
-                    SwitchState(AIState.FireBreath);
+                    NPC.velocity *= 0.98f;
+                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.03f);
+                    if(Timer >= 30)
+                    {
+                        AttackCycle = 1;
+                        Timer = 0;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    NPC.velocity *= 0.98f;
+                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.03f);
+                    if (Timer >= 30)
+                    {
+                        SwitchState(AIState.FireBreath);
+                    }
+             
                 }
                 break;
         }

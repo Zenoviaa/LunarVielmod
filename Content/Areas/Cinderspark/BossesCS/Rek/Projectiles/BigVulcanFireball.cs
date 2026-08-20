@@ -148,7 +148,7 @@ public class VulcanFireball : ModProjectile
         flameTrailShader.BloomColor = Color.Red;
         flameTrailShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
 
-        flameTrailShader.LaserTexture = TrailRegistry.Beamlight.Value;
+        flameTrailShader.LaserTexture = AssetManager.LaserTextures.FlameTrail.Value;
         flameTrailShader.Time = Main.GlobalTimeWrappedHourly * 24;
         TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, Projectile.Size * 0.5f);
 
@@ -159,7 +159,7 @@ public class VulcanFireball : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         BigRekFireballShader shader = ShaderContent.GetInstance<BigRekFireballShader>();
-        shader.Time = Main.GlobalTimeWrappedHourly * 3;
+        shader.Time = Main.GlobalTimeWrappedHourly * -24;
         shader.NoiseTexture = AssetManager.Noise.SharpPerlinNoise;
         shader.InnerColor = Color.Yellow;
         shader.BloomColor = Color.DarkRed;

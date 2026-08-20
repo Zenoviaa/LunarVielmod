@@ -22,9 +22,16 @@ public partial class RekBoss
         {
             Vector2 start = eruptionLeft;
             Vector2 end = eruptionRight;
-            float y = EasingFunction.QuadraticBump(ratio) * -300;
+
+
+            if(AttackCount % 2 == 0)
+            {
+                start = eruptionRight;
+                end = eruptionLeft;
+            }
+            float y = EasingFunction.QuadraticBump(ratio) * -900;
             Vector2 p = Vector2.Lerp(start, end, ratio);
-            p.Y -= y;
+            p.Y += y;
             return p;
         }
         switch (AttackCycle)
@@ -34,7 +41,7 @@ public partial class RekBoss
                     //Vector2 moveToPoint = Vector2.Lerp(eruptionLeft, eruptionRight, 0.7f);
                     if (Timer == 1)
                     {
-                        Vector2 pointToUse = Main.rand.NextBool(2) ? eruptionLeft : eruptionRight;
+                        Vector2 pointToUse = AttackCount % 2 == 0 ? eruptionLeft : eruptionRight;
                         Teleport(pointToUse);
                     }
 
@@ -51,7 +58,7 @@ public partial class RekBoss
                         seg.deadly = true;
                     }
 
-                    if (Timer == 2)
+                    if (Timer == 15)
                     {
                         Vector2 vel = (nextPoint - point).SafeNormalize(Vector2.Zero);
                         vel *= 1024;
@@ -111,7 +118,7 @@ public partial class RekBoss
                 break;
             case 2:
                 {
-                    SwitchState(AIState.Ouroboros);
+                    SwitchState(AIState.Idle);
                 }
                 break;
         }

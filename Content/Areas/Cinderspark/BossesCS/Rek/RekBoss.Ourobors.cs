@@ -246,7 +246,6 @@ public partial class RekBoss
                         AllNoWorm();
 
                         //Set the new centerp oint
-                        _centerPoint = _initialVelocity;
                         _initialVelocity = -Vector2.UnitY * 5;
 
                     }
@@ -265,7 +264,7 @@ public partial class RekBoss
                     _spinRot -= rotationSpeed;
 
                     float surface = LavaSurface();
-                    if(_centerPoint.Y > surface)
+                    if(_centerPoint.Y + 127 > surface)
                     {
                         if(_initialVelocity.Y > 1)
                             _initialVelocity *= 0.94f;

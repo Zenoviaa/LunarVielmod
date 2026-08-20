@@ -86,6 +86,27 @@ public partial class RekBoss
                         NPC.TargetClosest();
                         Teleport(_arenaCenter + new Vector2(0, -999));
                     }
+
+
+                    int i = 0;
+                    //All parts should glow and float up
+                    foreach (var segment in Segments)
+                    {
+                        if(AttackCount < i)
+                        {
+                            float ratio = 1f;
+                            if (segment.velocity.Y > 1)
+                                segment.velocity.Y *= 0.95f;
+                            segment.velocity.Y -= ratio * 0.58f;
+                            segment.rotation += 0.05f * ratio;
+                            segment.isBurning = true;
+                            segment.deadly = true;
+                            segment.position += segment.velocity;
+                        }
+       
+                        i++;
+                    }
+
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -252);
                     SegmentsMeteorFloat();
                     if (Timer % TimeBetweenMeteors == 0)

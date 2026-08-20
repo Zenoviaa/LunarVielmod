@@ -442,8 +442,9 @@ public partial class RekBoss : IWaterSilhouette
         ref RekSegment segment = ref Segments[index];
         var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, segment.position);
-        glowDrawer.scale *= 0.78f;
-        glowDrawer.color = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12)) * ExtraMath.Osc(0.5f, 0.75f, speed: 8) * 0.2f;
+        glowDrawer.scale *= 0.38f;
+        glowDrawer.color = Color.White * 0.33f;
+        glowDrawer.color.R = (byte)(index * 9);
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);
     }
@@ -486,8 +487,10 @@ public partial class RekBoss : IWaterSilhouette
         torchShader.Time = Main.GlobalTimeWrappedHourly * 4;
         torchShader.Strength = 0.5f;
         torchShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
-        torchShader.InnerColor = Color.Yellow;
+        torchShader.InnerColor = Color.Lerp(Color.Yellow, Color.OrangeRed, 0.35f);
         torchShader.BloomColor = Color.Red;
+        torchShader.DitherTexture = AssetManager.Dithering.Dither8x8Double;
+        torchShader.SpriteSize = AssetManager.GlowMask.SimpleGlowCircle.Size();
         SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = torchShader.Effect };
         using(new SpritebatchContext(spriteBatch, @params))
         {

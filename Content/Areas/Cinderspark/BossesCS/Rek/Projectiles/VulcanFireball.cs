@@ -9,6 +9,7 @@ using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,7 +22,7 @@ public class BigVulcanFireball : ModProjectile
     {
         base.SetStaticDefaults();
         this.AddCommonDebuff(DebuffFlags.Burning_Serpent);
-        ProjectileID.Sets.TrailCacheLength[Type] = 32;
+        ProjectileID.Sets.TrailCacheLength[Type] = 48;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
     public override void SetDefaults()
@@ -31,12 +32,13 @@ public class BigVulcanFireball : ModProjectile
         Projectile.height = 24;
         Projectile.penetrate = -1;
         Projectile.hostile = true;
-        Projectile.tileCollide = true;
-        Projectile.timeLeft = 320;
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = 140;
     }
 
     public override void AI()
     {
+
         base.AI();
         Timer++;
         if(Timer == 1)
@@ -94,10 +96,6 @@ public class BigVulcanFireball : ModProjectile
                     break;
             }
         }
-        if(Projectile.timeLeft < 30)
-        {
-            Projectile.scale *= 1.02f;
-        }
 
         if(Timer < 15)
         {
@@ -116,10 +114,7 @@ public class BigVulcanFireball : ModProjectile
             Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, p.Center, degreesToRotate: 0.5f);
         }
 
-        if (Projectile.wet)
-        {
-            Projectile.velocity.Y -= 2f;
-        }
+
     }
 
     public override bool OnTileCollide(Vector2 oldVelocity)
@@ -134,58 +129,65 @@ public class BigVulcanFireball : ModProjectile
     {
         float GetTrailWidth(float ratio)
         {
-            return MathHelper.SmoothStep(64, 16, ratio);
+            return MathHelper.SmoothStep(96, 64, ratio) * 0.5f;
+        }
+        float GetTrailWidth2(float ratio)
+        {
+            return GetTrailWidth(ratio) * 2f;
         }
         Color GetTrailColor(float ratio)
         {
-            return DrawUtilities.InterpolateColorArray(ratio, Color.White, Color.Orange, Color.Red, Color.DarkRed, Color.Blue, Color.Black) * EasingFunction.OutSine(ratio);
+            return DrawUtilities.InterpolateColorArray(ratio, Color.White, Color.White, Color.OrangeRed,  Color.Red, Color.DarkRed, Color.Black);
+            //    return Color.Lerp(Color.Lerp(Color.White, Color.Yellow, EasingFunction.OutQuad(ratio)), Color.Lerp(Color.Orange, Color.Lerp(Color.Red, Color.Transparent, ratio), EasingFunction.OutQuad(ratio)), EasingFunction.OutExpo(ratio)) * _afterImageAlpha;
+        }
+
+        Color GetTrailColor2(float ratio)
+        {
+            return Color.Lerp(GetTrailColor(ratio), Color.DarkRed, 0.5f) * 0.3f;
         }
 
         GothinFlameTrailShader flameTrailShader = ShaderContent.GetInstance<GothinFlameTrailShader>();
         flameTrailShader.InsideColor = Color.Lerp(Color.White, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 12));
         flameTrailShader.BloomColor = Color.Red;
         flameTrailShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+    
 
-        flameTrailShader.LaserTexture = TrailRegistry.Beamlight.Value;
+        flameTrailShader.LaserTexture = AssetManager.LaserTextures.FlameTrail.Value;
         flameTrailShader.Time = Main.GlobalTimeWrappedHourly * 24;
         TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, Projectile.Size * 0.5f);
 
-        flameTrailShader.LaserTexture = TrailRegistry.SmallWhispyTrail.Value;
-        TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, Projectile.Size * 0.5f);
+        flameTrailShader.LaserTexture = TrailRegistry.WhispyTrail.Value;
+        TrailDrawer.Draw(Projectile.oldPos, GetTrailColor2, GetTrailWidth2, flameTrailShader, Projectile.Size * 0.5f);
     }
 
-    public override bool PreDraw(ref Color lightColor)
+    private void DrawFlameBall(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        RekFireballShader shader = ShaderContent.GetInstance<RekFireballShader>();
-        shader.Time = Main.GlobalTimeWrappedHourly * 3;
-        shader.NoiseTexture = AssetManager.Noise.InvertedVoronoi;
-        shader.WNoiseTexture = AssetManager.Noise.FlameVortexNoise;
+        BigRekFireballShader shader = ShaderContent.GetInstance<BigRekFireballShader>();
+        shader.Time = Main.GlobalTimeWrappedHourly * -64;
+        shader.NoiseTexture = AssetManager.Noise.SharpPerlinNoise;
         shader.InnerColor = Color.Yellow;
         shader.BloomColor = Color.DarkRed;
-        shader.Strength = 0.3f;
+        shader.Strength = 3f;
+        shader.DitherTexture = AssetManager.Dithering.Dither8x8Double;
+        shader.SpriteSize = TextureAssets.Projectile[Type].Size();
         var sbParams = SpritebatchParams.InWorldAndZoomed();
         sbParams.effect = shader.Effect;
-
-
+        sbParams.blendState = BlendState.Additive;
         float y = MathHelper.Lerp(1.5f, 0.2f, Projectile.velocity.Length() / 80);
-        SpritebatchDrawer darkness = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center);
-        darkness.color = Color.Black;
-        darkness.scale *= 0.6f;
-        darkness.scale.Y *= 0.7f * y;
-        darkness.rotation = Projectile.rotation;
-        Main.spriteBatch.Draw(darkness);
-        using(SpritebatchStarter.Begin(Main.spriteBatch, sbParams))
+        using (new SpritebatchContext(spriteBatch, sbParams))
         {
             SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
             drawer.color = Color.White;
-            drawer.scale *= 0.75f;
-            drawer.color.A = 0;
+            drawer.scale *= 1.4f;
             drawer.scale.Y *= 0.75f * y;
-
-            Main.spriteBatch.Draw(drawer);
-
-         
+            spriteBatch.Draw(drawer);
         }
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+
+
+        PixelationManager.QueueSpritebatchDrawAction(DrawFlameBall, DrawLayer.OverNPCsAdditive);
         PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
         return false;
     }

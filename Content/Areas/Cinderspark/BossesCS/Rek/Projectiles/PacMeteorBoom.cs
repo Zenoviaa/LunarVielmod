@@ -16,7 +16,8 @@ public class PacMeteorBoom : ModProjectile
     private ref float Timer => ref Projectile.ai[0];
     private NPC Parent => Main.npc[(int)Projectile.ai[1]];
     private int SegmentIndex => (int)Projectile.ai[2];
-    private float AttackProgress => Timer / 24;
+    private float AttackTime => 80;
+    private float AttackProgress => Timer / AttackTime;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -31,7 +32,7 @@ public class PacMeteorBoom : ModProjectile
         Projectile.height = 16;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 24;
+        Projectile.timeLeft = (int)AttackTime;
         Projectile.light = 0.78f;
     }
 
