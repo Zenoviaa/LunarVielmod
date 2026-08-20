@@ -35,21 +35,9 @@ public partial class RekBoss
                         Teleport(eruptionLeft);
                     }
 
+                    this.GetAnimator().PlayAnimation(ANIM_IDLE, AnimationParams.Default with { IsLooping = true });
                     if (Timer >= Eruption_GraceTime)
                     {
-                        if (Timer >= Eruption_GraceTime * 5)
-                        {
-                            this.GetAnimator().PlayAnimation(ANIM_MOUTH_BIG_OPEN_HOLD, AnimationParams.Default with { IsLooping = true });
-                        }
-                        else if (Timer >= Eruption_GraceTime * 4)
-                        {
-                            this.GetAnimator().PlayAnimation(ANIM_MOUTH_BIG_OPEN_READY, AnimationParams.Default with { IsLooping = false });
-                        }
-                        else
-                        {
-                            this.GetAnimator().PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
-                        }
-
                         if (Timer % 24 == 0)
                         {
                             if (MultiplayerHelper.IsHost)
