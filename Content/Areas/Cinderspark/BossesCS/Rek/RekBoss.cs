@@ -53,6 +53,7 @@ public partial class RekBoss : ScarletBoss
         public bool noWorm;
         public float burnAlpha;
         public int bodyFrame;
+        public float sawBladeAlpha;
     }
     public ChainWithLengths _chain;
     public ChainWithLengths Chain
@@ -236,6 +237,16 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
+    private Asset<Texture2D> _sawTextureAsset;
+    private Asset<Texture2D> SawTextureAsset
+    {
+        get
+        {
+            _sawTextureAsset ??= ModContent.Request<Texture2D>(base.Texture + "_Saw");
+            return _sawTextureAsset;
+        }
+    }
+
     private RekSegment[] _segments;
     public RekSegment[] Segments
     {
@@ -369,6 +380,9 @@ public partial class RekBoss : ScarletBoss
             var segment = Segments[i];
             segment.deadly = false;
             segment.isBurningNoWarning = false;
+
+            //This value you should be set specifically for everything that uses saw visual
+            segment.sawBladeAlpha = 0;
         }
         _showAfterImages = false;
         _ouroborosTrail = false;

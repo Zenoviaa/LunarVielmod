@@ -298,6 +298,18 @@ public partial class RekBoss : IWaterSilhouette
     {
         system.SilhouettesToDraw.Add(DrawWetWhite);
     }
+    private void DrawSaw(int index)
+    {
+        ref RekSegment segment = ref Segments[index];
+        if (segment.sawBladeAlpha <= 0)
+            return;
+
+        Asset<Texture2D> textureAsset = SawTextureAsset;
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
+        drawer.rotation = segment.rotation;
+        drawer.scale = Vector2.One * segment.sawBladeAlpha;
+        Main.spriteBatch.Draw(drawer);
+    }
 
     private void DrawSegment(int index)
     {
@@ -454,6 +466,11 @@ public partial class RekBoss : IWaterSilhouette
         {
             PixelationManager.QueuePrimitivesDrawAction(DrawSlashEffect, DrawLayer.OverNPCsAdditive);
             PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
+        }
+       
+        for (int i = 1; i < Segments.Length; i++)
+        {
+            DrawSaw(i);
         }
         //Ok, so we draw everything here yah?
         for (int i = 1; i < Segments.Length; i++)

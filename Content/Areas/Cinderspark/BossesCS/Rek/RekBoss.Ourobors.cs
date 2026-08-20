@@ -29,6 +29,7 @@ public partial class RekBoss
     private float _spinRot;
     private float Ouroboros_Coil_Time => 190;
     private float Ouroboros_Wait_Time => 70;
+    private float Ouroboros_Spinup_Time => 120;
     private float Ouroboros_Startup_Time => 150;
     private void AI_Ouroboros()
     {
@@ -243,13 +244,41 @@ public partial class RekBoss
            
                         NPC.TargetClosest();
                         AllNoWorm();
-                        _initialVelocity = Vector2.Lerp(eruptionLeft, eruptionRight, 0.5f);
-                        _initialVelocity.Y = _arenaCenter.Y;
+
+                        //Set the new centerp oint
+                        _centerPoint = _initialVelocity;
+                        _initialVelocity = -Vector2.UnitY * 5;
+
+                    }
+
+                    _centerPoint += _initialVelocity;
+                    for(int i = 0; i < Segments.Length; i++)
+                    {
+                        ref var segment = ref Segments[i];
+                        float t = Timer - i * 4;
+                        float ratio = t / 25f;
+                        float ease = EasingFunction.InOutExpo(ratio);
+                        segment.sawBladeAlpha = ease;
                     }
 
                     animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
                     _spinRot -= rotationSpeed;
-                    SpinAround(_initialVelocity, _spinRot);
+
+                    float surface = LavaSurface();
+                    if(_centerPoint.Y > surface)
+                    {
+                        if(_initialVelocity.Y > 1)
+                            _initialVelocity *= 0.94f;
+                        else
+                        {
+                            _initialVelocity.Y -= 0.03f;
+                        }
+                    }
+                    else
+                    {
+                        _initialVelocity.Y += 0.5f;
+                    }
+                    SpinAround(_centerPoint, _spinRot);
                     if(Timer >= Ouroboros_Wait_Time)
                     {
                         Timer = 0;
@@ -259,21 +288,17 @@ public partial class RekBoss
                 break;
             case 3:
                 {
-                    if (Timer == 1)
-                    {
-                        _centerPoint = _initialVelocity;
-                    }
                     _outliner.warning = true;
-                    _spinRot += rotationSpeed * EasingFunction.InOutExpo(Timer / Ouroboros_Startup_Time) * 2;
+                    foreach(var seg in Segments)
+                    {
+                        seg.isBurning = true;
+                    }
 
-                    var rect = ArenaRectangleUpToLava();
-                    rect = rect.CenterPad(-384);
-                    rect.Height += 128;
-                    float ratio = Timer / Ouroboros_Startup_Time;
-                    float ease = EasingFunction.InOutExpo(ratio);
-                    Vector2 pointToMoveTo = Vector2.Lerp(_centerPoint, rect.BottomRight(), ease);
-                    SpinAround(pointToMoveTo, _spinRot);
-                    if (Timer >= Ouroboros_Startup_Time)
+                    _spinRot -= rotationSpeed * Timer / 60f;
+                    _initialVelocity *= 0.98f;
+                    _centerPoint += _initialVelocity;
+                    SpinAround(_centerPoint, _spinRot);
+                    if(Timer >= Ouroboros_Spinup_Time)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -281,6 +306,27 @@ public partial class RekBoss
                 }
                 break;
             case 4:
+                {
+                    if(Timer == 1)
+                    {
+                        _initialVelocity = _centerPoint;
+                    }
+                    var rect = ArenaRectangleUpToLava();
+                    rect = rect.CenterPad(-384);
+                    rect.Height += 128;
+                    Vector2 bottomLeft = rect.BottomLeft();
+
+                    Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled, _initialVelocity, bottomLeft);
+                    _distanceTraveled += 8f * EasingFunction.InOutExpo(Timer / 50f);
+                    if(_distanceTraveled >= Vector2.Distance(_initialVelocity, bottomLeft))
+                    {
+                        _distanceTraveled = 0;
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 5:
                 {
           
                     var rect = ArenaRectangleUpToLava();
@@ -292,7 +338,7 @@ public partial class RekBoss
                     Vector2 topLeft = rect.TopLeft();
                     Vector2 topRifght = rect.TopRight();
 
-                    Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled, bottomRight, bottomLeft, topLeft, topRifght, bottomRight);
+                    Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled,  bottomLeft, topLeft, topRifght, bottomRight, bottomLeft);
                     _ouroborosOrigin = currentPoint;
 
                     if (Timer == 1)
@@ -307,7 +353,7 @@ public partial class RekBoss
           
                     }
                     _oldOuroborosPos.PushAndPopOffEnd(currentPoint);
-                    Vector2 nextPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled + 32, bottomRight, bottomLeft, topLeft, topRifght, bottomRight);
+                    Vector2 nextPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled + 32,  bottomLeft, topLeft, topRifght, bottomRight, bottomLeft);
 
                     _ouroborosTrail = true;
                     Vector2 movementDirection = nextPoint - currentPoint;
