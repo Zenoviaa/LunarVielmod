@@ -9,6 +9,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    private float _ouroborosIndex;
     private float _eatProgress;
     private float _hitstopTimer;
     private float _segmentTimer;
@@ -80,6 +81,7 @@ public partial class RekBoss
                 yRadius: 192,
                 startRadians: 0,
                 endRadians: MathHelper.ToRadians(310), ratio);
+            circlePoint = circlePoint.RotatedBy(_ouroborosIndex * MathHelper.ToRadians(60), _arenaCenter);
             return circlePoint;
         }
 
@@ -99,6 +101,7 @@ public partial class RekBoss
                         AllNoWorm();
                     }
                     _segmentTimer = 0;
+
                     //Prepare the points
                     SegmentsMeteorFloat();
                     if(Timer >= 30)
@@ -167,6 +170,7 @@ public partial class RekBoss
                             }
                             else if(ShouldStopEating())
                             {
+                                _ouroborosIndex++;
                                 Timer = 0;
                                 AttackCycle = 1;
                             }
