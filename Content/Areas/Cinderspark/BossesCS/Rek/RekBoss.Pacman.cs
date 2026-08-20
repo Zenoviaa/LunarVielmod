@@ -155,11 +155,19 @@ public partial class RekBoss
                             travelVelocity = velToTarget * distToTarget;
                             if (MultiplayerHelper.IsHost)
                             {
-                                var firer = ProjFirer.From<MeteorBoom>(NPC);
-                                firer.velocity = NPC.velocity * 1024;
-                                firer.position = NPC.Center;
-                                firer.damage = Pac_Boom_Damage;
-                                firer.New();
+                                for(int i = 0; i < 7; i++)
+                                {
+                                    float ratio = (float)i / 7f;
+                                    var segment = Segments[i];
+                                    var firer = ProjFirer.From<PacMeteorBoom>(NPC);
+                                    firer.velocity = (segment.rotation - MathHelper.PiOver2).ToRotationVector2() * 1024 * ratio;
+                                    firer.position = segment.position;
+                                    firer.damage = Pac_Boom_Damage;
+                                    firer.ai1 = NPC.whoAmI;
+                                    firer.ai2 = i;
+                                    firer.New();
+                                }
+             
                             }
 
                             seg.Projectile.ai[2] = 1;
