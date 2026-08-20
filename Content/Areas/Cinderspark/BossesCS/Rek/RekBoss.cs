@@ -20,6 +20,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss : ScarletBoss
 {
+    private Rectangle _lavaArenaRectangle;
     private Vector2 _arenaCenter;
     private Vector2 _teleportPosition;
 
@@ -276,7 +277,7 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private AIState TestAttack => AIState.CoilDash;
+    private AIState TestAttack => AIState.VolcanicMeteor;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -334,7 +335,9 @@ public partial class RekBoss : ScarletBoss
         if (_arenaCenter == Vector2.Zero)
         {
             _arenaCenter = TileUtilities.GuessArenaCenter(NPC.Center);
+            _lavaArenaRectangle = ArenaRectangleUpToLava();
         }
+
         if (Main.netMode != NetmodeID.Server)
         {
             ProduceWaterRipples();

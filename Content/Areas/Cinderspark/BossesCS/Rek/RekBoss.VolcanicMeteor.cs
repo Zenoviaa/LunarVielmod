@@ -13,6 +13,34 @@ public partial class RekBoss
 
     private float TimeBetweenMeteors => 12;
     private int Volcanic_Meteor_Damage => 60;
+
+    private void SegmentsMeteorFloat()
+    {
+        int i = 0;
+        float surface = LavaSurface();
+        foreach (var segment in Segments)
+        {
+            if (i < AttackCount)
+            {
+                segment.isBurning = true;
+                segment.deadly = true;
+                segment.position += segment.velocity;
+                Point segmentTile = segment.position.ToTileCoordinates();
+                if (segment.position.Y >= surface + 128)
+                {
+                    if (segment.velocity.Y > 1)
+                        segment.velocity *= 0.88f;
+                    segment.velocity.Y -= 0.15f;
+                }
+                else
+                {
+                    segment.velocity.Y *= 0.96f;
+                    segment.velocity.Y += 0.02f;
+                }
+            }
+            i++;
+        }
+    }
     private void AI_VolcanicMeteor()
     {
         Timer++;
@@ -26,13 +54,17 @@ public partial class RekBoss
                     foreach (var segment in Segments)
                     {
                         float time = Timer - i * 3;
-                        float ratio = EasingFunction.InOutExpo(time / 40f);
-                        segment.velocity.Y -= ratio * 0.15f;
+                        float ratio = EasingFunction.InOutExpo(time / 10f);
+                        if (segment.velocity.Y > 1)
+                            segment.velocity.Y *= 0.95f;
+                       segment.velocity.Y -= ratio * 0.58f;
                         segment.rotation += 0.05f * ratio;
                         if (time > 0)
                             segment.isBurning = true;
                         i++;
                     }
+                    if (NPC.velocity.Y > 1)
+                        NPC.velocity.Y *= 0.94f;
                     NPC.velocity.Y -= 0.15f;
                     NPC.rotation -= 0.05f;
                     AllNoWorm();
@@ -40,7 +72,7 @@ public partial class RekBoss
                     {
                         segment.position += segment.velocity;
                     }
-                    if (Timer >= 280)
+                    if (Timer >= 180)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -55,17 +87,7 @@ public partial class RekBoss
                         Teleport(_arenaCenter + new Vector2(0, -999));
                     }
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -252);
-                    int i = 0;
-                    foreach(var segment in Segments)
-                    {
-                        if(i < AttackCount)
-                        {
-                            segment.isBurning = true;
-                            segment.deadly = true;
-                            segment.position += segment.velocity;
-                        }
-                        i++;
-                    }
+                    SegmentsMeteorFloat();
                     if (Timer % TimeBetweenMeteors == 0)
                     {
                         if (MultiplayerHelper.IsHost)
@@ -97,8 +119,8 @@ public partial class RekBoss
                 break;
             case 2:
                 {
-                    ResetLavaSegments();
-                    SwitchState(AIState.Idle);
+
+                    SwitchState(AIState.Pacman);
                 }
                 break;
         }

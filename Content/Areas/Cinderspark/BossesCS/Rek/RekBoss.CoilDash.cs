@@ -246,6 +246,7 @@ public partial class RekBoss
                     for (int i = Segments.Length - 1; i >= 0; i--)
                     {
                         Segments[i].isBurning = true;
+                        Segments[i].deadly = true;
                     }
                     if (Timer == 1)
                     {
@@ -358,11 +359,9 @@ public partial class RekBoss
                     NPC.velocity.X *= 0.94f;
                     NPC.velocity.Y += 0.4f;
                     NPC.rotation += MathF.Sign(NPC.velocity.X) * 0.05f;
-
-                    float surface = LavaSurface();
                     MakeSegmentsFallIntoLavaAndFloat();
-                    float dy = NPC.Center.Y;
-                    if (dy >= surface)
+         
+                    if (Timer >= 90)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -370,34 +369,6 @@ public partial class RekBoss
                 }
                 break;
             case 6:
-                {
-                    NPC.velocity.X *= 0.94f;
-                    NPC.rotation *= 0.99f;
-
-                    float surface = LavaSurface();
-                    if (NPC.Center.Y >= surface + 64)
-                    {
-                        NPC.velocity.Y *= 0.94f;
-                        if(NPC.velocity.Y < 1)
-                        {
-                            NPC.velocity.Y -= 0.3f;
-                        }
-                    }
-                    else
-                    {
-                        NPC.velocity.Y *= 0.94f;
-                        NPC.velocity.Y += 0.02f;
-                    }
-
-                    MakeSegmentsFallIntoLavaAndFloat();
-                    if ( Timer >= 200)
-                    {
-                        Timer = 0;
-                        AttackCycle++;
-                    }
-                }
-                break;
-            case 7:
                 {
                     SwitchState(AIState.VolcanicMeteor);
                 }

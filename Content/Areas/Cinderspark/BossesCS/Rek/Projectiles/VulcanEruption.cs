@@ -247,7 +247,7 @@ public class VulcanEruption : ModProjectile
                 drawer.color.A = 0;
                 drawer.LeftCenterOrigin();
                 drawer.scale *= MathHelper.SmoothStep(1.2f, 0.5f, TelegraphProgress);
-                drawer.scale.Y *= MathHelper.SmoothStep(0, 1.5f, EasingFunction.OutExpo(TelegraphProgress));
+                drawer.scale.Y *= MathHelper.SmoothStep(0, 2.5f, EasingFunction.OutExpo(TelegraphProgress));
                 drawer.scale.X *= 1.02f;
                 spriteBatch.Draw(drawer);
 
@@ -272,7 +272,7 @@ public class VulcanEruption : ModProjectile
                 drawer.color.A = 0;
                 drawer.LeftCenterOrigin();
                 drawer.scale *= MathHelper.SmoothStep(1f, 3f, AttackProgress);
-                drawer.scale.Y *= MathHelper.SmoothStep(0, 1.5f, EasingFunction.OutExpo(AttackProgress));
+                drawer.scale.Y *= MathHelper.SmoothStep(0, 2.5f, EasingFunction.OutExpo(AttackProgress));
                 drawer.scale.X *= 2;
                 spriteBatch.Draw(drawer);
 

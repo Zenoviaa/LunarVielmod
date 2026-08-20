@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
+using Stellamod.Core.Camera;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -8,10 +9,14 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    private float _eatProgress;
+    private float _hitstopTimer;
     private float _segmentTimer;
     private int _segmentToEat;
     private int Pac_Boom_Damage => 50;
     private float Pac_Time_Between_Points_Spawning => 15;
+    private float Pac_Dash_Time => 160f;
+    private float Pac_Delay_Time => 90;
     private void AI_Pacman()
     {
         void PlacePacPoint(Vector2 position)
@@ -68,13 +73,20 @@ public partial class RekBoss
             return eat;
         }
 
+        Vector2 GetPointOnPath(float ratio)
+        {
+            Vector2 circlePoint = VectorHelper.PointOnCircle(_arenaCenter,
+                xRadius: 800,
+                yRadius: 192,
+                startRadians: 0,
+                endRadians: MathHelper.ToRadians(310), ratio);
+            return circlePoint;
+        }
 
         Timer++;
         _segmentTimer++;
-        if(_segmentTimer % 40 == 0)
-        {
-            PlacePacPoint(MyTarget.Center + Main.rand.NextVector2CircularEdge(16, 16));
-        }
+        int numWaves = 3;
+        int segmentsPerWave = Segments.Length / numWaves;
         switch (AttackCycle)
         {
             case 0:
@@ -88,18 +100,24 @@ public partial class RekBoss
                     }
                     _segmentTimer = 0;
                     //Prepare the points
-                    //1st point is somewhere around the head, floating above the lava
-                    //2nd point is more or less the same but slightly towards you
-                    //3rd point is on top of you
-                    //4th point is randomly placed around you
-                    Timer = 0;
-                    AttackCycle++;
-                    Animator.PlayAnimation(ANIM_IDLE);
+                    SegmentsMeteorFloat();
+                    if(Timer >= 30)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
                 }
                 break;
             case 1:
                 {
-                    if(Timer >= 40)
+                    if(Timer < segmentsPerWave)
+                    {
+                        float ratio = Timer / segmentsPerWave;
+                        PlacePacPoint(GetPointOnPath(ratio));
+                    }
+
+                    _eatProgress = 0f;
+                    if(Timer >= Pac_Delay_Time)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -113,26 +131,24 @@ public partial class RekBoss
           
                     }
 
-            
+                    _hitstopTimer++;
                     _outliner.attacking = true;
+                    _showAfterImages = true;
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = true });
                     Animator.Update();
-                    float speed = 12;
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
                     var seg = GetNextSegmentToEat();
-                    
                     if(seg != null)
                     {
-                        Segments[(int)seg.Projectile.ai[1]].isBurning=true;
-                        Vector2 vel = seg.Projectile.Center - NPC.Center;
-                        vel = vel.SafeNormalize(Vector2.Zero);
-                        vel *= speed;
-
-                        NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.05f *  EasingFunction.InOutSine(Timer / 30f));
-                        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.15f);
-                        float dist = Vector2.Distance(NPC.Center, seg.Projectile.Center);
-                        if (dist < 100)
+                        float travelSpeed = MathHelper.Lerp(0f, 45f, EasingFunction.InOutExpo(Timer / 120f));
+                        travelSpeed += MathHelper.Lerp(-21, 3, EasingFunction.InOutExpo(_hitstopTimer / 30f));
+                        Vector2 velToTarget = (seg.Projectile.Center - NPC.Center);
+                        velToTarget = velToTarget.SafeNormalize(Vector2.Zero);
+                        Vector2 travelVelocity = velToTarget * travelSpeed;
+                        float distToTarget = Vector2.Distance(seg.Projectile.Center, NPC.Center);
+                        if(distToTarget < travelSpeed)
                         {
-                            Timer = 0;
+                            travelVelocity = velToTarget * distToTarget;
                             if (MultiplayerHelper.IsHost)
                             {
                                 var firer = ProjFirer.From<MeteorBoom>(NPC);
@@ -141,23 +157,28 @@ public partial class RekBoss
                                 firer.damage = Pac_Boom_Damage;
                                 firer.New();
                             }
- 
+
                             seg.Projectile.ai[2] = 1;
-                            seg.Projectile.Kill();     
+                            seg.Projectile.Kill();
+                            _hitstopTimer = 0;
+                            if (IsFull())
+                            {
+                                AttackCycle++;
+                            }
+                            else if(ShouldStopEating())
+                            {
+                                Timer = 0;
+                                AttackCycle = 1;
+                            }
                         }
+                        NPC.velocity = travelVelocity;
+                        NPC.rotation = Utils.AngleLerp(NPC.rotation, travelVelocity.ToRotation(), 0.15f);
+      
                     }
-                    else
-                    {
-                        Timer = 0;
-                        if (IsFull())
-                        {
-                            AttackCycle++;
-                        }
-                        else if (ShouldStopEating())
-                        {
-                            AttackCycle = 2;
-                        }
-                    }
+
+
+
+
               
                 }
                 break;
