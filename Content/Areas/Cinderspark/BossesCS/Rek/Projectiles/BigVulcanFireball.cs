@@ -9,12 +9,13 @@ using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
-public class BigVulcanFireball : ModProjectile
+public class VulcanFireball : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
@@ -113,7 +114,7 @@ public class BigVulcanFireball : ModProjectile
         var p = PlayerHelper.FindClosestPlayer(Projectile.Center, 1024);
         if(p != null && Timer > 15)
         {
-            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, p.Center, degreesToRotate: 0.5f);
+            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, p.Center, degreesToRotate: 0.15f);
         }
 
         if (Projectile.wet)
@@ -139,6 +140,7 @@ public class BigVulcanFireball : ModProjectile
         Color GetTrailColor(float ratio)
         {
             return DrawUtilities.InterpolateColorArray(ratio, Color.White, Color.Orange, Color.Red, Color.DarkRed, Color.Blue, Color.Black) * EasingFunction.OutSine(ratio);
+            //    return Color.Lerp(Color.Lerp(Color.White, Color.Yellow, EasingFunction.OutQuad(ratio)), Color.Lerp(Color.Orange, Color.Lerp(Color.Red, Color.Transparent, ratio), EasingFunction.OutQuad(ratio)), EasingFunction.OutExpo(ratio)) * _afterImageAlpha;
         }
 
         GothinFlameTrailShader flameTrailShader = ShaderContent.GetInstance<GothinFlameTrailShader>();
@@ -156,35 +158,24 @@ public class BigVulcanFireball : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        RekFireballShader shader = ShaderContent.GetInstance<RekFireballShader>();
+        BigRekFireballShader shader = ShaderContent.GetInstance<BigRekFireballShader>();
         shader.Time = Main.GlobalTimeWrappedHourly * 3;
-        shader.NoiseTexture = AssetManager.Noise.InvertedVoronoi;
-        shader.WNoiseTexture = AssetManager.Noise.FlameVortexNoise;
+        shader.NoiseTexture = AssetManager.Noise.SharpPerlinNoise;
         shader.InnerColor = Color.Yellow;
         shader.BloomColor = Color.DarkRed;
         shader.Strength = 0.3f;
         var sbParams = SpritebatchParams.InWorldAndZoomed();
         sbParams.effect = shader.Effect;
 
-
         float y = MathHelper.Lerp(1.5f, 0.2f, Projectile.velocity.Length() / 80);
-        SpritebatchDrawer darkness = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center);
-        darkness.color = Color.Black;
-        darkness.scale *= 0.6f;
-        darkness.scale.Y *= 0.7f * y;
-        darkness.rotation = Projectile.rotation;
-        Main.spriteBatch.Draw(darkness);
-        using(SpritebatchStarter.Begin(Main.spriteBatch, sbParams))
+        using(new SpritebatchContext(Main.spriteBatch, sbParams))
         {
             SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
             drawer.color = Color.White;
             drawer.scale *= 0.75f;
             drawer.color.A = 0;
             drawer.scale.Y *= 0.75f * y;
-
             Main.spriteBatch.Draw(drawer);
-
-         
         }
         PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
         return false;

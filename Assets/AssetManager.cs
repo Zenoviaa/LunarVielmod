@@ -17,6 +17,7 @@ namespace Stellamod.Assets
         }
         public class Noise
         {
+            public static LazyAsset<Texture2D> SharpPerlinNoise;
             public static LazyAsset<Texture2D> SnowStormNoise;
             public static LazyAsset<Texture2D> InvertedVoronoi;
             public static LazyAsset<Texture2D> FlameVortexNoise;
@@ -78,6 +79,7 @@ namespace Stellamod.Assets
  
         public class LaserTextures
         {
+            public static Asset<Texture2D> FlameTrail;
             public static Asset<Texture2D> SilkStrand;
             public static Asset<Texture2D> Aura;
             public static Asset<Texture2D> CometTrail;
@@ -104,7 +106,7 @@ namespace Stellamod.Assets
             Dithering.Dither4x4Double = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither4x4DoubleScaled");
             Dithering.Dither8x8 = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither8x8");
             Dithering.Dither8x8Double = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither8x8DoubleScaled");
-
+            Noise.SharpPerlinNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/SharpPerlinNoise");
 
             GlowMask.JumbledGlowCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/JumbledGlowCircle");
             Noise.InvertedVoronoi = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/InvertedVoronoi");
@@ -150,6 +152,7 @@ namespace Stellamod.Assets
             GlowMask.ShootingStarGlint = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarGlint");
             GlowMask.ShootingStarTrail = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarParticle");
             GlowMask.WhiteCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/WhiteCircle");
+            LaserTextures.FlameTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/FlameTrail");
             LaserTextures.TexturedLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
             LaserTextures.TexturedLaser2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser2");
             LaserTextures.SnowflakeLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SnowflakeLaser");
@@ -179,12 +182,14 @@ namespace Stellamod.Assets
             Dithering.Dither4x4Double?.Unload();
             Dithering.Dither8x8?.Unload();
             Dithering.Dither8x8Double?.Unload();
+            Noise.SharpPerlinNoise?.Unload();
             
             GlowMask.JumbledGlowCircle?.Unload();
             Noise.InvertedVoronoi?.Unload();
             Noise.FlameVortexNoise?.Unload();
             GlowMask.SwordSlashForward?.Unload();
             Noise.FrontClouds?.Unload();
+            LaserTextures.FlameTrail = null;
             Noise.Clouds = null;
             Noise.CloudsMask = null;
             Noise.PainterlyNoise = null;
