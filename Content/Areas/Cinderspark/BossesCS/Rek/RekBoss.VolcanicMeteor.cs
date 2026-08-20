@@ -97,6 +97,7 @@ public partial class RekBoss
                 break;
             case 2:
                 {
+                    ResetLavaSegments();
                     SwitchState(AIState.Idle);
                 }
                 break;

@@ -7,6 +7,45 @@ namespace Stellamod
 {
     public static class VectorHelper
     {
+        public static Rectangle CenterPad(this Rectangle rect, int padding)
+        {
+            rect.Width += padding;
+            rect.Height += padding;
+            rect.Location += new Point(-padding / 2, -padding / 2);
+            return rect;
+        }
+        /// <summary>
+        /// Linearly moves between points based on a distance traveled variable.
+        /// </summary>
+        /// <param name="distanceTraveled"></param>
+        /// <param name="elements"></param>
+        /// <returns></returns>
+        public static Vector2 MoveBetweenPointsWrapped(float distanceTraveled, params Vector2[] elements)
+        {
+            float totalDistance = 0;
+            Span<float> distances = stackalloc float[elements.Length - 1];
+            for (int i = 0; i < elements.Length - 1; i++)
+            {
+                distances[i] = Vector2.Distance(elements[i], elements[i + 1]);
+                totalDistance += distances[i];
+            }
+
+            //Properly wrap around to the beginning
+            distanceTraveled %= totalDistance;
+            for (int i = 0; i < elements.Length - 1; i++)
+            {
+                float dist = distances[i];
+                if (distanceTraveled > dist)
+                    distanceTraveled -= dist;
+                else
+                {
+                    return Vector2.Lerp(elements[i], elements[i + 1], distanceTraveled / dist);
+                }
+            }
+
+            return elements[0];
+        }
+
         /// <summary>
         /// Returns a point on a heart
         /// </summary>

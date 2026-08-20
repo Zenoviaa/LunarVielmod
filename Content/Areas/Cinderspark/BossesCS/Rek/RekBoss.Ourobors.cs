@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets.ContentReader.Aseprite;
+﻿using MonoMod.Cil;
+using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Animations;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
@@ -13,15 +14,84 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Liquid;
 using Terraria.GameContent.Shaders;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    private float _ouroborosAlpha;
+    private bool _ouroborosTrail;
+    private float _windUpTimer;
+    private Vector2 _ouroborosVelocity;
+    private Vector2 _ouroborosOrigin;
+    private float _distanceTraveled;
+    private float _spinRot;
     private float Ouroboros_Coil_Time => 190;
+    private float Ouroboros_Wait_Time => 70;
+    private float Ouroboros_Startup_Time => 150;
     private void AI_Ouroboros()
     {
+        Projectile FindLatchProjectile<T>() where T : ModProjectile
+        {
+            int t = ModContent.ProjectileType<T>();
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type != t)
+                    continue;
+                if (proj.ai[0] != NPC.whoAmI)
+                    continue;
+                return proj;
+            }
+            return null;
+        }
 
+        void SpinAround(Vector2 point, float radians)
+        {
+            //Create a circle
+            int i = 0;
+            var orientation = new CircleOrientation(point, spawnEdgeRadius: 200, Segments.Length);
+            foreach (PositionVelocity posVel in orientation)
+            {
+                PositionVelocity next = orientation.Get(i + 1);
+                next.position = next.position.RotatedBy(radians, point);
+
+                var segment = Segments[i];
+                segment.position = posVel.position.RotatedBy(radians, point);
+
+
+                float rot = (next.position - segment.position).ToRotation();
+                segment.rotation = rot;
+                i++;
+            }
+
+            PositionVelocity headPos = orientation.Get(0);
+            Vector2 pos = headPos.position.RotatedBy(radians, point);
+            PositionVelocity nextPos = orientation.Get(-1);
+            Vector2 nPos = nextPos.position.RotatedBy(radians, point);
+            NPC.Center = Segments[0].position;
+            NPC.rotation = (nPos - pos).ToRotation();
+            NPC.velocity *= 0f;
+        }
+
+        void SlamWall(Vector2 point)
+        {
+            var iminShock = new SoundStyle("Stellamod/Assets/Sounds/RekShockwave");
+            SoundEngine.PlaySound(iminShock, point);
+            var fx = FXUtil.GlowCircleBoom(point, Color.White, Color.OrangeRed, Color.Red);
+            fx.VectorScale *= 7;
+            foreach (PositionVelocity posVel in new RandomCircleOrientation(point, 64, 32))
+            {
+                Particles.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
+            }
+            foreach (PositionVelocity posVel in new RandomCircleOrientation(point, 450, 24))
+            {
+                Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
+            }
+            FXUtil.CreateRipple(point);
+
+        }
+        _oldOuroborosPos ??= new Vector2[32];
         float rotationSpeed = -0.05f;
         var animator = this.GetAnimator();
         Timer++;
@@ -178,30 +248,106 @@ public partial class RekBoss
                     }
 
                     animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
-                    //Create a circle
-                    int i = 0;
-                    var orientation = new CircleOrientation(_initialVelocity, spawnEdgeRadius: 200, Segments.Length);
-                    foreach (PositionVelocity posVel in orientation)
+                    _spinRot -= rotationSpeed;
+                    SpinAround(_initialVelocity, _spinRot);
+                    if(Timer >= Ouroboros_Wait_Time)
                     {
-                        PositionVelocity next = orientation.Get(i + 1);
-                        next.position = next.position.RotatedBy(Timer * rotationSpeed, _initialVelocity);
-   
-                        var segment = Segments[i];
-                        segment.position = posVel.position.RotatedBy(Timer * rotationSpeed, _initialVelocity);
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    if (Timer == 1)
+                    {
+                        _centerPoint = _initialVelocity;
+                    }
+                    _outliner.warning = true;
+                    _spinRot += rotationSpeed * EasingFunction.InOutExpo(Timer / Ouroboros_Startup_Time) * 2;
 
+                    var rect = ArenaRectangleUpToLava();
+                    rect = rect.CenterPad(-384);
+                    rect.Height += 128;
+                    float ratio = Timer / Ouroboros_Startup_Time;
+                    float ease = EasingFunction.InOutExpo(ratio);
+                    Vector2 pointToMoveTo = Vector2.Lerp(_centerPoint, rect.BottomRight(), ease);
+                    SpinAround(pointToMoveTo, _spinRot);
+                    if (Timer >= Ouroboros_Startup_Time)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+          
+                    var rect = ArenaRectangleUpToLava();
+                    rect = rect.CenterPad(-384);
+                    rect.Height += 128;
+                    _spinRot += rotationSpeed * 3;
+                    Vector2 bottomRight = rect.BottomRight();
+                    Vector2 bottomLeft = rect.BottomLeft();
+                    Vector2 topLeft = rect.TopLeft();
+                    Vector2 topRifght = rect.TopRight();
 
-                        float rot = (next.position - segment.position).ToRotation();
-                        segment.rotation = rot;
-                        i++;
+                    Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled, bottomRight, bottomLeft, topLeft, topRifght, bottomRight);
+                    _ouroborosOrigin = currentPoint;
+
+                    if (Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            ProjFirer firer = ProjFirer.From<FlameWheel>(NPC);
+                            firer.position = currentPoint;
+                            firer.ai0 = NPC.whoAmI;
+                            firer.New();
+                        }
+          
+                    }
+                    _oldOuroborosPos.PushAndPopOffEnd(currentPoint);
+                    Vector2 nextPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled + 32, bottomRight, bottomLeft, topLeft, topRifght, bottomRight);
+
+                    _ouroborosTrail = true;
+                    Vector2 movementDirection = nextPoint - currentPoint;
+                    movementDirection = movementDirection.SafeNormalize(Vector2.Zero);
+
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, currentPoint, 0.1f));
+                    SpinAround(currentPoint, _spinRot);
+                    for (int i = Segments.Length - 1; i >= 0; i--)
+                    {
+                        Segments[i].isBurning = true;
+                        Segments[i].deadly = true;
                     }
 
-                    PositionVelocity headPos = orientation.Get(0);
-                    Vector2 pos = headPos.position.RotatedBy(Timer * rotationSpeed, _initialVelocity);
-                    PositionVelocity nextPos = orientation.Get(-1);
-                    Vector2 nPos = nextPos.position.RotatedBy(Timer * rotationSpeed, _initialVelocity);
-                    NPC.Center = Segments[0].position;
-                    NPC.rotation = (nPos - pos).ToRotation();
-                    NPC.velocity *= 0f;
+                    if (Vector2.Dot(_ouroborosVelocity, movementDirection) < 0.9f && Timer > 15)
+                    {
+                      
+                        SlamWall(currentPoint);
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            ProjFirer firer = ProjFirer.From<RekFlameTrail>(NPC);
+                            firer.ai0 = NPC.whoAmI;
+                            firer.damage = Coil_Dash_Damage;
+                            firer.position = NPC.Center;
+                            firer.velocity = Vector2.Zero;
+                            firer.New();
+                        }
+                        _windUpTimer = 0;
+                    }
+
+                    var flameWheel = FindLatchProjectile<FlameWheel>();
+                    if(flameWheel != null)
+                    {
+                        flameWheel.Center = currentPoint;
+                    }
+                    _ouroborosVelocity = movementDirection;
+                    _windUpTimer++;
+
+                    float speedUp = MathHelper.SmoothStep(0f, 24, EasingFunction.Clamp(Timer / 300f));
+                    _distanceTraveled += ((24 + speedUp) * EasingFunction.InOutBack(_windUpTimer / 35) + 12) * EasingFunction.InOutExpo(Timer / 120f);
+                    _spinRot += rotationSpeed * 1.7f * EasingFunction.InOutExpo(_windUpTimer / 45f);
                 }
                 break;
         }

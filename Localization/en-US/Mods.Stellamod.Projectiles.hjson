@@ -2034,3 +2034,5 @@ RekFlameTrail.DisplayName: Rek Flame Trail
 VolcanicMeteor.DisplayName: Volcanic Meteor
 PacmanBoom.DisplayName: Pacman Boom
 PacmanSegment.DisplayName: Pacman Segment
+StartupWheel.DisplayName: Startup Wheel
+ZoomWheel.DisplayName: Zoom Wheel

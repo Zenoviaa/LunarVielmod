@@ -399,7 +399,7 @@ public partial class RekBoss
                 break;
             case 7:
                 {
-                    SwitchState(AIState.Pacman);
+                    SwitchState(AIState.VolcanicMeteor);
                 }
                 break;
         }

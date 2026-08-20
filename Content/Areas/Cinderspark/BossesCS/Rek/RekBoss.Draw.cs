@@ -2,8 +2,10 @@
 using Stellamod.Assets;
 using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering;
 using Stellamod.Effects.RekFlames;
+using Stellamod.Effects.RoyalMagic;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -104,6 +106,164 @@ public interface IWaterSilhouette
 
 public partial class RekBoss : IWaterSilhouette
 {
+    private Vector2[] _oldOuroborosPos;
+    private float GetTrailWidth(float ratio)
+    {
+        return MathHelper.Lerp(284, 89, ratio);
+    }
+    private float GetTrailWidth2(float ratio)
+    {
+        return GetTrailWidth(ratio) * 1.5f;
+    }
+    private float GetTrailWidth3(float ratio)
+    {
+        return GetTrailWidth(ratio) * 2f;
+    }
+
+    private Color GetTrailColor(float ratio)
+    {
+        Color c = Color.Lerp(Color.Orange, Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16)), ratio) * EasingFunction.QuadraticBump(ratio) * _ouroborosAlpha;// * EasingFunction.QuadraticBump(_swingTrailAlpha);
+                                                                                                                                                             // c.A = 0;
+        return c;
+    }
+    private Color GetTrailColor2(float ratio)
+    {
+        Color c = Color.Lerp(Color.Orange, Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16)), ratio) * 0.24f * EasingFunction.QuadraticBump(ratio) * _ouroborosAlpha;// * EasingFunction.QuadraticBump(_swingTrailAlpha);                                                                                                                     // c.A = 0;
+        return c;
+    }
+    private void DrawFlameTrail(GraphicsDevice gDevice)
+    {
+        if (_oldOuroborosPos == null)
+            return;
+
+        //FixedRichLaserShader shader = ShaderContent.GetInstance<FixedRichLaserShader>();
+        AlcadSlashShader shader = ShaderContent.GetInstance<AlcadSlashShader>();
+        shader.ScrollingLaser = TrailRegistry.Beamlight.Value;
+        shader.Noise = AssetManager.Noise.Whirly.Value;
+        shader.Slash = AssetManager.LaserTextures.CometTrail.Value;
+        shader.BloomColor = Color.DarkRed;
+        shader.Time = Main.GlobalTimeWrappedHourly * 24;
+        shader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        shader.Distortion = 0.15f;
+        TrailDrawer.Draw(_oldOuroborosPos, GetTrailColor, GetTrailWidth, shader);
+        //TrailDrawer.Draw(_oldOuroborosPos, GetTrailColor, GetTrailWidth2, shader);
+
+        FixedRichLaserShader shader2 = ShaderContent.GetInstance<FixedRichLaserShader>();
+        shader2.LaserTexture = TrailRegistry.BeamTrail;
+        TrailDrawer.Draw(_oldOuroborosPos, GetTrailColor2, GetTrailWidth3, shader2);
+    }
+
+    private float GetSlashTrailWidth(float ratio)
+    {
+        return MathHelper.Lerp(150, 89, ratio) * 0.8f;
+    }
+    private float GetSlashTrailWidth2(float ratio)
+    {
+        return GetSlashTrailWidth(ratio) * 1.5f;
+    }
+    private float GetSlashTrailWidth3(float ratio)
+    {
+        return GetSlashTrailWidth(ratio) * 2f;
+    }
+    private float GetSlashTrailWidth4(float ratio)
+    {
+        return GetSlashTrailWidth(ratio) * 1.45f * MathHelper.SmoothStep(1f, 0, ratio);
+    }
+
+
+    private Color GetSlashTrailColor(float ratio)
+    {
+
+        Color inbetweenColor = Color.OrangeRed;
+        inbetweenColor = Color.Lerp(inbetweenColor, Color.DarkRed, ExtraMath.Osc(0f, 1f, speed: 9));
+        Color c1 = Color.Lerp(Color.Orange, inbetweenColor, ratio);
+        Color c2 = Color.Lerp(inbetweenColor, Color.DarkRed, ratio);
+        c2 = Color.Lerp(c2, Color.OrangeRed, ExtraMath.Osc(0f, 1f, speed: 16));
+        Color c3 = Color.Lerp(c1, c2, ratio);
+        c3 *= 0.5f;
+        c3 *= _ouroborosAlpha;
+        c3 *= EasingFunction.QuadraticBump(ratio);
+        // c3.A = 0;
+        return c3;
+    }
+
+    private Color GetSlashTrailColor2(float ratio)
+    {
+        Color c = GetSlashTrailColor(ratio) * 0.24f * EasingFunction.QuadraticBump(ratio);// * EasingFunction.QuadraticBump(_swingTrailAlpha);     
+        c *= EasingFunction.QuadraticBump(ratio);
+        // c.A = 0;
+        c *= _ouroborosAlpha;
+        return c;
+    }
+    private Color GetSlashTrailColor3(float ratio)
+    {
+        Color c = Color.Orange;
+        c = Color.Lerp(Color.OrangeRed, c, ratio);
+        c = Color.Lerp(c, Color.DarkRed, ExtraMath.Osc(0f, 1f, speed: 9));
+        c *= EasingFunction.QuadraticBump(ratio);
+        c *= _ouroborosAlpha;// * EasingFunction.QuadraticBump(_swingTrailAlpha);                                                                                                                     // c.A = 0;
+        return c;
+    }
+
+    private Vector2 CalculateSwingOffset(float interpolant)
+    {
+        Vector2 v = Vector2.UnitY;
+        v = v.RotatedBy(MathHelper.TwoPi * interpolant * MathHelper.Lerp(1f, 1.5f, EasingFunction.InOutSine(Timer / 90)));
+        v = v.RotatedBy(_spinRot);
+        v *= 144;
+        return v;
+    }
+    private Vector2 CalculateSwingOffset(float interpolant, float dist)
+    {
+        Vector2 v = Vector2.UnitY;
+        v = v.RotatedBy(MathHelper.TwoPi * interpolant * MathHelper.Lerp(1f, 1.5f, EasingFunction.InOutSine(Timer / 90)));
+        v = v.RotatedBy(_spinRot);
+        v *= dist;
+        return v;
+    }
+
+
+    private void DrawSlashEffect(GraphicsDevice gDevice)
+    {
+        Vector2[] position = new Vector2[64];
+        for (int i = 0; i < position.Length; i++)
+        {
+            //Here we use parent.center cause projectil.center might be the wrong spottt
+            float ratio = i / (float)position.Length;
+            Vector2 v = CalculateSwingOffset(ratio);
+            v = v.RotatedBy(MathHelper.ToRadians(180));
+            Vector2 point = _ouroborosOrigin + v;
+            position[i] = point;
+        }
+
+        //FixedRichLaserShader shader = ShaderContent.GetInstance<FixedRichLaserShader>();
+        AlcadSlashShader shader = ShaderContent.GetInstance<AlcadSlashShader>();
+        shader.ScrollingLaser = TrailRegistry.Beamlight.Value;
+        shader.Noise = AssetManager.Noise.Whirly.Value;
+        shader.Slash = AssetManager.GlowMask.SwordSlash.Value;
+        shader.BloomColor = Color.Red;
+        shader.Time = Main.GlobalTimeWrappedHourly * 24;
+        shader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        shader.Distortion = 0.15f;
+        TrailDrawer.Draw(position, GetSlashTrailColor, GetSlashTrailWidth, shader);
+        TrailDrawer.Draw(position, GetSlashTrailColor, GetSlashTrailWidth, shader);
+
+        FixedRichLaserShader shader2 = ShaderContent.GetInstance<FixedRichLaserShader>();
+        shader2.LaserTexture = TrailRegistry.BeamTrail;
+        shader2.LaserColor = Color.Lerp(Color.OrangeRed, Color.DarkRed, ExtraMath.Osc(0f, 1f, speed: 8));
+        TrailDrawer.Draw(position, GetSlashTrailColor2, GetSlashTrailWidth3, shader2);
+
+        for (int i = 0; i < position.Length; i++)
+        {
+            //Here we use parent.center cause projectil.center might be the wrong spottt
+            float ratio = i / (float)position.Length;
+            Vector2 v = CalculateSwingOffset(MathHelper.Lerp(0.75f, 1f, ratio), 244);
+            v = v.RotatedBy(MathHelper.ToRadians(180 - 45));
+            Vector2 point = _ouroborosOrigin + v;
+            position[i] = point;
+        }
+
+    }
     private void DrawSegmentWetWhite(int index)
     {
         ref RekSegment segment = ref Segments[index];
@@ -231,7 +391,11 @@ public partial class RekBoss : IWaterSilhouette
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-
+        if(_ouroborosAlpha > 0)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawSlashEffect, DrawLayer.OverNPCsAdditive);
+            PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
+        }
         //Ok, so we draw everything here yah?
         for (int i = 1; i < Segments.Length; i++)
         {

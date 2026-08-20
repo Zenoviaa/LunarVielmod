@@ -19,7 +19,7 @@ public class LavaArenaCommand : ConsoleCommand
     public override bool Invoke(params string[] args)
     {
         Point center = Main.LocalPlayer.Center.ToTileCoordinates();
-        int width = 175;
+        int width = 145;
         int height = 100;
         var bounds = TileUtilities.CenterTileBoundsTileSpace(Main.LocalPlayer.Center, width + 10, height + 10);
 

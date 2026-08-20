@@ -276,7 +276,7 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private AIState TestAttack => AIState.Ouroboros;
+    private AIState TestAttack => AIState.CoilDash;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -368,6 +368,7 @@ public partial class RekBoss : ScarletBoss
             segment.isBurningNoWarning = false;
         }
         _showAfterImages = false;
+        _ouroborosTrail = false;
         switch (State)
         {
             case AIState.Despawn:
@@ -434,6 +435,9 @@ public partial class RekBoss : ScarletBoss
                 break;
         }
 
+
+        float targetOuroAlpha = _ouroborosTrail ? 1f : 0f;
+        _ouroborosAlpha = MathHelper.Lerp(_ouroborosAlpha, targetOuroAlpha, 0.1f);
         if (_showAfterImages)
         {
             _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 1f, 0.3f);

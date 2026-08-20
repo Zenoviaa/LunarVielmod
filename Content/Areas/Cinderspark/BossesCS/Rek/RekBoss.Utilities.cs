@@ -6,6 +6,67 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    public Rectangle ArenaRectangleUpToLava()
+    {
+
+        Point center = _arenaCenter.ToTileCoordinates();
+        int left = center.X;
+        int top = center.Y;
+        int bottom = center.Y;
+        int right = center.X;
+
+
+        //Find left
+        while (left > 0)
+        {
+            left--;
+            Tile tile = Main.tile[left, center.Y];
+            if (WorldGen.SolidTile(tile))
+                break;
+        }
+
+        //Find right
+        while (right < Main.maxTilesX - 1)
+        {
+            right++;
+            Tile tile = Main.tile[right, center.Y];
+            if (WorldGen.SolidTile(tile))
+                break;
+        }
+
+
+        //Find top
+        while (top > 0)
+        {
+            top--;
+            Tile tile = Main.tile[center.X, top];
+            if (WorldGen.SolidTile(tile))
+                break;
+        }
+
+        //Find bottom
+        while (bottom < Main.maxTilesY - 1)
+        {
+            bottom++;
+            Tile tile = Main.tile[center.X, bottom];
+            if (tile.LiquidAmount > 0)
+                break;
+        }
+
+        Point topLeft = new Point(left, top);
+        Point bottomRight = new Point(right, bottom);
+
+        Vector2 topLeftWorld = topLeft.ToWorldCoordinates();
+        Vector2 bottomRightWorld = bottomRight.ToWorldCoordinates();
+
+        Point topLeftPoint = topLeftWorld.ToPoint();
+        Point bottomRightPoint = bottomRightWorld.ToPoint();
+        return  new Rectangle(
+            topLeftPoint.X,
+            topLeftPoint.Y,
+            bottomRightPoint.X - topLeftPoint.X,
+            bottomRightPoint.Y - topLeftPoint.Y);
+    }
     private void CreateFlameSuckParticles(Vector2 position)
     {
         Vector2 spawnPos = position + Main.rand.NextVector2CircularEdge(444, 444);
