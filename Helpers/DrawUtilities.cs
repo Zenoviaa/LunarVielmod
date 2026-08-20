@@ -571,6 +571,47 @@ public static class SpritebatchDrawExtensions
     public static void Begin(this SpriteBatch spriteBatch, SpritebatchParams spritebatchParams) => spritebatchParams.Begin(spriteBatch);
 }
 
+public class SpritebatchContext : IDisposable
+{
+    private SpritebatchParams? _oldParameters;
+    private SpriteBatch? _spriteBatch;
+
+    public SpritebatchParams spriteBatchParameters;
+    public SpritebatchContext(SpriteBatch spriteBatch, SpritebatchParams requiredParameters)
+    {
+        spriteBatchParameters = requiredParameters;
+        _spriteBatch = spriteBatch;
+        bool beginCalled = SpritebatchParams.GetBeginCalled(spriteBatch);
+        if (beginCalled)
+        {
+            _oldParameters = SpritebatchParams.FromSpritebatch(spriteBatch);
+            spriteBatch.End();
+        }
+        spriteBatch.Begin(spriteBatchParameters);
+    }
+
+
+    public void EndAndTryResume(SpriteBatch spriteBatch)
+    {
+        //This should only be used with a using statement, which means this will always be called immediately after it exits scope
+        //So begin can be assumed to have been called here
+        spriteBatch.End();
+
+        //If there's old parameters that means a batch is being interuppted, so we shouldresume it right after
+        //It remembers the old parameters so it doesn't matter where this is being called!
+        if (_oldParameters.HasValue)
+        {
+            spriteBatch.Begin(_oldParameters.Value);
+            _oldParameters = null;
+        }
+    }
+
+    public void Dispose()
+    {
+        EndAndTryResume(_spriteBatch!);
+    }
+}
+
 /// <summary>
 /// Encapsulates parameters for starting a spritebatch so we don't have to call begin and end everytime
 /// This should only be used with a using statement after using one of the static .Begin() functions

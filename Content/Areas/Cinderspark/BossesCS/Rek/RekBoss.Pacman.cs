@@ -103,6 +103,7 @@ public partial class RekBoss
                     _segmentTimer = 0;
                     NPC.velocity *= 0.98f;
                     NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.03f);
                     //Prepare the points
                     SegmentsMeteorFloat();
                     if(Timer >= 30)
@@ -114,6 +115,26 @@ public partial class RekBoss
                 break;
             case 1:
                 {
+                    if(Timer == 1)
+                    {
+                        _initialVelocity = NPC.Center;
+                    }
+                    Animator.PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
+ 
+                    Vector2 targetPoint = GetPointOnPath(-0.2f);
+                    float headRatio = Timer / Pac_Delay_Time;
+                    float headEase = EasingFunction.InOutExpo(headRatio);
+                    Vector2 pos = Vector2.Lerp(_initialVelocity, targetPoint, headEase);
+                    NPC.Center = pos;
+                    NPC.velocity = Vector2.Zero;
+                    var seg = GetNextSegmentToEat();
+                    if(seg != null)
+                    {
+                        float targetAngle = (seg.Projectile.Center - NPC.Center).ToRotation();
+                        NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.03f);
+
+                    }
+
                     if(Timer < segmentsPerWave)
                     {
                         float ratio = Timer / segmentsPerWave;
@@ -138,8 +159,8 @@ public partial class RekBoss
                     _hitstopTimer++;
                     _outliner.attacking = true;
                     _showAfterImages = true;
-                    Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = true });
-                    Animator.Update();
+                    Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
+          
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
                     var seg = GetNextSegmentToEat();
                     if(seg != null)
@@ -188,11 +209,6 @@ public partial class RekBoss
                         NPC.rotation = Utils.AngleLerp(NPC.rotation, travelVelocity.ToRotation(), 0.15f);
       
                     }
-
-
-
-
-              
                 }
                 break;
             case 3:
