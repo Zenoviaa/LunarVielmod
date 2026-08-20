@@ -101,7 +101,8 @@ public partial class RekBoss
                         AllNoWorm();
                     }
                     _segmentTimer = 0;
-
+                    NPC.velocity *= 0.98f;
+                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
                     //Prepare the points
                     SegmentsMeteorFloat();
                     if(Timer >= 30)
