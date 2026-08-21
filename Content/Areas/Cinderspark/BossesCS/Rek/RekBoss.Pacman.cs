@@ -210,7 +210,7 @@ public partial class RekBoss
                     _showAfterImages = true;
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
                     SegmentsMeteorFloatAlways();
-                  //  CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
                     var seg = GetNextSegmentToEat2();
                     if(seg != null)
                     {
