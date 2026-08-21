@@ -1,14 +1,18 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core.Camera;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    private bool _blowtorched;
     private float _segmentIndex;
     private float _ouroborosIndex;
     private float _eatProgress;
@@ -18,7 +22,8 @@ public partial class RekBoss
     private int Pac_Boom_Damage => 50;
     private float Pac_Time_Between_Points_Spawning => 15;
     private float Pac_Dash_Time => 160f;
-    private float Pac_Delay_Time => 120;
+    private float Pac_Delay_Time => 190;
+    private float Pac_Man_Delay_Startup_Time => 80;
     private void AI_Pacman()
     {
         void PlacePacPoint(Vector2 position)
@@ -74,23 +79,43 @@ public partial class RekBoss
             }
             return eat;
         }
-
+        RekSegment GetNextSegmentToEat2()
+        {
+         for(int i = 0; i < Segments.Length; i++)
+            {
+                var seg = Segments[i];
+                if (seg.noWorm)
+                    return seg;
+            }
+            return null;
+        }
+        Vector2 eruptionLeft = FindEruptionLeft();
+        Vector2 eruptionRight = FindEruptionRight();
+        float surfaceY = LavaSurface();
         Vector2 GetPointOnPath(float ratio)
         {
+
+            Vector2 left = eruptionLeft;
+            Vector2 right = eruptionRight;
+            float y = surfaceY;
+            y = _arenaCenter.Y;
+            left.Y = y;
+            right.Y = y;
+
+            /*
             Vector2 circlePoint = VectorHelper.PointOnCircle(_arenaCenter,
                 xRadius: 800,
                 yRadius: 384,
                 startRadians: 0,
                 endRadians: MathHelper.ToRadians(310), ratio);
             circlePoint = circlePoint.RotatedBy(_ouroborosIndex * MathHelper.ToRadians(60), _arenaCenter);
-            return circlePoint;
+            */
+            return Vector2.Lerp(left, right, ratio);
         }
 
         Timer++;
         _segmentTimer++;
-        int numWaves = 3;
-        int segmentsPerWave = Segments.Length / numWaves;
-        segmentsPerWave += numWaves;
+
         switch (AttackCycle)
         {
             case 0:
@@ -100,15 +125,15 @@ public partial class RekBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
-                        AllNoWorm();
                     }
+
                     _segmentTimer = 0;
                     NPC.velocity *= 0.98f;
                     NPC.velocity = NPC.velocity.RotatedBy(0.05f);
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.03f);
                     //Prepare the points
-                    SegmentsMeteorFloat();
-                    if(Timer >= 30)
+                    SegmentsMeteorFloatAlways();
+                    if(Timer >= Pac_Man_Delay_Startup_Time)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -121,9 +146,13 @@ public partial class RekBoss
                     {
                         _initialVelocity = NPC.velocity;
                         _centerPoint = NPC.Center;
+                        foreach(var segment in Segments)
+                        {
+                            segment.initialPosition = segment.position;
+                        }
                     }
                     Animator.PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
-                    SegmentsMeteorFloat();
+                    SegmentsMeteorFloatAlways();
                     Vector2 targetPoint = GetPointOnPath(0f);
                     targetPoint -= new Vector2(0, 154);
                     float headRatio = Timer / Pac_Delay_Time;
@@ -133,18 +162,30 @@ public partial class RekBoss
                     Vector2 easedVel = Vector2.Lerp(_initialVelocity, vel, headEase);
                 
                     NPC.velocity = easedVel;
-                    var seg = GetNextSegmentToEat();
+                    var seg = GetNextSegmentToEat2();
                     if(seg != null)
                     {
-                        float targetAngle = (seg.Projectile.Center - NPC.Center).ToRotation();
+                        float targetAngle = (seg.position - NPC.Center).ToRotation();
                         NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.03f);
 
                     }
 
-                    if(Timer < segmentsPerWave)
+                    int i = 0;
+                    float segIndex = 0;
+                    foreach(var segment in Segments)
                     {
-                        float ratio = Timer / segmentsPerWave;
-                        PlacePacPoint(GetPointOnPath(ratio));
+                        float ratio = (Timer - i) / 120f;
+                        float ease = EasingFunction.InOutExpo(ratio);
+                        Vector2 t = GetPointOnPath(segIndex / (float)Segments.Length);
+                        Vector2 easedPoint = Vector2.Lerp(segment.initialPosition, t, ease);
+                        segment.position = easedPoint;
+                        segment.velocity = Vector2.Zero;
+                        i++;
+                        segIndex++;
+                    }
+                    if(Timer <= Segments.Length)
+                    {
+
                     }
 
                     _eatProgress = 0f;
@@ -161,83 +202,80 @@ public partial class RekBoss
                     {
                         _segmentIndex = 0;
                         _hitstopTimer = 0;
+                        _blowtorched = false;
                     }
 
-       
+
                     _outliner.attacking = true;
                     _showAfterImages = true;
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
-                    SegmentsMeteorFloat();
-                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
-                    var seg = GetNextSegmentToEat();
+                    SegmentsMeteorFloatAlways();
+                  //  CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
+                    var seg = GetNextSegmentToEat2();
                     if(seg != null)
                     {
                         float travelSpeed = MathHelper.Lerp(0f, 45f, EasingFunction.InOutExpo(Timer / 120f));
                      //   travelSpeed += MathHelper.Lerp(-21, 3, EasingFunction.InOutExpo(_hitstopTimer / 30f));
-                        Vector2 velToTarget = (seg.Projectile.Center - NPC.Center);
+                        Vector2 velToTarget = (seg.position - NPC.Center);
                         velToTarget = velToTarget.SafeNormalize(Vector2.Zero);
                         Vector2 travelVelocity = velToTarget * travelSpeed;
-                        float distToTarget = Vector2.Distance(seg.Projectile.Center, NPC.Center);
+                        float distToTarget = Vector2.Distance(seg.position, NPC.Center);
                         if(distToTarget < travelSpeed)
                         {
                             travelVelocity = velToTarget * distToTarget;
-                            if (MultiplayerHelper.IsHost)
+                            if (!_blowtorched && MultiplayerHelper.IsHost)
                             {
-                                int i = (int)_segmentIndex;
-                                float ratio = (float)i / (float)Segments.Length;
-                                ratio = 1f - ratio;
-                                var segment = Segments[i + 3];
+                                int i = 0;
+                                var segment = Segments[i];
                                 var firer = ProjFirer.From<PacMeteorBoom>(NPC);
-                                firer.velocity = (segment.rotation - MathHelper.PiOver2).ToRotationVector2() * 1000 * ratio;
+                                firer.velocity = (segment.rotation - MathHelper.PiOver2).ToRotationVector2() * 1000;
                                 firer.position = segment.position;
                                 firer.damage = Pac_Boom_Damage;
                                 firer.ai1 = NPC.whoAmI;
                                 firer.ai2 = i;
                                 firer.New();
+                                _blowtorched = true;
                             }
+
+                            CreateSegmentEatEffect(seg);
+                            seg.noWorm = false;
                             _segmentIndex++;
-                            seg.Projectile.ai[2] = 1;
-                            seg.Projectile.Kill();
-       
-                            if (IsFull())
-                            {
-                                Timer = 0;
-                                AttackCycle +=2;
-                            }
-                            else if(ShouldStopEating())
-                            {
-                                _ouroborosIndex++;
-                                Timer = 0;
-                                AttackCycle++;
-                            }
+                              
                         }
                         NPC.velocity = travelVelocity;
                         NPC.rotation = Utils.AngleLerp(NPC.rotation, travelVelocity.ToRotation(), 0.15f);
-      
+
+                    }
+                    if (IsFull())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
                     }
                 }
                 break;
             case 3:
 
                 {
-                    NPC.velocity *= 0.98f;
-                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+
+                    NPC.velocity *= 1.02f;
+                    NPC.velocity = NPC.velocity.RotatedBy(-0.05f);
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.03f);
                     if(Timer >= 30)
                     {
-                        AttackCycle = 1;
+                        AttackCycle++;
                         Timer = 0;
                     }
                 }
                 break;
             case 4:
                 {
-                    NPC.velocity *= 0.98f;
-                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    NPC.velocity.Y += 0.5f;
+                    NPC.velocity.X -= 0.1f;
+         
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.03f);
-                    if (Timer >= 30)
+                    if (Timer >= 120)
                     {
-                        SwitchState(AIState.FireBreath);
+                        SwitchState(AIState.VolcanicMeteor);
                     }
              
                 }

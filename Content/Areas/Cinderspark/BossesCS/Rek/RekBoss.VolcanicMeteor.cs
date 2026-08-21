@@ -41,6 +41,28 @@ public partial class RekBoss
             i++;
         }
     }
+    private void SegmentsMeteorFloatAlways()
+    {
+        float surface = LavaSurface();
+        foreach (var segment in Segments)
+        {
+            segment.isBurning = true;
+            segment.deadly = true;
+            segment.position += segment.velocity;
+            Point segmentTile = segment.position.ToTileCoordinates();
+            if (segment.position.Y >= surface + 128)
+            {
+                if (segment.velocity.Y > 1)
+                    segment.velocity *= 0.88f;
+                segment.velocity.Y -= 0.15f;
+            }
+            else
+            {
+                segment.velocity.Y *= 0.96f;
+                segment.velocity.Y += 0.02f;
+            }
+        }
+    }
     private void AI_VolcanicMeteor()
     {
         Timer++;

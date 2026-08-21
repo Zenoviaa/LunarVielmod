@@ -44,6 +44,7 @@ public partial class RekBoss : ScarletBoss
         public Vector2 position;
         public Vector2 velocity;
         public Vector2 size;
+        public Vector2 initialPosition;
         public float scale;
         public float rotation;
         public bool isBurning;
@@ -288,7 +289,7 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private AIState TestAttack => AIState.FireBreath;
+    private AIState TestAttack => AIState.VolcanicMeteor;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {

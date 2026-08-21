@@ -1,6 +1,10 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Common.Particles;
+using Stellamod.Dusts;
+using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -107,10 +111,25 @@ public class PacmanSegment : ModProjectile
             var segment = rek.Segments[SegmentIndex];
             segment.noWorm = false;
         }
-        if (this.OwnedByLocalClient())
+        return;
+        for(float f = 0; f < 12; f++)
         {
-            var firer = ProjFirer.From<PacmanBoom>(Projectile);
-            firer.New();
+            Vector2 pos = Projectile.Center;
+            pos += Main.rand.NextVector2Circular(16, 16);
+            Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            {
+                position = pos,
+                velocity = Main.rand.NextVector2Circular(18, 18),
+                timeLeft = 100,
+                innerColor = color.ToVector4(),
+                outerColor = Color.Red.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(1f, 2f))
+            });
         }
+        
+
+  //      FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Red, duration: 12, baseSize: 0.24f);
+        SoundEngine.PlaySound(SoundID.Item74 with { PitchVariance = 0.6f }, Projectile.position);
     }
 }

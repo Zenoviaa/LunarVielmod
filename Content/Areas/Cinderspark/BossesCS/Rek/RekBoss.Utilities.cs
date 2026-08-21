@@ -1,11 +1,33 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    public void CreateSegmentEatEffect(RekSegment segment)
+    {
+        for (float f = 0; f < 12; f++)
+        {
+            Vector2 pos = segment.position;
+            pos += Main.rand.NextVector2Circular(16, 16);
+            Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            {
+                position = pos,
+                velocity = Main.rand.NextVector2Circular(18, 18),
+                timeLeft = 100,
+                innerColor = color.ToVector4(),
+                outerColor = Color.Red.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(1f, 2f))
+            });
+        }
+
+        SoundEngine.PlaySound(SoundID.Item74 with { PitchVariance = 0.6f }, segment.position);
+    }
     public Rectangle ArenaRectangleUpToLava()
     {
 

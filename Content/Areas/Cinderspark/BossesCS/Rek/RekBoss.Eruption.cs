@@ -40,7 +40,7 @@ public partial class RekBoss
                             {
                                 //The sound will be on the projectile
                                 ProjFirer firer = ProjFirer.From<VulcanEruption>(NPC);
-                                int segmentIndex = Main.rand.Next(3, Segments.Length);
+                                int segmentIndex = Main.rand.Next(0, Segments.Length);
                                 ref var segment = ref Segments[segmentIndex];
                                 firer.position = segment.position;
                                 firer.velocity = -Vector2.UnitY * 512;
