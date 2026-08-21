@@ -28,7 +28,12 @@ public class LavaArenaCommand : ConsoleCommand
         {
             for (int y = bounds.topLeft.Y; y < bounds.bottomRight.Y; y++)
             {
-                WorldGen.PlaceTile(x, y, ModContent.TileType<CindersparkDirt>(), mute: true, forced: true);
+                Tile tile = Main.tile[x, y];
+                tile.ClearEverything();
+                tile.HasTile = true;
+                tile.TileType = (ushort)ModContent.TileType<CindersparkDirt>();
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
             }
         }
 
@@ -38,7 +43,17 @@ public class LavaArenaCommand : ConsoleCommand
         {
             for(int y = bounds.topLeft.Y; y<  bounds.bottomRight.Y; y++)
             {
-                WorldGen.KillTile(x, y, noItem: true);
+                Tile tile = Main.tile[x, y];
+                tile.ClearEverything();
+            }
+        }
+
+        bounds = TileUtilities.CenterTileBoundsTileSpace(Main.LocalPlayer.Center, width + 10, height + 10);
+        for (int x = bounds.topLeft.X; x < bounds.bottomRight.X; x++)
+        {
+            for (int y = bounds.topLeft.Y; y < bounds.bottomRight.Y; y++)
+            {
+                WorldGen.TileFrame(x, y, resetFrame: true);
             }
         }
 

@@ -22,6 +22,7 @@ public class BigVulcanFireball : ModProjectile
 {
     private Asset<Texture2D> _maskTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Scale => ref Projectile.ai[1];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -140,6 +141,10 @@ public class BigVulcanFireball : ModProjectile
         {
  
         }
+        if(Projectile.velocity.Y > 0)
+        {
+            Projectile.tileCollide = true;
+        }
         Projectile.velocity.Y += 0.4f;
         Projectile.rotation = Projectile.velocity.ToRotation();
         var p = PlayerHelper.FindClosestPlayer(Projectile.Center, 1024);
@@ -163,7 +168,7 @@ public class BigVulcanFireball : ModProjectile
     {
         float GetTrailWidth(float ratio)
         {
-            return MathHelper.SmoothStep(96, 64, ratio) * 0.35f;
+            return MathHelper.SmoothStep(96, 64, ratio) * 0.35f * Scale;
         }
         float GetTrailWidth2(float ratio)
         {
@@ -213,7 +218,7 @@ public class BigVulcanFireball : ModProjectile
             SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
             drawer.color = Color.White;
             drawer.worldPosition -= Projectile.velocity.SafeNormalize(Vector2.Zero) * 60;
-            drawer.scale *= 0.7f;
+            drawer.scale *= 0.7f * Scale;
             drawer.scale.X *= 1.5f;
     //            drawer.scale *= 1.2f;
   //          drawer.scale.Y *= 0.75f * y;
@@ -231,7 +236,7 @@ public class BigVulcanFireball : ModProjectile
         var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         drawer.color = Color.OrangeRed * 0.5f;
         drawer.color.A = 0;
-        drawer.scale *= 0.6f;
+        drawer.scale *= 0.6f * Scale;
         drawer.scale.X *= 0.74f;
         drawer.scale.Y *= 0.8f;
         drawer.rotation = Projectile.rotation;

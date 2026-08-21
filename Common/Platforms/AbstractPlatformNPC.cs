@@ -35,7 +35,6 @@ public abstract class AbstractPlatformNPC : ModNPC
 
     public override void DrawBehind(int index)
     {
-        base.DrawBehind(index);
         Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
     }
     public abstract Point GetPlatformSize();

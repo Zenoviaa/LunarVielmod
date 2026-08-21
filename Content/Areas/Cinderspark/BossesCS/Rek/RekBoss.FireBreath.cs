@@ -69,16 +69,36 @@ public partial class RekBoss
                             firer.velocity = vel;
                             firer.New();
 
-                            for (float f = 0; f < 3; f++)
+                            for (float f = 0; f < 2; f++)
                             {
                                 Vector2 throVelocity = vel.SafeNormalize(Vector2.Zero);
                                 throVelocity *= 24;
-                                throVelocity = throVelocity.RotatedByRandom(0.5f);
+                                throVelocity = throVelocity.RotatedByRandom(0.05f);
 
                                 ProjFirer ballFirer = ProjFirer.From<BigVulcanFireball>(NPC);
                                 ballFirer.velocity = throVelocity;
                                 ballFirer.velocity += Main.rand.NextVector2Circular(2, 2);
                                 ballFirer.damage = Fire_Breath_Damage;
+                                ballFirer.ai1 = Main.rand.NextFloat(0.5f, 1f);
+                                ballFirer.New();
+
+                            }
+
+                            for (float f = 0; f < 2; f++)
+                            {
+                                Vector2 throVelocity = vel.SafeNormalize(Vector2.Zero);
+                                throVelocity *= 24;
+                                throVelocity = throVelocity.RotatedByRandom(0.2f);
+
+                                float dir = AttackCount % 2 == 0 ? 1 : -1;
+                                throVelocity = throVelocity.RotatedBy(0.5f * dir);
+                                throVelocity.X *= 0.6f;
+                                throVelocity.Y *= 0.8f;
+                                ProjFirer ballFirer = ProjFirer.From<BigVulcanFireball>(NPC);
+                                ballFirer.velocity = throVelocity;
+                                ballFirer.velocity += Main.rand.NextVector2Circular(2, 2);
+                                ballFirer.damage = Fire_Breath_Damage;
+                                ballFirer.ai1 = Main.rand.NextFloat(0.5f, 1f);
                                 ballFirer.New();
 
                             }
