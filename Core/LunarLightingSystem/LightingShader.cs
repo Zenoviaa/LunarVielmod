@@ -12,15 +12,24 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             set
             {
-                _levelsParam ??= Effect.Parameters["levels"];
+                _levelsParam = Effect.Parameters["levels"];
                 _levelsParam.SetValue(value);
             }
         }
+        
+        public float ShadowAlpha
+        {
+            set
+            {
+                Effect.Parameters["shadowAlpha"].SetValue(value);
+            }
+        }
+
         public Matrix TransformMatrix
         {
             set
             {
-                _transformMatrixParam ??= Effect.Parameters["transformMatrix"];
+                _transformMatrixParam = Effect.Parameters["transformMatrix"];
                 _transformMatrixParam.SetValue(value);
             }
         }
@@ -28,10 +37,11 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             set
             {
-                _shadowMapTexture ??= Effect.Parameters["shadowMap"];
+                _shadowMapTexture = Effect.Parameters["shadowMap"];
                 _shadowMapTexture.SetValue(value);
             }
         }
+
 
         public override void SetDefaults()
         {

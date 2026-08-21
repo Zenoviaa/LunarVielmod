@@ -5,6 +5,33 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem;
 
+public static class LightingHelper
+{
+    /// <summary>
+    /// Interpolates between 0-1 near the end of a day/night cycle, to make the transition a bit sooner
+    /// </summary>
+    public static float DayLightEase
+    {
+        get
+        {
+            float easingTime = 2400;
+            float dayLength = (float)Main.dayLength;
+            if (!Main.dayTime)
+            {
+                dayLength = (float)Main.nightLength;
+            }
+
+            float inTime = (float)Main.time;
+            float inEasing = EasingFunction.InOutSine(inTime / easingTime);
+            float outTime = (float)Main.time;
+            float outDown = outTime - (dayLength - easingTime);
+            float outEasing = EasingFunction.InOutSine(outDown / easingTime);
+            float a = inEasing * MathHelper.Lerp(1f, 0f, outEasing);
+            return a;
+        }
+    }
+}
+
 public partial class LunarLightingRenderer
 {
     public Color GetSunColor()
@@ -63,6 +90,7 @@ public partial class LunarLightingRenderer
 
         var shader = ShaderContent.GetInstance<SunLightShader>();
         shader.StepSize = stepSize;
+        shader.ShadowAlpha = LightingHelper.DayLightEase;
 
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -99,7 +127,7 @@ public partial class LunarLightingRenderer
         effect.Parameters["falloff"].SetValue(0.1f);
         effect.Parameters["uScreenResolution"].SetValue(Main.ScreenSize.ToVector2());
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, effect);
-        spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, Color.Black * 0.9f, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+        spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, Color.Black * 0.9f * LightingHelper.DayLightEase, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
         spriteBatch.End();
 
 

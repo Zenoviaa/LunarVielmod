@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Stellamod.Buffs;
+using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Core.Camera;
@@ -568,6 +569,8 @@ namespace Stellamod
 
         private bool _pressed;
         private Vector2 _lockPos;
+
+        private bool _pressed2;
         public override void PostUpdate()
         {
 
@@ -590,7 +593,25 @@ namespace Stellamod
                 }
 
             }
-            if(_lockPos != Vector2.Zero)
+
+
+            /*
+            if (!_pressed2)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.K))
+                {
+                    _pressed2 = true;
+                }
+            } else if (_pressed2 && Keyboard.GetState().IsKeyUp(Keys.K))
+            {
+                _pressed2 = false;
+                int x = (int)Player.Center.X - 128;
+                int y = (int)Player.Center.Y;
+                NPC.NewNPC(Player.GetSource_FromThis(), x, y, ModContent.NPCType<Celestia>());
+
+            }*/
+
+            if (_lockPos != Vector2.Zero)
             {
                 CameraTargetSystem.AddTarget(_lockPos);
                 // OffsetCameraModifier.FocusTargetOffset = (_lockPos - Main.Camera.Center);

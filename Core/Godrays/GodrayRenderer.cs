@@ -252,6 +252,8 @@ namespace Stellamod.Core.Godrays
             Color outerColor = Color.Lerp(Color.Black, godrayParticle.outerColor, bump);
             innerColor *= intensity;
             outerColor *= intensity;
+            innerColor *= LightingHelper.DayLightEase;
+            outerColor *= LightingHelper.DayLightEase;
 
             _vertexBuffer[startIndex] = new GodrayVertex(topLeft, innerColor, outerColor, new Vector2(0, 0));
             _vertexBuffer[startIndex + 1] = new GodrayVertex(topRight, innerColor, outerColor, new Vector2(1, 0));

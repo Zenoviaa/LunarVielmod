@@ -12,7 +12,7 @@ public partial class LunarLightingRenderer
     {
         if (Keyboard.GetState().IsKeyDown(Keys.K))
         {
-            Main.time += 128;
+            Main.time += 64;
         }
         if (Main.gameMenu)
             return;
@@ -90,6 +90,10 @@ public partial class LunarLightingRenderer
             }
         }
 
+
+        //We could gpu instance this instead
+        //Would be a lot faster
+        //Would just need position and color data, would remove a lot of the work from the cpu
         VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[_pointLights.UsedLightCount * 4];
 
         //Prepare the index buffer, we need to draw all the lights in the same batch
@@ -146,6 +150,7 @@ public partial class LunarLightingRenderer
         var shadow2 = LightingShader.Instance;
         shadow2.ShadowMap = _shadowMap.Texture;
         shadow2.TransformMatrix = TrailDrawer.WorldViewPoint2;
+     //  shadow2.ShadowAlpha = LightingHelper.DayLightEase;
 
 
         //Using the max color state gives a really nice look on colors

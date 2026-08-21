@@ -125,6 +125,7 @@ public class ThrowTrueHammer : ModProjectile
         base.SetStaticDefaults();
         ProjectileID.Sets.TrailCacheLength[Type] = 16;
         ProjectileID.Sets.TrailingMode[Type] = 2;
+        Main.projFrames[Type] = 2;
     }
     public override void SetDefaults()
     {
@@ -171,7 +172,7 @@ public class ThrowTrueHammer : ModProjectile
         Projectile.velocity.Y += 0.3f;
   
         Projectile.rotation += 0.05f;
-        Projectile.rotation += Projectile.velocity.Length() * 0.05f;
+        Projectile.rotation += Projectile.velocity.Length() * 0.025f;
     }
     public override bool PreDraw(ref Color lightColor)
     {
@@ -188,6 +189,10 @@ public class ThrowTrueHammer : ModProjectile
         hammerDrawer.color = c;
         hammerDrawer.rotation = Projectile.rotation;
         hammerDrawer.worldPosition = Projectile.Center;
+        Main.spriteBatch.Draw(hammerDrawer);
+
+        hammerDrawer.VerticalFrame(1, 2);
+        hammerDrawer.color = Color.LightGreen * ExtraMath.Osc(0.5f, 1f, speed: 16);
         Main.spriteBatch.Draw(hammerDrawer);
         return false;
     }
@@ -276,18 +281,19 @@ public class TrueHammerSlash : BaseSwingProjectileV2
         base.DefineCombo();
         SwingV2Helper.AddHammerSwingStyle(this);
         useAfterImage = true;
+      
         hitStopTime = 4 * EXTRA_UPDATE_COUNT;
     }
 
     private Color GetTrailColor(float completionRatio)
     {
-        return Color.Lerp(Color.White, Color.Black, completionRatio);
+        return Color.Lerp(Color.White, Color.Orange, completionRatio);
     }
 
 
     private float GetTrailWidth(float interpolant)
     {
-        return EasingFunction.QuadraticBump(interpolant) * 16;
+        return MathHelper.Lerp(0, 20, EasingFunction.InOutSine(interpolant));
     }
 
     public override void AI()
@@ -307,11 +313,12 @@ public class TrueHammerSlash : BaseSwingProjectileV2
         base.RenderSwingTrail(ref lightColor, points);
         void DrawPixelatedSwingTrail(GraphicsDevice gDevice)
         {
-            var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.Lerp(Color.OrangeRed, Color.Brown, ExtraMath.Osc(0f, 1f, speed: 8, offset: 2));
-            shader.InnerColor = Color.Goldenrod;
-            shader.OuterColor = Color.Red;
-            shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
+            var shader = FixedRichLaserShader.Instance;
+            shader.LaserColor = Color.Orange;
+            shader.InnerColor = Color.DarkOrange;
+            shader.OuterColor = Color.DarkGoldenrod;
+           
+            shader.LaserTexture = AssetManager.LaserTextures.Aura;
             shader.BloomTexture = AssetManager.LaserTextures.Lightning2;
             TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor, GetTrailWidth, shader);
         }
@@ -326,9 +333,7 @@ public class TrueHammerSlash : BaseSwingProjectileV2
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
                 ModContent.ProjectileType<TrueHammerBoom>(), Projectile.damage, Projectile.knockBack, ai1: ComboProgress);
             Bounce(8);
-            ShakeScreenPosition.Shake = 2;
-            FXUtil.ShakeCamera(target.Center, 1024, 16);
-            FXUtil.PunchCamera(target.Center, Projectile.velocity, 0.5f, 2, 30);
+            FXUtil.ShakeCamera(target.Center, 1024, 4);
         }
         _hitCount++;
         float pitch = MathHelper.Clamp(_hitCount * 0.05f, 0f, 1f);

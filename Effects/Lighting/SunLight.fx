@@ -1,5 +1,6 @@
 sampler heightMapSampler : register(s0);
 float2 stepSize;
+float shadowAlpha;
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
     //This shader handles screenspace sun lighting by doing a simple raymarching over the tile target
@@ -34,7 +35,10 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
             break;
         }
     }
-    return float4(luminance, 1.0) * sampleColor;
+    
+    float4 shadowedColor = float4(luminance, 1.0) * sampleColor;
+    float4 sunColor = float4(1.0, 1.0, 1.0, 1.0) * sampleColor;
+    return lerp(sunColor, shadowedColor, shadowAlpha);
 }
 
 technique Technique1

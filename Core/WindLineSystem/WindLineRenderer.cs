@@ -60,7 +60,7 @@ namespace Stellamod.Core.WindLineSystem
             windLineShader.ApplyPasses();
 
             graphicsDevice.BlendState = BlendState.AlphaBlend;
-            graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+            graphicsDevice.SamplerStates[0] = SamplerState.AnisotropicClamp;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
 
             graphicsDevice.DrawUserPrimitives(
@@ -221,7 +221,7 @@ namespace Stellamod.Core.WindLineSystem
             windLine.velocity = initialVelocity;
             windLine.active = true;
             windLine.lifetime = 180;
-            windLine.width = Main.rand.NextFloat(0.5f, 3f);
+            windLine.width = Main.rand.NextFloat(0.95f, 3f);
 
 
         }

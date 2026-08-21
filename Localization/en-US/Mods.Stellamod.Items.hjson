@@ -12130,3 +12130,8 @@ MoltenCrustedWall: {
 	DisplayName: Molten Crusted Wall
 	Tooltip: ""
 }
+
+MossyGrottoTileBlock: {
+	DisplayName: Mossy Grotto Tile Block
+	Tooltip: ""
+}

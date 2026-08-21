@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Achievements;
 using Stellamod.Core;
+using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
@@ -306,14 +307,14 @@ public class MagicWitchCauldron : VeilTownNPC
 
         float godrayOffset = 150;
         SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromTextureAsset(godrayTexture, NPC.Center);
-        sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1);
+        sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1) * LightingHelper.DayLightEase;
         sbDrawer2.color.A = 0;
         sbDrawer2.rotation -= MathHelper.ToRadians(25);
         sbDrawer2.scale *= godrayScale;
         sbDrawer2.worldPosition.Y -= godrayOffset;
         Main.spriteBatch.Draw(sbDrawer2);
 
-        sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1, offset: 1);
+        sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1, offset: 1) * LightingHelper.DayLightEase;
         sbDrawer2.color.A = 0;
         sbDrawer2.worldPosition += Vector2.UnitY.RotatedBy(Main.GlobalTimeWrappedHourly * 1) * 64;
         sbDrawer2.worldPosition.Y -= godrayOffset;

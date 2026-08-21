@@ -6,6 +6,7 @@ matrix transformMatrix;
 float levels;
 
 texture shadowMap;
+float shadowAlpha;
 sampler2D ShadowMapSampler = sampler_state
 {
     texture = <shadowMap>;
@@ -75,7 +76,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float falloff = 1.0;
     if (pixelLength > distance)
     {
-        falloff -= saturate((pixelLength - distance) / 0.05);
+        falloff -= saturate((pixelLength - distance) / 0.05) ;
     }
 
     float4 light = float4(input.Color.rgb, 1.0);    

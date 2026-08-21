@@ -244,12 +244,15 @@ public class BigCelestialBow : ModProjectile,
         {
             Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(384, 384);
             Vector2 vel = (Projectile.Center - pos);
-            vel *= 0.1f;
+            vel *= 0.02f;
 
             DustParticleSpawnParams spawnparams = DustParticleSpawnParams.Default;
             spawnparams.innerColor = Color.Lerp(Color.White, Color.Turquoise, Main.rand.NextFloat(0f, 1f));
             spawnparams.outerColor = Color.Turquoise;
+           
             var dp = DustParticle.Spawn(pos, vel, spawnparams);
+            dp.dampening = 0.05f;
+            dp.gravity = 0;
             dp.Scale *= 0.5f;
         }
         SoundStyle growSound = AssetRegistry.Sounds.Celestia.BigBowFullyGrown with { PitchVariance = 0.3f };
@@ -285,6 +288,8 @@ public class BigCelestialBow : ModProjectile,
             spawnparams.innerColor = Color.Lerp(Color.White, Color.Turquoise, Main.rand.NextFloat(0f, 1f));
             spawnparams.outerColor = Color.Turquoise;
             var dp = DustParticle.Spawn(pos, vel, spawnparams);
+            dp.dampening = 0.05f;
+            dp.gravity = 0;
             dp.Scale *= 0.5f;
         }
 

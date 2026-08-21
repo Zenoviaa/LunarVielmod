@@ -23,8 +23,7 @@ public class MossyGrottoTile : ModTile
         //Main.tileFrameImportant[Type] = true;
         Main.tileLargeFrames[Type] = 2;
         TileID.Sets.ChecksForMerge[Type] = true;
-        TileSets.ThickSnow[Type] = true;
-        HitSound = SoundID.Item48;
+      
         RegisterItemDrop(ModContent.ItemType<MossyGrottoTileBlock>());
         AddMapEntry(new Color(40, 140, 40));
     }
