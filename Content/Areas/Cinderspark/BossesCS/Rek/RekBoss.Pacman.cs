@@ -210,6 +210,8 @@ public partial class RekBoss
                     _showAfterImages = true;
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
                     SegmentsMeteorFloatAlways();
+                    Vector2 lastPoint = GetPointOnPath(1f);
+                    Vector2 dir = (lastPoint - NPC.Center).SafeNormalize(Vector2.Zero);
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
                     var seg = GetNextSegmentToEat2();
                     if(seg != null)
@@ -222,7 +224,6 @@ public partial class RekBoss
                         float distToTarget = Vector2.Distance(seg.position, NPC.Center);
                         if(distToTarget < travelSpeed)
                         {
-                            travelVelocity = velToTarget * distToTarget;
                             if (!_blowtorched && MultiplayerHelper.IsHost)
                             {
                                 int i = 0;
