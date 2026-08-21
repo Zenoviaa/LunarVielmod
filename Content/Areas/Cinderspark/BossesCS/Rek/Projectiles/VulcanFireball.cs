@@ -1,4 +1,6 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -7,6 +9,7 @@ using Stellamod.Effects.GothinFlames;
 using Stellamod.Effects.RekFlames;
 using Stellamod.Visual.Particles;
 using System;
+
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -17,6 +20,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
 public class BigVulcanFireball : ModProjectile
 {
+    private Asset<Texture2D> _maskTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
@@ -33,7 +37,7 @@ public class BigVulcanFireball : ModProjectile
         Projectile.penetrate = -1;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 140;
+        Projectile.timeLeft = 180;
     }
 
     public override void AI()
@@ -77,6 +81,36 @@ public class BigVulcanFireball : ModProjectile
                 Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(48, 48), DustID.Lava, vel, Scale: 2f);
             }
         }
+        if (Main.rand.NextBool(6))
+        {
+            Vector2 pos = Projectile.Center;
+            pos += Main.rand.NextVector2Circular(24, 24);
+            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.Black * 0.45F, timeleft = 180 });
+        }
+        if (Timer % 8 == 0)
+        {
+            var p2 =LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero), newColor: Color.White);
+            p2.fadeToColor = Color.DarkRed;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (Main.rand.NextBool(3))
+            {
+                Vector2 pos = Projectile.Center;
+                pos += Main.rand.NextVector2Circular(16, 16);
+                Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                {
+                    position = pos,
+                    velocity = -Projectile.velocity * 0.47f,
+                    timeLeft = 45,
+                    innerColor = color.ToVector4(),
+                    outerColor = Color.Red.ToVector4()
+                });
+            }
+        }
+
 
         if (Main.rand.NextBool(4))
         {
@@ -129,7 +163,7 @@ public class BigVulcanFireball : ModProjectile
     {
         float GetTrailWidth(float ratio)
         {
-            return MathHelper.SmoothStep(96, 64, ratio) * 0.5f;
+            return MathHelper.SmoothStep(96, 64, ratio) * 0.35f;
         }
         float GetTrailWidth2(float ratio)
         {
@@ -143,11 +177,11 @@ public class BigVulcanFireball : ModProjectile
 
         Color GetTrailColor2(float ratio)
         {
-            return Color.Lerp(GetTrailColor(ratio), Color.DarkRed, 0.5f) * 0.3f;
+            return Color.Lerp(GetTrailColor(ratio), Color.DarkRed, 0.5f) * 0.3f * MathHelper.Lerp(1f, 0f, ratio) * 4;
         }
 
         GothinFlameTrailShader flameTrailShader = ShaderContent.GetInstance<GothinFlameTrailShader>();
-        flameTrailShader.InsideColor = Color.Lerp(Color.White, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 12));
+        flameTrailShader.InsideColor = Color.Gold;
         flameTrailShader.BloomColor = Color.Red;
         flameTrailShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
     
@@ -162,14 +196,14 @@ public class BigVulcanFireball : ModProjectile
 
     private void DrawFlameBall(SpriteBatch spriteBatch, Vector2 screenPos)
     {
+        _maskTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Mask");
         BigRekFireballShader shader = ShaderContent.GetInstance<BigRekFireballShader>();
         shader.Time = Main.GlobalTimeWrappedHourly * -64;
         shader.NoiseTexture = AssetManager.Noise.SharpPerlinNoise;
         shader.InnerColor = Color.Yellow;
         shader.BloomColor = Color.DarkRed;
         shader.Strength = 3f;
-        shader.DitherTexture = AssetManager.Dithering.Dither8x8Double;
-        shader.SpriteSize = TextureAssets.Projectile[Type].Size();
+        shader.MaskTexture = _maskTextureAsset.Value;
         var sbParams = SpritebatchParams.InWorldAndZoomed();
         sbParams.effect = shader.Effect;
         sbParams.blendState = BlendState.Additive;
@@ -178,14 +212,42 @@ public class BigVulcanFireball : ModProjectile
         {
             SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
             drawer.color = Color.White;
-            drawer.scale *= 1.4f;
-            drawer.scale.Y *= 0.75f * y;
+            drawer.worldPosition -= Projectile.velocity.SafeNormalize(Vector2.Zero) * 60;
+            drawer.scale *= 0.7f;
+            drawer.scale.X *= 1.5f;
+    //            drawer.scale *= 1.2f;
+  //          drawer.scale.Y *= 0.75f * y;
+            spriteBatch.Draw(drawer);
+
+            drawer.color = Color.Orange * 0.5f;
             spriteBatch.Draw(drawer);
         }
+
+
     }
     public override bool PreDraw(ref Color lightColor)
     {
 
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        drawer.color = Color.OrangeRed * 0.5f;
+        drawer.color.A = 0;
+        drawer.scale *= 0.6f;
+        drawer.scale.X *= 0.74f;
+        drawer.scale.Y *= 0.8f;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.Gold * 0.5f;
+        drawer.color.A = 0;
+        drawer.scale *= 0.84f;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White;
+        drawer.color.A = 0;
+        drawer.scale *= 0.84f;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
 
         PixelationManager.QueueSpritebatchDrawAction(DrawFlameBall, DrawLayer.OverNPCsAdditive);
         PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);

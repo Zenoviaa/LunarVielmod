@@ -12,49 +12,38 @@ float3 innerColor;
 float3 bloomColor;
 
 
-sampler ditherSampler : register(s2);
-float2 spriteSize;
-float2 ditherTexelSize;
-float Dither(float2 screenUV)
-{
-    //Here we multiple the screen uv by the image size to get it back to 0-1, and then multiple by the texel size of the dither to normalize it
-    float2 ditherTextureUV = screenUV * spriteSize * ditherTexelSize;
-    float dither = tex2D(ditherSampler, ditherTextureUV).r;
-    return dither;
-}
+sampler maskSampler : register(s2);
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
-{
+{    
+    float2 originalCoords = coords;
     //Distorting Big Rek Balls
     float2 distortionNoiseCoords = coords + float2(time * -0.03, 0.3);
     distortionNoiseCoords = frac(distortionNoiseCoords);
     distortionNoiseCoords *= 0.2;
     float distortingNoise = tex2D(noiseSampler, distortionNoiseCoords).r;
-    float2 offCoords = coords;
-    offCoords.y += sin(distortingNoise * 3.14) * 0.2 - 0.2;
-   
-    float2 noiseCoords = offCoords + float2(time * -0.05, 0.0);
-    noiseCoords = frac(noiseCoords);
-    float tiling = lerp(0.3, 1.0, coords.x);
     
-    //Hope this works?
-    noiseCoords *= tiling;
   
-    noiseCoords.y += sin(distortingNoise ) * strength;
-    float noise = tex2D(noiseSampler, noiseCoords).r;
-    noise *= 1.4;
-    float3 particleColor = lerp(innerColor, bloomColor, noise);
-    
-    float2 diff = offCoords - float2(0.5, 0.5);
-    float fade = saturate(length(diff) / 0.35);
-    fade = 1.0 - fade;
+    float2 scrollingNoiseCoords = coords + float2(time * -0.03, 0.0);
+    float scrollingNoise = tex2D(noiseSampler, scrollingNoiseCoords).r;
+    scrollingNoise *= lerp(1.0, 4.0, coords.x);
+    float strength = 0.08;
+    coords.y += sin(distortingNoise * 3.14) * strength - strength* 0.5;
+    coords.x += time * -0.05;
 
-    particleColor.rgb += smoothstep(0.0, 1.0, offCoords.x);
-    particleColor.b -= 0.3;
-    
+    coords = frac(coords);
+    float yDir = (originalCoords.y - 0.5);
+   // coords.y += acos(coords.x * 3.14) * 0.05;
+    float4 spriteColor = tex2D(spriteSampler, coords);
+  
+    float3 tint = lerp(bloomColor, innerColor, coords.x);
+    float mask = tex2D(maskSampler, originalCoords);
 
-    float4 finalcolor = float4(particleColor, 1.0) * sampleColor * fade * 8.0;
-    return finalcolor;
+    spriteColor *= mask;
+    spriteColor.rgb *= tint;
+    spriteColor.rgb += originalCoords.x * spriteColor.r;
+    spriteColor.rgb *= originalCoords.x;
+    return spriteColor * scrollingNoise * 2.0;
 }
 
 technique Technique1

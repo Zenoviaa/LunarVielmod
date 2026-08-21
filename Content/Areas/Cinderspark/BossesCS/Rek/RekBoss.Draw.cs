@@ -442,7 +442,7 @@ public partial class RekBoss : IWaterSilhouette
         ref RekSegment segment = ref Segments[index];
         var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, segment.position);
-        glowDrawer.scale *= 0.38f;
+        glowDrawer.scale *= 0.38f * MathHelper.Lerp(1f, 0.2f, (float)index / (float)Segments.Length);
         glowDrawer.color = Color.White * 0.33f;
         glowDrawer.color.R = (byte)(index * 9);
         glowDrawer.color.A = 0;

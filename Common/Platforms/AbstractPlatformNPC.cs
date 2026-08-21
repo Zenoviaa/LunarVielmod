@@ -30,9 +30,16 @@ public abstract class AbstractPlatformNPC : ModNPC
         NPC.dontCountMe = true;
         NPC.dontTakeDamage = true;
         NPC.dontTakeDamageFromHostiles = true;
+        NPC.hide = true;
     }
 
+    public override void DrawBehind(int index)
+    {
+        base.DrawBehind(index);
+        Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
+    }
     public abstract Point GetPlatformSize();
+    public virtual Point GetPlatformOffset() => Point.Zero;
     public virtual bool RiseInLiquids() => true;
     public override void AI()
     {
@@ -83,7 +90,6 @@ public abstract class AbstractPlatformNPC : ModNPC
             NPC.noGravity = true;
 
         }
-   
 
         Vector2 movement = NPC.position - NPC.oldPosition;
         Rectangle platformRectangle = GetPlatformRectangle();
@@ -109,6 +115,10 @@ public abstract class AbstractPlatformNPC : ModNPC
 
     private Rectangle GetPlatformRectangle()
     {
-        return NPC.getRect();
+        var rect = NPC.getRect();
+        var point = rect.Location;
+        point += GetPlatformOffset();
+        rect.Location = point;
+        return rect;
     }
 }

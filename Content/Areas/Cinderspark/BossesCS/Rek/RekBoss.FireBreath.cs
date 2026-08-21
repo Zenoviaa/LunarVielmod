@@ -69,7 +69,7 @@ public partial class RekBoss
                             firer.velocity = vel;
                             firer.New();
 
-                            for (float f = 0; f < 4; f++)
+                            for (float f = 0; f < 3; f++)
                             {
                                 Vector2 throVelocity = vel.SafeNormalize(Vector2.Zero);
                                 throVelocity *= 24;

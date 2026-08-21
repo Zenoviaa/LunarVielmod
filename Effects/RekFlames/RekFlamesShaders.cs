@@ -104,20 +104,12 @@ public class BigRekFireballShader : CrystalShader<BigRekFireballShader>
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
         }
     }
-    public Texture2D DitherTexture
+    public Texture2D MaskTexture
     {
         set
         {
             Main.graphics.GraphicsDevice.Textures[2] = value;
             Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-            Effect.Parameters["ditherTexelSize"].SetValue(value.GetTexelSize());
-        }
-    }
-    public Vector2 SpriteSize
-    {
-        set
-        {
-            Effect.Parameters["spriteSize"].SetValue(value);
         }
     }
 }

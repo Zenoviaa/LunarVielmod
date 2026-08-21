@@ -489,7 +489,7 @@ public partial class RekBoss : ScarletBoss
         {
             var segment = Segments[i];
             segment.burnAlpha = MathHelper.Lerp(segment.burnAlpha, (segment.isBurning || segment.isBurningNoWarning) ? 1f : 0f, 0.05f);
-            if ((segment.isBurning || segment.isBurningNoWarning) && Main.rand.NextBool(15))
+            if ((segment.isBurning || segment.isBurningNoWarning) && Main.rand.NextBool(32))
             {
                 Dust.NewDustPerfect(segment.position + Main.rand.NextVector2Circular(48, 48), DustID.Torch, -Vector2.UnitY, Scale: 2f);
             }

@@ -7,7 +7,11 @@ public class BigMoltenPlatform : AbstractPlatformNPC
 {
     public override Point GetPlatformSize()
     {
-        return new Point(1202, 64);
+        return new Point(856, 64);
+    }
+    public override Point GetPlatformOffset()
+    {
+        return new Point(0, -176);
     }
 }
 
@@ -15,6 +19,6 @@ public class SmallMoltenPlatform : AbstractPlatformNPC
 {
     public override Point GetPlatformSize()
     {
-        return new Point(146, 50);
+        return new Point(146, 130);
     }
 }
