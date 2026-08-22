@@ -76,7 +76,7 @@ public class PointLights
         }
         else
         {
-            return Vector3.One;
+            return Vector3.Zero;
         }
     }
     public void GatherLights()

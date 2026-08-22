@@ -43,6 +43,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
            // Stopwatch sw = Stopwatch.StartNew();
             //What we're gonna do is raycast in all directions and output the geometry
+            //TODO: remove in world check
             float d = 16;
             float maxSteps = distance / d; 
             for(int i = 0; i < Resolution; i++)

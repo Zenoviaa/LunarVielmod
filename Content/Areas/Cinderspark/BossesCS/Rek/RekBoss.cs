@@ -289,8 +289,13 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
-    private AIState TestAttack => AIState.Eruption;
+    private AIState TestAttack => AIState.Ouroboros;
     public override string Texture => TextureRegistry.EmptyTexture;
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return base.CanHitPlayer(target, ref cooldownSlot) && false;
+    }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -316,6 +321,7 @@ public partial class RekBoss : ScarletBoss
         NPC.noTileCollide = true;
         NPC.boss = true;
         NPC.npcSlots = 10f;
+
 
         //Setup the music and boss bar
         Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Rek");

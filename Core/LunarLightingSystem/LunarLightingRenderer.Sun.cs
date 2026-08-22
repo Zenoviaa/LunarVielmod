@@ -86,7 +86,7 @@ public partial class LunarLightingRenderer
             return;
 
         Vector2 stepSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
-        stepSize *= 4 * -SunLightManager.ShadowDirection;
+        stepSize *= 4 * -LightingGlobals.ShadowDirection;
 
         var shader = ShaderContent.GetInstance<SunLightShader>();
         shader.StepSize = stepSize;
@@ -122,7 +122,7 @@ public partial class LunarLightingRenderer
         Effect effect = GameShaders.Misc["LunarVeil:SunShadow"].Shader;
         effect.Parameters["mipBias"].SetValue(0.1f);
 
-        Vector2 sunDirection = SunLightManager.ShadowDirection.SafeNormalize(Vector2.Zero);
+        Vector2 sunDirection = LightingGlobals.ShadowDirection;
         effect.Parameters["sunDirection"].SetValue(-sunDirection * 1400);
         effect.Parameters["falloff"].SetValue(0.1f);
         effect.Parameters["uScreenResolution"].SetValue(Main.ScreenSize.ToVector2());

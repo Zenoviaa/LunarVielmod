@@ -21,23 +21,35 @@ public class FlameWheel : ModProjectile
         base.SetStaticDefaults();
         this.AddCommonDebuff(DebuffFlags.Burning_Serpent);
     }
+
+    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+    {
+        float collisionRadius = 212;
+        Vector2 centerPoint = targetHitbox.Center();
+        Vector2 myPoint = projHitbox.Center();
+        return Vector2.Distance(myPoint, centerPoint) <= collisionRadius;
+    }
+
     public override void SetDefaults()
     {
         base.SetDefaults();
         Projectile.tileCollide = false;
-        Projectile.width = 16;
-        Projectile.height = 16;
+        Projectile.width = 200;
+        Projectile.height = 200;
         Projectile.timeLeft = 600;
+        Projectile.hostile = true;
     }
     public override void AI()
     {
         base.AI();
-        if(Parent.ModNPC is not RekBoss)
+        if(Parent.ModNPC is not RekBoss || !Parent.active)
         {
             Projectile.active = false;
             return;
         }
+        Projectile.Center = Parent.Center;
     }
+
     private float GetTrailWidth(float ratio)
     {
         return MathHelper.Lerp(150, 89, ratio);

@@ -8,6 +8,39 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    private Rectangle _arenaRectangleToLava;
+    private Vector2 _eruptionRight;
+    private Vector2 _eruptionLeft;
+    private Vector2 EruptionLeft
+    {
+        get
+        {
+            if (_eruptionLeft == Vector2.Zero)
+                _eruptionLeft = FindEruptionLeft();
+            return _eruptionLeft;
+        }
+    }
+
+    private Vector2 EruptionRight
+    {
+        get
+        {
+            if (_eruptionRight == Vector2.Zero)
+                _eruptionRight = FindEruptionRight();
+            return _eruptionRight;
+        }
+    }
+
+    private Rectangle ArenaRectangleToLava
+    {
+        get
+        {
+            if (_arenaRectangleToLava == Rectangle.Empty)
+                _arenaRectangleToLava = ArenaRectangleUpToLava();
+            return _arenaRectangleToLava;
+        }
+    }
+    
     public void CreateSegmentEatEffect(RekSegment segment)
     {
         for (float f = 0; f < 12; f++)

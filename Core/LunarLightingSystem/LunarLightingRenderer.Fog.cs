@@ -8,6 +8,7 @@ namespace Stellamod.Core.LunarLightingSystem;
 
 public partial class LunarLightingRenderer
 {
+    //TODO: better batched
     public Fog SetupFog(Point position, Action<Fog> createFogFunc)
     {
         if (_fogIndex.ContainsKey(position))

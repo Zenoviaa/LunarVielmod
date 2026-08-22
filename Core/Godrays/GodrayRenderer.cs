@@ -169,8 +169,8 @@ namespace Stellamod.Core.Godrays
 
             ref GodrayParticle particle = ref _particles[nextIdnex];
             particle.position = position;
-            particle.innerColor = Color.Lerp(SunLightManager.SunColor, Color.White, 0.5f);
-            particle.outerColor = SunLightManager.SunColor;
+            particle.innerColor = Color.Lerp(LightingGlobals.SunColor, Color.White, 0.5f);
+            particle.outerColor = LightingGlobals.SunColor;
             particle.time = 0;
             particle.active = true;
         }
@@ -192,7 +192,7 @@ namespace Stellamod.Core.Godrays
             _godrayIndex = 0;
             _primitiveCount = 0;
 
-            Vector2 shadowDirection = SunLightManager.ShadowDirection;
+            Vector2 shadowDirection = LightingGlobals.ShadowDirection;
             float rotation = shadowDirection.ToRotation();
             for (int i = 0; i < Max_Particle_Count; i++)
             {
