@@ -39,19 +39,7 @@ public partial class RekBoss
 
         return t.ToWorldCoordinates().Y;
     }
-    private bool AllSegmentsSubmerged()
-    {
-        float surface = LavaSurface();
-        foreach (var segment in Segments)
-        {
-            float diff = segment.position.Y - surface;
-            float a = MathF.Abs(diff);
-            if (a > 32)
-                return false;
-        }
 
-        return true;
-    }
     private void ResetLavaSegments()
     {
         foreach(var segment in Segments)

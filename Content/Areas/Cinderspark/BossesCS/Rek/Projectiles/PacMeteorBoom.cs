@@ -8,7 +8,6 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
@@ -102,10 +101,10 @@ public class PacMeteorBoom : ModProjectile
                 Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(48, 192) + new Vector2(0, -64), DustID.Lava, vel, Scale: 2f);
             }
         }
-        if(Parent.ModNPC is RekBoss rek)
+        if (Parent.ModNPC is RekBoss rek)
         {
             Projectile.Center = rek.Segments[SegmentIndex].position;
-            Projectile.velocity = (rek.Segments[SegmentIndex].rotation-MathHelper.PiOver2).ToRotationVector2() * Projectile.velocity.Length();
+            Projectile.velocity = (rek.Segments[SegmentIndex].rotation - MathHelper.PiOver2).ToRotationVector2() * Projectile.velocity.Length();
         }
         if (!Parent.active)
             Projectile.active = false;

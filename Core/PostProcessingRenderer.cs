@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.LunarLightingSystem;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -41,7 +42,7 @@ namespace Stellamod.Core
         }
         private void DrawPostProcessingPasses(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
         {
-            if (layer == RenderLayers.All && beginSpriteBatch && !Main.gameMenu)
+            if (layer == RenderLayers.All && beginSpriteBatch && !Main.gameMenu && LightingHelper.CanRenderPostProcessingEffects)
             {
                 RenderPostProcessing();
             }

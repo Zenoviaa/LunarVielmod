@@ -16,7 +16,7 @@ public partial class LunarLightingRenderer
             return;
         if (!IsLightingEnabled)
             return;
-        if (!Lighting.UsingNewLighting)
+        if (!LightingHelper.CanRenderPostProcessingEffects)
             return;
 
         var config = ModContent.GetInstance<LunarVeilClientConfig>();

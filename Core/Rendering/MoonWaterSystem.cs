@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Biomes;
+using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
@@ -337,6 +338,9 @@ public class MoonWaterSystem : ModSystem
             return;
         if (Main.gameMenu)
             return;
+        if (!LightingHelper.CanRenderPostProcessingEffects)
+            return;
+
 
         SpriteBatch spriteBatch = Main.spriteBatch;
 
@@ -375,9 +379,12 @@ public class MoonWaterSystem : ModSystem
             return;
         if (_waterEffect == null)
             return;
-
-        if (!Lighting.UsingNewLighting)
+        if (!LightingHelper.CanRenderPostProcessingEffects)
+        {
+            _allowDraw = true;
             return;
+        }
+
         if (layer == RenderLayers.ForegroundWater)
         {
             //This is called right before the front water gets drawn

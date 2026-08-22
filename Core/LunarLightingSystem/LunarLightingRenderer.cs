@@ -15,72 +15,6 @@ using Terraria.Utilities;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
-    public class SSAOShader : CrystalShader<SSAOShader>
-    {
-        public Vector2 StepSize
-        {
-            set
-            {
-                Effect.Parameters["stepSize"].SetValue(value);
-            }
-        }
-
-        public Vector2[] Offsets
-        {
-            set
-            {
-                Effect.Parameters["offsets"].SetValue(value);
-            }
-        }
-    }
-
-    public class LuminanceShader : CrystalShader<LuminanceShader>
-    {
-        private EffectParameter _thresholdParam;
-        public float Threshold
-        {
-            set
-            {
-                _thresholdParam ??= Effect.Parameters["threshold"];
-                _thresholdParam.SetValue(value);
-            }
-        }
-
-    }
-
-    //TODO: Rewrite this and try implementing Radiance Cascades instead, might be really cool
-    //I'll make a prototype elsewhere first though
-    public class LightingPreDrawEdit : GlobalTile
-    {
-        public static bool DontRenderPreDraw;
-        public override bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
-        {
-            if (type == TileID.FogMachine && DontRenderPreDraw)
-                return false;
-            if (type == TileID.FogMachine && NPC.AnyDanger())
-                return false;
-            return base.PreDraw(i, j, type, spriteBatch);
-        }
-    }
-
-    public class SunLightShader : CrystalShader<SunLightShader>
-    {
-        public float ShadowAlpha
-        {
-            set
-            {
-                Effect.Parameters["shadowAlpha"].SetValue(value);
-            }
-        }
-
-        public Vector2 StepSize
-        {
-            set
-            {
-                Effect.Parameters["stepSize"].SetValue(value);
-            }
-        }
-    }
 
     [Autoload(Side = ModSide.Client)]
     public partial class LunarLightingRenderer : ModSystem,
@@ -159,7 +93,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void ApplySSAO()
         {
-            if (!Lighting.UsingNewLighting)
+            if (!LightingHelper.CanRenderPostProcessingEffects)
                 return;
             SSAOShader ssaoShader = ShaderContent.GetInstance<SSAOShader>();
             ssaoShader.StepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
@@ -181,7 +115,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
         {
-            if (!Main.gameMenu && IsLightingEnabled && Lighting.UsingNewLighting)
+            if (!Main.gameMenu && IsLightingEnabled && LightingHelper.CanRenderPostProcessingEffects)
             {
                 var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
                 // glowMaskBloomShader.Threshold = 0.5f;
@@ -244,7 +178,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
-            if (Lighting.UsingNewLighting)
+            if (LightingHelper.CanRenderPostProcessingEffects)
             {
                 RenderToLightsRT();
                 if (IsActive && _isLoaded)
@@ -263,7 +197,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if (behindTiles && DrawSunShadows2() && IsActive && _isLoaded && Lighting.UsingNewLighting)
+            if (behindTiles && DrawSunShadows2() && IsActive && _isLoaded && LightingHelper.CanRenderPostProcessingEffects)
             {
                 spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, Color.White);
             }

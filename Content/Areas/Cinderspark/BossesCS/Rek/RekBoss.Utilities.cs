@@ -1,8 +1,10 @@
-﻿using Stellamod.Common.Particles;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
@@ -39,6 +41,46 @@ public partial class RekBoss
                 _arenaRectangleToLava = ArenaRectangleUpToLava();
             return _arenaRectangleToLava;
         }
+    }
+
+    public void CreateFirebreathChargeEffect(Vector2 position)
+    {
+        for (float f = 0; f < 8; f++)
+        {
+            Vector2 pos = position + Main.rand.NextVector2Circular(384, 384);
+            Vector2 vel = (position - pos);
+            vel *= 0.1f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.OuterGlowColor = Color.Turquoise;
+            fx.Scale *= 0.5f;
+        }
+
+        if (Main.netMode != NetmodeID.Server)
+        {
+            var screenShader = ModContent.GetInstance<ScreenShaderSystem>();
+            screenShader.TintScreen(Color.Red, 0.1f, 15f);
+            PixelPrimitiveCircleFactory.CreateRekInwardBoom(position);
+        }
+
+        for (float f = 0; f < 12; f++)
+        {
+            Vector2 pos = position + Main.rand.NextVector2Circular(384, 384);
+            Vector2 vel = (position - pos);
+            vel *= 0.1f;
+
+            DustParticleSpawnParams spawnparams = DustParticleSpawnParams.Default;
+            spawnparams.innerColor = Color.Lerp(Color.White, Color.Red, Main.rand.NextFloat(0f, 1f));
+            spawnparams.outerColor = Color.Red;
+            var dp = DustParticle.Spawn(pos, vel, spawnparams);
+            dp.dampening = 0.05f;
+            dp.gravity = 0;
+            dp.Scale *= 0.5f;
+        }
+
+        /*
+        SoundStyle growSound = AssetRegistry.Sounds.Celestia.BigBowCharge with { PitchVariance = 0.3f };
+        SoundEngine.PlaySound(growSound, Projectile.position);
+        */
     }
     
     public void CreateSegmentEatEffect(RekSegment segment)

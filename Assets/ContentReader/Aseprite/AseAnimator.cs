@@ -100,6 +100,7 @@ public class AnimatorGlobalNPC : GlobalNPC
 
 public record struct AnimationParams(bool IsLooping = false)
 {
+    public static readonly AnimationParams NoLooping = new AnimationParams(IsLooping: false);
     public static readonly AnimationParams Default = new AnimationParams(IsLooping: true);
 }
 public record struct DrawEffects(Vector2? DrawOrigin, Vector2? Scale)
