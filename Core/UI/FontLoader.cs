@@ -10,13 +10,25 @@ namespace Stellamod.Core.UI;
 [Autoload(Side = ModSide.Client)]
 public class FontLoader : ModSystem
 {
+    private bool _canReplace;
     private bool _replacedFonts;
     private Asset<DynamicSpriteFont> _deathText;
     private Asset<DynamicSpriteFont> _mouseText;
     private string FontName => "KleeOne";
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+
+    }
+    public override void PostAddRecipes()
+    {
+        base.PostAddRecipes();
+        _canReplace = true;
+    }
     public override void OnModLoad()
     {
         base.OnModLoad();
+        _canReplace = false;
         _deathText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}DeathText");
         _mouseText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}MouseText");
         On_Main.Update += CheckForFontReplacement;
@@ -25,7 +37,7 @@ public class FontLoader : ModSystem
     private void CheckForFontReplacement(On_Main.orig_Update orig, Main self, GameTime gameTime)
     {
         orig(self, gameTime);
-        if (Mod.loading)
+        if (!_canReplace)
             return;
 
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
