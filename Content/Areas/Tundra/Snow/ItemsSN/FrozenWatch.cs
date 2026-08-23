@@ -1,10 +1,14 @@
-﻿using System.IO;
+﻿using ReLogic.Content;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.Content.Areas.Tundra.Snow.ItemsSN;
 
@@ -12,6 +16,9 @@ public class FrozenWatchSystem : ModSystem
 {
     public double frozenTime;
     public bool isTimeFrozen;
+    public float frozenEaseTimer;
+
+    private float WatchEaseInTime => 60;
     public override void NetSend(BinaryWriter writer)
     {
         base.NetSend(writer);
@@ -31,6 +38,10 @@ public class FrozenWatchSystem : ModSystem
         {
             Main.time = frozenTime;
         }
+
+        float direction = isTimeFrozen ? 1f : -1f;
+        frozenEaseTimer += direction;
+        frozenEaseTimer = MathHelper.Clamp(frozenEaseTimer, 0f, WatchEaseInTime);
     }
 
     public void ToggleFrozenTime()
@@ -48,7 +59,7 @@ public class FrozenWatchSystem : ModSystem
             isTimeFrozen = true;
             frozenTime = Main.time;
         }
-       
+
         //Use Item is called on the server, so I believe this will toggle and sync properly?
         if (Main.netMode == NetmodeID.Server)
         {
@@ -59,6 +70,33 @@ public class FrozenWatchSystem : ModSystem
         else
         {
             Main.NewText(message, 34, 121, 100);
+        }
+    }
+
+    public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+    {
+        base.ModifyInterfaceLayers(layers);
+        int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
+        if (mouseTextIndex != -1)
+        {
+            layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                "LunarVeil: Frozen Time Icon",
+                delegate
+                {
+                    if (frozenEaseTimer > 0)
+                    {
+                        float ease = EasingFunction.InOutSine(frozenEaseTimer / WatchEaseInTime);
+                        Vector2 drawPos = new Vector2(48, Main.screenHeight * 0.2f);
+                        SpriteBatch spriteBatch = Main.spriteBatch;
+                        Asset<Texture2D> watchTextureAsset = TextureAssets.Item[ModContent.ItemType<FrozenWatch>()];
+                        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(watchTextureAsset, drawPos + Main.screenPosition);
+                        drawer.color = Color.Lerp(Color.Transparent, Color.White, ease);
+                        drawer.scale = Vector2.Lerp(Vector2.One * 1.5f, Vector2.One, ease);
+                        spriteBatch.Draw(drawer);
+                    }
+                    return true;
+                },
+                InterfaceScaleType.UI));
         }
     }
 }
