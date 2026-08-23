@@ -5,9 +5,9 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
-namespace Stellamod.Tiles.Abyss.Aurelus
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus
 {
-    public class AurelusBanner2 : ModTile
+    public class AurelusBanner1 : ModTile
     {
         public override void SetStaticDefaults()
         {

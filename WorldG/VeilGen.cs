@@ -2,11 +2,11 @@
 using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
+using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Tiles;
-using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;

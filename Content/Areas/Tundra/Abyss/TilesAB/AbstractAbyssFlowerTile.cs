@@ -1,0 +1,47 @@
+﻿using Terraria;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.ObjectData;
+
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
+public abstract class AbstractAbyssFlowerTile : ModTile
+{
+    public override void SetStaticDefaults()
+    {
+        AbyssVisualHelper.DefaultToGlowingPlant(Type);
+        TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
+        TileObjectData.newTile.Height = 2;
+        TileObjectData.newTile.Width = 2;
+        TileObjectData.newTile.CoordinateHeights = new int[]
+        {
+            16,
+            16
+        };
+        TileObjectData.addTile(Type);
+        DustType = DustID.Stone;
+        LocalizedText name = CreateMapEntryName();
+        AddMapEntry(new Color(93, 203, 243));
+    }
+
+    public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
+    {
+        AbyssVisualHelper.AbyssPlantModifyLight(i, j, ref r, ref g, ref b);
+    }
+
+    public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
+    {
+        offsetY = 2;
+    }
+
+    public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+    {
+        Tile tileBelow = Framing.GetTileSafely(i, j + 2);
+        if (!tileBelow.HasTile || tileBelow.IsHalfBlock || tileBelow.TopSlope)
+        {
+            WorldGen.KillTile(i, j);
+        }
+
+        return true;
+    }
+}

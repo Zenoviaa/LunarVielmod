@@ -12,7 +12,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
-namespace Stellamod.Tiles.Abyss.Aurelus
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus
 {
     public class AurelusChest : ModTile
     {

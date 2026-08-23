@@ -1,16 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
-namespace Stellamod.Tiles.Abyss
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB
 {
-    public class AbyssalIce : ModTile
+    public class AbyssalDirt : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -19,7 +16,7 @@ namespace Stellamod.Tiles.Abyss
             Main.tileBlockLight[Type] = true;
             Main.tileMerge[TileID.IceBlock][Type] = true;
             Main.tileMerge[TileID.SnowBlock][Type] = true;
-            Main.tileMerge[ModContent.TileType<AbyssalDirt>()][Type] = true;
+            Main.tileMerge[ModContent.TileType<AbyssalIce>()][Type] = true;
             Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
@@ -35,35 +32,35 @@ namespace Stellamod.Tiles.Abyss
             {
                 if (Main.rand.NextBool(3))
                 {
-                    WorldGen.PlaceTile(i, j - 1, ModContent.TileType<BlueFlower>(), true);
+                    WorldGen.PlaceTile(i, j - 1, TileType<BlueFlower>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
                 if (Main.rand.NextBool(3))
                 {
-                    WorldGen.PlaceTile(i, j - 1, ModContent.TileType<BlueFlower2>(), true);
+                    WorldGen.PlaceTile(i, j - 1, TileType<BlueFlower2>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
                 if (Main.rand.NextBool(2))
                 {
-                    WorldGen.PlaceTile(i, j - 2, ModContent.TileType<TealBulb>(), true);
+                    WorldGen.PlaceTile(i, j - 2, TileType<TealBulb>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
                 if (Main.rand.NextBool(2))
                 {
-                    WorldGen.PlaceTile(i, j, ModContent.TileType<TealBulb2>(), true);
+                    WorldGen.PlaceTile(i, j, TileType<TealBulb2>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
                 if (Main.rand.NextBool(2))
                 {
-                    WorldGen.PlaceTile(i, j - 1, ModContent.TileType<TealBulb3>(), true);
+                    WorldGen.PlaceTile(i, j - 1, TileType<TealBulb3>(), true);
                 }
             }
             //Try place vine

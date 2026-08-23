@@ -1,4 +1,6 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.Particles;
+using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -116,9 +118,23 @@ public class FrozenWatch : ModItem
     public override bool? UseItem(Player player)
     {
         ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-        screenShaderSystem.TintScreen(Color.Cyan, 0.5f, 60);
+        screenShaderSystem.TintScreen(Color.DarkBlue, 0.1f, 60);
         FrozenWatchSystem watchSystem = ModContent.GetInstance<FrozenWatchSystem>();
         watchSystem.ToggleFrozenTime();
+        foreach(PositionVelocity posVel in new CircleOrientation(player.Center, 16, 32))
+        {
+            Vector2 vel = posVel.velocity;
+            vel = vel.SafeNormalize(Vector2.Zero);
+            vel *= Main.rand.NextFloat(3, 15);
+            vel = vel.RotatedByRandom(MathHelper.ToRadians(6));
+            var dp = DustParticle.Spawn(posVel.position + Main.rand.NextVector2Circular(48, 48), vel);
+            dp.innerColor = Color.Lerp(Color.LightBlue, Color.Blue, Main.rand.NextFloat(0f, 1f));
+            dp.outerColor = Color.DarkBlue;
+            dp.noTileCollide = true;
+            dp.dampening = 0.05f;
+            dp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+            dp.gravity = 0;
+        }
         return true;
     }
 }

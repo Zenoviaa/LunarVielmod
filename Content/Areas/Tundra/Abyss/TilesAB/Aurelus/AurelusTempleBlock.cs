@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace Stellamod.Tiles.Abyss.Aurelus
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus
 {
     public class AurelusTempleBlock : ModTile
     {

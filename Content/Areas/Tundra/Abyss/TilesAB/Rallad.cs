@@ -7,9 +7,9 @@ using Terraria.ObjectData;
 
 
 
-namespace Stellamod.Tiles.Abyss.Aurelus
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB
 {
-    public class AurelusBorderS : ModTile
+    public class Rallad : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -24,16 +24,16 @@ namespace Stellamod.Tiles.Abyss.Aurelus
             MineResist = 4f;
             MinPick = 200;
 
-        
+            DustType = ModContent.DustType<Dusts.SalfaceDust>();
             AdjTiles = new int[] { TileID.Bookcases };
             Main.tileFrameImportant[Type] = true;
             Main.tileNoAttach[Type] = true;
             Main.tileLavaDeath[Type] = true;
             TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
-            TileObjectData.newTile.Height = 12;
-            TileObjectData.newTile.Width = 24;
+            TileObjectData.newTile.Height = 11;
+            TileObjectData.newTile.Width = 8;
 
-            TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 };
+            TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 };
             TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
             TileObjectData.newTile.StyleMultiplier = 2; //same as above
             TileObjectData.newTile.StyleHorizontal = true;
@@ -41,9 +41,10 @@ namespace Stellamod.Tiles.Abyss.Aurelus
             TileObjectData.addTile(Type);
             LocalizedText name = CreateMapEntryName();
 
-            // name.SetDefault("GrassBigS");
-            AddMapEntry(new Color(126, 77, 59), name);
+            // name.SetDefault("BarS");
+            AddMapEntry(new Color(126, 77, 200), name);
         }
+        public override bool CanExplode(int i, int j) => false;
         public override void NumDust(int x, int y, bool fail, ref int num)
         {
             num = fail ? 1 : 3;
@@ -52,6 +53,5 @@ namespace Stellamod.Tiles.Abyss.Aurelus
         {
 
         }
-        public override bool CanExplode(int i, int j) => false;
     }
 }

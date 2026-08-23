@@ -3,26 +3,28 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Tiles;
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 
-public class CindersparkVines : ModTile
+public class AbyssalVines2 : ModTile
 {
     public override void SetStaticDefaults()
     {
         Main.tileCut[Type] = true;
-        Main.tileLavaDeath[Type] = false;
+        Main.tileBlockLight[Type] = true;
+        Main.tileLavaDeath[Type] = true;
         Main.tileNoFail[Type] = true;
         Main.tileNoAttach[Type] = true;
         Main.tileLighted[Type] = true;
+        Main.tileBlockLight[Type] = true;
 
 
         TileID.Sets.VineThreads[Type] = true;
         TileID.Sets.IsVine[Type] = true;
 
         HitSound = SoundID.Grass;
-        DustType = DustID.Torch;
+        DustType = DustID.Plantera_Green;
 
-        AddMapEntry(new Color(293, 86, 93));
+        AddMapEntry(new Color(93, 243, 243));
     }
 
     public override void NumDust(int i, int j, bool fail, ref int num) => num = 4;
@@ -37,9 +39,9 @@ public class CindersparkVines : ModTile
     }
     public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
     {
-        r = .255f;
-        g = .077f;
-        b = .102f;
+        r = .154f;
+        g = .177f;
+        b = .255f;
     }
     public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
     {
@@ -50,7 +52,7 @@ public class CindersparkVines : ModTile
             type = tileAbove.TileType;
         }
 
-        if (type == ModContent.TileType<CindersparkDirt>() || type == Type)
+        if (type == ModContent.TileType<AbyssalDirt>() || type == Type)
         {
             return true;
         }
@@ -62,7 +64,7 @@ public class CindersparkVines : ModTile
     public override void RandomUpdate(int i, int j)
     {
         Tile tileBelow = Framing.GetTileSafely(i, j + 1);
-        if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile)
+        if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
         {
             bool placeVine = false;
             int yTest = j;
@@ -73,7 +75,7 @@ public class CindersparkVines : ModTile
                 {
                     break;
                 }
-                else if (!testTile.HasTile || testTile.TileType != ModContent.TileType<CindersparkDirt>())
+                else if (!testTile.HasTile || testTile.TileType != ModContent.TileType<AbyssalDirt>())
                 {
                     yTest--;
                     continue;

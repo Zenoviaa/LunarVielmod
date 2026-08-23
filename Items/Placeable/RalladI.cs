@@ -1,4 +1,5 @@
-﻿using Terraria.GameContent.Creative;
+﻿using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
@@ -14,7 +15,7 @@ namespace Stellamod.Items.Placeable
         }
         public override void SetDefaults()
         {
-            Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Abyss.Rallad>());
+            Item.DefaultToPlaceableTile(ModContent.TileType<Rallad>());
             Item.value = 150;
             Item.maxStack = 20;
             Item.width = 38;

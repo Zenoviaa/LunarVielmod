@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -44,7 +45,7 @@ namespace Stellamod.Items.Placeable.Cathedral
             Item.useTime = 10;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.consumable = true;
-            Item.createTile = ModContent.TileType<Tiles.Abyss.Aurelus.AurelusTempleBlock>();
+            Item.createTile = ModContent.TileType<AurelusTempleBlock>();
         }
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 

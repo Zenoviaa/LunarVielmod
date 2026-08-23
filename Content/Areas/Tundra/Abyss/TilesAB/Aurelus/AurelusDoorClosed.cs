@@ -1,9 +1,10 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Consumables;
+using Stellamod.Tiles;
 using Terraria.ModLoader;
 
-namespace Stellamod.Tiles.Abyss.Aurelus
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus
 {
     //TODO: Smart Cursor Outlines and tModLoader support
     public class AurelusDoorClosed : LockedDoor

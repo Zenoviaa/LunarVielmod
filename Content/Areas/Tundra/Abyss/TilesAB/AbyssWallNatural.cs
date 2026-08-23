@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Tiles.Abyss
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB
 {
 
     public class AbyssWallNatural : ModWall

@@ -8,4 +8,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Folder Include="Tiles\Abyss\" />
+	</ItemGroup>
 </Project>

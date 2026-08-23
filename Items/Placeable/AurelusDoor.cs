@@ -1,5 +1,5 @@
 ﻿
-using Stellamod.Tiles.Abyss.Aurelus;
+using Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus;
 using Terraria;
 using Terraria.ModLoader;
 

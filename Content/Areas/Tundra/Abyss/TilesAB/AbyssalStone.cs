@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace Stellamod.Tiles.Abyss
+namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB
 {
     public class AbyssalStone : ModTile
     {
