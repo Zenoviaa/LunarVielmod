@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Abyss;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Gores.Foreground;

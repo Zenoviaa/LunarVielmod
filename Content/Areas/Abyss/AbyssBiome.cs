@@ -4,11 +4,10 @@ using Terraria;
 using Terraria.ModLoader;
 
 
-namespace Stellamod.Assets.Biomes
+namespace Stellamod.Content.Areas.Abyss
 {
     public class AbyssBiome : ModBiome
     {
-        //public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("SpiritMod/Biomes/SpiritUgBgStyle");
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Hidding_In_The_Shadows");
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override string BestiaryIcon => base.BestiaryIcon;

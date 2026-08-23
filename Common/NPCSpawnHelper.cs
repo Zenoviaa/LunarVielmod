@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.Abyss;
 using Stellamod.Content.Areas.PunkerTown;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;

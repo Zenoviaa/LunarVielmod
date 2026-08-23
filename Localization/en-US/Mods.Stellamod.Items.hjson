@@ -12135,3 +12135,8 @@ MossyGrottoTileBlock: {
 	DisplayName: Mossy Grotto Tile Block
 	Tooltip: ""
 }
+
+NighttimeSigil: {
+	DisplayName: Nighttime Sigil
+	Tooltip: "Grants +5 to every medallion attribute during the night!"
+}
