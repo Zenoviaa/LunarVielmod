@@ -1,4 +1,6 @@
 Common: {
+	TimeFrozen: "Time has been paused..."
+	TimeUnFrozen: "Time has been unpaused!"
 	CombatToolHelp: Choose a combat tool! These are replenshible consumables that can turn the tide of battle...
 	CombatTool: Combat Tool
 	CombatToolItemHelp: Yeah.
@@ -12139,4 +12141,8 @@ MossyGrottoTileBlock: {
 NighttimeSigil: {
 	DisplayName: Nighttime Sigil
 	Tooltip: "Grants +5 to every medallion attribute during the night!"
+}
+FrozenWatch: {
+	DisplayName: Frozen Watch
+	Tooltip: "When used, it will pause or unpause time!"
 }
