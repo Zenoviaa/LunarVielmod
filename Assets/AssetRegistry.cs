@@ -54,6 +54,7 @@ namespace Stellamod.Assets
             }
             public static class Rek
             {
+                public static readonly SoundStyle BigLaserChargeRek = new SoundStyle($"{Path}Rek/BigLaserChargeRek") with { PitchVariance = 0.5f };
                 public static readonly SoundStyle RekBigroar = new SoundStyle($"{Path}Rek/RekBigroar") with { PitchVariance = 0 };
                 public static readonly SoundStyle RekIdleroar = new SoundStyle($"{Path}Rek/RekIdleroar") with { PitchVariance = 0.5f };
                 public static readonly SoundStyle BigLaserRek = new SoundStyle($"{Path}Rek/BigLaserRek") with { PitchVariance = 0 };

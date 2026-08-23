@@ -517,6 +517,7 @@ public partial class RekBoss : IWaterSilhouette
         spotLight.scale *= 0.95f;
         spriteBatch.Draw(spotLight);
     }
+
     private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         for (int i = 0; i < NPC.oldPos.Length; i++)

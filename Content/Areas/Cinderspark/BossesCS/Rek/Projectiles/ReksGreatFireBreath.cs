@@ -4,11 +4,13 @@ using Stellamod.Common.DrawEffects;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Palettes;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Core.Rendering;
 using Stellamod.Effects.Generic;
 using Stellamod.Effects.RekFlames;
+using Stellamod.Effects.RoyalMagic;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
@@ -107,6 +110,14 @@ public class ReksGreatFireBreath : ModProjectile,
         }
     }
 
+    private float EasingOut
+    {
+        get
+        {
+            float outEasing = EasingFunction.InOutSine(Projectile.timeLeft / 60f);
+            return outEasing;
+        }
+    }
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
         float lineWidth = 64;
@@ -195,6 +206,35 @@ public class ReksGreatFireBreath : ModProjectile,
                 });
             }
 
+            for(int i = 0; i < 64; i++)
+            {
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                {
+                    position = Projectile.Center + Main.rand.NextVector2Circular(64, 64),
+                    velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 45),
+                    timeLeft = 45,
+                    innerColor = Color.White.ToVector4(),
+                    outerColor = Color.Red.ToVector4()
+                });
+            }
+            for (int i = 0; i < 32; i++)
+            {
+                Particles.BitDust.Spawn(BitDustFactory.Default with
+                {
+                    position = Projectile.Center + Main.rand.NextVector2Circular(64, 64),
+                    velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 45),
+                    timeLeft = 45,
+                    innerColor = Color.White.ToVector4(),
+                    outerColor = Color.Red.ToVector4(),
+                    scale = new Vector2(2)
+                });
+            }
+        }
+
+        if(Timer == 2)
+        {
+            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            screenShaderSystem.TintScreen(Color.Red, 0.18f, 120);
         }
         ShakeScreenPosition.Shake = 4;
         if (Timer % 6 == 0)
@@ -204,7 +244,7 @@ public class ReksGreatFireBreath : ModProjectile,
         if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
         {
             SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
-            effectsPlayer.darknessCurve = MathHelper.Lerp(0.5f, 0f, EasingFunction.InOutExpo(Timer / (60f)));
+            effectsPlayer.darknessCurve = MathHelper.Lerp(0.75f, 0f, EasingFunction.InOutExpo(Timer / (60f)));
         }
         for (int i = 0; i < _backFlameParticles.length; i++)
         {
@@ -264,7 +304,7 @@ public class ReksGreatFireBreath : ModProjectile,
                 outerColor = Color.Red.ToVector4()
             });
         }
-        if (Timer > 120)
+        if (Timer > 45)
         {
             ShouldDie = 1;
         }
@@ -274,6 +314,22 @@ public class ReksGreatFireBreath : ModProjectile,
         Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * length;
         Projectile.velocity = Parent.rotation.ToRotationVector2() * Projectile.velocity.Length();
         Projectile.rotation = Parent.rotation;
+        if(Timer % 2 == 0)
+        {
+            float numSteam = 2;
+            for (float n = 0; n < numSteam; n++)
+            {
+                Vector2 spawnPosition = ImpactPoint;
+                spawnPosition.X += Main.rand.NextFloat(-64, 64);
+                spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+                Vector2 spawnVelocity = Main.rand.NextVector2Circular(2, 2);
+
+                float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+                var p = Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
+                p.Scale *= 1.5f;
+            }
+        }
 
         DrawUtilities.InterpolateBetweenPointsNonAlloc(ref _beamPoints, Projectile.Center, Projectile.Center + Projectile.velocity * 1.05f);
         ParticlesHelper.CheckForAndKillParticles(_backFlameParticles);
@@ -282,6 +338,7 @@ public class ReksGreatFireBreath : ModProjectile,
     public override bool PreDraw(ref Color lightColor)
     {
         DrawImpactGlow();
+        DrawStarBomb(Main.spriteBatch);
         CommonDrawEffects.DrawFenixLaserCircles(Main.spriteBatch, Timer, Projectile.Center, Projectile.velocity, num: 3);
         return false;
     }
@@ -331,7 +388,7 @@ public class ReksGreatFireBreath : ModProjectile,
         }
         float GetBeamWidth(float ratio)
         {
-            return MathHelper.SmoothStep(32, 256, ratio) * 0.35f;
+            return MathHelper.SmoothStep(196, 296, ratio) * 0.85f;
         }
 
         FixedRichLaserShader richShader = ShaderContent.GetInstance<FixedRichLaserShader>();
@@ -371,6 +428,60 @@ public class ReksGreatFireBreath : ModProjectile,
         }
     }
 
+    private void DrawStarBomb(SpriteBatch sb)
+    {
+        float divisor = 888;
+        Vector2 _bounceOffset = Vector2.Lerp(Projectile.velocity.SafeNormalize(Vector2.Zero) * 444, Vector2.Zero, EasingFunction.OutSine(Timer / 60f));
+        float _scale = MathHelper.SmoothStep(3f, 1f, Timer / 60f);
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center + _bounceOffset);
+        Color color = Color.Lerp(Color.OrangeRed, Color.Red, Timer / 30);
+        circleDrawer.color = color * 0.75f * MathHelper.Lerp(1f, 0f, EasingFunction.Clamp(Timer / 30)) * EasingOut;
+        circleDrawer.color.A = 0;
+        circleDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * 12, Timer / 30f);
+        Main.spriteBatch.Draw(circleDrawer);
+
+        SpritebatchDrawer glowBall2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
+        glowBall2.color = Color.White * 0.9f * ExtraMath.Osc(0.5f, 1f, speed: 6) * EasingOut;
+        glowBall2.color.A = 0;
+        glowBall2.scale *= 2 * _scale;
+        glowBall2.scale.Y *= 1.3f;
+        sb.Draw(glowBall2);
+
+        SpritebatchDrawer glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        glowBall.color = Color.Lerp(Color.Blue, Color.Magenta, ExtraMath.Osc(0f, 1f, speed: 3)) * 0.1f;
+        glowBall.color.A = 0;
+        glowBall.scale *= 2 * _scale;
+        sb.Draw(glowBall);
+
+
+        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        glowBall.color = Color.DarkRed * 0.75f * (_bounceOffset.Length() / 115f) * EasingOut;
+        glowBall.color.A = 0;
+        glowBall.scale *= 2 * _scale;
+        sb.Draw(glowBall);
+
+
+
+        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        glowBall.color = Color.White * 0.75f * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo((_bounceOffset.Length() / divisor))) * EasingOut;
+        glowBall.color.A = 0;
+        glowBall.scale *= 2 * _scale;
+        sb.Draw(glowBall);
+
+
+        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center + _bounceOffset);
+        glowBall.color = Color.Lerp(Color.Orange, Color.Red, ExtraMath.Osc(0f, 1f, speed: 3)) * 0.08f * EasingOut;
+        glowBall.color.A = 0;
+        glowBall.scale *= 2 * _scale * MathHelper.Lerp(0f, 2f, EasingFunction.InExpo((_bounceOffset.Length() / divisor)));
+        sb.Draw(glowBall);
+
+
+        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
+        glowBall.color = Color.White * 0.92f * EasingOut;
+        glowBall.color.A = 0;
+        glowBall.scale *= 2 * _scale * MathHelper.Lerp(0, 6.4f, EasingFunction.InExpo((_bounceOffset.Length() / divisor)));
+        sb.Draw(glowBall);
+    }
     private void RenderFlamethrower(SpriteBatch spriteBatch)
     {
         var shader = ShaderContent.GetInstance<RekFlamethrowerShader>();
@@ -392,7 +503,7 @@ public class ReksGreatFireBreath : ModProjectile,
                 flamethrowerDrawer.worldPosition = position;
                 flamethrowerDrawer.color = Color.OrangeRed * lerpValue * EasingInOut * 0.85f;
                 flamethrowerDrawer.color.A = 0;
-                flamethrowerDrawer.scale *= 1.3f + MathHelper.Lerp(1f, 0f, lerpValue);
+                flamethrowerDrawer.scale *= 1.5f + MathHelper.Lerp(1f, 0f, lerpValue);
                 flamethrowerDrawer.scale *= EasingFunction.QuadraticBump(lerpValue);
 
                 flamethrowerDrawer.rotation = -particle.timeLeft * 0.05f;
@@ -453,7 +564,7 @@ public class ReksGreatFireBreath : ModProjectile,
             var flamethrowerDrawer = SpritebatchDrawer.FromTextureAsset(_ringsTextureAsset,
                 Projectile.Center);
             flamethrowerDrawer.LeftCenterOrigin();
-            flamethrowerDrawer.color = Color.LightGoldenrodYellow * EasingInOut * 0.35f;
+            flamethrowerDrawer.color = Color.LightGoldenrodYellow * EasingInOut * 0.85f;
             flamethrowerDrawer.color.A = 0;
             flamethrowerDrawer.rotation = Projectile.velocity.ToRotation();
             flamethrowerDrawer.scale.X = Projectile.velocity.Length() / _ringsTextureAsset.Width();

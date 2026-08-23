@@ -1,18 +1,23 @@
-﻿using Stellamod.Assets.ContentReader.Aseprite;
+﻿using Stellamod.Assets;
+using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core.Camera;
+using Stellamod.Core.InverseKinematics;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.Animations;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    private float _soundTimer;
     private float _startRotation;
     private float _firebreathSide;
     private int Fire_Breath_V2_Damage => 50;
-    private float Fire_Breath_V2_Blast_Time => 210;
+    private float Fire_Breath_V2_Blast_Time => 90;
     private float Fire_Breath_V2_Come_In_Time => 180;
     private float Fire_Breath_V2_X_Radius => 512;
     private float Fire_Breath_V2_Y_Radius => 384;
@@ -46,6 +51,7 @@ public partial class RekBoss
                 break;
             case 1:
                 {
+                    _soundTimer = 0;
                     Vector2 eruptionLeft = EruptionLeft;
                     Vector2 eruptionRight = EruptionRight;
 
@@ -83,6 +89,14 @@ public partial class RekBoss
                     if(Timer == 1)
                     {
                         _startRotation = NPC.rotation;
+                        _soundTimer = -11f;
+       
+                    }
+
+                    if(Timer == 60)
+                    {
+                        var chargeSound = AssetRegistry.Sounds.Rek.BigLaserChargeRek;
+                        SoundEngine.PlaySound(chargeSound, MyTarget.position);
                     }
                     Vector2 diff = Vector2.UnitY;
                     float rot = diff.ToRotation();
@@ -144,13 +158,21 @@ public partial class RekBoss
                     for(int i = Segments.Length - 1; i >= 0 ; i--)
                     {
                         var segment = Segments[i];
-                        float time = Timer - j * 5.5f;
+                        float time = Timer - j * 11f;
                         if (time > 0)
                         {
                             segment.isBurning = true;
-                            segment.sawBladeAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(time / 10f));
+                            segment.sawBladeAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(time / 11f));
                         }
-                        j++;
+                        if(i % 2 == 0)
+                            j++;
+                    }
+                    _soundTimer++;
+                    if(_soundTimer >= 11f)
+                    {
+                        var sound = AssetRegistry.Sounds.Rek.RekSpikeOut;
+                        SoundEngine.PlaySound(sound, NPC.position);
+                        _soundTimer = 0;
                     }
     
                     if (Timer >= Fire_Breath_V2_Charge_Time)
@@ -189,7 +211,7 @@ public partial class RekBoss
                     }
 
                     _outliner.attacking = true;
-                    NPC.rotation += EasingFunction.InOutExpo(Timer / 60f) * 0.025f * MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / Fire_Breath_V2_Blast_Time)) * _firebreathSide;
+                    NPC.rotation += EasingFunction.InOutExpo(Timer / 20) * 0.035f * MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / Fire_Breath_V2_Blast_Time)) * _firebreathSide;
                     if (Timer >= Fire_Breath_V2_Blast_Time)
                     {
                         Timer = 0;
@@ -211,13 +233,17 @@ public partial class RekBoss
 
                     //Swim out
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.NoLooping);
-                    NPC.velocity.X += -0.2f;
-                    NPC.velocity.Y += 0.5f;
-                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
-                    if (Timer >= 90)
+                    if(Timer >= 45)
                     {
-                        NextState();
+                        NPC.velocity.X += -0.2f * _firebreathSide;
+                        NPC.velocity.Y += 0.5f;
+                        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+                        if (Timer >= 135)
+                        {
+                            NextState();
+                        }
                     }
+         
                 }
                 break;
         }

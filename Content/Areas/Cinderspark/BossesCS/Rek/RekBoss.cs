@@ -517,14 +517,14 @@ public partial class RekBoss : ScarletBoss
             Chain.ResolveBackToRoot();
         }
 
+
         for (int i = 0; i < Segments.Length; i++)
         {
             var segment = Segments[i];
             segment.burnAlpha = MathHelper.Lerp(segment.burnAlpha, (segment.isBurning || segment.isBurningNoWarning) ? 1f : 0f, 0.05f);
             if(segment.lastSawBladeAlpha < 0.5f && segment.sawBladeAlpha > 0.5f)
             {
-                var sound = AssetRegistry.Sounds.Rek.RekSpikeOut;
-                SoundEngine.PlaySound(sound, segment.position);
+
                 for(int k = 0; k < 4; k++)
                 {
                     float upRotation = segment.rotation + MathHelper.PiOver2;
