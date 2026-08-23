@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.DungeonGeneration;
+﻿using Stellamod.Common.ClassReworkSystem;
+using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.Players;
 using Stellamod.Common.WaypointSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
@@ -7,9 +8,7 @@ using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Stellamod.Core;
 using Stellamod.Core.PlayerLevelingSystem;
 using Stellamod.Core.RibbonSystem;
-using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Melee;
@@ -311,6 +310,12 @@ namespace Stellamod
                         float ai2 = reader.ReadSingle();
                         float ai3 = reader.ReadSingle();
                         NPCUtilities.HandleNPCAIChange(npcWhoAmI, ai0, ai1, ai2, ai3);
+                    }
+                    break;
+                case MessageType.ClassReworkPlayerSync:
+                    {
+                        ClassReworkPlayer reworkPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
+                        reworkPlayer.playerClass = (PlayerClass)reader.ReadSingle();
                     }
                     break;
             }

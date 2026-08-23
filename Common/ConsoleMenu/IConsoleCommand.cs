@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.Common.ConsoleMenu;
 
@@ -45,7 +46,7 @@ public class ConsoleUI : UIPanel
     private void ParseText(string text)
     {
         var args = ConsoleSystem.ParseCommand(text);
-        var arguments = ConsoleSystem.GetArguments(args.name, args.arguments);
+        var arguments = ConsoleSystem.GetArguments( args.arguments);
         _arguments = arguments;
     }
 
@@ -72,7 +73,7 @@ public class ConsoleUI : UIPanel
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-
+       // _textField.SetText(string.Empty);// = string.Empty;
         if (!_textField.focused)
         {
        
@@ -95,7 +96,7 @@ public class ConsoleUI : UIPanel
             {
                 _enterDown = false;
                 var args = ConsoleSystem.ParseCommand(_textField.Text);
-                bool e = ConsoleSystem.ExecuteCommand(args.name, args.arguments);
+                bool e = ConsoleSystem.ExecuteCommand(args.arguments);
                 string arguments = string.Empty;
                 foreach (var argument in args.arguments)
                     arguments += $"{argument} ";
@@ -132,18 +133,23 @@ public class ConsoleUI : UIPanel
         this.QuickMouseInteraction();
 
         //Get all commands that could potential match this
-        string[] potentialCommands = ConsoleSystem.GetMatches(_textField.Text);
-
+        (string name, string[] args) = ConsoleSystem.ParseCommand(_textField.Text);
+        var potentialCommands = ConsoleSystem.GetArguments( args);
+        string currentArg = args[args.Length - 1];
+        string[] matches = ConsoleSystem.GetMatches(currentArg, potentialCommands.potentialArguments);
         //Now draw them upwards from the text field, showing what command you might want
-        for(int i = 0; i < potentialCommands.Length; i++)
+        int i = 0;
+        foreach(var arg in matches)
         {
-            ref var text = ref potentialCommands[i];
+            string text = arg;
             Vector2 pos = _textField.GetDimensions().ToRectangle().TopLeft();
             pos.Y -= i * 18;
             pos.Y -= 32;
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, 
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch,
                 FontAssets.MouseText.Value, text, pos, Color.Lerp(Color.LightGreen, Color.LightGreen * 0.5f, ExtraMath.Osc(0f, 1f, speed: 1, i)), 0, Vector2.Zero, Vector2.One);
+            i++;
         }
+
     }
 
 }
@@ -185,23 +191,53 @@ public class ConsoleSystem : ModSystem
         }
     }
 
-    public Arguments GetArguments(in string name, in string[] args)
+    public Arguments StarterArguments()
     {
-        if (!commandLookup.ContainsKey(name))
-            return null;
-        ConsoleCommand command = commandLookup[name];
-        Arguments arguments = command.GetArguments();
-        int index = 0;
-        if (args.Length <= index)
-            return null;
-        string arg = args[index];
-
-        //Keep moving forward until arguments don't match anymore
-        while (index < args.Length && arguments.potentialArguments.Contains(arg) && arguments.next != null)
+        Arguments arguments = new Arguments();
+        foreach(var kvp in commandLookup)
         {
-            arguments = arguments.next;
-            index++;
-            arg = args[index];
+            arguments.potentialArguments.Add(kvp.Key);
+        }
+        return arguments;
+    }
+
+   
+
+    public Arguments GetArguments(in string[] args)
+    {
+        Queue<string> argsQueue = new Queue<string>(args);
+        Arguments arguments = StarterArguments();
+        int i = 0;
+        while(argsQueue.Count > 0)
+        {
+            if (arguments.potentialArguments.Count <= 0)
+                break;
+
+            string arg = argsQueue.Dequeue();
+            if(i == 0)
+            {
+                if (commandLookup.ContainsKey(arg))
+                {
+                    var nextArguments = commandLookup[arg].GetArguments();
+                    if (nextArguments != null)
+                        arguments = nextArguments;
+                }
+            }
+            else
+            {
+                if (arguments.potentialArguments.Contains(arg))
+                {
+                    if (arguments.next != null)
+                        arguments = arguments.next;
+                    else
+                        break;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            i++;
         }
         return arguments;
     }
@@ -215,6 +251,20 @@ public class ConsoleSystem : ModSystem
             if (kvp.Key.StartsWith(command))
                 matches.Add(kvp.Key);
         }
+
+        return matches.ToArray();
+    }
+
+    public string[] GetMatches(string command, HashSet<string> potentialArguments)
+    {
+        command = command.ToLower();
+        List<string> matches = new List<string>();
+        foreach (var kvp in potentialArguments)
+        {
+            if (kvp.StartsWith(command))
+                matches.Add(kvp);
+        }
+
         return matches.ToArray();
     }
 
@@ -222,10 +272,10 @@ public class ConsoleSystem : ModSystem
     {
         string[] args = command.Split(' ');
         if (args.Length <= 0)
-            return ("", new string[0]);
+            return ("", new string[1] {string.Empty});
 
         List<string> arguments = new List<string>();
-        for (int i = 1; i < args.Length; i++)
+        for (int i = 0; i < args.Length; i++)
         {
             arguments.Add(args[i]);
         }
@@ -234,8 +284,9 @@ public class ConsoleSystem : ModSystem
         return (name, arguments.ToArray());
     }
 
-    public bool ExecuteCommand(in string name, in string[] arguments)
+    public bool ExecuteCommand(in string[] arguments)
     {
+        string name = arguments[0];
         if (!commandLookup.ContainsKey(name))
             return false;
         return commandLookup[name].Invoke(arguments);
