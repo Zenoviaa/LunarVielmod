@@ -1,13 +1,10 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
-using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering;
-using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
@@ -97,7 +94,7 @@ public class RoyalStarBombBoom : ModProjectile,
         if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
         {
             SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
-            effectsPlayer.darknessCurve = MathHelper.Lerp(1.2f, 0f, EasingFunction.InExpo(Timer / (Time/3f)));
+            effectsPlayer.darknessCurve = MathHelper.Lerp(1.2f, 0f, EasingFunction.InExpo(Timer / (Time / 3f)));
         }
     }
 
@@ -301,7 +298,7 @@ public class RoyalStarBomb : ModProjectile,
             {
                 FXUtil.CreateRipple(Projectile.Center);
                 PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.Transparent, Color.White, 35, 768);
-      
+
                 if (Main.netMode != NetmodeID.Server)
                 {
                     ScreenShaderSystem system = ModContent.GetInstance<ScreenShaderSystem>();

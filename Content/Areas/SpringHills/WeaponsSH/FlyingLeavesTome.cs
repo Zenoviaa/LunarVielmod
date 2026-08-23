@@ -1,18 +1,10 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
@@ -106,13 +98,13 @@ public class FlyingLeaf : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1 && this.OwnedByLocalClient())
+        if (Timer == 1 && this.OwnedByLocalClient())
         {
             Variant = Main.rand.Next(6);
             RandScale = Main.rand.NextFloat(0.5f, 1f);
             Projectile.netUpdate = true;
         }
-        if(Timer == 1)
+        if (Timer == 1)
         {
             ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
             {
@@ -130,7 +122,7 @@ public class FlyingLeaf : ModProjectile
 
         if (Projectile.velocity.Length() < 15)
             Projectile.velocity *= 1.01f;
-        if(Timer % 8 == 0)
+        if (Timer % 8 == 0)
         {
             int dust = DustID.Grass;
             if (Variant == 1)
@@ -190,7 +182,7 @@ public class FlyingLeaf : ModProjectile
             afDrawer.worldPosition = Projectile.oldPos[i] + Projectile.Size * 0.5f;
             afDrawer.rotation = Projectile.oldRot[i];
 
-            float ratio = (float)i / (float)Projectile.oldPos.Length;
+            float ratio = i / (float)Projectile.oldPos.Length;
             afDrawer.scale = Vector2.Lerp(Vector2.One, Vector2.One * 0.5f, ratio);
             afDrawer.color = Color.Lerp(GetVariantColor(), Color.Black, ratio) * 0.5f;
             afDrawer.color.A = 0;

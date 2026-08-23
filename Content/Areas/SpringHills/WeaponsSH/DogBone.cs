@@ -1,4 +1,4 @@
-﻿using Stellamod.Content.Areas.Snow.WeaponsSN;
+﻿using Stellamod.Content.Areas.Tundra.Snow.WeaponsSN;
 using Stellamod.Core.Bases;
 using System;
 using System.Collections.Generic;

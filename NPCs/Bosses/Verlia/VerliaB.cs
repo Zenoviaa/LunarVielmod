@@ -1,4 +1,4 @@
-﻿using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
+﻿using Stellamod.Content.Areas.Tundra.MoonspiralTower.WeaponsMT;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;

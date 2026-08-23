@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Content.Areas.Shop.AccShop;
-using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Content.Currencies;
 using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
 using System.Collections.Generic;

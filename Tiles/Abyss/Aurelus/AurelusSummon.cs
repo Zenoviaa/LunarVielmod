@@ -1,7 +1,7 @@
 ﻿
 
 using Microsoft.Xna.Framework;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
+using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;

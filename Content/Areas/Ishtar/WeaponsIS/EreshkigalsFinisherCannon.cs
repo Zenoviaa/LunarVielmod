@@ -3,7 +3,7 @@ using ReLogic.Utilities;
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Snow.WeaponsSN;
+using Stellamod.Content.Areas.Tundra.Snow.WeaponsSN;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;

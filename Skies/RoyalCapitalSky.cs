@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
+using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Biomes;
 using Stellamod.Helpers;
 using System;

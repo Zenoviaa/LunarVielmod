@@ -1,4 +1,4 @@
-﻿using Stellamod.Content.Areas.MoonspiralTower.CariyaBoss;
+﻿using Stellamod.Content.Areas.Tundra.MoonspiralTower.CariyaBoss;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Utilities;
 using Terraria;

@@ -1,10 +1,10 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
-using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
-using Stellamod.Content.Areas.Snow.WeaponsSN;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles;
+using Stellamod.Content.Areas.Tundra.Snow.WeaponsSN;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;

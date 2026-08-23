@@ -1,6 +1,5 @@
 ﻿using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
-using Stellamod.Content.Areas.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
@@ -9,6 +8,7 @@ using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
+using Stellamod.Content.Areas.Tundra.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Underground.TilesUG;
 using Stellamod.Content.Areas.WaterSide.TilesWS;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;

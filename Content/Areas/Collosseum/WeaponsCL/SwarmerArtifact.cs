@@ -1,7 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
-using Stellamod.Content.Areas.Snow.WeaponsSN;
+using Stellamod.Content.Areas.Tundra.Snow.WeaponsSN;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Bases;

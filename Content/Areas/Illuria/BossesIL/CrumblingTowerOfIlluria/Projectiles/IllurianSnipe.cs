@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
-using Stellamod.Content.Areas.Snow.WeaponsSN;
+using Stellamod.Content.Areas.Tundra.Snow.WeaponsSN;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;

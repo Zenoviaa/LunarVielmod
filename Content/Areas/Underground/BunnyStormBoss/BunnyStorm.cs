@@ -3,21 +3,15 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
-using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
-using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.TriggersSystem.Triggers;
-using Stellamod.Core.Utilities;
 using Stellamod.Effects.GothinFlames;
-using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -87,7 +81,7 @@ public class BunnyStormBunny : ModProjectile
                 AI_Suck();
                 break;
         }
-      //  TileCollideWhenBelowPlayer();
+        //  TileCollideWhenBelowPlayer();
     }
 
     private void TileCollideWhenBelowPlayer()
@@ -104,7 +98,7 @@ public class BunnyStormBunny : ModProjectile
         velocityToParent = velocityToParent.RotatedBy(0.5f);
         Projectile.velocity = velocityToParent * 12;
 
-        if(Vector2.Distance(Projectile.Center, Parent.Center) < 16)
+        if (Vector2.Distance(Projectile.Center, Parent.Center) < 16)
         {
             Projectile.Kill();
         }
@@ -123,7 +117,7 @@ public class BunnyStormBunny : ModProjectile
 
     private void AI_ShootOut()
     {
-        if(Timer == 1)
+        if (Timer == 1)
         {
             var p = FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.OrangeRed, Color.Black);
             p.Scale *= Main.rand.NextFloat(0.4f, 0.65f);
@@ -163,7 +157,7 @@ public class BunnyStormBunny : ModProjectile
             var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.3f);
             donut.Scale *= 0.5f;
             float numDust = 8;
-            for(float n = 0; n < numDust; n++)
+            for (float n = 0; n < numDust; n++)
             {
                 Vector2 vel = Projectile.velocity * Main.rand.NextFloat(0.3f, 0.6f);
                 vel = vel.RotatedByRandom(MathHelper.ToRadians(35));
@@ -199,7 +193,7 @@ public class BunnyStormBunny : ModProjectile
 
     private void AI_Falling()
     {
-        if(Timer % 8 == 0)
+        if (Timer % 8 == 0)
         {
             Vector2 pos = new Vector2();
             pos.X = Main.rand.Next(0, Projectile.width);
@@ -211,18 +205,18 @@ public class BunnyStormBunny : ModProjectile
             sp.gravity = 0;
         }
 
-        if(Timer % 24 == 0)
+        if (Timer % 24 == 0)
         {
             var fx = FXUtil.GlowStretch(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity * 0.05f);
             fx.VectorScale *= 0.5f;
         }
-        if(Projectile.velocity.Y < 15)
+        if (Projectile.velocity.Y < 15)
             Projectile.velocity.Y += 0.15f;
         Projectile.rotation += Projectile.velocity.Length() * 0.025f;
         Projectile.rotation += 0.015f;
 
         Projectile.frameCounter++;
-        if(Projectile.frameCounter >= 5)
+        if (Projectile.frameCounter >= 5)
         {
             Projectile.frameCounter = 0;
             Projectile.frame++;
@@ -239,7 +233,7 @@ public class BunnyStormBunny : ModProjectile
             SpritebatchDrawer afDrawer = SpritebatchDrawer.FromProjectile(Projectile);
             afDrawer.worldPosition = pos;
             afDrawer.rotation = Projectile.oldRot[i];
-            afDrawer.color = Color.Lerp(Color.White, Color.Black, (float)i / (float)Projectile.oldPos.Length) * 0.05f;
+            afDrawer.color = Color.Lerp(Color.White, Color.Black, i / (float)Projectile.oldPos.Length) * 0.05f;
             afDrawer.color.A = 0;
             afDrawer.scale = _scale;
             Main.spriteBatch.Draw(afDrawer);
@@ -488,7 +482,7 @@ public class BunnyStormCrystal : ModNPC,
                 PixelPrimitiveCircleFactory.CreateVerliaMoonBoom2(NPC.Center);
                 NPC.netUpdate = true;
             }
-          
+
             NPC.life = 1;
         }
         else
@@ -582,7 +576,7 @@ public class BunnyStorm : ScarletBoss
     {
         get
         {
-            if(_patternManagerBackingField == null)
+            if (_patternManagerBackingField == null)
             {
                 _patternManagerBackingField = new();
                 _patternManagerBackingField.AddPattern(AIState.Hand_Wiggle_Bunny_Drop, 1f);
@@ -655,7 +649,7 @@ public class BunnyStorm : ScarletBoss
     {
         _vortexPS ??= new VortexParticleSystem(64);
         _vortexPS.centerPoint = -NPC.velocity * 16;
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
 
             _vortexPS.SpawnParticle(Vector2.Zero + Main.rand.NextVector2CircularEdge(64, 64), Main.rand.NextVector2Circular(2, 2));
@@ -730,7 +724,7 @@ public class BunnyStorm : ScarletBoss
 
     private void AI_BunnyRemerge()
     {
-       
+
     }
 
     private void AI_BunnyGun()
@@ -765,10 +759,10 @@ public class BunnyStorm : ScarletBoss
                     float inTime = 90 * speedUp;
                     float ratio2 = Timer / inTime;
                     Vector2 upOffset = Vector2.UnitY * MathHelper.Lerp(352, 232, EasingFunction.InOutSine(ratio2));
-                    upOffset = upOffset.RotatedBy((AttackCounter / 6f ) * MathHelper.TwoPi);
+                    upOffset = upOffset.RotatedBy((AttackCounter / 6f) * MathHelper.TwoPi);
                     Vector2 startupPoint = MyTarget.Center - upOffset;
-              
-                //    startupPoint -= Vector2.UnitX * MathHelper.Lerp(0, 300, EasingFunction.InOutSine(ratio2));
+
+                    //    startupPoint -= Vector2.UnitX * MathHelper.Lerp(0, 300, EasingFunction.InOutSine(ratio2));
                     startupPoint.Y -= MathHelper.Lerp(0f, 100, EasingFunction.InExpo(ratio));
                     Vector2 velocityToPoint = (startupPoint - NPC.Center);
                     NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToPoint, EasingFunction.InOutExpo(ratio2));
@@ -784,7 +778,7 @@ public class BunnyStorm : ScarletBoss
                 break;
             case 1:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage1");
                         boom2.PitchVariance = 0.3f;
@@ -799,10 +793,10 @@ public class BunnyStorm : ScarletBoss
                     NPC.velocity = Vector2.Lerp(NPC.velocity, slowMoveVelocity.SafeNormalize(Vector2.Zero) * speed, EasingFunction.InOutSine(Timer / 24f));
                     _outliner.warning = true;
                     float targetRotation = (MyTarget.Center - NPC.Center).ToRotation();
-        
+
 
                     _stormRotation = Utils.AngleLerp(_startRotation, targetRotation, EasingFunction.InOutSine(Timer / 24f));
-                    if(Timer >= 24f)
+                    if (Timer >= 24f)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -817,18 +811,18 @@ public class BunnyStorm : ScarletBoss
                     Vector2 firePoint = NPC.Center + offset.RotatedBy(_stormRotation);
                     if (Timer == 1)
                     {
-                        for(int i = 0; i < 4; i++)
+                        for (int i = 0; i < 4; i++)
                         {
                             CreateBunnyGore(firePoint, fireVelocity.RotatedByRandom(0.8f) * 0.5f);
                         }
-                
+
                         _startRotation = _stormRotation;
                     }
 
                     _stormRotation = Utils.AngleLerp(_startRotation, _startRotation - MathHelper.ToRadians(60), EasingFunction.QuadraticBump(Timer / 25f));
-                    if(Timer == 1 && MultiplayerHelper.IsHost)
+                    if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
- 
+
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), firePoint, (MyTarget.Center - firePoint).SafeNormalize(Vector2.Zero) * 12,
                             ModContent.ProjectileType<BunnyStormBunny>(), GunDamage, 1, Main.myPlayer, ai1: 1);
                     }
@@ -849,9 +843,9 @@ public class BunnyStorm : ScarletBoss
                     {
 
                         AttackCounter++;
-                        if(AttackCounter >= 7)
+                        if (AttackCounter >= 7)
                         {
-               
+
                             SwitchState(AIState.Idle);
                         }
                         else
@@ -867,7 +861,7 @@ public class BunnyStorm : ScarletBoss
     private bool IsGrounded()
     {
         Point solidTileBelow = NPC.Bottom.ToTileCoordinates();
-        solidTileBelow.Y+=2;
+        solidTileBelow.Y += 2;
         bool tileSolid = Main.tileSolid[Main.tile[solidTileBelow].TileType] || Main.tileSolidTop[Main.tile[solidTileBelow].TileType];
         bool isGrounded = Main.tile[solidTileBelow].HasTile && tileSolid;
         return isGrounded;
@@ -883,7 +877,7 @@ public class BunnyStorm : ScarletBoss
                 {
                     if (Timer == 1)
                     {
-   
+
                         PlayReadySound();
                         _initialVelocity = NPC.velocity;
                         NPC.TargetClosest();
@@ -891,7 +885,7 @@ public class BunnyStorm : ScarletBoss
 
                     float speedUp = MathHelper.Lerp(1f, 0.75f, AttackCounter / 3f);
                     float fistingTime = 150 * speedUp;
-                    if(AttackCounter >= 3)
+                    if (AttackCounter >= 3)
                     {
                         fistingTime *= 2f;
                     }
@@ -926,20 +920,20 @@ public class BunnyStorm : ScarletBoss
                         _stormFrame = 3;
                     }
                     _outliner.warning = true;
-          
-                  
+
+
                     _stormRotation = MathHelper.Lerp(0, MathHelper.TwoPi * 2, EasingFunction.InOutQuad(ratio)) + MathHelper.PiOver2;
-                    if(Timer >= fistingTime)
+                    if (Timer >= fistingTime)
                     {
                         Timer = 0;
                         AttackCycle++;
                     }
                 }
-   
+
                 break;
             case 1:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage2");
                         boom2.PitchVariance = 0.3f;
@@ -951,7 +945,7 @@ public class BunnyStorm : ScarletBoss
                         NPC.velocity.Y += MathHelper.Lerp(0.05f, 4f, EasingFunction.InExpo(Timer / 60f));
                     else
                     {
-                        if(Timer % 4 == 0)
+                        if (Timer % 4 == 0)
                         {
                             LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -Vector2.UnitY);
                         }
@@ -971,10 +965,10 @@ public class BunnyStorm : ScarletBoss
                 break;
             case 2:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         FXUtil.ShakeCamera(NPC.Center, 1024, 8);
-               
+
                         SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
                         boom.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(boom, NPC.position);
@@ -1021,7 +1015,7 @@ public class BunnyStorm : ScarletBoss
                         }
 
 
-                        if(AttackCounter == 3)
+                        if (AttackCounter == 3)
                         {
                             ShakeScreenPosition.Shake = 16;
                             FXUtil.ShakeCamera(NPC.position, 1024, 129);
@@ -1037,7 +1031,7 @@ public class BunnyStorm : ScarletBoss
                             {
                                 //This is the part where you spawn the cool ahh shockwaves
                                 //But we have to make cool ahh shockwaves :(
-            
+
                                 Vector2 velocity = Vector2.UnitX;
                                 velocity *= 4;
 
@@ -1054,7 +1048,7 @@ public class BunnyStorm : ScarletBoss
                             {
                                 //This is the part where you spawn the cool ahh shockwaves
                                 //But we have to make cool ahh shockwaves :(
-                     
+
                                 Vector2 velocity = Vector2.UnitX;
                                 velocity *= 4;
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
@@ -1063,10 +1057,10 @@ public class BunnyStorm : ScarletBoss
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
                                ModContent.ProjectileType<WindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
                             }
-    
-                            for(int i = 0; i < 8; i++)
+
+                            for (int i = 0; i < 8; i++)
                             {
-                                Vector2 fireVelocity = Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, (float)i / 8f) * 8;
+                                Vector2 fireVelocity = Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, i / 8f) * 8;
                                 fireVelocity.Y -= 12;
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, fireVelocity,
                                     ModContent.ProjectileType<BunnyStormBunny>(), shockwaveDamage, knockback, Main.myPlayer, ai1: 0);
@@ -1076,17 +1070,17 @@ public class BunnyStorm : ScarletBoss
 
                     ShakeScreenPosition.Shake = MathHelper.Lerp(8, 1, EasingFunction.InOutSine(Timer / 100f));
 
-      
+
                     NPC.velocity.Y = 0;
                     NPC.noTileCollide = true;
-                    
+
                     if (AttackCounter < 3)
                     {
                         Vector2 s1 = Vector2.Lerp(Vector2.One, new Vector2(0.5f), EasingFunction.OutExpo(Timer / 50f));
                         Vector2 s2 = Vector2.Lerp(new Vector2(0.5f), Vector2.One, EasingFunction.InOutSine(Timer / 50f));
                         Vector2 s = Vector2.Lerp(s1, s2, Timer / 50f);
-                        _stormScale =s;
-                        if(Timer >= 25)
+                        _stormScale = s;
+                        if (Timer >= 25)
                         {
                             _stormFrame = 0;
                         }
@@ -1097,7 +1091,7 @@ public class BunnyStorm : ScarletBoss
                             AttackCycle = 0;
                             AttackCounter++;
                         }
-              
+
                     }
                     else
                     {
@@ -1170,7 +1164,7 @@ public class BunnyStorm : ScarletBoss
                         _stormScale *= 1.1f;
                         if (MultiplayerHelper.IsHost)
                         {
-                            ProjFirer firer = ProjFirer.From<BunnyStormBunny>(NPC); 
+                            ProjFirer firer = ProjFirer.From<BunnyStormBunny>(NPC);
                             Vector2 offset = new Vector2();
                             offset.X = Main.rand.NextFloat(-64, 64);
                             firer.position += offset;
@@ -1194,24 +1188,24 @@ public class BunnyStorm : ScarletBoss
             case 2:
                 {
                     _stormFrame = 0;
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirageRed");
                         boom2.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(boom2, MyTarget.position);
                     }
-                    if(Timer % 10 == 0 && Timer < 60)
+                    if (Timer % 10 == 0 && Timer < 60)
                     {
                         PixelPrimitiveCircleFactory.CreateInWhiteSuck(NPC.Center);
                     }
                     ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 3f, EasingFunction.QuadraticBump(Timer / 80f));
                     NPC.velocity *= 0.9f;
-                    if(Timer == 59)
+                    if (Timer == 59)
                     {
                         var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightGray, Color.DarkGray, duration: 25, baseSize: 0.24f);
                         fx.Scale *= 1.2f;
                         float numDust = 12;
-                        for(float n = 0; n < numDust; n++)
+                        for (float n = 0; n < numDust; n++)
                         {
                             var d = DustParticle.Spawn(NPC.Center, Main.rand.NextVector2Circular(16, 16));
                             d.noTileCollide = true;
@@ -1222,7 +1216,7 @@ public class BunnyStorm : ScarletBoss
 
                     }
                     _stormScale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.InExpo(Timer / 80f));
-                    if(Timer >= 80f)
+                    if (Timer >= 80f)
                     {
                         SoundStyle boom2 = new SoundStyle("Stellamod/Assets/Sounds/GSummon");
                         boom2.PitchVariance = 0.3f;
@@ -1242,7 +1236,7 @@ public class BunnyStorm : ScarletBoss
     private void AI_Idle()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _initialVelocity = NPC.velocity;
             NPC.TargetClosest();
@@ -1251,16 +1245,17 @@ public class BunnyStorm : ScarletBoss
         //For the idle state, the storm moves around its binding point semi randomly, but it follows a nice path, probably just have it circle around it
         Vector2 vecFromBind = (NPC.Center - _boundPoint);
         vecFromBind = vecFromBind.RotatedBy(0.015);
-        if(vecFromBind.Length() > MaxIdleHoverDistance)
+        if (vecFromBind.Length() > MaxIdleHoverDistance)
         {
             vecFromBind = vecFromBind.Resize(MaxIdleHoverDistance);
-        } else if (vecFromBind.Length() < 1)
+        }
+        else if (vecFromBind.Length() < 1)
         {
             vecFromBind += Vector2.UnitY * MaxIdleHoverDistance * 0.5f;
         }
 
 
-      //  vecFromBind *= MathHelper.Lerp(0.5f, 1f, MathF.Sin(Timer * 0.05f) * 0.5f + 0.5f);
+        //  vecFromBind *= MathHelper.Lerp(0.5f, 1f, MathF.Sin(Timer * 0.05f) * 0.5f + 0.5f);
         Vector2 newPoint = _boundPoint + vecFromBind;
         Vector2 velocityToNewPoint = (newPoint - NPC.Center);
         NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToNewPoint, EasingFunction.InOutQuad(Timer / 240f));
@@ -1268,7 +1263,7 @@ public class BunnyStorm : ScarletBoss
         _stormFrame = 0;
         _stormScale = Vector2.Lerp(_stormScale, Vector2.One, 0.1f);
         _stormRotation = Utils.AngleLerp(_stormRotation, 0, 0.02f);
-        if(Timer >= IdleTime)
+        if (Timer >= IdleTime)
         {
             ChooseAttack();
         }
@@ -1282,7 +1277,7 @@ public class BunnyStorm : ScarletBoss
             NPC.netUpdate = true;
         }
 
-        if(Timer % 10 == 0 && MultiplayerHelper.IsHost)
+        if (Timer % 10 == 0 && MultiplayerHelper.IsHost)
         {
             ProjFirer firer = ProjFirer.From<BunnyStormBunny>(NPC);
             firer.ai1 = 2;
@@ -1321,7 +1316,7 @@ public class BunnyStorm : ScarletBoss
             Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
             Vector2 vel = (NPC.Center - pos);
 
-            
+
             vel *= 0.1f;
             var fx = FXUtil.GlowStretch(pos, vel);
             fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
@@ -1344,7 +1339,7 @@ public class BunnyStorm : ScarletBoss
         {
             float range = Main.rand.NextFloat(252, 512);
             Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
-            Vector2 vel = ( pos - NPC.Center);
+            Vector2 vel = (pos - NPC.Center);
             vel *= 0.1f;
             var fx = FXUtil.GlowStretch(pos, vel);
             fx.VectorScale *= 0.5f;
@@ -1360,7 +1355,7 @@ public class BunnyStorm : ScarletBoss
             fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
             fx.VectorScale *= 0.25f;
         }
-        if(Timer % 7 == 0)
+        if (Timer % 7 == 0)
         {
             CreateBunnyGore(NPC.Center, Main.rand.NextVector2Circular(16, 16));
             _stormScale *= 1.25f;
@@ -1375,7 +1370,7 @@ public class BunnyStorm : ScarletBoss
         CameraTargetSystem.SetLingerTime(120);
         if (Timer >= 180)
         {
-            for(int i = 0; i < 64; i++)
+            for (int i = 0; i < 64; i++)
             {
                 CreateBunnyGore(NPC.Center, Main.rand.NextVector2Circular(16, 16));
                 _stormScale *= 1.25f;
@@ -1422,7 +1417,7 @@ public class BunnyStorm : ScarletBoss
         Timer++;
         NPC.velocity.X *= 0.98f;
         NPC.velocity.Y -= 0.3f;
-        if(Timer >= DespawnTime)
+        if (Timer >= DespawnTime)
         {
             NPC.active = false;
         }
@@ -1449,10 +1444,10 @@ public class BunnyStorm : ScarletBoss
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
-        if(NPC.life <= 0)
+        if (NPC.life <= 0)
         {
             NPC.life = 1;
-            if(State != AIState.Death)
+            if (State != AIState.Death)
             {
                 SwitchState(AIState.Death);
             }
@@ -1496,7 +1491,7 @@ public class BunnyStorm : ScarletBoss
         sb.Draw(maskDrawer);
 
 
-        maskDrawer.color = Color.LightBlue *ExtraMath.Osc(0.8f, 1.2f, speed: 4);
+        maskDrawer.color = Color.LightBlue * ExtraMath.Osc(0.8f, 1.2f, speed: 4);
         maskDrawer.color.A = 0;
         sb.Draw(maskDrawer);
         sb.RestartDefaults();
@@ -1569,7 +1564,7 @@ public class BunnyStorm : ScarletBoss
         SpritebatchDrawer bunnyDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BunnyStormBunny>()], NPC.Center);
         bunnyDrawer.VerticalFrame(0, 6);
         bunnyDrawer.CenterOrigin();
-       
+
         for (int i = 0; i < _vortexPS.particles.Length; i++)
         {
             ref Vector2 pos = ref _vortexPS.particles.positions[i];
@@ -1601,7 +1596,7 @@ public class BunnyStorm : ScarletBoss
             maskDrawer.CenterOrigin();
             maskDrawer.scale = _stormScale * ExtraMath.Osc(0.85f, 1.1f, speed: 3);
             maskDrawer.rotation = _stormRotation;
-            maskDrawer.color = Color.Lerp(Color.CadetBlue, Color.Black, (float)i / (float)NPC.oldPos.Length) * 0.05f;
+            maskDrawer.color = Color.Lerp(Color.CadetBlue, Color.Black, i / (float)NPC.oldPos.Length) * 0.05f;
             maskDrawer.color.A = 0;
             spriteBatch.Draw(maskDrawer);
         }

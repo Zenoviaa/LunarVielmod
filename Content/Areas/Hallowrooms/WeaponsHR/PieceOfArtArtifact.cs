@@ -1,7 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Snow.WeaponsSN;
+using Stellamod.Content.Areas.Tundra.Snow.WeaponsSN;
 using Stellamod.Content.Armors.Artisan;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;

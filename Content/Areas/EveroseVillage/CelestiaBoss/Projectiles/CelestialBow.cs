@@ -1,17 +1,10 @@
-﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -46,7 +39,7 @@ public class CelestialBow : ModProjectile
         base.SetStaticDefaults();
         Main.projFrames[Type] = 7;
     }
-    
+
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -64,12 +57,12 @@ public class CelestialBow : ModProjectile
         base.AI();
 
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _targetPullScale = Vector2.One;
             var p = MoonSpiralParticle.Spawn(Projectile.Center, Vector2.Zero);
             p.color = Color.Teal;
-            for(float f = 0; f < 8; f++)
+            for (float f = 0; f < 8; f++)
             {
                 Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2CircularEdge(128, 128);
                 Vector2 vel = (Projectile.Center - spawnPos);
@@ -78,30 +71,30 @@ public class CelestialBow : ModProjectile
                 fx.OuterGlowColor = Color.Green;
                 fx.VectorScale *= 0.4f;
             }
-       
+
         }
 
-        if(Timer % 4 == 0)
+        if (Timer % 4 == 0)
         {
             Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(48, 48);
             var d = Dust.NewDustPerfect(pos, DustID.GemEmerald, Scale: 1f);
             d.noGravity = true;
         }
 
-        if(Timer >= 0)
+        if (Timer >= 0)
         {
             //Ready bow line
             AttackTimer++;
             if (AttackTimer == 10 || AttackTimer == 20 || AttackTimer == 30)
             {
 
-                _targetPullScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), (float)(Projectile.frame + 1) / 4f);
+                _targetPullScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), (Projectile.frame + 1) / 4f);
                 Projectile.frame = (int)Math.Floor(AttackTimer / 10f);
             }
 
 
 
-            if(AttackTimer > 60)
+            if (AttackTimer > 60)
             {
                 if (this.OwnedByLocalClient() && AttackTimer == 70)
                 {
@@ -113,22 +106,22 @@ public class CelestialBow : ModProjectile
                 }
                 if (AttackTimer == 70 || AttackTimer == 80 || AttackTimer == 90)
                 {
-                 
+
                     _targetPullScale = Vector2.One;
                     Projectile.frame++;
                 }
 
             }
         }
- 
 
-        if(Timer % 4 == 0)
+
+        if (Timer % 4 == 0)
         {
             //Visual effect purely, doesn't need to be net synced.
             _mirageOffset = Main.rand.NextVector2Circular(3, 3);
         }
         Projectile.velocity.X *= 0.94f;
-        if(Timer < 5)
+        if (Timer < 5)
         {
             Projectile.velocity.Y -= 0.05f;
         }
@@ -136,14 +129,14 @@ public class CelestialBow : ModProjectile
         {
             Projectile.velocity.Y *= 0.94f;
         }
-   
+
         _pullScale = Vector2.Lerp(_pullScale, _targetPullScale, 0.1f);
 
         Vector2 aimingDirection = (Target.Center - Projectile.Center);
         float aimingRotation = aimingDirection.ToRotation();
         float rotOffset = MathHelper.Lerp(-MathHelper.Pi + MathHelper.PiOver4, 0, EasingFunction.OutCirc(Timer / 60f));
         Projectile.rotation = aimingRotation + rotOffset;
-        if(AttackTimer > 100)
+        if (AttackTimer > 100)
         {
             Projectile.velocity = Projectile.rotation.ToRotationVector2() * 0.2f;
         }
@@ -163,7 +156,7 @@ public class CelestialBow : ModProjectile
         SpritebatchDrawer backGlowDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), Projectile.Center); ;
         backGlowDrawer.scale *= pullScale * 2;
         backGlowDrawer.color = Color.Black * 0.5f * alpha;
-      //  glowDrawer.color.A = 0;
+        //  glowDrawer.color.A = 0;
         backGlowDrawer.worldPosition += inOffset;
         Main.spriteBatch.Draw(backGlowDrawer);
 
@@ -207,7 +200,7 @@ public class CelestialBow : ModProjectile
         bloomlineDrawer.color.A = 0;
 
         float dist = Vector2.Distance(Projectile.Center, Target.Center);
-        float bloomLineSize = dist / (float)bloomlineDrawer.texture.Width;
+        float bloomLineSize = dist / bloomlineDrawer.texture.Width;
         bloomlineDrawer.scale.X *= bloomLineSize;
         bloomlineDrawer.scale.Y *= 0.025f;
         bloomlineDrawer.LeftCenterOrigin();
@@ -267,10 +260,10 @@ public class CelestialArrow : ModProjectile
         base.AI();
 
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _stretchScale = Vector2.One;
-            if(Style == 0)
+            if (Style == 0)
             {
                 for (float f = 0; f < 4f; f++)
                 {
@@ -297,7 +290,7 @@ public class CelestialArrow : ModProjectile
             d2.Scale *= 0.15f;
             Projectile.velocity *= 8;
 
-            if(Style == 0 || Style == 2)
+            if (Style == 0 || Style == 2)
             {
                 SoundStyle shootSound1 = AssetRegistry.Sounds.Celestia.SmallBowShoot1 with { PitchVariance = 0.3f };
                 SoundStyle shootSound2 = AssetRegistry.Sounds.Celestia.SmallBowShoot2 with { PitchVariance = 0.3f };
@@ -310,9 +303,9 @@ public class CelestialArrow : ModProjectile
                         SoundEngine.PlaySound(shootSound2, Projectile.position);
                         break;
                 }
-           //     SoundEngine.PlaySound(backflipSound, NPC.position);
+                //     SoundEngine.PlaySound(backflipSound, NPC.position);
             }
-            if(Style == 1)
+            if (Style == 1)
             {
                 Projectile.velocity *= 0.6f;
             }
@@ -325,16 +318,16 @@ public class CelestialArrow : ModProjectile
         }
         if (Timer % 2 == 0)
         {
-            for(float f = 0; f < 3; f++)
+            for (float f = 0; f < 3; f++)
             {
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(48, 48);
                 var d = Dust.NewDustPerfect(pos, DustID.GemEmerald, Scale: 1f);
                 d.noGravity = true;
             }
-     
+
         }
 
-        if(Style == 0)
+        if (Style == 0)
         {
             if (Projectile.velocity.Length() < 30)
                 Projectile.velocity *= 1.2f;
@@ -344,7 +337,8 @@ public class CelestialArrow : ModProjectile
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, Target.Center, degreesToRotate: 0.5f);
             }
-        } else if (Style == 1 || Style == 2)
+        }
+        else if (Style == 1 || Style == 2)
         {
             if (Projectile.velocity.Length() < 15)
                 Projectile.velocity *= 1.1f;
@@ -362,7 +356,7 @@ public class CelestialArrow : ModProjectile
             dp.Scale *= 0.66f;
         }
 
-        if(Timer % 12 == 0)
+        if (Timer % 12 == 0)
         {
             SparkleParticle sp = SparkleParticle.Spawn(Projectile.Center, Projectile.velocity.RotatedBy(MathHelper.ToRadians(30) * 0.1f));
             sp.Scale *= 0.5f;
@@ -372,7 +366,7 @@ public class CelestialArrow : ModProjectile
             sp.gravity = 0;
             sp.dampening = 0.05f;
         }
-        if(Style == 1)
+        if (Style == 1)
         {
             if (Projectile.Bottom.Y > Target.Top.Y)
             {
@@ -437,12 +431,12 @@ public class CelestialArrow : ModProjectile
         celestialArrowDrawer.scale *= 1.3f;
         Main.spriteBatch.Draw(celestialArrowDrawer);
 
-        for(int i = 0; i < Projectile.oldPos.Length; i++)
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
             Vector2 pos = Projectile.oldPos[i];
             pos += Projectile.Size * 0.5f;
             celestialArrowDrawer.worldPosition = pos;
-            celestialArrowDrawer.color = Color.Lerp(Color.Turquoise, Color.Black, (float)i / (float)Projectile.oldPos.Length) * 0.1f;
+            celestialArrowDrawer.color = Color.Lerp(Color.Turquoise, Color.Black, i / (float)Projectile.oldPos.Length) * 0.1f;
             celestialArrowDrawer.color.A = 0;
             Main.spriteBatch.Draw(celestialArrowDrawer);
 
@@ -480,7 +474,7 @@ public class CelestialArrow : ModProjectile
             dp.Scale *= 0.5f;
         }
 
-       for(int i = 0; i < Projectile.oldPos.Length - 1; i++)
+        for (int i = 0; i < Projectile.oldPos.Length - 1; i++)
         {
             if (Main.rand.NextBool(4))
             {
@@ -497,11 +491,11 @@ public class CelestialArrow : ModProjectile
                 dp.noTileCollide = true;
                 dp.dampening = 0.05f;
                 dp.gravity = 0;
-        
+
             }
         }
 
-         if(Style == 1)
+        if (Style == 1)
         {
             SoundStyle arrowRainHit = AssetRegistry.Sounds.Celestia.ArrowRainArrowhitground with { PitchVariance = 0.4f };
             SoundEngine.PlaySound(arrowRainHit, Projectile.position);

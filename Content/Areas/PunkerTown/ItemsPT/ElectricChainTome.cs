@@ -1,24 +1,15 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Common.Shaders.MagicTrails;
-using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
 using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Mage.Tomes;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -75,7 +66,7 @@ public class ElectricChainTome : AbstractMagicTome
             velocity = vectorToMouse;
         else
             velocity = velocity.Resize(800);
-       // velocity = velocity.RotatedByRandom(MathHelper.ToRadians(22));
+        // velocity = velocity.RotatedByRandom(MathHelper.ToRadians(22));
     }
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
@@ -100,7 +91,7 @@ public class ElectricChain : ModProjectile
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
         Projectile.usesLocalNPCImmunity = true;
-        Projectile.localNPCHitCooldown = 15; 
+        Projectile.localNPCHitCooldown = 15;
         Projectile.friendly = true;
         Projectile.timeLeft = 30;
         Projectile.ignoreWater = true;
@@ -120,7 +111,7 @@ public class ElectricChain : ModProjectile
 
         for (int i = 1; i < _targets.Count; i++)
         {
-         
+
             Vector2 start = _targets[i - 1];
             Vector2 end = _targets[i];
             Vector2 velocity = (end - start).SafeNormalize(Vector2.Zero);
@@ -139,23 +130,23 @@ public class ElectricChain : ModProjectile
         //OK SO HERE'S WHAT WE DO
         //First cast a lightning out based on the velocity of the projectile
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
-            string path = $"Stellamod/Assets/Sounds/Dreadmire__LightingRain{Main.rand.Next(3)+1}";
+            string path = $"Stellamod/Assets/Sounds/Dreadmire__LightingRain{Main.rand.Next(3) + 1}";
             SoundStyle sound = new SoundStyle(path) with { PitchVariance = 0.3f, Volume = 0.5f };
             SoundEngine.PlaySound(sound, Projectile.position);
 
-            for(float f = 0; f < 4; f++)
+            for (float f = 0; f < 4; f++)
             {
                 Vector2 velocity = Projectile.velocity.Resize(Main.rand.NextFloat(10, 20)).RotatedByRandom(MathHelper.ToRadians(32));
-                var dp =    DustParticle.Spawn(Projectile.Center, velocity);
+                var dp = DustParticle.Spawn(Projectile.Center, velocity);
                 dp.outerColor = Color.Goldenrod;
                 dp.Scale *= Main.rand.NextFloat(0.4f, 0.75f);
                 dp.gravity = 0;
                 dp.dampening = 0.1f;
             }
         }
-     //   Projectile.Center = Owner.Center;
+        //   Projectile.Center = Owner.Center;
         float distance = ProjectileHelper.PerformBeamHitscan(Projectile.Center, Projectile.velocity, Projectile.velocity.Length());
         Vector2 endPoint = Projectile.Center + Projectile.velocity.Resize(distance);
         _hitPoint = endPoint;
@@ -184,7 +175,7 @@ public class ElectricChain : ModProjectile
         Vector2 target = startPoint;
         float distanceToTarget = float.MaxValue;
         int found = -1;
-        foreach(var npc in Main.ActiveNPCs)
+        foreach (var npc in Main.ActiveNPCs)
         {
             if (npc.friendly)
                 continue;
@@ -197,7 +188,7 @@ public class ElectricChain : ModProjectile
 
 
             float distanceToEnemy = Vector2.Distance(target, npc.Center);
-            if(distanceToEnemy < distanceToTarget && distanceToEnemy < 512)
+            if (distanceToEnemy < distanceToTarget && distanceToEnemy < 512)
             {
                 found = npc.whoAmI;
                 target = npc.Center;
@@ -242,7 +233,7 @@ public class ElectricChain : ModProjectile
     {
 
         float w = 72;
-        float outEasing = EasingFunction.InExpo((float)Projectile.timeLeft / 30f);
+        float outEasing = EasingFunction.InExpo(Projectile.timeLeft / 30f);
         float outEasing2 = MathHelper.SmoothStep(0.5f, 1f, Timer / 15f);
         return MathHelper.SmoothStep(w * 0.85f, w, EasingFunction.QuadraticBump(ratio)) * outEasing * outEasing2;
     }
@@ -265,7 +256,7 @@ public class ElectricChain : ModProjectile
         float numPointsEachChain = 32;
         void AddPoints(Vector2 start, Vector2 end)
         {
-            for(float f = 0; f < numPointsEachChain; f++)
+            for (float f = 0; f < numPointsEachChain; f++)
             {
                 float ratio = (f / numPointsEachChain);
                 points.Add(Vector2.Lerp(start, end, ratio));

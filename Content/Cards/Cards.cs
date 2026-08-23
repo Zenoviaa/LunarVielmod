@@ -1,7 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.IgnitersNPowders;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.MoonspiralTower.AccMT;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.AccMT;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
 using Stellamod.Items;

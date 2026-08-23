@@ -2,7 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Cinderspark.AccCS;
-using Stellamod.Content.Areas.MoonspiralTower.AccMT;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.AccMT;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;

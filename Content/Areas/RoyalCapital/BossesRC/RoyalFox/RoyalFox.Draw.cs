@@ -1,6 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering;
 using Stellamod.Core.Utilities;

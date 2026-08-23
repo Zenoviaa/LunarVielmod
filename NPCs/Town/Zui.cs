@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Content.Ammo;
-using Stellamod.Content.Areas.Snow.AccsSN;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
+using Stellamod.Content.Areas.Tundra.Snow.AccsSN;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Core;

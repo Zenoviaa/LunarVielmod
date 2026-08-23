@@ -1,4 +1,4 @@
-﻿using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
+﻿using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Utilities;
 using Terraria;

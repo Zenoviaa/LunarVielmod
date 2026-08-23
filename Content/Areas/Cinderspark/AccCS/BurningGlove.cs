@@ -1,6 +1,5 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Abyss.AccAB;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.Areas.PunkerTown.ItemsPT;
 using Stellamod.Content.CommonMaterials;
@@ -37,7 +36,7 @@ public class BurningGlove : AbstractMeleeAddon
             _fireTimer.Add(id, (0, 0));
     }
 
-    
+
     public override void AI(BaseSwingProjectileV2 projectile)
     {
         base.AI(projectile);
@@ -49,10 +48,10 @@ public class BurningGlove : AbstractMeleeAddon
         if (_fireTimer.ContainsKey(id))
         {
             (float oldRot, float traveled) = _fireTimer[id];
-            traveled += MathF.Abs( proj.rotation - oldRot);
+            traveled += MathF.Abs(proj.rotation - oldRot);
             oldRot = proj.rotation;
 
-            if(traveled >= 0.4f)
+            if (traveled >= 0.4f)
             {
                 Projectile.NewProjectile(proj.GetSource_FromAI(), proj.Center, proj.rotation.ToRotationVector2() * 2,
                 ModContent.ProjectileType<IncineratorProj>(), (int)(proj.damage * 0.25f), proj.knockBack, proj.owner);
@@ -69,14 +68,14 @@ public class BurningGlove : AbstractMeleeAddon
 
         if (!_hasShotSwingProj[id] && projectile.Interpolant >= 0.1f)
         {
-            for(int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Projectile.NewProjectile(projectile.Projectile.GetSource_FromAI(), projectile.Owner.Center,
                               projectile.Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(0.1) * 15, ModContent.ProjectileType<MoltenManaBlast>(),
                               (int)(projectile.Projectile.damage * 0.45f), projectile.Projectile.knockBack,
                               projectile.Projectile.owner);
             }
-          
+
             _hasShotSwingProj[id] = true;
         }
     }

@@ -1,7 +1,4 @@
-﻿using Stellamod.Assets;
-using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Abyss.AccAB;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Items;
@@ -43,7 +40,7 @@ public class FallenBladesExtender : AbstractMeleeAddon
 
     public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
     {
-          DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Gold);
+        DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Gold);
         return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
     }
 
@@ -74,7 +71,7 @@ public class FinalExtenderBlade : ModProjectile,
     {
         get
         {
-            foreach(var proj in Main.ActiveProjectiles)
+            foreach (var proj in Main.ActiveProjectiles)
             {
                 if (proj.identity == Parent)
                     return proj;
@@ -117,7 +114,7 @@ public class FinalExtenderBlade : ModProjectile,
 
     private void UpdateHitbox()
     {
-     //   Texture2D texture = GetTexture();
+        //   Texture2D texture = GetTexture();
         float swordLength = 300;
         float rotation = Projectile.rotation;
         rotation -= MathHelper.PiOver4;
@@ -151,7 +148,7 @@ public class FinalExtenderBlade : ModProjectile,
     }
     public override bool PreDraw(ref Color lightColor)
     {
-  //      DrawBlade(Main.spriteBatch, Main.screenPosition);
+        //      DrawBlade(Main.spriteBatch, Main.screenPosition);
         return false;
         //return base.PreDraw(ref lightColor);
     }

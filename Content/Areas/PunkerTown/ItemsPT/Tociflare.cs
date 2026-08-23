@@ -1,15 +1,10 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -56,7 +51,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
         public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-  
+
             type = ModContent.ProjectileType<TociflareFlame>();
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false;
@@ -122,7 +117,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             start = Vector2.Lerp(start, end, easeOut * 0.5f);
             for (int i = 0; i < numPoints; i++)
             {
-                float f = (float)i;
+                float f = i;
                 float ratio = f / numPoints;
                 Vector2 point = Vector2.Lerp(start, end, ratio);
                 IncineratorPos[i] = point;
@@ -180,7 +175,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         private void DrawMainShader(Vector2[] oldPos)
         {
             BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
-           // TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
+            // TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
             BlackFireOldShader blackFireShader = BlackFireOldShader.Instance;
             blackFireShader.InnerColor = Color.Blue;

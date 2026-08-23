@@ -1,8 +1,8 @@
 ﻿using Stellamod.Assets.Biomes;
-using Stellamod.Content.Areas.Abyss;
 using Stellamod.Content.Areas.PunkerTown;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;
+using Stellamod.Content.Areas.Tundra.Abyss;
 using Stellamod.Content.Areas.Underground;
 using Stellamod.Content.Areas.WaterSide;
 using System.Collections.Generic;

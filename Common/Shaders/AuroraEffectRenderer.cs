@@ -58,7 +58,7 @@ public class AuroraEffectRenderer : ModSystem
                 eff.Apply();
 
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
                 spriteBatch.Draw(starsTexture.Value,
                    new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
                     null, Color.White * 0.3f);
@@ -72,7 +72,7 @@ public class AuroraEffectRenderer : ModSystem
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred,
                       BlendState.AlphaBlend,
-                      SamplerState.PointWrap,
+                      SamplerState.AnisotropicWrap,
                       DepthStencilState.None,
                       RasterizerState.CullCounterClockwise,
                       null);
@@ -175,7 +175,7 @@ public class AuroraEffectRenderer : ModSystem
         skyGradientShader.StartColor = Color.Transparent;
         skyGradientShader.MidColor = Color.Lerp(Color.Transparent, Color.Blue * 0.5f, ease);
         skyGradientShader.EndColor = Color.Transparent;
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone,
             skyGradientShader.Effect);
 
 
@@ -185,7 +185,7 @@ public class AuroraEffectRenderer : ModSystem
 
         AuroraShader auroraShader = AuroraShader.Instance;
         auroraShader.Parallax = new Vector2(Main.screenPosition.X, 0) * (Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight)) * 0.25f;
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone,
             auroraShader.Effect);
 
 

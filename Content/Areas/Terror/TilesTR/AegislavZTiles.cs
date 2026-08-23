@@ -1,7 +1,5 @@
 ﻿using ReLogic.Content;
-using Stellamod.Content.Areas.MoonspiralTower.TilesMT;
 using Stellamod.Core.ZTileSystem;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -14,7 +12,7 @@ public class AegislavFlower : ZTile
         base.SetStaticDefaults();
         frameCount = 4;
         drawOrigin = TileDrawOrigin.BottomUp;
-        
+
         windSwayOffset = 0f;
         windSwayMagnitude = 0.2f;
         windSwaySpeed = 0.02f;
@@ -28,7 +26,7 @@ public class AegislavHangingCage : ZTile
         base.SetStaticDefaults();
         frameCount = 3;
         drawOrigin = TileDrawOrigin.TopDown;
-        
+
         windSwayOffset = 0f;
         windSwayMagnitude = 0.08f;
         windSwaySpeed = 0.02f;
@@ -160,7 +158,7 @@ public abstract class HangingGlowBottle : ZTile
 
         //Since it's gonne default to 0 on old worlds
         //We'll make 255 be black
-        Color valueColor = Color.Lerp(Color.White, Color.Black, (float)drawParams.tileData.value / 255f);
+        Color valueColor = Color.Lerp(Color.White, Color.Black, drawParams.tileData.value / 255f);
         Color drawColor = drawParams.lightColor.MultiplyRGB(valueColor);
 
         float drawRotation;
