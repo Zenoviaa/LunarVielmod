@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Core.Pixelation;
+using System;
 using System.Diagnostics;
 using Terraria;
 using Terraria.ModLoader;

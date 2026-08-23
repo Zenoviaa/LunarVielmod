@@ -52,6 +52,14 @@ namespace Stellamod.Assets
                 public static readonly SoundStyle HeavenlyShot1 = new SoundStyle($"{Path}Ereshkigal/HeavenlyShot");
                 public static readonly SoundStyle HeavenlyShot2 = new SoundStyle($"{Path}Ereshkigal/HeavenlyShot2");
             }
+            public static class Rek
+            {
+                public static readonly SoundStyle RekBigroar = new SoundStyle($"{Path}Rek/RekBigroar") with { PitchVariance = 0 };
+                public static readonly SoundStyle RekIdleroar = new SoundStyle($"{Path}Rek/RekIdleroar") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle BigLaserRek = new SoundStyle($"{Path}Rek/BigLaserRek") with { PitchVariance = 0 };
+                public static readonly SoundStyle RekSpikeOut = new SoundStyle($"{Path}Rek/RekSpikeOut") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle SmallFlameBlast = new SoundStyle($"{Path}Rek/SmallFlameBlast") with { PitchVariance = 0.5f };
+            }
             public static class Fire
             {
                 public static readonly SoundStyle Sungrow3 = new SoundStyle($"{Path}Fire/Sungrow3") with { PitchVariance = 0.5f };

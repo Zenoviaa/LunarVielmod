@@ -220,6 +220,14 @@ public static class DrawUtilities
         }
         return points;
     }
+    public static void InterpolateBetweenPointsNonAlloc(ref Vector2[] points, Vector2 start, Vector2 end)
+    {
+        for (int i = 0; i < points.Length; i++)
+        {
+            ref Vector2 p = ref points[i];
+            p = Vector2.Lerp(start, end, (float)i / (float)points.Length);
+        }
+    }
     public static void DrawSpriteAfterImage(SpriteBatch spriteBatch, Projectile projectile, Color startColor, Color endColor, float alpha)
     {
         SpritebatchDrawer spriteDrawer = SpritebatchDrawer.FromProjectile(projectile);

@@ -1,8 +1,53 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Effects.Generic;
 
+public class DitheredColorPaletteShader : CrystalShader<DitheredColorPaletteShader>
+{
+    public Vector2 ScreenSize
+    {
+        set
+        {
+            Effect.Parameters["screenSize"].SetValue(value);
+        }
+    }
+    public Texture3D ColorAtlasTexture
+    {
+        set
+        {
+            Effect.Parameters["ColorSpectrumTexture"].SetValue(value);
+        }
+    }
+    public Texture2D DitheredTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+            Effect.Parameters["ditherTexelSize"].SetValue(value.GetTexelSize());
+        }
+    }
+    public float DitherAlpha
+    {
+        set
+        {
+            Effect.Parameters["ditherAlpha"].SetValue(value);
+        }
+    }
+
+    public static DitheredColorPaletteShader PrepareForDrawing(Texture3D colorAtlas, Vector2 targetSize)
+    {
+        DitheredColorPaletteShader paletteShader = ShaderContent.GetInstance<DitheredColorPaletteShader>();
+        paletteShader.DitherAlpha = 0.5f;
+        paletteShader.ScreenSize = targetSize;
+        paletteShader.ColorAtlasTexture = colorAtlas;
+        paletteShader.DitheredTexture = AssetManager.Dithering.Dither8x8Double.Asset.Value;
+        return paletteShader;
+    }
+}
 public class MetaballShader : CrystalShader<MetaballShader>
 {
     public Vector3[] Particles

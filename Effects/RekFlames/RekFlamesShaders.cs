@@ -3,6 +3,62 @@ using Terraria;
 
 namespace Stellamod.Effects.RekFlames;
 
+public class RekFlamethrowerBeamShader : CrystalShader<RekFlamethrowerBeamShader>
+{
+    public Texture2D DistortionNoise
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public float Distortion
+    {
+        set
+        {
+            Effect.Parameters["strength"].SetValue(value);
+        }
+    }
+}
+
+public class RekFlamethrowerShader : CrystalShader<RekFlamethrowerShader>
+{
+    public Texture2D DistortionNoise
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public float Distortion
+    {
+        set
+        {
+            Effect.Parameters["strength"].SetValue(value);
+        }
+    }
+}
+
 public class LavaSilShader : CrystalShader<LavaSilShader>
 {
     public Texture2D MaskTexture

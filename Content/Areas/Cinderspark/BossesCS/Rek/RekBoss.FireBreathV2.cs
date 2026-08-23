@@ -9,7 +9,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 public partial class RekBoss
 {
     private int Fire_Breath_V2_Damage => 50;
-    private float Fire_Breath_V2_Blast_Time => 150;
+    private float Fire_Breath_V2_Blast_Time => 210;
     private float Fire_Breath_V2_Come_In_Time => 180;
     private float Fire_Breath_V2_X_Radius => 512;
     private float Fire_Breath_V2_Y_Radius => 384;
@@ -76,25 +76,6 @@ public partial class RekBoss
                     {
                         Animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN, AnimationParams.NoLooping);
                     }
-
-                    if (Timer >= 90)
-                    {
-                        Timer = 0;
-                        AttackCycle++;
-                    }
-                }
-                break;
-            case 2:
-                {
-                    foreach (var segment in Segments)
-                    {
-                        segment.isBurning = true;
-                    }
-                    _outliner.warning = true;
-                    Vector2 diff = Vector2.UnitY;
-                    float rot = diff.ToRotation();
-                    NPC.velocity *= 0.96f;
-                    NPC.rotation = Utils.AngleLerp(NPC.rotation, rot, 0.01f);
                     if (Timer >= 60)
                     {
                         CreateFirebreathChargeEffect(NPC.Center);
@@ -107,21 +88,24 @@ public partial class RekBoss
                             AttackCount = 0;
                         }
                     }
+                    
                 }
                 break;
-            case 3:
+            case 2:
                 {
-                    if(Timer % 8 == 0)
+                    if(Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)
                         {
                             
-                            ProjFirer breathFirer = ProjFirer.From<RekFireBreathV2>(NPC);
+                            ProjFirer breathFirer = ProjFirer.From<ReksGreatFireBreath>(NPC);
+                            breathFirer.ai0 = NPC.whoAmI;
                             breathFirer.damage = Fire_Breath_V2_Damage;
-                            breathFirer.velocity = NPC.rotation.ToRotationVector2() * 17;
+                            breathFirer.velocity = NPC.rotation.ToRotationVector2() * 1024;
                             breathFirer.New();
                         }
                     }
+
                     NPC.velocity *= 0.96f;
                     foreach (var segment in Segments)
                     {
@@ -137,7 +121,7 @@ public partial class RekBoss
                     }
                 }
                 break;
-            case 4:
+            case 3:
                 {
                     //Swim out
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.NoLooping);
