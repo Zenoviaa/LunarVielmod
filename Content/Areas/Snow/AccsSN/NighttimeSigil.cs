@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.Abyss.AccAB;
+namespace Stellamod.Content.Areas.Snow.AccsSN;
 
 public class NighttimeSigilPlayer : ModPlayer
 {
