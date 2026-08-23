@@ -13,6 +13,7 @@ using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
@@ -175,6 +176,8 @@ public class ReksGreatFireBreath : ModProjectile,
 
         if (Timer == 1)
         {
+            var sound = AssetRegistry.Sounds.Rek.BigLaserRek;
+            SoundEngine.PlaySound(sound, Main.LocalPlayer.position);
             if (this.OwnedByLocalClient())
             {
                 ProjFirer firer = ProjFirer.From<MeteorBoom>(Projectile);
@@ -265,11 +268,7 @@ public class ReksGreatFireBreath : ModProjectile,
         {
             ShouldDie = 1;
         }
-        else
-        {
 
-        }
-       
         float length = ProjectileHelper.PerformBeamHitscan(Projectile, 2400);
         Projectile.Center = Parent.Center;
         Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * length;
@@ -277,13 +276,24 @@ public class ReksGreatFireBreath : ModProjectile,
         Projectile.rotation = Parent.rotation;
 
         DrawUtilities.InterpolateBetweenPointsNonAlloc(ref _beamPoints, Projectile.Center, Projectile.Center + Projectile.velocity * 1.05f);
-        _backFlameParticles.CheckForAndKillParticles();
+        ParticlesHelper.CheckForAndKillParticles(_backFlameParticles);
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
+        DrawImpactGlow();
+        CommonDrawEffects.DrawFenixLaserCircles(Main.spriteBatch, Timer, Projectile.Center, Projectile.velocity, num: 3);
+        return false;
+    }
 
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+    }
+
+    private void DrawImpactGlow()
+    {
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
         drawer.color = Color.OrangeRed * 0.5f;
         drawer.color.A = 0;
         drawer.scale *= 0.9f * EasingInOut;
@@ -303,14 +313,6 @@ public class ReksGreatFireBreath : ModProjectile,
         drawer.scale *= 0.84f;
         drawer.rotation = Projectile.rotation;
         Main.spriteBatch.Draw(drawer);
-
-        CommonDrawEffects.DrawFenixLaserCircles(Main.spriteBatch, Timer, Projectile.Center, Projectile.velocity, num: 3);
-        return false;
-    }
-
-    public override void OnKill(int timeLeft)
-    {
-        base.OnKill(timeLeft);
     }
 
     public void DrawToRenderTargets()
@@ -362,14 +364,11 @@ public class ReksGreatFireBreath : ModProjectile,
             impactDrawer.scale *= 1.2f * EasingInOut;
             impactDrawer.scale.X *= 1.5f;
             impactDrawer.rotation = Projectile.rotation;
-            //            drawer.scale *= 1.2f;
-            //          drawer.scale.Y *= 0.75f * y;
             spriteBatch.Draw(impactDrawer);
 
             impactDrawer.color = Color.Orange * 1f;
             spriteBatch.Draw(impactDrawer);
         }
-
     }
 
     private void RenderFlamethrower(SpriteBatch spriteBatch)

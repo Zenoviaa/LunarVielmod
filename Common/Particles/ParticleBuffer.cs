@@ -1,5 +1,27 @@
 ﻿namespace Stellamod.Common.Particles;
 
+public static class ParticlesHelper
+{
+    /// <summary>
+    /// Iterates over the particle buffer and kills inactive particles
+    /// </summary>
+    /// <typeparam name="ParticleStructType"></typeparam>
+    /// <param name="buffer"></param>
+    public static void CheckForAndKillParticles<ParticleStructType>(ParticleBuffer<ParticleStructType> buffer) 
+        where ParticleStructType : struct, IParticleData
+    {
+        for (int i = 0; i < buffer.length; i++)
+        {
+            ref ParticleStructType particleData = ref buffer._particles[i];
+            if (!particleData.IsActive)
+            {
+                buffer.KillParticle(i);
+                i--;
+            }
+        }
+    }
+}
+
 public sealed class ParticleBuffer<ParticleStructType> 
     where ParticleStructType : struct, IParticleData
 {
@@ -13,22 +35,6 @@ public sealed class ParticleBuffer<ParticleStructType>
     }
 
     public bool HasAnyParticles => length > 0;
-
-    public void CheckForAndKillParticles()
-    {
-        //var watch = Stopwatch.StartNew();
-        for (int i = 0; i < length; i++)
-        {
-            ref ParticleStructType particleData = ref _particles[i];
-            if (!particleData.IsActive)
-            {
-                KillParticle(i);
-                i--;
-            }
-        }
-        //watch.Stop();
-        //elapsedString = $"~{(float)watch.ElapsedTicks / 10000f}ms ::: Particle Count: {_length}";
-    }
 
     public ref ParticleStructType Spawn(in ParticleStructType particleData)
     {

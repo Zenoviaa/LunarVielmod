@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Assets.ContentReader.Aseprite;
+using Stellamod.Common.Particles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
@@ -8,6 +9,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
+
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -32,6 +34,9 @@ public partial class RekBoss : ScarletBoss
     private Vector2 _initialVelocity;
     private float _afterImageAlpha;
     private bool _showAfterImages;
+    private float _mouthAuraAlpha;
+    private bool _showMouthAura;
+    private float _rekfireballAlpha;
     public class RekSegment
     {
         public RekSegment(Vector2 _position, Vector2 _size, float _scale, int _bodyFrame)
@@ -55,6 +60,7 @@ public partial class RekBoss : ScarletBoss
         public float burnAlpha;
         public int bodyFrame;
         public float sawBladeAlpha;
+        public float lastSawBladeAlpha;
     }
     public ChainWithLengths _chain;
     public ChainWithLengths Chain
@@ -289,6 +295,13 @@ public partial class RekBoss : ScarletBoss
         }
     }
 
+    private bool FacingLeft
+    {
+        get
+        {
+            return Vector2.Dot(-Vector2.UnitX, NPC.rotation.ToRotationVector2()) > 0;
+        }
+    }
     private AIState TestAttack => AIState.FireBreathV2;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -393,6 +406,8 @@ public partial class RekBoss : ScarletBoss
         }
         _showAfterImages = false;
         _ouroborosTrail = false;
+        _showMouthAura = false;
+        _rekfireballAlpha = 0;
         switch (State)
         {
             case AIState.Despawn:
@@ -459,7 +474,6 @@ public partial class RekBoss : ScarletBoss
                 break;
         }
 
-
         float targetOuroAlpha = _ouroborosTrail ? 1f : 0f;
         _ouroborosAlpha = MathHelper.Lerp(_ouroborosAlpha, targetOuroAlpha, 0.1f);
         if (_showAfterImages)
@@ -470,13 +484,24 @@ public partial class RekBoss : ScarletBoss
         {
             _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 0f, 0.3f);
         }
+
+        if (_showMouthAura)
+        {
+            _mouthAuraAlpha = MathHelper.Lerp(_mouthAuraAlpha, 1f, 0.03f);
+        }
+        else
+        {
+            _mouthAuraAlpha = MathHelper.Lerp(_mouthAuraAlpha, 0f, 0.03f);
+        }
         _outliner.Update();
         NPC.spriteDirection = 1;
         if (NPC.velocity.X < 0)
             NPC.direction = -1;
         else
             NPC.direction = 1;
-        if (NPC.rotation < 0)
+
+
+        if (FacingLeft)
         {
             this.SetSpriteEffects(SpriteEffects.FlipVertically);
         }
@@ -496,6 +521,27 @@ public partial class RekBoss : ScarletBoss
         {
             var segment = Segments[i];
             segment.burnAlpha = MathHelper.Lerp(segment.burnAlpha, (segment.isBurning || segment.isBurningNoWarning) ? 1f : 0f, 0.05f);
+            if(segment.lastSawBladeAlpha < 0.5f && segment.sawBladeAlpha > 0.5f)
+            {
+                var sound = AssetRegistry.Sounds.Rek.RekSpikeOut;
+                SoundEngine.PlaySound(sound, segment.position);
+                for(int k = 0; k < 4; k++)
+                {
+                    float upRotation = segment.rotation + MathHelper.PiOver2;
+                    Vector2 upVec = upRotation.ToRotationVector2();
+                    upVec *= Main.rand.NextFloat(5f, 15f);
+                    upVec = upVec.RotatedByRandom(0.4f);
+                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                    {
+                        position = segment.position,
+                        velocity = upVec,
+                        timeLeft = 45,
+                        innerColor = Color.Yellow.ToVector4(),
+                        outerColor = Color.Red.ToVector4()
+                    });
+                }
+            }
+            segment.lastSawBladeAlpha = segment.sawBladeAlpha;
             if ((segment.isBurning || segment.isBurningNoWarning) && Main.rand.NextBool(32))
             {
                 Dust.NewDustPerfect(segment.position + Main.rand.NextVector2Circular(48, 48), DustID.Torch, -Vector2.UnitY, Scale: 2f);
