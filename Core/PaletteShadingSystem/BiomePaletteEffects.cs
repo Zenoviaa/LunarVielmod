@@ -69,11 +69,8 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
-
             //  return true;
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
-            if (myPlayer.ZoneAbyss)
-                return true;
             if (myPlayer.ZoneAurelus)
                 return true;
 

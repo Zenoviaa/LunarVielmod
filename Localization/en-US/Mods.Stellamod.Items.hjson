@@ -12147,3 +12147,13 @@ FrozenWatch: {
 	DisplayName: Frozen Watch
 	Tooltip: When used, it will pause or unpause time!
 }
+
+AbyssalDirtItem: {
+	DisplayName: Abyssal Dirt Item
+	Tooltip: ""
+}
+
+AbyssalDirtWallItem: {
+	DisplayName: Abyssal Dirt Wall Item
+	Tooltip: ""
+}
