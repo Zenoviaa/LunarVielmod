@@ -3,6 +3,7 @@ using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
+using Stellamod.Content.Areas.Tundra.Snow.TilesSN;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -320,7 +321,7 @@ public class VeilGenTester : ModItem
 
     public override bool? UseItem(Player player)
     {
-        MineshaftTest();
+        AbyssTest();
         // LayoutTest();
         //  CaveTest();
         // AegislavTest();
@@ -328,6 +329,180 @@ public class VeilGenTester : ModItem
         return true;
     }
 
+    private static void AbyssTest()
+    {
+        //Calculate center of the abyss
+        Point AbyssCenter = new Point();
+        AbyssCenter.X = GenVars.snowOriginLeft + GenVars.snowOriginRight;
+        AbyssCenter.X /= 2;
+        AbyssCenter.Y = (int)(GenVars.rockLayerHigh + Main.maxTilesY * 0.15);
+        AbyssCenter.Y -= 20;
+        //Place the center like a circle
+
+        ushort abyssTile = (ushort)ModContent.TileType<AbyssalDirt>();
+
+        int abyssHigh = AbyssCenter.Y - 500;
+
+        int abyssLow = GenVars.snowBottom;
+    
+        //Fill the entire area with abyss dirt tiles
+        for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
+        {
+            for (int y = abyssHigh; y < abyssLow; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
+                tile.HasTile = true;
+                tile.TileType = abyssTile;
+            }
+        }
+        var genRand = WorldGen.genRand;
+        for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
+        {
+            if (x > GenVars.snowOriginLeft && x < GenVars.snowOriginRight - 1)
+                continue;
+
+            for (int y = abyssHigh; y < abyssLow; y+=8)
+            {
+                WorldGen.TileRunner(x, y,
+                    strength: 48,
+                    125, abyssTile, addTile: true);
+            }
+        }
+
+        for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x+=8)
+        {
+            int y = abyssHigh;
+            WorldGen.TileRunner(x, y,
+                strength: 48,
+                125, abyssTile, addTile: true);
+            y = abyssLow;
+            WorldGen.TileRunner(x, y,
+                strength: 48,
+                125, abyssTile, addTile: true);
+        }
+
+        TileID.Sets.CanBeClearedDuringGeneration[abyssTile] = true;
+        TileID.Sets.CanBeClearedDuringOreRunner[abyssTile] = true;
+
+        Span<ushort> pool = new ushort[3].AsSpan();
+        pool[0] = (ushort)ModContent.TileType<ThickSnowTile>();
+        pool[1] = TileID.SnowBlock;
+        pool[2] = TileID.IceBlock;
+
+        /*
+        int numAbyssBlotchSteps = 350;
+        for (int i = 0; i < 3; i++)
+        {
+            ushort tileType = pool[i];
+            for (int n = 0; n < numAbyssBlotchSteps; n++)
+            {
+                //Get a random center point to place the blotch
+                Point p = new Point();
+                p.X = genRand.Next(GenVars.snowOriginLeft, GenVars.snowOriginRight);
+                p.Y = genRand.Next(abyssHigh, abyssLow);
+
+                float strength = genRand.NextFloat(8, 16);
+                int steps = genRand.Next(10, 20);
+                WorldGen.OreRunner(p.X, p.Y, strength, steps, tileType);
+            }
+        }*/
+        FastNoiseLite fnl = new FastNoiseLite();
+        for(int i = 0; i < 3; i++)
+        {
+            fnl.SetSeed(genRand.Next(0, 20000));
+            fnl.SetFrequency(0.05f);
+            fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+            fnl.SetDomainWarpAmp(65);
+            for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
+            {
+                for (int y = abyssHigh; y < abyssLow; y++)
+                {
+                    float noise = fnl.GetNoise(x, y);
+                    if (noise > 0.65f)
+                    {
+                        Tile tile = Main.tile[x, y];
+                        tile.TileType = pool[i];
+                    }
+                }
+            }
+        }
+
+
+
+        void CreateCave(Vector2 originPoint, in Vector2 initialVelocity)
+        {
+            //The way this cave style will work, is it will start form the origin point
+            //and it will go until it hits the edge of the biome or if it['s traveled enoiugh steps
+            //After each segment it generates, it randomizes the velocity again in 30 degree angles from the starting direction
+            //Which should create nice little lines/caverns
+            Vector2 cavernPoint = originPoint;
+            int failsafe = 0;
+            float strength = genRand.NextFloat(12, 18);
+            while (cavernPoint.X < GenVars.snowOriginRight && failsafe < 300)
+            {
+                int remainingSteps = 4;
+                Vector2 velocity = initialVelocity.RotatedBy(genRand.NextFloat(-MathHelper.PiOver4 * 0.5f, MathHelper.PiOver4 * 0.5f));
+                while (remainingSteps > 0)
+                {
+                    cavernPoint += velocity * 7;
+                    if (cavernPoint.X < GenVars.snowOriginRight)
+                    {
+
+                        //Cut away at the terrain
+                        WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
+                            strength: strength,
+                            genRand.Next(7, 25), -1);
+                    }
+
+                    remainingSteps--;
+                }
+                failsafe++;
+            }
+        }
+
+        //Sprinkle several long caves throughout the biome
+        int numCaves = 26;
+        for (int n = 0; n < numCaves; n++)
+        {
+            Vector2 p = new Vector2();
+            p.X = genRand.Next(GenVars.snowOriginLeft - 25, GenVars.snowOriginLeft + 25);
+            p.Y = (int)MathHelper.Lerp(abyssHigh, abyssLow, (float)n / (float)numCaves);
+
+            //All caves should be moving to the right
+            Vector2 initialDirection = Vector2.UnitX;
+            initialDirection = initialDirection.RotatedBy(genRand.NextFloat(-0.2f, 0.2f));
+            CreateCave(p, initialDirection);
+        }
+
+        Rectangle rect = new Rectangle(GenVars.snowOriginLeft, abyssHigh, GenVars.snowOriginRight - GenVars.snowOriginLeft, abyssLow - abyssHigh);
+        VeilGen.PruneLonelyTiles(rect);
+        for(int x = rect.Left; x <= rect.Right; x++)
+        {
+            for(int y = rect.Top; y <= rect.Top; y++)
+            {
+                WorldGen.SquareTileFrame(x, y);
+            }
+        }
+        
+        /*
+        var genRand = WorldGen.genRand;
+
+
+        for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
+        {
+            for (int y = abyssHigh; y < abyssLow; y++)
+            {
+                float noise = fnl.GetNoise(x, y);
+                if (noise > 0f)
+                {
+                    Tile tile = Main.tile[x, y];
+                    tile.ClearTile();
+                }
+            }
+        }*/
+    }
     private static void CaveTest2() 
     {
         Point mousePoint = Main.MouseWorld.ToTileCoordinates();
@@ -1417,6 +1592,36 @@ public static class VeilGen
             }
         }
 
+    }
+
+
+    public static void PruneLonelyTiles(Rectangle areaRectangle)
+    {
+        for(int x = areaRectangle.Left; x < areaRectangle.Right; x++)
+        {
+            for(int y = areaRectangle.Top; y < areaRectangle.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                Tile tileAbove = Main.tile[x, y - 1];
+                Tile tileBelow = Main.tile[x, y + 1];
+                Tile tileLeft = Main.tile[x - 1, y];
+                Tile tileRight = Main.tile[x + 1, y];
+
+                int count = 0;
+                if (tileAbove.HasTile)
+                    count++;
+                if (tileBelow.HasTile)
+                    count++;
+                if (tileLeft.HasTile)
+                    count++;
+                if (tileRight.HasTile)
+                    count++;
+
+
+                if (count <= 1 && tile.HasTile)
+                    tile.ClearTile();
+            }
+        }
     }
 
 

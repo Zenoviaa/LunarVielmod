@@ -10,6 +10,7 @@ using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Content.Areas.Tundra.Abyss.WeaponsAB;
+using Stellamod.Content.Areas.Tundra.Snow.TilesSN;
 using Stellamod.Content.Areas.Underground.TilesUG;
 using Stellamod.Content.Areas.WaterSide.TilesWS;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
@@ -475,7 +476,6 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Ice Clumping", IceClump));
         passWriter.NextPass(new PassLegacy("Ice Spikes", MakingIcyRandomness));
         passWriter.NextPass(new PassLegacy("World Gen Abysm", WorldGenAbysm));
-        passWriter.NextPass(new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
         passWriter.NextPass(new PassLegacy("Icey Caverns", WorldGenIceCaverns));
         passWriter.NextPass(new PassLegacy("Ice Housing 3", SurfaceIceHouses));
 
@@ -7586,116 +7586,112 @@ for (int beamX = structureRectangle.Location.X;
         //Place the center like a circle
 
         ushort abyssTile = (ushort)ModContent.TileType<AbyssalDirt>();
-        for (int i = 0; i < 100; i++)
+
+        int abyssHigh = AbyssCenter.Y - 500;
+        int abyssLow = AbyssCenter.Y + 350;
+
+        //Fill the entire area with abyss dirt tiles
+        for(int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
         {
-            WorldGen.TileRunner(AbyssCenter.X, AbyssCenter.Y, 30, 150, abyssTile, false);
-        }
-
-        int width = GenVars.snowOriginRight - GenVars.snowOriginLeft;
-        int radius = width / 2;
-        int heightRadius = radius / 2;
-        for (int i = 0; i < 350; i++)
-        {
-            Point abyssClump = AbyssCenter;
-            abyssClump.X += WorldGen.genRand.Next(-radius, radius);
-            abyssClump.Y += WorldGen.genRand.Next(-heightRadius, heightRadius);
-            WorldGen.TileRunner(abyssClump.X, abyssClump.Y, 30, 150, abyssTile, false);
-        }
-
-        //https://stackoverflow.com/questions/13894715/draw-equidistant-points-on-a-spiral
-        double coils = 8;
-        // value of theta corresponding to end of last coil
-        double thetaMax = coils * 2 * Math.PI;
-
-        // How far to step away from center for each side.
-        double spiralRadius = 250;
-        double awayStep = spiralRadius / thetaMax;
-
-        // distance between points to plot
-        double chord = 10;
-
-        float rotation = 1;
-        double centerX = AbyssCenter.X;
-        double centerY = AbyssCenter.Y;
-
-        // For every side, step around and away from center.
-        // start at the angle corresponding to a distance of chord
-        // away from centre.
-        for (double theta = chord / awayStep; theta <= thetaMax;)
-        {
-            // How far away from center
-            double away = awayStep * theta;
-
-            // How far around the center.
-            double around = theta + rotation;
-
-            // Convert 'around' and 'away' to X and Y.
-            double x = centerX + Math.Cos(around) * away;
-            double y = centerY + Math.Sin(around) * away;
-
-            Point currentPoint = new Point((int)x, (int)y);
-            int fluff = 100;
-
-            // to a first approximation, the points are on a circle
-            // so the angle between them is chord/radius
-            theta += chord / away;
-            if (currentPoint.X < fluff || currentPoint.X > Main.maxTilesX - fluff)
-                continue;
-            if (currentPoint.Y < fluff || currentPoint.Y > Main.maxTilesY - fluff)
-                continue;
-
-
-            /*
-            WorldUtils.Gen(currentPoint,
-                new Shapes.Circle(innerCircleRadius, innerCircleRadius),
-                new Actions.SetTile(abyssTile));*/
-            WorldGen.TileRunner(currentPoint.X, currentPoint.Y, 10, 150, abyssTile, false);
-            WorldGen.TileRunner(currentPoint.X, currentPoint.Y, 10, 150, abyssTile, false);
-        }
-        var genRand = WorldGen.genRand;
-        for (double theta = chord / awayStep; theta <= thetaMax;)
-        {
-            // How far away from center
-            double away = awayStep * theta;
-
-            // How far around the center.
-            double around = theta + rotation;
-
-            // Convert 'around' and 'away' to X and Y.
-            double x = centerX + Math.Cos(around) * away;
-            double y = centerY + Math.Sin(around) * away;
-
-            Point currentPoint = new Point((int)x, (int)y);
-            int fluff = 100;
-
-            // to a first approximation, the points are on a circle
-            // so the angle between them is chord/radius
-            theta += chord / away;
-            if (currentPoint.X < fluff || currentPoint.X > Main.maxTilesX - fluff)
-                continue;
-            if (currentPoint.Y < fluff || currentPoint.Y > Main.maxTilesY - fluff)
-                continue;
-
-            WorldGen.TileRunner(currentPoint.X, currentPoint.Y,
-              genRand.NextFloat(5, 10),
-              genRand.Next(60, 80), -1);
-        }
-
-        ushort abyssalIce = (ushort)ModContent.TileType<AbyssalIce>();
-        for (int x = 0; x < Main.maxTilesX; x++)
-        {
-            for (int y = 0; y < Main.maxTilesY; y++)
+            for(int y = abyssHigh; y < abyssLow; y++)
             {
+                Tile tile = Main.tile[x, y];
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
+                tile.HasTile = true;
+                tile.TileType = abyssTile;
+            }
+        }
 
-                Vector2 tilePosition = new Vector2(x, y);
-                float distance = Vector2.Distance(AbyssCenter.ToVector2(), tilePosition);
-                if (distance < spiralRadius)
+        var genRand = WorldGen.genRand;
+
+        //Sprinkle Blotches of Ice, Snow, and Thick Snow tiles
+        //This will add nice variation within the blocks
+        Span<ushort> pool = new ushort[3].AsSpan();
+        pool[0] = (ushort)ModContent.TileType<ThickSnowTile>();
+        pool[1] = TileID.SnowBlock;
+        pool[2] = TileID.IceBlock;
+
+        int numAbyssBlotchSteps = 150;
+        for(int i = 0; i < 3; i++)
+        {
+            ushort tileType = pool[i];
+            for(int n = 0; n < numAbyssBlotchSteps; n++)
+            {
+                //Get a random center point to place the blotch
+                Point p = new Point();
+                p.X = genRand.Next(GenVars.snowOriginLeft, GenVars.snowOriginRight);
+                p.Y = genRand.Next(abyssHigh, abyssLow);
+
+                float strength = genRand.NextFloat(8, 16);
+                int steps = genRand.Next(10, 20);
+                WorldGen.OreRunner(p.X, p.Y, strength, steps, tileType);
+            }
+        }
+
+        /*
+        //Create long caves
+        void CreateCave(Vector2 originPoint, in Vector2 initialVelocity)
+        {
+            //The way this cave style will work, is it will start form the origin point
+            //and it will go until it hits the edge of the biome or if it['s traveled enoiugh steps
+            //After each segment it generates, it randomizes the velocity again in 30 degree angles from the starting direction
+            //Which should create nice little lines/caverns
+            Vector2 cavernPoint = originPoint;
+            int failsafe = 0;
+            while(cavernPoint.X < GenVars.snowOriginRight && failsafe < 300)
+            {
+                int remainingSteps = 32;
+                Vector2 velocity = initialVelocity.RotatedBy(genRand.NextFloat(-MathHelper.PiOver4 * 0.5f, MathHelper.PiOver4 * 0.5f));
+                while (remainingSteps > 0)
+                {
+                    cavernPoint += velocity * 12f;
+                    if(cavernPoint.X < GenVars.snowOriginRight)
+                    {
+
+                        //Cut away at the terrain
+                        WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
+                            strength: 24,
+                            genRand.Next(7, 25), -1);
+                    }
+
+                    remainingSteps--;
+                }
+                failsafe++;
+            }
+        }
+
+        //Sprinkle several long caves throughout the biome
+        int numCaves = 32;
+        for(int n = 0; n < numCaves; n++)
+        {
+            Vector2 p = new Vector2();
+            p.X = genRand.Next(GenVars.snowOriginLeft - 25, GenVars.snowOriginLeft + 25);
+            p.Y = genRand.Next(abyssHigh, abyssLow);
+
+            //All caves should be moving to the right
+            Vector2 initialDirection = Vector2.UnitX;
+            initialDirection = initialDirection.RotatedBy(genRand.NextFloat(-0.2f, 0.2f));
+            CreateCave(p, initialDirection);
+        }*/
+
+
+        //Let's try an implementation with fast noise lite
+        FastNoiseLite fnl = new FastNoiseLite();
+        fnl.SetSeed(genRand.Next(0, 20000));
+        fnl.SetFrequency(0.005f);
+        fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+        fnl.SetDomainWarpAmp(65);
+
+        for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
+        {
+            for (int y = abyssHigh; y < abyssLow; y++)
+            {
+                float noise = fnl.GetNoise(x, y);
+                if(noise < 0.5f)
                 {
                     Tile tile = Main.tile[x, y];
-                    if (tile.HasTile && (tile.TileType == TileID.IceBlock))
-                    {
-                        WorldGen.PlaceTile(x, y, abyssalIce, forced: true);
-                    }
+                    tile.ClearTile();
                 }
             }
         }

@@ -67,6 +67,73 @@ public static class BackgroundHelper
 
         spriteBatch.End();
     }
+    public static void DrawWrappedAtlassedBackground(SpriteBatch spriteBatch, AtlassedBackgroundDraw draw)
+    {
+        Vector2[] parallax = new Vector2[10];
+        Vector2[] offsets = new Vector2[10];
+
+        int numBackgrounds = draw.numBackgrounds;
+        Color fadeToColor = draw.fadeToColor;
+        Vector2 cameraMovement = draw.cameraMovement;
+        float alpha = draw.alpha;
+        var bg = draw.bg;
+        for (int i = 0; i < numBackgrounds; i++)
+        {
+            offsets[i] = Vector2.Lerp(new Vector2(0f, 0), new Vector2(0f, 1f), (float)i / (float)numBackgrounds);
+            parallax[i] = Vector2.Lerp(draw.parallax, Vector2.Zero, (float)i / (float)numBackgrounds) * (cameraMovement) * 0.01f;
+        }
+
+        AtlassedParallaxingBackgroundShader backgroundShader = AtlassedParallaxingBackgroundShader.Instance;
+        backgroundShader.Parallax = parallax;
+        backgroundShader.Offsets = offsets;
+        backgroundShader.Tiling = new Vector2(1f, numBackgrounds);
+        backgroundShader.FadeToColor = fadeToColor;
+        backgroundShader.Effect.CurrentTechnique = backgroundShader.Effect.Techniques["SpriteDrawing"];
+        spriteBatch.Begin(SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointWrap,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            backgroundShader.Effect);
+
+        Color baseColor = draw.baseColor;
+        //  baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
+        Color drawColor = baseColor * alpha;
+
+
+        SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+        drawer2.VerticalFrame(0, numBackgrounds);
+        Rectangle frameSize = drawer2.sourceRect.Value;
+
+
+        float scale = 1.5f;
+        float width = frameSize.Width * scale;
+        float height = frameSize.Height * scale;
+        int xRepeats = (int)(Main.screenWidth / width) + 1;
+        int yRepeats = (int)(Main.screenHeight / height) + 1;
+
+
+        for (int i = numBackgrounds; i >= 0; i--)
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+            drawer.drawOrigin = Vector2.Zero;
+            drawer.scale = Vector2.One;
+            drawer.color = drawColor;
+            drawer.VerticalFrame(i, numBackgrounds);
+            for (int x = 0; x < xRepeats; x++)
+            {
+                for (int y = 0; y < yRepeats; y++)
+                {
+                    Rectangle drawRect = new Rectangle((int)(x * width), (int)(y * height), (int)width, (int)height);
+                    drawer.dstRect = drawRect;
+                    spriteBatch.Draw(drawer);
+                }
+            }
+ 
+        }
+
+        spriteBatch.End();
+    }
     public static void DrawSimpleAtlassedBackground(SpriteBatch spriteBatch, AtlassedBackgroundDraw draw)
     {
         Vector2[] parallax = new Vector2[10];

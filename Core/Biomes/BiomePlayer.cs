@@ -178,12 +178,12 @@ namespace Stellamod.Content.Biomes
             MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar || myPlayer.ZoneAbyss)
             {
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(15))
                 {
                     ForegroundParticleRenderer.NewParticle<Starstrike>();
                 }
 
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(15))
                 {
                     ForegroundParticleRenderer.NewParticle<Snowstrike>();
                 }
