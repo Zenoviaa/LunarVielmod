@@ -197,7 +197,7 @@ public class DeadRomanceParryBuster : ModProjectile
 
     private void PlayGrowSound()
     {
-        SoundStyle growSound = AssetRegistry.Sounds.Melee.ExcaliburSwordBigger;
+        SoundStyle growSound = AssetRegistry.Sounds.Melee.WeaponSwordbigger;
         growSound.Pitch = MathHelper.Lerp(0f, 0.8f, reflectCount / 5f);
         SoundEngine.PlaySound(growSound, Projectile.Center);
     }

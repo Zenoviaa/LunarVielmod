@@ -1068,7 +1068,7 @@ public partial class RoyalFox : ScarletBoss,
                     if(Timer == 30)
                     {
          
-                        SoundStyle soundS = AssetRegistry.Sounds.AlcaricFox.FenixCloseBounce;
+                        SoundStyle soundS = AssetRegistry.Sounds.AlcaricFox.FenixClosebounce;
                         SoundEngine.PlaySound(soundS, MyTarget.Center);
                     }
 

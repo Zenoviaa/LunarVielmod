@@ -67,7 +67,7 @@ public static class BackgroundHelper
 
         spriteBatch.End();
     }
-    public static void DrawWrappedAtlassedBackground(SpriteBatch spriteBatch, AtlassedBackgroundDraw draw)
+    public static void DrawWrappedAtlassedBackground(SpriteBatch spriteBatch, AtlassedBackgroundDraw draw, float scale = 1f)
     {
         Vector2[] parallax = new Vector2[10];
         Vector2[] offsets = new Vector2[10];
@@ -105,8 +105,6 @@ public static class BackgroundHelper
         drawer2.VerticalFrame(0, numBackgrounds);
         Rectangle frameSize = drawer2.sourceRect.Value;
 
-
-        float scale = 1.5f;
         float width = frameSize.Width * scale;
         float height = frameSize.Height * scale;
         int xRepeats = (int)(Main.screenWidth / width) + 1;

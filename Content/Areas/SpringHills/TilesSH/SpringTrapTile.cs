@@ -125,7 +125,7 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
                     // In a real mod you should be spawning projectiles that are both hostile and friendly to do damage to both players and NPC, as Terraria traps do.
                     // Make sure to change velocity, projectile, damage, and knockback.
                     Projectile.NewProjectile(Wiring.GetProjectileSource(i, j), spawnPosition, new Vector2(horizontalDirection, 0) * 6f,
-                        ModContent.ProjectileType<SpringArrow>(), 40, 2f, Main.myPlayer);
+                        ModContent.ProjectileType<SpringArrow>(), 20, 2f, Main.myPlayer);
                 }
 
             }

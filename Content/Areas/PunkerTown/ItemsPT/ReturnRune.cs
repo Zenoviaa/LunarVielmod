@@ -91,7 +91,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            SoundStyle soundStyle = AssetRegistry.Sounds.Rune.RuneTeleport;
+            SoundStyle soundStyle = AssetRegistry.Sounds.Runes.RuneTeleport;
             soundStyle.PitchVariance = 0.2f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);
         }

@@ -486,7 +486,7 @@ public class Bishinine : ScarletBoss
                 glowColor: Color.Blue,
                 outerGlowColor: Color.Black, duration: 12, baseSize: 0.14f);
             part.Scale *= 1;
-            SoundStyle laughSound = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+            SoundStyle laughSound = AssetRegistry.Sounds.Bishinine.Bishininelaugh;
             SoundEngine.PlaySound(laughSound, NPC.position);
             SwitchState(AIState.CometJump_Startup);
         }
@@ -663,7 +663,7 @@ public class Bishinine : ScarletBoss
             NPC.TargetClosest();
             NPC.velocity.Y = -2;
             var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
-            SoundStyle laugh = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+            SoundStyle laugh = AssetRegistry.Sounds.Bishinine.Bishininelaugh;
             SoundEngine.PlaySound(laugh, NPC.position);
         }
 
@@ -793,7 +793,7 @@ public class Bishinine : ScarletBoss
         Timer++;
         if (Timer == 1)
         {
-            SoundStyle sound = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+            SoundStyle sound = AssetRegistry.Sounds.Bishinine.Bishininelaugh;
             SoundEngine.PlaySound(sound, NPC.position);
         }
         if (Timer == 25)
@@ -1280,7 +1280,7 @@ public class Bishinine : ScarletBoss
         if (Timer == 1)
         {
             NPC.TargetClosest();
-            SoundStyle bellHit = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+            SoundStyle bellHit = AssetRegistry.Sounds.Bishinine.Bishininelaugh;
             bellHit.PitchVariance = 0.2f;
             SoundEngine.PlaySound(bellHit, NPC.position);
         }
@@ -1498,7 +1498,7 @@ public class Bishinine : ScarletBoss
             NPC.TargetClosest();
             NPC.velocity.Y = -2;
             var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
-            SoundStyle laugh = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+            SoundStyle laugh = AssetRegistry.Sounds.Bishinine.Bishininelaugh;
             SoundEngine.PlaySound(laugh, NPC.position);
         }
 
@@ -1870,7 +1870,7 @@ public class Bishinine : ScarletBoss
                 _deathCenter = _bigBellProjectile.Center;
                 NPC.netUpdate = true;
             }
-            SoundStyle laughSound = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
+            SoundStyle laughSound = AssetRegistry.Sounds.Bishinine.Bishininelaugh;
             SoundEngine.PlaySound(laughSound, NPC.position);
         }
         if (Timer % 40 == 0 && AttackNumber < 3)

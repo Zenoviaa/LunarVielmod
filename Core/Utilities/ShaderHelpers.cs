@@ -195,7 +195,7 @@ public class BlackSea : ScreenShader
         _amplitudeParam.SetValue(amplitude);
         _timeParam.SetValue(Main.GlobalTimeWrappedHourly * 8);
         _seatilingParam.SetValue(new Vector2(1, 8f));
-        _seaNoiseTextureParam.SetValue(AssetRegistry.Textures.Noise.IceWaterCaustics.Value);
+        _seaNoiseTextureParam.SetValue(AssetRegistry.NoiseTextures.IceWaterCaustics.Value);
         _seaThresholdParam.SetValue(0.05f);
         _seaDarknessParam.SetValue(0.96f);
         _ringPowerParam.SetValue(12);

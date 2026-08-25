@@ -107,7 +107,7 @@ public class EreshkigalCrack : ModProjectile
             {
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 64);
 
-                SoundStyle shootSound = AssetRegistry.Sounds.Ereshkigal.HeavenlyShot1;
+                SoundStyle shootSound = AssetRegistry.Sounds.Ereshkigal.HeavenlyShot;
                 switch (Main.rand.Next(2))
                 {
                     case 1:

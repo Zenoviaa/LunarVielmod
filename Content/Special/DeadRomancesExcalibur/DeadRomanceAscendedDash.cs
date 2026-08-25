@@ -59,7 +59,7 @@ public class DeadRomanceAscendedDash : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            SoundStyle dash = AssetRegistry.Sounds.Melee.ExcaliburAscendedDash;
+            SoundStyle dash = AssetRegistry.Sounds.Melee.ExcaliburAscendDash;
             SoundEngine.PlaySound(dash, Projectile.position);
         }
         if (Timer % 16 == 0)

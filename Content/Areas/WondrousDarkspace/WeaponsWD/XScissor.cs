@@ -75,7 +75,7 @@ public class XScissorCut : ModProjectile
         if(Timer == 1)
         {
             _scale = 1f;
-            SoundStyle curveSound = AssetRegistry.Sounds.Melee.CrosshatchCut;
+            SoundStyle curveSound = AssetRegistry.Sounds.Melee.Crosshatchcut;
             curveSound.PitchVariance = 0.3f;
             curveSound.Volume = 0.5f;
             SoundEngine.PlaySound(curveSound, Projectile.position);
@@ -476,7 +476,7 @@ public class XScissorSlash : BaseSwingProjectileV2
 
         if (ComboIndex == ComboCount - 1)
         {
-            SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadiantCast1;
+            SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadianceCast1;
             fireSound.PitchVariance = 0.2f;
             SoundEngine.PlaySound(fireSound, Projectile.position);
             for (float f = 0; f < 8; f++)
@@ -632,7 +632,7 @@ public class XScissorStaminaSlash : BaseSwingProjectileV2
 
         if (ComboIndex == ComboCount - 1)
         {
-            SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadiantCast1;
+            SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadianceCast1;
             fireSound.PitchVariance = 0.2f;
             SoundEngine.PlaySound(fireSound, Projectile.position);
             for (float f = 0; f < 8; f++)

@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Core;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 

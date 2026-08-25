@@ -1,18 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using ReLogic.Threading;
 using Stellamod.Common;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using static Stellamod.Assets.AssetRegistry.Textures;
 
 namespace Stellamod.Core.Grass
 {
@@ -43,7 +38,7 @@ namespace Stellamod.Core.Grass
             public Vector2 position;
             public Vector2 direction;
             public Vector2 offsetDirection;
-        
+
         }
         public struct GrassBlade
         {
@@ -128,7 +123,7 @@ namespace Stellamod.Core.Grass
             float fluff = 200;
 
             Vector2 halfScreenSize = new Vector2(Main.screenWidth + fluff, Main.screenHeight + fluff) * 0.5f;
-            Point startTile = (Main.Camera.Center-halfScreenSize).ToTileCoordinates();
+            Point startTile = (Main.Camera.Center - halfScreenSize).ToTileCoordinates();
             Point endTile = (Main.Camera.Center + halfScreenSize).ToTileCoordinates();
 
             startTile.X = Math.Clamp(startTile.X, 0, Main.maxTilesX - 1);
@@ -147,8 +142,8 @@ namespace Stellamod.Core.Grass
                     if (tileAbove.HasTile)
                         continue;
 
-                    float i = x;   
-                    if(_noise.GetNoise(i, 0) > -0.95f)
+                    float i = x;
+                    if (_noise.GetNoise(i, 0) > -0.95f)
                     {
                         if (tile.HasTile && GrassTileSystem.GetGrassProfile(tile.TileType, out GrassProfile profile))
                         {
@@ -158,14 +153,14 @@ namespace Stellamod.Core.Grass
                     }
                 }
             }
-    
+
             SimulateWind();
             if (!Main.gameMenu)
             {
                 PixelationManager.QueuePrimitivesDrawAction(RenderGrassBack, DrawLayer.BackGrassTarget);
                 PixelationManager.QueuePrimitivesDrawAction(RenderGrass, DrawLayer.FrontGrassTarget);
             }
- 
+
             orig();
         }
 
@@ -217,7 +212,7 @@ namespace Stellamod.Core.Grass
                 float osc = ExtraMath.Osc(0f, 1f, 0, offset: tileOffsetX + _windTimer);
                 float windRadians = MathHelper.Lerp(-windRange, windRange, osc);
 
-                    
+
                 Vector2 externalForces = velocityMap.GetDecayingVelocity(grassPosition - new Vector2(16, 0), 32, 80);
                 externalForces = externalForces.SafeNormalize(Vector2.Zero);
                 grass.offsetDirection = grass.direction;// + externalForces * 0.2f;
@@ -348,7 +343,7 @@ namespace Stellamod.Core.Grass
 
         }
 
- 
+
         private void RenderGrassInner(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             _noise.SetSeed(1337);
@@ -374,7 +369,7 @@ namespace Stellamod.Core.Grass
                 grassPosition.Y = MathF.Floor(grassPosition.Y / 16) * 16;
                 Vector2 drawPosition = grassPosition - screenPos + _backOffset;
                 drawPosition.Y += 8;
-    
+
                 float rotation = grass.offsetDirection.ToRotation() + MathHelper.PiOver2;
 
                 rotation += _windRotations[i];

@@ -20,8 +20,8 @@ public class IcePixelWaterStyle : PixelWaterStyle
         pixelWater.EndGradientColor = Color.Cyan;
         pixelWater.BackgroundColor = Color.Blue;
         pixelWater.CausticsColor = Color.Cyan * 0.75f;
-        pixelWater.NoiseTexture = AssetRegistry.Textures.Noise.IceWaterCaustics;
-        pixelWater.CausticsTexture = AssetRegistry.Textures.Noise.IceWaterCaustics;
+        pixelWater.NoiseTexture = AssetRegistry.NoiseTextures.IceWaterCaustics;
+        pixelWater.CausticsTexture = AssetRegistry.NoiseTextures.IceWaterCaustics;
         pixelWater.TilingMultiplier = Vector2.One;
     }
 }

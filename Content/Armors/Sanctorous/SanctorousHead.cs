@@ -292,7 +292,7 @@ public class SanctorousLegs : ModItem
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.insourceSlots += 4;
+        stats.insourceSlots += 1;
         stats.inventorySlots += 20;
         stats.defenseBonus += 16;
         stats.accessorySlots += 0;

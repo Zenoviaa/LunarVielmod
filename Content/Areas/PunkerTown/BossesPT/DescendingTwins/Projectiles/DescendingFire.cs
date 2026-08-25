@@ -284,7 +284,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         {
             Color twinColor = GetTwinColor();
             Color darkerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
-            SoundStyle shot = AssetRegistry.Sounds.Magic.RadiantCast1;
+            SoundStyle shot = AssetRegistry.Sounds.Magic.RadianceCast1;
             shot.PitchVariance = 0.3f;
             SoundEngine.PlaySound(shot, Projectile.position);
             SoundStyle shot2 = SoundID.DD2_BetsyFireballImpact;

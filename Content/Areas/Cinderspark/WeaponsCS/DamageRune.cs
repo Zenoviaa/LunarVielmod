@@ -79,7 +79,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            SoundStyle soundStyle = AssetRegistry.Sounds.Rune.RuneTeleport;
+            SoundStyle soundStyle = AssetRegistry.Sounds.Runes.RuneTeleport;
             soundStyle.PitchVariance = 0.2f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);
         }

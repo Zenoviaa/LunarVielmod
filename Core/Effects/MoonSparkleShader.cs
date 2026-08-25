@@ -17,7 +17,7 @@ namespace Stellamod.Core.Effects
 
             StartColor = Color.LightCyan;
             GlowColor = Color.Yellow;
-            NoiseTexture = AssetRegistry.Textures.Noise.Perlin;
+            NoiseTexture = AssetRegistry.Textures.Noise.PerlinNoise;
             Tiling = Vector2.One;
             Offset = Vector2.Zero;
         }

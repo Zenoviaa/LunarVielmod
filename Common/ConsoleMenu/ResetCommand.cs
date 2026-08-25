@@ -30,7 +30,7 @@ public class ResetCommand : ConsoleCommand
         if (args.Length <= 0)
             return false;
         Player player = Main.LocalPlayer;
-        switch (args[0])
+        switch (args[1])
         {
             case "level":
 

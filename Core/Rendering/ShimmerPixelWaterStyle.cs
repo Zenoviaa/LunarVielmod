@@ -19,7 +19,7 @@ public class ShimmerPixelWaterStyle : PixelWaterStyle
         pixelWater.StartGradientColor = Color.White;
         pixelWater.EndGradientColor = Color.DarkBlue;
         pixelWater.BackgroundColor = Color.Pink;
-        pixelWater.CausticsTexture = AssetRegistry.Textures.Noise.ShimmerWaterCaustics;
+        pixelWater.CausticsTexture = AssetRegistry.NoiseTextures.ShimmerWaterCaustics;
         pixelWater.CausticsColor = Color.Purple;
         pixelWater.TilingMultiplier = new Vector2(1f, 2);
         pixelWater.ignoreSkyColor = true;

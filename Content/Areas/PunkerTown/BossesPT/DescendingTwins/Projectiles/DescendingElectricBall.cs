@@ -255,7 +255,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         public override bool PreDraw(ref Color lightColor)
         {
             DescendingLightningBallShader shader = DescendingLightningBallShader.Instance;
-            shader.NoiseTexture = AssetRegistry.Textures.Noise.IceWaterCaustics;
+            shader.NoiseTexture = AssetRegistry.NoiseTextures.IceWaterCaustics;
             shader.GradientStartColor = Color.Yellow;
             shader.GradientMidColor = Color.Gold;
             shader.GradientEndColor = Color.Purple;

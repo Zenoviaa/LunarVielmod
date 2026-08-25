@@ -1,527 +1,2171 @@
-﻿using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.ModLoader;
+namespace Stellamod;
 
-namespace Stellamod.Assets
+public class AssetRegistry : ModSystem
 {
-    public static class AssetRegistry
-    {
-        public static class Textures
-        {
-            public static Asset<Texture2D> EmptyBigTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/EmptyBigTexture");
-            public static class Noise
-            {
-                public static Asset<Texture2D> JungleWaterCaustics = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/JungleWaterCaustics");
-                public static Asset<Texture2D> ShimmerWaterCaustics = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ShimmerWaterCaustics");
-                public static Asset<Texture2D> IceWaterCaustics = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/IceWaterCaustics");
+public static class Biomes
+{
+public static LazyAsset<Texture2D> AcidWaterfallStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/AcidWaterfallStyle");
+public static LazyAsset<Texture2D> AcidWaterStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/AcidWaterStyle");
+public static LazyAsset<Texture2D> AcidWaterStyle_Block = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/AcidWaterStyle_Block");
+public static LazyAsset<Texture2D> AcidWaterStyle_Slope = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/AcidWaterStyle_Slope");
+public static LazyAsset<Texture2D> AlcadziaBiomeBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/AlcadziaBiomeBackground");
+public static LazyAsset<Texture2D> AlcadziaBiomeBackground2 = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/AlcadziaBiomeBackground2");
+public static LazyAsset<Texture2D> BloodWaterfallStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/BloodWaterfallStyle");
+public static LazyAsset<Texture2D> BloodWaterStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/BloodWaterStyle");
+public static LazyAsset<Texture2D> BloodWaterStyle_Block = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/BloodWaterStyle_Block");
+public static LazyAsset<Texture2D> BloodWaterStyle_Slope = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/BloodWaterStyle_Slope");
+public static LazyAsset<Texture2D> CathedralWaterfallStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/CathedralWaterfallStyle");
+public static LazyAsset<Texture2D> CathedralWaterStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/CathedralWaterStyle");
+public static LazyAsset<Texture2D> CathedralWaterStyle_Block = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/CathedralWaterStyle_Block");
+public static LazyAsset<Texture2D> CathedralWaterStyle_Slope = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/CathedralWaterStyle_Slope");
+public static LazyAsset<Texture2D> FableBiomeBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/FableBiomeBackground");
+public static LazyAsset<Texture2D> HarmonicWaterfallStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/HarmonicWaterfallStyle");
+public static LazyAsset<Texture2D> HarmonicWaterStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/HarmonicWaterStyle");
+public static LazyAsset<Texture2D> HarmonicWaterStyle_Block = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/HarmonicWaterStyle_Block");
+public static LazyAsset<Texture2D> HarmonicWaterStyle_Slope = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/HarmonicWaterStyle_Slope");
+public static LazyAsset<Texture2D> MarrowWaterfallStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/MarrowWaterfallStyle");
+public static LazyAsset<Texture2D> MarrowWaterStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/MarrowWaterStyle");
+public static LazyAsset<Texture2D> MarrowWaterStyle_Block = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/MarrowWaterStyle_Block");
+public static LazyAsset<Texture2D> MarrowWaterStyle_Slope = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/MarrowWaterStyle_Slope");
+public static LazyAsset<Texture2D> StarbloomBiomeBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/StarbloomBiomeBackground");
+public static LazyAsset<Texture2D> StarbloomWaterfallStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/StarbloomWaterfallStyle");
+public static LazyAsset<Texture2D> StarbloomWaterStyle = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/StarbloomWaterStyle");
+public static LazyAsset<Texture2D> StarbloomWaterStyle_Block = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/StarbloomWaterStyle_Block");
+public static LazyAsset<Texture2D> StarbloomWaterStyle_Slope = new LazyAsset<Texture2D>("Stellamod/Assets/Biomes/StarbloomWaterStyle_Slope");
+}
+public static class ContentReader
+{
+public static class Aseprite
+{
+}
+public static class Pal
+{
+}
+}
+public static class Dithering
+{
+public static LazyAsset<Texture2D> Dither4x4 = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither4x4");
+public static LazyAsset<Texture2D> Dither4x4DoubleScaled = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither4x4DoubleScaled");
+public static LazyAsset<Texture2D> Dither8x8 = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither8x8");
+public static LazyAsset<Texture2D> Dither8x8DoubleScaled = new LazyAsset<Texture2D>("Stellamod/Assets/Dithering/Dither8x8DoubleScaled");
+}
+public static class Effects
+{
+public static class Trails
+{
+}
+public static LazyAsset<Texture2D> CloudTexture = new LazyAsset<Texture2D>("Stellamod/Assets/Effects/CloudTexture");
+public static LazyAsset<Texture2D> PulseShot = new LazyAsset<Texture2D>("Stellamod/Assets/Effects/PulseShot");
+public static LazyAsset<Texture2D> VoxTexture = new LazyAsset<Texture2D>("Stellamod/Assets/Effects/VoxTexture");
+public static LazyAsset<Texture2D> VoxTexture3 = new LazyAsset<Texture2D>("Stellamod/Assets/Effects/VoxTexture3");
+}
+public static class Fonts
+{
+}
+public static class GlowMasks
+{
+public static LazyAsset<Texture2D> AlsisMagicCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/AlsisMagicCircle");
+public static LazyAsset<Texture2D> AuroraBackGradient = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/AuroraBackGradient");
+public static LazyAsset<Texture2D> AuroraGradient = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/AuroraGradient");
+public static LazyAsset<Texture2D> BlastPillar = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/BlastPillar");
+public static LazyAsset<Texture2D> ButterflyCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/ButterflyCircle");
+public static LazyAsset<Texture2D> EmptyGradient = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/EmptyGradient");
+public static LazyAsset<Texture2D> GothinMagicCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/GothinMagicCircle");
+public static LazyAsset<Texture2D> GradientPillar = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/GradientPillar");
+public static LazyAsset<Texture2D> Impact = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/Impact");
+public static LazyAsset<Texture2D> JumbledGlowCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/JumbledGlowCircle");
+public static LazyAsset<Texture2D> MagicBloodCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/MagicBloodCircle");
+public static LazyAsset<Texture2D> MagicCircle1 = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle1");
+public static LazyAsset<Texture2D> MagicCircle2 = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle2");
+public static LazyAsset<Texture2D> MagicCircleVampiricVine = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircleVampiricVine");
+public static LazyAsset<Texture2D> MagicSwordCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/MagicSwordCircle");
+public static LazyAsset<Texture2D> MuzzleFlash = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/MuzzleFlash");
+public static LazyAsset<Texture2D> PointLight = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/PointLight");
+public static LazyAsset<Texture2D> RomanceGlowSword = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/RomanceGlowSword");
+public static LazyAsset<Texture2D> RomanceGlowSword_Medium = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/RomanceGlowSword_Medium");
+public static LazyAsset<Texture2D> RomanceGlowSword_Small = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/RomanceGlowSword_Small");
+public static LazyAsset<Texture2D> Shine = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/Shine");
+public static LazyAsset<Texture2D> ShootingStarGlint = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarGlint");
+public static LazyAsset<Texture2D> ShootingStarParticle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarParticle");
+public static LazyAsset<Texture2D> SimpleGlowCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SimpleGlowCircle");
+public static LazyAsset<Texture2D> SolarEye = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SolarEye");
+public static LazyAsset<Texture2D> SolarRing = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SolarRing");
+public static LazyAsset<Texture2D> SpiralVortex = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SpiralVortex");
+public static LazyAsset<Texture2D> SpiralVortex2 = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SpiralVortex2");
+public static LazyAsset<Texture2D> Spotlight = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/Spotlight");
+public static LazyAsset<Texture2D> Star1 = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/Star1");
+public static LazyAsset<Texture2D> Star2 = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/Star2");
+public static LazyAsset<Texture2D> Star3 = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/Star3");
+public static LazyAsset<Texture2D> SwordSlash = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SwordSlash");
+public static LazyAsset<Texture2D> SwordSlashForward = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SwordSlashForward");
+public static LazyAsset<Texture2D> Wave = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/Wave");
+public static LazyAsset<Texture2D> WhiteCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/WhiteCircle");
+public static LazyAsset<Texture2D> WhiteSquare = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/WhiteSquare");
+}
+public static class LaserTextures
+{
+public static LazyAsset<Texture2D> Aura = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/Aura");
+public static LazyAsset<Texture2D> Beamlight = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/Beamlight");
+public static LazyAsset<Texture2D> Bloom = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/Bloom");
+public static LazyAsset<Texture2D> CometTrail = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/CometTrail");
+public static LazyAsset<Texture2D> FlameTrail = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/FlameTrail");
+public static LazyAsset<Texture2D> HeavenlySlashTrail = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/HeavenlySlashTrail");
+public static LazyAsset<Texture2D> Lightning = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/Lightning");
+public static LazyAsset<Texture2D> Lightning2 = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/Lightning2");
+public static LazyAsset<Texture2D> MuzzleFlash = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/MuzzleFlash");
+public static LazyAsset<Texture2D> PetalNoise = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/PetalNoise");
+public static LazyAsset<Texture2D> SilkStrand = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/SilkStrand");
+public static LazyAsset<Texture2D> SnowflakeLaser = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/SnowflakeLaser");
+public static LazyAsset<Texture2D> SplittingTrail = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/SplittingTrail");
+public static LazyAsset<Texture2D> TexturedLaser = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
+public static LazyAsset<Texture2D> TexturedLaser2 = new LazyAsset<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser2");
+}
+public static class Music
+{
+public static readonly SoundStyle Acidic_Nightmares = new SoundStyle("Stellamod/Assets/Music/Acidic_Nightmares");
+public static readonly SoundStyle Acidic_Terors = new SoundStyle("Stellamod/Assets/Music/Acidic_Terors");
+public static readonly SoundStyle ADemise = new SoundStyle("Stellamod/Assets/Music/ADemise");
+public static readonly SoundStyle Aegislav = new SoundStyle("Stellamod/Assets/Music/Aegislav");
+public static readonly SoundStyle AlcadizHurricane = new SoundStyle("Stellamod/Assets/Music/AlcadizHurricane");
+public static readonly SoundStyle AlcaricFox = new SoundStyle("Stellamod/Assets/Music/AlcaricFox");
+public static readonly SoundStyle Ashoti = new SoundStyle("Stellamod/Assets/Music/Ashoti");
+public static readonly SoundStyle AurelusTemple = new SoundStyle("Stellamod/Assets/Music/AurelusTemple");
+public static readonly SoundStyle BeforeTheFlames = new SoundStyle("Stellamod/Assets/Music/BeforeTheFlames");
+public static readonly SoundStyle Bishinine = new SoundStyle("Stellamod/Assets/Music/Bishinine");
+public static readonly SoundStyle BloodCathedral = new SoundStyle("Stellamod/Assets/Music/BloodCathedral");
+public static readonly SoundStyle Boss6 = new SoundStyle("Stellamod/Assets/Music/Boss6");
+public static readonly SoundStyle Cariya = new SoundStyle("Stellamod/Assets/Music/Cariya");
+public static readonly SoundStyle Catacombs = new SoundStyle("Stellamod/Assets/Music/Catacombs");
+public static readonly SoundStyle Cinderspark = new SoundStyle("Stellamod/Assets/Music/Cinderspark");
+public static readonly SoundStyle CountingStars = new SoundStyle("Stellamod/Assets/Music/CountingStars");
+public static readonly SoundStyle Daedus = new SoundStyle("Stellamod/Assets/Music/Daedus");
+public static readonly SoundStyle DeadlyFoe = new SoundStyle("Stellamod/Assets/Music/DeadlyFoe");
+public static readonly SoundStyle Descender = new SoundStyle("Stellamod/Assets/Music/Descender");
+public static readonly SoundStyle DreadHeart = new SoundStyle("Stellamod/Assets/Music/DreadHeart");
+public static readonly SoundStyle Ending = new SoundStyle("Stellamod/Assets/Music/Ending");
+public static readonly SoundStyle Ereshkigal = new SoundStyle("Stellamod/Assets/Music/Ereshkigal");
+public static readonly SoundStyle EStyr = new SoundStyle("Stellamod/Assets/Music/EStyr");
+public static readonly SoundStyle FoundationOfLife = new SoundStyle("Stellamod/Assets/Music/FoundationOfLife");
+public static readonly SoundStyle Gintzicane = new SoundStyle("Stellamod/Assets/Music/Gintzicane");
+public static readonly SoundStyle Gothivia = new SoundStyle("Stellamod/Assets/Music/Gothivia");
+public static readonly SoundStyle GovheilCastle = new SoundStyle("Stellamod/Assets/Music/GovheilCastle");
+public static readonly SoundStyle HarmonicCoralways = new SoundStyle("Stellamod/Assets/Music/HarmonicCoralways");
+public static readonly SoundStyle HeatedDepths = new SoundStyle("Stellamod/Assets/Music/HeatedDepths");
+public static readonly SoundStyle Hidding_In_The_Shadows = new SoundStyle("Stellamod/Assets/Music/Hidding_In_The_Shadows");
+public static readonly SoundStyle Irradia = new SoundStyle("Stellamod/Assets/Music/Irradia");
+public static readonly SoundStyle Ishtar = new SoundStyle("Stellamod/Assets/Music/Ishtar");
+public static readonly SoundStyle ItRains = new SoundStyle("Stellamod/Assets/Music/ItRains");
+public static readonly SoundStyle Jack = new SoundStyle("Stellamod/Assets/Music/Jack");
+public static readonly SoundStyle JiitasMask = new SoundStyle("Stellamod/Assets/Music/JiitasMask");
+public static readonly SoundStyle Junkyard = new SoundStyle("Stellamod/Assets/Music/Junkyard");
+public static readonly SoundStyle JustAnotherDay = new SoundStyle("Stellamod/Assets/Music/JustAnotherDay");
+public static readonly SoundStyle LeviathanEel = new SoundStyle("Stellamod/Assets/Music/LeviathanEel");
+public static readonly SoundStyle LibraryWorld = new SoundStyle("Stellamod/Assets/Music/LibraryWorld");
+public static readonly SoundStyle LightedFable = new SoundStyle("Stellamod/Assets/Music/LightedFable");
+public static readonly SoundStyle ManorWorld = new SoundStyle("Stellamod/Assets/Music/ManorWorld");
+public static readonly SoundStyle Mechanics = new SoundStyle("Stellamod/Assets/Music/Mechanics");
+public static readonly SoundStyle Menutheme = new SoundStyle("Stellamod/Assets/Music/Menutheme");
+public static readonly SoundStyle Minerva = new SoundStyle("Stellamod/Assets/Music/Minerva");
+public static readonly SoundStyle MoonskapeReflection = new SoundStyle("Stellamod/Assets/Music/MoonskapeReflection");
+public static readonly SoundStyle MoonspiralTower = new SoundStyle("Stellamod/Assets/Music/MoonspiralTower");
+public static readonly SoundStyle Moonwalker = new SoundStyle("Stellamod/Assets/Music/Moonwalker");
+public static readonly SoundStyle MothlightBoss = new SoundStyle("Stellamod/Assets/Music/MothlightBoss");
+public static readonly SoundStyle MothlightManor = new SoundStyle("Stellamod/Assets/Music/MothlightManor");
+public static readonly SoundStyle MysticalFoe = new SoundStyle("Stellamod/Assets/Music/MysticalFoe");
+public static readonly SoundStyle Necromancy = new SoundStyle("Stellamod/Assets/Music/Necromancy");
+public static readonly SoundStyle Niivi = new SoundStyle("Stellamod/Assets/Music/Niivi");
+public static readonly SoundStyle NostalgicFoe = new SoundStyle("Stellamod/Assets/Music/NostalgicFoe");
+public static readonly SoundStyle ObservatorOfTheStars = new SoundStyle("Stellamod/Assets/Music/ObservatorOfTheStars");
+public static readonly SoundStyle OggFabledWilds = new SoundStyle("Stellamod/Assets/Music/OggFabledWilds");
+public static readonly SoundStyle OggMoonblight = new SoundStyle("Stellamod/Assets/Music/OggMoonblight");
+public static readonly SoundStyle PunkerPrime = new SoundStyle("Stellamod/Assets/Music/PunkerPrime");
+public static readonly SoundStyle PunkerSteam = new SoundStyle("Stellamod/Assets/Music/PunkerSteam");
+public static readonly SoundStyle PunkerTown = new SoundStyle("Stellamod/Assets/Music/PunkerTown");
+public static readonly SoundStyle Rek = new SoundStyle("Stellamod/Assets/Music/Rek");
+public static readonly SoundStyle RoyalQueenFenix = new SoundStyle("Stellamod/Assets/Music/RoyalQueenFenix");
+public static readonly SoundStyle SacredUnknowns = new SoundStyle("Stellamod/Assets/Music/SacredUnknowns");
+public static readonly SoundStyle SanctuaryOfDeath = new SoundStyle("Stellamod/Assets/Music/SanctuaryOfDeath");
+public static readonly SoundStyle SanguineSingularity = new SoundStyle("Stellamod/Assets/Music/SanguineSingularity");
+public static readonly SoundStyle SingularityFragment = new SoundStyle("Stellamod/Assets/Music/SingularityFragment");
+public static readonly SoundStyle SitriAndTheMechs = new SoundStyle("Stellamod/Assets/Music/SitriAndTheMechs");
+public static readonly SoundStyle Skullrunner = new SoundStyle("Stellamod/Assets/Music/Skullrunner");
+public static readonly SoundStyle SongsDeepBelow = new SoundStyle("Stellamod/Assets/Music/SongsDeepBelow");
+public static readonly SoundStyle Sporulent = new SoundStyle("Stellamod/Assets/Music/Sporulent");
+public static readonly SoundStyle SpringFields = new SoundStyle("Stellamod/Assets/Music/SpringFields");
+public static readonly SoundStyle Starbloom = new SoundStyle("Stellamod/Assets/Music/Starbloom");
+public static readonly SoundStyle StoneGolem = new SoundStyle("Stellamod/Assets/Music/StoneGolem");
+public static readonly SoundStyle SunStalker = new SoundStyle("Stellamod/Assets/Music/SunStalker");
+public static readonly SoundStyle TheGreatIlluria = new SoundStyle("Stellamod/Assets/Music/TheGreatIlluria");
+public static readonly SoundStyle TheLustfulImpaler = new SoundStyle("Stellamod/Assets/Music/TheLustfulImpaler");
+public static readonly SoundStyle The_Gintzing_Winds = new SoundStyle("Stellamod/Assets/Music/The_Gintzing_Winds");
+public static readonly SoundStyle Travoi = new SoundStyle("Stellamod/Assets/Music/Travoi");
+public static readonly SoundStyle VampireDance = new SoundStyle("Stellamod/Assets/Music/VampireDance");
+public static readonly SoundStyle VerliaOfTheMoon = new SoundStyle("Stellamod/Assets/Music/VerliaOfTheMoon");
+public static readonly SoundStyle Virucrowe = new SoundStyle("Stellamod/Assets/Music/Virucrowe");
+public static readonly SoundStyle WitchOfTheDark = new SoundStyle("Stellamod/Assets/Music/WitchOfTheDark");
+public static readonly SoundStyle Witchtown4 = new SoundStyle("Stellamod/Assets/Music/Witchtown4");
+public static readonly SoundStyle WondrousDarkspace = new SoundStyle("Stellamod/Assets/Music/WondrousDarkspace");
+public static readonly SoundStyle WorldsEnd = new SoundStyle("Stellamod/Assets/Music/WorldsEnd");
+public static readonly SoundStyle ZuiTheTraveller = new SoundStyle("Stellamod/Assets/Music/ZuiTheTraveller");
+}
+public static class Noise
+{
+public static LazyAsset<Texture2D> AuroraRays = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/AuroraRays");
+public static LazyAsset<Texture2D> Clouds = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/Clouds");
+public static LazyAsset<Texture2D> CloudsMask = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/CloudsMask");
+public static LazyAsset<Texture2D> CometStars = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/CometStars");
+public static LazyAsset<Texture2D> FlameNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FlameNoise");
+public static LazyAsset<Texture2D> FlameVortexNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FlameVortexNoise");
+public static LazyAsset<Texture2D> FrontClouds = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FrontClouds");
+public static LazyAsset<Texture2D> InvertedVoronoi = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/InvertedVoronoi");
+public static LazyAsset<Texture2D> PainterlyNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/PainterlyNoise");
+public static LazyAsset<Texture2D> PerlinBlurred = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/PerlinBlurred");
+public static LazyAsset<Texture2D> SharpPerlinNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/SharpPerlinNoise");
+public static LazyAsset<Texture2D> SnowStormNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/SnowStormNoise");
+public static LazyAsset<Texture2D> Swirl = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/Swirl");
+public static LazyAsset<Texture2D> Whirly = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/Whirly");
+}
+public static class NoiseTextures
+{
+public static LazyAsset<Texture2D> AuroraGradient = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/AuroraGradient");
+public static LazyAsset<Texture2D> Backglow = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Backglow");
+public static LazyAsset<Texture2D> BasicGlow = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow");
+public static LazyAsset<Texture2D> Beamlight = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Beamlight");
+public static LazyAsset<Texture2D> BeamTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BeamTrail");
+public static LazyAsset<Texture2D> BloodletTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BloodletTrail");
+public static LazyAsset<Texture2D> BloodWater = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BloodWater");
+public static LazyAsset<Texture2D> BloomLine = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine");
+public static LazyAsset<Texture2D> BloomLineSmall = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLineSmall");
+public static LazyAsset<Texture2D> BlurryPerlinNoise = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise");
+public static LazyAsset<Texture2D> BlurryPerlinNoise2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise2");
+public static LazyAsset<Texture2D> BulbTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/BulbTrail");
+public static LazyAsset<Texture2D> CandleFlame = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CandleFlame");
+public static LazyAsset<Texture2D> CartoonyStar = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CartoonyStar");
+public static LazyAsset<Texture2D> CausticTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CausticTrail");
+public static LazyAsset<Texture2D> CheckerTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CheckerTrail");
+public static LazyAsset<Texture2D> Circle = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Circle");
+public static LazyAsset<Texture2D> Circle64 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Circle64");
+public static LazyAsset<Texture2D> CircleGradient = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CircleGradient");
+public static LazyAsset<Texture2D> CloudNoise = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CloudNoise");
+public static LazyAsset<Texture2D> CloudNoise2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CloudNoise2");
+public static LazyAsset<Texture2D> CloudNoise3 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CloudNoise3");
+public static LazyAsset<Texture2D> Clouds = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds");
+public static LazyAsset<Texture2D> Clouds3 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds3");
+public static LazyAsset<Texture2D> Clouds4 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds4");
+public static LazyAsset<Texture2D> Clouds5 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds5");
+public static LazyAsset<Texture2D> Clouds6 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6");
+public static LazyAsset<Texture2D> Clouds6_Outline = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6_Outline");
+public static LazyAsset<Texture2D> Clouds7 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds7");
+public static LazyAsset<Texture2D> ColorMap = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap");
+public static LazyAsset<Texture2D> ColorMap2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap2");
+public static LazyAsset<Texture2D> ColorMap3 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap3");
+public static LazyAsset<Texture2D> ColorMap4 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap4");
+public static LazyAsset<Texture2D> ColorMap5 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap5");
+public static LazyAsset<Texture2D> ColorMap6 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap6");
+public static LazyAsset<Texture2D> ColorMap7 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap7");
+public static LazyAsset<Texture2D> ColorMap8 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap8");
+public static LazyAsset<Texture2D> ColorMapYellow = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMapYellow");
+public static LazyAsset<Texture2D> CorkscrewTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CorkscrewTrail");
+public static LazyAsset<Texture2D> Crystals = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Crystals");
+public static LazyAsset<Texture2D> CrystalTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CrystalTrail");
+public static LazyAsset<Texture2D> CrystalTrail2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/CrystalTrail2");
+public static LazyAsset<Texture2D> DashTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/DashTrail");
+public static LazyAsset<Texture2D> DimLight = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight");
+public static LazyAsset<Texture2D> DirmTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/DirmTrail");
+public static LazyAsset<Texture2D> DirnTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/DirnTrail");
+public static LazyAsset<Texture2D> DNAHelixTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/DNAHelixTrail");
+public static LazyAsset<Texture2D> DottedTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/DottedTrail");
+public static LazyAsset<Texture2D> DottedTrailOutline = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/DottedTrailOutline");
+public static LazyAsset<Texture2D> DreadTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/DreadTrail");
+public static LazyAsset<Texture2D> Empty = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Empty");
+public static LazyAsset<Texture2D> EmptyPixel = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/EmptyPixel");
+public static LazyAsset<Texture2D> EreshkigalClouds = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/EreshkigalClouds");
+public static LazyAsset<Texture2D> EreshkigalStars = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/EreshkigalStars");
+public static LazyAsset<Texture2D> ExampleTrailSlash = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ExampleTrailSlash");
+public static LazyAsset<Texture2D> Extra_47 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47");
+public static LazyAsset<Texture2D> Extra_48 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_48");
+public static LazyAsset<Texture2D> Extra_49 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_49");
+public static LazyAsset<Texture2D> Extra_56 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_56");
+public static LazyAsset<Texture2D> Extra_59 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_59");
+public static LazyAsset<Texture2D> Extra_62 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_62");
+public static LazyAsset<Texture2D> Extra_63 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_63");
+public static LazyAsset<Texture2D> Extra_67 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_67");
+public static LazyAsset<Texture2D> FadedStreak = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/FadedStreak");
+public static LazyAsset<Texture2D> FlamingTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/FlamingTrail");
+public static LazyAsset<Texture2D> FlamingTrailNoBlack = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/FlamingTrailNoBlack");
+public static LazyAsset<Texture2D> Flower = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Flower");
+public static LazyAsset<Texture2D> FlyingSlash = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/FlyingSlash");
+public static LazyAsset<Texture2D> Fog = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Fog");
+public static LazyAsset<Texture2D> FogEmpty = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/FogEmpty");
+public static LazyAsset<Texture2D> GlowSword_AngelSword = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_AngelSword");
+public static LazyAsset<Texture2D> GlowSword_Chillrend = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Chillrend");
+public static LazyAsset<Texture2D> GlowSword_Irradiaspear = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Irradiaspear");
+public static LazyAsset<Texture2D> GlowSword_LightKnives = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_LightKnives");
+public static LazyAsset<Texture2D> GlowSword_Scythe = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Scythe");
+public static LazyAsset<Texture2D> GlowSword_Scythe2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Scythe2");
+public static LazyAsset<Texture2D> GlowSword_Spear = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Spear");
+public static LazyAsset<Texture2D> GlowSword_Sword = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Sword");
+public static LazyAsset<Texture2D> GlowSword_TulaSword = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_TulaSword");
+public static LazyAsset<Texture2D> GlowTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowTrail");
+public static LazyAsset<Texture2D> GlowTrailNoBlack = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowTrailNoBlack");
+public static LazyAsset<Texture2D> GlowTrailNoBlackOutline = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/GlowTrailNoBlackOutline");
+public static LazyAsset<Texture2D> Godray = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Godray");
+public static LazyAsset<Texture2D> IceCrystal = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/IceCrystal");
+public static LazyAsset<Texture2D> IceTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/IceTrail");
+public static LazyAsset<Texture2D> IceTrailFlat = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/IceTrailFlat");
+public static LazyAsset<Texture2D> IceTrailSpiked = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/IceTrailSpiked");
+public static LazyAsset<Texture2D> IceWaterCaustics = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/IceWaterCaustics");
+public static LazyAsset<Texture2D> Invisible = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Invisible");
+public static LazyAsset<Texture2D> JungleWaterCaustics = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/JungleWaterCaustics");
+public static LazyAsset<Texture2D> LaserCircle = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/LaserCircle");
+public static LazyAsset<Texture2D> LavaDepths = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/LavaDepths");
+public static LazyAsset<Texture2D> Leaves = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Leaves");
+public static LazyAsset<Texture2D> LightningTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/LightningTrail");
+public static LazyAsset<Texture2D> LightningTrail2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/LightningTrail2");
+public static LazyAsset<Texture2D> LightningTrail2Outline = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/LightningTrail2Outline");
+public static LazyAsset<Texture2D> LightningTrail3 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/LightningTrail3");
+public static LazyAsset<Texture2D> Line = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Line");
+public static LazyAsset<Texture2D> LoveTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/LoveTrail");
+public static LazyAsset<Texture2D> NormalNoise1 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/NormalNoise1");
+public static LazyAsset<Texture2D> Pentagram = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Pentagram");
+public static LazyAsset<Texture2D> PentagramP2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/PentagramP2");
+public static LazyAsset<Texture2D> PerlinNoise = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/PerlinNoise");
+public static LazyAsset<Texture2D> QuickClouds = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/QuickClouds");
+public static LazyAsset<Texture2D> RainbowPixels = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/RainbowPixels");
+public static LazyAsset<Texture2D> Ray = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Ray");
+public static LazyAsset<Texture2D> RayLight = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight");
+public static LazyAsset<Texture2D> RayLight2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight2");
+public static LazyAsset<Texture2D> RayLight3 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight3");
+public static LazyAsset<Texture2D> RayLight4 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4");
+public static LazyAsset<Texture2D> Refraction = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Refraction");
+public static LazyAsset<Texture2D> RiverMask = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/RiverMask");
+public static LazyAsset<Texture2D> SF = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SF");
+public static LazyAsset<Texture2D> SF2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SF2");
+public static LazyAsset<Texture2D> ShimmerWaterCaustics = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ShimmerWaterCaustics");
+public static LazyAsset<Texture2D> SilkEnd = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SilkEnd");
+public static LazyAsset<Texture2D> SilkTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SilkTrail");
+public static LazyAsset<Texture2D> SimpleTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SimpleTrail");
+public static LazyAsset<Texture2D> Skinnytrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Skinnytrail");
+public static LazyAsset<Texture2D> Skull = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Skull");
+public static LazyAsset<Texture2D> SlashTrail1 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SlashTrail1");
+public static LazyAsset<Texture2D> SmallClouds = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SmallClouds");
+public static LazyAsset<Texture2D> SmallNoise = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SmallNoise");
+public static LazyAsset<Texture2D> SmallWhispyTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SmallWhispyTrail");
+public static LazyAsset<Texture2D> SmooothTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SmooothTrail");
+public static LazyAsset<Texture2D> SoftGlow = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow");
+public static LazyAsset<Texture2D> Spiin = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin");
+public static LazyAsset<Texture2D> Spiin2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin2");
+public static LazyAsset<Texture2D> SpikyTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SpikyTrail");
+public static LazyAsset<Texture2D> SpikyTrail1 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SpikyTrail1");
+public static LazyAsset<Texture2D> SpikyTrail2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/SpikyTrail2");
+public static LazyAsset<Texture2D> Star = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Star");
+public static LazyAsset<Texture2D> StarbloomSkyBeam = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StarbloomSkyBeam");
+public static LazyAsset<Texture2D> StarbloomSkyBeam2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StarbloomSkyBeam2");
+public static LazyAsset<Texture2D> StarNoise = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StarNoise");
+public static LazyAsset<Texture2D> StarNoise2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StarNoise2");
+public static LazyAsset<Texture2D> StarryMagic = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StarryMagic");
+public static LazyAsset<Texture2D> StarryMagicStar = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StarryMagicStar");
+public static LazyAsset<Texture2D> Stars = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Stars");
+public static LazyAsset<Texture2D> StarsSmall = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StarsSmall");
+public static LazyAsset<Texture2D> StarTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StarTrail");
+public static LazyAsset<Texture2D> StringTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/StringTrail");
+public static LazyAsset<Texture2D> TerraTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/TerraTrail");
+public static LazyAsset<Texture2D> Trail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Trail");
+public static LazyAsset<Texture2D> VortexTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/VortexTrail");
+public static LazyAsset<Texture2D> Water = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Water");
+public static LazyAsset<Texture2D> Water3 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/Water3");
+public static LazyAsset<Texture2D> WaterCaustics = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/WaterCaustics");
+public static LazyAsset<Texture2D> WaterGradient = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/WaterGradient");
+public static LazyAsset<Texture2D> WaterNoise1 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/WaterNoise1");
+public static LazyAsset<Texture2D> WaterNoise2 = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/WaterNoise2");
+public static LazyAsset<Texture2D> WaterTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/WaterTrail");
+public static LazyAsset<Texture2D> WaveTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/WaveTrail");
+public static LazyAsset<Texture2D> WhispyTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/WhispyTrail");
+public static LazyAsset<Texture2D> WhiteTrail = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/WhiteTrail");
+public static LazyAsset<Texture2D> ZuiEffect = new LazyAsset<Texture2D>("Stellamod/Assets/NoiseTextures/ZuiEffect");
+}
+public static class Sounds
+{
+public static class AlcaricFox
+{
+public static readonly SoundStyle FenixAirbounce1 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixAirbounce1");
+public static readonly SoundStyle FenixAirbounce2 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixAirbounce2");
+public static readonly SoundStyle FenixAppeartired = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixAppeartired");
+public static readonly SoundStyle FenixBooma = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixBooma");
+public static readonly SoundStyle FenixChargin = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixChargin");
+public static readonly SoundStyle FenixClosebounce = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixClosebounce");
+public static readonly SoundStyle FenixExplosion = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixExplosion");
+public static readonly SoundStyle FenixFastdash1 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixFastdash1");
+public static readonly SoundStyle FenixFastdash2 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixFastdash2");
+public static readonly SoundStyle FenixFastdash3 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixFastdash3");
+public static readonly SoundStyle FenixFastdash4 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixFastdash4");
+public static readonly SoundStyle FenixSawbounce1 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixSawbounce1");
+public static readonly SoundStyle FenixSawbounce2 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixSawbounce2");
+public static readonly SoundStyle Fenixslash1 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/Fenixslash1");
+public static readonly SoundStyle Fenixslash2 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/Fenixslash2");
+public static readonly SoundStyle Fenixslash3 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/Fenixslash3");
+public static readonly SoundStyle Fenixslash4 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/Fenixslash4");
+public static readonly SoundStyle Fenixsmallcrash1 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/Fenixsmallcrash1");
+public static readonly SoundStyle Fenixsmallcrash2 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/Fenixsmallcrash2");
+public static readonly SoundStyle Fenixsmallcrash3 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/Fenixsmallcrash3");
+public static readonly SoundStyle Fenixsmallcrash4 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/Fenixsmallcrash4");
+public static readonly SoundStyle FenixSmallStarExplode = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixSmallStarExplode");
+public static readonly SoundStyle FenixSonicSpeedBoost = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixSonicSpeedBoost");
+public static readonly SoundStyle FenixStarballgrow1 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixStarballgrow1");
+public static readonly SoundStyle FenixStarballgrow2 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixStarballgrow2");
+public static readonly SoundStyle FenixStarballgrow3 = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixStarballgrow3");
+public static readonly SoundStyle FenixStarsactivate = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixStarsactivate");
+public static readonly SoundStyle FenixWindStartup = new SoundStyle("Stellamod/Assets/Sounds/AlcaricFox/FenixWindStartup");
+}
+public static class Bishinine
+{
+public static readonly SoundStyle BellHit1 = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BellHit1");
+public static readonly SoundStyle BellHit2 = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BellHit2");
+public static readonly SoundStyle Bigballchargepart = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/Bigballchargepart");
+public static readonly SoundStyle BigBallready = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BigBallready");
+public static readonly SoundStyle BigBellGroundhit = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BigBellGroundhit");
+public static readonly SoundStyle BishinineBellSmash = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BishinineBellSmash");
+public static readonly SoundStyle BishinineChargeBell = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BishinineChargeBell");
+public static readonly SoundStyle BishinineCometfallbegin = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BishinineCometfallbegin");
+public static readonly SoundStyle BishinineFastfall = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BishinineFastfall");
+public static readonly SoundStyle Bishininelaugh = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/Bishininelaugh");
+public static readonly SoundStyle BishinineSound1 = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BishinineSound1");
+public static readonly SoundStyle BishinineSound2 = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/BishinineSound2");
+public static readonly SoundStyle Comet1 = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/Comet1");
+public static readonly SoundStyle Comet2 = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/Comet2");
+public static readonly SoundStyle FallingBell = new SoundStyle("Stellamod/Assets/Sounds/Bishinine/FallingBell");
+}
+public static class Bow
+{
+public static readonly SoundStyle Aim = new SoundStyle("Stellamod/Assets/Sounds/Bow/Aim");
+public static readonly SoundStyle CrossbowPull = new SoundStyle("Stellamod/Assets/Sounds/Bow/CrossbowPull");
+}
+public static class Cariya
+{
+public static readonly SoundStyle CarianDownslash = new SoundStyle("Stellamod/Assets/Sounds/Cariya/CarianDownslash");
+public static readonly SoundStyle Carianpokie = new SoundStyle("Stellamod/Assets/Sounds/Cariya/Carianpokie");
+public static readonly SoundStyle CarianSlash1 = new SoundStyle("Stellamod/Assets/Sounds/Cariya/CarianSlash1");
+public static readonly SoundStyle CarianSlash2 = new SoundStyle("Stellamod/Assets/Sounds/Cariya/CarianSlash2");
+public static readonly SoundStyle CariyaGrunt1 = new SoundStyle("Stellamod/Assets/Sounds/Cariya/CariyaGrunt1");
+public static readonly SoundStyle CariyaGrunt2 = new SoundStyle("Stellamod/Assets/Sounds/Cariya/CariyaGrunt2");
+}
+public static class Celestia
+{
+public static readonly SoundStyle ArrowCrash = new SoundStyle("Stellamod/Assets/Sounds/Celestia/ArrowCrash");
+public static readonly SoundStyle ArrowRainArrowhitground = new SoundStyle("Stellamod/Assets/Sounds/Celestia/ArrowRainArrowhitground");
+public static readonly SoundStyle ArrowRainStart = new SoundStyle("Stellamod/Assets/Sounds/Celestia/ArrowRainStart");
+public static readonly SoundStyle BigBowCharge = new SoundStyle("Stellamod/Assets/Sounds/Celestia/BigBowCharge");
+public static readonly SoundStyle BigBowFullyGrown = new SoundStyle("Stellamod/Assets/Sounds/Celestia/BigBowFullyGrown");
+public static readonly SoundStyle CelestiaAbouttoAttack = new SoundStyle("Stellamod/Assets/Sounds/Celestia/CelestiaAbouttoAttack");
+public static readonly SoundStyle CelestiaBackflip = new SoundStyle("Stellamod/Assets/Sounds/Celestia/CelestiaBackflip");
+public static readonly SoundStyle CelestiaBowThrow = new SoundStyle("Stellamod/Assets/Sounds/Celestia/CelestiaBowThrow");
+public static readonly SoundStyle SmallBowShoot1 = new SoundStyle("Stellamod/Assets/Sounds/Celestia/SmallBowShoot1");
+public static readonly SoundStyle SmallBowShoot2 = new SoundStyle("Stellamod/Assets/Sounds/Celestia/SmallBowShoot2");
+}
+public static class Collosseum
+{
+public static readonly SoundStyle GintzeCheer = new SoundStyle("Stellamod/Assets/Sounds/Collosseum/GintzeCheer");
+public static readonly SoundStyle GintzeGasp = new SoundStyle("Stellamod/Assets/Sounds/Collosseum/GintzeGasp");
+public static readonly SoundStyle GintzeGrunt1 = new SoundStyle("Stellamod/Assets/Sounds/Collosseum/GintzeGrunt1");
+public static readonly SoundStyle GintzeGrunt2 = new SoundStyle("Stellamod/Assets/Sounds/Collosseum/GintzeGrunt2");
+public static readonly SoundStyle GintzeGrunt3 = new SoundStyle("Stellamod/Assets/Sounds/Collosseum/GintzeGrunt3");
+public static readonly SoundStyle GintzeGrunt4 = new SoundStyle("Stellamod/Assets/Sounds/Collosseum/GintzeGrunt4");
+public static readonly SoundStyle GintzeGrunt5 = new SoundStyle("Stellamod/Assets/Sounds/Collosseum/GintzeGrunt5");
+public static readonly SoundStyle GintzeHandSummon = new SoundStyle("Stellamod/Assets/Sounds/Collosseum/GintzeHandSummon");
+}
+public static class E
+{
+public static readonly SoundStyle DarkTentacleStab = new SoundStyle("Stellamod/Assets/Sounds/E/DarkTentacleStab");
+public static readonly SoundStyle DescendingDark = new SoundStyle("Stellamod/Assets/Sounds/E/DescendingDark");
+public static readonly SoundStyle Hurriboom = new SoundStyle("Stellamod/Assets/Sounds/E/Hurriboom");
+public static readonly SoundStyle HurricaneBlack = new SoundStyle("Stellamod/Assets/Sounds/E/HurricaneBlack");
+public static readonly SoundStyle Hurridown = new SoundStyle("Stellamod/Assets/Sounds/E/Hurridown");
+public static readonly SoundStyle Hurrilock = new SoundStyle("Stellamod/Assets/Sounds/E/Hurrilock");
+public static readonly SoundStyle Hurrislash = new SoundStyle("Stellamod/Assets/Sounds/E/Hurrislash");
+}
+public static class Ereshkigal
+{
+public static readonly SoundStyle EreshkigalsFinisherCannon = new SoundStyle("Stellamod/Assets/Sounds/Ereshkigal/EreshkigalsFinisherCannon");
+public static readonly SoundStyle HeavenlyShot = new SoundStyle("Stellamod/Assets/Sounds/Ereshkigal/HeavenlyShot");
+public static readonly SoundStyle HeavenlyShot2 = new SoundStyle("Stellamod/Assets/Sounds/Ereshkigal/HeavenlyShot2");
+}
+public static class Fire
+{
+public static readonly SoundStyle BlowtorchBigger1 = new SoundStyle("Stellamod/Assets/Sounds/Fire/BlowtorchBigger1");
+public static readonly SoundStyle BlowtorchBigger2 = new SoundStyle("Stellamod/Assets/Sounds/Fire/BlowtorchBigger2");
+public static readonly SoundStyle Demoneatsyourmom = new SoundStyle("Stellamod/Assets/Sounds/Fire/Demoneatsyourmom");
+public static readonly SoundStyle DragonForgeHit = new SoundStyle("Stellamod/Assets/Sounds/Fire/DragonForgeHit");
+public static readonly SoundStyle FireballCharge1 = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballCharge1");
+public static readonly SoundStyle FireballImpact1 = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballImpact1");
+public static readonly SoundStyle FireballShoot1 = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballShoot1");
+public static readonly SoundStyle FireballShoot2 = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballShoot2");
+public static readonly SoundStyle FireExplosion1 = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireExplosion1");
+public static readonly SoundStyle FlameoutWheel = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlameoutWheel");
+public static readonly SoundStyle Flamewheel = new SoundStyle("Stellamod/Assets/Sounds/Fire/Flamewheel");
+public static readonly SoundStyle FlaminCharge = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlaminCharge");
+public static readonly SoundStyle FlaminChargeFast = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlaminChargeFast");
+public static readonly SoundStyle Gothiviaflyaway = new SoundStyle("Stellamod/Assets/Sounds/Fire/Gothiviaflyaway");
+public static readonly SoundStyle Sungrow1 = new SoundStyle("Stellamod/Assets/Sounds/Fire/Sungrow1");
+public static readonly SoundStyle Sungrow2 = new SoundStyle("Stellamod/Assets/Sounds/Fire/Sungrow2");
+public static readonly SoundStyle Sungrow3 = new SoundStyle("Stellamod/Assets/Sounds/Fire/Sungrow3");
+public static readonly SoundStyle Waxing = new SoundStyle("Stellamod/Assets/Sounds/Fire/Waxing");
+}
+public static class Gun
+{
+public static readonly SoundStyle FossilLauncher = new SoundStyle("Stellamod/Assets/Sounds/Gun/FossilLauncher");
+public static readonly SoundStyle GrappleCharge = new SoundStyle("Stellamod/Assets/Sounds/Gun/GrappleCharge");
+public static readonly SoundStyle GrappleShoot = new SoundStyle("Stellamod/Assets/Sounds/Gun/GrappleShoot");
+public static readonly SoundStyle GrappleWindUpStart = new SoundStyle("Stellamod/Assets/Sounds/Gun/GrappleWindUpStart");
+public static readonly SoundStyle GrappleWindWhoosh = new SoundStyle("Stellamod/Assets/Sounds/Gun/GrappleWindWhoosh");
+public static readonly SoundStyle GunJam = new SoundStyle("Stellamod/Assets/Sounds/Gun/GunJam");
+public static readonly SoundStyle GunReload = new SoundStyle("Stellamod/Assets/Sounds/Gun/GunReload");
+public static readonly SoundStyle GunToss = new SoundStyle("Stellamod/Assets/Sounds/Gun/GunToss");
+public static readonly SoundStyle ShockLineShock = new SoundStyle("Stellamod/Assets/Sounds/Gun/ShockLineShock");
+public static readonly SoundStyle ShockLineShoot = new SoundStyle("Stellamod/Assets/Sounds/Gun/ShockLineShoot");
+}
+public static class Illuria
+{
+public static readonly SoundStyle IceCrash1 = new SoundStyle("Stellamod/Assets/Sounds/Illuria/IceCrash1");
+public static readonly SoundStyle IceCrash2 = new SoundStyle("Stellamod/Assets/Sounds/Illuria/IceCrash2");
+public static readonly SoundStyle IceImpact1 = new SoundStyle("Stellamod/Assets/Sounds/Illuria/IceImpact1");
+public static readonly SoundStyle IceImpact2 = new SoundStyle("Stellamod/Assets/Sounds/Illuria/IceImpact2");
+public static readonly SoundStyle MagicalIce = new SoundStyle("Stellamod/Assets/Sounds/Illuria/MagicalIce");
+public static readonly SoundStyle SlushShot1 = new SoundStyle("Stellamod/Assets/Sounds/Illuria/SlushShot1");
+public static readonly SoundStyle SlushShot2 = new SoundStyle("Stellamod/Assets/Sounds/Illuria/SlushShot2");
+public static readonly SoundStyle SlushShot3 = new SoundStyle("Stellamod/Assets/Sounds/Illuria/SlushShot3");
+}
+public static class Jiitas
+{
+public static readonly SoundStyle JiitasBombFuse = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasBombFuse");
+public static readonly SoundStyle JiitasBombThrow = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasBombThrow");
+public static readonly SoundStyle JiitasGunShot = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasGunShot");
+public static readonly SoundStyle JiitasKnifeSlash = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasKnifeSlash");
+public static readonly SoundStyle JiitasKnifeThrow = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasKnifeThrow");
+public static readonly SoundStyle JiitasLaugh = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasLaugh");
+public static readonly SoundStyle JiitasLightSpin = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasLightSpin");
+public static readonly SoundStyle JiitasReload = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasReload");
+public static readonly SoundStyle JiitasSadWah = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasSadWah");
+public static readonly SoundStyle JiitasSit = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasSit");
+public static readonly SoundStyle JiitasSummon = new SoundStyle("Stellamod/Assets/Sounds/Jiitas/JiitasSummon");
+}
+public static class LeviathanEel
+{
+public static readonly SoundStyle EarthRumble = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/EarthRumble");
+public static readonly SoundStyle Electrify = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/Electrify");
+public static readonly SoundStyle LeviBigLaserShoot = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviBigLaserShoot");
+public static readonly SoundStyle LeviBigSuck = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviBigSuck");
+public static readonly SoundStyle LeviBlink = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviBlink");
+public static readonly SoundStyle LeviBubbleStream = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviBubbleStream");
+public static readonly SoundStyle Levigrowl = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/Levigrowl");
+public static readonly SoundStyle LeviGulp = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviGulp");
+public static readonly SoundStyle LeviLaserCharge = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviLaserCharge");
+public static readonly SoundStyle LeviShockchain = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviShockchain");
+public static readonly SoundStyle LeviShockIn = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviShockIn");
+public static readonly SoundStyle LeviSmallBite1 = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviSmallBite1");
+public static readonly SoundStyle LeviSmallSuck = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviSmallSuck");
+public static readonly SoundStyle LeviSwipingBite = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviSwipingBite");
+public static readonly SoundStyle LeviZap1 = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviZap1");
+public static readonly SoundStyle LeviZap2 = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviZap2");
+public static readonly SoundStyle LeviZap3 = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviZap3");
+public static readonly SoundStyle LeviZap4 = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/LeviZap4");
+public static readonly SoundStyle SandDash = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/SandDash");
+public static readonly SoundStyle SandFade = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/SandFade");
+public static readonly SoundStyle StartBodyPrisma = new SoundStyle("Stellamod/Assets/Sounds/LeviathanEel/StartBodyPrisma");
+}
+public static class Magic
+{
+public static readonly SoundStyle AutomationCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/AutomationCast1");
+public static readonly SoundStyle AutomationCast2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/AutomationCast2");
+public static readonly SoundStyle AutomationHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/AutomationHit1");
+public static readonly SoundStyle AutomationHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/AutomationHit2");
+public static readonly SoundStyle BasicMagicHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/BasicMagicHit1");
+public static readonly SoundStyle BasicMagicHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/BasicMagicHit2");
+public static readonly SoundStyle BloodletCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/BloodletCast1");
+public static readonly SoundStyle BloodletHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/BloodletHit1");
+public static readonly SoundStyle BloodletHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/BloodletHit2");
+public static readonly SoundStyle DeeyaCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/DeeyaCast1");
+public static readonly SoundStyle DeeyaCast2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/DeeyaCast2");
+public static readonly SoundStyle DeeyaHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/DeeyaHit1");
+public static readonly SoundStyle DeeyaHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/DeeyaHit2");
+public static readonly SoundStyle GuutCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/GuutCast1");
+public static readonly SoundStyle GuutCast2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/GuutCast2");
+public static readonly SoundStyle GuutHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/GuutHit1");
+public static readonly SoundStyle GuutHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/GuutHit2");
+public static readonly SoundStyle HolyCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/HolyCast1");
+public static readonly SoundStyle HolyCast2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/HolyCast2");
+public static readonly SoundStyle HolyHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/HolyHit1");
+public static readonly SoundStyle HolyHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/HolyHit2");
+public static readonly SoundStyle MothlightStarCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/MothlightStarCast1");
+public static readonly SoundStyle MothlightStarCast2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/MothlightStarCast2");
+public static readonly SoundStyle MothlightStarCast3 = new SoundStyle("Stellamod/Assets/Sounds/Magic/MothlightStarCast3");
+public static readonly SoundStyle NaturalCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/NaturalCast1");
+public static readonly SoundStyle NaturalCast2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/NaturalCast2");
+public static readonly SoundStyle NaturalHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/NaturalHit1");
+public static readonly SoundStyle NaturalHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/NaturalHit2");
+public static readonly SoundStyle PrimeMagicCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/PrimeMagicCast1");
+public static readonly SoundStyle PrimeMagicCast2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/PrimeMagicCast2");
+public static readonly SoundStyle PrimeMagicHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/PrimeMagicHit1");
+public static readonly SoundStyle PrimeMagicHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/PrimeMagicHit2");
+public static readonly SoundStyle PrismaticHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/PrismaticHit1");
+public static readonly SoundStyle RadianceCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/RadianceCast1");
+public static readonly SoundStyle RadianceHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/RadianceHit1");
+public static readonly SoundStyle VineWrap = new SoundStyle("Stellamod/Assets/Sounds/Magic/VineWrap");
+public static readonly SoundStyle WindCast1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/WindCast1");
+public static readonly SoundStyle WindCast2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/WindCast2");
+public static readonly SoundStyle WindHit1 = new SoundStyle("Stellamod/Assets/Sounds/Magic/WindHit1");
+public static readonly SoundStyle WindHit2 = new SoundStyle("Stellamod/Assets/Sounds/Magic/WindHit2");
+}
+public static class MagicWand
+{
+public static readonly SoundStyle BasicCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/BasicCharge");
+public static readonly SoundStyle BloodletCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/BloodletCharge");
+public static readonly SoundStyle BloodletChargeShot = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/BloodletChargeShot");
+public static readonly SoundStyle DeeyaCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/DeeyaCharge");
+public static readonly SoundStyle DeeyaChargeShot = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/DeeyaChargeShot");
+public static readonly SoundStyle EnchantmentGrab = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/EnchantmentGrab");
+public static readonly SoundStyle EnchantmentPlace = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/EnchantmentPlace");
+public static readonly SoundStyle FireCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/FireCharge");
+public static readonly SoundStyle FireChargeShot = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/FireChargeShot");
+public static readonly SoundStyle GuutCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/GuutCharge");
+public static readonly SoundStyle GuutChargeShot = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/GuutChargeShot");
+public static readonly SoundStyle HexCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/HexCharge");
+public static readonly SoundStyle HexChargeShot = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/HexChargeShot");
+public static readonly SoundStyle NatureCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/NatureCharge");
+public static readonly SoundStyle NatureChargeShot = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/NatureChargeShot");
+public static readonly SoundStyle PhantasmalCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/PhantasmalCharge");
+public static readonly SoundStyle PhantasmalChargeShot = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/PhantasmalChargeShot");
+public static readonly SoundStyle UvilisCharge = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/UvilisCharge");
+public static readonly SoundStyle UvilisChargeShot = new SoundStyle("Stellamod/Assets/Sounds/MagicWand/UvilisChargeShot");
+}
+public static class Melee
+{
+public static readonly SoundStyle Crosshatchcut = new SoundStyle("Stellamod/Assets/Sounds/Melee/Crosshatchcut");
+public static readonly SoundStyle CrystalHit1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/CrystalHit1");
+public static readonly SoundStyle ExcaliburAscendDash = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburAscendDash");
+public static readonly SoundStyle ExcaliburAscended = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburAscended");
+public static readonly SoundStyle ExcaliburHeavenlyExplosions = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburHeavenlyExplosions");
+public static readonly SoundStyle ExcaliburHeavenlyStrike = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburHeavenlyStrike");
+public static readonly SoundStyle ExcaliburHitBuster = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburHitBuster");
+public static readonly SoundStyle ExcaliburParry = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburParry");
+public static readonly SoundStyle ExcaliburParryHitback = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburParryHitback");
+public static readonly SoundStyle ExcaliburSmallSwordrain = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburSmallSwordrain");
+public static readonly SoundStyle ExcaliburStartHit1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburStartHit1");
+public static readonly SoundStyle ExcaliburStartHit2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburStartHit2");
+public static readonly SoundStyle ExcaliburStartSlash1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburStartSlash1");
+public static readonly SoundStyle ExcaliburStartSlash2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburStartSlash2");
+public static readonly SoundStyle ExcaliburStartSlash3 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburStartSlash3");
+public static readonly SoundStyle ExcaliburStartSlash4 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburStartSlash4");
+public static readonly SoundStyle ExcaliburSwordCrashFall = new SoundStyle("Stellamod/Assets/Sounds/Melee/ExcaliburSwordCrashFall");
+public static readonly SoundStyle HammerHit1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/HammerHit1");
+public static readonly SoundStyle HammerHit2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/HammerHit2");
+public static readonly SoundStyle HammerSmash1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/HammerSmash1");
+public static readonly SoundStyle HammerSmash2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/HammerSmash2");
+public static readonly SoundStyle HammerSmash3 = new SoundStyle("Stellamod/Assets/Sounds/Melee/HammerSmash3");
+public static readonly SoundStyle HammerSmashLightning1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/HammerSmashLightning1");
+public static readonly SoundStyle HeavySwordSlash1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/HeavySwordSlash1");
+public static readonly SoundStyle HeavySwordSlash2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/HeavySwordSlash2");
+public static readonly SoundStyle LightSwordSpin1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/LightSwordSpin1");
+public static readonly SoundStyle MorrowExp = new SoundStyle("Stellamod/Assets/Sounds/Melee/MorrowExp");
+public static readonly SoundStyle MotoMot = new SoundStyle("Stellamod/Assets/Sounds/Melee/MotoMot");
+public static readonly SoundStyle MotoSlash = new SoundStyle("Stellamod/Assets/Sounds/Melee/MotoSlash");
+public static readonly SoundStyle MotoSlash2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/MotoSlash2");
+public static readonly SoundStyle NormalSwordHit1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/NormalSwordHit1");
+public static readonly SoundStyle NormalSwordSlash1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/NormalSwordSlash1");
+public static readonly SoundStyle NormalSwordSlash2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/NormalSwordSlash2");
+public static readonly SoundStyle Parendine = new SoundStyle("Stellamod/Assets/Sounds/Melee/Parendine");
+public static readonly SoundStyle Parendine2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/Parendine2");
+public static readonly SoundStyle Safunais = new SoundStyle("Stellamod/Assets/Sounds/Melee/Safunais");
+public static readonly SoundStyle Safunais2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/Safunais2");
+public static readonly SoundStyle Safunais3 = new SoundStyle("Stellamod/Assets/Sounds/Melee/Safunais3");
+public static readonly SoundStyle ScytheBigSlash = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheBigSlash");
+public static readonly SoundStyle ScytheBladeSlash1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheBladeSlash1");
+public static readonly SoundStyle ScytheHit1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheHit1");
+public static readonly SoundStyle ScytheHit2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheHit2");
+public static readonly SoundStyle ScytheHit3 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheHit3");
+public static readonly SoundStyle ScythePull = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScythePull");
+public static readonly SoundStyle ScytheWindSlash1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheWindSlash1");
+public static readonly SoundStyle ScytheWindSlash2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheWindSlash2");
+public static readonly SoundStyle ScytheWindSlash3 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheWindSlash3");
+public static readonly SoundStyle ScytheWindSlash4 = new SoundStyle("Stellamod/Assets/Sounds/Melee/ScytheWindSlash4");
+public static readonly SoundStyle SpearHit1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SpearHit1");
+public static readonly SoundStyle SpearSlash1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SpearSlash1");
+public static readonly SoundStyle SpearSlash2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SpearSlash2");
+public static readonly SoundStyle SwordHit1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordHit1");
+public static readonly SoundStyle SwordHit2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordHit2");
+public static readonly SoundStyle SwordHit3 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordHit3");
+public static readonly SoundStyle SwordHit4 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordHit4");
+public static readonly SoundStyle SwordSpin1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordSpin1");
+public static readonly SoundStyle SwordSwing1 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordSwing1");
+public static readonly SoundStyle SwordSwing2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordSwing2");
+public static readonly SoundStyle SwordSwing3 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordSwing3");
+public static readonly SoundStyle SwordSwing4 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordSwing4");
+public static readonly SoundStyle SwordSwing5 = new SoundStyle("Stellamod/Assets/Sounds/Melee/SwordSwing5");
+public static readonly SoundStyle Vinger = new SoundStyle("Stellamod/Assets/Sounds/Melee/Vinger");
+public static readonly SoundStyle Vinger2 = new SoundStyle("Stellamod/Assets/Sounds/Melee/Vinger2");
+public static readonly SoundStyle WeaponSwordbigger = new SoundStyle("Stellamod/Assets/Sounds/Melee/WeaponSwordbigger");
+}
+public static class Minerva
+{
+public static readonly SoundStyle MinervaDeath = new SoundStyle("Stellamod/Assets/Sounds/Minerva/MinervaDeath");
+public static readonly SoundStyle MinervaLaugh = new SoundStyle("Stellamod/Assets/Sounds/Minerva/MinervaLaugh");
+public static readonly SoundStyle MinervaSpin = new SoundStyle("Stellamod/Assets/Sounds/Minerva/MinervaSpin");
+public static readonly SoundStyle MinervaVoice1 = new SoundStyle("Stellamod/Assets/Sounds/Minerva/MinervaVoice1");
+public static readonly SoundStyle MinervaVoice2 = new SoundStyle("Stellamod/Assets/Sounds/Minerva/MinervaVoice2");
+public static readonly SoundStyle MinervaVoice3 = new SoundStyle("Stellamod/Assets/Sounds/Minerva/MinervaVoice3");
+public static readonly SoundStyle Stunned = new SoundStyle("Stellamod/Assets/Sounds/Minerva/Stunned");
+}
+public static class Nature
+{
+public static readonly SoundStyle LeafRustle1 = new SoundStyle("Stellamod/Assets/Sounds/Nature/LeafRustle1");
+public static readonly SoundStyle LeafRustle2 = new SoundStyle("Stellamod/Assets/Sounds/Nature/LeafRustle2");
+}
+public static class Ravager
+{
+public static readonly SoundStyle RavagerAngry = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerAngry");
+public static readonly SoundStyle RavagerRoar = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerRoar");
+public static readonly SoundStyle RavagerRockSlide1 = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerRockSlide1");
+public static readonly SoundStyle RavagerRockSlide2 = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerRockSlide2");
+public static readonly SoundStyle RavagerRockSmash1 = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerRockSmash1");
+public static readonly SoundStyle RavagerRockSmash2 = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerRockSmash2");
+public static readonly SoundStyle RavagerRockSummon1 = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerRockSummon1");
+public static readonly SoundStyle RavagerRockSummon2 = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerRockSummon2");
+public static readonly SoundStyle RavagerRockSummon3 = new SoundStyle("Stellamod/Assets/Sounds/Ravager/RavagerRockSummon3");
+}
+public static class Rek
+{
+public static readonly SoundStyle BigLaserChargeRek = new SoundStyle("Stellamod/Assets/Sounds/Rek/BigLaserChargeRek");
+public static readonly SoundStyle BigLaserRek = new SoundStyle("Stellamod/Assets/Sounds/Rek/BigLaserRek");
+public static readonly SoundStyle RekBigroar = new SoundStyle("Stellamod/Assets/Sounds/Rek/RekBigroar");
+public static readonly SoundStyle RekIdleroar = new SoundStyle("Stellamod/Assets/Sounds/Rek/RekIdleroar");
+public static readonly SoundStyle RekSpikeOut = new SoundStyle("Stellamod/Assets/Sounds/Rek/RekSpikeOut");
+public static readonly SoundStyle SmallFlameBlast = new SoundStyle("Stellamod/Assets/Sounds/Rek/SmallFlameBlast");
+}
+public static class Runes
+{
+public static readonly SoundStyle RuneTeleport = new SoundStyle("Stellamod/Assets/Sounds/Runes/RuneTeleport");
+}
+public static class SanguineSingularity
+{
+public static readonly SoundStyle BloodyDeath = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/BloodyDeath");
+public static readonly SoundStyle BloodyExplosion = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/BloodyExplosion");
+public static readonly SoundStyle BloodyGrab = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/BloodyGrab");
+public static readonly SoundStyle BloodyHit = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/BloodyHit");
+public static readonly SoundStyle ChangeTheWorldo = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/ChangeTheWorldo");
+public static readonly SoundStyle SanguineBurst = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineBurst");
+public static readonly SoundStyle SanguineBurstReady = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineBurstReady");
+public static readonly SoundStyle SanguineCharge = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineCharge");
+public static readonly SoundStyle SanguineCry = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineCry");
+public static readonly SoundStyle SanguineCry2 = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineCry2");
+public static readonly SoundStyle SanguineCyst = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineCyst");
+public static readonly SoundStyle SanguineDash = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineDash");
+public static readonly SoundStyle SanguineDeath = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineDeath");
+public static readonly SoundStyle SanguineLaugh = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineLaugh");
+public static readonly SoundStyle SanguinePreBurst = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguinePreBurst");
+public static readonly SoundStyle SanguineSpawn = new SoundStyle("Stellamod/Assets/Sounds/SanguineSingularity/SanguineSpawn");
+}
+public static class STARBOMBER
+{
+public static readonly SoundStyle HeavyCrush = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/HeavyCrush");
+public static readonly SoundStyle Heavyspin = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/Heavyspin");
+public static readonly SoundStyle Ommove1 = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/Ommove1");
+public static readonly SoundStyle Ommove2 = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/Ommove2");
+public static readonly SoundStyle Ommove3 = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/Ommove3");
+public static readonly SoundStyle Ommove5 = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/Ommove5");
+public static readonly SoundStyle STARRAILGUN = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/STARRAILGUN");
+public static readonly SoundStyle STARSTEP = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/STARSTEP");
+public static readonly SoundStyle STARWALK = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBER/STARWALK");
+}
+public static class Stars
+{
+public static readonly SoundStyle Starsingle1 = new SoundStyle("Stellamod/Assets/Sounds/Stars/Starsingle1");
+public static readonly SoundStyle Starsingle2 = new SoundStyle("Stellamod/Assets/Sounds/Stars/Starsingle2");
+public static readonly SoundStyle Starsingle3 = new SoundStyle("Stellamod/Assets/Sounds/Stars/Starsingle3");
+public static readonly SoundStyle Starsingle4 = new SoundStyle("Stellamod/Assets/Sounds/Stars/Starsingle4");
+public static readonly SoundStyle Starsingle5 = new SoundStyle("Stellamod/Assets/Sounds/Stars/Starsingle5");
+}
+public static class SteamPunking
+{
+public static readonly SoundStyle DescendingBeep = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingBeep");
+public static readonly SoundStyle DescendingBoom = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingBoom");
+public static readonly SoundStyle DescendingCircle = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingCircle");
+public static readonly SoundStyle DescendingDash1 = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingDash1");
+public static readonly SoundStyle DescendingDash2 = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingDash2");
+public static readonly SoundStyle DescendingElectricCharge = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingElectricCharge");
+public static readonly SoundStyle DescendingFlamethrower = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingFlamethrower");
+public static readonly SoundStyle DescendingMineDeploy = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingMineDeploy");
+public static readonly SoundStyle DescendingNodeShoot = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingNodeShoot");
+public static readonly SoundStyle DescendingPhaseShift = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingPhaseShift");
+public static readonly SoundStyle DescendingRetinaBeam = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingRetinaBeam");
+public static readonly SoundStyle DescendingTwirl = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingTwirl");
+public static readonly SoundStyle DescendingWindup = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingWindup");
+public static readonly SoundStyle DescendingZoom = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/DescendingZoom");
+public static readonly SoundStyle MechMove = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/MechMove");
+public static readonly SoundStyle MechSaw = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/MechSaw");
+public static readonly SoundStyle MechSawRevLoop = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/MechSawRevLoop");
+public static readonly SoundStyle MechSawRevUp = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/MechSawRevUp");
+public static readonly SoundStyle MechShoot1 = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/MechShoot1");
+public static readonly SoundStyle MechSteaming = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/MechSteaming");
+public static readonly SoundStyle MechSupercharge = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/MechSupercharge");
+public static readonly SoundStyle MechTurn = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/MechTurn");
+public static readonly SoundStyle ReadyAttack = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/ReadyAttack");
+public static readonly SoundStyle SteamingDeathStart = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/SteamingDeathStart");
+public static readonly SoundStyle SteamrollerDig = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/SteamrollerDig");
+public static readonly SoundStyle Steamrollerheadingdown = new SoundStyle("Stellamod/Assets/Sounds/SteamPunking/Steamrollerheadingdown");
+}
+public static class Verlia
+{
+public static readonly SoundStyle BigMoonExplosion = new SoundStyle("Stellamod/Assets/Sounds/Verlia/BigMoonExplosion");
+public static readonly SoundStyle BigMoonGrow = new SoundStyle("Stellamod/Assets/Sounds/Verlia/BigMoonGrow");
+public static readonly SoundStyle BigSwordHitDown = new SoundStyle("Stellamod/Assets/Sounds/Verlia/BigSwordHitDown");
+public static readonly SoundStyle BigSwordSwing = new SoundStyle("Stellamod/Assets/Sounds/Verlia/BigSwordSwing");
+public static readonly SoundStyle MoonBounceOnce = new SoundStyle("Stellamod/Assets/Sounds/Verlia/MoonBounceOnce");
+public static readonly SoundStyle MoonBounceTwo = new SoundStyle("Stellamod/Assets/Sounds/Verlia/MoonBounceTwo");
+public static readonly SoundStyle MoonDuoHitGround = new SoundStyle("Stellamod/Assets/Sounds/Verlia/MoonDuoHitGround");
+public static readonly SoundStyle MoonshotBlast = new SoundStyle("Stellamod/Assets/Sounds/Verlia/MoonshotBlast");
+public static readonly SoundStyle ShockwaveGround = new SoundStyle("Stellamod/Assets/Sounds/Verlia/ShockwaveGround");
+public static readonly SoundStyle SwordGrowBigga = new SoundStyle("Stellamod/Assets/Sounds/Verlia/SwordGrowBigga");
+public static readonly SoundStyle SwordGrowSmall = new SoundStyle("Stellamod/Assets/Sounds/Verlia/SwordGrowSmall");
+}
+public static class Waypoint
+{
+public static readonly SoundStyle OpenWaypointSection = new SoundStyle("Stellamod/Assets/Sounds/Waypoint/OpenWaypointSection");
+public static readonly SoundStyle WaypointActivate = new SoundStyle("Stellamod/Assets/Sounds/Waypoint/WaypointActivate");
+}
+public static readonly SoundStyle AbsoluteDistillence = new SoundStyle("Stellamod/Assets/Sounds/AbsoluteDistillence");
+public static readonly SoundStyle AbsoluteSwing = new SoundStyle("Stellamod/Assets/Sounds/AbsoluteSwing");
+public static readonly SoundStyle AcidProbe1 = new SoundStyle("Stellamod/Assets/Sounds/AcidProbe1");
+public static readonly SoundStyle AcidProbe2 = new SoundStyle("Stellamod/Assets/Sounds/AcidProbe2");
+public static readonly SoundStyle AcidProbe3 = new SoundStyle("Stellamod/Assets/Sounds/AcidProbe3");
+public static readonly SoundStyle AcidProbeDeath = new SoundStyle("Stellamod/Assets/Sounds/AcidProbeDeath");
+public static readonly SoundStyle ArcaneExplode = new SoundStyle("Stellamod/Assets/Sounds/ArcaneExplode");
+public static readonly SoundStyle Arcaneup = new SoundStyle("Stellamod/Assets/Sounds/Arcaneup");
+public static readonly SoundStyle ArcharilitDrone1 = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1");
+public static readonly SoundStyle ArcharilitDrone2 = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone2");
+public static readonly SoundStyle ArcharilitDrone3 = new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3");
+public static readonly SoundStyle ArchariliteEnergyShot = new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot");
+public static readonly SoundStyle ArchariliteEnergyShot2 = new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot2");
+public static readonly SoundStyle AssassinsKnifeHit = new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit");
+public static readonly SoundStyle AssassinsKnifeHit2 = new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2");
+public static readonly SoundStyle AssassinsKnifeProg = new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg");
+public static readonly SoundStyle AssassinsKnifeProg2 = new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg2");
+public static readonly SoundStyle AssassinsSlash = new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlash");
+public static readonly SoundStyle AssassinsSlashCharge = new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashCharge");
+public static readonly SoundStyle AssassinsSlashProj2 = new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashProj2");
+public static readonly SoundStyle AssassinsSlashProj3 = new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashProj3");
+public static readonly SoundStyle AssassinsSlashProj4 = new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashProj4");
+public static readonly SoundStyle Astalaiya1 = new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1");
+public static readonly SoundStyle Astalaiya2 = new SoundStyle("Stellamod/Assets/Sounds/Astalaiya2");
+public static readonly SoundStyle Astalaiya3 = new SoundStyle("Stellamod/Assets/Sounds/Astalaiya3");
+public static readonly SoundStyle Aurora = new SoundStyle("Stellamod/Assets/Sounds/Aurora");
+public static readonly SoundStyle AuroraEnd = new SoundStyle("Stellamod/Assets/Sounds/AuroraEnd");
+public static readonly SoundStyle AutomationCast1 = new SoundStyle("Stellamod/Assets/Sounds/AutomationCast1");
+public static readonly SoundStyle AutomationCast2 = new SoundStyle("Stellamod/Assets/Sounds/AutomationCast2");
+public static readonly SoundStyle AutomationHit1 = new SoundStyle("Stellamod/Assets/Sounds/AutomationHit1");
+public static readonly SoundStyle AutomationHit2 = new SoundStyle("Stellamod/Assets/Sounds/AutomationHit2");
+public static readonly SoundStyle Axing = new SoundStyle("Stellamod/Assets/Sounds/Axing");
+public static readonly SoundStyle Balls = new SoundStyle("Stellamod/Assets/Sounds/Balls");
+public static readonly SoundStyle BallSwing = new SoundStyle("Stellamod/Assets/Sounds/BallSwing");
+public static readonly SoundStyle BasicMagicHit1 = new SoundStyle("Stellamod/Assets/Sounds/BasicMagicHit1");
+public static readonly SoundStyle BasicMagicHit2 = new SoundStyle("Stellamod/Assets/Sounds/BasicMagicHit2");
+public static readonly SoundStyle BeeBuzz1 = new SoundStyle("Stellamod/Assets/Sounds/BeeBuzz1");
+public static readonly SoundStyle BeeBuzz2 = new SoundStyle("Stellamod/Assets/Sounds/BeeBuzz2");
+public static readonly SoundStyle BeeDeath1 = new SoundStyle("Stellamod/Assets/Sounds/BeeDeath1");
+public static readonly SoundStyle BeeDeath2 = new SoundStyle("Stellamod/Assets/Sounds/BeeDeath2");
+public static readonly SoundStyle BiggerCharge = new SoundStyle("Stellamod/Assets/Sounds/BiggerCharge");
+public static readonly SoundStyle BindingBless1 = new SoundStyle("Stellamod/Assets/Sounds/BindingBless1");
+public static readonly SoundStyle Binding_Abyss_Laugh = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Laugh");
+public static readonly SoundStyle Binding_Abyss_Rune = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune");
+public static readonly SoundStyle Binding_Abyss_Rune_Fade = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune_Fade");
+public static readonly SoundStyle Binding_Abyss_Rune_SoulShot = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune_SoulShot");
+public static readonly SoundStyle Binding_Abyss_Rune_SoulStar = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune_SoulStar");
+public static readonly SoundStyle Binding_Abyss_Spawn = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn");
+public static readonly SoundStyle Binding_Abyss_Start = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Start");
+public static readonly SoundStyle BlindingBless2 = new SoundStyle("Stellamod/Assets/Sounds/BlindingBless2");
+public static readonly SoundStyle Bliss1 = new SoundStyle("Stellamod/Assets/Sounds/Bliss1");
+public static readonly SoundStyle Bliss2 = new SoundStyle("Stellamod/Assets/Sounds/Bliss2");
+public static readonly SoundStyle BloodCystDeath = new SoundStyle("Stellamod/Assets/Sounds/BloodCystDeath");
+public static readonly SoundStyle bloodlamp = new SoundStyle("Stellamod/Assets/Sounds/bloodlamp");
+public static readonly SoundStyle BloodletCast1 = new SoundStyle("Stellamod/Assets/Sounds/BloodletCast1");
+public static readonly SoundStyle BloodletHit1 = new SoundStyle("Stellamod/Assets/Sounds/BloodletHit1");
+public static readonly SoundStyle BloodletHit2 = new SoundStyle("Stellamod/Assets/Sounds/BloodletHit2");
+public static readonly SoundStyle BlowtorchContinous = new SoundStyle("Stellamod/Assets/Sounds/BlowtorchContinous");
+public static readonly SoundStyle BoneCrackle = new SoundStyle("Stellamod/Assets/Sounds/BoneCrackle");
+public static readonly SoundStyle bongo = new SoundStyle("Stellamod/Assets/Sounds/bongo");
+public static readonly SoundStyle BookClose = new SoundStyle("Stellamod/Assets/Sounds/BookClose");
+public static readonly SoundStyle BookOpen = new SoundStyle("Stellamod/Assets/Sounds/BookOpen");
+public static readonly SoundStyle BookPageTurn = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
+public static readonly SoundStyle BowHolding = new SoundStyle("Stellamod/Assets/Sounds/BowHolding");
+public static readonly SoundStyle bowpull = new SoundStyle("Stellamod/Assets/Sounds/bowpull");
+public static readonly SoundStyle Briskfly = new SoundStyle("Stellamod/Assets/Sounds/Briskfly");
+public static readonly SoundStyle BrokenWrath1 = new SoundStyle("Stellamod/Assets/Sounds/BrokenWrath1");
+public static readonly SoundStyle BrokenWrath2 = new SoundStyle("Stellamod/Assets/Sounds/BrokenWrath2");
+public static readonly SoundStyle BubbleIn = new SoundStyle("Stellamod/Assets/Sounds/BubbleIn");
+public static readonly SoundStyle BuildingSomething = new SoundStyle("Stellamod/Assets/Sounds/BuildingSomething");
+public static readonly SoundStyle Built = new SoundStyle("Stellamod/Assets/Sounds/Built");
+public static readonly SoundStyle Burnbefore = new SoundStyle("Stellamod/Assets/Sounds/Burnbefore");
+public static readonly SoundStyle CauldronCraft = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
+public static readonly SoundStyle CHAOS = new SoundStyle("Stellamod/Assets/Sounds/CHAOS");
+public static readonly SoundStyle Chroma1 = new SoundStyle("Stellamod/Assets/Sounds/Chroma1");
+public static readonly SoundStyle Chroma2 = new SoundStyle("Stellamod/Assets/Sounds/Chroma2");
+public static readonly SoundStyle Chroma3 = new SoundStyle("Stellamod/Assets/Sounds/Chroma3");
+public static readonly SoundStyle Cinder = new SoundStyle("Stellamod/Assets/Sounds/Cinder");
+public static readonly SoundStyle CinderBraker = new SoundStyle("Stellamod/Assets/Sounds/CinderBraker");
+public static readonly SoundStyle CleanestCleaver1 = new SoundStyle("Stellamod/Assets/Sounds/CleanestCleaver1");
+public static readonly SoundStyle CleanestCleaver2 = new SoundStyle("Stellamod/Assets/Sounds/CleanestCleaver2");
+public static readonly SoundStyle CleanestCleaver3 = new SoundStyle("Stellamod/Assets/Sounds/CleanestCleaver3");
+public static readonly SoundStyle CleanestCleaver4 = new SoundStyle("Stellamod/Assets/Sounds/CleanestCleaver4");
+public static readonly SoundStyle CleanestCleaver5 = new SoundStyle("Stellamod/Assets/Sounds/CleanestCleaver5");
+public static readonly SoundStyle CleanestCleaver6 = new SoundStyle("Stellamod/Assets/Sounds/CleanestCleaver6");
+public static readonly SoundStyle clickk = new SoundStyle("Stellamod/Assets/Sounds/clickk");
+public static readonly SoundStyle ClockworkCity1 = new SoundStyle("Stellamod/Assets/Sounds/ClockworkCity1");
+public static readonly SoundStyle ClockworkCity2 = new SoundStyle("Stellamod/Assets/Sounds/ClockworkCity2");
+public static readonly SoundStyle ClockworkCity3 = new SoundStyle("Stellamod/Assets/Sounds/ClockworkCity3");
+public static readonly SoundStyle ClockworkCity4 = new SoundStyle("Stellamod/Assets/Sounds/ClockworkCity4");
+public static readonly SoundStyle CollectSpecial = new SoundStyle("Stellamod/Assets/Sounds/CollectSpecial");
+public static readonly SoundStyle CombusterBoom = new SoundStyle("Stellamod/Assets/Sounds/CombusterBoom");
+public static readonly SoundStyle CombusterReady = new SoundStyle("Stellamod/Assets/Sounds/CombusterReady");
+public static readonly SoundStyle CombusterSnap = new SoundStyle("Stellamod/Assets/Sounds/CombusterSnap");
+public static readonly SoundStyle ComicBoom = new SoundStyle("Stellamod/Assets/Sounds/ComicBoom");
+public static readonly SoundStyle ConfettiShot1 = new SoundStyle("Stellamod/Assets/Sounds/ConfettiShot1");
+public static readonly SoundStyle Converted = new SoundStyle("Stellamod/Assets/Sounds/Converted");
+public static readonly SoundStyle CorsageRune1 = new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1");
+public static readonly SoundStyle CorsageRune2 = new SoundStyle("Stellamod/Assets/Sounds/CorsageRune2");
+public static readonly SoundStyle CorsageRune3 = new SoundStyle("Stellamod/Assets/Sounds/CorsageRune3");
+public static readonly SoundStyle CrossbowPull = new SoundStyle("Stellamod/Assets/Sounds/CrossbowPull");
+public static readonly SoundStyle Crysalizer1 = new SoundStyle("Stellamod/Assets/Sounds/Crysalizer1");
+public static readonly SoundStyle Crysalizer2 = new SoundStyle("Stellamod/Assets/Sounds/Crysalizer2");
+public static readonly SoundStyle Crysalizer3 = new SoundStyle("Stellamod/Assets/Sounds/Crysalizer3");
+public static readonly SoundStyle Crysalizer4 = new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4");
+public static readonly SoundStyle Crysalizer5 = new SoundStyle("Stellamod/Assets/Sounds/Crysalizer5");
+public static readonly SoundStyle CrystalHit1 = new SoundStyle("Stellamod/Assets/Sounds/CrystalHit1");
+public static readonly SoundStyle CrystalSumms = new SoundStyle("Stellamod/Assets/Sounds/CrystalSumms");
+public static readonly SoundStyle CurveSwordSlash1 = new SoundStyle("Stellamod/Assets/Sounds/CurveSwordSlash1");
+public static readonly SoundStyle CyroBolt1 = new SoundStyle("Stellamod/Assets/Sounds/CyroBolt1");
+public static readonly SoundStyle CyroBolt2 = new SoundStyle("Stellamod/Assets/Sounds/CyroBolt2");
+public static readonly SoundStyle dash = new SoundStyle("Stellamod/Assets/Sounds/dash");
+public static readonly SoundStyle DeathShot = new SoundStyle("Stellamod/Assets/Sounds/DeathShot");
+public static readonly SoundStyle DeathShot2 = new SoundStyle("Stellamod/Assets/Sounds/DeathShot2");
+public static readonly SoundStyle DeathShotBomb = new SoundStyle("Stellamod/Assets/Sounds/DeathShotBomb");
+public static readonly SoundStyle DeathShotBomb2 = new SoundStyle("Stellamod/Assets/Sounds/DeathShotBomb2");
+public static readonly SoundStyle DeeyaCast1 = new SoundStyle("Stellamod/Assets/Sounds/DeeyaCast1");
+public static readonly SoundStyle DeeyaCast2 = new SoundStyle("Stellamod/Assets/Sounds/DeeyaCast2");
+public static readonly SoundStyle DeeyaHit1 = new SoundStyle("Stellamod/Assets/Sounds/DeeyaHit1");
+public static readonly SoundStyle DeeyaHit2 = new SoundStyle("Stellamod/Assets/Sounds/DeeyaHit2");
+public static readonly SoundStyle Dirt = new SoundStyle("Stellamod/Assets/Sounds/Dirt");
+public static readonly SoundStyle DMHeart__Dash = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Dash");
+public static readonly SoundStyle DMHeart__Dash2 = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Dash2");
+public static readonly SoundStyle DMHeart__Open = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Open");
+public static readonly SoundStyle DMHeart__PreDash = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__PreDash");
+public static readonly SoundStyle DMHeart__Shot1 = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Shot1");
+public static readonly SoundStyle DMHeart__Shot2 = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Shot2");
+public static readonly SoundStyle DMHeart__Spawn = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Spawn");
+public static readonly SoundStyle DMHeart__Vomit1 = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Vomit1");
+public static readonly SoundStyle DMHeart__Vomit2 = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Vomit2");
+public static readonly SoundStyle DMHeart__Vomit3 = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Vomit3");
+public static readonly SoundStyle Dreadmire_BoneSpawn1 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_BoneSpawn1");
+public static readonly SoundStyle Dreadmire_BoneSpawn2 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_BoneSpawn2");
+public static readonly SoundStyle Dreadmire_Fire1 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Fire1");
+public static readonly SoundStyle Dreadmire_Laugh = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Laugh");
+public static readonly SoundStyle Dreadmire_Pentagram = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Pentagram");
+public static readonly SoundStyle Dreadmire_Pentagram_Skull1 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Pentagram_Skull1");
+public static readonly SoundStyle Dreadmire_Pentagram_Skull2 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Pentagram_Skull2");
+public static readonly SoundStyle Dreadmire_Spawn1 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Spawn1");
+public static readonly SoundStyle Dreadmire_Spawn2 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Spawn2");
+public static readonly SoundStyle Dreadmire_TP_In = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_TP_In");
+public static readonly SoundStyle Dreadmire_TP_Out = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_TP_Out");
+public static readonly SoundStyle Dreadmire__Dash = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__Dash");
+public static readonly SoundStyle Dreadmire__FinalBeam = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__FinalBeam");
+public static readonly SoundStyle Dreadmire__LightingRain = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain");
+public static readonly SoundStyle Dreadmire__LightingRain1 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain1");
+public static readonly SoundStyle Dreadmire__LightingRain2 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain2");
+public static readonly SoundStyle Dreadmire__LightingRain3 = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain3");
+public static readonly SoundStyle Dreadmire__PreDash = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__PreDash");
+public static readonly SoundStyle Dreadmire__Skulls = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__Skulls");
+public static readonly SoundStyle DreamCharge = new SoundStyle("Stellamod/Assets/Sounds/DreamCharge");
+public static readonly SoundStyle DUAL = new SoundStyle("Stellamod/Assets/Sounds/DUAL");
+public static readonly SoundStyle DUAL2 = new SoundStyle("Stellamod/Assets/Sounds/DUAL2");
+public static readonly SoundStyle ElectricShuffle = new SoundStyle("Stellamod/Assets/Sounds/ElectricShuffle");
+public static readonly SoundStyle EventHorizon1 = new SoundStyle("Stellamod/Assets/Sounds/EventHorizon1");
+public static readonly SoundStyle EventHorizon2 = new SoundStyle("Stellamod/Assets/Sounds/EventHorizon2");
+public static readonly SoundStyle Executor1 = new SoundStyle("Stellamod/Assets/Sounds/Executor1");
+public static readonly SoundStyle ExplosionBurstBomb = new SoundStyle("Stellamod/Assets/Sounds/ExplosionBurstBomb");
+public static readonly SoundStyle ExplosionCrystalShard = new SoundStyle("Stellamod/Assets/Sounds/ExplosionCrystalShard");
+public static readonly SoundStyle ExplosionGaseous = new SoundStyle("Stellamod/Assets/Sounds/ExplosionGaseous");
+public static readonly SoundStyle FanHit1 = new SoundStyle("Stellamod/Assets/Sounds/FanHit1");
+public static readonly SoundStyle FanHit2 = new SoundStyle("Stellamod/Assets/Sounds/FanHit2");
+public static readonly SoundStyle FenixFun = new SoundStyle("Stellamod/Assets/Sounds/FenixFun");
+public static readonly SoundStyle FenixHot = new SoundStyle("Stellamod/Assets/Sounds/FenixHot");
+public static readonly SoundStyle FenixLaugh = new SoundStyle("Stellamod/Assets/Sounds/FenixLaugh");
+public static readonly SoundStyle FenixNeNe = new SoundStyle("Stellamod/Assets/Sounds/FenixNeNe");
+public static readonly SoundStyle FenixReady = new SoundStyle("Stellamod/Assets/Sounds/FenixReady");
+public static readonly SoundStyle FenixSlash1 = new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1");
+public static readonly SoundStyle FenixSlash2 = new SoundStyle("Stellamod/Assets/Sounds/FenixSlash2");
+public static readonly SoundStyle FenixSlash3 = new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3");
+public static readonly SoundStyle FenixSummonGrav = new SoundStyle("Stellamod/Assets/Sounds/FenixSummonGrav");
+public static readonly SoundStyle FenixSwordsDance1 = new SoundStyle("Stellamod/Assets/Sounds/FenixSwordsDance1");
+public static readonly SoundStyle FenixSwordsDance2 = new SoundStyle("Stellamod/Assets/Sounds/FenixSwordsDance2");
+public static readonly SoundStyle FireShockwave = new SoundStyle("Stellamod/Assets/Sounds/FireShockwave");
+public static readonly SoundStyle flameup = new SoundStyle("Stellamod/Assets/Sounds/flameup");
+public static readonly SoundStyle Flowers = new SoundStyle("Stellamod/Assets/Sounds/Flowers");
+public static readonly SoundStyle FrostBringer = new SoundStyle("Stellamod/Assets/Sounds/FrostBringer");
+public static readonly SoundStyle FrostShot1 = new SoundStyle("Stellamod/Assets/Sounds/FrostShot1");
+public static readonly SoundStyle FrostShot2 = new SoundStyle("Stellamod/Assets/Sounds/FrostShot2");
+public static readonly SoundStyle FrostShot3 = new SoundStyle("Stellamod/Assets/Sounds/FrostShot3");
+public static readonly SoundStyle Frosty = new SoundStyle("Stellamod/Assets/Sounds/Frosty");
+public static readonly SoundStyle FungalFlaceBall1 = new SoundStyle("Stellamod/Assets/Sounds/FungalFlaceBall1");
+public static readonly SoundStyle FungalFlaceBall2 = new SoundStyle("Stellamod/Assets/Sounds/FungalFlaceBall2");
+public static readonly SoundStyle FungalFlaceBall3 = new SoundStyle("Stellamod/Assets/Sounds/FungalFlaceBall3");
+public static readonly SoundStyle FungalFlaceBall4 = new SoundStyle("Stellamod/Assets/Sounds/FungalFlaceBall4");
+public static readonly SoundStyle GallinLock = new SoundStyle("Stellamod/Assets/Sounds/GallinLock");
+public static readonly SoundStyle GallinLock2 = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
+public static readonly SoundStyle GaseousShockwave = new SoundStyle("Stellamod/Assets/Sounds/GaseousShockwave");
+public static readonly SoundStyle Genesis1 = new SoundStyle("Stellamod/Assets/Sounds/Genesis1");
+public static readonly SoundStyle Genesis2 = new SoundStyle("Stellamod/Assets/Sounds/Genesis2");
+public static readonly SoundStyle Genesis3 = new SoundStyle("Stellamod/Assets/Sounds/Genesis3");
+public static readonly SoundStyle Genesis4 = new SoundStyle("Stellamod/Assets/Sounds/Genesis4");
+public static readonly SoundStyle GhostExcalibur1 = new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur1");
+public static readonly SoundStyle GhostExcalibur2 = new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur2");
+public static readonly SoundStyle Gintze_Death = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death");
+public static readonly SoundStyle Gintze_Hit = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit");
+public static readonly SoundStyle GintzSummon = new SoundStyle("Stellamod/Assets/Sounds/GintzSummon");
+public static readonly SoundStyle GintzSummon2 = new SoundStyle("Stellamod/Assets/Sounds/GintzSummon2");
+public static readonly SoundStyle GladiatorMirage1 = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage1");
+public static readonly SoundStyle GladiatorMirage2 = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage2");
+public static readonly SoundStyle GladiatorMirageRed = new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirageRed");
+public static readonly SoundStyle GlocketRouncher = new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher");
+public static readonly SoundStyle GlocketRouncher2 = new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher2");
+public static readonly SoundStyle Gold1 = new SoundStyle("Stellamod/Assets/Sounds/Gold1");
+public static readonly SoundStyle Gold2 = new SoundStyle("Stellamod/Assets/Sounds/Gold2");
+public static readonly SoundStyle Gold3 = new SoundStyle("Stellamod/Assets/Sounds/Gold3");
+public static readonly SoundStyle GoldenAura = new SoundStyle("Stellamod/Assets/Sounds/GoldenAura");
+public static readonly SoundStyle GoldenAura2 = new SoundStyle("Stellamod/Assets/Sounds/GoldenAura2");
+public static readonly SoundStyle GoldenFall = new SoundStyle("Stellamod/Assets/Sounds/GoldenFall");
+public static readonly SoundStyle GoldenPrice5 = new SoundStyle("Stellamod/Assets/Sounds/GoldenPrice5");
+public static readonly SoundStyle GoldenPrice6 = new SoundStyle("Stellamod/Assets/Sounds/GoldenPrice6");
+public static readonly SoundStyle GoldenSlice1 = new SoundStyle("Stellamod/Assets/Sounds/GoldenSlice1");
+public static readonly SoundStyle GoldenSlice2 = new SoundStyle("Stellamod/Assets/Sounds/GoldenSlice2");
+public static readonly SoundStyle GoldenSlice3 = new SoundStyle("Stellamod/Assets/Sounds/GoldenSlice3");
+public static readonly SoundStyle GoldenStart1 = new SoundStyle("Stellamod/Assets/Sounds/GoldenStart1");
+public static readonly SoundStyle GoldenStart2 = new SoundStyle("Stellamod/Assets/Sounds/GoldenStart2");
+public static readonly SoundStyle GoldPrice1 = new SoundStyle("Stellamod/Assets/Sounds/GoldPrice1");
+public static readonly SoundStyle GoldPrice2 = new SoundStyle("Stellamod/Assets/Sounds/GoldPrice2");
+public static readonly SoundStyle GoldPrice3 = new SoundStyle("Stellamod/Assets/Sounds/GoldPrice3");
+public static readonly SoundStyle GoldPrice4 = new SoundStyle("Stellamod/Assets/Sounds/GoldPrice4");
+public static readonly SoundStyle Gong = new SoundStyle("Stellamod/Assets/Sounds/Gong");
+public static readonly SoundStyle GothCarmody = new SoundStyle("Stellamod/Assets/Sounds/GothCarmody");
+public static readonly SoundStyle GothExplode = new SoundStyle("Stellamod/Assets/Sounds/GothExplode");
+public static readonly SoundStyle GothingBow = new SoundStyle("Stellamod/Assets/Sounds/GothingBow");
+public static readonly SoundStyle GothKickSlap = new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap");
+public static readonly SoundStyle GothReact = new SoundStyle("Stellamod/Assets/Sounds/GothReact");
+public static readonly SoundStyle GothSummon = new SoundStyle("Stellamod/Assets/Sounds/GothSummon");
+public static readonly SoundStyle GothSunLong = new SoundStyle("Stellamod/Assets/Sounds/GothSunLong");
+public static readonly SoundStyle GothSunLonger = new SoundStyle("Stellamod/Assets/Sounds/GothSunLonger");
+public static readonly SoundStyle GotInWorld = new SoundStyle("Stellamod/Assets/Sounds/GotInWorld");
+public static readonly SoundStyle Granite1 = new SoundStyle("Stellamod/Assets/Sounds/Granite1");
+public static readonly SoundStyle Granite2 = new SoundStyle("Stellamod/Assets/Sounds/Granite2");
+public static readonly SoundStyle Granite3 = new SoundStyle("Stellamod/Assets/Sounds/Granite3");
+public static readonly SoundStyle Granite4 = new SoundStyle("Stellamod/Assets/Sounds/Granite4");
+public static readonly SoundStyle GraniteMagmum1 = new SoundStyle("Stellamod/Assets/Sounds/GraniteMagmum1");
+public static readonly SoundStyle GraniteMagmum2 = new SoundStyle("Stellamod/Assets/Sounds/GraniteMagmum2");
+public static readonly SoundStyle Green = new SoundStyle("Stellamod/Assets/Sounds/Green");
+public static readonly SoundStyle GSummon = new SoundStyle("Stellamod/Assets/Sounds/GSummon");
+public static readonly SoundStyle gun1 = new SoundStyle("Stellamod/Assets/Sounds/gun1");
+public static readonly SoundStyle GunBigNew1 = new SoundStyle("Stellamod/Assets/Sounds/GunBigNew1");
+public static readonly SoundStyle GunBlasting = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
+public static readonly SoundStyle GunElectric = new SoundStyle("Stellamod/Assets/Sounds/GunElectric");
+public static readonly SoundStyle GunLaser = new SoundStyle("Stellamod/Assets/Sounds/GunLaser");
+public static readonly SoundStyle GunRaving = new SoundStyle("Stellamod/Assets/Sounds/GunRaving");
+public static readonly SoundStyle GunShootNew1 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew1");
+public static readonly SoundStyle GunShootNew10 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew10");
+public static readonly SoundStyle GunShootNew11 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew11");
+public static readonly SoundStyle GunShootNew12 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew12");
+public static readonly SoundStyle GunShootNew2 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew2");
+public static readonly SoundStyle GunShootNew3 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew3");
+public static readonly SoundStyle GunShootNew4 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew4");
+public static readonly SoundStyle GunShootNew5 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew5");
+public static readonly SoundStyle GunShootNew6 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew6");
+public static readonly SoundStyle GunShootNew7 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew7");
+public static readonly SoundStyle GunShootNew8 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew8");
+public static readonly SoundStyle GunShootNew9 = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew9");
+public static readonly SoundStyle Gunshot1 = new SoundStyle("Stellamod/Assets/Sounds/Gunshot1");
+public static readonly SoundStyle GunShot2 = new SoundStyle("Stellamod/Assets/Sounds/GunShot2");
+public static readonly SoundStyle Gunsotp = new SoundStyle("Stellamod/Assets/Sounds/Gunsotp");
+public static readonly SoundStyle GuutCast1 = new SoundStyle("Stellamod/Assets/Sounds/GuutCast1");
+public static readonly SoundStyle GuutCast2 = new SoundStyle("Stellamod/Assets/Sounds/GuutCast2");
+public static readonly SoundStyle GuutHit1 = new SoundStyle("Stellamod/Assets/Sounds/GuutHit1");
+public static readonly SoundStyle GuutHit2 = new SoundStyle("Stellamod/Assets/Sounds/GuutHit2");
+public static readonly SoundStyle GW1 = new SoundStyle("Stellamod/Assets/Sounds/GW1");
+public static readonly SoundStyle GW2 = new SoundStyle("Stellamod/Assets/Sounds/GW2");
+public static readonly SoundStyle GW3 = new SoundStyle("Stellamod/Assets/Sounds/GW3");
+public static readonly SoundStyle HammerHit1 = new SoundStyle("Stellamod/Assets/Sounds/HammerHit1");
+public static readonly SoundStyle HammerHit2 = new SoundStyle("Stellamod/Assets/Sounds/HammerHit2");
+public static readonly SoundStyle HammerSmash1 = new SoundStyle("Stellamod/Assets/Sounds/HammerSmash1");
+public static readonly SoundStyle HammerSmash2 = new SoundStyle("Stellamod/Assets/Sounds/HammerSmash2");
+public static readonly SoundStyle HammerSmash3 = new SoundStyle("Stellamod/Assets/Sounds/HammerSmash3");
+public static readonly SoundStyle HammerSmashLightning1 = new SoundStyle("Stellamod/Assets/Sounds/HammerSmashLightning1");
+public static readonly SoundStyle HardRockHit = new SoundStyle("Stellamod/Assets/Sounds/HardRockHit");
+public static readonly SoundStyle HarmonicBlasphemy1 = new SoundStyle("Stellamod/Assets/Sounds/HarmonicBlasphemy1");
+public static readonly SoundStyle HarmonicBlasphemy2 = new SoundStyle("Stellamod/Assets/Sounds/HarmonicBlasphemy2");
+public static readonly SoundStyle Harv1 = new SoundStyle("Stellamod/Assets/Sounds/Harv1");
+public static readonly SoundStyle HavocCharge = new SoundStyle("Stellamod/Assets/Sounds/HavocCharge");
+public static readonly SoundStyle HeatExplosion = new SoundStyle("Stellamod/Assets/Sounds/HeatExplosion");
+public static readonly SoundStyle HeatFeather = new SoundStyle("Stellamod/Assets/Sounds/HeatFeather");
+public static readonly SoundStyle HeavyExplosion1 = new SoundStyle("Stellamod/Assets/Sounds/HeavyExplosion1");
+public static readonly SoundStyle HeavySwordSlash1 = new SoundStyle("Stellamod/Assets/Sounds/HeavySwordSlash1");
+public static readonly SoundStyle HeavySwordSlash2 = new SoundStyle("Stellamod/Assets/Sounds/HeavySwordSlash2");
+public static readonly SoundStyle HolyCast1 = new SoundStyle("Stellamod/Assets/Sounds/HolyCast1");
+public static readonly SoundStyle HolyCast2 = new SoundStyle("Stellamod/Assets/Sounds/HolyCast2");
+public static readonly SoundStyle HolyHit1 = new SoundStyle("Stellamod/Assets/Sounds/HolyHit1");
+public static readonly SoundStyle HolyHit2 = new SoundStyle("Stellamod/Assets/Sounds/HolyHit2");
+public static readonly SoundStyle Huhhuh = new SoundStyle("Stellamod/Assets/Sounds/Huhhuh");
+public static readonly SoundStyle Hyuh = new SoundStyle("Stellamod/Assets/Sounds/Hyuh");
+public static readonly SoundStyle iceshake = new SoundStyle("Stellamod/Assets/Sounds/iceshake");
+public static readonly SoundStyle IceyWind = new SoundStyle("Stellamod/Assets/Sounds/IceyWind");
+public static readonly SoundStyle Infernis1 = new SoundStyle("Stellamod/Assets/Sounds/Infernis1");
+public static readonly SoundStyle IridineRevive = new SoundStyle("Stellamod/Assets/Sounds/IridineRevive");
+public static readonly SoundStyle IrradiatedGreatBlade1 = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedGreatBlade1");
+public static readonly SoundStyle IrradiatedGreatBlade2 = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedGreatBlade2");
+public static readonly SoundStyle IrradiatedGreatBlade3 = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedGreatBlade3");
+public static readonly SoundStyle IrradiatedNest_Comuicating = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Comuicating");
+public static readonly SoundStyle IrradiatedNest_ComuicationRay = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_ComuicationRay");
+public static readonly SoundStyle IrradiatedNest_Egg_Land = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Land");
+public static readonly SoundStyle IrradiatedNest_Egg_Shot = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Shot");
+public static readonly SoundStyle IrradiatedNest_Fall = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Fall");
+public static readonly SoundStyle IrradiatedNest_Land = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Land");
+public static readonly SoundStyle IrradiatedNest_Missile_Land = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Land");
+public static readonly SoundStyle IrradiatedNest_Missile_Shots = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Shots");
+public static readonly SoundStyle IrradiatedNest_Teleport = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Teleport");
+public static readonly SoundStyle Irradieagle_Dash = new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Dash");
+public static readonly SoundStyle Irradieagle_Flare1 = new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Flare1");
+public static readonly SoundStyle Irradieagle_Flare2 = new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Flare2");
+public static readonly SoundStyle Irradieagle_Spawn = new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Spawn");
+public static readonly SoundStyle Irradieagle_Wave = new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Wave");
+public static readonly SoundStyle ITBeep = new SoundStyle("Stellamod/Assets/Sounds/ITBeep");
+public static readonly SoundStyle ITBomb1 = new SoundStyle("Stellamod/Assets/Sounds/ITBomb1");
+public static readonly SoundStyle ITBomb2 = new SoundStyle("Stellamod/Assets/Sounds/ITBomb2");
+public static readonly SoundStyle ITBomb3 = new SoundStyle("Stellamod/Assets/Sounds/ITBomb3");
+public static readonly SoundStyle ItemHarvested = new SoundStyle("Stellamod/Assets/Sounds/ItemHarvested");
+public static readonly SoundStyle ITPrimer = new SoundStyle("Stellamod/Assets/Sounds/ITPrimer");
+public static readonly SoundStyle Jack_Death1 = new SoundStyle("Stellamod/Assets/Sounds/Jack_Death1");
+public static readonly SoundStyle Jack_Death2 = new SoundStyle("Stellamod/Assets/Sounds/Jack_Death2");
+public static readonly SoundStyle Jack_FirePing = new SoundStyle("Stellamod/Assets/Sounds/Jack_FirePing");
+public static readonly SoundStyle Jack_Jump = new SoundStyle("Stellamod/Assets/Sounds/Jack_Jump");
+public static readonly SoundStyle Jack_Land = new SoundStyle("Stellamod/Assets/Sounds/Jack_Land");
+public static readonly SoundStyle Jack_Laugh = new SoundStyle("Stellamod/Assets/Sounds/Jack_Laugh");
+public static readonly SoundStyle Jack_Spawn = new SoundStyle("Stellamod/Assets/Sounds/Jack_Spawn");
+public static readonly SoundStyle Jack_Throw = new SoundStyle("Stellamod/Assets/Sounds/Jack_Throw");
+public static readonly SoundStyle JellyBow = new SoundStyle("Stellamod/Assets/Sounds/JellyBow");
+public static readonly SoundStyle JellyLance = new SoundStyle("Stellamod/Assets/Sounds/JellyLance");
+public static readonly SoundStyle JellyStaff = new SoundStyle("Stellamod/Assets/Sounds/JellyStaff");
+public static readonly SoundStyle JellyTome = new SoundStyle("Stellamod/Assets/Sounds/JellyTome");
+public static readonly SoundStyle JuggleCatch1 = new SoundStyle("Stellamod/Assets/Sounds/JuggleCatch1");
+public static readonly SoundStyle JuggleCatch2 = new SoundStyle("Stellamod/Assets/Sounds/JuggleCatch2");
+public static readonly SoundStyle JugglerHit = new SoundStyle("Stellamod/Assets/Sounds/JugglerHit");
+public static readonly SoundStyle JugglerHitMax = new SoundStyle("Stellamod/Assets/Sounds/JugglerHitMax");
+public static readonly SoundStyle JugglerPong1 = new SoundStyle("Stellamod/Assets/Sounds/JugglerPong1");
+public static readonly SoundStyle JugglerPong2 = new SoundStyle("Stellamod/Assets/Sounds/JugglerPong2");
+public static readonly SoundStyle Kaboom = new SoundStyle("Stellamod/Assets/Sounds/Kaboom");
+public static readonly SoundStyle LaserChannel = new SoundStyle("Stellamod/Assets/Sounds/LaserChannel");
+public static readonly SoundStyle Laserlock = new SoundStyle("Stellamod/Assets/Sounds/Laserlock");
+public static readonly SoundStyle Laserlock2 = new SoundStyle("Stellamod/Assets/Sounds/Laserlock2");
+public static readonly SoundStyle Lenabee = new SoundStyle("Stellamod/Assets/Sounds/Lenabee");
+public static readonly SoundStyle LenaSongEx = new SoundStyle("Stellamod/Assets/Sounds/LenaSongEx");
+public static readonly SoundStyle Liberator1 = new SoundStyle("Stellamod/Assets/Sounds/Liberator1");
+public static readonly SoundStyle Liberator2 = new SoundStyle("Stellamod/Assets/Sounds/Liberator2");
+public static readonly SoundStyle Lighting2 = new SoundStyle("Stellamod/Assets/Sounds/Lighting2");
+public static readonly SoundStyle LSC1 = new SoundStyle("Stellamod/Assets/Sounds/LSC1");
+public static readonly SoundStyle LSC2 = new SoundStyle("Stellamod/Assets/Sounds/LSC2");
+public static readonly SoundStyle M38F30 = new SoundStyle("Stellamod/Assets/Sounds/M38F30");
+public static readonly SoundStyle M38F30Bomb1 = new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb1");
+public static readonly SoundStyle M38F30Bomb2 = new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb2");
+public static readonly SoundStyle M38F30Bomb3 = new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb3");
+public static readonly SoundStyle M38F30Bomb4 = new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb4");
+public static readonly SoundStyle MagicalShockwave = new SoundStyle("Stellamod/Assets/Sounds/MagicalShockwave");
+public static readonly SoundStyle MagicalShockwave2 = new SoundStyle("Stellamod/Assets/Sounds/MagicalShockwave2");
+public static readonly SoundStyle MiniPistol = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol");
+public static readonly SoundStyle MiniPistol2 = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2");
+public static readonly SoundStyle MiniPistol3 = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3");
+public static readonly SoundStyle Moaning = new SoundStyle("Stellamod/Assets/Sounds/Moaning");
+public static readonly SoundStyle MoonBlow = new SoundStyle("Stellamod/Assets/Sounds/MoonBlow");
+public static readonly SoundStyle Morrowarrow = new SoundStyle("Stellamod/Assets/Sounds/Morrowarrow");
+public static readonly SoundStyle MorrowExp = new SoundStyle("Stellamod/Assets/Sounds/MorrowExp");
+public static readonly SoundStyle Morrowpes = new SoundStyle("Stellamod/Assets/Sounds/Morrowpes");
+public static readonly SoundStyle MorrowSalf = new SoundStyle("Stellamod/Assets/Sounds/MorrowSalf");
+public static readonly SoundStyle MorrowSalfi = new SoundStyle("Stellamod/Assets/Sounds/MorrowSalfi");
+public static readonly SoundStyle Morrowsc1 = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
+public static readonly SoundStyle Morrowsc2 = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc2");
+public static readonly SoundStyle MorrowSong = new SoundStyle("Stellamod/Assets/Sounds/MorrowSong");
+public static readonly SoundStyle MorrowSong2 = new SoundStyle("Stellamod/Assets/Sounds/MorrowSong2");
+public static readonly SoundStyle MorrowSong3 = new SoundStyle("Stellamod/Assets/Sounds/MorrowSong3");
+public static readonly SoundStyle MothlightStarCast1 = new SoundStyle("Stellamod/Assets/Sounds/MothlightStarCast1");
+public static readonly SoundStyle MothlightStarCast2 = new SoundStyle("Stellamod/Assets/Sounds/MothlightStarCast2");
+public static readonly SoundStyle MothlightStarCast3 = new SoundStyle("Stellamod/Assets/Sounds/MothlightStarCast3");
+public static readonly SoundStyle MotoMot = new SoundStyle("Stellamod/Assets/Sounds/MotoMot");
+public static readonly SoundStyle MotoSlash = new SoundStyle("Stellamod/Assets/Sounds/MotoSlash");
+public static readonly SoundStyle MotoSlash2 = new SoundStyle("Stellamod/Assets/Sounds/MotoSlash2");
+public static readonly SoundStyle MusicChord1 = new SoundStyle("Stellamod/Assets/Sounds/MusicChord1");
+public static readonly SoundStyle NaturalCast1 = new SoundStyle("Stellamod/Assets/Sounds/NaturalCast1");
+public static readonly SoundStyle NaturalCast2 = new SoundStyle("Stellamod/Assets/Sounds/NaturalCast2");
+public static readonly SoundStyle NaturalHit1 = new SoundStyle("Stellamod/Assets/Sounds/NaturalHit1");
+public static readonly SoundStyle NaturalHit2 = new SoundStyle("Stellamod/Assets/Sounds/NaturalHit2");
+public static readonly SoundStyle NewHarvest = new SoundStyle("Stellamod/Assets/Sounds/NewHarvest");
+public static readonly SoundStyle NiiviDeath = new SoundStyle("Stellamod/Assets/Sounds/NiiviDeath");
+public static readonly SoundStyle NiiviHeavyBreathing1 = new SoundStyle("Stellamod/Assets/Sounds/NiiviHeavyBreathing1");
+public static readonly SoundStyle NiiviHeavyBreathing2 = new SoundStyle("Stellamod/Assets/Sounds/NiiviHeavyBreathing2");
+public static readonly SoundStyle NiiviTired = new SoundStyle("Stellamod/Assets/Sounds/NiiviTired");
+public static readonly SoundStyle NiiviWingFlap = new SoundStyle("Stellamod/Assets/Sounds/NiiviWingFlap");
+public static readonly SoundStyle NormalSwordHit1 = new SoundStyle("Stellamod/Assets/Sounds/NormalSwordHit1");
+public static readonly SoundStyle NormalSwordSlash1 = new SoundStyle("Stellamod/Assets/Sounds/NormalSwordSlash1");
+public static readonly SoundStyle NormalSwordSlash2 = new SoundStyle("Stellamod/Assets/Sounds/NormalSwordSlash2");
+public static readonly SoundStyle NStarblast = new SoundStyle("Stellamod/Assets/Sounds/NStarblast");
+public static readonly SoundStyle NStarblast2 = new SoundStyle("Stellamod/Assets/Sounds/NStarblast2");
+public static readonly SoundStyle One = new SoundStyle("Stellamod/Assets/Sounds/One");
+public static readonly SoundStyle OrbSmash = new SoundStyle("Stellamod/Assets/Sounds/OrbSmash");
+public static readonly SoundStyle OrbSummon1 = new SoundStyle("Stellamod/Assets/Sounds/OrbSummon1");
+public static readonly SoundStyle OrbSummon2 = new SoundStyle("Stellamod/Assets/Sounds/OrbSummon2");
+public static readonly SoundStyle OverGrowth_Thorn1 = new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_Thorn1");
+public static readonly SoundStyle OverGrowth_Thorn2 = new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_Thorn2");
+public static readonly SoundStyle OverGrowth_TP1 = new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_TP1");
+public static readonly SoundStyle OverGrowth_TP2 = new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_TP2");
+public static readonly SoundStyle PageTurn = new SoundStyle("Stellamod/Assets/Sounds/PageTurn");
+public static readonly SoundStyle Parendine = new SoundStyle("Stellamod/Assets/Sounds/Parendine");
+public static readonly SoundStyle Parendine2 = new SoundStyle("Stellamod/Assets/Sounds/Parendine2");
+public static readonly SoundStyle Pericarditis = new SoundStyle("Stellamod/Assets/Sounds/Pericarditis");
+public static readonly SoundStyle Pikminhit1 = new SoundStyle("Stellamod/Assets/Sounds/Pikminhit1");
+public static readonly SoundStyle Pikminhit2 = new SoundStyle("Stellamod/Assets/Sounds/Pikminhit2");
+public static readonly SoundStyle Pikminhit3 = new SoundStyle("Stellamod/Assets/Sounds/Pikminhit3");
+public static readonly SoundStyle Pikminhit4 = new SoundStyle("Stellamod/Assets/Sounds/Pikminhit4");
+public static readonly SoundStyle Pikminhit5 = new SoundStyle("Stellamod/Assets/Sounds/Pikminhit5");
+public static readonly SoundStyle Pikminthrow1 = new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow1");
+public static readonly SoundStyle Pikminthrow2 = new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow2");
+public static readonly SoundStyle Pikminthrow3 = new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow3");
+public static readonly SoundStyle Pikminthrow4 = new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow4");
+public static readonly SoundStyle PrimAm = new SoundStyle("Stellamod/Assets/Sounds/PrimAm");
+public static readonly SoundStyle PrimBomb = new SoundStyle("Stellamod/Assets/Sounds/PrimBomb");
+public static readonly SoundStyle PrimCharge = new SoundStyle("Stellamod/Assets/Sounds/PrimCharge");
+public static readonly SoundStyle PrimeMagicCast1 = new SoundStyle("Stellamod/Assets/Sounds/PrimeMagicCast1");
+public static readonly SoundStyle PrimeMagicCast2 = new SoundStyle("Stellamod/Assets/Sounds/PrimeMagicCast2");
+public static readonly SoundStyle PrimeMagicHit1 = new SoundStyle("Stellamod/Assets/Sounds/PrimeMagicHit1");
+public static readonly SoundStyle PrimeMagicHit2 = new SoundStyle("Stellamod/Assets/Sounds/PrimeMagicHit2");
+public static readonly SoundStyle PrimGrow1 = new SoundStyle("Stellamod/Assets/Sounds/PrimGrow1");
+public static readonly SoundStyle PrimGrow2 = new SoundStyle("Stellamod/Assets/Sounds/PrimGrow2");
+public static readonly SoundStyle PrimRay = new SoundStyle("Stellamod/Assets/Sounds/PrimRay");
+public static readonly SoundStyle PrismaticHit1 = new SoundStyle("Stellamod/Assets/Sounds/PrismaticHit1");
+public static readonly SoundStyle QuickHit = new SoundStyle("Stellamod/Assets/Sounds/QuickHit");
+public static readonly SoundStyle RadianceCast1 = new SoundStyle("Stellamod/Assets/Sounds/RadianceCast1");
+public static readonly SoundStyle RadianceHit1 = new SoundStyle("Stellamod/Assets/Sounds/RadianceHit1");
+public static readonly SoundStyle RazorClash = new SoundStyle("Stellamod/Assets/Sounds/RazorClash");
+public static readonly SoundStyle RazorWing = new SoundStyle("Stellamod/Assets/Sounds/RazorWing");
+public static readonly SoundStyle RekClappbackStart = new SoundStyle("Stellamod/Assets/Sounds/RekClappbackStart");
+public static readonly SoundStyle RekDeath = new SoundStyle("Stellamod/Assets/Sounds/RekDeath");
+public static readonly SoundStyle REKEAT = new SoundStyle("Stellamod/Assets/Sounds/REKEAT");
+public static readonly SoundStyle RekFireballDeath = new SoundStyle("Stellamod/Assets/Sounds/RekFireballDeath");
+public static readonly SoundStyle RekFireballShoot = new SoundStyle("Stellamod/Assets/Sounds/RekFireballShoot");
+public static readonly SoundStyle RekLaser = new SoundStyle("Stellamod/Assets/Sounds/RekLaser");
+public static readonly SoundStyle RekLaser2 = new SoundStyle("Stellamod/Assets/Sounds/RekLaser2");
+public static readonly SoundStyle RekOuroborosExplosion = new SoundStyle("Stellamod/Assets/Sounds/RekOuroborosExplosion");
+public static readonly SoundStyle RekRoar = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
+public static readonly SoundStyle RekShockwave = new SoundStyle("Stellamod/Assets/Sounds/RekShockwave");
+public static readonly SoundStyle RekSummon = new SoundStyle("Stellamod/Assets/Sounds/RekSummon");
+public static readonly SoundStyle Rhamenthal = new SoundStyle("Stellamod/Assets/Sounds/Rhamenthal");
+public static readonly SoundStyle Rhap1 = new SoundStyle("Stellamod/Assets/Sounds/Rhap1");
+public static readonly SoundStyle Rhap2 = new SoundStyle("Stellamod/Assets/Sounds/Rhap2");
+public static readonly SoundStyle Rhap3 = new SoundStyle("Stellamod/Assets/Sounds/Rhap3");
+public static readonly SoundStyle RibbonStaffBoom1 = new SoundStyle("Stellamod/Assets/Sounds/RibbonStaffBoom1");
+public static readonly SoundStyle RibbonStaffWrap1 = new SoundStyle("Stellamod/Assets/Sounds/RibbonStaffWrap1");
+public static readonly SoundStyle RipperSlash1 = new SoundStyle("Stellamod/Assets/Sounds/RipperSlash1");
+public static readonly SoundStyle RipperSlash2 = new SoundStyle("Stellamod/Assets/Sounds/RipperSlash2");
+public static readonly SoundStyle RipperSlashTelegraph = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
+public static readonly SoundStyle RisingSummon = new SoundStyle("Stellamod/Assets/Sounds/RisingSummon");
+public static readonly SoundStyle RockBreak1 = new SoundStyle("Stellamod/Assets/Sounds/RockBreak1");
+public static readonly SoundStyle RockBreak2 = new SoundStyle("Stellamod/Assets/Sounds/RockBreak2");
+public static readonly SoundStyle RocketExplosion = new SoundStyle("Stellamod/Assets/Sounds/RocketExplosion");
+public static readonly SoundStyle Rolldice = new SoundStyle("Stellamod/Assets/Sounds/Rolldice");
+public static readonly SoundStyle RudeBuster = new SoundStyle("Stellamod/Assets/Sounds/RudeBuster");
+public static readonly SoundStyle Sadano = new SoundStyle("Stellamod/Assets/Sounds/Sadano");
+public static readonly SoundStyle Safunais = new SoundStyle("Stellamod/Assets/Sounds/Safunais");
+public static readonly SoundStyle Safunais2 = new SoundStyle("Stellamod/Assets/Sounds/Safunais2");
+public static readonly SoundStyle Safunais3 = new SoundStyle("Stellamod/Assets/Sounds/Safunais3");
+public static readonly SoundStyle Saw1 = new SoundStyle("Stellamod/Assets/Sounds/Saw1");
+public static readonly SoundStyle Scything1 = new SoundStyle("Stellamod/Assets/Sounds/Scything1");
+public static readonly SoundStyle Scything2 = new SoundStyle("Stellamod/Assets/Sounds/Scything2");
+public static readonly SoundStyle Scything3 = new SoundStyle("Stellamod/Assets/Sounds/Scything3");
+public static readonly SoundStyle ShadeHand = new SoundStyle("Stellamod/Assets/Sounds/ShadeHand");
+public static readonly SoundStyle ShadeHand2 = new SoundStyle("Stellamod/Assets/Sounds/ShadeHand2");
+public static readonly SoundStyle ShadowExplosion = new SoundStyle("Stellamod/Assets/Sounds/ShadowExplosion");
+public static readonly SoundStyle SingularityFragment_Charge = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge");
+public static readonly SoundStyle SingularityFragment_Charge2 = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2");
+public static readonly SoundStyle SingularityFragment_Death = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Death");
+public static readonly SoundStyle SingularityFragment_LAZER = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER");
+public static readonly SoundStyle SingularityFragment_Shot = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot");
+public static readonly SoundStyle SingularityFragment_Shot1 = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot1");
+public static readonly SoundStyle SingularityFragment_TPIn = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn");
+public static readonly SoundStyle SingularityFragment_TPOut = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut");
+public static readonly SoundStyle SkyrageShasher = new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher");
+public static readonly SoundStyle SkyrageShasherEle = new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasherEle");
+public static readonly SoundStyle Slapin = new SoundStyle("Stellamod/Assets/Sounds/Slapin");
+public static readonly SoundStyle SNAKEROAR = new SoundStyle("Stellamod/Assets/Sounds/SNAKEROAR");
+public static readonly SoundStyle SoftSummon = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon");
+public static readonly SoundStyle SoftSummon2 = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2");
+public static readonly SoundStyle SpearHit1 = new SoundStyle("Stellamod/Assets/Sounds/SpearHit1");
+public static readonly SoundStyle SpearSlash1 = new SoundStyle("Stellamod/Assets/Sounds/SpearSlash1");
+public static readonly SoundStyle SpearSlash2 = new SoundStyle("Stellamod/Assets/Sounds/SpearSlash2");
+public static readonly SoundStyle SpidrSummon = new SoundStyle("Stellamod/Assets/Sounds/SpidrSummon");
+public static readonly SoundStyle StaalkerDescend = new SoundStyle("Stellamod/Assets/Sounds/StaalkerDescend");
+public static readonly SoundStyle Starblast = new SoundStyle("Stellamod/Assets/Sounds/Starblast");
+public static readonly SoundStyle STARBOMB = new SoundStyle("Stellamod/Assets/Sounds/STARBOMB");
+public static readonly SoundStyle STARBOMBERWAKE = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBERWAKE");
+public static readonly SoundStyle StarBounce = new SoundStyle("Stellamod/Assets/Sounds/StarBounce");
+public static readonly SoundStyle StarCharge = new SoundStyle("Stellamod/Assets/Sounds/StarCharge");
+public static readonly SoundStyle STARDEATH = new SoundStyle("Stellamod/Assets/Sounds/STARDEATH");
+public static readonly SoundStyle Starence = new SoundStyle("Stellamod/Assets/Sounds/Starence");
+public static readonly SoundStyle Starexplosion = new SoundStyle("Stellamod/Assets/Sounds/Starexplosion");
+public static readonly SoundStyle STAREXPULSION = new SoundStyle("Stellamod/Assets/Sounds/STAREXPULSION");
+public static readonly SoundStyle StarFlower1 = new SoundStyle("Stellamod/Assets/Sounds/StarFlower1");
+public static readonly SoundStyle StarFlower1_2 = new SoundStyle("Stellamod/Assets/Sounds/StarFlower1_2");
+public static readonly SoundStyle StarFlower2 = new SoundStyle("Stellamod/Assets/Sounds/StarFlower2");
+public static readonly SoundStyle StarFlower3 = new SoundStyle("Stellamod/Assets/Sounds/StarFlower3");
+public static readonly SoundStyle STARGROP = new SoundStyle("Stellamod/Assets/Sounds/STARGROP");
+public static readonly SoundStyle STARGUN = new SoundStyle("Stellamod/Assets/Sounds/STARGUN");
+public static readonly SoundStyle STARIGNITE = new SoundStyle("Stellamod/Assets/Sounds/STARIGNITE");
+public static readonly SoundStyle StarKeeper = new SoundStyle("Stellamod/Assets/Sounds/StarKeeper");
+public static readonly SoundStyle StarKeeper2 = new SoundStyle("Stellamod/Assets/Sounds/StarKeeper2");
+public static readonly SoundStyle STARLAUGH = new SoundStyle("Stellamod/Assets/Sounds/STARLAUGH");
+public static readonly SoundStyle Starrer = new SoundStyle("Stellamod/Assets/Sounds/Starrer");
+public static readonly SoundStyle StarringDeath = new SoundStyle("Stellamod/Assets/Sounds/StarringDeath");
+public static readonly SoundStyle StarSheith = new SoundStyle("Stellamod/Assets/Sounds/StarSheith");
+public static readonly SoundStyle STARSHOOT = new SoundStyle("Stellamod/Assets/Sounds/STARSHOOT");
+public static readonly SoundStyle STARWAVE = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
+public static readonly SoundStyle StealthRune = new SoundStyle("Stellamod/Assets/Sounds/StealthRune");
+public static readonly SoundStyle SteinGoth = new SoundStyle("Stellamod/Assets/Sounds/SteinGoth");
+public static readonly SoundStyle Steinhit1 = new SoundStyle("Stellamod/Assets/Sounds/Steinhit1");
+public static readonly SoundStyle Steinhit2 = new SoundStyle("Stellamod/Assets/Sounds/Steinhit2");
+public static readonly SoundStyle Steinhit3 = new SoundStyle("Stellamod/Assets/Sounds/Steinhit3");
+public static readonly SoundStyle SteinHulting = new SoundStyle("Stellamod/Assets/Sounds/SteinHulting");
+public static readonly SoundStyle SteinIk = new SoundStyle("Stellamod/Assets/Sounds/SteinIk");
+public static readonly SoundStyle SteinShading = new SoundStyle("Stellamod/Assets/Sounds/SteinShading");
+public static readonly SoundStyle SteinVolting = new SoundStyle("Stellamod/Assets/Sounds/SteinVolting");
+public static readonly SoundStyle StingBomb1 = new SoundStyle("Stellamod/Assets/Sounds/StingBomb1");
+public static readonly SoundStyle StingBomb2 = new SoundStyle("Stellamod/Assets/Sounds/StingBomb2");
+public static readonly SoundStyle StoneDeath = new SoundStyle("Stellamod/Assets/Sounds/StoneDeath");
+public static readonly SoundStyle StormDragon_Bomb = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
+public static readonly SoundStyle StormDragon_CloudBolt = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_CloudBolt");
+public static readonly SoundStyle StormDragon_Enrage = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Enrage");
+public static readonly SoundStyle StormDragon_FlyingIn = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_FlyingIn");
+public static readonly SoundStyle StormDragon_FlyingOut = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_FlyingOut");
+public static readonly SoundStyle StormDragon_LightingRain = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingRain");
+public static readonly SoundStyle StormDragon_LightingZap = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
+public static readonly SoundStyle StormDragon_StormSpike = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_StormSpike");
+public static readonly SoundStyle StormDragon_StormSpike2 = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_StormSpike2");
+public static readonly SoundStyle StormDragon_Wave = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Wave");
+public static readonly SoundStyle StormDragon_WaveCharge = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_WaveCharge");
+public static readonly SoundStyle StormKnight_Dash = new SoundStyle("Stellamod/Assets/Sounds/StormKnight_Dash");
+public static readonly SoundStyle StormKnight_Rechage = new SoundStyle("Stellamod/Assets/Sounds/StormKnight_Rechage");
+public static readonly SoundStyle StormKnight_Slash = new SoundStyle("Stellamod/Assets/Sounds/StormKnight_Slash");
+public static readonly SoundStyle StormSpiritCharge = new SoundStyle("Stellamod/Assets/Sounds/StormSpiritCharge");
+public static readonly SoundStyle Suckler = new SoundStyle("Stellamod/Assets/Sounds/Suckler");
+public static readonly SoundStyle Summoner1 = new SoundStyle("Stellamod/Assets/Sounds/Summoner1");
+public static readonly SoundStyle SunStalker_Attack = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Attack");
+public static readonly SoundStyle SunStalker_Attack2 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Attack2");
+public static readonly SoundStyle SunStalker_Bomb = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb");
+public static readonly SoundStyle SunStalker_Bomb_2 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_2");
+public static readonly SoundStyle SunStalker_Bomb_Explode = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode");
+public static readonly SoundStyle SunStalker_Charge = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge");
+public static readonly SoundStyle SunStalker_Charge_Full = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge_Full");
+public static readonly SoundStyle SunStalker_Charge_Full_Note = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge_Full_Note");
+public static readonly SoundStyle SunStalker_Charge_TP_In = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge_TP_In");
+public static readonly SoundStyle SunStalker_Charge_TP_Out = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge_TP_Out");
+public static readonly SoundStyle SunStalker_Dash = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Dash");
+public static readonly SoundStyle SunStalker_Dash2 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Dash2");
+public static readonly SoundStyle SunStalker_Death_1 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Death_1");
+public static readonly SoundStyle SunStalker_Death_2 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Death_2");
+public static readonly SoundStyle SunStalker_Feather = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Feather");
+public static readonly SoundStyle SunStalker_Feather2 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Feather2");
+public static readonly SoundStyle SunStalker_PreSpawn = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_PreSpawn");
+public static readonly SoundStyle SunStalker_PreSpawn2 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_PreSpawn2");
+public static readonly SoundStyle SunStalker_PreSpawn_Fail = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_PreSpawn_Fail");
+public static readonly SoundStyle SunStalker_Rock = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Rock");
+public static readonly SoundStyle SunStalker_Rock2 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Rock2");
+public static readonly SoundStyle SunStalker_Sun_End = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_End");
+public static readonly SoundStyle SunStalker_Sun_Shot1 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Shot1");
+public static readonly SoundStyle SunStalker_Sun_Shot2 = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Shot2");
+public static readonly SoundStyle SunStalker_Sun_Start = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Start");
+public static readonly SoundStyle SwarmerJump1 = new SoundStyle("Stellamod/Assets/Sounds/SwarmerJump1");
+public static readonly SoundStyle SwarmerJump2 = new SoundStyle("Stellamod/Assets/Sounds/SwarmerJump2");
+public static readonly SoundStyle SwarmerJump3 = new SoundStyle("Stellamod/Assets/Sounds/SwarmerJump3");
+public static readonly SoundStyle SwarmerJump4 = new SoundStyle("Stellamod/Assets/Sounds/SwarmerJump4");
+public static readonly SoundStyle Swinger = new SoundStyle("Stellamod/Assets/Sounds/Swinger");
+public static readonly SoundStyle SwingFast = new SoundStyle("Stellamod/Assets/Sounds/SwingFast");
+public static readonly SoundStyle SwingyAr = new SoundStyle("Stellamod/Assets/Sounds/SwingyAr");
+public static readonly SoundStyle SwingyLong = new SoundStyle("Stellamod/Assets/Sounds/SwingyLong");
+public static readonly SoundStyle SwingyMael = new SoundStyle("Stellamod/Assets/Sounds/SwingyMael");
+public static readonly SoundStyle SwingyWind = new SoundStyle("Stellamod/Assets/Sounds/SwingyWind");
+public static readonly SoundStyle Swoosher = new SoundStyle("Stellamod/Assets/Sounds/Swoosher");
+public static readonly SoundStyle SwordHoldVerlia = new SoundStyle("Stellamod/Assets/Sounds/SwordHoldVerlia");
+public static readonly SoundStyle SwordOfGlactia1 = new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1");
+public static readonly SoundStyle SwordOfGlactia2 = new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia2");
+public static readonly SoundStyle SwordOfGlactia3 = new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3");
+public static readonly SoundStyle SwordSheethe = new SoundStyle("Stellamod/Assets/Sounds/SwordSheethe");
+public static readonly SoundStyle SwordSlice = new SoundStyle("Stellamod/Assets/Sounds/SwordSlice");
+public static readonly SoundStyle SwordSpin1 = new SoundStyle("Stellamod/Assets/Sounds/SwordSpin1");
+public static readonly SoundStyle SwordThrow = new SoundStyle("Stellamod/Assets/Sounds/SwordThrow");
+public static readonly SoundStyle SyliaRiftClose = new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose");
+public static readonly SoundStyle SyliaRiftOpen = new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftOpen");
+public static readonly SoundStyle SyliaTransition = new SoundStyle("Stellamod/Assets/Sounds/SyliaTransition");
+public static readonly SoundStyle TentacleBubbleOut = new SoundStyle("Stellamod/Assets/Sounds/TentacleBubbleOut");
+public static readonly SoundStyle TheDeafen = new SoundStyle("Stellamod/Assets/Sounds/TheDeafen");
+public static readonly SoundStyle TheDeafen2 = new SoundStyle("Stellamod/Assets/Sounds/TheDeafen2");
+public static readonly SoundStyle TheWondering = new SoundStyle("Stellamod/Assets/Sounds/TheWondering");
+public static readonly SoundStyle TheWorld = new SoundStyle("Stellamod/Assets/Sounds/TheWorld");
+public static readonly SoundStyle Thorny = new SoundStyle("Stellamod/Assets/Sounds/Thorny");
+public static readonly SoundStyle Three = new SoundStyle("Stellamod/Assets/Sounds/Three");
+public static readonly SoundStyle Ticking = new SoundStyle("Stellamod/Assets/Sounds/Ticking");
+public static readonly SoundStyle TON618 = new SoundStyle("Stellamod/Assets/Sounds/TON618");
+public static readonly SoundStyle TOTS1 = new SoundStyle("Stellamod/Assets/Sounds/TOTS1");
+public static readonly SoundStyle TOTS2 = new SoundStyle("Stellamod/Assets/Sounds/TOTS2");
+public static readonly SoundStyle TraumatizerLaserFire = new SoundStyle("Stellamod/Assets/Sounds/TraumatizerLaserFire");
+public static readonly SoundStyle TraumatizerLaserStart = new SoundStyle("Stellamod/Assets/Sounds/TraumatizerLaserStart");
+public static readonly SoundStyle Trick = new SoundStyle("Stellamod/Assets/Sounds/Trick");
+public static readonly SoundStyle trickbomb = new SoundStyle("Stellamod/Assets/Sounds/trickbomb");
+public static readonly SoundStyle Two = new SoundStyle("Stellamod/Assets/Sounds/Two");
+public static readonly SoundStyle untitledVoidBlasterExplosionBomb2 = new SoundStyle("Stellamod/Assets/Sounds/untitledVoidBlasterExplosionBomb2");
+public static readonly SoundStyle Upp = new SoundStyle("Stellamod/Assets/Sounds/Upp");
+public static readonly SoundStyle UvilisCast1 = new SoundStyle("Stellamod/Assets/Sounds/UvilisCast1");
+public static readonly SoundStyle UvilisCast2 = new SoundStyle("Stellamod/Assets/Sounds/UvilisCast2");
+public static readonly SoundStyle UvilisHit1 = new SoundStyle("Stellamod/Assets/Sounds/UvilisHit1");
+public static readonly SoundStyle UvilisHit2 = new SoundStyle("Stellamod/Assets/Sounds/UvilisHit2");
+public static readonly SoundStyle VDisappear = new SoundStyle("Stellamod/Assets/Sounds/VDisappear");
+public static readonly SoundStyle Veiizal__MG1 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__MG1");
+public static readonly SoundStyle Veiizal__MG2 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__MG2");
+public static readonly SoundStyle Veiizal__MG3 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__MG3");
+public static readonly SoundStyle Veiizal__Uopen1 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__Uopen1");
+public static readonly SoundStyle Veiizal__Uopen2 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__Uopen2");
+public static readonly SoundStyle Veiizal__Uopen3 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__Uopen3");
+public static readonly SoundStyle Veiizal__UShot1 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__UShot1");
+public static readonly SoundStyle Veiizal__UShot2 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__UShot2");
+public static readonly SoundStyle Veiizal__USpawn1 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__USpawn1");
+public static readonly SoundStyle Veiizal__USpawn2 = new SoundStyle("Stellamod/Assets/Sounds/Veiizal__USpawn2");
+public static readonly SoundStyle Veriappear = new SoundStyle("Stellamod/Assets/Sounds/Veriappear");
+public static readonly SoundStyle VeriButterfly = new SoundStyle("Stellamod/Assets/Sounds/VeriButterfly");
+public static readonly SoundStyle Veridash1 = new SoundStyle("Stellamod/Assets/Sounds/Veridash1");
+public static readonly SoundStyle Verifall = new SoundStyle("Stellamod/Assets/Sounds/Verifall");
+public static readonly SoundStyle Verifallstar = new SoundStyle("Stellamod/Assets/Sounds/Verifallstar");
+public static readonly SoundStyle Veripulse = new SoundStyle("Stellamod/Assets/Sounds/Veripulse");
+public static readonly SoundStyle Verirocks = new SoundStyle("Stellamod/Assets/Sounds/Verirocks");
+public static readonly SoundStyle Verispin = new SoundStyle("Stellamod/Assets/Sounds/Verispin");
+public static readonly SoundStyle VerliaSONATO = new SoundStyle("Stellamod/Assets/Sounds/VerliaSONATO");
+public static readonly SoundStyle VerliaSummoning = new SoundStyle("Stellamod/Assets/Sounds/VerliaSummoning");
+public static readonly SoundStyle Vinger = new SoundStyle("Stellamod/Assets/Sounds/Vinger");
+public static readonly SoundStyle Vinger2 = new SoundStyle("Stellamod/Assets/Sounds/Vinger2");
+public static readonly SoundStyle violar = new SoundStyle("Stellamod/Assets/Sounds/violar");
+public static readonly SoundStyle VoidBlaster1 = new SoundStyle("Stellamod/Assets/Sounds/VoidBlaster1");
+public static readonly SoundStyle VoidBlaster2 = new SoundStyle("Stellamod/Assets/Sounds/VoidBlaster2");
+public static readonly SoundStyle VoidBlasterExplosionBomb = new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb");
+public static readonly SoundStyle VoidBlasterExplosionBomb2 = new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb2");
+public static readonly SoundStyle VoidDead1 = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1");
+public static readonly SoundStyle VoidDead2 = new SoundStyle("Stellamod/Assets/Sounds/VoidDead2");
+public static readonly SoundStyle Voidence = new SoundStyle("Stellamod/Assets/Sounds/Voidence");
+public static readonly SoundStyle Voidfield = new SoundStyle("Stellamod/Assets/Sounds/Voidfield");
+public static readonly SoundStyle VoidHand = new SoundStyle("Stellamod/Assets/Sounds/VoidHand");
+public static readonly SoundStyle VoidHand2 = new SoundStyle("Stellamod/Assets/Sounds/VoidHand2");
+public static readonly SoundStyle VoidHand3 = new SoundStyle("Stellamod/Assets/Sounds/VoidHand3");
+public static readonly SoundStyle VoidHit = new SoundStyle("Stellamod/Assets/Sounds/VoidHit");
+public static readonly SoundStyle VTeleportOut = new SoundStyle("Stellamod/Assets/Sounds/VTeleportOut");
+public static readonly SoundStyle WavingGoth = new SoundStyle("Stellamod/Assets/Sounds/WavingGoth");
+public static readonly SoundStyle WavingGoth2 = new SoundStyle("Stellamod/Assets/Sounds/WavingGoth2");
+public static readonly SoundStyle WetDeath = new SoundStyle("Stellamod/Assets/Sounds/WetDeath");
+public static readonly SoundStyle WigglerShot = new SoundStyle("Stellamod/Assets/Sounds/WigglerShot");
+public static readonly SoundStyle WigglerShot2 = new SoundStyle("Stellamod/Assets/Sounds/WigglerShot2");
+public static readonly SoundStyle WigglerShot3 = new SoundStyle("Stellamod/Assets/Sounds/WigglerShot3");
+public static readonly SoundStyle WindCast1 = new SoundStyle("Stellamod/Assets/Sounds/WindCast1");
+public static readonly SoundStyle WindCast2 = new SoundStyle("Stellamod/Assets/Sounds/WindCast2");
+public static readonly SoundStyle WindHit1 = new SoundStyle("Stellamod/Assets/Sounds/WindHit1");
+public static readonly SoundStyle WindHit2 = new SoundStyle("Stellamod/Assets/Sounds/WindHit2");
+public static readonly SoundStyle windpetal = new SoundStyle("Stellamod/Assets/Sounds/windpetal");
+public static readonly SoundStyle WindStorm = new SoundStyle("Stellamod/Assets/Sounds/WindStorm");
+public static readonly SoundStyle Wingspand = new SoundStyle("Stellamod/Assets/Sounds/Wingspand");
+public static readonly SoundStyle Wingspand2 = new SoundStyle("Stellamod/Assets/Sounds/Wingspand2");
+public static readonly SoundStyle WinterboundArrow = new SoundStyle("Stellamod/Assets/Sounds/WinterboundArrow");
+public static readonly SoundStyle WinterboundArrowHit = new SoundStyle("Stellamod/Assets/Sounds/WinterboundArrowHit");
+public static readonly SoundStyle WinterboundFlare = new SoundStyle("Stellamod/Assets/Sounds/WinterboundFlare");
+public static readonly SoundStyle WinterStorm = new SoundStyle("Stellamod/Assets/Sounds/WinterStorm");
+public static readonly SoundStyle WinterStorm2 = new SoundStyle("Stellamod/Assets/Sounds/WinterStorm2");
+public static readonly SoundStyle WinterStormFlare = new SoundStyle("Stellamod/Assets/Sounds/WinterStormFlare");
+public static readonly SoundStyle WinterStormFlare2 = new SoundStyle("Stellamod/Assets/Sounds/WinterStormFlare2");
+public static readonly SoundStyle wow = new SoundStyle("Stellamod/Assets/Sounds/wow");
+public static readonly SoundStyle XX4160 = new SoundStyle("Stellamod/Assets/Sounds/XX4160");
+public static readonly SoundStyle XX41602 = new SoundStyle("Stellamod/Assets/Sounds/XX41602");
+public static readonly SoundStyle XX41603 = new SoundStyle("Stellamod/Assets/Sounds/XX41603");
+public static readonly SoundStyle XX41604 = new SoundStyle("Stellamod/Assets/Sounds/XX41604");
+public static readonly SoundStyle Yumiko = new SoundStyle("Stellamod/Assets/Sounds/Yumiko");
+public static readonly SoundStyle Yumiko2 = new SoundStyle("Stellamod/Assets/Sounds/Yumiko2");
+public static readonly SoundStyle Yumiko3 = new SoundStyle("Stellamod/Assets/Sounds/Yumiko3");
+public static readonly SoundStyle Yumiko4 = new SoundStyle("Stellamod/Assets/Sounds/Yumiko4");
+public static readonly SoundStyle Zaped = new SoundStyle("Stellamod/Assets/Sounds/Zaped");
+public static readonly SoundStyle zero = new SoundStyle("Stellamod/Assets/Sounds/zero");
+public static readonly SoundStyle Zo = new SoundStyle("Stellamod/Assets/Sounds/Zo");
+public static readonly SoundStyle Zoee = new SoundStyle("Stellamod/Assets/Sounds/Zoee");
+public static readonly SoundStyle ZthoKnifes1 = new SoundStyle("Stellamod/Assets/Sounds/ZthoKnifes1");
+public static readonly SoundStyle ZthoKnifes2 = new SoundStyle("Stellamod/Assets/Sounds/ZthoKnifes2");
+}
+public static class Textures
+{
+public static class Backgrounds
+{
+public static LazyAsset<Texture2D> Abyss = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Abyss");
+public static LazyAsset<Texture2D> AegislavCloudConvection = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavCloudConvection");
+public static LazyAsset<Texture2D> AegislavJail = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavJail");
+public static LazyAsset<Texture2D> AegislavJailGlow = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavJailGlow");
+public static LazyAsset<Texture2D> AegislavSurface_Close = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavSurface_Close");
+public static LazyAsset<Texture2D> AegislavSurface_Far = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavSurface_Far");
+public static LazyAsset<Texture2D> AegislavSurface_Mid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavSurface_Mid");
+public static LazyAsset<Texture2D> AegislavSurface_UndergroundLoop = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavSurface_UndergroundLoop");
+public static LazyAsset<Texture2D> AegislavUnderground_Clouds = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavUnderground_Clouds");
+public static LazyAsset<Texture2D> AegislavUnderground_Far = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/AegislavUnderground_Far");
+public static LazyAsset<Texture2D> Alcadziaflat = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Alcadziaflat");
+public static LazyAsset<Texture2D> BlankBG = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/BlankBG");
+public static LazyAsset<Texture2D> BloodCathedral_Far = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/BloodCathedral_Far");
+public static LazyAsset<Texture2D> BloodCathedral_Mid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/BloodCathedral_Mid");
+public static LazyAsset<Texture2D> Cathedral = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Cathedral");
+public static LazyAsset<Texture2D> Cathedralflat = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Cathedralflat");
+public static LazyAsset<Texture2D> Cinderspark = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Cinderspark");
+public static LazyAsset<Texture2D> Darkspace = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Darkspace");
+public static LazyAsset<Texture2D> DarkspaceBottom = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/DarkspaceBottom");
+public static LazyAsset<Texture2D> DarkspaceBottomGradient = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/DarkspaceBottomGradient");
+public static LazyAsset<Texture2D> DarkspaceFront = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/DarkspaceFront");
+public static LazyAsset<Texture2D> DarkspaceFrontGradient = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/DarkspaceFrontGradient");
+public static LazyAsset<Texture2D> DarkspaceMid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/DarkspaceMid");
+public static LazyAsset<Texture2D> DarkspaceMidGradient = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/DarkspaceMidGradient");
+public static LazyAsset<Texture2D> FableBiomeBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/FableBiomeBackground");
+public static LazyAsset<Texture2D> FableBiomeBackgroundFlat = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/FableBiomeBackgroundFlat");
+public static LazyAsset<Texture2D> ForestFar = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/ForestFar");
+public static LazyAsset<Texture2D> ForestFront = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/ForestFront");
+public static LazyAsset<Texture2D> ForestMid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/ForestMid");
+public static LazyAsset<Texture2D> ForestUnderground = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/ForestUnderground");
+public static LazyAsset<Texture2D> GreyGrassBackgroundClose = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/GreyGrassBackgroundClose");
+public static LazyAsset<Texture2D> GreyGrassBackgroundFar = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/GreyGrassBackgroundFar");
+public static LazyAsset<Texture2D> GreyGrassBackgroundMid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/GreyGrassBackgroundMid");
+public static LazyAsset<Texture2D> GreyGrassBackgroundUndergroundLoop = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/GreyGrassBackgroundUndergroundLoop");
+public static LazyAsset<Texture2D> HarmonicCoralwaysClose = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/HarmonicCoralwaysClose");
+public static LazyAsset<Texture2D> HarmonicCoralwaysFar = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/HarmonicCoralwaysFar");
+public static LazyAsset<Texture2D> HarmonicCoralwaysMid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/HarmonicCoralwaysMid");
+public static LazyAsset<Texture2D> IceBack = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IceBack");
+public static LazyAsset<Texture2D> IceBack2 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IceBack2");
+public static LazyAsset<Texture2D> IceFront = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IceFront");
+public static LazyAsset<Texture2D> IceFront2 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IceFront2");
+public static LazyAsset<Texture2D> IceGradient = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IceGradient");
+public static LazyAsset<Texture2D> IceMiddle = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IceMiddle");
+public static LazyAsset<Texture2D> IceUnderground = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IceUnderground");
+public static LazyAsset<Texture2D> IceyBiomeBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IceyBiomeBackground");
+public static LazyAsset<Texture2D> IshtarBiomeUnderground1 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/IshtarBiomeUnderground1");
+public static LazyAsset<Texture2D> JunkyardUnderground_Close = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/JunkyardUnderground_Close");
+public static LazyAsset<Texture2D> JunkyardUnderground_Far = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/JunkyardUnderground_Far");
+public static LazyAsset<Texture2D> JunkyardUnderground_Mid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/JunkyardUnderground_Mid");
+public static LazyAsset<Texture2D> LavaRocks = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/LavaRocks");
+public static LazyAsset<Texture2D> MarrowBiomeSurfaceClose = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceClose");
+public static LazyAsset<Texture2D> MarrowBiomeSurfaceFar = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceFar");
+public static LazyAsset<Texture2D> MarrowBiomeSurfaceMid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceMid");
+public static LazyAsset<Texture2D> Mineshafts = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Mineshafts");
+public static LazyAsset<Texture2D> MistyDungeon = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MistyDungeon");
+public static LazyAsset<Texture2D> MistyDungeon_Back = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MistyDungeon_Back");
+public static LazyAsset<Texture2D> MistyDungeon_Mid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MistyDungeon_Mid");
+public static LazyAsset<Texture2D> MistyDungeon_Top = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MistyDungeon_Top");
+public static LazyAsset<Texture2D> MistyDungeon_TopTop = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MistyDungeon_TopTop");
+public static LazyAsset<Texture2D> MoonspiralTowerFar = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFar");
+public static LazyAsset<Texture2D> MoonspiralTowerFront = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFront");
+public static LazyAsset<Texture2D> MoonspiralTowerFrontGlowBall = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFrontGlowBall");
+public static LazyAsset<Texture2D> MoonspiralTowerFrontPane = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFrontPane");
+public static LazyAsset<Texture2D> MoonspiralTowerMid = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerMid");
+public static LazyAsset<Texture2D> MorrowBiomeUnderground0 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MorrowBiomeUnderground0");
+public static LazyAsset<Texture2D> MorrowBiomeUnderground1 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MorrowBiomeUnderground1");
+public static LazyAsset<Texture2D> MorrowBiomeUnderground2 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MorrowBiomeUnderground2");
+public static LazyAsset<Texture2D> MorrowBiomeUnderground3 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MorrowBiomeUnderground3");
+public static LazyAsset<Texture2D> None = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/None");
+public static LazyAsset<Texture2D> RainforestBack = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/RainforestBack");
+public static LazyAsset<Texture2D> RainforestBackGradient = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/RainforestBackGradient");
+public static LazyAsset<Texture2D> RainforestFront = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/RainforestFront");
+public static LazyAsset<Texture2D> RainforestFrontGradient = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/RainforestFrontGradient");
+public static LazyAsset<Texture2D> RainforestMiddle = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/RainforestMiddle");
+public static LazyAsset<Texture2D> RainforestMiddleGradient = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/RainforestMiddleGradient");
+public static LazyAsset<Texture2D> RoyalCapitalBiomeBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/RoyalCapitalBiomeBackground");
+public static LazyAsset<Texture2D> SeaTempleBG = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/SeaTempleBG");
+public static LazyAsset<Texture2D> SeaTempleBG2 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/SeaTempleBG2");
+public static LazyAsset<Texture2D> SeaTempleBG3 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/SeaTempleBG3");
+public static LazyAsset<Texture2D> Snow = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Snow");
+public static LazyAsset<Texture2D> StarbloomBiomeBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/StarbloomBiomeBackground");
+public static LazyAsset<Texture2D> Starbloomflat = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/Starbloomflat");
+public static LazyAsset<Texture2D> VeilBiomeBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Backgrounds/VeilBiomeBackground");
+}
+public static class Menu
+{
+public static LazyAsset<Texture2D> Logo = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Menu/Logo");
+public static LazyAsset<Texture2D> LunarTree = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree");
+}
+public static class Noise
+{
+public static LazyAsset<Texture2D> BasicGlow = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Noise/BasicGlow");
+public static LazyAsset<Texture2D> Clouds3 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Noise/Clouds3");
+public static LazyAsset<Texture2D> PerlinNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Noise/PerlinNoise");
+public static LazyAsset<Texture2D> SmallClouds = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Noise/SmallClouds");
+}
+public static class Trails
+{
+public static LazyAsset<Texture2D> BasicSlash_Thin1 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin1");
+public static LazyAsset<Texture2D> BasicSlash_Thin2 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin2");
+public static LazyAsset<Texture2D> BasicSlash_Thin3 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin3");
+public static LazyAsset<Texture2D> BasicSlash_Thin4 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin4");
+public static LazyAsset<Texture2D> BasicSlash_Wide1 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide1");
+public static LazyAsset<Texture2D> BasicSlash_Wide2 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide2");
+public static LazyAsset<Texture2D> BasicSlash_Wide3 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide3");
+public static LazyAsset<Texture2D> BasicSlash_Wide4 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide4");
+public static LazyAsset<Texture2D> BulbyTrail = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/BulbyTrail");
+public static LazyAsset<Texture2D> StringySlash1 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash1");
+public static LazyAsset<Texture2D> StringySlash2 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash2");
+public static LazyAsset<Texture2D> StringySlash3 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash3");
+public static LazyAsset<Texture2D> StringySlash4 = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash4");
+}
+public static class UI
+{
+public static LazyAsset<Texture2D> BackButton = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/BackButton");
+public static LazyAsset<Texture2D> ButtonCloudActive = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonCloudActive");
+public static LazyAsset<Texture2D> ButtonCloudInactive = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonCloudInactive");
+public static LazyAsset<Texture2D> ButtonCollapsed = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonCollapsed");
+public static LazyAsset<Texture2D> ButtonDelete = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonDelete");
+public static LazyAsset<Texture2D> ButtonError = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonError");
+public static LazyAsset<Texture2D> ButtonExclamation = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonExclamation");
+public static LazyAsset<Texture2D> ButtonExpanded = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonExpanded");
+public static LazyAsset<Texture2D> ButtonFavoriteActive = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonFavoriteActive");
+public static LazyAsset<Texture2D> ButtonFavoriteInactive = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonFavoriteInactive");
+public static LazyAsset<Texture2D> ButtonFiltering = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonFiltering");
+public static LazyAsset<Texture2D> ButtonPlay = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonPlay");
+public static LazyAsset<Texture2D> ButtonRename = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonRename");
+public static LazyAsset<Texture2D> ButtonSeed = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonSeed");
+public static LazyAsset<Texture2D> ButtonSorting = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ButtonSorting");
+public static LazyAsset<Texture2D> CategoryPanel = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/CategoryPanel");
+public static LazyAsset<Texture2D> CategoryPanelHighlight = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/CategoryPanelHighlight");
+public static LazyAsset<Texture2D> CategoryPanelHot = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/CategoryPanelHot");
+public static LazyAsset<Texture2D> ForwardButton = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ForwardButton");
+public static LazyAsset<Texture2D> InnerPanelBackground = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/InnerPanelBackground");
+public static LazyAsset<Texture2D> InnerPanelBackgroundNew = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/InnerPanelBackgroundNew");
+public static LazyAsset<Texture2D> Mouse = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/Mouse");
+public static LazyAsset<Texture2D> PreviewBlankWorld = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBlankWorld");
+public static LazyAsset<Texture2D> PreviewBorder = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/PreviewBorder");
+public static LazyAsset<Texture2D> PreviewDifficultyExpert = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyExpert");
+public static LazyAsset<Texture2D> PreviewDifficultyMaster = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyMaster");
+public static LazyAsset<Texture2D> PreviewDifficultyMJourny = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyMJourny");
+public static LazyAsset<Texture2D> PreviewDifficultyNormal = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/PreviewDifficultyNormal");
+public static LazyAsset<Texture2D> PreviewSizeWorldVeil = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/PreviewSizeWorldVeil");
+public static LazyAsset<Texture2D> ResearchSlot = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ResearchSlot");
+public static LazyAsset<Texture2D> Scrollbar = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/Scrollbar");
+public static LazyAsset<Texture2D> ScrollBarIn = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ScrollBarIn");
+public static LazyAsset<Texture2D> ScrollBarOuter = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/ScrollBarOuter");
+public static LazyAsset<Texture2D> SlotBack = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/SlotBack");
+public static LazyAsset<Texture2D> SlotFront = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/SlotFront");
+public static LazyAsset<Texture2D> SlotOverlay = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/SlotOverlay");
+public static LazyAsset<Texture2D> SmallPanelRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/UI/SmallPanelRE");
+}
+public static LazyAsset<Texture2D> AshedRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/AshedRE");
+public static LazyAsset<Texture2D> AshingRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/AshingRE");
+public static LazyAsset<Texture2D> ClayRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/ClayRE");
+public static LazyAsset<Texture2D> CloudRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/CloudRE");
+public static LazyAsset<Texture2D> CrimGrassRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/CrimGrassRE");
+public static LazyAsset<Texture2D> CrimStoneRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/CrimStoneRE");
+public static LazyAsset<Texture2D> CrorpGrassRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/CrorpGrassRE");
+public static LazyAsset<Texture2D> CrorpStoneRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/CrorpStoneRE");
+public static LazyAsset<Texture2D> DirtRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/DirtRE");
+public static LazyAsset<Texture2D> DirtWallRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/DirtWallRE");
+public static LazyAsset<Texture2D> Empty = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/Empty");
+public static LazyAsset<Texture2D> EmptyBig = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/EmptyBig");
+public static LazyAsset<Texture2D> GraniteRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/GraniteRE");
+public static LazyAsset<Texture2D> GrassRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/GrassRE");
+public static LazyAsset<Texture2D> HardSandRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/HardSandRE");
+public static LazyAsset<Texture2D> IceRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/IceRE");
+public static LazyAsset<Texture2D> MarbRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/MarbRE");
+public static LazyAsset<Texture2D> MudGrassRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/MudGrassRE");
+public static LazyAsset<Texture2D> MudRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/MudRE");
+public static LazyAsset<Texture2D> MushGrassRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/MushGrassRE");
+public static LazyAsset<Texture2D> PearlSandRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/PearlSandRE");
+public static LazyAsset<Texture2D> PearlstoneRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/PearlstoneRE");
+public static LazyAsset<Texture2D> SandRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/SandRE");
+public static LazyAsset<Texture2D> SnowCloudRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/SnowCloudRE");
+public static LazyAsset<Texture2D> SnowRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/SnowRE");
+public static LazyAsset<Texture2D> StoneBrickRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/StoneBrickRE");
+public static LazyAsset<Texture2D> StoneRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/StoneRE");
+public static LazyAsset<Texture2D> StoneSandRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/StoneSandRE");
+public static LazyAsset<Texture2D> WoodRE = new LazyAsset<Texture2D>("Stellamod/Assets/Textures/WoodRE");
+}
+public static class Videos
+{
+}
+public static class WorldGenTextures
+{
+public static LazyAsset<Texture2D> CavernCave_1 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_1");
+public static LazyAsset<Texture2D> CavernCave_2 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_2");
+public static LazyAsset<Texture2D> CavernCave_3 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_3");
+public static LazyAsset<Texture2D> CavernCave_4 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_4");
+public static LazyAsset<Texture2D> CavernCave_5 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_5");
+public static LazyAsset<Texture2D> CavernCave_6 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_6");
+public static LazyAsset<Texture2D> CavernCave_7 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_7");
+public static LazyAsset<Texture2D> CavernCave_8 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_8");
+public static LazyAsset<Texture2D> CavernCave_9 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CavernCave_9");
+public static LazyAsset<Texture2D> CraftsmanTunnels = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/CraftsmanTunnels");
+public static LazyAsset<Texture2D> GilatineCave = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/GilatineCave");
+public static LazyAsset<Texture2D> HarmonicCoralways = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/HarmonicCoralways");
+public static LazyAsset<Texture2D> JungleTop = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/JungleTop");
+public static LazyAsset<Texture2D> Junkyard = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/Junkyard");
+public static LazyAsset<Texture2D> MistyDungeon_1 = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/MistyDungeon_1");
+public static LazyAsset<Texture2D> TreasureTrove = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/TreasureTrove");
+public static LazyAsset<Texture2D> WaterWobbleCave = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/WaterWobbleCave");
+public static LazyAsset<Texture2D> WorldRoughHeightMap = new LazyAsset<Texture2D>("Stellamod/Assets/WorldGenTextures/WorldRoughHeightMap");
+}
+public override void Unload()
+{
+Biomes.AcidWaterfallStyle?.Unload();
+Biomes.AcidWaterStyle?.Unload();
+Biomes.AcidWaterStyle_Block?.Unload();
+Biomes.AcidWaterStyle_Slope?.Unload();
+Biomes.AlcadziaBiomeBackground?.Unload();
+Biomes.AlcadziaBiomeBackground2?.Unload();
+Biomes.BloodWaterfallStyle?.Unload();
+Biomes.BloodWaterStyle?.Unload();
+Biomes.BloodWaterStyle_Block?.Unload();
+Biomes.BloodWaterStyle_Slope?.Unload();
+Biomes.CathedralWaterfallStyle?.Unload();
+Biomes.CathedralWaterStyle?.Unload();
+Biomes.CathedralWaterStyle_Block?.Unload();
+Biomes.CathedralWaterStyle_Slope?.Unload();
+Biomes.FableBiomeBackground?.Unload();
+Biomes.HarmonicWaterfallStyle?.Unload();
+Biomes.HarmonicWaterStyle?.Unload();
+Biomes.HarmonicWaterStyle_Block?.Unload();
+Biomes.HarmonicWaterStyle_Slope?.Unload();
+Biomes.MarrowWaterfallStyle?.Unload();
+Biomes.MarrowWaterStyle?.Unload();
+Biomes.MarrowWaterStyle_Block?.Unload();
+Biomes.MarrowWaterStyle_Slope?.Unload();
+Biomes.StarbloomBiomeBackground?.Unload();
+Biomes.StarbloomWaterfallStyle?.Unload();
+Biomes.StarbloomWaterStyle?.Unload();
+Biomes.StarbloomWaterStyle_Block?.Unload();
+Biomes.StarbloomWaterStyle_Slope?.Unload();
+Dithering.Dither4x4?.Unload();
+Dithering.Dither4x4DoubleScaled?.Unload();
+Dithering.Dither8x8?.Unload();
+Dithering.Dither8x8DoubleScaled?.Unload();
+Effects.CloudTexture?.Unload();
+Effects.PulseShot?.Unload();
+Effects.VoxTexture?.Unload();
+Effects.VoxTexture3?.Unload();
+GlowMasks.AlsisMagicCircle?.Unload();
+GlowMasks.AuroraBackGradient?.Unload();
+GlowMasks.AuroraGradient?.Unload();
+GlowMasks.BlastPillar?.Unload();
+GlowMasks.ButterflyCircle?.Unload();
+GlowMasks.EmptyGradient?.Unload();
+GlowMasks.GothinMagicCircle?.Unload();
+GlowMasks.GradientPillar?.Unload();
+GlowMasks.Impact?.Unload();
+GlowMasks.JumbledGlowCircle?.Unload();
+GlowMasks.MagicBloodCircle?.Unload();
+GlowMasks.MagicCircle1?.Unload();
+GlowMasks.MagicCircle2?.Unload();
+GlowMasks.MagicCircleVampiricVine?.Unload();
+GlowMasks.MagicSwordCircle?.Unload();
+GlowMasks.MuzzleFlash?.Unload();
+GlowMasks.PointLight?.Unload();
+GlowMasks.RomanceGlowSword?.Unload();
+GlowMasks.RomanceGlowSword_Medium?.Unload();
+GlowMasks.RomanceGlowSword_Small?.Unload();
+GlowMasks.Shine?.Unload();
+GlowMasks.ShootingStarGlint?.Unload();
+GlowMasks.ShootingStarParticle?.Unload();
+GlowMasks.SimpleGlowCircle?.Unload();
+GlowMasks.SolarEye?.Unload();
+GlowMasks.SolarRing?.Unload();
+GlowMasks.SpiralVortex?.Unload();
+GlowMasks.SpiralVortex2?.Unload();
+GlowMasks.Spotlight?.Unload();
+GlowMasks.Star1?.Unload();
+GlowMasks.Star2?.Unload();
+GlowMasks.Star3?.Unload();
+GlowMasks.SwordSlash?.Unload();
+GlowMasks.SwordSlashForward?.Unload();
+GlowMasks.Wave?.Unload();
+GlowMasks.WhiteCircle?.Unload();
+GlowMasks.WhiteSquare?.Unload();
+LaserTextures.Aura?.Unload();
+LaserTextures.Beamlight?.Unload();
+LaserTextures.Bloom?.Unload();
+LaserTextures.CometTrail?.Unload();
+LaserTextures.FlameTrail?.Unload();
+LaserTextures.HeavenlySlashTrail?.Unload();
+LaserTextures.Lightning?.Unload();
+LaserTextures.Lightning2?.Unload();
+LaserTextures.MuzzleFlash?.Unload();
+LaserTextures.PetalNoise?.Unload();
+LaserTextures.SilkStrand?.Unload();
+LaserTextures.SnowflakeLaser?.Unload();
+LaserTextures.SplittingTrail?.Unload();
+LaserTextures.TexturedLaser?.Unload();
+LaserTextures.TexturedLaser2?.Unload();
+Noise.AuroraRays?.Unload();
+Noise.Clouds?.Unload();
+Noise.CloudsMask?.Unload();
+Noise.CometStars?.Unload();
+Noise.FlameNoise?.Unload();
+Noise.FlameVortexNoise?.Unload();
+Noise.FrontClouds?.Unload();
+Noise.InvertedVoronoi?.Unload();
+Noise.PainterlyNoise?.Unload();
+Noise.PerlinBlurred?.Unload();
+Noise.SharpPerlinNoise?.Unload();
+Noise.SnowStormNoise?.Unload();
+Noise.Swirl?.Unload();
+Noise.Whirly?.Unload();
+NoiseTextures.AuroraGradient?.Unload();
+NoiseTextures.Backglow?.Unload();
+NoiseTextures.BasicGlow?.Unload();
+NoiseTextures.Beamlight?.Unload();
+NoiseTextures.BeamTrail?.Unload();
+NoiseTextures.BloodletTrail?.Unload();
+NoiseTextures.BloodWater?.Unload();
+NoiseTextures.BloomLine?.Unload();
+NoiseTextures.BloomLineSmall?.Unload();
+NoiseTextures.BlurryPerlinNoise?.Unload();
+NoiseTextures.BlurryPerlinNoise2?.Unload();
+NoiseTextures.BulbTrail?.Unload();
+NoiseTextures.CandleFlame?.Unload();
+NoiseTextures.CartoonyStar?.Unload();
+NoiseTextures.CausticTrail?.Unload();
+NoiseTextures.CheckerTrail?.Unload();
+NoiseTextures.Circle?.Unload();
+NoiseTextures.Circle64?.Unload();
+NoiseTextures.CircleGradient?.Unload();
+NoiseTextures.CloudNoise?.Unload();
+NoiseTextures.CloudNoise2?.Unload();
+NoiseTextures.CloudNoise3?.Unload();
+NoiseTextures.Clouds?.Unload();
+NoiseTextures.Clouds3?.Unload();
+NoiseTextures.Clouds4?.Unload();
+NoiseTextures.Clouds5?.Unload();
+NoiseTextures.Clouds6?.Unload();
+NoiseTextures.Clouds6_Outline?.Unload();
+NoiseTextures.Clouds7?.Unload();
+NoiseTextures.ColorMap?.Unload();
+NoiseTextures.ColorMap2?.Unload();
+NoiseTextures.ColorMap3?.Unload();
+NoiseTextures.ColorMap4?.Unload();
+NoiseTextures.ColorMap5?.Unload();
+NoiseTextures.ColorMap6?.Unload();
+NoiseTextures.ColorMap7?.Unload();
+NoiseTextures.ColorMap8?.Unload();
+NoiseTextures.ColorMapYellow?.Unload();
+NoiseTextures.CorkscrewTrail?.Unload();
+NoiseTextures.Crystals?.Unload();
+NoiseTextures.CrystalTrail?.Unload();
+NoiseTextures.CrystalTrail2?.Unload();
+NoiseTextures.DashTrail?.Unload();
+NoiseTextures.DimLight?.Unload();
+NoiseTextures.DirmTrail?.Unload();
+NoiseTextures.DirnTrail?.Unload();
+NoiseTextures.DNAHelixTrail?.Unload();
+NoiseTextures.DottedTrail?.Unload();
+NoiseTextures.DottedTrailOutline?.Unload();
+NoiseTextures.DreadTrail?.Unload();
+NoiseTextures.Empty?.Unload();
+NoiseTextures.EmptyPixel?.Unload();
+NoiseTextures.EreshkigalClouds?.Unload();
+NoiseTextures.EreshkigalStars?.Unload();
+NoiseTextures.ExampleTrailSlash?.Unload();
+NoiseTextures.Extra_47?.Unload();
+NoiseTextures.Extra_48?.Unload();
+NoiseTextures.Extra_49?.Unload();
+NoiseTextures.Extra_56?.Unload();
+NoiseTextures.Extra_59?.Unload();
+NoiseTextures.Extra_62?.Unload();
+NoiseTextures.Extra_63?.Unload();
+NoiseTextures.Extra_67?.Unload();
+NoiseTextures.FadedStreak?.Unload();
+NoiseTextures.FlamingTrail?.Unload();
+NoiseTextures.FlamingTrailNoBlack?.Unload();
+NoiseTextures.Flower?.Unload();
+NoiseTextures.FlyingSlash?.Unload();
+NoiseTextures.Fog?.Unload();
+NoiseTextures.FogEmpty?.Unload();
+NoiseTextures.GlowSword_AngelSword?.Unload();
+NoiseTextures.GlowSword_Chillrend?.Unload();
+NoiseTextures.GlowSword_Irradiaspear?.Unload();
+NoiseTextures.GlowSword_LightKnives?.Unload();
+NoiseTextures.GlowSword_Scythe?.Unload();
+NoiseTextures.GlowSword_Scythe2?.Unload();
+NoiseTextures.GlowSword_Spear?.Unload();
+NoiseTextures.GlowSword_Sword?.Unload();
+NoiseTextures.GlowSword_TulaSword?.Unload();
+NoiseTextures.GlowTrail?.Unload();
+NoiseTextures.GlowTrailNoBlack?.Unload();
+NoiseTextures.GlowTrailNoBlackOutline?.Unload();
+NoiseTextures.Godray?.Unload();
+NoiseTextures.IceCrystal?.Unload();
+NoiseTextures.IceTrail?.Unload();
+NoiseTextures.IceTrailFlat?.Unload();
+NoiseTextures.IceTrailSpiked?.Unload();
+NoiseTextures.IceWaterCaustics?.Unload();
+NoiseTextures.Invisible?.Unload();
+NoiseTextures.JungleWaterCaustics?.Unload();
+NoiseTextures.LaserCircle?.Unload();
+NoiseTextures.LavaDepths?.Unload();
+NoiseTextures.Leaves?.Unload();
+NoiseTextures.LightningTrail?.Unload();
+NoiseTextures.LightningTrail2?.Unload();
+NoiseTextures.LightningTrail2Outline?.Unload();
+NoiseTextures.LightningTrail3?.Unload();
+NoiseTextures.Line?.Unload();
+NoiseTextures.LoveTrail?.Unload();
+NoiseTextures.NormalNoise1?.Unload();
+NoiseTextures.Pentagram?.Unload();
+NoiseTextures.PentagramP2?.Unload();
+NoiseTextures.PerlinNoise?.Unload();
+NoiseTextures.QuickClouds?.Unload();
+NoiseTextures.RainbowPixels?.Unload();
+NoiseTextures.Ray?.Unload();
+NoiseTextures.RayLight?.Unload();
+NoiseTextures.RayLight2?.Unload();
+NoiseTextures.RayLight3?.Unload();
+NoiseTextures.RayLight4?.Unload();
+NoiseTextures.Refraction?.Unload();
+NoiseTextures.RiverMask?.Unload();
+NoiseTextures.SF?.Unload();
+NoiseTextures.SF2?.Unload();
+NoiseTextures.ShimmerWaterCaustics?.Unload();
+NoiseTextures.SilkEnd?.Unload();
+NoiseTextures.SilkTrail?.Unload();
+NoiseTextures.SimpleTrail?.Unload();
+NoiseTextures.Skinnytrail?.Unload();
+NoiseTextures.Skull?.Unload();
+NoiseTextures.SlashTrail1?.Unload();
+NoiseTextures.SmallClouds?.Unload();
+NoiseTextures.SmallNoise?.Unload();
+NoiseTextures.SmallWhispyTrail?.Unload();
+NoiseTextures.SmooothTrail?.Unload();
+NoiseTextures.SoftGlow?.Unload();
+NoiseTextures.Spiin?.Unload();
+NoiseTextures.Spiin2?.Unload();
+NoiseTextures.SpikyTrail?.Unload();
+NoiseTextures.SpikyTrail1?.Unload();
+NoiseTextures.SpikyTrail2?.Unload();
+NoiseTextures.Star?.Unload();
+NoiseTextures.StarbloomSkyBeam?.Unload();
+NoiseTextures.StarbloomSkyBeam2?.Unload();
+NoiseTextures.StarNoise?.Unload();
+NoiseTextures.StarNoise2?.Unload();
+NoiseTextures.StarryMagic?.Unload();
+NoiseTextures.StarryMagicStar?.Unload();
+NoiseTextures.Stars?.Unload();
+NoiseTextures.StarsSmall?.Unload();
+NoiseTextures.StarTrail?.Unload();
+NoiseTextures.StringTrail?.Unload();
+NoiseTextures.TerraTrail?.Unload();
+NoiseTextures.Trail?.Unload();
+NoiseTextures.VortexTrail?.Unload();
+NoiseTextures.Water?.Unload();
+NoiseTextures.Water3?.Unload();
+NoiseTextures.WaterCaustics?.Unload();
+NoiseTextures.WaterGradient?.Unload();
+NoiseTextures.WaterNoise1?.Unload();
+NoiseTextures.WaterNoise2?.Unload();
+NoiseTextures.WaterTrail?.Unload();
+NoiseTextures.WaveTrail?.Unload();
+NoiseTextures.WhispyTrail?.Unload();
+NoiseTextures.WhiteTrail?.Unload();
+NoiseTextures.ZuiEffect?.Unload();
+Textures.Backgrounds.Abyss?.Unload();
+Textures.Backgrounds.AegislavCloudConvection?.Unload();
+Textures.Backgrounds.AegislavJail?.Unload();
+Textures.Backgrounds.AegislavJailGlow?.Unload();
+Textures.Backgrounds.AegislavSurface_Close?.Unload();
+Textures.Backgrounds.AegislavSurface_Far?.Unload();
+Textures.Backgrounds.AegislavSurface_Mid?.Unload();
+Textures.Backgrounds.AegislavSurface_UndergroundLoop?.Unload();
+Textures.Backgrounds.AegislavUnderground_Clouds?.Unload();
+Textures.Backgrounds.AegislavUnderground_Far?.Unload();
+Textures.Backgrounds.Alcadziaflat?.Unload();
+Textures.Backgrounds.BlankBG?.Unload();
+Textures.Backgrounds.BloodCathedral_Far?.Unload();
+Textures.Backgrounds.BloodCathedral_Mid?.Unload();
+Textures.Backgrounds.Cathedral?.Unload();
+Textures.Backgrounds.Cathedralflat?.Unload();
+Textures.Backgrounds.Cinderspark?.Unload();
+Textures.Backgrounds.Darkspace?.Unload();
+Textures.Backgrounds.DarkspaceBottom?.Unload();
+Textures.Backgrounds.DarkspaceBottomGradient?.Unload();
+Textures.Backgrounds.DarkspaceFront?.Unload();
+Textures.Backgrounds.DarkspaceFrontGradient?.Unload();
+Textures.Backgrounds.DarkspaceMid?.Unload();
+Textures.Backgrounds.DarkspaceMidGradient?.Unload();
+Textures.Backgrounds.FableBiomeBackground?.Unload();
+Textures.Backgrounds.FableBiomeBackgroundFlat?.Unload();
+Textures.Backgrounds.ForestFar?.Unload();
+Textures.Backgrounds.ForestFront?.Unload();
+Textures.Backgrounds.ForestMid?.Unload();
+Textures.Backgrounds.ForestUnderground?.Unload();
+Textures.Backgrounds.GreyGrassBackgroundClose?.Unload();
+Textures.Backgrounds.GreyGrassBackgroundFar?.Unload();
+Textures.Backgrounds.GreyGrassBackgroundMid?.Unload();
+Textures.Backgrounds.GreyGrassBackgroundUndergroundLoop?.Unload();
+Textures.Backgrounds.HarmonicCoralwaysClose?.Unload();
+Textures.Backgrounds.HarmonicCoralwaysFar?.Unload();
+Textures.Backgrounds.HarmonicCoralwaysMid?.Unload();
+Textures.Backgrounds.IceBack?.Unload();
+Textures.Backgrounds.IceBack2?.Unload();
+Textures.Backgrounds.IceFront?.Unload();
+Textures.Backgrounds.IceFront2?.Unload();
+Textures.Backgrounds.IceGradient?.Unload();
+Textures.Backgrounds.IceMiddle?.Unload();
+Textures.Backgrounds.IceUnderground?.Unload();
+Textures.Backgrounds.IceyBiomeBackground?.Unload();
+Textures.Backgrounds.IshtarBiomeUnderground1?.Unload();
+Textures.Backgrounds.JunkyardUnderground_Close?.Unload();
+Textures.Backgrounds.JunkyardUnderground_Far?.Unload();
+Textures.Backgrounds.JunkyardUnderground_Mid?.Unload();
+Textures.Backgrounds.LavaRocks?.Unload();
+Textures.Backgrounds.MarrowBiomeSurfaceClose?.Unload();
+Textures.Backgrounds.MarrowBiomeSurfaceFar?.Unload();
+Textures.Backgrounds.MarrowBiomeSurfaceMid?.Unload();
+Textures.Backgrounds.Mineshafts?.Unload();
+Textures.Backgrounds.MistyDungeon?.Unload();
+Textures.Backgrounds.MistyDungeon_Back?.Unload();
+Textures.Backgrounds.MistyDungeon_Mid?.Unload();
+Textures.Backgrounds.MistyDungeon_Top?.Unload();
+Textures.Backgrounds.MistyDungeon_TopTop?.Unload();
+Textures.Backgrounds.MoonspiralTowerFar?.Unload();
+Textures.Backgrounds.MoonspiralTowerFront?.Unload();
+Textures.Backgrounds.MoonspiralTowerFrontGlowBall?.Unload();
+Textures.Backgrounds.MoonspiralTowerFrontPane?.Unload();
+Textures.Backgrounds.MoonspiralTowerMid?.Unload();
+Textures.Backgrounds.MorrowBiomeUnderground0?.Unload();
+Textures.Backgrounds.MorrowBiomeUnderground1?.Unload();
+Textures.Backgrounds.MorrowBiomeUnderground2?.Unload();
+Textures.Backgrounds.MorrowBiomeUnderground3?.Unload();
+Textures.Backgrounds.None?.Unload();
+Textures.Backgrounds.RainforestBack?.Unload();
+Textures.Backgrounds.RainforestBackGradient?.Unload();
+Textures.Backgrounds.RainforestFront?.Unload();
+Textures.Backgrounds.RainforestFrontGradient?.Unload();
+Textures.Backgrounds.RainforestMiddle?.Unload();
+Textures.Backgrounds.RainforestMiddleGradient?.Unload();
+Textures.Backgrounds.RoyalCapitalBiomeBackground?.Unload();
+Textures.Backgrounds.SeaTempleBG?.Unload();
+Textures.Backgrounds.SeaTempleBG2?.Unload();
+Textures.Backgrounds.SeaTempleBG3?.Unload();
+Textures.Backgrounds.Snow?.Unload();
+Textures.Backgrounds.StarbloomBiomeBackground?.Unload();
+Textures.Backgrounds.Starbloomflat?.Unload();
+Textures.Backgrounds.VeilBiomeBackground?.Unload();
+Textures.Menu.Logo?.Unload();
+Textures.Menu.LunarTree?.Unload();
+Textures.Noise.BasicGlow?.Unload();
+Textures.Noise.Clouds3?.Unload();
+Textures.Noise.PerlinNoise?.Unload();
+Textures.Noise.SmallClouds?.Unload();
+Textures.Trails.BasicSlash_Thin1?.Unload();
+Textures.Trails.BasicSlash_Thin2?.Unload();
+Textures.Trails.BasicSlash_Thin3?.Unload();
+Textures.Trails.BasicSlash_Thin4?.Unload();
+Textures.Trails.BasicSlash_Wide1?.Unload();
+Textures.Trails.BasicSlash_Wide2?.Unload();
+Textures.Trails.BasicSlash_Wide3?.Unload();
+Textures.Trails.BasicSlash_Wide4?.Unload();
+Textures.Trails.BulbyTrail?.Unload();
+Textures.Trails.StringySlash1?.Unload();
+Textures.Trails.StringySlash2?.Unload();
+Textures.Trails.StringySlash3?.Unload();
+Textures.Trails.StringySlash4?.Unload();
+Textures.UI.BackButton?.Unload();
+Textures.UI.ButtonCloudActive?.Unload();
+Textures.UI.ButtonCloudInactive?.Unload();
+Textures.UI.ButtonCollapsed?.Unload();
+Textures.UI.ButtonDelete?.Unload();
+Textures.UI.ButtonError?.Unload();
+Textures.UI.ButtonExclamation?.Unload();
+Textures.UI.ButtonExpanded?.Unload();
+Textures.UI.ButtonFavoriteActive?.Unload();
+Textures.UI.ButtonFavoriteInactive?.Unload();
+Textures.UI.ButtonFiltering?.Unload();
+Textures.UI.ButtonPlay?.Unload();
+Textures.UI.ButtonRename?.Unload();
+Textures.UI.ButtonSeed?.Unload();
+Textures.UI.ButtonSorting?.Unload();
+Textures.UI.CategoryPanel?.Unload();
+Textures.UI.CategoryPanelHighlight?.Unload();
+Textures.UI.CategoryPanelHot?.Unload();
+Textures.UI.ForwardButton?.Unload();
+Textures.UI.InnerPanelBackground?.Unload();
+Textures.UI.InnerPanelBackgroundNew?.Unload();
+Textures.UI.Mouse?.Unload();
+Textures.UI.PreviewBlankWorld?.Unload();
+Textures.UI.PreviewBorder?.Unload();
+Textures.UI.PreviewDifficultyExpert?.Unload();
+Textures.UI.PreviewDifficultyMaster?.Unload();
+Textures.UI.PreviewDifficultyMJourny?.Unload();
+Textures.UI.PreviewDifficultyNormal?.Unload();
+Textures.UI.PreviewSizeWorldVeil?.Unload();
+Textures.UI.ResearchSlot?.Unload();
+Textures.UI.Scrollbar?.Unload();
+Textures.UI.ScrollBarIn?.Unload();
+Textures.UI.ScrollBarOuter?.Unload();
+Textures.UI.SlotBack?.Unload();
+Textures.UI.SlotFront?.Unload();
+Textures.UI.SlotOverlay?.Unload();
+Textures.UI.SmallPanelRE?.Unload();
+Textures.AshedRE?.Unload();
+Textures.AshingRE?.Unload();
+Textures.ClayRE?.Unload();
+Textures.CloudRE?.Unload();
+Textures.CrimGrassRE?.Unload();
+Textures.CrimStoneRE?.Unload();
+Textures.CrorpGrassRE?.Unload();
+Textures.CrorpStoneRE?.Unload();
+Textures.DirtRE?.Unload();
+Textures.DirtWallRE?.Unload();
+Textures.Empty?.Unload();
+Textures.EmptyBig?.Unload();
+Textures.GraniteRE?.Unload();
+Textures.GrassRE?.Unload();
+Textures.HardSandRE?.Unload();
+Textures.IceRE?.Unload();
+Textures.MarbRE?.Unload();
+Textures.MudGrassRE?.Unload();
+Textures.MudRE?.Unload();
+Textures.MushGrassRE?.Unload();
+Textures.PearlSandRE?.Unload();
+Textures.PearlstoneRE?.Unload();
+Textures.SandRE?.Unload();
+Textures.SnowCloudRE?.Unload();
+Textures.SnowRE?.Unload();
+Textures.StoneBrickRE?.Unload();
+Textures.StoneRE?.Unload();
+Textures.StoneSandRE?.Unload();
+Textures.WoodRE?.Unload();
+WorldGenTextures.CavernCave_1?.Unload();
+WorldGenTextures.CavernCave_2?.Unload();
+WorldGenTextures.CavernCave_3?.Unload();
+WorldGenTextures.CavernCave_4?.Unload();
+WorldGenTextures.CavernCave_5?.Unload();
+WorldGenTextures.CavernCave_6?.Unload();
+WorldGenTextures.CavernCave_7?.Unload();
+WorldGenTextures.CavernCave_8?.Unload();
+WorldGenTextures.CavernCave_9?.Unload();
+WorldGenTextures.CraftsmanTunnels?.Unload();
+WorldGenTextures.GilatineCave?.Unload();
+WorldGenTextures.HarmonicCoralways?.Unload();
+WorldGenTextures.JungleTop?.Unload();
+WorldGenTextures.Junkyard?.Unload();
+WorldGenTextures.MistyDungeon_1?.Unload();
+WorldGenTextures.TreasureTrove?.Unload();
+WorldGenTextures.WaterWobbleCave?.Unload();
+WorldGenTextures.WorldRoughHeightMap?.Unload();
 
-                public static Asset<Texture2D> BasicGlow = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/BasicGlow");
-                public static Asset<Texture2D> Clouds3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/Clouds3");
-                public static Asset<Texture2D> CloudsSmall = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/SmallClouds");
-                public static Asset<Texture2D> Perlin = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/PerlinNoise");
-                public static Asset<Texture2D> CandleFlame = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CandleFlame");
-                public static Asset<Texture2D> CartoonyStar = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CartoonyStar");
-            }
-            public static class Trails
-            {
-                public static Asset<Texture2D> BasicSlash_Thin1 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin1");
-                public static Asset<Texture2D> BasicSlash_Thin2 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin2");
-                public static Asset<Texture2D> BasicSlash_Thin3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin3");
-                public static Asset<Texture2D> BasicSlash_Thin4 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin4");
-                public static Asset<Texture2D> BasicSlash_Wide1 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide1");
-                public static Asset<Texture2D> BasicSlash_Wide2 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide2");
-                public static Asset<Texture2D> BasicSlash_Wide3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide3");
-                public static Asset<Texture2D> BasicSlash_Wide4 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide4");
-
-                public static Asset<Texture2D> StringySlash1 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash1");
-                public static Asset<Texture2D> StringySlash2 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash2");
-                public static Asset<Texture2D> StringySlash3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash3");
-                public static Asset<Texture2D> StringySlash4 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/StringySlash4");
-
-                public static Asset<Texture2D> BulbyTrail = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BulbyTrail");
-            }
-        }
-
-        public static class Sounds
-        {
-            private static string Path => "Stellamod/Assets/Sounds/";
-
-            public static class Ereshkigal
-            {
-                public static readonly SoundStyle EreshkigalsFinisherCannon = new SoundStyle($"{Path}Ereshkigal/EreshkigalsFinisherCannon");
-                public static readonly SoundStyle HeavenlyShot1 = new SoundStyle($"{Path}Ereshkigal/HeavenlyShot");
-                public static readonly SoundStyle HeavenlyShot2 = new SoundStyle($"{Path}Ereshkigal/HeavenlyShot2");
-            }
-            public static class Rek
-            {
-                public static readonly SoundStyle BigLaserChargeRek = new SoundStyle($"{Path}Rek/BigLaserChargeRek") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle RekBigroar = new SoundStyle($"{Path}Rek/RekBigroar") with { PitchVariance = 0 };
-                public static readonly SoundStyle RekIdleroar = new SoundStyle($"{Path}Rek/RekIdleroar") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle BigLaserRek = new SoundStyle($"{Path}Rek/BigLaserRek") with { PitchVariance = 0 };
-                public static readonly SoundStyle RekSpikeOut = new SoundStyle($"{Path}Rek/RekSpikeOut") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle SmallFlameBlast = new SoundStyle($"{Path}Rek/SmallFlameBlast") with { PitchVariance = 0.5f };
-            }
-            public static class Fire
-            {
-                public static readonly SoundStyle Sungrow3 = new SoundStyle($"{Path}Fire/Sungrow3") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle Sungrow2 = new SoundStyle($"{Path}Fire/Sungrow2") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle Sungrow1 = new SoundStyle($"{Path}Fire/Sungrow1") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle Gothiviaflyaway = new SoundStyle($"{Path}Fire/Gothiviaflyaway") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle BlowtorchBigger1 = new SoundStyle($"{Path}Fire/BlowtorchBigger1") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle BlowtorchBigger2 = new SoundStyle($"{Path}Fire/BlowtorchBigger2") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle FlameoutWheel = new SoundStyle($"{Path}Fire/FlameoutWheel") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle Flamewheel = new SoundStyle($"{Path}Fire/Flamewheel") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle FlaminCharge = new SoundStyle($"{Path}Fire/FlaminCharge") with { PitchVariance = 0.5f };
-                public static readonly SoundStyle FlaminChargeFast = new SoundStyle($"{Path}Fire/FlaminChargeFast") with { PitchVariance = 0.5f };
-            }
-
-            public static class AlcaricFox
-            {
-                public static readonly SoundStyle FenixSawbounce2 = new SoundStyle($"{Path}AlcaricFox/FenixSawbounce2") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixSawbounce1 = new SoundStyle($"{Path}AlcaricFox/FenixSawbounce1") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixCloseBounce = new SoundStyle($"{Path}AlcaricFox/FenixClosebounce") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixChargin = new SoundStyle($"{Path}AlcaricFox/FenixChargin") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixStarballgrow1 = new SoundStyle($"{Path}AlcaricFox/FenixStarballgrow1") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixStarballgrow2 = new SoundStyle($"{Path}AlcaricFox/FenixStarballgrow2") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixStarballgrow3 = new SoundStyle($"{Path}AlcaricFox/FenixStarballgrow3") with { PitchVariance = 0.33f };
-
-                public static readonly SoundStyle FenixStarsactivate = new SoundStyle($"{Path}AlcaricFox/FenixStarsactivate") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixSmallStarExplode = new SoundStyle($"{Path}AlcaricFox/FenixSmallStarExplode") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixAirbounce1 = new SoundStyle($"{Path}AlcaricFox/FenixAirbounce1") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixAirbounce2 = new SoundStyle($"{Path}AlcaricFox/FenixAirbounce2") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixAppeartired = new SoundStyle($"{Path}AlcaricFox/FenixAppeartired") with { PitchVariance = 0.33f };
-                
-                public static readonly SoundStyle FenixBooma = new SoundStyle($"{Path}AlcaricFox/FenixBooma") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixExplosion = new SoundStyle($"{Path}AlcaricFox/FenixExplosion") with { PitchVariance = 0.33f };
-                
-                public static readonly SoundStyle FenixFastdash1 = new SoundStyle($"{Path}AlcaricFox/FenixFastdash1") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixFastdash2 = new SoundStyle($"{Path}AlcaricFox/FenixFastdash2") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixFastdash3 = new SoundStyle($"{Path}AlcaricFox/FenixFastdash3") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixFastdash4 = new SoundStyle($"{Path}AlcaricFox/FenixFastdash4") with { PitchVariance = 0.33f };
-
-                public static readonly SoundStyle Fenixslash1 = new SoundStyle($"{Path}AlcaricFox/Fenixslash1") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle Fenixslash2 = new SoundStyle($"{Path}AlcaricFox/Fenixslash2") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle Fenixslash3 = new SoundStyle($"{Path}AlcaricFox/Fenixslash3") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle Fenixslash4 = new SoundStyle($"{Path}AlcaricFox/Fenixslash4") with { PitchVariance = 0.33f };
-
-                public static readonly SoundStyle Fenixsmallcrash1 = new SoundStyle($"{Path}AlcaricFox/Fenixsmallcrash1") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle Fenixsmallcrash2 = new SoundStyle($"{Path}AlcaricFox/Fenixsmallcrash2") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle Fenixsmallcrash3 = new SoundStyle($"{Path}AlcaricFox/Fenixsmallcrash3") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle Fenixsmallcrash4 = new SoundStyle($"{Path}AlcaricFox/Fenixsmallcrash4") with { PitchVariance = 0.33f };
-
-                public static readonly SoundStyle FenixSonicSpeedBoost = new SoundStyle($"{Path}AlcaricFox/FenixSonicSpeedBoost") with { PitchVariance = 0.33f };
-                public static readonly SoundStyle FenixWindStartup = new SoundStyle($"{Path}AlcaricFox/FenixWindStartup") with { PitchVariance = 0.33f };
-            }
-
-            public static class LeviathanEel
-            {
-                public static SoundStyle Electrify = new SoundStyle($"{Path}LeviathanEel/Electrify");
-                public static SoundStyle SandFade = new SoundStyle($"{Path}LeviathanEel/SandFade");
-                public static SoundStyle SandDash = new SoundStyle($"{Path}LeviathanEel/SandDash");
-                public static SoundStyle EarthRumble = new SoundStyle($"{Path}LeviathanEel/EarthRumble");
-                public static SoundStyle Levigrowl => new SoundStyle($"{Path}LeviathanEel/Levigrowl");
-                public static SoundStyle LeviShockIn => new SoundStyle($"{Path}LeviathanEel/LeviShockIn");
-                public static SoundStyle LeviShockchain => new SoundStyle($"{Path}LeviathanEel/LeviShockchain");
-                public static SoundStyle LeviSmallBite1 => new SoundStyle($"{Path}LeviathanEel/LeviSmallBite1");
-                public static SoundStyle StartBodyPrisma => new SoundStyle($"{Path}LeviathanEel/StartBodyPrisma");
-                public static SoundStyle LeviBlink => new SoundStyle($"{Path}LeviathanEel/LeviBlink");
-                public static SoundStyle LeviSwipingBite => new SoundStyle($"{Path}LeviathanEel/LeviSwipingBite");
-                public static SoundStyle LeviBubbleStream => new SoundStyle($"{Path}LeviathanEel/LeviBubbleStream");
-                public static SoundStyle LeviBigSuck => new SoundStyle($"{Path}LeviathanEel/LeviBigSuck");
-                public static SoundStyle LeviZap1 => new SoundStyle($"{Path}LeviathanEel/LeviZap1");
-                public static SoundStyle LeviZap2 => new SoundStyle($"{Path}LeviathanEel/LeviZap2");
-                public static SoundStyle LeviZap3 => new SoundStyle($"{Path}LeviathanEel/LeviZap3");
-                public static SoundStyle LeviZap4 => new SoundStyle($"{Path}LeviathanEel/LeviZap4");
-                public static SoundStyle LeviGulp => new SoundStyle($"{Path}LeviathanEel/LeviGulp");
-                public static SoundStyle LeviSmallSuck => new SoundStyle($"{Path}LeviathanEel/LeviSmallSuck");
-                public static SoundStyle LeviLaserCharge => new SoundStyle($"{Path}LeviathanEel/LeviLaserCharge");
-                public static SoundStyle LeviBigLaserShoot => new SoundStyle($"{Path}LeviathanEel/LeviBigLaserShoot");
-            }
-            public static class Cariya
-            {
-                public static SoundStyle CariyaGrunt2 => new SoundStyle($"{Path}Cariya/CariyaGrunt2");
-                public static SoundStyle CariyaGrunt1 => new SoundStyle($"{Path}Cariya/CariyaGrunt1");
-                public static SoundStyle CarianDownslash => new SoundStyle($"{Path}Cariya/CarianDownslash");
-                public static SoundStyle Carianpokie => new SoundStyle($"{Path}Cariya/Carianpokie");
-                public static SoundStyle CarianSlash2 => new SoundStyle($"{Path}Cariya/CarianSlash2");
-                public static SoundStyle CarianSlash1 => new SoundStyle($"{Path}Cariya/CarianSlash1");
-            }
-            public static class Celestia
-            {
-                public static SoundStyle ArrowRainStart => new SoundStyle($"{Path}Celestia/ArrowRainStart");
-                public static SoundStyle ArrowRainArrowhitground => new SoundStyle($"{Path}Celestia/ArrowRainArrowhitground");
-                public static SoundStyle ArrowCrash => new SoundStyle($"{Path}Celestia/ArrowCrash");
-                public static SoundStyle BigBowCharge => new SoundStyle($"{Path}Celestia/BigBowCharge");
-                public static SoundStyle BigBowFullyGrown => new SoundStyle($"{Path}Celestia/BigBowFullyGrown");
-                public static SoundStyle CelestiaAbouttoAttack => new SoundStyle($"{Path}Celestia/CelestiaAbouttoAttack");
-                public static SoundStyle CelestiaBackflip => new SoundStyle($"{Path}Celestia/CelestiaBackflip");
-                public static SoundStyle CelestiaBowThrow => new SoundStyle($"{Path}Celestia/CelestiaBowThrow");
-                public static SoundStyle SmallBowShoot1 => new SoundStyle($"{Path}Celestia/SmallBowShoot1");
-                public static SoundStyle SmallBowShoot2 => new SoundStyle($"{Path}Celestia/SmallBowShoot2");
-            }
-            public static class Verlia
-            {
-                public static SoundStyle BigMoonExplosion => new SoundStyle($"{Path}Verlia/BigMoonExplosion");
-                public static SoundStyle MoonDuoHitGround => new SoundStyle($"{Path}Verlia/MoonDuoHitGround");
-                public static SoundStyle MoonBounceTwo => new SoundStyle($"{Path}Verlia/MoonBounceTwo");
-                public static SoundStyle MoonBounceOnce => new SoundStyle($"{Path}Verlia/MoonBounceOnce");
-                public static SoundStyle MoonshotBlast => new SoundStyle($"{Path}Verlia/MoonshotBlast");
-                public static SoundStyle BigMoonGrow => new SoundStyle($"{Path}Verlia/BigMoonGrow");
-                public static SoundStyle SwordGrowBigga => new SoundStyle($"{Path}Verlia/SwordGrowBigga");
-                public static SoundStyle SwordGrowSmall => new SoundStyle($"{Path}Verlia/SwordGrowSmall");
-                public static SoundStyle BigSwordHitDown => new SoundStyle($"{Path}Verlia/BigSwordHitDown");
-                public static SoundStyle BigSwordSwing => new SoundStyle($"{Path}Verlia/BigSwordSwing");
-                public static SoundStyle ShockwaveGround => new SoundStyle($"{Path}Verlia/ShockwaveGround");
-            }
-            public static class Waypoint
-            {
-                public static SoundStyle OpenWaypointSection => new SoundStyle($"{Path}Waypoint/OpenWaypointSection");
-                public static SoundStyle WaypointActivate => new SoundStyle($"{Path}Waypoint/WaypointActivate");
-            }
-
-            public static class Collosseum
-            {
-                public static SoundStyle GintzeCheer => new SoundStyle($"{Path}Collosseum/GintzeCheer");
-                public static SoundStyle GintzeGasp => new SoundStyle($"{Path}Collosseum/GintzeGasp");
-                public static SoundStyle GintzeGrunt1 => new SoundStyle($"{Path}Collosseum/GintzeGrunt1");
-                public static SoundStyle GintzeGrunt2 => new SoundStyle($"{Path}Collosseum/GintzeGrunt2");
-                public static SoundStyle GintzeGrunt3 => new SoundStyle($"{Path}Collosseum/GintzeGrunt3");
-                public static SoundStyle GintzeGrunt4 => new SoundStyle($"{Path}Collosseum/GintzeGrunt4");
-                public static SoundStyle GintzeGrunt5 => new SoundStyle($"{Path}Collosseum/GintzeGrunt5");
-                public static SoundStyle GintzeHandSummon => new SoundStyle($"{Path}Collosseum/GintzeHandSummon");
-            }
-
-            public static class Rune
-            {
-                public static SoundStyle RuneTeleport = new SoundStyle($"{Path}Runes/RuneTeleport");
-            }
-            public static class E
-            {
-                public static SoundStyle DarkTentacleStab = new SoundStyle($"{Path}E/DarkTentacleStab");
-                public static SoundStyle DescendingDark = new SoundStyle($"{Path}E/DescendingDark");
-                public static SoundStyle Hurrilock = new SoundStyle($"{Path}E/Hurrilock");
-                public static SoundStyle HurricaneBlack = new SoundStyle($"{Path}E/HurricaneBlack");
-                public static SoundStyle Hurridown = new SoundStyle($"{Path}E/Hurridown");
-                public static SoundStyle Hurriboom = new SoundStyle($"{Path}E/Hurriboom");
-                public static SoundStyle Hurrislash = new SoundStyle($"{Path}E/Hurrislash");
-            }
-
-            public static class Illuria
-            {
-                public static SoundStyle IceCrash1 = new SoundStyle($"{Path}Illuria/IceCrash1");
-                public static SoundStyle IceCrash2 = new SoundStyle($"{Path}Illuria/IceCrash2");
-                public static SoundStyle SlushShot3 = new SoundStyle($"{Path}Illuria/SlushShot3");
-                public static SoundStyle SlushShot2 = new SoundStyle($"{Path}Illuria/SlushShot2");
-                public static SoundStyle SlushShot1 = new SoundStyle($"{Path}Illuria/SlushShot1");
-                public static SoundStyle IceImpact1 = new SoundStyle($"{Path}Illuria/IceImpact1");
-                public static SoundStyle IceImpact2 = new SoundStyle($"{Path}Illuria/IceImpact2");
-                public static SoundStyle MagicalIce = new SoundStyle($"{Path}Illuria/MagicalIce");
-            }
-
-            public static class SteamPunking
-            {
-                public static SoundStyle ReadyAttack = new SoundStyle($"{Path}SteamPunking/ReadyAttack");
-                public static SoundStyle Steamrollerheadingdown = new SoundStyle($"{Path}SteamPunking/Steamrollerheadingdown");
-                public static SoundStyle SteamrollerDig = new SoundStyle($"{Path}SteamPunking/SteamrollerDig");
-                public static SoundStyle SteamingDeathStart = new SoundStyle($"{Path}SteamPunking/SteamingDeathStart");
-                public static SoundStyle DescendingElectricCharge = new SoundStyle($"{Path}SteamPunking/DescendingElectricCharge");
-                public static SoundStyle DescendingZoom = new SoundStyle($"{Path}SteamPunking/DescendingZoom");
-                public static SoundStyle DescendingPhaseShift = new SoundStyle($"{Path}SteamPunking/DescendingPhaseShift");
-                public static SoundStyle DescendingRetinaBeam = new SoundStyle($"{Path}SteamPunking/DescendingRetinaBeam");
-                public static SoundStyle DescendingMineDeploy = new SoundStyle($"{Path}SteamPunking/DescendingMineDeploy");
-                public static SoundStyle DescendingNodeShoot = new SoundStyle($"{Path}SteamPunking/DescendingNodeShoot");
-                public static SoundStyle DescendingBoom = new SoundStyle($"{Path}SteamPunking/DescendingBoom");
-                public static SoundStyle DescendingFlamethrower = new SoundStyle($"{Path}SteamPunking/DescendingFlamethrower");
-                public static SoundStyle DescendingBeep = new SoundStyle($"{Path}SteamPunking/DescendingBeep");
-                public static SoundStyle DescendingTwirl = new SoundStyle($"{Path}SteamPunking/DescendingTwirl");
-                public static SoundStyle DescendingWindup = new SoundStyle($"{Path}SteamPunking/DescendingWindup");
-                public static SoundStyle DescendingCircle = new SoundStyle($"{Path}SteamPunking/DescendingCircle");
-                public static SoundStyle DescendingDash1 = new SoundStyle($"{Path}SteamPunking/DescendingDash1");
-                public static SoundStyle DescendingDash2 = new SoundStyle($"{Path}SteamPunking/DescendingDash2");
-                public static SoundStyle MechSteaming = new SoundStyle($"{Path}SteamPunking/MechSteaming");
-                public static SoundStyle MechSupercharge = new SoundStyle($"{Path}SteamPunking/MechSupercharge");
-                public static SoundStyle MechSawRevLoop = new SoundStyle($"{Path}SteamPunking/MechSawRevLoop");
-                public static SoundStyle MechSawRevUp = new SoundStyle($"{Path}SteamPunking/MechSawRevUp");
-                public static SoundStyle MechShoot1 = new SoundStyle($"{Path}SteamPunking/MechShoot1");
-                public static SoundStyle MechSaw = new SoundStyle($"{Path}SteamPunking/MechSaw");
-                public static SoundStyle MechMove = new SoundStyle($"{Path}SteamPunking/MechMove");
-                public static SoundStyle MechTurn = new SoundStyle($"{Path}SteamPunking/MechTurn");
-            }
-
-            public static class SanguineSingularity
-            {
-                public static SoundStyle ChangeTheWorldo = new SoundStyle($"{Path}SanguineSingularity/ChangeTheWorldo");
-                public static SoundStyle SanguineCyst = new SoundStyle($"{Path}SanguineSingularity/SanguineCyst");
-                public static SoundStyle BloodyExplosion = new SoundStyle($"{Path}SanguineSingularity/BloodyExplosion");
-                public static SoundStyle BloodyGrab = new SoundStyle($"{Path}SanguineSingularity/BloodyGrab");
-                public static SoundStyle BloodyHit = new SoundStyle($"{Path}SanguineSingularity/BloodyHit");
-                public static SoundStyle BloodyDeath = new SoundStyle($"{Path}SanguineSingularity/BloodyDeath");
-                public static SoundStyle SanguineCry2 = new SoundStyle($"{Path}SanguineSingularity/SanguineCry2");
-                public static SoundStyle SanguineCry = new SoundStyle($"{Path}SanguineSingularity/SanguineCry");
-                public static SoundStyle SanguineLaugh = new SoundStyle($"{Path}SanguineSingularity/SanguineLaugh");
-                public static SoundStyle SanguineCharge = new SoundStyle($"{Path}SanguineSingularity/SanguineCharge");
-                public static SoundStyle SanguineSpawn = new SoundStyle($"{Path}SanguineSingularity/SanguineSpawn");
-                public static SoundStyle SanguineBurst = new SoundStyle($"{Path}SanguineSingularity/SanguineBurst");
-                public static SoundStyle SanguineBurstReady = new SoundStyle($"{Path}SanguineSingularity/SanguineBurstReady");
-                public static SoundStyle SanguinePreBurst = new SoundStyle($"{Path}SanguineSingularity/SanguinePreBurst");
-                public static SoundStyle SanguineDeath = new SoundStyle($"{Path}SanguineSingularity/SanguineDeath");
-                public static SoundStyle SanguineDash = new SoundStyle($"{Path}SanguineSingularity/SanguineDash");
-            }
-            public static class STARBOMBER
-            {
-                public static SoundStyle Ommove5 = new SoundStyle($"{Path}STARBOMBER/Ommove5");
-                public static SoundStyle Ommove4 = new SoundStyle($"{Path}STARBOMBER/Ommove4");
-                public static SoundStyle Ommove3 = new SoundStyle($"{Path}STARBOMBER/Ommove3");
-                public static SoundStyle Ommove2 = new SoundStyle($"{Path}STARBOMBER/Ommove2");
-                public static SoundStyle Ommove1 = new SoundStyle($"{Path}STARBOMBER/Ommove1");
-                public static SoundStyle Heavyspin = new SoundStyle($"{Path}STARBOMBER/Heavyspin");
-                public static SoundStyle HeavyCrush = new SoundStyle($"{Path}STARBOMBER/HeavyCrush");
-                public static SoundStyle STARRAILGUN = new SoundStyle($"{Path}STARBOMBER/STARRAILGUN");
-                public static SoundStyle STARWALK = new SoundStyle($"{Path}STARBOMBER/STARWALK");
-                public static SoundStyle STARSTEP = new SoundStyle($"{Path}STARBOMBER/STARSTEP");
-            }
-            public static class Minerva
-            {
-                public static SoundStyle MinervaVoice1 = new SoundStyle($"{Path}Minerva/MinervaVoice1");
-                public static SoundStyle MinervaVoice2 = new SoundStyle($"{Path}Minerva/MinervaVoice2");
-                public static SoundStyle MinervaVoice3 = new SoundStyle($"{Path}Minerva/MinervaVoice3");
-                public static SoundStyle MinervaLaugh = new SoundStyle($"{Path}Minerva/MinervaLaugh");
-                public static SoundStyle MinervaSpin = new SoundStyle($"{Path}Minerva/MinervaSpin");
-                public static SoundStyle MinervaDeath = new SoundStyle($"{Path}Minerva/MinervaDeath");
-                public static SoundStyle Stunned = new SoundStyle($"{Path}Minerva/Stunned");
-            }
-
-            public static class Bishinine
-            {
-                public static SoundStyle Bigballchargepart = new SoundStyle($"{Path}Bishinine/Bigballchargepart");
-                public static SoundStyle BigBallready = new SoundStyle($"{Path}Bishinine/BigBallready");
-                public static SoundStyle BishinineChargeBell = new SoundStyle($"{Path}Bishinine/BishinineChargeBell");
-                public static SoundStyle BishinineCometfallbegin = new SoundStyle($"{Path}Bishinine/BishinineCometfallbegin");
-                public static SoundStyle BishinineFastfall = new SoundStyle($"{Path}Bishinine/BishinineFastfall");
-                public static SoundStyle BigBellGroundhit = new SoundStyle($"{Path}Bishinine/BigBellGroundhit");
-                public static SoundStyle BishinineBellSmash = new SoundStyle($"{Path}Bishinine/BishinineBellSmash");
-                public static SoundStyle BishinineSound1 = new SoundStyle($"{Path}Bishinine/BishinineSound1");
-                public static SoundStyle BishinineSound2 = new SoundStyle($"{Path}Bishinine/BishinineSound2");
-                public static SoundStyle BishinineLaugh = new SoundStyle($"{Path}Bishinine/Bishininelaugh");
-                public static SoundStyle FallingBell = new SoundStyle($"{Path}Bishinine/FallingBell");
-                public static SoundStyle BellHit1 = new SoundStyle($"{Path}Bishinine/BellHit1");
-                public static SoundStyle BellHit2 = new SoundStyle($"{Path}Bishinine/BellHit2");
-                public static SoundStyle Comet1 = new SoundStyle($"{Path}Bishinine/Comet1");
-                public static SoundStyle Comet2 = new SoundStyle($"{Path}Bishinine/Comet2");
-            }
-            public static class Nature
-            {
-                public static SoundStyle LeafRustle1 = new SoundStyle($"{Path}Nature/LeafRustle1");
-                public static SoundStyle LeafRustle2 = new SoundStyle($"{Path}Nature/LeafRustle2");
-            }
-            public static class Stars
-            {
-                public static SoundStyle Starsingle1 = new SoundStyle($"{Path}Stars/Starsingle1");
-                public static SoundStyle Starsingle2 = new SoundStyle($"{Path}Stars/Starsingle2");
-                public static SoundStyle Starsingle3 = new SoundStyle($"{Path}Stars/Starsingle3");
-                public static SoundStyle Starsingle4 = new SoundStyle($"{Path}Stars/Starsingle4");
-                public static SoundStyle Starsingle5 = new SoundStyle($"{Path}Stars/Starsingle5");
-            }
-            public static class Bow
-            {
-                public static SoundStyle Aim = new SoundStyle($"{Path}Bow/Aim");
-                public static SoundStyle CrossbowPull = new SoundStyle($"{Path}Bow/CrossbowPull");
-            }
-            public static class Gun
-            {
-                public static SoundStyle FossilLauncher = new SoundStyle($"{Path}Gun/FossilLauncher") with { PitchVariance = 0.6f };
-                public static SoundStyle ShockLineShock = new SoundStyle($"{Path}Gun/ShockLineShock");
-                public static SoundStyle ShockLineShoot = new SoundStyle($"{Path}Gun/ShockLineShoot");
-                public static SoundStyle GrappleWindWhoosh = new SoundStyle($"{Path}Gun/GrappleWindWhoosh");
-                public static SoundStyle GrappleWindUpStart = new SoundStyle($"{Path}Gun/GrappleWindUpStart");
-                public static SoundStyle GrappleShoot = new SoundStyle($"{Path}Gun/GrappleShoot");
-                public static SoundStyle GrappleCharge = new SoundStyle($"{Path}Gun/GrappleCharge");
-                public static SoundStyle GunJam = new SoundStyle($"{Path}Gun/GunJam");
-                public static SoundStyle GunReload = new SoundStyle($"{Path}Gun/GunReload");
-                public static SoundStyle GunToss = new SoundStyle($"{Path}Gun/GunToss");
-            }
-
-            public static class Ravager
-            {
-                public static SoundStyle RavagerAngry = new SoundStyle($"{Path}Ravager/RavagerAngry");
-                public static SoundStyle RavagerRoar = new SoundStyle($"{Path}Ravager/RavagerRoar");
-                public static SoundStyle RavagerRockSlide1 = new SoundStyle($"{Path}Ravager/RavagerRockSlide1");
-                public static SoundStyle RavagerRockSlide2 = new SoundStyle($"{Path}Ravager/RavagerRockSlide2");
-                public static SoundStyle RavagerRockSmash1 = new SoundStyle($"{Path}Ravager/RavagerRockSmash1");
-                public static SoundStyle RavagerRockSmash2 = new SoundStyle($"{Path}Ravager/RavagerRockSmash2");
-                public static SoundStyle RavagerRockSummon1 = new SoundStyle($"{Path}Ravager/RavagerRockSummon1");
-                public static SoundStyle RavagerRockSummon2 = new SoundStyle($"{Path}Ravager/RavagerRockSummon2");
-                public static SoundStyle RavagerRockSummon3 = new SoundStyle($"{Path}Ravager/RavagerRockSummon3");
-            }
-            public static class Jiitas
-            {
-                public static SoundStyle JiitasGunShot = new SoundStyle($"{Path}Jiitas/JiitasGunShot");
-                public static SoundStyle JiitasKnifeThrow = new SoundStyle($"{Path}Jiitas/JiitasKnifeThrow");
-                public static SoundStyle JiitasKnifeSlash = new SoundStyle($"{Path}Jiitas/JiitasKnifeSlash");
-                public static SoundStyle JiitasBombThrow = new SoundStyle($"{Path}Jiitas/JiitasBombThrow");
-                public static SoundStyle JiitasBombFuse = new SoundStyle($"{Path}Jiitas/JiitasBombFuse");
-                public static SoundStyle JiitasLaugh = new SoundStyle($"{Path}Jiitas/JiitasLaugh");
-                public static SoundStyle JiitasSit = new SoundStyle($"{Path}Jiitas/JiitasSit");
-                public static SoundStyle JiitasSummon = new SoundStyle($"{Path}Jiitas/JiitasSummon");
-                public static SoundStyle JiitasLightSpin = new SoundStyle($"{Path}Jiitas/JiitasLightSpin");
-                public static SoundStyle JiitasReload = new SoundStyle($"{Path}Jiitas/JiitasReload");
-                public static SoundStyle JiitasSadWah = new SoundStyle($"{Path}Jiitas/JiitasSadWah");
-            }
-
-            public static class MagicWand
-            {
-                public static SoundStyle EnchantmentGrab = new SoundStyle($"{Path}MagicWand/EnchantmentGrab");
-                public static SoundStyle EnchantmentPlace = new SoundStyle($"{Path}MagicWand/EnchantmentPlace");
-                public static SoundStyle BasicCharge = new SoundStyle($"{Path}MagicWand/BasicCharge");
-                public static SoundStyle BloodletCharge = new SoundStyle($"{Path}MagicWand/BloodletCharge");
-                public static SoundStyle BloodletChargeShot = new SoundStyle($"{Path}MagicWand/BloodletChargeShot");
-                public static SoundStyle DeeyaCharge = new SoundStyle($"{Path}MagicWand/DeeyaCharge");
-                public static SoundStyle DeeyaChargeShot = new SoundStyle($"{Path}MagicWand/DeeyaChargeShot");
-                public static SoundStyle FireCharge = new SoundStyle($"{Path}MagicWand/FireCharge");
-                public static SoundStyle FireChargeShot = new SoundStyle($"{Path}MagicWand/FireChargeShot");
-                public static SoundStyle GuutCharge = new SoundStyle($"{Path}MagicWand/GuutCharge");
-                public static SoundStyle GuutChargeShot = new SoundStyle($"{Path}MagicWand/GuutChargeShot");
-                public static SoundStyle HexCharge = new SoundStyle($"{Path}MagicWand/HexCharge");
-                public static SoundStyle HexChargeShot = new SoundStyle($"{Path}MagicWand/HexChargeShot");
-                public static SoundStyle NatureCharge = new SoundStyle($"{Path}MagicWand/NatureCharge");
-                public static SoundStyle NatureChargeShot = new SoundStyle($"{Path}MagicWand/NatureChargeShot");
-                public static SoundStyle PhantasmalCharge = new SoundStyle($"{Path}MagicWand/PhantasmalCharge");
-                public static SoundStyle PhantasmalChargeShot = new SoundStyle($"{Path}MagicWand/PhantasmalChargeShot");
-                public static SoundStyle UvilisCharge = new SoundStyle($"{Path}MagicWand/UvilisCharge");
-                public static SoundStyle UvilisChargeShot = new SoundStyle($"{Path}MagicWand/UvilisChargeShot");
-            }
-            public static class Magic
-            {
-                public static SoundStyle AutomationCast1 = new SoundStyle($"{Path}Magic/AutomationCast1");
-                public static SoundStyle AutomationCast2 = new SoundStyle($"{Path}Magic/AutomationCast2");
-                public static SoundStyle AutomationHit1 = new SoundStyle($"{Path}Magic/AutomationHit1");
-                public static SoundStyle AutomationHit2 = new SoundStyle($"{Path}Magic/AutomationHit2");
-
-                public static SoundStyle BasicMagicHit1 = new SoundStyle($"{Path}Magic/BasicMagicHit1");
-                public static SoundStyle BasicMagicHit2 = new SoundStyle($"{Path}Magic/BasicMagicHit2");
-
-                public static SoundStyle BloodletCast1 = new SoundStyle($"{Path}Magic/BloodletCast1");
-                public static SoundStyle BloodletHit1 = new SoundStyle($"{Path}Magic/BloodletHit1");
-                public static SoundStyle BloodletHit2 = new SoundStyle($"{Path}Magic/BloodletHit2");
-
-                public static SoundStyle DeeyaCast1 = new SoundStyle($"{Path}Magic/DeeyaCast1");
-                public static SoundStyle DeeyaCast2 = new SoundStyle($"{Path}Magic/DeeyaCast2");
-                public static SoundStyle DeeyaHit1 = new SoundStyle($"{Path}Magic/DeeyaHit1");
-                public static SoundStyle DeeyaHit2 = new SoundStyle($"{Path}Magic/DeeyaHit2");
-
-                public static SoundStyle GuutCast1 = new SoundStyle($"{Path}Magic/GuutCast1");
-                public static SoundStyle GuutCast2 = new SoundStyle($"{Path}Magic/GuutCast2");
-                public static SoundStyle GuutHit1 = new SoundStyle($"{Path}Magic/GuutHit1");
-                public static SoundStyle GuutHit2 = new SoundStyle($"{Path}Magic/GuutHit2");
-
-                public static SoundStyle HolyCast1 = new SoundStyle($"{Path}Magic/HolyCast1");
-                public static SoundStyle HolyCast2 = new SoundStyle($"{Path}Magic/HolyCast2");
-                public static SoundStyle HolyHit1 = new SoundStyle($"{Path}Magic/HolyHit1");
-                public static SoundStyle HolyHit2 = new SoundStyle($"{Path}Magic/HolyHit2");
-
-                public static SoundStyle MothlightStarCast1 = new SoundStyle($"{Path}Magic/MothlightStarCast1");
-                public static SoundStyle MothlightStarCast2 = new SoundStyle($"{Path}Magic/MothlightStarCast2");
-                public static SoundStyle MothlightStarCast3 = new SoundStyle($"{Path}Magic/MothlightStarCast3");
-
-                public static SoundStyle NaturalCast1 = new SoundStyle($"{Path}Magic/NaturalCast1");
-                public static SoundStyle NaturalCast2 = new SoundStyle($"{Path}Magic/NaturalCast2");
-                public static SoundStyle NaturalHit1 = new SoundStyle($"{Path}Magic/NaturalHit1");
-                public static SoundStyle NaturalHit2 = new SoundStyle($"{Path}Magic/NaturalHit2");
-
-                public static SoundStyle PrimeMagicCast1 = new SoundStyle($"{Path}Magic/PrimeMagicCast1");
-                public static SoundStyle PrimeMagicCast2 = new SoundStyle($"{Path}Magic/PrimeMagicCast2");
-                public static SoundStyle PrimeMagicHit1 = new SoundStyle($"{Path}Magic/PrimeMagicHit1");
-                public static SoundStyle PrimeMagicHit2 = new SoundStyle($"{Path}Magic/PrimeMagicHit2");
-
-                public static SoundStyle RadiantCast1 = new SoundStyle($"{Path}Magic/RadianceCast1");
-                public static SoundStyle RadianceHit1 = new SoundStyle($"{Path}Magic/RadianceHit1");
-
-                public static SoundStyle WindCast1 = new SoundStyle($"{Path}Magic/WindCast1");
-                public static SoundStyle WindCast2 = new SoundStyle($"{Path}Magic/WindCast2");
-                public static SoundStyle WindHit1 = new SoundStyle($"{Path}Magic/WindHit1");
-                public static SoundStyle WindHit2 = new SoundStyle($"{Path}Magic/WindHit2");
-
-                public static SoundStyle VineWrap = new SoundStyle($"{Path}Magic/VineWrap");
-            }
-
-            public static class Melee
-            {
-                public static SoundStyle CrosshatchCut = new SoundStyle($"{Path}Melee/Crosshatchcut");
-
-                public static SoundStyle ExcaliburSwordBigger = new SoundStyle($"{Path}Melee/WeaponSwordbigger");
-                public static SoundStyle ExcaliburSwordCrashFall = new SoundStyle($"{Path}Melee/ExcaliburSwordCrashFall");
-                public static SoundStyle ExcaliburHitBuster = new SoundStyle($"{Path}Melee/ExcaliburHitBuster");
-                public static SoundStyle ExcaliburAscendedDash = new SoundStyle($"{Path}Melee/ExcaliburAscendDash");
-                public static SoundStyle ExcaliburAscended = new SoundStyle($"{Path}Melee/ExcaliburAscended");
-                public static SoundStyle ExcaliburHeavenlyExplosions = new SoundStyle($"{Path}Melee/ExcaliburHeavenlyExplosions");
-                public static SoundStyle ExcaliburParry = new SoundStyle($"{Path}Melee/ExcaliburParry");
-                public static SoundStyle ExcaliburParryHitback = new SoundStyle($"{Path}Melee/ExcaliburParryHitback");
-                public static SoundStyle ExcaliburSmallSwordrain = new SoundStyle($"{Path}Melee/ExcaliburSmallSwordrain");
-                public static SoundStyle ExcaliburHeavenlyStrike = new SoundStyle($"{Path}Melee/ExcaliburHeavenlyStrike");
-                public static SoundStyle ExcaliburStartHit1 = new SoundStyle($"{Path}Melee/ExcaliburStartHit1");
-                public static SoundStyle ExcaliburStartHit2 = new SoundStyle($"{Path}Melee/ExcaliburStartHit2");
-                public static SoundStyle ExcaliburStartSlash1 = new SoundStyle($"{Path}Melee/ExcaliburStartSlash1");
-                public static SoundStyle ExcaliburStartSlash2 = new SoundStyle($"{Path}Melee/ExcaliburStartSlash2");
-                public static SoundStyle ExcaliburStartSlash3 = new SoundStyle($"{Path}Melee/ExcaliburStartSlash3");
-                public static SoundStyle ExcaliburStartSlash4 = new SoundStyle($"{Path}Melee/ExcaliburStartSlash4");
-
-                public static SoundStyle SwordHit1 = new SoundStyle($"{Path}Melee/SwordHit1");
-                public static SoundStyle SwordHit2 = new SoundStyle($"{Path}Melee/SwordHit2");
-                public static SoundStyle SwordHit3 = new SoundStyle($"{Path}Melee/SwordHit3");
-                public static SoundStyle SwordHit4 = new SoundStyle($"{Path}Melee/SwordHit4");
-                public static SoundStyle SwordSwing1 = new SoundStyle($"{Path}Melee/SwordSwing1");
-                public static SoundStyle SwordSwing2 = new SoundStyle($"{Path}Melee/SwordSwing2");
-                public static SoundStyle SwordSwing3 = new SoundStyle($"{Path}Melee/SwordSwing3");
-                public static SoundStyle SwordSwing4 = new SoundStyle($"{Path}Melee/SwordSwing4");
-                public static SoundStyle SwordSwing5 = new SoundStyle($"{Path}Melee/SwordSwing5");
-
-                public static SoundStyle ScytheBigSlash = new SoundStyle($"{Path}Melee/ScytheBigSlash");
-                public static SoundStyle ScytheBladeSlash1 = new SoundStyle($"{Path}Melee/ScytheBladeSlash1");
-                public static SoundStyle ScytheHit1 = new SoundStyle($"{Path}Melee/ScytheHit1");
-                public static SoundStyle ScytheHit2 = new SoundStyle($"{Path}Melee/ScytheHit2");
-                public static SoundStyle ScytheHit3 = new SoundStyle($"{Path}Melee/ScytheHit3");
-                public static SoundStyle ScythePull = new SoundStyle($"{Path}Melee/ScythePull");
-                public static SoundStyle ScytheWindSlash1 = new SoundStyle($"{Path}Melee/ScytheWindSlash1");
-                public static SoundStyle ScytheWindSlash2 = new SoundStyle($"{Path}Melee/ScytheWindSlash2");
-                public static SoundStyle ScytheWindSlash3 = new SoundStyle($"{Path}Melee/ScytheWindSlash3");
-                public static SoundStyle ScytheWindSlash4 = new SoundStyle($"{Path}Melee/ScytheWindSlash4");
-
-
-                public static SoundStyle SpearHit1 = new SoundStyle($"{Path}Melee/SpearHit1");
-                public static SoundStyle SwordSpin1 = new SoundStyle($"{Path}Melee/SwordSpin1");
-                public static SoundStyle HammerHit1 = new SoundStyle($"{Path}Melee/HammerHit1");
-                public static SoundStyle HammerHit2 = new SoundStyle($"{Path}Melee/HammerHit2");
-                public static SoundStyle LightSwordSpin1 = new SoundStyle($"{Path}Melee/LightSwordSpin1");
-
-                public static SoundStyle HammerSmash1 = new SoundStyle($"{Path}Melee/HammerSmash1");
-                public static SoundStyle HammerSmash2 = new SoundStyle($"{Path}Melee/HammerSmash2");
-                public static SoundStyle HammerSmash3 = new SoundStyle($"{Path}Melee/HammerSmash3");
-                public static SoundStyle HammerSmashLightning1 = new SoundStyle($"{Path}Melee/HammerSmashLightning1");
-
-                public static SoundStyle HeavySwordSlash1 = new SoundStyle($"{Path}Melee/HeavySwordSlash1");
-                public static SoundStyle HeavySwordSlash2 = new SoundStyle($"{Path}Melee/HeavySwordSlash2");
-
-                public static SoundStyle NormalSwordHit1 = new SoundStyle($"{Path}Melee/NormalSwordHit1");
-                public static SoundStyle NormalSwordSlash1 = new SoundStyle($"{Path}Melee/NormalSwordSlash1");
-                public static SoundStyle NormalSwordSlash2 = new SoundStyle($"{Path}Melee/NormalSwordSlash2");
-
-                public static SoundStyle Safunais1 = new SoundStyle($"{Path}Melee/Safunais");
-                public static SoundStyle Safunais2 = new SoundStyle($"{Path}Melee/Safunais2");
-                public static SoundStyle Safunais3 = new SoundStyle($"{Path}Melee/Safunais3");
-
-                public static SoundStyle Vinger = new SoundStyle($"{Path}Melee/Vinger");
-                public static SoundStyle Vinger2 = new SoundStyle($"{Path}Melee/Vinger2");
-                public static SoundStyle MorrowExp = new SoundStyle($"{Path}Melee/MorrowExp");
-
-                public static SoundStyle Parendine = new SoundStyle($"{Path}Melee/Parendine");
-                public static SoundStyle Parendine2 = new SoundStyle($"{Path}Melee/Parendine2");
-
-
-                public static SoundStyle CrystalHit1 = new SoundStyle($"{Path}Melee/CrystalHit1");
-
-                public static SoundStyle SpearSlash1 = new SoundStyle($"{Path}Melee/SpearSlash1");
-                public static SoundStyle SpearSlash2 = new SoundStyle($"{Path}Melee/SpearSlash2");
-            }
-        }
-    }
+}
 }

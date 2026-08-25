@@ -525,7 +525,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         if(Timer == 1)
         {
             _initialOffset = Projectile.Center - Owner.Center;
-            SoundStyle sound = AssetRegistry.Sounds.Melee.ExcaliburSwordBigger;
+            SoundStyle sound = AssetRegistry.Sounds.Melee.WeaponSwordbigger;
             SoundEngine.PlaySound(sound, Projectile.position);
         }
         Vector2 initialVelocity = Projectile.Center - Owner.Center;
@@ -570,7 +570,7 @@ public class DeadRomanceGreatBlade : ModProjectile
     {
         _stage++;
         _growTimer = 0;
-        SoundStyle sound = AssetRegistry.Sounds.Melee.ExcaliburSwordBigger;
+        SoundStyle sound = AssetRegistry.Sounds.Melee.WeaponSwordbigger;
         SoundEngine.PlaySound(sound, Projectile.position);
 
         var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);

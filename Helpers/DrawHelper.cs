@@ -29,7 +29,7 @@ namespace Stellamod.Helpers
         }
         public static void DrawHalo(Vector2 haloCenter, Color color, float numStars)
         {
-            Texture2D texture = AssetRegistry.Textures.Noise.CartoonyStar.Value;
+            Texture2D texture = AssetRegistry.NoiseTextures.CartoonyStar.Value;
             color.A = 0;
             DrawHalo(haloCenter, texture, color, numStars, Main.GlobalTimeWrappedHourly * 4);
         }

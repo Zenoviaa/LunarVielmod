@@ -100,7 +100,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            SoundStyle soundStyle = AssetRegistry.Sounds.Rune.RuneTeleport;
+            SoundStyle soundStyle = AssetRegistry.Sounds.Runes.RuneTeleport;
             soundStyle.PitchVariance = 0.2f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);
         }

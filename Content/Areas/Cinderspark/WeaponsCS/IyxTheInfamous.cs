@@ -175,7 +175,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             {
                 if (!_playedSound)
                 {
-                    SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadiantCast1;
+                    SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadianceCast1;
                     fireSound.PitchVariance = 0.2f;
                     SoundEngine.PlaySound(fireSound, Projectile.position);
                     _playedSound = true;
@@ -254,7 +254,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             }
             if (ComboIndex == ComboCount - 1)
             {
-                SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadiantCast1;
+                SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadianceCast1;
                 fireSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(fireSound, Projectile.position);
                 for (float f = 0; f < 8; f++)

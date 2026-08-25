@@ -5,7 +5,6 @@ using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
-using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
@@ -15,12 +14,9 @@ using Stellamod.Content.Areas.Underground.TilesUG;
 using Stellamod.Content.Areas.WaterSide.TilesWS;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
-using Stellamod.Content.Armors.Alcalite;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.RibbonSystem;
-using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
-using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
 using Stellamod.Items.Armors.Windmillion;
@@ -30,17 +26,14 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Special.MinerLogs;
-using Stellamod.Items.Tools;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Acid;
-using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
@@ -153,116 +146,6 @@ public partial class StellaWorld : ModSystem
             task.Disable();
         }
     }
-
-    /*
-    private void AddWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
-    {
-        //We don't need this for now
-        int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Micro Biomes"));
-        int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
-
-        int oceanSand = tasks.FindIndex(genpass => genpass.Name.Equals("Ocean Sand"));
-        tasks[oceanSand].Disable();
-        tasks.Insert(oceanSand + 1, new ReworkedOceanSandPass());
-
-        oceanSand = tasks.FindIndex(genpass => genpass.Name.Equals("Beaches"));
-        tasks[oceanSand].Disable();
-        tasks.Insert(oceanSand + 1, new ReworkedBeachesPass());
-
-
-        int fullDesert = tasks.FindIndex(genpass => genpass.Name.Equals("Full Desert"));
-        tasks[fullDesert] = new PassLegacy("Lock Full Desert", LockDesert);
-
-        int terrainIndex = tasks.FindIndex(x => x.Name.Equals("Terrain"));
-        if (terrainIndex != -1)
-        {
-            tasks.Insert(terrainIndex + 1, new VanillaTerrainPass());
-            tasks.Insert(terrainIndex + 2, new PassLegacy("Desert Pyr", InitializePyr));
-            tasks.Insert(terrainIndex + 3, new PassLegacy("World Gen GenVar Locations", WorldGenVarLocations));
-        }
-
-        int iceGen = tasks.FindIndex(genpass => genpass.Name.Equals("Generate Ice Biome"));
-        tasks.Insert(iceGen + 1, new ReworkedVanillaIceBiomePass());
-        tasks.Insert(iceGen + 2, new PassLegacy("Ice Clumping", IceClump));
-        //  tasks.Insert(iceGen + 3, new PassLegacy("Ice Housing 1", InGroundIceHouses));
-        //tasks.Insert(iceGen + 4, new PassLegacy("Ice Housing 2", RuneBridges));
-
-        tasks.Insert(iceGen + 3, new PassLegacy("Ice Spikes", MakingIcyRandomness));
-        tasks.Insert(iceGen + 4, new PassLegacy("World Gen Abysm", WorldGenAbysm));
-        tasks.Insert(iceGen + 5, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
-        tasks.Insert(iceGen + 6, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-        tasks.Insert(iceGen + 7, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
-        tasks.Insert(iceGen + 8, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
-        tasks.Insert(iceGen + 9, new PassLegacy("Ice Housing 3", SurfaceIceHouses));
-        int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
-        if (shimmerGen != -1)
-        {
-            tasks.Insert(shimmerGen + 1, new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
-        }
-
-        int caveGen = tasks.FindIndex(x => x.Name.Equals("Jungle"));
-        if (caveGen != -1)
-        {
-
-            //  tasks.Insert(caveGen + 2, new PassLegacy("Granite Caves", WorldGenMarbleCaves));
-            tasks.Insert(caveGen + 1, new MarshJungleMudPass());
-            tasks.Insert(caveGen + 2, new PassLegacy("Caves 1", WorldGenCaves));
-            tasks.Insert(caveGen + 3, new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
-        }
-
-
-        if (MorrowGen != -1)
-        {
-            tasks.Insert(MorrowGen + 1, new PassLegacy("Marsh Jungle", WorldGenMarsh));
-            tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-            tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
-            tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
-            tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-            tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Illuria", WorldGenIlluria));
-            tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
-            tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
-            tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-            tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
-            tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Misty Dungeon", GenerateMistyDungeon));
-        }
-
-        int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
-        if (CathedralGen3 != -1)
-        {
-            tasks.Insert(CathedralGen3 + 1, new PassLegacy("World Gen Ambience", WorldGenAmbience));
-        }
-
-        int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
-        if (CathedralGen2 != -1)
-        {
-            tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Abandoned Mineshafts", WorldGenMineshafts));
-            tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
-
-            tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-            tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
-
-            tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen Veldris", WorldGenVeizalManor));
-            tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
-            tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
-            tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
-
-            tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
-            tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Rysa House", WorldGenRysaHouse));
-            tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Manor", WorldGenManor));
-            tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
-            // tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
-            tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-            //      tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
-            tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
-            tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Dock", WorldGenDock));
-            tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Evil", WorldGenEvil));
-            tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
-            tasks.Insert(CathedralGen2 + 18, new PassLegacy("Grassing Caves", WorldGenGrassPass));
-            tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
-            tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-            //     tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Water", WorldGenWater));
-        }
-    }*/
 
     private void ForceCrimson(GenerationProgress progress, GameConfiguration configuration)
     {
@@ -415,6 +298,7 @@ public partial class StellaWorld : ModSystem
     private void AddNewGenerationPasses(List<GenPass> tasks, ref double totalWeight)
     {
         PassWriter passWriter = new PassWriter(tasks);
+        passWriter.DisablePass("Traps");
         // passWriter.DisablePass("Grass");
 
         passWriter.SetInsertionIndex("Ocean Sand");
@@ -1711,7 +1595,7 @@ public partial class StellaWorld : ModSystem
                 Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
                 Point offset = rectangle.Top().ToPoint();
                 topLeftRoom.Y -= map[0].bounds.Height;
-            
+
                 topLeftRoom += offset;
                 WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
                    Actions.Chain(
@@ -5391,7 +5275,7 @@ for (int beamX = structureRectangle.Location.X;
                         break;
 
                     case 2:
-                    
+
                         break;
 
                     case 3:
@@ -6176,7 +6060,7 @@ for (int beamX = structureRectangle.Location.X;
 
 
                         case 7:
-      
+
                             itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
                             itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
                             itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -7591,9 +7475,9 @@ for (int beamX = structureRectangle.Location.X;
         int abyssLow = AbyssCenter.Y + 350;
 
         //Fill the entire area with abyss dirt tiles
-        for(int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
+        for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
         {
-            for(int y = abyssHigh; y < abyssLow; y++)
+            for (int y = abyssHigh; y < abyssLow; y++)
             {
                 Tile tile = Main.tile[x, y];
                 tile.TileFrameX = -1;
@@ -7613,10 +7497,10 @@ for (int beamX = structureRectangle.Location.X;
         pool[2] = TileID.IceBlock;
 
         int numAbyssBlotchSteps = 150;
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             ushort tileType = pool[i];
-            for(int n = 0; n < numAbyssBlotchSteps; n++)
+            for (int n = 0; n < numAbyssBlotchSteps; n++)
             {
                 //Get a random center point to place the blotch
                 Point p = new Point();
@@ -7688,7 +7572,7 @@ for (int beamX = structureRectangle.Location.X;
             for (int y = abyssHigh; y < abyssLow; y++)
             {
                 float noise = fnl.GetNoise(x, y);
-                if(noise < 0.5f)
+                if (noise < 0.5f)
                 {
                     Tile tile = Main.tile[x, y];
                     tile.ClearTile();
@@ -7790,7 +7674,7 @@ for (int beamX = structureRectangle.Location.X;
                         break;
 
                     case 6:
-                     
+
                         itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                         itemsToAdd.Add((ItemID.Shiverthorn, Main.rand.Next(2, 15)));
                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
@@ -7947,7 +7831,7 @@ for (int beamX = structureRectangle.Location.X;
                             break;
 
                         case 5:
-                      
+
                             itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
                             itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                             itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(100, 1500)));
@@ -8275,7 +8159,7 @@ for (int beamX = structureRectangle.Location.X;
                         itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
                         break;
                     case 1:
-                
+
                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                         itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -8387,7 +8271,7 @@ for (int beamX = structureRectangle.Location.X;
                     itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
                     break;
                 case 1:
-              
+
                     itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                     itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                     itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));

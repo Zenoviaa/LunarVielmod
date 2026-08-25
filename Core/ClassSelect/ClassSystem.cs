@@ -448,15 +448,8 @@ public class ClassSystem : ModSystem
     {
         base.Load();
         On_Main.DrawMenu += DrawClassSelectMenu;
-        //On_UICharacter.DrawSelf += DrawClassIcon;
         On_UICharacterListItem.DrawSelf += DrawClassIcon;
-        //       Main
         On_UICharacterSelect.NewCharacterClick += OpenSelectCharacterClass;
-    }
-
-    private void DrawClassIcon(On_UICharacter.orig_DrawSelf orig, UICharacter self, SpriteBatch spriteBatch)
-    {
-     
     }
 
     private void DrawClassIcon(On_UICharacterListItem.orig_DrawSelf orig, UICharacterListItem self, SpriteBatch spriteBatch)
@@ -491,16 +484,10 @@ public class ClassSystem : ModSystem
 
     }
 
-    public bool ShouldShowClassSelectMenu()
-    {
-        return _originalMethod != null;
-        //    return Main.PendingPlayer != null && Main.PendingPlayer.GetModPlayer<ClassReworkPlayer>().playerClass == PlayerClass.God;
-    }
-
     private void DrawClassSelectMenu(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
     {
 
-        if (Main.PendingPlayer != null)
+        if (Main.MenuUI.CurrentState == classUIState && Main.PendingPlayer != null)
         {
             Main.PendingPlayer.GetModPlayer<ClassReworkPlayer>().playerClass = (PlayerClass)ModContent.GetInstance<ClassSystem>().selectedClass;
             Main.MenuUI.Recalculate();

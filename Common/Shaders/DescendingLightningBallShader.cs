@@ -77,7 +77,7 @@ namespace Stellamod.Common.Shaders
             GradientStartColor = Color.Yellow;
             GradientMidColor = Color.Red;
             GradientEndColor = Color.Blue;
-            NoiseTexture = AssetRegistry.Textures.Noise.IceWaterCaustics;
+            NoiseTexture = AssetRegistry.NoiseTextures.IceWaterCaustics;
             BlendState = BlendState.AlphaBlend;
             Time = Main.GlobalTimeWrappedHourly * 1;
         }

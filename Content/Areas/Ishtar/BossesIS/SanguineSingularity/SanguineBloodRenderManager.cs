@@ -151,7 +151,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Vector2 centerOrigin = _bloodBGRenderRT.Size / 2f;
 
             float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
-            Texture2D vortexTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics.Value;
+            Texture2D vortexTexture = AssetRegistry.NoiseTextures.JungleWaterCaustics.Value;
             Vector2 scaleMult = _bloodBGRenderRT.Size / vortexTexture.Size();
             spriteBatch.Draw(vortexTexture, centerOrigin, null, Color.White * alpha, 0f, vortexTexture.Size() / 2f, scaleMult * _scale, SpriteEffects.None, 0f);
 

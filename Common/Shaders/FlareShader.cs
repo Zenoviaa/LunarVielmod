@@ -95,7 +95,7 @@ namespace Stellamod.Common.Shaders
             BlendState = BlendState.Additive;
             Distortion = 0.15f;
             Power = 1;
-            DistortionTexture = AssetRegistry.Textures.Noise.Perlin;
+            DistortionTexture = AssetRegistry.Textures.Noise.PerlinNoise;
             Time = Main.GlobalTimeWrappedHourly * 5;
         }
     }

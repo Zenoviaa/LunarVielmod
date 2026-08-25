@@ -2,6 +2,7 @@
 using Stellamod.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -105,6 +106,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
+      
             tag["enchantments"] = Backpack;
             
             if(miniWand == null)
@@ -114,6 +116,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             }
 
             tag["miniwand"] = ItemIO.Save(miniWand);
+ 
         }
 
         public override void LoadData(TagCompound tag)

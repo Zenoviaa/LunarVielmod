@@ -139,7 +139,7 @@ namespace Stellamod.Common.Shaders
 
             PrimaryTexture = TrailRegistry.IceTrailFlat;
             NoiseTexture = TrailRegistry.Clouds3;
-            DistortionTexture = AssetRegistry.Textures.Noise.Perlin;
+            DistortionTexture = AssetRegistry.Textures.Noise.PerlinNoise;
             Time = Main.GlobalTimeWrappedHourly * 0.5f;
             Tiling = Vector2.One * 8;
         }

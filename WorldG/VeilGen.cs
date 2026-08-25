@@ -440,11 +440,12 @@ public class VeilGenTester : ModItem
             Vector2 cavernPoint = originPoint;
             int failsafe = 0;
             float strength = genRand.NextFloat(12, 18);
-            while (cavernPoint.X < GenVars.snowOriginRight && failsafe < 300)
+            int maxSteps = genRand.Next(50, 100);
+            while (cavernPoint.X < GenVars.snowOriginRight && failsafe < 300 && maxSteps > 0)
             {
                 int remainingSteps = 4;
-                Vector2 velocity = initialVelocity.RotatedBy(genRand.NextFloat(-MathHelper.PiOver4 * 0.5f, MathHelper.PiOver4 * 0.5f));
-                while (remainingSteps > 0)
+                Vector2 velocity = initialVelocity.RotatedBy(genRand.NextFloat(-MathHelper.PiOver4 * 0.25f, MathHelper.PiOver4 * 0.25f));
+                while (remainingSteps > 0 && maxSteps > 0)
                 {
                     cavernPoint += velocity * 7;
                     if (cavernPoint.X < GenVars.snowOriginRight)
@@ -457,34 +458,158 @@ public class VeilGenTester : ModItem
                     }
 
                     remainingSteps--;
+                    maxSteps--;
                 }
                 failsafe++;
             }
         }
+        Dictionary<int, List<Vector2>> caveConnectPoints = new Dictionary<int, List<Vector2>>();
+        void CreateAbyssCavernCave(int index, Vector2 originPoint, Vector2 velocity, Rectangle scanArea)
+        {
+            Vector2 cavernPoint = originPoint;
+            int failSafe = 0;
+            float strength = genRand.NextFloat(12, 18);
+            float cavingSteps = genRand.Next(24, 64);
+            float down = genRand.Next(-64, -12);
+            int connectPointCounter = 5;           
+            while(scanArea.Contains(cavernPoint.ToPoint()) && failSafe < 500)
+            {
+                connectPointCounter--;
+                if(cavingSteps > 0)
+                {
+                    if(connectPointCounter <= 0)
+                    {
+                        caveConnectPoints[index].Add(cavernPoint);
+                    }
+                    WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
+                          strength: strength,
+                          genRand.Next(7, 25), -1);
+                }
+                cavingSteps--;
+                if(cavingSteps < down)
+                {
+                    down = genRand.Next(-64, -12);
+                    strength = genRand.NextFloat(12, 18);
+                    cavingSteps = genRand.Next(24, 64);
+                }
+                cavernPoint += velocity * 7;
+                failSafe++;
+            }
+        }
 
+        void CreateAbyssConnectionCave(Vector2 start, Vector2 end)
+        {
+            float strength = genRand.NextFloat(12, 18);
+            float steps = Vector2.Distance(start, end) / 4f;
+            for(float f =0; f < steps; f++)
+            {
+                float lerp = f / steps;
+                Vector2 pos = Vector2.Lerp(start, end, lerp);
+                WorldGen.TileRunner((int)pos.X, (int)pos.Y,
+                     strength: strength,
+                     genRand.Next(5, 12), -1);
+            }
+        }
+        List<Vector2> FindPointsICanConnectTo(int index, Vector2 referencePoint)
+        {
+            float connectRadius = 150;
+            float maxConnectionRadiusSquared = connectRadius * connectRadius;
+            List<Vector2> otherPoints = new List<Vector2>(16);
+            foreach(var kvp in caveConnectPoints)
+            {
+                if (kvp.Key == index)
+                    continue;
+                foreach(Vector2 cavePoint in kvp.Value)
+                {
+                    float distanceSquared = Vector2.DistanceSquared(referencePoint, cavePoint);
+                    if(distanceSquared <= maxConnectionRadiusSquared)
+                    {
+                        otherPoints.Add(cavePoint);
+                    }
+                }
+            }
+            return otherPoints;
+        }
+        bool IsValidSpotToPlaceCave(Point tilePoint)
+        {
+            int tileCount = 0;
+            //I want this to be centered
+            int height = 36;
+            tilePoint.Y -= height / 2;
+            Rectangle scanArea = new Rectangle(tilePoint.X, tilePoint.Y, 252, height);
+            for(int x = scanArea.Left; x < scanArea.Right; x++)
+            {
+                for(int y = scanArea.Top; y < scanArea.Bottom; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (tile.HasTile)
+                        tileCount++;
+                }
+            }
+
+            int maxTileCount = scanArea.Width * scanArea.Height;
+            float ratio = (float)tileCount / (float)maxTileCount;
+            return ratio > 0.65f;
+
+        }
         //Sprinkle several long caves throughout the biome
-        int numCaves = 26;
+        int numCaves = 18;
+        int fails = 0;
+        Rectangle operationRectangle = new Rectangle(GenVars.snowOriginLeft, abyssHigh, GenVars.snowOriginRight - GenVars.snowOriginLeft, abyssLow - abyssHigh);
+        operationRectangle = operationRectangle.CenterPad(25);
+
         for (int n = 0; n < numCaves; n++)
         {
+            caveConnectPoints.Add(n, new List<Vector2>());
+            int dir = 1;
+            if (genRand.NextBool(2))
+                dir = -1;
             Vector2 p = new Vector2();
             p.X = genRand.Next(GenVars.snowOriginLeft - 25, GenVars.snowOriginLeft + 25);
+            if (dir == -1)
+                p.X = genRand.Next(GenVars.snowOriginRight - 25, GenVars.snowOriginRight);
             p.Y = (int)MathHelper.Lerp(abyssHigh, abyssLow, (float)n / (float)numCaves);
 
             //All caves should be moving to the right
             Vector2 initialDirection = Vector2.UnitX;
-            initialDirection = initialDirection.RotatedBy(genRand.NextFloat(-0.2f, 0.2f));
-            CreateCave(p, initialDirection);
+            if (dir == -1)
+                initialDirection *= -1;
+
+            CreateAbyssCavernCave(n, p, initialDirection, operationRectangle);
         }
 
-        Rectangle rect = new Rectangle(GenVars.snowOriginLeft, abyssHigh, GenVars.snowOriginRight - GenVars.snowOriginLeft, abyssLow - abyssHigh);
-        VeilGen.PruneLonelyTiles(rect);
-        for(int x = rect.Left; x <= rect.Right; x++)
+
+        //NOW WE CONNECT CAVES
+        //Let's make two connections per layer
+        //or atleast try to
+        for(int n = 0; n < numCaves; n++)
         {
-            for(int y = rect.Top; y <= rect.Top; y++)
+            int attempts = 0;
+            for(int k = 0; k < 2; k++)
             {
-                WorldGen.SquareTileFrame(x, y);
+                if (attempts >= 100)
+                {
+                    break;
+                }
+                List<Vector2> points = caveConnectPoints[n];
+                if (points.Count <= 0)
+                    break;
+
+                Vector2 referencePoint = points[genRand.Next(0, points.Count)];
+                List<Vector2> pointsICanConnectTo = FindPointsICanConnectTo(n, referencePoint);
+                if(pointsICanConnectTo.Count <= 0)
+                {
+                    k--;
+                    attempts++;
+                    continue;
+                }
+                CreateAbyssConnectionCave(referencePoint, pointsICanConnectTo[genRand.Next(0, pointsICanConnectTo.Count)]);              
             }
         }
+        
+        Rectangle rect = new Rectangle(GenVars.snowOriginLeft, abyssHigh, GenVars.snowOriginRight - GenVars.snowOriginLeft, abyssLow - abyssHigh);
+        VeilGen.PruneLonelyTiles(rect);
+
         
         /*
         var genRand = WorldGen.genRand;

@@ -155,21 +155,6 @@ namespace Stellamod.TilesNew.RainforestTiles
                     _treeTopsToNotDraw.Add(point);
             };
         }
-
-        public override void SaveWorldData(TagCompound tag)
-        {
-            base.SaveWorldData(tag);
-            tag["treeTops"] = _treeTopsToNotDraw;
-        }
-
-        public override void LoadWorldData(TagCompound tag)
-        {
-            base.LoadWorldData(tag);
-            if (tag.ContainsKey("treeTops"))
-            {
-                _treeTopsToNotDraw = tag.Get<List<Point>>("treeTops");
-            }
-        }
     }
 
     public class RainforestTree : ModTile

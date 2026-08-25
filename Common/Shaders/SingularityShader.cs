@@ -74,7 +74,7 @@ namespace Stellamod.Common.Shaders
             InnerColor = Color.White;
             OuterColor = Color.LightCyan;
 
-            NoiseTexture = AssetRegistry.Textures.Noise.Perlin;
+            NoiseTexture = AssetRegistry.Textures.Noise.PerlinNoise;
             Time = Main.GlobalTimeWrappedHourly * -3.5f;
         }
     }

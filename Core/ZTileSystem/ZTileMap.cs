@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Terraria;
@@ -460,6 +461,8 @@ public class ZTileMap : ModSystem
     public override void SaveWorldData(TagCompound tag)
     {
         base.SaveWorldData(tag);
+        Stopwatch watch = new Stopwatch();
+        watch.Start();
         List<List<ZTileSaveData>> tileDataList = new List<List<ZTileSaveData>>();
         for (int i = 0; i < _renderLayers.Length; i++)
         {
@@ -490,10 +493,13 @@ public class ZTileMap : ModSystem
         }
 
         tag["zTileData"] = tileDataList;
+        watch.Stop();
+        Stellamod.Instance.Logger.Info($"Saving Z Tile Data {watch.ElapsedMilliseconds}ms");
     }
 
     public void SaveTileData(TagCompound tag, Rectangle worldBounds, Point bottomLeft)
     {
+
         List<List<ZTileSaveData>> tileDataList = new List<List<ZTileSaveData>>();
         for (int i = 0; i < _renderLayers.Length; i++)
         {

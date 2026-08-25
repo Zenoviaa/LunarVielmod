@@ -21,11 +21,11 @@ namespace Stellamod.Core.Bases
         {
             if (isSafunai)
             {
-                SoundStyle safunai = AssetRegistry.Sounds.Melee.Safunais1;
+                SoundStyle safunai = AssetRegistry.Sounds.Melee.Safunais;
                 _combo++;
                 if (_combo == 1)
                 {
-                    safunai = AssetRegistry.Sounds.Melee.Safunais1;
+                    safunai = AssetRegistry.Sounds.Melee.Safunais;
                 }
                 if (_combo == 2)
                 {
@@ -35,7 +35,7 @@ namespace Stellamod.Core.Bases
                 }
                 if (_combo == 3)
                 {
-                    safunai = AssetRegistry.Sounds.Melee.Safunais1;
+                    safunai = AssetRegistry.Sounds.Melee.Safunais;
                     //SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.Safunais1, position);
 
                 }

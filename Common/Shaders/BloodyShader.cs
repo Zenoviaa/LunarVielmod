@@ -99,7 +99,7 @@ namespace Stellamod.Common.Shaders
             Distortion = 0.15f;
 
             NoiseTexture = TrailRegistry.Clouds3;
-            DistortionTexture = AssetRegistry.Textures.Noise.Perlin;
+            DistortionTexture = AssetRegistry.Textures.Noise.PerlinNoise;
             Time = Main.GlobalTimeWrappedHourly * 18;
             Tiling = Vector2.One * 8;
         }
