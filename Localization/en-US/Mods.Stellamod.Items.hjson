@@ -1,4 +1,6 @@
 Common: {
+	ArmorShop: Armor Forge
+	ArmorShopHelp: Trade in materials and ManMan will make an armor for you!
 	TimeFrozen: Time has been paused...
 	TimeUnFrozen: Time has been unpaused!
 	CombatToolHelp: Choose a combat tool! These are replenshible consumables that can turn the tide of battle...

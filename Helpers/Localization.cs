@@ -140,7 +140,11 @@ namespace Stellamod.Helpers
         }
         public static string Armor(Item item, string key)
         {
-            return Language.GetTextValue($"Mods.Stellamod.Armor.{item}." + key);
+            if(item.ModItem != null)
+            {
+                return Armor(item.ModItem, key);
+            }
+            return Language.GetTextValue($"Mods.Stellamod.Armor.{item.GetTypeFileName()}." + key);
         }
         public static string Armor(ModItem item, string key)
         {

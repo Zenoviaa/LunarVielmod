@@ -8,12 +8,14 @@ namespace Stellamod.Common.ArmorShop
     {
         public ArmorShopSet()
         {
+            pieces = new List<Item>();
             heads = new List<Item>();
             bodies = new List<Item>();
             legs = new List<Item>();
         }
 
         public Item material;
+        public List<Item> pieces;
         public List<Item> heads;
         public List<Item> bodies;
         public List<Item> legs;
@@ -39,18 +41,39 @@ namespace Stellamod.Common.ArmorShop
         {
             Item item = new Item(itemType);
             heads.Add(item);
+            pieces.Add(item);
         }
 
         public void AddBody(int itemType)
         {
             Item item = new Item(itemType);
             bodies.Add(item);
+            pieces.Add(item);
         }
 
         public void AddLegs(int itemType)
         {
             Item item = new Item(itemType);
             legs.Add(item);
+            pieces.Add(item);
+        }
+        public bool CanPurchase()
+        {
+
+
+            Player player = Main.LocalPlayer;
+            ArmorShopPlayer shopPlayer = player.GetModPlayer<ArmorShopPlayer>();
+            if (HasPurchased())
+            {
+                return true;
+            }
+            else
+            {
+                if (player.CountItem(material.type) >= material.stack)
+                    return true;
+            }
+
+            return false;
         }
 
         public bool IsInSet(Item item)

@@ -1,16 +1,11 @@
-﻿using Stellamod.Assets;
-using Stellamod.Common.UI;
-using Stellamod.Core;
-using Stellamod.Helpers;
+﻿using Stellamod.Common.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Common.ClassReworkSystem.AmmoRework.UI;
 
@@ -35,7 +30,7 @@ public class AmmoToolBrowserMenu : UIPanel
         base.OnInitialize();
         Width.Pixels = 428;
         Height.Pixels = 236;
-       // Append(_view);
+        // Append(_view);
     }
 
     private void Refresh()
@@ -125,7 +120,7 @@ public class AmmoToolBrowserMenu : UIPanel
         string text3 = LangText.Common("MagicQuiver");
         Vector2 size3 = FontAssets.DeathText.Value.MeasureString(text3);
         ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.DeathText.Value, text3,
-            centerPos + new Vector2(0, -452),  Color.White * textAlpha, 0f, size3 * 0.5f, new Vector2(1f), -1f, 1f);
+            centerPos + new Vector2(0, -452), Color.White * textAlpha, 0f, size3 * 0.5f, new Vector2(1f), -1f, 1f);
 
 
     }
