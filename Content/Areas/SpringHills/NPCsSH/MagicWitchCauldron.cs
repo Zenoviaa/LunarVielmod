@@ -114,6 +114,9 @@ public class MagicWitchCauldron : VeilTownNPC
                 if (!Cauldron.IsMaterial(item.type) && !Cauldron.IsMold(item.type))
                     continue;
 
+                if (item.stack <= 0)
+                    continue;
+
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
                 soundStyle.PitchVariance = 0.15f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
@@ -153,8 +156,9 @@ public class MagicWitchCauldron : VeilTownNPC
             {
                 int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
                     result.item, result.stack);
+                float dir = Main.rand.NextBool(2) ? -1 : 1;
                 Main.item[itemIndex].shimmered = true;
-                Main.item[itemIndex].velocity = -Vector2.UnitY * 15;
+                Main.item[itemIndex].velocity = -Vector2.UnitY * 8 + new Vector2(-7 * dir, 0);
                 Main.item[itemIndex].velocity = Main.item[itemIndex].velocity.RotatedByRandom(MathHelper.ToRadians(65));
                 ItemType = result.item;
                 NPC.netUpdate = true;

@@ -494,6 +494,9 @@ namespace Stellamod.Items
                 if (IsMold(sbm.item))
                     continue;
 
+                if (sbm.stack <= 0)
+                    continue;
+
                 Results.Enqueue(sbm);
             }
             _brewingMaterials.Clear();
