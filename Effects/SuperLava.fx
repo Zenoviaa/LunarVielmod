@@ -71,7 +71,8 @@ struct VertexShaderOutput
 float reflectionDistance;
 float2 reflectionTexelSize;
 float reflectionPower;
-
+float4 outlineColor;
+float2 outlineTexelSize;
 float posterize(float v, float k)
 {
     return ceil(v * k) / k;
@@ -201,7 +202,33 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
 float4 CombineALLPS(VertexShaderOutput input) : COLOR
 {
     float2 coords = input.TextureCoordinates;
+    
+    
     float4 baseWaterColor = tex2D(SpriteTextureSampler, coords);
+            //sample outline
+    if (baseWaterColor.a <= 0.0)
+    {
+        float2 leftCoords = coords + float2(-outlineTexelSize.x, 0.0);
+        float2 rightCoords = coords + float2(outlineTexelSize.x, 0.0);
+        float2 upCoords = coords + float2(0.0, -outlineTexelSize.y);
+        float2 downCoords = coords + float2(0.0, outlineTexelSize.y);
+   
+        float4 left = tex2D(SpriteTextureSampler, leftCoords);
+        float4 right = tex2D(SpriteTextureSampler, rightCoords);
+        float4 up = tex2D(SpriteTextureSampler, upCoords);
+        float4 down = tex2D(SpriteTextureSampler, downCoords);
+    
+        
+        if (left.a > 0)
+            return left.a * outlineColor;
+        if (right.a > 0)
+            return right.a * outlineColor;
+        if (up.a > 0)
+            return up.a * outlineColor;
+        return down.a * outlineColor;
+    }
+
+    
     float4 fancyWaterColor = tex2D(NormalNoiseSampler, coords);
     fancyWaterColor.r = posterize(fancyWaterColor.r, Quantize);
     fancyWaterColor.g = posterize(fancyWaterColor.g, Quantize);

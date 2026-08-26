@@ -62,6 +62,8 @@ float distortion;
 float3 startGradient;
 float3 endGradient;
 float4 causticsColor;
+float4 outlineColor;
+float2 outlineTexelSize;
 float2 tiling;
 float2 screenOffset;
 float foamLava;
@@ -155,6 +157,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     float4 foam = SampleFoam(coords);
     foam *= foamLava;
+    
+
     return gradientColor + caustics * causticsColor + foam;
 }
 
@@ -382,6 +386,28 @@ float4 CombineALLPS(VertexShaderOutput input) : COLOR
     float4 baseWaterColor = tex2D(SpriteTextureSampler, coords);
     float4 fancyWaterColor = tex2D(WaterTextureSampler, coords);
     
+        //sample outline
+    if (baseWaterColor.a <= 0.0)
+    {
+        float2 leftCoords = coords + float2(-outlineTexelSize.x, 0.0);
+        float2 rightCoords = coords + float2(outlineTexelSize.x, 0.0);
+        float2 upCoords = coords + float2(0.0, -outlineTexelSize.y);
+        float2 downCoords = coords + float2(0.0, outlineTexelSize.y);
+   
+        float4 left = tex2D(SpriteTextureSampler, leftCoords);
+        float4 right = tex2D(SpriteTextureSampler, rightCoords);
+        float4 up = tex2D(SpriteTextureSampler, upCoords);
+        float4 down = tex2D(SpriteTextureSampler, downCoords);
+    
+        if (left.a > 0)
+            return left.a * outlineColor;
+        if (right.a > 0)
+            return right.a * outlineColor;
+        if (up.a > 0)
+            return up.a * outlineColor;
+        return down.a * outlineColor;
+    }
+
     float4 finalColor = fancyWaterColor * baseWaterColor.a;
     return finalColor * input.Color;
 }

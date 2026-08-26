@@ -138,6 +138,22 @@ public class SuperLavaShader : CrystalShader<SuperLavaShader>
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
         }
     }
+
+    public Texture2D OutlineTexelSize
+    {
+        set
+        {
+            Effect.Parameters["outlineTexelSize"].SetValue(value.GetTexelSize() * 2);
+        }
+    }
+
+    public Color OutlineColor
+    {
+        set
+        {
+            Effect.Parameters["outlineColor"].SetValue(value.ToVector4());
+        }
+    }
 }
 
 public static class WaterHelpers
@@ -408,7 +424,8 @@ public class MoonWaterSystem : ModSystem
                 SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
                 lavaShader.NormalNoiseTexture = _waterTextureRTOutput;
                 lavaShader.HeightMap = _waterHeightMapRT;
-
+                lavaShader.OutlineColor = Color.Lerp(Color.White, Color.Goldenrod, 0.3f);
+                lavaShader.OutlineTexelSize = Main.waterTarget;
                 lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["Combine"];
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     lavaShader.Effect, Main.Transform);
