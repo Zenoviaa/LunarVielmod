@@ -293,6 +293,11 @@ public partial class RekBoss : IWaterSilhouette
         {
             DrawSegmentWetWhite(i);
         }
+        for (int i = 1; i < Segments.Length; i++)
+        {
+      
+            DrawSaw(i);
+        }
     }
 
     public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
@@ -315,6 +320,8 @@ public partial class RekBoss : IWaterSilhouette
     }
     private void DrawSaw(int index)
     {
+        if (_saw && index % 2 == 0)
+            return;
         ref RekSegment segment = ref Segments[index];
         if (segment.sawBladeAlpha <= 0)
             return;

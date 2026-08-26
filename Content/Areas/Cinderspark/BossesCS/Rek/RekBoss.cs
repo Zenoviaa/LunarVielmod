@@ -342,7 +342,7 @@ public partial class RekBoss : ScarletBoss
             return Vector2.Dot(-Vector2.UnitX, NPC.rotation.ToRotationVector2()) > 0;
         }
     }
-    private AIState TestAttack => default;
+    private AIState TestAttack => AIState.Husk;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
@@ -456,6 +456,7 @@ public partial class RekBoss : ScarletBoss
             //This value you should be set specifically for everything that uses saw visual
             segment.sawBladeAlpha = 0;
         }
+        Main.NewText(_patternIndex);
         _showAfterImages = false;
         _ouroborosTrail = false;
         _showMouthAura = false;

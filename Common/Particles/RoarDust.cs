@@ -8,7 +8,7 @@ namespace Stellamod.Common.Particles;
 public class RoarDust : ParticleUpdater<RoarDustData>
 {
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 1 };
-    public override DrawLayer PixelationDrawLayer => DrawLayer.OverNPCsWithOutline;
+    public override DrawLayer PixelationDrawLayer => DrawLayer.OverNPCs;
     public override int GetPoolSize()
     {
         return 25;
@@ -41,17 +41,19 @@ public class RoarDust : ParticleUpdater<RoarDustData>
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         var roarShader = ShaderContent.GetInstance<RoarShader>();
-
-        SpritebatchParams roarParameters = SpritebatchParams.InWorldAndZoomed() with { effect = roarShader.Effect };
-        using(new SpritebatchContext(spriteBatch, roarParameters))
+        /*
+       */
+        SpritebatchParams roarParameters = SpritebatchParams.InWorldAndZoomed() with { effect = roarShader.Effect, blendState = BlendState.Additive };
+        using (new SpritebatchContext(spriteBatch, roarParameters))
         {
-            base.Draw(spriteBatch, screenPos);
+
         }
-   
+        base.Draw(spriteBatch, screenPos);
+
     }
     public override void Draw(SpriteBatch spriteBatch, ref RoarDustData particle)
     {
-        float lerpValue = Utils.GetLerpValue(0, 120, particle.timeLeft, clamped: true);
+        float lerpValue = Utils.GetLerpValue(0, 24, particle.timeLeft, clamped: true);
         float interpolant = EasingFunction.QuadraticBump(lerpValue);
 
         (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
@@ -59,9 +61,9 @@ public class RoarDust : ParticleUpdater<RoarDustData>
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
         drawer.color = Color.Lerp(Color.Transparent, particle.color, interpolant);
-        drawer.color *= interpolant;
-        drawer.color.A = (byte)((1f - lerpValue) * 255);
-        drawer.scale *= MathHelper.Lerp(2f, 0.1f, lerpValue) * particle.scale;
+        drawer.color *= 0.5f;
+        drawer.color.A = 0;
+        drawer.scale *= MathHelper.Lerp(5f, 0.1f, lerpValue) * particle.scale;
         spriteBatch.Draw(drawer);
     }
 }

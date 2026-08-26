@@ -157,14 +157,7 @@ public class RekEye : ModNPC
     public override void AI()
     {
         base.AI();
-        _myRemainingLifeTime--;
-        if(_myRemainingLifeTime <= 0 || !Parent.active)
-        {
-            CreateSpawnEffect();
-            //I think setting active false won't kill the other npc?
-            //I hope not
-            NPC.active = false;
-        }
+
         if (!NPC.HasValidTarget)
         {
             NPC.TargetClosest();
@@ -206,6 +199,14 @@ public class RekEye : ModNPC
             case AIState.Crash:
                 AI_Crash();
                 break;
+        }
+        _myRemainingLifeTime--;
+        if (_myRemainingLifeTime <= 0 || !Parent.active)
+        {
+            CreateSpawnEffect();
+            //I think setting active false won't kill the other npc?
+            //I hope not
+            NPC.active = false;
         }
     }
     private void SwitchState(AIState state)

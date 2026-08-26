@@ -91,9 +91,14 @@ public partial class RekBoss
                     }
                     else
                     {
+                        if(Timer == 65)
+                        {
+                            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                            screenShaderSystem.TintScreen(Color.Red, 0.12f, 120);
+                        }
                         if (Timer % 10 == 0)
                         {
-                            Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center });
+                            Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
                         }
                         ShakeScreenPosition.Shake = 8;
 

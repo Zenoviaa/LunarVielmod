@@ -14,7 +14,7 @@ public partial class RekBoss
 {
     private bool _blowtorched;
     private int Pac_Boom_Damage => 50;
-    private float Pac_Delay_Time => MathF.Floor(190 * Pac_Delay_Time);
+    private float Pac_Delay_Time => MathF.Floor(190 * AttackSpeedMultiplier);
     private float Pac_Man_Delay_Startup_Time => 80;
     private void AI_Pacman()
     {
@@ -33,7 +33,7 @@ public partial class RekBoss
 
         RekSegment GetNextSegmentToEat2()
         {
-         for(int i = 0; i < Segments.Length; i++)
+            for(int i = 0; i < Segments.Length; i++)
             {
                 var seg = Segments[i];
                 if (seg.noWorm)
@@ -126,7 +126,7 @@ public partial class RekBoss
                     float segIndex = 0;
                     foreach(var segment in Segments)
                     {
-                        float ratio = (Timer - i) / Pac_Delay_Time - 70f;
+                        float ratio = (Timer - i) / (Pac_Delay_Time - 70f);
                         float ease = EasingFunction.InOutExpo(ratio);
                         Vector2 t = GetPointOnPath(segIndex / (float)Segments.Length);
                         Vector2 easedPoint = Vector2.Lerp(segment.initialPosition, t, ease);
@@ -167,7 +167,7 @@ public partial class RekBoss
                         Vector2 velToTarget = Vector2.UnitX;
                         Vector2 travelVelocity = velToTarget * travelSpeed;
                         float distToTarget = Vector2.Distance(seg.position, NPC.Center);
-                        if(distToTarget < travelSpeed)
+                        if(NPC.Center.X > seg.position.X)
                         {
                             if (!_blowtorched && MultiplayerHelper.IsHost)
                             {

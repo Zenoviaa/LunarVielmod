@@ -34,13 +34,13 @@ public partial class RekBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
-                        Vector2 midArena = Vector2.Lerp(_eruptionLeft, _eruptionRight, 0.5f);
+                        Vector2 midArena = Vector2.Lerp(FindEruptionLeft(), FindEruptionRight(), 0.5f);
                         Teleport(midArena);
                     }
 
                     Animator.PlayAnimation(ANIM_IDLE);
                     NPC.velocity.X += MathF.Sin(Timer * 0.1f) * 0.2f;
-                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -4f, 0.1f);
+                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -7f, 0.1f);
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= Husk_Prep_Time)
                     {
@@ -70,10 +70,10 @@ public partial class RekBoss
                             Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center });
                         }
                         ShakeScreenPosition.Shake = 8;
-                        Animator.PlayAnimation(ANIM_EYELESS_HUSK, AnimationParams.Default with { IsLooping = true });
+                        Animator.PlayAnimation("EyelessHusk", AnimationParams.Default with { IsLooping = true });
                     }
 
-                    NPC.velocity *= 0.96f;
+                    NPC.velocity *= 0.99f;
                     NPC.velocity = NPC.velocity.RotatedBy(0.035f);
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= Husk_Arch_Time)
@@ -94,7 +94,7 @@ public partial class RekBoss
                         }
                     }
                     _huskAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 180));
-                    Animator.PlayAnimation(ANIM_EYELESS_HUSK, AnimationParams.Default with { IsLooping = true });
+                    Animator.PlayAnimation("EyelessHusk", AnimationParams.Default with { IsLooping = true });
                     NPC.velocity *= 0.94f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= 180 && !HasAbaby())

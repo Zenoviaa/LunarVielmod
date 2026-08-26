@@ -1,5 +1,6 @@
 ﻿using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core.Camera;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -8,13 +9,33 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    private float _jumpRadians;
     private int Volcanic_Spear_Damage => 50;
-    private float Volcanic_Spear_Come_Up_Time => 70;
-    private float Volcanic_Spear_Go_Down_Time => 70;
-    private float Volcanic_Spear_Crash_Time => 180;
+    private float Volcanic_Spear_Come_Up_Time => 80;
+    private float Volcanic_Spear_Go_Down_Time => 130;
+    private float Volcanic_Spear_Crash_Time => 210;
+    private float Volcanic_Spear_Stab_Time => 150;
     private float Volcanic_Spear_End_Time => 90;
     private void AI_VolcanicSpear()
     {
+        Vector2 eruptionLeft = FindEruptionLeft();
+        Vector2 eruptionRight = FindEruptionRight();
+        Vector2 GetArcPoint(float ratio)
+        {
+            Vector2 start = eruptionLeft;
+            Vector2 end = eruptionRight;
+
+
+            if (AttackCount % 2 == 0)
+            {
+                start = eruptionRight;
+                end = eruptionLeft;
+            }
+            float y = EasingFunction.QuadraticBump(ratio) * -1200;
+            Vector2 p = Vector2.Lerp(start, end, ratio);
+            p.Y += y;
+            return p;
+        }
         Timer++;
         switch (AttackCycle)
         {
@@ -23,17 +44,17 @@ public partial class RekBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
-                        Vector2 pos = Vector2.Lerp(_eruptionLeft, _eruptionRight, 0.8f);
+                        Vector2 pos = Vector2.Lerp(FindEruptionLeft(), FindEruptionRight(), 0.8f);
                         pos.Y -= 100;
                         Teleport(pos);
                         var sound = AssetRegistry.Sounds.Rek.RekIdleroar;
                         SoundEngine.PlaySound(sound, pos);
                     }
 
-                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f);
+                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.25f);
                     CameraTargetSystem.AddTarget(panning);
-                    NPC.velocity.X -= 0.5f;
-                    NPC.velocity.Y -= 1f;
+                    NPC.velocity.X -= 0.11f;
+                    NPC.velocity.Y -= 0.15f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= Volcanic_Spear_Come_Up_Time)
                     {
@@ -44,11 +65,8 @@ public partial class RekBoss
                 break;
             case 1:
                 {
-                    NPC.velocity.X *= 0.96f;
-                    if (NPC.velocity.Y < -1)
-                        NPC.velocity.Y *= 0.94f;
-                    else
-                        NPC.velocity.Y += 0.5f;
+                    NPC.velocity.X *= 0.99f;
+                    NPC.velocity.Y += 0.5f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= Volcanic_Spear_Go_Down_Time)
                     {
@@ -61,8 +79,12 @@ public partial class RekBoss
                 {
                     if (Timer == 1)
                     {
+                        Vector2 pos = Vector2.Lerp(FindEruptionLeft(), FindEruptionRight(), 0.8f);
+                        pos.Y -= 100;
+                        Teleport(pos);
                         _initialVelocity = NPC.velocity;
-                        _coilStartPoint = NPC.Center;
+                        _coilStartPoint = pos;
+
                     }
                     _centerPoint = _destroyArena ? _arenaCenter + new Vector2(0, 128) : MyTarget.Center;
                     _outliner.warning = true;
@@ -104,19 +126,14 @@ public partial class RekBoss
                         spearAlpha = EasingFunction.InOutExpo7(spearAlpha);
                     }
 
-                    float upEasing = EasingFunction.OutExpo(Timer / Volcanic_Spear_Crash_Time);
-                    float downEasing = EasingFunction.InExpo(Timer / Volcanic_Spear_Crash_Time);
-                    float midEasing = EasingFunction.InOutSine(Timer / Volcanic_Spear_Crash_Time);
-                    float startupEasing = EasingFunction.InOutSine(Timer / 45f);
-
-                    Vector2 upPoint = _coilStartPoint + new Vector2(0, -256);
-                    Vector2 upwardLerp = Vector2.Lerp(_coilStartPoint, upPoint, upEasing);
-                    Vector2 downwardLerp = Vector2.Lerp(upPoint, _centerPoint, downEasing);
-                    Vector2 targetPoint = Vector2.Lerp(upwardLerp, downwardLerp, midEasing);
-                    Vector2 movementVelocity = targetPoint - NPC.Center;
-
-                    NPC.velocity = Vector2.Lerp(_initialVelocity, movementVelocity, startupEasing);
-                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+                    float r = Timer / Volcanic_Spear_Crash_Time;
+                    float extra = Timer * 0.0005f;
+                    Vector2 point = GetArcPoint(EasingFunction.OutExpo(r) * 0.75f + extra);
+                    Vector2 nextPoint = GetArcPoint(EasingFunction.OutExpo(r) * 0.75f + 0.1f + extra);
+                    float rot = (nextPoint - point).ToRotation();
+                    float angle = Utils.AngleLerp(NPC.rotation, rot, 0.2f);
+                    NPC.velocity = point - NPC.Center;
+                    NPC.rotation = angle;
                     if (Timer >= Volcanic_Spear_Crash_Time)
                     {
                         Timer = 0;
@@ -126,6 +143,53 @@ public partial class RekBoss
                 break;
             case 3:
                 {
+                    if(Timer == 1)
+                    {
+                        _initialVelocity = NPC.velocity;
+                        _coilStartPoint = NPC.Center;
+
+                    }
+
+                    for (int i = 0; i < Segments.Length; i++)
+                    {
+                        ref var segment = ref Segments[i];
+                        segment.sawBladeAlpha = 1f;
+                        segment.deadly = true;
+                        segment.isBurning = true;
+                    }
+                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.25f);
+                    CameraTargetSystem.AddTarget(panning);
+
+                    _outliner.attacking = true;
+
+                    float ratio = Timer / Volcanic_Spear_Stab_Time;
+                    float ease = 0.8f * EasingFunction.OutQuad(ratio) + 0.2f * ratio;
+                    float skewRotation = MathHelper.ToRadians(-15);
+                    float xAmp = 1545;
+                    float yAmp = 244;
+                    float swingRadians = MathHelper.ToRadians(360);
+                    float localX = MathF.Sin(ease * swingRadians) * xAmp;
+                    float localY = MathF.Cos(ease * swingRadians) * yAmp;
+                    Vector2 localPos = new Vector2(localX, localY);
+                    localPos = localPos.RotatedBy(skewRotation);
+                    Vector2 targetPosition = _centerPoint + localPos;
+                    targetPosition += new Vector2(xAmp * 0.5f, yAmp * 0.5f).RotatedBy(skewRotation);
+                    Vector2 dashVel = targetPosition - NPC.Center;
+                    NPC.velocity = dashVel;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+                    if(Timer >= Volcanic_Spear_Stab_Time)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+
+                }
+                break;
+            case 4:
+                {
+                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f);
+                    CameraTargetSystem.AddTarget(panning);
+
                     if (Timer == 1)
                     {
                         if (_destroyArena)

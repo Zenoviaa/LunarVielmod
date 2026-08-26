@@ -50,6 +50,10 @@ public partial class RekBoss
                     float ratio = Timer / Fire_Breath_Arc_Jump_Time;
                     Vector2 point = GetArcPoint(ratio);
                     Vector2 nextPoint = GetArcPoint(ratio + 0.1f);
+                    float rot = (nextPoint - point).ToRotation();
+                    float angle = Utils.AngleLerp(NPC.rotation, rot, 0.2f);
+                    NPC.velocity = point - NPC.Center;
+                    NPC.rotation = angle;
 
                     _showAfterImages = true;
                     _outliner.attacking = true;
@@ -106,10 +110,7 @@ public partial class RekBoss
                         }
                     }
 
-                    float rot = (nextPoint - point).ToRotation();
-                    float angle = Utils.AngleLerp(NPC.rotation, rot, 0.2f);
-                    NPC.velocity = point - NPC.Center;
-                    NPC.rotation = angle;
+
                     if (Timer >= Fire_Breath_Arc_Jump_Time)
                     {
                         Timer = 0;

@@ -47,16 +47,16 @@ public partial class RekBoss
     {
         int width = 145;
         NPC.NewNPC(NPC.GetSource_FromThis(),
-            (int)_arenaCenter.X, (int)_arenaCenter.Y, ModContent.NPCType<BigMoltenPlatform>());
+            (int)_arenaCenter.X, (int)_arenaCenter.Y + 840, ModContent.NPCType<BigMoltenPlatform>());
 
-        Vector2 left = _arenaCenter.ToWorldCoordinates() + new Vector2(-width * 16, 0) * new Vector2(0.5f, 0f);
-        Vector2 right = _arenaCenter.ToWorldCoordinates() + new Vector2(width * 16, 0) * new Vector2(0.5f, 0f);
+        Vector2 left = _arenaCenter + new Vector2(-width * 16, 0) * new Vector2(0.5f, 0f);
+        Vector2 right = _arenaCenter + new Vector2(width * 16, 0) * new Vector2(0.5f, 0f);
         void MakeSmallerPlatform(float p)
         {
             Vector2 pos = Vector2.Lerp(left, right, p);
             NPC.NewNPC(Main.LocalPlayer.GetSource_FromThis(),
                 (int)pos.X,
-                (int)pos.Y,
+                (int)pos.Y + 840,
                 ModContent.NPCType<SmallMoltenPlatform>());
         }
 
