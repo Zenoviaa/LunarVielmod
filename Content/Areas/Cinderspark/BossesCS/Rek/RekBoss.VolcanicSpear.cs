@@ -14,7 +14,7 @@ public partial class RekBoss
     private float Volcanic_Spear_Come_Up_Time => 80;
     private float Volcanic_Spear_Go_Down_Time => 130;
     private float Volcanic_Spear_Crash_Time => 210;
-    private float Volcanic_Spear_Stab_Time => 150;
+    private float Volcanic_Spear_Stab_Time => 210;
     private float Volcanic_Spear_End_Time => 90;
     private void AI_VolcanicSpear()
     {
@@ -150,6 +150,7 @@ public partial class RekBoss
 
                     }
 
+                    _showAfterImages = true;
                     for (int i = 0; i < Segments.Length; i++)
                     {
                         ref var segment = ref Segments[i];
@@ -162,21 +163,19 @@ public partial class RekBoss
 
                     _outliner.attacking = true;
 
+                    float speed = -0.025f;
+                    _coilStartPoint = _coilStartPoint.RotatedBy(speed, _centerPoint);
                     float ratio = Timer / Volcanic_Spear_Stab_Time;
-                    float ease = 0.8f * EasingFunction.OutQuad(ratio) + 0.2f * ratio;
-                    float skewRotation = MathHelper.ToRadians(-15);
-                    float xAmp = 1545;
-                    float yAmp = 244;
-                    float swingRadians = MathHelper.ToRadians(360);
-                    float localX = MathF.Sin(ease * swingRadians) * xAmp;
-                    float localY = MathF.Cos(ease * swingRadians) * yAmp;
-                    Vector2 localPos = new Vector2(localX, localY);
-                    localPos = localPos.RotatedBy(skewRotation);
-                    Vector2 targetPosition = _centerPoint + localPos;
-                    targetPosition += new Vector2(xAmp * 0.5f, yAmp * 0.5f).RotatedBy(skewRotation);
-                    Vector2 dashVel = targetPosition - NPC.Center;
-                    NPC.velocity = dashVel;
-                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+                    float inOut = EasingFunction.OutExpo(ratio);
+                    float slowIn = EasingFunction.InExpo(ratio);
+                    Vector2 prePoint = _centerPoint + new Vector2(0, 900).RotatedBy(Timer * speed);
+                    Vector2 quickOut = Vector2.Lerp(_coilStartPoint, prePoint, inOut);
+                    Vector2 backIn = Vector2.Lerp(prePoint, _centerPoint, slowIn);
+                    Vector2 targetPos = Vector2.Lerp(quickOut, backIn, slowIn * slowIn * slowIn);
+                    Vector2 targetVelocity = targetPos - NPC.Center;
+                    NPC.velocity = Vector2.Lerp(_initialVelocity, targetVelocity, EasingFunction.InOutExpo(ratio / 0.75f));
+                    
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.4f);
                     if(Timer >= Volcanic_Spear_Stab_Time)
                     {
                         Timer = 0;
@@ -187,8 +186,12 @@ public partial class RekBoss
                 break;
             case 4:
                 {
-                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f);
-                    CameraTargetSystem.AddTarget(panning);
+                    if(Timer < 25)
+                    {
+                        Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f);
+                        CameraTargetSystem.AddTarget(panning);
+                    }
+    
 
                     if (Timer == 1)
                     {
@@ -206,7 +209,8 @@ public partial class RekBoss
                         {
                             ProjFirer firer = ProjFirer.From<SpearBoom>(NPC);
                             firer.damage = Volcanic_Spear_Damage;
-                            firer.position = _targetPoint;
+                            firer.position = NPC.Center;
+                            firer.velocity = -Vector2.UnitY * 1024;
                             firer.New();
                         }
                     }
@@ -216,8 +220,8 @@ public partial class RekBoss
                         spearAlpha = MathHelper.SmoothStep(1f, 0f, Timer / Volcanic_Spear_End_Time);
                     }
 
-                    NPC.velocity.X *= 0.94f;
-                    NPC.velocity.Y += 0.5f;
+                    NPC.velocity.X -= 2.5f;
+                    NPC.velocity.Y += 2.5f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= Volcanic_Spear_End_Time)
                     {
