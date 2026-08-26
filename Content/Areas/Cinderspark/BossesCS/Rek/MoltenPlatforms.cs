@@ -12,6 +12,12 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public class BigMoltenPlatform : AbstractPlatformNPC
 {
+    public override bool CheckActive()
+    {
+        if (NPC.AnyNPCs(ModContent.NPCType<RekBoss>()))
+            return false;
+        return base.CheckActive();
+    }
     private Asset<Texture2D> _glowMaskTexture;
     private Asset<Texture2D> _decorationTexture;
     public override void OnKill()
@@ -105,7 +111,12 @@ public class SmallMoltenPlatform : AbstractPlatformNPC
 {
     private Asset<Texture2D> _glowMaskTexture;
     private Asset<Texture2D> _decorationTexture;
-
+    public override bool CheckActive()
+    {
+        if (NPC.AnyNPCs(ModContent.NPCType<RekBoss>()))
+            return false;
+        return base.CheckActive();
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         _glowMaskTexture ??= ModContent.Request<Texture2D>($"{Texture}_Glow");
