@@ -22,7 +22,7 @@ public partial class RekBoss
     private float Ouroboros_Wait_Time => 70;
     private float Ouroboros_Spinup_Time => 120;
     private float Ouroboros_Startup_Time => 150;
-    private float Ouroboros_Wall_Slam_Count => 17;
+    private float Ouroboros_Wall_Slam_Count => 35;
     private void AI_Ouroboros()
     {
         Projectile FindLatchProjectile<T>() where T : ModProjectile
@@ -82,6 +82,16 @@ public partial class RekBoss
                 Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
             }
             FXUtil.CreateRipple(point);
+
+        }
+        void SawsOn()
+        {
+
+            for (int i = 0; i < Segments.Length; i++)
+            {
+                ref var segment = ref Segments[i];
+                segment.sawBladeAlpha = 1f;
+            }
 
         }
         _oldOuroborosPos ??= new Vector2[32];
@@ -243,14 +253,17 @@ public partial class RekBoss
                     }
 
                     _centerPoint += _initialVelocity;
+
                     for (int i = 0; i < Segments.Length; i++)
                     {
                         ref var segment = ref Segments[i];
-                        float t = Timer - i * 4;
-                        float ratio = t / 25f;
+                        float j = i / 2;
+                        float t = Timer - j * 4;
+                        float ratio = t / 9f;
                         float ease = EasingFunction.InOutExpo(ratio);
                         segment.sawBladeAlpha = ease;
                     }
+                    _saw = true;
 
                     animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
                     _spinRot += rotationSpeed;
@@ -279,16 +292,18 @@ public partial class RekBoss
                 break;
             case 3:
                 {
+                
                     _outliner.warning = true;
                     foreach (var seg in Segments)
                     {
                         seg.isBurning = true;
                     }
-
+                    _saw = true;
                     _spinRot += rotationSpeed + rotationSpeed * 2 * EasingFunction.OutExpo(Timer / Ouroboros_Spinup_Time);
                     _initialVelocity *= 0.98f;
                     _centerPoint += _initialVelocity;
                     SpinAround(_centerPoint, _spinRot);
+                    SawsOn();
                     if (Timer >= Ouroboros_Spinup_Time)
                     {
                         Timer = 0;
@@ -306,11 +321,12 @@ public partial class RekBoss
                     rect = rect.CenterPad(-384);
                     rect.Height += 128;
                     Vector2 bottomLeft = rect.BottomLeft();
-
+                    _saw = true;
                     Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled, _initialVelocity, bottomLeft);
                     _distanceTraveled += 4 + 28 * EasingFunction.InOutExpo(Timer / 120f);
                     _spinRot += rotationSpeed * 3;
                     SpinAround(currentPoint, _spinRot);
+                    SawsOn();
                     if (_distanceTraveled >= Vector2.Distance(_initialVelocity, bottomLeft))
                     {
                         _distanceTraveled = 0;
@@ -330,7 +346,7 @@ public partial class RekBoss
                     Vector2 bottomLeft = rect.BottomLeft();
                     Vector2 topLeft = rect.TopLeft();
                     Vector2 topRifght = rect.TopRight();
-
+                    _saw = true;
                     Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled, bottomLeft, topLeft, topRifght, bottomRight, bottomLeft);
                     _ouroborosOrigin = currentPoint;
 
@@ -379,6 +395,7 @@ public partial class RekBoss
                     }
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, currentPoint, 0.1f));
                     SpinAround(currentPoint, _spinRot);
+                    SawsOn();
                     for (int i = Segments.Length - 1; i >= 0; i--)
                     {
                         Segments[i].isBurning = true;
@@ -421,14 +438,23 @@ public partial class RekBoss
                     _windUpTimer++;
 
                     float speedUp = MathHelper.SmoothStep(0f, 24, EasingFunction.Clamp(Timer / 300f));
-                    _distanceTraveled += 32;
+
+                    float pctIncrease = 1f + (1f - AttackSpeedMultiplier);
+                    _distanceTraveled += 32 * pctIncrease;
                     _distanceTraveled += ((speedUp) * EasingFunction.InOutBack(_windUpTimer / 35) + 12) * EasingFunction.InOutExpo(Timer / 120f);
                     _spinRot += rotationSpeed * 3f;
                 }
                 break;
             case 6:
                 {
+                    _saw = true;
                     SpinAround(_centerPoint, _spinRot);
+                    for (int i = 0; i < Segments.Length; i++)
+                    {
+                        ref var segment = ref Segments[i];
+                        segment.sawBladeAlpha = MathHelper.Lerp(1f, 0f, Timer / 180f);
+                    }
+
                     _spinRot += rotationSpeed * 3f;
                     _centerPoint += _initialVelocity;
                     _initialVelocity.X *= 0.97f;

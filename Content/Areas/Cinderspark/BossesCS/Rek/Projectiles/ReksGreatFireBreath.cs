@@ -10,7 +10,6 @@ using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Core.Rendering;
 using Stellamod.Effects.Generic;
 using Stellamod.Effects.RekFlames;
-using Stellamod.Effects.RoyalMagic;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
@@ -157,7 +155,7 @@ public class ReksGreatFireBreath : ModProjectile,
         Vector2 position = Projectile.Center;
 
 
-        if(Timer % 3 == 0)
+        if (Timer % 3 == 0)
         {
             MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(position + velocity * 64, velocity * 5, innerColor);
             flashParticle.innerColor = innerColor;
@@ -206,7 +204,7 @@ public class ReksGreatFireBreath : ModProjectile,
                 });
             }
 
-            for(int i = 0; i < 64; i++)
+            for (int i = 0; i < 64; i++)
             {
                 Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
@@ -231,7 +229,7 @@ public class ReksGreatFireBreath : ModProjectile,
             }
         }
 
-        if(Timer == 2)
+        if (Timer == 2)
         {
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             screenShaderSystem.TintScreen(Color.Red, 0.18f, 120);
@@ -314,7 +312,7 @@ public class ReksGreatFireBreath : ModProjectile,
         Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * length;
         Projectile.velocity = Parent.rotation.ToRotationVector2() * Projectile.velocity.Length();
         Projectile.rotation = Parent.rotation;
-        if(Timer % 2 == 0)
+        if (Timer % 2 == 0)
         {
             float numSteam = 2;
             for (float n = 0; n < numSteam; n++)

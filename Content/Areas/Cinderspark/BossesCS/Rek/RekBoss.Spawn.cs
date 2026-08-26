@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
+using Stellamod.Common.Particles;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
@@ -20,6 +21,7 @@ public partial class RekBoss
         {
             case 0:
                 {
+
                     Vector2 eruptionLeft = FindEruptionLeft();
                     Vector2 eruptionRight = FindEruptionRight();
 
@@ -44,7 +46,10 @@ public partial class RekBoss
                     NPC.velocity = targetVel;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
 
-
+                    if (Timer == 1 && MultiplayerHelper.IsHost && !NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>()))
+                    {
+                        CreateArena();
+                    }
                     if (Timer == 1)
                     {
                         Teleport(eruptionLeft);
@@ -88,7 +93,7 @@ public partial class RekBoss
                     {
                         if (Timer % 10 == 0)
                         {
-                            LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                            Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center });
                         }
                         ShakeScreenPosition.Shake = 8;
 
@@ -101,7 +106,7 @@ public partial class RekBoss
 
                         if (!_roar)
                         {
-                            var sound = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
+                            var sound = AssetRegistry.Sounds.Rek.RekBigroar;
                             SoundEngine.PlaySound(sound);
 
                             var sound2 = new SoundStyle("Stellamod/Assets/Sounds/RekSummon");

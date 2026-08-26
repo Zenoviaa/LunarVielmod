@@ -1,7 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace Stellamod.Effects.Generic;
 

@@ -4,6 +4,23 @@ using Terraria;
 
 namespace Stellamod.Common.Particles;
 
+
+public struct RoarDustData : IParticleData
+{
+    public static readonly RoarDustData Default = new RoarDustData
+    {
+        position = Vector2.Zero,
+        color = Color.White,
+        timeLeft = 120,
+        scale = 1f
+    };
+
+    public Color color;
+    public Vector2 position;
+    public float timeLeft;
+    public float scale;
+    public bool IsActive => timeLeft > 0;
+}
 public struct FaintSmokeDustData : IParticleData
 {
     public static readonly FaintSmokeDustData Default = new FaintSmokeDustData

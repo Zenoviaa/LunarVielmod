@@ -43,46 +43,29 @@ public partial class RekBoss
         }
     }
 
-    public void CreateFirebreathChargeEffect(Vector2 position)
+    public void CreateArena()
     {
-        for (float f = 0; f < 8; f++)
+        int width = 145;
+        NPC.NewNPC(NPC.GetSource_FromThis(),
+            (int)_arenaCenter.X, (int)_arenaCenter.Y, ModContent.NPCType<BigMoltenPlatform>());
+
+        Vector2 left = _arenaCenter.ToWorldCoordinates() + new Vector2(-width * 16, 0) * new Vector2(0.5f, 0f);
+        Vector2 right = _arenaCenter.ToWorldCoordinates() + new Vector2(width * 16, 0) * new Vector2(0.5f, 0f);
+        void MakeSmallerPlatform(float p)
         {
-            Vector2 pos = position + Main.rand.NextVector2Circular(384, 384);
-            Vector2 vel = (position - pos);
-            vel *= 0.1f;
-            var fx = FXUtil.GlowStretch(pos, vel);
-            fx.OuterGlowColor = Color.Turquoise;
-            fx.Scale *= 0.5f;
+            Vector2 pos = Vector2.Lerp(left, right, p);
+            NPC.NewNPC(Main.LocalPlayer.GetSource_FromThis(),
+                (int)pos.X,
+                (int)pos.Y,
+                ModContent.NPCType<SmallMoltenPlatform>());
         }
 
-        if (Main.netMode != NetmodeID.Server)
-        {
-            var screenShader = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShader.TintScreen(Color.Red, 0.1f, 15f);
-            PixelPrimitiveCircleFactory.CreateRekInwardBoom(position);
-        }
-
-        for (float f = 0; f < 12; f++)
-        {
-            Vector2 pos = position + Main.rand.NextVector2Circular(384, 384);
-            Vector2 vel = (position - pos);
-            vel *= 0.1f;
-
-            DustParticleSpawnParams spawnparams = DustParticleSpawnParams.Default;
-            spawnparams.innerColor = Color.Lerp(Color.White, Color.Red, Main.rand.NextFloat(0f, 1f));
-            spawnparams.outerColor = Color.Red;
-            var dp = DustParticle.Spawn(pos, vel, spawnparams);
-            dp.dampening = 0.05f;
-            dp.gravity = 0;
-            dp.Scale *= 0.5f;
-        }
-
-        /*
-        SoundStyle growSound = AssetRegistry.Sounds.Celestia.BigBowCharge with { PitchVariance = 0.3f };
-        SoundEngine.PlaySound(growSound, Projectile.position);
-        */
+        MakeSmallerPlatform(0.1f);
+        MakeSmallerPlatform(0.2f);
+        MakeSmallerPlatform(0.8f);
+        MakeSmallerPlatform(0.9f);
     }
-    
+
     public void CreateSegmentEatEffect(RekSegment segment)
     {
         for (float f = 0; f < 12; f++)

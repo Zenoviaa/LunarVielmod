@@ -14,7 +14,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 public partial class RekBoss
 {
     private int Coil_Dash_Damage => 60;
-    private float Coil_Coil_Time => 120;
+    private float Coil_Coil_Time => MathF.Floor(120 * AttackSpeedMultiplier);
     private float Coil_Dash_Time => 12;
     private void AllNoWorm()
     {
@@ -358,7 +358,7 @@ public partial class RekBoss
                 break;
             case 6:
                 {
-                    SwitchState(AIState.VolcanicMeteor);
+                    NextState();
                 }
                 break;
         }

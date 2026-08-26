@@ -10,7 +10,7 @@ public partial class RekBoss
 {
     private float Eruption_PrepTime => 90;
     private float Eruption_GraceTime => 40;
-    private float Eruption_SinTime => 620;
+    private float Eruption_SinTime => 620 * AttackSpeedMultiplier;
     private float Eruption_SinHeight => 64;
     private float Eruption_SinFrequency => 0.04f;
     private void AI_Eruption()
@@ -51,7 +51,11 @@ public partial class RekBoss
                         }
                     }
 
-
+                    if(Timer == (int)(Eruption_SinTime / 2))
+                    {
+                        var roarSound = AssetRegistry.Sounds.Rek.RekIdleroar;
+                        SoundEngine.PlaySound(roarSound, MyTarget.Center);
+                    }
                     Vector2 start = _lavaArenaRectangle.BottomLeft();
                     Vector2 end = _lavaArenaRectangle.BottomRight();
 
@@ -77,7 +81,7 @@ public partial class RekBoss
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= Eruption_PrepTime)
                     {
-                        SwitchState(AIState.CoilDash);
+                        NextState();
                     }
                 }
                 break;

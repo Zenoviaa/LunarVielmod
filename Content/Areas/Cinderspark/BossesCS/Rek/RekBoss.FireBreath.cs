@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
+using System;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
@@ -8,7 +9,7 @@ public partial class RekBoss
 {
     private float Fire_Breath_Arc_Jump_Count => 3;
     private float Fire_Breath_Arc_Jump_Delay => 24;
-    private float Fire_Breath_Arc_Jump_Time => 90;
+    private float Fire_Breath_Arc_Jump_Time => MathF.Floor(90 * AttackSpeedMultiplier);
     private int Fire_Breath_Damage => 40;
     private void AI_FireBreath()
     {
@@ -138,7 +139,7 @@ public partial class RekBoss
                 break;
             case 2:
                 {
-                    SwitchState(AIState.Ouroboros);
+                    NextState();
                 }
                 break;
         }

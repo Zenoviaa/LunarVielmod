@@ -1,6 +1,9 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Platforms;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
@@ -11,6 +14,35 @@ public class BigMoltenPlatform : AbstractPlatformNPC
 {
     private Asset<Texture2D> _glowMaskTexture;
     private Asset<Texture2D> _decorationTexture;
+    public override void OnKill()
+    {
+        base.OnKill();
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.Transparent, 60, 384);
+        for (int k = 0; k < 2; k++)
+        {
+            Vector2 pos = NPC.position;
+            pos.X += Main.rand.Next(0, NPC.width);
+            pos.Y += Main.rand.Next(0, NPC.height);
+            Particle<SmokeParticle>.SpawnInAlphaLayer(pos, -Vector2.UnitY);
+        }
+
+        int leftGore = Mod.Find<ModGore>($"{Name}_Gore_0").Type;
+        int rightGore = Mod.Find<ModGore>($"{Name}_Gore_1").Type;
+        int midGore = Mod.Find<ModGore>($"{Name}_Gore_2").Type;
+
+        // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+        Vector2 vel = new Vector2(0, -54);
+        Vector2 rightVel = vel;
+        rightVel.X = 24;
+        Vector2 leftVel = vel;
+        leftVel.X = -24;
+        Gore.NewGore(NPC.GetSource_Death(), NPC.Center - new Vector2(128, 0), leftVel, leftGore, 1f);
+        Gore.NewGore(NPC.GetSource_Death(), NPC.Center, vel, rightGore);
+        Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(128, 0), rightVel, midGore);
+    }
+
     public override Point GetPlatformSize()
     {
         return new Point(856, 358);

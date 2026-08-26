@@ -162,8 +162,7 @@ public partial class RekBoss
                 break;
             case 2:
                 {
-
-                    SwitchState(AIState.Pacman);
+                    NextState();
                 }
                 break;
         }

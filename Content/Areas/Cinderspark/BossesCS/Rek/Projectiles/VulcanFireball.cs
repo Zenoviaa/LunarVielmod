@@ -30,6 +30,14 @@ public class BigVulcanFireball : ModProjectile
         ProjectileID.Sets.TrailCacheLength[Type] = 48;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
+    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+    {
+        float collisionRadius = 12 * Scale;
+        Vector2 centerPoint = targetHitbox.Center();
+        Vector2 myPoint = projHitbox.Center();
+        return Vector2.Distance(myPoint, centerPoint) <= collisionRadius;
+    }
+
     public override void SetDefaults()
     {
         base.SetDefaults();

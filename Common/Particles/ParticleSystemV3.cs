@@ -16,6 +16,7 @@ public sealed class Particles : ModSystem
     public static CinderEmberDust CinderEmberDust;
     public static CinderEmberDustBackground CinderEmberDustBackground;
     public static SwirlingFlameDust SwirlingFlameDust;
+    public static RoarDust RoarDust;
     public override void Load()
     {
         base.Load();
@@ -26,6 +27,7 @@ public sealed class Particles : ModSystem
         CinderEmberDust = new();
         CinderEmberDustBackground = new();
         SwirlingFlameDust = new();
+        RoarDust = new();
         _particleUpdaters = new List<IParticleUpdater>
         {
             BitDust,
@@ -33,7 +35,8 @@ public sealed class Particles : ModSystem
             FaintSmokeDust,
             CinderEmberDust,
             CinderEmberDustBackground,
-            SwirlingFlameDust
+            SwirlingFlameDust,
+            RoarDust
         };
 
         for (int i = 0; i < _particleUpdaters.Count; i++)

@@ -14,28 +14,11 @@ public partial class RekBoss
 {
     private bool _blowtorched;
     private int Pac_Boom_Damage => 50;
-    private float Pac_Delay_Time => 190;
+    private float Pac_Delay_Time => MathF.Floor(190 * Pac_Delay_Time);
     private float Pac_Man_Delay_Startup_Time => 80;
     private void AI_Pacman()
     {
-        void PlacePacPoint(Vector2 position)
-        {
-            if (AttackCount >= Segments.Length)
-                return;
 
-            if (MultiplayerHelper.IsHost)
-            {
-                var seg = Segments[(int)AttackCount];
-                ProjFirer firer = ProjFirer.From<PacmanSegment>(NPC);
-                firer.damage = Pac_Boom_Damage;
-                firer.position = seg.position;
-                firer.velocity = position - seg.position;
-                firer.ai0 = NPC.whoAmI;
-                firer.ai1 = AttackCount;
-                firer.New();
-            }
-            AttackCount++;
-        }
    
         bool IsFull()
         {
@@ -143,7 +126,7 @@ public partial class RekBoss
                     float segIndex = 0;
                     foreach(var segment in Segments)
                     {
-                        float ratio = (Timer - i) / 120f;
+                        float ratio = (Timer - i) / Pac_Delay_Time - 70f;
                         float ease = EasingFunction.InOutExpo(ratio);
                         Vector2 t = GetPointOnPath(segIndex / (float)Segments.Length);
                         Vector2 easedPoint = Vector2.Lerp(segment.initialPosition, t, ease);
@@ -153,10 +136,7 @@ public partial class RekBoss
                         i++;
                         segIndex++;
                     }
-                    if(Timer <= Segments.Length)
-                    {
 
-                    }
 
                     if(Timer >= Pac_Delay_Time)
                     {
@@ -184,8 +164,7 @@ public partial class RekBoss
                     if(seg != null)
                     {
                         float travelSpeed = MathHelper.Lerp(0f, 45f, EasingFunction.InOutExpo(Timer / 120f));
-                        Vector2 velToTarget = (seg.position - NPC.Center);
-                        velToTarget = velToTarget.SafeNormalize(Vector2.Zero);
+                        Vector2 velToTarget = Vector2.UnitX;
                         Vector2 travelVelocity = velToTarget * travelSpeed;
                         float distToTarget = Vector2.Distance(seg.position, NPC.Center);
                         if(distToTarget < travelSpeed)
