@@ -57,11 +57,7 @@ public class BannerShop
                 RemoveAllChildren();
                 View = new(
                     shopParameters.AvailableItemsFunction(), 
-                    shopParameters.SelectItemFunction, 
-                    shopParameters.ViewItemFunction, 
-                    shopParameters.SelectedItemFunction,
-                    shopParameters.DrawFunction,
-                    shopParameters.HoverTooltipFunction);
+                    shopParameters);
                 View.Width.Pixels = Width.Pixels;
                 View.Height.Pixels = Height.Pixels;
                 View.Activate();
@@ -170,15 +166,19 @@ public class BannerShop
 
     }
 
+  
     public class BannerShopMenuUIState : UIState
     {
         public BannerShopBrowserWindow browserWindow;
         public CommonBackButton backButton;
+        public CommonBackButton buyButton;
         public BannerShopMenuUIState(BannerShopParameters shopParameters, Action closeAction) : base()
         {
+            ShopParameters = shopParameters;
             browserWindow = new(new BannerBrowserMenu(shopParameters));
             CloseAction = closeAction;
         }
+        public BannerShopParameters ShopParameters;
         public readonly Action CloseAction;
         public float timer;
         public bool isOpen;
@@ -192,6 +192,12 @@ public class BannerShop
             backButton.Left.Pixels = RelativeLeft;
             backButton.Top.Pixels = RelativeTop;
             Append(backButton);
+
+
+            buyButton = new CommonBackButton(ShopParameters.BuyFunction, "Buy"); // );
+            buyButton.Left.Pixels = RelativeLeft;
+            buyButton.Top.Pixels = RelativeTop;
+            Append(buyButton);
         }
         public override void OnActivate()
         {
@@ -202,8 +208,14 @@ public class BannerShop
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            float gap = 128;
             backButton.Left.Pixels = RelativeLeft - backButton.Width.Pixels / 2;
             backButton.Top.Pixels = RelativeTop + 256;
+            backButton.Left.Pixels -= gap;
+
+            buyButton.Left.Pixels = RelativeLeft - backButton.Width.Pixels / 2;
+            buyButton.Left.Pixels += gap;
+            buyButton.Top.Pixels = RelativeTop + 256;
             if (FullyClosed())
             {
                 CloseAction();

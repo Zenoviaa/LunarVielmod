@@ -117,6 +117,25 @@ public partial class RekBoss
                     }
 
                     //Segments should pop one at a time
+                    for(int i = Segments.Length - 1; i >= 0; i--)
+                    {
+                        var segment = Segments[i];
+                        segment.noWorm = true;
+                        if (!segment.killed)
+                        {
+                            segment.killed = true;
+                            segment.velocity = -Vector2.UnitY * 15;
+                            segment.velocity.X *= 0.94f;
+                        }
+                    }
+
+                    foreach(var segment in Segments)
+                    {
+                        segment.position += segment.velocity;
+                        segment.velocity.X *= 0.95f;
+                        segment.velocity.Y += 0.8f;
+                        segment.rotation += 0.2f;
+                    }
 
                     NPC.velocity *= 0.96f;
                     if (Timer >= 180)

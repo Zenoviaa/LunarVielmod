@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.UI;
+﻿using ReLogic.Content;
+using Stellamod.Common.UI;
 using System;
 using Terraria;
 
@@ -14,4 +15,7 @@ public  struct BannerShopParameters()
     public string TooltipKey;
     public Action<SpriteBatch, Item, BannerDrawParameters> DrawFunction;
     public Action<Item> HoverTooltipFunction;
+    public Action BuyFunction;
+    public Asset<Texture2D> SlotTextureOverride;
+    public Action<SpriteBatch, Item, BannerDrawParameters> DrawWhitesFunction;
 }

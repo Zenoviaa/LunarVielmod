@@ -1,6 +1,4 @@
-﻿using SteelSeries.GameSense;
-using Stellamod.Common.ClassReworkSystem.AmmoRework.UI;
-using Stellamod.Common.UI;
+﻿using Stellamod.Common.UI;
 using Stellamod.Core.Tooltips;
 using Stellamod.UI;
 using System.Collections.Generic;
@@ -11,8 +9,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
-using static Stellamod.Common.ArmorShop.UI.BannerShop;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Common.ArmorShop.UI;
 
@@ -22,6 +18,7 @@ namespace Stellamod.Common.ArmorShop.UI;
 [Autoload(Side = ModSide.Client)]
 public class ArmorShopSystem : BaseUISystem
 {
+    private Item _item;
     private GameTime _lastUpdateUiGameTime;
     private UserInterface _userInterface;
     public BannerShop bannerShop;
@@ -42,25 +39,49 @@ public class ArmorShopSystem : BaseUISystem
             return items.ToArray();
         };
 
-        armorBannerShopParameters.SelectItemFunction = (Item item) =>
+        armorBannerShopParameters.DrawWhitesFunction = (SpriteBatch spriteBatch, Item head, BannerDrawParameters drawParameters) =>
         {
             ArmorShopGroups groups = ModContent.GetInstance<ArmorShopGroups>();
-            ArmorShopSet armorSet = groups.FindSet(item);
-            if (!armorSet.CanPurchase())
-                return;
-
-            Player player = Main.LocalPlayer;
-
-            if (!armorSet.HasPurchased())
+            ArmorShopSet armorSet = groups.FindSet(head);
+            float pieceCount = armorSet.pieces.Count;
+            float index = 0;
+            Color originColor = drawParameters.color;
+            foreach (var piece in armorSet.pieces)
             {
-                player.RemoveItem(armorSet.material.type, armorSet.material.stack);
-            }
+                float ratio = index / pieceCount;
+                Vector2 start = drawParameters.position;
+                start.Y -= 42;
+                Vector2 end = drawParameters.position;
+                end.Y += 42;
 
-            armorSet.QuickSpawn(player);
-            SoundEngine.PlaySound(SoundID.Coins);
+
+                Vector2 iconCenterPos = Vector2.Lerp(start, end, ratio);
+                iconCenterPos.Y += 8;
+
+                for(float f = 0; f < MathHelper.TwoPi; f+= MathHelper.PiOver2)
+                {
+                    Vector2 offset = f.ToRotationVector2() * 2;
+                    ItemSlot.DrawItemIcon(piece, ItemSlot.Context.BankItem, spriteBatch, iconCenterPos + offset, drawParameters.scale, 32, drawParameters.color);
+                }
+               
+                index++;
+            }
         };
 
-        armorBannerShopParameters.SelectedItemFunction = (Item item) => false;
+
+        armorBannerShopParameters.SlotTextureOverride = ModContent.Request<Texture2D>("Stellamod/Common/UI/Banner_ArmorShop");
+        armorBannerShopParameters.SelectItemFunction = (Item item) =>
+        {
+            _item = item;
+        };
+
+        armorBannerShopParameters.SelectedItemFunction = (Item item) =>
+        {
+            if (_item == null)
+                return false;
+            return _item.type == item.type;
+        };
+
         armorBannerShopParameters.ViewItemFunction = (Item item) => true;
         armorBannerShopParameters.TitleKey = "ArmorShop";
         armorBannerShopParameters.TooltipKey = "ArmorShopHelp";
@@ -73,25 +94,42 @@ public class ArmorShopSystem : BaseUISystem
             Color originColor = drawParameters.color;
             if (!armorSet.HasPurchased())
                 drawParameters.color = drawParameters.color.MultiplyRGB(Color.Black);
-            foreach(var piece in armorSet.pieces)
+
+            foreach (var piece in armorSet.pieces)
             {
                 float ratio = index / pieceCount;
                 Vector2 start = drawParameters.position;
                 start.Y -= 42;
                 Vector2 end = drawParameters.position;
                 end.Y += 42;
+
+
                 Vector2 iconCenterPos = Vector2.Lerp(start, end, ratio);
+                iconCenterPos.Y += 8;
                 ItemSlot.DrawItemIcon(piece, ItemSlot.Context.BankItem, spriteBatch, iconCenterPos, drawParameters.scale, 32, drawParameters.color);
                 index++;
             }
 
             //Draw the material the armor needs
             Item material = armorSet.material;
-            ItemSlot.DrawItemIcon(material, ItemSlot.Context.BankItem, spriteBatch, drawParameters.position + new Vector2(32), drawParameters.scale, 32, originColor);
-            
+            ItemSlot.DrawItemIcon(material, ItemSlot.Context.BankItem, spriteBatch, drawParameters.position - new Vector2(42, 84), drawParameters.scale, 32, originColor);
+
             //Draw the cost of the armor
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, material.stack.ToString(),
-                drawParameters.position + new Vector2(32), originColor, 0f, Vector2.Zero, Vector2.One, -1f, 1f);
+
+            int countInInventory = Main.LocalPlayer.CountItem(material.type);
+            string countText = $"{countInInventory} / {material.stack}";
+            if (countInInventory >= material.stack)
+            {
+                originColor = originColor.MultiplyRGB(Color.LightGreen);
+            }
+            else
+            {
+                originColor = originColor.MultiplyRGB(Color.IndianRed);
+            }
+            if (armorSet.HasPurchased())
+                return;
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, countText,
+                drawParameters.position - new Vector2(24, 84), originColor, 0f, Vector2.Zero, Vector2.One, -1f, 1f);
         };
         armorBannerShopParameters.HoverTooltipFunction = (Item head) =>
         {
@@ -115,10 +153,26 @@ public class ArmorShopSystem : BaseUISystem
             ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
             renderer.SetTooltipsToDraw(lines, 64, 16);
         };
-
+        armorBannerShopParameters.BuyFunction = Purchase;
         bannerShop = new BannerShop(armorBannerShopParameters, CloseThis);
     }
 
+    public void Purchase()
+    {
+        ArmorShopGroups groups = ModContent.GetInstance<ArmorShopGroups>();
+        ArmorShopSet armorSet = groups.FindSet(_item);
+        if (!armorSet.CanPurchase())
+            return;
+
+        Player player = Main.LocalPlayer;
+        if (!armorSet.HasPurchased())
+        {
+            player.RemoveItem(armorSet.material.type, armorSet.material.stack);
+        }
+
+        armorSet.QuickSpawn(player);
+        SoundEngine.PlaySound(SoundID.Coins);
+    }
     public override void UpdateUI(GameTime gameTime)
     {
         _lastUpdateUiGameTime = gameTime;

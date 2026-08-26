@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.UI;
+﻿using Stellamod.Common.ArmorShop.UI;
+using Stellamod.Common.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -47,7 +48,12 @@ public class AmmoToolBrowserMenu : UIPanel
                 itemList.AddRange(ItemHelper.Act2Ammos);
             if (actSystem.act3)
                 itemList.AddRange(ItemHelper.Act3Ammos);
-            View = new(itemList.ToArray(), SelectCombatTool, ViewCombatTool, HasSelectedCombatTool);
+            BannerShopParameters shopParameters = new();
+            shopParameters.AvailableItemsFunction = () => itemList.ToArray();
+            shopParameters.SelectItemFunction = SelectCombatTool;
+            shopParameters.ViewItemFunction = ViewCombatTool;
+            shopParameters.SelectedItemFunction = HasSelectedCombatTool;
+            View = new(shopParameters.AvailableItemsFunction(), shopParameters);
             View.Width.Pixels = Width.Pixels;
             View.Height.Pixels = Height.Pixels;
             View.Activate();

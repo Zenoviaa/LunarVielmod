@@ -19,18 +19,27 @@ public class CommonBackButton : UIPanel
     private float _scale;
     private Action _closeFunction;
     private UIText _backText;
-    public CommonBackButton(Action closeFunction) : base()
+    public CommonBackButton(Action closeFunction, string titleKey = null) : base()
     {
         alpha = 1f;
         _commonXBigTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/CommonXBig");
         _commonXTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/CommonX");
         _closeFunction = closeFunction;
         _backText = new UIText("Back", large: true);
+        if (!string.IsNullOrEmpty(titleKey))
+        {
+            this.titleKey = titleKey;
+        }
+        else
+        {
+            this.titleKey = "Back";
+        }
     }
 
     public bool asXButton;
     public bool axXBigButton;
     public float alpha;
+    public string titleKey;
     public override void OnInitialize()
     {
         base.OnInitialize();
@@ -40,7 +49,7 @@ public class CommonBackButton : UIPanel
         _backText.Width.Pixels = Width.Pixels;
         _backText.Height.Pixels = Height.Pixels;
         _backText.HAlign = 0.5f;
-        _backText.SetText(LangText.Common("Back"));
+        _backText.SetText(LangText.Common(titleKey));
         BackgroundColor = Color.Lerp(Color.Blue, Color.Black, 1f) * 0.5f;
         BorderColor = Color.Lerp(Color.Purple, Color.Black, 0.8f) * 0.5f;
         Append(_backText);
@@ -97,6 +106,6 @@ public class CommonBackButton : UIPanel
         {
             _scale = MathHelper.Lerp(_scale, 1f, 0.3f);
         }
-        _backText.SetText(LangText.Common("Back"), _scale, true);
+        _backText.SetText(LangText.Common(titleKey), _scale, true);
     }
 }

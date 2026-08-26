@@ -1,4 +1,5 @@
 Common: {
+	Buy: Buy
 	ArmorShop: Armor Forge
 	ArmorShopHelp: Trade in materials and ManMan will make an armor for you!
 	TimeFrozen: Time has been paused...

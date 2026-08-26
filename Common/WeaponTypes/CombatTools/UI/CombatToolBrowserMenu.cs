@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.ArmorShop.UI;
 using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Common.UI;
 using Stellamod.Core;
@@ -59,8 +60,11 @@ public class CombatToolBrowserMenu : UIPanel
                     }
                 }
               
-            }  
-            View = new(itemList.ToArray(), SelectCombatTool, ViewCombatTool);
+            }
+            var shopParameters = new BannerShopParameters();
+            shopParameters.SelectItemFunction = SelectCombatTool;
+            shopParameters.ViewItemFunction = ViewCombatTool;
+            View = new(itemList.ToArray(), shopParameters);
             View.Width.Pixels = Width.Pixels;
             View.Height.Pixels = Height.Pixels;
             View.Activate();
