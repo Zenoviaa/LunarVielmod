@@ -5,6 +5,7 @@ using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering;
+using Stellamod.Effects.GothinFlames;
 using Stellamod.Effects.RekFlames;
 using Stellamod.Effects.RoyalMagic;
 using System;
@@ -345,9 +346,34 @@ public partial class RekBoss : IWaterSilhouette
     
         Main.spriteBatch.Draw(drawer);
 
-        drawer.color = Color.White * segment.sawBladeAlpha;
+
+
+        Vector2 pos = drawer.worldPosition;
+        for(float f = 0; f < MathHelper.TwoPi; f+= MathHelper.PiOver2)
+        {
+            drawer.worldPosition = pos + (f + Main.GlobalTimeWrappedHourly * 4 + index).ToRotationVector2() * 3;
+            drawer.color = Color.LightGoldenrodYellow * 0.3f * segment.sawBladeAlpha;
+     
+            Main.spriteBatch.Draw(drawer);
+        }
+    }
+    private void DrawSawGlow(int index)
+    {
+        if (_saw && index % 2 == 0)
+            return;
+        ref RekSegment segment = ref Segments[index];
+        if (segment.sawBladeAlpha <= 0)
+            return;
+
+        Asset<Texture2D> textureAsset = AssetRegistry.GlowMasks.SimpleGlowCircle;
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
+        drawer.BottomCenterOrigin();
+        drawer.drawOrigin.Y -= 80;
+        drawer.scale = Vector2.One * segment.sawBladeAlpha * 0.5f;
+        drawer.color = Color.Goldenrod * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 6, index) * segment.sawBladeAlpha;
         drawer.color.A = 0;
         Main.spriteBatch.Draw(drawer);
+
     }
 
     private void DrawSpear()
@@ -372,8 +398,43 @@ public partial class RekBoss : IWaterSilhouette
             sprite.rotation = NPC.rotation;
             sprite.VerticalFrame(i, _spearAlphas.Length);
             sprite.LeftCenterOrigin();
-            sprite.drawOrigin.X += 32;
-            sprite.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 16)) * 0.5f * _spearAlphas[i];
+            sprite.drawOrigin.X += 128;
+            sprite.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0.6f, 1f, 32)) * _spearAlphas[i];
+            sprite.color *= _spearAlphas[i];
+            sprite.color.A = 0;
+            sprite.scale *= Vector2.Lerp(Vector2.One * 6, Vector2.One, _spearAlphas[i]);
+            Vector2 offset = GetDirection(i);
+            offset *= MathHelper.Lerp(256, 0, _spearAlphas[i]);
+            sprite.worldPosition += offset;
+            Main.spriteBatch.Draw(sprite);
+        }
+    }
+    private void DrawSpearBright()
+    {
+
+        Vector2 GetDirection(int index)
+        {
+            switch (index)
+            {
+                default:
+                case 0:
+                    return Vector2.UnitY;
+                case 1:
+                    return -Vector2.UnitY;
+                case 2:
+                    return Vector2.UnitX;
+            }
+        }
+        for (int i = 0; i < _spearAlphas.Length; i++)
+        {
+            SpritebatchDrawer sprite = SpritebatchDrawer.FromTextureAsset(SpearTextureAsset, NPC.Center);
+            sprite.rotation = NPC.rotation;
+            sprite.VerticalFrame(i, _spearAlphas.Length);
+            sprite.LeftCenterOrigin();
+            sprite.drawOrigin.X += 128;
+            sprite.scale *= 0.9f;
+            sprite.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 16)) * _spearAlphas[i];
+            sprite.color *= _spearAlphas[i];
             sprite.color.A = 0;
             Vector2 offset = GetDirection(i);
             offset *= MathHelper.Lerp(256, 0, _spearAlphas[i]);
@@ -587,6 +648,10 @@ public partial class RekBoss : IWaterSilhouette
         {
             DrawSaw(i);
         }
+        for (int i = 1; i < Segments.Length; i++)
+        {
+            DrawSawGlow(i);
+        }
         //Ok, so we draw everything here yah?
         for (int i = 1; i < Segments.Length; i++)
         {
@@ -615,24 +680,6 @@ public partial class RekBoss : IWaterSilhouette
         }
 
 
-        if (_spearAlphas[0] > 0)
-        {
-
-            GlowingSwordMaskShader shader = GlowingSwordMaskShader.Instance;
-            shader.TrailTexture = TrailRegistry.BulbTrail;
-            shader.Distortion = 0.02f;
-            shader.DistortionTexture = TrailRegistry.WhispyTrail;
-            shader.Time = Main.GlobalTimeWrappedHourly * 16;
-            shader.Bloom = 0.8f;
-            shader.Tiling = Vector2.One * 0.75f;
-            shader.InnerColor = Color.Lerp(Color.OrangeRed, Color.DarkRed, ExtraMath.Osc(0f, 1f, 12));
-            shader.OuterColor = Color.DarkRed;
-            SpritebatchParams spearParams = SpritebatchParams.InWorldAndZoomed() with { effect = shader.Effect };
-            using (new SpritebatchContext(spriteBatch, spearParams))
-            {
-                DrawSpear();
-            }
-        }
         DrawAfterImages(spriteBatch, screenPos, drawColor);
         drawColor = Color.Lerp(drawColor, Color.Black, _huskAlpha);
         NPC.DrawAnimator(spriteBatch, drawColor);
@@ -643,6 +690,29 @@ public partial class RekBoss : IWaterSilhouette
         if(_rekfireballAlpha > 0)
         {
             DrawFireballOrb(spriteBatch);
+        }
+        if (_spearAlphas[0] > 0)
+        {
+
+            FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
+            flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
+            flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
+            flamebowShader.InsideColor = Color.Yellow;
+            flamebowShader.BloomColor = Color.Red;
+            flamebowShader.DissipateThreshold = MathHelper.Lerp(1f, 0f, 1f);
+            flamebowShader.DistortionStrength = 0.6f;
+
+            SpritebatchParams spearParams = SpritebatchParams.InWorldAndZoomed() with { effect = flamebowShader.Effect };
+            using (new SpritebatchContext(spriteBatch, spearParams))
+            {
+                DrawSpear();
+            }
+            flamebowShader.InsideColor = Color.Lerp(Color.Yellow, Color.OrangeRed, ExtraMath.Osc(0f, 1f, 24));
+            flamebowShader.BloomColor = Color.DarkBlue;
+            using (new SpritebatchContext(spriteBatch, spearParams))
+            {
+                DrawSpearBright();
+            }
         }
         OutlineRenderer.Queue(DrawWhite);
         return false;

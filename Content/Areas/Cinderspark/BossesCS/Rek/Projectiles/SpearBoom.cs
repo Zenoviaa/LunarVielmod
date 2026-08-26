@@ -15,7 +15,7 @@ public class SpearBoom : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
     private float AttackTime => 80;
-    private float AttackProgress => Timer / AttackTime;
+    private float AttackProgress => EasingFunction.OutQuad(Timer / AttackTime);
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -68,6 +68,19 @@ public class SpearBoom : ModProjectile
         Timer++;
         if (Timer == 1)
         {
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            shaderSystem.TintScreen(Color.Red, 0.1f, timer: 60);
+            shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f, timer: 60);
+
+            SoundStyle explosionSound = AssetRegistry.Sounds.Fire.Demoneatsyourmom with { PitchVariance = 0.5f };
+            SoundEngine.PlaySound(explosionSound);
+            FXUtil.CreateRipple(Projectile.Center);
+            ShakeScreenPosition.Shake = 6;
+
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.LightGoldenrodYellow, Color.OrangeRed, 55, 450);
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Red, Color.Black, duration: 25, baseSize: 0.2f);
+            fx.Scale *= 3f;
+
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             screenShaderSystem.TintScreen(Color.Red, 0.12f, 5);
             var sound = AssetRegistry.Sounds.RekShockwave with { PitchVariance = 0.3f };
@@ -76,7 +89,6 @@ public class SpearBoom : ModProjectile
             var sound2 = new SoundStyle("Stellamod/Assets/Sounds/FireShockwave") with { PitchVariance = 0.3f };
             SoundEngine.PlaySound(sound2, Projectile.position);
 
-            FXUtil.ShakeCamera(Projectile.position, 1024, 8);
             for(float r = 0; r < MathHelper.TwoPi; r += MathHelper.PiOver4)
             {
                 for (float f = 0; f < 8; f++)
@@ -113,13 +125,17 @@ public class SpearBoom : ModProjectile
             }
 
         }
+        FXUtil.ApplyContrast(MathHelper.Lerp(1f, 0f, EasingFunction.InOutExpo(Timer / 45f)));
         Projectile.rotation = Projectile.velocity.ToRotation();
+        if (AttackProgress >= 0.95f)
+            Projectile.Kill();
     }
 
     private void DrawTorchInner(SpriteBatch spriteBatch, Vector2 position, float rotation, float scale)
     {
+        float fade = MathHelper.Lerp(1f, 0f, AttackProgress);
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
-        drawer.color = Color.Lerp(Color.White, Color.OrangeRed, AttackProgress);
+        drawer.color = Color.Lerp(Color.White, Color.OrangeRed, AttackProgress) * fade;
         drawer.color.A = 0;
         drawer.rotation = rotation;
         drawer.LeftCenterOrigin();
@@ -129,12 +145,12 @@ public class SpearBoom : ModProjectile
         drawer.scale.X *= scale;
         spriteBatch.Draw(drawer);
 
-        drawer.color = Color.DarkRed;
+        drawer.color = Color.DarkRed * fade;
         drawer.color.A = 0;
         drawer.scale *= 1.12f;
         spriteBatch.Draw(drawer);
 
-        drawer.color = Color.DarkRed;
+        drawer.color = Color.DarkRed * fade;
         drawer.color.A = 0;
         drawer.scale *= 1.12f;
         drawer.scale.Y *= 0.8f;
@@ -155,7 +171,7 @@ public class SpearBoom : ModProjectile
         SpriteBatch spriteBatch = Main.spriteBatch;
         SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = torchShader.Effect };
         float length = TextureAssets.Projectile[Type].Value.Width;
-        float scale = Projectile.velocity.Length() / length;
+        float scale = Projectile.velocity.Length() / length * 2f;
 
         void DrawTorches()
         {

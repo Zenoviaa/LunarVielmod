@@ -222,14 +222,6 @@ public partial class RekBoss : ScarletBoss
                     switch (pattern)
                     {
                         case 0:
-                            if (NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>()))
-                            {
-                                _destroyArena = true;
-                            }
-                            else
-                            {
-                                _destroyArena = false;
-                            }
                             return AIState.VolcanicSpear;
                         case 1:
                             return AIState.Eruption;
@@ -456,7 +448,7 @@ public partial class RekBoss : ScarletBoss
             //This value you should be set specifically for everything that uses saw visual
             segment.sawBladeAlpha = 0;
         }
-        Main.NewText(_patternIndex);
+
         _showAfterImages = false;
         _ouroborosTrail = false;
         _showMouthAura = false;

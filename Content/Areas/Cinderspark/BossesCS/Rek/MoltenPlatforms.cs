@@ -20,24 +20,39 @@ public class BigMoltenPlatform : AbstractPlatformNPC
         if (Main.netMode == NetmodeID.Server)
             return;
         PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.Transparent, 60, 384);
-        for (int k = 0; k < 2; k++)
+        for (int k = 0; k < 48; k++)
         {
             Vector2 pos = NPC.position;
             pos.X += Main.rand.Next(0, NPC.width);
             pos.Y += Main.rand.Next(0, NPC.height);
-            Particle<SmokeParticle>.SpawnInAlphaLayer(pos, -Vector2.UnitY);
+            var sp = Particle<SmokeParticle>.SpawnInAlphaLayer(pos, -Vector2.UnitY * Main.rand.NextFloat(3f,7f), Color.Black, Scale: 4.5f);
+            sp.fadeToColor = Color.Black;
+            sp.initialColor = Color.Lerp(Color.RosyBrown, Color.Black, 0.5f);
+            sp.fast = Main.rand.NextBool(2);
+            sp.dampening = 0.1f;
         }
+
+        for(int k = 0; k < 32; k++)
+        {
+            Vector2 dpos = NPC.Center + Main.rand.NextVector2Circular(512, 128);
+            Vector2 dvel = -Vector2.UnitY * Main.rand.NextFloat(5f, 10f);
+            DustParticle sp = Particle<DustParticle>.Spawn(dpos, dvel, Scale: Main.rand.NextFloat(0.5f, 1.5f));
+            sp.gravity = 0.5f;
+            sp.dampening = 0.1f;
+        }
+        ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+        screenShaderSystem.TintScreen(Color.Red, 0.12f, 120);
 
         int leftGore = Mod.Find<ModGore>($"{Name}_Gore_0").Type;
         int rightGore = Mod.Find<ModGore>($"{Name}_Gore_1").Type;
         int midGore = Mod.Find<ModGore>($"{Name}_Gore_2").Type;
 
         // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
-        Vector2 vel = new Vector2(0, -54);
+        Vector2 vel = new Vector2(0, -15);
         Vector2 rightVel = vel;
-        rightVel.X = 24;
+        rightVel.X = 2;
         Vector2 leftVel = vel;
-        leftVel.X = -24;
+        leftVel.X = -2;
         Gore.NewGore(NPC.GetSource_Death(), NPC.Center - new Vector2(128, 0), leftVel, leftGore, 1f);
         Gore.NewGore(NPC.GetSource_Death(), NPC.Center, vel, rightGore);
         Gore.NewGore(NPC.GetSource_Death(), NPC.Center + new Vector2(128, 0), rightVel, midGore);
