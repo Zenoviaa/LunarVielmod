@@ -436,7 +436,7 @@ public class MoonWaterSystem : ModSystem
                 lavaShader.OutlineColor = Color.Lerp(Color.White, Color.Goldenrod, 0.3f);
                 lavaShader.OutlineTexelSize = Main.waterTarget;
                 lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["Combine"];
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     lavaShader.Effect, Main.Transform);
 
                 Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
@@ -457,7 +457,7 @@ public class MoonWaterSystem : ModSystem
 
                 _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTDrawing"];
                 _waterEffect.Parameters["WaterTexture"].SetValue(_waterTextureRTOutput);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     _waterEffect, Main.Transform);
 
                 Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
