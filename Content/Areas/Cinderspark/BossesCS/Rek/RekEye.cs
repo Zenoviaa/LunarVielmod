@@ -358,6 +358,37 @@ public class RekEye : ModNPC
             case 1:
                 {
                     LookAtPlayer();
+                    _outliner.warning = true;
+                    float dist = Vector2.Distance(NPC.Center, MyTarget.Center);
+                    if (dist < 256)
+                    {
+                        NPC.velocity -= (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                    }
+                    else
+                    {
+                        NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                    }
+
+                    if (Main.rand.NextBool(2))
+                    {
+                        Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(384, 384);
+                        Vector2 vel = (NPC.Center - pos);
+                        vel *= 0.05f;
+                        var fx = FXUtil.GlowStretch(pos, vel);
+                        fx.OuterGlowColor = Color.Yellow;
+                        fx.Scale *= 0.5f;
+                    }
+
+                    if(Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    LookAtPlayer();
                     if (Timer == 1 && _fireballAttackCount == 0)
                     {
                         NPC.TargetClosest();
@@ -369,7 +400,17 @@ public class RekEye : ModNPC
 
                     _outliner.attacking = true;
                     NPC.velocity *= 0.91f;
-                    NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+
+                    float dist = Vector2.Distance(NPC.Center, MyTarget.Center);
+                    if(dist < 256)
+                    {
+                        NPC.velocity -= (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                    }
+                    else
+                    {
+                        NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                    }
+
                     if (Timer >= 38)
                     {
                         CreateFireShoot(NPC.Center);
@@ -396,7 +437,7 @@ public class RekEye : ModNPC
                     }
                 }
                 break;
-            case 2:
+            case 3:
                 {
                     NPC.velocity *= 0.94f;
                     if(Timer >= Fireball_End_Time)
@@ -527,10 +568,16 @@ public class RekEye : ModNPC
             case 2:
                 {
                     _eyeColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 36));
-                    NPC.velocity.X *= 0.94f;
-                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.01f) * 0.5f, 0.1f);
-                    NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.15f;
-                    NPC.rotation *= 0.94f;
+
+                    float dist = Vector2.Distance(NPC.Center, MyTarget.Center);
+                    if (dist < 256)
+                    {
+                        NPC.velocity -= (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                    }
+                    else
+                    {
+                        NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                    }
                     _outliner.attacking = true;
                     if (Timer == 1)
                     {
@@ -777,7 +824,6 @@ public class RekEye : ModNPC
                 break;
         }
 
-        SwitchState(AIState.MiniFire);
         _attackPhase++;
         _attackPhase %= 3;
     }

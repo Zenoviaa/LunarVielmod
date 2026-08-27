@@ -34,7 +34,7 @@ public partial class RekBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
-                        Vector2 midArena = Vector2.Lerp(FindEruptionLeft(), FindEruptionRight(), 0.5f);
+                        Vector2 midArena = Vector2.Lerp(FindEruptionLeft(), FindEruptionRight(), 0.68f);
                         Teleport(midArena);
                     }
 

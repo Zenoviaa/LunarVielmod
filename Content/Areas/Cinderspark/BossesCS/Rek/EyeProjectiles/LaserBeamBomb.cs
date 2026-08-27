@@ -1,16 +1,19 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Effects.Generic;
+using Stellamod.Effects.RekFlames;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Animations;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -30,6 +33,7 @@ public class LaserBeamBomb : ModProjectile,
     public override string Texture => TextureRegistry.EmptyTexture;
     private float EasingInOut => EasingFunction.QuadraticBump(Timer / LifeTime);
     private Vector2 ImpactPoint => Projectile.Center + Projectile.velocity;
+    private Asset<Texture2D> BeamMaskTextureAsset => ModContent.Request<Texture2D>(ModContent.GetInstance<BigVulcanFireball>().Texture + "_Mask");
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -84,6 +88,37 @@ public class LaserBeamBomb : ModProjectile,
         Projectile.Center = Parent.Center;
         Vector2 newVelocity = _initialVelocity.SafeNormalize(Vector2.Zero).RotatedBy(ease * MaxRadians) * length;
         Projectile.velocity = newVelocity;
+        float waterSteps = newVelocity.Length() / 4f;
+        Vector2 maxPoint = Projectile.Center + newVelocity;
+        for (float f = 0; f < waterSteps; f++)
+        {
+            Vector2 start = Projectile.Center;
+            Vector2 end = maxPoint;
+            Vector2 inBetween = Vector2.Lerp(start, end, f / waterSteps);
+            Point tilePoint = inBetween.ToTileCoordinates();
+            Tile tile = Main.tile[tilePoint];
+            if (tile.LiquidAmount > 0)
+            {
+                maxPoint = inBetween;
+                break;
+            }
+        }
+        Projectile.velocity = maxPoint - Projectile.Center;
+        if (Main.rand.NextBool(2))
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                {
+                    position = ImpactPoint + Main.rand.NextVector2Circular(32, 32),
+                    velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 25f),
+                    timeLeft = 45,
+                    innerColor = Color.Yellow.ToVector4(),
+                    outerColor = Color.Red.ToVector4()
+                });
+            }
+
+        }
         Projectile.rotation = newVelocity.ToRotation();
         DrawUtilities.InterpolateBetweenPointsNonAlloc(ref _beamPoints, Projectile.Center, Projectile.Center + Projectile.velocity * 1.05f);
         if (ease >= 0.9f)
@@ -99,7 +134,7 @@ public class LaserBeamBomb : ModProjectile,
                 bombVelocity *= bombLength;
 
 
-                float steps = bombVelocity.Length() / 16f;
+                float steps = bombVelocity.Length() / 4f;
                 Vector2 maxBombPoint = Projectile.Center + bombVelocity;
 
                 //Stop at liquid
@@ -132,7 +167,62 @@ public class LaserBeamBomb : ModProjectile,
 
     public override bool PreDraw(ref Color lightColor)
     {
+        DrawImpactGlow();
+
+        SpritebatchDrawer glowCircle = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        glowCircle.color = Color.White;
+        glowCircle.color.A = 0;
+        glowCircle.scale *= 0.24f * EasingInOut;
+        Main.spriteBatch.Draw(glowCircle);
         return false;
+    }
+    private void DrawImpactGlow()
+    {
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
+        drawer.color = Color.OrangeRed * 0.2f;
+        drawer.color.A = 0;
+        drawer.scale *= 0.9f * EasingInOut;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.Gold * 0.2f;
+        drawer.color.A = 0;
+        drawer.scale *= 0.84f;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White * 0.2f;
+        drawer.color.A = 0;
+        drawer.scale *= 0.84f;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
+    }
+    private void DrawFlameImpact(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        BigRekFireballShader shader = ShaderContent.GetInstance<BigRekFireballShader>();
+        shader.Time = Main.GlobalTimeWrappedHourly * -64;
+        shader.NoiseTexture = AssetManager.Noise.SharpPerlinNoise;
+        shader.InnerColor = Color.Yellow;
+        shader.BloomColor = Color.DarkRed;
+        shader.Strength = 3f;
+        shader.MaskTexture = BeamMaskTextureAsset.Value;
+        var sbParams = SpritebatchParams.InWorldAndZoomed();
+        sbParams.effect = shader.Effect;
+        sbParams.blendState = BlendState.Additive;
+        float y = MathHelper.Lerp(1.5f, 0.2f, Projectile.velocity.Length() / 80);
+        using (new SpritebatchContext(spriteBatch, sbParams))
+        {
+            SpritebatchDrawer impactDrawer = SpritebatchDrawer.FromTextureAsset(BeamTextureAsset, ImpactPoint);
+            impactDrawer.color = Color.White;
+        //    impactDrawer.worldPosition -= Projectile.velocity.SafeNormalize(Vector2.Zero) * 144;
+            impactDrawer.scale *= 1.2f * EasingInOut * 0.5f;
+            impactDrawer.scale.X *= 1.5f;
+            impactDrawer.rotation = Projectile.rotation;
+            spriteBatch.Draw(impactDrawer);
+
+            impactDrawer.color = Color.Orange * 1f;
+            spriteBatch.Draw(impactDrawer);
+        }
     }
     private void DrawFlamingBeam(GraphicsDevice graphicsDevice)
     {
@@ -160,6 +250,7 @@ public class LaserBeamBomb : ModProjectile,
 
     public void DrawToRenderTargets()
     {
+        PixelationManager.QueueSpritebatchDrawAction(DrawFlameImpact, DrawLayer.OverNPCsAdditive);
         PixelationManager.QueuePrimitivesDrawAction(DrawFlamingBeam);
     }
 }
@@ -211,8 +302,8 @@ public class LaserBeamBombBoom : ModProjectile
             {
                 ProjFirer firer = ProjFirer.From<MeteorBoom>(Projectile);
                 firer.position = Projectile.Center;
-                firer.ai1 = -0.5f;
-                firer.velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * 512;
+                firer.ai1 = -0.25f;
+                firer.velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * 1524;
                 firer.New();
 
             }
@@ -249,13 +340,21 @@ public class LaserBeamBombBoom : ModProjectile
         {
             float sparkleRatio = Timer / Sparkle_Time;
             float ease = EasingFunction.InOutSine(sparkleRatio);
-            Vector2 scale = Vector2.Lerp(new Vector2(0.5f), new Vector2(1.5f), ease) * 4;
-            float rot = -Projectile.velocity.ToRotation();
-            SpritebatchDrawer sparkleDrawer = SpritebatchDrawer.FromTextureAsset(AssetRegistry.GlowMasks.MuzzleFlash.Value, Projectile.Center);
-            sparkleDrawer.color = Color.Red * 0.9f * EasingFunction.QuadraticBump(sparkleRatio);
+            Vector2 scale = Vector2.Lerp(new Vector2(0.5f), new Vector2(1.5f), ease) * 2;
+            float rot = (-Projectile.velocity).ToRotation();
+            SpritebatchDrawer sparkleDrawer = SpritebatchDrawer.FromTextureAsset(AssetRegistry.GlowMasks.SimpleGlowCircle.Value, Projectile.Center);
+            sparkleDrawer.color = Color.OrangeRed * 0.9f * EasingFunction.QuadraticBump(sparkleRatio);
+ 
             sparkleDrawer.color.A = 0;
-            sparkleDrawer.rotation = rot + MathHelper.PiOver2;
-            sparkleDrawer.scale = scale;
+            sparkleDrawer.rotation = rot;
+            sparkleDrawer.scale = scale * new Vector2(1f, 0.12f);
+            Main.spriteBatch.Draw(sparkleDrawer);
+          
+            
+            sparkleDrawer.color = Color.Yellow * 0.9f * EasingFunction.QuadraticBump(sparkleRatio);
+
+            sparkleDrawer.color.A = 0;
+            sparkleDrawer.scale *= 0.75f;
             Main.spriteBatch.Draw(sparkleDrawer);
         }
         else
