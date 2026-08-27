@@ -13,6 +13,8 @@ public partial class RekBoss
     private float Eruption_SinTime => 620 * AttackSpeedMultiplier;
     private float Eruption_SinHeight => 64;
     private float Eruption_SinFrequency => 0.04f;
+
+    private int Eruption_Damage => 50;
     private void AI_Eruption()
     {
         Timer++;
@@ -42,6 +44,7 @@ public partial class RekBoss
                                 ProjFirer firer = ProjFirer.From<VulcanEruption>(NPC);
                                 int segmentIndex = Main.rand.Next(0, Segments.Length);
                                 ref var segment = ref Segments[segmentIndex];
+                                firer.damage = Eruption_Damage;
                                 firer.position = segment.position;
                                 firer.velocity = -Vector2.UnitY * 512;
                                 firer.ai0 = NPC.whoAmI;

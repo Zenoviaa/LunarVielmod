@@ -16,7 +16,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public class VolcanicMeteor : ModProjectile
 {
-    
+    private float _scale;
     private float _timer;
     private float _glowAlpha;
     private NPC Parent => Main.npc[(int)Projectile.ai[0]];
@@ -63,6 +63,7 @@ public class VolcanicMeteor : ModProjectile
             segment.position = Projectile.Center;
             segment.velocity = Projectile.velocity;
             segment.rotation += MathF.Sign(Projectile.velocity.X) * 0.05f;
+            _scale = segment.SizeMultiplier;
         }
         _glowAlpha = EasingFunction.InOutSine(_timer / 60f);
         _glowAlpha *= MathHelper.Lerp(1f, 0f, (_timer - 60f) / 180f);
@@ -97,7 +98,7 @@ public class VolcanicMeteor : ModProjectile
     {
         float GetTrailWidth(float ratio)
         {
-            return MathHelper.SmoothStep(96, 16, ratio);
+            return MathHelper.SmoothStep(96, 16, ratio) * _scale;
         }
         Color GetTrailColor(float ratio)
         {
@@ -123,9 +124,10 @@ public class VolcanicMeteor : ModProjectile
     public override void PostDraw(Color lightColor)
     {
         base.PostDraw(lightColor);
+      
         var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, Projectile.Center);
-        glowDrawer.scale *= 0.48f;
+        glowDrawer.scale *= 0.48f * _scale;
         glowDrawer.color = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12)) * ExtraMath.Osc(0.5f, 0.75f, speed: 8) * _glowAlpha;
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);

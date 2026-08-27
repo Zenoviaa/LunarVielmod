@@ -23,6 +23,7 @@ public partial class RekBoss
     private float Ouroboros_Spinup_Time => 120;
     private float Ouroboros_Startup_Time => 150;
     private float Ouroboros_Wall_Slam_Count => 35;
+    private int Ouroboros_Damage => 90;
     private void AI_Ouroboros()
     {
         Projectile FindLatchProjectile<T>() where T : ModProjectile
@@ -165,15 +166,15 @@ public partial class RekBoss
 
                         if (Timer < 37)
                         {
-                            animator.PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
+//animator.PlayAnimation(ANIM_MOUTHOPEN, AnimationParams.Default with { IsLooping = false });
                         }
                         else if (Timer < 64)
                         {
-                            animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN, AnimationParams.Default with { IsLooping = false });
+                          //  animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN, AnimationParams.Default with { IsLooping = false });
                         }
                         else if (Timer < 100)
                         {
-                            animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN_READY, AnimationParams.Default with { IsLooping = false });
+                        //    animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN_READY, AnimationParams.Default with { IsLooping = false });
                         }
                         else
                         {
@@ -184,10 +185,10 @@ public partial class RekBoss
                                 var fx = FXUtil.GlowCircleBoom(_centerPoint, Color.White, Color.OrangeRed, Color.Red);
                                 fx.VectorScale *= Timer / 50f;
                             }
-                            animator.PlayAnimation(ANIM_MOUTH_BIG_OPEN_HOLD, AnimationParams.Default with { IsLooping = true });
+                       
                         }
 
-
+                        animator.PlayAnimation(ANIM_IDLE, AnimationParams.Default with { IsLooping = true });
 
                         float ratio = Timer / Ouroboros_Coil_Time;
                         float ease = EasingFunction.InOutSine(ratio);
@@ -265,7 +266,7 @@ public partial class RekBoss
                     }
                     _saw = true;
 
-                    animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
+                    animator.PlayAnimation(ANIM_IDLE, AnimationParams.Default with { IsLooping = false });
                     _spinRot += rotationSpeed;
 
                     float surface = LavaSurface();
@@ -356,6 +357,7 @@ public partial class RekBoss
                         {
                             ProjFirer firer = ProjFirer.From<FlameWheel>(NPC);
                             firer.position = currentPoint;
+                            firer.damage = Ouroboros_Damage;
                             firer.ai0 = NPC.whoAmI;
                             firer.New();
                         }

@@ -60,6 +60,13 @@ public partial class RekBoss : ScarletBoss
         public float sawBladeAlpha;
         public float lastSawBladeAlpha;
         public bool killed;
+        public float SizeMultiplier
+        {
+            get
+            {
+                return size.LengthSquared() / (63 * 63);
+            }
+        }
     }
     public ChainWithLengths _chain;
     public ChainWithLengths Chain
@@ -146,7 +153,7 @@ public partial class RekBoss : ScarletBoss
         {
             if(_phase == 2)
             {
-                return 0.8f;
+                return 0.75f;
             }
             return 1f;
         }
@@ -334,7 +341,7 @@ public partial class RekBoss : ScarletBoss
             return Vector2.Dot(-Vector2.UnitX, NPC.rotation.ToRotationVector2()) > 0;
         }
     }
-    private AIState TestAttack => AIState.Husk;
+    private AIState TestAttack => default;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {

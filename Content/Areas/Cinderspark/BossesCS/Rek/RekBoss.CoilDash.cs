@@ -95,10 +95,22 @@ public partial class RekBoss
      
         var animator = this.GetAnimator();
         Timer++;
+
+        float GetSide()
+        {
+            if (_firebreathSide < 0)
+                return 0.25f;
+            return 0.75f;
+        }
         switch (AttackCycle)
         {
             case 0:
                 {
+                    if(Timer == 1)
+                    {
+                        _firebreathSide = Main.rand.NextBool(2) ? -1 : 1;
+                    }
+
                     Vector2 eruptionLeft = FindEruptionLeft();
                     Vector2 eruptionRight = FindEruptionRight();
 
@@ -107,7 +119,7 @@ public partial class RekBoss
                     eruptionLeft.Y -= 64;
                     //Vector2 moveToPoint = Vector2.Lerp(eruptionLeft, eruptionRight, 0.7f);
 
-                    Vector2 midPoint = Vector2.Lerp(eruptionLeft, eruptionRight, 0.5f);
+                    Vector2 midPoint = Vector2.Lerp(eruptionLeft, eruptionRight, GetSide());
 
                     float moveTime = 180;
                     float xRadius = 512;
@@ -125,7 +137,7 @@ public partial class RekBoss
 
                     if (Timer == 1)
                     {
-                        Vector2 ePos = Vector2.Lerp(eruptionLeft, eruptionRight, 0.5f);
+                        Vector2 ePos = Vector2.Lerp(eruptionLeft, eruptionRight, GetSide());
                         ePos.Y += 666;
                         Teleport(ePos);
                     }
@@ -153,8 +165,8 @@ public partial class RekBoss
                         Vector2 eruptionLeft = FindEruptionLeft();
                         Vector2 eruptionRight = FindEruptionRight();
 
-                        Vector2 pos = Vector2.Lerp(eruptionLeft, eruptionRight, Main.rand.NextFloat(0.4f, 0.6f));
-                        pos.Y -= 400;
+                        Vector2 pos = Vector2.Lerp(eruptionLeft, eruptionRight, GetSide());
+                        pos.Y -= 187;
                         _centerPoint = pos;
                         _initialVelocity = NPC.velocity;
                     }
@@ -238,6 +250,10 @@ public partial class RekBoss
                     }
                     if (Timer == 1)
                     {
+                        if (_firebreathSide == -1)
+                            _firebreathSide = 1;
+                        else
+                            _firebreathSide = -1;
                         if (MultiplayerHelper.IsHost)
                         {
                             ProjFirer firer = ProjFirer.From<RekFlameTrail>(NPC);

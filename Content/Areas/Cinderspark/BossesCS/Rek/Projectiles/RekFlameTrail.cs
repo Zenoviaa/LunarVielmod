@@ -32,7 +32,7 @@ public class RekFlameTrail : ModProjectile
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
         Projectile.light = 0.78f;
-        Projectile.timeLeft = 180;
+        Projectile.timeLeft = 100;
     }
 
     public override void AI()
