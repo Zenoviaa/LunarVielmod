@@ -1,16 +1,13 @@
 ﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
+using Stellamod.Effects.Generic;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -22,8 +19,9 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.EyeProjectiles;
 public class LaserBeamBomb : ModProjectile,
     IDrawToRenderTarget
 {
+    private float _bombTimer;
     private Vector2 _initialVelocity;
-    private float LifeTime => 100f;
+    private float LifeTime => 45;
     private Asset<Texture2D> BeamTextureAsset => TextureAssets.Projectile[ModContent.ProjectileType<BigVulcanFireball>()];
     private Vector2[] _beamPoints = new Vector2[64];
     private ref float Timer => ref Projectile.ai[0];
@@ -73,7 +71,7 @@ public class LaserBeamBomb : ModProjectile,
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _initialVelocity = Projectile.velocity;
             var sound = AssetRegistry.Sounds.RekLaser with { PitchVariance = 0.3f };
@@ -88,15 +86,16 @@ public class LaserBeamBomb : ModProjectile,
         Projectile.velocity = newVelocity;
         Projectile.rotation = newVelocity.ToRotation();
         DrawUtilities.InterpolateBetweenPointsNonAlloc(ref _beamPoints, Projectile.Center, Projectile.Center + Projectile.velocity * 1.05f);
-        if(Timer % 10 == 0)
+        if (ease >= 0.9f)
         {
-            if (this.OwnedByLocalClient())
+            _bombTimer += 4;
+            if (this.OwnedByLocalClient() && Timer % 2 == 0)
             {
                 //This places at a lil different spot btw
-                float bombRatio = Timer / LifeTime;
+                float bombRatio = _bombTimer / 60f;
                 Vector2 bombVelocity = _initialVelocity.SafeNormalize(Vector2.Zero).RotatedBy(bombRatio * MaxRadians);
-             
-                float bombLength  = ProjectileHelper.PerformBeamHitscan(Projectile.Center, bombVelocity, 2400);
+
+                float bombLength = ProjectileHelper.PerformBeamHitscan(Projectile.Center, bombVelocity, 2400);
                 bombVelocity *= bombLength;
 
 
@@ -111,16 +110,16 @@ public class LaserBeamBomb : ModProjectile,
                     Vector2 inBetween = Vector2.Lerp(start, end, f / steps);
                     Point tilePoint = inBetween.ToTileCoordinates();
                     Tile tile = Main.tile[tilePoint];
-                    if(tile.LiquidAmount > 0)
+                    if (tile.LiquidAmount > 0)
                     {
                         maxBombPoint = inBetween;
                         break;
                     }
                 }
-           
+
                 ProjFirer bombFirer = ProjFirer.From<LaserBeamBombBoom>(Projectile);
                 bombFirer.position = maxBombPoint;
-                bombFirer.velocity = Vector2.Zero;
+                bombFirer.velocity = bombVelocity.SafeNormalize(Vector2.Zero);
                 bombFirer.New();
             }
         }
@@ -168,9 +167,10 @@ public class LaserBeamBomb : ModProjectile,
 public class LaserBeamBombBoom : ModProjectile
 {
     public override string Texture => TextureRegistry.EmptyTexture;
-    private float LifeTime => 90;
-    private float Sparkle_Time => 60f;
+    private float LifeTime => 120;
+    private float Sparkle_Time => 45;
     private ref float Timer => ref Projectile.ai[0];
+    private float Time => LifeTime - Sparkle_Time;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -191,67 +191,76 @@ public class LaserBeamBombBoom : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer >= Sparkle_Time)
+        if (Timer >= Sparkle_Time)
         {
+            FXUtil.ApplyContrast(MathHelper.Lerp(0.5f, 0f, Timer / Time));
             Projectile.hostile = true;
         }
 
-        if(Timer == Sparkle_Time)
+        if (Timer == Sparkle_Time)
         {
             SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
             hitSound.PitchVariance = 0.2f;
             SoundEngine.PlaySound(hitSound, Projectile.position);
 
             FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
-            FXUtil.GlowCircleBoom(Projectile.Center,
-                innerColor: Color.White,
-                glowColor: Color.Yellow,
-                outerGlowColor: Color.Red, duration: 25, baseSize: 0.28f);
-
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
 
-            for (float f = 0; f < 4; f++)
-            {
-                Particle<DustParticle>.Spawn(Projectile.Center, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(6, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
-            }
 
-            for (float f = 0; f < 4; f++)
+            if (this.OwnedByLocalClient())
             {
-                var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(1, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
-                smoke.initialColor = Color.DarkGray;
-            }
+                ProjFirer firer = ProjFirer.From<MeteorBoom>(Projectile);
+                firer.position = Projectile.Center;
+                firer.ai1 = -0.5f;
+                firer.velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * 512;
+                firer.New();
 
-
-            for (float i = 0; i < 8; i++)
-            {
-                float progress = i / 4f;
-                float rot = progress * MathHelper.ToRadians(360);
-                rot += Main.rand.NextFloat(-0.5f, 0.5f);
-                Vector2 offset = rot.ToRotationVector2() * 24;
-                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
-                    innerColor: Color.White,
-                    glowColor: Color.Yellow,
-                    outerGlowColor: Color.Red,
-                    baseSize: Main.rand.NextFloat(0.1f, 0.2f),
-                    duration: Main.rand.NextFloat(15, 25));
-                particle.Rotation = rot + MathHelper.ToRadians(45);
             }
         }
     }
+    private void DrawPixelatedFlameBoom(SpriteBatch sb, Vector2 sp)
+    {
+        NoisyBoomShader boomShader = ShaderContent.GetInstance<NoisyBoomShader>();
+        boomShader.Time = Main.GlobalTimeWrappedHourly * 8;
+        boomShader.NoiseColor = Color.Red;
+        SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = boomShader };
+
+        float time = (Timer - Sparkle_Time) / Time;
+        float ease = EasingFunction.OutExpo(time);
+        float ease2 = EasingFunction.InOutSine(time);
+
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        glowDrawer.color = Color.Red * 0.8f * ExtraMath.Osc(0.6f, 1f, speed: 6) * MathHelper.Lerp(1f, 0f, ease2);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 1.2f * MathHelper.Lerp(0f, 1f, ease);
+        sb.Draw(glowDrawer);
+        using (SpritebatchStarter.Begin(sb, @params))
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.FlameVortexNoise.Asset, Projectile.Center);
+            drawer.scale = Vector2.One * MathHelper.Lerp(0.2f, 1.56f, ease);
+            drawer.color = Color.Lerp(Color.Gold, Color.Transparent, ease2) * 2.0f;
+            sb.Draw(drawer);
+        }
+    }
+
     public override bool PreDraw(ref Color lightColor)
     {
-        if(Timer < Sparkle_Time)
+        if (Timer < Sparkle_Time)
         {
             float sparkleRatio = Timer / Sparkle_Time;
             float ease = EasingFunction.InOutSine(sparkleRatio);
-            Vector2 scale = Vector2.Lerp(Vector2.One, Vector2.Zero, ease);
-            float rot = MathHelper.Lerp(MathHelper.TwoPi * 2, 0, ease);
-            SpritebatchDrawer sparkleDrawer = SpritebatchDrawer.FromTextureAsset(AssetRegistry.GlowMasks.Star2.Value, Projectile.Center);
-            sparkleDrawer.color = Color.White;
+            Vector2 scale = Vector2.Lerp(new Vector2(0.5f), new Vector2(1.5f), ease) * 4;
+            float rot = -Projectile.velocity.ToRotation();
+            SpritebatchDrawer sparkleDrawer = SpritebatchDrawer.FromTextureAsset(AssetRegistry.GlowMasks.MuzzleFlash.Value, Projectile.Center);
+            sparkleDrawer.color = Color.Red * 0.9f * EasingFunction.QuadraticBump(sparkleRatio);
             sparkleDrawer.color.A = 0;
-            sparkleDrawer.rotation = rot;
+            sparkleDrawer.rotation = rot + MathHelper.PiOver2;
             sparkleDrawer.scale = scale;
             Main.spriteBatch.Draw(sparkleDrawer);
+        }
+        else
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedFlameBoom);
         }
         return false;
     }

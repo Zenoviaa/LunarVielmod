@@ -16,6 +16,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
+using Terraria.GameContent.Liquid;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Light;
 using Terraria.Graphics.Shaders;
@@ -293,6 +294,7 @@ public class MoonWaterSystem : ModSystem
     public int DownSamples => 2;
     public Vector2 Tiling => new Vector2(1.5f, 1.5f) * 0.75f;
     public float waterAlpha;
+    public static event Action<SpriteBatch> DrawWaterMask;
     public override void Load()
     {
         On_Main.CheckMonoliths += RenderHook;
@@ -301,12 +303,10 @@ public class MoonWaterSystem : ModSystem
         On_Main.DrawWaters += StopDrawWater;
     }
 
-    private void StopDrawWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
+    private void DrawWaterMaskT(On_LiquidEdgeRenderer.orig_DrawTileMask orig, SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
     {
-        if (!_allowDraw)
-            return;
-
-        orig(self, isBackground);
+        orig(spriteBatch, tileTarget, tileTargetOffset);
+        DrawWaterMask?.Invoke(spriteBatch);
     }
 
     public override void Unload()
@@ -319,6 +319,15 @@ public class MoonWaterSystem : ModSystem
         _pixelWaterStyles = null;
         _heightsToDraw.Clear();
     }
+    private void StopDrawWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
+    {
+        if (!_allowDraw)
+            return;
+
+        orig(self, isBackground);
+    }
+
+
     public override void OnModLoad()
     {
         base.OnModLoad();
@@ -456,7 +465,7 @@ public class MoonWaterSystem : ModSystem
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
-    
+  
             //DrawWaterBaseToScreen();
         }
 
@@ -547,6 +556,10 @@ public class MoonWaterSystem : ModSystem
         try
         {
             WaterHelpers.DrawWaters(Main.instance, isBackground: false);
+            //Anything else that wants to draw to the water target, such as particles
+            //Which will create some nice visuals, fake metaballs basically
+
+            //DrawWaterMask?.Invoke(spriteBatch);
         }
         catch
         {

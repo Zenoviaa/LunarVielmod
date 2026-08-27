@@ -32,7 +32,7 @@ public class BigVulcanFireball : ModProjectile
     }
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        float collisionRadius = 12 * Scale;
+        float collisionRadius = 48 * Scale;
         Vector2 centerPoint = targetHitbox.Center();
         Vector2 myPoint = projHitbox.Center();
         return Vector2.Distance(myPoint, centerPoint) <= collisionRadius;
@@ -96,15 +96,19 @@ public class BigVulcanFireball : ModProjectile
             pos += Main.rand.NextVector2Circular(24, 24);
             Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.Black * 0.45F, timeleft = 180 });
         }
-        if (Timer % 8 == 0)
+        if (Timer % 16 == 0 && Scale > 0.5f)
         {
             var p2 =LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero), newColor: Color.White);
             p2.fadeToColor = Color.DarkRed;
+            p2.Scale *= 0.45f;
         }
 
+        int denom = 3;
+        if (Scale < 0.5f)
+            denom = 7;
         for (int i = 0; i < 4; i++)
         {
-            if (Main.rand.NextBool(3))
+            if (Main.rand.NextBool(denom))
             {
                 Vector2 pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(16, 16);
@@ -119,9 +123,10 @@ public class BigVulcanFireball : ModProjectile
                 });
             }
         }
-
-
-        if (Main.rand.NextBool(4))
+        denom = 4;
+        if (Scale < 0.5f)
+            denom = 7;
+        if (Main.rand.NextBool(denom))
         {
             switch (Main.rand.Next(2))
             {
@@ -279,7 +284,7 @@ public class BigVulcanFireball : ModProjectile
             spawnParams.scaleRange = new Vector2(0.1f, 3f);
             DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
         }
-        if (this.OwnedByLocalClient())
+        if (this.OwnedByLocalClient() && Scale > 0.5f)
         {
             var firer = ProjFirer.From<PacmanBoom>(Projectile);
             firer.New();

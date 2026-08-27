@@ -768,14 +768,14 @@ public static class PixelPrimitiveCircleFactory
             ;
             Color GetTrailColorFunction(float interpolant)
             {
-                Color lerp1 = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0.5f, 1f, speed: 16));
+                Color lerp1 = Color.Lerp(Color.White, Color.Gold, ExtraMath.Osc(0.5f, 1f, speed: 16));
                 lerp1 = Color.Lerp(lerp1, Color.Black, EasingFunction.InExpo(completionRatio));
                 return lerp1;
             }
             ;
             BlackFireShader blackFireShader = BlackFireShader.Instance;
             blackFireShader.InnerColor = Color.White;
-            blackFireShader.OuterColor = Color.Red;
+            blackFireShader.OuterColor = Color.Gold;
             blackFireShader.BackColor = Color.DarkRed;
             blackFireShader.PrimaryTexture2 = AssetManager.LaserTextures.Lightning2;
 
@@ -790,7 +790,7 @@ public static class PixelPrimitiveCircleFactory
         PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
         circle.circleParams.minRadius = 400;
         circle.circleParams.maxRadius = 0;
-        circle.circleParams.time = 45;
+        circle.circleParams.time = 24;
         circle.renderPixelPrimitivesFunction = RenderPrimitives;
         circle.position = position;
         ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);

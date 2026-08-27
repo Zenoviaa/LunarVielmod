@@ -169,7 +169,12 @@ public partial class RekBoss
                         SoundEngine.PlaySound(sound, NPC.position);
                         _initialVelocity = NPC.velocity;
                         _coilStartPoint = NPC.Center;
-
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            ProjFirer firer = ProjFirer.From<RekSpiralDashTrail>(NPC);
+                            firer.ai1= NPC.whoAmI;
+                            firer.New();
+                        }
                     }
 
                     _showAfterImages = true;

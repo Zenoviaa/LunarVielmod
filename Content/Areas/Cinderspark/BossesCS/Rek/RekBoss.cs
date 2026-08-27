@@ -334,7 +334,7 @@ public partial class RekBoss : ScarletBoss
             return Vector2.Dot(-Vector2.UnitX, NPC.rotation.ToRotationVector2()) > 0;
         }
     }
-    private AIState TestAttack => AIState.VolcanicSpear;
+    private AIState TestAttack => AIState.Husk;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {

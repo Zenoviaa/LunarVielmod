@@ -14,6 +14,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 public class MeteorBoom : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
+    private ref float SizeDown => ref Projectile.ai[1];
+    private float Scale => 1f + SizeDown;
     private float AttackProgress => Timer / 24;
     public override void SetStaticDefaults()
     {
@@ -67,7 +69,7 @@ public class MeteorBoom : ModProjectile
             SoundEngine.PlaySound(sound2, Projectile.position);
 
             FXUtil.ShakeCamera(Projectile.position, 1024, 8);
-            for (float f = 0; f < 32; f++)
+            for (float f = 0; f < 32 * Scale; f++)
             {
                 Vector2 vel = Projectile.velocity;
                 vel = vel.SafeNormalize(Vector2.Zero);
@@ -80,7 +82,7 @@ public class MeteorBoom : ModProjectile
                 dp.dampening = 0.05f;
                 dp.Scale *= Main.rand.NextFloat(1f, 1.5f);
             }
-            for (float f = 0; f < 64; f++)
+            for (float f = 0; f < 64 * Scale; f++)
             {
                 Vector2 vel = Projectile.velocity;
                 vel = vel.SafeNormalize(Vector2.Zero);
@@ -119,7 +121,7 @@ public class MeteorBoom : ModProjectile
             drawer.color = Color.Lerp(Color.White, Color.OrangeRed, AttackProgress);
             drawer.color.A = 0;
             drawer.LeftCenterOrigin();
-            drawer.scale *= MathHelper.SmoothStep(1f, 3f, AttackProgress);
+            drawer.scale *= MathHelper.SmoothStep(1f, 3f, AttackProgress) * Scale;
             drawer.scale.Y *= MathHelper.SmoothStep(0, 1.5f, EasingFunction.OutExpo(AttackProgress));
             drawer.scale.X *= 5f;
             spriteBatch.Draw(drawer);
@@ -144,7 +146,7 @@ public class MeteorBoom : ModProjectile
             drawer.color = Color.Lerp(Color.White, Color.OrangeRed, AttackProgress);
             drawer.color.A = 0;
             drawer.LeftCenterOrigin();
-            drawer.scale *= MathHelper.SmoothStep(1f, 3f, AttackProgress);
+            drawer.scale *= MathHelper.SmoothStep(1f, 3f, AttackProgress) * Scale;
             drawer.scale.Y *= MathHelper.SmoothStep(0, 1.5f, EasingFunction.OutExpo(AttackProgress));
             drawer.scale.X *= 3;
             spriteBatch.Draw(drawer);

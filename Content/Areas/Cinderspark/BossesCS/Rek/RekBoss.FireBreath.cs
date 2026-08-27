@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using System;
 using Terraria;
@@ -67,6 +68,16 @@ public partial class RekBoss
                     {
                         Vector2 vel = (nextPoint - point).SafeNormalize(Vector2.Zero);
                         vel *= 1024;
+                        for(int i = 0; i < 32; i++)
+                        {
+                            Particles.WaterDust.Spawn(WaterDustData.Default with
+                            { 
+                                position = point, 
+                                velocity = vel * Main.rand.NextFloat(0.02f, 0.05f), 
+                                scale = Main.rand.NextFloat(0.5f, 1.5f), 
+                                timeLeft = Main.rand.Next(90, 120)  
+                            });
+                        }
                         if (MultiplayerHelper.IsHost)
                         {
                             ProjFirer firer = ProjFirer.From<MeteorBoom>(NPC);

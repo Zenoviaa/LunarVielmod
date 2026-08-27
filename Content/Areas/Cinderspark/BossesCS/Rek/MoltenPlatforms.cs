@@ -110,7 +110,6 @@ public class BigMoltenPlatform : AbstractPlatformNPC
 public class SmallMoltenPlatform : AbstractPlatformNPC
 {
     private Asset<Texture2D> _glowMaskTexture;
-    private Asset<Texture2D> _decorationTexture;
     public override bool CheckActive()
     {
         if (NPC.AnyNPCs(ModContent.NPCType<RekBoss>()))

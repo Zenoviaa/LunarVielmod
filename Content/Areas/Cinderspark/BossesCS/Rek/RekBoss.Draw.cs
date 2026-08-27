@@ -450,7 +450,7 @@ public partial class RekBoss : IWaterSilhouette
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
         drawer.rotation = segment.rotation;
         drawer.spriteEffects = GetSegmentSpriteEffects(index);
-        drawer.color = Color.Lerp(drawer.color, Color.Black, _huskAlpha * 0.4f);
+        drawer.color = Color.Lerp(drawer.color, Color.Black, _huskAlpha);
         switch (segment.bodyFrame)
         {
             default:
@@ -496,6 +496,7 @@ public partial class RekBoss : IWaterSilhouette
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
         drawer.rotation = segment.rotation;
         drawer.spriteEffects = GetSegmentSpriteEffects(index);
+        drawer.color = Color.Lerp(drawer.color, Color.Black, _huskAlpha);
         switch (segment.bodyFrame)
         {
             default:
@@ -580,6 +581,7 @@ public partial class RekBoss : IWaterSilhouette
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, segment.position);
         glowDrawer.scale *= 0.38f * MathHelper.Lerp(1f, 0.2f, (float)index / (float)Segments.Length);
         glowDrawer.color = Color.White * 0.33f;
+        glowDrawer.color = Color.Lerp(glowDrawer.color, Color.Black, _huskAlpha);
         glowDrawer.color.R = (byte)(index * 9);
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);
@@ -691,9 +693,9 @@ public partial class RekBoss : IWaterSilhouette
         {
             DrawFireballOrb(spriteBatch);
         }
+
         if (_spearAlphas[0] > 0)
         {
-
             FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
             flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
             flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
@@ -707,6 +709,7 @@ public partial class RekBoss : IWaterSilhouette
             {
                 DrawSpear();
             }
+
             flamebowShader.InsideColor = Color.Lerp(Color.Yellow, Color.OrangeRed, ExtraMath.Osc(0f, 1f, 24));
             flamebowShader.BloomColor = Color.DarkBlue;
             using (new SpritebatchContext(spriteBatch, spearParams))
