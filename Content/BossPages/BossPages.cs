@@ -437,7 +437,11 @@ namespace Stellamod.Content.BossPages
             progression = 18;
             flag = DownedBossFlag.CrumblingTowerOfIlluria;
             StarRanking = 4;
+            AddReward<DragonShard>(2);
+            AddReward<RuinMedal>(35);
+            AddReward<IllurineScale>(30);
             AddMasterModeReward<TowerofIlluriaRelicItem>();
+            AddMasterModeReward<GlisteningPearl>(5);
         }
     }
 }
