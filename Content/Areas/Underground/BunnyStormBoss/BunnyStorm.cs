@@ -614,6 +614,7 @@ public class BunnyStorm : ScarletBoss
         NPCID.Sets.TrailingMode[Type] = 3;
         NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         NPCID.Sets.BossBestiaryPriority.Add(Type);
+      
     }
 
     public override void SetDefaults()
@@ -1545,6 +1546,9 @@ public class BunnyStorm : ScarletBoss
     }
     private void DrawBunnyParticles(SpriteBatch spriteBatch)
     {
+        if (_vortexPS == null)
+            return;
+
         SpritebatchDrawer bunnyDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BunnyStormBunny>()], NPC.Center);
         bunnyDrawer.VerticalFrame(0, 6);
         bunnyDrawer.CenterOrigin();
