@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Common.RarityRendering;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,7 +11,7 @@ public class StoneGolett : ModItem
     public override void SetDefaults()
     {
         Item.CloneDefaults(ItemID.ZephyrFish); // Copy the Defaults of the Zephyr Fish Item.
-
+        Item.rare = ModContent.RarityType<BossRewardRarity>();
         Item.shoot = ModContent.ProjectileType<StoneGolettPet>(); // "Shoot" your pet projectile.
         Item.buffType = ModContent.BuffType<StoneGolettPetBuff>(); // Apply buff upon usage of the Item.
     }

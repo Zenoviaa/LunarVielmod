@@ -10,8 +10,10 @@ namespace Stellamod.Common
         {
             base.ResizeArrays();
             IsSoldBySirestias = ItemID.Sets.Factory.CreateBoolSet();
+            SpecialRarity = ItemID.Sets.Factory.CreateIntSet();
         }
         public static bool[] IsSoldBySirestias;
+        public static int[] SpecialRarity;
     }
 
     public static class ItemSetsExtensions

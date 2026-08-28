@@ -12184,5 +12184,28 @@ SteamHatter: {
 
 StoneGolett: {
 	DisplayName: Stone Golett
-	Tooltip: "Summons a pet Stone Golett"
+	Tooltip: Summons a pet Stone Golett
+}
+
+JewelsBow: {
+	BasicSlash: ""
+	StaminaSlash: Shoots a spread of bouncing blue jewels!
+	DisplayName: Jewels Bow
+	Tooltip: Shine bright like a diamond
+}
+
+Jiisword: {
+	BasicSlash: Swirls around and thrusts out in its combo, throwing out a bomb!
+	StaminaSlash: Holds out the blade and throws out bombs all over...
+	DisplayName: Jiisword
+	Tooltip: Celebrate, for the day is approaching
+}
+
+HeartPendant: {
+	DisplayName: Heart Pendant
+	Tooltip:
+		'''
+		+1 Stamina
+		10% increased stamina regeneration
+		'''
 }

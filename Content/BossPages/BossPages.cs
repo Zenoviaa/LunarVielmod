@@ -23,6 +23,7 @@ using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
+using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.CariyaBoss;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
@@ -205,7 +206,12 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<Jiitas>();
             progression = 2;
             flag = DownedBossFlag.Jiitas;
+            AddReward<DragonShard>();
+            AddReward<HeartPendant>();
+            AddReward<JewelsBow>();
             AddMasterModeReward<JiitasRelicItem>();
+            AddMasterModeReward<DragonShard>(2);
+            AddNoHitReward<Jiisword>();
             StarRanking = 1;
         }
     }

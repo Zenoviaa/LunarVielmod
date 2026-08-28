@@ -75,6 +75,7 @@ public class DeadEye : AbstractDashItem
         base.SetDefaults();
         Item.DefaultToAccessory();
         Item.damage = 150;
+        Item.DamageType = DamageClass.Generic;
     }
 
     private float _timer;

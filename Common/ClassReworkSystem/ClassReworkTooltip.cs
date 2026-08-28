@@ -14,7 +14,7 @@ namespace Stellamod.Common.ClassReworkSystem
             ClassReworkPlayer classReworkPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
             if(classReworkPlayer.damageClass != item.DamageType && 
                 classReworkPlayer.playerClass != PlayerClass.Omni && 
-                classReworkPlayer.playerClass != PlayerClass.God && item.damage > 0)
+                classReworkPlayer.playerClass != PlayerClass.God && item.damage > 0 && item.DamageType != DamageClass.Generic && item.DamageType != DamageClass.Default)
             {
                 var line = new TooltipLine(Mod, "ClassNerf", LangText.Common("ClassNerf"));
                 line.OverrideColor = Color.IndianRed;

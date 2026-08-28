@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.RarityRendering;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Core;
@@ -174,6 +175,7 @@ namespace Stellamod.Common.BossBannerSystem
         public void AddReward<T>(int stack = 1) where T : ModItem
         {
             Item item = ModContent.GetInstance<T>().Item;
+            ItemSets.SpecialRarity[item.type] = 1;
             Item clone = item.Clone();
             clone.stack=stack;
             Rewards.Add(clone);
@@ -190,6 +192,7 @@ namespace Stellamod.Common.BossBannerSystem
         public void AddNoHitReward<T>(int stack = 1) where T : ModItem
         {
             Item item = ModContent.GetInstance<T>().Item;
+            ItemSets.SpecialRarity[item.type] = 2;
             Item clone = item.Clone();
             clone.stack = stack;
             NoHitRewards.Add(clone);

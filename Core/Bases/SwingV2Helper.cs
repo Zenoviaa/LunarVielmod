@@ -993,6 +993,93 @@ namespace Stellamod.Core.Bases
                 HitCount=3,
             });
         }
+        public static void AddJiiSwordSwingStyle(ISwingProjectile swings)
+        {
+            SoundStyle spearSlash1 = SoundRegistry.SpearSlash1;
+            SoundStyle spearSlash2 = SoundRegistry.SpearSlash2;
+            SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.NormalSwordSlash1;
+            swingSound1.PitchVariance = 0.25f;
+            swingSound1.Volume = 0.25f;
+
+            SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.NormalSwordSlash2;
+            swingSound2.PitchVariance = 0.25f;
+
+            SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.SwordSpin1;
+            swingSound3.PitchVariance = 0.5f;
+            swingSound3.Volume = 0.5f;
+
+
+            SoundStyle swingSoundAlt1 = AssetRegistry.Sounds.Melee.SwordSwing2;
+            swingSoundAlt1.PitchVariance = 0.25f;
+
+            SoundStyle swingSoundAlt2 = AssetRegistry.Sounds.Melee.SwordSwing3;
+            swingSoundAlt2.PitchVariance = 0.25f;
+
+
+            int style = 0;
+            SoundStyle s1 = style == 0 ? swingSound1 : swingSoundAlt1;
+            SoundStyle s2 = style == 0 ? swingSound2 : swingSoundAlt2;
+            swings.Add(new OvalSwing
+            {
+                Duration = 22,
+                XSwingRadius = 88,
+                YSwingRadius = 48,
+                SwingDegrees = 270,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 22,
+                XSwingRadius = 88,
+                YSwingRadius = 48,
+                SwingDegrees = 270,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 30,
+                XSwingRadius = 80,
+                YSwingRadius = 48,
+                SwingDegrees = 720,
+                Easing = EasingFunction.Anticipation2,
+                Sound = swingSound3
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 14,
+                XSwingRadius = 88,
+                YSwingRadius = 48,
+                SwingDegrees = 96,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1,
+            });
+            swings.Add(new OvalSwing
+            {
+                Duration = 14,
+                XSwingRadius = 88,
+                YSwingRadius = 48,
+                SwingDegrees = 96,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 32,
+                XSwingRadius = 64,
+                YSwingRadius = 48,
+                SwingDegrees = 135,
+                Easing = (float lerpValue) => EasingFunction.OutBounce(lerpValue),
+                Sound = spearSlash2,
+            });
+
+
+        }
         public static void AddSwordSwingStyle(ISwingProjectile swings)
         {
             SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.NormalSwordSlash1;
