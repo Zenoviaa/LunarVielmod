@@ -67,7 +67,7 @@ public class TerrorMinigun : BaseGun
     public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
     {
         base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-        type = ModContent.ProjectileType<XX4160Shot>();
+        type = ModContent.ProjectileType<TerrorMinigunShot>();
     }
 
     public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -101,16 +101,17 @@ public class TerrorMinigun : BaseGun
 
 }
 
-public class XX4160Shot : ModProjectile,
+public class TerrorMinigunShot : ModProjectile,
     IDrawToRenderTarget
 {
     private Player Owner => Main.player[Projectile.owner];
     public override string Texture => TextureRegistry.EmptyTexture;
     private ref float Timer => ref Projectile.ai[0];
     private ref float RandScale => ref Projectile.ai[1];
+    private ref float Recoil => ref Projectile.ai[2];
     public override void SetStaticDefaults()
     {
-        ProjectileID.Sets.TrailCacheLength[Projectile.type] = 18;
+        ProjectileID.Sets.TrailCacheLength[Projectile.type] = 16;
         ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
     }
 
@@ -129,12 +130,16 @@ public class XX4160Shot : ModProjectile,
 
     public override void AI()
     {
-        ProjectileID.Sets.TrailCacheLength[Projectile.type] = 16;
+
         Timer++;
         if(Timer == 1)
         {
-            Owner.AddRecoil(-Projectile.velocity.SafeNormalize(Vector2.Zero) * 0.35f);
-            FXUtil.ShakeCamera(Projectile.Center, 1024, 2);
+            if(Recoil == 0)
+            {
+                Owner.AddRecoil(-Projectile.velocity.SafeNormalize(Vector2.Zero) * 0.35f);
+                FXUtil.ShakeCamera(Projectile.Center, 1024, 2);
+            }
+
             if (this.OwnedByLocalClient())
             {
                 RandScale = Main.rand.NextFloat(0.5f, 1f);

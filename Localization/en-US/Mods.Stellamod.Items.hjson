@@ -12209,3 +12209,13 @@ HeartPendant: {
 		10% increased stamina regeneration
 		'''
 }
+
+Boomboxer: {
+	DisplayName: Boomboxer
+	Tooltip: "Summons a pet Boomboxer"
+}
+
+MechanicalArms: {
+	DisplayName: Mechanical Arms
+	Tooltip: "Grants 4 octopus like arms around you that'll shoot at your cursor!"
+}

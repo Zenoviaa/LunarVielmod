@@ -394,6 +394,7 @@ namespace Stellamod.Content.BossPages
             progression = 20;
             flag = DownedBossFlag.SanguineSingularity;
             StarRanking = 6;
+
             AddMasterModeReward<SanguineSingularityRelicItem>();
         }
     }
@@ -409,7 +410,13 @@ namespace Stellamod.Content.BossPages
             flag = DownedBossFlag.PunkerPrime;
 
             StarRanking = 4;
+            AddReward<MechanicalArms>();
+            AddReward<DragonShard>(2);
+            AddReward<RuinMedal>(10);
             AddMasterModeReward<PunkerPrimeRelicItem>(stack: 1);
+            AddMasterModeReward<GlisteningPearl>(5);
+            AddMasterModeReward<DragonShard>();
+            AddNoHitReward<Boomboxer>();
         }
     }
     public class DescendingTwinsPage : BossPage

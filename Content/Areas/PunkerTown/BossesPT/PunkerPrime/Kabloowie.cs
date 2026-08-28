@@ -12,6 +12,7 @@ public class Kabloowie : ModProjectile
     private int _frame;
     private float _animationTimer;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
 
     public override void SetStaticDefaults()
     {
@@ -57,6 +58,8 @@ public class Kabloowie : ModProjectile
         drawer.sourceRect = frame;
         drawer.drawOrigin = frame.Size() * 0.5f;
         drawer.scale *= 1.5f;
+        if (Style == 1)
+            drawer.scale *= 0.5f;
         Main.spriteBatch.Draw(drawer);
         return false;
     }

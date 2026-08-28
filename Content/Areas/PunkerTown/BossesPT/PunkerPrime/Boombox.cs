@@ -156,7 +156,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<Kabloowie>(), 1, 1, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<Kabloowie>(), 1, 1,
+                        Main.myPlayer, ai1: 0);
                 }
             }
             _bounceOffset = Vector2.Lerp(Vector2.UnitY * -64, Vector2.UnitY * 64, ExtraMath.Osc(0f, 1f, speed: 4)) * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 60f));
