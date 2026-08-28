@@ -429,7 +429,12 @@ namespace Stellamod.Content.BossPages
             flag = DownedBossFlag.Steamroller;
 
             StarRanking = 6;
+            AddReward<SteamHatter>();
+            AddReward<DragonShard>(1);
+            AddReward<RuinMedal>(10);
             AddMasterModeReward<SteamrollerRelicItem>(stack: 1);
+            AddMasterModeReward<GlisteningPearl>(5);
+            AddMasterModeReward<DragonShard>(1);
         }
     }
 

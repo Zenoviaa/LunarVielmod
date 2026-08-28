@@ -12172,3 +12172,12 @@ DeadEye: {
 	DisplayName: Dead Eye
 	Tooltip: Your dash becomes nearly instant and deals damage!
 }
+
+SteamHatter: {
+	DisplayName: Steam Hatter
+	Tooltip:
+		'''
+		When you take damage, gain 10% increased attack speed and damage for 8 seconds 
+		This can stack up to 5 times!
+		'''
+}

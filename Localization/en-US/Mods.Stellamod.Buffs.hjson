@@ -1212,3 +1212,8 @@ CinderingWings: {
 	DisplayName: Cindering Wings
 	Description: Mods.Stellamod.Buffs.CinderingWings.Description
 }
+
+Steaming: {
+	DisplayName: Steaming
+	Description: I'm MAD!!!!
+}
