@@ -12165,7 +12165,11 @@ AbyssalDirtWallItem: {
 
 Fistanizer: {
 	DisplayName: Fistanizer
-	Tooltip: ""
+	Tooltip:
+		'''
+		Increases the distance your fists go by 50%
+		Not to be confused with wowanizer of course
+		'''
 }
 
 DeadEye: {
