@@ -11,6 +11,7 @@ using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria;
 using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
+using Stellamod.Content.Areas.PunkerTown.AccPT;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
@@ -408,7 +409,13 @@ namespace Stellamod.Content.BossPages
             flag = DownedBossFlag.DescendingTwins;
 
             StarRanking = 5;
+            AddReward<DeadEye>();
+            AddReward<DragonShard>(2);
+            AddReward<RuinMedal>(10);
+        
             AddMasterModeReward<DescendingTwinsRelicItem>(stack: 1);
+            AddMasterModeReward<GlisteningPearl>(5);
+            AddMasterModeReward<DragonShard>(1);
         }
     }
     public class SteamrollerPage : BossPage
