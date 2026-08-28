@@ -795,6 +795,44 @@ public static class PixelPrimitiveCircleFactory
         circle.position = position;
         ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
     }
+    public static void CreateGothInwardBoom(Vector2 position)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(16, 0, EasingFunction.InSine(completionRatio));
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.Turquoise, ExtraMath.Osc(0.5f, 1f, speed: 16));
+                lerp1 = Color.Lerp(lerp1, Color.Black, EasingFunction.InExpo(completionRatio));
+                return lerp1;
+            }
+            ;
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerColor = Color.White;
+            blackFireShader.OuterColor = Color.Turquoise;
+            blackFireShader.BackColor = Color.DarkTurquoise;
+            blackFireShader.PrimaryTexture2 = AssetManager.LaserTextures.Lightning2;
+
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+
+            BloomTrailShader bloomTrail = BloomTrailShader.Instance;
+            bloomTrail.InnerColor = Color.White;
+            bloomTrail.OuterColor = Color.DarkTurquoise;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, bloomTrail);
+
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 212;
+        circle.circleParams.maxRadius = 0;
+        circle.circleParams.time = 25;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
     public static void CreateCelestiaInwardBoom(Vector2 position)
     {
         void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)

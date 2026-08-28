@@ -4,6 +4,32 @@ using Terraria;
 
 namespace Stellamod.Effects.Generic;
 
+public class NoHitRarityShader : CrystalShader<NoHitRarityShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+    public float Strength
+    {
+        set
+        {
+            Effect.Parameters["strength"].SetValue(value);
+        }
+    }
+
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+}
 public class DitheredColorPaletteShader : CrystalShader<DitheredColorPaletteShader>
 {
     public Vector2 ScreenSize

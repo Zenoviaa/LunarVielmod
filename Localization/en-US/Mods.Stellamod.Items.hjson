@@ -202,6 +202,7 @@ Common: {
 	StyleSword: Sword Attack Style
 	BasicSlash: "{0}"
 	StaminaSlash: Special: {0}
+	WeaponTypeStein: Stein Weapon Type
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type
 	WeaponTypeScythe: Scythe Weapon Type
@@ -213,7 +214,7 @@ Common: {
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaCost: Special attack costs {0} stamina to use
-	ExpandTooltipHelp: Press [{0}] for more information
+	ExpandTooltipHelp: Tap [{0}] for more information
 	BellLock: Real
 	BellUse: Put your minions into the bell, then hold [{0}] to summon them!
 	CastingTime: "{0} seconds added to your casting time"
@@ -236,7 +237,7 @@ Common: {
 		This item is a [c/FFA500:mold], which serves as a template for creating all sorts of useful items!
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
-	ExpandableTooltipHelp: Hold {0} for more about this item type!
+	ExpandableTooltipHelp: Tap {0} for more about this item type!
 	MagicArtifact: Magic Artifact
 	MagicArtifactHelp:
 		'''
@@ -6828,16 +6829,17 @@ Iknoctstein: {
 }
 
 Gothinstein: {
-	Tooltip:
+	Tooltip: Gothivia didn't have this...
+	DisplayName: Gothinstein
+	BasicSlash: Unleash a barrage of fists to pummel your target, every 10 hits, release a powerful flaming fist!
+	StaminaSlash:
 		'''
-		Gothivia didn't have this...
-		Tap to your cursor to dash into Gothivia's damage! 
+		Dash into Gothivia's damage! 
 		Hitting enemies will give you bonus damage and immunity for reward! 
 		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
 		A combination of every other glove!
 		5 Words!
 		'''
-	DisplayName: Gothinstein
 }
 
 Friedstein: {
@@ -12158,5 +12160,10 @@ AbyssalDirtItem: {
 
 AbyssalDirtWallItem: {
 	DisplayName: Abyssal Dirt Wall Item
+	Tooltip: ""
+}
+
+Fistanizer: {
+	DisplayName: Fistanizer
 	Tooltip: ""
 }

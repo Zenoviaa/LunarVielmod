@@ -6,7 +6,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trailing;
@@ -349,7 +348,7 @@ public class StarvastStarProj : ModProjectile,
         else
         {
             Timer += 0.02f;
-            Vector2 orbitCenter = MovementHelper.OrbitAround(owner.Center, Vector2.UnitY, 64, Timer);
+            Vector2 orbitCenter = MovementUtilities.OrbitAround(owner.Center, Vector2.UnitY, 64, Timer);
             Vector2 targetVel = (orbitCenter - Projectile.Center);
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVel, 0.02f);
         }

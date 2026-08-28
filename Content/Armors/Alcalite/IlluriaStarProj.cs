@@ -1,5 +1,4 @@
 ﻿using Stellamod.Assets;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
@@ -115,7 +114,7 @@ namespace Stellamod.Content.Armors.Alcalite
 
             Player owner = Main.player[Projectile.owner];
             Vector2 startOrbit = Vector2.UnitY.RotatedBy(OrbitOffset);
-            Vector2 orbitCenter = MovementHelper.OrbitAround(owner.Center, startOrbit, OrbitDistance, Timer * 0.01f);
+            Vector2 orbitCenter = MovementUtilities.OrbitAround(owner.Center, startOrbit, OrbitDistance, Timer * 0.01f);
             Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, orbitCenter, 8);
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.9f);
         }

@@ -38,10 +38,27 @@ namespace Stellamod.Core.Tooltips
     public class ExpandableLineSystem : ModSystem
     {
         private List<TooltipLine> _expandableLines;
+        public static bool renderExtraInfo;
+        private bool _keyDown;
         public override void OnModLoad()
         {
             base.OnModLoad();
             _expandableLines = new List<TooltipLine>();
+        }
+        public override void PostUpdateInput()
+        {
+            base.PostUpdateInput();
+
+            Keys keys = Keys.LeftShift;
+            if (!_keyDown && Main.keyState.IsKeyDown(keys))
+            {
+                _keyDown = true;
+            }
+            else if (_keyDown && Main.keyState.IsKeyUp(keys))
+            {
+                _keyDown = false;
+                renderExtraInfo = !renderExtraInfo;
+            }
         }
         public override void UpdateUI(GameTime gameTime)
         {
@@ -68,9 +85,7 @@ namespace Stellamod.Core.Tooltips
                 return;
 
 
-            Keys keys = Keys.LeftShift;
-            bool isExpanded = Main.keyState.IsKeyDown(keys);
-            if (isExpanded)
+            if (renderExtraInfo)
             {
                 ArmorSet set = ArmorSetSystem.FindArmorSet(item.type);
                 ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
@@ -124,12 +139,10 @@ namespace Stellamod.Core.Tooltips
             var lines = lineSystem.GetExpandableLines();
             if (lines.Count > 0)
             {
-                Keys keys = Keys.LeftShift;
-                bool isExpanded = Main.keyState.IsKeyDown(keys);
                 TooltipLine helpLine = new TooltipLine(Mod, "ExpandHelp", LangText.Common("ExpandableTooltipHelp", "Left Shift"));
                 helpLine.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.7f);
                 tooltips.Add(helpLine);
-                if (isExpanded)
+                if (ExpandableLineSystem.renderExtraInfo)
                 {
 
                     if (item.headSlot != -1 || item.bodySlot != -1 || item.legSlot != -1)
@@ -188,6 +201,8 @@ namespace Stellamod.Core.Tooltips
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _timer += deltaTime * (_holdingTooltip ? 1 : -1);
             _timer = MathHelper.Clamp(_timer, 0f, EaseTime);
+            if (_timer <= 0)
+                _lines = null;
             _holdingTooltip = false;
 
         }
@@ -210,13 +225,13 @@ namespace Stellamod.Core.Tooltips
                             int targetY = Main.mouseY + _startingYOffset;
 
                             float ratio = _timer / EaseTime;
-                            float ease = EasingFunction.InOutSine(ratio);
+                            float ease = EasingFunction.InOutCubic(ratio);
                             int x = (int)MathHelper.Lerp(targetX - 64, targetX, ease);
                             int y = targetY;
-                             ExpandableTooltip.DrawExpandableTooltip(Main.spriteBatch, _lines, x, y, ease, _drawGlass);
+                            if(ease > 0.05f)
+                                ExpandableTooltip.DrawExpandableTooltip(Main.spriteBatch, _lines, x, y, ease, _drawGlass);
                         
-                            if (_timer <= 0)
-                                _lines = null;
+                  
                         }
                         return true;
                     },
@@ -548,7 +563,7 @@ namespace Stellamod.Core.Tooltips
                 }
 
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLine.Font, drawableLine.Text,
-                    new Vector2(X, drawableLine.Y + yOffset), realLineColor * alpha, drawableLine.Rotation, drawableLine.Origin, drawableLine.BaseScale * alpha,
+                    new Vector2(X, drawableLine.Y + yOffset), realLineColor * alpha, drawableLine.Rotation, drawableLine.Origin, drawableLine.BaseScale,
                     drawableLine.MaxWidth, drawableLine.Spread);
                 yOffset += (int)(FontAssets.MouseText.Value.MeasureString(drawableLine.Text).Y);
             }

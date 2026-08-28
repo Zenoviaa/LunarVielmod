@@ -1,9 +1,6 @@
-﻿using Stellamod.Assets;
-using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System.IO;
-using System.Runtime.Intrinsics.X86;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -44,7 +41,7 @@ public class DeadRomancePlayer : ModPlayer
         base.PreUpdateMovement();
         if (dashVelocity.HasValue)
         {
-            Vector2 dv = (Vector2)dashVelocity.Value;
+            Vector2 dv = dashVelocity.Value;
             Player.velocity = dv;
             dashVelocity = null;
         }
@@ -78,7 +75,7 @@ public class DeadRomancePlayer : ModPlayer
                 sp.gravity = 0;
             }
 
-            if(Main.netMode != NetmodeID.Server)
+            if (Main.netMode != NetmodeID.Server)
             {
                 ScreenShaderSystem tint = ModContent.GetInstance<ScreenShaderSystem>();
                 tint.TintScreen(Color.Goldenrod, 0.2f, 15);
@@ -154,14 +151,14 @@ public class DeadRomancePlayer : ModPlayer
         {
             if (i >= parryStacks)
                 break;
-            float ratio = (float)i / (float)maxNumBlades;
+            float ratio = i / (float)maxNumBlades;
             float radians = ratio * MathHelper.TwoPi;
             radians += Main.GlobalTimeWrappedHourly * 0.5f;
             Vector2 drawCenter = radians.ToRotationVector2() * 32 + drawInfo.drawPlayer.Center;
             for (int j = 0; j < 4; j++)
             {
 
-                float ratio2 = (float)j / (float)4f;
+                float ratio2 = j / (float)4f;
                 float radians2 = ratio2 * MathHelper.TwoPi;
                 radians2 += Main.GlobalTimeWrappedHourly * 2f;
                 Vector2 offset = radians2.ToRotationVector2() * 8;
@@ -175,7 +172,7 @@ public class DeadRomancePlayer : ModPlayer
                 swordDrawer.scale = Vector2.One * 0.3f;
                 sb.Draw(swordDrawer);
             }
- 
+
         }
     }
 
@@ -211,7 +208,7 @@ public class DeadRomancePlayer : ModPlayer
         hitParry = true;
         parryTimer = 0;
         parryStacks++;
-        Player.GetModPlayer<DashPlayer>().DashCount+=2;
+        Player.GetModPlayer<DashPlayer>().DashCount += 2;
         Player.SetImmuneTimeForAllTypes(60);
         if (Player.whoAmI != Main.myPlayer)
         {

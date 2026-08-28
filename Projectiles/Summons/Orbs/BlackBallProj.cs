@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System;
@@ -128,7 +127,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             //Orbit around the player
             float orbitDistance = 256;
             OrbitRotation += 0.003f;
-            Vector2 targetOrbitPos = MovementHelper.OrbitAround(Owner.Center, Vector2.UnitY, orbitDistance, OrbitRotation);
+            Vector2 targetOrbitPos = MovementUtilities.OrbitAround(Owner.Center, Vector2.UnitY, orbitDistance, OrbitRotation);
 
             //Lerp
             Projectile.Center = Vector2.Lerp(Projectile.Center, targetOrbitPos, 0.12f / Swing_Speed_Multiplier);

@@ -572,6 +572,21 @@ public struct SpritebatchParams
         starter.rasterizerState = Main.Rasterizer;
         return starter;
     }
+    public static SpritebatchParams UI
+    {
+        get
+        {
+            SpritebatchParams starter = new SpritebatchParams();
+            starter.blendState = BlendState.AlphaBlend;
+            starter.samplerState = SamplerState.LinearClamp;
+            starter.sortMode = SpriteSortMode.Deferred;
+            starter.depthStencilState = DepthStencilState.None;
+            starter.effect = null!;
+            starter.matrix = Main.UIScaleMatrix;
+            starter.rasterizerState = Main.Rasterizer;
+            return starter;
+        }
+    }
 }
 
 public static class SpritebatchDrawExtensions

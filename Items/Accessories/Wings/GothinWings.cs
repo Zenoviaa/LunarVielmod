@@ -115,7 +115,7 @@ public class GothinWings : ModItem
         // Fly time: 180 ticks = 3 seconds
         // Fly speed: 9
         // Acceleration multiplier: 2.5
-        ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(5400, 12f, 2.5f);
+        ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(5400, 12f, 3);
 
     }
 

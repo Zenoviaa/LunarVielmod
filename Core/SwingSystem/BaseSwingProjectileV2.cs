@@ -46,17 +46,20 @@ public class MeleeEffectsPlayer : ModPlayer
     public List<AbstractMeleeAddon> addons = new List<AbstractMeleeAddon>();
     public int safunaiChainBonus;
     public int steinWordBonus;
+    public float steinDistanceBonus;
     public float noProjectionDamageBonus;
     public float projectionOnlyDamageBonus;
     public bool noOwnerHitCheck;
     public bool smokyPendant;
     public bool superExtender;
 
+
     public override void ResetEffects()
     {
         base.ResetEffects();
         noOwnerHitCheck = false;
         safunaiChainBonus = 0;
+        steinDistanceBonus = 0f;
         noProjectionDamageBonus = 0f;
         projectionOnlyDamageBonus = 0f;
         steinWordBonus = 0;

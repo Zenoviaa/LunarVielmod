@@ -15,6 +15,7 @@ using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
+using Stellamod.Content.Areas.PunkerTown.ItemsPT;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER;
 using Stellamod.Content.Areas.SpringHills.AccSH;
@@ -27,11 +28,13 @@ using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Areas.Underground.BunnyStormBoss;
 using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
+using Stellamod.Content.Armors.Gothin;
 using Stellamod.Content.Armors.Ravaging;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Relics;
 using Stellamod.Content.Vanity.IllurianGeneralHat;
+using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Insources;
 using Terraria.ModLoader;
@@ -313,7 +316,12 @@ namespace Stellamod.Content.BossPages
             progression = 25;
             flag = DownedBossFlag.Gothivia;
             StarRanking = 8;
+            AddReward<GothinMask>();
+            AddReward<GothinRobe>();
+            AddReward<GothinPants>();
+            AddReward<GothinWings>();
             AddMasterModeReward<GothiviaRelicItem>(stack: 1);
+            AddNoHitReward<Gothinstein>();
         }
     }
     public class RoyalFoxPage : BossPage

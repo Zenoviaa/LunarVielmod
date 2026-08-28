@@ -182,12 +182,14 @@ namespace Stellamod.Core.SwingSystem
             }
             else
             {
-                Projectile.NewProjectile(source, position, velocity, type, staminaDamage, knockback, player.whoAmI);
+                ShootStaminaProj(player, source, position, velocity, type, staminaDamage, knockback);
             }
             PixelPrimitiveCircleFactory.CreateGenericInBoom(player.Center, Color.White, Color.White, 24, 128);
-           // Projectile.NewProjectile(source, player.Center, Vector2.Zero, ModContent.ProjectileType<BasicStaminaExplosion>(), damage, knockback, player.whoAmI);
         }
 
+        protected virtual void ShootStaminaProj(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+        }
         public override bool AltFunctionUse(Player player)
         {
             return true;
