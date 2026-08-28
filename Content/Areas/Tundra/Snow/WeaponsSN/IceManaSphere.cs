@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Common;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles;
@@ -641,6 +642,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+            ProjSets.IsManasphere[Type] = true;
             ProjectileID.Sets.TrailCacheLength[Type] = 4;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
@@ -806,7 +808,8 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
                 spawnParams.innerColor = Color.LightSkyBlue;
                 spawnParams.outerColor = Color.DarkBlue;
                 spawnParams.scaleRange = new Vector2(0.1f, 1f);
-                DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+                var d = DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+                d.dampening = 0.1f;
             }
 
             SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.White, Scale: 1f);

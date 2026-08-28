@@ -11,7 +11,7 @@ namespace Stellamod.Core.Bases
         private float _burstTimer;
         public bool takeAim;
         public bool usingStamina;
-
+        public bool splittingShot;
         public bool countShots;
         public float shotCount;
         public int gothinEnchant;
@@ -30,6 +30,7 @@ namespace Stellamod.Core.Bases
             base.ResetEffects();
             takeAim = false;
             usingStamina = false;
+            splittingShot = false;
             magicCircleTextureAsset = null;
             magicCircleColor = Color.White;
             magicBigCircleTextureAsset = null;

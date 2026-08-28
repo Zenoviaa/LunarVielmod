@@ -92,6 +92,13 @@ public class LevelingPlayer : ModPlayer
     public override void PostUpdateBuffs()
     {
         base.PostUpdateBuffs();
+   
+
+    }
+
+    public override void PostUpdateEquips()
+    {
+        base.PostUpdateEquips();
         var stats = Player.GetStats();
         //Strength
         Player.GetDamage(DamageClass.Generic) += 0.01f * FinalStrength;
@@ -119,11 +126,6 @@ public class LevelingPlayer : ModPlayer
         Player.luck += 0.05f * FinalVeil;
 
 
-    }
-
-    public override void PostUpdateEquips()
-    {
-        base.PostUpdateEquips();
         float wingTimeMax = Player.wingTimeMax;
         float wingTimeToIncrease = wingTimeMax * 0.01f * FinalDexterity;
         wingTimeMax += wingTimeToIncrease;

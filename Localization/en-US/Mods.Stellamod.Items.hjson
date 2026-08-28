@@ -4570,7 +4570,7 @@ GremoryExtenderPowder: {
 
 MushyExtenderPowder: {
 	DisplayName: Mushy Extender Powder
-	Tooltip: Increases the velocity of igniter cards by 25%
+	Tooltip: Your igniter cards now bounce along the ground up to 2 times!
 }
 
 TomedDustingFlames: {
@@ -5250,7 +5250,7 @@ AlcaricQuiver: {
 
 BlackRose: {
 	DisplayName: Black Rose
-	Tooltip: Using a mana potion hurts you a little instead of sickening you
+	Tooltip: If a spell costs more than your mana, eat away at your health instead
 }
 
 BlackManaRose: {
@@ -12216,10 +12216,44 @@ HeartPendant: {
 
 Boomboxer: {
 	DisplayName: Boomboxer
-	Tooltip: "Summons a pet Boomboxer"
+	Tooltip: Summons a pet Boomboxer
 }
 
 MechanicalArms: {
 	DisplayName: Mechanical Arms
-	Tooltip: "Grants 4 octopus like arms around you that'll shoot at your cursor!"
+	Tooltip: Grants 4 octopus like arms around you that'll shoot at your cursor!
+}
+
+Wandanizer: {
+	DisplayName: Wandanizer
+	Tooltip: Adds 2 normal enchantment slots to your wands!
+}
+
+SongofWinds: {
+	DisplayName: Song of Winds
+	Tooltip: Grants 0.25% damage for every empty inventory slot you have, including those in your backpack!
+}
+
+UndyingHoliness: {
+	DisplayName: Undying Holiness
+	Tooltip: ""
+}
+
+SplitQuiver: {
+	DisplayName: Split Quiver
+	Tooltip: "Your arrows split into 3 when they hit an enemy"
+}
+
+RollingStones: {
+	DisplayName: Rolling Stones
+	Tooltip:
+		'''
+		Gives +2 to every stat in your medallion book!
+		Duplicate copies can be equipped...
+		'''
+}
+
+DoubleBaller: {
+	DisplayName: Double Baller
+	Tooltip: "You have a 50% chance to shoot 2 manaspheres instead of one"
 }

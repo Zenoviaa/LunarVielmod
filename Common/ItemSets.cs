@@ -4,6 +4,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Common
 {
+    public class ProjSets : ModSystem
+    {
+        public override void ResizeArrays()
+        {
+            base.ResizeArrays();
+            IsManasphere = ProjectileID.Sets.Factory.CreateBoolSet();
+        }
+        public static bool[] IsManasphere;
+    }
+
     public class ItemSets : ModSystem
     {
         public override void ResizeArrays()

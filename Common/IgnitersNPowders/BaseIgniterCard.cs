@@ -28,6 +28,7 @@ namespace Stellamod.Common.IgnitersNPowders
         public bool multishot;
         public bool reverie;
         public bool lucky;
+        public bool bouncing;
         public List<AbstractIgniterAddon> addons = new List<AbstractIgniterAddon>();
         public override void ResetEffects()
         {
@@ -39,6 +40,7 @@ namespace Stellamod.Common.IgnitersNPowders
             multishot = false;
             reverie = false;
             lucky = false;
+            bouncing = false;
             addons.Clear();
         }
     }

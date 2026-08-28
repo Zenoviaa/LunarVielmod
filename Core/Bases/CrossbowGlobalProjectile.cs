@@ -161,6 +161,22 @@ namespace Stellamod.Core.Bases
                 return;
             }
 
+            //The extra arrows are not labelled as crossbow shots, so it shouldn't infinitely split
+            Player owner = Main.player[projectile.owner];
+            if (owner.GetModPlayer<CrossbowPlayer>().splittingShot)
+            {
+                Vector2 midVelocity = projectile.velocity;
+                for(float f = 0; f < 3; f++)
+                {
+                    float rot = MathHelper.Lerp(-0.5f, 0.5f, f / 3f);
+                    Vector2 shootVelocity = midVelocity.RotatedBy(rot);
+                    ProjFirer firer = ProjFirer.Copy(projectile);
+                    firer.damage /= 3;
+                    firer.velocity = shootVelocity;
+                    firer.New();
+                }
+            }
+
             if (projectile.penetrate <= 1)
             {
                 Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity,

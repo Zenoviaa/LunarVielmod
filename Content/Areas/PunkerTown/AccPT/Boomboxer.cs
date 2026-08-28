@@ -1,11 +1,5 @@
-﻿using Stellamod.Common.RarityRendering;
-using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
-using System;
-using System.Collections.Generic;
+﻿using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -77,7 +71,7 @@ public class BoomboxerPet : ModProjectile
     public override void SetDefaults()
     {
         Projectile.CloneDefaults(ProjectileID.DD2PetGato);
-        AIType = ProjectileID.DD2PetGato; 
+        AIType = ProjectileID.DD2PetGato;
     }
 
     public override bool PreAI()
@@ -102,14 +96,14 @@ public class BoomboxerPet : ModProjectile
         if (BoomboxerGlobalNPC.Cheer)
         {
             _cheerTimer = 60;
-            if(this.OwnedByLocalClient())
+            if (this.OwnedByLocalClient())
                 Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<Kabloowie>(), 1, 1, Projectile.owner, ai1: 1);
             BoomboxerGlobalNPC.Cheer = false;
         }
-        if(_cheerTimer > 0)
+        if (_cheerTimer > 0)
         {
             _cheerTimer--;
-            if(_cheerTimer <= 0)
+            if (_cheerTimer <= 0)
             {
                 SoundStyle cheering = AssetRegistry.Sounds.Collosseum.GintzeCheer;
                 SoundEngine.PlaySound(cheering, Projectile.position);

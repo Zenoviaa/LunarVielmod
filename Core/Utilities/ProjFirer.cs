@@ -54,6 +54,22 @@ public record struct ProjFirer
             ai2 = 0
         };
     }
+    public static ProjFirer Copy(Projectile projectile)
+    {
+        return new ProjFirer
+        {
+            source = projectile.GetSource_FromAI(),
+            type = projectile.type,
+            owner = projectile.owner,
+            position = projectile.position,
+            velocity = projectile.velocity,
+            damage = projectile.damage,
+            knockback = projectile.knockBack,
+            ai0 = projectile.ai[0],
+            ai1 = projectile.ai[1],
+            ai2 = projectile.ai[2]
+        };
+    }
 
     public static ProjFirer From<ProjectileType>(Player player)
         where ProjectileType : ModProjectile
