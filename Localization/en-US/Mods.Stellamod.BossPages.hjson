@@ -5,8 +5,8 @@ BossPage: {
 }
 
 StoneGolemPage: {
-	DisplayName: Who???
-	WhereToFind: In Your Mom
+	DisplayName: Stone Golem
+	WhereToFind: Guarding the exit to the cave in Spring Hills
 	Lore: Birthed by your mom
 }
 
