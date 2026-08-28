@@ -13,6 +13,15 @@ public static class CustomBlendStates
         AlphaBlendFunction = BlendFunction.Max,
         ColorBlendFunction = BlendFunction.Max
     };
+    public static readonly BlendState Max = new BlendState
+    {
+        AlphaSourceBlend = Blend.One,
+        ColorSourceBlend = Blend.One,
+        AlphaDestinationBlend = Blend.One,
+        ColorDestinationBlend = Blend.One,
+        AlphaBlendFunction = BlendFunction.Max,
+        ColorBlendFunction = BlendFunction.Max
+    };
 
     public static readonly BlendState Multiply = new BlendState
     {
