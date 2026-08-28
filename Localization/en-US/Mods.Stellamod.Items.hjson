@@ -12167,3 +12167,8 @@ Fistanizer: {
 	DisplayName: Fistanizer
 	Tooltip: ""
 }
+
+DeadEye: {
+	DisplayName: Dead Eye
+	Tooltip: Your dash becomes nearly instant and deals damage!
+}
