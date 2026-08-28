@@ -1217,3 +1217,8 @@ Steaming: {
 	DisplayName: Steaming
 	Description: I'm MAD!!!!
 }
+
+StoneGolettPetBuff: {
+	DisplayName: Stone Golett
+	Description: How does this thing fly, anyway?
+}

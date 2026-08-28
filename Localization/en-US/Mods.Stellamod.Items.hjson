@@ -12181,3 +12181,8 @@ SteamHatter: {
 		This can stack up to 5 times!
 		'''
 }
+
+StoneGolett: {
+	DisplayName: Stone Golett
+	Tooltip: "Summons a pet Stone Golett"
+}

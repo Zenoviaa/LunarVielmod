@@ -31,6 +31,7 @@ using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Content.Armors.Gothin;
 using Stellamod.Content.Armors.Ravaging;
+using Stellamod.Content.Armors.Stone;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Relics;
@@ -53,7 +54,14 @@ namespace Stellamod.Content.BossPages
             progression = 0;
             flag = DownedBossFlag.StoneGolem;
             StarRanking = 1;
+            AddReward<DragonShard>(1);
+            AddReward<StoneGolett>(1);
+            AddReward<StoniaHat>();
+            AddReward<StoniaChestplate>();
+            AddReward<StoniaBoots>();
+            AddReward<RuinMedal>(1);
             AddMasterModeReward<StoneGolemRelicItem>();
+            AddNoHitReward<DragonShard>();
         }
     }
 
