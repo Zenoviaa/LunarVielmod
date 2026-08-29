@@ -39,10 +39,4 @@ public class RollingStones : ModItem
             levelingPlayer.statModifiers[i] += 2;
         }
     }
-
-    public override void AddRecipes()
-    {
-        base.AddRecipes();
-        this.RegisterBrew<PearlescentScrap, BlankAccessory>();
-    }
 }

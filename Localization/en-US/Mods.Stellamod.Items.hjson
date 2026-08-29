@@ -9994,10 +9994,7 @@ GreenCarpet: {
 
 TravelersBackpack: {
 	DisplayName: Travelers Backpack
-	Tooltip:
-		'''
-		Allows you to carry 30 extra items in your inventory!
-		'''
+	Tooltip: Allows you to carry 30 extra items in your inventory!
 }
 
 WindingInsource: {

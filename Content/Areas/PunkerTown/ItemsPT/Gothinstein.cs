@@ -253,7 +253,7 @@ public class GothinsteinBarrage : ModProjectile
     {
         float GetTrailWidth(float ratio)
         {
-            return MathHelper.SmoothStep(96, 64, ratio) * 0.35f * MathHelper.SmoothStep(1f, 0f, Timer / 32f);
+            return MathHelper.SmoothStep(96, 64, ratio) * 0.25f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Timer / 32f));
         }
         float GetTrailWidth2(float ratio)
         {
@@ -295,8 +295,8 @@ public class GothinsteinBarrage : ModProjectile
             fadeDrawer.rotation = Projectile.oldRot[oldPos.index];
             Main.spriteBatch.Draw(fadeDrawer);
         }
-        
-
+        var spriteDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        Main.spriteBatch.Draw(spriteDrawer);
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         outlineDrawer.VerticalFrame(1, 2);
         if(Style == 0)
