@@ -129,6 +129,10 @@ public class GothinsteinBarrage : ModProjectile
             if (this.OwnedByLocalClient())
             {
                 _start = Owner.Center + Main.rand.NextVector2Circular(45, 45);
+                ProjFirer firer = ProjFirer.From<GothinsteinFlameWave>(Projectile);
+                firer.position = _start;
+                firer.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 16;
+                firer.New();
 
                 if (Style == 1)
                 {
@@ -181,6 +185,21 @@ public class GothinsteinBarrage : ModProjectile
             }
         }
 
+        int denom = 6;
+        if (Main.rand.NextBool(denom))
+        {
+            Vector2 pos = Projectile.Center;
+            pos += Main.rand.NextVector2Circular(16, 16);
+            Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            {
+                position = pos,
+                velocity = -Projectile.velocity * 0.47f,
+                timeLeft = 45,
+                innerColor = color.ToVector4(),
+                outerColor = Color.Red.ToVector4()
+            });
+        }
         if (Timer % 8 == 0)
         {
             var ts = ThickSmokeParticle.Spawn(Projectile.Center, Vector2.Zero);
@@ -284,8 +303,33 @@ public class GothinsteinBarrage : ModProjectile
         TrailDrawer.Draw(Projectile.oldPos, GetTrailColor2, GetTrailWidth2, flameTrailShader, Projectile.Size * 0.5f);
     }
 
+    private void DrawGlow()
+    {
+        Vector2 scale = new Vector2(0.6f, 0.5f);
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        drawer.color = Color.OrangeRed * 0.5f;
+        drawer.color.A = 0;
+        drawer.scale *= 0.6f * scale;
+        drawer.scale.X *= 0.74f;
+        drawer.scale.Y *= 0.8f;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.Gold * 0.5f;
+        drawer.color.A = 0;
+        drawer.scale *= 0.84f;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White;
+        drawer.color.A = 0;
+        drawer.scale *= 0.84f;
+        drawer.rotation = Projectile.rotation;
+        Main.spriteBatch.Draw(drawer);
+    }
     public override bool PreDraw(ref Color lightColor)
     {
+        DrawGlow();
         SpritebatchDrawer fadeDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         float fadeOut = MathHelper.SmoothStep(0f, 1f, Projectile.timeLeft / 12f);
         foreach(OldPosition oldPos in Projectile.IterateOldPosBackwards())
@@ -314,6 +358,76 @@ public class GothinsteinBarrage : ModProjectile
     }
 }
 
+public class GothinsteinFlameWave : ModProjectile, IDrawToRenderTarget
+{
+    private ref float Timer => ref Projectile.ai[0];
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        ProjectileID.Sets.TrailCacheLength[Type] = 16;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = 80;
+        Projectile.width = 100;
+        Projectile.height = 100;
+        Projectile.hostile = false;
+        Projectile.friendly = true;
+        Projectile.ignoreWater = true;
+        Projectile.penetrate = -1;
+        Projectile.extraUpdates = 2;
+
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        Projectile.velocity *= 0.97f;
+        Projectile.rotation = Projectile.velocity.ToRotation();
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        return false;
+    }
+    private void DrawFlameBow(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
+        flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
+        flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
+        flamebowShader.InsideColor = Color.Yellow;
+        flamebowShader.BloomColor = Color.Red;
+        flamebowShader.DissipateThreshold =0f;
+        flamebowShader.DistortionStrength = 0.05f;
+        float alpha = EasingFunction.InOutSine(Projectile.timeLeft / 80f);
+        using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { effect = flamebowShader.Effect }))
+        {
+            SpritebatchDrawer bowDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+            bowDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 18) * alpha * 4;
+            bowDrawer.color.A = 0;
+            bowDrawer.rotation = Projectile.velocity.ToRotation();
+            bowDrawer.CenterOrigin();
+            bowDrawer.scale *= 0.75f;
+            spriteBatch.Draw(bowDrawer);
+  
+            bowDrawer.color = Color.DarkRed * ExtraMath.Osc(0.8f, 1f, speed: 12) * 0.35f * alpha;
+            bowDrawer.color.A = 0;
+            bowDrawer.scale *= 1.2f;
+
+            spriteBatch.Draw(bowDrawer);
+        }
+    }
+    public void DrawToRenderTargets()
+    {
+        PixelationManager.QueueSpritebatchDrawAction(DrawFlameBow);
+    }
+}
 
 public class GothinsteinImpact : ModProjectile,
     IDrawToRenderTarget

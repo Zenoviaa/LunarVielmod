@@ -429,10 +429,12 @@ public class EreshkigalsFinisherLaser : ModProjectile,
         Projectile.height = 1;
         Projectile.timeLeft = (int)Time;
         Projectile.friendly = true;
+        Projectile.penetrate = -1;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
         Projectile.ignoreWater = true;
         Projectile.light = 0.3f;
+        Projectile.tileCollide = false;
 
     }
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -505,7 +507,6 @@ public class EreshkigalsFinisherLaser : ModProjectile,
                 }
             }
         }
-
 
         FXUtil.ApplyContrast(MathHelper.Lerp(0.6f, 0f, EasingFunction.InOutExpo(Timer / Time)));
     }

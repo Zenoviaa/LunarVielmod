@@ -25,55 +25,6 @@ public class SilkGlobalTile : GlobalTile
     {
         base.RandomUpdate(i, j, type);
 
-        if(i <= 2 || i > Main.maxTilesX - 2 || j <= 2 || j >= Main.maxTilesY - 2)
-        {
-            return;
-        }
-
-        if (type == ModContent.TileType<SilkTile>() && WorldGen.TileIsExposedToAir(i, j))
-        {
-            if (Main.rand.NextBool(128))
-            {
-                WorldGen.PlaceTile(i, j, ModContent.TileType<MiracleSilkTile>(), mute: false, forced: true);
-                if(Main.netMode != NetmodeID.SinglePlayer)
-                {
-                    NetMessage.SendTileSquare(-1, i, j, TileChangeType.None);
-                }
-            }
-        }
-        if (type == TileID.Granite)
-        {
-            if (Main.rand.NextBool(2048))
-            {
-                WorldGen.PlaceTile(i, j, ModContent.TileType<SilkTile>(), mute: false, forced: true);
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                {
-                    NetMessage.SendTileSquare(-1, i, j, TileChangeType.None);
-                }
-            }
-
-            bool checkAgain = false;
-            for(int x = -1; x <= 1; x++)
-            {
-                for(int y = -1; y <= 1; y++)
-                {
-                    Tile tile = Main.tile[i + x, j + y];
-                    if(tile.TileType == ModContent.TileType<SilkTile>())
-                    {
-                        checkAgain = true;
-                        break;
-                    }
-                }
-            }
-            if (Main.rand.NextBool(128) && checkAgain)
-            {
-                WorldGen.PlaceTile(i, j, ModContent.TileType<SilkTile>(), mute: false, forced: true);
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                {
-                    NetMessage.SendTileSquare(-1, i, j, TileChangeType.None);
-                }
-            }
-        }
     }
 }
 

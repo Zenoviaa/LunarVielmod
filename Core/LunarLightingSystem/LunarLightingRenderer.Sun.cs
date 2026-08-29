@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Shaders;
+using Stellamod.Content.Biomes;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -46,8 +47,19 @@ public partial class LunarLightingRenderer
         Color interpolatedColor = DrawUtilities.InterpolateColorArray(dayProgress, sunColors);
         if (!Main.dayTime)
             interpolatedColor = sunColors[0];
-        if (!Main.LocalPlayer.ZoneOverworldHeight && !Main.LocalPlayer.ZoneSkyHeight)
+        if (Main.LocalPlayer.ZoneRockLayerHeight && !Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMistyDungeonAnywhere)
+        {
             interpolatedColor = SmoothedBackLightColor;
+        }
+        else
+        {
+         //   Main.NewText("Dark");
+        }
+        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell)
+        {
+            interpolatedColor = SmoothedBackLightColor;
+        }
+           
         if (ModContent.GetInstance<DomainExpansionManager>().hoveringPlatform)
             interpolatedColor = Color.White;
         return interpolatedColor;
