@@ -82,7 +82,7 @@ public class FireTornado : ModProjectile,
         fireTornad.GradientTopColor = new Color(224, 187, 122);
         fireTornad.GradientBottomColor = new Color(59, 19, 13);
         fireTornad.FlameyTexture  = AssetManager.Noise.FlamethrowerNoise.Value;
-        fireTornad.NoiseTexture = AssetManager.Noise.Whirly.Value;
+        fireTornad.NoiseTexture = AssetReferences.Assets.Noise.Whirly.Asset.Value;
 
         sb.End();
         sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, 

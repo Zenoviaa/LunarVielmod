@@ -55,7 +55,7 @@ public partial class LunarLightingRenderer
         {
          //   Main.NewText("Dark");
         }
-        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell)
+        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAbyss)
         {
             interpolatedColor = SmoothedBackLightColor;
         }

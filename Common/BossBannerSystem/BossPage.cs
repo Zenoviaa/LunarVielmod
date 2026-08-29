@@ -8,6 +8,7 @@ using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -175,7 +176,7 @@ namespace Stellamod.Common.BossBannerSystem
         public void AddReward<T>(int stack = 1) where T : ModItem
         {
             Item item = ModContent.GetInstance<T>().Item;
-            ItemSets.SpecialRarity[item.type] = 1;
+            ItemID.Sets.SpecialRarity[item.type] = 1;
             Item clone = item.Clone();
             clone.stack=stack;
             Rewards.Add(clone);
@@ -192,7 +193,7 @@ namespace Stellamod.Common.BossBannerSystem
         public void AddNoHitReward<T>(int stack = 1) where T : ModItem
         {
             Item item = ModContent.GetInstance<T>().Item;
-            ItemSets.SpecialRarity[item.type] = 2;
+            ItemID.Sets.SpecialRarity[item.type] = 2;
             Item clone = item.Clone();
             clone.stack = stack;
             NoHitRewards.Add(clone);

@@ -2,6 +2,7 @@
 using Stellamod.Effects.Generic;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 using static System.Net.Mime.MediaTypeNames;
@@ -95,7 +96,7 @@ public class BossRarityGlobalItem : GlobalItem
     public override void SetDefaults(Item entity)
     {
         base.SetDefaults(entity);
-        int specialRarityType = ItemSets.SpecialRarity[entity.type];
+        int specialRarityType = ItemID.Sets.SpecialRarity[entity.type];
         if (specialRarityType <= 0)
             return;
         switch (specialRarityType)

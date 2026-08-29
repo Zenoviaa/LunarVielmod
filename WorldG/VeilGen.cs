@@ -420,7 +420,7 @@ public class VeilGenTester : ModItem
                 for (int y = abyssHigh; y < abyssLow; y++)
                 {
                     float noise = fnl.GetNoise(x, y);
-                    if (noise > 0.65f)
+                    if (noise > 0.85f)
                     {
                         Tile tile = Main.tile[x, y];
                         tile.TileType = pool[i];

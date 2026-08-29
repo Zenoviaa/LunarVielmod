@@ -28,6 +28,10 @@ namespace Stellamod.Common
 
     public static class ItemSetsExtensions
     {
+        extension(ItemID.Sets)
+        {
+            public static int[] SpecialRarity => ItemSets.SpecialRarity;
+        }
         public static void AddToSirestiasShop(this Item item)
         {
             ItemSets.IsSoldBySirestias[item.type] = true;
