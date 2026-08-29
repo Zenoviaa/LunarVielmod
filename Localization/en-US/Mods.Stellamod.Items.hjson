@@ -12253,3 +12253,13 @@ DoubleBaller: {
 	DisplayName: Double Baller
 	Tooltip: You have a 50% chance to shoot 2 manaspheres instead of one
 }
+
+ScriptofTheMoon: {
+	DisplayName: Script of The Moon
+	Tooltip: Minion damage increased by 25%
+}
+
+ScriptofTheSun: {
+	DisplayName: Script of The Sun
+	Tooltip: Guardian damage increased by 30%
+}

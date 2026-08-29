@@ -442,7 +442,7 @@ public class GothinsteinFlameWave : ModProjectile, IDrawToRenderTarget
         flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
         flamebowShader.InsideColor = Color.Yellow;
         flamebowShader.BloomColor = Color.Red;
-        flamebowShader.DissipateThreshold = MathHelper.Lerp(1f, 0f, dissipate);
+        flamebowShader.DissipateThreshold = 0f;
         flamebowShader.DistortionStrength = 0.05f;
         float alpha = EasingFunction.InOutSine(Projectile.timeLeft / 80f);
         using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { effect = flamebowShader.Effect }))
