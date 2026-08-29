@@ -25,7 +25,9 @@ public class Steaming : ModBuff
             Vector2 spawnVelocity = Main.rand.NextVector2Circular(2, 2);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-            Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
+            spawnScale *= 0.55f;
+            var p = Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray * 0.4f, Scale: spawnScale);
+            p.Scale *= 0.5f;
         }
 
         if (Main.rand.NextBool(denom2))

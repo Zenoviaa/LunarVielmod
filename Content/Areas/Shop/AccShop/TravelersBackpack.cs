@@ -19,13 +19,7 @@ namespace Stellamod.Content.Areas.Shop.AccShop
         {
             base.UpdateAccessory(player, hideVisual);
             ArmorStatsPlayer statsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
-            statsPlayer.inventorySlots += 20;
-        }
-        public override void UpdateVanity(Player player)
-        {
-            base.UpdateVanity(player);
-            ArmorStatsPlayer statsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
-            statsPlayer.inventorySlots += 20;
+            statsPlayer.inventorySlots += 30;
         }
     }
 }

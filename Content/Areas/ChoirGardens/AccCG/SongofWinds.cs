@@ -17,19 +17,14 @@ public class SongofWinds : ModItem
         base.UpdateAccessory(player, hideVisual);
         //Get num of empty inventory slots
         float count = 0;
+        /*
         for (int i = 0; i < player.inventory.Length; i++)
         {
             if (player.inventory[i].IsAir)
                 count++;
-        }
+        }*/
 
         BackpackPlayer bp = player.GetModPlayer<BackpackPlayer>();
-        for (int i = 0; i < bp.MaxCapacity; i++)
-        {
-            if (bp.BackpackItems[i].IsAir)
-                count++;
-        }
-
-        player.GetDamage(DamageClass.Generic) += count * 0.025f;
+        bp.hasDamageBonus = true;
     }
 }

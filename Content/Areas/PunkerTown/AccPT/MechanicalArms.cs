@@ -47,8 +47,6 @@ public class MechanicalArms : ModItem
     {
         base.SetDefaults();
         Item.DefaultToAccessory();
-        Item.damage = 50;
-        Item.DamageType = DamageClass.Generic;
     }
 
     public override void UpdateAccessory(Player player, bool hideVisual)
@@ -124,7 +122,7 @@ public class MechanicalArmProj : ModProjectile
         if (Owner.controlUseItem)
         {
             Timer++;
-            if(Timer >= 30)
+            if(Timer >= 18)
             {
                 SoundStyle s;
                 if (Main.rand.NextBool(2))
@@ -140,13 +138,8 @@ public class MechanicalArmProj : ModProjectile
                 Timer = Main.rand.Next(-15, 0);
                 if(Main.myPlayer == Projectile.owner)
                 {
-                    StatModifier mod = Owner.GetDamage(DamageClass.Generic);
-                    float d = 50;
-                    float newDamage = mod.ApplyTo(d);
-
                     ProjFirer firer = ProjFirer.From<TerrorMinigunShot>(Projectile);
-                    firer.position = arm2EndEffector;
-                    firer.damage = (int)newDamage;
+                    firer.damage = Owner.HeldItem.damage / 4;
                     firer.ai2 = 1;
                     firer.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 14;
                     firer.New();

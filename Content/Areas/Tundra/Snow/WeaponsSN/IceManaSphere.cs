@@ -336,7 +336,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
                 sp.Scale *= 0.25f;
             }
 
-            if(Timer >= 60)
+            if(Timer >= 15)
             {
                 Projectile.tileCollide = true;
             }

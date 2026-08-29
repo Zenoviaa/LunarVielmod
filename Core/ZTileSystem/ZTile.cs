@@ -66,6 +66,7 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         this.GetLocalization(nameof(DisplayName), () => RegexHelper.SplitByCapital(Name));
     }
 
+
     public void DrawIcon(SpriteBatch spriteBatch, Vector2 iconCenterPos, float maxSize)
     {
         _tileTextureAsset  ??= ModContent.Request<Texture2D>(Texture);

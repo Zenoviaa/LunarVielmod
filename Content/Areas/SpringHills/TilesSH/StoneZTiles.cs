@@ -1,4 +1,7 @@
-﻿using Stellamod.Core.ZTileSystem;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Core.ZTileSystem;
+using Terraria;
+using Terraria.ID;
 
 namespace Stellamod.Content.Areas.SpringHills.TilesSH;
 
@@ -90,9 +93,14 @@ public class StoneFurnace : ZTile
         drawOrigin = TileDrawOrigin.BottomUp;
     }
 
-    public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    public override void Update(Vector2 worldPosition)
     {
-        base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
+        base.Update(worldPosition);
+        Lighting.AddLight(worldPosition + new Vector2(0, -16), Color.OrangeRed.ToVector3() * 4);
+        if (Main.GameUpdateCount % 2 == 0)
+        {
+            Particles.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = worldPosition, timeleft = 70 });
 
+        }
     }
 }

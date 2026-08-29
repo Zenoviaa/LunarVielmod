@@ -17,6 +17,7 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Chat;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Stellamod.Common.BackpackSystem
 {
@@ -304,12 +305,13 @@ namespace Stellamod.Common.BackpackSystem
         }
 
         public bool hasBackpack;
+        public bool hasDamageBonus;
         public override void ResetEffects()
         {
             base.ResetEffects();
             MaxCapacity = 0;// + Player.GetModPlayer<ArmorStatsPlayer>().inventorySlots;
             hasBackpack = false;
-
+            hasDamageBonus = false;
         }
         public override void PostUpdateMiscEffects()
         {
@@ -319,6 +321,11 @@ namespace Stellamod.Common.BackpackSystem
             if (statsPlayer.inventorySlots > 0)
             {
                 hasBackpack = true;
+            }
+            if (hasDamageBonus)
+            {
+                Player.GetDamage(DamageClass.Generic) += MaxCapacity * 0.05f;
+
             }
         }
 

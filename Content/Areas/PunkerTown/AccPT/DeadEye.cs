@@ -98,7 +98,7 @@ public class DeadEye : AbstractDashItem
             {
                 ProjFirer proj = ProjFirer.From<DeadEyeProj>(player);
                 var bonus = player.GetTotalDamage(DamageClass.Generic);
-                float damage = Item.damage;
+                float damage = player.HeldItem.damage;
                 float newDamage = bonus.ApplyTo(damage);
                 proj.damage = (int)newDamage;
                 proj.New();

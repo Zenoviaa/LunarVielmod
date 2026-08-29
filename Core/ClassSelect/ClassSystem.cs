@@ -178,8 +178,9 @@ public class ClassVideo : UIPanel
             lastClass = ClassSystem.selectedClass;
             initialized = false;
         }
-        if (!initialized)
+        if (!initialized || ClassSystem.refresh)
         {
+            ClassSystem.refresh = false;
             string path = ModContent.GetInstance<ClassSystem>().GetPreviewPath();
             var video = ModContent.Request<Video>(path, AssetRequestMode.ImmediateLoad).Value;
             
@@ -444,6 +445,7 @@ public class ClassSystem : ModSystem
     private UserInterface _userInterface;
     public int selectedClass;
     public ClassUIState classUIState;
+    public bool refresh;
     public override void Load()
     {
         base.Load();
@@ -472,6 +474,7 @@ public class ClassSystem : ModSystem
         _originalMethod = new OrigCharacterMethod(orig, self, evt, listeningElement);
         Main.menuMode = 888;
         Main.MenuUI.SetState(classUIState);
+        ModContent.GetInstance<ClassSystem>().refresh = true;
         OpenUI();
 
         // _openNewCharacterFunction = orig;

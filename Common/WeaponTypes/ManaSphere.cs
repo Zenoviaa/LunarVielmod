@@ -81,7 +81,7 @@ public class ManaSphereGlobalItem : GlobalItem
             {
                 if (Main.rand.NextBool(2))
                 {
-                    Projectile.NewProjectile(player.GetSource_FromThis(), point.Center + Main.rand.NextVector2Circular(16, 16), velocity.RotatedByRandom(0.2f), type, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(player.GetSource_FromThis(), point.Center + Main.rand.NextVector2Circular(32, 32), velocity.RotatedByRandom(0.6f), type, damage, knockback, player.whoAmI);
                 }
             }
             return false;
