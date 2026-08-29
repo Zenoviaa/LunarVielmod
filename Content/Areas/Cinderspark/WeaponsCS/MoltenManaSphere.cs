@@ -416,7 +416,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             }
 
             SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.White, Scale: 1f);
-            sp.initialColor = Color.White * 0.14f;
+            sp.initialColor = Color.Lerp(Color.White, Color.Black, 0.75f);
         }
     }
 

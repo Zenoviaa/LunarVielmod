@@ -96,11 +96,12 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
                 {
                     DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
                     spawnParams.outerColor = Color.SkyBlue;
-                    DustParticle.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(45)) * 5, spawnParams);
+                    var dp = DustParticle.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(45)) * 5, spawnParams);
+                    dp.dampening = 0.1f;
                 }
 
 
-                FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+                FXUtil.ShakeCamera(Projectile.Center, 1024, 2);
                 ShakeScreenPosition.Shake = 2;
 
                 for (float f = 0; f < 4f; f++)
@@ -134,7 +135,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
                                 Projectile.Center,
                                 -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
                         }
-                        FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
+                        FXUtil.ShakeCamera(Projectile.Center, 1024, 6);
                         _drawLightning = true;
                         var p3 = FXUtil.GlowCircleBoom(Projectile.Center,
                            innerColor: Color.Gray,
@@ -813,7 +814,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             }
 
             SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.White, Scale: 1f);
-            sp.initialColor = Color.White * 0.14f;
+            sp.initialColor = Color.Lerp(Color.White, Color.Black, 0.35f);
         }
     }
 
