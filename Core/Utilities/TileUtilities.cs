@@ -4,6 +4,18 @@ namespace Stellamod.Core.Utilities;
 
 public static class TileUtilities
 {
+    public static void UpdateMap(Rectangle tileBounds, byte alpha)
+    {
+        for (int i = tileBounds.Left; i < tileBounds.Right; i++)
+        {
+            for (int j = tileBounds.Top; j < tileBounds.Bottom; j++)
+            {
+                if (Main.sectionManager.TileLoaded(i, j))
+                    Main.Map.Update(i, j, alpha);
+            }
+        }
+        Main.refreshMap = true;
+    }
     /// <summary>
     /// Attempts to find the center of a closed spaced by averaging the nearest tiles on the left, right, top and bottom. Not guaranteed to work with complex shapes
     /// </summary>

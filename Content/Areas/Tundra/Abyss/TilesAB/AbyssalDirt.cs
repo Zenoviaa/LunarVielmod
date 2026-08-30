@@ -20,7 +20,7 @@ public class AbyssalDirt : ModTile
     {
         Main.tileSolid[Type] = true;
         Main.tileMerge[Type][Type] = true;
-        Main.tileBlockLight[Type] = false;
+        Main.tileBlockLight[Type] = true;
         Main.tileLargeFrames[Type] = 2;
         Main.tileMerge[TileID.IceBlock][Type] = true;
         Main.tileMerge[TileID.SnowBlock][Type] = true;

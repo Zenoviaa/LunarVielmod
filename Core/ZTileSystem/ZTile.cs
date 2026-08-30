@@ -17,6 +17,18 @@ public struct ZTileDrawParams
     public Color lightColor;
 }
 
+
+public struct ZTileDrawData
+{
+    public Rectangle frame;
+    public Color drawColor;
+    public Vector2 drawPosition;
+    public Vector2 drawOrigin;
+    public Vector2 drawScale;
+    public SpriteEffects spriteEffects;
+    public float drawRotation;
+}
+
 /// <summary>
 /// Base class for a purely decorative tile asset
 /// </summary>
@@ -42,6 +54,7 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
             return LangText.ZTile(this, "DisplayName");
         }
     }
+    
 
     protected override void Register()
     {
@@ -51,12 +64,13 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
     public override void Unload()
     {
         base.Unload();
-        _tileTextureAsset = null;
-        _outlineTextureAsset = null;
+        _tileTextureAsset = null!;
+        _outlineTextureAsset = null!;
     }
     public sealed override void SetupContent()
     {
         base.SetupContent();
+        type = ZTileLoader.RegisterZTileType();
         SetStaticDefaults();
     }
 
@@ -181,8 +195,25 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         if(doDraw)
             spriteBatch.Draw(_tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, drawParams.tileData.scale, spriteEffects, 0);
         PostDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
+        
+        PostDraw(spriteBatch, new ZTileDrawData
+        {
+            spriteEffects = spriteEffects,
+            drawColor = drawColor,
+            drawOrigin = drawOrigin,
+            drawPosition = drawPosition + drawOffset,
+            frame = frame,
+            drawScale = Vector2.One * drawParams.tileData.scale,
+            drawRotation = drawRotation
+        }, drawParams);
     }
 
+
+
+    public virtual void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+
+    }
     public virtual void DrawOutline(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         _outlineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Outline");

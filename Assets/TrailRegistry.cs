@@ -5,6 +5,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Assets
 {
+    /// <summary>
+    /// Deprecated use TML build asset refs instead
+    /// </summary>
     static class TrailRegistry
     {
         private static string BasePath => "Stellamod/Assets/NoiseTextures/";

@@ -86,9 +86,17 @@ public class PassWriter
     }
 }
 
-
+public static class SavedGenerationParameters
+{
+    public static int SnowLeft;
+    public static int SnowRight;
+    public static int SnowTop;
+    public static int SnowBottom;
+    public static double RockLayerHigh;
+}
 public partial class StellaWorld : ModSystem
 {
+
     public Point RoyalCapitalLocation { get; private set; }
     public Point VeizalHillStartLcoation { get; private set; }
     public Point VeizalHillEndLocation { get; private set; }
@@ -1082,8 +1090,11 @@ public partial class StellaWorld : ModSystem
             while (WorldGen.InWorld(x, y) && !WorldGen.SolidTile(x, y))
             {
                 if (!Main.tileSolid[Main.tile[x, y].TileType])
-                    WorldGen.KillTile(x, y);
-                WorldGen.PlaceTile(x, y, TileID.Dirt);
+                {
+                    Tile tile = Main.tile[x, y];
+                    tile.ClearTile();
+                }
+                VeilGen.QuickPlaceTile(x, y, TileID.Dirt);
                 y++;
             }
         }
@@ -1746,7 +1757,7 @@ public partial class StellaWorld : ModSystem
 
         //Set snow biome location
 
-        GenVars.snowOriginLeft = WitchTownLocation.X + 4400;
+        GenVars.snowOriginLeft = WitchTownLocation.X + 4810;
         GenVars.snowOriginRight = GenVars.snowOriginLeft + 1200;
 
         //Set dungeon and jungle sides
@@ -3999,7 +4010,7 @@ public partial class StellaWorld : ModSystem
             float height = (int)(GetFableHillHeight(ratio) * hillHeight);
             for (int y = 0; y < height; y++)
             {
-                WorldGen.PlaceTile(x, startHillTile.Y - y, TileID.Dirt);
+                VeilGen.QuickPlaceTile(x, startHillTile.Y - y, TileID.Dirt);
             }
         }
 
@@ -4040,8 +4051,7 @@ public partial class StellaWorld : ModSystem
             float height = (int)(GetFableHillHeight(ratio) * hillHeight);
             for (int y = 0; y < height; y++)
             {
-                WorldGen.PlaceTile(x, startHillTile.Y - y, TileID.Dirt);
-                //  WorldGen.PlaceTile(x, y, TileID.Dirt);
+                VeilGen.QuickPlaceTile(x, startHillTile.Y - y, TileID.Dirt);
             }
         }
         //  WorldGen
@@ -4077,7 +4087,7 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
+                VeilGen.QuickPlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
 
@@ -4113,78 +4123,11 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
-                // WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
+                VeilGen.QuickPlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
 
         FableFarEdgeLocation = fableFalloffEnd;
-
-        /*
-Point startCaveTile = new Point();
-startCaveTile.X = (int)MathHelper.Lerp(FableHillStartLocation.X, FableHillEndLocation.X, 0.2f);
-startCaveTile.Y = (int)(Main.worldSurface - 400);
-
-Point endCaveTile = new Point();
-endCaveTile.X = (int)MathHelper.Lerp(FableHillStartLocation.X, FableHillEndLocation.X, 0.4f);
-endCaveTile.Y = (int)(Main.worldSurface - 400);
-
-startCaveTile = FallToSolidTile(startCaveTile.X, startCaveTile.Y);
-endCaveTile = FallToSolidTile(endCaveTile.X, endCaveTile.Y);
-
-
-width = endCaveTile.X - startCaveTile.X;
-float maxCaveDepth = 66;
-var genRand = WorldGen.genRand;
-Vector2 caveStrength = new Vector2(15, 20);
-
-for (int x = startCaveTile.X; x < endCaveTile.X; x++)
-{
-    float ratio = (x - startCaveTile.X) / width;
-    float bump = EasingFunction.QuadraticBump(ratio);
-    int y = (int)MathHelper.Lerp(startCaveTile.Y, endCaveTile.Y, ratio);
-    y += (int)MathHelper.Lerp(0, maxCaveDepth, bump);
-
-    WorldGen.TileRunner(x, y,
-        genRand.NextFloat(caveStrength.X, caveStrength.Y),
-        genRand.Next(12, 30), -1);
-}
-
-
-//Place Telegrim
-//Place DELGRIM
-Point delgrimPoint = new Point();
-delgrimPoint.X = (int)MathHelper.Lerp(startCaveTile.X, endCaveTile.X, 0.5f);
-delgrimPoint.Y = (int)MathHelper.Lerp(startCaveTile.Y, endCaveTile.Y, 0.5f) + (int)MathHelper.Lerp(0, maxCaveDepth, EasingFunction.QuadraticBump(0.5f)); ;
-
-string structure = "Struct/Underground/DelgrimShop";
-Point pointToPlaceDelgrimShop = delgrimPoint;
-while (!Structurizer.TryPlaceAndProtectStructure(pointToPlaceDelgrimShop, structure))
-{
-    pointToPlaceDelgrimShop += genRand.NextVector2Circular(4, 4).ToPoint();
-}
-
-Structurizer.ReadStruct(pointToPlaceDelgrimShop, structure);
-Rectangle structureRectangle = Structurizer.ReadRectangle(structure);
-structureRectangle.Location = pointToPlaceDelgrimShop;
-for (int beamX = structureRectangle.Location.X;
-    beamX < structureRectangle.Location.X + structureRectangle.Width; beamX += 4)
-{
-    int beamY = structureRectangle.Location.Y;
-    int solidCount = 0;
-    while (solidCount < 5)
-    {
-        if (!WorldGen.SolidTile(beamX, beamY))
-        {
-            WorldGen.PlaceTile(beamX, beamY, TileID.WoodenBeam);
-        }
-        else
-        {
-            solidCount++;
-        }
-        beamY++;
-    }
-}*/
     }
 
 
@@ -7460,6 +7403,12 @@ for (int beamX = structureRectangle.Location.X;
     public Point AbyssCenter;
     private void WorldGenAbysm(GenerationProgress progress, GameConfiguration configuration)
     {
+        //Save the snow attributes
+        SavedGenerationParameters.SnowLeft = GenVars.snowOriginLeft;
+        SavedGenerationParameters.SnowRight = GenVars.snowOriginRight;
+        SavedGenerationParameters.SnowBottom = GenVars.snowBottom;
+        SavedGenerationParameters.SnowTop = GenVars.snowTop;
+        SavedGenerationParameters.RockLayerHigh = GenVars.rockLayerHigh;
         progress.Message = "Shifting Shadows deep in the Ice";
         //Calculate center of the abyss
         AbyssCenter = new Point();
@@ -7512,52 +7461,6 @@ for (int beamX = structureRectangle.Location.X;
                 WorldGen.OreRunner(p.X, p.Y, strength, steps, tileType);
             }
         }
-
-        /*
-        //Create long caves
-        void CreateCave(Vector2 originPoint, in Vector2 initialVelocity)
-        {
-            //The way this cave style will work, is it will start form the origin point
-            //and it will go until it hits the edge of the biome or if it['s traveled enoiugh steps
-            //After each segment it generates, it randomizes the velocity again in 30 degree angles from the starting direction
-            //Which should create nice little lines/caverns
-            Vector2 cavernPoint = originPoint;
-            int failsafe = 0;
-            while(cavernPoint.X < GenVars.snowOriginRight && failsafe < 300)
-            {
-                int remainingSteps = 32;
-                Vector2 velocity = initialVelocity.RotatedBy(genRand.NextFloat(-MathHelper.PiOver4 * 0.5f, MathHelper.PiOver4 * 0.5f));
-                while (remainingSteps > 0)
-                {
-                    cavernPoint += velocity * 12f;
-                    if(cavernPoint.X < GenVars.snowOriginRight)
-                    {
-
-                        //Cut away at the terrain
-                        WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
-                            strength: 24,
-                            genRand.Next(7, 25), -1);
-                    }
-
-                    remainingSteps--;
-                }
-                failsafe++;
-            }
-        }
-
-        //Sprinkle several long caves throughout the biome
-        int numCaves = 32;
-        for(int n = 0; n < numCaves; n++)
-        {
-            Vector2 p = new Vector2();
-            p.X = genRand.Next(GenVars.snowOriginLeft - 25, GenVars.snowOriginLeft + 25);
-            p.Y = genRand.Next(abyssHigh, abyssLow);
-
-            //All caves should be moving to the right
-            Vector2 initialDirection = Vector2.UnitX;
-            initialDirection = initialDirection.RotatedBy(genRand.NextFloat(-0.2f, 0.2f));
-            CreateCave(p, initialDirection);
-        }*/
 
 
         //Let's try an implementation with fast noise lite
@@ -8383,7 +8286,7 @@ for (int beamX = structureRectangle.Location.X;
         num *= 2;
         for (int k = 0; k < (int)(num); k++)
         {
-            int x = WorldGen.genRand.Next(GenVars.snowOriginLeft - 600, GenVars.snowOriginRight + 600);
+            int x = WorldGen.genRand.Next(GenVars.snowOriginLeft, GenVars.snowOriginRight);
             int y = WorldGen.genRand.Next((int)GenVars.rockLayerHigh - 500, Main.maxTilesY - 400);
 
             //Only spawn on ice/snow
@@ -9234,6 +9137,11 @@ for (int beamX = structureRectangle.Location.X;
         tag["DarkspaceEnd"] = DarkspaceEnd;
         tag["HeatedDepthsStart"] = HeatedDepthsStart;
         tag["HeatedDepthsEnd"] = HeatedDepthsEnd;
+        tag["SnowLeft"] = SavedGenerationParameters.SnowLeft;
+        tag["SnowRight"] = SavedGenerationParameters.SnowRight;
+        tag["SnowTop"] = SavedGenerationParameters.SnowTop;
+        tag["SnowBottom"] = SavedGenerationParameters.SnowBottom;
+        tag["RockLayerHigh"] = SavedGenerationParameters.RockLayerHigh;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -9247,5 +9155,10 @@ for (int beamX = structureRectangle.Location.X;
         DarkspaceEnd = tag.Get<int>("DarkspaceEnd");
         HeatedDepthsStart = tag.Get<int>("HeatedDepthsStart");
         HeatedDepthsEnd = tag.Get<int>("HeatedDepthsEnd");
+        SavedGenerationParameters.SnowLeft = tag.Get<int>("SnowLeft");
+        SavedGenerationParameters.SnowRight = tag.Get<int>("SnowRight");
+        SavedGenerationParameters.SnowTop = tag.Get<int>("SnowTop");
+        SavedGenerationParameters.SnowBottom = tag.Get<int>("SnowBottom");
+        SavedGenerationParameters.RockLayerHigh = tag.Get<double>("RockLayerHigh");
     }
 }

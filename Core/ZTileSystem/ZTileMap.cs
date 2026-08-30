@@ -29,6 +29,11 @@ public enum Rotation : byte
     Degrees_270,
 }
 
+//So to fix this
+//We drop the dictionary
+//and instead straight up store a List of every ZTile in the world?
+
+
 /// <summary>
 /// Data structure for the decorative tile
 /// </summary>
@@ -203,6 +208,7 @@ public class TileScene : IEnumerable
     {
         //At this point we can assume that everything in this scene is either on screen or very close to being on screen
         //So we should render everything within the scene
+        //why are we sorting every frame
         var sortedDict = _tiles.OrderBy(x => x.Key.z);
         foreach (var kvp in sortedDict)
         {
@@ -767,11 +773,12 @@ public class ZTileMap : ModSystem
 
     private void DrawInFrontOfWalls()
     {
+        Point chunk = GetCameraChunk();
+        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.InFrontOfWalls);
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-        Point chunk = GetCameraChunk();
-        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.InFrontOfWalls);
+
         renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
         if (IsHoldingDecorationBuilder)
             renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
@@ -779,8 +786,8 @@ public class ZTileMap : ModSystem
 
     private void DrawInFrontOfPlayer()
     {
-        SpriteBatch spriteBatch = Main.spriteBatch;
 
+        SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
         Point chunk = GetCameraChunk();
         ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.Midground);
@@ -788,7 +795,6 @@ public class ZTileMap : ModSystem
         if (IsHoldingDecorationBuilder)
             renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
         spriteBatch.End();
-
     }
     private void DrawForeground()
     {
@@ -843,7 +849,18 @@ public class ZTileMap : ModSystem
 
     }
 
-    public void KillAnyTile(Point tileCoordinates)
+    /// <summary>
+    /// Kills any tile at any z layer at these tile coordinates
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    public void KillAnyTile(in int x, in int y) => KillAnyTile(new Point(x, y));
+
+    /// <summary>
+    /// Kills any tile at any z layer at this position
+    /// </summary>
+    /// <param name="tileCoordinates"></param>
+    public void KillAnyTile(in Point tileCoordinates)
     {
         foreach (var layer in _renderLayers)
         {

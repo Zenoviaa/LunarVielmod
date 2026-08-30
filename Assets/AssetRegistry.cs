@@ -2,6 +2,9 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 namespace Stellamod;
 
+/// <summary>
+/// Deprecated, use TMLBUILD Asset Refs instead
+/// </summary>
 public class AssetRegistry : ModSystem
 {
 public static class Biomes

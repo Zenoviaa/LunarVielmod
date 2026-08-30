@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.ConsoleMenu;
-
 public class LavaPlatformCommand : ConsoleCommand
 {
     public override string GetCommandName()
