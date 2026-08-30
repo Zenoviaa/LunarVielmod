@@ -1757,7 +1757,7 @@ public partial class StellaWorld : ModSystem
 
         //Set snow biome location
 
-        GenVars.snowOriginLeft = WitchTownLocation.X + 4810;
+        GenVars.snowOriginLeft = WitchTownLocation.X + 4760;
         GenVars.snowOriginRight = GenVars.snowOriginLeft + 1200;
 
         //Set dungeon and jungle sides

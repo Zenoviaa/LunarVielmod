@@ -93,9 +93,10 @@ public class StoneFurnace : ZTile
         drawOrigin = TileDrawOrigin.BottomUp;
     }
 
-    public override void Update(Vector2 worldPosition)
+    public override void Update(int i, int j)
     {
-        base.Update(worldPosition);
+        base.Update(i, j);
+        Vector2 worldPosition = new Vector2(i, j).ToWorldCoordinates();
         Lighting.AddLight(worldPosition + new Vector2(0, -16), Color.OrangeRed.ToVector3() * 4);
         if (Main.GameUpdateCount % 2 == 0)
         {

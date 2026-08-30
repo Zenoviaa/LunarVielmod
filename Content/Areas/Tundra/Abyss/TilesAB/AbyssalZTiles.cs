@@ -22,6 +22,12 @@ public class AbyssalFlower : ZTile
         windSwaySpeed = 0.02f;
     }
 
+    public override void Update(int i, int j)
+    {
+        base.Update(i, j);
+        Color color = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 3, offset: i * j), Color.White, Color.SkyBlue, Color.Pink);
+        Lighting.AddLight(new Vector2(i, j).ToWorldCoordinates(), color.ToVector3());
+    }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);

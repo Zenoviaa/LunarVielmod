@@ -196,6 +196,14 @@ public class ZTileMap : ModSystem
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
+        ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
+        foreach (var tileDatas in _zTileActiveDrawingInstances)
+        {
+            foreach(var tileData in tileDatas)
+            {
+                zTileLoader.GetTile(tileData.instanceData.type).Update(tileData.position.x, tileData.position.y);
+            }
+        }
         Point chunk = GetCameraChunk();
         if (_lastChunk == chunk)
             return;
@@ -664,6 +672,11 @@ public class ZTileMap : ModSystem
         Refresh();
     }
 
+    public void KillAnyArea(Rectangle area)
+    {
+        _zTileInstances.RemoveAll(x => area.Contains(new Point(x.position.x, x.position.y)));
+        Refresh();
+    }
     /// <summary>
     /// Creates a tile at the chosen position
     /// </summary>

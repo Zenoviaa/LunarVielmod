@@ -38,7 +38,13 @@ public static class DrawUtilities
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
 
-
+    public static Vector2 CalculateScreenOffset(Rectangle drawLocation, float scale = 1f)
+    {
+        Vector2 texelSize = Vector2.One / new Vector2(drawLocation.Width, drawLocation.Height);
+        Vector2 screenoffset = Main.screenPosition * texelSize;
+        screenoffset *= (1f / scale);
+        return screenoffset;
+    }
     public static Vector2[] PruneFarPoints(Vector2[] oldPos)
     {
 

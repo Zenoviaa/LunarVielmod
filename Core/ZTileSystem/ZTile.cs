@@ -106,10 +106,6 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         return (float)Math.Sin(Main.GameUpdateCount * speed + offset) * magnitude;
     }
 
-    public virtual void Update(Vector2 worldPosition)
-    {
-
-    }
     public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         _tileTextureAsset ??= ModContent.Request<Texture2D>(Texture);
@@ -208,7 +204,7 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         }, drawParams);
     }
 
-
+    public virtual void Update(int i, int j) { }
 
     public virtual void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
     {

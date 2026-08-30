@@ -645,8 +645,8 @@ public class VeilGenTester : ModItem
 
         Rectangle rect = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
         VeilGen.PruneLonelyTiles(rect);
-
-
+        VeilGen.GenerateWaterBowls(rect, 512, new Point(5, 12), new Point(5, 12));
+        VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));
         var types = new ushort[]
         {
             ModContent.ZTileType<AbyssalFlower>()
@@ -2293,7 +2293,142 @@ public static class VeilGen
         float y = bump * mountains * mountains2 - dips - roughness - roughness2;
         return y + 0.1f;
     }
+    public static void GenerateWaterBlobs(Rectangle area, float numWaterBlocks, Point squareRange)
+    {
+        var genRand = WorldGen.genRand;
+        List<Point> validPoints = new();
+        for (int x = area.Left; x < area.Right; x++)
+        {
+            for (int y = area.Top; y < area.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (tile.HasTile)
+                    continue;
+                int sy = y;
+                int sx = x;
+                while (!tile.HasTile && sy < Main.UnderworldLayer)
+                {
+                    sy++;
+                    tile = Main.tile[sx, sy];
+                }
+                validPoints.Add(new Point(sx, sy));
+            }
+        }
+        if (validPoints.Count <= 0)
+            return;
 
+        for (float f = 0; f < numWaterBlocks; f++)
+        {
+            //Reset the seed for each cave
+            Point p = validPoints.NextElement(genRand);
+            //Dimensions of the lava bowl
+            int width = genRand.Next(squareRange.X, squareRange.Y);
+            int left = p.X - width / 2;
+            int right = p.X + width / 2;
+            int top = p.Y - width / 2;
+            int bottom = p.Y + width / 2;
+            for (int x = left; x < right; x++)
+            {
+                for(int y = top; y < bottom; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (tile.HasTile)
+                        continue;
+                    tile.LiquidAmount = 255;
+                    tile.LiquidType = LiquidID.Water;
+                }
+            }
+        }
+    }
+    public static void GenerateWaterBowls(Rectangle area, float numLavaBowls, Point widthRange, Point depthRange)
+    {
+        var genRand = WorldGen.genRand;
+        List<Point> validPoints = new();
+        for(int x = area.Left; x< area.Right; x++)
+        {
+            for(int y = area.Top; y < area.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (tile.HasTile)
+                    continue;
+                int sy = y;
+                int sx = x;
+                while (!tile.HasTile && sy < Main.UnderworldLayer)
+                {
+                    sy++;
+                    tile = Main.tile[sx, sy];
+                }
+                validPoints.Add(new Point(sx, sy));
+            }
+        }
+        if (validPoints.Count <= 0)
+            return;
+
+        for (float f = 0; f < numLavaBowls; f++)
+        {
+            //Reset the seed for each cave
+            Point p = validPoints.NextElement(genRand);
+            Tile startTile = Main.tile[p.X, p.Y];
+
+            //Dimensions of the lava bowl
+            int width = genRand.Next(widthRange.X, widthRange.Y);
+            int depth = genRand.Next(depthRange.X, depthRange.Y);
+            int left = p.X - width / 2;
+            int right = p.X + width / 2;
+            for (int x = left; x < right; x++)
+            {
+                float numSteps = right - left;
+                int d = (int)MathHelper.Lerp(0, depth, EasingFunction.QuadraticBump((x - left) / numSteps));
+                for (int y = p.Y; y < p.Y + d; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    tile.ClearTile();
+                    tile.LiquidAmount = 255;
+                    tile.LiquidType = LiquidID.Water;
+                }
+            }
+        }
+    }
+    public static void GenerateLavaBowls(Rectangle area, float numLavaBowls, Point widthRange, Point depthRange)
+    {
+        var genRand = WorldGen.genRand;
+        for (float f = 0; f < numLavaBowls; f++)
+        {
+            //Reset the seed for each cave
+            int sx = genRand.Next(area.Left, area.Right);
+            int sy = genRand.Next(area.Top, area.Bottom);
+            Tile startTile = Main.tile[sx, sy];
+
+            //Only place on air, guaranteeing that the lava is inside of a cave/exposed to air
+            if (startTile.HasTile)
+                continue;
+
+            //Gotta land on a solid tile
+            while (!startTile.HasTile && sy < Main.UnderworldLayer)
+            {
+                sy++;
+                startTile = Main.tile[sx, sy];
+            }
+
+            //Dimensions of the lava bowl
+            int width = genRand.Next(widthRange.X, widthRange.Y);
+            int depth = genRand.Next(depthRange.X, depthRange.Y);
+            int left = sx - width / 2;
+            int right = sx + width / 2;
+            for (int x = left; x < right; x++)
+            {
+                float numSteps = right - left;
+                int d = (int)MathHelper.Lerp(0, depth, EasingFunction.QuadraticBump((x - left) / numSteps));
+                for (int y = sy; y < sy + d; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    tile.ClearTile();
+                    tile.LiquidAmount = 255;
+                    tile.LiquidType = LiquidID.Lava;
+                }
+            }
+        }
+    }
     public static void GenerateMarshFoliage(Point startTile, int length)
     {
         var genRand = WorldGen.genRand;
@@ -3264,13 +3399,7 @@ public static class VeilGen
         int top = tileBounds.Top;
         int bottom = tileBounds.Bottom;
         ZTileMap zTileMap = ModContent.GetInstance<ZTileMap>();
-        for (int x = left; x < right; x++)
-        {
-            for (int y = top; y < bottom; y++)
-            {
-                zTileMap.KillAnyTile(new Point(x, y));
-            }
-        }
+        zTileMap.KillAnyArea(tileBounds);
     }
 
     public static void DecorateSurfaceEdgesWithMultiTile(Rectangle tileBounds, int denom, int targetGroundTileType, params int[] tileTypes)

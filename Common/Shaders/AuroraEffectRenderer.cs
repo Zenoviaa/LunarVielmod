@@ -100,6 +100,7 @@ public class AuroraEffectRenderer : ModSystem
         bool isActive = Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight;
         isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
         isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower;
+        isActive |= Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAbyss;
         //isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneEdgeoftheMoon;
         if (isActive)
         {
