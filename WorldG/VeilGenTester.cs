@@ -298,7 +298,7 @@ public class VeilGenTester : ModItem
         }); 
         VeilGen.DecorateSurfaceEdgesWithZTile(new()
         {
-            denom = 24,
+            denom = 128,
             renderLayer = ZRenderLayer.Midground,
             targetTileTypes = groundTiles,
             tileBounds = rect,
