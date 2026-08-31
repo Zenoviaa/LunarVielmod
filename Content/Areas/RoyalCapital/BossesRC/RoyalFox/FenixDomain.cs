@@ -43,6 +43,7 @@ public class FenixDomain : ModSystem
             return;
         }
            
+            Rectangle targetRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_domainRT);
@@ -53,7 +54,6 @@ public class FenixDomain : ModSystem
         fenixDomainShader.Time = Main.GlobalTimeWrappedHourly;
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, fenixDomainShader.Effect);
 
-        Rectangle targetRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         spriteBatch.Draw(TextureAssets.BlackTile.Value, targetRect, Color.White);
 
         spriteBatch.End();

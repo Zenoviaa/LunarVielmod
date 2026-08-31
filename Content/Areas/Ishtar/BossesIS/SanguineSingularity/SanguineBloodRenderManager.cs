@@ -146,7 +146,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             var bloodStormShader = BloodStormShader.Instance;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodStormShader.Effect, Main.Transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodStormShader.Effect, Main.Transform);
 
             Vector2 centerOrigin = _bloodBGRenderRT.Size / 2f;
 
@@ -230,7 +230,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 graphicsDevice.SetRenderTarget(_pixelRenderRT);
                 graphicsDevice.Clear(Color.Transparent);
 
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 float denom = DownSamples;
                 float scale = 1f / denom;
                 spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
@@ -270,7 +270,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             bloodyShader.NoiseTexture = TextureRegistry.CloudNoise2;
             SpriteBatch spriteBatch = Main.spriteBatch;
             float scale = DownSamples;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                 DepthStencilState.Default, RasterizerState.CullNone, null);
 
             float redOutlineOffset = 4;
@@ -293,7 +293,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             spriteBatch.End();
 
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, 
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, 
                 DepthStencilState.Default, RasterizerState.CullNone, bloodyShader.Effect);
 
      
