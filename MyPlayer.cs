@@ -881,11 +881,6 @@ namespace Stellamod
                 Main.gore[a].velocity.Y = Main.rand.NextFloat(1f, 3f);
             }
 
-            if (ZoneIshtar && !DownedBossSystem.downedZuiBoss)
-            {
-                player.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 10);
-            }
-
             if (CorsageTime >= 1)
             {
                 var entitySource = Player.GetSource_FromThis();
@@ -1502,8 +1497,6 @@ namespace Stellamod
 
                         break;
                     case 7:
-
-                        npc.AddBuff((ModContent.BuffType<Wounded>()), 240);
 
                         break;
                 }

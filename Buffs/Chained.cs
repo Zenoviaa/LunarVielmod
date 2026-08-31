@@ -18,20 +18,18 @@ namespace Stellamod.Buffs
         {
             npc.lifeRegen -= 16;
             float pullStartDistance = 320;
+            pullStartDistance *= pullStartDistance;
             npc.velocity *= 0.04f;
-            for (int i = 0; i < Main.maxPlayers; i++)
+            foreach(var player in Main.ActivePlayers)
             {
-                Player player = Main.player[i];
-                if (player.active)
+                float distance = Vector2.DistanceSquared(player.Center, npc.Center);
+                if (distance > pullStartDistance)
                 {
-                    float distance = Vector2.Distance(player.Center, npc.Center);
-                    if (distance > pullStartDistance)
-                    {
-                        float pullStrength = 5f;
-                        npc.velocity += npc.DirectionTo(player.Center) * pullStrength;
-                    }
+                    float pullStrength = 5f;
+                    npc.velocity += npc.DirectionTo(player.Center) * pullStrength;
                 }
             }
+
 
             if (Main.rand.NextBool(2))
             {

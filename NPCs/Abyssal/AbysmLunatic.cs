@@ -2,7 +2,6 @@ using ReLogic.Content;
 using Stellamod.Content.Areas.Tundra.Abyss.AccAB;
 using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.Audio;
