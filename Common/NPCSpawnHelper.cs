@@ -26,6 +26,7 @@ public class SpawnSets : ModSystem
         HeatedDepthsEnemy = new List<int>();
         FableEnemy = new List<int>();
         AbyssEnemy = new List<int>();
+        AbyssTempleEnemy = new List<int>();
         ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
         base.SetupContent();
 
@@ -37,6 +38,7 @@ public class SpawnSets : ModSystem
     public static List<int> HeatedDepthsEnemy;
     public static List<int> FableEnemy;
     public static List<int> AbyssEnemy;
+    public static List<int> AbyssTempleEnemy;
     public static float[] ModifiedWeights;
 }
 
@@ -70,6 +72,10 @@ public static class NPCSpawnExtensions
     public static void AddToAbyss(this ModNPC npc)
     {
         SpawnSets.AbyssEnemy.Add(npc.Type);
+    }
+    public static void AddToAbyssTemple(this ModNPC npc)
+    {
+        SpawnSets.AbyssTempleEnemy.Add(npc.Type);
     }
 
 
@@ -138,6 +144,10 @@ public class NPCSpawnHelper : GlobalNPC
         if (spawnInfo.Player.InModBiome<AbyssBiome>())
         {
             AddEnemiesFromSpawnSet(SpawnSets.AbyssEnemy, pool, spawnInfo);
+        }
+        if (spawnInfo.Player.InModBiome<AurelusBiome>())
+        {
+            AddEnemiesFromSpawnSet(SpawnSets.AbyssTempleEnemy, pool, spawnInfo);
         }
     }
 }

@@ -19,8 +19,22 @@ namespace Stellamod.Content.Biomes
 {
     public static class BiomeExtensions
     {
+        extension(Player player)
+        {
+            public bool ZoneAbyss
+            {
+                get
+                {
+                    return player.GetModPlayer<MyPlayer>().ZoneAbyss;
+                }
+                set
+                {
+                    player.GetModPlayer<MyPlayer>().ZoneAbyss = value;
+                }
+            }
+        }
+
         public static bool ZoneFable(this Player player) => player.InModBiome<FableBiome>();
-        public static bool ZoneAbyss(this Player player) => player.InModBiome<AbyssBiome>();
         public static bool ZoneXixianVillage(this Player player) => player.InModBiome<XixVillageBiome>();
     }
     public class BiomePlayer : ModPlayer
@@ -176,7 +190,7 @@ namespace Stellamod.Content.Biomes
         private void AddForegroundOrBackground()
         {
             MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
-            if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar || myPlayer.ZoneAbyss)
+            if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar)
             {
                 if (Main.rand.NextBool(15))
                 {
@@ -187,6 +201,15 @@ namespace Stellamod.Content.Biomes
                 {
                     ForegroundParticleRenderer.NewParticle<Snowstrike>();
                 }
+            }
+
+            if (Player.ZoneAbyss && Main.rand.NextBool(8))
+            {
+                Particles.AbyssFloatingFlowerDust.Spawn(AbyssFloatingFlowerDustData.Default with
+                {
+                    position = DrawUtilities.RandomScreenPositionForForegroundParticles(),
+                    parallax = Main.rand.NextFloat(0.2f, 1f),
+                });
             }
 
             if (Main.raining && (Player.ZoneForest || myPlayer.ZoneVillage))

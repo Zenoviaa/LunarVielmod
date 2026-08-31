@@ -24,7 +24,6 @@ public struct CinderEmberDustData : IParticleData
     public float parallaxStrength;
     public bool IsActive => timeleft > 0;
 }
-
 public class CinderEmberDustBackground : CinderEmberDust
 {
     public override void LoadSafe()

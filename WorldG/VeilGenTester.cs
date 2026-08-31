@@ -312,7 +312,7 @@ public class VeilGenTester : ModItem
             targetTileTypes = groundTiles,
             tileBounds = rect,
             zLayer = 0,
-            zTileTypes = types
+            zTileTypes = wetTypes
         });
 
         VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles, 

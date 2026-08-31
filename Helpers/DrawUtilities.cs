@@ -38,6 +38,14 @@ public static class DrawUtilities
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
 
+    public static Vector2 RandomScreenPositionForForegroundParticles()
+    {
+        float xPosition = Main.rand.Next(-(int)(Main.screenWidth * 0.52f), (int)(Main.screenWidth * 0.52f));
+        float yPosition = Main.rand.NextFloat(-Main.screenHeight * 0.52f, 0);
+        Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
+        return pos; 
+    }
+
     public static Vector2 CalculateScreenOffset(Rectangle drawLocation, float scale = 1f)
     {
         Vector2 texelSize = Vector2.One / new Vector2(drawLocation.Width, drawLocation.Height);

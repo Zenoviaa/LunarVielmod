@@ -18,6 +18,7 @@ public sealed class Particles : ModSystem
     public static SwirlingFlameDust SwirlingFlameDust;
     public static RoarDust RoarDust;
 
+    public static AbyssFloatingFlowerDust AbyssFloatingFlowerDust;
     /// <summary>
     /// A circle particle that draws on the water target, creating the illusion of splashing water
     /// </summary>
@@ -34,6 +35,7 @@ public sealed class Particles : ModSystem
         SwirlingFlameDust = new();
         RoarDust = new();
         WaterDust = new();
+        AbyssFloatingFlowerDust = new();
         _particleUpdaters = new List<IParticleUpdater>
         {
             BitDust,
@@ -43,7 +45,8 @@ public sealed class Particles : ModSystem
             CinderEmberDustBackground,
             SwirlingFlameDust,
             RoarDust,
-            WaterDust
+            WaterDust,
+            AbyssFloatingFlowerDust
         };
 
         for (int i = 0; i < _particleUpdaters.Count; i++)

@@ -89,7 +89,7 @@ public class Overseer : ModNPC,
     {
         base.SetStaticDefaults();
         Main.npcFrameCount[Type] = 24;
-        this.AddToAbyss();
+        this.AddToAbyssTemple();
     }
 
     public override void SetDefaults()

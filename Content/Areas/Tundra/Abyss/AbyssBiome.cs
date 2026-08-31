@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Assets.Biomes;
 using Stellamod.Core.Biomes;
 using Stellamod.Core.LunarLightingSystem;
 using Terraria;
@@ -17,7 +18,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;
         public override Color? BackgroundColor => base.BackgroundColor;
-
+        public override ModWaterStyle WaterStyle => ModContent.GetInstance<AcidWaterStyle>();
 
         public override bool IsBiomeActive(Player player) => (player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight) && BiomeTileCounts.InAbyss;
         public override void OnEnter(Player player)

@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Assets.ContentReader.Pal;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Biomes;
@@ -211,6 +212,7 @@ public class PixelWater
         CausticsColor = Color.SeaGreen * 0.75f;
         CausticsTexture = LoadTexture("WaterCaustics");
         NoiseTexture = LoadTexture("WaterNoise2");
+        Palette = null;
         TilingMultiplier = Vector2.One;
         affectsLava = false;
         noLighting = false;
@@ -230,6 +232,7 @@ public class PixelWater
     public Vector2 TilingMultiplier;
     public Asset<Texture2D> NoiseTexture;
     public Asset<Texture2D> CausticsTexture;
+    public Palette Palette;
     public bool noLighting;
     public bool vibrant;
     public bool ignoreSkyColor;
@@ -455,13 +458,26 @@ public class MoonWaterSystem : ModSystem
             else
             {
 
-                _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTDrawing"];
+                if(_pixelWater.Palette != null)
+                {
+                    _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombinePaletteRTDrawing"];
+                    _waterEffect.Parameters["ColorSpectrumTexture"].SetValue(_pixelWater.Palette.ColorAtlas);
+                }
+                else
+                {
+                    _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTDrawing"];
+                }
+
                 _waterEffect.Parameters["WaterTexture"].SetValue(_waterTextureRTOutput);
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     _waterEffect, Main.Transform);
 
                 Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
                 spriteBatch.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
+
+                Color c = Color.White * 0.43f;
+                c.A = 0;
+                spriteBatch.Draw(Main.waterTarget, pos, c * waterAlpha);
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }

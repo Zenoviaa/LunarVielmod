@@ -13,14 +13,14 @@ file static class AbyssalZTileUtilties
         zTile.windSwayOffset = 0f;
 
         //The max it can sway
-        zTile.windSwayMagnitude = 0.1f;
+        zTile.windSwayMagnitude = 0.05f;
 
         //How fast it sways
         zTile.windSwaySpeed = 0.02f;
     }
     public static void AddAbyssFlowerLighting(int i, int j)
     {
-        Color color = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 1f, speed: 3, offset: i * j), Color.White, Color.SkyBlue, Color.Pink);
+        Color color = Color.SkyBlue;
         Lighting.AddLight(new Vector2(i, j).ToWorldCoordinates(), color.ToVector3());
     }
     public static void DrawAbyssFlowerGlow(ZTile zTile, SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
@@ -75,7 +75,7 @@ public class AbyssalReed : ZTile
     public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawData, drawParams);
-        AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
+      //  AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
     }
 }
 public class AbyssalOrbFlower : ZTile
@@ -97,7 +97,7 @@ public class AbyssalOrbFlower : ZTile
     public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawData, drawParams);
-        AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
+   //     AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
     }
 }
 
@@ -120,6 +120,6 @@ public class AbyssalWhiteFlower : ZTile
     public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawData, drawParams);
-        AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
+      //  AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
     }
 }

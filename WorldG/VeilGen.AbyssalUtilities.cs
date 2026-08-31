@@ -77,9 +77,10 @@ public partial class VeilGen
             for (int y = top; y < bottom; y++)
             {
                 Tile tile = Main.tile[x, y];
+                Tile tileAbove = Main.tile[x, y - 1];
                 if (!tile.HasTile)
                     continue;
-                if (tile.LiquidAmount <= 0)
+                if (tileAbove.LiquidAmount <= 0)
                     continue;
                 if (!parameters.targetTileTypes.Contains(tile.TileType))
                     continue;
