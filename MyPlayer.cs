@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Stellamod.Buffs;
-using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Core.Camera;
 using Stellamod.Dusts;
-using Stellamod.Items.Armors.Ducanblitz;
-using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
@@ -580,10 +577,11 @@ namespace Stellamod
                 {
                     _pressed = true;
                 }
-            } else if (_pressed && Keyboard.GetState().IsKeyUp(Keys.J))
+            }
+            else if (_pressed && Keyboard.GetState().IsKeyUp(Keys.J))
             {
                 _pressed = false;
-                if(_lockPos == Vector2.Zero)
+                if (_lockPos == Vector2.Zero)
                 {
                     _lockPos = Main.Camera.Center;
                 }
@@ -948,43 +946,13 @@ namespace Stellamod
 
 
 
-
-            if (GovheilB && GovheilBCooldown == 301)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-                for (int j = 0; j < 1; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilBows>(), 20, 1f, Player.whoAmI);
-                }
-            }
-
-            /*if (GovheilB && GovheilBCooldown > 300)
-			{
-				Player.GetDamage(DamageClass.Magic) *= 2f;
-				Player.GetDamage(DamageClass.Summon) *= 2f;
-
-			}*/
             if (GovheilB && GovheilBCooldown == 540)
             {
                 GovheilBCooldown = 0;
-
-
             }
 
 
 
-            if (GovheilC && GovheilBCooldown == 301)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-                for (int j = 0; j < 1; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilSwords>(), 25, 1f, Player.whoAmI);
-                }
-
-
-            }
 
             if (DucanB && DucanBCooldown == 520)
             {
@@ -993,27 +961,6 @@ namespace Stellamod
 
             }
 
-
-
-            if (DucanB && DucanBCooldown == 301)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-                for (int j = 0; j < 1; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3,
-                        ModContent.ProjectileType<Dulcans>(), 200, 1f, Player.whoAmI);
-                }
-
-
-            }
-
-            /*		if (GovheilC && GovheilBCooldown > 300)
-					{
-						Player.GetDamage(DamageClass.Ranged) *= 2f;
-						Player.GetDamage(DamageClass.Melee) *= 2f;
-
-					}*/
             if (GovheilC && GovheilBCooldown == 520)
             {
                 GovheilBCooldown = 0;

@@ -344,44 +344,17 @@ SetBonus: {
 		Small bits of paint left in your tracks.
 		Crit chance and armor penetration increased by 20!
 		'''
-	DaedenMask:
-		'''
-		This armor is really scuffed...
-		Gives the ability of a molten quiver!
-		-Stuck at 400 max HP, but 20% increased damage for Rangers
-		'''
 	DaediaMask:
 		'''
 		Max summons increased by 1
 		Summon the stolen souls of the wondrous darkspace in their purest form of moths...
 		They will attack enemies for you!
 		'''
-	DucanblitzCap:
-		'''
-		Enemies are less likely to target you!
-		Blades of Cinder and Rhamenthal will fight alongside you
-		Every few seconds you'll gain a major increase to Melee Damage
-		An upgraded Govheil set essentially.
-		+24% increased Melee damage
-		+10% melee crit strike chance
-		'''
 	ElagentHead:
 		'''
 		+1 Max Minions
 		+45 Max Life
 		Hit enemies have a rare chance to be assaulted by angelic power!
-		'''
-	EldritchianHood:
-		'''
-		Grants immunity to knockback!
-		When you take a hit, gain a temporary attack speed boost based on the amount of damage you took!
-		'''
-	FlowerHat:
-		'''
-		Increases life regen by decent amount!
-		The armor makes a flowery circle that heals players in it for a large amount!
-		Turns all your wooden arrows into flower arrows! Which when hitting a target,
-		splits into little golden shots that hit back!
 		'''
 	GarbageMask:
 		'''
@@ -402,8 +375,6 @@ SetBonus: {
 		Reduced Healing Flask cooldown
 		DOES NOT STACK with philosophers stone
 		'''
-	IllurianCrestmask: Enemies are less likely to target you!
-	IllurianWarriorHelm: Allows you to walk on water
 	JianxinMask:
 		'''
 		Increases life regen by a great amount!
@@ -462,7 +433,6 @@ SetBonus: {
 		Enemies will be attacked by your power of music!
 		Every few seconds you'll gain a major increase to Magic and Ranged damage!
 		'''
-	VerlMask: ""
 	VextinMask:
 		'''
 		Gain the accessory effects of desert boots!
@@ -476,14 +446,6 @@ SetBonus: {
 		Highly increased throwing weapon knowckback
 		'''
 	WinterbornHead: Up to three icicles surround you to protect you from attacks!
-	WitchenHat:
-		'''
-		Truly a giver of society! The witches respect you :P
-		Gain the effects of a mana flower, magic cuffs
-		Extreme mana regeneration
-		Mana costs are reduced by 50%
-		Flowery Rhythm!
-		'''
 	XexterianHat:
 		'''
 		Gain the accessory effects of desert boots!
@@ -3518,29 +3480,17 @@ VixedBroochA: {
 
 DaedenChestplate: {
 	DisplayName: Daeden Chestplate
-	Tooltip:
-		'''
-		Absolutely Hideous.
-		+10% Ranged damage
-		+20 Armor penetration
-		+5 Crit
-		'''
+	Tooltip: ""
 }
 
 DaedenLegs: {
 	DisplayName: Daeden Legs
-	Tooltip: Increased movement speed
+	Tooltip: ""
 }
 
 DaedenMask: {
 	DisplayName: Daeden Mask
-	Tooltip:
-		'''
-		This is for all those masochists.
-		+20% Ranged damage
-		Heavy Increased mana regeneration!
-		+5 Crit
-		'''
+	Tooltip: ""
 }
 
 DaedusBag: {
@@ -4871,32 +4821,32 @@ PotionOfHallowWand: {
 
 AppretienceBreastplate: {
 	DisplayName: Appretience Breastplate
-	Tooltip: +20% Crit strike chance and +5 Health!
+	Tooltip: ""
 }
 
 AppretienceHat: {
 	DisplayName: Appretience Hood
-	Tooltip: +20% Crit strike chance and Health!
+	Tooltip: ""
 }
 
 AppretiencePants: {
 	DisplayName: Appretience Pants
-	Tooltip: +20% Crit strike chance and Health!
+	Tooltip: ""
 }
 
 UlvenChestplate: {
 	DisplayName: Ulven Chestplate
-	Tooltip: +15 Armor Penetration!
+	Tooltip: ""
 }
 
 UlvenGreaves: {
 	DisplayName: Ulven Greaves
-	Tooltip: +25 Armor Penetration!
+	Tooltip: ""
 }
 
 UlvenHelmet: {
 	DisplayName: Ulven Helmet
-	Tooltip: +20 Armor Penetration
+	Tooltip: ""
 }
 
 RottenHeart: {
@@ -5153,31 +5103,17 @@ CursedShard: {
 
 DucanblitzBreastplate: {
 	DisplayName: Ducanblitz Breastplate
-	Tooltip:
-		'''
-		+10 Max Health
-		+10% Melee Damage!
-		'''
+	Tooltip: ""
 }
 
 DucanblitzCap: {
 	DisplayName: Ducanblitz Cap
-	Tooltip:
-		'''
-		+10 Critical Strike Chance
-		+24% Melee Damage!
-		'''
+	Tooltip: ""
 }
 
 DucanblitzThighs: {
 	DisplayName: Ducanblitz Thighs
-	Tooltip:
-		'''
-		A hell of a lot of movement speed and acceleration!
-		+10 Max Health
-		+15 Armor penetration
-		+2% Melee Damage!
-		'''
+	Tooltip: ""
 }
 
 FenixBag: {
@@ -5187,32 +5123,17 @@ FenixBag: {
 
 EldritchianCloak: {
 	DisplayName: Eldritchian Cloak
-	Tooltip:
-		'''
-		+12% Throwing Attack Speed
-		+16% Throwing Damage
-		Slightly increased life regen
-		'''
+	Tooltip: ""
 }
 
 EldritchianHood: {
 	DisplayName: Eldritchian Hood
-	Tooltip:
-		'''
-		+10% Throwing Attack Speed
-		+20% Throwing Damage
-		Slightly increased vision
-		'''
+	Tooltip: ""
 }
 
 EldritchianLegs: {
 	DisplayName: Eldritchian Legs
-	Tooltip:
-		'''
-		+8% Throwing Attack Speed
-		+23% Throwing Damage
-		Slightly increased movement speed
-		'''
+	Tooltip: ""
 }
 
 StickOfWisdom: {
@@ -5490,30 +5411,17 @@ Combuster: {
 }
 
 WitchenRobe: {
-	Tooltip:
-		'''
-		+5% Magical Critical Strike Chance and Health
-		+20% Magic damage
-		Suck em' up!
-		'''
+	Tooltip: ""
 	DisplayName: Witchen Robe
 }
 
 WitchenPants: {
-	Tooltip:
-		'''
-		30% more movement speed!
-		+20 Health
-		'''
+	Tooltip: ""
 	DisplayName: Witchen Pants
 }
 
 WitchenHat: {
-	Tooltip:
-		'''
-		+3% Magic damage
-		+10% Magical Critical Strike Chance
-		'''
+	Tooltip: ""
 	DisplayName: Witchen Hat
 }
 
@@ -6434,42 +6342,27 @@ IlluriaChesti: {
 }
 
 IllurianWarriorGreaves: {
-	Tooltip: Greaves of someone who may of shit their pants.
+	Tooltip: ""
 	DisplayName: Illurian Warrior Greaves
 }
 
 IllurianWarriorChestplate: {
-	Tooltip: Extremely defensive!
+	Tooltip: ""
 	DisplayName: Illurian Warrior Chestplate
 }
 
 IllurianCrestplate: {
-	Tooltip:
-		'''
-		+3 Minions and +50 mana
-		-50 Health
-		'''
+	Tooltip: ""
 	DisplayName: Illurian Crestplate
 }
 
 IllurianCrestpants: {
-	Tooltip:
-		'''
-		+1 Minion and 10% increased movement speed!
-		20% more damage and +15 Armor penetration
-		-90 Health
-		'''
+	Tooltip: ""
 	DisplayName: Illurian Crestpants
 }
 
 IllurianCrestmask: {
-	Tooltip:
-		'''
-		-50 Health
-		12% Magic and Summon damage!
-		10% Critical Strike Chance!
-		A very dissapointed Niivi.
-		'''
+	Tooltip: ""
 	DisplayName: Illurian Crestmask
 }
 
@@ -6774,35 +6667,17 @@ IllurianBroochA: {
 }
 
 GarbagePants: {
-	Tooltip:
-		'''
-		10% Increased movement speed
-		+1 Minion
-		Goofy goobers eat Osama bin Ladin 
-		'''
+	Tooltip: ""
 	DisplayName: Garbage Pants
 }
 
 GarbageMask: {
-	Tooltip:
-		'''
-		15% Increased Summoner and Throwing Damage!
-		30% Increased Throwing speed.
-		+2 Minions
-		It's actually garbage.
-		'''
+	Tooltip: ""
 	DisplayName: Garbage Mask
 }
 
 GarbageChestplate: {
-	Tooltip:
-		'''
-		25% Increased Summoner and Throwing Damage!
-		10% Increased Throwing speed.
-		+1 Minion
-		+40 Health and increased regeneration!
-		Throw it in the trash now!
-		'''
+	Tooltip: ""
 	DisplayName: Garbage Chestplate
 }
 
@@ -6894,30 +6769,17 @@ IlluriteDrill: {
 }
 
 FlowerRobe: {
-	Tooltip:
-		'''
-		Zui gave you some health!
-		+60 Health
-		+18% Melee and Ranged Damage!
-		'''
+	Tooltip: ""
 	DisplayName: Flower Robe
 }
 
 FlowerPants: {
-	Tooltip:
-		'''
-		+30% Speed and flower walking!
-		+10% Melee and Ranged Damage!
-		'''
+	Tooltip: ""
 	DisplayName: Flower Pants
 }
 
 FlowerHat: {
-	Tooltip:
-		'''
-		Zui gave you a halo!
-		+16% Melee and Ranged Damage!
-		'''
+	Tooltip: Flowery
 	DisplayName: Flower Hat
 }
 

@@ -19,34 +19,8 @@ namespace Stellamod.NPCs.Town
         public const string ShopName2 = "New Shop";
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[Type] = 30; // The amount of frames the NPC has
-
-            NPCID.Sets.ActsLikeTownNPC[Type] = true;
-
-            //To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
-            //In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
-            NPCID.Sets.SpawnsWithCustomName[Type] = true;
-            NPCID.Sets.NoTownNPCHappiness[Type] = true;
-
-            // Influences how the NPC looks in the Bestiary
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            {
-                Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
-                Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
-                              // Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
-                              // If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
-            };
-
-
-            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-
-            // Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
-
-
-
-
-
-            ; // < Mind the semicolon!
+            base.SetStaticDefaults();
+            Main.npcFrameCount[Type] = 30;
         }
 
         public override void SetDefaults()

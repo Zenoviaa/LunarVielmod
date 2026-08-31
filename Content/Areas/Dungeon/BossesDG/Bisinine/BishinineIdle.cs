@@ -19,14 +19,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
     {
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.TrailCacheLength[NPC.type] = 5;
-            NPCID.Sets.TrailingMode[Type] = 3;
+            base.SetStaticDefaults();
             Main.npcFrameCount[NPC.type] = 5;
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCID.Sets.ActsLikeTownNPC[Type] = true;
-            NPCID.Sets.SpawnsWithCustomName[Type] = true;
-            NPCID.Sets.NoTownNPCHappiness[Type] = true;
         }
 
         public override void SetDefaults()

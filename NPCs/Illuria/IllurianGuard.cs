@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Vanity.Illurian;
 using Stellamod.Dusts;
-using Stellamod.Items.Armors.Illurian;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;

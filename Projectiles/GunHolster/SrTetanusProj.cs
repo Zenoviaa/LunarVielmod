@@ -52,7 +52,6 @@ namespace Stellamod.Projectiles.GunHolster
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<AcidFlame>(), 180);
             target.AddBuff(BuffID.Venom, 180);
             target.AddBuff(BuffID.Slow, 180);
         }

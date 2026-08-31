@@ -82,7 +82,6 @@ namespace Stellamod.NPCs.Town
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Ichor] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<AcidFlame>()] = true;
             // < Mind the semicolon!
         }
 

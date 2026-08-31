@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core
@@ -41,6 +42,19 @@ namespace Stellamod.Core
         public Vector2 DrawOffset { get; set; }
         public virtual string QuestMarkTexture => "Stellamod/Common/QuestSystem/QuestMark";
 
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            NPCID.Sets.ActsLikeTownNPC[Type] = true;
+            NPCID.Sets.NoTownNPCHappiness[Type] = true;
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                Velocity = 1f,
+                Direction = 1
+            };
+
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
         public virtual void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
 

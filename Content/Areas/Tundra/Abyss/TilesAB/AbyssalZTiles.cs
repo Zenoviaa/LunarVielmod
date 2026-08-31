@@ -75,7 +75,7 @@ public class AbyssalReed : ZTile
     public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawData, drawParams);
-      //  AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
+       AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
     }
 }
 public class AbyssalOrbFlower : ZTile
@@ -97,7 +97,7 @@ public class AbyssalOrbFlower : ZTile
     public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawData, drawParams);
-   //     AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
+        AbyssalZTileUtilties.DrawAbyssFlowerGlow(this, spriteBatch, drawData, drawParams);
     }
 }
 

@@ -278,10 +278,6 @@ standing still gives you an acid aura that stays where you were when you leave T
         if (!hasSetBonus)
             return;
 
-        //Immunity to contamination
-        Player.ClearBuff(ModContent.BuffType<AcidFlame>());
-        Player.ClearBuff(ModContent.BuffType<Irradiation>());
-
         //Standing still for the acid aura
         if (Player.velocity == Vector2.Zero
             && Player.ownedProjectileCounts[ModContent.ProjectileType<AcidAuraProj>()] == 0)

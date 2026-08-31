@@ -11,8 +11,6 @@ namespace Stellamod.Buffs
             Main.debuff[Type] = true;
             Main.pvpBuff[Type] = true;
             Main.buffNoTimeDisplay[Type] = false;
-            // DisplayName.SetDefault("Abyssal Flame");
-            // Description.SetDefault("'A Dark force saps your vitality'");
         }
 
         public override void Update(NPC npc, ref int buffIndex)

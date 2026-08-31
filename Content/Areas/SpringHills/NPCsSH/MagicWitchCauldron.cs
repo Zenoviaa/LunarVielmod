@@ -33,16 +33,6 @@ public class MagicWitchCauldron : VeilTownNPC
     {
         base.SetStaticDefaults();
         Main.npcFrameCount[Type] = 60;
-        NPCID.Sets.ActsLikeTownNPC[Type] = true;
-        NPCID.Sets.SpawnsWithCustomName[Type] = true;
-        NPCID.Sets.NoTownNPCHappiness[Type] = true;
-        NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
-        {
-            Velocity = 1f,
-            Direction = 1
-        };
-
-        NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
     }
 
     public override void SetDefaults()

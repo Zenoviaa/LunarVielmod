@@ -29,14 +29,10 @@ public class VerliaIdle : VeilTownNPC,
     private ref float Timer => ref NPC.ai[0];
     public override void SetStaticDefaults()
     {
+        base.SetStaticDefaults();
         NPCID.Sets.TrailCacheLength[NPC.type] = 5;
         NPCID.Sets.TrailingMode[Type] = 3;
         Main.npcFrameCount[NPC.type] = 2;
-        NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-        NPCID.Sets.BossBestiaryPriority.Add(Type);
-        NPCID.Sets.ActsLikeTownNPC[Type] = true;
-        NPCID.Sets.SpawnsWithCustomName[Type] = true;
-        NPCID.Sets.NoTownNPCHappiness[Type] = true;
     }
 
     public override void SetDefaults()

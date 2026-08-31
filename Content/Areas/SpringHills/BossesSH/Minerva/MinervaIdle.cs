@@ -21,9 +21,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            NPCID.Sets.TrailingMode[Type] = 3;
-            NPCID.Sets.TrailCacheLength[Type] = 32;
-            NPCID.Sets.MPAllowedEnemies[Type] = true;
             Main.npcFrameCount[Type] = 46;
         }
         public override void SetDefaults()

@@ -173,12 +173,7 @@ namespace Stellamod.Core.TriggersSystem
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            if(Main.mouseMiddle && Main.mouseMiddleRelease)
-            {
-                debugTriggers = !debugTriggers;
-                Main.mouseMiddleRelease = false;
-                DebugHelper.NewTextOnlyInTesting(debugTriggers);
-            }
+            debugTriggers = Main.LocalPlayer.HeldItem.type == ModContent.ItemType<TriggerWand>() || Main.LocalPlayer.HeldItem.type == ModContent.ItemType<TriggerEraser>();
             foreach (var kvp in _triggerIndex)
             {
                 Trigger trigger = kvp.Value;

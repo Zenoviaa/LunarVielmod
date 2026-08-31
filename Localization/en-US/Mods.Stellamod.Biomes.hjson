@@ -94,8 +94,8 @@ AcidBiome: {
 }
 
 AbyssBiome: {
-	TownNPCDialogueName: the Abyss Biome
-	DisplayName: Abyss Biome
+	TownNPCDialogueName: the Illuria's Abyss
+	DisplayName: Illuria's Abyss
 }
 
 Laboratory: {
