@@ -12263,3 +12263,8 @@ ScriptofTheSun: {
 	DisplayName: Script of The Sun
 	Tooltip: Guardian damage increased by 30%
 }
+
+AbyssalCoarseDirtItem: {
+	DisplayName: Abyssal Coarse Dirt Item
+	Tooltip: ""
+}
