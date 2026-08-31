@@ -1,12 +1,6 @@
-﻿using log4net.Core;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
@@ -42,7 +36,7 @@ namespace Stellamod.Common.SummonerSystem
         {
             base.AI();
             Timer++;
-            if(Timer % 16 == 0)
+            if (Timer % 16 == 0)
             {
                 Vector2 position = Owner.Center;
                 position.X += Main.rand.NextFloat(-100, 100);
@@ -52,7 +46,7 @@ namespace Stellamod.Common.SummonerSystem
                     outerColor = Color.White,
                     gravity = 0,
                     scaleRange = new Vector2(0.2f, 0.5f)
-                    
+
                 };
 
                 var dp = DustParticle.Spawn(position, velocity, spawnParams);
@@ -103,7 +97,7 @@ namespace Stellamod.Common.SummonerSystem
             Color auraColor = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(Timer / 30f));
             auraColor = auraColor.MultiplyRGB(color);
 
-            TexturedQuad.CalculatePerspectiveCenterVertices2(Projectile.Center  + Vector2.UnitY * 16, 180, 180, velocity.ToRotation(), perspectiveRotation);
+            TexturedQuad.CalculatePerspectiveCenterVertices2(Projectile.Center + Vector2.UnitY * 16, 180, 180, velocity.ToRotation(), perspectiveRotation);
             TexturedQuad.SetColor(auraColor);
             TexturedQuad.DrawWithShader(magicCircleShader);
         }

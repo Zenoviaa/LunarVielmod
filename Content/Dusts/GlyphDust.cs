@@ -2,15 +2,15 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-namespace Stellamod.Dusts
+namespace Stellamod.Content.Dusts
 {
-    public class MusicDust : GlowDust
+    public class GlyphDust : GlowDust
     {
         public override void OnSpawn(Dust dust)
         {
             base.OnSpawn(dust);
             dust.noGravity = true;
-            dust.frame = new Rectangle(0, Main.rand.Next(2) * 64, 64, 64);     
+            dust.frame = new Rectangle(0, 0, 64, 64);
         }
     }
 }

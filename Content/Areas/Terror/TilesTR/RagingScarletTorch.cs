@@ -1,5 +1,5 @@
 ﻿using Stellamod.Common.Particles;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Terraria;
 using Terraria.Enums;
 using Terraria.ID;

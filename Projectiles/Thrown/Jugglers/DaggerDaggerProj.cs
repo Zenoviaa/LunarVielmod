@@ -1,14 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
-using Stellamod.Core.Bases;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
-using Stellamod.Trails;
+﻿using Stellamod.Core.Bases;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown.Jugglers;
 

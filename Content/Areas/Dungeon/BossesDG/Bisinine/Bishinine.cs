@@ -2,10 +2,10 @@
 using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles;
+using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
-using Stellamod.Dusts;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;

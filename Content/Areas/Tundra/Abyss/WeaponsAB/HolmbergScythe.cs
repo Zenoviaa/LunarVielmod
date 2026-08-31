@@ -1,13 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -41,7 +36,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.WeaponsAB
             blackFireShader.SetDefaults();
             blackFireShader.InnerColor = Color.White;
             blackFireShader.OuterColor = Color.Goldenrod;
-          
+
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
@@ -433,7 +428,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.WeaponsAB
             }
 
             NPC targetNPC = NPCHelper.FindClosestNPC(Projectile.position, 512);
-            if(targetNPC != null)
+            if (targetNPC != null)
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, targetNPC.Center, 3);
 

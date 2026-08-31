@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Buffs;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;

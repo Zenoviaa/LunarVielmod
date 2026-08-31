@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Projectiles.Gun;

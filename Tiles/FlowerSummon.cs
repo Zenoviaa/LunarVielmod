@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
@@ -46,7 +46,7 @@ namespace Stellamod.Tiles
             TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 
             DustType = ModContent.DustType<Sparkle>();
-            DustType = ModContent.DustType<Dusts.SalfaceDust>();
+            DustType = ModContent.DustType<SalfaceDust>();
             AdjTiles = new int[] { TileID.Bookcases };
             Main.tileFrameImportant[Type] = true;
             Main.tileNoAttach[Type] = true;

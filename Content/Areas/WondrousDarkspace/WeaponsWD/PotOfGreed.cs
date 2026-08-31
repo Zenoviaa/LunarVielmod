@@ -2,10 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trailing;

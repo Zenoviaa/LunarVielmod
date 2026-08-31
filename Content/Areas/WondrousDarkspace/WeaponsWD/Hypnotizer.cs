@@ -1,11 +1,11 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;

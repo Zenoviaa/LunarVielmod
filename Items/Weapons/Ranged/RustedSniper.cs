@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+using Stellamod.Content.Dusts;
 namespace Stellamod.Items.Weapons.Ranged
 {
     public class RustedSniper : ClassSwapItem
@@ -53,10 +52,10 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Vector2 direction = offset.RotatedByRandom(spread);
 
-                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<GlowDust>(), direction * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-            Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+            Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+            Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
     }

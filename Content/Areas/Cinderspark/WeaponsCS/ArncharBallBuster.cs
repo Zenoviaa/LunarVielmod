@@ -1,9 +1,9 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Terraria;

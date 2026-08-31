@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-
+using Stellamod.Content.Dusts;
 namespace Stellamod.Buffs
 {
     public class Overheated : ModBuff
@@ -18,7 +18,7 @@ namespace Stellamod.Buffs
             base.Update(player, ref buffIndex);
             if (Main.rand.NextBool(8))
             {
-                Dust.NewDustPerfect(player.Center, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2, 0, Color.Black * 0.5f, Main.rand.NextFloat(0.3f, 0.7f));
+                Dust.NewDustPerfect(player.Center, ModContent.DustType<TSmokeDust>(), Vector2.UnitY * -2, 0, Color.Black * 0.5f, Main.rand.NextFloat(0.3f, 0.7f));
             }
         }
     }

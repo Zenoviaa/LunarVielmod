@@ -1,11 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Gores;
-using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -63,7 +58,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            if(Timer >= 60f)
+            if (Timer >= 60f)
             {
                 if (BlastPos == null)
                     return false;
@@ -95,7 +90,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             base.AI();
             float halfTime = 60;
             Timer++;
-            if(Timer == halfTime)
+            if (Timer == halfTime)
             {
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Red * 0.4f, 1, 5);
@@ -115,7 +110,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
                 CreateGoreBurst(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 10);
                 CreateGoreBurst(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 5);
                 float numDust = 8;
-                for(float d = 0; d < numDust; d++)
+                for (float d = 0; d < numDust; d++)
                 {
                     Vector2 dustVelocity = Projectile.velocity.RotateRandom(0.5f);
                     dustVelocity = dustVelocity.SafeNormalize(Vector2.Zero);
@@ -127,7 +122,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             NPC npc = Main.npc[Owner];
             Projectile.Center = npc.Center;
             Projectile.rotation = Projectile.velocity.ToRotation();
-            if(Timer >= halfTime)
+            if (Timer >= halfTime)
             {
                 float time = (Timer - halfTime) / 60f;
                 float ease = EasingFunction.OutExpo(time);
@@ -152,7 +147,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
 
         private float WidthFunction(float completionRatio)
         {
-            float widthMult = MathHelper.Lerp(0f, 1f, (float)Projectile.timeLeft / 10f);
+            float widthMult = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / 10f);
             widthMult = MathHelper.Clamp(widthMult, 0f, 1f);
             return MathHelper.SmoothStep(128, 0, completionRatio) * MathF.Sin(completionRatio * 4) * widthMult;
         }
@@ -180,7 +175,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             drawColor *= 0.5f;
             drawColor *= Timer / 60f;
 
-            float widthMult = MathHelper.Lerp(0f, 1f, (float)Projectile.timeLeft / 10f);
+            float widthMult = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / 10f);
             drawColor *= widthMult;
             SpriteBatch spriteBatch = Main.spriteBatch;
 

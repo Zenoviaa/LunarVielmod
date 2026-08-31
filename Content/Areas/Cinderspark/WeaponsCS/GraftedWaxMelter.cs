@@ -1,8 +1,8 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;

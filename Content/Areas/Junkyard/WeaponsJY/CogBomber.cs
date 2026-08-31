@@ -2,8 +2,8 @@
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using Terraria;

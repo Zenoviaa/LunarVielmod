@@ -1,20 +1,21 @@
-﻿using Stellamod.Core;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core;
 using Terraria;
 using Terraria.ModLoader;
-
-namespace Stellamod.Dusts
+namespace Stellamod.Content.Dusts
 {
-    public class TSmokeDust : ModDust
+    public class GlowDust : ModDust
     {
 
         public override void OnSpawn(Dust dust)
         {
             dust.noGravity = true;
             dust.frame = new Rectangle(0, 64 * Main.rand.Next(4), 64, 64);
-            dust.rotation = Main.rand.NextFloat(-2f, 2f);
-            dust.shader = new Terraria.Graphics.Shaders.ArmorShaderData(ModContent.Request<Effect>("Stellamod/Effects/SmokeDust"), "PixelPass");
-            dust.scale *= 1.5f;
-        }
+         //   dust.scale *= 4;
+            dust.shader = new Terraria.Graphics.Shaders.ArmorShaderData(ModContent.Request<Effect>("Stellamod/Effects/GlowShard"), "PixelPass");
+       
+        }       
 
         public override Color? GetAlpha(Dust dust, Color lightColor)
         {
@@ -34,9 +35,11 @@ namespace Stellamod.Dusts
                 dust.velocity.Y += 0.1f;
 
             dust.velocity *= 0.95f;
+          
+            dust.scale *= 0.9f;
+            if (!dust.noLight)
+                Lighting.AddLight(dust.position, dust.color.ToVector3());
 
-            dust.color *= 0.99f;
-            dust.scale *= 0.99f;
             if (dust.scale < 0.05f)
                 dust.active = false;
 

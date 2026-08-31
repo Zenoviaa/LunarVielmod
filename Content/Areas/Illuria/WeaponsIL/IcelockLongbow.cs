@@ -1,22 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
-using Stellamod.Assets;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.WeaponsIL
@@ -55,9 +48,9 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             }
 
             NPC nearest = NPCHelper.FindClosestNPC(Projectile.position, 1024);
-            if(nearest != null)
+            if (nearest != null)
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center);
-            if(Projectile.velocity.Length() < 15f)
+            if (Projectile.velocity.Length() < 15f)
                 Projectile.velocity *= 1.01f;
         }
 
@@ -137,7 +130,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), icicleCenter,
                     velocity, ModContent.ProjectileType<IcicleFormation>(), 1, 1, Projectile.owner, ai1: steps, ai2: -1);
             }
-  
+
             return base.OnTileCollide(oldVelocity);
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

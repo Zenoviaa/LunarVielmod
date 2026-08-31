@@ -1,9 +1,9 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Dusts
+namespace Stellamod.Content.Dusts
 {
-    public class PaintBlob4 : ModDust
+    public class PaintBlob3 : ModDust
     {
         public override void OnSpawn(Dust dust)
         {

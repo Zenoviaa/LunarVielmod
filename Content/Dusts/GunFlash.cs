@@ -2,10 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-
-namespace Stellamod.Dusts
+namespace Stellamod.Content.Dusts
 {
-    public class GlowHeartDust : GlowDust
+    public class GunFlash : GlowDust
     {
         public override void OnSpawn(Dust dust)
         {

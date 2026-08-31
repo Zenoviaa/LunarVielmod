@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Projectiles.IgniterExplosions.Stein;
 using Stellamod.Trails;
@@ -10,7 +10,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+using Stellamod.Content.Dusts;
 namespace Stellamod.Projectiles.Steins
 {
     public class MardFist : ModProjectile
@@ -189,8 +189,8 @@ namespace Stellamod.Projectiles.Steins
                 for (int k = 0; k < 7; k++)
                 {
                     Vector2 direction = offset.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Purple, 1f).noGravity = true;
-                    Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 0, Color.Purple, 1f).noGravity = true;
+                    Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Purple, 1f).noGravity = true;
+                    Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 0, Color.Purple, 1f).noGravity = true;
 
                 }
 

@@ -1,6 +1,6 @@
 ﻿using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;

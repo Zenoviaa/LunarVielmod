@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-
+using Stellamod.Content.Dusts;
 
 
 namespace Stellamod.Tiles.Illuria
@@ -25,7 +25,7 @@ namespace Stellamod.Tiles.Illuria
             MineResist = 4f;
             MinPick = 200;
 
-            DustType = ModContent.DustType<Dusts.GunFlash>();
+            DustType = ModContent.DustType<GunFlash>();
             AdjTiles = new int[] { TileID.Bookcases };
             Main.tileFrameImportant[Type] = true;
             Main.tileNoAttach[Type] = true;

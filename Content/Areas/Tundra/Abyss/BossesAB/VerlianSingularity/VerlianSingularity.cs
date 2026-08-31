@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Projectiles;
+using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Wings;
 using Stellamod.Skies;

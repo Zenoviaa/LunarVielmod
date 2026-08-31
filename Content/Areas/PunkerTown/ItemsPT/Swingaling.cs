@@ -7,9 +7,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
@@ -17,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -191,7 +187,7 @@ public class SwingalingBlast : ModProjectile,
                         break;
                 }
                 zapSound.MaxInstances = 3;
-             //   zapSound.Volume = 0.3f;
+                //   zapSound.Volume = 0.3f;
                 SoundEngine.PlaySound(zapSound, Projectile.position);
                 if (Main.rand.NextBool(4))
                 {
@@ -260,7 +256,7 @@ public class SwingalingBlast : ModProjectile,
     {
         float ease = EasingFunction.InOutSine(_flashTimer / 30f);
         float w = 20 * _widthMultiplier;
-        float outEasing = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+        float outEasing = EasingFunction.InOutSine(Projectile.timeLeft / 30f);
         return MathHelper.SmoothStep(w * 0.85f, w, EasingFunction.QuadraticBump(ratio)) * outEasing;
     }
 
@@ -282,12 +278,12 @@ public class SwingalingBlast : ModProjectile,
         int numPoints = 64;
         List<Vector2> trailPoints = new List<Vector2>(numPoints);
         Vector2 up = Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.PiOver2);
-        float outEase = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+        float outEase = EasingFunction.InOutSine(Projectile.timeLeft / 30f);
         Vector2 cp1 = Vector2.Lerp(_controlPoint1, _controlPoint3, outEase);
         Vector2 cp2 = Vector2.Lerp(_controlPoint2, _controlPoint4, outEase);
         for (float f = 0; f < numPoints; f++)
         {
-            float ratio = (float)f / (float)numPoints;
+            float ratio = (float)f / numPoints;
             Vector2 startPoint = Projectile.Center;
             Vector2 trailPoint = ExtraMath.CubicBezier(startPoint,
                 cp1, cp2, EndPoint2, ratio);
@@ -313,7 +309,7 @@ public class SwingalingBlast : ModProjectile,
         lightingShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
         lightingShader.Levels = 64;
         lightingShader.Tiling = new Vector2(2f);
-     
+
         TrailDrawer.Draw(Main.spriteBatch, lightningPoints, GetTrailColor, GetTrailWidth, lightingShader, Projectile.Size * 0.5f);
         BloomTrailShader bloom = BloomTrailShader.Instance;
         bloom.InnerColor = Color.SkyBlue;
@@ -371,7 +367,7 @@ public class SwingalingCharge : ModProjectile
     private void AI_Blast()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
             lightningSoundStyle.PitchVariance = 0.4f;
@@ -423,7 +419,7 @@ public class SwingalingCharge : ModProjectile
         }
 
         float maxTime = _charge * 60;
-        if(Timer >= maxTime)
+        if (Timer >= maxTime)
         {
             Projectile.Kill();
         }
@@ -481,7 +477,7 @@ public class SwingalingCharge : ModProjectile
         if (Timer == ChargeTime)
         {
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightCyan, Color.DarkBlue, duration: 32);
-            for(float f = 0;f < 10; f++)
+            for (float f = 0; f < 10; f++)
             {
                 var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8));
                 dp.outerColor = Color.DarkBlue;

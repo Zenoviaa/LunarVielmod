@@ -3,7 +3,7 @@ using System;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Dusts
+namespace Stellamod.Content.Dusts
 {
     public class SmokeDust : ModDust
     {

@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -23,6 +22,7 @@ using Stellamod.Core.Effects;
 using Stellamod.Trailing;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
+using Stellamod.Content.Dusts;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {

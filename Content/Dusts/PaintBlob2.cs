@@ -1,9 +1,9 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Dusts
+namespace Stellamod.Content.Dusts
 {
-    public class PaintBlob5 : ModDust
+    public class PaintBlob2 : ModDust
     {
         public override void OnSpawn(Dust dust)
         {
@@ -16,7 +16,7 @@ namespace Stellamod.Dusts
             Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), 0.2f, 0.2f, 0.2f);
             dust.noGravity = false;
             dust.position += dust.velocity;
-            dust.velocity *= 1.02f;
+            dust.velocity *= 1.01f;
             dust.scale *= 0.98f;
             dust.alpha += 12;
             if (dust.scale < 0.5f)

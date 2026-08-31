@@ -2,8 +2,8 @@
 using Stellamod.Buffs;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Camera;
-using Stellamod.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
@@ -975,7 +975,7 @@ namespace Stellamod
                     {
                         Player.velocity.Y -= Player.gravDir * 1f;
                         if (Player.velocity.Y <= -jumpSpeed) Player.velocity.Y = -jumpSpeed;
-                        Dust.NewDust(new Vector2(Player.position.X, Player.position.Y + Player.height), Player.width, 0, ModContent.DustType<Dusts.Sparkle>());
+                        Dust.NewDust(new Vector2(Player.position.X, Player.position.Y + Player.height), Player.width, 0, ModContent.DustType<Sparkle>());
                     }
                     else
                     {

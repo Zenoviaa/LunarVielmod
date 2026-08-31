@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-
+using Stellamod.Content.Dusts;
 
 
 namespace Stellamod.Tiles.Structures
@@ -24,7 +24,7 @@ namespace Stellamod.Tiles.Structures
             MineResist = 4f;
             MinPick = 0;
 
-            DustType = ModContent.DustType<Dusts.Sparkle>();
+            DustType = ModContent.DustType<Sparkle>();
             AdjTiles = new int[] { TileID.Pots };
             Main.tileFrameImportant[Type] = true;
             Main.tileNoAttach[Type] = true;

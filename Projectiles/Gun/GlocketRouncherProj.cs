@@ -3,7 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Terror.WeaponsTR;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -92,10 +92,10 @@ namespace Stellamod.Projectiles.Gun
                     {
                         Vector2 direction2 = offset.RotatedByRandom(spread);
 
-                        Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
+                        Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
                     }
-                    Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-                    Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+                    Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+                    Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
 
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
 

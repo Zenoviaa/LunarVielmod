@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Palettes;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using System;
 using Terraria;

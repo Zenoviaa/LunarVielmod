@@ -1,11 +1,11 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Dusts;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering;
-using Stellamod.Dusts;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Visual.Particles;
 using Terraria;

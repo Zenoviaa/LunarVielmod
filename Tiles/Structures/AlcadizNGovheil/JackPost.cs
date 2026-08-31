@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using System;
 using Terraria;
 using Terraria.GameContent.ObjectInteractions;
@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using Stellamod.Content.Dusts;
 
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {
@@ -43,7 +44,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
             TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 
             DustType = ModContent.DustType<Sparkle>();
-            DustType = ModContent.DustType<Dusts.SalfaceDust>();
+            DustType = ModContent.DustType<SalfaceDust>();
             AdjTiles = new int[] { TileID.Bookcases };
             Main.tileFrameImportant[Type] = true;
             TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);

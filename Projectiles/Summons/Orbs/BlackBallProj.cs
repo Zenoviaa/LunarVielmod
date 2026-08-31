@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System;

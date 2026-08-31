@@ -1,8 +1,5 @@
 ﻿using Stellamod.Common.ArmorRework;
 using Stellamod.Content.Gores;
-using Stellamod.Core.Particles;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -106,7 +103,7 @@ namespace Stellamod.Content.Armors.Ravaging
             smashSound.PitchVariance = 0.2f;
             SoundEngine.PlaySound(smashSound, Projectile.position);
             float numDust = 8;
-            for(int n = 0; n < numDust; n++)
+            for (int n = 0; n < numDust; n++)
             {
                 Vector2 velocity = -Vector2.UnitY.RotatedByRandom(1f);
                 SmokeParticle sp = SmokeParticle.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(48, 48), velocity, Scale: Main.rand.NextFloat(1f, 1.5f));
@@ -149,7 +146,7 @@ namespace Stellamod.Content.Armors.Ravaging
 
                     dashPlayer.DashedThroughSet.Add(npc);
                     //Spawn falling projectile
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), npc.Top - new Vector2(0, 500), 
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), npc.Top - new Vector2(0, 500),
                         Vector2.UnitY, type, damage, 1, Player.whoAmI);
                 }
             }

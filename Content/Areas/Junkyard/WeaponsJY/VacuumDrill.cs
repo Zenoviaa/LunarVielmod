@@ -2,8 +2,8 @@
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
 using Stellamod.Items;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;

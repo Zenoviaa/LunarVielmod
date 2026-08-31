@@ -1,7 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
-using Stellamod.Dusts;
 using Stellamod.Effects.Generic;
 using Stellamod.Visual.Particles;
 using System;
@@ -71,7 +70,7 @@ public class BellSpikeRenderer : ModSystem
             }
             for (int i = 0; i < Draws.Count; i++)
             {
-             //   Draws[i].DrawTentacleFront(spriteBatch);
+                //   Draws[i].DrawTentacleFront(spriteBatch);
             }
         }
         spriteBatch.Begin(worldBeginner);
@@ -148,7 +147,7 @@ public class BellSpike : ModProjectile
         if (Main.netMode != NetmodeID.Server)
         {
             //Client only
-              BellSpikeRenderer.Draws.Add(new BellSpikeDraw(DrawBloomLine, DrawBackTentacle, DrawFrontTentacle, DrawGlow));
+            BellSpikeRenderer.Draws.Add(new BellSpikeDraw(DrawBloomLine, DrawBackTentacle, DrawFrontTentacle, DrawGlow));
         }
         Timer++;
         float numPoints = 100;
@@ -179,7 +178,7 @@ public class BellSpike : ModProjectile
         scalar *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(t / 180f));
         _scalar = scalar;
         _pillarFlameScale = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / 180f));
- 
+
         if (Timer == 1)
         {
             _randOffset = Main.rand.NextFloat(-15, 0);
@@ -189,7 +188,7 @@ public class BellSpike : ModProjectile
             {
                 Vector2 velocity = -Vector2.UnitY;
                 velocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
-                velocity *= Main.rand.NextFloat(15, 35);     
+                velocity *= Main.rand.NextFloat(15, 35);
                 if (Main.rand.NextBool(8))
                 {
                     FXUtil.GlowStretch(Projectile.Center, velocity);
@@ -228,7 +227,7 @@ public class BellSpike : ModProjectile
     }
 
 
-   private void DrawBackTentacle(SpriteBatch spriteBatch)
+    private void DrawBackTentacle(SpriteBatch spriteBatch)
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(Assets.AssetManager.LaserTextures.Aura, Projectile.Center);
         drawer.rotation = Projectile.velocity.ToRotation();
