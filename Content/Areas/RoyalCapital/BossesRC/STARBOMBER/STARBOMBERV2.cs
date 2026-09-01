@@ -390,7 +390,7 @@ public class STARBOMBERV2 : ScarletBoss,
     private int PeenarBlastDamage => 150;
 
     private int WalkUpStompDamage => 100;
-    private int SteamLaserDamage => 150;
+    private int SteamLaserDamage => 60;
     private int CrashDamage => 70;
     private int StarMissileDamage => 30;
     private int MachineGunDamage => 30;

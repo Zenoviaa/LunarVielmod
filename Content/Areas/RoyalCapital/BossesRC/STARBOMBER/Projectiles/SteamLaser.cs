@@ -134,6 +134,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
         {
             base.AI();
             Timer++;
+            if(Timer >= 30)
+            {
+                Projectile.hostile = false;
+            }
             if (Timer == 1)
             {
                 _startPoint = Projectile.Center;
