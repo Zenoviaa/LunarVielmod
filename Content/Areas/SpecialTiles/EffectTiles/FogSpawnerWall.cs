@@ -1,5 +1,4 @@
 ﻿using Stellamod.Common.Shaders;
-using Stellamod.Core.Foggy;
 using Stellamod.Core.LunarLightingSystem;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -43,7 +42,7 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
         {
             return false;
         }
-
+        /*
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
             LunarLightingRenderer fogSystem = ModContent.GetInstance<LunarLightingRenderer>();
@@ -80,6 +79,6 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
             fogShader.Speed = 1f;
             fogShader.Apply();
             return fogShader;
-        }
+        }*/
     }
 }

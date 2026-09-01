@@ -1,14 +1,9 @@
-﻿using Microsoft.Xna.Framework.Input;
-using ReLogic.Threading;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
-using Stellamod.Core.Foggy;
 using Stellamod.Core.Rendering;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
@@ -26,7 +21,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             get
             {
-                if(_offsets == null)
+                if (_offsets == null)
                 {
                     List<Vector2> offsets = new List<Vector2>(16);
                     UnifiedRandom random = new UnifiedRandom(1337);
@@ -48,10 +43,6 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private PointLights _pointLights;
         private ShadowMap _shadowMap;
-
-        private Dictionary<Point, Fog> _fogIndex = new();
-        private List<Fog> _fogsToRemove = new();
-        public bool renderFog;
         private Color _backLightColor;
         private Vector2 _previousScreenSize;
 
@@ -102,10 +93,10 @@ namespace Stellamod.Core.LunarLightingSystem
             ssaoShader.Offsets = Offsets;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(
-                SpriteSortMode.Deferred, 
+                SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
                 SamplerState.AnisotropicClamp,
-                DepthStencilState.None, 
+                DepthStencilState.None,
                 RasterizerState.CullNone,
                 ssaoShader.Effect,
                 Main.GameViewMatrix.TransformationMatrix);
@@ -229,13 +220,11 @@ namespace Stellamod.Core.LunarLightingSystem
                 return;
             if (!_isLoaded)
                 return;
-            RenderFog();
         }
 
         public override void PostUpdateWorld()
         {
             base.PostUpdateWorld();
-            UpdateFog();
         }
 
         private static bool DrawSunShadows2()
@@ -278,7 +267,7 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 backLightModifier.ModifyBackLight(ref BackLightColor);
             }
-   
+
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
             SmoothedBackLightColor = _backLightColor;
             SunColor = Color.Lerp(SunColor, GetSunColor(), 0.1f);

@@ -17,9 +17,11 @@ float Dither(float2 screenUV)
 
 float4 CloudNoise(float2 screenUV, float2 offset)
 {
+    screenUV += screenOffset;
+    screenUV = frac(screenUV);
     float2 fixedUV = screenUV * spriteSize * cloudTexelSize;
-    fixedUV *= float2(0.3, 1.0);
-    fixedUV += screenOffset;
+    fixedUV *= float2(0.6, 1.0) * 3.0;
+
     fixedUV += offset;
     fixedUV = frac(fixedUV);
     return tex2D(cloudSampler, fixedUV);

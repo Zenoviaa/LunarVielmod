@@ -9,4 +9,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Folder Include="Core\Foggy\" />
+	</ItemGroup>
 </Project>

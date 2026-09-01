@@ -1,10 +1,5 @@
-﻿using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Terror.TilesTR;
-using Stellamod.Core;
-using Stellamod.Core.Foggy;
-using Stellamod.Core.LunarLightingSystem;
+﻿using Stellamod.Core;
 using Stellamod.Core.Rendering;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -116,6 +111,8 @@ public class BarrierFogGlobalTile : GlobalTile
             return;
         if (TileID.Sets.BarrierFog[type] == 0)
             return;
+        if (!Main.tileSolid[type])
+            return;
 
         switch (TileID.Sets.BarrierFog[type])
         {
@@ -128,6 +125,8 @@ public class BarrierFogGlobalTile : GlobalTile
         }
     }
 }
+
+
 [Autoload(Side = ModSide.Client)]
 public class BarrierFog : ModSystem
 {
@@ -159,35 +158,8 @@ public class BarrierFog : ModSystem
 
         if (WhiteFogPoints.Count > 0 || RedFogPoints.Count > 0)
         {
-            //Draw clouds over the screen with a nice mask
-            var noiseSprite = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
-            var ditherSprite = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset.Value;
-            var pass = AssetReferences.Effects.Generic.BarrierFog.CreatePixelPass();
-            HlslSampler sampler = new HlslSampler();
-            sampler.Sampler = SamplerState.PointWrap;
-            sampler.Texture = _maskRT;
-            pass.Parameters.maskTarget = sampler;
-
-
-            HlslSampler cloudSampler = new HlslSampler();
-            cloudSampler.Sampler = SamplerState.PointWrap;
-            cloudSampler.Texture = noiseSprite;
-            pass.Parameters.cloudSampler = cloudSampler;
-
-            HlslSampler ditherSampler = new HlslSampler();
-            ditherSampler.Sampler = SamplerState.PointWrap;
-            ditherSampler.Texture = ditherSprite;
-            pass.Parameters.ditherSampler = ditherSampler;
-
-            pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.4f;
-            pass.Parameters.ditherTexelSize = ditherSprite.GetTexelSize();
-            pass.Parameters.cloudTexelSize = noiseSprite.GetTexelSize();
-            pass.Parameters.spriteSize = new Vector2(Main.screenWidth, Main.screenHeight);
-            pass.Parameters.screenOffset = DrawUtilities.CalculateScreenOffset(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight));
-            pass.Apply();
-
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, pass.Shader);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             spriteBatch.Draw(_maskRT, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
             spriteBatch.End();
         }
@@ -198,17 +170,81 @@ public class BarrierFog : ModSystem
         orig();
         if (Main.gameMenu)
             return;
+        if (WhiteFogPoints.Count <= 0 && RedFogPoints.Count <= 0)
+            return;
 
         //Render out the mask where the clouds will be drawing
         GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
         gDevice.SetRenderTarget(_maskRT);
         gDevice.Clear(Color.Transparent);
+
+
+        SpritebatchParams worldParams = SpritebatchParams.InWorldAndZoomed();
+
+        HlslSampler spriteSampler = new();
+        spriteSampler.Texture = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
+        spriteSampler.Sampler = SamplerState.LinearWrap;
+
+        var pass = AssetReferences.Effects.Generic.BigFog.CreatePixelPass();
+        pass.Parameters.spriteSampler = spriteSampler;
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 1.5f;
+        pass.Apply();
+
+        worldParams = worldParams with { effect = pass.Shader };
+        SpriteBatch spriteBatch = Main.spriteBatch;
+
+
+        SpritebatchParams blackParams = SpritebatchParams.InWorldAndZoomed();
+
+        //Draw the darkest possible color as a backdrop
+        spriteBatch.Begin(blackParams);
+
+        SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, Vector2.Zero);
+        foreach (Point fogTilePoint in WhiteFogPoints)
+        {
+            Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
+            blackDrawer.worldPosition = worldPos;
+            spriteBatch.Draw(blackDrawer);
+        }
+        foreach (Point fogTilePoint in RedFogPoints)
+        {
+            Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
+            blackDrawer.worldPosition = worldPos;
+            spriteBatch.Draw(blackDrawer);
+        }
+        spriteBatch.End();
+
+        //Draw oover ttop of that using max blend state so the colors blend nicely creating one seamless texture
+        spriteBatch.Begin(worldParams with { blendState = CustomBlendStates.Max });
+        foreach (Point fogTilePoint in WhiteFogPoints)
+        {
+            Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
+            SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
+            fogDrawer.color = Color.White;
+            float a = ExtraMath.Osc(0f, 1f, speed: 0, offset: fogTilePoint.X * fogTilePoint.Y);
+            fogDrawer.color *= a;
+            fogDrawer.scale *= 0.16f;
+            spriteBatch.Draw(fogDrawer);
+        }
+        foreach (Point fogTilePoint in RedFogPoints)
+        {
+            Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
+            SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
+            fogDrawer.color = Color.Red;
+            float a = ExtraMath.Osc(0f, 1f, speed: 0, offset: fogTilePoint.X * fogTilePoint.Y);
+            fogDrawer.color *= a;
+            fogDrawer.scale *= 0.16f;
+            spriteBatch.Draw(fogDrawer);
+        }
+        spriteBatch.End();
+
+        /*
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteCircle.Asset, Vector2.Zero);
         SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Max);
+        spriteBatch.Begin();
 
 
-        drawer.color = Color.White * 0.7f;
+        drawer.color = Color.White * 0.5f;
 
         foreach (Point tilePoint in WhiteFogPoints)
         {
@@ -216,14 +252,14 @@ public class BarrierFog : ModSystem
             spriteBatch.Draw(drawer);
         }
 
-        drawer.color = Color.Red  * 0.7f;
+        drawer.color = Color.Red * 0.7f;
 
         foreach (Point tilePoint in RedFogPoints)
         {
             drawer.worldPosition = tilePoint.ToWorldCoordinates();
             spriteBatch.Draw(drawer);
         }
-        spriteBatch.End();
+        spriteBatch.End();*/
     }
 }
 public abstract class BaseBarrierBlock : ModTile
@@ -288,7 +324,7 @@ public class BossBarrierBlock : ModTile
         Main.tileBlendAll[Type] = true;
         Main.tileLighted[Type] = true;
         Main.tileBlockLight[Type] = true;
-     
+
         LocalizedText name = CreateMapEntryName();
         AddMapEntry(new Color(178, 163, 190), name);
 

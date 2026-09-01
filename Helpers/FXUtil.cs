@@ -57,12 +57,7 @@ public static class FXUtil
             particle.Rotation = particle.Velocity.ToRotation();
         }
     }
-    public static FogParticle Fog(Vector2 position, Vector2 velocity)
-    {
-        FogParticle particle = LegacyParticle.NewParticle<FogParticle>(position, Vector2.Zero);
-        particle.Velocity = velocity;
-        return particle;
-    }
+
     public static GlowDonutParticle GlowDonutParticle(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor, Color fadeToColor, bool distortOut = false)
     {
         GlowDonutParticle particle = LegacyParticle.NewParticle<GlowDonutParticle>(position, Vector2.Zero);
