@@ -124,7 +124,6 @@ namespace Stellamod.Common.ArmorRework
 
         public int CountDiscoveredArmors()
         {
-            int count = 0;
             HashSet<int> armorTypes = new HashSet<int>();
             foreach(var item in DiscoveredArmors)
             {

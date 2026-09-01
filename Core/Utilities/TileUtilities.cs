@@ -4,7 +4,12 @@ namespace Stellamod.Core.Utilities;
 
 public static class TileUtilities
 {
-    public static void UpdateMap(Rectangle tileBounds, byte alpha)
+    /// <summary>
+    /// Sets the alpha value for a section of the minimap
+    /// </summary>
+    /// <param name="tileBounds">The bounds to update</param>
+    /// <param name="alpha">The alpha value to use</param>
+    public static void UpdateMap(in Rectangle tileBounds, in byte alpha)
     {
         for (int i = tileBounds.Left; i < tileBounds.Right; i++)
         {
@@ -16,6 +21,7 @@ public static class TileUtilities
         }
         Main.refreshMap = true;
     }
+
     /// <summary>
     /// Attempts to find the center of a closed spaced by averaging the nearest tiles on the left, right, top and bottom. Not guaranteed to work with complex shapes
     /// </summary>
