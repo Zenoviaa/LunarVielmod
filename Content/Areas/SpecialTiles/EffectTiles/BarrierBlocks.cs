@@ -178,9 +178,7 @@ public class BarrierFog : ModSystem
         gDevice.SetRenderTarget(_maskRT);
         gDevice.Clear(Color.Transparent);
 
-
         SpritebatchParams worldParams = SpritebatchParams.InWorldAndZoomed();
-
         HlslSampler spriteSampler = new();
         spriteSampler.Texture = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
         spriteSampler.Sampler = SamplerState.LinearWrap;

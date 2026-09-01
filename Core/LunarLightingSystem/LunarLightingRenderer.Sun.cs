@@ -70,6 +70,9 @@ public partial class LunarLightingRenderer
         if (!Lighting.UsingNewLighting)
             return;
 
+        if (ModContent.GetInstance<DomainExpansionManager>().noRender)
+            return;
+
         Vector2 stepSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
         stepSize *= 4 * -LightingGlobals.ShadowDirection;
 

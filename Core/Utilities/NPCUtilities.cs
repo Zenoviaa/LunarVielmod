@@ -9,6 +9,16 @@ namespace Stellamod.Core.Utilities;
 
 public static class NPCUtilities
 {
+    public static void SetDomainArenaY(NPC npc, ref float arenaY)
+    {
+        if(arenaY == 0)
+        {
+            npc.TargetClosest();
+            arenaY = Main.player[npc.target].Top.Y;
+            npc.netUpdate = true;
+        }
+
+    }
     /// <summary>
     /// Checks if you are a multiplayer client or if you're singleplayer and sends a spawn NPC packet accordingly
     /// <typeparam name="T"></typeparam>

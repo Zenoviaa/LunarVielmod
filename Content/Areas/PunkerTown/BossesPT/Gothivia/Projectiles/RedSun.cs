@@ -266,6 +266,11 @@ public class RedSun : ModProjectile,
         _sunAnimationFrame.maxFrame = HorizontalFrameCount * VerticalFrameCount;
         _sunAnimationFrame.UpdateTick();
         _targetScale = 0f;
+        if (!Parent.active)
+        {
+            Projectile.Kill();
+        }
+
         if (_blowtorchTimer < BlowtorchTime)
             _blowtorchTimer++;
         if (_flashTimer > 0)

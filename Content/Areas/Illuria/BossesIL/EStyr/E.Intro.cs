@@ -200,12 +200,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 blackseaRenderer.miniOrbDrawPosition = NPC.Center;
                 blackseaRenderer.miniOrbDrawScale = 0.4f;
             }
+            /*
 
             DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
             Vector2 targetPlatform = new Vector2(NPC.Center.X, fallSystem.hoverPlatformY - 128);
             Vector2 targetVelocity = targetPlatform - NPC.Center;
             NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, EasingFunction.InOutSine(completionRatio));
-
+            */
             //After a decent amount of time, switch to the hand out state 
             if (Timer >= headTurnTime)
             {

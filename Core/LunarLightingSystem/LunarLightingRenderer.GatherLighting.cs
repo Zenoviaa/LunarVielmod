@@ -112,7 +112,17 @@ public partial class LunarLightingRenderer
 
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_lightsRT);
-        graphicsDevice.Clear(_backLightColor);
+
+        if (ModContent.GetInstance<DomainExpansionManager>().noRender)
+        {
+            graphicsDevice.Clear(Color.White);
+            return;
+        }
+        else
+        {
+            graphicsDevice.Clear(_backLightColor);
+        }
+
 
         //Render Sun
         RenderSunLight();

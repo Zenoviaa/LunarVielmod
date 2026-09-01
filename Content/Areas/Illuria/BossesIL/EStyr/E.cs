@@ -12,6 +12,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
@@ -121,6 +122,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private float _attackNumber;
         private float _hoverTimer;
 
+        private float _arenaY;
         private bool InPhase2 => NPC.life < NPC.lifeMax * 0.5f;
         private bool InPhase3 => NPC.life < NPC.lifeMax * 0.2f;
         private ref float Timer => ref NPC.ai[0];
@@ -237,6 +239,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             writer.Write(_doneSpecial);
             writer.Write(_doneSpecial2);
             writer.Write(_startedFight);
+            writer.Write(_arenaY);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -249,6 +252,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _doneSpecial = reader.ReadBoolean();
             _doneSpecial2 = reader.ReadBoolean();
             _startedFight = reader.ReadBoolean();
+            _arenaY = reader.ReadSingle();
         }
 
         private void EnablePlatformArena()
@@ -315,9 +319,24 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (_startedFight)
             {
+                if(_arenaY == 0)
+                {
+                    NPC.TargetClosest();
+                    _arenaY = MyTarget.Top.Y;
+                    NPC.netUpdate = true;
+                }
+
                 BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
                 blackseaRenderer.renderBlackSea = true;
-                EnablePlatformArena();
+                DomainExpansionManager.UseDomain(new DomainParameters
+                {
+                    noWings = true,
+                    inSpace = true,
+                    hoveringPlatform = true,
+                    hoverPlatformY = _arenaY,
+                    noRender = _intro
+                });
+
             }
         
             UpdateClient();

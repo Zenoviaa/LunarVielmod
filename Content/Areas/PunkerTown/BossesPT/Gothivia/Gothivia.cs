@@ -106,6 +106,7 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
+    private float _arenaY;
     private int _timer;
     private bool _phase2Transition;
     private bool _keyDown;
@@ -232,25 +233,31 @@ public partial class Gothivia : ScarletBoss
             NPC.netUpdate = true;
         }
     }
-    private float Ground => 16000;
+    private float Ground => _arenaY;
 
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.WriteVector2(_teleportPosition);
+        writer.Write(_arenaY);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         _teleportPosition = reader.ReadVector2();
+        _arenaY = reader.ReadSingle();
     }
     private void EnablePlatformArena()
     {
-        DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
-        fallSystem.noWings = true;
-        fallSystem.inSpace = true;
-        fallSystem.hoveringPlatform = true;
-        fallSystem.hoverPlatformY = Ground;
+        NPCUtilities.SetDomainArenaY(NPC, ref _arenaY);
+        DomainExpansionManager.UseDomain(new DomainParameters
+        {
+            noWings = true,
+            inSpace = true,
+            hoveringPlatform = true,
+            hoverPlatformY = _arenaY,
+            noRender = true
+        });
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)

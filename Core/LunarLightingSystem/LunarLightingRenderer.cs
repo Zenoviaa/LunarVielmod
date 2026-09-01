@@ -86,6 +86,9 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             if (!LightingHelper.CanRenderPostProcessingEffects)
                 return;
+            if (ModContent.GetInstance<DomainExpansionManager>().noRender)
+                return;
+
             SSAOShader ssaoShader = ShaderContent.GetInstance<SSAOShader>();
             ssaoShader.StepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
 
