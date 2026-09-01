@@ -2,12 +2,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 {
@@ -20,7 +22,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         {
             TextureAsset = ModContent.Request<Texture2D>(texturePath);
             drawScale = Vector2.One;
-            recoilDistance = 24;
+            recoilDistance = 36;
             drawColor = Color.White;
         }
         public Asset<Texture2D> TextureAsset;
@@ -59,6 +61,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             part.shrink = true;
             part.noStretch = true;
         }
+        public void Prime2(Vector2 muzzlePoint)
+        {
+            _primeTimer = 45f;
+            SoundStyle primeSound = new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2");
+            primeSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(primeSound, muzzlePoint);
+            var part = LegacyParticle.NewParticle<GlowDonutParticle>(muzzlePoint, Vector2.Zero, Color.White);
+            part.Scale *= 4;
+            part.shrink = true;
+            part.noStretch = true;
+        }
         public void Update()
         {
             if (_primeTimer > 0)
@@ -72,15 +85,22 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 direction, Color lightColor)
         {
             _lastPosition = position;
-            Vector2 drawPosition = position - Main.screenPosition;
+            Vector2 drawPosition = position;
             drawPosition += GetRecoilOffset(direction);
 
             float primeProgress = _primeTimer / 45f;
             drawPosition += Main.rand.NextVector2Circular(4, 4) * primeProgress;
 
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, 
+                drawPosition + direction * 56);
+            glowDrawer.color = Color.Blue * 0.3f;
+            glowDrawer.color.A = 0;
+            glowDrawer.scale *= 0.6f;
+            spriteBatch.Draw(glowDrawer);
+
             float recoilAmount = _recoilTimer / 8f;
             Color finalColor = drawColor.MultiplyRGB(lightColor);
-            Vector2 drawOrigin = new Vector2(0, TextureAsset.Height() / 2f);
+
             Vector2 finalScale = drawScale;
             finalScale += Vector2.One * recoilAmount * 0.1f;
             float rotation = direction.ToRotation();
@@ -89,33 +109,53 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             if (direction.X < 0)
             {
                 spriteEffects = SpriteEffects.FlipVertically;
-                drawOrigin.Y = TextureAsset.Height() - drawOrigin.Y;
+  
             }
-            spriteBatch.Draw(TextureAsset.Value, drawPosition, null, finalColor, rotation, drawOrigin, finalScale, spriteEffects, 0);
+
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAsset, drawPosition);
+            drawer.color = finalColor;
+            drawer.rotation = rotation;
+            drawer.scale = finalScale;
+            drawer.spriteEffects = spriteEffects;
+            drawer.VerticalFrame(0, 2);
+            drawer.LeftCenterOrigin();
+            if(direction.X < 0)
+            {
+                drawer.drawOrigin.Y = drawer.sourceRect.Value.Height - drawer.drawOrigin.Y;
+            }
+            spriteBatch.Draw(drawer);
+
+            drawer.VerticalFrame(1, 2);
+            drawer.color = Color.White * ExtraMath.Osc(0f, 0.3f, speed: 6);
+            drawer.color.A = 0;
+            spriteBatch.Draw(drawer);
 
 
             Color glowColor = Color.White;
             glowColor.A = 0;
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(TextureAsset.Value, drawPosition, null, glowColor * recoilAmount, rotation, drawOrigin, finalScale, spriteEffects, 0);
+                drawer.color = glowColor * recoilAmount;
+                spriteBatch.Draw(drawer);
 
             }
             glowColor = Color.Red;
             glowColor.A = 0;
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(TextureAsset.Value, drawPosition, null, glowColor * recoilAmount, rotation, drawOrigin, finalScale, spriteEffects, 0);
+                drawer.color = glowColor * recoilAmount;
+                spriteBatch.Draw(drawer);
             }
             if(_primeTimer > 0)
             {
                 glowColor = Color.Red;
                 glowColor *= primeProgress;
                 glowColor.A = 0;
+                drawer.color = glowColor;
+         
                 for (int i = 0; i < 3; i++)
                 {
-                    spriteBatch.Draw(TextureAsset.Value, drawPosition, null, glowColor, rotation, drawOrigin, finalScale, spriteEffects, 0);
-
+                    spriteBatch.Draw(drawer);
                 }
             }
 
@@ -123,19 +163,48 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Color aimingLineColor = aimingReticleColor;
             aimingLineColor *= aimingReticle;
             aimingReticleColor.A = 0;
-            Texture2D aimingLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            Texture2D aimingLine = AssetReferences.Assets.NoiseTextures.BloomLine.Asset.Value;
             Vector2 lineOrigin = new Vector2(aimingLine.Size().X / 2f, 0f);
             Vector2 lineScale = new Vector2(0.01f, 1f);
             spriteBatch.Draw(aimingLine, drawPosition, null, aimingLineColor, rotation - MathHelper.PiOver2, lineOrigin, lineScale, SpriteEffects.None, 0);
         }
         
 
+     
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 position, Vector2 direction, Color lightColor)
         {
-            Draw(spriteBatch, position - Vector2.UnitY * 2, direction, lightColor);
-            Draw(spriteBatch, position + Vector2.UnitY * 2, direction, lightColor);
-            Draw(spriteBatch, position - Vector2.UnitX * 2, direction, lightColor);
-            Draw(spriteBatch, position + Vector2.UnitX * 2, direction, lightColor);
+            Vector2 drawPosition = position;
+            drawPosition += GetRecoilOffset(direction);
+
+            float primeProgress = _primeTimer / 45f;
+            drawPosition += Main.rand.NextVector2Circular(4, 4) * primeProgress;
+
+            float recoilAmount = _recoilTimer / 8f;
+            Color finalColor = drawColor.MultiplyRGB(lightColor);
+
+            Vector2 finalScale = drawScale;
+            finalScale += Vector2.One * recoilAmount * 0.1f;
+            float rotation = direction.ToRotation();
+            float angle = MathHelper.WrapAngle(rotation);
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (direction.X < 0)
+            {
+                spriteEffects = SpriteEffects.FlipVertically;
+
+            }
+
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAsset, drawPosition);
+            drawer.color = finalColor;
+            drawer.rotation = rotation;
+            drawer.scale = finalScale;
+            drawer.spriteEffects = spriteEffects;
+            drawer.VerticalFrame(0, 2);
+            drawer.LeftCenterOrigin();
+            if (direction.X < 0)
+            {
+                drawer.drawOrigin.Y = drawer.sourceRect.Value.Height - drawer.drawOrigin.Y;
+            }
+            spriteBatch.Draw(drawer);
         }
     }
 }

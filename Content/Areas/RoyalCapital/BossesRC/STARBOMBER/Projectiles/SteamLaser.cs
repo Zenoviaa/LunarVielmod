@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Particles;
@@ -47,9 +48,88 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Projectile.hostile = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 30;
+            Projectile.timeLeft = 60;
         }
 
+        private void CreateParticlesMini(Vector2 position)
+        {
+            for (float f = 0; f < 16; f++)
+            {
+                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = position,
+                    innerColor = Color.White.ToVector4(),
+                    outerColor = Color.Blue.ToVector4(),
+                    velocity = Main.rand.NextVector2Circular(14, 14),
+                    timeLeft = Main.rand.Next(60, 180)
+                });
+            }
+
+            for (float f = 0; f < 16; f++)
+            {
+                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = position,
+                    innerColor = Color.Pink.ToVector4(),
+                    outerColor = Color.Purple.ToVector4(),
+                    velocity = Main.rand.NextVector2Circular(18, 18),
+                    timeLeft = Main.rand.Next(60, 180)
+                });
+            }
+
+            for (float f = 0; f < 16; f++)
+            {
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                {
+                    position = position,
+                    innerColor = Color.LightBlue.ToVector4(),
+                    outerColor = Color.DarkBlue.ToVector4(),
+                    velocity = Main.rand.NextVector2Circular(32, 32),
+                    scale = new Vector2(Main.rand.NextFloat(0.5f, 1.5f)),
+                    timeLeft = Main.rand.Next(60, 360)
+                });
+            }
+        }
+
+        private void CreateParticles(Vector2 position)
+        {
+            for (float f = 0; f < 12; f++)
+            {
+                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = position,
+                    innerColor = Color.White.ToVector4(),
+                    outerColor = Color.Blue.ToVector4(),
+                    velocity = Main.rand.NextVector2Circular(32, 32),
+                    timeLeft = Main.rand.Next(60, 180)
+                });
+            }
+
+            for (float f = 0; f < 12; f++)
+            {
+                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = position,
+                    innerColor = Color.Pink.ToVector4(),
+                    outerColor = Color.Purple.ToVector4(),
+                    velocity = Main.rand.NextVector2Circular(48, 48),
+                    timeLeft = Main.rand.Next(60, 180)
+                });
+            }
+
+            for (float f = 0; f < 32; f++)
+            {
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                {
+                    position = position,
+                    innerColor = Color.LightBlue.ToVector4(),
+                    outerColor = Color.DarkBlue.ToVector4(),
+                    velocity = Main.rand.NextVector2Circular(48, 48),
+                    scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f)),
+                    timeLeft = Main.rand.Next(60, 360)
+                });
+            }
+        }
         public override void AI()
         {
             base.AI();
@@ -61,14 +141,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
                 railgun.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(railgun, Projectile.position);
 
-                for (int i = 0; i < 14; i++)
-                {
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Pink, 1f).noGravity = true;
-                }
+
+                CreateParticlesMini(Projectile.Center);
 
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 Vector2 explosionCenter = Projectile.Center + Projectile.velocity;
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(explosionCenter, 1024f, 32f);
+                FXUtil.ShakeCamera(Projectile.Center, 512, 8);
+                CreateParticles(explosionCenter);
                 if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), explosionCenter, Vector2.Zero, ModContent.ProjectileType<SiriusBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -77,11 +156,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 
                 ShakeScreenPosition.Shake = 3;
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, explosionCenter);
-                for (float f = 0; f < 16; f++)
-                {
-                    Dust.NewDustPerfect(explosionCenter, ModContent.DustType<GlowSparkleDust>(),
-                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Pink, Main.rand.NextFloat(1f, 3f)).noGravity = true;
-                }
+    
 
                 SoundStyle morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/MorrowExp");
                 morrowExp.PitchVariance = 0.3f;
@@ -107,8 +182,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
                 var b = FXUtil.GlowCircleBoom(explosionCenter,
                     innerColor: Color.White,
                     glowColor: Color.Pink,
-                    outerGlowColor: Color.Blue, duration: 25, baseSize: 0.24f);
-                b.Scale *= 3f;
+                    outerGlowColor: Color.Blue, duration: 60, baseSize: 0.24f);
+                b.Scale *= 2.4f;
                 for (float i = 0; i < 8; i++)
                 {
                     float progress = i / 4f;
@@ -162,9 +237,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
         {
             return Color.Lerp(Color.DarkGray, Color.Black, completionRatio);
         }
+        private float EaseOut => MathHelper.SmoothStep(1f, 0f, EasingFunction.OutSine(Timer / 60f));
         private float WidthFunction(float completionRatio)
         {
-            return 32 * EasingFunction.QuadraticBump(Timer / 30f);
+            return 32 * EaseOut;
         }
         private void DrawPixelatedBeam(GraphicsDevice graphicsDevice)
         {
@@ -177,19 +253,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 
             TrailDrawer.Draw(Main.spriteBatch, LaserPoints, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
         }
-        private void DrawLaser()
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            BlackFireShader shader = BlackFireShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.WhispyTrail;
-            shader.PrimaryTexture2 = TrailRegistry.StarTrail;
-            shader.InnerColor = Color.Aqua;
-            shader.OuterColor = Color.LightBlue;
-            shader.Distortion = 0.1f;
-            shader.Time = Timer * 0.07f;
-            TrailDrawer.Draw(spriteBatch, LaserPoints, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
 
-        }
         public void DrawPixelatedMuzzleFlash(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             Asset<Texture2D> muzzleFlashTexture = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/MuzzleFlash");
@@ -198,8 +262,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Color drawColor = Color.Pink;
             drawColor.A = 0;
 
-            float width = (float)Projectile.timeLeft / 30f;
-            float outWidth = EasingFunction.InOutSine(width);
+            float outWidth = EaseOut;
             float scale = outWidth;
             Vector2 flashScale = Vector2.One;
             flashScale.X *= 1.5f;
@@ -227,15 +290,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             drawColor = Color.White;
             drawColor.A = 0;
             spriteBatch.Draw(impactTexture.Value, drawCenter, null, drawColor, rot, drawOrigin, scale * 0.8f, SpriteEffects.None, 0);
-
-            impactTexture = AssetManager.GlowMask.SpiralVortex;
-            scale = 0.4f;
-            drawOrigin = impactTexture.Size() * 0.5f;
-            rot += Main.GlobalTimeWrappedHourly * 4;
-
-            float outEasing = (float)Projectile.timeLeft / 60f;
-            outEasing = EasingFunction.InOutSine(outEasing);
-            scale *= outEasing;
         }
         public override bool PreDraw(ref Color lightColor)
         {
