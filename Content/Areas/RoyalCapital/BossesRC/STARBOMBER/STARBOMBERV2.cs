@@ -387,16 +387,13 @@ public class STARBOMBERV2 : ScarletBoss,
     }
     private float SpinSpeed;
 
-    private int PeenarBlastDamage => 150;
-
-    private int WalkUpStompDamage => 100;
+    private int PeenarBlastDamage => 90;
     private int SteamLaserDamage => 60;
     private int CrashDamage => 70;
     private int StarMissileDamage => 30;
     private int MachineGunDamage => 30;
     private int WingSnipeDamage => 150;
-
-    private int StarRockDamage => 50;
+    private int StarRockDamage => 35;
 
     private bool InPhase2 => NPC.life < NPC.lifeMax / 2f;
     private ref float Timer => ref NPC.ai[0];
