@@ -922,7 +922,8 @@ public class MoonWaterSystem : ModSystem
 
 
             Vector3 lightColor = Lighting.GetColor(lightTilePoint).ToVector3();
-
+            if(_pixelWater.noLighting)
+                lightColor = Vector3.One;
             Color drawColor = new Color(lightColor.X, lightColor.Y, lightColor.Z, heightDraw.height);
 
             spriteBatch.Draw(heightTile, drawPosition + new Vector2(Main.offScreenRange), drawColor);

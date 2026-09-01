@@ -105,39 +105,44 @@ public class AuroraEffectRenderer : ModSystem
         if (isActive)
         {
             _activeTimer++;
-            if (Main.rand.NextBool(5))
+            if (!Main.LocalPlayer.ZoneAbyss)
             {
-                float xRand = Main.rand.NextFloat(-1000, 1000);
-                float yRand = Main.rand.NextFloat(-1000, 1000);
-                LegacyParticle.NewParticle<StarParticle>(Main.LocalPlayer.Center + new Vector2(xRand, yRand), Vector2.Zero);
-            }
-            if (Main.rand.NextBool(9))
-            {
-                Vector2 startPosition = Main.LocalPlayer.Top;
-                startPosition.Y -= 1000;
-                startPosition.X += Main.rand.NextFloat(-1000, 1000);
-                Point tilePosition = startPosition.ToTileCoordinates();
-                for(int i = 0; i < 200; i++)
+                if (Main.rand.NextBool(5))
                 {
-                    if (!WorldGen.InWorld(tilePosition.X, tilePosition.Y) || !WorldGen.SolidTile(tilePosition))
-                    {
-                        tilePosition.Y += 1;
-                    }
-
-                    else
-                    {
-                        break;
-                    }
+                    float xRand = Main.rand.NextFloat(-1000, 1000);
+                    float yRand = Main.rand.NextFloat(-1000, 1000);
+                    LegacyParticle.NewParticle<StarParticle>(Main.LocalPlayer.Center + new Vector2(xRand, yRand), Vector2.Zero);
                 }
+                if (Main.rand.NextBool(9))
+                {
+                    Vector2 startPosition = Main.LocalPlayer.Top;
+                    startPosition.Y -= 1000;
+                    startPosition.X += Main.rand.NextFloat(-1000, 1000);
+                    Point tilePosition = startPosition.ToTileCoordinates();
+                    for (int i = 0; i < 200; i++)
+                    {
+                        if (!WorldGen.InWorld(tilePosition.X, tilePosition.Y) || !WorldGen.SolidTile(tilePosition))
+                        {
+                            tilePosition.Y += 1;
+                        }
 
-                Vector2 spawnPoint = tilePosition.ToWorldCoordinates();
-                float scale = Main.rand.NextFloat(0.2f, 0.3f);
-                Vector2 spawnVelocity = -Vector2.UnitY * 1;
-                SparkleParticle sp = SparkleParticle.Spawn(spawnPoint, spawnVelocity, Color.White, Scale: scale);
-                sp.innerColor = Color.White;
-                sp.outerColor = Color.Blue;
-                sp.gravity = 0;
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    Vector2 spawnPoint = tilePosition.ToWorldCoordinates();
+                    float scale = Main.rand.NextFloat(0.2f, 0.3f);
+                    Vector2 spawnVelocity = -Vector2.UnitY * 1;
+                    SparkleParticle sp = SparkleParticle.Spawn(spawnPoint, spawnVelocity, Color.White, Scale: scale);
+                    sp.innerColor = Color.White;
+                    sp.outerColor = Color.Blue;
+                    sp.gravity = 0;
+                }
             }
+
+         
         }
         else
         {

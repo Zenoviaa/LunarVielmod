@@ -1,9 +1,22 @@
-﻿using Terraria;
+﻿using Stellamod.WorldG;
+using Terraria;
 
 namespace Stellamod.Core.Utilities;
 
 public static class TileUtilities
 {
+    /// <summary>
+    /// Returns the corrected world coordinates for a sprite being rendered during the tile rendering loop (they have a weird offset)
+    /// </summary>
+    /// <param name="i"></param>
+    /// <param name="j"></param>
+    /// <returns></returns>
+    public static Vector2 ToWorldCoordinatesFromTileRendering(in int i, in int j)
+    {
+        Vector2 pos2 = (new Vector2(i, j) + VeilGen.TileAdj) * 16;
+        return pos2;
+    }
+
     /// <summary>
     /// Sets the alpha value for a section of the minimap
     /// </summary>

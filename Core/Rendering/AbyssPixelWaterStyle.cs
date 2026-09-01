@@ -24,6 +24,8 @@ public class AbyssPixelWaterStyle : PixelWaterStyle
         pixelWater.Palette = PaletteAssets.FromPaletteFile(PaletteAssets.ABYSSWATER).Value;
         pixelWater.vibrant = true;
         pixelWater.ignoreSkyColor = true;
+        pixelWater.noLighting = true;
+
     
     }
 }

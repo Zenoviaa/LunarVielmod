@@ -9,6 +9,51 @@ namespace Stellamod.WorldG;
 
 public partial class VeilGen
 {
+
+    public static void GrowKelpArea<KelpTile>(Rectangle tileBounds, int minHeight, int maxHeight, int denom)
+        where KelpTile : ModTile
+    {
+        var genRand = WorldGen.genRand;
+        for (int x = tileBounds.Left; x < tileBounds.Right; x++)
+        {
+            for(int y= tileBounds.Top; y < tileBounds.Bottom; y++)
+            {
+                Tile tileBelow = Main.tile[x, y + 1];
+                Tile tile = Main.tile[x, y];
+                if (!tileBelow.HasTile)
+                    continue;
+                if (tile.LiquidAmount <= 0)
+                    continue;
+                if (!genRand.NextBool(denom))
+                    continue;
+                GrowKelp<KelpTile>(x, y, minHeight, maxHeight);
+            }
+        }
+    }
+    /// <summary>
+    /// Places a line of tiles
+    /// </summary>
+    /// <typeparam name="KelpTile"></typeparam>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="minHeight"></param>
+    /// <param name="maxHeight"></param>
+    public static void GrowKelp<KelpTile>(int x, int y, int minHeight, int maxHeight) 
+        where KelpTile : ModTile
+    {
+        var genRand = WorldGen.genRand;
+        int height = genRand.Next(minHeight, maxHeight);
+        int endHeight = y - height;
+        int startHeight = y;
+        for(int j = endHeight; j <= startHeight; j++)
+        {
+            Tile tile = Main.tile[x, j];
+            if (tile.HasTile)
+                break;
+            WorldGen.PlaceTile(x, j, ModContent.TileType<KelpTile>());
+        }
+    }
+
     public static void CreateAbyssConnectionCave(Vector2 start, Vector2 end)
     {
         var genRand = WorldGen.genRand;

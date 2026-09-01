@@ -307,7 +307,7 @@ public class VeilGenTester : ModItem
         });
         VeilGen.DecorateWetAreasWithZTile(new()
         {
-            denom = 8,
+            denom = 24,
             renderLayer = ZRenderLayer.Midground,
             targetTileTypes = groundTiles,
             tileBounds = rect,
@@ -317,6 +317,8 @@ public class VeilGenTester : ModItem
 
         VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles, 
             (ushort)ModContent.WallType<AbyssalDirtWall>());
+        VeilGen.GrowKelpArea<AbyssalKelp>(rect, minHeight: 5, maxHeight: 9, denom: 7);
+
         for (int x = left; x < right; x++)
         {
             for (int y = abyssHigh; y < abyssLow; y++)
