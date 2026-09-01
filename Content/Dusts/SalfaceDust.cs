@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Dusts
@@ -13,7 +14,7 @@ namespace Stellamod.Content.Dusts
         }
         public override void SetStaticDefaults()
         {
-            UpdateType = 110;
+            UpdateType = DustID.PureSpray;
         }
         public override bool Update(Dust dust)
         {

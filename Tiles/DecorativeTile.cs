@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
-using Stellamod.Helpers;
+﻿using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -22,7 +19,7 @@ namespace Stellamod.Tiles
 
 
             Tile tile = Main.tile[i, j];
-            if (tile.WallType != 0)
+            if (tile.WallType != WallID.None)
             {
                 DecorativeWall decorativeWall = ModContent.GetModWall(tile.WallType) as DecorativeWall;
                 if (decorativeWall == null)
@@ -131,7 +128,7 @@ namespace Stellamod.Tiles
                         Tile tile = Main.tile[x, y];
                         if (!tile.HasTile)
                             continue;
-                        if (tile.WallType == 0)
+                        if (tile.WallType == WallID.None)
                             continue;
                         var specialWall = ModContent.GetModWall(tile.WallType) as BaseSpecialWall;
                         if (specialWall == null)
@@ -183,7 +180,6 @@ namespace Stellamod.Tiles
             TopDown,
             Center
         }
-        private float _hoverLerp;
         private bool _shouldClick;
         public Color StructureColor { get; set; }
         public override string Texture => (GetType().FullName + "_S").Replace(".", "/");
@@ -276,7 +272,7 @@ namespace Stellamod.Tiles
                 }
             }
             Color color2 = Lighting.GetColor(lightI, lightJ);
-            
+
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
@@ -383,7 +379,7 @@ namespace Stellamod.Tiles
                 {
 
                 }
-                drawColor = drawColor.MultiplyRGB(Color.Lerp(Color.White, Color.Goldenrod, _hoverLerp * 5));
+
             }
             drawColor *= Alpha;
             Rotation = leafSway;
@@ -396,16 +392,16 @@ namespace Stellamod.Tiles
                 {
                     spriteBatch.Draw(texture,
                         drawPos - Main.screenPosition + Vector2.UnitX * o,
-                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                     spriteBatch.Draw(texture,
                         drawPos - Main.screenPosition - Vector2.UnitX * o,
-                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                     spriteBatch.Draw(texture,
                         drawPos - Main.screenPosition + Vector2.UnitY * o,
-                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                     spriteBatch.Draw(texture,
                         drawPos - Main.screenPosition - Vector2.UnitY * o,
-                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                 }
 
                 spriteBatch.RestartDefaults();
@@ -421,16 +417,16 @@ namespace Stellamod.Tiles
                 {
                     spriteBatch.Draw(texture,
                         drawPos - Main.screenPosition + Vector2.UnitX * o,
-                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                     spriteBatch.Draw(texture,
                         drawPos - Main.screenPosition - Vector2.UnitX * o,
-                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                     spriteBatch.Draw(texture,
                         drawPos - Main.screenPosition + Vector2.UnitY * o,
-                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                     spriteBatch.Draw(texture,
                         drawPos - Main.screenPosition - Vector2.UnitY * o,
-                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                        drawFrame, Color.White, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                 }
 
                 spriteBatch.RestartDefaults();
@@ -447,7 +443,7 @@ namespace Stellamod.Tiles
 
                 for (int w = 0; w < 3; w++)
                 {
-                    spriteBatch.Draw(texture, drawPos - Main.screenPosition, drawFrame, drawColor * 0.75f, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                    spriteBatch.Draw(texture, drawPos - Main.screenPosition, drawFrame, drawColor * 0.75f, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
                 }
 
                 spriteBatch.RestartDefaults();
@@ -456,7 +452,7 @@ namespace Stellamod.Tiles
             {
                 spriteBatch.Draw(texture,
                 drawPos - Main.screenPosition,
-                drawFrame, drawColor, leafSway, drawOrigin, DrawScale + _hoverLerp, GetSpriteEffects(i, j), 0);
+                drawFrame, drawColor, leafSway, drawOrigin, DrawScale, GetSpriteEffects(i, j), 0);
 
             }
         }

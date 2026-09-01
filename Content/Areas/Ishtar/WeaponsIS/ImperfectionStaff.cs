@@ -13,7 +13,6 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS;
 
 public class ImperfectionStaff : ModItem
 {
-    private int _dir;
     public override void SetDefaults()
     {
         Item.DefaultToArtifact();
@@ -50,8 +49,7 @@ public class ImperfectionStaff : ModItem
         }
 
         var p = Projectile.NewProjectileDirect(source, player.Center, velocity,
-            ModContent.ProjectileType<StaffWaveHold>(), damage, knockback, player.whoAmI,
-            ai2: _dir);
+            ModContent.ProjectileType<StaffWaveHold>(), damage, knockback, player.whoAmI);
         return false;
     }
 

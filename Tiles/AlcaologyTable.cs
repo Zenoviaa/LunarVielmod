@@ -1,11 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Dusts;
+﻿using Stellamod.Content.Dusts;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Stellamod.Content.Dusts;
 namespace Stellamod.Tiles
 {
     public class AlcaologyTable : ModTile

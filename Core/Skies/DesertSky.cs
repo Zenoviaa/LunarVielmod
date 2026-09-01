@@ -12,7 +12,7 @@ namespace Stellamod.Core.Skies
     {
         private Vector2 _parallax;
         private Vector2 _lastCameraPos;
-        private bool _active;
+
         private float _strength;
         private float _windSpeed;
 
@@ -21,12 +21,11 @@ namespace Stellamod.Core.Skies
 
         public override void Activate(Vector2 position, params object[] args)
         {
-            _active = true;
+
         }
 
         public override void Deactivate(params object[] args)
-        {
-            _active = false;
+        { 
         }
 
         public override bool IsActive() =>
@@ -34,7 +33,7 @@ namespace Stellamod.Core.Skies
 
         public override void Reset()
         {
-            _active = false;
+   
         }
 
         public override void Update(GameTime gameTime)

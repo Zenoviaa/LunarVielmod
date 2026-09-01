@@ -374,9 +374,9 @@ public class GoldenWisp : ModProjectile,
 public class EreshkigalsFinisherLaser : ModProjectile,
     IDrawToRenderTarget
 {
-    private NPC? _firstHitNPC;
-    private HashSet<NPC>? _trackedNPCs;
-    private List<Vector2>? _laserPoints;
+    private NPC _firstHitNPC;
+    private HashSet<NPC> _trackedNPCs;
+    private List<Vector2> _laserPoints;
     private List<Vector2> LaserPoints
     {
         get
@@ -653,7 +653,6 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
     private float _shootTimer;
     private bool _midPoint;
     private bool _hasCharged;
-    private float _sinOsc;
     private float _whiteFlashAlpha;
     private Vector2 _shakeOffset;
     private float _recoil;
@@ -1053,7 +1052,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
 
 
         float shakeSpeed = MathHelper.Lerp(0f, 6, easing);
-        dir *= MathHelper.Lerp(0.8f, 1f, _sinOsc);
+        dir *= 0.8f;
 
 
         SpritebatchDrawer gunDrawer = backDrawer;

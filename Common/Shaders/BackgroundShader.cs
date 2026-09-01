@@ -53,7 +53,7 @@ namespace Stellamod.Common.Shaders
     
     public class BackgroundParallaxShader : CrystalShader<BackgroundParallaxShader>
     {
-        private EffectParameter? _parallaxParam;
+        private EffectParameter _parallaxParam;
         public Vector2 Parallax
         {
             set

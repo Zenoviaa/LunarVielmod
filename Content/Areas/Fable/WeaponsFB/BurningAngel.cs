@@ -49,7 +49,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
     {
         private float _hitCount;
         private bool _hit;
-        private bool _playSound;
         public override void DefineCombo()
         {
             base.DefineCombo();

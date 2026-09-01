@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Content.Vanity.Illurian;
 using Terraria;
@@ -43,7 +42,7 @@ namespace Stellamod.NPCs.Illuria
             NPC.DeathSound = SoundID.NPCDeath6;
             NPC.value = 563f;
             NPC.knockBackResist = .45f;
-            NPC.aiStyle = 3;
+            NPC.aiStyle = NPCAIStyleID.Fighter;
             AIType = NPCID.SnowFlinx;
         }
 

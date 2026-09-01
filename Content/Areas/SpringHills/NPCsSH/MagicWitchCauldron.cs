@@ -4,7 +4,6 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Achievements;
 using Stellamod.Core;
 using Stellamod.Core.LunarLightingSystem;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
@@ -154,7 +153,7 @@ public class MagicWitchCauldron : VeilTownNPC
                 NPC.netUpdate = true;
                 NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
             }
-            if(Main.netMode != NetmodeID.Server)
+            if (Main.netMode != NetmodeID.Server)
             {
                 ModContent.GetInstance<WitchsBabySteps>().BrewCountCondition.Value++;
             }
@@ -169,7 +168,7 @@ public class MagicWitchCauldron : VeilTownNPC
             Item item = new Item((int)ItemType);
             string get = item.Name;
             Color color = Color.White;
-            if (item.IsAir || item.type == 0)
+            if (item.IsAir || item.type == ItemID.None)
             {
                 color = Color.DarkGray;
                 get = "...........";

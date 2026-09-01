@@ -1,13 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -33,10 +29,10 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             Item.height = 40;
             Item.useTime = 6;
             Item.useAnimation = 12;
-            Item.useStyle = 5;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 20, 0);
-            Item.rare = 4;
+            Item.rare = ItemRarityID.LightRed;
             Item.autoReuse = true;
             Item.shoot = ProjectileType<AuroraStar>();
             Item.shootSpeed = 15f;

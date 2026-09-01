@@ -74,7 +74,6 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Proje
 
     public class BlackLightning : VSProjectile
     {
-        private ZappingTrail _lightningTrail;
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float BurstCounter => ref Projectile.ai[2];
         private Vector2 _targetCenter;

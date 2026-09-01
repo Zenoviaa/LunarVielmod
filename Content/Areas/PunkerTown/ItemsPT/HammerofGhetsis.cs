@@ -46,7 +46,6 @@ public class HammerofGhetsis : BaseSwingItemV2
 
 public class HammerofGhetsisSlash : BaseSwingProjectileV2
 {
-    private float _hitCount;
     private bool _hit;
     private bool _playSound;
     public override void DefineCombo()
@@ -159,7 +158,7 @@ public class HammerofGhetsisSlash : BaseSwingProjectileV2
 
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
-        float pitch = MathHelper.Clamp(_hitCount * 0.05f, 0f, 1f);
+        float pitch = MathHelper.Clamp(0 * 0.05f, 0f, 1f);
         SoundStyle smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;
         smashSound.PitchVariance = 0.2f;
         SoundEngine.PlaySound(smashSound, Projectile.position);

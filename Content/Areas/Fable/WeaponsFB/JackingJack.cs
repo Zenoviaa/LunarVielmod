@@ -64,7 +64,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Summon_Hand_Down
         }
 
-        private int _frame;
         private float _frameTimer;
         private AnimationState _animation;
 

@@ -343,7 +343,6 @@ public class SwingalingCharge : ModProjectile
     private ref float State => ref Projectile.ai[1];
     private float ChargeTime => 60f;
     private float _charge;
-    private bool MaxCharge;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -499,7 +498,6 @@ public class SwingalingCharge : ModProjectile
         {
             if (Timer >= ChargeTime)
             {
-                MaxCharge = true;
                 Timer = 0;
                 State = 1;
             }

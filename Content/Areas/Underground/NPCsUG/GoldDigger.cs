@@ -1,7 +1,6 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Core.NPCHelpers;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -22,7 +21,7 @@ public class GoldDigger : ModNPC
         base.SetDefaults();
         NPC.width = 34;
         NPC.height = 40;
-        NPC.aiStyle = 3;
+        NPC.aiStyle = NPCAIStyleID.Fighter;
         NPC.damage = 34;
         NPC.defense = 8;
         NPC.lifeMax = 140;
@@ -30,9 +29,9 @@ public class GoldDigger : ModNPC
         NPC.DeathSound = SoundID.DD2_SkeletonDeath;
         NPC.value = 563f;
         NPC.knockBackResist = .45f;
-        NPC.aiStyle = 3;
+        NPC.aiStyle = NPCAIStyleID.Fighter;
         AIType = NPCID.SnowFlinx;
-    
+
     }
 
     public override void AI()

@@ -1,11 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Trails;
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -44,9 +38,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
             set => Projectile.ai[0] = value;
         }
         public float Timer2;
-        private bool Moved;
         private float alphaCounter = 0;
-        int Spin = 0;
         public override void AI()
         {
             Timer2++;
@@ -102,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CinderBraker"), Projectile.position);
 
                 }
-                Spin = Main.rand.Next(0, 2);
+
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 Projectile.netUpdate = true;
             }

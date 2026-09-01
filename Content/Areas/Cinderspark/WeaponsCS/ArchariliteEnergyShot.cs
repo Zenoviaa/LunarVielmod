@@ -1,12 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Terraria;
 using Terraria.Audio;
@@ -91,7 +88,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Projectile.height = 17;
 
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;

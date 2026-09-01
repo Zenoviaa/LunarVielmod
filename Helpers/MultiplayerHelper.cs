@@ -13,7 +13,6 @@ using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Town;
 using Stellamod.UI.Dialogue;
 using System;
@@ -326,15 +325,6 @@ namespace Stellamod
             switch (dialogueType)
             {
                 case DialogueType.Start_Verlia:
-                    foreach (NPC npc in Main.ActiveNPCs)
-                    {
-                        if (npc.type == ModContent.NPCType<StarteV>())
-                        {
-                            StarteV verlia = npc.ModNPC as StarteV;
-                            verlia.State = StarteV.ActionState.Death;
-                            verlia.ResetTimers();
-                        }
-                    }
                     break;
 
                 case DialogueType.Start_Irradia:
@@ -362,13 +352,7 @@ namespace Stellamod
             {
                 case DialogueType.Start_Verlia:
                     {
-                        DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
-                        //2. Create a new instance of your dialogue
-                        VerliasDialogue exampleDialogue = new VerliasDialogue();
-
-                        //3. Start it
-                        dialogueSystem.StartDialogue(exampleDialogue);
                     }
                     break;
                 case DialogueType.Start_Irradia:

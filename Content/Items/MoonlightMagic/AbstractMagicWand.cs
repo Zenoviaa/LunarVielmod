@@ -1,21 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common;
+﻿using Stellamod.Common;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Items.Weapons.Mage;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.Utilities;
 
 namespace Stellamod.Content.Items.MoonlightMagic
 {
@@ -54,7 +47,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Item.autoReuse = true;
             TrailLength = 16;
             Size = 16;
-      
+
             Item.shoot = ModContent.ProjectileType<AdvancedMagicStaffHold>();
             Item.shootSpeed = 15;
             Item.channel = true;
@@ -91,7 +84,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             List<Item> equippedEnchantments = new List<Item>();
             int normalEnchantmentCount = GetCombinedNormalSlotCount(player);
             int timedEnchantmentCount = GetCombinedTimedSlotCount(player);
-            for(int n = 0; n < normalEnchantmentCount && n < normalEnchantments.Count; n++)
+            for (int n = 0; n < normalEnchantmentCount && n < normalEnchantments.Count; n++)
             {
                 equippedEnchantments.Add(normalEnchantments[n]);
             }
@@ -112,9 +105,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
             ModifyElementPreferences(elements);
             if (elements.Count == 0)
                 return true;
-            foreach(int e in elements)
+            foreach (int e in elements)
             {
-                if(primaryElement.ModItem.Type == e)
+                if (primaryElement.ModItem.Type == e)
                 {
                     return true;
                 }
@@ -148,7 +141,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             while (normalEnchantments.Count <= length)
             {
                 Item air = new Item();
-                air.SetDefaults(0);
+                air.SetDefaults(ItemID.None);
                 normalEnchantments.Add(air);
             }
             for (int i = 0; i < length; i++)
@@ -160,7 +153,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             while (timedEnchantments.Count <= length)
             {
                 Item air = new Item();
-                air.SetDefaults(0);
+                air.SetDefaults(ItemID.None);
                 timedEnchantments.Add(air);
             }
             for (int i = 0; i < length; i++)
@@ -184,7 +177,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     {
                         if (element.IsSynergizingWith(element.Type))
                         {
-                             damageModifier += 0.05f;
+                            damageModifier += 0.05f;
                         }
                     }
                 }
@@ -242,7 +235,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             ModItem clone = base.Clone(newEntity);
             AbstractMagicWand staff = clone as AbstractMagicWand;
             staff.normalEnchantments = new List<Item>();
-            for(int i = 0; i < normalEnchantments.Count; i++)
+            for (int i = 0; i < normalEnchantments.Count; i++)
             {
                 staff.normalEnchantments.Add(normalEnchantments[i].Clone());
             }
@@ -275,7 +268,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             ModifyElementPreferences(preferences);
 
             string preferenceString = "";
-            if(preferences.Count > 0)
+            if (preferences.Count > 0)
             {
                 for (int p = 0; p < preferences.Count; p++)
                 {
@@ -309,7 +302,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 var item = timedEnchantments[i];
                 if (item.ModItem is BaseEnchantment enchantment)
                 {
-                    tooltipLine = new TooltipLine(Mod, $"MoonMagicEnchantT_{i+normalEnchantments.Count}", $"[i:{enchantment.Type}] " + enchantment.DisplayName.Value);
+                    tooltipLine = new TooltipLine(Mod, $"MoonMagicEnchantT_{i + normalEnchantments.Count}", $"[i:{enchantment.Type}] " + enchantment.DisplayName.Value);
                     tooltips.Add(tooltipLine);
                 }
             }
@@ -353,14 +346,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Item item = new Item(ModContent.ItemType<BasicElement>());
                 return item;
             }
-                
+
             return primaryElement;
         }
 
         public void SetEnchantment(Item item, int index, bool isTimedSlot)
         {
             List<Item> itemList = isTimedSlot ? ref timedEnchantments : ref normalEnchantments;
-            while(itemList.Count <= index)
+            while (itemList.Count <= index)
             {
                 Item air = new Item();
                 air.SetDefaults(ItemID.None);
@@ -418,7 +411,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public void RandomizeEnchantments()
         {
-            for(int i = 0; i < normalEnchantments.Count; i++)
+            for (int i = 0; i < normalEnchantments.Count; i++)
             {
                 var enchantmentsToSpawn = ItemHelper.Enchantments;
                 BaseEnchantment enchantmentToSwapTo = enchantmentsToSpawn[Main.rand.Next(0, enchantmentsToSpawn.Length)];

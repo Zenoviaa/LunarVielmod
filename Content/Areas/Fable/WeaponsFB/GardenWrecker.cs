@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.GunSystem;
+﻿using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Core.Utilities;
 using Stellamod.Items;
 using Stellamod.Projectiles;
 using Terraria;
@@ -76,7 +73,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         {
             Projectile.width = 8; // The width of projectile hitbox
             Projectile.height = 8; // The height of projectile hitbox
-            Projectile.aiStyle = 1; // The ai style of the projectile, please reference the source code of Terraria
+            Projectile.aiStyle = ProjAIStyleID.Arrow; // The ai style of the projectile, please reference the source code of Terraria
             Projectile.friendly = true; // Can the projectile deal damage to enemies?
             Projectile.hostile = false; // Can the projectile deal damage to the player?
             Projectile.DamageType = DamageClass.Ranged; // Is the projectile shoot by a ranged weapon?

@@ -34,7 +34,7 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
                     {
                         int wallType = tilesToChooseFrom[Main.rand.Next(0, tilesToChooseFrom.Length)];
                         if (tile.WallType == WallID.FlowerUnsafe ||
-                            tile.WallType == WallID.GrassUnsafe || tile.WallType == 0)
+                            tile.WallType == WallID.GrassUnsafe || tile.WallType == WallID.None)
                         {
                             WorldGen.KillWall(i, j);
                             WorldGen.PlaceWall(i, j, wallType, true);

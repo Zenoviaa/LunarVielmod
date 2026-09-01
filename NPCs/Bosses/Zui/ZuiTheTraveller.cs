@@ -1,11 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
+﻿using Stellamod.Buffs;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Vanity.Verlia;
-using Stellamod.Items.Consumables;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Zui;
 using Stellamod.NPCs.Bosses.Zui.Projectiles;
@@ -135,7 +130,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             NPC.npcSlots = 10f;
             NPC.scale = 2f;
 
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
 
 
 

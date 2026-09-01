@@ -1,16 +1,10 @@
-﻿using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.Content.BuildingTools;
 
@@ -79,22 +73,22 @@ public class TileEyeDropper : ModItem
                     wallTypeToItemType.TryAdd(item.createWall, item.type);
                 }
 
-                if(item.paint > 0)
+                if (item.paint > 0)
                 {
                     paintTypeToItemType.TryAdd(item.paint, item.type);
                 }
             }
 
 
-            if(player.altFunctionUse == 2)
+            if (player.altFunctionUse == 2)
             {
                 //When right clicking it'll give you paints
-                if (tile.WallColor > 0)
+                if (tile.WallColor > PaintID.None)
                 {
                     int itemType = paintTypeToItemType[tile.WallColor];
                     player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
                 }
-                else if (tile.TileColor > 0)
+                else if (tile.TileColor > PaintID.None)
                 {
                     int itemType = paintTypeToItemType[tile.TileColor];
                     player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
@@ -103,7 +97,7 @@ public class TileEyeDropper : ModItem
             else
             {
 
-              
+
                 if (tile.HasTile)
                 {
 
@@ -143,7 +137,7 @@ public class MagicPaintBucket : ModItem
 
     public override bool? UseItem(Player player)
     {
-        if(player.whoAmI == Main.myPlayer)
+        if (player.whoAmI == Main.myPlayer)
         {
             Point point = Main.MouseWorld.ToTileCoordinates();
             MagicTileUtility.GetFloodCreateTiles(player, out var selected);
@@ -155,7 +149,7 @@ public class MagicPaintBucket : ModItem
                     selected.wallType = 0;
             }
             MagicTileUtility.FloodFill(point, selected);
- 
+
         }
 
         return true;
@@ -194,7 +188,7 @@ public class MagicPaintBucketPreview : ModSystem
     {
         base.PostDrawTiles();
         Player player = Main.LocalPlayer;
-        if(player.HeldItem.type == ModContent.ItemType<TileEyeDropper>())
+        if (player.HeldItem.type == ModContent.ItemType<TileEyeDropper>())
         {
 
             SpriteBatch sb = Main.spriteBatch;
@@ -208,16 +202,16 @@ public class MagicPaintBucketPreview : ModSystem
         }
         if (player.HeldItem.type != ModContent.ItemType<MagicPaintBucket>())
             return;
-        
+
         Point tilePoint = Main.MouseWorld.ToTileCoordinates();
-        if(Main.GameUpdateCount % 12 == 0)
+        if (Main.GameUpdateCount % 12 == 0)
         {
             MagicTileUtility.GetFloodCreateTiles(player, out var selected);
             (int loops, HashSet<Point> visited) = MagicTileUtility.GetAffectedPoints(tilePoint, selected);
             _visited = visited;
         }
 
-        
+
         if (_visited == null)
             return;
 
@@ -227,7 +221,7 @@ public class MagicPaintBucketPreview : ModSystem
 
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
         drawer.color = Color.Green * 0.5f * ExtraMath.Osc(0.5f, 1f, speed: 6);
-        foreach(Point p in _visited)
+        foreach (Point p in _visited)
         {
             drawer.worldPosition = p.ToWorldCoordinates();
             spriteBatch.Draw(drawer);
@@ -240,7 +234,7 @@ public class MagicTilePlacer : ModSystem
 {
     public override void Load()
     {
-        base.Load();       
+        base.Load();
         On_Player.FigureOutWhatToPlace += AllowAnythingToPlace;
     }
 
@@ -253,7 +247,7 @@ public class MagicTilePlacer : ModSystem
     private void AllowAnythingToPlace(On_Player.orig_FigureOutWhatToPlace orig, Player self, Tile targetTile, Item sItem, out int tileToCreate, out int previewPlaceStyle, out bool? overrideCanPlace, out int? forcedRandom)
     {
         orig(self, targetTile, sItem, out tileToCreate, out previewPlaceStyle, out overrideCanPlace, out forcedRandom);
-        if(self.GetModPlayer<TheMagicHandPlayer>().hasMagicHand)
+        if (self.GetModPlayer<TheMagicHandPlayer>().hasMagicHand)
             overrideCanPlace = true;
     }
 
@@ -303,12 +297,12 @@ public static class MagicTileUtility
             width += 1;
             height += 1;
             OldTiles = new OldTile[width, height];
-            for(int x = topLeft.X; x < bottomRight.X + 1; x++)
+            for (int x = topLeft.X; x < bottomRight.X + 1; x++)
             {
-                for(int y = topLeft.Y; y < bottomRight.Y + 1; y++)
+                for (int y = topLeft.Y; y < bottomRight.Y + 1; y++)
                 {
                     Tile tile = Main.tile[x, y];
-                   
+
                     OldTiles[x - topLeft.X, y - topLeft.Y] = new OldTile
                     {
                         oldTile = tile.TileType,
@@ -375,7 +369,7 @@ public static class MagicTileUtility
         {
             tileParams.tileReplace = tile.TileType;
         }
-        if (tile.WallType > 0)
+        if (tile.WallType > WallID.None)
         {
             tileParams.wallReplace = tile.WallType;
         }
@@ -391,9 +385,9 @@ public static class MagicTileUtility
 
         //Decide blocker function
         BlockerFunction solidFunction;
-        if(tileParams.wallType != -1)
+        if (tileParams.wallType != -1)
         {
-            if(tileParams.wallReplace != -1)
+            if (tileParams.wallReplace != -1)
             {
                 solidFunction = IsWallBlockedWallReplace;
             }
@@ -404,7 +398,7 @@ public static class MagicTileUtility
         }
         else
         {
-            if(tileParams.tileReplace != -1)
+            if (tileParams.tileReplace != -1)
             {
                 solidFunction = IsTileBlockedTileReplace;
             }
@@ -433,12 +427,12 @@ public static class MagicTileUtility
             Point up = next + new Point(0, -1);
             Point down = next + new Point(0, 1);
 
-          
+
             if (visited.Count > Limit)
                 break;
 
 
-            if (next.X < 1 || next.X > Main.maxTilesX - 1|| next.Y < 1 || next.Y > Main.maxTilesY - 1)
+            if (next.X < 1 || next.X > Main.maxTilesX - 1 || next.Y < 1 || next.Y > Main.maxTilesY - 1)
             {
                 continue;
             }
@@ -491,15 +485,15 @@ public static class MagicTileUtility
             return true;
         if (tile.WallType == tileParams.wallReplace)
             return false;
-        if (tile.WallType == 0)
+        if (tile.WallType == WallID.None)
             return true;
-        return tile.WallType != 0;
+        return tile.WallType != WallID.None;
         //return IsWallBlocked(tilePoint, tileParams);
     }
     public static bool IsWallBlocked(in Point tilePoint, in MagicTileParams tileParams)
     {
         Tile tile = Main.tile[tilePoint];
-        return tile.WallType > 0 || WorldGen.SolidTile(tilePoint);
+        return tile.WallType > WallID.None || WorldGen.SolidTile(tilePoint);
     }
 
     public static void FloodUndo()
@@ -508,9 +502,9 @@ public static class MagicTileUtility
         if (TileSnapshots.Count <= 0)
             return;
         TileSnapshot snapShot = TileSnapshots.Pop();
-        for(int x = 0; x < snapShot.OldTiles.GetLength(0); x++)
+        for (int x = 0; x < snapShot.OldTiles.GetLength(0); x++)
         {
-            for(int y = 0; y < snapShot.OldTiles.GetLength(1); y++)
+            for (int y = 0; y < snapShot.OldTiles.GetLength(1); y++)
             {
                 ref var oldTile = ref snapShot.OldTiles[x, y];
                 Point tilePoint = snapShot.TopLeft + new Point(x, y);
@@ -523,7 +517,7 @@ public static class MagicTileUtility
                 tile.TileFrameX = oldTile.oldTileFrameX;
                 tile.TileFrameY = oldTile.oldTileFrameY;
                 tile.TileFrameNumber = oldTile.oldTileFrameNumber;
-               // WorldGen.SquareTileFrame(tilePoint.X, tilePoint.Y);
+                // WorldGen.SquareTileFrame(tilePoint.X, tilePoint.Y);
 
                 tile.WallType = oldTile.oldWall;
                 tile.WallColor = oldTile.oldWallColor;
@@ -532,7 +526,7 @@ public static class MagicTileUtility
                 tile.WallFrameNumber = oldTile.oldWallFrameNumber;
                 tile.IsTileInvisible = oldTile.oldTileInvis;
                 tile.IsWallInvisible = oldTile.oldWallinvis;
-              //  WorldGen.SquareWallFrame(tilePoint.X, tilePoint.Y);
+                //  WorldGen.SquareWallFrame(tilePoint.X, tilePoint.Y);
             }
         }
         if (Main.netMode == NetmodeID.SinglePlayer)
@@ -548,7 +542,7 @@ public static class MagicTileUtility
     public static void FloodFill(Point tilePoint, in MagicTileParams tileParams)
     {
         (int loops, HashSet<Point> visited) = GetAffectedPoints(tilePoint, tileParams);
-        if(loops > Limit)
+        if (loops > Limit)
         {
             Vector2 pos = tilePoint.ToWorldCoordinates();
             CombatText.NewText(new Rectangle((int)pos.X, (int)pos.Y, 16, 16), Color.Red, "....", true);
@@ -572,7 +566,7 @@ public static class MagicTileUtility
         TileSnapshots.Push(new TileSnapshot(topLeft, bottomRight));
         if (tileParams.tileType != -1)
         {
-          
+
             foreach (Point next in visited)
             {
                 Tile tile = Main.tile[next];
@@ -611,13 +605,13 @@ public static class MagicTileUtility
         int maxSquareSize = 25;
 
         //ints round downward, we need to round up to make sure we actually get all the tiles
-        int numXLoops = (int)MathF.Ceiling((float)width / (float)maxSquareSize);
-        int numYLoops = (int)MathF.Ceiling((float)height / (float)maxSquareSize);
+        int numXLoops = (int)MathF.Ceiling(width / (float)maxSquareSize);
+        int numYLoops = (int)MathF.Ceiling(height / (float)maxSquareSize);
 
         //Here we are dividing up the tile squares because if we pack too much data in the same square 
-        for(int x = 0; x < numXLoops; x++)
+        for (int x = 0; x < numXLoops; x++)
         {
-            for(int y = 0; y < numYLoops; y++)
+            for (int y = 0; y < numYLoops; y++)
             {
                 Point topLeft = new Point();
                 topLeft.X = i + x * maxSquareSize;

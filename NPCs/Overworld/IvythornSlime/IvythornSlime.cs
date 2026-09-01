@@ -1,5 +1,3 @@
-
-using Microsoft.Xna.Framework;
 using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -32,7 +30,7 @@ namespace Stellamod.NPCs.Overworld.IvythornSlime
             NPC.buffImmune[BuffID.Venom] = true;
             NPC.alpha = 60;
             NPC.knockBackResist = .75f;
-            NPC.aiStyle = 1;
+            NPC.aiStyle = NPCAIStyleID.Slime;
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
         }

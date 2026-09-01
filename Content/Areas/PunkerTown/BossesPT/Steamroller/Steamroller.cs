@@ -255,7 +255,6 @@ public class Steamroller : ScarletBoss,
     private bool _renderDashTrail;
     private bool _crashed;
     private bool _contactDamage;
-    private bool _spawnedSmall;
     private bool _isMainWorm;
     private float _delayTimer;
     private AttackVariant _variant;

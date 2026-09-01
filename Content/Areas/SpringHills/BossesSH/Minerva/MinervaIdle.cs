@@ -2,7 +2,6 @@
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.TriggersSystem.Triggers;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -38,7 +37,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             NPC.npcSlots = 10f;
 
             NPC.friendly = true; // NPC Will not attack player
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
 
             NPC.npcSlots = 0;
             NPC.HitSound = SoundID.NPCHit1;

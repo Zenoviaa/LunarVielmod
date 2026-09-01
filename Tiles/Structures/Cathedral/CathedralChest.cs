@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Dusts;
-using Stellamod.Helpers;
+﻿using Stellamod.Content.Dusts;
 using Stellamod.Items.Placeable.Cathedral;
 using Terraria;
 using Terraria.Audio;
@@ -270,7 +268,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
             if (player.cursorItemIconText == "")
             {
                 player.cursorItemIconEnabled = false;
-                player.cursorItemIconID = 0;
+                player.cursorItemIconID = ItemID.None;
             }
         }
     }

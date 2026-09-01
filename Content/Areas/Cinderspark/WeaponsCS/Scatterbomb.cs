@@ -1,10 +1,7 @@
 ﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -61,7 +58,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             Projectile.width = 20;
             Projectile.height = 20;
-            Projectile.aiStyle = 2;
+            Projectile.aiStyle = ProjAIStyleID.ThrownProjectile;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.tileCollide = true;

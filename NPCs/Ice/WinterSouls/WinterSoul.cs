@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.CommonMaterials;
 using System;
 using System.IO;
@@ -37,7 +35,7 @@ namespace Stellamod.NPCs.Ice.WinterSouls
 
         public override void SetDefaults()
         {
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.defense = 3;

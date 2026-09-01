@@ -1,11 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Trails;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -72,7 +68,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Projectile.light = 0.5f; // How much light emit around the projectile
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.tileCollide = true; // Can the projectile collide with tiles?
-            AIType = 1;
+            AIType = ProjectileID.WoodenArrowFriendly;
         }
 
         public override void AI()
@@ -95,7 +91,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
             for (int i = 0; i < 3; i++)
             {
-                float progress = (float)i / 3f;
+                float progress = i / 3f;
                 float rot = progress * MathHelper.TwoPi;
                 Vector2 startVel = Vector2.UnitY.RotatedBy(rot);
                 startVel *= 8;
@@ -136,7 +132,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
             for (int i = 0; i < 4; i++)
             {
-                float rot = (float)i / 4f;
+                float rot = i / 4f;
                 Vector2 vel = rot.ToRotationVector2() * VectorHelper.Osc(0f, 4f, speed: 16);
                 Vector2 flameDrawPos = drawPos + vel + Main.rand.NextVector2Circular(2, 2);
                 flameDrawPos -= Vector2.UnitY * 4;
@@ -251,7 +247,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
                 if (npcToChase != null)
                 {
-                    Projectile.velocity = Projectile.velocity.MoveTowards((npcToChase.Center-Projectile.Center).SafeNormalize(Vector2.Zero) * 10, 0.5f);
+                    Projectile.velocity = Projectile.velocity.MoveTowards((npcToChase.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 10, 0.5f);
                     Projectile.velocity *= 1.05f;
                 }
 

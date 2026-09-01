@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Dusts;
-using Stellamod.Helpers;
+﻿using Stellamod.Content.Dusts;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
@@ -134,7 +132,7 @@ namespace Stellamod.Tiles.ShrineBreakers.Govheil
             if (player.cursorItemIconText == "")
             {
                 player.cursorItemIconEnabled = false;
-                player.cursorItemIconID = 0;
+                player.cursorItemIconID = ItemID.None;
             }
         }
 

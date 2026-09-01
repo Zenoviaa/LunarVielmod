@@ -1,7 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
-using Stellamod.Helpers;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -145,7 +144,7 @@ public partial class Jiitas : ScarletBoss
 
         //Setup the music and boss bar
         Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/JiitasMask");
-        NPC.aiStyle = 0;
+        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
         //  NPC.BossBar = ModContent.GetInstance<JiitasBossBar>();
     }
 
@@ -249,7 +248,7 @@ public partial class Jiitas : ScarletBoss
             Vector2 drawPos = centerPos - Main.screenPosition;
             drawPos.Y -= NPC.height / 4;
             drawPos += Vector2.Lerp(Vector2.Zero, -Vector2.UnitY * 16, ExtraMath.Osc(0f, 1f));
-            float interpolant = (float)i / (float)OldCenterPos.Length;
+            float interpolant = i / (float)OldCenterPos.Length;
             Color drawColor = Color.Lerp(Color.Blue, Color.LightBlue, interpolant);
             drawColor *= MathHelper.SmoothStep(1.0f, 0f, interpolant);
             drawColor = drawColor.MultiplyRGB(lightColor);

@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -51,7 +48,7 @@ namespace Stellamod.Common.XixianFlaskSystem
                 if (item == Item)
                 {
                     player.inventory[i] = new Item();
-                    player.inventory[i].SetDefaults(0);
+                    player.inventory[i].SetDefaults(ItemID.None);
                 }
             }
         }

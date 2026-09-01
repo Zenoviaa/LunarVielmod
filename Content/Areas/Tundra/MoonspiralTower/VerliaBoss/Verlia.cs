@@ -8,10 +8,6 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -463,7 +459,7 @@ public class Verlia : ScarletBoss,
 {
     private enum AIState
     {
-      
+
         Spawn,
         Despawn,
         Idle,
@@ -678,7 +674,7 @@ public class Verlia : ScarletBoss,
             NPC.TargetClosest();
             if (!NPC.HasValidTarget)
             {
-                if(State != AIState.Despawn)
+                if (State != AIState.Despawn)
                     SwitchState(AIState.Despawn);
             }
         }
@@ -707,22 +703,22 @@ public class Verlia : ScarletBoss,
                 break;
             case AIState.Two_Bouncing_Moons:
                 AI_TwoBouncingMoons();
-              //  _showMagicCircle = true;
+                //  _showMagicCircle = true;
                 break;
 
             case AIState.Spining_Little_Moons:
                 AI_SpinningLittleMoons();
-              //  _showMagicCircle = true;
+                //  _showMagicCircle = true;
                 break;
 
             case AIState.Blade_Dance:
                 AI_BladeDance();
-               // _showMagicCircle = true;
+                // _showMagicCircle = true;
                 break;
 
             case AIState.Blue_Magic_Sword:
                 AI_BlueMagicSword();
-              //  _showMagicCircle = true;
+                //  _showMagicCircle = true;
                 break;
 
             case AIState.Blade_Dance_V2:
@@ -732,7 +728,7 @@ public class Verlia : ScarletBoss,
 
             case AIState.Clone_Summon:
                 AI_CloneSummon();
-              //  _showMagicCircle = true;
+                //  _showMagicCircle = true;
                 break;
 
             case AIState.Running:
@@ -741,17 +737,17 @@ public class Verlia : ScarletBoss,
 
             case AIState.Sword_Fall:
                 AI_SwordFall();
-             //   _showMagicCircle = true;
+                //   _showMagicCircle = true;
                 break;
 
             case AIState.Desperation_Big_Moon:
                 AI_DesperationBigMoon();
-             //   _showMagicCircle = true;
+                //   _showMagicCircle = true;
                 break;
         }
 
 
-        if (State != AIState.Idle && Animator.GetAnimation() != "Explode") 
+        if (State != AIState.Idle && Animator.GetAnimation() != "Explode")
             _showWings = true;
 
 
@@ -781,7 +777,7 @@ public class Verlia : ScarletBoss,
         NPC.velocity.Y -= 1f;
         FaceTarget();
         Animator.PlayAnimation(ANIM_EXPLODE);
-        if(Timer >= 90)
+        if (Timer >= 90)
         {
             NPC.active = false;
         }
@@ -851,7 +847,7 @@ public class Verlia : ScarletBoss,
 
             SwitchState(state);
 
-           
+
         }
 
         if (_dying)
@@ -859,7 +855,7 @@ public class Verlia : ScarletBoss,
             SwitchState(AIState.Desperation_Big_Moon);
         }
 
-    //   SwitchState(AIState.Desperation_Big_Moon);
+        //   SwitchState(AIState.Desperation_Big_Moon);
     }
 
     private void Teleport(Vector2 pos)
@@ -944,14 +940,14 @@ public class Verlia : ScarletBoss,
             SoundStyle inSound = new SoundStyle($"Stellamod/Assets/Sounds/VDisappear");
             inSound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(inSound, NPC.position);
-         
+
             _startVelocity = NPC.velocity;
             float dir = Main.rand.NextBool(2) ? -1 : 1;
             TeleportAbovePlayer(144);
 
-           
+
         }
-        if(Timer == 5)
+        if (Timer == 5)
         {
             var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
             fx.Scale *= 1.8f;
@@ -979,7 +975,7 @@ public class Verlia : ScarletBoss,
                 break;
             }
         }
-     //   _showMagicCircle = true;
+        //   _showMagicCircle = true;
 
         float inTime = 80f;
         float ratio = Timer / inTime;
@@ -1009,8 +1005,8 @@ public class Verlia : ScarletBoss,
         Vector2 rotationOffset = (NPC.Center - pos).SafeNormalize(Vector2.Zero);
         Vector2 below = Vector2.UnitY;
         float dp = Vector2.Dot(below, rotationOffset);
-       
-        if(dp < 0.99f)
+
+        if (dp < 0.99f)
         {
             Vector2 targetPos = pos + rotationOffset.RotatedBy(0.025f) * 400;
             Vector2 targetVelocity = (targetPos - NPC.Center);
@@ -1065,7 +1061,7 @@ public class Verlia : ScarletBoss,
                     {
                         if (MultiplayerHelper.IsHost)
                         {
-                            var modProj = Projectile.NewProjectileDirect(SourceFromThis, NPC.Center + -Vector2.UnitY * 384, Vector2.Zero, 
+                            var modProj = Projectile.NewProjectileDirect(SourceFromThis, NPC.Center + -Vector2.UnitY * 384, Vector2.Zero,
                                 ModContent.ProjectileType<VerliaDesperationMoon>(), Desperation_Moon_Damage, 1, Main.myPlayer);
                             _moon = modProj.ModProjectile as VerliaDesperationMoon;
                             if (_moon != null)
@@ -1074,7 +1070,7 @@ public class Verlia : ScarletBoss,
                             }
                         }
                     }
-    
+
                     FaceTarget();
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     if (Animator.IsFinished())
@@ -1089,7 +1085,7 @@ public class Verlia : ScarletBoss,
                     FaceTarget();
                     NPC.velocity *= 0.9f;
                     Animator.PlayAnimation(ANIM_HOLDUP);
-                    if(Timer >= 200)
+                    if (Timer >= 200)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1099,13 +1095,13 @@ public class Verlia : ScarletBoss,
                 break;
             case 4:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         _startVelocity = NPC.velocity;
                     }
                     FaceTarget();
                     Vector2 pos = NPC.Center;
-                    if(_moon != null)
+                    if (_moon != null)
                     {
                         pos = _moon.Projectile.Center;
                     }
@@ -1154,7 +1150,7 @@ public class Verlia : ScarletBoss,
                     Animator.PlayAnimation(ANIM_IDLESUMMON);
                     FaceTarget();
                     SpinAroundMoon();
-                    if(AttackCounter == 1)
+                    if (AttackCounter == 1)
                     {
                         if (Timer >= 200)
                         {
@@ -1176,7 +1172,7 @@ public class Verlia : ScarletBoss,
             case 7:
                 {
 
-            
+
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     FaceTarget();
                     SpinAroundMoonUntilBelow();
@@ -1186,8 +1182,8 @@ public class Verlia : ScarletBoss,
                 {
                     if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
-   
-                        if(_moon != null)
+
+                        if (_moon != null)
                         {
                             _moon.Projectile.ai[1] = _dying ? 5 : 4;
                         }
@@ -1195,8 +1191,8 @@ public class Verlia : ScarletBoss,
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     FaceTarget();
                     NPC.velocity *= 0.8f;
-             
-                    if(_moon != null)
+
+                    if (_moon != null)
                     {
                         _moon.parentIndex = NPC.whoAmI;
                     }
@@ -1211,14 +1207,14 @@ public class Verlia : ScarletBoss,
                 break;
             case 9:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Moaning"), NPC.position);
                     }
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     FaceTarget();
                     NPC.velocity *= 0.8f;
-                    if(Timer >= 60)
+                    if (Timer >= 60)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1234,7 +1230,7 @@ public class Verlia : ScarletBoss,
 
                     if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
-                        if(_moon != null)
+                        if (_moon != null)
                         {
                             _moon.holdState++;
                             _moon.Projectile.netUpdate = true;
@@ -1248,7 +1244,7 @@ public class Verlia : ScarletBoss,
 
                     if (_dying)
                     {
-                        if(Timer >= 30f)
+                        if (Timer >= 30f)
                         {
                             Timer = 0;
                             AttackCycle += 2;
@@ -1263,7 +1259,7 @@ public class Verlia : ScarletBoss,
                             AttackCycle++;
                         }
                     }
-    
+
                 }
                 break;
             case 11:
@@ -1273,7 +1269,7 @@ public class Verlia : ScarletBoss,
                 break;
             case 12:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Moaning"));
                     }
@@ -1281,10 +1277,10 @@ public class Verlia : ScarletBoss,
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     NPC.velocity.X *= 0.9f;
                     FaceTarget();
-                    if(Timer >= 75)
+                    if (Timer >= 75)
                     {
 
-                        if(_moon == null || !_moon.Projectile.active)
+                        if (_moon == null || !_moon.Projectile.active)
                         {
                             NPC.Kill();
                         }
@@ -1312,24 +1308,24 @@ public class Verlia : ScarletBoss,
                 break;
             case 1:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VerliaSONATO"), NPC.position);
                     }
-                
+
                     FaceTarget();
                     _warning = true;
                     float range = 1280;
                     float numBlades = 32;
                     float timeBetweenBlades = 5;
-                    if (Timer % timeBetweenBlades == 0  && AttackCounter < numBlades)
+                    if (Timer % timeBetweenBlades == 0 && AttackCounter < numBlades)
                     {
                         AttackCounter++;
                         if (MultiplayerHelper.IsHost)
                         {
                             float ratio = AttackCounter / numBlades;
 
-                            float offset = MathHelper.Lerp(range, 0f, ratio); 
+                            float offset = MathHelper.Lerp(range, 0f, ratio);
                             Vector2 pos = NPC.Center;
                             pos.X += offset;
                             pos.Y -= 256;
@@ -1360,7 +1356,7 @@ public class Verlia : ScarletBoss,
 
     private void ExplodeOut()
     {
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VTeleportOut"), NPC.position);
         }
@@ -1370,16 +1366,16 @@ public class Verlia : ScarletBoss,
             var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightSkyBlue, Color.DarkBlue);
             fx.Scale *= 2f;
 
-            for(float f = 0; f < 4f; f++)
+            for (float f = 0; f < 4f; f++)
             {
                 var sp = FaintSmokeParticle.SpawnInAlphaLayer(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2));
                 sp.Scale *= Main.rand.NextFloat(0.5f, 0.75f);
-          //      sp.behindLayer = true;
+                //      sp.behindLayer = true;
                 sp.noShrink = true;
                 sp.fadeToColor = Color.Black;
                 sp.color = Color.Lerp(Color.Blue, Color.Black, 0.75f);
             }
- 
+
         }
 
 
@@ -1406,14 +1402,14 @@ public class Verlia : ScarletBoss,
                 break;
             case 1:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordSheethe"), NPC.position);
                     }
                     FaceTarget();
                     _warning = true;
                     Animator.PlayAnimation(ANIM_READYDASH);
-                    if(Timer % 6 == 0)
+                    if (Timer % 6 == 0)
                     {
                         Vector2 pos = NPC.Center;
                         float range = Main.rand.NextFloat(128, 196);
@@ -1443,39 +1439,39 @@ public class Verlia : ScarletBoss,
                         inSound.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(inSound, NPC.position);
                         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"), NPC.position);
-                   
+
 
                         var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
                         fx.Scale *= 1.8f;
                         float speed = MathHelper.Lerp(10f, 35, EasingFunction.Clamp(AttackCounter / (dashCount / 2f)));
                         _runningVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * speed;
-                        
+
                         FaceTarget();
                     }
 
-                    if(Timer == 4 && MultiplayerHelper.IsHost)
+                    if (Timer == 4 && MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, ModContent.ProjectileType<StarryMoonTrail>(), 1, 1, Main.myPlayer, ai0: NPC.whoAmI);
                     }
 
-                    if(AttackCounter == 0)
+                    if (AttackCounter == 0)
                     {
                         _startVelocity = _runningVelocity.SafeNormalize(Vector2.Zero);
 
                     }
                     DustTrailSmokeEffects();
                     JapanFootsteps();
-           
+
                     _runningVelocity *= 1.02f;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, _runningVelocity, 0.85f);
-   
+
                     _attacking = true;
                     _showTrail = true;
                     Animator.PlayAnimation(ANIM_RUN);
 
 
 
-                    Vector2 nextPosition = NPC.Center + NPC.velocity ;
+                    Vector2 nextPosition = NPC.Center + NPC.velocity;
                     Vector2 edgePosition = _startPosition + _runningVelocity.SafeNormalize(Vector2.Zero) * circleSize;
                     Vector2 dirToEdge = (edgePosition - nextPosition).SafeNormalize(Vector2.Zero);
                     float dp = Vector2.Dot(_runningVelocity.SafeNormalize(Vector2.Zero), dirToEdge);
@@ -1509,10 +1505,10 @@ public class Verlia : ScarletBoss,
                         NPC.velocity *= 0.9f;
                         if (MultiplayerHelper.IsHost)
                         {
-                     
-          
+
+
                             Vector2 pos = MyTarget.Center;
-     
+
                             float ratio = AttackCounter / dashCount;
                             pos += -_startVelocity.RotatedBy(MathHelper.TwoPi * ratio * 2) * circleSize * 0.65f;
                             Teleport(pos);
@@ -1577,13 +1573,13 @@ public class Verlia : ScarletBoss,
                 break;
             case 2:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightSkyBlue, Color.DarkBlue);
                         fx.Scale *= 2f;
 
 
-                        for(float f = 0; f < 32f; f++)
+                        for (float f = 0; f < 32f; f++)
                         {
                             Vector2 velocity = Main.rand.NextVector2CircularEdge(18, 18);
                             var dp = DustParticle.Spawn(NPC.Center, velocity);
@@ -1610,11 +1606,11 @@ public class Verlia : ScarletBoss,
                     }
 
 
-                    if(Timer == 60)
+                    if (Timer == 60)
                     {
                         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VerliaSONATO"), NPC.position);
                     }
-                   // NPC.velocity *= 0.9f;
+                    // NPC.velocity *= 0.9f;
                     Animator.PlayAnimation(ANIM_PULSE);
                     if (Animator.IsFinished() && Timer >= 100)
                     {
@@ -1701,7 +1697,7 @@ public class Verlia : ScarletBoss,
                         _warning = true;
                         TeleportsFarAboveYou();
                     }
-                
+
                 }
                 break;
             case 1:
@@ -1714,7 +1710,7 @@ public class Verlia : ScarletBoss,
                     {
                         if (MultiplayerHelper.IsHost)
                         {
-                            if(_phase2)
+                            if (_phase2)
                                 ThrowOutStars();
                             Vector2 forwardVector = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
                             var proj = Projectile.NewProjectileDirect(SourceFromThis, NPC.Center, forwardVector, ModContent.ProjectileType<VerliaGreatBlade>(), Great_Blade_Damage, 1, Main.myPlayer, ai2: NPC.whoAmI);
@@ -1727,7 +1723,7 @@ public class Verlia : ScarletBoss,
                                     greatBlade.Projectile.netUpdate = true;
                                 }
                             }
-                 
+
                         }
                     }
                     NPC.velocity *= 0.9f;
@@ -1747,7 +1743,7 @@ public class Verlia : ScarletBoss,
                         {
                             float dir = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
                             Vector2 velocity = Vector2.UnitX * dir;
-                            Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity, 
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
                                 ModContent.ProjectileType<MoonSlash>(), Moon_Slash_Damage, 1, Main.myPlayer);
                         }
                     }
@@ -1759,9 +1755,9 @@ public class Verlia : ScarletBoss,
                         if (Animator.IsFinished())
                         {
                             Timer = 0;
-                            AttackCycle+=2;
+                            AttackCycle += 2;
                         }
-     
+
                     }
                     else
                     {
@@ -1771,7 +1767,7 @@ public class Verlia : ScarletBoss,
                             AttackCycle++;
                         }
                     }
-         
+
                 }
                 break;
             case 3:
@@ -1814,7 +1810,7 @@ public class Verlia : ScarletBoss,
                     CameraTargetSystem.AddTarget(NPC.Center);
                     if (Timer == 1)
                     {
-                        if(MultiplayerHelper.IsHost && _phase2)
+                        if (MultiplayerHelper.IsHost && _phase2)
                         {
                             ThrowOutStars();
                         }
@@ -1965,7 +1961,7 @@ public class Verlia : ScarletBoss,
                             pos += Main.rand.NextVector2Circular(32, 32);
 
 
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, Vector2.Zero, 
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, Vector2.Zero,
                                 ModContent.ProjectileType<MoonShot>(), Moon_Shot_Damage, 0f, Owner: Main.myPlayer,
                             ai1: style);
                         }
@@ -2146,7 +2142,7 @@ public class Verlia : ScarletBoss,
                     fx.Scale *= 2f;
                 }
 
-                if(Timer == 60)
+                if (Timer == 60)
                 {
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VerliaSONATO"));
                 }
@@ -2159,8 +2155,8 @@ public class Verlia : ScarletBoss,
                 }
                 break;
             case 3:
-   
-                
+
+
                 ExplodeOut();
                 break;
         }
@@ -2213,7 +2209,7 @@ public class Verlia : ScarletBoss,
         Animator.PlayAnimation(ANIM_IDLESUMMON);
 
         NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 2f;
-        if(Timer >= 100)
+        if (Timer >= 100)
         {
             SwitchState(AIState.IdleOut);
         }
@@ -2246,12 +2242,12 @@ public class Verlia : ScarletBoss,
         {
             if (!_dying)
             {
-                if(Main.netMode != NetmodeID.Server)
+                if (Main.netMode != NetmodeID.Server)
                 {
                     ScreenShaderSystem tintSystem = ModContent.GetInstance<ScreenShaderSystem>();
                     tintSystem.TintScreen(Color.White, 0.2f, 15);
                     float numDust = 16;
-                    for(float f =0; f < numDust;f++)
+                    for (float f = 0; f < numDust; f++)
                     {
                         Vector2 offset = Main.rand.NextVector2CircularEdge(64, 64);
                         DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
@@ -2416,7 +2412,7 @@ public class Verlia : ScarletBoss,
         glowDrawer.rotation = Main.GlobalTimeWrappedHourly;
         spriteBatch.Draw(glowDrawer);
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSpellCircle, DrawLayer.BehindNPCsWithOutline);
-        if(_inwardAlpha > 0)
+        if (_inwardAlpha > 0)
         {
             SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
             sbDrawer.color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(_inwardAlpha)) * 0.4f;
@@ -2427,7 +2423,7 @@ public class Verlia : ScarletBoss,
         }
         DrawAfterImage(spriteBatch);
         DrawWings(spriteBatch, screenPos, drawColor);
-     
+
         DrawSprite(spriteBatch, Vector2.Zero, drawColor);
         return false;
     }
@@ -2524,7 +2520,7 @@ public class Verlia : ScarletBoss,
 
         glowDrawer.rotation = MathHelper.ToRadians(-degrees);
         glowDrawer.drawOrigin.X = glowDrawer.texture.Size().X - glowDrawer.drawOrigin.X;
-    //    glowDrawer.drawOrigin = new Vector2(AssetManager.GlowMask.SimpleGlowCircle.Width() * 0.2f, AssetManager.GlowMask.SimpleGlowCircle.Height() * 0.5f);
+        //    glowDrawer.drawOrigin = new Vector2(AssetManager.GlowMask.SimpleGlowCircle.Width() * 0.2f, AssetManager.GlowMask.SimpleGlowCircle.Height() * 0.5f);
         spriteBatch.Draw(glowDrawer);
 
 
@@ -2563,23 +2559,23 @@ public class Verlia : ScarletBoss,
         wingShader.Tiling = Vector2.One * 2.5f;
         wingShader.ScrollOffset = new Vector2(-Main.GlobalTimeWrappedHourly * 0.4f, 0.0f);
 
-   //     DrawWings_Inner2(spriteBatch);
+        //     DrawWings_Inner2(spriteBatch);
 
         DrawWings_Inner(spriteBatch);
         //return;
 
         float degrees = -MathHelper.Lerp(8, 15, ExtraMath.Osc(0f, 1f, speed: 3));
         spriteBatch.Restart(effect: wingShader.Effect, sortMode: SpriteSortMode.Immediate);
- 
+
         SpritebatchDrawer wingDrawer;
-      
+
         //Draw main wings
         wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         wingDrawer.worldPosition.Y -= HeightOffset;
         wingDrawer.color = Color.Lerp(Color.White, Color.Black, 0.5f) * 0.5f;
-        wingDrawer.rotation = MathHelper.ToRadians(degrees) + RightWingRotation; 
+        wingDrawer.rotation = MathHelper.ToRadians(degrees) + RightWingRotation;
         wingDrawer.scale = RightWingScale;
         spriteBatch.Draw(wingDrawer);
 
@@ -2591,7 +2587,7 @@ public class Verlia : ScarletBoss,
 
         //Draw stars in wings
         spriteBatch.Restart(effect: wingShader.Effect, sortMode: SpriteSortMode.Immediate);
-        wingShader.Tiling = Vector2.One *16f;
+        wingShader.Tiling = Vector2.One * 16f;
         wingShader.ScrollingTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise2").Value;
         wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
         wingDrawer.LeftCenterOrigin();
@@ -2609,7 +2605,7 @@ public class Verlia : ScarletBoss,
         wingDrawer.scale = LeftWingScale;
         spriteBatch.Draw(wingDrawer);
 
-    
+
 
         wingShader.BloomColorEnd = Color.White;
         wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingOutlineTextureAsset, NPC.Center);

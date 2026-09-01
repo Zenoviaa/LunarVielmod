@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Dialogue;
+﻿using Stellamod.Content.Dialogue;
 using Stellamod.Core;
-using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.TriggersSystem.Triggers;
-using Stellamod.Helpers;
 using Stellamod.NPCs;
 using System;
 using System.Collections.Generic;
@@ -39,7 +36,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             NPC.knockBackResist = 0f;
             NPC.noGravity = false;
             NPC.npcSlots = 10f;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.knockBackResist = 0.5f;

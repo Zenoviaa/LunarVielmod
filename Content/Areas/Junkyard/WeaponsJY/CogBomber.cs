@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
-using Stellamod.Common.GunSystem;
+﻿using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Pixelation;
@@ -89,12 +87,12 @@ public class CogBomb : ModProjectile
     {
         Projectile.width = 20;
         Projectile.height = 20;
-        Projectile.aiStyle = 2;
+        Projectile.aiStyle = ProjAIStyleID.ThrownProjectile;
         Projectile.friendly = true;
         Projectile.hostile = false;
         Projectile.tileCollide = true;
         Projectile.timeLeft = 3600;
-     
+
     }
 
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -113,7 +111,7 @@ public class CogBomb : ModProjectile
     public override void AI()
     {
         Timer++;
-        if(Timer % 6 == 0)
+        if (Timer % 6 == 0)
         {
             var dp = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(40, 40), -Projectile.velocity.SafeNormalize(Vector2.Zero));
             dp.dampening = 0.05f;
@@ -131,7 +129,7 @@ public class CogBomb : ModProjectile
 
         if (this.OwnedByLocalClient())
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<CogBombBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
 
@@ -160,7 +158,7 @@ public class CogBombBoom : ModProjectile,
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             for (int i = 0; i < 14; i++)
             {
@@ -170,8 +168,8 @@ public class CogBombBoom : ModProjectile,
             {
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
             }
-        
-            for(int i = 0; i < 14; i++)
+
+            for (int i = 0; i < 14; i++)
             {
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
                 Vector2 vel = Main.rand.NextVector2Circular(10, 10);
@@ -182,7 +180,7 @@ public class CogBombBoom : ModProjectile,
                 smokeParitcle.Scale *= 2f;
             }
 
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
                 Vector2 vel = Main.rand.NextVector2Circular(16, 16);
@@ -195,7 +193,7 @@ public class CogBombBoom : ModProjectile,
 
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Red, duration: 12, baseSize: 0.24f);
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode with {  PitchVariance = 0.6f }, Projectile.position);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode with { PitchVariance = 0.6f }, Projectile.position);
         }
     }
     public override bool PreDraw(ref Color lightColor)
@@ -205,6 +203,6 @@ public class CogBombBoom : ModProjectile,
 
     public void DrawToRenderTargets()
     {
-     
+
     }
 }

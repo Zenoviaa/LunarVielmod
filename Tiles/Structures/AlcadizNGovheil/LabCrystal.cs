@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Dusts;
+﻿using Stellamod.Content.Dusts;
 using System;
 using Terraria;
 using Terraria.GameContent.ObjectInteractions;
@@ -215,7 +213,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
             if (player.cursorItemIconText == "")
             {
                 player.cursorItemIconEnabled = false;
-                player.cursorItemIconID = 0;
+                player.cursorItemIconID = ItemID.None;
             }
         }
 

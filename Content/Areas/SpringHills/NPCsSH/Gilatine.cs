@@ -1,14 +1,8 @@
-﻿using Microsoft.Build.Utilities;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Core;
-using Stellamod.Core.DialogueSystem;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -37,7 +31,7 @@ public class DragonSegment
         {
             if (_parent != null)
                 _parent.children.Remove(this);
-               
+
             _parent = value;
             if (_parent != null)
                 _parent.children.Add(this);
@@ -83,11 +77,11 @@ public class DragonRig
 
     public void ResolveInner(DragonSegment child)
     {
-        if(child.parent != null)
+        if (child.parent != null)
             child.a = child.parent.b;
 
         child.b = child.a + child.totalAngle.ToRotationVector2() * child.length;
-        foreach(DragonSegment innerChild in child.children)
+        foreach (DragonSegment innerChild in child.children)
         {
             ResolveInner(innerChild);
         }
@@ -109,9 +103,9 @@ public class Gilatine : VeilTownNPC
 
     private DragonSegment _headSegment;
     private DragonSegment[] _bodySegments;
- //   private DragonSegment[] _frontLegSegments;
-  //  private DragonSegment[] _backLegSegments;
- //   private DragonSegment[] _wingSegments;
+    //   private DragonSegment[] _frontLegSegments;
+    //  private DragonSegment[] _backLegSegments;
+    //   private DragonSegment[] _wingSegments;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -124,7 +118,7 @@ public class Gilatine : VeilTownNPC
             return;
         _headTextureAsset = ModContent.Request<Texture2D>(Texture + "_Head");
         _bodyTextureAssets = new Asset<Texture2D>[5];
-        for(int i = 0; i < _bodyTextureAssets.Length; i++)
+        for (int i = 0; i < _bodyTextureAssets.Length; i++)
         {
             _bodyTextureAssets[i] = ModContent.Request<Texture2D>(Texture + "_Body_" + i);
         }
@@ -163,10 +157,10 @@ public class Gilatine : VeilTownNPC
         bodyWidths[2] = 20;
         bodyWidths[3] = 8;
         bodyWidths[4] = 20;
-        for(int i = 0; i < _bodySegments.Length; i++)
+        for (int i = 0; i < _bodySegments.Length; i++)
         {
             DragonSegment bodySegment = new DragonSegment(segmentLength: bodyWidths[i]);
-            if(i == 0)
+            if (i == 0)
             {
                 bodySegment.parent = _headSegment;
             }
@@ -187,7 +181,7 @@ public class Gilatine : VeilTownNPC
         NPC.friendly = true; // NPC Will not attack player
         NPC.width = 32;
         NPC.height = 32;
-        NPC.aiStyle = 0;
+        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
         NPC.damage = 90;
         NPC.defense = 42;
         NPC.lifeMax = 200;
@@ -203,7 +197,7 @@ public class Gilatine : VeilTownNPC
     {
         return false;
     }
-    
+
     private void ResolveKinematics()
     {
         _rig.ResolveFK(NPC.Center);
@@ -314,11 +308,11 @@ public class Gilatine : VeilTownNPC
 
         Vector2 forwardVectory = (_headSegment.a - _headSegment.b).SafeNormalize(Vector2.Zero);
         float dp = Vector2.Dot(forwardVectory, lookVectory);
-        if(dp > 0.25f)
+        if (dp > 0.25f)
         {
             float lookAngle = lookVectory.ToRotation();
             _headAngle = Utils.AngleLerp(_headAngle, lookAngle, 0.1f);
-  
+
         }
         else
         {
@@ -327,7 +321,7 @@ public class Gilatine : VeilTownNPC
 
         headDrawer.rotation = _headAngle;
         headDrawer.LeftCenterOrigin();
-     
+
         drawAngle = MathHelper.WrapAngle(drawAngle + MathHelper.PiOver2);
         if (drawAngle < 0)
         {

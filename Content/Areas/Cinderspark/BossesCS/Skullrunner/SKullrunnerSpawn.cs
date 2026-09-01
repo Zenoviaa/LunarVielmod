@@ -38,7 +38,6 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             SpawningLaughingGrin,
         }
 
-        private bool _freezeFrame;
         private AnimationState _animation;
 
         private ref float Timer => ref NPC.ai[0];
@@ -237,14 +236,12 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
 
             if (Timer < 60)
             {
-                _freezeFrame = true;
                 //Rising into the air
                 float risingInterpolant = Timer / 60f;
                 NPC.velocity.Y = MathHelper.Lerp(-4, 0, risingInterpolant);
             }
             else if (Timer < 180)
             {
-                _freezeFrame = false;
                 //Sin left and right bobbing up and down while laughing
                 NPC.velocity.Y = MathF.Sin(Timer * 0.25f);
 

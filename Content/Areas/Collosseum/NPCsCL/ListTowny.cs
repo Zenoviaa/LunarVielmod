@@ -29,7 +29,7 @@ public class ListTowny : VeilTownNPC
         NPC.friendly = true; // NPC Will not attack player
         NPC.width = 38;
         NPC.height = 50;
-        NPC.aiStyle = 0;
+        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
         NPC.damage = 90;
         NPC.defense = 42;
         NPC.lifeMax = 200;
@@ -43,7 +43,7 @@ public class ListTowny : VeilTownNPC
     }
 
     public override void SetChatButtons(ref string button, ref string button2)
-    { 
+    {
         button2 = Language.GetTextValue("LegacyInterface.28");
         button = LangText.Chat(this, "Button");
     }

@@ -6,8 +6,6 @@ using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Particles;
 using Stellamod.Core.TriggersSystem.Triggers;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -49,7 +47,7 @@ public class VerliaIdle : VeilTownNPC,
         NPC.knockBackResist = 0f;
         NPC.noGravity = true;
         NPC.npcSlots = 10f;
-        NPC.aiStyle = 0;
+        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0.5f;

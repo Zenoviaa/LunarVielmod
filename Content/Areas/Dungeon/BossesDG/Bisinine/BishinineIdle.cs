@@ -2,7 +2,6 @@
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.TriggersSystem.Triggers;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -28,7 +27,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 54;
             NPC.height = 106;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
             NPC.damage = 90;
             NPC.defense = 42;
             NPC.lifeMax = 2000;

@@ -1,9 +1,4 @@
-﻿using Stellamod.Assets;
-using Stellamod.Helpers;
-using Stellamod.Trails;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.Graphics.Shaders;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,7 +6,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectile
 
 public class StarSuperShockwave : ModProjectile
 {
-    private Vector2[] _shockwavePos;
     private ref float Timer => ref Projectile.ai[0];
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()

@@ -4,11 +4,8 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -67,7 +64,7 @@ public class Hypnotizer : BaseCrossbowItem
     {
         base.StaminaShootBow(player, source, shootParams);
         var crossShot = Projectile.NewProjectileDirect(source, shootParams.position, shootParams.fireVelocity, ModContent.ProjectileType<HypnotizerArrow>(), shootParams.damage, shootParams.knockBack, player.whoAmI);
-       // crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+        // crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
     }
     public override void AddRecipes()
     {
@@ -250,8 +247,8 @@ public class HypnotizerStaminaShotExplosionProjectile : ModProjectile
             {
                 float rot = Main.rand.NextFloat(0f, 1f) * MathHelper.TwoPi;
                 Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(8, 16);
-                DustParticle.Spawn(Projectile.Center , velocity);
-               // Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 1f));
+                DustParticle.Spawn(Projectile.Center, velocity);
+                // Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 1f));
             }
 
             for (float f = 0f; f < 16; f++)

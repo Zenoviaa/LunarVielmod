@@ -63,7 +63,6 @@ public class IrradiaspearSlash : BaseSwingProjectileV2
     
     private bool _init;
     private bool _hit;
-    private bool _didHitStop;
     private float _traveledRotation;
     private float _oldRot;
     public override void DefineCombo()

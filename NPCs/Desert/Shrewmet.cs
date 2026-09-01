@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -44,7 +43,7 @@ namespace Stellamod.NPCs.Desert
             NPC.DeathSound = SoundID.NPCDeath6;
             NPC.value = 563f;
             NPC.knockBackResist = .45f;
-            NPC.aiStyle = 38;
+            NPC.aiStyle = NPCAIStyleID.Snowman;
             AIType = NPCID.MisterStabby;
             NPC.noTileCollide = false;
         }

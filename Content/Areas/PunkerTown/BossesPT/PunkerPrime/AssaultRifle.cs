@@ -125,7 +125,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            float numDust = 3f;
             for (float f = 0; f < 7; f++)
             {
                 Vector2 fireVelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero);
