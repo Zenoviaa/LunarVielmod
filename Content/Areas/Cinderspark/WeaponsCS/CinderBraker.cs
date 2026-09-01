@@ -204,7 +204,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
         }
-        private bool _thrust;
         public float thrustSpeed = 5;
         public float stabRange;
         public override void AI()

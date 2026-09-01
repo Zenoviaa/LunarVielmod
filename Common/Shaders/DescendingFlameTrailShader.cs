@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Terraria;
 
@@ -10,7 +8,6 @@ namespace Stellamod.Common.Shaders
     {
         private EffectParameter _matrixParam;
         private EffectParameter _laserTextureParam;
-        private EffectParameter _maskTextureParam;
         private EffectParameter _timeParam;
         private EffectParameter _innerColorParam;
         private EffectParameter _outerColorParam;

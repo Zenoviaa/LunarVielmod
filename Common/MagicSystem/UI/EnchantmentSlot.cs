@@ -19,7 +19,6 @@ namespace Stellamod.Common.MagicSystem.UI
         private readonly bool _isTimedSlot;
         private readonly int _context;
         private readonly float _scale;
-        private Item _oldItem;
         public Item Item;
         public EnchantmentSlot(int index, bool isTimedSlot, int context = ItemSlot.Context.BankItem, float scale = 1f)
         {

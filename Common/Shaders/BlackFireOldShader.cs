@@ -8,7 +8,6 @@ namespace Stellamod.Common.Shaders
     {
         private EffectParameter _tilingParam;
         private EffectParameter _matrixParam;
-        private EffectParameter _bloomTextureParam;
         private EffectParameter _primaryTextureParam2;
         private EffectParameter _primaryTextureParam;
         private EffectParameter _noiseTextureParam;

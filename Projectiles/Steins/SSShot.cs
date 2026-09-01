@@ -46,8 +46,6 @@ namespace Stellamod.Projectiles.Steins
             set => Projectile.ai[0] = value;
         }
         public float Timer2;
-        bool Moved;
-
         public override void OnKill(int timeLeft)
         {
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
@@ -63,12 +61,15 @@ namespace Stellamod.Projectiles.Steins
                     (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.White, 1f).noGravity = false;
             }
 
-            for (int i = 0; i < Main.rand.Next(2, 4); i++)
+            if (this.OwnedByLocalClient())
             {
-                Vector2 velocity = -Projectile.velocity;
-                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver4 / 2);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
-                             ProjectileID.BabySpider, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                for (int i = 0; i < Main.rand.Next(2, 4); i++)
+                {
+                    Vector2 velocity = -Projectile.velocity;
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 + MathHelper.PiOver4 / 2);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity,
+                                 ProjectileID.BabySpider, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
             }
         }
 

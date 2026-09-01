@@ -22,12 +22,10 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.WeaponsAB
             staminaProjectileShoot = ModContent.ProjectileType<HolmbergScytheProj>();
             meleeWeaponType = MeleeWeaponType.Scythe;
         }
-
     }
+
     public class HolmbergScytheSlash : BaseSwingProjectileV2
     {
-        private bool _playedSound;
-        private bool _flareCircle;
         public override void DefineCombo()
         {
             base.DefineCombo();

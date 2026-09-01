@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,7 +7,6 @@ namespace Stellamod.Projectiles.Swords.Altride
     public class AltrideProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
-        bool Moved;
         Vector2 StartVelocity;
         public override void SetStaticDefaults()
         {
@@ -19,15 +17,15 @@ namespace Stellamod.Projectiles.Swords.Altride
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;
-            base.Projectile.penetrate = 2;
-            base.Projectile.width = 30;
-            base.Projectile.height = 30;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.alpha = 255;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
+            Projectile.penetrate = 2;
+            Projectile.width = 30;
+            Projectile.height = 30;
+            Projectile.timeLeft = 700;
+            Projectile.alpha = 255;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
         }
         public override void AI()
         {

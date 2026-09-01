@@ -72,7 +72,6 @@ public class Cariya : ScarletBoss
     private float _ghostAlpha;
     private bool _allowPhase2Attacks;
     private float _wingAlpha;
-    private bool _phase2Effect;
     private bool _showWings;
 
 

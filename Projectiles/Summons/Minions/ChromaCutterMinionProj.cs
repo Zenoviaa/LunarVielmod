@@ -1,16 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Buffs.Minions;
+﻿using Stellamod.Buffs.Minions;
 using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
-using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Trails;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,7 +13,6 @@ namespace Stellamod.Projectiles.Summons.Minions
     {
         private Vector2 _prepareCenter;
         private Vector2 _targetCenter;
-        private float _slowdown;
         public enum ActionState
         {
             Red,

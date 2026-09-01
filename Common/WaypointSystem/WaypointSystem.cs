@@ -79,7 +79,6 @@ public class OrganDragon : ModNPC
     private Asset<Texture2D>[] _frontLegTextureAssets;
     private Asset<Texture2D>[] _backLegTextureAssets;
     private Asset<Texture2D>[] _wingTextureAssets;
-
     private DragonSegment _headSegment;
     private DragonSegment[] _bodySegments;
     private Vector2 _teleportPosition;
@@ -164,7 +163,7 @@ public class OrganDragon : ModNPC
         NPC.friendly = true; // NPC Will not attack player
         NPC.width = 32;
         NPC.height = 32;
-        NPC.aiStyle = 0;
+        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
         NPC.damage = 90;
         NPC.defense = 42;
         NPC.lifeMax = 200;

@@ -348,7 +348,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public Item GetElement()
         {
-            if (primaryElement == null || primaryElement.IsAir || primaryElement.type == 0)
+            if (primaryElement == null || primaryElement.IsAir || primaryElement.type == ItemID.None)
             {
                 Item item = new Item(ModContent.ItemType<BasicElement>());
                 return item;
@@ -363,7 +363,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             while(itemList.Count <= index)
             {
                 Item air = new Item();
-                air.SetDefaults(0);
+                air.SetDefaults(ItemID.None);
                 itemList.Add(air);
             }
             itemList[index] = item;

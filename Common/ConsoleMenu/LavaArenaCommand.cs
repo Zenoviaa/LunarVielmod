@@ -72,7 +72,6 @@ public class LavaArenaCommand : ConsoleCommand
 
         Vector2 left = center.ToWorldCoordinates() + new Vector2(-width * 16, 0) * new Vector2(0.5f, 0f);
         Vector2 right = center.ToWorldCoordinates() + new Vector2(width * 16, 0) * new Vector2(0.5f, 0f);
-        float numSmallerPlatforms = 4;
         void MakeSmallerPlatform(float p)
         {
             Vector2 pos = Vector2.Lerp(left, right, p);

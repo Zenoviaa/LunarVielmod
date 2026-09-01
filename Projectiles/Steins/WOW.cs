@@ -8,14 +8,6 @@ namespace Stellamod.Projectiles.Steins;
 
 public class WOW : ModProjectile
 {
-    public enum AttackState
-    {
-        Frost_Attack = 0,
-        Lightning_Attack = 1,
-        Tornado_Attack = 2
-    }
-
-    public AttackState State { get; set; }
     public override void SetStaticDefaults()
     {
         // Sets the amount of frames this minion has on its spritesheet

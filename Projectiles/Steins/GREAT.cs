@@ -11,15 +11,6 @@ namespace Stellamod.Projectiles.Steins
 
     public class GREAT : ModProjectile
     {
-        private static float _orbitCounter;
-        public enum AttackState
-        {
-            Frost_Attack = 0,
-            Lightning_Attack = 1,
-            Tornado_Attack = 2
-        }
-
-        public AttackState State { get; set; }
         public override void SetStaticDefaults()
         {
             // Sets the amount of frames this minion has on its spritesheet
@@ -41,8 +32,6 @@ namespace Stellamod.Projectiles.Steins
             Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
             Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
         }
-
-        private float _attackCounter;
 
         private static float _orbitingOffset;
         public override bool? CanCutTiles()

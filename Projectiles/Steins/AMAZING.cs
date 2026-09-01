@@ -11,7 +11,6 @@ namespace Stellamod.Projectiles.Steins
 
     public class AMAZING : ModProjectile
     {
-        private static float _orbitCounter;
         public enum AttackState
         {
             Frost_Attack = 0,

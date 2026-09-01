@@ -473,7 +473,6 @@ namespace Stellamod.Common.GunSystem
     public class GunHold : ModProjectile
     {
         private float _heatTimer;
-        private float _oldItemTime;
         private float _startRotation;
         private Vector2 _recoilOffset;
         public override string Texture => TextureRegistry.EmptyTexture;

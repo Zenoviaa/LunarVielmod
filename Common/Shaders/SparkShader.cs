@@ -1,58 +1,53 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿namespace Stellamod.Common.Shaders;
 
-namespace Stellamod.Common.Shaders
+public class SparkShader : BaseShader
 {
-    public class SparkShader : BaseShader
+    private EffectParameter _innerColorParam;
+    private EffectParameter _outerColorParam;
+    private EffectParameter _powerParam;
+    private static SparkShader _instance;
+    public static SparkShader Instance
     {
-        private EffectParameter _timeParam;
-        private EffectParameter _innerColorParam;
-        private EffectParameter _outerColorParam;
-        private EffectParameter _powerParam;
-        private static SparkShader _instance;
-        public static SparkShader Instance
+        get
         {
-            get
-            {
-                _instance ??= new();
-                _instance.SetDefaults();
-                return _instance;
-            }
+            _instance ??= new();
+            _instance.SetDefaults();
+            return _instance;
         }
+    }
 
-        public Color InnerColor
+    public Color InnerColor
+    {
+        set
         {
-            set
-            {
-                _innerColorParam ??= Effect.Parameters["innerColor"];
-                _innerColorParam.SetValue(value.ToVector3());
-            }
+            _innerColorParam ??= Effect.Parameters["innerColor"];
+            _innerColorParam.SetValue(value.ToVector3());
         }
+    }
 
-        public Color OuterColor
+    public Color OuterColor
+    {
+        set
         {
-            set
-            {
-                _outerColorParam ??= Effect.Parameters["outerColor"];
-                _outerColorParam.SetValue(value.ToVector3());
-            }
+            _outerColorParam ??= Effect.Parameters["outerColor"];
+            _outerColorParam.SetValue(value.ToVector3());
         }
+    }
 
-        public float Power
+    public float Power
+    {
+        set
         {
-            set
-            {
-                _powerParam ??= Effect.Parameters["power"];
-                _powerParam.SetValue(value);
-            }
+            _powerParam ??= Effect.Parameters["power"];
+            _powerParam.SetValue(value);
         }
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            InnerColor = Color.White;
-            OuterColor = Color.Yellow;
-            BlendState = BlendState.Additive;
-            Power = 1;
-        }
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        InnerColor = Color.White;
+        OuterColor = Color.Yellow;
+        BlendState = BlendState.Additive;
+        Power = 1;
     }
 }

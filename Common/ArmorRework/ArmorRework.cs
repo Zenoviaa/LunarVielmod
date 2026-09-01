@@ -470,7 +470,7 @@ namespace Stellamod.Common.ArmorRework
                     SoundEngine.PlaySound(SoundID.MaxMana);
                     for (int i = 0; i < 5; i++)
                     {
-                        int num3 = Dust.NewDust(self.position, self.width, self.height, 45, 0f, 0f, 255, default(Color), (float)Main.rand.Next(20, 26) * 0.1f);
+                        int num3 = Dust.NewDust(self.position, self.width, self.height, DustID.ManaRegeneration, 0f, 0f, 255, default(Color), (float)Main.rand.Next(20, 26) * 0.1f);
                         Main.dust[num3].noLight = true;
                         Main.dust[num3].noGravity = true;
                         Main.dust[num3].velocity *= 0.5f;

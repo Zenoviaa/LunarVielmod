@@ -109,8 +109,8 @@ public class PacmanSegment : ModProjectile
             var segment = rek.Segments[SegmentIndex];
             segment.noWorm = false;
         }
-        return;
-        for (float f = 0; f < 12; f++)
+
+        for (float f = 0; f < 6; f++)
         {
             Vector2 pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(16, 16);

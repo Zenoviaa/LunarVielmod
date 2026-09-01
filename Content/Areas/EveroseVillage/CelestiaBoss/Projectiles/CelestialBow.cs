@@ -19,7 +19,6 @@ public class CelestialBow : ModProjectile
     private Vector2 _mirageOffset;
     private Vector2 _pullScale;
     private Vector2 _targetPullScale;
-    private int _frameCounter;
     private ref float Timer => ref Projectile.ai[0];
     private Player Target => Main.player[(int)Projectile.ai[1]];
     private ref float AttackTimer => ref Projectile.ai[2];

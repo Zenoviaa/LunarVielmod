@@ -297,11 +297,10 @@ public class MoonramBoom : ModProjectile
 public class MoonramMoon : ModProjectile
 {
     private float Time => 60;
-    private float _flashAlpha;
     private Vector2 _targetScale;
-    private Asset<Texture2D>? _shadowMoonTextureAsset;
-    private Asset<Texture2D>? _outlineMoonTextureAsset;
-    private Asset<Texture2D>? _scrollingMoonTextureAsset;
+    private Asset<Texture2D> _shadowMoonTextureAsset;
+    private Asset<Texture2D> _outlineMoonTextureAsset;
+    private Asset<Texture2D> _scrollingMoonTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
@@ -400,7 +399,7 @@ public class MoonramMoon : ModProjectile
         Main.spriteBatch.Draw(glowDrawer);
 
 
-        moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha);
+    //    moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha);
         Main.spriteBatch.Draw(moonSprite);
     }
     public override bool PreDraw(ref Color lightColor)

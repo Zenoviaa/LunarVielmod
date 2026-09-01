@@ -32,6 +32,12 @@ namespace Stellamod.Content.Biomes
                     player.GetModPlayer<MyPlayer>().ZoneAbyss = value;
                 }
             }
+
+            public bool ZoneCrimsonBridewell
+            {
+                get => player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell;
+                set => player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell = value;
+            }
         }
 
         public static bool ZoneFable(this Player player) => player.InModBiome<FableBiome>();

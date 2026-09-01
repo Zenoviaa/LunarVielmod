@@ -80,7 +80,7 @@ public partial class Gothivia : ScarletBoss
             return _patternBackingField;
         }
     }
-    private PatternManager<int>? _patternManagerBackingField;
+    private PatternManager<int> _patternManagerBackingField;
     private PatternManager<int> ComboPattern
     {
         get
@@ -96,7 +96,7 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
-    private List<float>? _shootRotations;
+    private List<float> _shootRotations;
     private List<float> ShootRotations
     {
         get
@@ -129,8 +129,6 @@ public partial class Gothivia : ScarletBoss
     private float _numDirections;
 
     private int _bowFrame;
-    private float _dashDirection;
-
     private Vector2 _teleportPosition;
     private Vector2 _startCDashOffset;
     private Vector2 _endCDashOffset;
@@ -140,7 +138,6 @@ public partial class Gothivia : ScarletBoss
 
     private Outliner _outliner;
     private AnimationFramer _wingAnimationFrame;
-    private AnimationFramer _bowAnimationFrame;
     private ref float Timer => ref NPC.ai[0];
 
     private AIState State
@@ -633,7 +630,6 @@ public partial class Gothivia : ScarletBoss
     }
     private void ExitOutAttack() => ChooseAttack();
 
-    private AIState _lastState;
     private void ChooseAttack()
     {
         if (MultiplayerHelper.IsHost)
@@ -1975,9 +1971,7 @@ public partial class Gothivia : ScarletBoss
     }
 
     private float _circleDegrees;
-    private float _circleDistance;
     private float _circleSpeed;
-    private float _movementSpeed;
     private float _accelTimer;
     private void FaceTarget()
     {
@@ -2017,30 +2011,29 @@ public partial class Gothivia : ScarletBoss
         float ai1 = NPC.whoAmI;
         if (Timer == 3)
         {
-            _circleDistance = 270;
+
         }
 
         if (Timer == 80)
         {
-            _movementSpeed = 12;
+
             _circleSpeed = 3;
         }
 
         if (Timer == 170)
         {
-            _movementSpeed = 25;
+
 
         }
 
         if (Timer == 210)
         {
-            _movementSpeed = 16;
+  
         }
 
 
         if (Timer == 240)
         {
-            _movementSpeed = 12;
             _circleSpeed = 2;
         }
 

@@ -1,11 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
-using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -16,7 +11,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
     public class ConjureBallLightning : ModProjectile
     {
         private float _scale;
-        private float _width;
         private float _stretchX;
         private float _originalSpeed;
         private bool _canDie;
@@ -35,7 +29,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            _width = 1;
             Projectile.width = 49;
             Projectile.height = 49;
             Projectile.friendly = false;
@@ -61,7 +54,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             var shader = TeslaOrbShader.Instance;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-     
+
             spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, drawOrigin, scale, SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
             return false;
@@ -70,7 +63,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
         public override void AI()
         {
             base.AI();
-            if(_originalSpeed == 0)
+            if (_originalSpeed == 0)
             {
                 _originalSpeed = Projectile.velocity.Length();
             }
@@ -85,12 +78,12 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 _zapVelocity *= 0.5f;
             }
 
-            if(Projectile.velocity.Length() >= _originalSpeed)
+            if (Projectile.velocity.Length() >= _originalSpeed)
             {
                 Projectile.velocity *= 0.8f;
             }
-          //  Projectile.velocity.Y += MathF.Sin(Timer * 0.05f) * 0.1f;
-            if(Timer % 60 == 0)
+            //  Projectile.velocity.Y += MathF.Sin(Timer * 0.05f) * 0.1f;
+            if (Timer % 60 == 0)
             {
                 _zapVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 25;
                 _zapVelocity = _zapVelocity.RotatedByRandom(0.3f);
@@ -125,7 +118,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 }
             }
 
-            if(Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
                 Vector2 pVelocity = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4);
                 pVelocity *= Main.rand.NextFloat(0.5f, 1f);
@@ -157,7 +150,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                 Projectile.tileCollide = true;
             }
 
-          
+
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

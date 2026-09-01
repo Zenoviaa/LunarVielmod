@@ -67,7 +67,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             return true;
         }
-        private float alphaCounter = 0;
         public override void AI()
         {
             Timer++;
