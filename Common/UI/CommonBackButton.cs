@@ -106,6 +106,8 @@ public class CommonBackButton : UIPanel
         {
             _scale = MathHelper.Lerp(_scale, 1f, 0.3f);
         }
+        _backText.TextColor = Color.White * alpha;
+        _backText.ShadowColor = Color.Black * alpha;
         _backText.SetText(LangText.Common(titleKey), _scale, true);
     }
 }

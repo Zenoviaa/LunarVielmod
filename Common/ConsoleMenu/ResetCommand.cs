@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.PlayerLevelingSystem;
+using Stellamod.Items;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -21,7 +22,8 @@ public class ResetCommand : ConsoleCommand
             "level",
             "boss",
             "gintze",
-            "quests"
+            "quests",
+            "cauldron"
         };
 
         return arguments0;
@@ -62,6 +64,12 @@ public class ResetCommand : ConsoleCommand
                     questPlayer.CompletedQuests.Clear();
                     questPlayer.RewardQuests.Clear();
                     questPlayer.RecalculateUI = true;
+                }
+                return true;
+            case "cauldron":
+                {
+                    CauldronPlayer cauldronPlayer = player.GetModPlayer<CauldronPlayer>();
+                    cauldronPlayer.Crafts.Clear();
                 }
                 return true;
         }
