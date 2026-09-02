@@ -60,8 +60,8 @@ namespace Stellamod.Common.UI
             ShopParameters = shopParameters;
             if (shopParameters.SlotTextureOverride != null)
                 SlotTextureAsset = shopParameters.SlotTextureOverride;
-            Width.Set(32, 0f);
-            Height.Set(32, 0f);
+            Width.Pixels = Height.Pixels = 32;
+
             SelectFunction = shopParameters.SelectItemFunction;
             ViewFunction = shopParameters.ViewItemFunction;
             IsSelectedFunction = shopParameters.SelectedItemFunction;
@@ -118,27 +118,29 @@ namespace Stellamod.Common.UI
                 Vector2 diff = mouseScreen - _startMousePos;
                 Vector2 newOffset = _startOffset + diff;
                 _offset = newOffset;
-
             }
+
             _offset.X = MathHelper.Clamp(_offset.X, -Width.Pixels + 500, 0);
             _oldMousePos = Main.MouseScreen;
             _offset += _velocity;
       
             _offset.Y = 0;
             _velocity *= 0.94f;
-          
+         
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-         //   base.DrawSelf(spriteBatch);
+            //   base.DrawSelf(spriteBatch);
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
+ 
             if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
             }
-
+          
+          
             if (IsMouseHovering && _hovering)
             {
                 if (HoverTooltipFunction != null)
@@ -186,7 +188,7 @@ namespace Stellamod.Common.UI
             //Calculate the maximum height of the grid
            
             float maximumWidth = itemArr.Length * (elementWidth + listPadding);
-            Width.Pixels = maximumWidth + 32;
+            Width.Pixels = MathF.Max(maximumWidth + 32, Main.screenWidth);
 
 
 
@@ -238,13 +240,14 @@ namespace Stellamod.Common.UI
                 Color bannerColor = Color.Lerp(Color.White, Color.Black, banerLerp);
                 Color iconColor = Color.White;
                 if (!isUnlocked)
-                    iconColor = Color.Lerp(iconColor, Color.Black, 0.8f);
-                else
                 {
-                    bannerColor = Color.Lerp(bannerColor, Color.Transparent, lerp);
-                    iconColor = Color.Lerp(iconColor, Color.Transparent, lerp);
+                    iconColor = Color.Lerp(iconColor, Color.Black, 0.8f);
+                    bannerColor = Color.Lerp(bannerColor, Color.Black, 0.8f);
                 }
-         
+
+                bannerColor = Color.Lerp(bannerColor, Color.Transparent, lerp);
+                iconColor = Color.Lerp(iconColor, Color.Transparent, lerp);
+
 
                 spriteBatch.Draw(slotTexture, iconCenterPos - new Vector2(0, slotTexture.Height / 2), null, bannerColor * transitionInterpolant, 0f, drawOrigin, _scale * _scales[i] * extraScaleMul, SpriteEffects.None, 0f);
 
