@@ -60,7 +60,7 @@ public class AbyssLittleMoth : ModNPC
     private void NewWanderPos()
     {
         _wanderPos = NPC.Center;
-        _wanderPos.X += Main.rand.Next(-32, 32);
+        _wanderPos.X += Main.rand.Next(-128, 128);
         _wanderPos.Y += Main.rand.Next(-8, 8);
     }
 
@@ -69,24 +69,25 @@ public class AbyssLittleMoth : ModNPC
         base.AI();
         Timer++;
         Vector2 targetPos = _wanderPos;
-        targetPos.X += MathF.Sin(Timer * 0.005f) * 32;
-        targetPos.Y += MathF.Sin(Timer * 0.01f) * 16;
+        targetPos.X += MathF.Sin(Timer * 0.005f) * 9;
+        targetPos.Y += MathF.Sin(Timer * 0.01f) * 9;
         Vector2 targetVelocity = targetPos - NPC.Center;
         targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
-        float speed = 4f;
+        float speed = 1f;
         targetVelocity *= speed;
         NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.03f);
         FaceMovement();
         WanderTimer--;
-        if (WanderTimer <= 0 && MultiplayerHelper.IsHost)
+        if ((WanderTimer <= 0 || Vector2.DistanceSquared(NPC.Center, targetPos) < 64) && MultiplayerHelper.IsHost)
         {
             NewWanderPos();
-            WanderTimer = 240;
+            WanderTimer = 120;
             NPC.netUpdate = true;
         }
 
         this.AseAnimator.PlayAnimation("Idle", AnimationParams.Default);
         this.AseAnimator.drawEffects.DrawOrigin = new Vector2(28, 28);
+        Lighting.AddLight(NPC.Center, TorchID.White);
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -100,7 +101,7 @@ public class AbyssLittleMoth : ModNPC
         base.PostDraw(spriteBatch, screenPos, drawColor);
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
-        drawer.color = Color.OrangeRed * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f;
+        drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f;
         drawer.color.A = 0;
         drawer.scale *= 0.5f;
         spriteBatch.Draw(drawer);

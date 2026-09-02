@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -48,13 +49,26 @@ public class AbyssalKelp : ModTile
         drawer.BottomCenterOrigin();
         drawer.worldPosition.Y += drawer.sourceRect.Value.Height;
         spriteBatch.Draw(drawer);
+
     }
 
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
     {
         DrawKelpGlow(i, j, spriteBatch);
-        DrawKelp(i, j, spriteBatch);
+        Main.instance.TilesRenderer.AddSpecialLegacyPoint(new Point(i, j));
         return false;
+    }
+
+    public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+    {
+        base.DrawEffects(i, j, spriteBatch, ref drawData);
+ 
+    }
+    
+    public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
+    {
+        base.SpecialDraw(i, j, spriteBatch);
+        DrawKelp(i, j, spriteBatch);
     }
 
     public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
@@ -93,7 +107,7 @@ public class AbyssalKelp : ModTile
         }
 
         Tile tile = Framing.GetTileSafely(i, j);
-        tile.TileFrameX = x;
+        tile.TileFrameX = 255;
         tile.TileFrameY = y;
         return false;
     }

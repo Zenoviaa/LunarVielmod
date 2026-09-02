@@ -30,10 +30,10 @@ public class FeatherDust : ParticleUpdater<FeatherDustData>
         {
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
-            particle.velocity.X *= 0.96f;
+            particle.velocity.X *= 0.93f;
             particle.velocity.X += MathF.Sin(Main.GameUpdateCount * 0.03f) * 0.03f;
             particle.velocity.Y = MathHelper.Lerp(particle.velocity.Y, 0.5f, 0.03f);
-            particle.rotation = Utils.AngleLerp(particle.rotation, particle.velocity.ToRotation(), 0.03f);
+            particle.rotation = Utils.AngleLerp(particle.rotation, particle.velocity.ToRotation() + i * 0.05f, 0.03f) ;
             particle.timeLeft--;
         }
     }
@@ -46,7 +46,11 @@ public class FeatherDust : ParticleUpdater<FeatherDustData>
 
         if (_length <= 0)
             return;
-        PixelationManager.QueueSpritebatchDrawAction(Draw, PixelationDrawLayer);
+        using(new SpritebatchContext(Main.spriteBatch, SpritebatchParams.InWorldAndZoomed()))
+        {
+            Draw(Main.spriteBatch, Main.screenPosition);
+        }
+
     }
 
     public override void Draw(SpriteBatch spriteBatch, ref FeatherDustData particle)
@@ -58,8 +62,9 @@ public class FeatherDust : ParticleUpdater<FeatherDustData>
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
-        drawer.color = Color.White * interpolant;
+        drawer.color = Color.Lerp(Color.Black, Color.White, interpolant);
         drawer.color.A = 0;
+        drawer.scale *= particle.scale;
         drawer.rotation = particle.rotation;
         spriteBatch.Draw(drawer);
     }
