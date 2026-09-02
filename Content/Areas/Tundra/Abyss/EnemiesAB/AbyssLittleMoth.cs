@@ -87,7 +87,7 @@ public class AbyssLittleMoth : ModNPC
 
         this.AseAnimator.PlayAnimation("Idle", AnimationParams.Default);
         this.AseAnimator.drawEffects.DrawOrigin = new Vector2(28, 28);
-        Lighting.AddLight(NPC.Center, TorchID.White);
+        Lighting.AddLight(NPC.Center, Vector3.One * 0.2f);
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
