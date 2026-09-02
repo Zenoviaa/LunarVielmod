@@ -219,6 +219,7 @@ public class PixelWater
         vibrant = false;
         ignoreSkyColor = false;
         noReflection = false;
+        reflectionAlpha = 1f;
     }
 
     private Asset<Texture2D> LoadTexture(string fileName)
@@ -238,6 +239,7 @@ public class PixelWater
     public bool ignoreSkyColor;
     public bool affectsLava;
     public bool noReflection;
+    public float reflectionAlpha;
 }
 
 public class PixelWaterStyleComparer : IComparer<PixelWaterStyle>
@@ -791,7 +793,7 @@ public class MoonWaterSystem : ModSystem
         _waterEffect.Parameters["distortion"].SetValue(0.005f);
         _waterEffect.Parameters["NoiseTexture"].SetValue(_pixelWater.CausticsTexture.Value);
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_reflectionRT, Vector2.Zero, null, Color.White * 1f, 0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
+        spriteBatch.Draw(_reflectionRT, Vector2.Zero, null, Color.White * _pixelWater.reflectionAlpha, 0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
         spriteBatch.End();
     }
 

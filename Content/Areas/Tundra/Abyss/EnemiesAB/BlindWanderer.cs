@@ -15,7 +15,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
-
 internal class BlindWanderer : ModNPC
 {
     private enum AIState
@@ -246,6 +245,17 @@ internal class BlindWanderer : ModNPC
     {
         base.HitEffect(hit);
         AbyssEnemyCommon.HitAndDeathEffects(NPC);
+        if (NPC.life <= 0 && MultiplayerHelper.IsHost)
+        {
+            int bodyGore = Mod.Find<ModGore>($"{Name}_Gore_Body").Type;
+            int handGore = Mod.Find<ModGore>($"{Name}_Gore_Hand").Type;
+            int headGore = Mod.Find<ModGore>($"{Name}_Gore_Head").Type;
+
+            // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity + new Vector2(-4, 0), headGore, 1f);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 24), NPC.velocity, bodyGore);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(24, 24), NPC.velocity, handGore);
+        }
     }
     public override void OnKill()
     {

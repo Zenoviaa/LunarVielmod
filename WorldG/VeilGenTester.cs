@@ -261,7 +261,8 @@ public class VeilGenTester : ModItem
         };
         var types2 = new ushort[]
         {
-            ModContent.ZTileType<AbyssalOrbFlower>()
+            ModContent.ZTileType<AbyssalOrbFlower>(),
+            ModContent.ZTileType<AbyssalPillar>()
         };
         var wetTypes = new ushort[]
         {

@@ -224,6 +224,15 @@ internal class BlastingBlossom : ModNPC
     {
         base.HitEffect(hit);
         AbyssEnemyCommon.HitAndDeathEffects(NPC);
+        if(NPC.life <= 0 && MultiplayerHelper.IsHost)
+        {
+            int leftGore = Mod.Find<ModGore>($"{Name}_Gore_Left").Type;
+            int rightGore = Mod.Find<ModGore>($"{Name}_Gore_Right").Type;
+
+            // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity + new Vector2(-4, 0), leftGore, 1f);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(34, 0), NPC.velocity, rightGore);
+        }
     }
     public override void OnKill()
     {

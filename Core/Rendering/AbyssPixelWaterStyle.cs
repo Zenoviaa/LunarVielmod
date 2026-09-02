@@ -25,7 +25,7 @@ public class AbyssPixelWaterStyle : PixelWaterStyle
         pixelWater.vibrant = true;
         pixelWater.ignoreSkyColor = true;
         pixelWater.noLighting = true;
-
+        pixelWater.reflectionAlpha = 0.5f;
     
     }
 }

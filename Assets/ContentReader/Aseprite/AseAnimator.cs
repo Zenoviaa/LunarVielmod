@@ -8,6 +8,10 @@ namespace Stellamod.Assets.ContentReader.Aseprite;
 
 public static class AnimationExtensions
 {
+    extension(ModNPC modNpc)
+    {
+        public AseAnimator AseAnimator => modNpc.NPC.GetGlobalNPC<AnimatorGlobalNPC>().Animator;
+    }
     public static AseAnimator GetAnimator(this ModNPC modNpc)
     {
         return modNpc.NPC.GetAnimator();

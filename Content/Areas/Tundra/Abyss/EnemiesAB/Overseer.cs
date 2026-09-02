@@ -346,6 +346,19 @@ public class Overseer : ModNPC,
     {
         base.HitEffect(hit);
         AbyssEnemyCommon.HitAndDeathEffects(NPC);
+        if (NPC.life <= 0 && MultiplayerHelper.IsHost)
+        {
+            int bodyGore0 = Mod.Find<ModGore>($"{Name}_Gore_Body_0").Type;
+            int bodyGore1 = Mod.Find<ModGore>($"{Name}_Gore_Body_1").Type;
+            int legGore = Mod.Find<ModGore>($"{Name}_Gore_Leg").Type;
+            int headGore = Mod.Find<ModGore>($"{Name}_Gore_Head").Type;
+
+            // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity + new Vector2(-4, 0), headGore, 1f);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 24), NPC.velocity, bodyGore0);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(24, 24), NPC.velocity, bodyGore1);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(24, 36), NPC.velocity, legGore);
+        }
     }
 
     public override void OnKill()
