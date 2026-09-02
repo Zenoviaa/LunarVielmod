@@ -262,7 +262,7 @@ public class MoonWaterSystem : ModSystem
     {
         return new Point(Main.waterTarget.Width, Main.waterTarget.Height);
     }
-
+    private readonly HashSet<Point> _edgeWaterPoints = new();
     private RenderTargetProvider _reflectionRT = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
     private RenderTargetProvider _waterTextureRT = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
     private RenderTargetProvider _waterTextureRTSwap = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
@@ -279,7 +279,14 @@ public class MoonWaterSystem : ModSystem
         return p;
     });
 
-
+    private RenderTargetProvider _waterEdgeShadingRT = new RenderTargetProvider(() =>
+    {
+        RenderTargetParameters p = RenderTargetParameters.DefaultScreenTarget;
+        p.Width = Main.instance.tileTarget.Width;
+        p.Height = Main.instance.tileTarget.Height;
+        p.SurfaceFormat = SurfaceFormat.Alpha8;
+        return p;
+    });
 
     private PixelWaterStyle[] _pixelWaterStyles;
     private PixelWaterStyle _activePixelWaterStyle;
@@ -430,7 +437,7 @@ public class MoonWaterSystem : ModSystem
             CopyWaterTarget();
             //    _allowDraw = false;
             CopySwapToScreenTarget();
-
+            Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
             if (_pixelWater.affectsLava)
             {
                 //      Main.NewText("yuh");
@@ -444,7 +451,6 @@ public class MoonWaterSystem : ModSystem
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     lavaShader.Effect, Main.Transform);
 
-                Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
                 spriteBatch.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
 
 
@@ -464,6 +470,7 @@ public class MoonWaterSystem : ModSystem
                 {
                     _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombinePaletteRTDrawing"];
                     _waterEffect.Parameters["ColorSpectrumTexture"].SetValue(_pixelWater.Palette.ColorAtlas);
+                    _waterEffect.Parameters["EdgeTexture"].SetValue(_waterEdgeShadingRT);
                 }
                 else
                 {
@@ -474,7 +481,7 @@ public class MoonWaterSystem : ModSystem
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     _waterEffect, Main.Transform);
 
-                Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
+ 
                 spriteBatch.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
 
                 Color c = Color.White * 0.43f;
@@ -483,10 +490,95 @@ public class MoonWaterSystem : ModSystem
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
-  
+        //   spriteBatch.Draw(_waterEdgeShadingRT, pos, Color.White);
             //DrawWaterBaseToScreen();
         }
+    }
 
+
+
+    private void DrawEdgeMapToScreen()
+    {
+
+    }
+
+
+    private void CalculateEdgePoints()
+    {
+        _edgeWaterPoints.Clear();
+        (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(382, inside: 2);
+        for (int x = topLeft.X; x < bottomRight.X; x++)
+        {
+            for (int y = topLeft.Y; y < bottomRight.Y; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (!tile.HasTile && tile.LiquidAmount > 0)
+                {
+                    Tile tileLeft = Main.tile[x - 1, y];
+                    Tile tileRight = Main.tile[x + 1, y];
+                    Tile tileBottom = Main.tile[x, y + 1];
+
+                    if (tileLeft.HasTile && Main.tileSolid[tileLeft.TileType])
+                    {
+                        _edgeWaterPoints.Add(new Point(x - 1, y));
+                    }
+
+                    if (tileRight.HasTile && Main.tileSolid[tileRight.TileType])
+                    {
+                        _edgeWaterPoints.Add(new Point(x + 1, y));
+                    }
+
+                    if (tileBottom.HasTile && Main.tileSolid[tileBottom.TileType])
+                    {
+                        _edgeWaterPoints.Add(new Point(x, y + 1));
+                    }
+                }
+            }
+        }
+    }
+    private void RenderIntoEdgeShadeMap()
+    {
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
+        graphicsDevice.SetRenderTarget(_waterEdgeShadingRT);
+        graphicsDevice.Clear(Color.Transparent);
+
+
+        if(Main.GameUpdateCount % 30 == 0)
+        {
+            CalculateEdgePoints();
+        }
+
+        spriteBatch.Begin();
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(
+            AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Vector2.Zero);
+        glowDrawer.scale *= 0.2f;
+        glowDrawer.color = Color.White * 0.13f;
+        glowDrawer.color.A = 0;
+        foreach (Point edgeWaterPoint in _edgeWaterPoints)
+        {
+            Vector2 pos = edgeWaterPoint.ToWorldCoordinates();
+            pos += new Vector2(Main.offScreenRange);
+            glowDrawer.worldPosition = pos;
+            spriteBatch.Draw(glowDrawer);
+        }
+        spriteBatch.End();
+
+        //Was trying a raymarching approach
+        //Drawing these glow balls seems to work just as well for cheaper lmao
+        /*
+        HlslSampler sampler = new HlslSampler();
+        sampler.Sampler = SamplerState.PointClamp;
+        sampler.Texture = Main.instance.tileTarget;
+
+        var waterDistancePass = AssetReferences.Effects.Generic.WaterDistanceTile.CreatePixelPass();
+        waterDistancePass.Parameters.texelSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height);
+        waterDistancePass.Apply();
+
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, waterDistancePass.Shader);
+        spriteBatch.Draw(Main.instance.tileTarget, Vector2.Zero, Color.White);
+        spriteBatch.End();*/
+        graphicsDevice.SetRenderTarget(null);
     }
 
     private void CopyScreenTargetToSwap()
@@ -587,6 +679,8 @@ public class MoonWaterSystem : ModSystem
 
         spriteBatch.End();
         graphicsDevice.SetRenderTarget(null);
+
+        RenderIntoEdgeShadeMap();
     }
 
 

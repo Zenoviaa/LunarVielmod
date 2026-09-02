@@ -50,6 +50,14 @@ sampler3D ColorSpectrumTextureSampler = sampler_state
     AddressV = clamp;
 };
 
+Texture2D EdgeTexture;
+sampler2D EdgeTextureSampler = sampler_state
+{
+    Texture = <EdgeTexture>;
+    AddressU = clamp;
+    AddressV = clamp;
+};
+
 sampler brightenNoiseSampler : register(s1);
 sampler causticsNoiseSampler : register(s2);
 sampler foamNoiseSampler : register(s3);
@@ -390,12 +398,7 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
 float4 CombinePalettePS(VertexShaderOutput input) : COLOR
 {
     float2 coords = input.TextureCoordinates;
-    float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);
-       
-    float3 gradient = lerp(endGradient, startGradient, heightMapColor.a);
-    
-    //First let's calculate the gradient
-
+    float edgeMap = tex2D(EdgeTextureSampler, coords).r;
     float4 baseWaterColor = tex2D(SpriteTextureSampler, coords);
     
     //Don't want to write if statements in a shader if possible
@@ -405,11 +408,11 @@ float4 CombinePalettePS(VertexShaderOutput input) : COLOR
     //Add the water gradient to our fancy color
     //Hopefully this looks the way I want it to, I think it's gonna go to white though instead of alpha blend :sob:
     float4 fancyWaterColor = tex2D(WaterTextureSampler, coords);
-   
     fancyWaterColor.rgb *= 0.99;
-  
+    fancyWaterColor *= 1.0 - edgeMap;
     float4 colorToMapTo = tex3D(ColorSpectrumTextureSampler, fancyWaterColor.rgb);
     fancyWaterColor = colorToMapTo * fancyWaterColor.a;
+
     float4 finalColor = fancyWaterColor * baseWaterColor.a * (1.0 - lavaMult) + baseWaterColor * lavaMult;
     return finalColor * input.Color;
 }

@@ -153,6 +153,18 @@ public static class TileUtilities
             tilePoint.Y = Main.maxTilesY - 1;
         return tilePoint;
     }
+    public static Point Clamp(Point tilePoint, int fluff)
+    {
+        if (tilePoint.X < fluff)
+            tilePoint.X = fluff;
+        if (tilePoint.Y < fluff)
+            tilePoint.Y = fluff;
+        if (tilePoint.X >= Main.maxTilesX - fluff)
+            tilePoint.X = Main.maxTilesX - 1 - fluff;
+        if (tilePoint.Y >= Main.maxTilesY - fluff)
+            tilePoint.Y = Main.maxTilesY - 1 - fluff;
+        return tilePoint;
+    }
 
     public static (Point topLeft, Point bottomRight) CameraTileBounds(float fluff)
     {
@@ -168,6 +180,22 @@ public static class TileUtilities
 
         topLeftTile = Clamp(topLeftTile);
         bottomRightTile = Clamp(bottomRightTile);
+        return (topLeftTile, bottomRightTile);
+    }
+    public static (Point topLeft, Point bottomRight) CameraTileBounds(float fluff, int inside)
+    {
+        Vector2 cameraCenterWorld = Main.Camera.Center;
+        Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+        Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+
+        cameraTopLeft -= new Vector2(fluff);
+        cameraBottomRight += new Vector2(fluff);
+
+        Point topLeftTile = cameraTopLeft.ToTileCoordinates();
+        Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
+
+        topLeftTile = Clamp(topLeftTile, inside);
+        bottomRightTile = Clamp(bottomRightTile, inside);
         return (topLeftTile, bottomRightTile);
     }
     public static (Point topLeft, Point bottomRight) CenterTileBounds(Vector2 centerWorld, int width, int height)
