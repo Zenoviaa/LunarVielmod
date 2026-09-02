@@ -69,6 +69,11 @@ public class CommonBackButton : UIPanel
     }
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
+        BackgroundColor = Color.Lerp(Color.Blue, Color.Black, 1f) * 0.5f * alpha;
+        BorderColor = Color.Lerp(Color.Purple, Color.Black, 0.8f) * 0.5f * alpha;
+        _backText.TextColor = Color.White * alpha;
+        _backText.ShadowColor = Color.Black * alpha;
+        _backText.SetText(LangText.Common(titleKey), _scale, true);
         base.DrawSelf(spriteBatch);
         this.QuickMouseInteraction();
 
@@ -106,8 +111,7 @@ public class CommonBackButton : UIPanel
         {
             _scale = MathHelper.Lerp(_scale, 1f, 0.3f);
         }
-        _backText.TextColor = Color.White * alpha;
-        _backText.ShadowColor = Color.Black * alpha;
-        _backText.SetText(LangText.Common(titleKey), _scale, true);
+
+
     }
 }
