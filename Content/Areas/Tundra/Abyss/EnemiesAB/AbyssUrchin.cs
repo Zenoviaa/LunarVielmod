@@ -52,7 +52,7 @@ public class AbyssUrchin : ModNPC
             NPC.netUpdate = true;
         }
 
-        float x = WanderDirection;
+        float x = WanderDirection * 0.14f;
         NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, x, 0.2f);
         this.AseAnimator.PlayAnimation("Idle", AnimationParams.Default);
         this.AseAnimator.drawEffects.DrawOrigin = new Vector2(29, 40);
