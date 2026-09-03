@@ -10,6 +10,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 
 public class AbyssUrchin : ModNPC
 {
+    private float Glow => ExtraMath.Osc(0.1f, 0.7f, offset: NPC.whoAmI);
     private ref float Timer => ref NPC.ai[0];
     private ref float WanderTime => ref NPC.ai[1];
     private ref float WanderDirection => ref NPC.ai[2];
@@ -61,6 +62,10 @@ public class AbyssUrchin : ModNPC
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         NPC.DrawAnimator(spriteBatch, drawColor);
+
+        Color glowColor = Color.White * Glow;
+        glowColor.A = 0;
+        NPC.DrawAnimator(spriteBatch, glowColor);
         return false;
     }
 
@@ -69,7 +74,7 @@ public class AbyssUrchin : ModNPC
         base.PostDraw(spriteBatch, screenPos, drawColor);
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
-        drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f;
+        drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f * Glow;
         drawer.color.A = 0;
         drawer.scale *= 0.5f;
         spriteBatch.Draw(drawer);

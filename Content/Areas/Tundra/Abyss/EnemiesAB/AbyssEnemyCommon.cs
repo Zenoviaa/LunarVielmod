@@ -37,16 +37,18 @@ public static class AbyssEnemyCommon
 
                 var sound = AssetReferences.Assets.Sounds.NiiviWingFlap.Asset with { Pitch = 0.5f, PitchVariance = 0.3f };
                 SoundEngine.PlaySound(sound, NPC.Center);
-                for(int i = 0; i < 8; i++)
+                for(int i = 0; i < Main.rand.Next(5, 8); i++)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(12, 12);
                     velocity.Y -= Main.rand.Next(4, 8);
                     Particles.FeatherDust.Spawn(FeatherDustData.Default with { 
                         position = NPC.Center + Main.rand.NextVector2Circular(16, 16), 
                         velocity = velocity,
-                        scale = Main.rand.NextFloat(0.05f, 0.12f) });
+                        scale = Main.rand.NextFloat(0.5f, 0.9f) * 0.8f,
+                        timeLeft = Main.rand.Next(120, 240)});
                 }   
 
+                /*
                 for (int i = 0; i < 16; i++)
                 {
                     EmberParticle ep = LegacyParticle.NewParticle<EmberParticle>(NPC.position +
@@ -61,7 +63,7 @@ public static class AbyssEnemyCommon
                     spawnPosition.X = NPC.position.X + Main.rand.Next(0, NPC.width);
                     spawnPosition.Y = NPC.position.Y + Main.rand.Next(0, NPC.height);
                     SparkleParticle.Spawn(spawnPosition, Vector2.Zero, Scale: 0.3f);
-                }
+                }*/
             }
         }
     }

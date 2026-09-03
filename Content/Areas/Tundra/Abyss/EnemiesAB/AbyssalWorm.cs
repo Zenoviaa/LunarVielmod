@@ -10,6 +10,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 
 public class AbyssalWorm : ModNPC
 {
+    private float Glow => ExtraMath.Osc(0.1f, 0.4f, offset: NPC.whoAmI);
     private ref float Timer => ref NPC.ai[0];
     private ref float WanderTime => ref NPC.ai[1];
     private ref float WanderDirection => ref NPC.ai[2];
@@ -26,7 +27,7 @@ public class AbyssalWorm : ModNPC
     {
         base.SetDefaults();
         NPC.width = 40;
-        NPC.height = 37;
+        NPC.height = 24;
         NPC.damage = 34;
         NPC.defense = 8;
         NPC.lifeMax = 50;
@@ -73,13 +74,30 @@ public class AbyssalWorm : ModNPC
             this.AseAnimator.PlayAnimation("Walk", AnimationParams.Default);
             FaceMovement();
         }
-    
+
+        if (NPC.wet)
+        {
+            NPC.noGravity = true;
+            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -0.5f, 0.1f);
+        }
+        else
+        {
+            NPC.noGravity = false;
+        }
+            
         this.AseAnimator.drawEffects.DrawOrigin = new Vector2(30, 25);
+
+        float stepSpeed = 1;
+        Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref stepSpeed, ref NPC.gfxOffY);
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         NPC.DrawAnimator(spriteBatch, drawColor);
+
+        Color glowColor = Color.White * Glow;
+        glowColor.A = 0;
+        NPC.DrawAnimator(spriteBatch, glowColor);
         return false;
     }
 

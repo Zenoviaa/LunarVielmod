@@ -1,7 +1,9 @@
 ﻿
 using Stellamod.Assets;
 using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Visual.Particles;
 using System;
 using System.IO;
 using Terraria;
@@ -38,8 +40,8 @@ public class AbyssalSoul : ModNPC
         base.SetDefaults();
         NPC.width = NPC.height = 32;
         NPC.lifeMax = 32;
-        NPC.HitSound = SoundID.NPCHit38;
-        NPC.DeathSound = SoundID.NPCDeath41;
+        NPC.HitSound = SoundID.NPCHit36;
+        NPC.DeathSound = SoundID.NPCDeath39;
         NPC.aiStyle = -1;
         NPC.noGravity = true;
     }
@@ -61,7 +63,7 @@ public class AbyssalSoul : ModNPC
     {
         _wanderPos = NPC.Center;
         _wanderPos.X += Main.rand.Next(-32, 32);
-        _wanderPos.Y += Main.rand.Next(-8, 8);
+        _wanderPos.Y += Main.rand.Next(-32, 32);
     }
 
     public override void AI()
@@ -69,29 +71,35 @@ public class AbyssalSoul : ModNPC
         base.AI();
         Timer++;
         Vector2 targetPos = _wanderPos;
-        targetPos.X += MathF.Sin(Timer * 0.005f) * 32;
-        targetPos.Y += MathF.Sin(Timer * 0.01f) * 16;
+        targetPos.X += MathF.Sin(Timer * 0.005f) * 9;
+        targetPos.Y += MathF.Sin(Timer * 0.01f) * 9;
         Vector2 targetVelocity = targetPos - NPC.Center;
         targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
-        float speed = 4f;
+        float speed = 1f;
         targetVelocity *= speed;
         NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.03f);
         FaceMovement();
         WanderTimer--;
-        if (WanderTimer <= 0 && MultiplayerHelper.IsHost)
+        if ((WanderTimer <= 0 || Vector2.DistanceSquared(NPC.Center, targetPos) < 64) && MultiplayerHelper.IsHost)
         {
             NewWanderPos();
-            WanderTimer = 240;
+            WanderTimer = 120;
             NPC.netUpdate = true;
         }
 
         this.AseAnimator.PlayAnimation("Idle", AnimationParams.Default);
         this.AseAnimator.drawEffects.DrawOrigin = new Vector2(18, 38);
+        Lighting.AddLight(NPC.Center, Vector3.One * 0.2f);
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+
         NPC.DrawAnimator(spriteBatch, drawColor);
+
+        Color glowColor = Color.White;
+        glowColor.A = 0;
+        NPC.DrawAnimator(spriteBatch, glowColor);
         return false;
     }
 
@@ -100,15 +108,38 @@ public class AbyssalSoul : ModNPC
         base.PostDraw(spriteBatch, screenPos, drawColor);
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
-        drawer.color = Color.OrangeRed * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f;
+        drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f;
         drawer.color.A = 0;
-        drawer.scale *= 0.5f;
+        drawer.scale *= 0.25f;
         spriteBatch.Draw(drawer);
     }
 
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
-        AbyssEnemyCommon.HitAndDeathEffects(NPC);
+        float numDust = 3;
+        for (float n = 0; n < numDust; n++)
+        {
+            Vector2 inverseVelocity = -NPC.oldVelocity;
+            inverseVelocity = inverseVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f);
+            var dp = DustParticle.Spawn(NPC.Center, inverseVelocity);
+            dp.dampening = 0.1f;
+            dp.Scale *= 0.5f;
+            dp.innerColor = Color.White;
+            dp.outerColor = Color.SkyBlue;
+        }
+        if(NPC.life <= 0 && Main.netMode != NetmodeID.Server)
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                { 
+                    position = NPC.Center,
+                    velocity = Main.rand.NextVector2Circular(24, 24),
+                    velocityPerTickMult = 0.92f,
+                    scale = new Vector2(Main.rand.NextFloat(0.8f, 2.4f))
+                });
+            }
+        }
     }
 }

@@ -67,11 +67,19 @@ namespace Stellamod.Content.Biomes
         {
             get
             {
-                Player localPlayer = Player;
                 StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
                 int heightOffset = 100;
-                Rectangle biomeRect = new Rectangle(stellaWorld.CoralwaysLocation.X, stellaWorld.CoralwaysLocation.Y + heightOffset, 1000, 1800 - heightOffset);
-                return localPlayer.Center.ToTileCoordinates().Y > biomeRect.Bottom - 400 && localPlayer.Center.ToTileCoordinates().Y < biomeRect.Bottom;
+                Rectangle biomeRect =
+                    new Rectangle(
+                    stellaWorld.CoralwaysLocation.X, 
+                    stellaWorld.CoralwaysLocation.Y + heightOffset, 1000,
+                    1800 - heightOffset);
+                Rectangle deepRect = new Rectangle
+                    (stellaWorld.CoralwaysLocation.X,
+                    biomeRect.Bottom - 400,
+                    1000,
+                    400);
+                return deepRect.Contains(Player.Center.ToTileCoordinates());
             }
         }
         public bool ZoneCrimsonBridewell;
