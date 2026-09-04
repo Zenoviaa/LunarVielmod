@@ -97,7 +97,7 @@ namespace Stellamod.Common.ArmorShop
             astr.AddHead(ModContent.ItemType<AstrasilkHead>());
             astr.AddBody(ModContent.ItemType<AstrasilkBody>());
             astr.AddLegs(ModContent.ItemType<AstrasilkLegs>());
-            astr.SetMaterial(ModContent.ItemType<AuroreanStarI>());
+            astr.SetMaterial(ItemID.FallenStar);
             astr.Register();
 
 
