@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using Terraria;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;

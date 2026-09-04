@@ -1,6 +1,8 @@
 ﻿using ReLogic.Content;
 using Stellamod.Core.NPCHelpers;
+using Terraria;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.ContentReader.Aseprite;
@@ -19,6 +21,9 @@ internal class AsepriteAssetLoader : ModSystem
     public override void PostSetupContent()
     {
         base.PostSetupContent();
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
         AsepriteAssets.Npc = new Asset<AseSprite>[NPCSets.UseAseprite.Length];
         for (int i = 0; i < NPCSets.UseAseprite.Length; i++)
         {
@@ -39,7 +44,9 @@ internal class AsepriteAssetLoader : ModSystem
     public override void OnModUnload()
     {
         base.OnModUnload();
-        if(AsepriteAssets.Npc != null)
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        if (AsepriteAssets.Npc != null)
         {
             for (int i = 0; i < AsepriteAssets.Npc.Length; i++)
             {

@@ -2,8 +2,6 @@
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.Areas.Collosseum.TilesCL;
-using Stellamod.Content.Areas.Collosseum.WeaponsCL;
-using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
@@ -17,23 +15,18 @@ using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.ZTileSystem;
-using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
 using Stellamod.Items.Armors.Windmillion;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Tiles;
-using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
@@ -1640,7 +1633,7 @@ public partial class StellaWorld : ModSystem
                         {
                             Tile tile = Main.tile[downPoint];
                             //Checking for walls cause we don't wanna break the inside of the dungeon
-                            if (tile.WallType == 0)
+                            if (tile.WallType == WallID.None)
                             {
                                 tile.ClearEverything();
                                 tile.TileType = TileID.Dirt;
@@ -5079,171 +5072,10 @@ public partial class StellaWorld : ModSystem
         }
     }
 
-    private void WorldGenGiaHouse(GenerationProgress progress, GameConfiguration configuration)
-    {
-        StructureMap structures = GenVars.structures;
-        Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Acid/GiaHouse");
-        progress.Message = "Gia living fruitfully";
-
-
-        for (int k = 0; k < 1; k++)
-        {
-            bool placed = false;
-            int attempts = 0;
-            while (!placed && attempts++ < 1000000)
-            {
-                // Select a place in the first 6th of the world, avoiding the oceans
-                //int smx = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2; // from 50 since there's a unaccessible area at the world's borders
-                // 50% of choosing the last 6th of the world
-
-                int smx = WorldGen.genRand.Next(250, (Main.maxTilesX) - 250);     // Choose which side of the world to be on randomly
-                ///if (WorldGen.genRand.NextBool())
-                ///{
-                ///	towerX = Main.maxTilesX - towerX;
-                ///}
-
-                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                int smy = ((int)(Main.worldSurface - 200));
-
-                // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
-                {
-                    smy++;
-                }
-
-                // If we went under the world's surface, try again
-                if (smy > Main.worldSurface - 5)
-                {
-                    continue;
-                }
-                Tile tile = Main.tile[smx, smy];
-                // If the type of the tile we are placing the tower on doesn't match what we want, try again
-                if (!(tile.TileType == ModContent.TileType<AcidialDirt>()))
-                {
-                    continue;
-                }
-
-
-
-                // place the Rogue
-                //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-                //Main.npc[num].homeTileX = -1;
-                //	Main.npc[num].homeTileY = -1;
-                //	Main.npc[num].direction = 1;
-                //	Main.npc[num].homeless = true;
-
-
-
-                for (int da = 0; da < 1; da++)
-                {
-                    Point Loc = new Point(smx, smy + 5);
-                    rectangle.Location = Loc;
-                    StructureLoader.ReadStruct(Loc, "Struct/Acid/GiaHouse");
-
-                }
-
-                placed = true;
-            }
-        }
-
-    }
 
     #endregion
 
 
-    #region Virulent N Govheil
-
-
-    public void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
-    {
-        progress.Message = "Virulifying the Morrow";
-
-        int totalX = 0;
-        int numX = 0;
-        for (int x = 0; x < Main.maxTilesX; x++)
-        {
-            int y = (int)Main.worldSurface - 50;
-            while (y <= Main.worldSurface)
-            {
-                y++;
-                if (WorldGen.SolidTile(x, y) && Main.tile[x, y].TileType == TileID.Mud)
-                {
-                    numX++;
-                    totalX += x;
-                    break;
-
-                }
-
-            }
-
-        }
-        int jungleX = totalX / numX;
-        bool placed = false;
-        int attempts = 0;
-        while (!placed && attempts++ < 100000)
-        {
-            // Select a place in the first 6th of the world, avoiding the oceans
-            int abysmx = jungleX; // from 50 since there's a unaccessible area at the world's borders
-
-            //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-            int abysmy = (int)(Main.worldSurface - 50);
-
-            // We go down until we hit a solid tile or go under the world's surface
-            while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.worldSurface)
-            {
-                abysmy++;
-            }
-
-
-            for (int da = 0; da < 1; da++)
-            {
-                Point Loc7 = new Point(abysmx, abysmy);
-                WorldGen.TileRunner(Loc7.X, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-                WorldGen.TileRunner(Loc7.X, Loc7.Y + 200, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-                WorldGen.TileRunner(Loc7.X, Loc7.Y + 400, 600, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
-                WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
-                WorldGen.TileRunner(Loc7.X, Loc7.Y + 800, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
-                WorldGen.TileRunner(Loc7.X, Loc7.Y + 1000, 700, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), true, 0f, 0f, true, true);
-
-                pointL = new Point(abysmx, abysmy + 255);
-                WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
-                placed = true;
-            }
-        }
-
-        for (int fa = 0; fa < 20; fa++)
-        {
-            int abysmxd = WorldGen.genRand.Next(500, Main.maxTilesX - 500);
-            int abysmyd = (int)(Main.worldSurface - 50);
-
-            // We go down until we hit a solid tile or go under the world's surface
-            while (!WorldGen.SolidTile(abysmxd, abysmyd) && abysmyd <= Main.worldSurface)
-            {
-                abysmyd++;
-            }
-
-            // If we went under the world's surface, try again
-            if (abysmyd > Main.worldSurface)
-            {
-                continue;
-            }
-            Tile tile = Main.tile[abysmxd, abysmyd];
-            // If the type of the tile we are placing the tower on doesn't match what we want, try again
-            if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>()))
-            {
-                continue;
-            }
-            for (int da = 0; da < 1; da++)
-            {
-                Point Loc = new Point(abysmxd, abysmyd);
-
-
-                WorldGen.digTunnel(Loc.X, Loc.Y, 0, 1, 130, 3, false);
-            }
-        }
-    }
-
-    #endregion
 
 
     #region Ice Biome Generation
