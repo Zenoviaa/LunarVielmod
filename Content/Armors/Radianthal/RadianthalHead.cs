@@ -230,7 +230,7 @@ public class RadianthalHead : ModItem
         var stats = player.GetStats();
         stats.meleeAttackSpeed -= 0.05f;
         stats.meleeAggressiveness += 200;
-        stats.defenseBonus += 18;
+        stats.defenseBonus += 13;
         stats.accessorySlots++;
     }
 
@@ -266,7 +266,7 @@ public class RadianthalBody : ModItem
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.defenseBonus += 27;
+        stats.defenseBonus += 22;
         stats.stamina += 1;
         stats.meleeDamage += 0.5f;
         stats.accessorySlots++;
@@ -288,7 +288,7 @@ public class RadianthalLegs : ModItem
     {
         var stats = player.GetStats();
         stats.meleeArmorPenetration += 10;
-        stats.defenseBonus += 17;
+        stats.defenseBonus += 12;
         stats.accessorySlots++;
     }
 }

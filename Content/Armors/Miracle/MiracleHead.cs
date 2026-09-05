@@ -279,7 +279,6 @@ public class MiracleHead : ModItem
         Item.height = 24;
         Item.value = 10000;
         Item.rare = ItemRarityID.LightPurple;
-        Item.defense = 8;
     }
 
     public override void UpdateEquip(Player player)
@@ -327,7 +326,6 @@ public class MiracleBody : ModItem
         Item.height = 28;
         Item.value = Item.sellPrice(0, 0, 20, 0);
         Item.rare = ItemRarityID.LightPurple;
-        Item.defense = 10;
     }
 
     public override void UpdateEquip(Player player)

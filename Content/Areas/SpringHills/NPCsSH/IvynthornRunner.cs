@@ -59,7 +59,7 @@ public class IvynthornRunner : ModNPC
         NPC.height = 20;
         NPC.lifeMax = 50;
         NPC.defense = 0;
-        NPC.damage = 10;
+        NPC.damage = 30;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;

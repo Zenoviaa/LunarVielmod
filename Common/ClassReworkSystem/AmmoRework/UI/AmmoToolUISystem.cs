@@ -121,20 +121,29 @@ public class AmmoToolUISystem : BaseUISystem
             layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
                 "Stellamod: Ammo Tool UI",
                 delegate
-                {
-                    Player localPlayer = Main.LocalPlayer;
-                    
+                {  
                     if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                     {
                         _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
 
                     }
+                    return true;
+                },
+                InterfaceScaleType.UI));
+        }
+        //Interface Logic 3
+        mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+        if (mouseTextIndex != -1)
+        {
+            layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                "Stellamod: Ammo Tool UI",
+                delegate
+                {
                     if (_lastUpdateUiGameTime != null && _hudUserInterface?.CurrentState != null)
                     {
                         _hudUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
 
                     }
-
                     return true;
                 },
                 InterfaceScaleType.UI));

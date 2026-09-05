@@ -66,6 +66,7 @@ namespace Stellamod.Common.UI
             ViewFunction = shopParameters.ViewItemFunction;
             IsSelectedFunction = shopParameters.SelectedItemFunction;
             DrawFunction = shopParameters.DrawFunction;
+            HoverTooltipFunction = shopParameters.HoverTooltipFunction;
         }
 
         private void AddVelocity(UIMouseEvent evt, UIElement listeningElement)

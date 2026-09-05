@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Common.ArmorShop;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.PlayerLevelingSystem;
 using Stellamod.Items;
@@ -23,7 +24,8 @@ public class ResetCommand : ConsoleCommand
             "boss",
             "gintze",
             "quests",
-            "cauldron"
+            "cauldron",
+            "armor"
         };
 
         return arguments0;
@@ -70,6 +72,11 @@ public class ResetCommand : ConsoleCommand
                 {
                     CauldronPlayer cauldronPlayer = player.GetModPlayer<CauldronPlayer>();
                     cauldronPlayer.Crafts.Clear();
+                }
+                return true;
+            case "armor":
+                {
+                    player.GetModPlayer<ArmorShopPlayer>().PurchasedArmors.Clear();
                 }
                 return true;
         }

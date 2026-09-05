@@ -170,13 +170,19 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             set => NPC.ai[1] = (float)value;
         }
 
+        private float _arenaY;
         private ref float AttackNumber => ref NPC.ai[2];
         private ref float Timer2 => ref NPC.ai[3];
+
+
         private int BloodyBurstDamage => 26;
-        private int BloodyChargeBoomDamage => 30;
-        private int BloodRainDamage => 18;
+        private int BloodyChargeBoomDamage => 30;  
+        private int BloodRainDamage => 18; 
         private int BloodGeyserDamage => 26;
+     
         private int BloodHallucinationDamage => 20;
+
+
         private bool InPhase2
         {
             get => NPC.life <= NPC.lifeMax / 2f;
@@ -200,8 +206,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                              new Tuple<AIState, float>(AIState.BloodCrack_Start, 1f),
                              new Tuple<AIState, float>(AIState.GhastlyBloodDash_Start, 1f),
                              new Tuple<AIState, float>(AIState.Special_Start, 1f));
-                        
                 }
+
                 return _patternManagerBacking;
             }
         }
@@ -220,6 +226,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             writer.Write(_attackCount);
             writer.WriteVector2(_rushPivot);
             writer.WriteVector2(_iniitalRushVector);
+            writer.Write(_arenaY);
         }
         
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -236,6 +243,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _attackCount = reader.ReadSingle();
             _rushPivot = reader.ReadVector2();
             _iniitalRushVector = reader.ReadVector2();
+            _arenaY = reader.ReadSingle();
         }
 
         public override void SetStaticDefaults()
@@ -290,12 +298,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void EnablePlatformArena()
         {
-            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
-            fallSystem.noWings = true;
-            fallSystem.inSpace = true;
-            fallSystem.hoveringPlatform = true;
-            fallSystem.hoverPlatformY = 16000;
-            fallSystem.noProjTileCollide = true;
+            NPCUtilities.SetDomainArenaY(NPC, ref _arenaY);
+            DomainExpansionManager.UseDomain(new DomainParameters
+            {
+                noWings = true,
+                inSpace = true,
+                hoveringPlatform = true,
+                hoverPlatformY = _arenaY,
+                noRender = true
+            });
             if (Main.netMode == NetmodeID.Server)
                 return;
             _blackTimer++;

@@ -15,6 +15,7 @@ namespace Stellamod.Common.ArmorRework
         private UserInterface _userInterface;
         private GameTime _lastUpdateUiGameTime;
         private ArmorTooltipUIState _uiState;
+        private float EaseTime => 0.4f;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -41,14 +42,14 @@ namespace Stellamod.Common.ArmorRework
         {
             base.UpdateUI(gameTime);
             _timer += (float)(gameTime.ElapsedGameTime.TotalSeconds * (_active ? 1 : -1));
-            if(_timer >= 1f)
+            if(_timer >= EaseTime)
             {
-                _timer = 1f;
+                _timer = EaseTime;
             }
             if (_timer <= 0f)
                 _timer = 0f;
             _active = false;
-            _alpha = EasingFunction.OutExpo(_timer / 1f);
+            _alpha = EasingFunction.InOutSine(_timer / EaseTime);
 
 
             _uiState.inspectorUI.alpha = _alpha;
@@ -97,7 +98,7 @@ namespace Stellamod.Common.ArmorRework
                     "Scarlet Sun: Armor Rework",
                     delegate
                     {
-                        if (_timer <= 0f)
+                        if (_timer <= 0.1f)
                             return true;
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
