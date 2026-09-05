@@ -89,9 +89,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
         {
             base.AI();
             float halfTime = 60;
+
+            NPC npc = Main.npc[Owner];
+            Projectile.Center = npc.Center;
+            Projectile.rotation = Projectile.velocity.ToRotation();
             Timer++;
             if (Timer == halfTime)
             {
+                npc.velocity -= Projectile.velocity.SafeNormalize(Vector2.Zero) * 3;
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Red * 0.4f, 1, 5);
 
@@ -119,9 +124,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
                 }
             }
 
-            NPC npc = Main.npc[Owner];
-            Projectile.Center = npc.Center;
-            Projectile.rotation = Projectile.velocity.ToRotation();
+
             if (Timer >= halfTime)
             {
                 float time = (Timer - halfTime) / 60f;
@@ -138,18 +141,42 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
 
                 BlastPos = blastPoints.ToArray();
             }
+            else
+            {
+                float time = (Timer) / 60f;
+                float ease = EasingFunction.QuadraticBump(time);
+                List<Vector2> blastPoints = new List<Vector2>();
+                float numPoints = 80;
+                for (float f = 0; f < numPoints; f++)
+                {
+                    float completionRatio = f / numPoints;
+                    completionRatio *= ease;
+                    Vector2 point = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * 1, completionRatio);
+                    blastPoints.Add(point);
+                }
+
+                BlastPos = blastPoints.ToArray();
+            }
         }
 
         private Color ColorFunction(float completionRatio)
         {
+
+            float halfTime = 60;
+            if (Timer < halfTime)
+                return Color.Lerp(Color.White, Color.Black, 0.6f);
             return Color.White;
         }
 
         private float WidthFunction(float completionRatio)
         {
+            float halfTime = 60;
             float widthMult = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / 10f);
             widthMult = MathHelper.Clamp(widthMult, 0f, 1f);
-            return MathHelper.SmoothStep(128, 0, completionRatio) * MathF.Sin(completionRatio * 4) * widthMult;
+            float w = 1f;
+            if (Timer < halfTime)
+                w *= 0.3f;
+            return MathHelper.SmoothStep(128, 0, completionRatio) * MathF.Sin(completionRatio * 4) * widthMult * w;
         }
 
         public void DrawToSanguineMask(SpriteBatch spriteBatch)
@@ -167,6 +194,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
 
         public override bool PreDraw(ref Color lightColor)
         {
+            return false;
             Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
             Vector2 drawOrigin = new Vector2(lineTexture.Width / 2, 0);
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;

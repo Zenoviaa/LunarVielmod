@@ -45,6 +45,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
     }
     public class ChillrendSlash : BaseSwingProjectileV2
     {
+        private BlackFireShader _blackFireShader;
         private NPCSucker _npcSucker;
         private bool _hit;
       private FireTrailRenderer _fireTrailRenderer;
@@ -53,19 +54,11 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             base.DefineCombo();
 
             SwingV2Helper.AddGreatswordSwingStyle(this);
-            BlackFireShader blackFireShader = new BlackFireShader();
-            blackFireShader.SetDefaults();
-            blackFireShader.PrimaryTexture2 = TrailRegistry.BeamTrail;
-            blackFireShader.InnerColor = Color.White;
-            blackFireShader.OuterColor = Color.Cyan;
-            blackFireShader.Distortion = 0.35f;
-            blackFireShader.InnerEmitColor = Color.White * 0.2f;
-            blackFireShader.OuterEmiteColor = Color.Blue;
-
+            _blackFireShader = new BlackFireShader();
 
             SlashTrailer devilsPeak = new SlashTrailer
             {
-                Shader = blackFireShader,
+                Shader = _blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
                     return MathHelper.SmoothStep(8, 54, interpolant);
@@ -73,7 +66,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 TrailColorFunction = (interpolant) =>
                 {
                     return DrawUtilities.InterpolateColorArray(interpolant, Color.Purple, Color.Blue, Color.SkyBlue, Color.White) * MathHelper.SmoothStep(0f,  1f, EasingFunction.OutSine(interpolant));
-                    return Color.Lerp(Color.Blue, Color.White, interpolant);
+
                 }
 
             };
@@ -97,6 +90,18 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
             hitStopTime = EXTRA_UPDATE_COUNT * 8;
         }
+        private void PrepareShader()
+        {
+            _blackFireShader.SetDefaults();
+            _blackFireShader.PrimaryTexture2 = TrailRegistry.BeamTrail;
+            _blackFireShader.InnerColor = Color.White;
+            _blackFireShader.OuterColor = Color.Cyan;
+            _blackFireShader.Distortion = 0.35f;
+            _blackFireShader.InnerEmitColor = Color.White * 0.2f;
+            _blackFireShader.OuterEmiteColor = Color.Blue;
+
+
+        }
         private float GetBloomWidth(float ratio)
         {
             return MathHelper.SmoothStep(8, 64, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
@@ -109,6 +114,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
         public override Asset<Texture2D> RequestHologramTexture()
         {
+            PrepareShader();
             return TextureRegistry.GlowSword_Chillrend;
         }
 

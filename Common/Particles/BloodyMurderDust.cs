@@ -1,12 +1,12 @@
 ﻿using Stellamod.Common.Shaders;
+using Stellamod.Core;
 using Stellamod.Core.Pixelation;
 using Stellamod.Effects.Generic;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
 
-
-public class RoarDust : ParticleUpdater<RoarDustData>
+public class BloodyMurderDust : ParticleUpdater<RoarDustData>
 {
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 1 };
     public override DrawLayer PixelationDrawLayer => DrawLayer.OverNPCs;
@@ -41,15 +41,24 @@ public class RoarDust : ParticleUpdater<RoarDustData>
 
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        var roarShader = ShaderContent.GetInstance<RoarShader>();
-        /*
-       */
-        SpritebatchParams roarParameters = SpritebatchParams.InWorldAndZoomed() with { effect = roarShader.Effect, blendState = BlendState.Additive };
+        var pass = AssetReferences.Effects.Generic.BloodyRoar.CreatePixelPass();
+
+  
+      
+        var noiseSampler = new HlslSampler();
+        noiseSampler.Sampler = SamplerState.PointWrap;
+        noiseSampler.Texture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset.Value;
+        pass.Parameters.noiseSampler = noiseSampler;
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 4;
+        pass.Parameters.strength = 0.25f;
+        pass.Apply();
+        
+        SpritebatchParams roarParameters = SpritebatchParams.InWorldAndZoomed() with { effect = pass.Shader, blendState = BlendState.Additive };
         using (new SpritebatchContext(spriteBatch, roarParameters))
         {
-
+            base.Draw(spriteBatch, screenPos);
         }
-        base.Draw(spriteBatch, screenPos);
+   
 
     }
     public override void Draw(SpriteBatch spriteBatch, ref RoarDustData particle)
@@ -61,10 +70,8 @@ public class RoarDust : ParticleUpdater<RoarDustData>
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
-        drawer.color = Color.Lerp(Color.Transparent, particle.color, interpolant);
-        drawer.color *= 0.5f;
-        drawer.color.A = 0;
-        drawer.scale *= MathHelper.Lerp(5f, 0.1f, lerpValue) * particle.scale;
+        drawer.color = Color.Lerp(Color.Transparent, particle.color, lerpValue);
+        drawer.scale *= MathHelper.Lerp(7, 0.1f, lerpValue) * particle.scale;
         spriteBatch.Draw(drawer);
     }
 }
