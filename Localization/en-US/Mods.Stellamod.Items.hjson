@@ -12130,3 +12130,8 @@ AbyssalCoarseDirtItem: {
 	DisplayName: Abyssal Coarse Dirt Item
 	Tooltip: ""
 }
+
+Undercross: {
+	DisplayName: Undercross
+	Tooltip: "While in pure underground, take 25% less damage from enemies and bosses"
+}

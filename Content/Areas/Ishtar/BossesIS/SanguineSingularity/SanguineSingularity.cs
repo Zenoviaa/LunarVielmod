@@ -1284,7 +1284,7 @@ public partial class SanguineSingularity : ScarletBoss,
             scale = Vector2.One * 0.6f });
         }
         var c = LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
-        c.alpha = 0.5f;
+        c.alpha = 0.75f;
     }
 
     private void AI_Spawn()
