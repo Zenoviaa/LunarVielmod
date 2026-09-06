@@ -103,6 +103,21 @@ public class NPCSpawnHelper : GlobalNPC
             pool.TryAdd(enemyType, weight);
         }
     }
+    public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+    {
+        base.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
+        if (player.InModBiome<AbyssBiome>())
+        {
+            float sp = (float)spawnRate;
+            sp *= 0.6f;
+            spawnRate = (int)sp;
+
+
+            float ms = (float)maxSpawns;
+            ms *= 1.4f;
+            maxSpawns = (int)ms;
+        }
+    }
 
     public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
     {
@@ -145,10 +160,12 @@ public class NPCSpawnHelper : GlobalNPC
         }
         if (spawnInfo.Player.InModBiome<AbyssBiome>())
         {
+            pool.Clear();
             AddEnemiesFromSpawnSet(SpawnSets.AbyssEnemy, pool, spawnInfo);
         }
         if (spawnInfo.Player.InModBiome<AurelusBiome>())
         {
+            pool.Clear();
             AddEnemiesFromSpawnSet(SpawnSets.AbyssTempleEnemy, pool, spawnInfo);
         }
     }

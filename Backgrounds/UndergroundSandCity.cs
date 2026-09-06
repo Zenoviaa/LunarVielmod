@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Foreground;
+﻿using Stellamod.Content.Biomes;
+using Stellamod.Core.Foreground;
 using Terraria;
 
 namespace Stellamod.Backgrounds;

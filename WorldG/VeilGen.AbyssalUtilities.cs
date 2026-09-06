@@ -100,6 +100,7 @@ public partial class VeilGen
 
                         ZTileInstanceData instanceData = zTileLoader.InstanceTileData(zTileLoader.GetTile(zTileType));
                         instanceData.frameNumber = (ushort)genRand.Next(0, zTileLoader.GetTile(zTileType).frameCount);
+                        instanceData.value = parameters.value;
                         Vector2 worldPos = new Point(x, y).ToWorldCoordinates();
                         zTileMap.CreateTile(
                             parameters.renderLayer,
@@ -143,6 +144,7 @@ public partial class VeilGen
 
                         ZTileInstanceData instanceData = zTileLoader.InstanceTileData(zTileLoader.GetTile(zTileType));
                         instanceData.frameNumber = (ushort)genRand.Next(0, zTileLoader.GetTile(zTileType).frameCount);
+                        instanceData.value = parameters.value;
                         Vector2 worldPos = new Point(x, y).ToWorldCoordinates();
                         zTileMap.CreateTile(
                             parameters.renderLayer,

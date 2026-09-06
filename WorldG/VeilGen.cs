@@ -1839,6 +1839,7 @@ public partial class VeilGen
         public required ushort[] zTileTypes;
         public required int zLayer;
         public required ZRenderLayer renderLayer;
+        public byte value;
     }
 
     public static void KillZTilesInArea(Rectangle tileBounds)

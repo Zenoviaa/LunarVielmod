@@ -261,8 +261,7 @@ public class VeilGenTester : ModItem
         };
         var types2 = new ushort[]
         {
-            ModContent.ZTileType<AbyssalOrbFlower>(),
-            ModContent.ZTileType<AbyssalPillar>()
+            ModContent.ZTileType<AbyssalOrbFlower>()
         };
         var wetTypes = new ushort[]
         {
@@ -295,7 +294,8 @@ public class VeilGenTester : ModItem
             targetTileTypes = groundTiles,
             tileBounds = rect,
             zLayer = 0,
-            zTileTypes = types
+            zTileTypes = types,
+            value = 125
         }); 
         VeilGen.DecorateSurfaceEdgesWithZTile(new()
         {
@@ -304,7 +304,8 @@ public class VeilGenTester : ModItem
             targetTileTypes = groundTiles,
             tileBounds = rect,
             zLayer = 0,
-            zTileTypes = types2
+            zTileTypes = types2,
+            value = 125
         });
         VeilGen.DecorateWetAreasWithZTile(new()
         {
@@ -313,7 +314,8 @@ public class VeilGenTester : ModItem
             targetTileTypes = groundTiles,
             tileBounds = rect,
             zLayer = 0,
-            zTileTypes = wetTypes
+            zTileTypes = wetTypes,
+            value = 125
         });
 
         VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles, 
