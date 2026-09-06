@@ -5,6 +5,7 @@ using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.Tundra.Abyss;
 using Stellamod.Content.Areas.Underground;
 using Stellamod.Content.Areas.WaterSide;
+using Stellamod.Core.NPCHelpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -28,9 +29,16 @@ public class SpawnSets : ModSystem
         AbyssEnemy = new List<int>();
         AbyssWaterEnemy = new List<int>();
         AbyssTempleEnemy = new List<int>();
-        ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
+   
         base.SetupContent();
 
+    }
+
+    public override void ResizeArrays()
+    {
+        base.ResizeArrays();
+        ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
+        TryNotToSpawnOnWater = NPCID.Sets.Factory.CreateBoolSet();
     }
     public static List<int> SpringEnemy;
     public static List<int> HarmonicEnemy;
@@ -42,10 +50,23 @@ public class SpawnSets : ModSystem
     public static List<int> AbyssWaterEnemy;
     public static List<int> AbyssTempleEnemy;
     public static float[] ModifiedWeights;
+    public static bool[] TryNotToSpawnOnWater;
+
 }
 
 public static class NPCSpawnExtensions
 {
+    extension(NPCID.Sets)
+    {
+        public static bool[] TryNotToSpawnOnWater => SpawnSets.TryNotToSpawnOnWater;
+    }
+
+    public static void PreferLand(this ModNPC npc)
+    {
+        NPCID.Sets.TryNotToSpawnOnWater[npc.Type] = true;
+    }
+
+
     //Wrapper functions for this functionality just incase we want to change how this works
     public static void AddToSpringHills(this ModNPC npc)
     {
@@ -89,12 +110,14 @@ public static class NPCSpawnExtensions
 
 public class NPCSpawnHelper : GlobalNPC
 {
-
     private void AddEnemiesFromSpawnSet(List<int> set, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
     {
         for (int i = 0; i < set.Count; i++)
         {
             int enemyType = set[i];
+            if (spawnInfo.Water && NPCID.Sets.TryNotToSpawnOnWater[enemyType])
+                continue;
+
             float totalWeight = 1f;
             float weight = totalWeight / (float)set.Count;
 
@@ -103,6 +126,7 @@ public class NPCSpawnHelper : GlobalNPC
             pool.TryAdd(enemyType, weight);
         }
     }
+
     public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
     {
         base.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
@@ -110,12 +134,12 @@ public class NPCSpawnHelper : GlobalNPC
         {
             float sp = (float)spawnRate;
             sp *= 0.6f;
-            spawnRate = (int)sp;
+       //     spawnRate = (int)sp;
 
 
             float ms = (float)maxSpawns;
             ms *= 1.4f;
-            maxSpawns = (int)ms;
+//maxSpawns = (int)ms;
         }
     }
 
@@ -161,6 +185,7 @@ public class NPCSpawnHelper : GlobalNPC
         if (spawnInfo.Player.InModBiome<AbyssBiome>())
         {
             pool.Clear();
+       
             AddEnemiesFromSpawnSet(SpawnSets.AbyssEnemy, pool, spawnInfo);
         }
         if (spawnInfo.Player.InModBiome<AurelusBiome>())

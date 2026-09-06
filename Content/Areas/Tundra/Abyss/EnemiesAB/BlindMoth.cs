@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
@@ -156,6 +157,7 @@ public class BlindMothOrb : ModProjectile
     }
 }
 public class BlindMoth : ModNPC,
+    IWaterSilhouette,
     IDrawOutlines
 {
     private int _frame;
@@ -598,5 +600,18 @@ public class BlindMoth : ModNPC,
         spriteBatch.Draw(glowCircle, drawCenter, null, drawColor, NPC.rotation, glowCircleDrawOrigin, NPC.scale * 0.5f, spriteEffects, 0);
 
         return false;
+    }
+
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void Draw(SpriteBatch spriteBatch)
+        {
+            Texture2D npcTexture = TextureAssets.Npc[Type].Value;
+            Vector2 drawOrigin = NPC.frame.Size() * 0.5f;
+            Vector2 drawCenter = NPC.Center - Main.screenPosition;
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(npcTexture, drawCenter, NPC.frame, Color.Black, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+        }
+        system.SilhouettesToDraw.Add(Draw);
     }
 }

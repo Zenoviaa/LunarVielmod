@@ -1,6 +1,7 @@
 ﻿
 using Stellamod.Assets;
 using Stellamod.Common;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Core.NPCHelpers;
 using Terraria;
 using Terraria.ID;
@@ -8,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 
-public class AbyssalWorm : ModNPC
+public class AbyssalWorm : ModNPC, IWaterSilhouette
 {
     private float Glow => ExtraMath.Osc(0.1f, 0.4f, offset: NPC.whoAmI);
     private ref float Timer => ref NPC.ai[0];
@@ -84,6 +85,7 @@ public class AbyssalWorm : ModNPC
         {
             NPC.noGravity = false;
         }
+
             
         this.AseAnimator.drawEffects.DrawOrigin = new Vector2(30, 25);
 
@@ -110,5 +112,13 @@ public class AbyssalWorm : ModNPC
     {
         base.HitEffect(hit);
         AbyssEnemyCommon.HitAndDeathEffects(NPC);
+    }
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void DrawWhite(SpriteBatch spriteBatch)
+        {
+            NPC.DrawAnimator(spriteBatch, Color.Black);
+        }
+        system.SilhouettesToDraw.Add(DrawWhite);
     }
 }

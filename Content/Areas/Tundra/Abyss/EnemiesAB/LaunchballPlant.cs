@@ -1,4 +1,6 @@
-﻿using Stellamod.Common.Particles;
+﻿using Stellamod.Common;
+using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Visual.Particles;
@@ -245,7 +247,8 @@ public class Launchball : ModProjectile
     }
 }
 
-public class LaunchballPlant : ModNPC
+public class LaunchballPlant : ModNPC,
+    IWaterSilhouette
 {
     private enum AIState
     {
@@ -274,6 +277,9 @@ public class LaunchballPlant : ModNPC
         NPCSets.UseAseprite[Type] = true;
         NPCID.Sets.TrailCacheLength[Type] = 16;
         NPCID.Sets.TrailingMode[Type] = 1;
+        this.AddToAbyss();
+        this.PreferLand();
+        NPCSets.Heavy[Type] = true;
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -373,6 +379,7 @@ public class LaunchballPlant : ModNPC
         this.AseAnimator.PlayAnimation(ANIM_NAKED, AnimationParams.NoLooping);
     }
 
+
     private void SwitchState(AIState state)
     {
         if (MultiplayerHelper.IsHost)
@@ -398,5 +405,14 @@ public class LaunchballPlant : ModNPC
     {
         base.HitEffect(hit);
         AbyssEnemyCommon.HitAndDeathEffectsPlanty(NPC);
+    }
+
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void DrawWhite(SpriteBatch spriteBatch)
+        {
+            NPC.DrawAnimator(spriteBatch, Color.Black);
+        }
+        system.SilhouettesToDraw.Add(DrawWhite);
     }
 }

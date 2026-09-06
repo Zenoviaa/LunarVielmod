@@ -290,32 +290,32 @@ public class VeilGenTester : ModItem
         VeilGen.DecorateSurfaceEdgesWithZTile(new()
         {
             denom = 8,
-            renderLayer = ZRenderLayer.Midground,
+            renderLayer = ZRenderLayer.InFrontOfWalls,
             targetTileTypes = groundTiles,
             tileBounds = rect,
             zLayer = 0,
             zTileTypes = types,
-            value = 125
+            value = 175
         }); 
         VeilGen.DecorateSurfaceEdgesWithZTile(new()
         {
             denom = 128,
-            renderLayer = ZRenderLayer.Midground,
+            renderLayer = ZRenderLayer.InFrontOfWalls,
             targetTileTypes = groundTiles,
             tileBounds = rect,
             zLayer = 0,
             zTileTypes = types2,
-            value = 125
+            value = 175
         });
         VeilGen.DecorateWetAreasWithZTile(new()
         {
             denom = 24,
-            renderLayer = ZRenderLayer.Midground,
+            renderLayer = ZRenderLayer.InFrontOfWalls,
             targetTileTypes = groundTiles,
             tileBounds = rect,
             zLayer = 0,
             zTileTypes = wetTypes,
-            value = 125
+            value = 175
         });
 
         VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles, 
@@ -326,7 +326,7 @@ public class VeilGenTester : ModItem
         {
             for (int y = abyssHigh; y < abyssLow; y++)
             {
-                WorldGen.SquareTileFrame(x, y, resetFrame: true);
+               WorldGen.SquareTileFrame(x, y, resetFrame: true);
             }
         }
         if (WorldGen.SkipFramingBecauseOfGen)

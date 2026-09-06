@@ -1,6 +1,7 @@
 ﻿
 using Stellamod.Assets;
 using Stellamod.Common;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
 using System;
@@ -12,7 +13,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 
-public class AbyssLittleMoth : ModNPC
+public class AbyssLittleMoth : ModNPC, 
+    IWaterSilhouette
 {
     private Vector2 _wanderPos;
     private float Glow => ExtraMath.Osc(0.1f, 0.7f, offset: NPC.whoAmI);
@@ -24,6 +26,7 @@ public class AbyssLittleMoth : ModNPC
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
         this.AddToAbyss();
+        this.PreferLand();
     }
 
     public override void SendExtraAI(BinaryWriter writer)
@@ -121,5 +124,13 @@ public class AbyssLittleMoth : ModNPC
     {
         base.HitEffect(hit);
         AbyssEnemyCommon.HitAndDeathEffects(NPC);
+    }
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void DrawWhite(SpriteBatch spriteBatch)
+        {
+            NPC.DrawAnimator(spriteBatch, Color.Black);
+        }
+        system.SilhouettesToDraw.Add(DrawWhite);
     }
 }

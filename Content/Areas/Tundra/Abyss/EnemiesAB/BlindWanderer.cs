@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
@@ -15,7 +16,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
-internal class BlindWanderer : ModNPC
+internal class BlindWanderer : ModNPC,
+     IWaterSilhouette
 {
     private enum AIState
     {
@@ -49,6 +51,7 @@ internal class BlindWanderer : ModNPC
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
         this.AddToAbyss();
+        this.PreferLand();
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -182,6 +185,7 @@ internal class BlindWanderer : ModNPC
             ChooseNextState();
         }
 
+        Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
         float distTOTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
         if(distTOTarget <= 64 && SpawnedMoth < 1)
         {
@@ -260,5 +264,14 @@ internal class BlindWanderer : ModNPC
     public override void OnKill()
     {
         base.OnKill();
+    }
+
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void DrawWhite(SpriteBatch spriteBatch)
+        {
+            NPC.DrawAnimator(spriteBatch, Color.Black);
+        }
+        system.SilhouettesToDraw.Add(DrawWhite);
     }
 }

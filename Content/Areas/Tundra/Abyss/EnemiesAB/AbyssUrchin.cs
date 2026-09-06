@@ -1,6 +1,7 @@
 ﻿
 using Stellamod.Assets;
 using Stellamod.Common;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Core.NPCHelpers;
 using Terraria;
 using Terraria.ID;
@@ -8,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 
-public class AbyssUrchin : ModNPC
+public class AbyssUrchin : ModNPC, IWaterSilhouette
 {
     private float Glow => ExtraMath.Osc(0.1f, 0.7f, offset: NPC.whoAmI);
     private ref float Timer => ref NPC.ai[0];
@@ -55,6 +56,7 @@ public class AbyssUrchin : ModNPC
 
         float x = WanderDirection * 0.14f;
         NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, x, 0.2f);
+        Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
         this.AseAnimator.PlayAnimation("Idle", AnimationParams.Default);
         this.AseAnimator.drawEffects.DrawOrigin = new Vector2(29, 40);
     }
@@ -91,5 +93,13 @@ public class AbyssUrchin : ModNPC
     {
         base.HitEffect(hit);
         AbyssEnemyCommon.HitAndDeathEffects(NPC);
+    }
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void DrawWhite(SpriteBatch spriteBatch)
+        {
+            NPC.DrawAnimator(spriteBatch, Color.Black);
+        }
+        system.SilhouettesToDraw.Add(DrawWhite);
     }
 }

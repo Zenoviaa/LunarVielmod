@@ -281,6 +281,7 @@ public class HangingMoon : ModNPC
         Sway,
         Attract_Moths
     }
+    private float _alpha;
     private float Glow => ExtraMath.Osc(0.1f, 0.7f, offset: NPC.whoAmI);
     public const float AGGRO_DISTANCE = 256 * 256;
     private UnifiedRandom _random;
@@ -347,9 +348,11 @@ public class HangingMoon : ModNPC
             _rootPoint = MovementUtilities.FindCeiling(NPC.Center);
             _floorPoint = MovementUtilities.FindFloor(_rootPoint);
 
-
-            _numSegments = 24;
+            NPC.Center = _rootPoint;
+            _numSegments = 29;
         }
+        if(_alpha < 1f)
+            _alpha += 0.05f;
         if (Main.rand.NextBool(4))
         {
             var d = Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(64, 64), DustID.GemDiamond, Scale: 1f);
@@ -426,6 +429,10 @@ public class HangingMoon : ModNPC
             NPC.netUpdate = true;
         }
     }
+    public override float SpawnChance(NPCSpawnInfo spawnInfo)
+    {
+        return base.SpawnChance(spawnInfo);
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         _random ??= new();
@@ -443,21 +450,24 @@ public class HangingMoon : ModNPC
             vineDrawer.TopCenterOrigin();
             vineDrawer.rotation = rot + MathHelper.PiOver2;
             vineDrawer.worldPosition = chainPos;
+            vineDrawer.color *= _alpha;
             spriteBatch.Draw(vineDrawer);
         }
 
         SpritebatchDrawer head = SpritebatchDrawer.FromNPC(NPC);
+        head.color *= _alpha;
         spriteBatch.Draw(head);
 
 
         Color glowColor = Color.White * Glow;
         glowColor.A = 0;
         head.color = glowColor;
+        head.color *= _alpha;
         spriteBatch.Draw(head);
 
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
-        drawer.color = Color.White * Glow * 0.2f;
+        drawer.color = Color.White * Glow * 0.2f * _alpha;
         drawer.color.A = 0;
         drawer.scale *= 0.5f;
         spriteBatch.Draw(drawer);

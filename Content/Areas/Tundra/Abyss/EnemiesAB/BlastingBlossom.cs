@@ -1,7 +1,9 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -14,8 +16,9 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 
 
-internal class BlastingBlossom : ModNPC
+internal class BlastingBlossom : ModNPC, IWaterSilhouette
 {
+
     private enum AIState
     {
         Idle,
@@ -46,6 +49,7 @@ internal class BlastingBlossom : ModNPC
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
         this.AddToAbyss();
+        this.PreferLand();
         NPCSets.Heavy[Type] = true;
     }
 
@@ -154,7 +158,7 @@ internal class BlastingBlossom : ModNPC
         dirToTarget = dirToTarget.SafeNormalize(Vector2.Zero);
         Vector2 facingDirection = _facingDirection;
         float dp = Vector2.Dot(dirToTarget, facingDirection);
-        if (dp > 0.5f)
+        if (dp > 0.5f && Collision.CanHitLine(NPC.Center, 1, 1, MyTarget.Center, 1, 1))
         {
             SwitchState(AIState.Cover);
         }
@@ -207,6 +211,14 @@ internal class BlastingBlossom : ModNPC
     private void DrawWhite(SpriteBatch spriteBatch)
     {
         NPC.DrawAnimator(spriteBatch, _outliner.outlineColor);
+    }
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void DrawWhite(SpriteBatch spriteBatch)
+        {
+            NPC.DrawAnimator(spriteBatch, Color.Black);
+        }
+        system.SilhouettesToDraw.Add(DrawWhite);
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
@@ -321,7 +333,7 @@ public class BlastingBlossomBeam : ModProjectile
             for (int i = 0; i < BeamPoints.Length; i++)
             {
                 Vector2 beamPoint = BeamPoints[i];
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(6))
                 {
                     DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                     {
@@ -333,7 +345,19 @@ public class BlastingBlossomBeam : ModProjectile
                     var dp = DustParticle.Spawn(beamPoint, Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.1f, 0.5f), spawnParams);
                     dp.dampening = 0.1f;
                 }
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(8))
+                {
+                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    {
+                        position = beamPoint,
+                        timeLeft = Main.rand.Next(60, 120),
+                        velocity = Main.rand.NextVector2Circular(15, 15),
+                        innerColor = Color.LightCyan.ToVector4(),
+                        outerColor = Color.DarkBlue.ToVector4(),
+                        scale = Vector2.One * Main.rand.NextFloat(1f, 1.5f)
+                    });
+                }
+                if (Main.rand.NextBool(16))
                 {
                     var dp = SparkleParticle.Spawn(beamPoint, Projectile.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(0.25f, 0.5f));
                     dp.Scale *= 0.85f;
@@ -376,6 +400,7 @@ public class BlastingBlossomBeam : ModProjectile
                 DustParticle dustParticle = Particle<DustParticle>.Spawn(explosionCenter, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 2f));
                 dustParticle.innerColor = Color.SkyBlue;
                 dustParticle.outerColor = Color.Violet;
+                dustParticle.dampening = 0.05f;
             }
 
             for (float f = 0; f < 6; f++)
@@ -434,19 +459,23 @@ public class BlastingBlossomBeam : ModProjectile
 
     private float GetTrailWidth(float completionRatio)
     {
-        return 32 * EasingFunction.QuadraticBump(Timer / Lifetime);
+        return 60 * EasingFunction.QuadraticBump(Timer / Lifetime);
     }
 
     private void DrawPixelGlows(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         Texture2D glow = AssetManager.GlowMask.SimpleGlowCircle.Value;
         Vector2 drawOrigin = glow.Size() * 0.5f;
+        int j = 0;
         for (int i = 0; i < BeamPoints.Length; i++)
         {
             if (i % 2 == 0)
             {
                 Vector2 pos = BeamPoints[i];
-                Color color = Color.DarkBlue;
+                Color color = Color.BlueViolet;
+                j++;
+                if(j % 2 == 0)
+                    color = Color.DarkBlue;
                 color.A = 0;
                 spriteBatch.Draw(glow, pos - screenPos, null, color, 0, drawOrigin, 0.25f * new Vector2(1.5f, 1f) * Projectile.scale, SpriteEffects.None, 0);
             }
