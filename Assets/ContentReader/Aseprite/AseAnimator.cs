@@ -2,6 +2,7 @@
 using Stellamod.Common.Animations;
 using Stellamod.Core.NPCHelpers;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.ContentReader.Aseprite;
@@ -76,6 +77,7 @@ public class AnimatorGlobalNPC : GlobalNPC
 {
     public override bool InstancePerEntity => true;
 
+
     public AseAnimator Animator;
     public override void FindFrame(NPC npc, int frameHeight)
     {
@@ -91,11 +93,15 @@ public class AnimatorGlobalNPC : GlobalNPC
         base.SetDefaults(entity);
         if (AsepriteAssets.Npc == null)
             return;
-        Animator = new AseAnimator(AsepriteAssets.Npc[entity.type]);
+        Animator = new AseAnimator();
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        Animator.SetSpriteAsset(AsepriteAssets.Npc[entity.type]);
     }
 
     public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
     {
+
         if (NPCSets.UseAseprite[entity.type])
             return true && lateInstantiation;
         return false;
@@ -116,19 +122,26 @@ public class AseAnimator
 {
     private float _frameCounter;
     private int _frameIndex;
-    public AseAnimator(Asset<AseSprite> sprite)
+    public AseAnimator()
     {
-        Sprite = sprite;
+
         drawEffects = default;
-        centerDrawOrigin = new Vector2(sprite.Value.FrameWidth * 0.5f, sprite.Value.FrameHeight * 0.5f);
+
     }
-    public readonly Asset<AseSprite> Sprite;
+
+
+    public Asset<AseSprite> Sprite;
     public AseTags playingTag;
     public string currentAnimation;
     public bool isLooping;
     public DrawEffects drawEffects;
     public SpriteEffects spriteEffects;
     public Vector2 centerDrawOrigin;
+    public void SetSpriteAsset(Asset<AseSprite> sprite)
+    {
+        Sprite = sprite;
+        centerDrawOrigin = new Vector2(sprite.Value.FrameWidth * 0.5f, sprite.Value.FrameHeight * 0.5f);
+    }
     public SpritebatchDrawer GetSprite() => GetSprite(Vector2.Zero);
     public SpritebatchDrawer GetSprite(Vector2 worldPosition)
     {
@@ -140,6 +153,8 @@ public class AseAnimator
     }
     public void PlayAnimation(string name, AnimationParams? animationParams = null)
     {
+        if (Main.netMode == NetmodeID.Server)
+            return;
         if (animationParams == null)
         {
             animationParams = AnimationParams.Default;
@@ -156,6 +171,8 @@ public class AseAnimator
 
     public void Update()
     {
+        if (Main.netMode == NetmodeID.Server)
+            return;
         if (playingTag == null)
             return;
         //TODO: instead take in an elapsed time and calculate the current frame

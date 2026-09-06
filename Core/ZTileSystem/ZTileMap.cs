@@ -1,9 +1,5 @@
-﻿using Microsoft.CodeAnalysis.Text;
-using Stellamod.Helpers;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Terraria;
@@ -441,6 +437,7 @@ public class ZTileMap : ModSystem
         SendZTileSyncPacket();
     }
 
+    
 
     public override void NetReceive(BinaryReader reader)
     {
@@ -454,24 +451,17 @@ public class ZTileMap : ModSystem
         //Should work just fine lol
         try
         {
-            ModPacket packet = Stellamod.Instance.GetPacket(capacity: 65536);
-            packet.Write((byte)MessageType.ZTileSync);
-            packet.Write(_zTileInstances.Count);
-            for (int i = 0; i < _zTileInstances.Count; i++)
+            
+            int sectionsX = Main.maxTilesX / 4;
+            int sectionsY = Main.maxTilesY / 4;
+            for(int x = 0; x < 4; x++)
             {
-                var tileData = _zTileInstances[i];
-                packet.Write((byte)i);
-                packet.Write((ushort)tileData.position.x);
-                packet.Write((ushort)tileData.position.y);
-                packet.Write((ushort)tileData.position.z);
-                packet.Write(tileData.instanceData.scale);
-                packet.Write(tileData.instanceData.flipX);
-                packet.Write(tileData.instanceData.frameNumber);
-                packet.Write((byte)tileData.instanceData.rotation);
-                packet.Write(tileData.instanceData.type);
-                packet.Write(tileData.instanceData.value);
+                for(int y = 0; y < 4; y++)
+                {
+                    HandleZTileDataRequestPacket(-1, sectionsX * x, sectionsY * y, sectionsX, sectionsY);
+                }
             }
-            packet.Send();
+            
         }
         catch (System.Exception ex)
         {
@@ -479,10 +469,87 @@ public class ZTileMap : ModSystem
         }
     }
 
+
+    public void HandleZTileDataRequestPacket(int requester, int x, int y, int width, int height)
+    {
+        Rectangle rectangle = new Rectangle(x, y, width, height);
+        List<ZTileData> datasToSync = new();
+        for(int i = 0; i < _zTileInstances.Count; i++)
+        {
+            var tileData = _zTileInstances[i];
+            if(rectangle.Contains(tileData.position.x, tileData.position.y))
+            {
+                datasToSync.Add(tileData);
+            }
+        }
+
+        int bytesPerTileData = 128;
+        int totalBytes = bytesPerTileData * (datasToSync.Count + 16);
+        ModPacket packet = Stellamod.Instance.GetPacket(capacity: totalBytes);
+        packet.Write((byte)MessageType.ZTileSync);
+        packet.Write(datasToSync.Count);
+        packet.Write(x);
+        packet.Write(y);
+        packet.Write(width);
+        packet.Write(height);
+        for (int i = 0; i < datasToSync.Count; i++)
+        {
+            var tileData = datasToSync[i];
+            packet.Write((byte)tileData.renderLayer);
+            packet.Write((ushort)tileData.position.x);
+            packet.Write((ushort)tileData.position.y);
+            packet.Write((ushort)tileData.position.z);
+            packet.Write(tileData.instanceData.scale);
+            packet.Write(tileData.instanceData.flipX);
+            packet.Write(tileData.instanceData.frameNumber);
+            packet.Write((byte)tileData.instanceData.rotation);
+            packet.Write(tileData.instanceData.type);
+            packet.Write(tileData.instanceData.value);
+        }
+        packet.Send(toClient: requester);
+    }
+
+    /// <summary>
+    /// Handles a sync packet for Z Tile data
+    /// </summary>
+    /// <param name="reader"></param>
     public void HandleZTileSyncPacket(BinaryReader reader)
     {
-        _zTileInstances.Clear();
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
         int length = reader.ReadInt32();
+        int x = reader.ReadInt32();
+        int y = reader.ReadInt32();
+        int width = reader.ReadInt32();
+        int height = reader.ReadInt32();
+
+        Rectangle rectangle = new Rectangle(x, y, width, height);
+        List<ZTileData> datasToRemove = new();
+        int popIndex = _zTileInstances.Count - 1;
+        for (int i = 0; i < _zTileInstances.Count; i++)
+        {
+            var tileData = _zTileInstances[i];
+            if (rectangle.Contains(tileData.position.x, tileData.position.y) && popIndex >= 0)
+            {
+                //Swap with last element
+                var temp = _zTileInstances[popIndex];
+                _zTileInstances[popIndex] = tileData;
+                _zTileInstances[i] = temp;
+
+                //Substract pop index
+                //              datasToRemove.Add(tileData);
+                popIndex--;
+                i--;
+            }
+        }
+
+        for(int k = _zTileInstances.Count - 1; k > popIndex; k--)
+        {
+            _zTileInstances.RemoveAt(k);
+        }
+  
+
         for (int i = 0; i < length; i++)
         {
             ZRenderLayer renderLayer = (ZRenderLayer)reader.ReadByte();
@@ -500,6 +567,7 @@ public class ZTileMap : ModSystem
             instanceData.value = reader.ReadByte();
             Add(renderLayer, tilePosition, instanceData);
         }
+        Refresh();
     }
 
     private void RenderOverWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
@@ -708,6 +776,7 @@ public class ZTileMap : ModSystem
                 tileData.value).Send(ignoreClient: clientToIgnore);
         }
         Add(renderLayer, zTilePosition, tileData);
+        Refresh();
     }
 
     public void SyncPlaceTile(int toWho, int fromWho, ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)

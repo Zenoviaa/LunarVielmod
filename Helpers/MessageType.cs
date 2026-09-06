@@ -37,7 +37,9 @@
         ZTileSync,
         ChangeNPCAI,
         LevelingPlayerSync,
-        ClassReworkPlayerSync
+        ClassReworkPlayerSync,
+
+        RequestZTileData
     }
 
     public enum DialogueType : byte

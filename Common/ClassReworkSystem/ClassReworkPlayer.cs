@@ -157,7 +157,7 @@ public class ClassReworkPlayer : ModPlayer
     {
         base.PostUpdateEquips();
 
-        if (!hasSpawned)
+        if (!hasSpawned && Main.netMode != NetmodeID.Server)
         {
             Item[] startingITems = ModContent.GetInstance<ClassSystem>().GetClassStartingItems((int)playerClass);
             Player.inventory[0] = startingITems[0].Clone();

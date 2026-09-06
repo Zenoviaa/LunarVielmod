@@ -545,6 +545,9 @@ namespace Stellamod
         public override void PostUpdateMiscEffects()
         {
 
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
             Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
             //   Player.ManageSpecialBiomeVisuals("Stellamod:AuroreanStars", ZoneAlcadzia);
             //     Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", false);
