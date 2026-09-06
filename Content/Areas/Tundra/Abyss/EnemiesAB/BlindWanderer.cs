@@ -2,6 +2,7 @@
 using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -214,6 +216,11 @@ internal class BlindWanderer : ModNPC,
         {
             SwitchState(AIState.LanternDown);
         }
+    }
+    public override void ModifyNPCLoot(NPCLoot npcLoot)
+    {
+        base.ModifyNPCLoot(npcLoot);
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
     }
 
     private void AI_LanternDown()

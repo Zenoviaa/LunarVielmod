@@ -1,93 +1,189 @@
 ﻿using Stellamod.Core.ZTileSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Stellamod.Content.Areas.Underground.TilesUG
+namespace Stellamod.Content.Areas.Underground.TilesUG;
+
+public class BigCobweb : ZTile
 {
-    public class OpenChest : ZTile
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 3;
+        drawOrigin = TileDrawOrigin.Center;
     }
-    public class MineshaftTable : ZTile
+}
+public class DustBanner : ZTile
+{
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 3;
+        drawOrigin = TileDrawOrigin.TopDown;
     }
-    public class MineshaftCrate : ZTile
+}
+public class BigBrownChesspiece : ZTile
+{
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 3;
+        drawOrigin = TileDrawOrigin.BottomUp;
     }
+}
+public class BrownFlowerPillar : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class BrownStalagmiteGate : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
 
-    public class ShaftChest : ZTile
+public class BrownStalagmite : ZTile
+{
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 4;
+        drawOrigin = TileDrawOrigin.BottomUp;
     }
+}
 
-    public class MineshaftLadder : ZTile
+public class BrokenAngel : ZTile
+{
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 3;
+        drawOrigin = TileDrawOrigin.BottomUp;
     }
-    public class MineshaftPot : ZTile
+}
+
+public class Poster2 : ZTile
+{
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 4;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.Center;
     }
-    public class MineshaftTableNChair : ZTile
+}
+public class Poster1 : ZTile
+{
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.Center;
     }
-    public class MineshaftBackTunnel : ZTile
+}
+public class MineshaftBridgeHorizontal : ZTile
+{
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.Center;
     }
-    public class LampPostSmallHangingLamp : ZTile
+}
+public class MineshaftBridgeVertical : ZTile
+{
+    public override void SetStaticDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.Center;
+    }
+}
+public class OpenChest : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class MineshaftTable : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class MineshaftCrate : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+
+public class ShaftChest : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+
+public class MineshaftLadder : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class MineshaftPot : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 4;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class MineshaftTableNChair : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class MineshaftBackTunnel : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class LampPostSmallHangingLamp : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
     }
 }

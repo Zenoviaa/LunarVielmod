@@ -13,3 +13,13 @@ public class JunkyRefrigerator : ZTile
       
     }
 }
+public class JunkyBall : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 5;
+        drawOrigin = TileDrawOrigin.Center;
+
+    }
+}

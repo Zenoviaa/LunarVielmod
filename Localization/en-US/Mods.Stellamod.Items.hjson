@@ -12135,3 +12135,8 @@ Undercross: {
 	DisplayName: Undercross
 	Tooltip: While in pure underground, take 25% less damage from enemies and bosses
 }
+
+GoldenFork: {
+	DisplayName: Golden Fork
+	Tooltip: "Summons a pet Little Demon"
+}

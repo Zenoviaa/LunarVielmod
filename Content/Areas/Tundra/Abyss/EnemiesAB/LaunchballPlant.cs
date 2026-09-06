@@ -1,11 +1,13 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -294,7 +296,7 @@ public class LaunchballPlant : ModNPC,
         NPC.damage = 1;
         NPC.defense = 8;
         NPC.lifeMax = 90;
-
+        NPC.knockBackResist = 0;
     }
 
     public override void AI()
@@ -405,6 +407,11 @@ public class LaunchballPlant : ModNPC,
     {
         base.HitEffect(hit);
         AbyssEnemyCommon.HitAndDeathEffectsPlanty(NPC);
+    }
+    public override void ModifyNPCLoot(NPCLoot npcLoot)
+    {
+        base.ModifyNPCLoot(npcLoot);
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
     }
 
     public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)

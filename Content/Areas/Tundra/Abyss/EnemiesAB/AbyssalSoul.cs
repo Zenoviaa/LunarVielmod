@@ -46,6 +46,7 @@ public class AbyssalSoul : ModNPC, IWaterSilhouette
         NPC.DeathSound = SoundID.NPCDeath39;
         NPC.aiStyle = -1;
         NPC.noGravity = true;
+        NPC.noTileCollide = true;
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)

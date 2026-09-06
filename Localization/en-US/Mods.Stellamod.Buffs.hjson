@@ -1227,3 +1227,8 @@ BoomboxerPetBuff: {
 	DisplayName: Boomboxer
 	Description: Give me five big BOOMS
 }
+
+GoldenForkPetBuff: {
+	DisplayName: Little Demon
+	Description: The demons are watching...
+}

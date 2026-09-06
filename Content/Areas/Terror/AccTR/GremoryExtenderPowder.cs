@@ -7,7 +7,6 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Terror.AccTR;
-
 public class GremoryExtenderPowder : ModItem
 {
     public override void SetStaticDefaults()
