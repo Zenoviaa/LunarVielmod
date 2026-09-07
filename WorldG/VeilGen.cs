@@ -23,22 +23,6 @@ using Terraria.WorldBuilding;
 
 namespace Stellamod.WorldG;
 
-/// <summary>
-/// Collection of helper functions for manipulating textures.
-/// </summary>
-public static class TextureUtilities
-{
-    public static int GetPixelIndex(Texture2D texture, int x, int y)
-    {
-        return x + y * texture.Width;
-    }
-
-    public static Color GetPixelColor(Texture2D texture, int x, int y, Color[] pixels)
-    {
-        return pixels[GetPixelIndex(texture, x, y)];
-    }
-}
-
 public enum PrefabPlacementType : byte
 {
     FromTopLeft,
@@ -311,6 +295,24 @@ public partial class VeilGen
     public static readonly Room[] MineshaftPrefabs = DungeonSaveUtility.GetDungeonPrefabs("Mineshafts");
 
 
+    public static bool IsFilledEnough(Rectangle tileBounds, float tilePercent)
+    {
+        float total = 0;
+        for(int i = tileBounds.Left; i < tileBounds.Right; i++)
+        {
+            for(int j = tileBounds.Top; j < tileBounds.Bottom; j++)
+            {
+                Tile tile = Main.tile[i, j];
+                if (tile.HasTile)
+                    total++;
+            }
+        }
+        float tileCount = (tileBounds.Width * tileBounds.Height);
+        float pct = total / tileCount;
+        return pct >= tilePercent;
+
+
+    }
     public static void QuickOrePatch(int x, int y, int tileType)
     {
         VeilGen.Walker(x, y, WorldGen.genRand.Next(50, 90), tileType, maxDist: 3);

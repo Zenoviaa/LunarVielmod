@@ -4,6 +4,7 @@ using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
+using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -384,7 +385,7 @@ public class BlastingBlossomBeam : ModProjectile
 
                 }
             }
-            SoundStyle sound = AssetRegistry.Sounds.SteamPunking.DescendingBoom;
+            SoundStyle sound = AssetReferences.Assets.Sounds.Abyss.MothLaser.Asset with { PitchVariance = 0.3f } ;
             sound.PitchVariance = 0.3f;
             sound.Volume = 0.5f;
             SoundEngine.PlaySound(sound, Projectile.position);

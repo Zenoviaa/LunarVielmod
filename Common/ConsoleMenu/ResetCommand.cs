@@ -7,7 +7,6 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.ConsoleMenu;
-
 public class ResetCommand : ConsoleCommand
 {
     public override string GetCommandName()

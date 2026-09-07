@@ -1,15 +1,541 @@
-﻿using Stellamod.Core.ZTileSystem;
+﻿using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
+using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
+using Stellamod.Core.ZTileSystem;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
+
 
 namespace Stellamod.WorldG;
 
 public partial class VeilGen
 {
+    /// <summary>
+    /// Generates the entire abyss biome
+    /// </summary>
+    public static void GenerateAbyss()
+    {
+        int left = SavedGenerationParameters.SnowLeft;
+        int right = SavedGenerationParameters.SnowRight;
+        int top = SavedGenerationParameters.SnowTop;
+        int bottom = ModContent.GetInstance<StellaWorld>().DarkspaceStart;
 
+        //Calculate center of the abyss
+        Point AbyssCenter = new Point();
+        AbyssCenter.X = left + right;
+        AbyssCenter.X /= 2;
+        AbyssCenter.Y = (int)(SavedGenerationParameters.RockLayerHigh + Main.maxTilesY * 0.15);
+        AbyssCenter.Y -= 20;
+        //Place the center like a circle
+
+        ushort abyssTile = (ushort)ModContent.TileType<AbyssalDirt>();
+
+        int abyssHigh = AbyssCenter.Y - 500;
+
+        int abyssLow = bottom;
+
+        //Fill the entire area with abyss dirt tiles
+        for (int x = left; x < right; x++)
+        {
+            for (int y = abyssHigh; y < abyssLow; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
+                tile.HasTile = true;
+                tile.TileType = abyssTile;
+            }
+        }
+        //var genRand = WorldGen.genRand;
+        FastRandom fastRandom = new FastRandom(WorldGen.genRand.Next(0, 3000));
+        for (int x = left; x < right; x++)
+        {
+            if (x > left && x < right - 1)
+                continue;
+
+            for (int y = abyssHigh; y < abyssLow; y += 8)
+            {
+                WorldGen.TileRunner(x, y,
+                    strength: 48,
+                    125, abyssTile, addTile: true);
+            }
+        }
+
+        for (int x = left; x < right; x += 8)
+        {
+            int y = abyssHigh;
+            WorldGen.TileRunner(x, y,
+                strength: 48,
+                125, abyssTile, addTile: true);
+            y = abyssLow;
+            WorldGen.TileRunner(x, y,
+                strength: 48,
+                125, abyssTile, addTile: true);
+        }
+
+        TileID.Sets.CanBeClearedDuringGeneration[abyssTile] = true;
+        TileID.Sets.CanBeClearedDuringOreRunner[abyssTile] = true;
+
+        Span<ushort> pool = new ushort[1].AsSpan();
+        pool[0] = (ushort)ModContent.TileType<AbyssalCoarseDirt>();
+
+        FastNoiseLite fnl = new FastNoiseLite();
+        for (int i = 0; i < 1; i++)
+        {
+            fnl.SetSeed(fastRandom.Next(0, 20000));
+            fnl.SetFrequency(0.05f);
+            fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+            fnl.SetDomainWarpAmp(65);
+            for (int x = left; x < right; x++)
+            {
+                for (int y = abyssHigh; y < abyssLow; y++)
+                {
+                    float noise = fnl.GetNoise(x, y);
+                    if (noise > 0.1f)
+                    {
+                        Tile tile = Main.tile[x, y];
+                        tile.TileType = pool[i];
+                    }
+                }
+            }
+        }
+
+        Dictionary<int, List<Vector2>> caveConnectPoints = new Dictionary<int, List<Vector2>>();
+        bool CreateAbyssCavernCave(int index, Vector2 originPoint, Vector2 velocity, Rectangle scanArea)
+        {
+            Vector2 cavernPoint = originPoint;
+            int failSafe = 0;
+            float strength = fastRandom.Next(12, 18);
+            float cavingSteps = fastRandom.Next(24, 64);
+            float down = fastRandom.Next(-64, -12);
+            int connectPointCounter = 5;
+            bool success = false;
+            while (scanArea.Contains(cavernPoint.ToPoint()) && failSafe < 500)
+            {
+                connectPointCounter--;
+                if (cavingSteps > 0)
+                {
+                    if (connectPointCounter <= 0)
+                    {
+                        caveConnectPoints[index].Add(cavernPoint);
+                    }
+                    WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
+                          strength: strength,
+                          fastRandom.Next(7, 27), -1);
+                    success = true;
+                }
+                cavingSteps--;
+                if (cavingSteps < down)
+                {
+                    down = fastRandom.Next(-64, -12);
+                    strength = fastRandom.Next(12, 20);
+                    cavingSteps = fastRandom.Next(24, 96);
+                }
+                cavernPoint += velocity * 7;
+                failSafe++;
+            }
+            return success;
+        }
+
+        bool CreateAbyssClearing(int index, Vector2 originPoint, Vector2 velocity, Rectangle scanArea)
+        {
+            Vector2 cavernPoint = originPoint;
+            int failSafe = 0;
+            float strength = fastRandom.Next(12, 18);
+            float cavingSteps = fastRandom.Next(24, 64);
+            float down = fastRandom.Next(-64, -12);
+            int connectPointCounter = 5;
+            bool success = false;
+            while (scanArea.Contains(cavernPoint.ToPoint()) && failSafe < 500)
+            {
+                connectPointCounter--;
+                if (cavingSteps > 0)
+                {
+                    if (connectPointCounter <= 0)
+                    {
+                        caveConnectPoints[index].Add(cavernPoint);
+                    }
+                    WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
+                          strength: strength,
+                          fastRandom.Next(27, 32), -1);
+                    success = true;
+                }
+                cavingSteps--;
+                if (cavingSteps < down)
+                {
+                    down = fastRandom.Next(-64, -12);
+                    strength = fastRandom.Next(22, 30);
+                    cavingSteps = fastRandom.Next(48, 96);
+                }
+                cavernPoint += velocity * 7;
+                failSafe++;
+            }
+            return success;
+        }
+
+        List<Vector2> FindPointsICanConnectTo(int index, Vector2 referencePoint)
+        {
+            float connectRadius = 150;
+            float maxConnectionRadiusSquared = connectRadius * connectRadius;
+            List<Vector2> otherPoints = new List<Vector2>(16);
+            foreach (var kvp in caveConnectPoints)
+            {
+                if (kvp.Key == index)
+                    continue;
+                foreach (Vector2 cavePoint in kvp.Value)
+                {
+                    float distanceSquared = Vector2.DistanceSquared(referencePoint, cavePoint);
+                    if (distanceSquared <= maxConnectionRadiusSquared)
+                    {
+                        otherPoints.Add(cavePoint);
+                    }
+                }
+            }
+            return otherPoints;
+        }
+        List<Vector2> FindAnyPointsICanConnectTo(Vector2 referencePoint, float connectRadius = 150)
+        {
+            float maxConnectionRadiusSquared = connectRadius * connectRadius;
+            List<Vector2> otherPoints = new List<Vector2>(16);
+            foreach (var kvp in caveConnectPoints)
+            {
+                foreach (Vector2 cavePoint in kvp.Value)
+                {
+                    float distanceSquared = Vector2.DistanceSquared(referencePoint, cavePoint);
+                    if (distanceSquared <= maxConnectionRadiusSquared)
+                    {
+                        otherPoints.Add(cavePoint);
+                    }
+                }
+            }
+            return otherPoints;
+        }
+
+
+        //Sprinkle several long caves throughout the biome
+        int numCaves = 18;
+        Rectangle operationRectangle = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
+        operationRectangle = operationRectangle.CenterPad(25);
+
+        for (int n = 0; n < numCaves; n++)
+        {
+            caveConnectPoints.TryAdd(n, new List<Vector2>());
+            int dir = 1;
+            if (fastRandom.Next(2) == 0)
+                dir = -1;
+            Vector2 p = new Vector2();
+            p.X = fastRandom.Next(left - 25, left + 25);
+            if (dir == -1)
+                p.X = fastRandom.Next(right - 25, right);
+            p.X += fastRandom.Next(-250, 250);
+            p.Y = (int)MathHelper.Lerp(abyssHigh, abyssLow, n / (float)numCaves);
+
+            //All caves should be moving to the right
+            Vector2 initialDirection = Vector2.UnitX;
+            if (dir == -1)
+                initialDirection *= -1;
+
+            bool success = CreateAbyssCavernCave(n, p, initialDirection, operationRectangle);
+            if (!success)
+            {
+                n--;
+            }
+        }
+
+
+        //Create numerous clearings in the abyss
+        int numClearings = 8;
+
+        /*
+        for (int n = 0; n < numClearings; n++)
+        {
+            int dir = 1;
+            if (fastRandom.Next(2) == 0)
+                dir = -1;
+            Vector2 p = new Vector2();
+            p.X = fastRandom.Next(left - 25, left + 25);
+            if (dir == -1)
+                p.X = fastRandom.Next(right - 25, right);
+            p.X += fastRandom.Next(-250, 250);
+            p.Y = (int)MathHelper.Lerp(abyssHigh, abyssLow, n / (float)numClearings);
+
+            //All caves should be moving to the right
+            Vector2 initialDirection = Vector2.UnitX;
+            if (dir == -1)
+                initialDirection *= -1;
+
+            bool success = CreateAbyssClearing(n, p, initialDirection, operationRectangle);
+            if (!success)
+            {
+                n--;
+            }
+        }
+        */
+        //NOW WE CONNECT CAVES
+        //Let's make two connections per layer
+        //or atleast try to
+
+        for (int n = 0; n < numCaves; n++)
+        {
+            int attempts = 0;
+            for (int k = 0; k < 3; k++)
+            {
+                if (attempts >= 100)
+                {
+                    break;
+                }
+                List<Vector2> points = caveConnectPoints[n];
+                if (points.Count <= 0)
+                    break;
+
+                Vector2 referencePoint = points[fastRandom.Next(0, points.Count)];
+                List<Vector2> pointsICanConnectTo = FindPointsICanConnectTo(n, referencePoint);
+                //So by distance to point
+                pointsICanConnectTo = pointsICanConnectTo.OrderBy(x => Vector2.Distance(referencePoint, x)).ToList();
+
+                if (pointsICanConnectTo.Count <= 0)
+                {
+                    k--;
+                    attempts++;
+                    continue;
+                }
+                int min = (int)MathF.Min(6, pointsICanConnectTo.Count);
+                VeilGen.CreateAbyssConnectionCave(referencePoint, pointsICanConnectTo[fastRandom.Next(0, min)]);
+            }
+        }
+
+        List<Point> validPointsForFlowers = new List<Point>();
+        int skip = 8;
+        int xPadding = 50;
+        int innerLeft = left + xPadding;
+        int innerRight = right - xPadding;
+        int innerHigh = abyssHigh + 150;
+        int innerLow = abyssLow - 125;
+        for(int x = innerLeft; x < innerRight; x+= skip)
+        {
+            for(int y = innerHigh; y < innerLow; y+= skip)
+            {
+                Rectangle tileBounds = TileUtilities.CenterTileRectangle(new Point(x, y), 100, 100);
+                if (!VeilGen.IsFilledEnough(tileBounds, 0.95f))
+                {
+                    continue;
+                }
+                validPointsForFlowers.Add(new Point(x, y));
+            }
+        }
+
+        //Place Clearings
+        //How do we palce these uhhhh
+        //Yeahs
+        int numBellFlowers = 5;
+        List<Point> placedFlowers = new List<Point>();
+        List<Vector2> allPoints = new List<Vector2>();
+        foreach (var kvp in caveConnectPoints)
+            allPoints.AddRange(kvp.Value);
+        BellFlowerSystem.ClearBellFlowers();
+        for (int n = 0; n < numBellFlowers; n++)
+        {
+
+            bool TooCloseToAnotherPlacedFlower(Point p)
+            {
+                foreach(Point placed in placedFlowers)
+                {
+                    if (TileUtilities.TooCloseToTilePoint(p, placed, proximity: 200))
+                        return true;
+                }
+                return false;
+            }
+   
+            Vector2 GetRandomConnectionPoint(Vector2 referencePoint, float checkDistance)
+            {
+                float checkDistanceSquared = checkDistance * checkDistance;
+                for(int a = 0; a < 50; a++)
+                {
+                    Vector2 p = allPoints[fastRandom.Next(0, allPoints.Count)];
+                    float distanceSquare = Vector2.DistanceSquared(referencePoint, p);
+                    if (distanceSquare <= checkDistanceSquared)
+                        return p;
+                }
+                return allPoints[fastRandom.Next(0, allPoints.Count)];
+            }
+            int maxAttempts = 100;
+            int a = 0;
+            
+            
+            while(a < maxAttempts)
+            {
+                Point randPoint = validPointsForFlowers[fastRandom.Next(0, validPointsForFlowers.Count)];
+                if (TooCloseToAnotherPlacedFlower(randPoint))
+                {
+                    a++;
+                    continue;
+                }
+
+
+                //List<Vector2> pointsICanConnectTo = FindAnyPointsICanConnectTo(randPoint.ToVector2(), connectRadius: 250);
+                //pointsICanConnectTo = pointsICanConnectTo.OrderBy(x => Vector2.Distance(randPoint.ToVector2(), x)).ToList();
+                Vector2 pointToConnectTo = GetRandomConnectionPoint(randPoint.ToVector2(), checkDistance: 250);
+                CreateAbyssConnectionCave(randPoint.ToVector2(), pointToConnectTo);
+                VeilGen.CreateBellFlowerClearing(randPoint.ToVector2());
+                placedFlowers.Add(randPoint);
+                break;
+            }
+            if(a >= maxAttempts)
+            {
+                Main.NewText("FAIL TO PLACED BELL FLOWER", Color.Red);
+            }
+        }
+
+
+        Rectangle rect = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
+        VeilGen.PruneLonelyTiles(rect);
+        VeilGen.GenerateWaterBowls(rect, 512, new Point(5, 12), new Point(5, 12));
+        VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));
+      
+        var types = new ushort[]
+        {
+            ModContent.ZTileType<AbyssalFlower>(),
+            ModContent.ZTileType<AbyssalFlower>(),
+            ModContent.ZTileType<AbyssalFlower>(),
+            ModContent.ZTileType<AbyssalWhiteFlower>()
+        };
+        var types2 = new ushort[]
+        {
+            ModContent.ZTileType<AbyssalOrbFlower>()
+        };
+        var wetTypes = new ushort[]
+        {
+            ModContent.ZTileType<AbyssalReed>()
+        };
+        VeilGen.ClearWallsArea(rect);
+        VeilGen.KillZTilesInArea(rect);
+
+        int[] multiTileFlowers = new int[]
+        {
+            ModContent.TileType<BlueFlower>(),
+            ModContent.TileType<BlueFlower2>(),
+            ModContent.TileType<TealBulb>(),
+            ModContent.TileType<TealBulb2>(),
+            ModContent.TileType<TealBulb3>()
+        };
+
+        var groundTiles = new List<int>
+        {
+            ModContent.TileType<AbyssalDirt>(),
+            ModContent.TileType<AbyssalCoarseDirt>()
+        };
+
+        //No need to settle liquids anymore, water just places in the correct spot
+        VeilGen.SettleLiquids();
+        VeilGen.DecorateSurfaceEdgesWithMultiTile(rect, denom: 8, groundTiles, multiTileFlowers);
+        VeilGen.DecorateSurfaceEdgesWithZTile(new()
+        {
+            denom = 8,
+            renderLayer = ZRenderLayer.InFrontOfWalls,
+            targetTileTypes = groundTiles,
+            tileBounds = rect,
+            zLayer = 0,
+            zTileTypes = types,
+            value = 175
+        });
+        VeilGen.DecorateSurfaceEdgesWithZTile(new()
+        {
+            denom = 128,
+            renderLayer = ZRenderLayer.InFrontOfWalls,
+            targetTileTypes = groundTiles,
+            tileBounds = rect,
+            zLayer = 0,
+            zTileTypes = types2,
+            value = 175
+        });
+        VeilGen.DecorateWetAreasWithZTile(new()
+        {
+            denom = 24,
+            renderLayer = ZRenderLayer.InFrontOfWalls,
+            targetTileTypes = groundTiles,
+            tileBounds = rect,
+            zLayer = 0,
+            zTileTypes = wetTypes,
+            value = 175
+        });
+
+
+        VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles,
+            (ushort)ModContent.WallType<AbyssalDirtWall>());
+        VeilGen.GrowKelpArea<AbyssalKelp>(rect, minHeight: 5, maxHeight: 9, denom: 7);
+        if (WorldGen.SkipFramingBecauseOfGen)
+            return;
+        for (int x = left; x < right; x++)
+        {
+            for (int y = abyssHigh; y < abyssLow; y++)
+            {
+                WorldGen.SquareTileFrame(x, y, resetFrame: true);
+            }
+        }
+
+        TileUtilities.UpdateMap(rect, 255);
+    }
+
+    public static void CreateBellFlowerClearing(Vector2 pointToPlaceOn)
+    {
+        int tileRadius = 30;
+        Point tilePoint = pointToPlaceOn.ToPoint();
+        ClearCircle(tilePoint, tileRadius);
+
+        //Place little hakf curcke island
+        int islandRadius = tileRadius / 2;
+        for (int x = tilePoint.X - islandRadius; x <= tilePoint.X + islandRadius; x++)
+        {
+            for (int y = tilePoint.Y - islandRadius; y <= tilePoint.Y + islandRadius; y++)
+            {
+                Point point = new Point(x, y);
+                int dx = Math.Abs(point.X - tilePoint.X);
+                int dy = Math.Abs(point.Y - tilePoint.Y);
+                int diff = dx + dy;
+                if (diff > tileRadius)
+                    continue;
+                if (point.Y < tilePoint.Y)
+                    continue;
+
+                Tile tile = Main.tile[point];
+                tile.HasTile = true;
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
+                tile.TileType = (ushort)ModContent.TileType<AbyssalDirt>();
+               // tile.LiquidAmount = 255;
+                //tile.LiquidType = LiquidID.Water;
+            }
+        }
+
+        BellFlowerSystem.CreateBellFlower(tilePoint + new Point(0, -5));
+    }
+
+    public static void ClearCircle(Point tilePoint, int tileRadius)
+    {
+        WorldUtils.Gen(tilePoint, new Shapes.Circle(tileRadius, tileRadius),
+           Actions.Chain(new Actions.ClearTile()));
+        /*
+        for (int x = tilePoint.X - tileRadius; x <= tilePoint.X + tileRadius; x++)
+        {
+            for (int y = tilePoint.Y - tileRadius; y <= tilePoint.Y + tileRadius; y++)
+            {
+                Point point = new Point(x, y);
+                int dx = Math.Abs(point.X - tilePoint.X);
+                int dy = Math.Abs(point.Y - tilePoint.Y);
+                int diff = dx + dy;
+                if (diff > tileRadius)
+                    continue;
+                Tile tile = Main.tile[point];
+                tile.ClearTile();
+            }
+        }*/
+    }
     public static void GrowKelpArea<KelpTile>(Rectangle tileBounds, int minHeight, int maxHeight, int denom)
         where KelpTile : ModTile
     {
@@ -325,6 +851,12 @@ public partial class VeilGen
                     Tile tile = Main.tile[x, y];
                     if (tile.HasTile)
                         continue;
+                    //Fall down until hitting a solid tile or another water source
+                    int newY = TileUtilities.FallToSolidOrWaterTile(x, y, maxSteps: 255);
+
+                    //We're placing at 1 tile above the actual thing
+                    newY--;
+                    tile = Main.tile[x, newY];
                     tile.LiquidAmount = 255;
                     tile.LiquidType = LiquidID.Water;
                 }
