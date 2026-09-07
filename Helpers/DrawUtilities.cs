@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Core;
 using Stellamod.Core.ZTileSystem;
 using System;
 using System;
@@ -468,6 +469,15 @@ public static class DrawUtilities
             spritebatchDrawer.rotation = projectile.oldRot[i];
             spriteBatch.Draw(spritebatchDrawer);
         }
+    }
+
+    public static void DrawBasicGlow(SpriteBatch spriteBatch, Vector2 position, float scale, Color color)
+    {
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, position);
+        glowDrawer.color = color;
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= scale;
+        spriteBatch.Draw(glowDrawer);
     }
 }
 

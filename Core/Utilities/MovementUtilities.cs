@@ -54,6 +54,22 @@ public class MovementUtilities
         }
         return worldPosition;
     }
+    public static Vector2 FindFloorWet(in Vector2 worldPosition, int maxTileSteps = 100)
+    {
+        Point tilePoint = worldPosition.ToTileCoordinates();
+        int x = tilePoint.X;
+        int y = tilePoint.Y;
+        for (int i = 0; i < maxTileSteps && y > 0; i++)
+        {
+            y++;
+            Tile tile = Main.tile[x, y];
+            if ((tile.HasTile && Main.tileSolid[tile.TileType]) || tile.LiquidAmount > 0)
+            {
+                return new Point(x, y).ToWorldCoordinates();
+            }
+        }
+        return worldPosition;
+    }
     public static Vector2 SteinGetEndPoint(Player player, in Vector2 startPosition, in Vector2 targetPosition, in float maxDistance)
     {
         float adjustedMaxDistance = player.GetModPlayer<MeleeEffectsPlayer>().steinDistanceBonus * maxDistance + maxDistance;

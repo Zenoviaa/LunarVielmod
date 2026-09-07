@@ -376,13 +376,18 @@ public partial class VeilGen
                     a++;
                     continue;
                 }
-
+         
 
                 //List<Vector2> pointsICanConnectTo = FindAnyPointsICanConnectTo(randPoint.ToVector2(), connectRadius: 250);
                 //pointsICanConnectTo = pointsICanConnectTo.OrderBy(x => Vector2.Distance(randPoint.ToVector2(), x)).ToList();
                 Vector2 pointToConnectTo = GetRandomConnectionPoint(randPoint.ToVector2(), checkDistance: 250);
-                CreateAbyssConnectionCave(randPoint.ToVector2(), pointToConnectTo);
+                if (pointToConnectTo.Y > randPoint.Y)
+                    continue;
+
+
                 VeilGen.CreateBellFlowerClearing(randPoint.ToVector2());
+
+                CreateAbyssConnectionCaveMini(randPoint.ToVector2(), pointToConnectTo);
                 placedFlowers.Add(randPoint);
                 break;
             }
@@ -396,8 +401,7 @@ public partial class VeilGen
         Rectangle rect = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
         VeilGen.PruneLonelyTiles(rect);
         VeilGen.GenerateWaterBowls(rect, 512, new Point(5, 12), new Point(5, 12));
-        VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));
-      
+        VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));  
         var types = new ushort[]
         {
             ModContent.ZTileType<AbyssalFlower>(),
@@ -486,34 +490,56 @@ public partial class VeilGen
     {
         int tileRadius = 30;
         Point tilePoint = pointToPlaceOn.ToPoint();
-        ClearCircle(tilePoint, tileRadius);
+        ushort abyssDirtTile = (ushort)ModContent.TileType<AbyssalDirt>();
 
-        //Place little hakf curcke island
-        int islandRadius = tileRadius / 2;
-        for (int x = tilePoint.X - islandRadius; x <= tilePoint.X + islandRadius; x++)
+
+        Rectangle originalBounds = TileUtilities.CenterTileRectangle(tilePoint, tileRadius * 2, tileRadius * 2);
+        for (int x = originalBounds.Left; x < originalBounds.Right; x++)
         {
-            for (int y = tilePoint.Y - islandRadius; y <= tilePoint.Y + islandRadius; y++)
+            for (int y = originalBounds.Top; y < originalBounds.Bottom; y++)
             {
-                Point point = new Point(x, y);
-                int dx = Math.Abs(point.X - tilePoint.X);
-                int dy = Math.Abs(point.Y - tilePoint.Y);
-                int diff = dx + dy;
-                if (diff > tileRadius)
-                    continue;
-                if (point.Y < tilePoint.Y)
-                    continue;
-
-                Tile tile = Main.tile[point];
+                Tile tile = Main.tile[x, y];
                 tile.HasTile = true;
+                tile.TileType = abyssDirtTile;
                 tile.TileFrameX = -1;
                 tile.TileFrameY = -1;
-                tile.TileType = (ushort)ModContent.TileType<AbyssalDirt>();
-               // tile.LiquidAmount = 255;
-                //tile.LiquidType = LiquidID.Water;
             }
         }
 
-        BellFlowerSystem.CreateBellFlower(tilePoint + new Point(0, -5));
+        ClearCircle(tilePoint, tileRadius);
+
+
+        int islandRadius = 16;
+        Point islandPoint = tilePoint;
+        islandPoint.Y -= 8;
+        WorldUtils.Gen(islandPoint, new Shapes.Circle(islandRadius),
+            Actions.Chain(new Actions.SetTile(abyssDirtTile, false, false)));
+        WorldUtils.Gen(islandPoint, new Shapes.HalfCircle(islandRadius),
+            Actions.Chain(new Actions.ClearTile()));
+
+        tileRadius += 6;
+        int left = tilePoint.X - tileRadius / 2;
+        int right = tilePoint.X + tileRadius / 2;
+        int top = tilePoint.Y - tileRadius / 2;
+        int bottom = tilePoint.Y + tileRadius / 2;
+
+        for(int x = left; x < right; x++)
+        {
+            for(int y = top; y < bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                tile.LiquidAmount = 255;
+                tile.LiquidType = LiquidID.Water;
+            }
+        }
+
+        Rectangle bounds = TileUtilities.CenterTileRectangle(tilePoint, tileRadius, tileRadius);
+        var targetTileTypes = new List<int> { abyssDirtTile };
+        VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes,
+            WallID.HallowedGrassUnsafe);
+        VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes,
+            WallID.GrassUnsafe);
+        BellFlowerSystem.CreateBellFlower(islandPoint + new Point(0, -5));
     }
 
     public static void ClearCircle(Point tilePoint, int tileRadius)
@@ -585,6 +611,20 @@ public partial class VeilGen
         var genRand = WorldGen.genRand;
         float strength = genRand.NextFloat(12, 18);
         float steps = Vector2.Distance(start, end) / 4f;
+        for (float f = 0; f < steps; f++)
+        {
+            float lerp = f / steps;
+            Vector2 pos = Vector2.Lerp(start, end, lerp);
+            WorldGen.TileRunner((int)pos.X, (int)pos.Y,
+                 strength: strength,
+                 genRand.Next(5, 12), -1);
+        }
+    }
+    public static void CreateAbyssConnectionCaveMini(Vector2 start, Vector2 end)
+    {
+        var genRand = WorldGen.genRand;
+        float strength = genRand.NextFloat(6, 9);
+        float steps = Vector2.Distance(start, end) / 2f;
         for (float f = 0; f < steps; f++)
         {
             float lerp = f / steps;
@@ -769,7 +809,7 @@ public partial class VeilGen
                 {
                     //WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
                     Point point = new Point(x, y);
-                    int steps = genRand.Next(1, 4);
+                    int steps = genRand.Next(1, 3);
 
 
                     for (int s = 0; s < steps; s++)

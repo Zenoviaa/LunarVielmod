@@ -1,7 +1,12 @@
-﻿using Stellamod.Common.Particles;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Core;
+using Stellamod.Core.Godrays;
+using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.RibbonSystem;
+using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -35,6 +40,9 @@ public class BellFlowerMapLayer : ModMapLayer
         var bellFlowerTexture = AssetReferences.Content.Areas.Tundra.Abyss.EnemiesAB.BellFlower_MapIcon.Asset;
         foreach(PlacedBellFlower flower in BellFlowerSystem.BellFlowers)
         {
+            byte frame = 0;
+            if (flower.rung)
+                frame = 1;
             /*
             if (!flower.discovered)
                 continue;*/
@@ -42,7 +50,7 @@ public class BellFlowerMapLayer : ModMapLayer
             // Note that the `position` argument expects tile coordinates expressed as a Vector2. Don't scale tile coordinates to world coordinates by multiplying by 16.
             // The return of MapOverlayDrawContext.Draw has a field that indicates if the mouse is currently over our icon.
             if (context.Draw(bellFlowerTexture.Value, flower.spawnPosition.ToTileCoordinates().ToVector2(), Color.White,
-                new SpriteFrame(1, 2, 0, 0), scaleIfNotSelected, scaleIfSelected, Alignment.Center).IsMouseOver)
+                new SpriteFrame(1, 2, 0, frame), scaleIfNotSelected, scaleIfSelected, Alignment.Center).IsMouseOver)
             {
                 // When the icon is being hovered by the users mouse, we set the mouse text to the localized text for "The Dungeon"
                 text = LangText.Common("BellFlower");
@@ -282,7 +290,31 @@ public class BellFlower : ModNPC
         {
             NPC.active = false;
         }
-   
+        if (Main.rand.NextBool(100) && Main.hasFocus && Main.netMode != NetmodeID.Server)
+        {
+            GodrayRenderer godrayRenderer = ModContent.GetInstance<GodrayRenderer>();
+            Vector2 centerPos = NPC.Center;
+
+           
+            godrayRenderer.AddGodrayParticle(centerPos + Main.rand.NextVector2Circular(64, 64));
+        }
+
+        if (Main.rand.NextBool(16))
+        {
+            var sp = SparkleParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(72, 72), Vector2.Zero);
+            sp.gravity = 0;
+            sp.Scale *= 0.5f;
+            sp.fast = true;
+            sp.outerColor = Color.Blue;
+        }
+        Vector2 ground = MovementUtilities.FindFloorWet(NPC.Center);
+        ground.Y -= 64;
+        NPC.velocity = ground - NPC.Center;
+        if (Main.rand.NextBool(32))
+        {
+            var d = Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond, Scale: 0.8f);
+            d.noGravity = true;
+        }
         NPC.TargetClosest();
         NPC.life = NPC.lifeMax;
         float distanceSquared = Vector2.DistanceSquared(NPC.Center, MyTarget.Center);
@@ -347,17 +379,51 @@ public class BellFlower : ModNPC
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        Vector2 drawOrigin = new Vector2(42, 32);
+        Vector2 drawOffset = new Vector2(-16, 0);
         SpritebatchDrawer rootDrawer = SpritebatchDrawer.FromNPC(NPC);
         rootDrawer.VerticalFrame(0, 2);
-        rootDrawer.BottomCenterOrigin();
-        rootDrawer.drawOrigin = new Vector2(42, 32);
+        rootDrawer.drawOrigin = drawOrigin;
         rootDrawer.rotation = 0;
+        rootDrawer.worldPosition -= drawOrigin;
+        rootDrawer.worldPosition += drawOffset;
         spriteBatch.Draw(rootDrawer);
 
         SpritebatchDrawer bellDrawer = SpritebatchDrawer.FromNPC(NPC);
-        bellDrawer.drawOrigin = new Vector2(42, 32);
+        bellDrawer.drawOrigin = drawOrigin;
         bellDrawer.VerticalFrame(1, 2);
+        bellDrawer.worldPosition -= drawOrigin;
+        bellDrawer.worldPosition += drawOffset;
         spriteBatch.Draw(bellDrawer);
+
+        bellDrawer.color = Color.White * ExtraMath.Osc(0.32f, 0.6f, speed: 2);
+        bellDrawer.color.A = 0;
+        spriteBatch.Draw(bellDrawer);
+        DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 0.4f, Color.Blue * 0.4f * ExtraMath.Osc(0.8f, 1f, speed: 2));
+        DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 1.5f, Color.Blue * 0.4f * ExtraMath.Osc(0.8f, 1f, speed: 2));
+
+
+        //Godrays here
+        Asset<Texture2D> godrayTexture = AssetManager.GlowMask.SimpleGlowCircle;
+        Vector2 origin = godrayTexture.Size() * 0.5f;
+        Vector2 godrayScale = new Vector2(0.35f, 2f);
+
+        float godrayOffset = 150;
+        SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromTextureAsset(godrayTexture, NPC.Center);
+        sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1) * LightingHelper.DayLightEase;
+        sbDrawer2.color.A = 0;
+        sbDrawer2.rotation -= MathHelper.ToRadians(25);
+        sbDrawer2.scale *= godrayScale;
+        sbDrawer2.worldPosition.Y -= godrayOffset;
+        sbDrawer2.worldPosition.X -= 64;
+        Main.spriteBatch.Draw(sbDrawer2);
+
+        sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1, offset: 1) * LightingHelper.DayLightEase;
+        sbDrawer2.color.A = 0;
+        sbDrawer2.worldPosition += Vector2.UnitY.RotatedBy(Main.GlobalTimeWrappedHourly * 1) * 64;
+        sbDrawer2.worldPosition.Y -= godrayOffset;
+        sbDrawer2.worldPosition.X -= 64;
+        Main.spriteBatch.Draw(sbDrawer2);
         return false;
     }
     public override void OnKill()

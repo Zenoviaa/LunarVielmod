@@ -158,24 +158,6 @@ public partial class RekBoss : ScarletBoss
             return 1f;
         }
     }
-    private int HitboxWidth => 100;
-    private int HitboxHeight => 100;
-    public override bool? CanBeHitByProjectile(Projectile projectile)
-    {
-        foreach(var segment in Segments)
-        {
-            Rectangle collisionRect = new Rectangle(
-                (int)segment.position.X - HitboxWidth / 2, 
-                (int)segment.position.Y - HitboxHeight / 2,
-                HitboxWidth, 
-                HitboxHeight);
-            if(projectile.Colliding(projectile.getRect(), collisionRect))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public override void SendExtraAI(BinaryWriter writer)
     {

@@ -1,11 +1,8 @@
-﻿using Humanizer;
-using Microsoft.VisualBasic;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
-using Stellamod.Content.Areas.Tundra.Snow.TilesSN;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.TilesNew.RainforestTiles;
@@ -14,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -298,9 +294,9 @@ public partial class VeilGen
     public static bool IsFilledEnough(Rectangle tileBounds, float tilePercent)
     {
         float total = 0;
-        for(int i = tileBounds.Left; i < tileBounds.Right; i++)
+        for (int i = tileBounds.Left; i < tileBounds.Right; i++)
         {
-            for(int j = tileBounds.Top; j < tileBounds.Bottom; j++)
+            for (int j = tileBounds.Top; j < tileBounds.Bottom; j++)
             {
                 Tile tile = Main.tile[i, j];
                 if (tile.HasTile)
@@ -879,7 +875,7 @@ public partial class VeilGen
         float y = bump * mountains * mountains2 - dips - roughness - roughness2;
         return y + 0.1f;
     }
-  
+
     public static void GenerateMarshFoliage(Point startTile, int length)
     {
         var genRand = WorldGen.genRand;
@@ -1854,7 +1850,7 @@ public partial class VeilGen
         zTileMap.KillAnyArea(tileBounds);
     }
 
-  
+
 
     public static void QuickPlaceTile(int x, int y, ushort tileType)
     {
