@@ -342,68 +342,74 @@ public partial class VeilGen
         foreach (var kvp in caveConnectPoints)
             allPoints.AddRange(kvp.Value);
         BellFlowerSystem.ClearBellFlowers();
-        for (int n = 0; n < numBellFlowers; n++)
+        void GenerateBellFlowers()
         {
-
-            bool TooCloseToAnotherPlacedFlower(Point p)
+            for (int n = 0; n < numBellFlowers; n++)
             {
-                foreach(Point placed in placedFlowers)
+
+                bool TooCloseToAnotherPlacedFlower(Point p)
                 {
-                    if (TileUtilities.TooCloseToTilePoint(p, placed, proximity: 200))
-                        return true;
+                    foreach (Point placed in placedFlowers)
+                    {
+                        if (TileUtilities.TooCloseToTilePoint(p, placed, proximity: 200))
+                            return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-   
-            Vector2 GetRandomConnectionPoint(Vector2 referencePoint, float checkDistance)
-            {
-                float checkDistanceSquared = checkDistance * checkDistance;
-                for(int a = 0; a < 50; a++)
+
+                Vector2 GetRandomConnectionPoint(Vector2 referencePoint, float checkDistance)
                 {
-                    Vector2 p = allPoints[fastRandom.Next(0, allPoints.Count)];
-                    float distanceSquare = Vector2.DistanceSquared(referencePoint, p);
-                    if (distanceSquare <= checkDistanceSquared)
-                        return p;
+                    float checkDistanceSquared = checkDistance * checkDistance;
+                    for (int a = 0; a < 50; a++)
+                    {
+                        Vector2 p = allPoints[fastRandom.Next(0, allPoints.Count)];
+                        float distanceSquare = Vector2.DistanceSquared(referencePoint, p);
+                        if (distanceSquare <= checkDistanceSquared)
+                            return p;
+                    }
+                    return allPoints[fastRandom.Next(0, allPoints.Count)];
                 }
-                return allPoints[fastRandom.Next(0, allPoints.Count)];
-            }
-            int maxAttempts = 100;
-            int a = 0;
-            
-            
-            while(a < maxAttempts)
-            {
-                Point randPoint = validPointsForFlowers[fastRandom.Next(0, validPointsForFlowers.Count)];
-                if (TooCloseToAnotherPlacedFlower(randPoint))
+                int maxAttempts = 100;
+                int a = 0;
+
+
+                while (a < maxAttempts)
                 {
-                    a++;
-                    continue;
+                    Point randPoint = validPointsForFlowers[fastRandom.Next(0, validPointsForFlowers.Count)];
+                    if (TooCloseToAnotherPlacedFlower(randPoint))
+                    {
+                        a++;
+                        continue;
+                    }
+
+
+                    //List<Vector2> pointsICanConnectTo = FindAnyPointsICanConnectTo(randPoint.ToVector2(), connectRadius: 250);
+                    //pointsICanConnectTo = pointsICanConnectTo.OrderBy(x => Vector2.Distance(randPoint.ToVector2(), x)).ToList();
+                    Vector2 pointToConnectTo = GetRandomConnectionPoint(randPoint.ToVector2(), checkDistance: 250);
+                    if (pointToConnectTo.Y > randPoint.Y)
+                        continue;
+
+
+                    VeilGen.CreateBellFlowerClearing(randPoint.ToVector2());
+
+                    CreateAbyssConnectionCaveMini(randPoint.ToVector2() + new Vector2(0, -16), pointToConnectTo);
+                    placedFlowers.Add(randPoint);
+                    break;
                 }
-         
-
-                //List<Vector2> pointsICanConnectTo = FindAnyPointsICanConnectTo(randPoint.ToVector2(), connectRadius: 250);
-                //pointsICanConnectTo = pointsICanConnectTo.OrderBy(x => Vector2.Distance(randPoint.ToVector2(), x)).ToList();
-                Vector2 pointToConnectTo = GetRandomConnectionPoint(randPoint.ToVector2(), checkDistance: 250);
-                if (pointToConnectTo.Y > randPoint.Y)
-                    continue;
-
-
-                VeilGen.CreateBellFlowerClearing(randPoint.ToVector2());
-
-                CreateAbyssConnectionCaveMini(randPoint.ToVector2(), pointToConnectTo);
-                placedFlowers.Add(randPoint);
-                break;
+                if (a >= maxAttempts)
+                {
+                    Main.NewText("FAIL TO PLACED BELL FLOWER", Color.Red);
+                }
             }
-            if(a >= maxAttempts)
-            {
-                Main.NewText("FAIL TO PLACED BELL FLOWER", Color.Red);
-            }
+
         }
 
 
         VeilGen.PruneLonelyTiles(rect);
         VeilGen.GenerateWaterBowls(rect, 512, new Point(5, 12), new Point(5, 12));
-        VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));  
+        VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));
+        GenerateBellFlowers();
+
         var types = new ushort[]
         {
             ModContent.ZTileType<AbyssalFlower>(),
@@ -506,6 +512,7 @@ public partial class VeilGen
                 Tile tile = Main.tile[x, y];
                 tile.HasTile = true;
                 tile.TileType = abyssDirtTile;
+                tile.LiquidAmount = 0;
                 tile.TileFrameX = -1;
                 tile.TileFrameY = -1;
             }
@@ -522,6 +529,23 @@ public partial class VeilGen
         WorldUtils.Gen(islandPoint, new Shapes.HalfCircle(islandRadius),
             Actions.Chain(new Actions.ClearTile()));
 
+        int pillarLeft = islandPoint.X - 6;
+        int pillarRight = islandPoint.X + 6;
+        int pillarTop = islandPoint.Y + 8;
+        int pillarBottom = tilePoint.Y + tileRadius + 2;
+
+        for (int x = pillarLeft; x <= pillarRight; x++)
+        {
+            for (int y = pillarTop; y < pillarBottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                tile.HasTile = true;
+                tile.TileType = abyssDirtTile;
+                tile.LiquidAmount = 0;
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
+            }
+        }
         tileRadius += 6;
         int left = tilePoint.X - tileRadius / 2;
         int right = tilePoint.X + tileRadius / 2;
@@ -533,17 +557,20 @@ public partial class VeilGen
             for(int y = top; y < bottom; y++)
             {
                 Tile tile = Main.tile[x, y];
+                if (tile.HasTile)
+                    continue;
                 tile.LiquidAmount = 255;
                 tile.LiquidType = LiquidID.Water;
             }
         }
 
-        Rectangle bounds = TileUtilities.CenterTileRectangle(tilePoint, tileRadius, tileRadius);
+        Rectangle bounds = TileUtilities.CenterTileRectangle(tilePoint, tileRadius * 2, tileRadius * 2);
         var targetTileTypes = new List<int> { abyssDirtTile };
-        VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes,
-            WallID.HallowedGrassUnsafe, 1);
-        VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes,
-            WallID.GrassUnsafe, 1);
+        VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes, 2,
+            (ushort)ModContent.WallType<AbyssalGrassWallDark>(), 7);
+        VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes, 2,
+            (ushort)ModContent.WallType<AbyssalDirtWall>(), 7);
+
         BellFlowerSystem.CreateBellFlower(islandPoint + new Point(0, -5));
     }
 
@@ -827,6 +854,51 @@ public partial class VeilGen
                         }
 
                         point += (baseDirection * wallCaveWidth).RotatedByRandom(MathHelper.ToRadians(30)).ToPoint();
+                    }
+                }
+            }
+        }
+    }
+    public static void DecorateEdgeTilesWithWalls(Rectangle tileBounds, List<int> targetTileTypes, int steps, ushort wallType, int maxWallCaveWidth = 2)
+    {
+        int left = tileBounds.Left;
+        int right = tileBounds.Right;
+        int top = tileBounds.Top;
+        int bottom = tileBounds.Bottom;
+        var genRand = WorldGen.genRand;
+        int wallCaveWidth = maxWallCaveWidth;
+        Vector2 baseDirection = -Vector2.UnitY;
+
+        //Here we're placing walls and silk tiles, this is a bit slow, so maybe optimize it a bit later.
+        for (int x = left; x < right; x++)
+        {
+            for (int y = top; y < bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (!tile.HasTile)
+                    continue;
+                if (!targetTileTypes.Contains(tile.TileType))
+                    continue;
+                bool hasRight = (x + 1 < Main.maxTilesX) && !WorldGen.SolidOrSlopedTile(x + 1, y);
+                bool hasLeft = (x - 1 > 0) && !WorldGen.SolidOrSlopedTile(x - 1, y);
+                bool hasTop = (y + 1 < Main.maxTilesY) && !WorldGen.SolidOrSlopedTile(x, y + 1);
+                bool hasBottom = (y - 1 > 0) && !WorldGen.SolidOrSlopedTile(x, y - 1);
+                bool hasAny = hasRight || hasLeft || hasTop || hasBottom;
+                if (hasAny)
+                {
+                    //WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
+                    Point point = new Point(x, y);
+
+                    for (int s = 0; s < steps; s++)
+                    {
+                        if (point.X - wallCaveWidth > 0 && point.X + wallCaveWidth < Main.maxTilesX
+                            && point.Y + wallCaveWidth < Main.maxTilesY && point.Y - wallCaveWidth > 0)
+                        {
+                            WorldUtils.Gen(point, new Shapes.Circle(1, 1),
+                                new Actions.PlaceWall(wallType));
+                        }
+
+                        point += (baseDirection * 4).RotatedByRandom(MathHelper.ToRadians(360)).ToPoint();
                     }
                 }
             }
