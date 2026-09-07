@@ -245,7 +245,7 @@ public class BellFlower : ModNPC
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Main.npcFrameCount[Type] = 2;
+        Main.npcFrameCount[Type] = 3;
         NPCID.Sets.MPAllowedEnemies[Type] = true;
         NPCSets.Heavy[Type] = true;
     }
@@ -354,7 +354,7 @@ public class BellFlower : ModNPC
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             screenShaderSystem.TintScreen(Color.White, 0.12f, 45);
             BellFlowerSystem.RingBellFlower(Index);
-            var sound = AssetReferences.Assets.Sounds.TheWorld.Asset with { PitchVariance = 0.3f };
+            var sound = AssetReferences.Assets.Sounds.Abyss.BellFlowerHit.Asset with { PitchVariance = 0.3f };
             SoundEngine.PlaySound(sound);
         }
         if(Timer % 10 == 0)
@@ -379,10 +379,11 @@ public class BellFlower : ModNPC
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        Vector2 drawOrigin = new Vector2(42, 32);
+        NPC.spriteDirection = 1;
+        Vector2 drawOrigin = new Vector2(45, 32);
         Vector2 drawOffset = new Vector2(-16, 0);
         SpritebatchDrawer rootDrawer = SpritebatchDrawer.FromNPC(NPC);
-        rootDrawer.VerticalFrame(0, 2);
+        rootDrawer.VerticalFrame(0, 3);
         rootDrawer.drawOrigin = drawOrigin;
         rootDrawer.rotation = 0;
         rootDrawer.worldPosition -= drawOrigin;
@@ -391,7 +392,7 @@ public class BellFlower : ModNPC
 
         SpritebatchDrawer bellDrawer = SpritebatchDrawer.FromNPC(NPC);
         bellDrawer.drawOrigin = drawOrigin;
-        bellDrawer.VerticalFrame(1, 2);
+        bellDrawer.VerticalFrame(1, 3);
         bellDrawer.worldPosition -= drawOrigin;
         bellDrawer.worldPosition += drawOffset;
         spriteBatch.Draw(bellDrawer);
@@ -399,6 +400,13 @@ public class BellFlower : ModNPC
         bellDrawer.color = Color.White * ExtraMath.Osc(0.32f, 0.6f, speed: 2);
         bellDrawer.color.A = 0;
         spriteBatch.Draw(bellDrawer);
+
+        bellDrawer.color *= 0.3f;
+        bellDrawer.drawOrigin = drawOrigin;
+        bellDrawer.VerticalFrame(2, 3);
+        bellDrawer.scale *= ExtraMath.Osc(1.2f, 1.4f);
+        spriteBatch.Draw(bellDrawer);
+
         DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 0.4f, Color.Blue * 0.4f * ExtraMath.Osc(0.8f, 1f, speed: 2));
         DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 1.5f, Color.Blue * 0.4f * ExtraMath.Osc(0.8f, 1f, speed: 2));
 

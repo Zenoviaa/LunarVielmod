@@ -3,6 +3,7 @@ using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Core.ZTileSystem;
 using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Net;
 using Terraria;
@@ -484,6 +485,11 @@ public partial class VeilGen
         VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles,
              (ushort)ModContent.WallType<AbyssalGrassWallDark>(), 1);
         VeilGen.GrowKelpArea<AbyssalKelp>(rect, minHeight: 5, maxHeight: 9, denom: 7);
+        foreach(Point p in placedFlowers)
+        {
+            Rectangle kelpRect = TileUtilities.CenterTileRectangle(p, 50, 50);
+            VeilGen.GrowKelpArea<AbyssalKelp>(kelpRect, minHeight: 20, maxHeight: 35, denom: 4);
+        }
         if (WorldGen.SkipFramingBecauseOfGen)
             return;
         for (int x = left; x < right; x++)
@@ -491,6 +497,7 @@ public partial class VeilGen
             for (int y = abyssHigh; y < abyssLow; y++)
             {
                 WorldGen.SquareTileFrame(x, y, resetFrame: true);
+                WorldGen.SquareWallFrame(x, y, resetFrame: true);
             }
         }
 
@@ -570,7 +577,11 @@ public partial class VeilGen
             (ushort)ModContent.WallType<AbyssalGrassWallDark>(), 7);
         VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes, 2,
             (ushort)ModContent.WallType<AbyssalDirtWall>(), 7);
-
+        VeilGen.DecorateWallEdgesWithWallPatches(bounds, new List<int>
+        { 
+            ModContent.WallType<AbyssalDirtWall>(),
+            ModContent.WallType<AbyssalGrassWallDark>() 
+        }, 32, (ushort)ModContent.WallType<AbyssalGrassWall>());
         BellFlowerSystem.CreateBellFlower(islandPoint + new Point(0, -5));
     }
 
@@ -904,7 +915,53 @@ public partial class VeilGen
             }
         }
     }
+    public static void DecorateWallEdgesWithWallPatches(Rectangle tileBounds, List<int> targetTileTypes, int steps, ushort wallType, int maxWallCaveWidth = 2)
+    {
+        int left = tileBounds.Left;
+        int right = tileBounds.Right;
+        int top = tileBounds.Top;
+        int bottom = tileBounds.Bottom;
+        var genRand = WorldGen.genRand;
+        int wallCaveWidth = maxWallCaveWidth;
+        Vector2 baseDirection = -Vector2.UnitY;
 
+        //Here we're placing walls and silk tiles, this is a bit slow, so maybe optimize it a bit later.
+        for (int x = left; x < right; x++)
+        {
+            for (int y = top; y < bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (!targetTileTypes.Contains(tile.WallType))
+                    continue;
+                Tile tileLeft = Main.tile[x - 1, y];
+                Tile tileRight = Main.tile[x + 1, y];
+                Tile tileBottom = Main.tile[x, y + 1];
+                Tile tileTop = Main.tile[x, y - 1];
+                bool hasAny = 
+                    tileLeft.WallType == WallID.None ||
+                    tileRight.WallType == WallID.None || 
+                    tileTop.WallType == WallID.None || 
+                    tileBottom.WallType == WallID.None;
+                
+                if (hasAny && genRand.NextBool(16))
+                {
+                    //WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
+      
+                    Vector2 worldPos = new Vector2(x, y).ToWorldCoordinates();
+                    for (int s = 0; s < steps; s++)
+                    {
+                        Point tilePoint = worldPos.ToTileCoordinates();
+                        Tile placeTile = Main.tile[tilePoint];
+                        placeTile.WallType = wallType;
+                        placeTile.WallFrameX = -1;
+                        placeTile.WallFrameY = -1;
+                     
+                        worldPos += (baseDirection * 8).RotatedByRandom(MathHelper.ToRadians(360));
+                    }
+                }
+            }
+        }
+    }
     public static void DecorateSurfaceEdgesWithMultiTile(Rectangle tileBounds, int denom, List<int> targetGroundTileTypes, params int[] tileTypes)
     {
         int left = tileBounds.Left;
