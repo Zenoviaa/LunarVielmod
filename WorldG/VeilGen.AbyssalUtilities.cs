@@ -40,6 +40,9 @@ public partial class VeilGen
 
         int abyssLow = bottom;
 
+        Rectangle rect = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
+        VeilGen.ClearWallsArea(rect);
+
         //Fill the entire area with abyss dirt tiles
         for (int x = left; x < right; x++)
         {
@@ -398,7 +401,6 @@ public partial class VeilGen
         }
 
 
-        Rectangle rect = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
         VeilGen.PruneLonelyTiles(rect);
         VeilGen.GenerateWaterBowls(rect, 512, new Point(5, 12), new Point(5, 12));
         VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));  
@@ -417,7 +419,7 @@ public partial class VeilGen
         {
             ModContent.ZTileType<AbyssalReed>()
         };
-        VeilGen.ClearWallsArea(rect);
+
         VeilGen.KillZTilesInArea(rect);
 
         int[] multiTileFlowers = new int[]
@@ -471,7 +473,10 @@ public partial class VeilGen
 
 
         VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles,
-            (ushort)ModContent.WallType<AbyssalDirtWall>());
+            (ushort)ModContent.WallType<AbyssalDirtWall>(), 1);
+
+        VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles,
+             (ushort)ModContent.WallType<AbyssalGrassWallDark>(), 1);
         VeilGen.GrowKelpArea<AbyssalKelp>(rect, minHeight: 5, maxHeight: 9, denom: 7);
         if (WorldGen.SkipFramingBecauseOfGen)
             return;
@@ -536,9 +541,9 @@ public partial class VeilGen
         Rectangle bounds = TileUtilities.CenterTileRectangle(tilePoint, tileRadius, tileRadius);
         var targetTileTypes = new List<int> { abyssDirtTile };
         VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes,
-            WallID.HallowedGrassUnsafe);
+            WallID.HallowedGrassUnsafe, 1);
         VeilGen.DecorateEdgeTilesWithWalls(bounds, targetTileTypes,
-            WallID.GrassUnsafe);
+            WallID.GrassUnsafe, 1);
         BellFlowerSystem.CreateBellFlower(islandPoint + new Point(0, -5));
     }
 
@@ -809,7 +814,7 @@ public partial class VeilGen
                 {
                     //WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
                     Point point = new Point(x, y);
-                    int steps = genRand.Next(1, 3);
+                    int steps = genRand.Next(0, 2);
 
 
                     for (int s = 0; s < steps; s++)

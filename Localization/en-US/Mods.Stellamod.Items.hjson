@@ -12141,3 +12141,13 @@ GoldenFork: {
 	DisplayName: Golden Fork
 	Tooltip: Summons a pet Little Demon
 }
+
+AbyssalGrassWallDarkItem: {
+	DisplayName: Abyssal Grass Wall Dark Item
+	Tooltip: ""
+}
+
+AbyssalGrassWallItem: {
+	DisplayName: Abyssal Grass Wall Item
+	Tooltip: ""
+}
