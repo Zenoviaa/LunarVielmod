@@ -423,6 +423,7 @@ public class TheWhisperer : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center + _shakePos, 0.7f, Color.Blue * 0.3f * _alpha);
         SpritebatchDrawer skullDrawer = SpritebatchDrawer.FromNPC(NPC);
         skullDrawer.color = Color.White * _alpha * OscAlpha;
         skullDrawer.worldPosition.Y += ExtraMath.Osc(-4f, 4f, offset: 3);
