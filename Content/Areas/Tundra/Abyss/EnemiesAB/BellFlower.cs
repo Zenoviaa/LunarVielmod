@@ -5,16 +5,13 @@ using Stellamod.Core;
 using Stellamod.Core.Godrays;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.NPCHelpers;
-using Stellamod.Core.RibbonSystem;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -38,7 +35,7 @@ public class BellFlowerMapLayer : ModMapLayer
 
         // Here we retrieve the texture of the Skeletron boss head so that we can draw it. Remember that not all textures are loaded by default, so you might need to do something like `Main.instance.LoadItem(ItemID.BoneKey);` in your code to ensure the texture is loaded.
         var bellFlowerTexture = AssetReferences.Content.Areas.Tundra.Abyss.EnemiesAB.BellFlower_MapIcon.Asset;
-        foreach(PlacedBellFlower flower in BellFlowerSystem.BellFlowers)
+        foreach (PlacedBellFlower flower in BellFlowerSystem.BellFlowers)
         {
             byte frame = 0;
             if (flower.rung)
@@ -102,7 +99,7 @@ public class BellFlowerSystem : ModSystem
         get
         {
             int count = 0;
-            foreach(var flower in BellFlowers)
+            foreach (var flower in BellFlowers)
             {
                 if (flower.rung)
                     count++;
@@ -110,58 +107,68 @@ public class BellFlowerSystem : ModSystem
             return count;
         }
     }
+
+    /// <summary>
+    /// Slowly lerps to 1 when the whispering event is active
+    /// </summary>
+    public static float WhisperingAlpha { get; private set; }
     public static bool Whispering { get; private set; }
     public static int MaxBellFlowers => BellFlowers.Count;
     public static int SpawnWhisperer;
     public static int WhisperingCountdown;
 
-    public static bool AllBellFlowersRung() => RungBellFlowerCount >= MaxBellFlowers;
-    
+    public static bool AllBellFlowersRung() =>
+        RungBellFlowerCount >= MaxBellFlowers;
+
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
-        if (MultiplayerHelper.IsHost)
+        float targetAlpha = Whispering ? 1 : 0;
+        WhisperingAlpha = MathHelper.Lerp(WhisperingAlpha, targetAlpha, 0.1f);
+
+        bool anyInAbyss = false;
+        foreach (Player player in Main.ActivePlayers)
         {
-            bool anyInAbyss = false;
-            foreach (Player player in Main.ActivePlayers)
+            if (player.InModBiome<AbyssBiome>())
             {
-                if (player.InModBiome<AbyssBiome>())
+                anyInAbyss = true;
+                break;
+            }
+        }
+
+        if (!anyInAbyss)
+        {
+            foreach (var flower in BellFlowers)
+            {
+                flower.rung = false;
+            }
+            Whispering = false;
+            return;
+        }
+
+        if (RungBellFlowerCount <= 0 || DownedBossTracker.IsDowned(DownedBossFlag.TheWhisperer))
+        {
+            Whispering = false;
+            WhisperingCountdown = 60 * 60;
+            SpawnWhisperer = 60 * 10;
+        }
+        else
+        {
+            Whispering = true;
+            WhisperingCountdown--;
+            if (WhisperingCountdown <= 0)
+            {
+
+                if (NPC.AnyNPCs(ModContent.NPCType<TheWhisperer>()))
                 {
-                    anyInAbyss = true;
-                    break;
+                    SpawnWhisperer = 60 * 10;
                 }
-            }
-
-            if (!anyInAbyss)
-            {
-                foreach(var flower in BellFlowers)
+                else
                 {
-                    flower.rung = false;
-                }
-                return;
-            }
-
-            if (RungBellFlowerCount <= 0 || DownedBossTracker.IsDowned(DownedBossFlag.TheWhisperer))
-            {
-                Whispering = false;
-                WhisperingCountdown = 60 * 60;
-                SpawnWhisperer = 60 * 10;
-            }
-            else
-            {
-                Whispering = true;
-                WhisperingCountdown--;
-                if (WhisperingCountdown <= 0)
-                {
-
-                    if (NPC.AnyNPCs(ModContent.NPCType<TheWhisperer>()))
+                    SpawnWhisperer--;
+                    if (SpawnWhisperer <= 0)
                     {
-                        SpawnWhisperer = 60 * 10;
-                    }
-                    else
-                    {
-                        SpawnWhisperer--;
-                        if (SpawnWhisperer <= 0)
+                        if (MultiplayerHelper.IsHost)
                         {
                             List<Player> playersToSpawnOn = new List<Player>();
                             foreach (Player player in Main.ActivePlayers)
@@ -186,33 +193,36 @@ public class BellFlowerSystem : ModSystem
                             spawnPos.X += xWidth;
                             spawnPos.Y += yWidth;
                             NPC.NewNPC(new EntitySource_Misc(""),
-                                (int)spawnPos.X, 
+                                (int)spawnPos.X,
                                 (int)spawnPos.Y,
                                 ModContent.NPCType<TheWhisperer>());
-                            SpawnWhisperer = 60 * 10;
                         }
+                        SpawnWhisperer = 60 * 10;
                     }
                 }
             }
-            int i = 0;
-            foreach (PlacedBellFlower bellFlower in BellFlowers)
+        }
+
+        int i = 0;
+        foreach (PlacedBellFlower bellFlower in BellFlowers)
+        {
+            bellFlower.activeTimer--;
+            if (bellFlower.activeTimer <= 0)
             {
-                bellFlower.activeTimer--;
-                if (bellFlower.activeTimer <= 0)
+                if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(new EntitySource_Misc(""),
                         (int)bellFlower.spawnPosition.X,
                         (int)bellFlower.spawnPosition.Y,
                         ModContent.NPCType<BellFlower>(),
                         ai2: i);
-                    bellFlower.activeTimer = 30;
                 }
-                i++;
+                bellFlower.activeTimer = 30;
             }
+            i++;
         }
-
-
     }
+
     public static void ClearBellFlowers()
     {
         BellFlowers.Clear();
@@ -254,7 +264,7 @@ public class BellFlowerSystem : ModSystem
     {
         base.NetSend(writer);
         writer.Write(BellFlowers.Count);
-        foreach(PlacedBellFlower flower in BellFlowers)
+        foreach (PlacedBellFlower flower in BellFlowers)
         {
             writer.WriteVector2(flower.spawnPosition);
             writer.Write(flower.discovered);
@@ -268,7 +278,7 @@ public class BellFlowerSystem : ModSystem
         int bCount = reader.ReadInt32();
         BellFlowers.Clear();
 
-        for(int i = 0; i < bCount; i++)
+        for (int i = 0; i < bCount; i++)
         {
             Vector2 pos = reader.ReadVector2();
             bool disc = reader.ReadBoolean();
@@ -374,7 +384,7 @@ public class BellFlower : ModNPC
             GodrayRenderer godrayRenderer = ModContent.GetInstance<GodrayRenderer>();
             Vector2 centerPos = NPC.Center;
 
-           
+
             godrayRenderer.AddGodrayParticle(centerPos + Main.rand.NextVector2Circular(64, 64));
         }
 
@@ -428,7 +438,7 @@ public class BellFlower : ModNPC
     private void AI_Ring()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             screenShaderSystem.TintScreen(Color.White, 0.12f, 45);
@@ -436,7 +446,7 @@ public class BellFlower : ModNPC
             var sound = AssetReferences.Assets.Sounds.Abyss.BellFlowerHit.Asset with { PitchVariance = 0.3f };
             SoundEngine.PlaySound(sound);
         }
-        if(Timer % 10 == 0)
+        if (Timer % 10 == 0)
         {
             Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
         }
@@ -444,7 +454,7 @@ public class BellFlower : ModNPC
         float range = MathHelper.Lerp(0.25f, 0f, Timer / 60f);
         NPC.rotation = ExtraMath.Osc(-range, range, speed: 6);
         ShakeScreenPosition.Shake = MathHelper.Lerp(4, 0, Timer / 60f);
-        if(Timer >= 60)
+        if (Timer >= 60)
         {
             SwitchState(AIState.Sway);
         }

@@ -17,15 +17,21 @@ public class AbyssBiome : BaseUrdveilBiome,
         get
         {
             int music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ArtInTheShadows");
-            if (BellFlowerSystem.WhisperingCountdown <= 0)
+            if (NPC.AnyNPCs(ModContent.NPCType<TheWhisperer>()))
             {
                 music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Hidding_In_The_Shadows");
+                return music;
+            } 
+            else if (BellFlowerSystem.Whispering)
+            {
+                music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/HeWhoWhispss");
                 return music;
             }
 
             return music;
         }
     }
+
     public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
     public override string BestiaryIcon => base.BestiaryIcon;
     public override string BackgroundPath => MapBackground;

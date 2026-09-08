@@ -187,12 +187,8 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         SpriteEffects spriteEffects = drawParams.tileData.flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         if (drawParams.tileData.flipX)
             drawRotation *= -1;
-        bool doDraw = PreDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
-        if(doDraw)
-            spriteBatch.Draw(_tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, drawParams.tileData.scale, spriteEffects, 0);
-        PostDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
-        
-        PostDraw(spriteBatch, new ZTileDrawData
+
+        ZTileDrawData drawData = new ZTileDrawData
         {
             spriteEffects = spriteEffects,
             drawColor = drawColor,
@@ -201,9 +197,30 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
             frame = frame,
             drawScale = Vector2.One * drawParams.tileData.scale,
             drawRotation = drawRotation
-        }, drawParams);
+        };
+
+        bool doDraw = PreDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
+
+        if (doDraw)
+
+        {
+            ModifyDraw(ref drawData);
+            spriteBatch.Draw(_tileTextureAsset.Value,
+                drawData.drawPosition,
+                drawData.frame, 
+                drawData.drawColor,
+                drawData.drawRotation,
+                drawData.drawOrigin,
+                drawData.drawScale,  
+                drawData.spriteEffects, 0);
+        }
+  
+        PostDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
+        
+        PostDraw(spriteBatch, drawData, drawParams);
     }
 
+    public virtual void ModifyDraw(ref ZTileDrawData drawData) { }
     public virtual void Update(int i, int j) { }
 
     public virtual void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
@@ -295,6 +312,10 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         PostDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
     }
 
+    public virtual void ModifyDrawColor(ref Color color)
+    {
+
+    }
     public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         return true;

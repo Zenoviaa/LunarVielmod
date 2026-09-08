@@ -423,15 +423,16 @@ public class TheWhisperer : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        float range = 24;
         DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center + _shakePos, 0.7f, Color.Blue * 0.3f * _alpha);
         SpritebatchDrawer skullDrawer = SpritebatchDrawer.FromNPC(NPC);
         skullDrawer.color = Color.White * _alpha * OscAlpha;
-        skullDrawer.worldPosition.Y += ExtraMath.Osc(-4f, 4f, offset: 3);
+        skullDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 3);
         skullDrawer.worldPosition += _shakePos;
 
         SpritebatchDrawer lanternDrawer = skullDrawer;
         lanternDrawer.VerticalFrame(2, Main.npcFrameCount[Type]);
-        lanternDrawer.worldPosition.Y += ExtraMath.Osc(-8f, 8f, speed: 0.8f);
+        lanternDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, speed: 0.8f);
         Vector2 lanternCenterOrigin = new Vector2(127);
         if (NPC.spriteDirection == -1)
             lanternDrawer.Flip(ref lanternCenterOrigin.X);
@@ -442,12 +443,14 @@ public class TheWhisperer : ModNPC,
         SpritebatchDrawer headDrawer = skullDrawer;
         headDrawer.VerticalFrame(1, Main.npcFrameCount[Type]);
         headDrawer.color *= OscAlpha;
+        headDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
         spriteBatch.Draw(headDrawer);
 
         SpritebatchDrawer eyeDrawer = skullDrawer;
         eyeDrawer.VerticalFrame(3, Main.npcFrameCount[Type]);
         Vector2 directionToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
         eyeDrawer.worldPosition += directionToTarget * 4f;
+        eyeDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
         eyeDrawer.color = Color.White * ExtraMath.Osc(0.75f, 2f, speed: 2) * OscAlpha;
         eyeDrawer.color.A = 0;
         spriteBatch.Draw(eyeDrawer);
