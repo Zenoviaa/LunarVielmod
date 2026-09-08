@@ -1,7 +1,9 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB.Gores;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -13,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -56,9 +59,12 @@ public class TheWhisperer : ModNPC,
     private enum AIState
     {
         Chase,
-        Despawn
+        Despawn,
+
+        Death
     }
 
+    private Vector2 _shakePos;
   
     private ref float Timer => ref NPC.ai[0];
     private AIState State
@@ -142,6 +148,14 @@ public class TheWhisperer : ModNPC,
                 Main.musicFade[j] = 1f - ratio;
             }
         }
+
+        if(BellFlowerSystem.AllBellFlowersRung())
+        {
+            if(State != AIState.Death)
+            {
+                SwitchState(AIState.Death);
+            }
+        }
         _alpha += 0.01f;
         _alpha = MathHelper.Clamp(_alpha, 0f, 1f);
         if (!NPC.HasValidTarget)
@@ -149,7 +163,7 @@ public class TheWhisperer : ModNPC,
             NPC.TargetClosest();
             if (!NPC.HasValidTarget)
             {
-                if(State != AIState.Despawn)
+                if(State != AIState.Despawn && State != AIState.Death)
                 {
                     SwitchState(AIState.Despawn);
                 }
@@ -158,7 +172,7 @@ public class TheWhisperer : ModNPC,
         float distanceToTargetSquared = Vector2.DistanceSquared(NPC.Center, MyTarget.Center);
         if(distanceToTargetSquared > Max_Chase_Distance_Squared)
         {
-            if(State != AIState.Despawn)
+            if(State != AIState.Despawn && State != AIState.Death)
             {
                 SwitchState(AIState.Despawn);
             }
@@ -209,9 +223,64 @@ public class TheWhisperer : ModNPC,
             case AIState.Despawn:
                 AI_Despawn();
                 break;
+            case AIState.Death:
+                AI_Death();
+                break;
         }
         HairRenderer.SimulateHair(NPC.Center + new Vector2(0, -36));
         Lighting.AddLight(NPC.Center, new Vector3(0.3f));
+    }
+
+    private void AI_Death()
+    {
+        Timer++;
+        NPC.velocity *= 0.96f;
+        ShakeScreenPosition.Shake = 4;
+        CameraTargetSystem.AddTarget(NPC.Center);
+        if (Timer % 4 == 0)
+        {
+            _shakePos += Main.rand.NextVector2Circular(7, 7);
+            float range = Main.rand.NextFloat(128, 256);
+            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+            Vector2 vel = (NPC.Center - pos);
+            vel *= 0.1f;
+            FXUtil.GlowStretch(pos, vel);
+        }
+
+        if (Timer % 4 == 0)
+        {
+            float range = Main.rand.NextFloat(252, 400);
+            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+            Vector2 vel = (NPC.Center - pos);
+            vel *= 0.1f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
+            fx.VectorScale *= 0.5f;
+        }
+
+        if (Timer >= 240)
+        {
+            if (Main.netMode != NetmodeID.Server)
+            {
+                void SpawnGore(int index)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    int g = Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center + velocity, velocity * 2, ModContent.GoreType<TheWhispererGore>());
+                    Gore gore = Main.gore[g];
+                    gore.frame = (byte)index;
+                }
+
+                for(int i = 0; i < 3; i++)
+                {
+                    SpawnGore(i);
+                }
+                Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
+                ShakeScreenPosition.Shake = 2;
+                var sound = AssetReferences.Assets.Sounds.NiiviWingFlap.Asset with { Pitch = 0.5f, PitchVariance = 0.3f };
+                SoundEngine.PlaySound(sound, NPC.Center);
+            }
+            NPC.Kill();
+        }
     }
 
     private void AI_Despawn()
@@ -279,6 +348,7 @@ public class TheWhisperer : ModNPC,
             vortex.color = Color.White * 0.3f* OscAlpha * _alpha; 
             vortex.color.A = 0;
             vortex.scale *= 1.5f;
+            vortex.worldPosition += _shakePos;
 
             SpritebatchDrawer skullDrawer = SpritebatchDrawer.FromNPC(NPC);
             skullDrawer.color = Color.White * _alpha;
@@ -306,7 +376,7 @@ public class TheWhisperer : ModNPC,
         SpritebatchDrawer skullDrawer = SpritebatchDrawer.FromNPC(NPC);
         skullDrawer.color = Color.White * _alpha * OscAlpha;
         skullDrawer.worldPosition.Y += ExtraMath.Osc(-4f, 4f, offset: 3);
-
+        skullDrawer.worldPosition += _shakePos;
 
         SpritebatchDrawer lanternDrawer = skullDrawer;
         lanternDrawer.VerticalFrame(2, Main.npcFrameCount[Type]);
@@ -334,7 +404,7 @@ public class TheWhisperer : ModNPC,
         spriteBatch.Draw(lanternDrawer);
 
 
-        DrawUtilities.DrawBasicGlow(spriteBatch, lanternWorldPos, 0.3f, Color.Blue * 0.3f * _alpha);
+        DrawUtilities.DrawBasicGlow(spriteBatch, lanternWorldPos + _shakePos, 0.3f, Color.Blue * 0.3f * _alpha);
         return false;
        // return base.PreDraw(spriteBatch, screenPos, drawColor);
     }
@@ -342,6 +412,7 @@ public class TheWhisperer : ModNPC,
     public override void OnKill()
     {
         base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.TheWhisperer);
     }
 
     private void DrawHair(GraphicsDevice graphicsDevices)
@@ -379,4 +450,5 @@ public class TheWhisperer : ModNPC,
         PixelationManager.QueuePrimitivesDrawAction(DrawHair2, DrawLayer.OverNPCsAdditive);
         PixelationManager.QueuePrimitivesDrawAction(DrawHair3, DrawLayer.OverNPCsAdditive);
     }
+
 }

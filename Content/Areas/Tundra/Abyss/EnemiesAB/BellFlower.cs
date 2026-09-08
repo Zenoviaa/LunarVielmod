@@ -110,8 +110,11 @@ public class BellFlowerSystem : ModSystem
             return count;
         }
     }
+    public static int MaxBellFlowers => BellFlowers.Count;
     public static int SpawnWhisperer;
     public static int WhisperingCountdown;
+
+    public static bool AllBellFlowersRung() => RungBellFlowerCount >= MaxBellFlowers;
     
     public override void PostUpdateEverything()
     {
@@ -137,7 +140,7 @@ public class BellFlowerSystem : ModSystem
                 return;
             }
 
-            if (RungBellFlowerCount <= 0)
+            if (RungBellFlowerCount <= 0 || DownedBossTracker.IsDowned(DownedBossFlag.TheWhisperer))
             {
                 WhisperingCountdown = 60 * 60;
             }
@@ -167,8 +170,17 @@ public class BellFlowerSystem : ModSystem
 
                             Player random = playersToSpawnOn[Main.rand.Next(0, playersToSpawnOn.Count)];
                             Vector2 spawnPos = random.Center;
-                            spawnPos.X += Main.rand.Next(-512, 512);
-                            spawnPos.Y += Main.rand.Next(-512, 512);
+
+                            int xWidth = 256;
+                            if (Main.rand.NextBool(2))
+                                xWidth *= -1;
+
+                            int yWidth = 256;
+                            if (Main.rand.NextBool(2))
+                                yWidth *= -1;
+
+                            spawnPos.X += xWidth;
+                            spawnPos.Y += yWidth;
                             NPC.NewNPC(new EntitySource_Misc(""),
                                 (int)spawnPos.X, 
                                 (int)spawnPos.Y,

@@ -12,8 +12,8 @@ public class AbyssFeatherGore : ModGore
         gore.numFrames = 8;
         gore.frame = (byte)Main.rand.Next(8);
         gore.timeLeft = 240;
-        //UpdateType = 910;
     }
+
     public override bool Update(Gore gore)
     {
         gore.velocity *= 0.93f;
@@ -26,16 +26,5 @@ public class AbyssFeatherGore : ModGore
         if (gore.timeLeft <= 0)
             gore.active = false;
         return false;
-    }
-}
-
-public class AbyssPlantyGore : AbyssFeatherGore
-{
-    public override void OnSpawn(Gore gore, IEntitySource source)
-    {
-        gore.numFrames = 4;
-        gore.frame = (byte)Main.rand.Next(4);
-        gore.timeLeft = 240;
-        //UpdateType = 910;
     }
 }
