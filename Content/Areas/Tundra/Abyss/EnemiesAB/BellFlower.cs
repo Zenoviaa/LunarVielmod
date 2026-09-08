@@ -396,6 +396,11 @@ public class BellFlower : ModNPC
             sp.fast = true;
             sp.outerColor = Color.Blue;
         }
+
+        if (Main.rand.NextBool(16))
+        {
+            MakeTinyWhiteMoth();
+        }
         Vector2 ground = MovementUtilities.FindFloorWet(NPC.Center);
         ground.Y -= 64;
         NPC.velocity = ground - NPC.Center;
@@ -418,6 +423,20 @@ public class BellFlower : ModNPC
                 break;
         }
     }
+    private void MakeTinyWhiteMoth()
+    {
+        Vector2 bellPos = NPC.Center;
+        bellPos += Main.rand.NextVector2Circular(64, 64);
+        Vector2 mothVelocity = bellPos - NPC.Center;
+        mothVelocity = mothVelocity.SafeNormalize(Vector2.Zero);
+        mothVelocity *= Main.rand.NextFloat(1, 6);
+        Particles.TinyWhiteMothDust.Spawn(new TinyWhiteMothDustData
+        {
+            position = bellPos,
+            velocity = mothVelocity,
+            timeLeft = Main.rand.Next(120, 180),
+        });
+    }
 
     private void SwitchState(AIState state)
     {
@@ -435,6 +454,8 @@ public class BellFlower : ModNPC
         NPC.rotation = ExtraMath.Osc(-0.05f, 0.05f);
     }
 
+
+
     private void AI_Ring()
     {
         Timer++;
@@ -445,6 +466,20 @@ public class BellFlower : ModNPC
             BellFlowerSystem.RingBellFlower(Index);
             var sound = AssetReferences.Assets.Sounds.Abyss.BellFlowerHit.Asset with { PitchVariance = 0.3f };
             SoundEngine.PlaySound(sound);
+            for(int i = 0; i < 64; i++)
+            {
+                Vector2 bellPos = NPC.Center;
+                bellPos += Main.rand.NextVector2Circular(64, 64);
+                Vector2 mothVelocity = bellPos - NPC.Center;
+                mothVelocity = mothVelocity.SafeNormalize(Vector2.Zero);
+                mothVelocity *= Main.rand.NextFloat(8, 16);
+                Particles.TinyWhiteMothDust.Spawn(new TinyWhiteMothDustData
+                {
+                    position = bellPos,
+                    velocity = mothVelocity,
+                    timeLeft = 120,
+                });
+            }
         }
         if (Timer % 10 == 0)
         {

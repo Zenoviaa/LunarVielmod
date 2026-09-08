@@ -28,6 +28,7 @@ public sealed class Particles : ModSystem
     public static BloodyMurderDust BloodyMurderDust;
 
     public static WaterfallCrashDust WaterfallCrashDust;
+    public static TinyWhiteMothDust TinyWhiteMothDust;
     public override void Load()
     {
         base.Load();
@@ -44,6 +45,7 @@ public sealed class Particles : ModSystem
         AbyssFloatingFlowerDust = new();
         BloodyMurderDust = new();
         WaterfallCrashDust = new();
+        TinyWhiteMothDust = new();
         _particleUpdaters = new List<IParticleUpdater>
         {
             BitDust,
@@ -57,7 +59,8 @@ public sealed class Particles : ModSystem
             AbyssFloatingFlowerDust,
             FeatherDust,
             BloodyMurderDust,
-            WaterfallCrashDust
+            WaterfallCrashDust,
+            TinyWhiteMothDust
         };
 
         for (int i = 0; i < _particleUpdaters.Count; i++)
