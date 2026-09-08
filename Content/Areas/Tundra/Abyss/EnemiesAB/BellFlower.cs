@@ -143,6 +143,7 @@ public class BellFlowerSystem : ModSystem
             if (RungBellFlowerCount <= 0 || DownedBossTracker.IsDowned(DownedBossFlag.TheWhisperer))
             {
                 WhisperingCountdown = 60 * 60;
+                SpawnWhisperer = 60 * 10;
             }
             else
             {

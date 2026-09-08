@@ -136,7 +136,7 @@ public class TheWhisperer : ModNPC,
         if (Main.netMode != NetmodeID.Server)
         {
             float dq = Vector2.DistanceSquared(NPC.Center, Main.LocalPlayer.Center);
-            float ratio = MathHelper.Clamp(dq / (666 * 666), 0, 1f);
+            float ratio = MathHelper.Clamp(dq / (444 * 444), 0, 1f);
             ratio = 1f - ratio;
 
             ScreenShaderSystem system = ModContent.GetInstance<ScreenShaderSystem>();

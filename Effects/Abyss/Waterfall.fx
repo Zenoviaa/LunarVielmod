@@ -27,6 +27,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     finalColor += osc * 0.4;
     finalColor += coords.y * 0.2;
     finalColor *= quadraticBump(coords.x);
+    finalColor *= saturate(coords.y / 0.2);
     return finalColor;
 }
 
