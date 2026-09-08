@@ -110,6 +110,7 @@ public class BellFlowerSystem : ModSystem
             return count;
         }
     }
+    public static bool Whispering { get; private set; }
     public static int MaxBellFlowers => BellFlowers.Count;
     public static int SpawnWhisperer;
     public static int WhisperingCountdown;
@@ -142,11 +143,13 @@ public class BellFlowerSystem : ModSystem
 
             if (RungBellFlowerCount <= 0 || DownedBossTracker.IsDowned(DownedBossFlag.TheWhisperer))
             {
+                Whispering = false;
                 WhisperingCountdown = 60 * 60;
                 SpawnWhisperer = 60 * 10;
             }
             else
             {
+                Whispering = true;
                 WhisperingCountdown--;
                 if (WhisperingCountdown <= 0)
                 {

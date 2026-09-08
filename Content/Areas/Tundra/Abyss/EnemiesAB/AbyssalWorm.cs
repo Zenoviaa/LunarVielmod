@@ -21,7 +21,7 @@ public class AbyssalWorm : ModNPC, IWaterSilhouette
     {
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
-        this.AddToAbyss();
+        this.AddToAbyssCritter();
     }
 
     public override void SetDefaults()

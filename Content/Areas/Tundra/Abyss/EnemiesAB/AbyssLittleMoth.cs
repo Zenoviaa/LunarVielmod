@@ -8,12 +8,11 @@ using System;
 using System.IO;
 using Terraria;
 using Terraria.ID;
-using Terraria.IO;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 
-public class AbyssLittleMoth : ModNPC, 
+public class AbyssLittleMoth : ModNPC,
     IWaterSilhouette
 {
     private Vector2 _wanderPos;
@@ -25,7 +24,7 @@ public class AbyssLittleMoth : ModNPC,
     {
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
-        this.AddToAbyss();
+        this.AddToAbyssCritter();
         this.PreferLand();
     }
 

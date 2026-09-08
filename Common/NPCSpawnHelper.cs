@@ -3,6 +3,7 @@ using Stellamod.Content.Areas.PunkerTown;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.Tundra.Abyss;
+using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Content.Areas.Underground;
 using Stellamod.Content.Areas.WaterSide;
 using Stellamod.Core.NPCHelpers;
@@ -28,6 +29,7 @@ public class SpawnSets : ModSystem
         FableEnemy = new List<int>();
         AbyssEnemy = new List<int>();
         AbyssWaterEnemy = new List<int>();
+        AbyssCritter = new List<int>();
         AbyssTempleEnemy = new List<int>();
    
         base.SetupContent();
@@ -47,6 +49,7 @@ public class SpawnSets : ModSystem
     public static List<int> HeatedDepthsEnemy;
     public static List<int> FableEnemy;
     public static List<int> AbyssEnemy;
+    public static List<int> AbyssCritter;
     public static List<int> AbyssWaterEnemy;
     public static List<int> AbyssTempleEnemy;
     public static float[] ModifiedWeights;
@@ -95,6 +98,10 @@ public static class NPCSpawnExtensions
     public static void AddToAbyss(this ModNPC npc)
     {
         SpawnSets.AbyssEnemy.Add(npc.Type);
+    }
+    public static void AddToAbyssCritter(this ModNPC npc)
+    {
+        SpawnSets.AbyssCritter.Add(npc.Type);
     }
     public static void AddToAbyssTemple(this ModNPC npc)
     {
@@ -186,7 +193,9 @@ public class NPCSpawnHelper : GlobalNPC
         {
             pool.Clear();
        
-            AddEnemiesFromSpawnSet(SpawnSets.AbyssEnemy, pool, spawnInfo);
+            if(!BellFlowerSystem.Whispering)
+                AddEnemiesFromSpawnSet(SpawnSets.AbyssEnemy, pool, spawnInfo);
+            AddEnemiesFromSpawnSet(SpawnSets.AbyssCritter, pool, spawnInfo);
         }
         if (spawnInfo.Player.InModBiome<AurelusBiome>())
         {

@@ -23,7 +23,7 @@ public class AbyssalSoul : ModNPC, IWaterSilhouette
     {
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
-        this.AddToAbyss();
+        this.AddToAbyssCritter();
         this.PreferLand();
     }
 
