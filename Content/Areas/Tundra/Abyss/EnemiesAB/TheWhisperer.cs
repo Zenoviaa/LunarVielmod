@@ -273,7 +273,7 @@ public class TheWhisperer : ModNPC,
 
     private void WhisperingDeathMessage()
     {
-        string message = LangText.Common("Whispers");
+        string message = LangText.Common("Whisperer");
         if (Main.netMode == NetmodeID.Server)
         {
             NetworkText txt = NetworkText.FromLiteral(message);

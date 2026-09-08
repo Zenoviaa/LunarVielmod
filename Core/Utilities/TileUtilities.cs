@@ -124,6 +124,18 @@ public static class TileUtilities
             return true;
         return false;
     }
+    public static (Point, int takenSteps) FindCeiling(int x, int y, int maxSteps)
+    {
+        Point start = new Point(x, y);
+        Point current = start;
+        for (int i = 0; i < maxSteps; i++)
+        {
+            if (WorldGen.SolidTile(current.X, current.Y))
+                return (current, i);
+            current.Y-=1;
+        }
+        return (new Point(x, y), -1);
+    }
     public static Point FallToSolidTile(int x, int y, int direction = 1)
     {
         Point start = new Point(x, y);
@@ -144,6 +156,19 @@ public static class TileUtilities
         {
             Tile tile = Main.tile[x, y];
             if (tile.LiquidAmount > 0 || (tile.HasTile && Main.tileSolid[tile.TileType]))
+                return y;
+            y++;
+        }
+        return y;
+    }
+    public static int FallToWaterTile(int x, int y, int maxSteps = 255)
+    {
+        Point start = new Point(x, y);
+        Point current = start;
+        for (int i = 0; i < maxSteps; i++)
+        {
+            Tile tile = Main.tile[x, y];
+            if (tile.LiquidAmount > 0)
                 return y;
             y++;
         }

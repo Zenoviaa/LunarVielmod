@@ -12152,3 +12152,8 @@ AbyssalGrassWallItem: {
 	DisplayName: Abyssal Grass Wall Item
 	Tooltip: ""
 }
+
+AbyssWaterFallWallBlock: {
+	DisplayName: Abyss Water Fall Wall Block
+	Tooltip: ""
+}

@@ -100,6 +100,27 @@ public class AbyssalDirtItem : ModItem
         Item.DefaultToPlaceableTile(ModContent.TileType<AbyssalDirt>());
     }
 }
+public class AbyssalWaterfallDirt : ModTile
+{
+    public override void SetStaticDefaults()
+    {
+        Main.tileSolid[Type] = true;
+        Main.tileMerge[Type][Type] = true;
+        Main.tileBlockLight[Type] = true;
+        Main.tileLargeFrames[Type] = 2;
+        Main.tileLighted[Type] = true;
+        Main.tileMerge[TileID.IceBlock][Type] = true;
+        Main.tileMerge[TileID.SnowBlock][Type] = true;
+        Main.tileMerge[ModContent.TileType<AbyssalIce>()][Type] = true;
+        Main.tileBlendAll[Type] = true;
+        RegisterItemDrop(ModContent.ItemType<AbyssalDirtItem>());
+        AddMapEntry(new Color(57, 55, 172));
+    }
+    public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
+    {
+        base.ModifyLight(i, j, ref r, ref g, ref b);
+    }
+}
 
 public class AbyssalDirt : ModTile
 {
