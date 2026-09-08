@@ -1,14 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering;
 using Stellamod.Effects.GothinFlames;
 using Stellamod.Effects.RekFlames;
 using Stellamod.Effects.RoyalMagic;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -96,6 +93,17 @@ public class SilhouetteGlobalNPC : GlobalNPC
         }
     }
 }
+public class SilhouetteGlobalProjectile : GlobalProjectile
+{
+    public override void PostAI(Projectile projectile)
+    {
+        base.PostAI(projectile);
+        if (projectile.ModProjectile is IWaterSilhouette silhouette)
+        {
+            silhouette.PrepareSilhouetteDrawing(ModContent.GetInstance<RekSilhouetteSystem>());
+        }
+    }
+}
 
 /// <summary>
 /// Implement this to draw a silhouette of the NPC over liquids
@@ -125,7 +133,7 @@ public partial class RekBoss : IWaterSilhouette
     private Color GetTrailColor(float ratio)
     {
         Color c = Color.Lerp(Color.Orange, Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16)), ratio) * EasingFunction.QuadraticBump(ratio) * _ouroborosAlpha;// * EasingFunction.QuadraticBump(_swingTrailAlpha);
-                                                                                                                                                             // c.A = 0;
+                                                                                                                                                                                    // c.A = 0;
         return c;
     }
     private Color GetTrailColor2(float ratio)
@@ -296,7 +304,7 @@ public partial class RekBoss : IWaterSilhouette
         }
         for (int i = 1; i < Segments.Length; i++)
         {
-      
+
             DrawSaw(i);
         }
     }
@@ -343,17 +351,17 @@ public partial class RekBoss : IWaterSilhouette
             drawer.spriteEffects = SpriteEffects.FlipHorizontally;
         }
 
-    
+
         Main.spriteBatch.Draw(drawer);
 
 
 
         Vector2 pos = drawer.worldPosition;
-        for(float f = 0; f < MathHelper.TwoPi; f+= MathHelper.PiOver2)
+        for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
         {
             drawer.worldPosition = pos + (f + Main.GlobalTimeWrappedHourly * 4 + index).ToRotationVector2() * 3;
             drawer.color = Color.LightGoldenrodYellow * 0.3f * segment.sawBladeAlpha;
-     
+
             Main.spriteBatch.Draw(drawer);
         }
     }
@@ -378,7 +386,7 @@ public partial class RekBoss : IWaterSilhouette
 
     private void DrawSpear()
     {
-       
+
         Vector2 GetDirection(int index)
         {
             switch (index)
@@ -579,7 +587,7 @@ public partial class RekBoss : IWaterSilhouette
         ref RekSegment segment = ref Segments[index];
         var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, segment.position);
-        glowDrawer.scale *= 0.38f * MathHelper.Lerp(1f, 0.2f, (float)index / (float)Segments.Length);
+        glowDrawer.scale *= 0.38f * MathHelper.Lerp(1f, 0.2f, index / (float)Segments.Length);
         glowDrawer.color = Color.White * 0.33f;
         glowDrawer.color = Color.Lerp(glowDrawer.color, Color.Black, _huskAlpha);
         glowDrawer.color.R = (byte)(index * 9);
@@ -640,12 +648,12 @@ public partial class RekBoss : IWaterSilhouette
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        if(_ouroborosAlpha > 0)
+        if (_ouroborosAlpha > 0)
         {
             PixelationManager.QueuePrimitivesDrawAction(DrawSlashEffect, DrawLayer.OverNPCsAdditive);
             PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
         }
-       
+
         for (int i = 1; i < Segments.Length; i++)
         {
             DrawSaw(i);
@@ -673,7 +681,7 @@ public partial class RekBoss : IWaterSilhouette
         torchShader.DitherTexture = AssetManager.Dithering.Dither8x8Double;
         torchShader.SpriteSize = AssetManager.GlowMask.SimpleGlowCircle.Size();
         SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = torchShader.Effect };
-        using(new SpritebatchContext(spriteBatch, @params))
+        using (new SpritebatchContext(spriteBatch, @params))
         {
             for (int i = 1; i < Segments.Length; i++)
             {
@@ -685,11 +693,11 @@ public partial class RekBoss : IWaterSilhouette
         DrawAfterImages(spriteBatch, screenPos, drawColor);
         drawColor = Color.Lerp(drawColor, Color.Black, _huskAlpha);
         NPC.DrawAnimator(spriteBatch, drawColor);
-        if(_mouthAuraAlpha > 0)
+        if (_mouthAuraAlpha > 0)
         {
             DrawMouthAura(spriteBatch);
         }
-        if(_rekfireballAlpha > 0)
+        if (_rekfireballAlpha > 0)
         {
             DrawFireballOrb(spriteBatch);
         }

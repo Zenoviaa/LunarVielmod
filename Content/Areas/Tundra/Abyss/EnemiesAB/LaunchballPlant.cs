@@ -93,7 +93,8 @@ public class LaunchballBoom : ModProjectile
 }
 
 
-public class Launchball : ModProjectile
+public class Launchball : ModProjectile,
+    IWaterSilhouette
 {
     private ref float Timer => ref Projectile.ai[0];
     private ref float BounceCount => ref Projectile.ai[1];
@@ -246,6 +247,23 @@ public class Launchball : ModProjectile
             ProjFirer firer = ProjFirer.From<LaunchballBoom>(Projectile);
             firer.New();
         }
+    }
+
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void DrawSilhouette(SpriteBatch spriteBatch)
+        {
+            SpritebatchDrawer projDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+            float ease = EasingFunction.OutExpo(SquishTimer / 60f);
+            Vector2 v = Vector2.Lerp(new Vector2(1.5f, 1f), new Vector2(0.8f, 1.5f), ease);
+            Vector2 v2 = Vector2.Lerp(new Vector2(0.8f, 1.5f), Vector2.One, ease);
+            Vector2 v3 = Vector2.Lerp(v, v2, SquishTimer / 60f);
+            projDrawer.scale *= v3;
+            projDrawer.color = Color.DarkBlue;
+            projDrawer.worldPosition = Projectile.Center;
+            Main.spriteBatch.Draw(projDrawer);
+        }
+        system.SilhouettesToDraw.Add(DrawSilhouette);
     }
 }
 
