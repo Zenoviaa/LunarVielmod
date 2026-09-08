@@ -738,6 +738,12 @@ public struct SpritebatchDrawer
     public SpriteEffects spriteEffects;
     public Vector2 scale;
     public bool blackIsTransparency;
+
+    public void Flip(ref float xPosition)
+    {
+        xPosition = sourceRect.Value.Width - xPosition;
+    }
+
     public void VerticalFrame(int frameIndex, int frameCount)
     {
         sourceRect = texture.GetFrame(frameIndex, frameCount);

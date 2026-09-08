@@ -17,6 +17,20 @@ public struct SteinUppercutParameters
 
 public class MovementUtilities
 {
+    public static void FaceMovementVelocity(NPC npc)
+    {
+        npc.spriteDirection = npc.velocity.X < 0 ? -1 : 1;
+    }
+
+    public static void AIMoveTowardsTarget(Vector2 currentPosition, Vector2 targetPosition,
+        ref Vector2 velocity, float speed, float lerp)
+    {
+        Vector2 directionTo = targetPosition - currentPosition;
+        directionTo = directionTo.SafeNormalize(Vector2.Zero);
+        Vector2 targetVelocity = directionTo * speed;
+        velocity = Vector2.Lerp(velocity, targetVelocity, lerp);
+    }
+
     /// <summary>
     /// A
     /// </summary>

@@ -97,6 +97,22 @@ public class PlacedBellFlower
 public class BellFlowerSystem : ModSystem
 {
     public static readonly List<PlacedBellFlower> BellFlowers = new();
+    public static int RungBellFlowerCount
+    {
+        get
+        {
+            int count = 0;
+            foreach(var flower in BellFlowers)
+            {
+                if (flower.rung)
+                    count++;
+            }
+            return count;
+        }
+    }
+    public static int SpawnWhisperer;
+    public static int WhisperingCountdown;
+    
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
@@ -113,8 +129,55 @@ public class BellFlowerSystem : ModSystem
             }
 
             if (!anyInAbyss)
+            {
+                foreach(var flower in BellFlowers)
+                {
+                    flower.rung = false;
+                }
                 return;
+            }
 
+            if (RungBellFlowerCount <= 0)
+            {
+                WhisperingCountdown = 60 * 60;
+            }
+            else
+            {
+                WhisperingCountdown--;
+                if (WhisperingCountdown <= 0)
+                {
+
+                    if (NPC.AnyNPCs(ModContent.NPCType<TheWhisperer>()))
+                    {
+                        SpawnWhisperer = 60 * 10;
+                    }
+                    else
+                    {
+                        SpawnWhisperer--;
+                        if (SpawnWhisperer <= 0)
+                        {
+                            List<Player> playersToSpawnOn = new List<Player>();
+                            foreach (Player player in Main.ActivePlayers)
+                            {
+                                if (player.InModBiome<AbyssBiome>())
+                                {
+                                    playersToSpawnOn.Add(player);
+                                }
+                            }
+
+                            Player random = playersToSpawnOn[Main.rand.Next(0, playersToSpawnOn.Count)];
+                            Vector2 spawnPos = random.Center;
+                            spawnPos.X += Main.rand.Next(-512, 512);
+                            spawnPos.Y += Main.rand.Next(-512, 512);
+                            NPC.NewNPC(new EntitySource_Misc(""),
+                                (int)spawnPos.X, 
+                                (int)spawnPos.Y,
+                                ModContent.NPCType<TheWhisperer>());
+                            SpawnWhisperer = 60 * 10;
+                        }
+                    }
+                }
+            }
             int i = 0;
             foreach (PlacedBellFlower bellFlower in BellFlowers)
             {

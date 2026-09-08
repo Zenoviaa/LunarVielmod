@@ -1,6 +1,5 @@
-﻿
-using Microsoft.Xna.Framework;
-using Stellamod.Assets.Biomes;
+﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Core.Biomes;
 using Stellamod.Core.LunarLightingSystem;
 using Terraria;
@@ -9,10 +8,24 @@ using Terraria.ModLoader;
 
 
 namespace Stellamod.Content.Areas.Tundra.Abyss;
+
 public class AbyssBiome : BaseUrdveilBiome,
     IBackLightModifier
 {
-    public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/ArtInTheShadows");
+    public override int Music
+    {
+        get
+        {
+            int music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ArtInTheShadows");
+            if (BellFlowerSystem.WhisperingCountdown <= 0)
+            {
+                music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Hidding_In_The_Shadows");
+                return music;
+            }
+
+            return music;
+        }
+    }
     public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
     public override string BestiaryIcon => base.BestiaryIcon;
     public override string BackgroundPath => MapBackground;
