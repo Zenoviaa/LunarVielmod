@@ -181,7 +181,7 @@ public class Launchball : ModProjectile
             });
         }
         SquishTimer = 0;
-        var hitSound = AssetReferences.Assets.Sounds.Bishinine.BellHit2.Asset with { PitchVariance = 0.3f };
+        var hitSound = AssetReferences.Assets.Sounds.Abyss.Smallbounce.Asset with { PitchVariance = 0.3f };
         SoundEngine.PlaySound(hitSound, Projectile.position);
     }
 

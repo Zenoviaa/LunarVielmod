@@ -33,7 +33,7 @@ public class WaterfallCrashDust : ParticleUpdater<WaterfallCrashDustData>
 
         if (_length <= 0)
             return;
-        using(new SpritebatchContext(Main.spriteBatch, SpritebatchParams.InWorldAndZoomed()))
+        using(new SpritebatchContext(Main.spriteBatch, SpritebatchParams.InWorldAndZoomed() with { blendState = BlendState.Additive }))
         {
             Draw(Main.spriteBatch, Main.screenPosition);
         }

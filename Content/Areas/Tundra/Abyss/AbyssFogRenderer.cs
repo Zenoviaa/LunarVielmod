@@ -4,6 +4,7 @@ using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Content.Biomes;
 using Stellamod.Core;
 using Stellamod.Core.LunarLightingSystem;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Rendering;
 using Stellamod.Core.WallBackgroundSystem;
 using System;
@@ -108,7 +109,7 @@ public class AbyssEffectsRenderer : ModSystem
             if(_timer % 8 == 0)
             {
                 Vector2 crashParticlePoint = crashPoint;
-                crashParticlePoint.X += _fastRandom.Next(-64, 64);
+                crashParticlePoint.X += _fastRandom.Next(-128, 128);
                 Particles.WaterfallCrashDust.Spawn(WaterfallCrashDustData.Default with { 
                     position = crashParticlePoint, 
                     velocity = Main.rand.NextVector2Circular(8, 4),
@@ -213,16 +214,18 @@ public class AbyssEffectsRenderer : ModSystem
             noiseSampler.Texture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset.Value;
             pass.Parameters.noiseSampler = noiseSampler;
             pass.Parameters.waveStrength = 0.5f;
+            pass.Parameters.ColorSpectrumTexture = PaletteAssets.FromPaletteFile(PaletteAssets.ABYSSWATER).Value.ColorAtlas;
             pass.Apply();
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
 
 
-            using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { effect = pass.Shader, blendState = BlendState.AlphaBlend }))
+            using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { effect = pass.Shader, blendState = BlendState.AlphaBlend, samplerState = SamplerState.PointWrap }))
             {
                 //int i = 0;
                 Color color = Color.Lerp(Color.White, Color.Cyan, 0.75f);
+                color = Color.Lerp(color, Color.Blue, 0.5f);
                 foreach(Rectangle rect in AbyssWaterfallPoints)
                 {
                     
@@ -231,8 +234,10 @@ public class AbyssEffectsRenderer : ModSystem
                     screenREct.Y -= (int)Main.screenPosition.Y;
                     screenREct = screenREct.CenterPad(32);
                     drawer.dstRect = screenREct;
+
+               
                     drawer.drawOrigin = Vector2.Zero;
-                    drawer.color = color * 0.125f * ExtraMath.Osc(0.7f, 1f, speed: 0, offset: rect.X);
+                    drawer.color = color * 0.5f * ExtraMath.Osc(0.7f, 1f, speed: 0, offset: rect.X);
                     spriteBatch.Draw(drawer);
                 }
 
