@@ -16,7 +16,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 
@@ -260,27 +262,75 @@ public class TheWhisperer : ModNPC,
 
         if (Timer >= 240)
         {
+            WhisperingDeathMessage();
             if (Main.netMode != NetmodeID.Server)
             {
-                void SpawnGore(int index)
-                {
-                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    int g = Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center + velocity, velocity * 2, ModContent.GoreType<TheWhispererGore>());
-                    Gore gore = Main.gore[g];
-                    gore.frame = (byte)index;
-                }
-
-                for(int i = 0; i < 3; i++)
-                {
-                    SpawnGore(i);
-                }
-                Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
-                ShakeScreenPosition.Shake = 2;
-                var sound = AssetReferences.Assets.Sounds.NiiviWingFlap.Asset with { Pitch = 0.5f, PitchVariance = 0.3f };
-                SoundEngine.PlaySound(sound, NPC.Center);
+                WhisperingDeathEffect();
             }
             NPC.Kill();
         }
+    }
+
+    private void WhisperingDeathMessage()
+    {
+        string message = LangText.Common("Whispers");
+        if (Main.netMode == NetmodeID.Server)
+        {
+            NetworkText txt = NetworkText.FromLiteral(message);
+            ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
+        }
+        else
+        {
+            Main.NewText(message, 34, 121, 100);
+        }
+    }
+
+    private void WhisperingDeathEffect()
+    {
+        void SpawnGore(int index)
+        {
+            Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+            int g = Gore.NewGore(NPC.GetSource_FromThis(), NPC.Center + velocity, velocity * 2, ModContent.GoreType<TheWhispererGore>());
+            Gore gore = Main.gore[g];
+            gore.frame = (byte)index;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            SpawnGore(i);
+        }
+        FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.Blue, 25, baseSize: 0.24f);
+        for (int i = 0; i < 32; i++)
+        {
+            Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(80, 80);
+            Vector2 vel = pos - NPC.Center;
+            vel = vel.SafeNormalize(Vector2.Zero);
+            vel *= Main.rand.NextFloat(8f, 16f);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = Color.White.ToVector4(),
+                outerColor = Color.Blue.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.8f, 1.5f)),
+                timeLeft = Main.rand.Next(60, 120),
+            });
+        }
+
+        for (int i = 0; i < 16; i++)
+        {
+            Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(80, 80);
+            Vector2 vel = pos - NPC.Center;
+            vel = vel.SafeNormalize(Vector2.Zero);
+            vel *= Main.rand.NextFloat(4f, 8f);
+            var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, vel, Scale: 0.8f);
+            d.noGravity = true;
+        }
+
+        Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
+        ShakeScreenPosition.Shake = 2;
+        var sound = AssetReferences.Assets.Sounds.DeathShotBomb2.Asset with { Pitch = 0.5f, PitchVariance = 0.3f };
+        SoundEngine.PlaySound(sound, NPC.Center);
     }
 
     private void AI_Despawn()
