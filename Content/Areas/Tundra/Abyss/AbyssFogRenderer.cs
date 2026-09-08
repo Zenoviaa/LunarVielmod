@@ -105,7 +105,7 @@ public class AbyssEffectsRenderer : ModSystem
         foreach(Rectangle crashRect in AbyssWaterfallPoints)
         {
             Vector2 crashPoint = crashRect.Bottom();
-            if(_timer % 2 == 0)
+            if(_timer % 8 == 0)
             {
                 Vector2 crashParticlePoint = crashPoint;
                 crashParticlePoint.X += _fastRandom.Next(-64, 64);
