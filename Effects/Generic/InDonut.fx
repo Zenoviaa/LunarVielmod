@@ -8,11 +8,12 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     
     float len = length(direction);
     float fadeOut = saturate(len / 0.5);
-    float fadeOut2 = saturate((len - 0.45) / 0.2);
+    float fadeOut2 = saturate((len - 0.3) / 0.2);
     fadeOut2 = 1.0 - fadeOut2;
     spriteColor *= fadeOut;
     spriteColor *= fadeOut2;
-    return spriteColor;
+    spriteColor = floor(spriteColor * 24.0) / 24.0;
+    return spriteColor * tintColor;
 }
 
 technique Technique1

@@ -20,6 +20,7 @@ public class HairRenderer
     public Func<float, float> getHairWidth;
     public float ghostAlpha;
     public int subdivisionCount;
+    public bool additive;
     public void SimulateHair(Vector2 originPoint)
     {
         Chain.points[0] = originPoint;
@@ -47,9 +48,11 @@ public class HairRenderer
 
     public Color GetHairColor(float ratio)
     {
-        Color spectralColor = Color.White * ghostAlpha * EasingFunction.OutExpo(ratio + 0.5f) * MathHelper.SmoothStep(1f, 0f, ratio) * EasingFunction.QuadraticBump(ratio) * 1.5f;
+        Color spectralColor = Color.White * ghostAlpha * EasingFunction.OutExpo(ratio + 0.5f) * MathHelper.SmoothStep(1f, 0f, ratio) * MathHelper.SmoothStep(1f, 0f, ratio) * 1.5f;
         Color scorllingColor = DrawUtilities.InterpolateColorArray(ratio, Color.White, Color.SkyBlue, Color.White, Color.LightSkyBlue);
         spectralColor = spectralColor.MultiplyRGBA(scorllingColor);
+        if (additive)
+            spectralColor.A = 0;
         return spectralColor;
     }
 

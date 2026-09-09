@@ -248,6 +248,7 @@ public class PixelationManager : ModSystem
     private PixelTarget _overPlayersPixelTarget;
     private PixelTarget _behindTilesPixelTarget;
     private PixelTarget _behindTilesOutlinePixelTarget;
+    private PixelTarget _waterTarget;
 
     //This one needs to go last
     public int Priority => 10;
@@ -263,8 +264,18 @@ public class PixelationManager : ModSystem
         On_Main.DoDraw_DrawNPCsBehindTiles += RenderBehindTiles;
         On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
         On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
+        On_Main.DrawInfernoRings += RenderOverWater;
         //On_Main.DrawCachedProjs += RenderLater;
         ZTileMap.OnRenderForeground += RenderLater;
+    }
+
+    private void RenderOverWater(On_Main.orig_DrawInfernoRings orig, Main self)
+    {
+        orig(self);
+        if (!Main.gameMenu)
+        {
+            _waterTarget.DrawToScreen();
+        }
     }
 
     private void RenderLater()
@@ -407,6 +418,8 @@ public class PixelationManager : ModSystem
                 return _behindTilesPixelTarget;
             case DrawLayer.BehindTilesOutline:
                 return _behindTilesOutlinePixelTarget;
+            case DrawLayer.OverWater:
+                return _waterTarget;
         }
     }
     public static void QueueSpritebatchDrawAction(PixelTarget.SpritebatchDrawAction drawAction, DrawLayer drawLayer = DrawLayer.OverNPCs)
@@ -442,6 +455,7 @@ public class PixelationManager : ModSystem
         _behindTilesPixelTarget.Render();
         _behindTilesOutlinePixelTarget.outlineColor = Color.Black;
         _behindTilesOutlinePixelTarget.Render();
+        _waterTarget.Render();
     }
 }
 
@@ -457,5 +471,7 @@ public enum DrawLayer
     OverPlayers = 6,
     BehindTiles,
     BehindTilesOutline,
+
+    OverWater,
     None
 }

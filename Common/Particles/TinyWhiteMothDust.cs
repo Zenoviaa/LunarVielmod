@@ -73,11 +73,13 @@ public class TinyWhiteMothDust : ParticleUpdater<TinyWhiteMothDustData>
     {
         float fade = MathHelper.Clamp(particle.timeLeft / 120f, 0f, 1f);// Utils.GetLerpValue(0, 1, particle.timeLeft / 120f, true);
         fade = EasingFunction.QuadraticBump(fade);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.Particles.TinyWhiteMoth.Asset.Value, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.Particles.TinyWhiteMothDust.Asset.Value, particle.position);
         drawer.color = Color.White * fade;
-        int frame = (int)particle.timeLeft / 2;
+
+        int frame = (int)particle.timeLeft / 3;
         frame %= 6;
         drawer.VerticalFrame(frame, 6);
+        drawer.CenterOrigin();
         spriteBatch.Draw(drawer);
     }
 
@@ -88,7 +90,7 @@ public class TinyWhiteMothDust : ParticleUpdater<TinyWhiteMothDustData>
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position);
         glowDrawer.color = Color.White * 0.4f * fade;
         glowDrawer.color.A = 0;
-        glowDrawer.scale *= 0.4f;
+        glowDrawer.scale *= 0.14f;
         spriteBatch.Draw(glowDrawer);
     }
 }

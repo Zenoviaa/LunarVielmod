@@ -1,10 +1,10 @@
 using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
+using Stellamod.WorldG;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 
@@ -21,12 +21,13 @@ file static class AbyssalDirtUtilities
 {
     public static void DrawOutline(int i, int j, int type, SpriteBatch spriteBatch)
     {
-        Vector2 pos = (new Vector2(i, j)) * 16;
-        pos += new Vector2(Main.offScreenRange);
+        Vector2 pos = (new Vector2(i, j) + VeilGen.TileAdj) * 16;
+        //   pos += new Vector2(Main.offScreenRange);
+
         Tile tile = Framing.GetTileSafely(i, j);
 
         Rectangle frame = new Rectangle(tile.TileFrameX + 234, tile.TileFrameY, 16, 16);
-        Color glowColor = Color.SkyBlue * BellFlowerSystem.WhisperingAlpha;
+        Color glowColor = Color.Lerp(Color.LightGray, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 1)) * BellFlowerSystem.WhisperingAlpha;
         glowColor *= ExtraMath.Osc(0.6f, 1f);
         glowColor.A = 0;
         spriteBatch.Draw(TextureAssets.Tile[type].Value, pos - Main.screenPosition, frame, glowColor, 0, Vector2.Zero, 1, 0, 1);
@@ -59,17 +60,26 @@ public class AbyssalCoarseDirt : ModTile
     }
     public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
     {
-   
+
         base.DrawEffects(i, j, spriteBatch, ref drawData);
         if (BellFlowerSystem.WhisperingAlpha > 0)
         {
-            Main.instance.TilesRenderer.AddSpecialLegacyPoint(new Point(i, j));
+            //            Main.instance.TilesRenderer.AddSpecialLegacyPoint(new Point(i, j));
         }
+
     }
     public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
     {
         base.SpecialDraw(i, j, spriteBatch);
-        AbyssalDirtUtilities.DrawOutline(i, j, Type, spriteBatch);
+
+    }
+    public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
+    {
+        base.PostDraw(i, j, spriteBatch);
+        if (BellFlowerSystem.WhisperingAlpha > 0)
+        {
+            AbyssalDirtUtilities.DrawOutline(i, j, Type, spriteBatch);
+        }
     }
     public override void RandomUpdate(int i, int j)
     {
@@ -186,7 +196,7 @@ public class AbyssalDirt : ModTile
                 NetMessage.SendTileSquare(-1, i, j - 1, TileChangeType.None);
             }
         }
-     
+
         //Try place vine
         if (WorldGen.genRand.NextBool(3) && !tileBelow.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
         {
@@ -219,14 +229,18 @@ public class AbyssalDirt : ModTile
     public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
     {
         base.DrawEffects(i, j, spriteBatch, ref drawData);
+
+    }
+    public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
+    {
+        base.PostDraw(i, j, spriteBatch);
         if (BellFlowerSystem.WhisperingAlpha > 0)
         {
-            Main.instance.TilesRenderer.AddSpecialLegacyPoint(new Point(i, j));
+            AbyssalDirtUtilities.DrawOutline(i, j, Type, spriteBatch);
         }
     }
     public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
     {
         base.SpecialDraw(i, j, spriteBatch);
-        AbyssalDirtUtilities.DrawOutline(i, j, Type, spriteBatch);
     }
 }

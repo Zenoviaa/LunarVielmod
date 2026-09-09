@@ -173,7 +173,8 @@ public class TheWhisperer : ModNPC,
             ratio = 1f - ratio;
             BellFlowerSystem.WhisperingDistanceAlpha = ratio;
             ScreenShaderSystem system = ModContent.GetInstance<ScreenShaderSystem>();
-            system.VignetteScreen(5f * ratio, 1f, 60);
+            float strength = MathHelper.Lerp(1f, 5f, ratio);
+            system.VignetteScreen(strength, 1f, 60);
             system.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.003f), 0.02f * ratio, 60f);
             system.TintScreen(Color.White, 0.05f * ratio, 60f);
             ShakeScreenPosition.Shake = 4 * ratio;
@@ -268,7 +269,26 @@ public class TheWhisperer : ModNPC,
             if(distanceToPlayerSquared < Suck_Distance_Squared)
             {
                 player.AddBuff(ModContent.BuffType<WhisperingDeath>(), 2);
+                Vector2 pos = player.Center;
+                pos += Main.rand.NextVector2Circular(32, 32);
+                Vector2 vel = NPC.Center - pos;
+                vel = vel.SafeNormalize(Vector2.Zero);
+                vel *= Main.rand.NextFloat(6f, 12f);
+                if (Main.rand.NextBool(3))
+                {
+                    FXUtil.GlowStretch(pos, vel);
+                }
             }
+        }
+
+        if (Main.rand.NextBool(7))
+        {
+            Particles.TinyWhiteMothDust.Spawn(new()
+            {
+                position = NPC.Center,
+                timeLeft = Main.rand.Next(60, 120),
+                velocity = Main.rand.NextVector2Circular(8, 8)
+            });
         }
 
         if (Main.rand.NextBool(16))
@@ -309,9 +329,13 @@ public class TheWhisperer : ModNPC,
                 AI_Death();
                 break;
         }
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
         HairRenderer.SimulateHair(NPC.Center + new Vector2(0, -36));
-        HairRenderer2.SimulateHair(NPC.Center);
+        HairRenderer2.SimulateHair(NPC.Center + new Vector2(0, 36));
         Lighting.AddLight(NPC.Center, new Vector3(0.3f));
+        AbyssEffectsRenderer.OverWater.Add(DrawWhisperer);
     }
 
     private void TinyWhiteMothEffect()
@@ -333,16 +357,24 @@ public class TheWhisperer : ModNPC,
         Timer++;
         if(Timer == 1)
         {
-            _circleBackStart = NPC.Center;
+            _circleBackStart = (NPC.Center - MyTarget.Center);
             _circleBackCenter = MyTarget.Center;
-            _startVelocity = NPC.Center;
+            _startVelocity = NPC.velocity;
+
         }
 
-        float circleTime = 100f;
-        float ease = EasingFunction.InOutExpo(Timer / circleTime);
-        Vector2 pos = _circleBackStart.RotatedBy(ease * MathHelper.Pi, _circleBackCenter);
-        Vector2 vel = pos - NPC.Center;
-        NPC.velocity = Vector2.Lerp(_startVelocity, vel, Timer / 30f);
+        float circleTime = 180f;
+        float ease = EasingFunction.Anticipation(Timer / circleTime);
+        Vector2 newOffset = _circleBackStart.RotatedBy(ease * MathHelper.Pi);
+    
+        Vector2 pos = _circleBackCenter + newOffset;
+
+        //NPC.Center = Vector2.Lerp(NPC.Center, pos, 0.1f);
+        NPC.velocity = Vector2.Lerp(_startVelocity, (pos - NPC.Center), EasingFunction.InOutQuad(Timer / 90f));
+        if (MyTarget.Center.X < NPC.Center.X)
+            NPC.spriteDirection = -1;
+        else
+            NPC.spriteDirection = 1;
         if(Timer >= circleTime)
         {
             SwitchState(AIState.Chase);
@@ -473,12 +505,12 @@ public class TheWhisperer : ModNPC,
                 NPC.Center,
                 MyTarget.Center,
                 ref NPC.velocity,
-                speed: MoveSpeed,
-                lerp: 0.05f);
+                speed: MoveSpeed * EasingFunction.InOutSine(Timer / 60f),
+                lerp: 0.05f * EasingFunction.InOutSine(Timer / 60f));
             MovementUtilities.FaceMovementVelocity(NPC);
         }
 
-        if(MultiplayerHelper.IsHost && Main.rand.NextBool(480))
+        if(Timer >= 800)
         {
             SwitchState(AIState.CircleBack);
         }
@@ -542,13 +574,24 @@ public class TheWhisperer : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+
+        return false;
+        // return base.PreDraw(spriteBatch, screenPos, drawColor);
+    }
+    public void DrawWhisperer()
+    {
+        DrawWhisperer(Main.spriteBatch);
+    }
+    private void DrawWhisperer(SpriteBatch spriteBatch)
+    {
         float range = 24;
         DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center + _shakePos, 0.7f, Color.Blue * 0.3f * _alpha);
 
 
+        float a = (float)BellFlowerSystem.RungBellFlowerCount / (float)BellFlowerSystem.MaxBellFlowers;
         var pass = AssetReferences.Effects.Abyss.WhispererAura.CreateSpritePass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.5f;
-        pass.Parameters.alpha = (float)BellFlowerSystem.RungBellFlowerCount / (float)BellFlowerSystem.MaxBellFlowers;
+        pass.Parameters.alpha = a;
         pass.Apply();
 
         SpritebatchDrawer skullDrawer = SpritebatchDrawer.FromNPC(NPC);
@@ -564,33 +607,35 @@ public class TheWhisperer : ModNPC,
             lanternDrawer.Flip(ref lanternCenterOrigin.X);
         Vector2 lanternWorldPos = NPC.Center + lanternCenterOrigin - lanternDrawer.drawOrigin;
 
-        using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with 
-            {  effect = pass.Shader }))
+        SpritebatchDrawer headDrawer = skullDrawer;
+        headDrawer.VerticalFrame(1, Main.npcFrameCount[Type]);
+        headDrawer.color *= OscAlpha;
+        headDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
+
+
+
+        SpritebatchDrawer eyeDrawer = skullDrawer;
+        eyeDrawer.VerticalFrame(3, Main.npcFrameCount[Type]);
+        Vector2 directionToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+        eyeDrawer.worldPosition += directionToTarget * 4f;
+        eyeDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
+        eyeDrawer.color = Color.White * ExtraMath.Osc(0.75f, 2f, speed: 2) * OscAlpha;
+        eyeDrawer.color.A = 0;
+
+        using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { effect = pass.Shader }))
         {
             spriteBatch.Draw(skullDrawer);
-
-            SpritebatchDrawer headDrawer = skullDrawer;
-            headDrawer.VerticalFrame(1, Main.npcFrameCount[Type]);
-            headDrawer.color *= OscAlpha;
-            headDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
             spriteBatch.Draw(headDrawer);
-
-            SpritebatchDrawer eyeDrawer = skullDrawer;
-            eyeDrawer.VerticalFrame(3, Main.npcFrameCount[Type]);
-            Vector2 directionToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-            eyeDrawer.worldPosition += directionToTarget * 4f;
-            eyeDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
-            eyeDrawer.color = Color.White * ExtraMath.Osc(0.75f, 2f, speed: 2) * OscAlpha;
-            eyeDrawer.color.A = 0;
             spriteBatch.Draw(eyeDrawer);
-
             spriteBatch.Draw(lanternDrawer);
         }
 
+        eyeDrawer.color = Color.Black * (1f - a);
+        spriteBatch.Draw(eyeDrawer);
+
+        DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 0.7f, Color.White * 0.6f * _alpha * (1f - a));
 
         DrawUtilities.DrawBasicGlow(spriteBatch, lanternWorldPos + _shakePos, 0.3f, Color.Blue * 0.3f * _alpha);
-        return false;
-       // return base.PreDraw(spriteBatch, screenPos, drawColor);
     }
 
     public override void OnKill()
@@ -600,9 +645,10 @@ public class TheWhisperer : ModNPC,
     }
 
     //TODO: batch this probably
-    //Might not really be necessary it's only 5 draws
+    //Might not really be necessary it's only 3 draws
     private void DrawHair(GraphicsDevice graphicsDevices)
     {
+        HairRenderer.additive = false;
         HairShader shader = ShaderContent.GetInstance<HairShader>();
         shader.LaserTexture = AssetReferences.Assets.LaserTextures.SpectralHair.Asset;
         shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
@@ -613,6 +659,7 @@ public class TheWhisperer : ModNPC,
 
     private void DrawHair2(GraphicsDevice graphicsDevices)
     {
+        HairRenderer.additive = true;
         HairShader shader = ShaderContent.GetInstance<HairShader>();
         shader.LaserTexture = AssetReferences.Assets.LaserTextures.SpectralHair.Asset;
         shader.Time = Main.GlobalTimeWrappedHourly * 0.2f + 8f; 
@@ -627,26 +674,10 @@ public class TheWhisperer : ModNPC,
         HairRenderer.Render(shader);
     }
 
-    private void DrawHair3(GraphicsDevice graphicsDevices)
-    {
-        HairShader shader = ShaderContent.GetInstance<HairShader>();
-        shader.LaserTexture = AssetReferences.Assets.LaserTextures.SpectralHair.Asset;
-        shader.Time = Main.GlobalTimeWrappedHourly * 0.2f + 8f;
-        shader.WaveFrequency = 8;
-        shader.XOffset = 12;
-        HairRenderer2.Render(shader);
-
-        shader.LaserTexture = AssetReferences.Assets.LaserTextures.SpectralHair.Asset;
-        shader.Time = Main.GlobalTimeWrappedHourly * 0.2f + 16f;
-        shader.WaveFrequency = 8;
-        shader.XOffset = 12;
-        HairRenderer2.Render(shader);
-    }
-
     private void DrawSuck(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         var pass = AssetReferences.Effects.Abyss.WhisperingSuck.CreatePass0();
-        pass.Parameters.Time = Main.GlobalTimeWrappedHourly * 0.1f;
+        pass.Parameters.Time = Main.GlobalTimeWrappedHourly * -0.9f;
         pass.Parameters.bloomColor = Color.Cyan.ToVector4();
         pass.Apply();
         using(new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with
@@ -665,8 +696,8 @@ public class TheWhisperer : ModNPC,
                 drawer.LeftCenterOrigin();
                 drawer.rotation = (NPC.Center - player.Center).ToRotation();
                 float dist = Vector2.Distance(NPC.Center, player.Center) / (float)AssetReferences.Assets.LaserTextures.SpectralSoulSuck.Asset.Value.Width;
-                drawer.scale = Vector2.One * new Vector2(dist, 1);
-                drawer.color = Color.White * whisperingPlayer.suckingAlpha;
+                drawer.scale = Vector2.One * new Vector2(dist, 0.4f);
+                drawer.color = Color.White * whisperingPlayer.suckingAlpha * 4;
                 spriteBatch.Draw(drawer);
             }
         }
@@ -674,11 +705,13 @@ public class TheWhisperer : ModNPC,
     public void DrawToRenderTargets()
     {
         HairRenderer.ghostAlpha = _alpha;
-        PixelationManager.QueueSpritebatchDrawAction(DrawVortexGlow);
-        PixelationManager.QueueSpritebatchDrawAction(DrawSuck, DrawLayer.OverPlayers);
-        PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
-        PixelationManager.QueuePrimitivesDrawAction(DrawHair2, DrawLayer.OverNPCsAdditive);
-        PixelationManager.QueuePrimitivesDrawAction(DrawHair3, DrawLayer.OverNPCsAdditive);
+        PixelationManager.QueueSpritebatchDrawAction(DrawVortexGlow, DrawLayer.OverWater);
+        PixelationManager.QueueSpritebatchDrawAction(DrawSuck, DrawLayer.OverWater);
+        PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.OverWater);
+        PixelationManager.QueuePrimitivesDrawAction(DrawHair2, DrawLayer.OverWater);
+        //PixelationManager.QueuePrimitivesDrawAction(DrawHair3, DrawLayer.OverNPCsAdditive);
     }
 
+
+ 
 }

@@ -31,6 +31,7 @@ public class AbyssEffectsRenderer : ModSystem
     private FastRandom _fastRandom;
     private float _thickFogAlpha;
     public static readonly List<Rectangle> AbyssWaterfallPoints = new();
+    public static readonly List<Action> OverWater = new();
     public override void Load()
     {
         base.Load();
@@ -39,10 +40,30 @@ public class AbyssEffectsRenderer : ModSystem
         On_Main.RenderWalls += ResetSpecialPoints;
 
         On_Main.DoDraw_WallsAndBlacks += RenderAroundWalls;
-
+        On_Main.DrawInfernoRings += DrawOverWater;
         On_OverlayManager.Draw += DrawPostProcessingPasses;
     }
 
+    private void DrawOverWater(On_Main.orig_DrawInfernoRings orig, Main self)
+    {
+        orig(self);
+        if (OverWater.Count <= 0)
+            return;
+        using(new SpritebatchContext(Main.spriteBatch, SpritebatchParams.InWorldAndZoomed()))
+        {
+            foreach (var action in OverWater)
+            {
+                action();
+            }
+        }
+
+    }
+
+    public override void PreUpdateNPCs()
+    {
+        base.PreUpdateNPCs();
+        OverWater.Clear();
+    }
     private void ResetSpecialPoints(On_Main.orig_RenderWalls orig, Main self)
     {
 
@@ -169,11 +190,11 @@ public class AbyssEffectsRenderer : ModSystem
             if(BellFlowerSystem.WhisperingAlpha > 0)
             {
                
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 spriteBatch.Draw(
                     AssetReferences.Assets.GlowMasks.WhiteSquare.Asset.Value, 
                     new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2), 
-                    Color.Gray * 0.3f * BellFlowerSystem.WhisperingAlpha);
+                    Color.DarkGray * 0.35f * BellFlowerSystem.WhisperingAlpha);
                 spriteBatch.End();
             }
         }

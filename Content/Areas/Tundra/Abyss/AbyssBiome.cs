@@ -19,7 +19,7 @@ public class AbyssBiome : BaseUrdveilBiome,
             int music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ArtInTheShadows");
             if (NPC.AnyNPCs(ModContent.NPCType<TheWhisperer>()))
             {
-                music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Hidding_In_The_Shadows");
+                music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/HeWhoWhispss");
                 return music;
             } 
             else if (BellFlowerSystem.Whispering)

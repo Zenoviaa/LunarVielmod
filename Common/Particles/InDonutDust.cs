@@ -19,6 +19,15 @@ public class InDonutDust : ParticleUpdater<InDonutData>
         On_Main.DrawInfernoRings += DrawParticles;
     }
 
+    protected override void UpdateParticles()
+    {
+        base.UpdateParticles();
+        for (int i = 0; i < _length; i++)
+        {
+            ref var particle = ref _particles[i];
+            particle.timeLeft--;
+        }
+    }
     private void DrawParticles(On_Main.orig_DrawInfernoRings orig, Main self)
     {
         orig(self);
