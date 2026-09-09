@@ -30,18 +30,78 @@ public class AbyssEffectsRenderer : ModSystem
     private float _timer;
     private FastRandom _fastRandom;
     private float _thickFogAlpha;
+    public static Color TileGlowColor;
     public static readonly List<Rectangle> AbyssWaterfallPoints = new();
     public static readonly List<Action> OverWater = new();
+    public RenderTargetProvider WaterfallTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void Load()
     {
         base.Load();
         _fastRandom = new FastRandom(2);
+        On_Main.CheckMonoliths += RenderWaterfallTarget;
         On_Main.RenderTiles += ResetSpecialPoints;
         On_Main.RenderWalls += ResetSpecialPoints;
 
         On_Main.DoDraw_WallsAndBlacks += RenderAroundWalls;
         On_Main.DrawInfernoRings += DrawOverWater;
         On_OverlayManager.Draw += DrawPostProcessingPasses;
+    }
+
+    private void RenderWaterfallTarget(On_Main.orig_CheckMonoliths orig)
+    {
+        orig();
+        if (AbyssWaterfallPoints.Count <= 0)
+            return;
+        //Waterfall shading
+        var pass = AssetReferences.Effects.Abyss.Waterfall.CreatePixelPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.75f;
+
+        var noiseSampler = new HlslSampler();
+        noiseSampler.Sampler = SamplerState.LinearWrap;
+        noiseSampler.Texture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset.Value;
+        pass.Parameters.noiseSampler = noiseSampler;
+
+        var whrilySampler = new HlslSampler();
+        whrilySampler.Sampler = SamplerState.LinearWrap;
+        whrilySampler.Texture = AssetReferences.Assets.NoiseTextures.WaterCaustics.Asset.Value;
+
+        pass.Parameters.whirlyNoiseSampler = whrilySampler;
+        pass.Parameters.waveStrength = 0.5f;
+        pass.Parameters.ColorSpectrumTexture = PaletteAssets.FromPaletteFile(PaletteAssets.ABYSSWATERFALL).Value.ColorAtlas;
+        pass.Apply();
+
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        spriteBatch.GraphicsDevice.SetRenderTarget(WaterfallTarget);
+        spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
+
+
+        using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { 
+            effect = pass.Shader, 
+            blendState = CustomBlendStates.Max, 
+            samplerState = SamplerState.AnisotropicWrap,
+        matrix = Matrix.Identity }))
+        {
+            //int i = 0;
+            Color color = Color.Lerp(Color.White, Color.Cyan, 0.75f);
+            color = Color.Lerp(color, Color.Blue, 0.5f);
+            foreach (Rectangle rect in AbyssWaterfallPoints)
+            {
+
+                Rectangle screenREct = rect;
+                screenREct.X -= (int)Main.screenPosition.X;
+                screenREct.Y -= (int)Main.screenPosition.Y;
+                screenREct = screenREct.CenterPad(32);
+                drawer.dstRect = screenREct;
+
+
+                drawer.drawOrigin = Vector2.Zero;
+                drawer.color = color * 0.35f * ExtraMath.Osc(0.7f, 1f, speed: 0, offset: rect.X);
+                spriteBatch.Draw(drawer);
+            }
+
+        }
+        spriteBatch.GraphicsDevice.SetRenderTarget(null);
     }
 
     private void DrawOverWater(On_Main.orig_DrawInfernoRings orig, Main self)
@@ -63,6 +123,10 @@ public class AbyssEffectsRenderer : ModSystem
     {
         base.PreUpdateNPCs();
         OverWater.Clear();
+        Color glowColor = Color.Lerp(Color.LightGray, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 1)) * BellFlowerSystem.WhisperingAlpha;
+        glowColor *= ExtraMath.Osc(0.6f, 1f);
+        glowColor.A = 0;
+        TileGlowColor = glowColor;
     }
     private void ResetSpecialPoints(On_Main.orig_RenderWalls orig, Main self)
     {
@@ -93,7 +157,31 @@ public class AbyssEffectsRenderer : ModSystem
         }
 
         orig(self);
+        if (BellFlowerSystem.WhisperingAlpha < 0.01f)
+            return;
 
+        var pass = AssetReferences.Effects.Generic.Outliner.CreatePixelPass();
+        pass.Parameters.texelSize = Main.instance.tileTarget.GetTexelSize() * 2;
+        pass.Apply();
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        spriteBatch.GraphicsDevice.SetRenderTarget(ExtraRenderTargets.TileTargetSwap);
+        spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+        spriteBatch.Begin(
+            SpriteSortMode.Deferred, 
+            BlendState.AlphaBlend, 
+            SamplerState.PointClamp, 
+            DepthStencilState.None, 
+            RasterizerState.CullNone,
+            pass.Shader);
+        spriteBatch.Draw(Main.instance.tileTarget, Vector2.Zero, AbyssEffectsRenderer.TileGlowColor);
+        spriteBatch.End();
+
+        spriteBatch.GraphicsDevice.SetRenderTarget(Main.instance.tileTarget);
+        spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+        spriteBatch.Begin();
+        spriteBatch.Draw(ExtraRenderTargets.TileTargetSwap, Vector2.Zero, Color.White);
+        spriteBatch.End();
+        spriteBatch.GraphicsDevice.SetRenderTarget(null);
     }
 
     private void ScanUpforWaterfall(int i, int j)
@@ -248,38 +336,47 @@ public class AbyssEffectsRenderer : ModSystem
             noiseSampler.Sampler = SamplerState.LinearWrap;
             noiseSampler.Texture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset.Value;
             pass.Parameters.noiseSampler = noiseSampler;
+
+            var whrilySampler = new HlslSampler();
+            whrilySampler.Sampler = SamplerState.LinearWrap;
+            whrilySampler.Texture = AssetReferences.Assets.NoiseTextures.WaterCaustics.Asset.Value;
+
+            pass.Parameters.whirlyNoiseSampler = whrilySampler;
             pass.Parameters.waveStrength = 0.5f;
-            pass.Parameters.ColorSpectrumTexture = PaletteAssets.FromPaletteFile(PaletteAssets.ABYSSWATER).Value.ColorAtlas;
+            pass.Parameters.ColorSpectrumTexture = PaletteAssets.FromPaletteFile(PaletteAssets.ABYSSWATERFALL).Value.ColorAtlas;
             pass.Apply();
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
 
 
-            using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { effect = pass.Shader, blendState = BlendState.AlphaBlend, samplerState = SamplerState.PointWrap }))
+            using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with
+            {
+                effect = pass.Shader,
+                blendState = CustomBlendStates.Max,
+                samplerState = SamplerState.AnisotropicWrap,
+            }))
             {
                 //int i = 0;
                 Color color = Color.Lerp(Color.White, Color.Cyan, 0.75f);
                 color = Color.Lerp(color, Color.Blue, 0.5f);
-                foreach(Rectangle rect in AbyssWaterfallPoints)
+                foreach (Rectangle rect in AbyssWaterfallPoints)
                 {
-                    
+
                     Rectangle screenREct = rect;
                     screenREct.X -= (int)Main.screenPosition.X;
                     screenREct.Y -= (int)Main.screenPosition.Y;
                     screenREct = screenREct.CenterPad(32);
                     drawer.dstRect = screenREct;
 
-               
+
                     drawer.drawOrigin = Vector2.Zero;
-                    drawer.color = color * 0.5f * ExtraMath.Osc(0.7f, 1f, speed: 0, offset: rect.X);
+                    drawer.color = color * 0.35f * ExtraMath.Osc(0.7f, 1f, speed: 0, offset: rect.X);
                     spriteBatch.Draw(drawer);
                 }
 
             }
 
         }
-
-
     }
 }

@@ -29,6 +29,13 @@ namespace Stellamod
             rect.Location += new Point(-padding / 2, -padding / 2);
             return rect;
         }
+        public static Rectangle CenterPad(this Rectangle rect, int paddingX, int paddingY)
+        {
+            rect.Width += paddingX;
+            rect.Height += paddingY;
+            rect.Location += new Point(-paddingX / 2, -paddingY / 2);
+            return rect;
+        }
         /// <summary>
         /// Linearly moves between points based on a distance traveled variable.
         /// </summary>

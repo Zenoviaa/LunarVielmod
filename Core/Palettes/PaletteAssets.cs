@@ -10,6 +10,7 @@ public class PaletteAssets : ModSystem
 {
     private readonly static Dictionary<string, Asset<Palette>> _paletteAssetLookup = new();
     public const string ABYSSWATER = "AbyssWater";
+    public const string ABYSSWATERFALL = "AbyssWaterfall";
     public const string ABYSS = "Abyss";
     public const string PERFECT = "Perfect";
     public const string AEGISLAV = "Aegislav";

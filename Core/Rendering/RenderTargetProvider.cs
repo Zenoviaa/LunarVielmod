@@ -48,6 +48,7 @@ public class RenderTargetProvider(Func<RenderTargetParameters> RenderTargetCreat
             return new Vector2(Width, Height);
         }
     }
+    public bool IsReady => GetTarget().isReady;
     public static implicit operator RenderTarget2D(RenderTargetProvider provider)
     {
         return provider.GetTarget();

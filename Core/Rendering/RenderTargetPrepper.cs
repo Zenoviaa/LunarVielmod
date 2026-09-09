@@ -11,6 +11,7 @@ public class RenderTargetPrepper :
         Parameters = parameters;
         target = null!;
         lastAccessedTime = DateTime.Now;
+        isReady = false;
     }
 
     public readonly RenderTargetParameters Parameters;
@@ -18,6 +19,7 @@ public class RenderTargetPrepper :
     public DateTime lastAccessedTime;
     public bool wasInitialized;
     public bool wasDisposed;
+    public bool isReady;
     private void TryInitializePooledRenderTarget()
     {
         if (wasInitialized)
@@ -32,6 +34,7 @@ public class RenderTargetPrepper :
                 Parameters.SurfaceFormat,
                 Parameters.DepthFormat, 0,
                 Parameters.Usage);
+            isReady = true;
         });
 
         wasInitialized = true;
@@ -80,6 +83,12 @@ public class RenderTargetPrepper :
             return RenderTargetRequestManager.UselessTarget;
         }
 
+        /*
+        if (!pooledRenderTarget.isReady)
+        {
+            return RenderTargetRequestManager.UselessTarget;
+
+        }*/
         return pooledRenderTarget.target;
     }
 

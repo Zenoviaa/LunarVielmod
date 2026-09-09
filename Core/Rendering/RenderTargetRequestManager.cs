@@ -16,6 +16,9 @@ public class RenderTargetRequestManager : ModSystem
         Main.QueueMainThreadAction(() =>
         {
             UselessTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, 1, 1);
+            Main.graphics.GraphicsDevice.SetRenderTarget(UselessTarget);
+            Main.graphics.GraphicsDevice.Clear(Color.Transparent);
+            Main.graphics.GraphicsDevice.SetRenderTarget(null);
         });
     }
 

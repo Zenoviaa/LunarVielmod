@@ -21,16 +21,14 @@ file static class AbyssalDirtUtilities
 {
     public static void DrawOutline(int i, int j, int type, SpriteBatch spriteBatch)
     {
+  
         Vector2 pos = (new Vector2(i, j) + VeilGen.TileAdj) * 16;
         //   pos += new Vector2(Main.offScreenRange);
 
-        Tile tile = Framing.GetTileSafely(i, j);
-
+        Tile tile = Main.tile[i, j];
         Rectangle frame = new Rectangle(tile.TileFrameX + 234, tile.TileFrameY, 16, 16);
-        Color glowColor = Color.Lerp(Color.LightGray, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 1)) * BellFlowerSystem.WhisperingAlpha;
-        glowColor *= ExtraMath.Osc(0.6f, 1f);
-        glowColor.A = 0;
-        spriteBatch.Draw(TextureAssets.Tile[type].Value, pos - Main.screenPosition, frame, glowColor, 0, Vector2.Zero, 1, 0, 1);
+
+        spriteBatch.Draw(TextureAssets.Tile[type].Value, pos - Main.screenPosition, frame, AbyssEffectsRenderer.TileGlowColor, 0, Vector2.Zero, 1, 0, 1);
     }
 }
 public class AbyssalCoarseDirt : ModTile
@@ -76,10 +74,6 @@ public class AbyssalCoarseDirt : ModTile
     public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
     {
         base.PostDraw(i, j, spriteBatch);
-        if (BellFlowerSystem.WhisperingAlpha > 0)
-        {
-            AbyssalDirtUtilities.DrawOutline(i, j, Type, spriteBatch);
-        }
     }
     public override void RandomUpdate(int i, int j)
     {
@@ -97,7 +91,8 @@ public class AbyssalCoarseDirt : ModTile
 
         if (!Main.rand.NextBool(32))
             return;
-
+        if (!MultiplayerHelper.IsHost)
+            return;
 
         //Tile tileAbove = Framing.GetTileSafely(i, j - 1);
         if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
@@ -234,10 +229,7 @@ public class AbyssalDirt : ModTile
     public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
     {
         base.PostDraw(i, j, spriteBatch);
-        if (BellFlowerSystem.WhisperingAlpha > 0)
-        {
-            AbyssalDirtUtilities.DrawOutline(i, j, Type, spriteBatch);
-        }
+
     }
     public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
     {

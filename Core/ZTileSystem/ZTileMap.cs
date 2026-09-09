@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Terraria;
@@ -258,6 +259,7 @@ public class ZTileMap : ModSystem
     }
     public void RenderLayer(SpriteBatch spriteBatch, in List<ZTileData> drawingData)
     {
+      //  var watch = Stopwatch.StartNew();
         ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
         foreach (var zTile in drawingData)
         {
@@ -304,6 +306,8 @@ public class ZTileMap : ModSystem
             }
             tile.Draw(spriteBatch, Main.screenPosition, drawParams);
         }
+    //    watch.Stop();
+     //   Main.NewText($"{watch.ElapsedTicks} ticks");
     }
    
 

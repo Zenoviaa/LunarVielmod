@@ -130,6 +130,7 @@ public class BarrierFogGlobalTile : GlobalTile
 [Autoload(Side = ModSide.Client)]
 public class BarrierFog : ModSystem
 {
+    private bool _rendered;
     private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void Load()
     {
@@ -156,13 +157,19 @@ public class BarrierFog : ModSystem
         if (Main.gameMenu)
             return;
 
+
         if (WhiteFogPoints.Count > 0 || RedFogPoints.Count > 0)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-            spriteBatch.Draw(_maskRT, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
-            spriteBatch.End();
+            if (_maskRT.IsReady)
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+                spriteBatch.Draw(_maskRT, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
+                spriteBatch.End();
+            }
+
         }
+
     }
 
     private void RenderBarrierFog(On_Main.orig_CheckMonoliths orig)
