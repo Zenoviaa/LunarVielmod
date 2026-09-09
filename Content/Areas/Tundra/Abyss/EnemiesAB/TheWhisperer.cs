@@ -57,6 +57,7 @@ public class WhisperingDeath : ModBuff
 public class TheWhisperer : ModNPC,
     IDrawToRenderTarget
 {
+    private float _spawnTimer;
     private float _alpha;
     private enum AIState
     {
@@ -150,6 +151,50 @@ public class TheWhisperer : ModNPC,
                 Main.musicFade[j] = 1f - ratio;
             }
         }
+        if (_spawnTimer < 60)
+        {
+            _spawnTimer++;
+            if(_spawnTimer == 1)
+            {
+                for (int i = 0; i < 32; i++)
+                {
+                    Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(80, 80);
+                    Vector2 vel = pos - NPC.Center;
+                    vel = vel.SafeNormalize(Vector2.Zero);
+                    vel *= Main.rand.NextFloat(8f, 16f);
+                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    {
+                        position = pos,
+                        velocity = vel,
+                        innerColor = Color.White.ToVector4(),
+                        outerColor = Color.Blue.ToVector4(),
+                        scale = new Vector2(Main.rand.NextFloat(0.8f, 1.5f)),
+                        timeLeft = Main.rand.Next(60, 120),
+                    });
+                }
+
+                for (int i = 0; i < 32; i++)
+                {
+                    TinyWhiteMothEffect();
+                }
+            }
+
+            if(_spawnTimer % 4 == 0)
+            {
+                TinyWhiteMothEffect();
+            }
+
+            if(_spawnTimer % 10 == 0)
+            {
+                Particles.InDonutDust.Spawn(new()
+                {
+                    position = NPC.Center,
+                    timeLeft = 24
+                });
+            }
+
+            ShakeScreenPosition.Shake = 4;
+        }
 
         if(BellFlowerSystem.AllBellFlowersRung())
         {
@@ -233,6 +278,19 @@ public class TheWhisperer : ModNPC,
         Lighting.AddLight(NPC.Center, new Vector3(0.3f));
     }
 
+    private void TinyWhiteMothEffect()
+    {
+        Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(80, 80);
+        Vector2 vel = pos - NPC.Center;
+        vel = vel.SafeNormalize(Vector2.Zero);
+        vel *= Main.rand.NextFloat(8f, 16f);
+        Particles.TinyWhiteMothDust.Spawn(new()
+        {
+            position = pos,
+            velocity = vel,
+            timeLeft = Main.rand.Next(60, 120),
+        });
+    }
     private void AI_Death()
     {
         Timer++;

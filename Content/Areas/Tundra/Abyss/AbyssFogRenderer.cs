@@ -43,7 +43,6 @@ public class AbyssEffectsRenderer : ModSystem
         On_OverlayManager.Draw += DrawPostProcessingPasses;
     }
 
-
     private void ResetSpecialPoints(On_Main.orig_RenderWalls orig, Main self)
     {
 
@@ -165,6 +164,16 @@ public class AbyssEffectsRenderer : ModSystem
                 spriteBatch.Draw(noiseSprite, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), fogColor * alpha);
                 spriteBatch.Draw(noiseSprite, Vector2.Zero, new Rectangle(512, 512, Main.screenWidth, Main.screenHeight), fogColor * BellFlowerSystem.WhisperingDistanceAlpha * 0.4f);
 
+                spriteBatch.End();
+            }
+            if(BellFlowerSystem.WhisperingAlpha > 0)
+            {
+               
+                spriteBatch.Begin();
+                spriteBatch.Draw(
+                    AssetReferences.Assets.GlowMasks.WhiteSquare.Asset.Value, 
+                    new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2), 
+                    Color.Gray * 0.3f * BellFlowerSystem.WhisperingAlpha);
                 spriteBatch.End();
             }
         }

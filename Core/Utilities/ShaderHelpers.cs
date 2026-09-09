@@ -124,6 +124,8 @@ public class SuperShockwave : ScreenShader
     }
 }
 
+
+
 public class DarkSmear : ScreenShader
 {
     private EffectParameter _maskTextureParam;
