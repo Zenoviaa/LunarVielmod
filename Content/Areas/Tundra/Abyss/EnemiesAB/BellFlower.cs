@@ -516,7 +516,7 @@ public class BellFlower : ModNPC
                             continue;
                         int x = (int)NPC.Center.X;
                         int y = (int)NPC.Center.Y;
-                        NPC.NewNPC(NPC.GetSource_FromAI(), x, y, ModContent.NPCType<AbyssLittleMoth>(), ai0: (i + 1) * -24 + -48, ai2: i + 1);
+                        NPC.NewNPC(NPC.GetSource_FromAI(), x, y, ModContent.NPCType<AbyssLittleMoth>(), ai0: (i + 1) * -24 + -95, ai2: i + 1);
 
                     }
                 }

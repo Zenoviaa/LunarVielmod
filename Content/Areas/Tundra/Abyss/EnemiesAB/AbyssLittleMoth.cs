@@ -123,12 +123,12 @@ public class AbyssLittleMoth : ModNPC,
             }
             else
             {
-                _alpha = MathHelper.Lerp(1f, 0f, Timer / 100f);
+                _alpha = MathHelper.Lerp(1f, 0f, Timer / 300f);
                 int index = (int)(Style - 1);
                 Vector2 target = BellFlowerSystem.BellFlowers[index].spawnPosition;
                 Vector2 movementVelocity = (target - NPC.Center).SafeNormalize(Vector2.Zero);
                 movementVelocity *= 16;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, movementVelocity, 0.03f);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, movementVelocity, 0.003f);
                 FaceMovement();
                 if(Timer % 8 == 0)
                 {
@@ -138,7 +138,7 @@ public class AbyssLittleMoth : ModNPC,
                     sp.fast = true;
                     sp.outerColor = Color.Blue;
                 }
-                if (Timer >= 100)
+                if (Timer >= 300)
                 {
                     NPC.active = false;
                 }
