@@ -56,7 +56,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     
     float4 mixedColor = finalColor * 0.5 + newColor * 0.5;
 
-    return mixedColor * 0.8;
+    return mixedColor * 0.5;
 }
 
 technique Technique1
