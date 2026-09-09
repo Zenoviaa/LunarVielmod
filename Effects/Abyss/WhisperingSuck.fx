@@ -17,7 +17,7 @@ float4 PixelShaderFunction(float2 uv : TEXCOORD0, float4 sampleColor : COLOR0) :
     float4 color = tex2D(spriteSampler, coords);
     color += QuadraticBump(coords.y) * bloomColor * color;
     color *= QuadraticBump(uv.x);
-    return color * sampleColor;
+    return color * sampleColor * 1.5;
 }
 
 technique Technique1

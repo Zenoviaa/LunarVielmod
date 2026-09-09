@@ -50,8 +50,21 @@ public class WhisperingDeath : ModBuff
     {
         base.Update(player, ref buffIndex);
         //Ignores life regen stat
-        player.statLife -= 2;
-        player.lifeRegen = -5;
+
+        Vector2 pos = player.Center;
+        foreach(var npc in Main.ActiveNPCs)
+        {
+            if(npc.type == ModContent.NPCType<TheWhisperer>())
+            {
+                pos = npc.Center;
+                break;
+            }
+        }
+
+        float dq = Vector2.DistanceSquared(player.Center, pos);
+        float ratio = dq / (500 * 500);
+        ratio = EasingFunction.OutExpo(ratio);
+        player.lifeRegen -= (int)(MathHelper.Lerp(80, 0, ratio));
         if (Main.rand.NextBool(3))
         {
             SmokeParticle sp = Particle<SmokeParticle>.Spawn(player.position + new Vector2(Main.rand.Next(0, player.width), Main.rand.Next(0, player.height)), -Vector2.UnitY, Color.Blue, Main.rand.NextFloat(0.9f, 1.5f));
@@ -267,14 +280,14 @@ public class TheWhisperer : ModNPC,
 
 
             float distanceToPlayerSquared = Vector2.DistanceSquared(NPC.Center, player.Center);
-            if(distanceToPlayerSquared < Suck_Distance_Squared)
+            if(distanceToPlayerSquared < 384 * 384)
             {
                 player.AddBuff(ModContent.BuffType<WhisperingDeath>(), 2);
                 Vector2 pos = player.Center;
                 pos += Main.rand.NextVector2Circular(32, 32);
                 Vector2 vel = NPC.Center - pos;
                 vel = vel.SafeNormalize(Vector2.Zero);
-                vel *= Main.rand.NextFloat(6f, 12f);
+                vel *= Main.rand.NextFloat(6f, 52);
                 if (Main.rand.NextBool(3))
                 {
                     FXUtil.GlowStretch(pos, vel);
@@ -660,7 +673,7 @@ public class TheWhisperer : ModNPC,
 
     private void DrawHair2(GraphicsDevice graphicsDevices)
     {
-        HairRenderer.additive = true;
+        HairRenderer.additive = false;
         HairShader shader = ShaderContent.GetInstance<HairShader>();
         shader.LaserTexture = AssetReferences.Assets.LaserTextures.SpectralHair.Asset;
         shader.Time = Main.GlobalTimeWrappedHourly * 0.2f + 8f; 
@@ -690,7 +703,7 @@ public class TheWhisperer : ModNPC,
             foreach (var player in Main.ActivePlayers)
             {
                 WhisperingPlayer whisperingPlayer = player.GetModPlayer<WhisperingPlayer>();
-                if (whisperingPlayer.suckingAlpha < 0.05f)
+                if (whisperingPlayer.suckingAlpha < 0.005f)
                     continue;
 
                 SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.LaserTextures.SpectralSoulSuck.Asset.Value, player.Center);
@@ -698,7 +711,7 @@ public class TheWhisperer : ModNPC,
                 drawer.rotation = (NPC.Center - player.Center).ToRotation();
                 float dist = Vector2.Distance(NPC.Center, player.Center) / (float)AssetReferences.Assets.LaserTextures.SpectralSoulSuck.Asset.Value.Width;
                 drawer.scale = Vector2.One * new Vector2(dist, 0.4f);
-                drawer.color = Color.White * whisperingPlayer.suckingAlpha * 4;
+                drawer.color = Color.White * whisperingPlayer.suckingAlpha;
                 spriteBatch.Draw(drawer);
             }
         }

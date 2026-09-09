@@ -126,6 +126,13 @@ public class PixelTarget
         spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         spriteBatch.End();
     }
+    public void DrawToScreenNoRestart()
+    {
+        if (_renderCount <= 0)
+            return;
+
+        Main.spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+    }
 
 }
 
@@ -274,7 +281,7 @@ public class PixelationManager : ModSystem
         orig(self);
         if (!Main.gameMenu)
         {
-            _waterTarget.DrawToScreen();
+            _waterTarget.DrawToScreenNoRestart();
         }
     }
 
