@@ -158,6 +158,7 @@ public class TheWhisperer : ModNPC,
         NPC.ShowNameOnHover = false;
     }
 
+
     public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
     {
         return false;

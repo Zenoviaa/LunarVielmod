@@ -77,15 +77,27 @@ public class GenerationPrefab : IDisposable
             }
         }
     }
+    private void PasteEraseInner(in int originX, in int originY, Action<int, int, Color> manipulator)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                int tileX = originX + x;
+                int tileY = originY + y;
+                manipulator(tileX, tileY, Sample(x, y));
+            }
+        }
+    }
     public void PasteErase(int originX, int originY, Point pixelOrigin)
     {
         originX -= pixelOrigin.X;
         originY -= pixelOrigin.Y;
         PasteEraseInner(originX, originY);
     }
-    public void PasteErase(Point origin, PrefabPlacementType placementType)
+    public void PasteErase(Point origin, PrefabPlacementType placementType, Action<int, int, Color> manipulator = null)
     {
-        PasteErase(origin.X, origin.Y, placementType);
+        PasteErase(origin.X, origin.Y, placementType, manipulator);
     }
     public Rectangle GetBounds(int originX, int originY, PrefabPlacementType placementType)
     {
@@ -120,7 +132,7 @@ public class GenerationPrefab : IDisposable
         rectangle.Height = (int)MathHelper.Min(rectangle.Height, maxHeight);
         return rectangle;
     }
-    public void PasteErase(int originX, int originY, PrefabPlacementType placementType)
+    public void PasteErase(int originX, int originY, PrefabPlacementType placementType, Action<int, int, Color> manipulator = null)
     {
         switch (placementType)
         {
@@ -139,7 +151,15 @@ public class GenerationPrefab : IDisposable
 
         }
 
-        PasteEraseInner(originX, originY);
+        if(manipulator != null)
+        {
+            PasteEraseInner(originX, originY, manipulator);
+        }
+        else
+        {
+            PasteEraseInner(originX, originY);
+        }
+
     }
 
 
