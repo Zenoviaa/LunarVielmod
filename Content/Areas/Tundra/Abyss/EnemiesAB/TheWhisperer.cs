@@ -96,6 +96,8 @@ public class TheWhisperer : ModNPC,
         Death
     }
 
+
+    private float _whisperingDirection;
     private Vector2 _shakePos;
     private Vector2 _circleBackStart;
     private Vector2 _circleBackCenter;
@@ -107,6 +109,7 @@ public class TheWhisperer : ModNPC,
         set => NPC.ai[1] = (float)value;
     }
 
+    private ref float SteamTimer => ref NPC.ai[2];
     private HairRenderer _hairRendererBackingField;
     private HairRenderer HairRenderer
     {
@@ -138,6 +141,7 @@ public class TheWhisperer : ModNPC,
         writer.WriteVector2(_circleBackStart);
         writer.WriteVector2(_circleBackCenter);
         writer.WriteVector2(_startVelocity);
+        writer.Write(_whisperingDirection);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -146,6 +150,7 @@ public class TheWhisperer : ModNPC,
         _circleBackStart = reader.ReadVector2();
         _circleBackCenter = reader.ReadVector2();
         _startVelocity = reader.ReadVector2();
+        _whisperingDirection = reader.ReadSingle();
     }
 
     public override void SetStaticDefaults()
@@ -327,7 +332,7 @@ public class TheWhisperer : ModNPC,
                 timeLeft = Main.rand.Next(60, 120),
             });
         }
-
+        
         switch (State)
         {
             case AIState.Chase:
@@ -349,7 +354,7 @@ public class TheWhisperer : ModNPC,
         HairRenderer.SimulateHair(NPC.Center + new Vector2(0, -36));
         HairRenderer2.SimulateHair(NPC.Center + new Vector2(0, 36));
         Lighting.AddLight(NPC.Center, new Vector3(0.3f));
-     //   AbyssEffectsRenderer.OverWater.Add(DrawWhisperer);
+     //  AbyssEffectsRenderer.OverWater.Add(DrawWhisperer);
     }
 
     private void TinyWhiteMothEffect()
@@ -368,18 +373,23 @@ public class TheWhisperer : ModNPC,
 
     private void AI_CircleBack()
     {
+
         Timer++;
         if(Timer == 1)
         {
             _circleBackStart = (NPC.Center - MyTarget.Center);
             _circleBackCenter = MyTarget.Center;
             _startVelocity = NPC.velocity;
+            if (MyTarget.Center.X < NPC.Center.X)
+                _whisperingDirection = -1;
+            else
+                _whisperingDirection = 1;
 
         }
 
         float circleTime = 180f;
         float ease = EasingFunction.Anticipation(Timer / circleTime);
-        Vector2 newOffset = _circleBackStart.RotatedBy(ease * MathHelper.Pi);
+        Vector2 newOffset = _circleBackStart.RotatedBy(ease * MathHelper.Pi * _whisperingDirection);
     
         Vector2 pos = _circleBackCenter + newOffset;
 
@@ -506,6 +516,13 @@ public class TheWhisperer : ModNPC,
 
     private void AI_Chase()
     {
+        SteamTimer++;
+        float disappearTime = MathHelper.Lerp(1800, 400, (float)BellFlowerSystem.RungBellFlowerCount / (float)BellFlowerSystem.MaxBellFlowers);;
+        if (SteamTimer >= disappearTime)
+        {
+            SwitchState(AIState.Despawn);
+            return;
+        }
         Timer++;
         float distanceSquaredToTarget = Vector2.DistanceSquared(NPC.Center, MyTarget.Center);
         if(distanceSquaredToTarget < 100 * 100)
@@ -521,10 +538,13 @@ public class TheWhisperer : ModNPC,
                 ref NPC.velocity,
                 speed: MoveSpeed * EasingFunction.InOutSine(Timer / 60f),
                 lerp: 0.05f * EasingFunction.InOutSine(Timer / 60f));
-            MovementUtilities.FaceMovementVelocity(NPC);
+            
+            NPC.spriteDirection = MyTarget.Center.X < NPC.Center.X ? -1 : 1;
         }
 
-        if(Timer >= 800)
+
+        float circleTime = MathHelper.Lerp(800, 300, (float)BellFlowerSystem.RungBellFlowerCount / (float)BellFlowerSystem.MaxBellFlowers); ;
+        if (Timer >= circleTime)
         {
             SwitchState(AIState.CircleBack);
         }
@@ -609,7 +629,9 @@ public class TheWhisperer : ModNPC,
         float a = (float)BellFlowerSystem.RungBellFlowerCount / (float)BellFlowerSystem.MaxBellFlowers;
         var pass = AssetReferences.Effects.Abyss.WhispererAura.CreateSpritePass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.5f;
-        pass.Parameters.alpha = a;
+
+     
+        pass.Parameters.alpha = MathHelper.Lerp(1f, 0f, a );
         pass.Apply();
 
         SpritebatchDrawer skullDrawer = SpritebatchDrawer.FromNPC(NPC);
@@ -642,6 +664,20 @@ public class TheWhisperer : ModNPC,
 
         using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { effect = pass.Shader }))
         {
+            for(float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
+            {
+                void Draw(in SpritebatchDrawer drawer)
+                {
+                    var d = drawer;
+                    d.color *= 0.4f * (1f -EasingFunction.OutExpo(a+0.2f));
+                    d.worldPosition += (f+Main.GlobalTimeWrappedHourly).ToRotationVector2() * 6;
+                    spriteBatch.Draw(d);
+                }
+                Draw(skullDrawer);
+                Draw(headDrawer);
+                Draw(eyeDrawer);
+                Draw(lanternDrawer);
+            }
             spriteBatch.Draw(skullDrawer);
             spriteBatch.Draw(headDrawer);
             spriteBatch.Draw(eyeDrawer);
