@@ -331,6 +331,8 @@ public class PixelationManager : ModSystem
 
         _behindTilesPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
         _behindTilesOutlinePixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
+
+        _waterTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
     }
     public override void Unload()
     {
@@ -345,6 +347,7 @@ public class PixelationManager : ModSystem
         _overPlayersPixelTarget = null;
         _behindTilesPixelTarget = null;
         _behindTilesOutlinePixelTarget = null;
+        _waterTarget = null;
     }
 
     private void RenderBehindTiles2(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
