@@ -503,8 +503,24 @@ public class BellFlower : ModNPC
                 {
                     position = bellPos,
                     velocity = mothVelocity,
-                    timeLeft = 120,
+                    timeLeft = 90,
                 });
+            }
+            if (MultiplayerHelper.IsHost)
+            {
+                if(BellFlowerSystem.RungBellFlowerCount == 1)
+                {
+                    for (int i = 0; i < BellFlowerSystem.MaxBellFlowers; i++)
+                    {
+                        if (i == Index)
+                            continue;
+                        int x = (int)NPC.Center.X;
+                        int y = (int)NPC.Center.Y;
+                        NPC.NewNPC(NPC.GetSource_FromAI(), x, y, ModContent.NPCType<AbyssLittleMoth>(), ai0: (i + 1) * -24 + -48, ai2: i + 1);
+
+                    }
+                }
+
             }
         }
         if (Timer % 10 == 0)

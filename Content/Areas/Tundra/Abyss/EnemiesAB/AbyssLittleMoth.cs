@@ -28,6 +28,7 @@ public class AbyssLittleMoth : ModNPC,
     {
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
+        NPCSets.Heavy[Type] = true;
         this.AddToAbyssCritter();
         this.PreferLand();
     }
@@ -76,6 +77,7 @@ public class AbyssLittleMoth : ModNPC,
 
     public override void AI()
     {
+        NPCSets.Heavy[Type] = true;
         base.AI();
         if(Style == 0)
         {
@@ -101,15 +103,21 @@ public class AbyssLittleMoth : ModNPC,
         }
         else
         {
+            NPC.noTileCollide = true;
+            NPC.dontTakeDamage = true;
+            NPC.dontTakeDamageFromHostiles = true;
             Timer++;
             if(!_spawned && MultiplayerHelper.IsHost)
             {
-                NPC.velocity = Main.rand.NextVector2CircularEdge(64, 64);
+                Vector2 upwardVelocity = -Vector2.UnitY;
+                upwardVelocity = upwardVelocity.RotatedBy(MathHelper.Lerp(-1f, 1f, (Style - 1) / (float)BellFlowerSystem.MaxBellFlowers));
+                NPC.velocity = upwardVelocity * 8;
                 NPC.netUpdate = true;
                 _spawned = true;
             }
             if(Timer < 0)
             {
+                _alpha = 1f;
                 NPC.velocity *= 0.96f;
                 FaceMovement();
             }
@@ -165,6 +173,11 @@ public class AbyssLittleMoth : ModNPC,
         drawer.color = Color.White * Glow * 0.2f * _alpha;
         drawer.color.A = 0;
         drawer.scale *= 0.5f;
+        spriteBatch.Draw(drawer);
+
+        if (Style == 0)
+            return;
+        drawer.color *= 2;
         spriteBatch.Draw(drawer);
     }
 

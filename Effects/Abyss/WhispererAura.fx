@@ -6,6 +6,7 @@ float alpha;
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
     float4 finalColor = tex2D(spriteSampler, coords);
+    float4 originalColor = tex2D(spriteSampler, coords);
     for (float f = 0.0; f < 4.0; f++)
     {
         float2 offset = float2(cos(f * 6.28 + time), sin(f * 6.28 + time));
@@ -14,8 +15,9 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
         finalColor += spriteColor / 3.5;
     }
     
-    finalColor = lerp(finalColor, float4(1.0, 1.0, 1.0, 1.0), alpha * finalColor.a * 2.0);
-    return finalColor * sampleColor;
+    float4 glowyFinalColor = lerp(finalColor, float4(1.0, 1.0, 1.0, 1.0), alpha * originalColor.a * 2.0);
+    float4 myColor = lerp(glowyFinalColor, originalColor, alpha - 0.2);
+    return myColor * sampleColor;
 
 }
 

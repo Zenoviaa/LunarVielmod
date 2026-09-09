@@ -349,7 +349,7 @@ public class TheWhisperer : ModNPC,
         HairRenderer.SimulateHair(NPC.Center + new Vector2(0, -36));
         HairRenderer2.SimulateHair(NPC.Center + new Vector2(0, 36));
         Lighting.AddLight(NPC.Center, new Vector3(0.3f));
-        AbyssEffectsRenderer.OverWater.Add(DrawWhisperer);
+     //   AbyssEffectsRenderer.OverWater.Add(DrawWhisperer);
     }
 
     private void TinyWhiteMothEffect()
@@ -499,7 +499,7 @@ public class TheWhisperer : ModNPC,
         _alpha -= 0.05f;
         Timer++;
         NPC.velocity.X *= 0.98f;
-        NPC.velocity.Y -= 0.5f;
+        NPC.velocity.Y -= 0.05f;
         if (Timer >= 90)
             NPC.active = false;
     }
@@ -593,6 +593,10 @@ public class TheWhisperer : ModNPC,
         // return base.PreDraw(spriteBatch, screenPos, drawColor);
     }
     public void DrawWhisperer()
+    {
+        DrawWhisperer(Main.spriteBatch);
+    }
+    public void DrawWhisperer2(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         DrawWhisperer(Main.spriteBatch);
     }
@@ -723,6 +727,7 @@ public class TheWhisperer : ModNPC,
         PixelationManager.QueueSpritebatchDrawAction(DrawSuck, DrawLayer.OverWater);
         PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.OverWater);
         PixelationManager.QueuePrimitivesDrawAction(DrawHair2, DrawLayer.OverWater);
+        PixelationManager.QueueSpritebatchDrawAction(DrawWhisperer2, DrawLayer.OverWater);
         //PixelationManager.QueuePrimitivesDrawAction(DrawHair3, DrawLayer.OverNPCsAdditive);
     }
 
