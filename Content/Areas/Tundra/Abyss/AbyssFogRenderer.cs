@@ -147,7 +147,14 @@ public class AbyssEffectsRenderer : ModSystem
                 pass.Apply();
 
 
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, Main.Rasterizer, pass.Shader, Main.GameViewMatrix.TransformationMatrix);
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred, 
+                    BlendState.AlphaBlend, 
+                    SamplerState.PointWrap, 
+                    DepthStencilState.Default, 
+                    Main.Rasterizer, 
+                    pass.Shader, 
+                    Main.GameViewMatrix.TransformationMatrix);
 
 
                 Color fogColor = Color.Lerp(Color.White, Color.Blue, 0.7f);
@@ -156,9 +163,7 @@ public class AbyssEffectsRenderer : ModSystem
                 alpha += _thickFogAlpha * 0.3f;
 
                 spriteBatch.Draw(noiseSprite, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), fogColor * alpha);
-
-
-                spriteBatch.Draw(noiseSprite, Vector2.Zero, new Rectangle(512, 512, Main.screenWidth, Main.screenHeight), fogColor * _thickFogAlpha);
+                spriteBatch.Draw(noiseSprite, Vector2.Zero, new Rectangle(512, 512, Main.screenWidth, Main.screenHeight), fogColor * BellFlowerSystem.WhisperingDistanceAlpha * 0.4f);
 
                 spriteBatch.End();
             }

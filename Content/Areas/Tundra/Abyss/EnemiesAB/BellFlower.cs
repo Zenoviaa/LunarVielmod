@@ -94,6 +94,11 @@ public class PlacedBellFlower
 public class BellFlowerSystem : ModSystem
 {
     public static readonly List<PlacedBellFlower> BellFlowers = new();
+
+
+    /// <summary>
+    /// Number of bell flowers that have been rung during the event
+    /// </summary>
     public static int RungBellFlowerCount
     {
         get
@@ -109,12 +114,33 @@ public class BellFlowerSystem : ModSystem
     }
 
     /// <summary>
+    /// How close the local player is to the whisperer
+    /// </summary>
+    public static float WhisperingDistanceAlpha;
+
+    /// <summary>
     /// Slowly lerps to 1 when the whispering event is active
     /// </summary>
     public static float WhisperingAlpha { get; private set; }
+
+    /// <summary>
+    /// If the whispering event is currently active
+    /// </summary>
     public static bool Whispering { get; private set; }
+
+    /// <summary>
+    /// The number of bell flowers that need to be rung
+    /// </summary>
     public static int MaxBellFlowers => BellFlowers.Count;
+
+    /// <summary>
+    /// Whisperer's spawn cooldown when he despawns
+    /// </summary>
     public static int SpawnWhisperer;
+
+    /// <summary>
+    /// The 1 minute countdown until the whisperer spawns
+    /// </summary>
     public static int WhisperingCountdown;
 
     public static bool AllBellFlowersRung() =>

@@ -355,6 +355,10 @@ public partial class VeilGen
     }
 
 
+    /// <summary>
+    /// Removes tiles that have 1 or less neighbours, make sure to clamp the area rectangle before calling this function
+    /// </summary>
+    /// <param name="areaRectangle"></param>
     public static void PruneLonelyTiles(Rectangle areaRectangle)
     {
         for (int x = areaRectangle.Left; x < areaRectangle.Right; x++)

@@ -138,7 +138,7 @@ public class TheWhisperer : ModNPC,
             float dq = Vector2.DistanceSquared(NPC.Center, Main.LocalPlayer.Center);
             float ratio = MathHelper.Clamp(dq / (444 * 444), 0, 1f);
             ratio = 1f - ratio;
-
+            BellFlowerSystem.WhisperingDistanceAlpha = ratio;
             ScreenShaderSystem system = ModContent.GetInstance<ScreenShaderSystem>();
             system.VignetteScreen(5f * ratio, 1f, 60);
             system.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.003f), 0.02f * ratio, 60f);
@@ -425,6 +425,13 @@ public class TheWhisperer : ModNPC,
     {
         float range = 24;
         DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center + _shakePos, 0.7f, Color.Blue * 0.3f * _alpha);
+
+
+        var pass = AssetReferences.Effects.Abyss.WhispererAura.CreateSpritePass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.5f;
+        pass.Parameters.alpha = (float)BellFlowerSystem.RungBellFlowerCount / (float)BellFlowerSystem.MaxBellFlowers;
+        pass.Apply();
+
         SpritebatchDrawer skullDrawer = SpritebatchDrawer.FromNPC(NPC);
         skullDrawer.color = Color.White * _alpha * OscAlpha;
         skullDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 3);
@@ -437,25 +444,29 @@ public class TheWhisperer : ModNPC,
         if (NPC.spriteDirection == -1)
             lanternDrawer.Flip(ref lanternCenterOrigin.X);
         Vector2 lanternWorldPos = NPC.Center + lanternCenterOrigin - lanternDrawer.drawOrigin;
-      
-        spriteBatch.Draw(skullDrawer);
 
-        SpritebatchDrawer headDrawer = skullDrawer;
-        headDrawer.VerticalFrame(1, Main.npcFrameCount[Type]);
-        headDrawer.color *= OscAlpha;
-        headDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
-        spriteBatch.Draw(headDrawer);
+        using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with 
+            {  effect = pass.Shader }))
+        {
+            spriteBatch.Draw(skullDrawer);
 
-        SpritebatchDrawer eyeDrawer = skullDrawer;
-        eyeDrawer.VerticalFrame(3, Main.npcFrameCount[Type]);
-        Vector2 directionToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-        eyeDrawer.worldPosition += directionToTarget * 4f;
-        eyeDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
-        eyeDrawer.color = Color.White * ExtraMath.Osc(0.75f, 2f, speed: 2) * OscAlpha;
-        eyeDrawer.color.A = 0;
-        spriteBatch.Draw(eyeDrawer);
+            SpritebatchDrawer headDrawer = skullDrawer;
+            headDrawer.VerticalFrame(1, Main.npcFrameCount[Type]);
+            headDrawer.color *= OscAlpha;
+            headDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
+            spriteBatch.Draw(headDrawer);
 
-        spriteBatch.Draw(lanternDrawer);
+            SpritebatchDrawer eyeDrawer = skullDrawer;
+            eyeDrawer.VerticalFrame(3, Main.npcFrameCount[Type]);
+            Vector2 directionToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            eyeDrawer.worldPosition += directionToTarget * 4f;
+            eyeDrawer.worldPosition.Y += ExtraMath.Osc(-range, range, offset: 6);
+            eyeDrawer.color = Color.White * ExtraMath.Osc(0.75f, 2f, speed: 2) * OscAlpha;
+            eyeDrawer.color.A = 0;
+            spriteBatch.Draw(eyeDrawer);
+
+            spriteBatch.Draw(lanternDrawer);
+        }
 
 
         DrawUtilities.DrawBasicGlow(spriteBatch, lanternWorldPos + _shakePos, 0.3f, Color.Blue * 0.3f * _alpha);
