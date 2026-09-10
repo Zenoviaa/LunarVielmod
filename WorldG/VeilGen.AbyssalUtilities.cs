@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
+﻿using Stellamod.Content.Areas.Tundra.Abyss;
+using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Core.ZTileSystem;
 using System;
@@ -17,11 +18,35 @@ namespace Stellamod.WorldG;
 
 public partial class VeilGen
 {
+    public static Rectangle AbyssRectangle
+    {
+        get
+        {
+            int left = SavedGenerationParameters.SnowLeft;
+            int right = SavedGenerationParameters.SnowRight;
+            int top = SavedGenerationParameters.SnowTop;
+            int bottom = ModContent.GetInstance<StellaWorld>().DarkspaceStart;
+
+            Point AbyssCenter = new Point();
+            AbyssCenter.X = left + right;
+            AbyssCenter.X /= 2;
+            AbyssCenter.Y = (int)(SavedGenerationParameters.RockLayerHigh + Main.maxTilesY * 0.15);
+            AbyssCenter.Y -= 20;
+
+            int abyssHigh = AbyssCenter.Y - 500;
+            int abyssLow = bottom;
+
+            Rectangle rect = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
+            return rect;
+        }
+    }
+
     /// <summary>
     /// Generates the entire abyss biome
     /// </summary>
     public static void GenerateAbyss()
     {
+        AbyssEffectsRenderer.rebuildWaterfalls = true;
         int left = SavedGenerationParameters.SnowLeft;
         int right = SavedGenerationParameters.SnowRight;
         int top = SavedGenerationParameters.SnowTop;

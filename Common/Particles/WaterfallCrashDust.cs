@@ -1,6 +1,7 @@
 ﻿using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using System;
+using System.Diagnostics;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
@@ -44,6 +45,7 @@ public class WaterfallCrashDust : ParticleUpdater<WaterfallCrashDustData>
     protected override void UpdateParticles()
     {
         base.UpdateParticles();
+   
         for (int i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];
@@ -68,8 +70,7 @@ public class WaterfallCrashDust : ParticleUpdater<WaterfallCrashDustData>
         for (int i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];
-            float lerpValue = Utils.GetLerpValue(0, 240, particle.timeLeft, clamped: true);
-            float interpolant = EasingFunction.OutSine(lerpValue);
+            float interpolant = EasingFunction.OutSine((float)particle.timeLeft / 240f);
             drawer.color = Color.Lerp(Color.Transparent, Color.White, interpolant);
             drawer.scale = Vector2.One *particle.scale;
             drawer.rotation = particle.rotation;
