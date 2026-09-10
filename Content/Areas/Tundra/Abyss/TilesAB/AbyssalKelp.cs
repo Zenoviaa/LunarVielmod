@@ -93,12 +93,13 @@ public class AbyssalKelp : ModTile,
         Tile tile = Main.tile[i, j];
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Tile[Type],
             new Point(i, j).ToWorldCoordinates());
-        drawer.color = Color.DarkBlue;
+        drawer.color = Color.DarkBlue * 0.25f;
         drawer.rotation = GetLeafSway(i + j, 0.07f, 0.05f);
         drawer.VerticalFrame(tile.TileFrameY, 12);
         drawer.BottomCenterOrigin();
         drawer.worldPosition.Y += drawer.sourceRect.Value.Height;
         drawer.worldPosition.X -= 8;
+        drawer.worldPosition.Y += 8;
         sb.Draw(drawer);
       
     }

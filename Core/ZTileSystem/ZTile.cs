@@ -189,7 +189,7 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         ZTileDrawData drawData = new ZTileDrawData
         {
             spriteEffects = spriteEffects,
-            drawColor = drawColor,
+            drawColor = drawColor * 0.25f,
             drawOrigin = drawOrigin,
             drawPosition = drawPosition + drawOffset,
             frame = frame,

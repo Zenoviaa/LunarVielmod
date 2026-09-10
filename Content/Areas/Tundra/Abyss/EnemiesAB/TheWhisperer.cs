@@ -64,7 +64,7 @@ public class WhisperingDeath : ModBuff
         float dq = Vector2.DistanceSquared(player.Center, pos);
         float ratio = dq / (500 * 500);
         ratio = EasingFunction.OutExpo(ratio);
-        player.lifeRegen -= (int)(MathHelper.Lerp(80, 0, ratio));
+        player.lifeRegen -= (int)(MathHelper.Lerp(140, 0, ratio));
         if (Main.rand.NextBool(3))
         {
             SmokeParticle sp = Particle<SmokeParticle>.Spawn(player.position + new Vector2(Main.rand.Next(0, player.width), Main.rand.Next(0, player.height)), -Vector2.UnitY, Color.Blue, Main.rand.NextFloat(0.9f, 1.5f));
