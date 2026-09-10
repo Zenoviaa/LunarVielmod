@@ -7,6 +7,7 @@ using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Rendering;
 using Stellamod.Core.WallBackgroundSystem;
+using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,6 +31,7 @@ public class AbyssEffectsRenderer : ModSystem
     private float _timer;
     private FastRandom _fastRandom;
     private float _thickFogAlpha;
+    private Vector2 _abyssWaterFall;
     public static Color TileGlowColor;
     public static readonly List<Rectangle> AbyssWaterfallPoints = new();
     public static readonly List<Action> OverWater = new();
@@ -38,6 +40,7 @@ public class AbyssEffectsRenderer : ModSystem
     {
         base.Load();
         _fastRandom = new FastRandom(2);
+        On_Main.Ambience += WaterfallAmbience;
         On_Main.CheckMonoliths += RenderWaterfallTarget;
         On_Main.RenderTiles += ResetSpecialPoints;
         On_Main.RenderWalls += ResetSpecialPoints;
@@ -45,6 +48,34 @@ public class AbyssEffectsRenderer : ModSystem
         On_Main.DoDraw_WallsAndBlacks += RenderAroundWalls;
         On_Main.DrawInfernoRings += DrawOverWater;
         On_OverlayManager.Draw += DrawPostProcessingPasses;
+    }
+
+    private void WaterfallAmbience(On_Main.orig_Ambience orig)
+    {
+        if (Main.LocalPlayer.ZoneAbyss)
+        {
+            if(Main.GameUpdateCount % 15 == 0)
+            {
+                float lowestDistance = 9999999;
+                Vector2 worldPos = Vector2.Zero;
+                foreach (var rect in AbyssWaterfallPoints)
+                {
+                    float d = Vector2.DistanceSquared(rect.Bottom(), Main.LocalPlayer.Center);
+                    if (d < lowestDistance)
+                    {
+                        worldPos = rect.Bottom();
+                        lowestDistance = d;
+                    }
+                }
+                _abyssWaterFall = worldPos;
+            }
+
+            Main.ambientWaterfallX = _abyssWaterFall.X;
+            Main.ambientWaterfallY = _abyssWaterFall.Y;
+            Main.ambientWaterfallStrength = 600;
+        }
+
+        orig();
     }
 
     private void RenderWaterfallTarget(On_Main.orig_CheckMonoliths orig)
@@ -79,8 +110,7 @@ public class AbyssEffectsRenderer : ModSystem
         using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { 
             effect = pass.Shader, 
             blendState = CustomBlendStates.Max, 
-            samplerState = SamplerState.AnisotropicWrap,
-        matrix = Matrix.Identity }))
+            samplerState = SamplerState.AnisotropicWrap }))
         {
             //int i = 0;
             Color color = Color.Lerp(Color.White, Color.Cyan, 0.75f);
@@ -139,7 +169,7 @@ public class AbyssEffectsRenderer : ModSystem
         AbyssWaterfallPoints.Clear();
         if (Main.LocalPlayer.ZoneAbyss)
         {
-            (Point tl, Point bottomRight) = TileUtilities.CameraTileBounds(666);
+            (Point tl, Point bottomRight) = TileUtilities.CameraTileBounds(900);
             tl.Y += 1;
             for (int x = tl.X; x < bottomRight.X; x++)
             {
@@ -149,17 +179,25 @@ public class AbyssEffectsRenderer : ModSystem
                     Tile tileAbove = Main.tile[x, y - 1];
                     if (tile.LiquidAmount > 0 && !tileAbove.HasTile && tileAbove.LiquidAmount <= 0)
                     {
-                        ScanUpforWaterfall(x, y);
+                        int w = 8;
+                        int h = 8;
+                        Rectangle rect = new Rectangle(x - w / 2, y, w, h);
+                        rect = TileUtilities.Clamp(rect);
+                        float pct = VeilGen.CountLiquidsPercent(rect);
+                        if(pct > 0.35f)
+                        {
+                            ScanUpforWaterfall(x, y);
+                        }
                     }
                 }
             }
-
         }
 
         orig(self);
+
         if (BellFlowerSystem.WhisperingAlpha < 0.01f)
             return;
-
+  
         var pass = AssetReferences.Effects.Generic.Outliner.CreatePixelPass();
         pass.Parameters.texelSize = Main.instance.tileTarget.GetTexelSize() * 2;
         pass.Apply();
@@ -211,20 +249,28 @@ public class AbyssEffectsRenderer : ModSystem
             targetAlpha = 0;
         _thickFogAlpha = MathHelper.Lerp(_thickFogAlpha, targetAlpha, 0.05f);
         _timer++;
+        Rectangle screnRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+        screnRect = screnRect.CenterPad(128);
         foreach(Rectangle crashRect in AbyssWaterfallPoints)
         {
-            Vector2 crashPoint = crashRect.Bottom();
-            if(_timer % 8 == 0)
+            if(screnRect.Contains(crashRect) || screnRect.Intersects(crashRect))
             {
-                Vector2 crashParticlePoint = crashPoint;
-                crashParticlePoint.X += _fastRandom.Next(-128, 128);
-                Particles.WaterfallCrashDust.Spawn(WaterfallCrashDustData.Default with { 
-                    position = crashParticlePoint, 
-                    velocity = Main.rand.NextVector2Circular(8, 4),
-                    timeLeft = Main.rand.Next(40, 60),
-                    rotation = Main.rand.NextFloat(3.14f), 
-                    scale = Main.rand.NextFloat(1f, 1.5f) * 0.9f });
+                Vector2 crashPoint = crashRect.Bottom();
+                if (Main.rand.NextBool(16))
+                {
+                    Vector2 crashParticlePoint = crashPoint;
+                    crashParticlePoint.X += _fastRandom.Next(-128, 128);
+                    Particles.WaterfallCrashDust.Spawn(WaterfallCrashDustData.Default with
+                    {
+                        position = crashParticlePoint,
+                        velocity = Main.rand.NextVector2Circular(8, 4),
+                        timeLeft = Main.rand.Next(40, 60),
+                        rotation = Main.rand.NextFloat(3.14f),
+                        scale = Main.rand.NextFloat(1f, 1.5f) * 0.9f
+                    });
+                }
             }
+    
         }
     }
 
@@ -328,54 +374,15 @@ public class AbyssEffectsRenderer : ModSystem
    //     Main.NewText(AbyssWaterfallPoints.Count);
         if (AbyssWaterfallPoints.Count > 0)
         {
-            //Waterfall shading
-            var pass = AssetReferences.Effects.Abyss.Waterfall.CreatePixelPass();
-            pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.75f;
-
-            var noiseSampler = new HlslSampler();
-            noiseSampler.Sampler = SamplerState.LinearWrap;
-            noiseSampler.Texture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset.Value;
-            pass.Parameters.noiseSampler = noiseSampler;
-
-            var whrilySampler = new HlslSampler();
-            whrilySampler.Sampler = SamplerState.LinearWrap;
-            whrilySampler.Texture = AssetReferences.Assets.NoiseTextures.WaterCaustics.Asset.Value;
-
-            pass.Parameters.whirlyNoiseSampler = whrilySampler;
-            pass.Parameters.waveStrength = 0.5f;
-            pass.Parameters.ColorSpectrumTexture = PaletteAssets.FromPaletteFile(PaletteAssets.ABYSSWATERFALL).Value.ColorAtlas;
+            var pass = AssetReferences.Effects.Abyss.WaterfallOutline.CreatePixelPass();
+            pass.Parameters.texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
             pass.Apply();
-
             SpriteBatch spriteBatch = Main.spriteBatch;
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
-
-
-            using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with
-            {
-                effect = pass.Shader,
-                blendState = CustomBlendStates.Max,
-                samplerState = SamplerState.AnisotropicWrap,
-            }))
-            {
-                //int i = 0;
-                Color color = Color.Lerp(Color.White, Color.Cyan, 0.75f);
-                color = Color.Lerp(color, Color.Blue, 0.5f);
-                foreach (Rectangle rect in AbyssWaterfallPoints)
-                {
-
-                    Rectangle screenREct = rect;
-                    screenREct.X -= (int)Main.screenPosition.X;
-                    screenREct.Y -= (int)Main.screenPosition.Y;
-                    screenREct = screenREct.CenterPad(32);
-                    drawer.dstRect = screenREct;
-
-
-                    drawer.drawOrigin = Vector2.Zero;
-                    drawer.color = color * 0.35f * ExtraMath.Osc(0.7f, 1f, speed: 0, offset: rect.X);
-                    spriteBatch.Draw(drawer);
-                }
-
-            }
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, pass.Shader);
+            spriteBatch.Draw(WaterfallTarget, Vector2.Zero, Color.White);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
         }
     }

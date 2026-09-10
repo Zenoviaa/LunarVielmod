@@ -42,7 +42,9 @@ public partial class VeilGen
         int abyssLow = bottom;
 
         Rectangle rect = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
-        VeilGen.ClearWallsArea(rect);
+        Rectangle wallRect = rect.CenterPad(64);
+
+        VeilGen.ClearWallsArea(wallRect);
 
         //Fill the entire area with abyss dirt tiles
         for (int x = left; x < right; x++)
@@ -54,6 +56,7 @@ public partial class VeilGen
                 tile.TileFrameY = -1;
                 tile.HasTile = true;
                 tile.TileType = abyssTile;
+                tile.IsHalfBlock = false;
             }
         }
         //var genRand = WorldGen.genRand;
@@ -174,8 +177,8 @@ public partial class VeilGen
                 if (cavingSteps < down)
                 {
                     down = fastRandom.Next(-64, -12);
-                    strength = fastRandom.Next(22, 30);
-                    cavingSteps = fastRandom.Next(48, 96);
+                    strength = fastRandom.Next(35, 45);
+                    cavingSteps = fastRandom.Next(56, 100);
                 }
                 cavernPoint += velocity * 7;
                 failSafe++;
@@ -227,6 +230,7 @@ public partial class VeilGen
         Rectangle operationRectangle = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
         operationRectangle = operationRectangle.CenterPad(25);
 
+
         for (int n = 0; n < numCaves; n++)
         {
             caveConnectPoints.TryAdd(n, new List<Vector2>());
@@ -245,7 +249,16 @@ public partial class VeilGen
             if (dir == -1)
                 initialDirection *= -1;
 
-            bool success = CreateAbyssCavernCave(n, p, initialDirection, operationRectangle);
+            bool success = false;
+            if(n % 4 == 0)
+            {
+                success = CreateAbyssClearing(n, p, initialDirection, operationRectangle); 
+            }
+            else
+            {
+                success = CreateAbyssCavernCave(n, p, initialDirection, operationRectangle);
+            }
+          
             if (!success)
             {
                 n--;
@@ -405,8 +418,8 @@ public partial class VeilGen
 
         }
 
-
-        VeilGen.PruneLonelyTiles(rect);
+        for(int i = 0; i < 3; i++)
+            VeilGen.PruneLonelyTiles(rect);
         VeilGen.GenerateWaterBowls(rect, 512, new Point(5, 12), new Point(5, 12));
         VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));
         GenerateBellFlowers();
@@ -446,6 +459,8 @@ public partial class VeilGen
 
         //No need to settle liquids anymore, water just places in the correct spot
         VeilGen.SettleLiquids();
+        VeilGen.CreateHalfBlocksOnEdges(rect);
+        VeilGen.CreateHalfBlocksOnEdges(rect);
         VeilGen.DecorateSurfaceEdgesWithMultiTile(rect, denom: 8, groundTiles, multiTileFlowers);
         VeilGen.DecorateSurfaceEdgesWithZTile(new()
         {
@@ -485,11 +500,15 @@ public partial class VeilGen
         VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles,
              (ushort)ModContent.WallType<AbyssalGrassWallDark>(), 1);
         VeilGen.GrowKelpArea<AbyssalKelp>(rect, minHeight: 5, maxHeight: 9, denom: 7);
+
+        //Extra kelp around flowers
         foreach(Point p in placedFlowers)
         {
             Rectangle kelpRect = TileUtilities.CenterTileRectangle(p, 50, 50);
             VeilGen.GrowKelpArea<AbyssalKelp>(kelpRect, minHeight: 20, maxHeight: 35, denom: 4);
         }
+
+        //This code down here only runs if not in world gen
         if (WorldGen.SkipFramingBecauseOfGen)
             return;
         for (int x = left; x < right; x++)
@@ -502,6 +521,76 @@ public partial class VeilGen
         }
 
         TileUtilities.UpdateMap(rect, 255);
+    }
+
+    /// <summary>
+    /// Returns the number of tiles that have any liquid within a given area
+    /// </summary>
+    /// <param name="tileBounds"></param>
+    /// <returns></returns>
+    public static int CountLiquids(Rectangle tileBounds)
+    {
+        int count = 0;
+        for (int x = tileBounds.Left; x <= tileBounds.Right; x++)
+        {
+            for (int y = tileBounds.Top; y <= tileBounds.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (tile.LiquidAmount > 0)
+                    count++;
+            }
+        }
+        return count;
+    }
+
+
+    /// <summary>
+    /// Returns the percentage of tiles that are filled with any liquid in a given area
+    /// </summary>
+    /// <param name="tileBounds"></param>
+    /// <returns></returns>
+    public static float CountLiquidsPercent(Rectangle tileBounds)
+    {
+        int liquidCount = CountLiquids(tileBounds);
+        int maxLiquidCount = tileBounds.Width * tileBounds.Height;
+
+
+        float pct = (float)liquidCount / (float)maxLiquidCount;
+        return pct;
+    }
+
+    /// <summary>
+    /// Creates half blocks on the edges of water ponds within the given area
+    /// </summary>
+    /// <param name="tileBounds"></param>
+    public static void CreateHalfBlocksOnEdges(Rectangle tileBounds)
+    {
+        for(int x = tileBounds.Left; x <= tileBounds.Right; x++)
+        {
+            for(int y = tileBounds.Top; y <= tileBounds.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                Tile tileRight = Main.tile[x + 1, y];
+                Tile tileAbove = Main.tile[x, y - 1];
+                Tile tileLeft = Main.tile[x - 1, y];
+
+                //Right Half Block
+                if(tile.HasTile &&
+                    tileLeft.LiquidAmount > 0 &&
+                    !tileAbove.HasTile)
+                {
+                    tile.IsHalfBlock = true;
+                }
+
+                //Left Half block
+                if(tile.HasTile &&
+                    tileRight.LiquidAmount > 0 &&
+                    !tileAbove.HasTile)
+                {
+                    tile.IsHalfBlock = true;
+                }
+            }
+        }
     }
 
     public static void CreateBellFlowerClearing(Vector2 pointToPlaceOn)
@@ -819,7 +908,8 @@ public partial class VeilGen
             for (int y = top; y < bottom; y++)
             {
                 Tile tile = Main.tile[x, y];
-                tile.WallType = 0;
+                tile.WallType = WallID.None;
+            
             }
         }
     }

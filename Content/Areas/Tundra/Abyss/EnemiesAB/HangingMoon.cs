@@ -349,7 +349,7 @@ public class HangingMoon : ModNPC
             _floorPoint = MovementUtilities.FindFloor(_rootPoint);
 
             NPC.Center = _rootPoint;
-            _numSegments = 29;
+            _numSegments = Vector2.Distance(_floorPoint, _rootPoint) / 14f;
         }
         if(_alpha < 1f)
             _alpha += 0.05f;

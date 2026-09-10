@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Pixelation;
+﻿using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using System;
 using Terraria;
 
@@ -58,23 +59,34 @@ public class WaterfallCrashDust : ParticleUpdater<WaterfallCrashDustData>
         particle.frame = Main.rand.Next(3);
     }
 
-    public override void Draw(SpriteBatch spriteBatch, ref WaterfallCrashDustData particle)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        float lerpValue = Utils.GetLerpValue(0, 240, particle.timeLeft, clamped: true);
-        float interpolant = EasingFunction.OutSine(lerpValue);
-
-        (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frame);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+        (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture,Vector2.Zero);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
-        drawer.color = Color.Lerp(Color.Transparent, Color.White, interpolant);
-        drawer.scale *= particle.scale;
-        drawer.rotation = particle.rotation;
-        spriteBatch.Draw(drawer);
+        for (int i = 0; i < _length; i++)
+        {
+            ref var particle = ref _particles[i];
+            float lerpValue = Utils.GetLerpValue(0, 240, particle.timeLeft, clamped: true);
+            float interpolant = EasingFunction.OutSine(lerpValue);
+            drawer.color = Color.Lerp(Color.Transparent, Color.White, interpolant);
+            drawer.scale = Vector2.One *particle.scale;
+            drawer.rotation = particle.rotation;
+            drawer.worldPosition = particle.position;
+            drawer.VerticalFrame(particle.frame, 3);
+            spriteBatch.Draw(drawer);
+        }
     }
+
 
     public override int GetPoolSize()
     {
-        return 255;
+        return 500;
+    }
+
+    public override void Draw(SpriteBatch spriteBatch, ref WaterfallCrashDustData particle)
+    {
+        //throw new NotImplementedException();
     }
 }

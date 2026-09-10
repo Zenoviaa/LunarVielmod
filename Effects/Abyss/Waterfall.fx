@@ -48,13 +48,14 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     finalColor += sin(coords.y * -coords.y * 4.4 + sin(whirlyNoiseColor.y * 8.0) * 0.5) * 0.3;
     finalColor += osc * 0.4;
     finalColor += 0.14;
-    finalColor *= saturate(coords.y / 0.2);
+ //   finalColor *= saturate(coords.y / 0.2);
     
     float4 colorToMapTo = tex3D(ColorSpectrumTextureSampler, finalColor.rgb);
     float4 newColor = finalColor;
     newColor.rgb = colorToMapTo.rgb * finalColor.a;
     
     float4 mixedColor = finalColor * 0.5 + newColor * 0.5;
+
 
     return mixedColor * 0.5;
 }
