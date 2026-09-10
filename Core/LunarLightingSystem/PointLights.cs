@@ -1,9 +1,12 @@
 ﻿using Stellamod.Common.ArmorReforge;
+using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Core.Utilities;
+using System.Diagnostics;
 using System.Reflection;
 using Terraria;
 using Terraria.Graphics.Light;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem;
 
@@ -81,6 +84,7 @@ public class PointLights
     }
     public void GatherLights()
     {
+
         (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(384);
         LightingEngine lightingEngine = typeof(Lighting).GetField("_activeEngine", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as LightingEngine;
         TileLightScanner tileScanner = typeof(LightingEngine).GetField("_tileScanner", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as TileLightScanner;
@@ -101,28 +105,29 @@ public class PointLights
             light.diameter = GetPlayerLightRadius(player);
             UsedLightCount++;
         }
+
         for (int x = topLeft.X; x < bottomRight.X; x++)
         {
             for (int y = topLeft.Y; y < bottomRight.Y; y++)
             {
                 //Return out of all loops if we run out of lights
-                if (UsedLightCount >= Lights.Length)
-                    return;
+              
                 Point lightTilePoint = new Point(x, y);
                 Tile tile = Main.tile[lightTilePoint];
+                if (!Main.tileLighted[tile.TileType])
+                    continue;
                 if (!tile.HasTile)
                     continue;
                 if (Main.tileSolid[tile.TileType])
                     continue;
                 if (Main.tileSolidTop[tile.TileType])
                     continue;
-                if (!Main.tileLighted[tile.TileType])
-                    continue;
+    
 
                 Vector3 lightColor;
                 tileScanner.GetTileLight(x, y, out lightColor);
 
-
+        
                 //Only bright lights should cast shadows
                 float brightness = lightColor.X + lightColor.Y + lightColor.Z;
                 brightness /= 3f;
@@ -145,6 +150,8 @@ public class PointLights
                 light.position = position;
                 light.diameter = LunarLightingRenderer.POINT_LIGHT_DIAMETER;
                 UsedLightCount++;
+                if (UsedLightCount >= Lights.Length)
+                    return;
                 //    spriteBatch.Draw(heightTile, position - Main.screenPosition, drawColor);
             }
         }

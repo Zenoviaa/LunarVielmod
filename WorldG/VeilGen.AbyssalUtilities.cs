@@ -754,12 +754,16 @@ public partial class VeilGen
         int height = genRand.Next(minHeight, maxHeight);
         int endHeight = y - height;
         int startHeight = y;
+        ushort type = (ushort)ModContent.TileType<KelpTile>();
         for(int j = endHeight; j <= startHeight; j++)
         {
             Tile tile = Main.tile[x, j];
             if (tile.HasTile)
                 break;
-            WorldGen.PlaceTile(x, j, ModContent.TileType<KelpTile>());
+            tile.HasTile = true;
+            tile.TileFrameX = -1;
+            tile.TileFrameY = -1;
+            tile.TileType = type;
         }
     }
 

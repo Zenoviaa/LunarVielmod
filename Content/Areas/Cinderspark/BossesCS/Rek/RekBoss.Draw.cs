@@ -9,6 +9,7 @@ using Stellamod.Effects.RekFlames;
 using Stellamod.Effects.RoyalMagic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -24,6 +25,7 @@ public class RekSilhouetteSystem : ModSystem
     private RenderTargetProvider _waterMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public readonly List<SilhouetteDraw> SilhouettesToDraw = new();
     public readonly List<SilhouetteDraw> TileSilhouettesToDraw = new();
+    public readonly List<Point> KelpPoints = new();
     public static event Action OnPrepareSilhouettes;
     public override void Load()
     {
@@ -45,39 +47,51 @@ public class RekSilhouetteSystem : ModSystem
 
         if (SilhouettesToDraw.Count <= 0 && TileSilhouettesToDraw.Count <= 0)
             return;
-        TileSilhouettesToDraw.Clear();
         var kelp = ModContent.GetInstance<AbyssalKelp>();
-        (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(192);
-        for (int x = topLeft.X; x < bottomRight.X; x++)
+        if (Main.GameUpdateCount % 15 == 0)
         {
-            for (int y = topLeft.Y; y < bottomRight.Y; y++)
+            KelpPoints.Clear();     
+            (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(192);
+            ushort ty = (ushort)ModContent.TileType<AbyssalKelp>();
+            for (int x = topLeft.X; x < bottomRight.X; x++)
             {
-                Tile tile = Main.tile[x, y];
-                if (tile.HasTile && tile.TileType == ModContent.TileType<AbyssalKelp>())
+                for (int y = topLeft.Y; y < bottomRight.Y; y++)
                 {
-                    kelp.PrepareSilhouetteDrawing(x, y, this);
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType == ty && tile.HasTile)
+                    {
+                        KelpPoints.Add(new Point(x, y));
+                        // kelp.PrepareSilhouetteDrawing(x, y, this);
+                    }
                 }
             }
         }
+
         //We need the water target as a mask.
         //I really hope this isn't glitchy
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_waterMaskRT);
         graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
+            Main.GameViewMatrix.TransformationMatrix);
         spriteBatch.Draw(Main.waterTarget, Main.sceneWaterPos - Main.screenPosition, Color.White);
         spriteBatch.End();
 
-
         graphicsDevice.SetRenderTarget(_maskedTarget);
         graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, 
+            Main.GameViewMatrix.TransformationMatrix);
         foreach (var draw in SilhouettesToDraw)
             draw(spriteBatch);
+        
         foreach (var draw in TileSilhouettesToDraw)
             draw(spriteBatch);
-
+        
+        foreach(var point in KelpPoints)
+        {
+            kelp.DrawWaterSilhouette(point.X, point.Y, spriteBatch);
+        }
         spriteBatch.End();
     }
 

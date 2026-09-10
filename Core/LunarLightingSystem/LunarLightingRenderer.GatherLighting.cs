@@ -13,13 +13,14 @@ public partial class LunarLightingRenderer
     private int[] _pointLightIndices = new int[MAX_POINT_LIGHTS * 6];
     private void RenderToLightsRT()
     {
+
         if (Main.gameMenu)
             return;
         if (!IsLightingEnabled)
             return;
         if (!LightingHelper.CanRenderPostProcessingEffects)
             return;
-
+ 
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
         int resolution = 64;
         switch (config.ShadowQuality)
@@ -48,14 +49,15 @@ public partial class LunarLightingRenderer
         }
         _shadowMap.Clear();
 
-
         //Point lights do not need to be calculated every frame, we'll change this later
-        if(Main.GameUpdateCount % 1 == 0)
+        if (Main.GameUpdateCount % 2 == 0)
         {
-          //  Stopwatch w = Stopwatch.StartNew();
+            //  Stopwatch w = Stopwatch.StartNew();
 
             _pointLights.Clear();
             _pointLights.GatherLights();
+            // w.Stop();
+            //  Main.NewText($"{w.ElapsedTicks} t");
 
             FastParallel.For(0, _pointLights.UsedLightCount, delegate (int start, int end, object context)
             {
@@ -68,8 +70,6 @@ public partial class LunarLightingRenderer
                     _shadowMap.RayMarch(j, light.position, light.diameter);
                 }
             });
-           // w.Stop();
-          //  Main.NewText($"{w.ElapsedTicks} t");
 
             //Prepare the index buffer, we need to draw all the lights in the same batch
             int indexLength = _pointLights.UsedLightCount * 6;
@@ -109,6 +109,7 @@ public partial class LunarLightingRenderer
                 _pointLightBuffer[startIndex + 2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), lightColor, new Vector2(0, 1));
                 _pointLightBuffer[startIndex + 3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), lightColor, new Vector2(1, 1));
             }
+
             //Get the shadow map texture
             _shadowMap.Output();
 
@@ -172,6 +173,8 @@ public partial class LunarLightingRenderer
         graphicsDevice.RasterizerState = RasterizerState.CullNone;
         graphicsDevice.DrawUserIndexedPrimitives(
             PrimitiveType.TriangleList, _pointLightBuffer, 0, _pointLightBuffer.Length, _pointLightIndices, 0, primitiveCount);
+  
+    
     }
 }
 

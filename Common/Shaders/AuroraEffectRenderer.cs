@@ -6,6 +6,7 @@ using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
+using System.Diagnostics;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -36,11 +37,13 @@ public class AuroraEffectRenderer : ModSystem
             orig(self, spriteBatch, layer, beginSpriteBatch);
             return;
         }
+      
         RenderLayers targetLayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower ? RenderLayers.ForegroundWater : RenderLayers.Background;
         if (layer == RenderLayers.Background)
         {
             if (!Main.gameMenu && _activeTimer > 0)
             {
+
                 float opacity = _activeTimer / 120f;
             
                 var starsTexture = TextureRegistry.StarNoise2;
@@ -56,7 +59,7 @@ public class AuroraEffectRenderer : ModSystem
                 eff.Shader.Parameters["uImageOffset"].SetValue(parallax);
                 eff.UseOpacity(opacity);
                 eff.Apply();
-
+      
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
                 spriteBatch.Draw(starsTexture.Value,
@@ -87,9 +90,9 @@ public class AuroraEffectRenderer : ModSystem
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 
             }
-
+        
         }
-
+  
         orig(self, spriteBatch, layer, beginSpriteBatch);
     }
 
@@ -150,6 +153,7 @@ public class AuroraEffectRenderer : ModSystem
         }
 
         _activeTimer = Math.Clamp(_activeTimer, 0f, 60f);
+ 
     }
 
 

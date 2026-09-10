@@ -17,6 +17,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public readonly int MaxShadowCasters;
         public void Clear()
         {
+ 
             for(int i = 0; i < _shadowCoordinates.Length; i++)
             {
                 _shadowCoordinates[i] = new Vector2( 0, 10000);
