@@ -62,6 +62,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public Vector3 AmbientLight;
         public bool leviathanDarken;
 
+        public float sunShadowAlpha;
         public bool IsLightingEnabled => ModContent.GetInstance<LunarVeilClientConfig>().BeamingLights;
         public override void Load()
         {
@@ -274,6 +275,17 @@ namespace Stellamod.Core.LunarLightingSystem
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
             SmoothedBackLightColor = _backLightColor;
             SunColor = Color.Lerp(SunColor, GetSunColor(), 0.1f);
+
+            bool nosunShadows = Main.LocalPlayer.ZoneRockLayerHeight || Main.LocalPlayer.ZoneUnderworldHeight;
+            if (nosunShadows)
+            {
+                sunShadowAlpha = MathHelper.Lerp(sunShadowAlpha, 0f, 0.1f);
+            }
+            else
+            {
+                sunShadowAlpha = MathHelper.Lerp(sunShadowAlpha, 1f, 0.1f);
+
+            }
         }
 
         public void AddBackLight(IBackLightModifier backLightModifier)

@@ -75,6 +75,7 @@ struct HeightPixelShaderOutput
     float4 Light : SV_Target1;
 };
 
+float maxDepth;
 float time;
 float levels;
 float distortion;
@@ -198,16 +199,15 @@ HeightPixelShaderOutput HeightPS(VertexShaderOutput input)
     
     //Calculate how many tiles down we are
     //Step 1. Calculate the depth that we would be fading to
-    const float Max_Depth = 32.0;
     float heightGradient = color.a;
-    float depth = heightGradient * Max_Depth;
+    float depth = heightGradient * maxDepth;
     
     //Step 2. calculate depth of htis pixel
     float pixelDepth = depth - coords.y;
     
     //Step 3. Calculate our new alpha value
     //Make sure to invert it, low depth means it's at the surface and should be bright
-    float newAlpha = pixelDepth / Max_Depth;
+    float newAlpha = pixelDepth / maxDepth;
     
     
 
@@ -412,9 +412,11 @@ float4 CombinePalettePS(VertexShaderOutput input) : COLOR
     fancyWaterColor *= 1.0 - edgeMap;
     float4 colorToMapTo = tex3D(ColorSpectrumTextureSampler, fancyWaterColor.rgb);
     fancyWaterColor = colorToMapTo * fancyWaterColor.a;
-
+    float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);
     float4 finalColor = fancyWaterColor * baseWaterColor.a * (1.0 - lavaMult) + baseWaterColor * lavaMult;
-    return finalColor * input.Color;
+    float a = heightMapColor.r;
+    a *= a;
+    return finalColor * input.Color * a * 1.5;
 }
 
 

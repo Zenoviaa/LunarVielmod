@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.Text;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -198,7 +200,24 @@ public class ZTileMap : ModSystem
         {
             foreach(var tileData in tileDatas)
             {
-                zTileLoader.GetTile(tileData.instanceData.type).Update(tileData.position.x, tileData.position.y);
+                var zTile = zTileLoader.GetTile(tileData.instanceData.type);
+                zTile.Update(tileData.position.x, tileData.position.y);
+                if (zTile.waterSilhouette)
+                {
+                    ZTilePosition tilePosition = tileData.position;
+                    ZTileInstanceData t = tileData.instanceData;
+                    ZTileDrawParams drawParams = new ZTileDrawParams
+                    {
+                        tilePosition = tilePosition,
+                        tileData = t,
+                        lightColor = Color.DarkBlue
+                    };
+                    var silhouetteSystem = ModContent.GetInstance<RekSilhouetteSystem>();
+                    silhouetteSystem.SilhouettesToDraw.Add((SpriteBatch sb) =>
+                    {
+                        zTile.DrawSilhouette(sb, Main.screenPosition, drawParams);
+                    });
+                }
             }
         }
         Point chunk = GetCameraChunk();

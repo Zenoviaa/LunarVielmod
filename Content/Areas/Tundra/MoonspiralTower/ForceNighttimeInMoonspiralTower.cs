@@ -23,7 +23,7 @@ public class ForceNighttimeInMoonspiralTower : ModSystem
             return;
         }
 
-
-        Main.time = (double)MathHelper.Lerp((float)Main.time, (float)Main.nightLength * 0.5f, 0.1f);
+        if(fastForward)
+            Main.time = (double)MathHelper.Lerp((float)Main.time, (float)Main.nightLength * 0.5f, 0.1f);
     }
 }

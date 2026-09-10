@@ -26,6 +26,6 @@ public class AbyssPixelWaterStyle : PixelWaterStyle
         pixelWater.ignoreSkyColor = true;
         pixelWater.noLighting = true;
         pixelWater.reflectionAlpha = 0.5f;
-    
+        pixelWater.maxHeight = 12;
     }
 }

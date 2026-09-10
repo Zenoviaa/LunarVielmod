@@ -78,7 +78,7 @@ public partial class LunarLightingRenderer
 
         var shader = ShaderContent.GetInstance<SunLightShader>();
         shader.StepSize = stepSize;
-        shader.ShadowAlpha = LightingHelper.DayLightEase;
+        shader.ShadowAlpha = LightingHelper.DayLightEase * sunShadowAlpha;
 
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;

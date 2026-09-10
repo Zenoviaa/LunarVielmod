@@ -234,7 +234,7 @@ public class AbyssEffectsRenderer : ModSystem
             Vector2 topWorld = ceil.ToWorldCoordinates();
             Vector2 bottomWorld = bottom.ToWorldCoordinates();
             Rectangle rect = new Rectangle((int)topWorld.X, (int)topWorld.Y, 32, (int)(bottomWorld.Y - topWorld.Y));
-            
+            rect.Height -= 8;
             AbyssWaterfallPoints.Add(rect);
         }
     }

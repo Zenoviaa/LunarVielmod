@@ -1,6 +1,8 @@
-﻿using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
+﻿using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
+using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Core.ZTileSystem;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
@@ -9,6 +11,8 @@ file static class AbyssalZTileUtilties
 {
     public static void SetAbyssFlowerWindDefaults(ZTile zTile)
     {
+        zTile.waterSilhouette = true;
+
         //idk
         zTile.windSwayOffset = 0f;
 
@@ -96,6 +100,7 @@ public class AbyssalReed : ZTile
         base.SetStaticDefaults();
         frameCount = 3;
         drawOrigin = TileDrawOrigin.BottomUp;
+
         AbyssalZTileUtilties.SetAbyssFlowerWindDefaults(this);
     }
 
@@ -104,6 +109,7 @@ public class AbyssalReed : ZTile
         base.Update(i, j);
         AbyssalZTileUtilties.AddAbyssFlowerLighting(i, j - 4);
     }
+
 
     public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
     {

@@ -1,11 +1,13 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering;
 using Stellamod.Effects.GothinFlames;
 using Stellamod.Effects.RekFlames;
 using Stellamod.Effects.RoyalMagic;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -21,21 +23,40 @@ public class RekSilhouetteSystem : ModSystem
     private RenderTargetProvider _maskedTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private RenderTargetProvider _waterMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public readonly List<SilhouetteDraw> SilhouettesToDraw = new();
+    public readonly List<SilhouetteDraw> TileSilhouettesToDraw = new();
     public override void Load()
     {
         base.Load();
         On_Main.CheckMonoliths += RenderWaterMask;
+        On_Main.RenderTiles += RenderTileSilhouetteMask;
         On_Main.DrawInfernoRings += RenderSilhouettes;
     }
 
+    private void RenderTileSilhouetteMask(On_Main.orig_RenderTiles orig, Main self)
+    {
 
+        orig(self);
+    }
 
     private void RenderWaterMask(On_Main.orig_CheckMonoliths orig)
     {
         orig();
-        if (SilhouettesToDraw.Count <= 0)
+        if (SilhouettesToDraw.Count <= 0 && TileSilhouettesToDraw.Count <= 0)
             return;
-
+        TileSilhouettesToDraw.Clear();
+        var kelp = ModContent.GetInstance<AbyssalKelp>();
+        (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(192);
+        for (int x = topLeft.X; x < bottomRight.X; x++)
+        {
+            for (int y = topLeft.Y; y < bottomRight.Y; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (tile.HasTile && tile.TileType == ModContent.TileType<AbyssalKelp>())
+                {
+                    kelp.PrepareSilhouetteDrawing(x, y, this);
+                }
+            }
+        }
         //We need the water target as a mask.
         //I really hope this isn't glitchy
         SpriteBatch spriteBatch = Main.spriteBatch;
@@ -52,6 +73,9 @@ public class RekSilhouetteSystem : ModSystem
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
         foreach (var draw in SilhouettesToDraw)
             draw(spriteBatch);
+        foreach (var draw in TileSilhouettesToDraw)
+            draw(spriteBatch);
+
         spriteBatch.End();
     }
 
@@ -60,7 +84,7 @@ public class RekSilhouetteSystem : ModSystem
     {
         orig(self);
 
-        if (SilhouettesToDraw.Count <= 0)
+        if (SilhouettesToDraw.Count <= 0 && TileSilhouettesToDraw.Count <= 0)
             return;
 
 
@@ -103,6 +127,10 @@ public class SilhouetteGlobalProjectile : GlobalProjectile
             silhouette.PrepareSilhouetteDrawing(ModContent.GetInstance<RekSilhouetteSystem>());
         }
     }
+}
+public interface IWaterTileSilhouette
+{
+    void DrawWaterSilhouette(int i, int j, SpriteBatch spriteBatch);
 }
 
 /// <summary>

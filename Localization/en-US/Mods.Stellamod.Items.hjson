@@ -2475,8 +2475,8 @@ BlankRune: {
 }
 
 ConvulgingMater: {
-	DisplayName: Convulging Matter
-	Tooltip: A dark matter that has corrupted the fallen.
+	DisplayName: Convulging Blood
+	Tooltip: The blood from those deep within Illuria's Abyss
 }
 
 DarkEssence: {
@@ -12155,5 +12155,10 @@ AbyssalGrassWallItem: {
 
 AbyssWaterFallWallBlock: {
 	DisplayName: Abyss Water Fall Wall Block
+	Tooltip: ""
+}
+
+RagingIceTorch: {
+	DisplayName: Raging Ice Torch
 	Tooltip: ""
 }

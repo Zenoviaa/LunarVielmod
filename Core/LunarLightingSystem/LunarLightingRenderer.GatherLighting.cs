@@ -85,7 +85,6 @@ public partial class LunarLightingRenderer
                 connectIndex += 4;
             }
 
-
             for (int i = 0; i < _pointLights.UsedLightCount; i++)
             {
                 Light light = _pointLights[i];
@@ -127,7 +126,6 @@ public partial class LunarLightingRenderer
         {
             graphicsDevice.Clear(_backLightColor);
         }
-
 
         //Render Sun
         RenderSunLight();
