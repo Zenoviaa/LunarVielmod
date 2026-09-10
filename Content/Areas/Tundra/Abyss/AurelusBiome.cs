@@ -1,14 +1,14 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Core.Biomes;
 using Stellamod.WorldG;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss;
 
-public class AurelusBiome : ModBiome
+public class AurelusBiome : BaseUrdveilBiome
 {
-
     public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/AurelusTemple");
     public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
     public override string BestiaryIcon => base.BestiaryIcon;
@@ -22,6 +22,15 @@ public class AurelusBiome : ModBiome
             return BiomeTileCounts.InAurelus;
         return SavedGenerationParameters.AbyssTempleRectangle.Contains(player.position.ToTileCoordinates());
     }
-    public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneAurelus = true;
-    public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneAurelus = false;
+    public override void OnEnter(Player player)
+    {
+        base.OnEnter(player);
+        player.GetModPlayer<MyPlayer>().ZoneAurelus = true;
+    }
+
+    public override void OnLeave(Player player)
+    {
+        base.OnLeave(player);
+        player.GetModPlayer<MyPlayer>().ZoneAurelus = false;
+    }
 }

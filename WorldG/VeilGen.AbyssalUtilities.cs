@@ -555,11 +555,6 @@ public partial class VeilGen
             TileUtilities.UpdateMap(rect, 255);
         }
         VeilGen.PlaceAbysmTemple(AbyssCenter + new Point(0, 256));
-        //This code down here only runs if not in world gen
-
-
-
-
     }
 
     public static void PlaceAbysmTemple(Point abyssCenter)
