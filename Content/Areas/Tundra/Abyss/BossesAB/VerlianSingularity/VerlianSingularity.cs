@@ -4,6 +4,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Projectiles;
 using Stellamod.Content.Dusts;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Wings;
@@ -299,7 +300,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                     SwitchState(AIState.Despawn);
                 }
             }
-
+            CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f));
             _spinTimer++;
             if (_starField)
             {

@@ -38,7 +38,8 @@ public class AbyssBiome : BaseUrdveilBiome,
     public override Color? BackgroundColor => base.BackgroundColor;
     public override ModWaterStyle WaterStyle => ModContent.GetInstance<AcidWaterStyle>();
 
-    public override bool IsBiomeActive(Player player) => (player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight) && BiomeTileCounts.InAbyss;
+    public override bool IsBiomeActive(Player player) => 
+        (player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight) && BiomeTileCounts.InAbyss && !player.InModBiome<AurelusBiome>();
     public override void OnEnter(Player player)
     {
         base.OnEnter(player);

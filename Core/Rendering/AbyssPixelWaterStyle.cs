@@ -9,7 +9,7 @@ public class AbyssPixelWaterStyle : PixelWaterStyle
     public override bool IsActive(Player player)
     {
 
-        return player.ZoneAbyss;
+        return player.ZoneAbyss || player.GetModPlayer<MyPlayer>().ZoneAurelus;
     }
     public override void ModifyPixelWater(ref PixelWater pixelWater)
     {

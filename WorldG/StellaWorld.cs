@@ -86,6 +86,7 @@ public static class SavedGenerationParameters
     public static int SnowTop;
     public static int SnowBottom;
     public static double RockLayerHigh;
+    public static Rectangle AbyssTempleRectangle;
 }
 public partial class StellaWorld : ModSystem
 {
@@ -6991,6 +6992,7 @@ public partial class StellaWorld : ModSystem
         tag["SnowTop"] = SavedGenerationParameters.SnowTop;
         tag["SnowBottom"] = SavedGenerationParameters.SnowBottom;
         tag["RockLayerHigh"] = SavedGenerationParameters.RockLayerHigh;
+        tag["AbyssTemple"] = SavedGenerationParameters.AbyssTempleRectangle;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -7009,5 +7011,6 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.SnowTop = tag.Get<int>("SnowTop");
         SavedGenerationParameters.SnowBottom = tag.Get<int>("SnowBottom");
         SavedGenerationParameters.RockLayerHigh = tag.Get<double>("RockLayerHigh");
+        SavedGenerationParameters.AbyssTempleRectangle = tag.Get<Rectangle>("AbyssTemple");
     }
 }

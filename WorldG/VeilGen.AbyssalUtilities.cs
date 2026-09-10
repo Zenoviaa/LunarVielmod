@@ -1,7 +1,13 @@
-﻿using Stellamod.Content.Areas.Tundra.Abyss;
+﻿using Microsoft.CodeAnalysis;
+using Stellamod.Content.Areas.Tundra.Abyss;
 using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
+using Stellamod.Content.Areas.Tundra.Abyss.WeaponsAB;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.ZTileSystem;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Special.MinerLogs;
+using Stellamod.Items.Weapons.Ranged;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +18,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
+using static tModPorter.ProgressUpdate;
 
 
 namespace Stellamod.WorldG;
@@ -388,6 +395,9 @@ public partial class VeilGen
 
                 bool TooCloseToAnotherPlacedFlower(Point p)
                 {
+                    int dx = Math.Abs(p.X - AbyssCenter.X);
+                    if (dx < 120)
+                        return true;
                     foreach (Point placed in placedFlowers)
                     {
                         if (TileUtilities.TooCloseToTilePoint(p, placed, proximity: 200))
@@ -532,20 +542,139 @@ public partial class VeilGen
             Rectangle kelpRect = TileUtilities.CenterTileRectangle(p, 50, 50);
             VeilGen.GrowKelpArea<AbyssalKelp>(kelpRect, minHeight: 20, maxHeight: 35, denom: 4);
         }
-
-        //This code down here only runs if not in world gen
-        if (WorldGen.SkipFramingBecauseOfGen)
-            return;
-        for (int x = left; x < right; x++)
+        if (!WorldGen.SkipFramingBecauseOfGen)
         {
-            for (int y = abyssHigh; y < abyssLow; y++)
+            for (int x = left; x < right; x++)
             {
-                WorldGen.SquareTileFrame(x, y, resetFrame: true);
-                WorldGen.SquareWallFrame(x, y, resetFrame: true);
+                for (int y = abyssHigh; y < abyssLow; y++)
+                {
+                    WorldGen.SquareTileFrame(x, y, resetFrame: true);
+                    WorldGen.SquareWallFrame(x, y, resetFrame: true);
+                }
             }
+            TileUtilities.UpdateMap(rect, 255);
+        }
+        VeilGen.PlaceAbysmTemple(AbyssCenter + new Point(0, 256));
+        //This code down here only runs if not in world gen
+
+
+
+
+    }
+
+    public static void PlaceAbysmTemple(Point abyssCenter)
+    {
+        StructureMap structures = GenVars.structures;
+        Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Aurelus/AurelusTemple2");
+
+        bool placed = false;
+        int attempts = 0;
+        while (!placed && attempts++ < 1000000)
+        {
+            Point Loc = abyssCenter;
+            Loc.X -= rectangle.Width / 2;
+            Loc.Y += rectangle.Height / 2;
+            rectangle.Location = Loc;
+
+            Rectangle templeRectangle = rectangle;
+            templeRectangle.Y -= rectangle.Height;
+
+            VeilGen.KillZTilesInArea(templeRectangle);
+            SavedGenerationParameters.AbyssTempleRectangle = templeRectangle;
+            StructureLoader.ProtectStructure(Loc, "Struct/Aurelus/AurelusTemple2");
+            int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple2");
+         
+            foreach (int chestIndex in ChestIndexs)
+            {
+                var chest = Main.chest[chestIndex];
+                // etc
+
+                // itemsToAdd will hold type and stack data for each item we want to add to the chest
+                var itemsToAdd = new List<(int type, int stack)>();
+
+                // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+                // Using a switch statement and a random choice to add sets of items.
+                switch (Main.rand.Next(7))
+                {
+                    case 0:
+                        itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
+                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
+                        itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+                        itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+                        itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+                        break;
+                    case 1:
+                        itemsToAdd.Add((ModContent.ItemType<Venatici>(), Main.rand.Next(1, 1)));
+                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                        itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                        itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+
+                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
+                        itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+                        itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+                        break;
+                    case 2:
+                        itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                        itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
+                        itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+                        break;
+                    case 3:
+                        //     itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
+                        // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
+                        itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                        itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+                        itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
+                        itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+
+                        break;
+                    case 4:
+                        itemsToAdd.Add((ModContent.ItemType<HolmbergScythe>(), Main.rand.Next(1, 1)));
+                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                        itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                        itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+
+                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
+                        itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+                        break;
+
+                    case 5:
+                        itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
+                        itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
+                        itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+                        break;
+
+                    case 6:
+
+                        itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
+                        itemsToAdd.Add((ItemID.Shiverthorn, Main.rand.Next(2, 15)));
+                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
+                        itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
+                        break;
+                }
+
+                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                int chestItemIndex = 0;
+                foreach (var itemToAdd in itemsToAdd)
+                {
+                    Item item = new Item();
+                    item.SetDefaults(itemToAdd.type);
+                    item.stack = itemToAdd.stack;
+                    chest.item[chestItemIndex] = item;
+                    chestItemIndex++;
+                    if (chestItemIndex >= 40)
+                        break; // Make sure not to exceed the capacity of the chest
+                }
+            }
+            placed = true;
         }
 
-        TileUtilities.UpdateMap(rect, 255);
+
     }
 
     /// <summary>

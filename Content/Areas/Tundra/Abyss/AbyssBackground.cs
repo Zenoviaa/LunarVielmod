@@ -40,6 +40,6 @@ public class AbyssBackground : CustomBG
 
     public override bool IsActive()
     {
-        return Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAbyss;
+        return Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAbyss && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAurelus;
     }
 }

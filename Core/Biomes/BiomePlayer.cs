@@ -21,6 +21,18 @@ namespace Stellamod.Content.Biomes
     {
         extension(Player player)
         {
+            /*
+            public bool ZoneAurelus
+            {
+                get
+                {
+                    return player.GetModPlayer<MyPlayer>().ZoneAurelus;
+                }
+                set
+                {
+                    player.GetModPlayer<MyPlayer>().ZoneAurelus = value;
+                }
+            }*/
             public bool ZoneAbyss
             {
                 get

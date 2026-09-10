@@ -178,6 +178,10 @@ public class AbyssEffectsRenderer : ModSystem
         glowColor.A = 0;
         TileGlowColor = glowColor;
     }
+    private bool BiomeWaterfallsAvailable()
+    {
+        return Main.LocalPlayer.ZoneAbyss || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAurelus;
+    }
     private void ResetSpecialPoints(On_Main.orig_RenderWalls orig, Main self)
     {
 
@@ -323,7 +327,7 @@ public class AbyssEffectsRenderer : ModSystem
         _thickFogAlpha = MathHelper.Lerp(_thickFogAlpha, targetAlpha, 0.05f);
         if (AllWaterfalls.Count <= 0)
             return;
-        if (!Main.LocalPlayer.ZoneAbyss)
+        if (!BiomeWaterfallsAvailable())
             return;
 
 
@@ -366,7 +370,7 @@ public class AbyssEffectsRenderer : ModSystem
     {
         if (layer == RenderLayers.All && beginSpriteBatch && !Main.gameMenu && LightingHelper.CanRenderPostProcessingEffects)
         {
-            if (Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAbyss)
+            if (BiomeWaterfallsAvailable())
             {
                 var noiseSprite = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
                 var ditherSprite = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset.Value;
@@ -424,7 +428,7 @@ public class AbyssEffectsRenderer : ModSystem
 
     private void RenderAroundWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
     {
-        if (Main.LocalPlayer.ZoneAbyss)
+        if (BiomeWaterfallsAvailable())
         {
             var noiseSprite = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
             var ditherSprite = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset.Value;
