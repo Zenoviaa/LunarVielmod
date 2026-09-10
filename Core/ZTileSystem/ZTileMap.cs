@@ -33,13 +33,13 @@ public enum Rotation : byte
 //We drop the dictionary
 //and instead straight up store a List of every ZTile in the world?
 
-public struct ZTileData
+public struct ActiveZTileData
 {
-    public ZTileData()
+    public ActiveZTileData()
     {
 
     }
-    public ZTileData(ZTilePosition position, ZTileInstanceData instanceData, ZRenderLayer renderLayer)
+    public ActiveZTileData(ZTilePosition position, ZTileInstanceData instanceData, ZRenderLayer renderLayer)
     {
         this.position = position;
         this.instanceData = instanceData;
@@ -164,8 +164,8 @@ public class ZTileMap : ModSystem
 {
     private bool _needsResorting;
     private Point _lastChunk = new Point(-9999, -9999);
-    private List<ZTileData> _zTileInstances = new List<ZTileData>();
-    private List<ZTileData>[] _zTileActiveDrawingInstances;
+    private List<ActiveZTileData> _zTileInstances = new List<ActiveZTileData>();
+    private List<ActiveZTileData>[] _zTileActiveDrawingInstances;
 
     public const int Chunk_Size = 64;
 
@@ -187,11 +187,11 @@ public class ZTileMap : ModSystem
     public override void OnModLoad()
     {
         base.OnModLoad();
-        _zTileInstances = new List<ZTileData>();
-        _zTileActiveDrawingInstances = new List<ZTileData>[Enum.GetValues<ZRenderLayer>().Length];
+        _zTileInstances = new List<ActiveZTileData>();
+        _zTileActiveDrawingInstances = new List<ActiveZTileData>[Enum.GetValues<ZRenderLayer>().Length];
         for(int i = 0; i < _zTileActiveDrawingInstances.Length; i++)
         {
-            _zTileActiveDrawingInstances[i] = new List<ZTileData>();
+            _zTileActiveDrawingInstances[i] = new List<ActiveZTileData>();
         }
         On_Main.DoDraw_WallsAndBlacks += RenderOverWalls;
         On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
@@ -269,7 +269,7 @@ public class ZTileMap : ModSystem
         {
             _zTileActiveDrawingInstances[i].Clear();
         }
-        foreach(ZTileData tileData in _zTileInstances)
+        foreach(ActiveZTileData tileData in _zTileInstances)
         {
             //Calculate the chunk
             int chunkX = tileData.position.x / ZTileMap.Chunk_Size;
@@ -288,7 +288,7 @@ public class ZTileMap : ModSystem
     //    Mod.Logger.Info($"{instanceDataWatch.ElapsedTicks} collect z tile data ticks");
     }
 
-    public void RenderRedBoxesLayer(SpriteBatch spriteBatch, in List<ZTileData> drawingData)
+    public void RenderRedBoxesLayer(SpriteBatch spriteBatch, in List<ActiveZTileData> drawingData)
     {
         Rectangle frame = new Rectangle(0, 0, 16, 16);
         foreach (var tileData in drawingData)
@@ -299,7 +299,7 @@ public class ZTileMap : ModSystem
             spriteBatch.Draw(TextureAssets.Tile[0].Value, drawPosition, frame, Color.Red, 0, frame.Size() / 2f, 1f, SpriteEffects.None, 0);
         }
     }
-    public void RenderLayer(SpriteBatch spriteBatch, in List<ZTileData> drawingData)
+    public void RenderLayer(SpriteBatch spriteBatch, in List<ActiveZTileData> drawingData)
     {
       //  var watch = Stopwatch.StartNew();
         ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
@@ -402,7 +402,7 @@ public class ZTileMap : ModSystem
                 instanceData.scale = saveData.scale;
                 instanceData.flipX = saveData.flipX;
                 instanceData.value = saveData.value;
-                ZTileData zTileData = new ZTileData(zTilePosition, instanceData, (ZRenderLayer)i);
+                ActiveZTileData zTileData = new ActiveZTileData(zTilePosition, instanceData, (ZRenderLayer)i);
                 _zTileInstances.Add(zTileData);
             }
         }
@@ -470,7 +470,7 @@ public class ZTileMap : ModSystem
                 instanceData.scale = saveData.scale;
                 instanceData.flipX = saveData.flipX;
                 instanceData.value = saveData.value;
-                ZTileData zTileData = new ZTileData(zTilePosition, instanceData, (ZRenderLayer)i);
+                ActiveZTileData zTileData = new ActiveZTileData(zTilePosition, instanceData, (ZRenderLayer)i);
                 _zTileInstances.Add(zTileData);
             }
         }
@@ -519,7 +519,7 @@ public class ZTileMap : ModSystem
     public void HandleZTileDataRequestPacket(int requester, int x, int y, int width, int height)
     {
         Rectangle rectangle = new Rectangle(x, y, width, height);
-        List<ZTileData> datasToSync = new();
+        List<ActiveZTileData> datasToSync = new();
         for(int i = 0; i < _zTileInstances.Count; i++)
         {
             var tileData = _zTileInstances[i];
@@ -571,7 +571,7 @@ public class ZTileMap : ModSystem
         int height = reader.ReadInt32();
 
         Rectangle rectangle = new Rectangle(x, y, width, height);
-        List<ZTileData> datasToRemove = new();
+        List<ActiveZTileData> datasToRemove = new();
         int popIndex = _zTileInstances.Count - 1;
         for (int i = 0; i < _zTileInstances.Count; i++)
         {
@@ -675,7 +675,7 @@ public class ZTileMap : ModSystem
 
     }
 
-    private List<ZTileData> GetZTileDatas(ZRenderLayer renderLayer)
+    private List<ActiveZTileData> GetZTileDatas(ZRenderLayer renderLayer)
     {
         return _zTileActiveDrawingInstances[(int)renderLayer];
     }
@@ -852,7 +852,7 @@ public class ZTileMap : ModSystem
 
     public void Add(ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
     {
-        _zTileInstances.Add(new ZTileData(tilePosition, tileData, renderLayer));
+        _zTileInstances.Add(new ActiveZTileData(tilePosition, tileData, renderLayer));
     }
 
     public override void ClearWorld()
