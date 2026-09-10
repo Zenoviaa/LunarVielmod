@@ -190,18 +190,21 @@ public class ZTileMap : ModSystem
         On_Main.DoDraw_WallsAndBlacks += RenderOverWalls;
         On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
         On_Main.DrawDust += RenderForeground;
+        RekSilhouetteSystem.OnPrepareSilhouettes += PrepareSilhouettes;
     }
-
-    public override void PostUpdateEverything()
+    public override void Unload()
     {
-        base.PostUpdateEverything();
+        base.Unload();
+        RekSilhouetteSystem.OnPrepareSilhouettes -= PrepareSilhouettes;
+    }
+    private void PrepareSilhouettes()
+    {
         ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
         foreach (var tileDatas in _zTileActiveDrawingInstances)
         {
-            foreach(var tileData in tileDatas)
+            foreach (var tileData in tileDatas)
             {
                 var zTile = zTileLoader.GetTile(tileData.instanceData.type);
-                zTile.Update(tileData.position.x, tileData.position.y);
                 if (zTile.waterSilhouette)
                 {
                     ZTilePosition tilePosition = tileData.position;
@@ -218,6 +221,20 @@ public class ZTileMap : ModSystem
                         zTile.DrawSilhouette(sb, Main.screenPosition, drawParams);
                     });
                 }
+            }
+        }
+    }
+
+    public override void PostUpdateEverything()
+    {
+        base.PostUpdateEverything();
+        ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
+        foreach (var tileDatas in _zTileActiveDrawingInstances)
+        {
+            foreach(var tileData in tileDatas)
+            {
+                var zTile = zTileLoader.GetTile(tileData.instanceData.type);
+                zTile.Update(tileData.position.x, tileData.position.y);
             }
         }
         Point chunk = GetCameraChunk();

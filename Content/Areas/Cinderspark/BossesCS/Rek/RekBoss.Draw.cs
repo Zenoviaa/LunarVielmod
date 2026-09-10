@@ -24,6 +24,7 @@ public class RekSilhouetteSystem : ModSystem
     private RenderTargetProvider _waterMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public readonly List<SilhouetteDraw> SilhouettesToDraw = new();
     public readonly List<SilhouetteDraw> TileSilhouettesToDraw = new();
+    public static event Action OnPrepareSilhouettes;
     public override void Load()
     {
         base.Load();
@@ -41,6 +42,7 @@ public class RekSilhouetteSystem : ModSystem
     private void RenderWaterMask(On_Main.orig_CheckMonoliths orig)
     {
         orig();
+
         if (SilhouettesToDraw.Count <= 0 && TileSilhouettesToDraw.Count <= 0)
             return;
         TileSilhouettesToDraw.Clear();
@@ -103,6 +105,7 @@ public class RekSilhouetteSystem : ModSystem
     {
         base.PreUpdateNPCs();
         SilhouettesToDraw.Clear();
+        OnPrepareSilhouettes?.Invoke();
     }
 }
 

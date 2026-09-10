@@ -60,6 +60,7 @@ public class WhisperingDeath : ModBuff
                 break;
             }
         }
+       
 
         float dq = Vector2.DistanceSquared(player.Center, pos);
         float ratio = dq / (500 * 500);
