@@ -286,8 +286,10 @@ public class OrganDragon : ModNPC
     {
         int targetTileType = (int)TeleportTarget;
         ZTileMap zTileMap = ModContent.GetInstance<ZTileMap>();
-        var tilePosition = zTileMap.Find((ushort)targetTileType);
-        return new Point(tilePosition.x, tilePosition.y);
+        if(zTileMap.Find((ushort)targetTileType, out var tp)){
+            return new Point(tp.x, tp.y);
+        }
+        return Main.LocalPlayer.position.ToTileCoordinates();
     }
 
     private void AI_SwoopUp()

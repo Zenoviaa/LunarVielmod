@@ -1,34 +1,12 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
-using Stellamod.Core.LunarLightingSystem;
-using Stellamod.Core.WallBackgroundSystem;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Backgrounds;
-
-public class CustomBGGlobalLightPlayer : ModPlayer
-{
-    public static float LightStrength;
-    public override void ResetEffects()
-    {
-        base.ResetEffects();
-        LightStrength = 0;
-    }
-    public override void PostUpdate()
-    {
-        base.PostUpdate();
-        if (CustomBGManager.drawingCustomBG)
-        {
-            LightStrength = 0.005f;
-        }
-
-    }
-}
 public class CustomBGGlobalWall : GlobalWall
 {
 
@@ -96,7 +74,7 @@ public class CustomBGManager : ModSystem
             return;
 
         SpriteBatch spriteBatch = Main.spriteBatch;
-      
+
         //Sort the list by their priority, so the higest priority one is in front
         drawingCustomBG = false;
         foreach (var bg in Backgrounds)

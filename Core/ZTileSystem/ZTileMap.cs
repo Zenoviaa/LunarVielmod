@@ -33,7 +33,7 @@ public enum Rotation : byte
 //We drop the dictionary
 //and instead straight up store a List of every ZTile in the world?
 
-public class ZTileData
+public struct ZTileData
 {
     public ZTileData()
     {
@@ -170,12 +170,18 @@ public class ZTileMap : ModSystem
     public const int Chunk_Size = 64;
 
     public static event Action OnRenderForeground;
-    public ZTilePosition Find(ushort type)
+    public bool Find(ushort type, out ZTilePosition tilePosition)
     {
-        ZTileData tileData = _zTileInstances.Find(x => x.instanceData.type == type)!;
-        if (tileData != null)
-            return tileData.position;
-        return default;
+        foreach(var instance in _zTileInstances)
+        {
+            if(instance.instanceData.type == type)
+            {
+                tilePosition = instance.position;
+                return true;
+            }
+        }
+        tilePosition = default;
+        return false;
     }
 
     public override void OnModLoad()
