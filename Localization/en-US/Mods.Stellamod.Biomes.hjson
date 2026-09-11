@@ -79,8 +79,8 @@ CatacombFlames: {
 }
 
 AurelusBiome: {
-	TownNPCDialogueName: the Aurelus Biome
-	DisplayName: Aurelus Biome
+	TownNPCDialogueName: the Aurelus Temple
+	DisplayName: Aurelus Temple
 }
 
 AlcadziaBiome: {
