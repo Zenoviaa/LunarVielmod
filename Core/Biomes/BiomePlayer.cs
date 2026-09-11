@@ -21,7 +21,7 @@ namespace Stellamod.Content.Biomes
     {
         extension(Player player)
         {
-            /*
+            
             public bool ZoneAurelus
             {
                 get
@@ -32,7 +32,7 @@ namespace Stellamod.Content.Biomes
                 {
                     player.GetModPlayer<MyPlayer>().ZoneAurelus = value;
                 }
-            }*/
+            }
             public bool ZoneAbyss
             {
                 get
