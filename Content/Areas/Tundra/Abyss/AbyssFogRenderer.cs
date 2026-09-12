@@ -179,11 +179,12 @@ public class AbyssEffectsRenderer : ModSystem
 
     private void ResetSpecialPoints(On_Main.orig_RenderTiles orig, Main self)
     {
-  
-        if (rebuildWaterfalls)
+
+        ref bool justEnteredAbyss = ref Main.LocalPlayer.GetModPlayer<BiomePlayer>().justEnteredAbyss;
+        if (justEnteredAbyss)
         {
             AllWaterfalls.Clear();
-            rebuildWaterfalls = false;
+            justEnteredAbyss = false;
             // var watch = Stopwatch.StartNew();
             Rectangle abRect = VeilGen.AbyssRectangle;
             for(int x = abRect.Left; x <= abRect.Right; x++)

@@ -9,9 +9,19 @@ namespace Stellamod.Assets.ContentReader.Aseprite;
 
 public static class AnimationExtensions
 {
+    public static readonly AseAnimator DummyAnimator = new();
+
     extension(ModNPC modNpc)
     {
-        public AseAnimator AseAnimator => modNpc.NPC.GetGlobalNPC<AnimatorGlobalNPC>().Animator;
+        public AseAnimator AseAnimator
+        {
+            get
+            {
+                if (modNpc.NPC.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animator))
+                    return animator.Animator;
+                return DummyAnimator;
+            }
+        }
     }
     public static AseAnimator GetAnimator(this ModNPC modNpc)
     {
@@ -19,7 +29,9 @@ public static class AnimationExtensions
     }
     public static AseAnimator GetAnimator(this NPC npc)
     {
-        return npc.GetGlobalNPC<AnimatorGlobalNPC>().Animator;
+        if (npc.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animator))
+            return animator.Animator;
+        return DummyAnimator;
     }
     public static void SetDrawOrigin(this ModNPC modNpc, Vector2 drawOrigin)
     {
@@ -91,9 +103,9 @@ public class AnimatorGlobalNPC : GlobalNPC
     public override void SetDefaults(NPC entity)
     {
         base.SetDefaults(entity);
+        Animator = new AseAnimator();
         if (AsepriteAssets.Npc == null)
             return;
-        Animator = new AseAnimator();
         if (Main.netMode == NetmodeID.Server)
             return;
         Animator.SetSpriteAsset(AsepriteAssets.Npc[entity.type]);

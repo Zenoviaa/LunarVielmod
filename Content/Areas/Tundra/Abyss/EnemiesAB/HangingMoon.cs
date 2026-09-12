@@ -299,12 +299,16 @@ public class HangingMoon : ModNPC
     {
         base.SendExtraAI(writer);
         writer.WriteVector2(_rootPoint);
+        writer.WriteVector2(_floorPoint);
+        writer.Write(_numSegments);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         _rootPoint = reader.ReadVector2();
+        _floorPoint = reader.ReadVector2();
+        _numSegments = reader.ReadSingle();
     }
 
     public override void SetStaticDefaults()

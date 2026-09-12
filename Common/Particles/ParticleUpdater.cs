@@ -3,6 +3,7 @@ using Stellamod.Core.Pixelation;
 using System;
 using System.Diagnostics;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.Particles;
@@ -99,7 +100,7 @@ public abstract class ParticleUpdater<ParticleStructType> :
     {
         //If too many particles just return a reference to one that's not being used or drawn to the screen
         //That way we don't interrupt anything that's happening
-        if (_length >= _particles.Length)
+        if (_length >= _particles.Length || Main.netMode == NetmodeID.Server)
             return ref _dummyParticle;
 
         int index = _length;

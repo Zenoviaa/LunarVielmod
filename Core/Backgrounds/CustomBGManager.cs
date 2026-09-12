@@ -33,7 +33,6 @@ public class CustomBGManager : ModSystem
     public override void OnModLoad()
     {
         base.OnModLoad();
-        On_Main.DoDraw_WallsTilesNPCs += DrawBehindWalls;
         On_OverlayManager.Draw += DrawBackgrounds;
         Backgrounds = ModContent.GetContent<CustomBG>().ToList();
     }
@@ -48,7 +47,6 @@ public class CustomBGManager : ModSystem
     public override void OnModUnload()
     {
         base.OnModUnload();
-        On_Main.DoDraw_WallsTilesNPCs -= DrawBehindWalls;
         On_OverlayManager.Draw -= DrawBackgrounds;
     }
     private void DrawBackgrounds(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
@@ -61,12 +59,6 @@ public class CustomBGManager : ModSystem
         }
         orig(self, spriteBatch, layer, beginSpriteBatch);
 
-    }
-
-    private void DrawBehindWalls(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
-    {
-        // DrawLoop();
-        orig(self);
     }
 
     private void DrawLoop()

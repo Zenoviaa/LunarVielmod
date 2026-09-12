@@ -1,54 +1,44 @@
 ﻿using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.Particles;
 
 //Helper methods for spawning particles
-[Autoload(Side = ModSide.Client)]
 public sealed class Particles : ModSystem
 {
     private List<IParticleUpdater> _particleUpdaters;
 
-    public static BitDust BitDust;
-    public static RagingFlameDust RagingFlameDust;
-    public static FaintSmokeDust FaintSmokeDust;
-    public static CinderEmberDust CinderEmberDust;
-    public static CinderEmberDustBackground CinderEmberDustBackground;
-    public static SwirlingFlameDust SwirlingFlameDust;
-    public static RoarDust RoarDust;
-    public static FeatherDust FeatherDust;
+    /// <summary>
+    /// A glowy dust that stretches and collides with particles
+    /// </summary>
+    public static readonly BitDust BitDust = new();
 
-    public static AbyssFloatingFlowerDust AbyssFloatingFlowerDust;
+    /// <summary>
+    /// A firey dust used for raging flame torches
+    /// </summary>
+    public static readonly RagingFlameDust RagingFlameDust = new();
+    
+    public static readonly FaintSmokeDust FaintSmokeDust = new();
+    public static readonly CinderEmberDust CinderEmberDust = new();
+    public static readonly CinderEmberDustBackground CinderEmberDustBackground = new();
+    public static readonly SwirlingFlameDust SwirlingFlameDust = new();
+    public static readonly RoarDust RoarDust = new();
+    public static readonly FeatherDust FeatherDust = new();
+    public static readonly AbyssFloatingFlowerDust AbyssFloatingFlowerDust = new();
+
     /// <summary>
     /// A circle particle that draws on the water target, creating the illusion of splashing water
     /// </summary>
-    public static WaterDust WaterDust;
-
-    public static BloodyMurderDust BloodyMurderDust;
-
-    public static WaterfallCrashDust WaterfallCrashDust;
-    public static TinyWhiteMothDust TinyWhiteMothDust;
-
-    public static InDonutDust InDonutDust;
+    public static readonly WaterDust WaterDust = new();
+    public static readonly BloodyMurderDust BloodyMurderDust = new();
+    public static readonly WaterfallCrashDust WaterfallCrashDust = new();
+    public static readonly TinyWhiteMothDust TinyWhiteMothDust = new();
+    public static readonly InDonutDust InDonutDust = new();
     public override void Load()
     {
         base.Load();
-
-        BitDust = new();
-        RagingFlameDust = new();
-        FaintSmokeDust = new();
-        CinderEmberDust = new();
-        CinderEmberDustBackground = new();
-        SwirlingFlameDust = new();
-        RoarDust = new();
-        WaterDust = new();
-        FeatherDust = new();
-        AbyssFloatingFlowerDust = new();
-        BloodyMurderDust = new();
-        WaterfallCrashDust = new();
-        TinyWhiteMothDust = new();
-        InDonutDust = new();
         _particleUpdaters = new List<IParticleUpdater>
         {
             BitDust,
@@ -67,6 +57,9 @@ public sealed class Particles : ModSystem
             InDonutDust
         };
 
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
         for (int i = 0; i < _particleUpdaters.Count; i++)
         {
             if (_particleUpdaters[i] is ILoadable loadable)
@@ -80,6 +73,8 @@ public sealed class Particles : ModSystem
     {
         base.Unload();
         if (_particleUpdaters == null)
+            return;
+        if (Main.netMode == NetmodeID.Server)
             return;
 
         for (int i = 0; i < _particleUpdaters.Count; i++)

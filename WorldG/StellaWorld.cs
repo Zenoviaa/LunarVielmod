@@ -6961,6 +6961,16 @@ public partial class StellaWorld : ModSystem
         writer.Write(MarshLocation.Y);
         writer.Write(CoralwaysLocation.X);
         writer.Write(CoralwaysLocation.Y);
+
+        writer.Write(SavedGenerationParameters.SnowLeft);
+        writer.Write(SavedGenerationParameters.SnowRight);
+        writer.Write(SavedGenerationParameters.SnowTop);
+        writer.Write(SavedGenerationParameters.SnowBottom);
+        writer.Write(SavedGenerationParameters.RockLayerHigh);
+        writer.Write(SavedGenerationParameters.AbyssTempleRectangle.X);
+        writer.Write(SavedGenerationParameters.AbyssTempleRectangle.Y);
+        writer.Write(SavedGenerationParameters.AbyssTempleRectangle.Width);
+        writer.Write(SavedGenerationParameters.AbyssTempleRectangle.Height);
     }
     public override void NetReceive(BinaryReader reader)
     {
@@ -6974,6 +6984,18 @@ public partial class StellaWorld : ModSystem
         coralwaysLocation.X = reader.ReadInt32();
         coralwaysLocation.Y = reader.ReadInt32();
         CoralwaysLocation = coralwaysLocation;
+
+        SavedGenerationParameters.SnowLeft = reader.ReadInt32();
+        SavedGenerationParameters.SnowRight = reader.ReadInt32();
+        SavedGenerationParameters.SnowTop = reader.ReadInt32();
+        SavedGenerationParameters.SnowBottom = reader.ReadInt32();
+        SavedGenerationParameters.RockLayerHigh = reader.ReadDouble();
+
+
+        SavedGenerationParameters.AbyssTempleRectangle.X = reader.ReadInt32();
+        SavedGenerationParameters.AbyssTempleRectangle.Y = reader.ReadInt32();
+        SavedGenerationParameters.AbyssTempleRectangle.Width = reader.ReadInt32();
+        SavedGenerationParameters.AbyssTempleRectangle.Height = reader.ReadInt32();
     }
 
     public override void SaveWorldData(TagCompound tag)

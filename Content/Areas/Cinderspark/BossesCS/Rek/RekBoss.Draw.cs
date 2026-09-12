@@ -9,8 +9,8 @@ using Stellamod.Effects.RekFlames;
 using Stellamod.Effects.RoyalMagic;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
@@ -50,7 +50,7 @@ public class RekSilhouetteSystem : ModSystem
         var kelp = ModContent.GetInstance<AbyssalKelp>();
         if (Main.GameUpdateCount % 15 == 0)
         {
-            KelpPoints.Clear();     
+            KelpPoints.Clear();
             (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(192);
             ushort ty = (ushort)ModContent.TileType<AbyssalKelp>();
             for (int x = topLeft.X; x < bottomRight.X; x++)
@@ -80,15 +80,15 @@ public class RekSilhouetteSystem : ModSystem
 
         graphicsDevice.SetRenderTarget(_maskedTarget);
         graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, 
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
             Main.GameViewMatrix.TransformationMatrix);
         foreach (var draw in SilhouettesToDraw)
             draw(spriteBatch);
-        
+
         foreach (var draw in TileSilhouettesToDraw)
             draw(spriteBatch);
-        
-        foreach(var point in KelpPoints)
+
+        foreach (var point in KelpPoints)
         {
             kelp.DrawWaterSilhouette(point.X, point.Y, spriteBatch);
         }
@@ -128,6 +128,8 @@ public class SilhouetteGlobalNPC : GlobalNPC
     public override void PostAI(NPC npc)
     {
         base.PostAI(npc);
+        if (Main.netMode == NetmodeID.Server)
+            return;
         if (npc.ModNPC is IWaterSilhouette silhouette)
         {
             silhouette.PrepareSilhouetteDrawing(ModContent.GetInstance<RekSilhouetteSystem>());
@@ -139,6 +141,8 @@ public class SilhouetteGlobalProjectile : GlobalProjectile
     public override void PostAI(Projectile projectile)
     {
         base.PostAI(projectile);
+        if (Main.netMode == NetmodeID.Server)
+            return;
         if (projectile.ModProjectile is IWaterSilhouette silhouette)
         {
             silhouette.PrepareSilhouetteDrawing(ModContent.GetInstance<RekSilhouetteSystem>());

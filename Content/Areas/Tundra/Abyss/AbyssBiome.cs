@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Biomes;
 using Stellamod.Core.LunarLightingSystem;
 using Terraria;
@@ -44,6 +45,7 @@ public class AbyssBiome : BaseUrdveilBiome,
     {
         base.OnEnter(player);
         player.GetModPlayer<MyPlayer>().ZoneAbyss = true;
+        player.GetModPlayer<BiomePlayer>().justEnteredAbyss = true;
         if (Main.netMode == NetmodeID.Server)
             return;
 

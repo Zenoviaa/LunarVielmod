@@ -58,6 +58,7 @@ namespace Stellamod.Content.Biomes
     public class BiomePlayer : ModPlayer
     {
         private float _windCounter;
+        public bool justEnteredAbyss;
         public bool ZoneIshtar;
         public bool ZoneSacredUnknowns;
         public bool ZoneEveroseVillage;
