@@ -132,7 +132,8 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     innerColor = Color.Lerp(Color.White, Color.Red, Main.rand.NextFloat(0.5f, 1f)),
                     outerColor = Color.DarkRed
                 };
-                DustParticle.Spawn(EndPoint, -Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(1f) * Main.rand.NextFloat(4f, 15f), spawnParams);
+                var d = DustParticle.Spawn(EndPoint, -Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(1f) * Main.rand.NextFloat(4f, 15f), spawnParams);
+                d.dampening = 0.06f;
             }
 
             float progress = Timer / 45f;

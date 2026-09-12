@@ -35,6 +35,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.shootSpeed = 4f;
             Item.useAmmo = AmmoID.Bullet;
             Item.noMelee = true;
+         
         }
 
         public override Vector2? HoldoutOffset()
@@ -44,6 +45,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            muzzleOrigin = new Vector2(64, 10);
             if (type == ProjectileID.Bullet)
                 type = ModContent.ProjectileType<BrokenMissile>();
             Vector2 Offset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y - 1)) * 20f;
