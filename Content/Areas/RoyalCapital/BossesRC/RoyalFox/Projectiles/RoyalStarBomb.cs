@@ -3,7 +3,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
@@ -173,7 +173,6 @@ public class RoyalStarBombRenderer : ModSystem
 {
     public delegate void SpritebatchDrawAction(SpriteBatch sb);
 
-    private RenderTargetProvider _bombRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private Queue<SpritebatchDrawAction> _drawQueue;
     public override void Load()
     {
@@ -190,20 +189,24 @@ public class RoyalStarBombRenderer : ModSystem
     {
         if (_drawQueue.Count <= 0)
             return;
-        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-        gDevice.SetRenderTarget(_bombRT);
-        gDevice.Clear(Color.Transparent);
-        var sb = Main.spriteBatch;
-        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
-        while (_drawQueue.Count > 0)
-        {
-            _drawQueue.Dequeue()(sb);
-        }
-        sb.End();
+
         PixelationManager.QueueSpritebatchDrawAction(DrawToScreen);
     }
     private void DrawToScreen(SpriteBatch sb, Vector2 screenPos)
     {
+        RenderTargetHandle bombRT = RenderTargets.ScreenTarget;
+        sb.EndOut(out var oldParameters);
+        using(new RenderTargetContext(bombRT))
+        {
+       
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
+            while (_drawQueue.Count > 0)
+            {
+                _drawQueue.Dequeue()(sb);
+            }
+            sb.End();
+        }
+
         Color outlineColor = new Color(150, 150, 235) * 0.85f;
         Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
 
@@ -215,7 +218,10 @@ public class RoyalStarBombRenderer : ModSystem
         // sb.Draw(_bombRT, Vector2.Zero, Color.White);
         // sb.RestartDefaults();
 
-        sb.Draw(_bombRT, Vector2.Zero, Color.White);
+        sb.Begin(oldParameters with { effect = outlineShader.Effect });
+        sb.Draw(bombRT, Vector2.Zero, Color.White);
+        sb.End();
+        sb.Begin(oldParameters);
     }
 
 

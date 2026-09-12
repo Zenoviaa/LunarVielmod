@@ -2,7 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
@@ -18,43 +18,36 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 [Autoload(Side = ModSide.Client)]
 public class RoyalFoxCloneRenderer : ModSystem
 {
-    private RenderTargetProvider _cloneRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private readonly Queue<Action> _cloneDrawActions = new();
     public override void Load()
     {
         base.Load();
-        PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += RenderClones;
         On_Main.DoDraw_DrawNPCsOverTiles += DrawClones;
     }
 
     private void DrawClones(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
     {
         orig(self);
+        if (_cloneDrawActions.Count <= 0)
+            return;
+
+        RenderTargetHandle cloneRT = RenderTargets.ScreenTarget;
+        using(new RenderTargetContext(cloneRT))
+        {
+            SpriteBatch sb = Main.spriteBatch;
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            while (_cloneDrawActions.Count > 0)
+            {
+                _cloneDrawActions.Dequeue()();
+            }
+            sb.End();
+        }
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-        spriteBatch.Draw(_cloneRT, Vector2.Zero, null, Main.DiscoColor * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 32), 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+        spriteBatch.Draw(cloneRT, Vector2.Zero, null, Main.DiscoColor * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 32), 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         spriteBatch.End(); 
     }
 
-    public override void Unload()
-    {
-        base.Unload();
-        PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady -= RenderClones;
-    }
-    private void RenderClones()
-    {
-        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-        gDevice.SetRenderTarget(_cloneRT);
-        gDevice.Clear(Color.Transparent);
-
-        SpriteBatch sb = Main.spriteBatch;
-        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
-        while (_cloneDrawActions.Count > 0)
-        {
-            _cloneDrawActions.Dequeue()();
-        }
-        sb.End();
-    }
     public static void Queue(Action drawAction)
     {
         RoyalFoxCloneRenderer clone = ModContent.GetInstance<RoyalFoxCloneRenderer>();

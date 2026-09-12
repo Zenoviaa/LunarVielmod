@@ -499,6 +499,29 @@ public static class DrawUtilities
     }
 }
 
+public static class SpriteBatchExtensions
+{
+    /// <summary>
+    /// Ends the spritebatch and spits out the parameters it was using to draw
+    /// </summary>
+    /// <param name="spriteBatch"></param>
+    /// <param name="parameters"></param>
+    public static void EndOut(this SpriteBatch spriteBatch, out SpritebatchParams parameters)
+    {
+        parameters = spriteBatch.Parameters;
+        spriteBatch.End();
+   
+    }
+
+    extension(SpriteBatch spriteBatch)
+    {
+        /// <summary>
+        /// Retrieves the parameters from the sprite batch
+        /// </summary>
+        public SpritebatchParams Parameters => SpritebatchParams.FromSpritebatch(spriteBatch);
+    }
+}
+
 /// <summary>
 /// Accesses the current parameters of the spritebatch
 /// </summary>
@@ -571,7 +594,7 @@ public static class SpritebatchDrawExtensions
     public static void Begin(this SpriteBatch spriteBatch, SpritebatchParams spritebatchParams) => spritebatchParams.Begin(spriteBatch);
 }
 
-public class SpritebatchContext : IDisposable
+public struct SpritebatchContext : IDisposable
 {
     private SpritebatchParams? _oldParameters;
     private SpriteBatch? _spriteBatch;

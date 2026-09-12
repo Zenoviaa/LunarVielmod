@@ -8,7 +8,7 @@ using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -89,8 +89,6 @@ public class PieceOfArtRenderer : ModSystem
 
     private int _length;
 
-    private RenderTargetProvider _blobRTProvider = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _maskRTProvider = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private BlobParticle _particles;
     public const int MAX_BLOB_COUNT = 400;
     public override void Load()
@@ -108,7 +106,6 @@ public class PieceOfArtRenderer : ModSystem
     {
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_blobTextureAsset, Vector2.Zero);
-
         for (int i = 0; i < _length; i++)
         {
             ref Vector2 position = ref _particles.position[i];
@@ -131,22 +128,6 @@ public class PieceOfArtRenderer : ModSystem
     {
         if (!Main.gameMenu && _drawActions.Count > 0)
         {
-            GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-            gDevice.SetRenderTarget(_maskRTProvider);
-            gDevice.Clear(Color.Transparent);
-            DrawDusts(spriteBatch);
- 
-            gDevice.SetRenderTarget(_blobRTProvider);
-            gDevice.Clear(Color.Transparent);
-
-
-            while (_drawActions.Count > 0)
-            {
-                _drawActions.Dequeue()(gDevice);
-            }
-
             PixelationManager.QueueSpritebatchDrawAction(DrawToScreen, DrawLayer.OverNPCsWithOutline);
         }
 
@@ -156,15 +137,39 @@ public class PieceOfArtRenderer : ModSystem
 
     private void DrawToScreen(SpriteBatch sb, Vector2 screenPos)
     {
+        sb.EndOut(out var parameters);
+        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+        SpriteBatch spriteBatch = Main.spriteBatch;
+
+        RenderTargetHandle maskTarget = RenderTargets.ScreenTarget;
+        RenderTargetHandle blobTarget = RenderTargets.ScreenTarget;
+
+        using(new RenderTargetContext(maskTarget))
+        {
+            DrawDusts(spriteBatch);
+        }
+
+        using(new RenderTargetContext(blobTarget))
+        {
+            while (_drawActions.Count > 0)
+            {
+                _drawActions.Dequeue()(gDevice);
+            }
+        }
+
         var shader = PieceOfArtShader.Instance;
-        shader.Blob = _maskRTProvider;
+        shader.Blob = maskTarget;
         shader.Levels = 4;
-        sb.Restart(effect: shader.Effect, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
+        sb.Begin(parameters with { 
+            effect = shader.Effect, 
+            blendState = BlendState.AlphaBlend, 
+            samplerState = SamplerState.PointClamp
+        });
 
         Color fogColor = Color.White;
-        sb.Draw(_blobRTProvider, Vector2.Zero, fogColor);
-        sb.RestartDefaults();
-
+        sb.Draw(blobTarget, Vector2.Zero, fogColor);
+        sb.End();
+        sb.Begin(parameters);
     }
 
     public override void OnModLoad()

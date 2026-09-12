@@ -1,12 +1,9 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Rendering;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Visual.Particles;
 using System;
-using System.Diagnostics;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -18,16 +15,10 @@ namespace Stellamod.Common.Shaders;
 public class AuroraEffectRenderer : ModSystem
 {
     private float _activeTimer;
-    private RenderTargetProvider _auroraRT = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with
-    {
-        Width = Main.screenWidth / 4,
-        Height = Main.screenHeight / 4
-    });
     public override void Load()
     {
         base.Load();
         On_OverlayManager.Draw += DrawAurora;
-        On_Main.CheckMonoliths += RenderToAuroraRT;
     }
 
     private void DrawAurora(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
@@ -37,15 +28,20 @@ public class AuroraEffectRenderer : ModSystem
             orig(self, spriteBatch, layer, beginSpriteBatch);
             return;
         }
-      
+
         RenderLayers targetLayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower ? RenderLayers.ForegroundWater : RenderLayers.Background;
         if (layer == RenderLayers.Background)
         {
             if (!Main.gameMenu && _activeTimer > 0)
             {
+                spriteBatch.EndOut(out var oldParameters);
+                RenderTargetHandle auroraRT = RenderTargets.QuarterScreenTarget;
+                using (new RenderTargetContext(auroraRT))
+                {
+                    PrepareAuroraContent(auroraRT);
+                }
 
                 float opacity = _activeTimer / 120f;
-            
                 var starsTexture = TextureRegistry.StarNoise2;
                 var noiseTexture = TextureRegistry.BlurryPerlinNoise2;
                 MiscShaderData eff = GameShaders.Misc["LunarVeil:RoyalCapitalStars"];
@@ -59,19 +55,12 @@ public class AuroraEffectRenderer : ModSystem
                 eff.Shader.Parameters["uImageOffset"].SetValue(parallax);
                 eff.UseOpacity(opacity);
                 eff.Apply();
-      
-                spriteBatch.End();
+
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
                 spriteBatch.Draw(starsTexture.Value,
                    new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
                     null, Color.White * 0.3f);
 
-
-                /*
-                spriteBatch.Draw(starsTexture.Value, 
-                    new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), 
-                    new Rectangle((int)-_parallax.X, (int)-_parallax.Y, Main.screenWidth, Main.screenHeight), Color.White * 0.3f);
-                */
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred,
                       BlendState.AlphaBlend,
@@ -80,19 +69,17 @@ public class AuroraEffectRenderer : ModSystem
                       RasterizerState.CullCounterClockwise,
                       null);
                 Color rayColor = Color.White;
-                spriteBatch.Draw(_auroraRT, new Vector2(0, -256), null, rayColor, 0, Vector2.Zero, 4, SpriteEffects.None, 0);
+                spriteBatch.Draw(auroraRT, new Vector2(0, -256), null, rayColor, 0, Vector2.Zero, 4, SpriteEffects.None, 0);
 
 
                 rayColor *= 0.5f;
                 rayColor.A = 0;
-                spriteBatch.Draw(_auroraRT, new Vector2(0, -256), null, rayColor, 0, Vector2.Zero, 4, SpriteEffects.None, 0);
+                spriteBatch.Draw(auroraRT, new Vector2(0, -256), null, rayColor, 0, Vector2.Zero, 4, SpriteEffects.None, 0);
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-
+                spriteBatch.Begin(oldParameters);
             }
-        
         }
-  
+
         orig(self, spriteBatch, layer, beginSpriteBatch);
     }
 
@@ -145,7 +132,7 @@ public class AuroraEffectRenderer : ModSystem
                 }
             }
 
-         
+
         }
         else
         {
@@ -153,32 +140,16 @@ public class AuroraEffectRenderer : ModSystem
         }
 
         _activeTimer = Math.Clamp(_activeTimer, 0f, 60f);
- 
+
     }
 
 
-    public override void Unload()
-    {
-        base.Unload();
-        On_OverlayManager.Draw -= DrawAurora;
-        On_Main.CheckMonoliths -= RenderToAuroraRT;
-    }
 
-    private void RenderToAuroraRT(On_Main.orig_CheckMonoliths orig)
-    {
-        orig();
-        if (Main.gameMenu)
-            return;
-        if (_activeTimer <= 0)
-            return;
 
-        float ease = EasingFunction.InOutSine(_activeTimer / 60f);
+    private void PrepareAuroraContent(RenderTargetHandle auroraRT)
+    {
         SpriteBatch spriteBatch = Main.spriteBatch;
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_auroraRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-
+        float ease = EasingFunction.InOutSine(_activeTimer / 60f);
         SkyGradientShader skyGradientShader = SkyGradientShader.Instance;
         skyGradientShader.H = 0;
         skyGradientShader.Bend = -0.24f;
@@ -189,7 +160,7 @@ public class AuroraEffectRenderer : ModSystem
             skyGradientShader.Effect);
 
 
-        Rectangle targetRectangle = new Rectangle(0, 0, _auroraRT.Width, _auroraRT.Height);
+        Rectangle targetRectangle = new Rectangle(0, 0, auroraRT.Width, auroraRT.Height);
         spriteBatch.Draw(AssetManager.GlowMask.EmptyGradient.Value, targetRectangle, Color.Blue * ease * 0.72f);
         spriteBatch.End();
 
@@ -199,9 +170,9 @@ public class AuroraEffectRenderer : ModSystem
             auroraShader.Effect);
 
 
-
-
-        Rectangle dstRect = new Rectangle(-8, 32, (int)(_auroraRT.Width * 1.5f), (int)(_auroraRT.Height * 0.5f));
+        //TODO: we probably don't need this many draws
+        //And could do more in the shader itself
+        Rectangle dstRect = new Rectangle(-8, 32, (int)(auroraRT.Width * 1.5f), (int)(auroraRT.Height * 0.5f));
 
         Texture2D texture = AssetManager.Noise.AuroraRays.Value;
         Rectangle srcRect = new Rectangle(256, 0, texture.Width, texture.Height);
@@ -216,27 +187,26 @@ public class AuroraEffectRenderer : ModSystem
         spriteBatch.Draw(texture, dstRect, srcRect, rayColor * 0.8f * ease, rotation, Vector2.Zero, SpriteEffects.None, 0);
         //    spriteBatch.Draw(texture, dstRect, srcRect2, rayColor * 0.3f, rotation, Vector2.Zero, SpriteEffects.None, 0);
 
-        Rectangle dstRect2 = new Rectangle(-8, 0, (int)(_auroraRT.Width * 1.5f), (int)(_auroraRT.Height * 0.25f));
+        Rectangle dstRect2 = new Rectangle(-8, 0, (int)(auroraRT.Width * 1.5f), (int)(auroraRT.Height * 0.25f));
         spriteBatch.Draw(texture, dstRect2, srcRect, rayColor * 0.125f * ease * 0.5f, backRotation, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
         spriteBatch.Draw(texture, dstRect2, srcRect, rayColor * 0.125f * ease * 0.5f, -backRotation, Vector2.Zero, SpriteEffects.FlipVertically, 0);
 
         Color rayColorGlow = Color.White;
         rayColorGlow.A = 0;
-        Rectangle dstRect3 = new Rectangle(-8, 0, (int)(_auroraRT.Width * 2f), (int)(_auroraRT.Height * 0.4f));
+        Rectangle dstRect3 = new Rectangle(-8, 0, (int)(auroraRT.Width * 2f), (int)(auroraRT.Height * 0.4f));
         spriteBatch.Draw(texture, dstRect3, srcRect, rayColorGlow * 0.125f * ease * 0.5f, rotation, Vector2.Zero, SpriteEffects.None, 0);
 
         //    spriteBatch.Draw(texture, dstRect2, srcRect2, rayColor * 0.3f, backRotation, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
         Color rayColorGlow2 = Color.White;
         rayColorGlow2.A = 0;
-        Rectangle dstRect4 = new Rectangle(-8, 0, (int)(_auroraRT.Width * 2f), (int)(_auroraRT.Height * 0.4f));
+        Rectangle dstRect4 = new Rectangle(-8, 0, (int)(auroraRT.Width * 2f), (int)(auroraRT.Height * 0.4f));
         spriteBatch.Draw(texture, dstRect4, srcRect, rayColorGlow2 * 0.35f * ease * 0.75f, rotation, Vector2.Zero, SpriteEffects.None, 0);
 
         Color rayColorGlow3 = Color.White;
         rayColorGlow3.A = 0;
         spriteBatch.Draw(texture, dstRect4, srcRect, rayColorGlow3 * 0.4f * ease * 0.75f, rotation, Vector2.Zero, SpriteEffects.None, 0);
         spriteBatch.End();
-
 
     }
 }

@@ -4,9 +4,12 @@ using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.Tundra.Abyss;
 using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
+using Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus;
 using Stellamod.Content.Areas.Underground;
 using Stellamod.Content.Areas.WaterSide;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Items.Placeable.Cathedral;
+using Stellamod.WorldG;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -133,7 +136,48 @@ public class NPCSpawnHelper : GlobalNPC
             pool.TryAdd(enemyType, weight);
         }
     }
+    private void AddEnemiesFromSpawnSet(List<int> set, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo, int[] tileTypesToIgnore)
+    {
+        for(int i = 0; i < tileTypesToIgnore.Length; i++)
+        {
+            int tileType = tileTypesToIgnore[i];
+            if (spawnInfo.SpawnTileType == tileType)
+                return;
+        }
 
+        for (int i = 0; i < set.Count; i++)
+        {
+            int enemyType = set[i];
+            if (spawnInfo.Water && NPCID.Sets.TryNotToSpawnOnWater[enemyType])
+                continue;
+
+            float totalWeight = 1f;
+            float weight = totalWeight / (float)set.Count;
+
+            //If we want to make an enemy rarer we'd do it here
+            weight *= SpawnSets.ModifiedWeights[enemyType];
+            pool.TryAdd(enemyType, weight);
+        }
+    }
+    private void AddEnemiesFromSpawnSet(List<int> set, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo, Rectangle ignoreTileRectangle)
+    {
+        if (ignoreTileRectangle.Contains(new Point(spawnInfo.SpawnTileX, spawnInfo.SpawnTileY)))
+            return;
+
+        for (int i = 0; i < set.Count; i++)
+        {
+            int enemyType = set[i];
+            if (spawnInfo.Water && NPCID.Sets.TryNotToSpawnOnWater[enemyType])
+                continue;
+
+            float totalWeight = 1f;
+            float weight = totalWeight / (float)set.Count;
+
+            //If we want to make an enemy rarer we'd do it here
+            weight *= SpawnSets.ModifiedWeights[enemyType];
+            pool.TryAdd(enemyType, weight);
+        }
+    }
     public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
     {
         base.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
@@ -192,15 +236,20 @@ public class NPCSpawnHelper : GlobalNPC
         if (spawnInfo.Player.InModBiome<AbyssBiome>())
         {
             pool.Clear();
-       
+
             if(!BellFlowerSystem.Whispering)
-                AddEnemiesFromSpawnSet(SpawnSets.AbyssEnemy, pool, spawnInfo);
-            AddEnemiesFromSpawnSet(SpawnSets.AbyssCritter, pool, spawnInfo);
+                AddEnemiesFromSpawnSet(SpawnSets.AbyssEnemy, pool, spawnInfo, SavedGenerationParameters.AbyssTempleRectangle);
+            AddEnemiesFromSpawnSet(SpawnSets.AbyssCritter, pool, spawnInfo, SavedGenerationParameters.AbyssTempleRectangle);
         }
         if (spawnInfo.Player.InModBiome<AurelusBiome>())
         {
             pool.Clear();
-            AddEnemiesFromSpawnSet(SpawnSets.AbyssTempleEnemy, pool, spawnInfo);
+            if(SavedGenerationParameters.AbyssTempleRectangle.Contains(new Point(spawnInfo.SpawnTileX, spawnInfo.SpawnTileY)))
+            {
+                AddEnemiesFromSpawnSet(SpawnSets.AbyssTempleEnemy, pool, spawnInfo);
+
+            }
+
         }
     }
 }

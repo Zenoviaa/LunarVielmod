@@ -1,15 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Stellamod.Assets;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core;
-using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
-using Stellamod.Trails;
-using System;
+using Stellamod.Core.Rendering.RTs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -39,10 +30,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
     [Autoload(Side = ModSide.Client)]
     public class SanguineBloodRenderManager : ModSystem
     {
-        private RenderTargetProvider _bloodBGRenderRT  = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-        private RenderTargetProvider _pixelRenderRT = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(4));
-        private RenderTargetProvider _pixelScreenRenderRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-        private List<IDrawSanguineBlood> _draws = new List<IDrawSanguineBlood>(100);
+        private List<IDrawSanguineBlood> _draws = new List<IDrawSanguineBlood>(2);
 
         public int DownSamples => 4;
         public bool DrawBloodyBG;
@@ -50,18 +38,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         public override void OnModLoad()
         {
             base.OnModLoad();
-            On_Main.CheckMonoliths += RenderToPixelationRT;
             On_Main.DrawNPCs += DrawBlack;
-            On_Main.DoDraw_WallsTilesNPCs += DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
         }
 
         public override void OnModUnload()
         {
             base.OnModUnload();
-            On_Main.CheckMonoliths -= RenderToPixelationRT;
             On_Main.DrawNPCs -= DrawBlack;
-            On_Main.DoDraw_WallsTilesNPCs -= DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRTToScreen;
         }
 
@@ -85,13 +69,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float beatsPerTick = 130 / 60f / 60f;
             _beatTimer += beatsPerTick;
 
-  
+
             while (_beatTimer >= 1f)
             {
                 _beatTimer -= 1f;
                 _beatCounter++;
             }
-            if(_beatCounter % 8 == 0)
+            if (_beatCounter % 8 == 0)
             {
                 _in = !_in;
             }
@@ -117,10 +101,42 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 FlickerTimer--;
             Metronome();
         }
+        private void DrawBloodyBG2()
+        {
+            var bloodStormShader = BloodStormShader.Instance;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, Main.Rasterizer, bloodStormShader.Effect, Main.Transform);
 
 
+
+
+            Vector2 centerOrigin = Main.ScreenSize.ToVector2() / 2f;
+
+
+
+
+
+
+
+            float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
+            Texture2D vortexTexture = AssetRegistry.NoiseTextures.JungleWaterCaustics.Value;
+            Vector2 scaleMult = Main.ScreenSize.ToVector2() / vortexTexture.Size();
+            spriteBatch.Draw(vortexTexture, centerOrigin, null, Color.White * alpha, 0f, vortexTexture.Size() / 2f, scaleMult * _scale, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+        }
         private void DrawBloodyBG1()
         {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            RenderTargetHandle whiteTarget = RenderTargets.ScreenTarget;
+            using(new RenderTargetContext(whiteTarget, Color.White))
+            {
+
+            }
+
             var bloodyShader = BloodyShader.Instance;
             bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.7f);
             bloodyShader.OuterColor = Color.Black;
@@ -129,32 +145,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             bloodyShader.Time = Main.GlobalTimeWrappedHourly * 3;
             bloodyShader.NoiseTexture = TextureRegistry.Clouds6;
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
+       
+     
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
 
             float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
 
-            Vector2 centerOrigin = _bloodBGRenderRT.Size / 2f;
-            spriteBatch.Draw(_bloodBGRenderRT, centerOrigin, null, Color.White * alpha * 0.55f, 0f, centerOrigin, _scale, SpriteEffects.None, 0f);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-        }
-
-        private void DrawBloodyBG2()
-        {
-            var bloodStormShader = BloodStormShader.Instance;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodStormShader.Effect, Main.Transform);
-
-            Vector2 centerOrigin = _bloodBGRenderRT.Size / 2f;
-
-            float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
-            Texture2D vortexTexture = AssetRegistry.NoiseTextures.JungleWaterCaustics.Value;
-            Vector2 scaleMult = _bloodBGRenderRT.Size / vortexTexture.Size();
-            spriteBatch.Draw(vortexTexture, centerOrigin, null, Color.White * alpha, 0f, vortexTexture.Size() / 2f, scaleMult * _scale, SpriteEffects.None, 0f);
-
+            Vector2 centerOrigin = whiteTarget.Size() / 2f;
+            spriteBatch.Draw(whiteTarget, centerOrigin, null, Color.White * alpha * 0.55f, 0f, centerOrigin, _scale, SpriteEffects.None, 0f);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
         }
@@ -164,13 +162,18 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (DrawBloodyBG)
             {
                 GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-                graphicsDevice.Clear(Color.Transparent);
+                graphicsDevice.Clear(Color.Black);
                 DrawBloodyBG2();
                 DrawBloodyBG1();
+
+            }
+
+            if (DrawBloodyBG)
+            {
                 DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
                 if (singularityFallSystem.hoveringPlatform)
                 {
-                    Texture2D bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+                    Texture2D bloomLine = AssetReferences.Assets.NoiseTextures.BloomLine.Asset.Value;
                     Vector2 drawOrigin = new Vector2(bloomLine.Size().X / 2, 0);
                     float rotation = MathHelper.PiOver2;
                     Color drawColor = Color.Red;
@@ -184,19 +187,17 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
                     spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, -rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
                 }
+
                 DrawBloodyBG = false;
             }
-  
             orig(self, behindTiles);
+
         }
 
-        private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
+
+
+        private void PreparePixelatedContent(RenderTargetHandle pixelRTDown, RenderTargetHandle pixelRTScreen)
         {
-            orig();
-   
-            if (Main.gameMenu)
-                return;
-      
             _draws.Clear();
             foreach (var proj in Main.ActiveProjectiles)
             {
@@ -207,12 +208,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            if (_draws.Count > 0)
+            using (new RenderTargetContext(pixelRTScreen))
             {
-
-                graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
-                graphicsDevice.Clear(Color.Transparent);
-
                 //Alright, so what we're going to do is actually use two render targets to get around the issue of misplaced pixels
                 //This costs a bit of extra performance but it'll look good
                 //So, first draw at fully quality to the screen render target
@@ -224,42 +221,38 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     draw.DrawToSanguineMask(spriteBatch);
                 }
                 spriteBatch.End();
+            }
 
-
-                //Now we take that output and downscale it to the pixel RT
-                graphicsDevice.SetRenderTarget(_pixelRenderRT);
-                graphicsDevice.Clear(Color.Transparent);
+            using (new RenderTargetContext(pixelRTDown))
+            {
 
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 float denom = DownSamples;
                 float scale = 1f / denom;
-                spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(pixelRTScreen, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
-            graphicsDevice.SetRenderTarget(_bloodBGRenderRT);
-            graphicsDevice.Clear(Color.White);
         }
-
-
-        private void DrawBloodRTToScreen(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
-   
-        {
-  
-          
-            orig(self);
-            if (Main.gameMenu)
-                return;
-         
-        }
-
         private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
             orig(self);
             if (Main.gameMenu)
                 return;
 
+            _draws.Clear();
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                if (proj.ModProjectile is IDrawSanguineBlood pixelated)
+                {
+                    _draws.Add(pixelated);
+                }
+            }
             if (_draws.Count <= 0)
                 return;
+
+            RenderTargetHandle pixelRenderRT = RenderTargets.QuarterScreenTarget;
+            RenderTargetHandle pixelTargetScren = RenderTargets.ScreenTarget;
+            PreparePixelatedContent(pixelRenderRT, pixelTargetScren);
 
             var bloodyShader = BloodyShader.Instance;
             bloodyShader.InnerColor = Color.Red;
@@ -276,29 +269,29 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float redOutlineOffset = 4;
             Vector2 v = Vector2.UnitY * redOutlineOffset;
             Vector2 h = Vector2.UnitX * redOutlineOffset;
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + v, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - v, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + h, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - h, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
+            //TODO: replace with outline shader
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero + v, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero - v, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero + h, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero - h, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
             float outlineOffset = 2;
             v = Vector2.UnitY * outlineOffset;
             h = Vector2.UnitX * outlineOffset;
 
 
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero + v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero - v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero + h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero - h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.End();
 
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, 
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                 DepthStencilState.Default, RasterizerState.CullNone, bloodyShader.Effect);
 
-     
-
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(pixelRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
     }

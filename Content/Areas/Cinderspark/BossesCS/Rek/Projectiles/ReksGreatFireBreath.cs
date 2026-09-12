@@ -7,7 +7,7 @@ using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Effects.Generic;
 using Stellamod.Effects.RekFlames;
 using Stellamod.Visual.Particles;
@@ -23,10 +23,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
 public class ReksGreatFireBreathRenderer : ModSystem
 {
-    private RenderTargetProvider _greatFireRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _greatFireRT2 = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public static readonly List<Action<SpriteBatch>> FirebreathDrawActions = new List<Action<SpriteBatch>>();
-
     public override void Load()
     {
         base.Load();
@@ -38,43 +35,39 @@ public class ReksGreatFireBreathRenderer : ModSystem
         orig();
         if (FirebreathDrawActions.Count <= 0)
             return;
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_greatFireRT2);
-        graphicsDevice.Clear(Color.Transparent);
 
-        SpritebatchParams startParams = SpritebatchParams.InWorldAndZoomed();
-        spriteBatch.Begin(startParams);
-        foreach (var drawAction in FirebreathDrawActions)
-        {
-            drawAction(spriteBatch);
-        }
-        spriteBatch.End();
-        FirebreathDrawActions.Clear();
-        graphicsDevice.SetRenderTarget(_greatFireRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-        var palette = DitheredColorPaletteShader.PrepareForDrawing(PaletteAssets.FromPaletteFile(PaletteAssets.FIREBREATH).Value.ColorAtlas, _greatFireRT.Size);
-        startParams.effect = palette.Effect;
-        spriteBatch.Begin(startParams);
-        spriteBatch.Draw(_greatFireRT2, Vector2.Zero, Color.White);
-        spriteBatch.End();
-        graphicsDevice.SetRenderTarget(null);
         PixelationManager.QueueSpritebatchDrawAction(DrawToScreen);
     }
 
-    private void DrawToScreen(SpriteBatch sb, Vector2 sp)
+    private void DrawToScreen(SpriteBatch spriteBatch, Vector2 sp)
     {
-        sb.Draw(_greatFireRT, Vector2.Zero, Color.White);
+        spriteBatch.EndOut(out var oldParameters);
+        SpritebatchParams startParams = SpritebatchParams.InWorldAndZoomed();
+        RenderTargetHandle greatFireRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle greatFireRT2 = RenderTargets.ScreenTarget;
+        using(new RenderTargetContext(greatFireRT2))
+        {
+            spriteBatch.Begin(startParams);
+            foreach (var drawAction in FirebreathDrawActions)
+            {
+                drawAction(spriteBatch);
+            }
+            spriteBatch.End();
+            FirebreathDrawActions.Clear();
+        }
 
+        using (new RenderTargetContext(greatFireRT))
+        {
+            var palette = DitheredColorPaletteShader.PrepareForDrawing(PaletteAssets.FromPaletteFile(PaletteAssets.FIREBREATH).Value.ColorAtlas, greatFireRT.Size());
+            startParams.effect = palette.Effect;
+            spriteBatch.Begin(startParams);
+            spriteBatch.Draw(greatFireRT2, Vector2.Zero, Color.White);
+            spriteBatch.End();
+        }
+
+        spriteBatch.Begin(oldParameters);
+        spriteBatch.Draw(greatFireRT, Vector2.Zero, Color.White);
     }
-
-    public override void PreUpdateProjectiles()
-    {
-        base.PreUpdateProjectiles();
-
-    }
-
 }
 public class ReksGreatFireBreath : ModProjectile,
     IDrawToRenderTarget

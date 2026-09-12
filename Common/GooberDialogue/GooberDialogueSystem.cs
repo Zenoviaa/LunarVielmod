@@ -1,7 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -161,15 +161,10 @@ public class GooberDialogueSystem : ModSystem
 {
     private readonly static Quad<VertexPositionColorTexture> _squareQuad = new();
     private readonly static List<SpeechBubble> _speechBubbles = new();
-    private RenderTargetProvider _pixelTarget = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(2));
-    private RenderTargetProvider _boxRenderTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _boxRenderTargetSwap = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void Load()
     {
         base.Load();
 
-
-        On_Main.CheckMonoliths += RenderDialogueBox;
         On_Main.DrawPlayers_AfterProjectiles += RenderToScreen;
     }
     public override void PostUpdateEverything()
@@ -209,9 +204,15 @@ public class GooberDialogueSystem : ModSystem
         orig(self);
         if (!ShouldRender())
             return;
+
+        RenderTargetHandle pixelTarget = RenderTargets.HalfScreenTarget;
+        RenderTargetHandle boxRenderTarget = RenderTargets.ScreenTarget;
+        RenderTargetHandle boxRenderTargetSwap = RenderTargets.ScreenTarget;
+        PrepareSpeechBubbleContent(pixelTarget, boxRenderTarget, boxRenderTargetSwap);
+
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-        spriteBatch.Draw(_pixelTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+        spriteBatch.Draw(pixelTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
         spriteBatch.End();
 
         SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.PortraitLine.Asset, Vector2.Zero);
@@ -264,16 +265,6 @@ public class GooberDialogueSystem : ModSystem
         spriteBatch.End();
     }
 
-    private void RenderDialogueBox(On_Main.orig_CheckMonoliths orig)
-    {
-        orig();
-        if (!ShouldRender())
-            return;
-        foreach (var bubble in _speechBubbles)
-        {
-            RenderDialogueBoxToPixelTarget(bubble);
-        }
-    }
 
     private void PrepareQuad(Vector2 anchorPoint, Vector2 size, Color startColor, Color endColor)
     {
@@ -290,63 +281,69 @@ public class GooberDialogueSystem : ModSystem
         _squareQuad.vertices[3] = new VertexPositionColorTexture(new Vector3(anchorPoint.X + size.X + 8, anchorPoint.Y + size.Y - 8, 0), endColor, Vector2.One);
     }
 
-    private void DrawOutline(RenderTarget2D src, RenderTarget2D dst, SpriteBatch spriteBatch, Effect effect, Color outlineColor)
+    private void DrawOutline(RenderTargetHandle src, RenderTargetHandle dst, SpriteBatch spriteBatch, Effect effect, Color outlineColor)
     {
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(dst);
-        graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(
-            SpriteSortMode.Deferred,
-            BlendState.AlphaBlend,
-            SamplerState.PointClamp,
-            DepthStencilState.None,
-            RasterizerState.CullNone,
-            effect);
-        spriteBatch.Draw(src, Vector2.Zero, outlineColor);
-        spriteBatch.End();
+        using(new RenderTargetContext(dst))
+        {
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                effect);
+            spriteBatch.Draw(src, Vector2.Zero, outlineColor);
+            spriteBatch.End();
+        }
     }
 
-    private void RenderDialogueBoxToPixelTarget(SpeechBubble speechBubble)
+    private void PrepareSpeechBubbleContent(RenderTargetHandle pixelTarget, RenderTargetHandle boxRenderTarget, RenderTargetHandle boxRenderTargetSwap)
+    {
+        foreach(var bubble in _speechBubbles)
+        {
+            RenderDialogueBoxToPixelTarget(bubble, pixelTarget, boxRenderTarget, boxRenderTargetSwap);
+        }
+    }
+
+    private void RenderDialogueBoxToPixelTarget(SpeechBubble speechBubble, RenderTargetHandle pixelTarget, RenderTargetHandle boxRenderTarget, RenderTargetHandle boxRenderTargetSwap)
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_boxRenderTarget);
-        graphicsDevice.Clear(Color.Transparent);
-        graphicsDevice.RasterizerState = RasterizerState.CullNone;
+        using(new RenderTargetContext(boxRenderTarget))
+        {
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            HlslSampler noiseSpriteSampler = new();
+            noiseSpriteSampler.Texture = AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value;
+            noiseSpriteSampler.Sampler = SamplerState.PointClamp;
 
-
-
-        HlslSampler noiseSpriteSampler = new();
-        noiseSpriteSampler.Texture = AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value;
-        noiseSpriteSampler.Sampler = SamplerState.PointClamp;
-
-        var pass = AssetReferences.Effects.Generic.Square.CreatePrimitivesPass();
-        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
-        pass.Parameters.spriteSampler = noiseSpriteSampler;
-        pass.Apply();
-        pass.Shader.CurrentTechnique.Passes[0].Apply();
-        PrepareQuad(
-            speechBubble.parameters.bubblePosition,
-            new Vector2(384, 128),
-            speechBubble.parameters.startGradientColor * 0.8f
-            , speechBubble.parameters.endGradientColor * 0.8f);
-        _squareQuad.Draw();
-        spriteBatch.Begin(
-            SpriteSortMode.Deferred,
-            BlendState.AlphaBlend,
-            SamplerState.PointClamp,
-            DepthStencilState.None,
-            RasterizerState.CullNone,
-            null,
-            Main.GameViewMatrix.TransformationMatrix);
-        SpritebatchDrawer tailDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.Tail.Asset, speechBubble.parameters.bubblePosition + new Vector2(0, 72));
-        tailDrawer.color = speechBubble.parameters.startGradientColor;
-        spriteBatch.Draw(tailDrawer);
-        spriteBatch.End();
+            var pass = AssetReferences.Effects.Generic.Square.CreatePrimitivesPass();
+            pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+            pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+            pass.Parameters.spriteSampler = noiseSpriteSampler;
+            pass.Apply();
+            pass.Shader.CurrentTechnique.Passes[0].Apply();
+            PrepareQuad(
+                speechBubble.parameters.bubblePosition,
+                new Vector2(384, 128),
+                speechBubble.parameters.startGradientColor * 0.8f
+                , speechBubble.parameters.endGradientColor * 0.8f);
+            _squareQuad.Draw();
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                null,
+                Main.GameViewMatrix.TransformationMatrix);
+            SpritebatchDrawer tailDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.Tail.Asset, speechBubble.parameters.bubblePosition + new Vector2(0, 72));
+            tailDrawer.color = speechBubble.parameters.startGradientColor;
+            spriteBatch.Draw(tailDrawer);
+            spriteBatch.End();
+        }
 
         HlslSampler spriteSampler = new();
-        spriteSampler.Texture = _boxRenderTarget;
+        spriteSampler.Texture = boxRenderTarget;
         spriteSampler.Sampler = SamplerState.PointClamp;
 
         Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
@@ -355,25 +352,24 @@ public class GooberDialogueSystem : ModSystem
         outlinerPass.Parameters.spriteSampler = spriteSampler;
         outlinerPass.Parameters.texelSize = texelSize;
         outlinerPass.Apply();
-        DrawOutline(_boxRenderTarget, _boxRenderTargetSwap, spriteBatch, outlinerPass.Shader, Color.White);
-        DrawOutline(_boxRenderTargetSwap, _boxRenderTarget, spriteBatch, outlinerPass.Shader, Color.White);
-        DrawOutline(_boxRenderTarget, _boxRenderTargetSwap, spriteBatch, outlinerPass.Shader, speechBubble.parameters.outlineColor);
+        DrawOutline(boxRenderTarget, boxRenderTargetSwap, spriteBatch, outlinerPass.Shader, Color.White);
+        DrawOutline(boxRenderTargetSwap, boxRenderTarget, spriteBatch, outlinerPass.Shader, Color.White);
+        DrawOutline(boxRenderTarget, boxRenderTargetSwap, spriteBatch, outlinerPass.Shader, speechBubble.parameters.outlineColor);
 
         var noisePass = AssetReferences.Effects.Generic.Scroll.CreatePixelPass();
         noisePass.Parameters.time = Main.GlobalTimeWrappedHourly * 4;
 
-        graphicsDevice.SetRenderTarget(_pixelTarget);
-        graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(
-            SpriteSortMode.Deferred,
-            BlendState.AlphaBlend,
-            SamplerState.PointClamp,
-            DepthStencilState.None,
-            RasterizerState.CullNone);
-        spriteBatch.Draw(_boxRenderTargetSwap, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-        spriteBatch.End();
-
-        graphicsDevice.SetRenderTarget(null);
+        using(new RenderTargetContext(pixelTarget))
+        {
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone);
+            spriteBatch.Draw(boxRenderTargetSwap, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+            spriteBatch.End();
+        }
     }
 
     /// <summary>

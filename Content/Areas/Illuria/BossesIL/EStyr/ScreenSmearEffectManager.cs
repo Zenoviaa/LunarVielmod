@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
@@ -30,7 +30,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             public bool screenBound;
             public Vector2 scale;
         }
-        private RenderTargetProvider _smearMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private LazyRenderTargetProvider _smearMaskRT = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         private List<SmearParticle> _particles;
         public override void OnModLoad()
         {

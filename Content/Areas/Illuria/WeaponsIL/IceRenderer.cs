@@ -1,115 +1,83 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
-using Stellamod.Core.Utilities;
+using Stellamod.Core.Rendering.RTs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.Illuria.WeaponsIL
+namespace Stellamod.Content.Areas.Illuria.WeaponsIL;
+
+[Autoload(Side = ModSide.Client)]
+public class IceRenderer : ModSystem,
+    IRenderer
 {
-    [Autoload(Side = ModSide.Client)]
-    public class IceRenderer : ModSystem,
-        IRenderer
+    private Queue<PixelTarget.SpritebatchDrawAction> _drawActionQueue;
+    public int Priority => 0;
+
+    public override void OnModLoad()
     {
+        base.OnModLoad();
+        _drawActionQueue = new Queue<PixelTarget.SpritebatchDrawAction>(2);
+    }
 
-        private RenderTargetProvider _icicleMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-        private RenderTargetProvider _iceRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-        private RenderTargetProvider _icicleRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-        private Queue<PixelTarget.SpritebatchDrawAction> _drawActionQueue;
-        private bool _ices;
-
-        public int Priority => 0;
-
-        public override void OnModLoad()
+    public void Render()
+    {
+        if (_drawActionQueue.Count > 0)
         {
-            base.OnModLoad();
-            _drawActionQueue = new Queue<PixelTarget.SpritebatchDrawAction>(100);
+            PixelationManager.QueueSpritebatchDrawAction(DrawMaskToPixelTarget, DrawLayer.OverNPCsWithOutline);
         }
+    }
 
-        public void Render()
+    private void DrawMaskToPixelTarget(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        RenderTargetHandle iceRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle icicleMaskRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle icicleRT = RenderTargets.ScreenTarget;
+        spriteBatch.EndOut(out var parameters);
+
+        using (new RenderTargetContext(icicleMaskRT))
         {
-            RenderIcicleMask();
-
-            if (_ices)
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            while (_drawActionQueue.Count > 0)
             {
-                RenderIceTexture();
-                RenderIcicles();
-                PixelationManager.QueueSpritebatchDrawAction(DrawMaskToPixelTarget, DrawLayer.OverNPCsWithOutline);
+                var drawAction = _drawActionQueue.Dequeue();
+                drawAction(spriteBatch, Main.screenPosition);
             }
+            spriteBatch.End();
         }
 
-        private void RenderIceTexture()
+        using (new RenderTargetContext(iceRT))
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_iceRT);
-            graphicsDevice.Clear(Color.Transparent);
-
             IceShader iceShader = IceShader.Instance;
             iceShader.NoiseTexture = TrailRegistry.Clouds3;
             iceShader.Tiling = Vector2.One * 132;
 
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, iceShader.Effect);
-            spriteBatch.Draw(_icicleMaskRT, Vector2.Zero, Color.White);
-
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, iceShader.Effect);
+            spriteBatch.Draw(icicleMaskRT, Vector2.Zero, Color.White);
             spriteBatch.End();
-
-            graphicsDevice.SetRenderTarget(null);
         }
 
-        private void RenderIcicleMask()
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_icicleMaskRT);
-            graphicsDevice.Clear(Color.Transparent);
-            _ices = _drawActionQueue.Count > 0;
-            if (_ices)
-            {
-
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                while (_drawActionQueue.Count > 0)
-                {
-                    var drawAction = _drawActionQueue.Dequeue();
-                    drawAction(spriteBatch, Main.screenPosition);
-                }
-                spriteBatch.End();
-            }
-            graphicsDevice.SetRenderTarget(null);
-        }
-        private void RenderIcicles()
+        using (new RenderTargetContext(icicleRT))
         {
             MaskCombineShader combineShader = MaskCombineShader.Instance;
-            combineShader.MixTexture = _iceRT;
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_icicleRT);
-            graphicsDevice.Clear(Color.Transparent);
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, combineShader.Effect);
-            spriteBatch.Draw(_icicleMaskRT, Vector2.Zero, Color.White);
+            combineShader.MixTexture = iceRT;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, combineShader.Effect);
+            spriteBatch.Draw(icicleMaskRT, Vector2.Zero, Color.White);
             spriteBatch.End();
-            graphicsDevice.SetRenderTarget(null);
         }
 
-        private void DrawMaskToPixelTarget(SpriteBatch spriteBatch, Vector2 screenPos)
-        {
-
-            spriteBatch.Draw(_icicleRT, Vector2.Zero, Color.White);
-        }
+        spriteBatch.Begin(parameters);
+        spriteBatch.Draw(icicleRT, Vector2.Zero, Color.White);
+    }
 
 
-        public static void QueueDrawAction(PixelTarget.SpritebatchDrawAction drawAction)
-        {
-            if (Main.netMode == NetmodeID.Server)
-                return;
-            IceRenderer renderer = ModContent.GetInstance<IceRenderer>();
-            renderer._drawActionQueue.Enqueue(drawAction);
-        }
+    public static void QueueDrawAction(PixelTarget.SpritebatchDrawAction drawAction)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        IceRenderer renderer = ModContent.GetInstance<IceRenderer>();
+        renderer._drawActionQueue.Enqueue(drawAction);
     }
 }

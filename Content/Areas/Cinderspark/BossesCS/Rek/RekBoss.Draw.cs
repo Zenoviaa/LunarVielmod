@@ -3,7 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Effects.GothinFlames;
 using Stellamod.Effects.RekFlames;
 using Stellamod.Effects.RoyalMagic;
@@ -21,8 +21,8 @@ public delegate void SilhouetteDraw(SpriteBatch sb);
 [Autoload(Side = ModSide.Client)]
 public class RekSilhouetteSystem : ModSystem
 {
-    private RenderTargetProvider _maskedTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _waterMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private LazyRenderTargetProvider _maskedTarget = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private LazyRenderTargetProvider _waterMaskRT = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public readonly List<SilhouetteDraw> SilhouettesToDraw = new();
     public readonly List<SilhouetteDraw> TileSilhouettesToDraw = new();
     public readonly List<Point> KelpPoints = new();

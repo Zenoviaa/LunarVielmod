@@ -4,7 +4,7 @@ using Stellamod.Content.Biomes;
 using Stellamod.Core;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Palettes;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
@@ -49,12 +49,10 @@ public class AbyssEffectsRenderer : ModSystem
     /// </summary>
     public static readonly List<WaterfallDraw> AllWaterfalls = new();
     public static readonly List<Action> OverWater = new();
-    public RenderTargetProvider WaterfallTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void Load()
     {
         base.Load();
         On_Main.Ambience += WaterfallAmbience;
-        On_Main.CheckMonoliths += RenderWaterfallTarget;
         On_Main.RenderTiles += ResetSpecialPoints;
         On_Main.RenderWalls += ResetSpecialPoints;
 
@@ -91,15 +89,9 @@ public class AbyssEffectsRenderer : ModSystem
         orig();
     }
 
-    private void RenderWaterfallTarget(On_Main.orig_CheckMonoliths orig)
+
+    private void PrepareWaterfallTargetContent()
     {
-        orig();
-        if (AbyssWaterfallPoints.Count <= 0)
-            return;
-        _renderCountdown--;
-        if (_renderCountdown > 0)
-            return;
-        _renderCountdown = 1;
         //Waterfall shading
         var pass = AssetReferences.Effects.Abyss.Waterfall.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.75f;
@@ -119,8 +111,6 @@ public class AbyssEffectsRenderer : ModSystem
         pass.Apply();
 
         SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.GraphicsDevice.SetRenderTarget(WaterfallTarget);
-        spriteBatch.GraphicsDevice.Clear(Color.Transparent);
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
         drawer.drawOrigin = Vector2.Zero;
 
@@ -134,7 +124,7 @@ public class AbyssEffectsRenderer : ModSystem
             //int i = 0;
             int spX = (int)Main.screenPosition.X;
             int spY = (int)Main.screenPosition.Y;
-            foreach (var  wf in AbyssWaterfallPoints)
+            foreach (var wf in AbyssWaterfallPoints)
             {
                 Rectangle screenREct = wf.waterfallRect;
                 screenREct.X -= spX;
@@ -146,7 +136,6 @@ public class AbyssEffectsRenderer : ModSystem
 
         }
         sceneWaterfallPos = Main.screenPosition;
-        spriteBatch.GraphicsDevice.SetRenderTarget(null);
     }
 
     private void DrawOverWater(On_Main.orig_DrawInfernoRings orig, Main self)
@@ -253,25 +242,28 @@ public class AbyssEffectsRenderer : ModSystem
         pass.Parameters.texelSize = Main.instance.tileTarget.GetTexelSize() * 2;
         pass.Apply();
         SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.GraphicsDevice.SetRenderTarget(ExtraRenderTargets.TileTargetSwap);
-        spriteBatch.GraphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(
-            SpriteSortMode.Deferred,
-            BlendState.AlphaBlend,
-            SamplerState.PointClamp,
-            DepthStencilState.None,
-            RasterizerState.CullNone,
-            pass.Shader);
-        spriteBatch.Draw(Main.instance.tileTarget, Vector2.Zero, AbyssEffectsRenderer.TileGlowColor);
-        spriteBatch.End();
+        RenderTargetHandle tileTargetSwap = RenderTargets.TileTarget;
+        using(new RenderTargetContext(tileTargetSwap))
+        {
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                pass.Shader);
+            spriteBatch.Draw(Main.instance.tileTarget, Vector2.Zero, AbyssEffectsRenderer.TileGlowColor);
+            spriteBatch.End();
+        }
 
         spriteBatch.GraphicsDevice.SetRenderTarget(Main.instance.tileTarget);
         spriteBatch.GraphicsDevice.Clear(Color.Transparent);
         spriteBatch.Begin();
-        spriteBatch.Draw(ExtraRenderTargets.TileTargetSwap, Vector2.Zero, Color.White);
+        spriteBatch.Draw(tileTargetSwap, Vector2.Zero, Color.White);
         spriteBatch.End();
         spriteBatch.GraphicsDevice.SetRenderTarget(null);
     }
+
 
     private void ScanUpforWaterfall(int i, int j)
     {
@@ -465,16 +457,33 @@ public class AbyssEffectsRenderer : ModSystem
         //     Main.NewText(AbyssWaterfallPoints.Count);
         if (AbyssWaterfallPoints.Count > 0)
         {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.EndOut(out var oldParameters);
+            
+            //Render to waterfall render target
+            RenderTargetHandle handle = RenderTargets.ScreenTarget;
+
+            //A target is needed to properly blend the waterfalls together
+            using(new RenderTargetContext(handle))
+            {
+                PrepareWaterfallTargetContent();
+            }
+
+            //Render waterfall render target to screen
             var pass = AssetReferences.Effects.Abyss.WaterfallOutline.CreatePixelPass();
             pass.Parameters.texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
             pass.Apply();
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, pass.Shader);
-            spriteBatch.Draw(WaterfallTarget, sceneWaterfallPos - Main.screenPosition, Color.White);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            using (new SpritebatchContext(spriteBatch, oldParameters with 
+            { 
+                effect = pass.Shader, 
+                matrix = Matrix.identity
+            }))
+            {
+                spriteBatch.Draw(handle, sceneWaterfallPos - Main.screenPosition, Color.White);
+            }
 
+            //resume sprite batch
+            spriteBatch.Begin(oldParameters);
         }
     }
 }

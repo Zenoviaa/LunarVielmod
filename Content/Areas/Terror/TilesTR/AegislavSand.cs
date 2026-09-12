@@ -2,7 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.TilesNew.RainforestTiles;
@@ -73,9 +73,6 @@ public class AegislavDustRenderer : ModSystem
     private Asset<Texture2D> _maskTexture;
     private Asset<Texture2D> _cloudTexture;
     public static readonly HashSet<Point> DustPoints = new();
-    private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _cloudRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-
     public override void Load()
     {
         base.Load();
@@ -92,37 +89,24 @@ public class AegislavDustRenderer : ModSystem
         orig(self);
     }
 
-
-    private void RenderDustClouds(SpriteBatch sb, Vector2 screenPos)
-    {
-        _cloudTexture ??= ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds2");
-        AegislavDustShader dustShader = AegislavDustShader.Instance;
-        dustShader.Tiling = new Vector2(1f, 1f);
-
-      
-        dustShader.Parallax = Vector2.Zero;
-        sb.GraphicsDevice.Textures[1] = _cloudRT;
-        sb.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
-        sb.Restart(effect: dustShader.Effect, samplerState: SamplerState.LinearWrap);
-
-        Color fogColor = Color.Pink * 0.9f;
-        fogColor.A = 0;
-        sb.Draw(_maskRT, Vector2.Zero, fogColor);
-        sb.RestartDefaults();
-    }
-
-  
-
     private void RenderDustMask(On_Main.orig_CheckMonoliths orig)
     {
         if (!Main.gameMenu && DustPoints.Count > 0)
         {
-            GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-            gDevice.SetRenderTarget(_maskRT);
-            gDevice.Clear(Color.Transparent);
-            SpriteBatch spriteBatch = Main.spriteBatch;
+            PixelationManager.QueueSpritebatchDrawAction(RenderDustClouds, DrawLayer.OverPlayers);
+        }
 
-            bool renderClouds = true;
+        orig();
+    }
+
+    private void RenderDustClouds(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        spriteBatch.EndOut(out var oldParameters);
+        RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle cloudRT = RenderTargets.ScreenTarget;
+
+        using(new RenderTargetContext(maskRT))
+        {
             _maskTexture = AssetManager.GlowMask.SimpleGlowCircle;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null,
                 Main.GameViewMatrix.TransformationMatrix); ;
@@ -131,7 +115,7 @@ public class AegislavDustRenderer : ModSystem
             sbDrawer.color = Color.White;
             sbDrawer.color.A = 0;
             sbDrawer.scale *= 0.5f;
-            foreach(Point point in DustPoints)
+            foreach (Point point in DustPoints)
             {
                 Vector2 worldCoordinates = point.ToWorldCoordinates();
                 sbDrawer.worldPosition = worldCoordinates;
@@ -139,36 +123,48 @@ public class AegislavDustRenderer : ModSystem
             }
 
             spriteBatch.End();
-            PixelationManager.QueueSpritebatchDrawAction(RenderDustClouds, DrawLayer.OverPlayers);
 
-            gDevice.SetRenderTarget(_cloudRT);
-            gDevice.Clear(Color.Transparent);
-
-            if (renderClouds)
-            {
-                _cloudTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds2");
-                BackgroundParallaxShader pShader = BackgroundParallaxShader.Instance;
-                Vector2 parallax = Main.screenPosition * 0.0001f + new Vector2(Main.GlobalTimeWrappedHourly * -0.015f, 0.0f);
-                
-
-                Vector2 texelSize = Vector2.One / new Vector2(_maskTexture.Width(), _maskTexture.Height());
-                Vector2 screenoffset = Main.screenPosition * texelSize;
-                screenoffset *= (1f / 4f);
-                screenoffset.Y *= 2f;
-
-                pShader.Parallax = parallax + screenoffset;
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,
-                    pShader.Effect); ;
-
-                Rectangle dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-                spriteBatch.Draw(_cloudTexture.Value, dstRect, null, Color.White);
-                spriteBatch.End();
-            }
         }
 
-        orig();
-        //throw new NotImplementedException();
+        using(new RenderTargetContext(cloudRT))
+        {
+            _cloudTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds2");
+            BackgroundParallaxShader pShader = BackgroundParallaxShader.Instance;
+            Vector2 parallax = Main.screenPosition * 0.0001f + new Vector2(Main.GlobalTimeWrappedHourly * -0.015f, 0.0f);
+
+
+            Vector2 texelSize = Vector2.One / new Vector2(_maskTexture.Width(), _maskTexture.Height());
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            screenoffset *= (1f / 4f);
+            screenoffset.Y *= 2f;
+
+            pShader.Parallax = parallax + screenoffset;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,
+                pShader.Effect); ;
+
+            Rectangle dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+            spriteBatch.Draw(_cloudTexture.Value, dstRect, null, Color.White);
+            spriteBatch.End();
+        }
+
+
+        _cloudTexture ??= ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds2");
+        AegislavDustShader dustShader = AegislavDustShader.Instance;
+        dustShader.Tiling = new Vector2(1f, 1f);
+        dustShader.Parallax = Vector2.Zero;
+
+        spriteBatch.GraphicsDevice.Textures[1] = cloudRT;
+        spriteBatch.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
+        spriteBatch.Begin(oldParameters with { effect = dustShader.Effect, samplerState = SamplerState.LinearWrap });
+        Color fogColor = Color.Pink * 0.9f;
+        fogColor.A = 0;
+        spriteBatch.Draw(maskRT, Vector2.Zero, fogColor);
+        spriteBatch.End();
+        spriteBatch.Begin(oldParameters);
     }
+
+  
+
 
     public override void Unload()
     {

@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.UI;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
@@ -73,30 +74,8 @@ namespace Stellamod.Common.WeaponUpgrade.UI
             base.OnModLoad();
             _userInterface = new UserInterface();
             reforgeUIState = new WeaponUpgradeUIState();
-            reforgeUIState.Activate();
-            On_Main.CheckMonoliths += RenderUI;
         }
 
-        private void RenderUI(On_Main.orig_CheckMonoliths orig)
-        {
-            if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
-            {
-                PlayerInput.SetZoom_UI();
-                Main.spriteBatch.GraphicsDevice.SetRenderTarget(UITarget);
-                Main.spriteBatch.GraphicsDevice.Clear(Color.Transparent);
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
-                        Main.UIScaleMatrix);
-
-                _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
-
-                Main.spriteBatch.End();
-                PlayerInput.SetZoom_World();
-            }
-
-            orig();
-        }
-
-        public RenderTarget2D UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
         public override void UpdateUI(GameTime gameTime)
         {
             ForgeGlow = MathHelper.Lerp(ForgeGlow, 0f, (float)gameTime.ElapsedGameTime.TotalSeconds * 3);
@@ -116,7 +95,6 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 
             }
           
-
             _inTimer = MathHelper.Clamp(_inTimer, 0f, easeInTime);
             _inRatio = _inTimer / easeInTime;
 
@@ -156,7 +134,6 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 
         public bool CanReforge()
         {
-
             if (ItemToUpgrade == null || ItemToUpgrade.IsAir)
                 return false;
 
@@ -214,16 +191,26 @@ namespace Stellamod.Common.WeaponUpgrade.UI
                         {
 
                             SpriteBatch spriteBatch = Main.spriteBatch;
-                            spriteBatch.End();
+                            spriteBatch.EndOut(out var parameters);
+                            RenderTargetHandle uiTarget = RenderTargets.ScreenTarget;
+                            using (new RenderTargetContext(uiTarget))
+                            {
+                                using (new SpritebatchContext(spriteBatch, parameters))
+                                {
+                                    _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                                }
+                            }
+
                             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
 
      
                             Vector2 offset = Vector2.Lerp(-Vector2.UnitX * 100, Vector2.Zero, EasingFunction.OutCirc(_inRatio));
                             Color color = Color.Lerp(Color.Transparent, Color.White, _inRatio);
-                            spriteBatch.Draw(UITarget, offset + UITarget.Size() * 0.5f, null, color, 0, UITarget.Size() * 0.5f, MathHelper.Lerp(0f, 1f, EasingFunction.OutCirc(_inRatio)), SpriteEffects.None, 0);
+                            spriteBatch.Draw(uiTarget, offset + uiTarget.Size() * 0.5f, null, color, 0, uiTarget.Size() * 0.5f, MathHelper.Lerp(0f, 1f, EasingFunction.OutCirc(_inRatio)), SpriteEffects.None, 0);
 
                             spriteBatch.End();
-                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
+
+                            spriteBatch.Begin(parameters);
                         }
                         return true;
                     },

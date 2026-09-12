@@ -5,7 +5,7 @@ using Stellamod.Common.ConsoleMenu;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Effects;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Effects.RoyalMagic;
 using System;
 using Terraria;
@@ -21,9 +21,9 @@ public class AegisCloudsRenderer : ModSystem
     private Vector2 _parallax;
     private Vector2 _lastCameraPos;
     private Vector2 _movementDiff;
-    private RenderTargetProvider _rt = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Usage = RenderTargetUsage.PreserveContents });
-    private RenderTargetProvider _rtSwap = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Usage = RenderTargetUsage.PreserveContents });
-    private RenderTargetProvider _cloudsRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private LazyRenderTargetProvider _rt = new LazyRenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Usage = RenderTargetUsage.PreserveContents });
+    private LazyRenderTargetProvider _rtSwap = new LazyRenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Usage = RenderTargetUsage.PreserveContents });
+    private LazyRenderTargetProvider _cloudsRT = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private int _lastRender;
 
     private RenderTarget2D OnScreen
@@ -187,7 +187,6 @@ public class AegisCloudsRenderer : ModSystem
         drawer.color = Color.White;
         Main.spriteBatch.Draw(drawer);
         Main.spriteBatch.End();
-
 
 
         var starsTexture = TextureRegistry.StarNoise2;

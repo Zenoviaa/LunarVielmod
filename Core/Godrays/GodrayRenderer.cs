@@ -89,7 +89,6 @@ namespace Stellamod.Core.Godrays
     {
         private int _lastIndex;
         private int _godrayIndex;
-        private int _primitiveCount;
         private int[] _indexBuffer;
         private GodrayVertex[] _vertexBuffer;
         private GodrayVertex[] _drawVertexBuffer;
@@ -133,6 +132,8 @@ namespace Stellamod.Core.Godrays
                 return;
             LunarVeilClientConfig config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.Godrays)
+                return;
+            if (ModContent.GetInstance<DomainExpansionManager>().noRender)
                 return;
             PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedGodrays, DrawLayer.OverPlayers);
         }
@@ -190,8 +191,6 @@ namespace Stellamod.Core.Godrays
         private void UpdateParticles()
         {
             _godrayIndex = 0;
-            _primitiveCount = 0;
-
             Vector2 shadowDirection = LightingGlobals.ShadowDirection;
             float rotation = shadowDirection.ToRotation();
             for (int i = 0; i < Max_Particle_Count; i++)
@@ -210,7 +209,6 @@ namespace Stellamod.Core.Godrays
                 float lengthModifier = ExtraMath.Osc(0.5f, 1f, 0, i);
                 CalculateVertices(i, particle.position, 2000 * lengthModifier, 90 * width + 16, rotation);
                 PushVertices(i);
-                _primitiveCount += 2;
               
             }
         }

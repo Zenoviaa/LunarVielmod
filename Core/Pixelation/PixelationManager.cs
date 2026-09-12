@@ -1,5 +1,5 @@
 ﻿using Stellamod.Common.Shaders;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.ZTileSystem;
 using System;
 using System.Collections.Generic;
@@ -19,17 +19,15 @@ public class PixelTarget
     public delegate void SpritebatchDrawAction(SpriteBatch spriteBatch, Vector2 screenPos);
 
     private int _renderCount = 0;
-    private RenderTargetProvider _downscaleRenderTarget;
-    private RenderTargetProvider _originalRenderTarget;
+    private bool _mipMap;
     private Queue<SpritebatchDrawAction> _spritebatchActionsQueue;
     private Queue<PrimitivesDrawAction> _primitivesActionsQueue;
     private float _downSamples;
     private BlendState _blendState;
-    public PixelTarget(RenderTargetProvider downScaleRenderTarget, int downSamples = 2, BlendState blendState = null, bool mipMap = false)
+    public PixelTarget(int downSamples = 2, BlendState blendState = null, bool mipMap = false)
     {
+        _mipMap = mipMap;
         _downSamples = downSamples;
-        _downscaleRenderTarget = downScaleRenderTarget;
-        _originalRenderTarget = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { MipMap = mipMap });//ManagedRenderTarget.New(mipMap: mipMap);
         _spritebatchActionsQueue = new Queue<SpritebatchDrawAction>(100);
         _primitivesActionsQueue = new Queue<PrimitivesDrawAction>(100);
         _blendState = blendState == null ? BlendState.AlphaBlend : blendState;
@@ -47,91 +45,109 @@ public class PixelTarget
         _primitivesActionsQueue.Enqueue(action);
     }
 
-    public void Render()
+    private void PreparePixelatedContent(RenderTargetHandle screenTarget, RenderTargetHandle halfScreenTarget)
     {
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        GraphicsDevice graphicsDevice = spriteBatch.graphicsDevice;
+        using (new RenderTargetContext(screenTarget))
+        {
+            //Primitives cannot draw within the spritebatch cause they modify the graphics state
+            //Which would cause inconsistent results if they drew within the spritebatch
+            //To get around this we just have them draw before
+            while (_primitivesActionsQueue.Count > 0)
+            {
+                graphicsDevice.RasterizerState = RasterizerState.CullNone;
+                PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
+                drawAction(graphicsDevice);
+                _renderCount++;
+            }
+
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                Main.Rasterizer,
+                null,
+                Main.GameViewMatrix.TransformationMatrix);
+
+            while (_spritebatchActionsQueue.Count > 0)
+            {
+                SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
+                drawAction(spriteBatch, Main.screenPosition);
+                _renderCount++;
+            }
+            spriteBatch.End();
+        }
+
+        using (new RenderTargetContext(halfScreenTarget))
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            float downScale = 1f / _downSamples;
+            spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, downScale, SpriteEffects.None, 0);
+            spriteBatch.End();
+        }
+
+    }
+
+    public void DrawToScreen()
+    {
+        //Prepared Pixelated Content
         _renderCount = 0;
         if (_primitivesActionsQueue.Count <= 0 && _spritebatchActionsQueue.Count <= 0)
         {
             return;
         }
+
+        RenderTargetHandle screenTarget = _mipMap ? RenderTargets.ScreenTargetMipMapped : RenderTargets.ScreenTarget;
+        RenderTargetHandle halfScreenTarget = RenderTargets.HalfScreenTarget;
         SpriteBatch spriteBatch = Main.spriteBatch;
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_originalRenderTarget);
-        graphicsDevice.Clear(Color.Transparent);
-
-        //Primitives cannot draw within the spritebatch cause they modify the graphics state
-        //Which would cause inconsistent results if they drew within the spritebatch
-        //To get around this we just have them draw before
-        while (_primitivesActionsQueue.Count > 0)
-        {
-            graphicsDevice.RasterizerState = RasterizerState.CullNone;
-            PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
-            drawAction(graphicsDevice);
-            _renderCount++;
-        }
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-        while (_spritebatchActionsQueue.Count > 0)
-        {
-            SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
-            drawAction(spriteBatch, Main.screenPosition);
-            _renderCount++;
-        }
-        spriteBatch.End();
-
-        //Draw to the downscaled render target
-        graphicsDevice.SetRenderTarget(_downscaleRenderTarget);
-        graphicsDevice.Clear(Color.Transparent);
-
-        spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-        float downScale = 1f / _downSamples;
-        spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, downScale, SpriteEffects.None, 0);
-        spriteBatch.End();
-
-        //Draw back to the original render target
-        graphicsDevice.SetRenderTarget(_originalRenderTarget);
-        graphicsDevice.Clear(Color.Transparent);
-
+        PreparePixelatedContent(screenTarget, halfScreenTarget);
         if (outlineColor.HasValue)
         {
-            Vector2 v = Vector2.UnitX * 2;
-            Vector2 h = Vector2.UnitY * 2;
-            Color oColor = outlineColor.Value;
-
-            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
-            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, whiteShader.Effect);
-
-            spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero + v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-            spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero - v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-            spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero + h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-            spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero - h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-
+            //Dunno why we weren't outlining with a shader before but here we go
+            var outlinePass = AssetReferences.Effects.Generic.Outliner.CreatePixelPass();
+            outlinePass.Parameters.texelSize = halfScreenTarget.Target.GetTexelSize();
+            outlinePass.Apply();
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                _blendState, 
+                SamplerState.PointClamp, 
+                DepthStencilState.None, 
+                Main.Rasterizer, 
+                outlinePass.Shader);
+            spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, outlineColor.Value, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+            spriteBatch.End();
+        }
+        else
+        {
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred, 
+                _blendState, 
+                SamplerState.PointClamp, 
+                DepthStencilState.None, 
+                Main.Rasterizer, 
+                null);
+            spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
             spriteBatch.End();
         }
 
-        spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-        spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-        spriteBatch.End();
-    }
-
-
-    public void DrawToScreen()
-    {
-        if (_renderCount <= 0)
-            return;
-
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-        spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-        spriteBatch.End();
     }
     public void DrawToScreenNoRestart()
     {
-        if (_renderCount <= 0)
+        if (_primitivesActionsQueue.Count <= 0 && _spritebatchActionsQueue.Count <= 0)
+        {
             return;
+        }
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        spriteBatch.EndOut(out var oldParaemeters);
+        RenderTargetHandle screenTarget = _mipMap ? RenderTargets.ScreenTargetMipMapped : RenderTargets.ScreenTarget;
+        RenderTargetHandle halfScreenTarget = RenderTargets.HalfScreenTarget;
 
-        Main.spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+        PreparePixelatedContent(screenTarget, halfScreenTarget);
+        spriteBatch.Begin(oldParaemeters);
+        spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+        //     Main.spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
     }
 
 }
@@ -244,8 +260,6 @@ public class PrepareRenderTargetDrawsSystem : ModSystem
 [Autoload(Side = ModSide.Client)]
 public class PixelationManager : ModSystem
 {
-    private RenderTargetProvider _downscaledTarget = new RenderTargetProvider(RenderTargetParameters.DownsizedFunc(2));
-
     private PixelTarget _overNPCsPixelTarget;
     private PixelTarget _overNPCsPixelTargetAdditive;
     private PixelTarget _overNPCsPixelTargetWithOutline;
@@ -318,28 +332,28 @@ public class PixelationManager : ModSystem
     public override void OnModLoad()
     {
         base.OnModLoad();
-        _overNPCsPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
-        _overNPCsPixelTargetWithOutline = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
+        _overNPCsPixelTarget = new PixelTarget( downSamples: 2, BlendState.AlphaBlend);
+        _overNPCsPixelTargetWithOutline = new PixelTarget( downSamples: 2, BlendState.AlphaBlend);
         _overNPCsPixelTargetWithOutline.outlineColor = Color.Black;
 
-        _behindNPCsPixelTargetWithOutline = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
+        _behindNPCsPixelTargetWithOutline = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
         _behindNPCsPixelTargetWithOutline.outlineColor = Color.Black;
 
-        _overNPCsPixelTargetAdditive = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.Additive);
+        _overNPCsPixelTargetAdditive = new PixelTarget( downSamples: 2, BlendState.Additive);
 
-        _frontGrassPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend, true);
+        _frontGrassPixelTarget = new PixelTarget( downSamples: 2, BlendState.AlphaBlend, true);
         _frontGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
 
-        _backGrassPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend, true);
+        _backGrassPixelTarget = new PixelTarget( downSamples: 2, BlendState.AlphaBlend, true);
         _backGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
 
-        _overPlayersPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
+        _overPlayersPixelTarget = new PixelTarget( downSamples: 2, BlendState.AlphaBlend);
 
 
-        _behindTilesPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
-        _behindTilesOutlinePixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
+        _behindTilesPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+        _behindTilesOutlinePixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
 
-        _waterTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
+        _waterTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
     }
     public override void Unload()
     {
@@ -454,24 +468,12 @@ public class PixelationManager : ModSystem
         Color grassColor = Color.DarkGreen.MultiplyRGB(skyColor);
         _frontGrassPixelTarget.outlineColor = Color.Lerp(grassColor, Color.Black, 0.7f);
         _backGrassPixelTarget.outlineColor = Color.Lerp(grassColor, Color.Black, 0.7f);
-
-        _overNPCsPixelTarget.Render();
-        _overNPCsPixelTargetWithOutline.Render();
-        _overNPCsPixelTargetAdditive.Render();
-        _behindNPCsPixelTargetWithOutline.Render();
-        _frontGrassPixelTarget.Render();
-        _backGrassPixelTarget.Render();
-        _overPlayersPixelTarget.Render();
-        _behindTilesPixelTarget.Render();
         _behindTilesOutlinePixelTarget.outlineColor = Color.Black;
-        _behindTilesOutlinePixelTarget.Render();
-        _waterTarget.Render();
     }
 }
 
 public enum DrawLayer
 {
-
     OverNPCs = 0,
     OverNPCsWithOutline = 1,
     OverNPCsAdditive = 2,

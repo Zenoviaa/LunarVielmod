@@ -1,7 +1,7 @@
 ﻿using System;
 using Terraria;
 
-namespace Stellamod.Core.Rendering;
+namespace Stellamod.Core.Rendering.RTs;
 
 public record struct RenderTargetParameters(int Width, int Height, bool MipMap, SurfaceFormat SurfaceFormat, DepthFormat DepthFormat, RenderTargetUsage Usage)
 {
@@ -9,11 +9,17 @@ public record struct RenderTargetParameters(int Width, int Height, bool MipMap, 
     {
         get
         {
-            return new RenderTargetParameters(Main.screenWidth, Main.screenHeight, false, SurfaceFormat.Color, DepthFormat.None, RenderTargetUsage.PlatformContents);
+            return new RenderTargetParameters(Main.screenTarget.Width, Main.screenTarget.Height, false, SurfaceFormat.Color, DepthFormat.None, RenderTargetUsage.PlatformContents);
         }
     }
 
     public readonly static Func<RenderTargetParameters> DefaultScreenTargetCreationFunc = () => DefaultScreenTarget;
+
+
+public static RenderTargetParameters FromRenderTarget(RenderTarget2D target)
+    {
+        return new RenderTargetParameters(target.Width, target.Height, target.LevelCount != 0, target.Format, target.DepthStencilFormat, target.RenderTargetUsage);
+    }
     public static Func<RenderTargetParameters> DownsizedFunc(int downSamples)
     {
         var func = () =>

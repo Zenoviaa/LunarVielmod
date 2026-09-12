@@ -593,7 +593,6 @@ public partial class VeilGen
                 {
                     case 0:
                         itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                         itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
                         itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
                         itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
@@ -611,7 +610,6 @@ public partial class VeilGen
                         break;
                     case 2:
                         itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                         itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                         itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
                         break;
@@ -627,7 +625,6 @@ public partial class VeilGen
                         break;
                     case 4:
                         itemsToAdd.Add((ModContent.ItemType<HolmbergScythe>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                         itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                         itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 
@@ -638,7 +635,6 @@ public partial class VeilGen
                     case 5:
                         itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                         itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
                         itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
                         itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
                         break;
@@ -647,7 +643,6 @@ public partial class VeilGen
 
                         itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
                         itemsToAdd.Add((ItemID.Shiverthorn, Main.rand.Next(2, 15)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
                         itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
                         itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
                         break;

@@ -1,115 +1,74 @@
 ﻿using Stellamod.Common.Shaders;
-using Stellamod.Core.Rendering;
-using Stellamod.Core.Utilities;
+using Stellamod.Core.Rendering.RTs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Common.SummonerSystem
+namespace Stellamod.Common.SummonerSystem;
+
+public interface IDrawSpectral
 {
-    public interface IDrawSpectral
+    void DrawSpectralWhites(SpriteBatch spriteBatch);
+    void DrawSpectral(SpriteBatch spriteBatch);
+}
+
+[Autoload(Side = ModSide.Client)]
+public class SpectralSummonDrawSystem : ModSystem
+{
+    private static readonly List<IDrawSpectral> _spectralDraws = new();
+    public override void Load()
     {
-        void DrawSpectralWhites(SpriteBatch spriteBatch);
-        void DrawSpectral(SpriteBatch spriteBatch);
+        On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRenderTarget;
     }
 
-    [Autoload(Side = ModSide.Client)]
-    public class SpectralSummonDrawSystem : ModSystem
+    public override void Unload()
     {
-        private RenderTargetProvider _spectralRenderTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-        private static List<IDrawSpectral> _spectralDraws = new();
-        public override void Load()
+        On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRenderTarget;
+        _spectralDraws?.Clear();
+    }
+
+    private void DrawPixelRenderTarget(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
+    {
+        orig(self);
+        if (Main.gameMenu)
+            return;
+        _spectralDraws.Clear();
+        foreach (var proj in Main.ActiveProjectiles)
         {
-            On_Main.CheckMonoliths += DrawToCustomRenderTargets;
-            On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRenderTarget;
+            if (proj.ModProjectile is IDrawSpectral minion)
+            {
+                _spectralDraws.Add(minion);
+            }
         }
 
-        public override void Unload()
+        if (_spectralDraws.Count <= 0)
+            return;
+
+        RenderTargetHandle screenTarget = RenderTargets.ScreenTarget;
+        using (new RenderTargetContext(screenTarget))
         {
-            On_Main.CheckMonoliths -= DrawToCustomRenderTargets;
-            On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRenderTarget;
-            _spectralDraws?.Clear();
-            _spectralDraws = null;
-        }
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
+            foreach (var drawer in _spectralDraws)
+            {
+                drawer.DrawSpectralWhites(Main.spriteBatch);
+            }
+            Main.spriteBatch.End();
 
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
-        private void DrawPixelRenderTarget(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
-        {
-            orig(self);
-            if (Main.gameMenu)
-                return;
+            foreach (var drawer in _spectralDraws)
+            {
+                drawer.DrawSpectral(Main.spriteBatch);
+            }
 
-            var shader = SpectralShader.Instance;
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
-                shader.Effect, Main.GameViewMatrix.TransformationMatrix);
-            Main.spriteBatch.Draw(_spectralRenderTarget, Vector2.Zero, null, Color.White * 0.87f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             Main.spriteBatch.End();
         }
 
-        private void DrawToCustomRenderTargets(On_Main.orig_CheckMonoliths orig)
-        {
-            if (!Main.gameMenu)
-            {
-                // Clear our render target from the previous frame.
-                _spectralDraws.Clear();
-                foreach (var proj in Main.ActiveProjectiles)
-                {
-                    if (proj.ModProjectile is IDrawSpectral minion)
-                    {
-                        _spectralDraws.Add(minion);
-                    }
-                }
 
-                // Draw the prims. The render target gets set here.
-                DrawToRenderTarget(_spectralRenderTarget, _spectralDraws);
-
-                // Clear the current render target.
-                Main.graphics.GraphicsDevice.SetRenderTarget(null);
-
-            }
-
-            // Call orig.
-            orig();
-        }
-
-        private static void DrawToRenderTarget(RenderTarget2D renderTarget, List<IDrawSpectral> drawSpectrals)
-        {
-            // Swap to our custom render target.
-            SwapToRenderTarget(renderTarget);
-            if (drawSpectrals.Count > 0)
-            {
-                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect);
-
-                foreach (var drawer in drawSpectrals)
-                {
-                    drawer.DrawSpectralWhites(Main.spriteBatch);
-                }
-
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
-
-                foreach (var drawer in drawSpectrals)
-                {
-                    drawer.DrawSpectral(Main.spriteBatch);
-                }
-
-                Main.spriteBatch.End();
-            }
-        }
-
-        private static void SwapToRenderTarget(RenderTarget2D renderTarget)
-        {
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-            // If we are in the menu, a server, or any of these are null, return.
-            if (Main.gameMenu || Main.dedServ || renderTarget is null || graphicsDevice is null || spriteBatch is null)
-                return;
-
-            // Else, set the render target.
-            graphicsDevice.SetRenderTarget(renderTarget);
-            // "Flush" the screen, removing any previous things drawn to it.
-            graphicsDevice.Clear(Color.Transparent);
-        }
+        var shader = SpectralShader.Instance;
+        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+            shader.Effect);
+        Main.spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White * 0.87f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+        Main.spriteBatch.End();
     }
 }
