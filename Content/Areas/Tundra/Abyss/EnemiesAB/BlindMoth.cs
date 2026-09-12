@@ -6,6 +6,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
@@ -571,36 +572,40 @@ public class BlindMoth : ModNPC,
         spriteBatch.Draw(texture, down, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
     }
 
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    public override bool PreDraw(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
-        Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        Vector2 glowCircleDrawOrigin = glowCircle.Size() * 0.5f;
-   
-       // DrawDashLine(spriteBatch, screenPos, drawColor);
-        Texture2D npcTexture = TextureAssets.Npc[Type].Value;
-        Vector2 drawOrigin = NPC.frame.Size() * 0.5f;
-        Vector2 drawCenter = NPC.Center - screenPos;
-        SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        for (int i = 0; i < NPC.oldPos.Length; i++)
+        DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch spriteBatch) =>
         {
-            Vector2 oldPosition = NPC.oldPos[i];
-            Vector2 oldCenter = oldPosition + NPC.Size * 0.5f;
-            Vector2 oldCenterDraw = oldCenter - screenPos;
+            Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            Vector2 glowCircleDrawOrigin = glowCircle.Size() * 0.5f;
 
-            float ease = (float)i / (float)NPC.oldPos.Length;
-            float alpha = MathHelper.SmoothStep(1f, 0f, ease);
-            spriteBatch.Draw(npcTexture, oldCenterDraw, NPC.frame, drawColor * alpha * 0.25f, NPC.oldRot[i], drawOrigin, NPC.scale, spriteEffects, 0);
-        }
-        spriteBatch.Draw(npcTexture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            // DrawDashLine(spriteBatch, screenPos, drawColor);
+            Texture2D npcTexture = TextureAssets.Npc[Type].Value;
+            Vector2 drawOrigin = NPC.frame.Size() * 0.5f;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 oldPosition = NPC.oldPos[i];
+                Vector2 oldCenter = oldPosition + NPC.Size * 0.5f;
+                Vector2 oldCenterDraw = oldCenter - screenPos;
 
-        drawColor *= ExtraMath.Osc(0.15f, 0.5f, offset: NPC.whoAmI);
-        drawColor.A = 0;
-        spriteBatch.Draw(npcTexture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+                float ease = (float)i / (float)NPC.oldPos.Length;
+                float alpha = MathHelper.SmoothStep(1f, 0f, ease);
+                spriteBatch.Draw(npcTexture, oldCenterDraw, NPC.frame, drawColor * alpha * 0.25f, NPC.oldRot[i], drawOrigin, NPC.scale, spriteEffects, 0);
+            }
+            spriteBatch.Draw(npcTexture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
 
-        spriteBatch.Draw(glowCircle, drawCenter, null, drawColor, NPC.rotation, glowCircleDrawOrigin, NPC.scale * 0.5f, spriteEffects, 0);
+            drawColor *= ExtraMath.Osc(0.15f, 0.5f, offset: NPC.whoAmI);
+            drawColor.A = 0;
+            spriteBatch.Draw(npcTexture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
 
+            spriteBatch.Draw(glowCircle, drawCenter, null, drawColor, NPC.rotation, glowCircleDrawOrigin, NPC.scale * 0.5f, spriteEffects, 0);
+        });
         return false;
     }
+
+
 
     public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
     {

@@ -4,6 +4,7 @@ using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Rendering;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
@@ -95,26 +96,25 @@ public class AbyssalSoul : ModNPC, IWaterSilhouette
         Lighting.AddLight(NPC.Center, Vector3.One * 0.2f);
     }
 
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    public override bool PreDraw(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
+        DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch spriteBatch) =>
+        {
+            NPC.DrawAnimator(spriteBatch, drawColor);
 
-        NPC.DrawAnimator(spriteBatch, drawColor);
+            Color glowColor = Color.White;
+            glowColor.A = 0;
+            NPC.DrawAnimator(spriteBatch, glowColor);
 
-        Color glowColor = Color.White;
-        glowColor.A = 0;
-        NPC.DrawAnimator(spriteBatch, glowColor);
+            Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
+            drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f;
+            drawer.color.A = 0;
+            drawer.scale *= 0.25f;
+            spriteBatch.Draw(drawer);
+        });
+
         return false;
-    }
-
-    public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        base.PostDraw(spriteBatch, screenPos, drawColor);
-        Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
-        drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f;
-        drawer.color.A = 0;
-        drawer.scale *= 0.25f;
-        spriteBatch.Draw(drawer);
     }
 
     public override void HitEffect(NPC.HitInfo hit)
