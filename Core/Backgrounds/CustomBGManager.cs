@@ -1,13 +1,13 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Backgrounds;
+
 public class CustomBGGlobalWall : GlobalWall
 {
 
@@ -23,11 +23,11 @@ public class CustomBGGlobalWall : GlobalWall
         }
     }
 }
+[Autoload(Side = ModSide.Client)]
 public class CustomBGManager : ModSystem
 {
     private IShader _currentShader;
     public List<CustomBG> Backgrounds = new List<CustomBG>();
-    public bool onScreen;
     public Color? darkenBGColor;
     public static bool drawingCustomBG;
     public override void OnModLoad()

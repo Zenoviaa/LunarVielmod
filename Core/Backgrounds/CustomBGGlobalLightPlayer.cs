@@ -1,4 +1,6 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Core.Backgrounds;
 
@@ -13,6 +15,9 @@ public class CustomBGGlobalLightPlayer : ModPlayer
     public override void PostUpdate()
     {
         base.PostUpdate();
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
         if (CustomBGManager.drawingCustomBG)
         {
             LightStrength = 0.005f;
