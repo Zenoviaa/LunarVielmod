@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -43,6 +44,8 @@ namespace Stellamod.NPCs
 
         public static float GetIshtarEnemySpawnChance(NPCSpawnInfo spawnInfo)
         {
+            if (!DownedBossSystem.downedZuiBoss)
+                return 0;
             if (!spawnInfo.Player.InModBiome<IshtarBiome>())
                 return 0;
             return SpawnCondition.Cavern.Chance * 2f;

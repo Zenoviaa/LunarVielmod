@@ -18,6 +18,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Stalker Lighting");
+            NPCID.Sets.MustAlwaysDraw[Type] = true;
         }
 
         public virtual string GlowTexturePath => Texture + "_Glow";
@@ -138,8 +139,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                         
 
 
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, velocity.X, velocity.Y,
-                        ModContent.ProjectileType<ZuiRay>(), 250, 10, Main.myPlayer, ai0: NPC.whoAmI);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<ZuiRay>(), 250, 10, Main.myPlayer);
 
                         Projectile.NewProjectile(EntitySource, LightPos.X + 150, LightPos.Y + 150, 0, 0, 
                         ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 1, Owner: Main.myPlayer, 0, 0);

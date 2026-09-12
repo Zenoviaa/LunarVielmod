@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
@@ -38,6 +39,8 @@ namespace Stellamod.NPCs.Ishtar
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
+            if (!DownedBossSystem.downedZuiBoss)
+                return 0;
             if (spawnInfo.Player.InModBiome<IshtarBiome>())
             {
                 return 0.3f;
