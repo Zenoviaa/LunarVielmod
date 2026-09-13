@@ -3,12 +3,14 @@ using Stellamod.Assets;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.AccMT;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Content.Rendering.Abyssal;
 using Stellamod.Content.Rendering.MoonMagic;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
+using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using System.Diagnostics;
 using System.IO;
@@ -398,5 +400,11 @@ public class AmalgamRapidfirebow : BaseCrossbowItem
     {
         base.StaminaShootBow(player, source, shootParams);
       Projectile.NewProjectile(source, shootParams.position, shootParams.fireVelocity, ModContent.ProjectileType<AmalgamSuperShot>(), shootParams.damage, shootParams.knockBack, player.whoAmI);
+    }
+
+    public override void AddRecipes()
+    {
+        base.AddRecipes();
+        this.RegisterBrew<ConvulgingMater, BlankBow>();
     }
 }

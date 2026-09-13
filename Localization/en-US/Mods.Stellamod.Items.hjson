@@ -12129,7 +12129,7 @@ ScriptofTheSun: {
 }
 
 AbyssalCoarseDirtItem: {
-	DisplayName: Abyssal Coarse Dirt Item
+	DisplayName: Abyssal Coarse Dirt
 	Tooltip: ""
 }
 
@@ -12144,12 +12144,12 @@ GoldenFork: {
 }
 
 AbyssalGrassWallDarkItem: {
-	DisplayName: Abyssal Grass Wall Dark Item
+	DisplayName: Abyssal Grass Wall Dark
 	Tooltip: ""
 }
 
 AbyssalGrassWallItem: {
-	DisplayName: Abyssal Grass Wall Item
+	DisplayName: Abyssal Grass Wall
 	Tooltip: ""
 }
 
