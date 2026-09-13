@@ -176,7 +176,7 @@ namespace Stellamod.Common.Shaders
                 trailingPoints = oldPos;
             }
                
-            return trailVertexCache.FillVertexArray(trailingPoints, colorFunc, widthFunc, trailOffset);
+            return TrailVertexHelper.FillVertexArray(trailingPoints, colorFunc, widthFunc, trailOffset);
         }
 
         public static void DrawCached(BaseShader shader)

@@ -1,8 +1,8 @@
 ﻿using Stellamod.Core;
-using System;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
+
 
 public struct InDonutData : IParticleData
 {

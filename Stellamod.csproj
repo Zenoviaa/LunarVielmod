@@ -16,4 +16,9 @@
 		<Publicize Include="ReLogic" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <Folder Include="Effects\Primitives\" />
+	</ItemGroup>
+
 </Project>

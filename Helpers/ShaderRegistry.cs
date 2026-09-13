@@ -128,12 +128,6 @@ namespace Stellamod.Helpers
             SkyManager.Instance["LunarVeil:DarkspaceSky"] = new RoyalCapitalSky();
             SkyManager.Instance["LunarVeil:DarkspaceSky"].Load();
 
-            SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
-            SkyManager.Instance["Stellamod:NaxtrinSky"].Load();
-
-            SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
-            SkyManager.Instance["Stellamod:AlcadSky"].Load();
-
             RegisterMiscCrystalShader("Clouds", "ScreenPass");
             RegisterMiscCrystalShader("CloudsFront", "ScreenPass");
             RegisterMiscCrystalShader("NightClouds", "ScreenPass");

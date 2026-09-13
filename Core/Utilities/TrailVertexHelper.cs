@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using System;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -150,14 +151,16 @@ namespace Stellamod.Core.Utilities
         /// <param name="colorFunc"></param>
         /// <param name="widthFunc"></param>
         /// <returns></returns>
-        public VertexPositionColorTexture[] FillVertexArray(Vector2[] trailingPoints, Func<float, Color> colorFunc, Func<float, float> widthFunc, Vector2 offset)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VertexPositionColorTexture[] FillVertexArray(Vector2[] trailingPoints, Func<float, Color> colorFunc, Func<float, float> widthFunc, Vector2 offset)
         {
             const float coord1 = 0;
             const float coord2 = 1;
 
             int numVertices = (trailingPoints.Length - 1) * 4;
             int index = 0;
-            VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[numVertices];
+          //  VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[numVertices];
+            Span<VertexPositionColorTexture> vertices = stackalloc VertexPositionColorTexture[numVertices];
             for (int i = 0; i < trailingPoints.Length - 1; i++)
             {
 
@@ -199,7 +202,7 @@ namespace Stellamod.Core.Utilities
 
             }
 
-            return vertices;
+            return vertices.ToArray();
         }
 
 

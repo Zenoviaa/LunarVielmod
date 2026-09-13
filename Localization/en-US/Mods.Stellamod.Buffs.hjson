@@ -1237,3 +1237,8 @@ WhisperingDeath: {
 	DisplayName: Whispering Death
 	Description: Mods.Stellamod.Buffs.WhisperingDeath.Description
 }
+
+Amalgamating: {
+	DisplayName: Amalgamating
+	Description: Mods.Stellamod.Buffs.Amalgamating.Description
+}

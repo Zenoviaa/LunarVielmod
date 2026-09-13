@@ -52,9 +52,8 @@ public abstract class BaseCrossbowItem : ModItem,
         base.SetDefaults();
         Item.damage = 12;
         Item.DamageType = DamageClass.Ranged;
-        Item.useTime = 16;
+        Item.useTime = Item.useAnimation = 60;
         Item.crit = 16;
-        Item.useAnimation = 16;
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.knockBack = 6;
         Item.value = Item.buyPrice(gold: 5);

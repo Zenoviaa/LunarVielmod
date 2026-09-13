@@ -36,6 +36,7 @@ public sealed class Particles : ModSystem
     public static readonly WaterfallCrashDust WaterfallCrashDust = new();
     public static readonly TinyWhiteMothDust TinyWhiteMothDust = new();
     public static readonly InDonutDust InDonutDust = new();
+    public static readonly CometMagicDust CometMagicDust = new();
     public override void Load()
     {
         base.Load();
@@ -54,7 +55,8 @@ public sealed class Particles : ModSystem
             BloodyMurderDust,
             WaterfallCrashDust,
             TinyWhiteMothDust,
-            InDonutDust
+            InDonutDust,
+            CometMagicDust
         };
 
         if (Main.netMode == NetmodeID.Server)

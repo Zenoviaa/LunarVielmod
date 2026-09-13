@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.ZTileSystem;
 using System;
@@ -48,6 +49,86 @@ public static class DrawUtilities
     public delegate float GetTrailWidth(float completionRatio);
 
 
+    /// <summary>
+    /// Prepares indices for a set of quads
+    /// </summary>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    public static short[] PrepareIndicesForDrawing(int length)
+    {
+        int connectIndex = 0;
+        Span<short> indicesSpan = stackalloc short[length * 6];
+        for (int i = 0; i < indicesSpan.Length; i += 6)
+        {
+            indicesSpan[i] = (short)(connectIndex + 0);
+            indicesSpan[i + 1] = (short)(connectIndex + 1);
+            indicesSpan[i + 2] = (short)(connectIndex + 2);
+            indicesSpan[i + 3] = (short)(connectIndex + 2);
+            indicesSpan[i + 4] = (short)(connectIndex + 3);
+            indicesSpan[i + 5] = (short)(connectIndex + 1);
+            connectIndex += 4;
+        }
+        return indicesSpan.ToArray();
+    }
+
+    /// <summary>
+    /// Draws indexed primitives with an effect then reverts back to the previous graphics device state afterward
+    /// </summary>
+    /// <typeparam name="VertexType"></typeparam>
+    /// <param name="arr"></param>
+    /// <param name="indices"></param>
+    /// <param name="effect"></param>
+    public static void DrawUserIndexedPrimitivesWithEffect<VertexType>(VertexType[] arr, short[] indices, Effect effect)
+        where VertexType : struct, IVertexType
+    {
+        GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+        foreach (var pass in effect.CurrentTechnique.Passes)
+        {
+            pass.Apply();
+        }
+        graphicsDevice.DrawUserIndexedPrimitives<VertexType>(
+          PrimitiveType.TriangleList, arr, 0, arr.Length, indices, 0, arr.Length / 2);
+    }
+    public static void DrawUserIndexedPrimitivesWithEffect<VertexType>(VertexType[] arr, int[] indices, Effect effect)
+        where VertexType : struct, IVertexType
+    {
+        GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+        foreach (var pass in effect.CurrentTechnique.Passes)
+        {
+            pass.Apply();
+        }
+        graphicsDevice.DrawUserIndexedPrimitives<VertexType>(
+          PrimitiveType.TriangleList, arr, 0, arr.Length, indices, 0, arr.Length / 2);
+    }
+
+    /// <summary>
+    /// Prepares vertices for a basic trail
+    /// </summary>
+    /// <param name="oldPos"></param>
+    /// <param name="colorFunc"></param>
+    /// <param name="widthFunc"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
+    public static VertexPositionColorTexture[] PrepareSimpleTrailing(
+        Vector2[] oldPos,
+        Func<float, Color> colorFunc,
+        Func<float, float> widthFunc, 
+        Vector2? offset = null)
+    {
+
+
+        Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+        float numPoints = oldPos.Length * 2;
+
+        oldPos = DrawUtilities.PruneFarPoints(oldPos);
+
+        if (oldPos.Length <= 2)
+            return new VertexPositionColorTexture[4];
+
+        numPoints = oldPos.Length * 2;
+        Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+        return TrailVertexHelper.FillVertexArray(trailingPoints, colorFunc, widthFunc, trailOffset);
+    }
     public static BackgroundDrawParameters CalculateScaledBackgroundDraw(Vector2 textureSize)
     {
         Vector2 drawOrigin = textureSize * 0.5f;
@@ -74,15 +155,15 @@ public static class DrawUtilities
     }
     public static Vector2[] PruneFarPoints(Vector2[] oldPos)
     {
-
+        float tooFar = 1000 * 1000;
         List<Vector2> prunedPoints = new List<Vector2>();
         Vector2 prevAddedPoint = oldPos[0];
         for (int i = 0; i < oldPos.Length - 1; i++)
         {
             Vector2 cur = oldPos[i];
             Vector2 next = oldPos[i + 1];
-            float d = Vector2.Distance(cur, next);
-            if (cur == Vector2.Zero || d > 1000)
+            float d = Vector2.DistanceSquared(cur, next);
+            if (cur == Vector2.Zero || d > tooFar)
             {
                 break;
             }

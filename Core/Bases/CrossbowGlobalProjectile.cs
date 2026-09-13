@@ -26,12 +26,14 @@ namespace Stellamod.Core.Bases
         {
             base.SendExtraAI(projectile, bitWriter, binaryWriter);
             binaryWriter.Write(isCrossbowShot);
+
         }
 
         public override void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader)
         {
             base.ReceiveExtraAI(projectile, bitReader, binaryReader);
             isCrossbowShot = binaryReader.ReadBoolean();
+
         }
 
         public override void SetDefaults(Projectile entity)
@@ -75,6 +77,8 @@ namespace Stellamod.Core.Bases
                     sp.Scale *= 0.6f;
                 }
 
+                if (projectile.velocity.Length() < 15)
+                    projectile.velocity = projectile.velocity.Resize(15);
                 isCrossbowShotInitialized = true;
             }
 
@@ -83,8 +87,6 @@ namespace Stellamod.Core.Bases
                 projectile.position += projectile.velocity * 0.25f;
             }
 
-            if (projectile.velocity.Length() < 15)
-                projectile.velocity *= 1.5f;
         }
 
         private Color ColorFunction(float completionRatio)
@@ -176,6 +178,8 @@ namespace Stellamod.Core.Bases
                     firer.New();
                 }
             }
+
+
 
             if (projectile.penetrate <= 1)
             {
