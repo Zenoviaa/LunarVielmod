@@ -77,8 +77,6 @@ namespace Stellamod.Core.Bases
                     sp.Scale *= 0.6f;
                 }
 
-                if (projectile.velocity.Length() < 15)
-                    projectile.velocity = projectile.velocity.Resize(15);
                 isCrossbowShotInitialized = true;
             }
 

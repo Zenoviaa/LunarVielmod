@@ -6,6 +6,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 
 public class ROCKSPIKE : ModProjectile
 {
+    public override string Texture => TextureRegistry.EmptyTexture;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);

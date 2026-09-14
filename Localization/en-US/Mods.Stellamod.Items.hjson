@@ -12164,8 +12164,8 @@ RagingIceTorch: {
 }
 
 AmalgamRapidfirebow: {
-	BasicSlash: "Enchants your arrows, they slow down over time and explode into an aura that slowly burns enemies"
+	BasicSlash: Enchants your arrows, they slow down over time and explode into an aura that slowly burns enemies
 	StaminaSlash: Shoots a super fast arrow that explodes into a moon-powered boom!
-	DisplayName: Amalgam Rapidfirebow
+	DisplayName: Amalgam Aura Bow
 	Tooltip: ""
 }

@@ -5,6 +5,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 
 public class STARROCKCRASHSLAM : ModProjectile
 {
+    public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();

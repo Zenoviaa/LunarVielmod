@@ -36,7 +36,7 @@ public class RedFeatherHatDrawLayer : PlayerDrawLayer
     {
         var position = drawInfo.Center - Main.screenPosition;
         position = new Vector2((int)position.X, (int)position.Y);
-        position.Y -= 12;
+        position.Y -= 10;
         position.X -= drawInfo.drawPlayer.direction * 8;
         Rectangle bodyFrame = drawInfo.drawPlayer.bodyFrame;
         float yOsc = MathF.Sin(bodyFrame.Y) * 0.5f + 0.5f;

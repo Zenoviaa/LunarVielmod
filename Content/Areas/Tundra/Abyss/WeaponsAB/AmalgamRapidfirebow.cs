@@ -87,7 +87,7 @@ public class AmalgamAura : ModProjectile
 
         Vector2 drawCenter = Projectile.Center - Main.screenPosition;
 
-        float ease = EasingFunction.InOutSine(Projectile.timeLeft / 60f) * EasingFunction.InOutSine(Timer / 10f);
+        float ease = EasingFunction.InOutSine(Projectile.timeLeft / 10f) * EasingFunction.InOutSine(Timer / 10f);
         Color drawColor = Color.White * ease;
         drawColor.A = 0;
 
@@ -97,13 +97,13 @@ public class AmalgamAura : ModProjectile
         Vector2 scale = Vector2.One;
         scale *= 4;
         var shader = CelestialAuraShader.Instance;
-        shader.InnerColor = Color.DarkBlue;
+        shader.InnerColor = Color.SkyBlue * 0.4f;
         shader.OuterColor = Color.Black;
         shader.Time = -Timer * 0.05f + 1;
         shader.Tiling = Vector2.One * 0.1f;
         using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { effect = shader }))
         {
-            for (float f = 0; f < 3; f++)
+            for (float f = 0; f < 4; f++)
             {
                 Color glowColor = Color.Lerp(drawColor, drawColor2, (f + 1) / 3f);
                 glowColor.A = 0;
@@ -385,6 +385,23 @@ public class AmalgamRapidfirebow : BaseCrossbowItem
 
     public override void ShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
     {
+        float v = 1f;
+        void ShootSecondArrow()
+        {
+            Vector2 fireVelocity = shootParams.velocity * shootParams.speed;
+            fireVelocity *= 2 * v;
+            fireVelocity *= shootParams.chargeStrength;
+
+            float bowDamage = shootParams.damage * shootParams.chargeStrength;
+            Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity,
+                shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
+            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
+            crossShot.GetGlobalProjectile<AmalgamGlobalProjectile>().hasAmalgam = true;
+            v *= 0.35f;
+        }
+
+        FunctionRepeatHelper.Repeat(() => ShootSecondArrow(), repeats: 1, rate: 7);
+        /*
         Vector2 fireVelocity = shootParams.velocity * shootParams.speed;
         fireVelocity *= 3;
         fireVelocity *= shootParams.chargeStrength;
@@ -393,7 +410,7 @@ public class AmalgamRapidfirebow : BaseCrossbowItem
         Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity,
             shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
         crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
-        crossShot.GetGlobalProjectile<AmalgamGlobalProjectile>().hasAmalgam = true;
+        crossShot.GetGlobalProjectile<AmalgamGlobalProjectile>().hasAmalgam = true;*/
     }
 
     public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)

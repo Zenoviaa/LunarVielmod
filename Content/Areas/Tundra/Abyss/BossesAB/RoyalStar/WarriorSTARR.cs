@@ -236,6 +236,9 @@ public partial class WarriorSTARR : ScarletBoss
 
     private void AI_Spawn()
     {
+        StayGrounded();
+        FaceTarget();
+        this.AseAnimator.PlayAnimation(ANIM_IDLE);
         if(Timer >= 60)
         {
             SwitchState(AIState.Idle);
