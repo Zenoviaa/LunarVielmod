@@ -117,7 +117,7 @@ public partial class WarriorSTARR : ScarletBoss
     {
         base.SetDefaults();
         NPC.width = 80;
-        NPC.height = 80;
+        NPC.height = 96;
         NPC.damage = 100;
         NPC.defense = 23;
         NPC.lifeMax = 18000;
@@ -214,6 +214,7 @@ public partial class WarriorSTARR : ScarletBoss
                 AI_Death();
                 break;
         }
+        this.SetDrawOrigin(new Vector2(68, 114));
         _outliner.Update();
     }
 
@@ -236,6 +237,7 @@ public partial class WarriorSTARR : ScarletBoss
 
     private void AI_Spawn()
     {
+        Timer++;
         StayGrounded();
         FaceTarget();
         this.AseAnimator.PlayAnimation(ANIM_IDLE);

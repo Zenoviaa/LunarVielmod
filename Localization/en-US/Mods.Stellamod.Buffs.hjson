@@ -1242,3 +1242,8 @@ Amalgamating: {
 	DisplayName: Amalgamating
 	Description: Mods.Stellamod.Buffs.Amalgamating.Description
 }
+
+Grounded: {
+	DisplayName: Grounded
+	Description: Mods.Stellamod.Buffs.Grounded.Description
+}

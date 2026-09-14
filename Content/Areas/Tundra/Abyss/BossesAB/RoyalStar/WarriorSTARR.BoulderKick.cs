@@ -1,11 +1,13 @@
 ﻿using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
 public partial class WarriorSTARR
 {
     private Vector2 _kickPunchDirection;
-    private float KICK_WARNING_TIME => 70;
+    private float KICK_WARNING_TIME => 55;
     private float KICK_DOWN_TIME => 30;
     private float KICK_PUNCH_DELAY_TIME => 40;
     private float KICK_PUNCH_PREP_TIME => 40;
@@ -60,6 +62,32 @@ public partial class WarriorSTARR
                     }
                     _outliner.attacking = true;
                     this.AseAnimator.PlayAnimation(ANIM_KICK_DOWN, AnimationParams.NoLooping);
+                    if (Timer == 15)
+                    {
+                        int rockBuffType = ModContent.BuffType<Grounded>();
+                        KickImpactVFX(NPC.Bottom + _kickPunchDirection * 36, -Vector2.UnitY * 15);
+                        EarthQuakeVFX(NPC.Bottom, -Vector2.UnitY * 15);
+                        foreach (var player in Main.ActivePlayers)
+                        {
+                            player.AddBuff(rockBuffType, 600);
+                        }
+
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            for (int i = 0; i < 7; i++)
+                            {
+                                ProjFirer firer = ProjFirer.From<STARBOULDER>(NPC);
+                                firer.damage = KICK_BOULDER_DAMAGE;
+                                firer.position = NPC.Bottom + _kickPunchDirection * 48 + -Vector2.UnitY * 1 * 36 + -Vector2.UnitY * 18;
+                                firer.velocity = _kickPunchDirection * 15;
+                                firer.ai0 = NPC.whoAmI;
+                                firer.ai1 = i;
+                                firer.ai2 = -10;
+                                firer.New();
+                            }
+                        }
+                    }
+
                     if (Timer >= KICK_DOWN_TIME)
                     {
                         Timer = 0;
@@ -69,23 +97,7 @@ public partial class WarriorSTARR
                 break;
             case 2:
                 {
-                    if (Timer == 1)
-                    {
-                        KickImpactVFX(NPC.Center, -Vector2.UnitY);
-                        if (MultiplayerHelper.IsHost)
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                ProjFirer firer = ProjFirer.From<STARBOULDER>(NPC);
-                                firer.damage = KICK_BOULDER_DAMAGE;
-                                firer.position = NPC.Bottom + _kickPunchDirection * 16 + -Vector2.UnitY * i * 24;
-                                firer.ai0 = NPC.whoAmI;
-                                firer.ai1 = i;
-                                firer.ai2 = -10;
-                                firer.New();
-                            }
-                        }
-                    }
+
 
                     Timer = 0;
                     AttackCycle++;
@@ -93,7 +105,7 @@ public partial class WarriorSTARR
                 break;
             case 3:
                 {
-                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
+                    this.AseAnimator.PlayAnimation(ANIM_KICK_DOWN, AnimationParams.NoLooping);
                     if (Timer >= KICK_PUNCH_DELAY_TIME)
                     {
                         Timer = 0;
@@ -105,7 +117,7 @@ public partial class WarriorSTARR
             case 4:
                 {
                     _outliner.warning = true;
-                    this.AseAnimator.PlayAnimation(ANIM_PUNCH_READY, AnimationParams.Default);
+                    this.AseAnimator.PlayAnimation(ANIM_PUNCH_READY, AnimationParams.NoLooping);
                     if(Timer >= KICK_PUNCH_PREP_TIME && HasAnotherBoulder())
                     {
                         Timer = 0;
@@ -126,9 +138,11 @@ public partial class WarriorSTARR
                     }
                     _outliner.attacking = true;
                     this.AseAnimator.PlayAnimation(ANIM_PUNCH, AnimationParams.NoLooping);
-                    if(Timer == 10)
+                    if(Timer == 7)
                     {
                         PunchVFX(NPC.Right, Vector2.UnitX * NPC.spriteDirection * 15);
+                        PunchBoulder((int)AttackCounter, Vector2.UnitX * NPC.spriteDirection * 15);
+                        AttackCounter++;
                     }
 
                     if(Timer >= KICK_PUNCH_TIME)
