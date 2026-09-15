@@ -46,8 +46,9 @@ public class STARDISC : ModProjectile
         Main.projFrames[Type] = 4;
         ProjectileID.Sets.TrailCacheLength[Type] = 16;
         ProjectileID.Sets.TrailingMode[Type] = 2;
+        Projectile.velocity *= 1.03f;
         Projectile.frame = (int)((Timer / 4) % Main.projFrames[Type]);
-        if(Timer % 3 == 0)
+        if(Timer % 6 == 0)
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
@@ -55,6 +56,7 @@ public class STARDISC : ModProjectile
                 velocity = Main.rand.NextVector2Circular(5, 5),
                 innerColor = Color.LightGoldenrodYellow.ToVector4(),
                 outerColor = Color.DarkGoldenrod.ToVector4(),
+                scale = Vector2.One * 0.4f
             });
         }
     }

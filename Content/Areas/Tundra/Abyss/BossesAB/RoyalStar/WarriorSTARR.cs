@@ -99,6 +99,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private const string ANIM_GRAB_THROW = "GrabThrow";
     private const string ANIM_GRAB_NO = "GrabNo";
     private const string ANIM_JUMP = "Jump";
+    private const string ANIM_PUNCH_BACK = "PunchBack";
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -107,6 +108,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         writer.WriteVector2(_vector2);
         writer.WriteVector2(_teleportPosition);
         writer.WriteVector2(_initialVelocity);
+        writer.Write(_fakeOut);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -117,6 +119,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         _vector2 = reader.ReadVector2();
         _teleportPosition = reader.ReadVector2();
         _initialVelocity = reader.ReadVector2();
+        _fakeOut = reader.ReadBoolean();
     }
 
     public override void SetStaticDefaults()
@@ -188,7 +191,6 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             _teleportPosition = Vector2.Zero;
         }
 
-        _fakeOut =false;
         _contactDamage = false;
         _jumpingTrail = false;
         _grabbing = false;
@@ -220,7 +222,6 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
                 AI_WindUpPunch();
                 break;
             case AIState.FakeOutPunch:
-                _fakeOut = true;
                 AI_WindUpPunch();
                 break;
             case AIState.DiscThrow:
@@ -297,7 +298,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.JumpRockSlam);
+            SwitchState(AIState.WindUpPunch);
         }
     }
 
@@ -367,7 +368,6 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         SpritebatchDrawer bossDrawInfo = NPC.GetAnimatorDrawInfo(drawColor);
         bossDrawInfo.scale = _jumpScale;
         spriteBatch.Draw(bossDrawInfo);
-        OutlineRenderer.Queue(DrawOutlineWhite);
 
         return false;
     }
@@ -402,5 +402,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         {
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSTARR, DrawLayer.OverPlayers);
         }
+        OutlineRenderer.Queue(DrawOutlineWhite);
+
     }
 }

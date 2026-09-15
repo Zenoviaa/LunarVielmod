@@ -1,18 +1,15 @@
 ﻿using Stellamod.Common.Particles;
-using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Gores;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
-using System;
 
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.NPCs.Town.MerenaQuestSystem;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
@@ -26,9 +23,10 @@ public partial class WarriorSTARR
         if (_stepDistance >= 100)
         {
             Vector2 pos = NPC.Bottom;
-            var circleStep = LegacyParticle.NewParticle<CircleStepParticle>(pos, Vector2.UnitY);
-            circleStep.color = Color.Yellow * 0.75f;
-            circleStep.Rotation = NPC.rotation;
+            var sp = MoonSpiralParticle.Spawn(NPC.Bottom, Main.rand.NextVector2Circular(2, 2));
+            sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+            sp.color = Color.Gold;
+            sp.fast = true;
             _stepDistance = 0;
         }
     }
@@ -114,7 +112,7 @@ public partial class WarriorSTARR
             var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 3);
             p2.Scale *= 0.5f;
         }
-        if(Timer % 5 == 0)
+        if (Timer % 5 == 0)
         {
             Vector2 spawnPosition = NPC.Center;
             spawnPosition.X += Main.rand.NextFloat(-64, 64);
@@ -134,11 +132,12 @@ public partial class WarriorSTARR
             var sp = SparkleParticle.Spawn(pos, -NPC.velocity * 0.1f);
             sp.gravity = 0f;
             sp.dampening = 0.1f;
+            sp.Scale *= 0.6f;
             sp.outerColor = Color.Gold;
             sp.innerColor = Color.LightGoldenrodYellow;
         }
 
-        if (Main.rand.NextBool(4))
+        if (Main.rand.NextBool(8))
         {
             Vector2 pos = NPC.Center;
             pos.X += Main.rand.NextFloat(-64, 64);
@@ -241,7 +240,7 @@ public partial class WarriorSTARR
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
             Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
         }
-        
+
         //Lemme grab the steamroller particles
         for (int i = 0; i < 4; i++)
         {
@@ -257,7 +256,7 @@ public partial class WarriorSTARR
     public void StarBitVFX(Vector2 position, Vector2 velocity)
     {
         int dustType = ModContent.DustType<StarBitDust>();
-        for(float f = 0; f < 32; f++)
+        for (float f = 0; f < 32; f++)
         {
             Vector2 pos = position;
             pos.X += Main.rand.NextFloat(-64, 64);
@@ -319,7 +318,7 @@ public partial class WarriorSTARR
             DustParticle.Spawn(position + Main.rand.NextVector2Circular(8, 8), vel, spawnParams);
         }
 
-        for(float f = 0; f < 2; f++)
+        for (float f = 0; f < 2; f++)
         {
             Vector2 spawnPosition = position;
             spawnPosition.X += Main.rand.NextFloat(-64, 64);
@@ -332,7 +331,7 @@ public partial class WarriorSTARR
         }
 
         //Lemme grab the steamroller particles
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             FXUtil.MakeSoilParticle(position + Main.rand.NextVector2Circular(32, 32), velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.6f, 1f));
         }
@@ -354,7 +353,7 @@ public partial class WarriorSTARR
 
     public void IFartedVFX(in Vector2 position, in Vector2 velocity)
     {
-        for(float f =0; f < 27; f++)
+        for (float f = 0; f < 27; f++)
         {
             var ts = ThickSmokeParticle.Spawn(position + Main.rand.NextVector2Circular(164, 80), velocity, Color.Green);
             ts.color = Color.Green;
@@ -402,7 +401,7 @@ public partial class WarriorSTARR
     public void PunchBoulder(int index, Vector2 velocity)
     {
         int projType = ModContent.ProjectileType<STARBOULDER>();
-        foreach(var proj in Main.ActiveProjectiles)
+        foreach (var proj in Main.ActiveProjectiles)
         {
             if (proj.type == projType && proj.ai[0] == NPC.whoAmI && proj.ai[1] == index)
             {

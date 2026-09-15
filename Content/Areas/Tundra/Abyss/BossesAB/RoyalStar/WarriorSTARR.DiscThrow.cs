@@ -8,7 +8,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 public partial class WarriorSTARR
 {
     private int Disc_Throw_Damage => 20;
-    private float Disc_Throw_Count => 5;
+    private float Disc_Throw_Count => 6;
     private float Disc_Spread => MathHelper.ToRadians(30);
     private void AI_DiscThrow()
     {

@@ -1,6 +1,10 @@
-﻿using Stellamod.Common.Particles;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Particles;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Dusts;
+using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Effects.RekFlames;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -48,6 +52,16 @@ public class STARPUNCH : ModProjectile
 
         if(Timer == 1)
         {
+            int dustType = ModContent.DustType<StarBitDust>();
+            for(float f =0; f < 10; f++)
+            {
+                Vector2 spawnPosition = Projectile.Center;
+                spawnPosition.X += Main.rand.NextFloat(-64, 64);
+                spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+                Vector2 spawnVelocity = Main.rand.NextVector2Circular(16, 16);
+                Dust.NewDustPerfect(spawnPosition, dustType, spawnVelocity);
+            }
             for(float f = 0; f < 3; f++)
             {
                 Vector2 spawnPosition = Projectile.Center;
@@ -62,7 +76,7 @@ public class STARPUNCH : ModProjectile
             }
 
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            ShakeScreenPosition.Shake = 8;
+            ShakeScreenPosition.Shake = 12;
             for(float f = 0; f < 32; f++)
             {
                 Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
@@ -76,11 +90,6 @@ public class STARPUNCH : ModProjectile
 
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.DarkGoldenrod, 15, 0.16f);
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-            for (float f = 0; f < 12; f++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(5, 5);
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), velocity, 0, Color.Yellow, Main.rand.NextFloat(2f, 5f)).noGravity = true;
-            }
 
             for (float i = 0; i < 4; i++)
             {
@@ -101,8 +110,49 @@ public class STARPUNCH : ModProjectile
         if (Projectile.frame >= Main.projFrames[Type])
             Projectile.Kill();
     }
+    private void DrawTorch()
+    {
+        {
+            float attackProgress = Timer / 36f;
+            RekTorchShader torchShader = ShaderContent.GetInstance<RekTorchShader>();
+            torchShader.Time = EasingFunction.OutExpo(attackProgress);
+            torchShader.Strength = MathHelper.Lerp(-0.5f, 0.5f, EasingFunction.OutSine(attackProgress));
+            torchShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
+            torchShader.InnerColor = Color.Yellow;
+            torchShader.BloomColor = Color.Gold;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = torchShader.Effect };
+            using (new SpritebatchContext(Main.spriteBatch, Main.spriteBatch.Parameters with { effect = torchShader }))
+            {
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(
+                    AssetReferences.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles.VulcanEruption.Asset, Projectile.Center);
+                drawer.rotation = Projectile.velocity.ToRotation();
+                drawer.color = Color.Lerp(Color.White, Color.Gold, attackProgress);
+                drawer.color.A = 0;
+                drawer.LeftCenterOrigin();
+                drawer.scale *= 2f;
+                drawer.scale.Y *= MathHelper.SmoothStep(1.5f, 0f, EasingFunction.OutExpo(attackProgress));
+                drawer.scale.X *= 2.8f;
+                spriteBatch.Draw(drawer);
+
+                drawer.color = Color.DarkGoldenrod;
+                drawer.color.A = 0;
+                drawer.scale *= 1.12f;
+                spriteBatch.Draw(drawer);
+
+                drawer.color = Color.DarkViolet;
+                drawer.color.A = 0;
+                drawer.scale *= 1.12f;
+                drawer.scale.Y *= 0.8f;
+                spriteBatch.Draw(drawer);
+            }
+
+        }
+    }
     public override bool PreDraw(ref Color lightColor)
     {
+     //   DrawTorch();
+
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
         drawer.color = Color.Gold;
         drawer.scale *= 1.1f;
