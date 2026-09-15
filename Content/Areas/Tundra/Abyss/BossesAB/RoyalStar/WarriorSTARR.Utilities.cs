@@ -1,6 +1,8 @@
-﻿using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Gores;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
+using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
@@ -61,9 +63,84 @@ public partial class WarriorSTARR
 
     }
 
+    public void MakeCometParticles(Vector2 position, Vector2 velocity)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            Vector2 pos = position;
+            pos += Main.rand.NextVector2Circular(32, 32);
+            Particles.CometMagicDust.Spawn(CometMagicDustData.Default with
+            {
+                position = pos,
+                velocity = -velocity.SafeNormalize(Vector2.Zero) * 3,
+                color = Color.Cyan,
+                timeLeft = Main.rand.Next(15, 25)
+            });
+        }
+        {
+            var sp = SmokeParticle.SpawnInAlphaLayer(position + Main.rand.NextVector2Circular(32, 32), -velocity * 0.05f, Color.DarkBlue);
+            sp.fast = true;
+            sp.initialColor = Color.DarkBlue;
+            sp.fadeToColor = Color.DarkGray;
+            sp.Scale *= 2.5f;
+            sp.behindLayer = true;
+        }
+        if (Main.rand.NextBool(12))
+        {
+            var sp = SparkleParticle.Spawn(position + Main.rand.NextVector2Circular(32, 32), -velocity * 0.05f, Color.DarkBlue);
+            sp.fast = true;
+            sp.behindLayer = true;
+            sp.Scale *= 0.5f;
+            sp.gravity = 0;
+        }
+        Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+        {
+            position = position + Main.rand.NextVector2Circular(32, 32),
+            velocity = Main.rand.NextVector2Circular(8, 8) - velocity,
+            innerColor = Color.LightBlue.ToVector4(),
+            outerColor = Color.DarkBlue.ToVector4(),
+            scale = Vector2.One * 0.6f
+        });
+    }
+
     public void MakeFallingCrashParticles()
     {
+        if (Timer % 5 == 0 && NPC.velocity.Length() > 3)
+        {
+            var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity);
+            p2.Scale *= 0.5f;
+        }
+        if(Timer % 5 == 0)
+        {
+            Vector2 spawnPosition = NPC.Center;
+            spawnPosition.X += Main.rand.NextFloat(-64, 64);
+            spawnPosition.Y += Main.rand.NextFloat(-64, 64);
 
+            Vector2 spawnVelocity = Main.rand.NextVector2Circular(2, 2);
+            spawnVelocity -= NPC.velocity * 0.2f;
+            float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+            Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
+        }
+
+        if (Main.rand.NextBool(6))
+        {
+            Vector2 pos = NPC.Center;
+            pos.X += Main.rand.NextFloat(-64, 64);
+            pos.Y += Main.rand.NextFloat(-64, 64);
+            var sp = SparkleParticle.Spawn(pos, -NPC.velocity * 0.1f);
+            sp.gravity = 0f;
+            sp.dampening = 0.1f;
+            sp.outerColor = Color.Gold;
+            sp.innerColor = Color.LightGoldenrodYellow;
+        }
+
+        if (Main.rand.NextBool(4))
+        {
+            Vector2 pos = NPC.Center;
+            pos.X += Main.rand.NextFloat(-64, 64);
+            pos.Y += Main.rand.NextFloat(-64, 64);
+            FXUtil.GlowStretch(pos, -NPC.velocity.SafeNormalize(Vector2.Zero) * 4);
+        }
     }
 
     public void MakeJumpingParticles()
@@ -95,6 +172,33 @@ public partial class WarriorSTARR
     public void CrashVFX(Vector2 position, Vector2 velocity)
     {
 
+    }
+
+    public void StarBoomVFX(Vector2 position)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        PixelPrimitiveCircleFactory.CreateSTARRBoom(position);
+    }
+    public void CrackVFX(Vector2 position)
+    {
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200 });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 1.5f, timeLeft = 120 });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 2.5f, timeLeft = 45 });
+    }
+    public void StarBitVFX(Vector2 position, Vector2 velocity)
+    {
+        int dustType = ModContent.DustType<StarBitDust>();
+        for(float f = 0; f < 32; f++)
+        {
+            Vector2 pos = position;
+            pos.X += Main.rand.NextFloat(-64, 64);
+            pos.Y += Main.rand.NextFloat(-64, 64);
+            Vector2 vel = velocity;
+            vel *= Main.rand.NextFloat(0.5f, 1f);
+            vel = vel.RotatedByRandom(1.5f);
+            Dust.NewDustPerfect(pos, dustType, vel);
+        }
     }
 
     public void EarthQuakeVFX(Vector2 position, Vector2 velocity)

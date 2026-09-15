@@ -1,5 +1,8 @@
-﻿using Stellamod.Core;
+﻿using Stellamod.Common.Animations;
+using Stellamod.Content.Rendering.GenericEffects;
+using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Pixelation;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -7,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
-public partial class WarriorSTARR : ScarletBoss
+public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
 {
     private enum AIState
     {
@@ -59,6 +62,10 @@ public partial class WarriorSTARR : ScarletBoss
             return 180;
         }
     }
+    private float _bigStarAlpha;
+    private float _jumpingTrailAlpha;
+    private float _afterImageAlpha;
+    private bool _afterImages;
     private bool _fakeOut;
     private bool _eyeFlash;
     private bool _jumpingTrail;
@@ -110,6 +117,8 @@ public partial class WarriorSTARR : ScarletBoss
         Main.npcFrameCount[NPC.type] = 1;
         NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         NPCID.Sets.BossBestiaryPriority.Add(Type);
+        NPCID.Sets.TrailCacheLength[Type] = 16;
+        NPCID.Sets.TrailingMode[Type] = 0;
         NPCSets.UseAseprite[Type] = true;
     }
 
@@ -167,6 +176,8 @@ public partial class WarriorSTARR : ScarletBoss
         _contactDamage = false;
         _jumpingTrail = false;
         _grabbing = false;
+        _afterImages = false;
+        _bigStarAlpha *= 0.92f;
         _outliner.SetDefaults();
         switch (State)
         {
@@ -214,6 +225,8 @@ public partial class WarriorSTARR : ScarletBoss
                 AI_Death();
                 break;
         }
+        _jumpingTrailAlpha = MathHelper.Lerp(_jumpingTrailAlpha, _jumpingTrail ? 1f : 0f, 0.1f);
+        _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, _afterImages ? 1f : 0f, 0.1f);
         this.SetDrawOrigin(new Vector2(68, 114));
         _outliner.Update();
     }
@@ -267,7 +280,7 @@ public partial class WarriorSTARR : ScarletBoss
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.BoulderKick);
+            SwitchState(AIState.JumpRockSlam);
         }
     }
 
@@ -299,15 +312,72 @@ public partial class WarriorSTARR : ScarletBoss
                 SwitchState(AIState.Death);
         }
     }
+    private float GetSpiralDashTrailWidth(float completionRatio)
+    {
+        return MathHelper.SmoothStep(128, 96, completionRatio)  * 0.46f;
+    }
+    private float GetSpiralDashTrailWidth2(float completionRatio)
+    {
+        return GetSpiralDashTrailWidth(completionRatio) * 1.3f;
+    }
+    private Color GetSpiralDashTrailColor(float completionRatio)
+    {
+        return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.5f *
+            _jumpingTrailAlpha * EasingFunction.QuadraticBump(completionRatio * completionRatio);
+    }
+
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        if(_afterImageAlpha > 0.03f)
+        {
+            var whitePass = AssetReferences.Effects.CrystalShaders.SpriteWhite.CreatePixelPass();
+            whitePass.Apply();
+            using(new SpritebatchContext(spriteBatch, spriteBatch.Parameters with {  effect = whitePass.Shader }))
+            {
+                foreach (OldPosition oldPos in new OldPositionEnum(NPC.oldPos))
+                {
+                    SpritebatchDrawer drawInfo = NPC.GetAnimatorDrawInfo(drawColor);
+                    Vector2 offset = drawInfo.drawOrigin - this.AseAnimator.centerDrawOrigin;
+                    drawInfo.worldPosition = oldPos.position + NPC.Size * 0.5f;
+                    drawInfo.worldPosition += offset;
+                    drawInfo.color = Color.Lerp(Color.Green, Color.Transparent, oldPos.progress) * 0.3f * _afterImageAlpha;
+                    drawInfo.color.A = 0;
+                    spriteBatch.Draw(drawInfo);
+                }
+            }
+        }
+
         NPC.DrawAnimator(spriteBatch, drawColor);
         OutlineRenderer.Queue(DrawOutlineWhite);
+        if(_bigStarAlpha > 0.03f)
+        {
+            var starAsset = AssetReferences.Assets.GlowMasks.FivePointedStar.Asset;
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
+            drawer.color = Color.Lerp(Color.Transparent, Color.Goldenrod, _bigStarAlpha) * 0.6f;
+            drawer.rotation = MathHelper.Lerp(3.14f, 0f, _bigStarAlpha);
+            spriteBatch.Draw(drawer);
+
+            drawer.color *= ExtraMath.Osc(0.25f, 1f, speed: 64);
+            drawer.color.A = 0;
+            spriteBatch.Draw(drawer);
+        }
         return false;
     }
 
     private void DrawOutlineWhite(SpriteBatch spriteBatch)
     {
         NPC.DrawAnimator(spriteBatch, _outliner.outlineColor);
+    }
+
+    public void DrawToRenderTargets()
+    {
+        if (_jumpingTrailAlpha > 0.03f)
+        {
+            var verts1 = DrawUtilities.PrepareSimpleTrailing(NPC.oldPos, GetSpiralDashTrailColor, GetSpiralDashTrailWidth, NPC.Size * 0.5f);
+            var verts2 = DrawUtilities.PrepareSimpleTrailing(NPC.oldPos, GetSpiralDashTrailColor, GetSpiralDashTrailWidth2, NPC.Size * 0.5f);
+            ModContent.GetInstance<SpiralingWindTrailRenderer>().PrepareForBigRendering(verts2);
+            ModContent.GetInstance<SpiralingWindTrailRenderer>().PrepareForRendering(verts1);
+        }
+
     }
 }

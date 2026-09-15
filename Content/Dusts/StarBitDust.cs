@@ -2,12 +2,12 @@
 using Terraria.ModLoader;
 namespace Stellamod.Content.Dusts;
 
-public class SeafloorRockDust : ModDust
+public class StarBitDust : ModDust
 {
     public override void OnSpawn(Dust dust)
     {
         dust.noGravity = true;
-        dust.frame = new Rectangle(0, Main.rand.Next(4) * 22, 22, 22);
+        dust.frame = new Rectangle(0, Main.rand.Next(3) * 22, 18, 22);
         dust.color = Color.White;
     }
 

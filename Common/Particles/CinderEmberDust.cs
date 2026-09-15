@@ -1,8 +1,8 @@
 ﻿using Stellamod.Core.Pixelation;
-using System;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
+
 
 
 public struct CinderEmberDustData : IParticleData
@@ -43,7 +43,6 @@ public class CinderEmberDustBackground : CinderEmberDust
         PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.BehindTiles);
     }
 }
-
 public class CinderEmberDust : ParticleUpdater<CinderEmberDustData>
 {
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 1 };

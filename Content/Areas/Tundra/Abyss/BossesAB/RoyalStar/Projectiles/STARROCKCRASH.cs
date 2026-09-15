@@ -1,48 +1,15 @@
 ﻿using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Gores;
+using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
-
-public class STARROCKCRASHSLAM : ModProjectile
-{
-    public override string Texture => TextureRegistry.EmptyTexture;
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-    }
-
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-    }
-
-    public override void AI()
-    {
-        base.AI();
-    }
-
-    public override bool PreDraw(ref Color lightColor)
-    {
-        return base.PreDraw(ref lightColor);
-    }
-
-    public override void OnHitPlayer(Player target, Player.HurtInfo info)
-    {
-        base.OnHitPlayer(target, info);
-    }
-
-    public override void OnKill(int timeLeft)
-    {
-        base.OnKill(timeLeft);
-    }
-
-}
 public class STARROCKCRASH : ModProjectile
 {
     private int _frame;
@@ -87,23 +54,37 @@ public class STARROCKCRASH : ModProjectile
         Projectile.frame = _frame;
         Projectile.velocity.Y += 0.5f;
         Projectile.rotation += Projectile.velocity.X * 0.05f;
+        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Stone);
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
+        OutlineRenderer.Queue(DrawWhites);
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
         Main.spriteBatch.Draw(drawer);
         return false;
     }
 
+    private void DrawWhites(SpriteBatch spriteSB)
+    {
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+        drawer.color = Color.Red;
+        Main.spriteBatch.Draw(drawer);
+    }
     public override void OnHitPlayer(Player target, Player.HurtInfo info)
     {
         base.OnHitPlayer(target, info);
     }
 
+    private void PlayBreakSound()
+    {
+        var soundStyle = AssetReferences.Assets.Sounds.STARR.RockSmash.Asset with { PitchVariance = 0.5f };
+        SoundEngine.PlaySound(soundStyle, Projectile.position);
+    }
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        PlayBreakSound();
         for (int i = 0; i < 4; i++)
         {
             Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(32, 32);

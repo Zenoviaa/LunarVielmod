@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 
+
 public class AIRBREAKER : ModProjectile
 {
     private NPC Parent => Main.npc[(int)Projectile.ai[0]];
