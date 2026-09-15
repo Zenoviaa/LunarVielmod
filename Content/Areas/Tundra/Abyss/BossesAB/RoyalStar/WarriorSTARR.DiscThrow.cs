@@ -54,6 +54,8 @@ public partial class WarriorSTARR
                 break;
             case 1:
                 {
+                    FaceTarget();
+                    NPC.velocity.X *= 0.96f;
                     SwitchState(AIState.CapeOut);
                 }
                 break;

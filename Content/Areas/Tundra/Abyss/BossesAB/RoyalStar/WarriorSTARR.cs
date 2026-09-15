@@ -71,6 +71,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private bool _jumpingTrail;
     private bool _grabbing;
     private int _grabbedPlayer;
+    private Vector2 _teleportPosition;
     private Vector2 _vector1;
     private Vector2 _vector2;
     private const string ANIM_IDLE = "Idle";
@@ -101,6 +102,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         writer.Write(Phase2Active);
         writer.WriteVector2(_vector1);
         writer.WriteVector2(_vector2);
+        writer.WriteVector2(_teleportPosition);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -109,6 +111,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         Phase2Active = reader.ReadBoolean();
         _vector1 = reader.ReadVector2();
         _vector2 = reader.ReadVector2();
+        _teleportPosition = reader.ReadVector2();
     }
 
     public override void SetStaticDefaults()
@@ -172,6 +175,14 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             if (!NPC.HasValidTarget && State != AIState.Despawn)
                 SwitchState(AIState.Despawn);
         }
+        
+        if(_teleportPosition != Vector2.Zero)
+        {
+            NPC.Center = _teleportPosition;
+            NPC.velocity = Vector2.Zero;
+            _teleportPosition = Vector2.Zero;
+        }
+
         _fakeOut =false;
         _contactDamage = false;
         _jumpingTrail = false;
@@ -280,7 +291,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.JumpRockSlam);
+            SwitchState(AIState.WindUpPunch);
         }
     }
 
@@ -322,7 +333,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     }
     private Color GetSpiralDashTrailColor(float completionRatio)
     {
-        return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.5f *
+        return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.66f *
             _jumpingTrailAlpha * EasingFunction.QuadraticBump(completionRatio * completionRatio);
     }
 

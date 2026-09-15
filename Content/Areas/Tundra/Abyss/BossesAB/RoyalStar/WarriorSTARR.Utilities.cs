@@ -17,6 +17,20 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
 public partial class WarriorSTARR
 {
+    private float _stepDistance;
+    private void CreateFootsteps()
+    {
+        float traveledDistance = Vector2.Distance(NPC.position, NPC.oldPosition);
+        _stepDistance += traveledDistance;
+        if (_stepDistance >= 100)
+        {
+            Vector2 pos = NPC.Bottom;
+            var circleStep = LegacyParticle.NewParticle<CircleStepParticle>(pos, Vector2.UnitY);
+            circleStep.color = Color.Yellow * 0.75f;
+            circleStep.Rotation = NPC.rotation;
+            _stepDistance = 0;
+        }
+    }
     public void FaceTarget()
     {
         int dir = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
@@ -167,6 +181,14 @@ public partial class WarriorSTARR
     public void AirSwooshSound()
     {
 
+    }
+
+    public void Teleport(Vector2 position)
+    {
+        if (MultiplayerHelper.IsHost)
+        {
+            _teleportPosition = position;
+        }
     }
 
     public void CrashVFX(Vector2 position, Vector2 velocity)
