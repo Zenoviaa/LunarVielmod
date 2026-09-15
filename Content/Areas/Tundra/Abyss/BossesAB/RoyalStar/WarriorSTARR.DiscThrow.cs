@@ -23,8 +23,10 @@ public partial class WarriorSTARR
                         float xDirection = MathF.Sign(NPC.velocity.X);
                         NPC.velocity.X = -xDirection * 5;
                     }
+                    _afterImages = true;
                     _outliner.attacking = true;
                     FaceTarget();
+                    NPC.noTileCollide = false;
                     NPC.velocity.X *= 0.96f;
                     NPC.velocity.Y += 0.2f;
                     this.AseAnimator.PlayAnimation(ANIM_DISC_THROW, AnimationParams.NoLooping);
@@ -44,6 +46,14 @@ public partial class WarriorSTARR
                                 discFirer.New();
                             }
                         }
+                    }
+                    _bigStarAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / 72f));
+                    if(Timer >= 72)
+                    {
+                        SwitchState(AIState.WindUpPunch);
+                        AttackCounter = 42;
+                        Timer = 0;
+
                     }
                     if (IsGrounded())
                     {

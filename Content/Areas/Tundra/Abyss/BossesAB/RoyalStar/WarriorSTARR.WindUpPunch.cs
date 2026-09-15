@@ -7,6 +7,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
 public partial class WarriorSTARR
 {
+
     private float Wind_Up_Speed_Up_Mult => MathHelper.Lerp(1f, 0.5f, EasingFunction.InOutSine(AttackCounter / 5f));
     private float Wind_Up_Punch_Count => 7;
     private float Wind_Up_Punch_Teleport_In_Time => 35;
@@ -26,6 +27,7 @@ public partial class WarriorSTARR
                     {
                         NPC.TargetClosest();
                         GruntSound();
+                        _initialVelocity = NPC.velocity;
                     }
                     float time = Wind_Up_Punch_Teleport_In_Time;
                     if (AttackCounter == 0)
@@ -49,7 +51,7 @@ public partial class WarriorSTARR
                     EndDashPosition = MyTarget.Center;
                     FaceTarget();
                     Vector2 vel = positionToMoveTo - NPC.Center;
-                    NPC.velocity = Vector2.Lerp(Vector2.Zero, vel, EasingFunction.InOutExpo(Timer / time));
+                    NPC.velocity = Vector2.Lerp(_initialVelocity, vel, EasingFunction.InOutExpo(Timer / time));
                     NPC.noTileCollide = true;
                     NPC.noGravity = true;
                     this.AseAnimator.PlayAnimation(ANIM_PUNCH_READY, AnimationParams.NoLooping);
@@ -115,7 +117,7 @@ public partial class WarriorSTARR
                         Timer = 0;
                         AttackCycle++;
                     }
-                    if (_fakeOut && Timer >= time * 0.35f)
+                    if (_fakeOut && Timer >= time * 0.9f)
                     {
                         SwitchState(AIState.DiscThrow);
                     }

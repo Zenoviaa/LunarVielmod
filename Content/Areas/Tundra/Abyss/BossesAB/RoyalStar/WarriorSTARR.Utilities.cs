@@ -12,6 +12,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.NPCs.Town.MerenaQuestSystem;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
@@ -208,6 +209,21 @@ public partial class WarriorSTARR
         Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 1.5f, timeLeft = 120 });
         Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 2.5f, timeLeft = 45 });
     }
+
+    public void StarBitDust()
+    {
+        if (Main.rand.NextBool(2))
+        {
+            Vector2 pos = NPC.Center;
+            pos.X += Main.rand.NextFloat(-64, 64);
+            pos.Y += Main.rand.NextFloat(-64, 64);
+            Vector2 vel = Main.rand.NextVector2Circular(8, 8);
+            vel -= NPC.velocity;
+            Dust.NewDustPerfect(pos, ModContent.DustType<StarBitDust>(), vel);
+        }
+
+    }
+
     public void StarBitVFX(Vector2 position, Vector2 velocity)
     {
         int dustType = ModContent.DustType<StarBitDust>();

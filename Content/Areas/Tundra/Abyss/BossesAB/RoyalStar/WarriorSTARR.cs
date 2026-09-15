@@ -74,6 +74,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private Vector2 _teleportPosition;
     private Vector2 _vector1;
     private Vector2 _vector2;
+    private Vector2 _initialVelocity;
     private const string ANIM_IDLE = "Idle";
     private const string ANIM_KICK_UP = "KickUp";
     private const string ANIM_KICK_DOWN = "KickDown";
@@ -103,6 +104,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         writer.WriteVector2(_vector1);
         writer.WriteVector2(_vector2);
         writer.WriteVector2(_teleportPosition);
+        writer.WriteVector2(_initialVelocity);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -112,6 +114,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         _vector1 = reader.ReadVector2();
         _vector2 = reader.ReadVector2();
         _teleportPosition = reader.ReadVector2();
+        _initialVelocity = reader.ReadVector2();
     }
 
     public override void SetStaticDefaults()
@@ -291,7 +294,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.WindUpPunch);
+            SwitchState(AIState.RockSpikeRun);
         }
     }
 
