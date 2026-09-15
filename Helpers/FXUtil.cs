@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Camera;
+﻿using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Effects.ScreenRipples;
@@ -12,6 +13,14 @@ namespace Stellamod.Helpers;
 
 public static class FXUtil
 {
+    public static void MakeSoilParticle(in Vector2 position, in Vector2 velocity)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        Vector2 spawnPosition = position;
+        Vector2 spawnVelocity = velocity;
+        ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
+    }
     public static void ApplyContrast(float strength)
     {
         if (Main.netMode == NetmodeID.Server)

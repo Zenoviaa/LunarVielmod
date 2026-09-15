@@ -290,7 +290,7 @@ public partial class WarriorSTARR
         //Lemme grab the steamroller particles
         for(int i = 0; i < 4; i++)
         {
-            MakeSoilParticle(position + Main.rand.NextVector2Circular(32, 32), velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.6f, 1f));
+            FXUtil.MakeSoilParticle(position + Main.rand.NextVector2Circular(32, 32), velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.6f, 1f));
         }
 
         if (Main.netMode == NetmodeID.Server)
@@ -308,14 +308,7 @@ public partial class WarriorSTARR
         Gore.NewGore(NPC.GetSource_FromThis(), position, velocity, ModContent.GoreType<IceRockGore>());
     }
 
-    public static void MakeSoilParticle(in Vector2 position, in Vector2 velocity)
-    {
-        if (Main.netMode == NetmodeID.Server)
-            return;
-        Vector2 spawnPosition = position;
-        Vector2 spawnVelocity = velocity;
-        ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
-    }
+
 
     public void PunchVFX(Vector2 position, Vector2 velocity)
     {

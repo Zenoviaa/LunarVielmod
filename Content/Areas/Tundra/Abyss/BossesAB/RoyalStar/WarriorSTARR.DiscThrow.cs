@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
+using Stellamod.Content.Dusts;
 using System;
 using Terraria;
 
@@ -26,6 +27,7 @@ public partial class WarriorSTARR
                     _afterImages = true;
                     _outliner.attacking = true;
                     FaceTarget();
+                    StarBitDust();
                     NPC.noTileCollide = false;
                     NPC.velocity.X *= 0.96f;
                     NPC.velocity.Y += 0.2f;

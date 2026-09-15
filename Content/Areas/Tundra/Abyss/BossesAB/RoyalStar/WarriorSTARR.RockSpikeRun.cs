@@ -18,17 +18,21 @@ public partial class WarriorSTARR
                     if (Timer == 1)
                     {
                         GruntSound();
-                        NPC.TargetClosest();
-                        RunDirection = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
+                        NPC.TargetClosest();                 
                     }
 
                     _outliner.warning = true;
                     FaceTarget();
+                    StayGrounded();
 
+                    Vector2 direction = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
                     float ratio = Timer / Flying_Or_Ankle_Prep_Time;
                     float ease = EasingFunction.OutExpo(ratio);
-                    NPC.velocity = Vector2.Lerp(-RunDirection * 8, Vector2.Zero, ease);
+                    NPC.velocity = Vector2.Lerp(-direction * 8, Vector2.Zero, ease);
                     this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
+                    
+                    StartDashPosition = NPC.Center;
+                    EndDashPosition = NPC.Center + direction * 384;
                     if (Timer >= Rock_Spike_Prep_Time)
                     {
                         Timer = 0;
@@ -36,10 +40,17 @@ public partial class WarriorSTARR
                     }
                 }
                 break;
+
             case 1:
                 {
+                    if(Timer == 1)
+                    {
+                        _initialVelocity = NPC.velocity;
+                    }
+                    _afterImages = true;
+                    _jumpingTrail = true;
                     _outliner.attacking = true;
-                    if(Timer % 8 == 0 && NPC.velocity.Length() > 4)
+                    if(Timer % 8 == 0 && Timer >= 15)
                     {
                         if (MultiplayerHelper.IsHost)
                         {
@@ -51,14 +62,23 @@ public partial class WarriorSTARR
                         }
                     }
                     this.AseAnimator.PlayAnimation(ANIM_RUN);
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, RunDirection * 8, 0.2f);
-                    if (Timer >= Rock_Spike_Run_Time)
+
+                    float time = Rock_Spike_Run_Time;
+                    float ratio = Timer / time;
+                    Vector2 pos = Vector2.Lerp(StartDashPosition, EndDashPosition, ratio);
+                    Vector2 vel = pos - NPC.Center;
+
+                    NPC.spriteDirection = NPC.velocity.X > 0 ? 1 : -1;
+                    NPC.velocity = vel;
+             
+                    if (Timer >= time)
                     {
                         Timer = 0;
                         AttackCycle++;
                     }
                 }
                 break;
+
             case 2:
                 {
                     SwitchState(AIState.Idle);

@@ -294,7 +294,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.RockSpikeRun);
+            SwitchState(AIState.JumpRockSlam);
         }
     }
 
