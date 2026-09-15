@@ -31,6 +31,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         Death
     }
 
+    private Vector2 _jumpScale;
     private bool _contactDamage;
     public override string Texture => TextureRegistry.EmptyTexture;
     private Outliner _outliner;
@@ -97,6 +98,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private const string ANIM_GRAB_TRY = "GrabTry";
     private const string ANIM_GRAB_THROW = "GrabThrow";
     private const string ANIM_GRAB_NO = "GrabNo";
+    private const string ANIM_JUMP = "Jump";
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -193,6 +195,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         _afterImages = false;
         _bigStarAlpha *= 0.92f;
         _outliner.SetDefaults();
+        _jumpScale = Vector2.Lerp(_jumpScale, Vector2.One, 0.2f);
         switch (State)
         {
             case AIState.Despawn:
@@ -328,7 +331,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     }
     private float GetSpiralDashTrailWidth(float completionRatio)
     {
-        return MathHelper.SmoothStep(128, 96, completionRatio)  * 0.46f;
+        return MathHelper.SmoothStep(128, 96, completionRatio)  * 0.3f;
     }
     private float GetSpiralDashTrailWidth2(float completionRatio)
     {
@@ -336,7 +339,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     }
     private Color GetSpiralDashTrailColor(float completionRatio)
     {
-        return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.66f *
+        return Color.Lerp(Color.White, Color.Transparent, completionRatio)  *
             _jumpingTrailAlpha * EasingFunction.QuadraticBump(completionRatio * completionRatio);
     }
 
@@ -361,20 +364,11 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             }
         }
 
-        NPC.DrawAnimator(spriteBatch, drawColor);
+        SpritebatchDrawer bossDrawInfo = NPC.GetAnimatorDrawInfo(drawColor);
+        bossDrawInfo.scale = _jumpScale;
+        spriteBatch.Draw(bossDrawInfo);
         OutlineRenderer.Queue(DrawOutlineWhite);
-        if(_bigStarAlpha > 0.03f)
-        {
-            var starAsset = AssetReferences.Assets.GlowMasks.FivePointedStar.Asset;
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
-            drawer.color = Color.Lerp(Color.Transparent, Color.Goldenrod, _bigStarAlpha) * 0.6f;
-            drawer.rotation = MathHelper.Lerp(3.14f, 0f, _bigStarAlpha);
-            spriteBatch.Draw(drawer);
 
-            drawer.color *= ExtraMath.Osc(0.25f, 1f, speed: 64);
-            drawer.color.A = 0;
-            spriteBatch.Draw(drawer);
-        }
         return false;
     }
 
@@ -383,6 +377,18 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         NPC.DrawAnimator(spriteBatch, _outliner.outlineColor);
     }
 
+    private void DrawPixelatedSTARR(SpriteBatch spriteBatch, Vector2 sp)
+    {
+        var starAsset = AssetReferences.Assets.GlowMasks.FivePointedStar.Asset;
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
+        drawer.color = Color.Lerp(Color.Transparent, Color.Goldenrod, _bigStarAlpha) * 0.45f;
+        drawer.rotation = MathHelper.Lerp(3.14f, 0f, _bigStarAlpha);
+        spriteBatch.Draw(drawer);
+
+        drawer.color *= ExtraMath.Osc(0.25f, 1f, speed: 64);
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
+    }
     public void DrawToRenderTargets()
     {
         if (_jumpingTrailAlpha > 0.03f)
@@ -392,6 +398,9 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             ModContent.GetInstance<SpiralingWindTrailRenderer>().PrepareForBigRendering(verts2);
             ModContent.GetInstance<SpiralingWindTrailRenderer>().PrepareForRendering(verts1);
         }
-
+        if (_bigStarAlpha > 0.03f)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSTARR, DrawLayer.OverPlayers);
+        }
     }
 }

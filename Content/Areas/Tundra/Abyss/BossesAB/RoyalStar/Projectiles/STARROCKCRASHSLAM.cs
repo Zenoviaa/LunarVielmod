@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Common.Particles;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
@@ -30,6 +31,20 @@ public class STARROCKCRASHSLAM : ModProjectile
     {
         base.AI();
         Timer++;
+        if(Timer == 1)
+        {
+            for (float f = 0; f < 32; f++)
+            {
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = Projectile.Center,
+                    velocity = Main.rand.NextVector2Circular(32, 32),
+                    innerColor = Color.LightGoldenrodYellow.ToVector4(),
+                    outerColor = Color.DarkGoldenrod.ToVector4(),
+                });
+            }
+
+        }
     }
 
     public override bool PreDraw(ref Color lightColor)

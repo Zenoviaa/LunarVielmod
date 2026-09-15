@@ -12,14 +12,15 @@ public partial class WarriorSTARR
     private ref Vector2 JumpStartPosition => ref _vector1;
     private ref Vector2 JumpTargetPosition => ref _vector2;
     private float Num_Falling_Rocks => 7;
-    private float Jump_Rock_Prep_Time => 40;
-    private float Jump_Ready_Time => 60;
+    private float Jump_Rock_Prep_Time => 15;
+    private float Jump_Ready_Time => 24;
     private int Jump_Rock_Crash_Damage => 45;
     private int Jump_Rock_Rock_Damage => 32;
     private float Jump_Rock_Punch_Out_Time => 60;
-    private float Jump_Rock_Falling_Time => 46;
+    private float Jump_Rock_Falling_Time => 88;
     private void AI_JumpRockSlam()
     {
+        CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.25f));
         Timer++;
         switch (AttackCycle)
         {
@@ -33,6 +34,12 @@ public partial class WarriorSTARR
 
                     StayGrounded();
                     FaceTarget();
+                    float time = Jump_Rock_Prep_Time;
+                    float ratio = Timer / time;
+                    Vector2 lerp1 = Vector2.Lerp(Vector2.One, new Vector2(1.3f, 0.9f), EasingFunction.OutExpo(ratio));
+                    Vector2 lerp2 = Vector2.Lerp(new Vector2(1.3f, 0.9f), new Vector2(0.9f, 1.2f), EasingFunction.InOutSine(ratio));
+                    Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, ratio);
+                    _jumpScale = lerp3;
                     this.AseAnimator.PlayAnimation(ANIM_CROUCH, AnimationParams.NoLooping);
                     if (Timer >= Jump_Rock_Prep_Time)
                     {
@@ -46,13 +53,15 @@ public partial class WarriorSTARR
                     if (Timer == 1)
                     {
                         BigGruntSound();
+                        MakeJumpVFX(NPC.Bottom, -Vector2.UnitY * 15);
                         JumpStartPosition = NPC.Center;
                         JumpTargetPosition = MyTarget.Center - Vector2.UnitY * 384;
                     }
 
                     _outliner.warning = true;
                     MakeJumpingParticles();
-
+                    if(Main.rand.NextBool(6))
+                        MakeSparkleAroundVFX(NPC.Center);
                     _afterImages = true;
                     _jumpingTrail = true;
                     float xDirection = MathF.Sign(JumpTargetPosition.X - JumpStartPosition.X);
@@ -68,7 +77,7 @@ public partial class WarriorSTARR
                     Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, ratio);
                     Vector2 targetVelocity = lerp3 - NPC.Center;
                     NPC.velocity = targetVelocity;
-                    this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN_READY, AnimationParams.NoLooping);
+                    this.AseAnimator.PlayAnimation(ANIM_JUMP, AnimationParams.NoLooping);
                     if (Timer >= Jump_Ready_Time)
                     {
                         Timer = 0;
@@ -79,9 +88,10 @@ public partial class WarriorSTARR
             case 2:
                 {
                     _outliner.attacking = true;
-                    NPC.velocity.X *= 0.5f;
+               
                     if(Timer == 1)
                     {
+                        _initialVelocity = NPC.velocity;
                         JumpStartPosition = NPC.Center;
                         JumpTargetPosition = TileUtilities.FallToSolidTile(JumpStartPosition.ToTileCoordinates()).ToWorldCoordinates();
                         JumpTargetPosition -= new Vector2(0, 64);
@@ -97,18 +107,26 @@ public partial class WarriorSTARR
                     }
 
                     _bigStarAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 64));
-                    Vector2 up = JumpStartPosition + new Vector2(0, -100);
+                    Vector2 up = JumpStartPosition + new Vector2(0, -256);
                     Vector2 lerp1 = Vector2.Lerp(JumpStartPosition, up, EasingFunction.OutExpo(ratio));
                     Vector2 lerp2 = Vector2.Lerp(up, JumpTargetPosition, EasingFunction.InExpo(ratio));
-                    Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, ratio);
+                    Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, EasingFunction.InSine(ratio));
                     Vector2 vel = lerp3 - NPC.Center;
-                    NPC.velocity = vel;
+                    NPC.velocity = Vector2.Lerp(_initialVelocity, vel, EasingFunction.InOutSine(ratio));
 
                     _jumpingTrail = true;
                     NPC.noGravity = true;
                     MakeFallingCrashParticles();
- 
-                    this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN, AnimationParams.Default);
+                 
+                    if(Timer < 30)
+                    {
+                        this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN_READY, AnimationParams.NoLooping);
+                    }
+                    else
+                    {
+                        this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN, AnimationParams.Default);
+                    }
+                   
                     if (Timer >= time)
                     {
                         Timer = 0;
@@ -125,6 +143,7 @@ public partial class WarriorSTARR
                         StarBitVFX(NPC.Bottom, -Vector2.UnitY * 15);
                         CrackVFX(NPC.Bottom);
                         StarBoomVFX(NPC.Bottom);
+                        IFartedVFX(NPC.Bottom, -Vector2.UnitY * 7);
                         var sound = AssetReferences.Assets.Sounds.RocketExplosion.Asset with { PitchVariance = 0.5f };
                         SoundEngine.PlaySound(sound, NPC.position);
                         if (MultiplayerHelper.IsHost)
@@ -146,8 +165,10 @@ public partial class WarriorSTARR
                             }
                         }
                     }
+
+                    MakeSparkleAroundVFX(NPC.Center);
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -44);
-                    ShakeScreenPosition.Shake = 8;
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(8, 2, EasingFunction.InOutSine(Timer / Jump_Rock_Punch_Out_Time));
                     StayGrounded();
                     this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN_OUT, AnimationParams.NoLooping);
                     if(Timer >= Jump_Rock_Punch_Out_Time)
@@ -159,7 +180,7 @@ public partial class WarriorSTARR
                 break;
             case 4:
                 {
-                    SwitchState(AIState.CapeOut);
+                    ChooseAttack();
                 }
                 break;
         }
