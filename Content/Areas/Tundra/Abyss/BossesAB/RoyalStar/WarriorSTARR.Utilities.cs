@@ -349,6 +349,31 @@ public partial class WarriorSTARR
         donut.Scale *= 2;
     }
 
+    public void TeleportOutEffect(Vector2 position)
+    {
+        var fx = FXUtil.GlowCircleBoom(position, Color.LightGoldenrodYellow, Color.Gold, Color.DarkOrange);
+        fx.Scale *= 1.5f;
+        for(float f = 0; f < 16; f++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = position,
+                innerColor = Color.Gold.ToVector4(),
+                outerColor = Color.DarkOrange.ToVector4(),
+                scale = Vector2.One * 0.6f,
+                velocity = Main.rand.NextVector2Circular(16, 16)
+            });
+        }
+    }
+    public void TeleportEffect(Vector2 position)
+    {
+        if (MultiplayerHelper.IsHost)
+        {
+            ProjFirer firer = ProjFirer.From<STARTELEPORT>(NPC);
+            firer.position = position;
+            firer.New();
+        }
+    }
     public void MakeRockGore(in Vector2 position, in Vector2 velocity)
     {
         Gore.NewGore(NPC.GetSource_FromThis(), position, velocity, ModContent.GoreType<IceRockGore>());

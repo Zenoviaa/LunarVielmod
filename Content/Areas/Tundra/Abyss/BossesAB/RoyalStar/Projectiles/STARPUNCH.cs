@@ -49,9 +49,10 @@ public class STARPUNCH : ModProjectile
     {
         base.AI();
         Timer++;
-        Main.projFrames[Type] = 8;
         if (Timer == 1)
         {
+            var sound = AssetReferences.Assets.Sounds.STARR.STARRPUNCH.Asset with { PitchVariance = 0.9f };
+            SoundEngine.PlaySound(sound, Projectile.position);
             int dustType = ModContent.DustType<StarBitDust>();
             for(float f =0; f < 10; f++)
             {
@@ -87,9 +88,6 @@ public class STARPUNCH : ModProjectile
                     outerColor = Color.DarkGoldenrod.ToVector4(),
                 });
             }
-
-            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.DarkGoldenrod, 15, 0.16f);
-            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
             for (float i = 0; i < 4; i++)
             {

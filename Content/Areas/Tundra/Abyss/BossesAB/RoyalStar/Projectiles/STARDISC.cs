@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -45,7 +46,11 @@ public class STARDISC : ModProjectile
     {
         base.AI();
         Timer++;
-
+        if(Timer == 1)
+        {
+            var zoomPunch = AssetReferences.Assets.Sounds.STARR.STARRthrowring.Asset with { PitchVariance = 0.5f };
+            SoundEngine.PlaySound(zoomPunch, Projectile.position);
+        }
         if(Projectile.velocity.Length() < 15)
             Projectile.velocity *= 1.03f;
         Projectile.frame = 0;
@@ -93,7 +98,7 @@ public class STARDISC : ModProjectile
     {
         for(int i = 0; i < 8; i++)
         {
-            var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(48, 48), Main.rand.NextVector2CircularEdge(12, 12));
+            var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(48, 48), Main.rand.NextVector2CircularEdge(6, 6));
             sp.innerColor = Color.PaleGoldenrod;
             sp.outerColor = Color.DarkOrange;
             sp.gravity = 0;
@@ -101,6 +106,8 @@ public class STARDISC : ModProjectile
             sp.Scale *= 0.4f;
             sp.fast = true;
         }
+        var bounceSOund = AssetReferences.Assets.Sounds.STARR.STARRringbounce.Asset with { PitchVariance = 1f };
+        SoundEngine.PlaySound(bounceSOund, Projectile.position);
     }
 
     public override bool PreDraw(ref Color lightColor)

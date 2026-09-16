@@ -307,7 +307,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.JumpRockSlam);
+            SwitchState(AIState.WindUpPunch);
         }
     }
 
@@ -349,7 +349,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     }
     private Color GetSpiralDashTrailColor(float completionRatio)
     {
-        return Color.Lerp(Color.White, Color.Transparent, completionRatio)  *
+        return Color.Lerp(Color.DarkOrange, Color.Transparent, completionRatio)  *
             _jumpingTrailAlpha * EasingFunction.QuadraticBump(completionRatio * completionRatio);
     }
 
