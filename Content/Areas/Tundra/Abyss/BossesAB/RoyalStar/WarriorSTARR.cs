@@ -103,6 +103,10 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private const string ANIM_GRAB_NO = "GrabNo";
     private const string ANIM_JUMP = "Jump";
     private const string ANIM_PUNCH_BACK = "PunchBack";
+    private const string ANIM_PUNCH_BACKAIR = "PunchBackair";
+    private const string ANIM_PUNCH_BACKGROUND = "Punchbackground";
+    private const string ANIM_JUMPFRAME = "Jumpframe";
+    private const string ANIM_JUMPTOHOVER = "JumpTohover";
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -303,7 +307,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.BoulderKick);
+            SwitchState(AIState.JumpRockSlam);
         }
     }
 

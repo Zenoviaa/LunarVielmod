@@ -54,6 +54,8 @@ public partial class WarriorSTARR
                 {
                     if (Timer == 1)
                     {
+                        var sound = AssetReferences.Assets.Sounds.STARR.STARRInAir.Asset with { PitchVariance = 0.5f };
+                        SoundEngine.PlaySound(sound, NPC.position);
                         BigGruntSound();
                         MakeJumpVFX(NPC.Bottom, -Vector2.UnitY * 15);
                         SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
@@ -104,7 +106,7 @@ public partial class WarriorSTARR
                     }
 
                     NPC.noGravity = true;
-                    this.AseAnimator.PlayAnimation(ANIM_JUMP, AnimationParams.NoLooping);
+                    this.AseAnimator.PlayAnimation(ANIM_JUMPFRAME, AnimationParams.NoLooping);
                     if (Timer >= Jump_Ready_Time)
                     {
                         Timer = 0;
@@ -118,6 +120,7 @@ public partial class WarriorSTARR
                
                     if(Timer == 1)
                     {
+        
                         _initialVelocity = NPC.velocity;
                         JumpStartPosition = NPC.Center;
                         JumpTargetPosition = TileUtilities.FallToSolidTile(JumpStartPosition.ToTileCoordinates()).ToWorldCoordinates();
@@ -146,15 +149,21 @@ public partial class WarriorSTARR
                     MakeFallingCrashParticles();
 
                     _starRot = MathHelper.Lerp(0, MathHelper.TwoPi * 2, Timer / time);
-                    if(Timer < 30)
+               
+                    if(Timer < 25)
                     {
-                        this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN_READY, AnimationParams.NoLooping);
+                        this.AseAnimator.PlayAnimation(ANIM_JUMPTOHOVER, AnimationParams.NoLooping);
+                    }
+                    else if(Timer < 50)
+                    {
+                        this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN_READY, AnimationParams.NoLooping); 
                     }
                     else
                     {
                         this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN, AnimationParams.Default);
+
                     }
-                   
+
                     if (Timer >= time)
                     {
                         Timer = 0;
@@ -172,7 +181,7 @@ public partial class WarriorSTARR
                         CrackVFX(NPC.Bottom);
                         StarBoomVFX(NPC.Bottom);
                         IFartedVFX(NPC.Bottom, -Vector2.UnitY * 7);
-                        var sound = AssetReferences.Assets.Sounds.RocketExplosion.Asset with { PitchVariance = 0.5f };
+                        var sound = AssetReferences.Assets.Sounds.STARR.StarrSlam.Asset with { PitchVariance = 0.5f };
                         SoundEngine.PlaySound(sound, NPC.position);
                         if (MultiplayerHelper.IsHost)
                         {

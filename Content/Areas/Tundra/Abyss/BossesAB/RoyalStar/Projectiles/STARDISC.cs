@@ -1,4 +1,6 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Core;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +27,7 @@ public class STARDISC : ModProjectile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Main.projFrames[Type] = 4;
+        Main.projFrames[Type] = 2;
         ProjectileID.Sets.TrailCacheLength[Type] = 16;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
@@ -35,7 +37,7 @@ public class STARDISC : ModProjectile
         Projectile.width = 18;
         Projectile.height = 18;
         Projectile.hostile = true;
-        Projectile.timeLeft = 180;
+        Projectile.timeLeft = 360;
         Projectile.light = 0.5f;
         Projectile.penetrate = -1;
     }
@@ -43,12 +45,11 @@ public class STARDISC : ModProjectile
     {
         base.AI();
         Timer++;
-        Main.projFrames[Type] = 4;
-        ProjectileID.Sets.TrailCacheLength[Type] = 16;
-        ProjectileID.Sets.TrailingMode[Type] = 2;
-        Projectile.velocity *= 1.03f;
-        Projectile.frame = (int)((Timer / 4) % Main.projFrames[Type]);
-        if(Timer % 6 == 0)
+
+        if(Projectile.velocity.Length() < 15)
+            Projectile.velocity *= 1.03f;
+        Projectile.frame = 0;
+        if(Timer % 12 == 0)
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
@@ -58,6 +59,47 @@ public class STARDISC : ModProjectile
                 outerColor = Color.DarkGoldenrod.ToVector4(),
                 scale = Vector2.One * 0.4f
             });
+        }
+
+        if(Timer % 8 == 0)
+        {
+            var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(48, 48), Vector2.Zero);
+            sp.innerColor = Color.PaleGoldenrod;
+            sp.outerColor = Color.DarkOrange;
+            sp.gravity = 0;
+            sp.dampening = 0f;
+            sp.Scale *= 0.4f;
+        }
+    }
+
+    public override bool OnTileCollide(Vector2 oldVelocity)
+    {
+        if (Projectile.velocity.X != oldVelocity.X)
+        {
+            Projectile.velocity.X = -oldVelocity.X;
+            BounceEffect();
+        }
+      
+        if (Projectile.velocity.Y != oldVelocity.Y)
+        {
+            Projectile.velocity.Y = -oldVelocity.Y;
+            BounceEffect();
+        }
+      
+        return false;
+    }
+
+    private void BounceEffect()
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(48, 48), Main.rand.NextVector2CircularEdge(12, 12));
+            sp.innerColor = Color.PaleGoldenrod;
+            sp.outerColor = Color.DarkOrange;
+            sp.gravity = 0;
+            sp.dampening = 0.04f;
+            sp.Scale *= 0.4f;
+            sp.fast = true;
         }
     }
 

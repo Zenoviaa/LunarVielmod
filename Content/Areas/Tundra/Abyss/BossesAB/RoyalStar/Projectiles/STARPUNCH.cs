@@ -33,7 +33,7 @@ public class STARPUNCH : ModProjectile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Main.projFrames[Type] = 5;
+        Main.projFrames[Type] = 8;
     }
     public override void SetDefaults()
     {
@@ -43,14 +43,14 @@ public class STARPUNCH : ModProjectile
         Projectile.tileCollide = false;
         Projectile.hostile = true;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 36;
+        Projectile.timeLeft = 80;
     }
     public override void AI()
     {
         base.AI();
         Timer++;
-
-        if(Timer == 1)
+        Main.projFrames[Type] = 8;
+        if (Timer == 1)
         {
             int dustType = ModContent.DustType<StarBitDust>();
             for(float f =0; f < 10; f++)
@@ -156,7 +156,7 @@ public class STARPUNCH : ModProjectile
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
         drawer.color = Color.Gold;
         drawer.scale *= 1.1f;
-        Main.spriteBatch.Draw(drawer);
+      //  Main.spriteBatch.Draw(drawer);
 
         drawer.scale = Vector2.One;
         drawer.color = Color.White;
