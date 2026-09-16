@@ -114,7 +114,10 @@ public static class TileUtilities
     {
         return FallToSolidTile(tile.X, tile.Y);
     }
-
+    public static Vector2 FallToSolidTile(Vector2 worldCoordinate)
+    {
+        return FallToSolidTile(worldCoordinate.ToTileCoordinates()).ToWorldCoordinates();
+    }
     public static bool TooCloseToTilePoint(Point tilePoint, Point referencePoint, int proximity)
     {
         int dx = Math.Abs(referencePoint.X - tilePoint.X);

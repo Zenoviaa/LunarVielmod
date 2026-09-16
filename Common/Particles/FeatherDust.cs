@@ -14,7 +14,6 @@ public struct FeatherDustData : IParticleData
     public float timeLeft;
     public bool IsActive => timeLeft > 0;
 }
-
 public class FeatherDust : ParticleUpdater<FeatherDustData>
 {
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 1 };

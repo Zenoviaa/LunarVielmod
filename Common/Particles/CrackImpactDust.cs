@@ -35,6 +35,13 @@ public class CrackImpactDust : ParticleUpdater<CrackImpactDust.Data>
         base.UnloadSafe();
         On_Main.DrawDust -= DrawCrackImpactDusts;
     }
+    private void DrawCrackImpactDusts(On_Main.orig_DrawDust orig, Main self)
+    {
+        orig(self);
+        if (_length <= 0)
+            return;
+        PixelationManager.QueueSpritebatchDrawAction(Draw);
+    }
     public override void OnSpawn(ref Data particle, in int index)
     {
         base.OnSpawn(ref particle, index);
@@ -49,13 +56,7 @@ public class CrackImpactDust : ParticleUpdater<CrackImpactDust.Data>
             particle.timeLeft--;
         }
     }
-    private void DrawCrackImpactDusts(On_Main.orig_DrawDust orig, Main self)
-    {
-        orig(self);
-        if (_length <= 0)
-            return;
-        PixelationManager.QueueSpritebatchDrawAction(Draw);
-    }
+
 
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {

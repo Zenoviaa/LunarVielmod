@@ -167,7 +167,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
 
         NPC.scale = 1f;
         NPC.value = Item.buyPrice(gold: 5);
-        NPC.knockBackResist = 0.04f;
+        NPC.knockBackResist = 0;
         NPC.boss = true;
         NPC.npcSlots = 30f;
 
@@ -325,6 +325,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         {
             SwitchState(PatternManager.NextPattern());
         }
+        SwitchState(AIState.AnkleBreakerMaybe);
     }
 
 
@@ -333,6 +334,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         Timer++;
         if(Timer == 1)
         {
+            GruntSound();
             TeleportOutEffect(NPC.Center);
             Vector2 pos = NPC.Center;
             pos = TileUtilities.FallToSolidTile(pos.ToTileCoordinates()).ToWorldCoordinates();

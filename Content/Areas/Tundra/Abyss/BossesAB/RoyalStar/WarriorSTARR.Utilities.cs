@@ -154,7 +154,8 @@ public partial class WarriorSTARR
 
     public void GruntSound()
     {
-
+        var sound = AssetReferences.Assets.Sounds.STARR.STARRGrunt.Asset with { PitchVariance = 0.3f };
+        SoundEngine.PlaySound(sound, MyTarget.Center);
     }
 
     public void KickSound()

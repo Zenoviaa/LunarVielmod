@@ -10,6 +10,8 @@ public sealed class Particles : ModSystem
 {
     private List<IParticleUpdater> _particleUpdaters;
 
+    //TODO: look into source genning these
+
     /// <summary>
     /// A glowy dust that stretches and collides with particles
     /// </summary>
@@ -38,6 +40,7 @@ public sealed class Particles : ModSystem
     public static readonly InDonutDust InDonutDust = new();
     public static readonly CometMagicDust CometMagicDust = new();
     public static readonly CrackImpactDust CrackDust = new();
+    public static readonly GoldenLeaf GoldenLeaf = new();
     public override void Load()
     {
         base.Load();
@@ -58,7 +61,8 @@ public sealed class Particles : ModSystem
             TinyWhiteMothDust,
             InDonutDust,
             CometMagicDust,
-            CrackDust
+            CrackDust,
+            GoldenLeaf
         };
 
         if (Main.netMode == NetmodeID.Server)

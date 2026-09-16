@@ -1,7 +1,10 @@
 ﻿using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 using Stellamod.Content.Dusts;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
+using Terraria.Audio;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
@@ -21,43 +24,56 @@ public partial class WarriorSTARR
                     {
                         NPC.TargetClosest();
                         NPC.velocity.Y = -12;
-                        float xDirection = MathF.Sign(NPC.velocity.X);
-                        NPC.velocity.X = -xDirection * 5;
+                        float xDirection = NPC.XDirectionToTarget;
+                        NPC.velocity.X = -xDirection * 16;
+
+
+                        SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
+                        bellHit.PitchVariance = 0.2f;
+                        SoundEngine.PlaySound(bellHit, NPC.position);
+
+                        var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+
                     }
                     _afterImages = true;
                     _outliner.attacking = true;
                     FaceTarget();
                     StarBitDust();
                     NPC.noTileCollide = false;
-                    NPC.velocity.X *= 0.96f;
-                    NPC.velocity.Y += 0.2f;
-                    this.AseAnimator.PlayAnimation(ANIM_DISC_THROW, AnimationParams.NoLooping);
-                    if(Timer == 12)
+                    NPC.velocity.X *= 0.98f;
+                    NPC.velocity.Y += 0.1f;
+
+                    if(Timer < 30)
                     {
-                        if (MultiplayerHelper.IsHost)
+                        this.AseAnimator.PlayAnimation(ANIM_PUNCH_READY, AnimationParams.NoLooping);
+                    }
+                    else
+                    {
+                        this.AseAnimator.PlayAnimation(ANIM_DISC_THROW, AnimationParams.NoLooping);
+                        if (Timer == 42)
                         {
-                            Vector2 throwDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                            for(float f = 0; f < Disc_Throw_Count; f++)
+                            NPC.velocity -= NPC.PlayerTargetDirection * 4;
+                            NPC.velocity.Y -= 4;
+                            if (MultiplayerHelper.IsHost)
                             {
-                                float radians = MathHelper.Lerp(-Disc_Spread, Disc_Spread, f / Disc_Throw_Count);
-                                Vector2 newDirection = throwDirection.RotatedBy(radians);
-                                ProjFirer discFirer = ProjFirer.From<STARDISC>(NPC);
-                                discFirer.damage = Disc_Throw_Damage;
-                                discFirer.velocity = newDirection * 12;
-                                discFirer.knockback = 1;
-                                discFirer.New();
+                                Vector2 throwDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                                for (float f = 0; f < Disc_Throw_Count; f++)
+                                {
+                                    float radians = MathHelper.Lerp(-Disc_Spread, Disc_Spread, f / Disc_Throw_Count);
+                                    Vector2 newDirection = throwDirection.RotatedBy(radians);
+                                    ProjFirer discFirer = ProjFirer.From<STARDISC>(NPC);
+                                    discFirer.damage = Disc_Throw_Damage;
+                                    discFirer.velocity = newDirection * 12;
+                                    discFirer.knockback = 1;
+                                    discFirer.New();
+                                }
                             }
                         }
                     }
-                    _bigStarAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / 72f));
-                    if(Timer >= 72)
-                    {
-                        SwitchState(AIState.WindUpPunch);
-                        AttackCounter = 42;
-                        Timer = 0;
 
-                    }
-                    if (IsGrounded())
+
+ 
+                    if (IsGrounded() && Timer >= 24)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -68,7 +84,7 @@ public partial class WarriorSTARR
                 {
                     FaceTarget();
                     NPC.velocity.X *= 0.96f;
-                    SwitchState(AIState.CapeOut);
+                    SwitchState(AIState.Idle);
                 }
                 break;
         }

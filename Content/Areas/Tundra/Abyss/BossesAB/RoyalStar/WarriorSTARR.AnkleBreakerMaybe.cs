@@ -1,22 +1,25 @@
 ﻿using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
+using Stellamod.Core;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
 public partial class WarriorSTARR 
 {
-    private ref Vector2 RunDirection => ref _vector1;
-    private ref Vector2 StartFlyingPoint => ref _vector2;
+    private float Tornado_Jump_Time => 45;
+    private float Tornado_Warn_Time => 45;
+    private float Tornadoing_Time => 540;
+    private int Tornado_Damage => 40;
+    private float Tornado_End_Time => 90;
 
-    private int Flying_Or_Ankle_Damage => 30;
-    private float Flying_Or_Ankle_Prep_Time => 30;
-    private float Flying_Or_Ankle_Flying_Warn_Time => 30;
-    private float Flying_Or_Ankle_Flying_Time => 70;
     /*
      * Jumps backwards and then runs towards you after charging for a bit, 
      * he’ll then either do a flying spinning kick (like that one street fighter move)
@@ -31,21 +34,47 @@ public partial class WarriorSTARR
         {
             case 0:
                 {
-                    if(Timer == 1)
+                    //He'll jump to you
+                    if (Timer == 1)
                     {
-                        GruntSound();
                         NPC.TargetClosest();
-                        RunDirection = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
+                        FaceTarget();
+                        GruntSound();
+
+                        SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
+                        bellHit.PitchVariance = 0.2f;
+                        SoundEngine.PlaySound(bellHit, NPC.position);
+
+                        var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+
+                        StartDashPosition = NPC.Center;
+                        EndDashPosition = MyTarget.Center;
+                        EndDashPosition = TileUtilities.FallToSolidTile(EndDashPosition);
+       
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            _fakeOut = Main.rand.NextBool(3);
+                            NPC.netUpdate = true;
+                        }
                     }
 
-                    _outliner.warning = true;
-                    FaceTarget();
 
-                    float ratio = Timer / Flying_Or_Ankle_Prep_Time;
-                    float ease = EasingFunction.OutExpo(ratio);
-                    NPC.velocity = Vector2.Lerp(-RunDirection * 8, Vector2.Zero, ease);
-                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
-                    if(Timer >= Flying_Or_Ankle_Prep_Time)
+                    _outliner.warning = true;
+                    _afterImages = true;
+                    _jumpingTrail = true;
+
+                    float time = Tornado_Jump_Time;
+                    float ratio = Timer / time;
+                    Vector2 positionToMoveTo = Vector2.Lerp(StartDashPosition, EndDashPosition, ratio);
+                    float yOut = MathHelper.Lerp(0, -128, EasingFunction.OutExpo(ratio));
+                    float yIn = MathHelper.Lerp(-128, 0, EasingFunction.InExpo(ratio));
+                    float yOffset = MathHelper.Lerp(yOut, yIn, ratio);
+                    positionToMoveTo.Y += yOffset;
+                    Vector2 vel = positionToMoveTo - NPC.Center;
+                    NPC.velocity = vel;
+                    NPC.rotation = vel.X * 0.01f;
+                    this.AseAnimator.PlayAnimation(ANIM_JUMPFRAME, AnimationParams.NoLooping);
+                    if (Timer >= time)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -54,136 +83,100 @@ public partial class WarriorSTARR
                 break;
             case 1:
                 {
-                    if(Timer == 1)
-                    {
-                 
-                    }
-                    _jumpingTrail = true;
-                    _outliner.warning = true;
-                    this.AseAnimator.PlayAnimation(ANIM_RUN, AnimationParams.Default);
-                    float xDir = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
-                    NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, xDir * 5, 0.1f);
-                    FaceTarget();
+        
 
-                    StartFlyingPoint = NPC.Bottom;
-                    float xDist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
-                    if(xDist <= 64 && MultiplayerHelper.IsHost)
+                    NPC.rotation *= 0.8f;
+                    NPC.velocity *= 0.6F;
+                    StayGrounded();
+                    FaceTarget();
+                    _outliner.warning = true;
+                    this.AseAnimator.PlayAnimation(ANIM_SPIN_KICK_READY, AnimationParams.NoLooping);
+                    if (Timer == (int)(Tornado_Warn_Time - 30))
                     {
-                        if (Main.rand.NextBool(2))
+              
+                        if (_fakeOut)
                         {
                             Timer = 0;
-                            AttackCycle = 31;
+                            AttackCycle = 10;
+                            var sound = AssetReferences.Assets.Sounds.STARR.STARRKidding.Asset;
+                            SoundEngine.PlaySound(sound, MyTarget.position);
                         }
                         else
                         {
-                            Timer = 0;
-                            AttackCycle = 21;
+                            var sound = AssetReferences.Assets.Sounds.STARR.STARRGoldenWind.Asset;
+                            sound.Volume = 0.76f;
+                            SoundEngine.PlaySound(sound, MyTarget.position);
                         }
-                        NPC.netUpdate = true;
-                    }
-                    else
-                    {
 
-                        if (Timer <= 60)
-                        {
-                            Timer = 0;
-                            AttackCycle = 21;
-                        }
                     }
 
-                }
-                break;
-            case 21:
-                {
-                    //telegraph for flying kick
-                    _outliner.warning = true;
-                    StayGrounded();
-                    this.AseAnimator.PlayAnimation(ANIM_SPIN_KICK_READY, AnimationParams.Default);
-                    if(Timer >= Flying_Or_Ankle_Flying_Warn_Time)
+                    if (Timer >= Tornado_Warn_Time)
                     {
                         Timer = 0;
                         AttackCycle++;
                     }
                 }
                 break;
-            case 22:
+            case 2:
                 {
                     if (Timer == 1)
                     {
-                        BigGruntSound();
-                    }
-
-                    MakeJumpingParticles();
-
-                    //Spinng Kick
-                    _jumpingTrail = true;
-                    _outliner.attacking = true;
-                    float yToMoveTo = StartFlyingPoint.Y + -128;
-                    float yVelocity = yToMoveTo - NPC.Center.Y;
-                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, yVelocity, 0.2f);
-
-                    float xDir = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
-                    NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, xDir * 5, 0.1f);
-                    FaceTarget();
-
-                    this.AseAnimator.PlayAnimation(ANIM_SPIN_KICK, AnimationParams.Default);
-
-                    if (Timer >= Flying_Or_Ankle_Flying_Time)
-                    {
-                        Timer = 0;
-                        AttackCycle = 4;
-                    }
-                }
-                break;
-            case 31:
-                {
-                    _outliner.warning = true;
-                    StayGrounded();
-                    this.AseAnimator.PlayAnimation(ANIM_LOW_KICK_READY, AnimationParams.Default);
-                    if (Timer >= Flying_Or_Ankle_Flying_Warn_Time)
-                    {
-                        Timer = 0;
-                        AttackCycle++;
-                    }
-                }
-                break;
-            case 32:
-                {
-                    //Low Kick
-                    if (Timer == 1)
-                    {
-                        GruntSound();
-                        KickSound();
-                        NPC.TargetClosest();
-                        float direction = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
-                        NPC.velocity.X = direction * 15;
+                 
                         if (MultiplayerHelper.IsHost)
                         {
-                            ProjFirer kickProj = ProjFirer.From<ANKLEBREAKER>(NPC);
-                            kickProj.ai0 = NPC.whoAmI;
-                            kickProj.ai1 = Flying_Or_Ankle_Flying_Time;
-                            kickProj.damage = Flying_Or_Ankle_Damage;
-                            kickProj.New();
+                            ProjFirer starNadoFirer = ProjFirer.From<STARNADO>(NPC);
+                            starNadoFirer.ai0 = NPC.whoAmI;
+                            starNadoFirer.damage = Tornado_Damage;
+                            starNadoFirer.New();
                         }
                     }
 
-                    MakeJumpingParticles();
+                    if(Timer % 16 == 0)
+                    {
+                        SoundStyle spin = AssetReferences.Assets.Sounds.Jiitas.JiitasLightSpin.Asset;
+                        SoundEngine.PlaySound(spin, MyTarget.position);
+                    }
+  
                     _outliner.attacking = true;
+                    _afterImages = true;
                     _jumpingTrail = true;
-                    NPC.velocity.X *= 0.96f;
-                    NPC.spriteDirection = NPC.velocity.X > 0 ? 1 : -1;
+                    MakeJumpingParticles();
+                    this.AseAnimator.PlayAnimation(ANIM_SPIN_KICK, AnimationParams.Default);
+                    float xMovement = NPC.XDirectionToTarget * 6f;
+                    NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, xMovement, 0.06f);
 
-                    this.AseAnimator.PlayAnimation(ANIM_LOW_KICK, AnimationParams.Default);
-                    if (Timer >= Flying_Or_Ankle_Flying_Time)
+                    float yOsc = MathF.Sin(Timer * 0.03f + 3f) * 5f;
+                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, yOsc, 0.13f);
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = true;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.015f, 0.03f);
+                    if (Timer >= Tornadoing_Time)
                     {
                         Timer = 0;
-                        AttackCycle = 4;
+                        AttackCycle++;
                     }
                 }
                 break;
-            case 4:
+            case 3:
                 {
-                    SwitchState(AIState.CapeOut);
+                    _afterImages = true;
+                    _jumpingTrail = true;
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = true;
+                    NPC.velocity *= 0.92f;
+                    NPC.velocity.Y -= 0.75f;
+                    NPC.rotation *= 0.94f;
+                    if(Timer >= Tornado_End_Time)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+
+
+            case 10:
+                {
+                    SwitchState(AIState.DiscThrow);
                 }
                 break;
         }
