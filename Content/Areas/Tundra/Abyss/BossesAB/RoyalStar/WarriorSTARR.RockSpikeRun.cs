@@ -1,12 +1,18 @@
 ﻿using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
+using Stellamod.Core;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
 
 public partial class WarriorSTARR
 {
+    private int Rock_Spike_Count => 4;
     private int Rock_Spike_Damage => 32;
-    private float Rock_Spike_Prep_Time => 50;
+    private float Rock_Spike_Prep_Time => 15;
     private float Rock_Spike_Run_Time => 90;
     private void AI_RockSpikeRun()
     {
@@ -17,22 +23,19 @@ public partial class WarriorSTARR
                 {
                     if (Timer == 1)
                     {
+                        NPC.TargetClosest();
                         GruntSound();
-                        NPC.TargetClosest();                 
                     }
 
-                    _outliner.warning = true;
-                    FaceTarget();
                     StayGrounded();
-
-                    Vector2 direction = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
-                    float ratio = Timer / Flying_Or_Ankle_Prep_Time;
-                    float ease = EasingFunction.InSine(ratio);
-                    NPC.velocity = Vector2.Lerp(-direction * 32, Vector2.Zero, ease);
-                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
-                    
-                    StartDashPosition = NPC.Center;
-                    EndDashPosition = NPC.Center + direction * 384;
+                    FaceTarget();
+                    float time = Jump_Rock_Prep_Time;
+                    float ratio = Timer / time;
+                    Vector2 lerp1 = Vector2.Lerp(Vector2.One, new Vector2(1.3f, 0.9f), EasingFunction.OutExpo(ratio));
+                    Vector2 lerp2 = Vector2.Lerp(new Vector2(1.3f, 0.9f), new Vector2(0.9f, 1.2f), EasingFunction.InOutSine(ratio));
+                    Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, ratio);
+                    _jumpScale = lerp3;
+                    this.AseAnimator.PlayAnimation(ANIM_CROUCH, AnimationParams.NoLooping);
                     if (Timer >= Rock_Spike_Prep_Time)
                     {
                         Timer = 0;
@@ -43,35 +46,38 @@ public partial class WarriorSTARR
 
             case 1:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
-                        _initialVelocity = NPC.velocity;
+
+                        SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
+                        bellHit.PitchVariance = 0.2f;
+                        SoundEngine.PlaySound(bellHit, NPC.position);
+
+                        float xDirection = NPC.Center.X < MyTarget.Center.X ? 1 : -1;
+                        var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+
+                        StartDashPosition = NPC.Center;
+                        EndDashPosition = StartDashPosition;
+                        EndDashPosition.X += xDirection * 100;
                     }
+
+                    _outliner.warning = true;
+                    MakeJumpingParticles();
                     _afterImages = true;
                     _jumpingTrail = true;
-                    _outliner.attacking = true;
-                    if(Timer % 8 == 0 && Timer >= 15)
-                    {
-                        if (MultiplayerHelper.IsHost)
-                        {
-                            var rok = ProjFirer.From<ROCKSPIKE>(NPC);
-                            rok.position = NPC.Bottom;
-                            rok.velocity = -Vector2.UnitY.RotatedByRandom(0.5f);
-                            rok.damage = Rock_Spike_Damage;
-                            rok.New();
-                        }
-                    }
-                    this.AseAnimator.PlayAnimation(ANIM_RUN);
 
-                    float time = Rock_Spike_Run_Time;
-                    float ratio = Timer / time;
+                    float ratio = Timer / Jump_Ready_Time;
                     Vector2 pos = Vector2.Lerp(StartDashPosition, EndDashPosition, ratio);
+                    float yOut = MathHelper.Lerp(0, -128, EasingFunction.OutExpo(ratio));
+                    float yIn = MathHelper.Lerp(-128, 0, EasingFunction.InExpo(ratio));
+                    float y = MathHelper.Lerp(yOut, yIn, ratio);
+                    pos.Y += y;
                     Vector2 vel = pos - NPC.Center;
-
-                    NPC.spriteDirection = NPC.velocity.X > 0 ? 1 : -1;
                     NPC.velocity = vel;
-             
-                    if (Timer >= time)
+                    NPC.rotation = NPC.velocity.X * 0.05f;
+                    NPC.noGravity = true;
+                    this.AseAnimator.PlayAnimation(ANIM_JUMPFRAME, AnimationParams.NoLooping);
+                    if (Timer >= Jump_Ready_Time)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -80,6 +86,38 @@ public partial class WarriorSTARR
                 break;
 
             case 2:
+                {
+                    StayGrounded();
+                    if(Timer == 1)
+                    {
+                    //    MakeJumpVFX(NPC.Bottom, -Vector2.UnitY * 15);
+                        AttackCounter++;
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 pos = NPC.Bottom;
+                            NPC.NewNPC(SourceFromThis, (int)pos.X, (int)pos.Y, ModContent.NPCType<ROCKSPIKE>());
+                        }
+                    }
+                    this.AseAnimator.PlayAnimation(ANIM_CROUCH, AnimationParams.NoLooping);
+                    NPC.velocity.X *= 0.95f;
+                    NPC.rotation = NPC.velocity.X * 0.05f;
+                    if (Timer >= 30)
+                    {
+                        if(AttackCounter >= Rock_Spike_Count)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                        else
+                        {
+                            Timer = 0;
+                            AttackCycle = 0;
+                        }
+                    }
+                }
+                break;
+
+            case 3:
                 {
                     SwitchState(AIState.Idle);
                 }
