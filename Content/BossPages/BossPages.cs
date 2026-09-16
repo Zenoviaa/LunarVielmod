@@ -317,7 +317,7 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<LeviathanEel>();
             progression = 8;
             flag = DownedBossFlag.LeviathanEel;
-            StarRanking = 5;
+            StarRanking = 6;
             AddMasterModeReward<LeviathanEelRelicItem>(stack: 1);
         }
     }
@@ -363,7 +363,7 @@ namespace Stellamod.Content.BossPages
             progression = 10;
             flag = DownedBossFlag.Verlia;
 
-            StarRanking = 6;
+            StarRanking = 5;
             AddMasterModeReward<VerliaRelicItem>(stack: 1);
         }
     }
