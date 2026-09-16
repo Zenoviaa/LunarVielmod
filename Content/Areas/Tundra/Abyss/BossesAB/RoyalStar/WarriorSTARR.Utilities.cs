@@ -396,9 +396,10 @@ public partial class WarriorSTARR
         FXUtil.ShakeCamera(position, 1024, 8);
 
         //Rock impact sound
-        SoundStyle rockHitSound = AssetReferences.Assets.Sounds.STARR.RockSummon.Asset with { PitchVariance = 0.5f };
+       /*
+        SoundStyle rockHitSound = AssetReferences.Assets.Sounds.STARR.STARRPUNCH.Asset with { PitchVariance = 1f };
         SoundEngine.PlaySound(rockHitSound, position);
-
+        */
 
         for (float f = 0; f < 8; f++)
         {

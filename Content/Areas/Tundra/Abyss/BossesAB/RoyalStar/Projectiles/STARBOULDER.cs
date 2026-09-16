@@ -16,9 +16,11 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 
 public class STARBOULDER : ModProjectile, IDrawToRenderTarget
 {
+    private bool _playSound;
     private float _timer;
     private float _spawnTimer;
     public bool _isFlying;
+    
     private int Style
     {
         get => (int)Projectile.ai[0];
@@ -141,6 +143,11 @@ public class STARBOULDER : ModProjectile, IDrawToRenderTarget
         return false;
     }
 
+    private void PlayStarHitSound()
+    {
+        SoundStyle sound = AssetReferences.Assets.Sounds.STARR.STARRPUNCH.Asset with { PitchVariance = 1f };
+        SoundEngine.PlaySound(sound, Projectile.position);
+    }
     private void PlayGongSound()
     {
         SoundStyle sound = AssetRegistry.Sounds.Bishinine.BigBellGroundhit;
@@ -164,12 +171,24 @@ public class STARBOULDER : ModProjectile, IDrawToRenderTarget
         _timer++;
         if (_timer == 1)
         {
-            PlayGongSound();
+            PlayStarHitSound();
         }
         if (_timer == 4)
         {
             Projectile.velocity *= 0.1f;
             PlaySlideSound();
+        }
+
+
+        float dist = Vector2.DistanceSquared(Projectile.Center, Main.LocalPlayer.Center);
+        if(dist < 96 * 96)
+        {
+            if (!_playSound)
+            {
+                var sound = AssetReferences.Assets.Sounds.STARR.StarrFastpass.Asset with { PitchVariance = 1f };
+                SoundEngine.PlaySound(sound, Projectile.position);
+                _playSound = true;
+            }
         }
         Projectile.rotation += Projectile.velocity.X * 0.05f;
         Projectile.velocity *= 1.03f;
@@ -193,7 +212,7 @@ public class STARBOULDER : ModProjectile, IDrawToRenderTarget
         _timer++;
         if(_timer == 1)
         {
-            PlayGongSound();
+
         }
         if (_timer == 4)
         {
