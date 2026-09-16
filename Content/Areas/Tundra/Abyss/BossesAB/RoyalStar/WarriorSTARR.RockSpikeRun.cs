@@ -27,8 +27,8 @@ public partial class WarriorSTARR
 
                     Vector2 direction = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
                     float ratio = Timer / Flying_Or_Ankle_Prep_Time;
-                    float ease = EasingFunction.OutExpo(ratio);
-                    NPC.velocity = Vector2.Lerp(-direction * 8, Vector2.Zero, ease);
+                    float ease = EasingFunction.InSine(ratio);
+                    NPC.velocity = Vector2.Lerp(-direction * 32, Vector2.Zero, ease);
                     this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
                     
                     StartDashPosition = NPC.Center;

@@ -226,7 +226,7 @@ public partial class WarriorSTARR
                     float time = Wind_Up_Punch_End_Time;
                     if(Timer > time * 0.5f)
                     {
-                        this.AseAnimator.PlayAnimation(ANIM_PUNCH_BACK, AnimationParams.NoLooping);
+                        this.AseAnimator.PlayAnimation(ANIM_PUNCH_BACKAIR, AnimationParams.NoLooping);
                     }
                     NPC.velocity *= 0.88f;
                     if (Timer >= time)

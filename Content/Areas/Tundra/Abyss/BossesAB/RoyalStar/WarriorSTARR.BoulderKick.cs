@@ -74,13 +74,13 @@ public partial class WarriorSTARR
 
                         if (MultiplayerHelper.IsHost)
                         {
-                            for (int i = 0; i < 7; i++)
+                            for (int i = 0; i < 14; i++)
                             {
                                 ProjFirer firer = ProjFirer.From<STARBOULDER>(NPC);
                                 firer.damage = KICK_BOULDER_DAMAGE;
                                 firer.position = NPC.Bottom + _kickPunchDirection * 48 + -Vector2.UnitY * 1 * 36 + -Vector2.UnitY * 18;
                                 firer.velocity = _kickPunchDirection * 15;
-                                firer.ai0 = NPC.whoAmI;
+                                firer.ai0 = Main.rand.Next(3);
                                 firer.ai1 = i;
                                 firer.ai2 = -10;
                                 firer.New();
@@ -137,7 +137,15 @@ public partial class WarriorSTARR
                         AirSwooshSound();
                     }
                     _outliner.attacking = true;
-                    this.AseAnimator.PlayAnimation(ANIM_PUNCH, AnimationParams.NoLooping);
+             
+                    if(Timer < 15)
+                    {
+                        this.AseAnimator.PlayAnimation(ANIM_PUNCH, AnimationParams.NoLooping);
+                    }
+                    else
+                    {
+                        this.AseAnimator.PlayAnimation(ANIM_PUNCH_BACKGROUND, AnimationParams.NoLooping);
+                    }
                     if(Timer == 7)
                     {
                         PunchVFX(NPC.Right, Vector2.UnitX * NPC.spriteDirection * 15);

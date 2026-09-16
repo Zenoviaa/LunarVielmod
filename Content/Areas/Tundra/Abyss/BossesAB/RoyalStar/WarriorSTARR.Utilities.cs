@@ -193,10 +193,10 @@ public partial class WarriorSTARR
     }
     public void CrackVFX(Vector2 position)
     {
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200 });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 2f, timeLeft = 120 });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 3f, timeLeft = 45 });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 5f, timeLeft = 25 });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
     }
 
     public void StarBitDust()
@@ -250,7 +250,7 @@ public partial class WarriorSTARR
         //Rock impact sound
         SoundStyle rockHitSound = AssetReferences.Assets.Sounds.STARR.RockSmash.Asset with { PitchVariance = 0.3f };
         SoundEngine.PlaySound(rockHitSound, position);
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200 });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 45, color = Color.DarkOrange });
     }
 
     public void StarBitVFX(Vector2 position, Vector2 velocity)
@@ -313,9 +313,12 @@ public partial class WarriorSTARR
             Vector2 vel = velocity.RotatedByRandom(MathHelper.ToRadians(80));
             vel *= Main.rand.NextFloat(0.6f, 2);
             var spawnParams = DustParticleSpawnParams.Default;
-            spawnParams.scaleRange *= 2f;
             spawnParams.outerColor = Color.DarkBlue;
-            DustParticle.Spawn(position + Main.rand.NextVector2Circular(8, 8), vel, spawnParams);
+            var dp = DustParticle.Spawn(position + Main.rand.NextVector2Circular(8, 8), vel, spawnParams);
+            dp.outerColor = Color.Orange;
+            dp.innerColor = Color.Gold;
+            dp.gravity = 0.04f;
+            dp.dampening = 0.05f;
         }
 
         for (float f = 0; f < 2; f++)
@@ -379,7 +382,11 @@ public partial class WarriorSTARR
             var spawnParams = DustParticleSpawnParams.Default;
             spawnParams.scaleRange *= 1f;
             spawnParams.outerColor = Color.DarkBlue;
-            DustParticle.Spawn(position + Main.rand.NextVector2Circular(16, 16), vel, spawnParams);
+            var dp = DustParticle.Spawn(position + Main.rand.NextVector2Circular(16, 16), vel, spawnParams);
+            dp.dampening = 0.05f;
+            dp.innerColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Gold, Main.rand.NextFloat());
+            dp.outerColor = Color.DarkOrange;
+            dp.gravity = 0.02f;
         }
 
         for (float f = 0; f < 1; f++)
@@ -403,9 +410,9 @@ public partial class WarriorSTARR
         int projType = ModContent.ProjectileType<STARBOULDER>();
         foreach (var proj in Main.ActiveProjectiles)
         {
-            if (proj.type == projType && proj.ai[0] == NPC.whoAmI && proj.ai[1] == index)
+            if (proj.type == projType && proj.ai[1] == index)
             {
-                proj.ai[2] = 10 + velocity.ToRotation();
+                proj.ai[2] = 10;
             }
         }
     }

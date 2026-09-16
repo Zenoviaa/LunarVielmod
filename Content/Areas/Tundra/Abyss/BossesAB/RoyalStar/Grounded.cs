@@ -13,7 +13,7 @@ public class Grounded : ModBuff
     public override void Update(Player player, ref int buffIndex)
     {
         base.Update(player, ref buffIndex);
-        if (player.wingTime > player.wingTimeMax * 0.1f)
-            player.wingTime = (int)(player.wingTimeMax * 0.1f);
+        if (player.wingTime > player.wingTimeMax * 0.5f)
+            player.wingTime = (int)(player.wingTimeMax * 0.5f);
     }
 }

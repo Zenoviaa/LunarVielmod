@@ -16,8 +16,8 @@ public class STARROCKCRASHSLAM : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 128;
-        Projectile.height = 128;
+        Projectile.width = 384;
+        Projectile.height = 384;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.timeLeft = 34;

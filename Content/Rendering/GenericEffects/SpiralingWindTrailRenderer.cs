@@ -25,7 +25,7 @@ public class SpiralingWindTrailRenderer : MeshRenderer<VertexPositionColorTextur
     {
         if (_verticesToRenderer.Count <= 0)
             return;
-        PixelationManager.QueuePrimitivesDrawAction(Render, DrawLayer.OverPlayers);
+        PixelationManager.QueuePrimitivesDrawAction(Render, DrawLayer.OverNPCs);
     }
 
     public void PrepareForBigRendering(IEnumerable<VertexPositionColorTexture> vertices)

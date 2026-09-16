@@ -1,6 +1,8 @@
 ﻿using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -13,7 +15,7 @@ public partial class WarriorSTARR
     private ref Vector2 JumpTargetPosition => ref _vector2;
     private float Num_Falling_Rocks => 7;
     private float Jump_Rock_Prep_Time => 15;
-    private float Jump_Ready_Time => 24;
+    private float Jump_Ready_Time => 45;
     private int Jump_Rock_Crash_Damage => 45;
     private int Jump_Rock_Rock_Damage => 32;
     private float Jump_Rock_Punch_Out_Time => 60;
@@ -54,8 +56,17 @@ public partial class WarriorSTARR
                     {
                         BigGruntSound();
                         MakeJumpVFX(NPC.Bottom, -Vector2.UnitY * 15);
-                        JumpStartPosition = NPC.Center;
-                        JumpTargetPosition = MyTarget.Center - Vector2.UnitY * 384;
+                        SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
+                        bellHit.PitchVariance = 0.2f;
+                        SoundEngine.PlaySound(bellHit, NPC.position);
+                        NPC.velocity.Y = -11;
+
+                        float xDirection = NPC.Center.X < MyTarget.Center.X ? 1 : -1;
+                        NPC.velocity.X += xDirection * 4f;
+                        var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                        var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
+                        p2.Scale *= 0.5f;
+
                     }
 
                     _outliner.warning = true;
@@ -64,19 +75,35 @@ public partial class WarriorSTARR
                         MakeSparkleAroundVFX(NPC.Center);
                     _afterImages = true;
                     _jumpingTrail = true;
-                    float xDirection = MathF.Sign(JumpTargetPosition.X - JumpStartPosition.X);
-                    Vector2 upward = (JumpTargetPosition - JumpStartPosition).RotatedBy(MathHelper.PiOver2 * -xDirection).SafeNormalize(Vector2.Zero);
-                    Vector2 pullPoint = JumpStartPosition + JumpTargetPosition;
-                    pullPoint *= 0.5f;
-                    pullPoint += upward * 128;
 
-                    float ratio = Timer / Jump_Ready_Time;
-                    float easeOut = EasingFunction.OutExpo(ratio);
-                    Vector2 lerp1 = Vector2.Lerp(JumpStartPosition, pullPoint, easeOut);
-                    Vector2 lerp2 = Vector2.Lerp(pullPoint, JumpTargetPosition, easeOut);
-                    Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, ratio);
-                    Vector2 targetVelocity = lerp3 - NPC.Center;
-                    NPC.velocity = targetVelocity;
+                    if (Timer >= 15)
+                    {
+                        if (Timer <= 45)
+                        {
+                            NPC.velocity.Y *= 0.95f;
+                            NPC.rotation = NPC.velocity.X * 0.05f;
+                        }
+                        else
+                        {
+                            if (Timer == 44)
+                            {
+                                SoundStyle fallSound = AssetRegistry.Sounds.Bishinine.BishinineFastfall;
+                                fallSound.PitchVariance = 0.1f;
+                                SoundEngine.PlaySound(fallSound, NPC.position);
+                            }
+                            NPC.rotation = -NPC.velocity.X * 0.05f;
+                            NPC.velocity.X += NPC.direction * 0.1f;
+                            NPC.velocity.Y *= 1.07f;
+                            NPC.noGravity = true;
+                            if (Timer % 5 == 0)
+                            {
+                                var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, -NPC.velocity);
+                                p2.Scale *= 0.5f;
+                            }
+                        }
+                    }
+
+                    NPC.noGravity = true;
                     this.AseAnimator.PlayAnimation(ANIM_JUMP, AnimationParams.NoLooping);
                     if (Timer >= Jump_Ready_Time)
                     {
@@ -113,11 +140,12 @@ public partial class WarriorSTARR
                     Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, EasingFunction.InSine(ratio));
                     Vector2 vel = lerp3 - NPC.Center;
                     NPC.velocity = Vector2.Lerp(_initialVelocity, vel, EasingFunction.InOutSine(ratio));
-
+                    NPC.rotation *= 0.92f;
                     _jumpingTrail = true;
                     NPC.noGravity = true;
                     MakeFallingCrashParticles();
-                 
+
+                    _starRot = MathHelper.Lerp(0, MathHelper.TwoPi * 2, Timer / time);
                     if(Timer < 30)
                     {
                         this.AseAnimator.PlayAnimation(ANIM_PUNCH_DOWN_READY, AnimationParams.NoLooping);
@@ -166,6 +194,9 @@ public partial class WarriorSTARR
                         }
                     }
 
+                    float ratio = Timer / Jump_Rock_Punch_Out_Time;
+                    _medalAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.OutQuad(ratio));
+                    _medalScale = MathHelper.Lerp(0f, 2f, EasingFunction.OutSine(ratio));
                     MakeSparkleAroundVFX(NPC.Center);
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -44);
                     ShakeScreenPosition.Shake = MathHelper.Lerp(8, 2, EasingFunction.InOutSine(Timer / Jump_Rock_Punch_Out_Time));

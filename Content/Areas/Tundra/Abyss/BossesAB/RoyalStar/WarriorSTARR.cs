@@ -63,6 +63,9 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             return 180;
         }
     }
+    private float _starRot;
+    private float _medalAlpha;
+    private float _medalScale;
     private float _bigStarAlpha;
     private float _jumpingTrailAlpha;
     private float _afterImageAlpha;
@@ -196,7 +199,9 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         _grabbing = false;
         _afterImages = false;
         _bigStarAlpha *= 0.92f;
+        _medalAlpha *= 0.92f;
         _outliner.SetDefaults();
+        _starRot *= 0.92f;
         _jumpScale = Vector2.Lerp(_jumpScale, Vector2.One, 0.2f);
         switch (State)
         {
@@ -298,7 +303,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.WindUpPunch);
+            SwitchState(AIState.BoulderKick);
         }
     }
 
@@ -382,12 +387,43 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         var starAsset = AssetReferences.Assets.GlowMasks.FivePointedStar.Asset;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
         drawer.color = Color.Lerp(Color.Transparent, Color.Goldenrod, _bigStarAlpha) * 0.45f;
-        drawer.rotation = MathHelper.Lerp(3.14f, 0f, _bigStarAlpha);
+        drawer.rotation = MathHelper.Lerp(3.14f, 0f, _bigStarAlpha) + _starRot;
         spriteBatch.Draw(drawer);
 
         drawer.color *= ExtraMath.Osc(0.25f, 1f, speed: 64);
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
+    }
+    private void DrawPixelatedSTARRMedal(SpriteBatch spriteBatch, Vector2 sp)
+    {
+        {
+            var starAsset = AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.WarriorStarMedal.Asset;
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
+            drawer.color = Color.DarkOrange * _medalAlpha * 0.4f;
+            drawer.color.A = 0;
+            drawer.scale = Vector2.One * _medalScale;
+            drawer.rotation = Main.GlobalTimeWrappedHourly * 2;
+            spriteBatch.Draw(drawer);
+            spriteBatch.Draw(drawer);
+
+
+            drawer.color *= ExtraMath.Osc(0.25f, 1f, speed: 64);
+            drawer.color.A = 0;
+            spriteBatch.Draw(drawer);
+        }
+        {
+            var starAsset = AssetReferences.Assets.GlowMasks.FivePointedStar.Asset;
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
+            drawer.color = Color.DarkOrange * _medalAlpha;
+            drawer.color.A = 0;
+            drawer.scale = Vector2.One * _medalScale * 2f;
+            drawer.rotation = -Main.GlobalTimeWrappedHourly * 4;
+            spriteBatch.Draw(drawer);
+
+            drawer.color *= ExtraMath.Osc(0.25f, 1f, speed: 64);
+            drawer.color.A = 0;
+            spriteBatch.Draw(drawer);
+        }
     }
     public void DrawToRenderTargets()
     {
@@ -401,6 +437,10 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         if (_bigStarAlpha > 0.03f)
         {
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSTARR, DrawLayer.OverPlayers);
+        }
+        if (_medalAlpha > 0.03f)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSTARRMedal, DrawLayer.OverPlayers);
         }
         OutlineRenderer.Queue(DrawOutlineWhite);
 
