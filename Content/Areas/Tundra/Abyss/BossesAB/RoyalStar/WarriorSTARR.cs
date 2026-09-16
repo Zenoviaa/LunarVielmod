@@ -1,5 +1,4 @@
-﻿using Stellamod.Common.Animations;
-using Stellamod.Content.Rendering.GenericEffects;
+﻿using Stellamod.Content.Rendering.GenericEffects;
 using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
@@ -107,6 +106,23 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private const string ANIM_PUNCH_BACKGROUND = "Punchbackground";
     private const string ANIM_JUMPFRAME = "Jumpframe";
     private const string ANIM_JUMPTOHOVER = "JumpTohover";
+
+    private PatternManager<AIState> _patternBackingField;
+    private PatternManager<AIState> PatternManager
+    {
+        get
+        {
+            if (_patternBackingField == null)
+            {
+                _patternBackingField = new();
+                _patternBackingField.AddPattern(AIState.BoulderKick, 1.0f);
+                _patternBackingField.AddPattern(AIState.WindUpPunch, 1.0f);
+                _patternBackingField.AddPattern(AIState.JumpRockSlam, 1.0f);
+                _patternBackingField.AddPattern(AIState.RockSpikeRun, 1.0f);
+            }
+            return _patternBackingField;
+        }
+    }
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -147,7 +163,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         NPC.height = 96;
         NPC.damage = 100;
         NPC.defense = 23;
-        NPC.lifeMax = 18000;
+        NPC.lifeMax = 22000;
 
         NPC.scale = 1f;
         NPC.value = Item.buyPrice(gold: 5);
@@ -190,8 +206,8 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             if (!NPC.HasValidTarget && State != AIState.Despawn)
                 SwitchState(AIState.Despawn);
         }
-        
-        if(_teleportPosition != Vector2.Zero)
+
+        if (_teleportPosition != Vector2.Zero)
         {
             NPC.Center = _teleportPosition;
             NPC.velocity = Vector2.Zero;
@@ -281,7 +297,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         StayGrounded();
         FaceTarget();
         this.AseAnimator.PlayAnimation(ANIM_IDLE);
-        if(Timer >= 60)
+        if (Timer >= 60)
         {
             SwitchState(AIState.Idle);
         }
@@ -307,7 +323,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.RockSpikeRun);
+            SwitchState(PatternManager.NextPattern());
         }
     }
 
@@ -315,8 +331,19 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private void AI_Idle()
     {
         Timer++;
+        if(Timer == 1)
+        {
+            TeleportOutEffect(NPC.Center);
+            Vector2 pos = NPC.Center;
+            pos = TileUtilities.FallToSolidTile(pos.ToTileCoordinates()).ToWorldCoordinates();
+            pos.Y -= 80;
+            Teleport(pos);
+
+            TeleportEffect(pos);
+        }
         NPC.velocity.X *= 0.96f;
         NPC.noGravity = false;
+        StayGrounded();
         this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         FaceTarget();
         if (Timer >= IdleTime)
@@ -341,7 +368,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     }
     private float GetSpiralDashTrailWidth(float completionRatio)
     {
-        return MathHelper.SmoothStep(128, 96, completionRatio)  * 0.3f;
+        return MathHelper.SmoothStep(128, 96, completionRatio) * 0.3f;
     }
     private float GetSpiralDashTrailWidth2(float completionRatio)
     {
@@ -349,17 +376,17 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     }
     private Color GetSpiralDashTrailColor(float completionRatio)
     {
-        return Color.Lerp(Color.DarkOrange, Color.Transparent, completionRatio)  *
+        return Color.Lerp(Color.DarkOrange, Color.Transparent, completionRatio) *
             _jumpingTrailAlpha * EasingFunction.QuadraticBump(completionRatio * completionRatio);
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        if(_afterImageAlpha > 0.03f)
+        if (_afterImageAlpha > 0.03f)
         {
             var whitePass = AssetReferences.Effects.CrystalShaders.SpriteWhite.CreatePixelPass();
             whitePass.Apply();
-            using(new SpritebatchContext(spriteBatch, spriteBatch.Parameters with {  effect = whitePass.Shader }))
+            using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { effect = whitePass.Shader }))
             {
                 foreach (OldPosition oldPos in new OldPositionEnum(NPC.oldPos))
                 {

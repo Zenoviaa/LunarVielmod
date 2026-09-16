@@ -20,7 +20,7 @@ public class STARROCKCRASHSLAM : ModProjectile
         Projectile.height = 384;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 34;
+        Projectile.timeLeft = 36;
         Projectile.penetrate = -1;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;

@@ -69,7 +69,7 @@ public partial class WarriorSTARR
                         EarthQuakeVFX(NPC.Bottom, -Vector2.UnitY * 15);
                         foreach (var player in Main.ActivePlayers)
                         {
-                            player.AddBuff(rockBuffType, 600);
+                            player.AddBuff(rockBuffType, 1200);
                         }
 
                         if (MultiplayerHelper.IsHost)
@@ -81,6 +81,8 @@ public partial class WarriorSTARR
                                 firer.position = NPC.Bottom + _kickPunchDirection * 48 + -Vector2.UnitY * 1 * 36 + -Vector2.UnitY * 18;
                                 firer.velocity = _kickPunchDirection * 15;
                                 firer.ai0 = Main.rand.Next(3);
+                                if (firer.ai0 == 1)
+                                    firer.damage /= 2;
                                 firer.ai1 = i;
                                 firer.ai2 = -10;
                                 firer.New();

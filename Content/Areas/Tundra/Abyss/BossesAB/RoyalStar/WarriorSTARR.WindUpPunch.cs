@@ -13,7 +13,7 @@ public partial class WarriorSTARR
     private float _timer2;
 
     private float Wind_Up_Speed_Up_Mult => MathHelper.Lerp(1f, 0.75f, EasingFunction.InOutSine(AttackCounter / 5f));
-    private float Wind_Up_Punch_Count => 7;
+    private float Wind_Up_Punch_Count => 14;
     private float Wind_Up_Punch_Teleport_In_Time => 35;
     private float Wind_Up_Punch_Prep_Time => 50;
     private float Wind_Up_Punch_Time => 32;
@@ -299,6 +299,11 @@ public partial class WarriorSTARR
                     {
                         Timer = 0;
                         AttackCycle=0;
+                        AttackCounter++;
+                        if (AttackCounter >= Wind_Up_Punch_Count)
+                        {
+                            SwitchState(AIState.Idle);
+                        }
                     }
                 }
                 break;
@@ -337,6 +342,11 @@ public partial class WarriorSTARR
                     {
                         Timer = 0;
                         AttackCycle = 0;
+                        AttackCounter++;
+                        if(AttackCounter >= Wind_Up_Punch_Count)
+                        {
+                            SwitchState(AIState.Idle);
+                        }
                     }
                 }
                 break;

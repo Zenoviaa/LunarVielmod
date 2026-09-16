@@ -136,6 +136,11 @@ public partial class WarriorSTARR
                         MakeCometParticles(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero));
                     }
 
+
+ 
+                    JumpStartPosition.X = MathHelper.Lerp(JumpStartPosition.X, MyTarget.Center.X, 0.2f);
+                    JumpTargetPosition.X = MathHelper.Lerp(JumpTargetPosition.X, MyTarget.Center.X, 0.2f);
+
                     _bigStarAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 64));
                     Vector2 up = JumpStartPosition + new Vector2(0, -256);
                     Vector2 lerp1 = Vector2.Lerp(JumpStartPosition, up, EasingFunction.OutExpo(ratio));

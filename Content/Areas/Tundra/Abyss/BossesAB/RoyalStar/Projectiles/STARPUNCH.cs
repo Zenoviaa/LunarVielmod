@@ -43,7 +43,7 @@ public class STARPUNCH : ModProjectile
         Projectile.tileCollide = false;
         Projectile.hostile = true;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 80;
+        Projectile.timeLeft = 36;
     }
     public override void AI()
     {

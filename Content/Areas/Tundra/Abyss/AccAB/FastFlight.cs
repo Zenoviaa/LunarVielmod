@@ -271,11 +271,13 @@ public class FastFlightPlayer : ModPlayer
     private float _wingTimer;
     public bool hasFastFlight;
     public bool hasMoonFlight;
+    public bool weakWinged;
     public override void ResetEffects()
     {
         base.ResetEffects();
         hasFastFlight = false;
         hasMoonFlight = false;
+        weakWinged = false;
     }
     public override void PostUpdateEquips()
     {
@@ -318,8 +320,15 @@ public class FastFlightPlayer : ModPlayer
         if (hasMoonFlight)
         {
             Player.wingTimeMax = Player.wingTimeMax + 7;
+   
             Player.GetDamage(DamageClass.Generic) += 0.05f;
             Player.moveSpeed += 0.2f;
+        }
+        if (weakWinged)
+        {
+            Player.wingTimeMax = (int)(Player.wingTimeMax );
+            Player.rocketTime = 0;
+            Player.rocketTimeMax = 0;
         }
     }
 
