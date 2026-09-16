@@ -52,15 +52,15 @@ public class AseSprite
         return frame;
     }
 
-    public Texture2D CreateVerticalSpriteSheet()
+    public Texture2D CreateSpriteSheet()
     {
         int frameWidth = frames[0].width;
         int frameHeight = frames[0].height;
 
         //Now we need to calculate the min dimenions of the sheet
-        int maxTextureSize = 16*16*16;
+        const int MAX_TEXTURE_SIZE = 16*16*16;
         int totalHeight = frameHeight * frames.Count;
-        int textureHeight = Math.Min(totalHeight, maxTextureSize);
+        int textureHeight = Math.Min(totalHeight, MAX_TEXTURE_SIZE);
 
         //I guess my math SUCKS
         //Let's do this
@@ -75,7 +75,6 @@ public class AseSprite
             }
         }
         int textureWidth = textureFrame.Right;
-
         Texture2D texture = new Texture2D(Main.instance.GraphicsDevice, textureWidth, textureHeight);
         Color[] pixels = new Color[texture.Width * texture.Height];
 
