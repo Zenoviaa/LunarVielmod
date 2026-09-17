@@ -1,9 +1,12 @@
-﻿using Stellamod.Content.Rendering.GenericEffects;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Rendering.GenericEffects;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -57,11 +60,13 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         {
             if (Phase2Active)
             {
-                return 120;
+                return 150;
             }
             return 180;
         }
     }
+
+    private bool _canFakeOut;
     private float _starRot;
     private float _medalAlpha;
     private float _medalScale;
@@ -108,6 +113,10 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private const string ANIM_JUMPTOHOVER = "JumpTohover";
 
     private const string ANIM_GRAB_IDLE = "GrabIdle";
+
+    private const string ANIM_NEPHEW = "Nephew";
+
+    private const string ANIM_HUH = "Huh";
     private PatternManager<AIState> _patternBackingField;
     private PatternManager<AIState> PatternManager
     {
@@ -122,6 +131,25 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
                 _patternBackingField.AddPattern(AIState.RockSpikeRun, 1.0f);
             }
             return _patternBackingField;
+        }
+    }
+
+    private PatternManager<AIState> _patternBackingFieldp2;
+    private PatternManager<AIState> PatternManagerP2
+    {
+        get
+        {
+            if (_patternBackingFieldp2 == null)
+            {
+                _patternBackingFieldp2 = new();
+                _patternBackingFieldp2.AddPattern(AIState.BoulderKick, 1.0f);
+                _patternBackingFieldp2.AddPattern(AIState.WindUpPunch, 1.0f);
+                _patternBackingFieldp2.AddPattern(AIState.JumpRockSlam, 1.0f);
+                _patternBackingFieldp2.AddPattern(AIState.RockSpikeRun, 1.0f);
+                _patternBackingFieldp2.AddPattern(AIState.AnkleBreakerMaybe, 1.0f);
+                _patternBackingFieldp2.AddPattern(AIState.CommandGrab, 1.0f);
+            }
+            return _patternBackingFieldp2;
         }
     }
     public override void SendExtraAI(BinaryWriter writer)
@@ -277,13 +305,48 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
 
     private void AI_Phase2Transition()
     {
+        _canFakeOut = false;
         Timer++;
+        if(Timer == 30)
+        {
+            var sound = AssetReferences.Assets.Sounds.STARR.STARRNephew1.Asset;
+            sound.Volume = 0.5f;
+            SoundEngine.PlaySound(sound, NPC.position);
+        } 
+        
+        if(Timer < 130)
+        {
+            FXUtil.SetZoomTarget(1.2f);
+            this.AseAnimator.PlayAnimation(ANIM_NEPHEW, AnimationParams.Default);
+        }
+        else
+        {
+            if (Timer % 2 == 0)
+            {
+                Vector2 pos = NPC.Center;
+                pos.Y += Main.rand.NextFloat(-128, 128);
+                Particles.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { rootPosition = pos, timeLeft = 150 });
+            }
+            FXUtil.SetZoomTarget(1.7f);
+            this.AseAnimator.PlayAnimation(ANIM_HUH, AnimationParams.Default);
+        }
+
+        if(Timer == 130)
+        {
+            var sound = AssetReferences.Assets.Sounds.STARR.STARRGetAJob.Asset;
+            sound.Volume = 0.5f;
+            SoundEngine.PlaySound(sound, NPC.position);
+        }
+
+        StayGrounded();
+        FaceTarget();
+
         Phase2Active = true;
         NPC.velocity.X *= 0.96f;
-        NPC.noGravity = false;
-        if (Timer >= 120)
+        CameraTargetSystem.AddTarget(NPC.Center);
+        if (Timer >= 180)
         {
-            SwitchState(AIState.Idle);
+            SwitchState(AIState.AnkleBreakerMaybe);
         }
     }
 
@@ -323,14 +386,22 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(PatternManager.NextPattern());
+            if (Phase2Active)
+            {
+                SwitchState(PatternManagerP2.NextPattern());
+            }
+            else
+            {
+                SwitchState(PatternManager.NextPattern());
+            }
+     
         }
-        SwitchState(AIState.CommandGrab);
     }
 
 
     private void AI_Idle()
     {
+        _canFakeOut = true;
         Timer++;
         if(Timer == 1)
         {
@@ -345,6 +416,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         }
         NPC.velocity.X *= 0.96f;
         NPC.noGravity = false;
+        NPC.rotation *= 0.92f;
         StayGrounded();
         this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         FaceTarget();
@@ -352,7 +424,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         {
             ChooseAttack();
         }
-        else if (ShouldBeInPhase2 && IsGrounded())
+        else if (ShouldBeInPhase2 && IsGrounded() && !Phase2Active)
         {
             SwitchState(AIState.Phase2Transition);
         }

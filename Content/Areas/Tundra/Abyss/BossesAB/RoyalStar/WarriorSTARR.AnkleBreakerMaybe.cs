@@ -51,7 +51,7 @@ public partial class WarriorSTARR
                         EndDashPosition = MyTarget.Center;
                         EndDashPosition = TileUtilities.FallToSolidTile(EndDashPosition);
        
-                        if (MultiplayerHelper.IsHost)
+                        if (MultiplayerHelper.IsHost && _canFakeOut)
                         {
                             _fakeOut = Main.rand.NextBool(3);
                             NPC.netUpdate = true;

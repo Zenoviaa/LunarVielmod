@@ -21,6 +21,7 @@ namespace Stellamod.Core.Camera
             Main.instance.CameraModifiers.Add(_smoothCameraModifier);
             Main.instance.CameraModifiers.Add(_reTargetCameraModifier);
         }
+
         public override void OnModUnload()
         {
             base.OnModUnload();

@@ -13,6 +13,10 @@ namespace Stellamod.Helpers;
 
 public static class FXUtil
 {
+    public static void SetZoomTarget(float targetZoomMultiplier)
+    {
+        CameraZoomSystem.TargetZoomMultiplier = targetZoomMultiplier;
+    }
     public static void MakeSoilParticle(in Vector2 position, in Vector2 velocity)
     {
         if (Main.netMode == NetmodeID.Server)
