@@ -2,7 +2,6 @@
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
-using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -24,7 +23,7 @@ public partial class WarriorSTARR
     {
         void HoldPlayer()
         {
-            if(_grabbedPlayer != -1)
+            if (_grabbedPlayer != -1)
             {
                 Vector2 dir = NPC.spriteDirection == 1 ? Vector2.UnitX : -Vector2.UnitX;
                 Player player = Main.player[_grabbedPlayer];
@@ -82,10 +81,10 @@ public partial class WarriorSTARR
             case 1:
                 {
                     //This gonna repeat three times
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         GruntSound();
-                        if(AttackCounter > 0)
+                        if (AttackCounter > 0)
                         {
                             NPC.velocity.X -= NPC.XDirectionToTarget * 8;
                             SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
@@ -96,7 +95,7 @@ public partial class WarriorSTARR
 
                             MakeGoldenDonut(NPC.Bottom, Vector2.UnitY);
                         }
-        
+
                     }
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f));
                     StayGrounded();
@@ -112,12 +111,12 @@ public partial class WarriorSTARR
                     {
                         this.AseAnimator.PlayAnimation(ANIM_GRAB_IDLE, AnimationParams.Default);
                     }
-          
+
                     if (Timer >= Got_You_Back_Time)
                     {
                         Timer = 0;
                         AttackCounter++;
-                        if(AttackCounter >= Fake_Out_Count)
+                        if (AttackCounter >= Fake_Out_Count)
                         {
                             AttackCycle++;
                         }
@@ -127,12 +126,12 @@ public partial class WarriorSTARR
             case 2:
                 {
                     _grabbing = true;
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         _grabbedPlayer = -1;
-                        
+
                     }
-     
+
                     HoldPlayer();
                     FaceTarget();
                     StartDashPosition = NPC.Bottom;
@@ -156,7 +155,7 @@ public partial class WarriorSTARR
                     NPC.noGravity = true;
                     NPC.noTileCollide = true;
                     this.AseAnimator.PlayAnimation(ANIM_GRAB_TRY, AnimationParams.NoLooping);
-                    if(Timer >= Grab_Time || _grabbedPlayer != -1)
+                    if (Timer >= Grab_Time || _grabbedPlayer != -1)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -166,7 +165,7 @@ public partial class WarriorSTARR
             case 3:
                 {
                     HoldPlayer();
-                    if(Timer == 1 && _grabbedPlayer != -1)
+                    if (Timer == 1 && _grabbedPlayer != -1)
                     {
                         var sound = AssetReferences.Assets.Sounds.STARR.STARRMyMy.Asset;
                         SoundEngine.PlaySound(sound, MyTarget.Center);
@@ -190,15 +189,13 @@ public partial class WarriorSTARR
 
                     if (Timer % 2 == 0)
                     {
-                        Vector2 pos = NPC.Center;
-                        pos.Y += Main.rand.NextFloat(-128, 128);
-                        Particles.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { rootPosition = pos, timeLeft = 150 });
+                        Particles.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { root = NPC, rootOffset = new Vector2(0, Main.rand.NextFloat(-128, 128)), timeLeft = 150 });
                     }
 
                     this.AseAnimator.PlayAnimation(ANIM_GRAB_TRY, AnimationParams.NoLooping);
-                    if(Timer >= 90)
+                    if (Timer >= 90)
                     {
-                        if(_grabbedPlayer != -1)
+                        if (_grabbedPlayer != -1)
                         {
                             Timer = 0;
                             AttackCycle = 9;
@@ -213,10 +210,10 @@ public partial class WarriorSTARR
                 break;
             case 4:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         var sound = AssetReferences.Assets.Sounds.STARR.STARRDescendant.Asset;
-                        sound.Volume = 0.25f;
+                        sound.Volume = 0.75f;
                         SoundEngine.PlaySound(sound, MyTarget.Center);
                     }
                     StayGrounded();
@@ -237,9 +234,9 @@ public partial class WarriorSTARR
                         var sound = AssetReferences.Assets.Sounds.STARR.STARRPathetic.Asset;
                         SoundEngine.PlaySound(sound, MyTarget.Center);
                     }
-           
+
                     StayGrounded();
-                    if(Timer >= 18)
+                    if (Timer >= 18)
                     {
                         this.AseAnimator.PlayAnimation(ANIM_PUNCH, AnimationParams.NoLooping);
                     }
@@ -275,8 +272,8 @@ public partial class WarriorSTARR
                     }
                     _outliner.attacking = true;
                     this.AseAnimator.PlayAnimation(ANIM_PUNCH_BACKAIR, AnimationParams.NoLooping);
-  
-                    if(Timer >= 60)
+
+                    if (Timer >= 60)
                     {
                         SwitchState(AIState.Idle);
                     }

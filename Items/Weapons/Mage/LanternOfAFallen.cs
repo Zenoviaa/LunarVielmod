@@ -46,7 +46,6 @@ namespace Stellamod.Items.Weapons.Mage
             Item.shoot = ModContent.ProjectileType<LanternOfTheFallenFly>();
             Item.shootSpeed = 7f;
             Item.autoReuse = true;
-            Item.crit = 22;
 
         }
 

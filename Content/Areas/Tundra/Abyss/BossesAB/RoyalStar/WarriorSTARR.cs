@@ -310,7 +310,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         if(Timer == 30)
         {
             var sound = AssetReferences.Assets.Sounds.STARR.STARRNephew1.Asset;
-            sound.Volume = 0.5f;
+            sound.Volume = 0.85f;
             SoundEngine.PlaySound(sound, NPC.position);
         } 
         
@@ -323,9 +323,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         {
             if (Timer % 2 == 0)
             {
-                Vector2 pos = NPC.Center;
-                pos.Y += Main.rand.NextFloat(-128, 128);
-                Particles.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { rootPosition = pos, timeLeft = 150 });
+                Particles.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { root = NPC, rootOffset = new Vector2(0, Main.rand.Next(-128, 128)), timeLeft = 150 });
             }
             FXUtil.SetZoomTarget(1.7f);
             this.AseAnimator.PlayAnimation(ANIM_HUH, AnimationParams.Default);
@@ -334,7 +332,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         if(Timer == 130)
         {
             var sound = AssetReferences.Assets.Sounds.STARR.STARRGetAJob.Asset;
-            sound.Volume = 0.5f;
+            sound.Volume = 0.85f;
             SoundEngine.PlaySound(sound, NPC.position);
         }
 
@@ -356,7 +354,6 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         if (Timer == 30)
         {
             var sound = AssetReferences.Assets.Sounds.STARR.STARRItsOver.Asset;
-            sound.Volume = 0.5f;
             SoundEngine.PlaySound(sound, NPC.position);
         }
 
@@ -424,6 +421,8 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             }
             if (State != AIState.Death && NPC.life <= 1)
                 SwitchState(AIState.Death);
+
+            SwitchState(AIState.AnkleBreakerMaybe);
         }
     }
 

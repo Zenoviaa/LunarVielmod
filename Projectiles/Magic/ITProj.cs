@@ -138,7 +138,7 @@ public class ITProj : ModProjectile
             {
                 if (Projectile.ai[1] <= 100)
                 {
-                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ITPrimer"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ITPrimer") with { Volume = 0.3f }, Projectile.position);
                     Projectile.ai[1] = 111;
                 }
             }
@@ -160,15 +160,15 @@ public class ITProj : ModProjectile
         int S1 = Main.rand.Next(0, 3);
         if (S1 == 0)
         {
-            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb1"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb1") with { Volume = 0.3f }, Projectile.position);
         }
         if (S1 == 1)
         {
-            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb2"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb2") with { Volume = 0.3f }, Projectile.position);
         }
         if (S1 == 2)
         {
-            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb3"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb3") with { Volume = 0.3f }, Projectile.position);
         }
         FXUtil.ShakeCamera(Projectile.Center, 2048, 8);
     }

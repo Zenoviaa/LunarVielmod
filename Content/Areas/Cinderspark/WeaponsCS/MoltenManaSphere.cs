@@ -27,7 +27,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.shoot = ModContent.ProjectileType<MoltenManaBlast>();
             Item.shootSpeed = 15;
             Item.damage = 13;
-            Item.UseSound = SoundID.DD2_BetsyFireballShot;
+            Item.UseSound = SoundID.DD2_BetsyFireballShot with { Volume = 0.5f };
         }
 
 

@@ -41,6 +41,7 @@ public sealed class Particles : ModSystem
     public static readonly CometMagicDust CometMagicDust = new();
     public static readonly CrackImpactDust CrackDust = new();
     public static readonly GoldenLeaf GoldenLeaf = new();
+    public static readonly GoldenLeaf GoldenLeafTornado = new();
     public override void Load()
     {
         base.Load();
@@ -62,7 +63,8 @@ public sealed class Particles : ModSystem
             InDonutDust,
             CometMagicDust,
             CrackDust,
-            GoldenLeaf
+            GoldenLeaf,
+            GoldenLeafTornado
         };
 
         if (Main.netMode == NetmodeID.Server)

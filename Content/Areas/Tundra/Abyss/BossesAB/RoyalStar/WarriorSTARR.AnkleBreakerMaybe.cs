@@ -152,8 +152,11 @@ public partial class WarriorSTARR
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.015f, 0.03f);
                     if (Timer >= Tornadoing_Time)
                     {
+                        SwitchState(AIState.JumpRockSlam);
                         Timer = 0;
-                        AttackCycle++;
+                        AttackCycle = 2;
+                        NPC.netUpdate = true;
+                        //AttackCycle++;
                     }
                 }
                 break;

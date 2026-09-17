@@ -9,8 +9,10 @@ public class GoldenLeaf : ParticleUpdater<GoldenLeaf.Data>
     public struct Data : IParticleData
     {
         public static readonly Data Default = new Data { timeLeft = 240, xRange = 128, yRange = 32 };
-        public Vector2 rootPosition;
+        public Entity root;
+        public Vector2 rootOffset;
         public Vector2 position;
+        public float progress;
         public int frame;
         public float scale;
         public float xRange;
@@ -20,6 +22,7 @@ public class GoldenLeaf : ParticleUpdater<GoldenLeaf.Data>
         public bool IsActive => timeLeft > 0;
     }
 
+    public bool noDecrement;
     public override void LoadSafe()
     {
         base.LoadSafe();
@@ -37,7 +40,7 @@ public class GoldenLeaf : ParticleUpdater<GoldenLeaf.Data>
         orig(self);
         if (_length <= 0)
             return;
-        PixelationManager.QueueSpritebatchDrawAction(Draw);
+        PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.OverPlayers);
     }
 
     public override void OnSpawn(ref Data particle, in int index)
@@ -46,19 +49,39 @@ public class GoldenLeaf : ParticleUpdater<GoldenLeaf.Data>
         particle.frame = Main.rand.Next(3);
         particle.rotation = Main.rand.NextFloat(12);
         particle.scale = Main.rand.NextFloat(0.7f, 1f);
+        particle.progress = Main.rand.NextFloat(0, 10f);
     }
 
     protected override void UpdateParticles()
     {
         base.UpdateParticles();
-        for (int i = 0; i < _length; i++)
+        if (noDecrement)
         {
-            ref var particle = ref _particles[i];
-            Vector2 offset = MovementUtilities.OvalProgressPoint(particle.timeLeft / 60f, MathHelper.TwoPi, particle.xRange, particle.yRange);
-            particle.position = particle.rootPosition + offset;
-            particle.rotation += 0.065f;
-            particle.timeLeft--;
+            for (int i = 0; i < _length; i++)
+            {
+                ref var particle = ref _particles[i];
+                particle.progress += 0.02f;
+                particle.progress %= 1.0f;
+                Vector2 offset = MovementUtilities.OvalProgressPoint(particle.progress, MathHelper.TwoPi, particle.xRange, particle.yRange);
+                particle.position = particle.root.Center + particle.rootOffset + offset;
+                particle.rotation += 0.065f;
+            }
         }
+        else
+        {
+            for (int i = 0; i < _length; i++)
+            {
+                ref var particle = ref _particles[i];
+                particle.progress += 0.02f;
+                particle.progress %= 1.0f;
+                Vector2 offset = MovementUtilities.OvalProgressPoint(particle.progress, MathHelper.TwoPi, particle.xRange, particle.yRange);
+                particle.position = particle.root.Center + particle.rootOffset + offset;
+                particle.rotation += 0.065f;
+                particle.timeLeft--;
+            }
+        }
+
+        noDecrement = false;
     }
 
 
@@ -72,11 +95,17 @@ public class GoldenLeaf : ParticleUpdater<GoldenLeaf.Data>
             float interpolant = EasingFunction.OutSine(lerpValue);
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
             drawer.sourceRect = frame;
+            drawer.VerticalFrame(particle.frame, 6);
             drawer.CenterOrigin();
+
+            Vector2 origin = particle.root.Center + particle.rootOffset;
+            float yDiff = origin.Y - particle.position.Y  ;
+            float lerp = yDiff / particle.yRange;
             drawer.rotation = particle.rotation;
+            drawer.color = Color.Lerp(drawer.color, Color.Black, lerp * 0.4f);
             drawer.color *= interpolant;
             drawer.scale = new Vector2(particle.scale);
-            drawer.VerticalFrame(particle.frame, 4);
+
             spriteBatch.Draw(drawer);
         }
     }

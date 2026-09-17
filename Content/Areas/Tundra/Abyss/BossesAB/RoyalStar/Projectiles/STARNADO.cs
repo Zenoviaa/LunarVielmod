@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
 using Stellamod.Visual.Particles;
@@ -10,6 +11,15 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 public class STARNADO : ModProjectile,
     IDrawToRenderTarget
 {
+    private LittleStarParticleManager _tornadoStreakParticlesBackingField;
+    private LittleStarParticleManager TornadoStreakParticles
+    {
+        get
+        {
+            _tornadoStreakParticlesBackingField ??= new LittleStarParticleManager(300, 8, GetTrailWidth);
+            return _tornadoStreakParticlesBackingField;
+        }
+    }
     private NPC Parent => Main.npc[(int)Projectile.ai[0]];
     private ref float Timer => ref Projectile.ai[1];
     private float OutEasing
@@ -59,20 +69,54 @@ public class STARNADO : ModProjectile,
             sp.fast = true;
         }
 
-        if(Timer % 2 == 0)
-        {
-            Vector2 pos = Projectile.Center;
-            pos.Y += Main.rand.NextFloat(-128, 128);
-            Particles.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { rootPosition = pos, timeLeft = 150});
-        }
-        for (int i = 0; i < 2; i++)
-        {
+        float inTornado = Timer / 30f;
+        float outTornado = (float)Projectile.timeLeft / 30f;
 
+        inTornado = EasingFunction.InOutSine(inTornado);
+        outTornado = EasingFunction.InOutSine(outTornado);
+        float alpha = inTornado * outTornado;
+        TornadoStreakParticles.xOvalRadius = 5;
+        TornadoStreakParticles.yOvalRadius = MathHelper.Lerp(50, 300, EasingFunction.InOutSine(Timer / 150f));
+        TornadoStreakParticles.minX = MathHelper.Lerp(0f, 50f, EasingFunction.InOutSine(Timer / 150f));
+        TornadoStreakParticles.spinTime = 25;
+        TornadoStreakParticles.rotationAxis = new Vector3(0, 1, 0.2f);
+        TornadoStreakParticles.alpha = 0.08f * alpha;
+        TornadoStreakParticles.topOnly = true;
+        TornadoStreakParticles.osc = false;
+        TornadoStreakParticles.Update(Projectile.Center);
+
+        if (Timer % 1 == 0 && Timer < 50)
+        {
+            Particles.GoldenLeafTornado.Spawn(GoldenLeaf.Data.Default with {
+                root = Projectile, 
+                rootOffset = new Vector2(0, Main.rand.NextFloat(-128, 128)),
+                timeLeft = 150,
+                xRange = 64, 
+                yRange = 27 });
         }
+        Particles.GoldenLeafTornado.noDecrement = true;
+       
+    }
+    private Color GetTrailColor(float completionRatio)
+    {
+        Color trailColor = Color.Lerp(Color.Gold, Color.DarkOrange, EasingFunction.QuadraticBump(completionRatio));
+        float alpha = EasingFunction.QuadraticBump(completionRatio);
+        trailColor *= alpha;
+        return trailColor;
+    }
+    private float GetTrailWidth(float completionRatio)
+    {
+        return MathHelper.Lerp(0.2f, 2, EasingFunction.QuadraticBump(completionRatio));
+    }
+
+    public void DrawPixelated(GraphicsDevice graphicsDevice)
+    {
+        TornadoStreakParticles.Draw();
     }
 
     private void DrawPixelatedTornado(SpriteBatch sb, Vector2 sp)
     {
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCsWithOutline);
         var pass = AssetReferences.Effects.Generic.MysteriousWind.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.09f;
         pass.Parameters.resolution = new Vector2(Main.screenWidth, Main.screenHeight);
@@ -112,16 +156,7 @@ public class STARNADO : ModProjectile,
             drawer2.scale *= 1.2f;
             sb.Draw(drawer2);
 
-            drawer2.spriteEffects = SpriteEffects.None;
-            drawer2.worldPosition.Y -= 64;
-            drawer2.color *= 0.86f;
-            drawer2.scale *= 1.2f;
-            sb.Draw(drawer2);
 
-            drawer2.spriteEffects = SpriteEffects.FlipHorizontally;
-            drawer2.color *= 0.56f;
-            drawer2.scale *= 2f;
-            sb.Draw(drawer2);
         }
     }
 
@@ -131,7 +166,7 @@ public class STARNADO : ModProjectile,
     }
     public void DrawToRenderTargets()
     {
-        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedTornado);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedTornado, DrawLayer.BehindNPCsWithOutline);
         //       throw new System.NotImplementedException();
     }
     public override void OnKill(int timeLeft)

@@ -15,6 +15,7 @@ using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Content.Armors.LunarianVoid;
 using Stellamod.Content.Armors.Miracle;
 using Stellamod.Content.Armors.Moonsker;
+using Stellamod.Content.Armors.Radianthal;
 using Stellamod.Content.Armors.Sanctorous;
 using Stellamod.Content.Armors.Scrappy;
 using Stellamod.Content.Armors.ShadeWraith;
@@ -248,6 +249,13 @@ namespace Stellamod.Common.ArmorShop
             silk.AddLegs(ModContent.ItemType<CandlelightLegs>());
             silk.SetMaterial(ModContent.ItemType<EreshkinCandle>());
             silk.Register();
+
+            ArmorShopSet rad = new ArmorShopSet();
+            rad.AddHead(ModContent.ItemType<RadianthalHead>());
+            rad.AddBody(ModContent.ItemType<RadianthalBody>());
+            rad.AddLegs(ModContent.ItemType<RadianthalLegs>());
+            rad.SetMaterial(ModContent.ItemType<RadiantNectar>());
+            rad.Register();
             //Daeden
             /*
             ArmorShopSet dae = new ArmorShopSet();

@@ -53,7 +53,7 @@ public class ROCKSPIKE : ModNPC,
         NPC.lifeMax = 10;
         NPC.damage = 35;
         NPC.defense = 9999;
-        NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
+        NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact with { Volume = 0.5f, PitchVariance = 0.5f };
       //  NPC.DeathSound = AssetReferences.Assets.Sounds.RockBreak.Asset with { PitchVariance = 0.6f };
         NPC.dontCountMe = true;
         NPC.dontTakeDamageFromHostiles = true;
@@ -69,7 +69,7 @@ public class ROCKSPIKE : ModNPC,
         Timer++;
         if(Timer == 1)
         {
-            var rockSpikeAsound = AssetReferences.Assets.Sounds.STARR.RockSmash.Asset with { PitchVariance = 1f };
+            var rockSpikeAsound = AssetReferences.Assets.Sounds.STARR.RockSmash.Asset with { PitchVariance = 1f, Volume = 0.5f };
             SoundEngine.PlaySound(rockSpikeAsound, NPC.position);
             CrackVFX(NPC.Bottom);
             DustVFX(NPC.Bottom, -Vector2.UnitY * 7);
