@@ -18,7 +18,7 @@ public partial class WarriorSTARR
     private int Got_You_Damage => 70;
     private float Got_You_Back_Time => 45;
     private float Fake_Out_Count => 4;
-    private float Grab_Time => 38;
+    private float Grab_Time => 39;
     private void AI_CommandGrab()
     {
         void HoldPlayer()

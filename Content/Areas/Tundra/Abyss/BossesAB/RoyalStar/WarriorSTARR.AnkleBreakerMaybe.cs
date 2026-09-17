@@ -53,7 +53,7 @@ public partial class WarriorSTARR
        
                         if (MultiplayerHelper.IsHost && _canFakeOut)
                         {
-                            _fakeOut = Main.rand.NextBool(3);
+                            _fakeOut = Main.rand.NextBool(2);
                             NPC.netUpdate = true;
                         }
                     }
