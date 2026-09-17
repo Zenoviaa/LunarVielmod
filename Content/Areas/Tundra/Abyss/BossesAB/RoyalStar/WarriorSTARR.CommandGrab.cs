@@ -25,6 +25,7 @@ public partial class WarriorSTARR
         {
             if (_grabbedPlayer != -1)
             {
+                CameraZoomSystem.TargetZoomMultiplier = 1.5f;
                 Vector2 dir = NPC.spriteDirection == 1 ? Vector2.UnitX : -Vector2.UnitX;
                 Player player = Main.player[_grabbedPlayer];
                 GotYouPlayer gotYouPlayer = player.GetModPlayer<GotYouPlayer>();
