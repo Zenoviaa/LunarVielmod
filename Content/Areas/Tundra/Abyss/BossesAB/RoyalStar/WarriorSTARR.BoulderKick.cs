@@ -1,5 +1,7 @@
 ﻿using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
+using Stellamod.Core;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
@@ -107,6 +109,12 @@ public partial class WarriorSTARR
                 break;
             case 3:
                 {
+                    if(Timer == 1)
+                    {
+                        var sound = AssetReferences.Assets.Sounds.STARR.STARRHellYeah.Asset;
+                        sound.Volume = 0.5f;
+                        SoundEngine.PlaySound(sound, MyTarget.position);
+                    }
                     this.AseAnimator.PlayAnimation(ANIM_KICK_DOWN, AnimationParams.NoLooping);
                     if (Timer >= KICK_PUNCH_DELAY_TIME)
                     {
@@ -119,6 +127,11 @@ public partial class WarriorSTARR
             case 4:
                 {
                     _outliner.warning = true;
+                    if(Timer == 1)
+                    {
+                        var sound = AssetReferences.Assets.Sounds.STARR.STARRGrunt.Asset with { PitchVariance = 0.5f };
+                        SoundEngine.PlaySound(sound, MyTarget.position);
+                    }
                     this.AseAnimator.PlayAnimation(ANIM_PUNCH_READY, AnimationParams.NoLooping);
                     if(Timer >= KICK_PUNCH_PREP_TIME && HasAnotherBoulder())
                     {
