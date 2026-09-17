@@ -16,7 +16,7 @@ public partial class WarriorSTARR
 {
     private float Tornado_Jump_Time => 45;
     private float Tornado_Warn_Time => 45;
-    private float Tornadoing_Time => 540;
+    private float Tornadoing_Time => 270;
     private int Tornado_Damage => 40;
     private float Tornado_End_Time => 90;
 

@@ -16,7 +16,7 @@ public class STARNADO : ModProjectile,
     {
         get
         {
-            _tornadoStreakParticlesBackingField ??= new LittleStarParticleManager(300, 8, GetTrailWidth);
+            _tornadoStreakParticlesBackingField ??= new LittleStarParticleManager(300, 8, GetTrailWidth, GetTrailColor);
             return _tornadoStreakParticlesBackingField;
         }
     }
@@ -36,7 +36,7 @@ public class STARNADO : ModProjectile,
         Projectile.height = 96;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 600;
+        Projectile.timeLeft = 300;
         Projectile.light = 0.7f;
     }
 
@@ -75,6 +75,7 @@ public class STARNADO : ModProjectile,
         inTornado = EasingFunction.InOutSine(inTornado);
         outTornado = EasingFunction.InOutSine(outTornado);
         float alpha = inTornado * outTornado;
+
         TornadoStreakParticles.xOvalRadius = 5;
         TornadoStreakParticles.yOvalRadius = MathHelper.Lerp(50, 300, EasingFunction.InOutSine(Timer / 150f));
         TornadoStreakParticles.minX = MathHelper.Lerp(0f, 50f, EasingFunction.InOutSine(Timer / 150f));
@@ -99,6 +100,7 @@ public class STARNADO : ModProjectile,
     }
     private Color GetTrailColor(float completionRatio)
     {
+        return Color.White;
         Color trailColor = Color.Lerp(Color.Gold, Color.DarkOrange, EasingFunction.QuadraticBump(completionRatio));
         float alpha = EasingFunction.QuadraticBump(completionRatio);
         trailColor *= alpha;
@@ -116,7 +118,7 @@ public class STARNADO : ModProjectile,
 
     private void DrawPixelatedTornado(SpriteBatch sb, Vector2 sp)
     {
-        PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCsWithOutline);
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCsAdditive);
         var pass = AssetReferences.Effects.Generic.MysteriousWind.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.09f;
         pass.Parameters.resolution = new Vector2(Main.screenWidth, Main.screenHeight);

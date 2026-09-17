@@ -304,5 +304,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
               PrimitiveType.TriangleList, _particleVertexBufferArr, 0, _particleVertexBufferArr.Length / 3);
 
         }
+        public void DrawAdd()
+        {
+            var particleShader = TileShadowShader.Instance;
+            particleShader.ApplyPasses();
+
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            graphicsDevice.BlendState = BlendState.Additive;
+            graphicsDevice.DrawUserPrimitives(
+              PrimitiveType.TriangleList, _particleVertexBufferArr, 0, _particleVertexBufferArr.Length / 3);
+
+        }
     }
 }
