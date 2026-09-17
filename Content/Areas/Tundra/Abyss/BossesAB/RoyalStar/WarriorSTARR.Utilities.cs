@@ -111,6 +111,9 @@ public partial class WarriorSTARR
         {
             var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 3);
             p2.Scale *= 0.5f;
+            p2.innerColor = Color.Gold;
+            p2.outerColor = Color.DarkOrange;
+            p2.fadeToColor = Color.Black;
         }
         if (Timer % 5 == 0)
         {
@@ -348,8 +351,19 @@ public partial class WarriorSTARR
         }
         var donut = LegacyParticle.NewParticle<GlowDonutParticle>(position, (-velocity.SafeNormalize(Vector2.Zero) * 4), Color.SkyBlue);
         donut.Scale *= 2;
+        donut.innerColor = Color.Gold;
+        donut.outerColor = Color.DarkOrange;
+        donut.fadeToColor = Color.Black;
     }
 
+    public GlowDonutParticle MakeGoldenDonut(Vector2 position, Vector2 velocity)
+    {
+        var p = LegacyParticle.NewParticle<GlowDonutParticle>(position, velocity);
+        p.innerColor = Color.Gold;
+        p.outerColor = Color.DarkOrange;
+        p.fadeToColor = Color.Black;
+        return p;
+    }
     public void TeleportOutEffect(Vector2 position)
     {
         var fx = FXUtil.GlowCircleBoom(position, Color.LightGoldenrodYellow, Color.Gold, Color.DarkOrange);
@@ -430,6 +444,8 @@ public partial class WarriorSTARR
 
         var donut = LegacyParticle.NewParticle<GlowDonutParticle>(position, (-velocity.SafeNormalize(Vector2.Zero) * 4), Color.SkyBlue);
         donut.Scale *= 1.2f;
+        donut.innerColor = Color.Gold;
+        donut.outerColor = Color.DarkOrange;
     }
 
     public void PunchBoulder(int index, Vector2 velocity)

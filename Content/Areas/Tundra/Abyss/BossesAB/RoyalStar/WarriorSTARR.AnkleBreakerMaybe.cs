@@ -45,7 +45,7 @@ public partial class WarriorSTARR
                         bellHit.PitchVariance = 0.2f;
                         SoundEngine.PlaySound(bellHit, NPC.position);
 
-                        var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                        MakeGoldenDonut(NPC.Bottom, Vector2.UnitY);
 
                         StartDashPosition = NPC.Center;
                         EndDashPosition = MyTarget.Center;

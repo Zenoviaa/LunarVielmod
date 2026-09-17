@@ -65,10 +65,9 @@ public partial class WarriorSTARR
 
                         float xDirection = NPC.Center.X < MyTarget.Center.X ? 1 : -1;
                         NPC.velocity.X += xDirection * 4f;
-                        var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
-                        var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
+                        MakeGoldenDonut(NPC.Bottom, Vector2.UnitY);
+                        var p2 = MakeGoldenDonut(NPC.Bottom, Vector2.UnitY * 4);
                         p2.Scale *= 0.5f;
-
                     }
 
                     _outliner.warning = true;

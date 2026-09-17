@@ -47,9 +47,8 @@ public partial class WarriorSTARR
                         bellHit.PitchVariance = 0.2f;
                         SoundEngine.PlaySound(bellHit, NPC.position);
 
-                        var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
-                        p.outerColor = Color.DarkOrange;
-                        p.innerColor = Color.Gold;
+                        MakeGoldenDonut(NPC.Bottom, Vector2.UnitY);
+
                         StartDashPosition = NPC.Center;
                         EndDashPosition = MyTarget.Center;
                         EndDashPosition = TileUtilities.FallToSolidTile(EndDashPosition);
@@ -95,9 +94,7 @@ public partial class WarriorSTARR
                             SoundEngine.PlaySound(bellHit, NPC.position);
 
 
-                            var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
-                            p.outerColor = Color.DarkOrange;
-                            p.innerColor = Color.Gold;
+                            MakeGoldenDonut(NPC.Bottom, Vector2.UnitY);
                         }
         
                     }
@@ -150,7 +147,7 @@ public partial class WarriorSTARR
                     MakeJumpingParticles();
                     if (Timer % 9 == 0)
                     {
-                        var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 3);
+                        var p2 = MakeGoldenDonut(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 3);
                         p2.Scale *= 0.5f;
                         p2.innerColor = Color.Gold;
                         p2.outerColor = Color.DarkGoldenrod;
