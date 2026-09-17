@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Gores;
 using Stellamod.Core;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Visual.Particles;
@@ -41,6 +42,7 @@ public class ROCKSPIKE : ModNPC,
         Main.npcFrameCount[Type] = 3;
         NPCID.Sets.ImmuneToAllBuffs[Type] = true;
         NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
+        NPCSets.Heavy[Type] = true;
     }
 
     public override void SetDefaults()

@@ -353,6 +353,34 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private void AI_Death()
     {
         Timer++;
+        if (Timer == 30)
+        {
+            var sound = AssetReferences.Assets.Sounds.STARR.STARRItsOver.Asset;
+            sound.Volume = 0.5f;
+            SoundEngine.PlaySound(sound, NPC.position);
+        }
+
+
+        if(Timer >= 35 && Timer <= 70)
+        {
+            FXUtil.SetZoomTarget(1.2f);
+
+        }
+        else if (Timer >= 70)
+        {
+            FXUtil.SetZoomTarget(1.7f);
+
+        }
+        this.AseAnimator.PlayAnimation(ANIM_HUH, AnimationParams.Default);
+
+        StayGrounded();
+        FaceTarget();
+        NPC.velocity.X *= 0.96f;
+        CameraTargetSystem.AddTarget(NPC.Center);
+        if (Timer >= 180)
+        {
+            NPC.Kill();
+        }
     }
 
     private void AI_Spawn()
@@ -394,7 +422,8 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             {
                 SwitchState(PatternManager.NextPattern());
             }
-     
+            if (State != AIState.Death && NPC.life <= 1)
+                SwitchState(AIState.Death);
         }
     }
 
@@ -436,8 +465,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         if (NPC.life <= 0)
         {
             NPC.life = 1;
-            if (State != AIState.Death)
-                SwitchState(AIState.Death);
+
         }
     }
     private float GetSpiralDashTrailWidth(float completionRatio)
