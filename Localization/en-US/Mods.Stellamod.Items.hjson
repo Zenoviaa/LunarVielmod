@@ -6134,7 +6134,9 @@ ThePenetrator: {
 
 SingularDive: {
 	DisplayName: Singular Dive
-	Tooltip: Right click to use little minions and a long spin to hit enemies!
+	Tooltip: "You can feel the power..."
+	BasicSlash: "Spins and throws the greatsword quite often"
+	StaminaSlash: Jump up into the sky and come crashing back down for a big SLAM!
 }
 
 DelgrimsHammer: {

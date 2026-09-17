@@ -238,6 +238,48 @@ namespace Stellamod.Core.Utilities
             graphicsDevice.BlendState = originalBlendState;
             graphicsDevice.SamplerStates[0] = originalSamplerState;
         }
+        public void DrawPrimitives(VertexPositionColorTexture[] vertices)
+        {
+            if (vertices.Length <= 0)
+                return;
+
+
+            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+            BlendState originalBlendState = graphicsDevice.BlendState;
+            RasterizerState oldCullMode = graphicsDevice.RasterizerState;
+            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
+
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+
+            graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
+              PrimitiveType.TriangleList, vertices, 0, vertices.Length, _trailIndexBuffer, 0, vertices.Length / 3);
+
+            graphicsDevice.RasterizerState = oldCullMode;
+            graphicsDevice.BlendState = originalBlendState;
+            graphicsDevice.SamplerStates[0] = originalSamplerState;
+        }
+
+        public void DrawPrimitives(VertexSection section)
+        {
+            if (section.primitiveCount <= 0)
+                return;
+
+
+            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+            BlendState originalBlendState = graphicsDevice.BlendState;
+            RasterizerState oldCullMode = graphicsDevice.RasterizerState;
+            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
+
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+
+
+            graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
+              PrimitiveType.TriangleList, _trailVertexBuffer, 0, section.vertexCount, _trailIndexBuffer, 0, section.primitiveCount);
+
+            graphicsDevice.RasterizerState = oldCullMode;
+            graphicsDevice.BlendState = originalBlendState;
+            graphicsDevice.SamplerStates[0] = originalSamplerState;
+        }
 
         public void DrawPrimitives(VertexSection section, BaseShader shader)
         {

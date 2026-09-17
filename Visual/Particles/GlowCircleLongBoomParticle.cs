@@ -24,6 +24,7 @@ namespace Stellamod.Visual.Particles
         public float BaseSize = 0.05f;
         public float Pixelation = 1f;
         public Vector2 VectorScale;
+        public bool noRot;
         public override void OnSpawn()
         {
             VectorScale = Vector2.One;
@@ -36,6 +37,7 @@ namespace Stellamod.Visual.Particles
             BaseSize = 0.025f;
             Pixelation = 1f;
             customShader = GlowCircleShader.Instance;
+            noRot = false;
         }
 
         public override void Update()
@@ -43,7 +45,8 @@ namespace Stellamod.Visual.Particles
             Timer++;
             Progress = Timer / Duration;
             Velocity *= 0.98f;
-            Rotation += 0.01f;
+            if(!noRot)
+                Rotation += 0.01f;
             Scale *= 0.997f;
             color *= 0.99f;
             if (Timer >= Duration)
