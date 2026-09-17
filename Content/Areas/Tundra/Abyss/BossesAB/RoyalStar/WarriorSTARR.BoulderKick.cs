@@ -111,9 +111,7 @@ public partial class WarriorSTARR
                 {
                     if(Timer == 1)
                     {
-                        var sound = AssetReferences.Assets.Sounds.STARR.STARRHellYeah.Asset;
-                        sound.Volume = 0.5f;
-                        SoundEngine.PlaySound(sound, MyTarget.position);
+
                     }
                     this.AseAnimator.PlayAnimation(ANIM_KICK_DOWN, AnimationParams.NoLooping);
                     if (Timer >= KICK_PUNCH_DELAY_TIME)
