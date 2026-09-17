@@ -422,7 +422,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
             if (State != AIState.Death && NPC.life <= 1)
                 SwitchState(AIState.Death);
 
-            SwitchState(AIState.AnkleBreakerMaybe);
+           // SwitchState(AIState.AnkleBreakerMaybe);
         }
     }
 
