@@ -107,6 +107,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private const string ANIM_JUMPFRAME = "Jumpframe";
     private const string ANIM_JUMPTOHOVER = "JumpTohover";
 
+    private const string ANIM_GRAB_IDLE = "GrabIdle";
     private PatternManager<AIState> _patternBackingField;
     private PatternManager<AIState> PatternManager
     {
@@ -314,7 +315,6 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         if (_grabbing)
         {
             _grabbedPlayer = target.whoAmI;
-            AttackCounter = 1;
             NPC.netUpdate = true;
         }
     }
@@ -325,7 +325,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         {
             SwitchState(PatternManager.NextPattern());
         }
-        SwitchState(AIState.AnkleBreakerMaybe);
+        SwitchState(AIState.CommandGrab);
     }
 
 
