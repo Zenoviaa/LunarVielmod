@@ -11,6 +11,21 @@ namespace Stellamod.Core.Bases
 {
     public static class ItemDefaultExtensions
     {
+        public static void DefaultToGun(this Item Item)
+        {
+            Item.damage = 16;
+            Item.DamageType = DamageClass.Ranged;
+            Item.useTime = Item.useAnimation = 24;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.knockBack = 6;
+            Item.UseSound = SoundID.Item5;
+            Item.autoReuse = true;
+            Item.shoot = ProjectileID.Bullet;
+            Item.shootSpeed = 8f;
+            Item.useAmmo = AmmoID.Bullet;
+            Item.noMelee = true;
+        }
+
         public static void DefaultToPermanentFood(this Item item, FoodType foodType)
         {
             item.GetGlobalItem<PermamentFoodGlobalItem>().permanentFoodType = foodType;

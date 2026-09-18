@@ -6134,8 +6134,8 @@ ThePenetrator: {
 
 SingularDive: {
 	DisplayName: Singular Dive
-	Tooltip: "You can feel the power..."
-	BasicSlash: "Spins and throws the greatsword quite often"
+	Tooltip: You can feel the power...
+	BasicSlash: Spins and throws the greatsword quite often
 	StaminaSlash: Jump up into the sky and come crashing back down for a big SLAM!
 }
 
@@ -12170,4 +12170,9 @@ AmalgamRapidfirebow: {
 	StaminaSlash: Shoots a super fast arrow that explodes into a moon-powered boom!
 	DisplayName: Amalgam Aura Bow
 	Tooltip: ""
+}
+
+GhostshotgunLantern: {
+	DisplayName: Ghostshotgun Lantern
+	Tooltip: "Turns musket balls into a spread of three little ghosts that home towards your cursor!"
 }

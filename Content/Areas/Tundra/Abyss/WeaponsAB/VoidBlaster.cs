@@ -92,7 +92,7 @@ public class VoidBlaster : BaseGun
         base.AddRecipes();
         this.RegisterBrew(
             mold: ModContent.ItemType<BlankGun>(),
-            material: ModContent.ItemType<PearlescentScrap>());
+            material: ModContent.ItemType<ConvulgingMater>());
     }
 
 }
