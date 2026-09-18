@@ -4,11 +4,8 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
 using Stellamod.Effects.GothinFlames;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
-using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -31,7 +28,6 @@ public class BouncingRazorSuns : ModProjectile,
         Chase
     }
 
-    private bool _lockTarget;
     private float _inTimer;
     private float _squishTimer;
     private Vector2 _offset;
@@ -82,7 +78,7 @@ public class BouncingRazorSuns : ModProjectile,
         _altTexture?.Unload();
         _auraTexture?.Unload();
     }
-    
+
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -187,8 +183,7 @@ public class BouncingRazorSuns : ModProjectile,
                 AI_Bounce();
                 break;
             case AIState.Chase:
-                _lockTarget = true;
-               // Projectile.hostile = true;
+                // Projectile.hostile = true;
                 AI_Chase();
                 break;
         }
@@ -208,10 +203,10 @@ public class BouncingRazorSuns : ModProjectile,
     private void AI_ComeIn()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _offset = Vector2.UnitY * 512;
-            if(Variant == 1)
+            if (Variant == 1)
             {
                 _offset *= -1;
             }
@@ -227,10 +222,10 @@ public class BouncingRazorSuns : ModProjectile,
 
 
         Vector2 targetPoint = _startPoint + Projectile.velocity;
-       
+
         Vector2 pos = targetPoint + o;
         Projectile.Center = pos;
-        if(Timer >= InTime)
+        if (Timer >= InTime)
         {
             Projectile.velocity = Vector2.Zero;
             //  Projectile.velocity = (_startPoint - targetPoint).SafeNormalize(Vector2.Zero) * 16;
@@ -241,22 +236,22 @@ public class BouncingRazorSuns : ModProjectile,
     private void AI_Bounce()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             fastAnimateTimer = 30;
             _squishTimer = 60;
             ShakeScreenPosition.Shake = 4;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { PitchVariance = 0.5f }, Projectile.Center);
-    
-            if(MultiplayerHelper.IsHost && Variant == 0)
+
+            if (MultiplayerHelper.IsHost && Variant == 0)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<RazorFireBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
 
         Timer++;
-     
+
         float ratio = Timer / BounceTime;
         float ease = EasingFunction.InOutSine(ratio);
 
@@ -273,9 +268,9 @@ public class BouncingRazorSuns : ModProjectile,
         Projectile.velocity = Vector2.Zero;
         Projectile.Center = _startPoint + o;
         _deadAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
-        if(Timer >= BounceTime)
+        if (Timer >= BounceTime)
         {
-         //   Main.NewText("Chase");
+            //   Main.NewText("Chase");
             //_startPoint = Projectile.Center;
             //_startOffset = _startOffset.RotatedBy(radians);
             SwitchState(AIState.Chase);
@@ -399,7 +394,7 @@ public class BouncingRazorSuns : ModProjectile,
         discDrawer.color = overrideColor != null ? overrideColor.Value : discDrawer.color;
         discDrawer.CenterOrigin();
 
-        if(overrideColor == null)
+        if (overrideColor == null)
         {
             SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             glowDrawer.color = GetDiscAuraColor() * 0.5f;
@@ -410,7 +405,7 @@ public class BouncingRazorSuns : ModProjectile,
             spriteBatch.Restart(effect: whiteShader.Effect);
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float ratio = (float)i / (float)Projectile.oldPos.Length;
+                float ratio = i / (float)Projectile.oldPos.Length;
                 Vector2 pos = Projectile.oldPos[i] + Projectile.Size * 0.5f;
                 var drawer = discDrawer;
                 drawer.worldPosition = pos;
@@ -422,7 +417,7 @@ public class BouncingRazorSuns : ModProjectile,
             spriteBatch.RestartDefaults();
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float ratio = (float)i / (float)Projectile.oldPos.Length;
+                float ratio = i / (float)Projectile.oldPos.Length;
                 Vector2 pos = Projectile.oldPos[i] + Projectile.Size * 0.5f;
                 var drawer = discDrawer;
                 drawer.worldPosition = pos;
@@ -437,7 +432,7 @@ public class BouncingRazorSuns : ModProjectile,
         discDrawer.color.A = 0;
         spriteBatch.Draw(discDrawer);
 
-        for(float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
+        for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
         {
             float e = f;
             e += Main.GlobalTimeWrappedHourly * 5;
@@ -471,7 +466,7 @@ public class BouncingRazorSuns : ModProjectile,
         BasicLaserShader basicLaserShader = ShaderContent.GetInstance<BasicLaserShader>();
         basicLaserShader.LaserTexture = AssetManager.LaserTextures.Aura;
         basicLaserShader.InnerColor = GetDiscAuraColor3();
-        basicLaserShader.OuterColor =GetDiscAuraColor3();
+        basicLaserShader.OuterColor = GetDiscAuraColor3();
         TrailDrawer.Draw(Projectile.oldPos, GetSpiralDashTrailColor2, GetSpiralDashTrailWidth2, basicLaserShader, Projectile.Size * 0.5f);
         TrailDrawer.Draw(Projectile.oldPos, GetSpiralDashTrailColor, GetSpiralDashTrailWidth, basicLaserShader, Projectile.Size * 0.5f);
     }
@@ -515,14 +510,14 @@ public class BouncingRazorSuns : ModProjectile,
         Color secondaryLerp = Color.Lerp(GetDiscAuraColor3(), Color.Black, completionRatio);
         return Color.Lerp(GetDiscAuraColor2(), secondaryLerp, completionRatio);
     }
-    
+
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
         Color primaryColor = GetDiscAuraColor();
         var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, primaryColor, Color.Lerp(primaryColor, Color.Black, 0.5f), duration: 25, baseSize: 0.23f);
         fx.Scale *= 1.8f;
-        for(float f =0; f < 10; f++)
+        for (float f = 0; f < 10; f++)
         {
             var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(16, 16));
             dp.Scale *= 1.5f;
@@ -547,7 +542,7 @@ public class BouncingRazorSuns : ModProjectile,
 public class RazorFireBoom : ModProjectile,
     IDrawToRenderTarget
 {
-    public override string Texture =>  TextureRegistry.EmptyTexture;
+    public override string Texture => TextureRegistry.EmptyTexture;
     private ref float Timer => ref Projectile.ai[0];
     private float Time => 45;
     public override void SetDefaults()
@@ -558,7 +553,7 @@ public class RazorFireBoom : ModProjectile,
         Projectile.width = 100;
         Projectile.height = 100;
         Projectile.hostile = true;
-        Projectile.ignoreWater=true;
+        Projectile.ignoreWater = true;
     }
     public override void OnHitPlayer(Player target, Player.HurtInfo info)
     {
@@ -570,12 +565,12 @@ public class RazorFireBoom : ModProjectile,
         base.AI();
 
 
-        if(Timer > 27)
+        if (Timer > 27)
         {
             Projectile.hostile = false;
         }
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             FXUtil.CreateRipple(Projectile.Center);
             ShakeScreenPosition.Shake = 6;
@@ -599,7 +594,7 @@ public class RazorFireBoom : ModProjectile,
                 particle.VectorScale *= 4;
                 particle.Rotation = rot + MathHelper.ToRadians(45);
             }
-            for (float f = 0; f< 14; f++)
+            for (float f = 0; f < 14; f++)
             {
                 var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(32, 32));
                 dp.dampening = 0.05f;
@@ -607,7 +602,7 @@ public class RazorFireBoom : ModProjectile,
                 dp.Scale *= 2;
             }
         }
-        var dp2 = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(384, 384), Vector2.Zero );
+        var dp2 = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(384, 384), Vector2.Zero);
         dp2.dampening = 0.05f;
         dp2.gravity *= 0.05f;
         dp2.fast = true;
@@ -624,7 +619,7 @@ public class RazorFireBoom : ModProjectile,
         boomShader.BloomColor = Color.Lerp(Color.Red, Color.DarkRed, t);
 
         sb.Restart(effect: boomShader.Effect);
-                 
+
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
         drawer.color = Color.White;
         drawer.color.A = 0;

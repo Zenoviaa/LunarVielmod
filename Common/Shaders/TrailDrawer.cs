@@ -78,6 +78,17 @@ namespace Stellamod.Common.Shaders
 
     public class TrailDrawer
     {
+        public static Matrix UnscaledWorldViewPoint
+        {
+            get
+            {
+                Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+                Matrix world = Matrix.CreateTranslation(-screenPosition);
+                Matrix view = Matrix.Identity;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+                return world * view * projection;
+            }
+        }
         public static Matrix WorldViewPoint2
         {
             get
@@ -165,7 +176,7 @@ namespace Stellamod.Common.Shaders
                 trailingPoints = oldPos;
             }
                
-            return trailVertexCache.FillVertexArray(trailingPoints, colorFunc, widthFunc, trailOffset);
+            return TrailVertexHelper.FillVertexArray(trailingPoints, colorFunc, widthFunc, trailOffset);
         }
 
         public static void DrawCached(BaseShader shader)
@@ -173,6 +184,31 @@ namespace Stellamod.Common.Shaders
             shader.Apply();
             ApplyPasses(shader.Effect);
             ModContent.GetInstance<TrailVertexHelper>().DrawCachedPrimitives();
+        }
+        public static void Draw(
+           Vector2[] oldPos,
+           Func<float, Color> colorFunc,
+           Func<float, float> widthFunc,
+           Effect shader,
+           Vector2? offset = null)
+        {
+       
+            Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+            float numPoints = oldPos.Length * 2;
+
+            oldPos = DrawUtilities.PruneFarPoints(oldPos);
+            if (oldPos.Length <= 2)
+                return;
+            //Apply passes
+            ApplyPasses(shader);
+            numPoints = oldPos.Length * 2;
+
+            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+
+            TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
+            trailVertexCache.Clear();
+            VertexSection section = trailVertexCache.FillVertexArrayNonAlloc(trailingPoints, colorFunc, widthFunc, trailOffset);
+            trailVertexCache.DrawPrimitives(section);
         }
 
         public static void Draw(SpriteBatch spriteBatch,

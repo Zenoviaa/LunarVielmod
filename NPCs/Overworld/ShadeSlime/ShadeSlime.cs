@@ -1,8 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Helpers;
+﻿using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -51,7 +47,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
             NPC.DeathSound = SoundID.NPCDeath24;
             NPC.value = 60f;
             NPC.knockBackResist = 0.5f;
-            NPC.aiStyle = 1;
+            NPC.aiStyle = NPCAIStyleID.Slime;
         }
 
         public override void FindFrame(int frameHeight)

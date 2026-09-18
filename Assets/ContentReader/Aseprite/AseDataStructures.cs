@@ -1,4 +1,6 @@
 ﻿using Stellamod.Core.NPCHelpers;
+using Stellamod.WorldG;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Terraria;
@@ -24,7 +26,7 @@ public class AseSprite
     public Vector2 Size => new Vector2(FrameWidth, FrameHeight);
     public int FrameWidth => frames[0].width;
     public int FrameHeight => frames[0].height;
-    
+
     public SpritebatchDrawer GetSprite(int frameIndex, Vector2 worldPosition)
     {
         Rectangle srcRect = GetSrcRect(frameIndex);
@@ -33,21 +35,72 @@ public class AseSprite
 
     public Rectangle GetSrcRect(int frameIndex)
     {
-        return new Rectangle(0, frameIndex * FrameHeight, FrameWidth, FrameHeight);
+        int frameWidth = frames[0].width;
+        int frameHeight = frames[0].height;
+
+        //nah my math just sucks ill do this later
+        Rectangle frame = new Rectangle(0, 0, frameWidth, frameHeight);
+        for(int j = 0; j < frameIndex; j++)
+        {
+            frame.Location += new Point(0, frameHeight);
+            if (frame.Bottom >= sheet.Height)
+            {
+                frame.Location -= new Point(0, frame.Location.Y);
+                frame.Location += new Point(frameWidth, 0);
+            }
+        }
+        return frame;
     }
 
-    public Texture2D CreateVerticalSpriteSheet()
+    public Texture2D CreateSpriteSheet()
     {
-        //For now just export the sheet vertically
-        int spriteSize = frames[0].width * frames[0].height;
-        Texture2D texture = new Texture2D(Main.instance.GraphicsDevice, frames[0].width, frames[0].height * frames.Count);
-        Color[] pixels = new Color[texture.Width * texture.Height];
-        int pixelIndex = 0;
-        for(int i = 0; i < frames.Count; i++)
+        int frameWidth = frames[0].width;
+        int frameHeight = frames[0].height;
+
+        //Now we need to calculate the min dimenions of the sheet
+        const int MAX_TEXTURE_SIZE = 16*16*16;
+        int totalHeight = frameHeight * frames.Count;
+        int textureHeight = Math.Min(totalHeight, MAX_TEXTURE_SIZE);
+
+        //I guess my math SUCKS
+        //Let's do this
+        Rectangle textureFrame = new Rectangle(0, 0, frameWidth, frameHeight);
+        for (int i = 0; i < frames.Count; i++)
         {
-            for(int j = 0; j < frames[i].pixels.Length; j++)
+            textureFrame.Location += new Point(0, frameHeight);
+            if (textureFrame.Bottom >= textureHeight)
             {
-                pixels[pixelIndex++] = frames[i].pixels[j];
+                textureFrame.Location -= new Point(0, textureFrame.Location.Y);
+                textureFrame.Location += new Point(frameWidth, 0);
+            }
+        }
+        int textureWidth = textureFrame.Right;
+        Texture2D texture = new Texture2D(Main.instance.GraphicsDevice, textureWidth, textureHeight);
+        Color[] pixels = new Color[texture.Width * texture.Height];
+
+        //So here's how we'd have to do it
+        //Pixel data is left right top botttom btw
+        //The vertical sprite sheet just works because it goes off the texture and perfectly loops back around
+        //So fr the grid sprite sheet we have to simulate that with a rectangle and basically use x/y to determine pixel coords
+        Rectangle frame = new Rectangle(0, 0, frameWidth, frameHeight);
+        for (int i = 0; i < frames.Count; i++)
+        {
+            for (int x = frame.Left; x < frame.Right; x++)
+            {
+                for(int y = frame.Top; y < frame.Bottom; y++)
+                {
+                    int texturePixelIndex = TextureUtilities.GetPixelIndex(texture, x, y);
+                    int framePixelIndex = TextureUtilities.GetPixelIndex(frame.Width, x - frame.Left, y - frame.Top);
+                    pixels[texturePixelIndex] = frames[i].pixels[framePixelIndex];
+                }
+            }
+
+            frame.Location += new Point(0, frameHeight);
+            if(frame.Bottom >= texture.Height)
+            {
+                frame.Location -= new Point(0, frame.Location.Y);
+                frame.Location += new Point(frameWidth, 0);
+  
             }
         }
         texture.SetData(pixels);

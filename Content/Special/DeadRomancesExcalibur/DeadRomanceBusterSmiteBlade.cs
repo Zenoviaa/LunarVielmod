@@ -1,11 +1,7 @@
-﻿using Stellamod.Assets;
-using Stellamod.Core.Particles;
-using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
+﻿using Stellamod.Core.Pixelation;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,8 +10,6 @@ namespace Stellamod.Content.Special.DeadRomancesExcalibur;
 public class DeadRomanceBusterSmiteBlade : ModProjectile
 {
     private float _scale;
-    private float _lineRot;
-    private float _lineRotLerp;
     private Vector2 _targetCenter;
     private int Target
     {
@@ -28,7 +22,7 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
         base.SendExtraAI(writer);
         writer.WriteVector2(_targetCenter);
     }
-    
+
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
@@ -42,7 +36,7 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
         ProjectileID.Sets.TrailCacheLength[Type] = 24;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
-    
+
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -62,7 +56,7 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
     public override void AI()
     {
         base.AI();
-        if(_scale == 0f)
+        if (_scale == 0f)
         {
             _scale = Projectile.scale = Main.rand.NextFloat(0.5f, 1f);
         }
@@ -80,7 +74,7 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
             }
         }
 
-        int denom = 16 * (Projectile.extraUpdates+1);
+        int denom = 16 * (Projectile.extraUpdates + 1);
         int denom2 = 32 * (Projectile.extraUpdates + 1);
         if (Timer % denom2 == 0)
         {
@@ -119,7 +113,7 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
         Projectile.velocity = Projectile.velocity.RotatedBy(0.015f);
         Projectile.rotation = Projectile.velocity.ToRotation();
 
-     //   SmokeParticles();
+        //   SmokeParticles();
     }
 
     private void SmokeParticles()
@@ -135,19 +129,19 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
     {
         base.ModifyHitNPC(target, ref modifiers);
-        
+
     }
 
     private void DrawPixelatedBlade(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);       
-        for(int i = 0; i < Projectile.oldPos.Length; i++)
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
             Vector2 pos = Projectile.oldPos[i];
             Vector2 worldPos = pos + Projectile.Size * 0.5f;
             drawer.worldPosition = worldPos;
             drawer.rotation = Projectile.oldRot[i];
-            float ratio = (float)i / (float)Projectile.oldPos.Length;
+            float ratio = i / (float)Projectile.oldPos.Length;
             float ease = EasingFunction.InOutSine(ratio);
             Color bladeColor = Color.Lerp(Color.Goldenrod, Color.Black, ease);
             bladeColor.A = 0;

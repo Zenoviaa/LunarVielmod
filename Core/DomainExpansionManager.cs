@@ -40,6 +40,19 @@ namespace Stellamod.Core
         }
     }
 
+    public struct DomainParameters
+    {
+        public bool inSpace;
+        public bool noWings;
+        public bool hoveringPlatform;
+        public float hoverPlatformY;
+        public bool noProjTileCollide;
+        
+        /// <summary>
+        /// Disables tile rendering, wall rendering, and water rendering as they are not needed while in a domain
+        /// </summary>
+        public bool noRender;
+    }
     public class DomainExpansionManager : ModSystem
     {
         private bool[] _prevTileSolid;
@@ -49,13 +62,74 @@ namespace Stellamod.Core
         public bool hoveringPlatform;
         public float hoverPlatformY;
         public bool noProjTileCollide;
+        public bool noRender;
         public override void OnModLoad()
         {
             base.OnModLoad();
+            //Disable rendering
+            On_Main.DoDraw_Tiles_NonSolid += DisableNonSolidTileDraw;
+            On_Main.DoDraw_WallsAndBlacks += DisableWallsDraw;
+            On_Main.DoDraw_Waterfalls += DisableWaterfallsDraw;
+            On_Main.DoDraw_Tiles_Solid += DisableSolidTileDraw;
+            On_Main.DrawLiquid += DisableLiquidDraw;
+
+            //Platform collision
             On_Player.DryCollision += FallThroughPlatform;
             On_Player.SlopingCollision += HoverPlatformCollisionCheck;
             On_Collision.TileCollision += HoverPlatformTileCollision;
             On_Collision.WetCollision += DisableWetCollisions;
+        }
+
+        private void DisableLiquidDraw(On_Main.orig_DrawLiquid orig, Main self, bool bg, int waterStyle, float Alpha, bool drawSinglePassLiquids)
+        {
+            if (noRender)
+                return;
+
+            orig(self, bg, waterStyle, Alpha, drawSinglePassLiquids);
+        }
+
+        private void DisableSolidTileDraw(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
+        {
+            if (noRender)
+                return;
+
+            orig(self);
+        }
+
+        private void DisableWaterfallsDraw(On_Main.orig_DoDraw_Waterfalls orig, Main self)
+        {
+            if (noRender)
+                return;
+
+            orig(self);
+        }
+
+        private void DisableNonSolidTileDraw(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
+        {
+            if (noRender)
+                return;
+
+            orig(self);
+          //  throw new NotImplementedException();
+        }
+
+        private void DisableWallsDraw(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
+        {
+            if (noRender)
+                return;
+
+            orig(self);
+        }
+
+        public static void UseDomain(in DomainParameters parameters)
+        {
+            DomainExpansionManager domain = ModContent.GetInstance<DomainExpansionManager>();
+            domain.inSpace = parameters.inSpace;
+            domain.noWings = parameters.noWings;
+            domain.hoveringPlatform = parameters.hoveringPlatform;
+            domain.hoverPlatformY = parameters.hoverPlatformY;
+            domain.noProjTileCollide = parameters.noProjTileCollide;
+            domain.noRender = parameters.noRender;
         }
 
         private void FallThroughPlatform(On_Player.orig_DryCollision orig, Player self, bool fallThrough, bool ignorePlats)
@@ -182,6 +256,7 @@ namespace Stellamod.Core
             noWings = false;
             hoveringPlatform = false;
             noProjTileCollide = false;
+            noRender = false;
         }
     }
 }

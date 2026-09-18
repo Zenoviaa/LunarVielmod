@@ -1,5 +1,5 @@
 ﻿using Stellamod.Core.LunarLightingSystem;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using System.Linq;
 using Terraria;
@@ -31,12 +31,10 @@ namespace Stellamod.Core.PaletteShadingSystem
     {
         public int PostProcessPriority => 10;
         private PaletteEffect[] _paletteEffects;
-        private RenderTargetProvider _paletteRenderRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         public override void Unload()
         {
             base.Unload();
             _paletteEffects = null;
-            _paletteRenderRT = null;
         }
 
         public override void OnModLoad()
@@ -93,22 +91,19 @@ namespace Stellamod.Core.PaletteShadingSystem
 
             if (paletteEffect == null)
                 return;
-
+    
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_paletteRenderRT);
-            graphicsDevice.Clear(Color.Transparent);
-
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null);
-            spriteBatch.Draw(Main.screenTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-            spriteBatch.End();
-
-            graphicsDevice.SetRenderTarget(Main.screenTarget);
-            graphicsDevice.Clear(Color.Transparent);
-
+            RenderTargetHandle screenTarget = RenderTargets.ScreenTarget;
+            using(new RenderTargetContext(screenTarget))
+            {
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null);
+                spriteBatch.Draw(Main.screenTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                spriteBatch.End();
+            }
+        
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, Main.Rasterizer, paletteEffect);
-            spriteBatch.Draw(_paletteRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
     }

@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -24,7 +22,7 @@ namespace Stellamod.Tiles
             // name.SetDefault("VerianOre");
             AddMapEntry(new Color(175, 0, 0), name);
 
-            DustType = 84;
+            DustType = DustID.Platinum;
             DustType = DustID.Firework_Yellow;
             DustType = DustID.FlameBurst;
             RegisterItemDrop(ModContent.ItemType<Items.Ores.VerianOre>());

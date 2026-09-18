@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Buffs.Minions;
 using Stellamod.Common.Shaders;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;

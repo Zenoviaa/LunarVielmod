@@ -12,9 +12,9 @@ using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Trails;
 using Stellamod.Core.ProjectileHelpers;
-using Stellamod.Dusts;
 using Terraria.Audio;
 using Stellamod.Core.Utilities;
+using Stellamod.Content.Dusts;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Guuts
 {

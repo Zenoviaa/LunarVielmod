@@ -1,24 +1,11 @@
-﻿using Stellamod.Assets;
-using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Effects.Trails;
-using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -56,7 +43,7 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
         private ref float HitStopTimer => ref Projectile.ai[1];
 
         private Vector2 InitialVelocity;
-    
+
         private Player Owner => Main.player[Projectile.owner];
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -91,24 +78,25 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
         public override void AI()
         {
             base.AI();
-            _spinAlpha = EasingFunction.QuadraticBump((float)Projectile.timeLeft / 180f) * 0.5f;
+            _spinAlpha = EasingFunction.QuadraticBump(Projectile.timeLeft / 180f) * 0.5f;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 InitialVelocity = Projectile.velocity;
             }
 
-            if(HitStopTimer > 0)
+            if (HitStopTimer > 0)
             {
                 HitStopTimer--;
                 Projectile.velocity = Vector2.Zero;
                 return;
             }
 
-            if(Timer < 15)
+            if (Timer < 15)
             {
                 InitialVelocity *= 1.1f;
-            } else if (Timer < 60)
+            }
+            else if (Timer < 60)
             {
                 InitialVelocity *= 0.94f;
             }
@@ -121,18 +109,18 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
                 sp.outerColor = Color.DarkRed;
             }
 
-            float ratio = (float)(Projectile.timeLeft - 30) / 60f;
+            float ratio = (Projectile.timeLeft - 30) / 60f;
             ratio = MathHelper.Clamp(ratio, 0f, 1f);
             float interp = MathHelper.Lerp(1f, 0f, ratio);
             float ease = EasingFunction.InOutSine(interp);
             Vector2 velocity = Vector2.Lerp(InitialVelocity, (Owner.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * InitialVelocity.Length() * 2.5f, ease);
 
-            if(Timer > 100)
+            if (Timer > 100)
             {
                 InitialVelocity *= 1.02f;
             }
             float distanceToOwner = Vector2.Distance(Owner.Center, Projectile.Center);
-            if(distanceToOwner <= 64 && Timer > 30)
+            if (distanceToOwner <= 64 && Timer > 30)
             {
                 Projectile.Kill();
             }
@@ -165,7 +153,7 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
                 _doneHitStop = true;
                 Projectile.netUpdate = true;
             }
-          
+
             int numDust = 6;
             FXUtil.ShakeCamera(target.Center, 1024, 2);
             for (int n = 0; n < numDust; n++)
@@ -197,10 +185,10 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
         {
             float numPoints = 48;
             Vector2[] circlePos = new Vector2[(int)numPoints];
-            for(int i = 0; i < circlePos.Length; i++)
+            for (int i = 0; i < circlePos.Length; i++)
             {
                 Vector2 rotationOffset = Projectile.rotation.ToRotationVector2() * 48;
-                rotationOffset = rotationOffset.RotatedBy((float)i / numPoints * MathHelper.TwoPi * 1f + Main.GlobalTimeWrappedHourly * 8);
+                rotationOffset = rotationOffset.RotatedBy(i / numPoints * MathHelper.TwoPi * 1f + Main.GlobalTimeWrappedHourly * 8);
                 Vector2 offsetPosition = Projectile.Center + rotationOffset;
                 circlePos[i] = offsetPosition;
             }
@@ -225,7 +213,7 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
                 Vector2 position = Projectile.oldPos[i];
                 drawCenter = position + Projectile.Size * 0.5f;
                 drawCenter -= Main.screenPosition;
-                float ratio = (float)i / (float)Projectile.oldPos.Length;
+                float ratio = i / (float)Projectile.oldPos.Length;
                 Color glowColor = drawColor;
                 glowColor *= MathHelper.SmoothStep(1f, 0f, ratio) * 0.3f;
                 spriteBatch.Draw(spinTexture, drawCenter, null, glowColor, Projectile.rotation, drawOrigin, Projectile.scale * 0.5f * MathHelper.SmoothStep(1f, 0f, ratio), SpriteEffects.None, 0);
@@ -235,7 +223,7 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
         public override bool PreDraw(ref Color lightColor)
         {
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelTrails);
-            for(int i = 0; i < Projectile.oldPos.Length; i++)
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 Vector2 position = Projectile.oldPos[i];
                 Vector2 drawCenter = position + Projectile.Size * 0.5f;
@@ -243,7 +231,7 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 Texture2D texture = TextureAssets.Projectile[Type].Value;
                 Vector2 drawOrigin = texture.Size() / 2f;
-                float ratio = (float)i / (float)Projectile.oldPos.Length;
+                float ratio = i / (float)Projectile.oldPos.Length;
                 Color glowColor = Color.Lerp(Color.White, Color.Black, ratio) * 0.05f;
                 glowColor.A = 0;
                 spriteBatch.Draw(texture, drawCenter, null, glowColor, Projectile.oldRot[i], drawOrigin, Projectile.scale, SpriteEffects.None, 0);
@@ -274,7 +262,7 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
             Main.QueueMainThreadAction(() =>
             {
                 GradientTexture2 = DrawHelper.CreateGradient(Color.Black, Color.Red, Color.White);
-                GradientTexture = DrawHelper.CreateGradient( Color.White, Color.Black, Color.Red);
+                GradientTexture = DrawHelper.CreateGradient(Color.White, Color.Black, Color.Red);
             });
 
         }

@@ -1,14 +1,8 @@
 ﻿using Stellamod.Common.ClassReworkSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 
 namespace Stellamod.Common.ConsoleMenu;
-
 public class ClassCommand : ConsoleCommand
 {
     public override string GetCommandName()
@@ -61,7 +55,7 @@ public class ClassCommand : ConsoleCommand
         }
 
         Main.NewText($"You are now {classReworkPlayer.playerClass}!");
-        if(Main.netMode != NetmodeID.SinglePlayer)
+        if (Main.netMode != NetmodeID.SinglePlayer)
         {
             Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.ClassReworkPlayerSync,
                 (float)classReworkPlayer.playerClass).Send();

@@ -1,8 +1,4 @@
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -43,7 +39,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
             NPC.buffImmune[BuffID.Venom] = true;
             NPC.alpha = 60;
             NPC.knockBackResist = .75f;
-            NPC.aiStyle = 1;
+            NPC.aiStyle = NPCAIStyleID.Slime;
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
         }

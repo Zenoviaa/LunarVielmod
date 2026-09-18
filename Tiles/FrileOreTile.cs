@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -24,7 +22,7 @@ namespace Stellamod.Tiles
             // name.SetDefault("Frile Ore");
             AddMapEntry(new Color(0, 19, 187), name);
 
-            DustType = 84;
+            DustType = DustID.Platinum;
             DustType = DustID.Firework_Blue;
             DustType = DustID.BlueCrystalShard;
             //RegisterItemDrop(ModContent.ItemType<Items.Ores.FrileOre>());

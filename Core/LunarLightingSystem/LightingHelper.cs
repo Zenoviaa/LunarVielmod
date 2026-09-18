@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using Terraria.Graphics.Light;
 
 namespace Stellamod.Core.LunarLightingSystem;
 

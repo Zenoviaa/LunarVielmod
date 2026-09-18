@@ -34,22 +34,12 @@ namespace Stellamod.Content.Areas.Terror
         public override void OnEnter(Player player)
         {
             base.OnEnter(player);
-            player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell = true;
-            if (Main.netMode == NetmodeID.Server)
-                return;
-            return;
-
-            SkyManager.Instance.Activate("Stellamod:AegislavSky", player.Center);
+            player.ZoneCrimsonBridewell = true;
         }
         public override void OnLeave(Player player)
         {
             base.OnLeave(player);
-            player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell = false;
-            if (Main.netMode == NetmodeID.Server)
-                return;
-            return;
-
-            SkyManager.Instance.Deactivate("Stellamod:AegislavSky", player.Center);
+            player.ZoneCrimsonBridewell = false;
         }
     }
 }

@@ -40,9 +40,6 @@ public class WonderousDarkspaceBackground : CustomBG
     public override bool IsActive()
     {
         return false;
-        BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
-        MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
-        return myPlayer.ZoneWonder && !myPlayer.ZoneCinder;
     }
 }
 

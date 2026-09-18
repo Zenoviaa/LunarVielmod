@@ -1,7 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;

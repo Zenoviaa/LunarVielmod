@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -24,7 +22,7 @@ namespace Stellamod.Tiles
             // name.SetDefault("Frile Ore");
             AddMapEntry(new Color(0, 200, 187), name);
 
-            DustType = 84;
+            DustType = DustID.Platinum;
             DustType = DustID.CoralTorch;
             RegisterItemDrop(ModContent.ItemType<Items.Ores.GlisteningOre>());
             HitSound = SoundID.DD2_CrystalCartImpact;

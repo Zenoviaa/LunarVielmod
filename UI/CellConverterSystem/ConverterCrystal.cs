@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
@@ -11,8 +8,6 @@ namespace Stellamod.UI.CellConverterSystem
 {
     public class ConverterCrystal : UIPanel
     {
-        
-        private readonly float _scale = 1f;
         public ConverterCrystal()
         {
             float scale = 1f;

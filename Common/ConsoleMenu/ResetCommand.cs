@@ -1,10 +1,12 @@
-﻿using Stellamod.Content.Areas.Collosseum.Event.Common;
+﻿using Stellamod.Common.ArmorShop;
+using Stellamod.Common.QuestSystem;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.PlayerLevelingSystem;
+using Stellamod.Items;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.ConsoleMenu;
-
 public class ResetCommand : ConsoleCommand
 {
     public override string GetCommandName()
@@ -19,7 +21,10 @@ public class ResetCommand : ConsoleCommand
         {
             "level",
             "boss",
-            "gintze"
+            "gintze",
+            "quests",
+            "cauldron",
+            "armor"
         };
 
         return arguments0;
@@ -51,6 +56,26 @@ public class ResetCommand : ConsoleCommand
                 else
                 {
                     Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.ResetColosseum).Send(-1);
+                }
+                return true;
+            case "quests":
+                {
+                    QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
+                    questPlayer.ActiveQuests.Clear();
+                    questPlayer.CompletedQuests.Clear();
+                    questPlayer.RewardQuests.Clear();
+                    questPlayer.RecalculateUI = true;
+                }
+                return true;
+            case "cauldron":
+                {
+                    CauldronPlayer cauldronPlayer = player.GetModPlayer<CauldronPlayer>();
+                    cauldronPlayer.Crafts.Clear();
+                }
+                return true;
+            case "armor":
+                {
+                    player.GetModPlayer<ArmorShopPlayer>().PurchasedArmors.Clear();
                 }
                 return true;
         }

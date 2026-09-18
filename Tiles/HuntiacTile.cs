@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -23,7 +21,7 @@ namespace Stellamod.Tiles
             // name.SetDefault("Huntiac Silk");
             AddMapEntry(new Color(36, 31, 27), name);
 
-            DustType = 84;
+            DustType = DustID.Platinum;
             DustType = DustID.Sandnado;
             DustType = DustID.Web;
             RegisterItemDrop(ModContent.ItemType<Items.Materials.HuntiacBlock>());

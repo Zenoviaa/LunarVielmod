@@ -1123,6 +1123,7 @@ STARBOMBERBOOM.DisplayName: S T A R B O M B E R B O O M
 STARLINGPRESPAWN.DisplayName: S T A R L I N G P R E S P A W N
 SunLaserProj.DisplayName: Sun Laser Proj
 STARTELEPORTBOOM.DisplayName: S T A R T E L E P O R T B O O M
+STARTELEPORT.DisplayName: S T A R T E L E P O R T
 NiiviLaserContinuousProj.DisplayName: Niivi Laser Continuous Proj
 NiiviLaserSpikeProj.DisplayName: Niivi Laser Spike Proj
 GraveShaperProj.DisplayName: Grave Shaper Proj
@@ -2060,3 +2061,25 @@ MechanicalArmProj.DisplayName: Mechanical Arm Proj
 TerrorMinigunShot.DisplayName: Terror Minigun Shot
 HolyManaKnife.DisplayName: Holy Mana Knife
 GothinsteinFlameWave.DisplayName: Gothinstein Flame Wave
+Launchball.DisplayName: Launchball
+LaunchballBoom.DisplayName: Launchball Boom
+GoldenForkPet.DisplayName: Golden Fork Pet
+AmalgamSpectreBall.DisplayName: Amalgam Spectre Ball
+AmalgamSuperShot.DisplayName: Amalgam Super Shot
+AmalgamTrailingProjectile.DisplayName: Amalgam Trailing Projectile
+AmalgamAura.DisplayName: Amalgam Aura
+AIRBREAKER.DisplayName: A I R B R E A K E R
+ANKLEBREAKER.DisplayName: A N K L E B R E A K E R
+GOTYOU.DisplayName: G O T Y O U
+ROCKSPIKE.DisplayName: R O C K S P I K E
+STARBOULDER.DisplayName: S T A R B O U L D E R
+STARDISC.DisplayName: S T A R D I S C
+STARROCKCRASH.DisplayName: S T A R R O C K C R A S H
+STARROCKCRASHSLAM.DisplayName: S T A R R O C K C R A S H S L A M
+STARROCKDASH.DisplayName: S T A R R O C K D A S H
+STARPUNCH.DisplayName: S T A R P U N C H
+STAREGG.DisplayName: S T A R E G G
+STARFLASH.DisplayName: S T A R F L A S H
+STARNADO.DisplayName: S T A R N A D O
+SingularDiveBoom.DisplayName: Singular Dive Boom
+SingularDiveSlash.DisplayName: Singular Dive Slash

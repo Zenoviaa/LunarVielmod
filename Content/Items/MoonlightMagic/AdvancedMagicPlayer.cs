@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -112,7 +113,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             if(miniWand == null)
             {
                 miniWand = new Item(0);
-                miniWand.SetDefaults(0);
+                miniWand.SetDefaults(ItemID.None);
             }
 
             tag["miniwand"] = ItemIO.Save(miniWand);
@@ -129,7 +130,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             if(miniWand == null)
             {
                 miniWand = new Item(0);
-                miniWand.SetDefaults(0);
+                miniWand.SetDefaults(ItemID.None);
             }
         }
     }

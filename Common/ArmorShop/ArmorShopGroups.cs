@@ -14,6 +14,8 @@ using Stellamod.Content.Armors.Leather;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Content.Armors.LunarianVoid;
 using Stellamod.Content.Armors.Miracle;
+using Stellamod.Content.Armors.Moonsker;
+using Stellamod.Content.Armors.Radianthal;
 using Stellamod.Content.Armors.Sanctorous;
 using Stellamod.Content.Armors.Scrappy;
 using Stellamod.Content.Armors.ShadeWraith;
@@ -97,7 +99,7 @@ namespace Stellamod.Common.ArmorShop
             astr.AddHead(ModContent.ItemType<AstrasilkHead>());
             astr.AddBody(ModContent.ItemType<AstrasilkBody>());
             astr.AddLegs(ModContent.ItemType<AstrasilkLegs>());
-            astr.SetMaterial(ModContent.ItemType<AuroreanStarI>());
+            astr.SetMaterial(ItemID.FallenStar);
             astr.Register();
 
 
@@ -247,6 +249,13 @@ namespace Stellamod.Common.ArmorShop
             silk.AddLegs(ModContent.ItemType<CandlelightLegs>());
             silk.SetMaterial(ModContent.ItemType<EreshkinCandle>());
             silk.Register();
+
+            ArmorShopSet rad = new ArmorShopSet();
+            rad.AddHead(ModContent.ItemType<RadianthalHead>());
+            rad.AddBody(ModContent.ItemType<RadianthalBody>());
+            rad.AddLegs(ModContent.ItemType<RadianthalLegs>());
+            rad.SetMaterial(ModContent.ItemType<RadiantNectar>());
+            rad.Register();
             //Daeden
             /*
             ArmorShopSet dae = new ArmorShopSet();
@@ -291,7 +300,6 @@ namespace Stellamod.Common.ArmorShop
             Ill2.SetMaterial(ModContent.ItemType<IllurineScale>());
             Ill2.Register();
 
-
             //radianui1
             ArmorShopSet rad1 = new ArmorShopSet();
             rad1.AddHead(ModContent.ItemType<FlowerHat>());
@@ -308,7 +316,6 @@ namespace Stellamod.Common.ArmorShop
             sanc.AddLegs(ModContent.ItemType<SanctorousLegs>());
             sanc.SetMaterial(ModContent.ItemType<FallenEyes>());
             sanc.Register();
-
 
             //Eldrit
             /*
@@ -328,6 +335,13 @@ namespace Stellamod.Common.ArmorShop
             ducan.AddLegs(ModContent.ItemType<DucanblitzThighs>());
             ducan.SetMaterial(ItemID.LunarBar);
             ducan.Register();*/
+
+            ArmorShopSet moonskerSet = new ArmorShopSet();
+            moonskerSet.AddHead(ModContent.ItemType<MoonskerHood>());
+            moonskerSet.AddBody(ModContent.ItemType<MoonskerRobe>());
+            moonskerSet.AddLegs(ModContent.ItemType<MoonskerPants>());
+            moonskerSet.SetMaterial(ModContent.ItemType<MothlightWing>());
+            moonskerSet.Register();
 
             //Jianxin
             ArmorShopSet JianxinSet = new ArmorShopSet();

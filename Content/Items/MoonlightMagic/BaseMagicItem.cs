@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic
@@ -20,7 +21,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 if (item == Item)
                 {
                     player.inventory[i] = new Item();
-                    player.inventory[i].SetDefaults(0);
+                    player.inventory[i].SetDefaults(ItemID.None);
                 }
             }
         }

@@ -25,7 +25,6 @@ public class PerfectChain : ModProjectile,
     }
 
     private int _drawOffset;
-    private bool _impactGround;
     private ref float Timer => ref Projectile.ai[0];
     private AIState State
     {
@@ -38,11 +37,10 @@ public class PerfectChain : ModProjectile,
     private float SwingInterpolant;
     private float TimeMult => 1f;
     private int NumPoints => (int)(Projectile.velocity.Length() / 28f) * 2;
-    private float[] _chainRotations;
+
     private Vector2[] _chainVelocities;
     private Vector2[] _chainPoints;
     private Vector2[] _chainSwingPos;
- 
     private Vector2 _movementDirection;
     private Vector2 ChainWhip_Start => Projectile.Center;
     private Vector2 ChainWhip_End => Projectile.Center + Projectile.velocity;

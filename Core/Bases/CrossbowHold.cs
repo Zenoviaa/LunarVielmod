@@ -56,7 +56,7 @@ namespace Stellamod.Core.Bases
         {
             get
             {
-                float baseTime = 60f;
+                float baseTime = Owner.HeldItem.useTime;
                 float timeBonus = Owner.GetModPlayer<ArmorStatsPlayer>().rangedBowChargeTime;
                 float adjustedSpeed = baseTime * (1.0f - timeBonus);
                 return adjustedSpeed;

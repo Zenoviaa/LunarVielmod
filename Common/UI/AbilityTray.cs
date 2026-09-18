@@ -7,7 +7,7 @@ namespace Stellamod.Common.UI
 {
     public class AbilityComparer : IComparer<Ability>
     {
-        public int Compare(Ability? x, Ability? y)
+        public int Compare(Ability x, Ability y)
         {
             return x.priority.CompareTo(y.priority);
         }

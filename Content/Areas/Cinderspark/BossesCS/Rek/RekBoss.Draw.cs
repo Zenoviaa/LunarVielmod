@@ -1,16 +1,16 @@
-﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Effects.GothinFlames;
 using Stellamod.Effects.RekFlames;
 using Stellamod.Effects.RoyalMagic;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
@@ -21,23 +21,51 @@ public delegate void SilhouetteDraw(SpriteBatch sb);
 [Autoload(Side = ModSide.Client)]
 public class RekSilhouetteSystem : ModSystem
 {
-    private RenderTargetProvider _maskedTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _waterMaskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private LazyRenderTargetProvider _maskedTarget = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private LazyRenderTargetProvider _waterMaskRT = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public readonly List<SilhouetteDraw> SilhouettesToDraw = new();
+    public readonly List<SilhouetteDraw> TileSilhouettesToDraw = new();
+    public readonly List<Point> KelpPoints = new();
+    public static event Action OnPrepareSilhouettes;
     public override void Load()
     {
         base.Load();
         On_Main.CheckMonoliths += RenderWaterMask;
+        On_Main.RenderTiles += RenderTileSilhouetteMask;
         On_Main.DrawInfernoRings += RenderSilhouettes;
     }
 
+    private void RenderTileSilhouetteMask(On_Main.orig_RenderTiles orig, Main self)
+    {
 
+        orig(self);
+    }
 
     private void RenderWaterMask(On_Main.orig_CheckMonoliths orig)
     {
         orig();
-        if (SilhouettesToDraw.Count <= 0)
+
+        if (SilhouettesToDraw.Count <= 0 && TileSilhouettesToDraw.Count <= 0)
             return;
+        var kelp = ModContent.GetInstance<AbyssalKelp>();
+        if (Main.GameUpdateCount % 15 == 0)
+        {
+            KelpPoints.Clear();
+            (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(192);
+            ushort ty = (ushort)ModContent.TileType<AbyssalKelp>();
+            for (int x = topLeft.X; x < bottomRight.X; x++)
+            {
+                for (int y = topLeft.Y; y < bottomRight.Y; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType == ty && tile.HasTile)
+                    {
+                        KelpPoints.Add(new Point(x, y));
+                        // kelp.PrepareSilhouetteDrawing(x, y, this);
+                    }
+                }
+            }
+        }
 
         //We need the water target as a mask.
         //I really hope this isn't glitchy
@@ -45,16 +73,25 @@ public class RekSilhouetteSystem : ModSystem
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_waterMaskRT);
         graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
+            Main.GameViewMatrix.TransformationMatrix);
         spriteBatch.Draw(Main.waterTarget, Main.sceneWaterPos - Main.screenPosition, Color.White);
         spriteBatch.End();
 
-
         graphicsDevice.SetRenderTarget(_maskedTarget);
         graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
+            Main.GameViewMatrix.TransformationMatrix);
         foreach (var draw in SilhouettesToDraw)
             draw(spriteBatch);
+
+        foreach (var draw in TileSilhouettesToDraw)
+            draw(spriteBatch);
+
+        foreach (var point in KelpPoints)
+        {
+            kelp.DrawWaterSilhouette(point.X, point.Y, spriteBatch);
+        }
         spriteBatch.End();
     }
 
@@ -63,7 +100,7 @@ public class RekSilhouetteSystem : ModSystem
     {
         orig(self);
 
-        if (SilhouettesToDraw.Count <= 0)
+        if (SilhouettesToDraw.Count <= 0 && TileSilhouettesToDraw.Count <= 0)
             return;
 
 
@@ -82,6 +119,7 @@ public class RekSilhouetteSystem : ModSystem
     {
         base.PreUpdateNPCs();
         SilhouettesToDraw.Clear();
+        OnPrepareSilhouettes?.Invoke();
     }
 }
 
@@ -90,11 +128,30 @@ public class SilhouetteGlobalNPC : GlobalNPC
     public override void PostAI(NPC npc)
     {
         base.PostAI(npc);
+        if (Main.netMode == NetmodeID.Server)
+            return;
         if (npc.ModNPC is IWaterSilhouette silhouette)
         {
             silhouette.PrepareSilhouetteDrawing(ModContent.GetInstance<RekSilhouetteSystem>());
         }
     }
+}
+public class SilhouetteGlobalProjectile : GlobalProjectile
+{
+    public override void PostAI(Projectile projectile)
+    {
+        base.PostAI(projectile);
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        if (projectile.ModProjectile is IWaterSilhouette silhouette)
+        {
+            silhouette.PrepareSilhouetteDrawing(ModContent.GetInstance<RekSilhouetteSystem>());
+        }
+    }
+}
+public interface IWaterTileSilhouette
+{
+    void DrawWaterSilhouette(int i, int j, SpriteBatch spriteBatch);
 }
 
 /// <summary>
@@ -125,7 +182,7 @@ public partial class RekBoss : IWaterSilhouette
     private Color GetTrailColor(float ratio)
     {
         Color c = Color.Lerp(Color.Orange, Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16)), ratio) * EasingFunction.QuadraticBump(ratio) * _ouroborosAlpha;// * EasingFunction.QuadraticBump(_swingTrailAlpha);
-                                                                                                                                                             // c.A = 0;
+                                                                                                                                                                                    // c.A = 0;
         return c;
     }
     private Color GetTrailColor2(float ratio)
@@ -296,7 +353,7 @@ public partial class RekBoss : IWaterSilhouette
         }
         for (int i = 1; i < Segments.Length; i++)
         {
-      
+
             DrawSaw(i);
         }
     }
@@ -343,17 +400,17 @@ public partial class RekBoss : IWaterSilhouette
             drawer.spriteEffects = SpriteEffects.FlipHorizontally;
         }
 
-    
+
         Main.spriteBatch.Draw(drawer);
 
 
 
         Vector2 pos = drawer.worldPosition;
-        for(float f = 0; f < MathHelper.TwoPi; f+= MathHelper.PiOver2)
+        for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
         {
             drawer.worldPosition = pos + (f + Main.GlobalTimeWrappedHourly * 4 + index).ToRotationVector2() * 3;
             drawer.color = Color.LightGoldenrodYellow * 0.3f * segment.sawBladeAlpha;
-     
+
             Main.spriteBatch.Draw(drawer);
         }
     }
@@ -378,7 +435,7 @@ public partial class RekBoss : IWaterSilhouette
 
     private void DrawSpear()
     {
-       
+
         Vector2 GetDirection(int index)
         {
             switch (index)
@@ -579,7 +636,7 @@ public partial class RekBoss : IWaterSilhouette
         ref RekSegment segment = ref Segments[index];
         var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, segment.position);
-        glowDrawer.scale *= 0.38f * MathHelper.Lerp(1f, 0.2f, (float)index / (float)Segments.Length);
+        glowDrawer.scale *= 0.38f * MathHelper.Lerp(1f, 0.2f, index / (float)Segments.Length);
         glowDrawer.color = Color.White * 0.33f;
         glowDrawer.color = Color.Lerp(glowDrawer.color, Color.Black, _huskAlpha);
         glowDrawer.color.R = (byte)(index * 9);
@@ -640,12 +697,12 @@ public partial class RekBoss : IWaterSilhouette
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        if(_ouroborosAlpha > 0)
+        if (_ouroborosAlpha > 0)
         {
             PixelationManager.QueuePrimitivesDrawAction(DrawSlashEffect, DrawLayer.OverNPCsAdditive);
             PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
         }
-       
+
         for (int i = 1; i < Segments.Length; i++)
         {
             DrawSaw(i);
@@ -673,7 +730,7 @@ public partial class RekBoss : IWaterSilhouette
         torchShader.DitherTexture = AssetManager.Dithering.Dither8x8Double;
         torchShader.SpriteSize = AssetManager.GlowMask.SimpleGlowCircle.Size();
         SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = torchShader.Effect };
-        using(new SpritebatchContext(spriteBatch, @params))
+        using (new SpritebatchContext(spriteBatch, @params))
         {
             for (int i = 1; i < Segments.Length; i++)
             {
@@ -685,11 +742,11 @@ public partial class RekBoss : IWaterSilhouette
         DrawAfterImages(spriteBatch, screenPos, drawColor);
         drawColor = Color.Lerp(drawColor, Color.Black, _huskAlpha);
         NPC.DrawAnimator(spriteBatch, drawColor);
-        if(_mouthAuraAlpha > 0)
+        if (_mouthAuraAlpha > 0)
         {
             DrawMouthAura(spriteBatch);
         }
-        if(_rekfireballAlpha > 0)
+        if (_rekfireballAlpha > 0)
         {
             DrawFireballOrb(spriteBatch);
         }

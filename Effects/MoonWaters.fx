@@ -1,4 +1,4 @@
-#define PS_SHADERMODEL ps_3_0
+ #define PS_SHADERMODEL ps_3_0
 
 Texture2D SpriteTexture;
 sampler2D SpriteTextureSampler = sampler_state
@@ -39,6 +39,25 @@ sampler2D NoiseTextureSampler = sampler_state
     AddressV = wrap;
 };
 
+Texture3D ColorSpectrumTexture;
+sampler3D ColorSpectrumTextureSampler = sampler_state
+{
+    Texture = <ColorSpectrumTexture>;
+    magfilter = POINT;
+    minfilter = POINT;
+    mipfilter = POINT;
+    AddressU = clamp;
+    AddressV = clamp;
+};
+
+Texture2D EdgeTexture;
+sampler2D EdgeTextureSampler = sampler_state
+{
+    Texture = <EdgeTexture>;
+    AddressU = clamp;
+    AddressV = clamp;
+};
+
 sampler brightenNoiseSampler : register(s1);
 sampler causticsNoiseSampler : register(s2);
 sampler foamNoiseSampler : register(s3);
@@ -56,6 +75,7 @@ struct HeightPixelShaderOutput
     float4 Light : SV_Target1;
 };
 
+float maxDepth;
 float time;
 float levels;
 float distortion;
@@ -179,16 +199,15 @@ HeightPixelShaderOutput HeightPS(VertexShaderOutput input)
     
     //Calculate how many tiles down we are
     //Step 1. Calculate the depth that we would be fading to
-    const float Max_Depth = 32.0;
     float heightGradient = color.a;
-    float depth = heightGradient * Max_Depth;
+    float depth = heightGradient * maxDepth;
     
     //Step 2. calculate depth of htis pixel
     float pixelDepth = depth - coords.y;
     
     //Step 3. Calculate our new alpha value
     //Make sure to invert it, low depth means it's at the surface and should be bright
-    float newAlpha = pixelDepth / Max_Depth;
+    float newAlpha = pixelDepth / maxDepth;
     
     
 
@@ -376,6 +395,30 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
     float4 finalColor = fancyWaterColor * baseWaterColor.a * (1.0 - lavaMult) + baseWaterColor * lavaMult;
     return finalColor * input.Color;
 }
+float4 CombinePalettePS(VertexShaderOutput input) : COLOR
+{
+    float2 coords = input.TextureCoordinates;
+    float edgeMap = tex2D(EdgeTextureSampler, coords).r;
+    float4 baseWaterColor = tex2D(SpriteTextureSampler, coords);
+    
+    //Don't want to write if statements in a shader if possible
+    //Branchless programming is best for multi-threading
+    float lavaMult = baseWaterColor.r > baseWaterColor.b;
+    
+    //Add the water gradient to our fancy color
+    //Hopefully this looks the way I want it to, I think it's gonna go to white though instead of alpha blend :sob:
+    float4 fancyWaterColor = tex2D(WaterTextureSampler, coords);
+    fancyWaterColor.rgb *= 0.99;
+    fancyWaterColor *= 1.0 - edgeMap;
+    float4 colorToMapTo = tex3D(ColorSpectrumTextureSampler, fancyWaterColor.rgb);
+    fancyWaterColor = colorToMapTo * fancyWaterColor.a;
+    float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);
+    float4 finalColor = fancyWaterColor * baseWaterColor.a * (1.0 - lavaMult) + baseWaterColor * lavaMult;
+    float a = heightMapColor.r;
+    a *= a;
+    return finalColor * input.Color * a * 1.5;
+}
+
 
 float4 CombineALLPS(VertexShaderOutput input) : COLOR
 {
@@ -496,9 +539,16 @@ technique CombineRTDrawing
     }
 };
 
-technique CombineRTAllDrawing
+technique CombinePaletteRTDrawing
 {
     pass P11
+    {
+        PixelShader = compile PS_SHADERMODEL CombinePalettePS();
+    }
+};
+technique CombineRTAllDrawing
+{
+    pass P12
     {
         PixelShader = compile PS_SHADERMODEL CombineALLPS();
     }

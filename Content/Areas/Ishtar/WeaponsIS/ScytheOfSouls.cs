@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -129,8 +125,6 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
 
     public class ScytheOfSoulsStaminaSlash : BaseSwingProjectileV2
     {
-        private bool _playedSound;
-        private bool _flareCircle;
         private float _projCount;
         public override void DefineCombo()
         {
@@ -178,9 +172,9 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
             base.AI();
             glowColor = Color.Lerp(Color.Transparent, Color.LightBlue, EasingFunction.QuadraticBump(Interpolant));
             growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));
-            if(Interpolant > 0.5f && _projCount < 1)
+            if (Interpolant > 0.5f && _projCount < 1)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity.RotatedBy(-0.5f), ModContent.ProjectileType<ScytheOfSoulsProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<ScytheOfSoulsProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -326,7 +320,7 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
         {
             for (int i = 0; i < 8; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, 205, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default, 1f).noGravity = false;
+                Dust.NewDustPerfect(Projectile.Center, DustID.VenomStaff, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default, 1f).noGravity = false;
             }
 
 
@@ -372,7 +366,7 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
 
         public override void PostDraw(Color lightColor)
         {
- 
+
         }
     }
 }

@@ -1,14 +1,40 @@
-﻿using Stellamod.Helpers;
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.WorldG.StructureManager.Snapshot;
 
 namespace Stellamod.Core.Utilities;
 
 public static class NPCUtilities
 {
+    extension(NPC npc)
+    {
+        /// <summary>
+        /// Returns the normalized direction to the player target
+        /// </summary>
+        public Vector2 PlayerTargetDirection => (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
+
+        /// <summary>
+        /// Returns 1 or -1 depending on which direction the player target is on the Y axis.
+        /// </summary>
+        public float YDirectionToTarget => Main.player[npc.target].Center.Y > npc.Center.Y ? 1 : -1;
+
+        /// <summary>
+        /// Returns 1 or -1 depending on which direction the player target is on the X axis.
+        /// </summary>
+        public float XDirectionToTarget => Main.player[npc.target].Center.X > npc.Center.X ? 1 : -1;
+    }
+
+    public static void SetDomainArenaY(NPC npc, ref float arenaY)
+    {
+        if (arenaY == 0)
+        {
+            npc.TargetClosest();
+            arenaY = Main.player[npc.target].Top.Y;
+            npc.netUpdate = true;
+        }
+
+    }
     /// <summary>
     /// Checks if you are a multiplayer client or if you're singleplayer and sends a spawn NPC packet accordingly
     /// <typeparam name="T"></typeparam>
@@ -62,10 +88,10 @@ public static class NPCUtilities
             return;
 
         Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.ChangeNPCAI,
-            (int)npcWhoAmI,
-            (float)ai0,
-            (float)ai1,
-            (float)ai2,
-            (float)ai3).Send(-1);
+            npcWhoAmI,
+            ai0,
+            ai1,
+            ai2,
+            ai3).Send(-1);
     }
 }

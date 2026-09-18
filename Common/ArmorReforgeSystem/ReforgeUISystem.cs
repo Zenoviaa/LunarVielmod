@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.ArmorReforge;
 using Stellamod.Common.UI;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
@@ -27,7 +28,6 @@ public class ReforgeUISystem : BaseUISystem
     public float flashTimer;
     public float inTimer;
     public bool open;
-    public RenderTarget2D UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
     public float InterpolationTime => 0.5f;
     public override int uiSlot => Slot_MajorUI;
     public override void OnModLoad()
@@ -35,29 +35,8 @@ public class ReforgeUISystem : BaseUISystem
         base.OnModLoad();
         _userInterface = new UserInterface();
         reforgeUIState = new ReforgeUIState();
-        reforgeUIState.Activate();
-
-        On_Main.CheckMonoliths += RenderUI;
     }
 
-    private void RenderUI(On_Main.orig_CheckMonoliths orig)
-    {
-        if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
-        {
-            PlayerInput.SetZoom_UI();
-            Main.spriteBatch.GraphicsDevice.SetRenderTarget(UITarget);
-            Main.spriteBatch.GraphicsDevice.Clear(Color.Transparent);
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
-                    Main.UIScaleMatrix);
-
-            _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
-
-            Main.spriteBatch.End();
-            PlayerInput.SetZoom_World();
-        }
-
-        orig();
-    }
 
     public override void UpdateUI(GameTime gameTime)
     {
@@ -226,18 +205,27 @@ public class ReforgeUISystem : BaseUISystem
                 {
                     if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                     {
-             
+
                         SpriteBatch spriteBatch = Main.spriteBatch;
-                        spriteBatch.End();
+                        spriteBatch.EndOut(out var parameters);
+                        RenderTargetHandle uiTarget = RenderTargets.ScreenTarget;
+                        using (new RenderTargetContext(uiTarget))
+                        {
+                            using (new SpritebatchContext(spriteBatch, parameters))
+                            {
+                                _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                            }
+                        }
+
                         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
 
                         float lerp = inTimer / InterpolationTime;
                         Vector2 offset = Vector2.Lerp(-Vector2.UnitX * 100, Vector2.Zero, EasingFunction.OutSine(lerp));
                         Color color = Color.Lerp(Color.Transparent, Color.White, lerp);
-                        spriteBatch.Draw(UITarget, offset, color);
+                        spriteBatch.Draw(uiTarget, offset, color);
 
                         spriteBatch.End();
-                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
+                        spriteBatch.Begin(parameters);
                     }
                     return true;
                 },

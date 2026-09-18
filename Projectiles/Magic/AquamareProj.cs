@@ -1,5 +1,5 @@
 ﻿using Stellamod.Common.Shaders;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using System;
 using Terraria;

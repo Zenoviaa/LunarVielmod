@@ -79,6 +79,7 @@ public class PerfectionProj : ModProjectile
     private Vector2 _initialPos;
     private Vector2 _wantedEndPoint;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -187,11 +188,21 @@ public class PerfectionProj : ModProjectile
         shader2.LaserTexture = TrailRegistry.StarTrail;
         shader2.InnerColor = Color.Turquoise * 0.5f;
         shader2.OuterColor = Color.DarkTurquoise;
+        if(Style == 1)
+        {
+            shader2.InnerColor = Color.Goldenrod * 0.5f;
+            shader2.OuterColor = Color.DarkViolet;
+        }
         TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader2, Projectile.Size * 0.5f);
 
         var bloom = BloomTrailShader.Instance;
         bloom.InnerColor = Color.Turquoise * 0.5f;
         bloom.OuterColor = Color.DarkTurquoise;
+        if (Style == 1)
+        {
+            bloom.InnerColor = Color.Goldenrod * 0.5f;
+            bloom.OuterColor = Color.DarkViolet;
+        }
         TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction2, bloom, Projectile.Size * 0.5f);
     }
 
@@ -200,6 +211,13 @@ public class PerfectionProj : ModProjectile
         Color inColor = Color.White;
         Color trailColor = Color.Lerp(Color.SpringGreen, Color.DarkBlue, completionRatio);
         Color easeColor = Color.Lerp(inColor, trailColor, EasingFunction.InExpo(Timer / 60f));
+
+        if (Style == 1)
+        {
+            trailColor = Color.Lerp(Color.Goldenrod, Color.DarkViolet, completionRatio);
+            easeColor = Color.Lerp(inColor, trailColor, EasingFunction.InExpo(Timer / 60f));
+        }
+
         return easeColor;
     }
 
@@ -228,14 +246,27 @@ public class PerfectionProj : ModProjectile
             perfectDrawer.worldPosition = pos;
 
             float ratio = (float)i / (float)Projectile.oldPos.Length;
-            perfectDrawer.color = Color.Lerp(Color.Turquoise, Color.DarkBlue,ratio);
-            perfectDrawer.color *= MathHelper.SmoothStep(1f, 0f, ratio) * 0.5f;
+            if(Style == 1)
+            {
+                perfectDrawer.color = Color.Lerp(Color.Gold, Color.DarkViolet, ratio);
+                perfectDrawer.color *= MathHelper.SmoothStep(1f, 0f, ratio) * 0.5f;
+            }
+            else
+            {
+                perfectDrawer.color = Color.Lerp(Color.Turquoise, Color.DarkBlue, ratio);
+                perfectDrawer.color *= MathHelper.SmoothStep(1f, 0f, ratio) * 0.5f;
+            }
+ 
             Main.spriteBatch.Draw(perfectDrawer);
 
         }
 
         SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         bloomDrawer.color = Color.Turquoise;
+        if(Style == 1)
+        {
+            bloomDrawer.color = Color.Purple;
+        }
         bloomDrawer.color *= ExtraMath.Osc(0.7f, 1f, speed: 6f, offset: Projectile.whoAmI);
         bloomDrawer.color.A = 0;
         bloomDrawer.color *= 0.5f;

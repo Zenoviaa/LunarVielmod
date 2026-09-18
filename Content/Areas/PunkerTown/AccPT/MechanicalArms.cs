@@ -140,6 +140,7 @@ public class MechanicalArmProj : ModProjectile
                 {
                     ProjFirer firer = ProjFirer.From<TerrorMinigunShot>(Projectile);
                     firer.damage = Owner.HeldItem.damage / 4;
+                    firer.position = arm2EndEffector;
                     firer.ai2 = 1;
                     firer.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 14;
                     firer.New();

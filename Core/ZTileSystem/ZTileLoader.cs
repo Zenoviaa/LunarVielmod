@@ -10,15 +10,19 @@ namespace Stellamod.Core.ZTileSystem;
 /// </summary>
 public class ZTileLoader : ModSystem
 {
+    private static ushort _nextZTileType;
     public ZTile[] Tiles { get; private set; }
+
+
     public override void OnModLoad()
     {
         base.OnModLoad();
         Tiles = ModContent.GetContent<ZTile>().ToArray();
+        /*
         for(ushort i = 0; i < Tiles.Length; i++)
         {
             Tiles[i].type = i;
-        }
+        }*/
     }
 
     public override void Unload()
@@ -26,7 +30,12 @@ public class ZTileLoader : ModSystem
         base.Unload();
         Tiles = null;
     }
-
+    public static ushort RegisterZTileType()
+    {
+        ushort nextType = _nextZTileType;
+        _nextZTileType++;
+        return nextType;
+    }
     public ZTile GetTile(ushort type)
     {
         return Tiles[type];

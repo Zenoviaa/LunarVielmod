@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Buffs.Minions;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -67,7 +67,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             return true;
         }
-        private float alphaCounter = 0;
         public override void AI()
         {
             Timer++;

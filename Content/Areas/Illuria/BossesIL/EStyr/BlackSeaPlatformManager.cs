@@ -113,14 +113,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             _timer++;
             //_timer = Main.Camera.Center.X / 16f;
-            if (NPC.AnyNPCs(ModContent.NPCType<E>()))
-            {
-                DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
-                fallSystem.noWings = true;
-                fallSystem.inSpace = true;
-                fallSystem.hoveringPlatform = true;
-                fallSystem.hoverPlatformY = 16000;
-            }
+
 
             const float revolutionTime = 400;
 

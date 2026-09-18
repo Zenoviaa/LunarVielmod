@@ -5,10 +5,20 @@
 		<AssemblyName>Stellamod</AssemblyName>
 		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
+		<Nullable>disable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>
+
+
 	<ItemGroup>
-	  <Folder Include="Tiles\Abyss\" />
+		<Publicize Include="FNA" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
+		<Publicize Include="ReLogic" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
 	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="Effects\Primitives\" />
+	</ItemGroup>
+
 </Project>

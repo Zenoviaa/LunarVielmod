@@ -94,22 +94,6 @@ public partial class RoyalFox
             }
         }
 
-        void DrawHairVerlet()
-        {
-            HairShader shader = ShaderContent.GetInstance<HairShader>();
-            shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
-            shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
-            shader.WaveFrequency = 8;
-            shader.XOffset = 12;
-
-
-            Vector2[] arr = new Vector2[VerletTail.points.Length];
-            for(int a = 0; a < arr.Length; a++)
-            {
-                arr[a] = VerletTail.points[a].position;
-            }
-            TrailDrawer.Draw(Main.spriteBatch, arr, GetHairColor, GetHairWidth, shader);
-        }
 
         DrawHairIK();
     }

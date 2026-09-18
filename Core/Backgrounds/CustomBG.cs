@@ -11,7 +11,8 @@ namespace Stellamod.Core.Backgrounds;
 
 public static class BackgroundHelper
 {
-    public record struct AtlassedBackgroundDraw(Asset<Texture2D> bg, int numBackgrounds, Color baseColor, Color fadeToColor, float alpha, Vector2 cameraMovement, Vector2 parallax)
+    public record struct AtlassedBackgroundDraw(
+        Asset<Texture2D> bg, int numBackgrounds, Color baseColor, Color fadeToColor, float alpha, Vector2 cameraMovement, Vector2 parallax, Vector2 parallaxOffset)
     {
         public static readonly AtlassedBackgroundDraw Default = new()
         {
@@ -19,7 +20,7 @@ public static class BackgroundHelper
             baseColor = Color.White,
             fadeToColor = new Color(255, 255, 255, 25),
             parallax = new Vector2(0.1f),
-
+            parallaxOffset = Vector2.Zero
         };
     }
     public static void DrawSimpleAtlassedBackground(SpriteBatch spriteBatch, 
@@ -146,6 +147,7 @@ public static class BackgroundHelper
         {
             offsets[i] = Vector2.Lerp(new Vector2(0f, 0), new Vector2(0f, 1f), (float)i / (float)numBackgrounds);
             parallax[i] = Vector2.Lerp(draw.parallax, Vector2.Zero, (float)i / (float)numBackgrounds) * (cameraMovement) * 0.01f;
+            parallax[i] += draw.parallaxOffset;
         }
 
         AtlassedParallaxingBackgroundShader backgroundShader = AtlassedParallaxingBackgroundShader.Instance;

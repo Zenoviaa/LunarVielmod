@@ -526,7 +526,7 @@ namespace Stellamod.Core.Grass
             var shader = GrassShader.Instance;
             shader.ApplyPasses();
 
-            graphicsDevice.BlendState = BlendState.Opaque;
+            graphicsDevice.BlendState = CustomBlendStates.Max;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.VertexSamplerStates[0] = SamplerState.PointClamp;
@@ -549,7 +549,7 @@ namespace Stellamod.Core.Grass
             var shader = GrassShader.Instance;
             shader.ApplyPasses();
 
-            graphicsDevice.BlendState = BlendState.Opaque;
+            graphicsDevice.BlendState = CustomBlendStates.Max;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             graphicsDevice.VertexSamplerStates[0] = SamplerState.PointClamp;

@@ -51,7 +51,7 @@ public class EldritchArrowProj : ModProjectile
         Projectile.light = 0.5f; // How much light emit around the projectile
         Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
         Projectile.tileCollide = true; // Can the projectile collide with tiles?
-        AIType = 1;
+        AIType = ProjectileID.WoodenArrowFriendly;
     }
 
     public override void AI()
@@ -103,7 +103,7 @@ public class EldritchBolt : ModProjectile
     {
         Projectile.width = 4; // The width of projectile hitbox
         Projectile.height = 4; // The height of projectile hitbox
-        Projectile.aiStyle = 1; // The ai style of the projectile, please reference the source code of Terraria
+        Projectile.aiStyle = ProjAIStyleID.Arrow; // The ai style of the projectile, please reference the source code of Terraria
         Projectile.friendly = true; // Can the projectile deal damage to enemies?
         Projectile.hostile = false; // Can the projectile deal damage to the player?
         Projectile.DamageType = DamageClass.Ranged; // Is the projectile shoot by a ranged weapon?

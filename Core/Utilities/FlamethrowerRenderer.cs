@@ -1,7 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -105,18 +105,19 @@ public class FlamethrowerShader : CrystalShader<FlamethrowerShader>
     }
 }
 
+/// <summary>
+/// Handles visuals for the flame thrower effect on Incinerator, Burning Glove, and related items
+/// </summary>
 [Autoload(Side = ModSide.Client)]
 public class FlamethrowerRenderer : ModSystem
 {
-    private RenderTargetProvider _metaballTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _fireTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private Vector4[] _metaballPositions;
     private List<Vector2> _metaballWorldPositions;
     private int _index;
     public override void Load()
     {
         base.Load();
-        _metaballPositions = new Vector4[32];
+        _metaballPositions = new Vector4[64];
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += RenderFull;
     }
 
@@ -127,104 +128,51 @@ public class FlamethrowerRenderer : ModSystem
     }
 
 
-
-    private void RenderFlameNoise()
-    {
-        SpriteBatch sb = Main.spriteBatch;
-        GraphicsDevice gDevice = sb.GraphicsDevice;
-        gDevice.SetRenderTarget(_fireTarget);
-        gDevice.Clear(Color.Transparent);
-
-        FlamethrowerNoiseShader shader = ShaderContent.GetInstance<FlamethrowerNoiseShader>();
-        shader.Time = Main.GlobalTimeWrappedHourly * -16;
-        sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, shader.Effect);
-        sb.Draw(ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/CloudNoise2").Value,
-    Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-        sb.End();
-    }
-    private void RenderMetaballs()
-    {
-        FlamethrowerShader shader = ShaderContent.GetInstance<FlamethrowerShader>();
-        shader.InnerColor = Color.Yellow;
-        shader.OuterColor = Color.Red;
-        shader.Length = _index;
-        shader.Metaballs = _metaballPositions;
-        shader.ScreenResolution = new Vector2(Main.screenWidth, Main.screenHeight);
-        SpriteBatch sb = Main.spriteBatch;
-        GraphicsDevice gDevice = sb.GraphicsDevice;
-        gDevice.SetRenderTarget(_metaballTarget);
-        gDevice.Clear(Color.Transparent);
-        sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, shader.Effect);
-        sb.Draw(_fireTarget, Vector2.Zero, Color.White);
-        sb.End();
-        _index = 0;
-        _metaballWorldPositions.Clear();
-    }
-    private void RenderMetaballsV2()
-    {
-        FlamethrowerV2Shader shader = ShaderContent.GetInstance<FlamethrowerV2Shader>();
-        shader.InnerColor = Color.Yellow;
-        shader.OuterColor = Color.Red;
-        shader.Threshold = 0.75f;
-        SpriteBatch sb = Main.spriteBatch;
-        GraphicsDevice gDevice = sb.GraphicsDevice;
-        gDevice.SetRenderTarget(_fireTarget);
-        gDevice.Clear(Color.Transparent);
-        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
-
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Vector2.Zero);
-        drawer.color = Color.White;
-        drawer.color.A = 0;
-        drawer.scale *= 0.3f;
-
-        int index = 0;
-        foreach(Vector2 wp in _metaballWorldPositions)
-        {
-            drawer.worldPosition = wp;
-            if(index < _metaballPositions.Length)
-            {
-                drawer.color = Color.White * _metaballPositions[index].Z;
-                drawer.color.A = 0;
-                drawer.scale = Vector2.One * 0.3f;
-                drawer.scale *= (_metaballPositions[index].W / 0.065f);
-            }
-            sb.Draw(drawer);
-            index++;
-        }
-        //sb.Draw(_fireTarget, Vector2.Zero, Color.White);
-        sb.End();
-
-        gDevice.SetRenderTarget(_metaballTarget);
-        gDevice.Clear(Color.Transparent);
-        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, shader.Effect);
-        sb.Draw(_fireTarget, Vector2.Zero, Color.White);
-        sb.End();
-
-        _index = 0;
-        _metaballWorldPositions.Clear();
-    }
-
     private void RenderFull()
     {
         if (_index <= 0)
             return;
-        RenderMetaballs();
-        RenderFlameNoise();
-      
+
         PixelationManager.QueueSpritebatchDrawAction(DrawToScreen);
     }
 
     private void DrawToScreen(SpriteBatch sb, Vector2 sp)
     {
+        sb.EndOut(out var oldParameters);
+        RenderTargetHandle fireTarget = RenderTargets.ScreenTarget;
+        RenderTargetHandle metaballTarget = RenderTargets.ScreenTarget;
+        using (new RenderTargetContext(metaballTarget))
+        {
+            FlamethrowerShader fireShader = ShaderContent.GetInstance<FlamethrowerShader>();
+            fireShader.InnerColor = Color.Yellow;
+            fireShader.OuterColor = Color.Red;
+            fireShader.Length = _index;
+            fireShader.Metaballs = _metaballPositions;
+            fireShader.ScreenResolution = new Vector2(Main.screenWidth, Main.screenHeight);
+            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, fireShader.Effect);
+            sb.Draw(fireTarget, Vector2.Zero, Color.White);
+            sb.End();
+            _index = 0;
+            _metaballWorldPositions.Clear();
+        }
+
+        using(new RenderTargetContext(fireTarget))
+        {
+            FlamethrowerNoiseShader noiseShader = ShaderContent.GetInstance<FlamethrowerNoiseShader>();
+            noiseShader.Time = Main.GlobalTimeWrappedHourly * -16;
+            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, noiseShader.Effect);
+            sb.Draw(AssetReferences.Assets.NoiseTextures.CloudNoise2.Asset.Value, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            sb.End();
+        }
+
         var shader = ShaderContent.GetInstance<FlamethrowerDistortionShader>();
         shader.Distortion = 0.009f;
-        shader.DistortionTexture = _fireTarget;
-        sb.Restart(effect: shader.Effect);
+        shader.DistortionTexture = fireTarget;
+        sb.Begin(oldParameters with { effect = shader.Effect });
         Color additive = Color.White * 1f;
-      //  additive.A = 0;
-        sb.Draw(_metaballTarget, Vector2.Zero, additive);
-        sb.RestartDefaults();
-        //    sb.Draw(_fireTarget, Vector2.Zero, Color.White);
+        sb.Draw(metaballTarget, Vector2.Zero, additive);
+        sb.End();
+        sb.Begin(oldParameters);
     }
 
     public static void AddMetaball(Vector2 pos, float time, float radius)

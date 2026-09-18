@@ -1,12 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
 using Stellamod.Items;
-using Stellamod.Projectiles.Magic;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -153,7 +150,7 @@ public class BlackEyeLaserProj : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMuzzleFlash);
-        PixelationManager.QueuePrimitivesDrawAction(DrawLaser,DrawLayer.OverNPCsWithOutline);
+        PixelationManager.QueuePrimitivesDrawAction(DrawLaser, DrawLayer.OverNPCsWithOutline);
         PixelationManager.QueueSpritebatchDrawAction(DrawImpactPoints);
         return false;
     }
@@ -164,8 +161,8 @@ public class BlackEyeLaserProj : ModProjectile
         Vector2 drawCenter = Projectile.Center - screenPos;
         Color drawColor = Color.Yellow;
         drawColor.A = 0;
-        float s = EasingFunction.InOutSine((float)Projectile.timeLeft / 120f) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Time / 30f)) * 1.65f;
-        float width = (float)Projectile.timeLeft / 30f;
+        float s = EasingFunction.InOutSine(Projectile.timeLeft / 120f) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Time / 30f)) * 1.65f;
+        float width = Projectile.timeLeft / 30f;
         float outWidth = EasingFunction.InOutSine(width);
         float scale = outWidth * s * 1.5f;
         Vector2 flashScale = Vector2.One;
@@ -193,7 +190,7 @@ public class BlackEyeLaserProj : ModProjectile
     }
     private void DrawImpactPoints(SpriteBatch sb, Vector2 sp)
     {
-        float s = EasingFunction.InOutSine((float)Projectile.timeLeft / 120f) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Time / 30f)) * 1.65f;
+        float s = EasingFunction.InOutSine(Projectile.timeLeft / 120f) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Time / 30f)) * 1.65f;
         SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, ImpactPoint);
         flareDrawer.color = Color.Red;
         flareDrawer.color.A = 0;
@@ -231,7 +228,7 @@ public class BlackEyeLaserProj : ModProjectile
 
     private float GetTrailWidth(float completionRatio)
     {
-        return 128 * EasingFunction.InOutSine((float)Projectile.timeLeft / 120f) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Time / 30f));
+        return 128 * EasingFunction.InOutSine(Projectile.timeLeft / 120f) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Time / 30f));
     }
 
 }
@@ -330,5 +327,5 @@ public class BlackEyeProj : ModProjectile
         return false;
     }
 
-    
+
 }

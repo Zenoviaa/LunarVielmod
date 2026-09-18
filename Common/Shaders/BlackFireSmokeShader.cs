@@ -1,20 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Stellamod.Common.Shaders
 {
     public class BlackFireSmokeShader : BaseShader
     {
-        private EffectParameter _innerEmitColorParam;
-        private EffectParameter _outerEmitColorParam;
         private EffectParameter _tilingParam;
         private EffectParameter _matrixParam;
         private EffectParameter _primaryTextureParam;

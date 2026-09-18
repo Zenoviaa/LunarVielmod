@@ -77,7 +77,7 @@ namespace Stellamod.Content.Armors.Fishy
                 NPC target = NPCHelper.FindClosestNPC(Projectile.Center, 1024);
                 if(target != null)
                 {
-                    Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, target.Center);
+                    Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, target.Center, degreesToRotate: 5);
                 }
             }
             Projectile.scale = MathHelper.Lerp(Projectile.scale, ScaleVariance, 0.1f);
@@ -104,6 +104,12 @@ namespace Stellamod.Content.Armors.Fishy
             SoundStyle bubblePop = SoundID.Item54;
             bubblePop.PitchVariance = 0.3f;
             SoundEngine.PlaySound(bubblePop, Projectile.position);
+            for(float f = 0; f < 16; f++)
+            {
+                Vector2 offset = Main.rand.NextVector2CircularEdge(16, 16);
+                var d = Dust.NewDustPerfect(Projectile.Center + offset, DustID.BubbleBurst_Blue, offset.SafeNormalize(Vector2.Zero) * 4, Scale: 1.5f);
+                d.noGravity = true;
+            }
         }
     }
 

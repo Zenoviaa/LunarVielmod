@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-
+using Stellamod.Content.Dusts;
 
 
 namespace Stellamod.Tiles.Structures.Cathedral
@@ -24,7 +24,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
             MineResist = 4f;
             MinPick = 200;
 
-            DustType = ModContent.DustType<Dusts.SalfaceDust>();
+            DustType = ModContent.DustType<SalfaceDust>();
             AdjTiles = new int[] { TileID.Bookcases };
             Main.tileFrameImportant[Type] = true;
             Main.tileNoAttach[Type] = true;

@@ -31,6 +31,7 @@ namespace Stellamod.Helpers
         public static void ProtectStructure(Point location, string path)
         {
             StructureMap structures = GenVars.structures;
+            structures ??= new();
             Rectangle rectangle = StructureLoader.ReadRectangle(path);
             location.Y -= rectangle.Height;
             rectangle.Location = location;

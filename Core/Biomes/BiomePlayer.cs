@@ -19,13 +19,46 @@ namespace Stellamod.Content.Biomes
 {
     public static class BiomeExtensions
     {
+        extension(Player player)
+        {
+            
+            public bool ZoneAurelus
+            {
+                get
+                {
+                    return player.GetModPlayer<MyPlayer>().ZoneAurelus;
+                }
+                set
+                {
+                    player.GetModPlayer<MyPlayer>().ZoneAurelus = value;
+                }
+            }
+            public bool ZoneAbyss
+            {
+                get
+                {
+                    return player.GetModPlayer<MyPlayer>().ZoneAbyss;
+                }
+                set
+                {
+                    player.GetModPlayer<MyPlayer>().ZoneAbyss = value;
+                }
+            }
+
+            public bool ZoneCrimsonBridewell
+            {
+                get => player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell;
+                set => player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell = value;
+            }
+        }
+
         public static bool ZoneFable(this Player player) => player.InModBiome<FableBiome>();
-        public static bool ZoneAbyss(this Player player) => player.InModBiome<AbyssBiome>();
         public static bool ZoneXixianVillage(this Player player) => player.InModBiome<XixVillageBiome>();
     }
     public class BiomePlayer : ModPlayer
     {
         private float _windCounter;
+        public bool justEnteredAbyss;
         public bool ZoneIshtar;
         public bool ZoneSacredUnknowns;
         public bool ZoneEveroseVillage;
@@ -47,11 +80,19 @@ namespace Stellamod.Content.Biomes
         {
             get
             {
-                Player localPlayer = Player;
                 StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
                 int heightOffset = 100;
-                Rectangle biomeRect = new Rectangle(stellaWorld.CoralwaysLocation.X, stellaWorld.CoralwaysLocation.Y + heightOffset, 1000, 1800 - heightOffset);
-                return localPlayer.Center.ToTileCoordinates().Y > biomeRect.Bottom - 400 && localPlayer.Center.ToTileCoordinates().Y < biomeRect.Bottom;
+                Rectangle biomeRect =
+                    new Rectangle(
+                    stellaWorld.CoralwaysLocation.X, 
+                    stellaWorld.CoralwaysLocation.Y + heightOffset, 1000,
+                    1800 - heightOffset);
+                Rectangle deepRect = new Rectangle
+                    (stellaWorld.CoralwaysLocation.X,
+                    biomeRect.Bottom - 400,
+                    1000,
+                    400);
+                return deepRect.Contains(Player.Center.ToTileCoordinates());
             }
         }
         public bool ZoneCrimsonBridewell;
@@ -176,7 +217,7 @@ namespace Stellamod.Content.Biomes
         private void AddForegroundOrBackground()
         {
             MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
-            if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar || myPlayer.ZoneAbyss)
+            if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar)
             {
                 if (Main.rand.NextBool(15))
                 {
@@ -187,6 +228,15 @@ namespace Stellamod.Content.Biomes
                 {
                     ForegroundParticleRenderer.NewParticle<Snowstrike>();
                 }
+            }
+
+            if (Player.ZoneAbyss && Main.rand.NextBool(8))
+            {
+                Particles.AbyssFloatingFlowerDust.Spawn(AbyssFloatingFlowerDustData.Default with
+                {
+                    position = DrawUtilities.RandomScreenPositionForForegroundParticles(),
+                    parallax = Main.rand.NextFloat(0.2f, 1f),
+                });
             }
 
             if (Main.raining && (Player.ZoneForest || myPlayer.ZoneVillage))

@@ -37,6 +37,7 @@ public partial class RoyalFox : ScarletBoss,
         Full_Control = 2
     }
 
+    private float _arenaY;
     private float _darkMoonTimer;
     private bool _darkMoon;
     private bool _killYoSelf;
@@ -330,16 +331,18 @@ public partial class RoyalFox : ScarletBoss,
         return BossLevel.Superboss;
     }
 
-    private float Ground => 16000;
+    private float Ground => _arenaY;
     private void EnablePlatformArena()
     {
-        DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
-        fallSystem.noWings = true;
-        fallSystem.inSpace = true;
-        fallSystem.hoveringPlatform = true;
-        fallSystem.hoverPlatformY = Ground;
-   //     fallSystem.noProjTileCollide = true;
-  
+        NPCUtilities.SetDomainArenaY(NPC, ref _arenaY);
+        DomainExpansionManager.UseDomain(new DomainParameters
+        {
+            noWings = true,
+            inSpace = true,
+            hoveringPlatform = true,
+            hoverPlatformY = _arenaY,
+            noRender = true
+        });
     }
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -353,6 +356,7 @@ public partial class RoyalFox : ScarletBoss,
         writer.Write(_precisionAttackCycle);
         writer.Write(_killYoSelf);
         writer.Write(_darkMoon);
+        writer.Write(_arenaY);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -366,6 +370,7 @@ public partial class RoyalFox : ScarletBoss,
         _precisionAttackCycle = reader.ReadInt32();
         _killYoSelf = reader.ReadBoolean();
         _darkMoon = reader.ReadBoolean();
+        _arenaY = reader.ReadSingle();
     }
     public override void SetStaticDefaults()
     {
@@ -441,7 +446,6 @@ public partial class RoyalFox : ScarletBoss,
 
     private bool InPhase2 => NPC.life < NPC.lifeMax * 0.5f;
     private bool _phase2;
-    private bool _pressed;
     public bool CanMakeClones()
     {
         return _phase2 && !IsAClone && MultiplayerHelper.IsHost;
@@ -710,7 +714,6 @@ public partial class RoyalFox : ScarletBoss,
 
     private void FakeButtTail2()
     {
-        float m = 0.03f;
         float newAngle = Rig.rootSegment.eulerAngles.W;
         float oldAngle = _oldButtRotation;
         float angleDiff = newAngle - oldAngle;
@@ -734,7 +737,6 @@ public partial class RoyalFox : ScarletBoss,
     }
     private void FakeButtTail()
     {
-        float m = 0.03f;
         float newAngle = Rig.rootSegment.eulerAngles.W;
        
         float oldAngle = _oldButtRotation;

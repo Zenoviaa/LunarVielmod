@@ -2,7 +2,7 @@
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Effects.Generic;
 using Stellamod.Effects.RekFlames;
 using System.Collections.Generic;
@@ -32,7 +32,6 @@ public struct RekFireMetaballData
 
 public class RekFireBreathRenderer : ModSystem
 {
-    private RenderTargetProvider _flamethrowerMask = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void Load()
     {
         base.Load();
@@ -47,39 +46,41 @@ public class RekFireBreathRenderer : ModSystem
 
         if (MetaballContent.RekFireMetaball.RequiresRendering)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_flamethrowerMask);
-            graphicsDevice.Clear(Color.Transparent);
-
-            SpritebatchParams defaultParams = SpritebatchParams.InWorldAndZoomed();
-            defaultParams.effect = MetaballContent.RekFireMetaball.PrepareMetaballShader();
-            defaultParams.matrix = Matrix.Identity;
-            using (new SpritebatchContext(spriteBatch, defaultParams))
-            {
-                spriteBatch.Draw(_flamethrowerMask, Vector2.Zero, Color.Transparent);
-            }
-
-            graphicsDevice.SetRenderTarget(null);
             PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedFlames);
         }
     }
 
     private void RenderPixelatedFlames(SpriteBatch spriteBatch, Vector2 screenPos)
     {
+        spriteBatch.EndOut(out var oldParameters);
+
+        RenderTargetHandle flameThrowerMask = RenderTargets.ScreenTarget;
+        using(new RenderTargetContext(flameThrowerMask))
+        {
+            SpritebatchParams defaultParams = SpritebatchParams.InWorldAndZoomed();
+            defaultParams.effect = MetaballContent.RekFireMetaball.PrepareMetaballShader();
+            defaultParams.matrix = Matrix.Identity;
+            using (new SpritebatchContext(spriteBatch, defaultParams))
+            {
+                spriteBatch.Draw(flameThrowerMask, Vector2.Zero, Color.Transparent);
+            }
+        }
+
         var pixelatedFlamesShader = ShaderContent.GetInstance<RekFirebreathShader>();
-        pixelatedFlamesShader.MetaballTexture = _flamethrowerMask;
+        pixelatedFlamesShader.MetaballTexture = flameThrowerMask;
         pixelatedFlamesShader.FlameTexture = AssetManager.Noise.Whirly.Value;
         pixelatedFlamesShader.Time = Main.GlobalTimeWrappedHourly * 18;
         pixelatedFlamesShader.InnerColor = Color.Yellow;
         pixelatedFlamesShader.BloomColor = Color.Red;
+
         SpritebatchParams flamesParams = SpritebatchParams.InWorldAndZoomed();
         flamesParams.effect = pixelatedFlamesShader;
-
         using (new SpritebatchContext(spriteBatch, flamesParams))
         {
-            spriteBatch.Draw(_flamethrowerMask,  Vector2.Zero, Color.White);
+            spriteBatch.Draw(flameThrowerMask,  Vector2.Zero, Color.White);
         }
+
+        spriteBatch.Begin(oldParameters);
     }
 }
 

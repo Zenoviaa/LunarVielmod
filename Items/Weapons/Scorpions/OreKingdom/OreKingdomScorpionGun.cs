@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Buffs.Scorpion;
 using Stellamod.Common.ScorpionMountSystem;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -68,9 +68,9 @@ namespace Stellamod.Items.Weapons.Scorpions.OreKingdom
             for (int k = 0; k < 7; k++)
             {
                 Vector2 direction = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
         }
 
     }

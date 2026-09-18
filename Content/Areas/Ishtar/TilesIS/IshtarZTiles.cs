@@ -1,17 +1,20 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.ZTileSystem;
-using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Ishtar.TilesIS;
 
+public class BigIshtarCandle : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 6;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
 public class GoldenBellBig : ZTile
 {
     public override void SetStaticDefaults()

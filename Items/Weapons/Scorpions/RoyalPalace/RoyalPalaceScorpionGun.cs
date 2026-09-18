@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Content.Dusts;
 
 namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
 {
@@ -54,9 +55,9 @@ namespace Stellamod.Items.Weapons.Scorpions.RoyalPalace
             for (int k = 0; k < 7; k++)
             {
                 Vector2 direction = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(Projectile.position + velocity * 43, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
         }
 
     }

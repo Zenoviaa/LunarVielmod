@@ -1,9 +1,13 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.Shaders;
+using Stellamod.Core;
+using Stellamod.Core.ZTileSystem;
 using System;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 
 namespace Stellamod.Helpers;
@@ -29,6 +33,14 @@ public static class ColorExtensions
 }
 
 /// <summary>
+/// The section of the background to draw and the offset with it, make sure to use with a wrapping mode
+/// </summary>
+/// <param name="SourceRectangle"></param>
+/// <param name="DrawOffset"></param>
+public record struct BackgroundDrawParameters(Rectangle SourceRectangle, Vector2 DrawOffset);
+
+
+/// <summary>
 /// A collection of utility functions for drawing simple visual effects
 /// </summary>
 public static class DrawUtilities
@@ -37,17 +49,121 @@ public static class DrawUtilities
     public delegate float GetTrailWidth(float completionRatio);
 
 
-    public static Vector2[] PruneFarPoints(Vector2[] oldPos)
+    /// <summary>
+    /// Prepares indices for a set of quads
+    /// </summary>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    public static short[] PrepareIndicesForDrawing(int length)
+    {
+        int connectIndex = 0;
+        Span<short> indicesSpan = stackalloc short[length * 6];
+        for (int i = 0; i < indicesSpan.Length; i += 6)
+        {
+            indicesSpan[i] = (short)(connectIndex + 0);
+            indicesSpan[i + 1] = (short)(connectIndex + 1);
+            indicesSpan[i + 2] = (short)(connectIndex + 2);
+            indicesSpan[i + 3] = (short)(connectIndex + 2);
+            indicesSpan[i + 4] = (short)(connectIndex + 3);
+            indicesSpan[i + 5] = (short)(connectIndex + 1);
+            connectIndex += 4;
+        }
+        return indicesSpan.ToArray();
+    }
+
+    /// <summary>
+    /// Draws indexed primitives with an effect then reverts back to the previous graphics device state afterward
+    /// </summary>
+    /// <typeparam name="VertexType"></typeparam>
+    /// <param name="arr"></param>
+    /// <param name="indices"></param>
+    /// <param name="effect"></param>
+    public static void DrawUserIndexedPrimitivesWithEffect<VertexType>(VertexType[] arr, short[] indices, Effect effect)
+        where VertexType : struct, IVertexType
+    {
+        GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+        foreach (var pass in effect.CurrentTechnique.Passes)
+        {
+            pass.Apply();
+        }
+        graphicsDevice.DrawUserIndexedPrimitives<VertexType>(
+          PrimitiveType.TriangleList, arr, 0, arr.Length, indices, 0, arr.Length / 2);
+    }
+    public static void DrawUserIndexedPrimitivesWithEffect<VertexType>(VertexType[] arr, int[] indices, Effect effect)
+        where VertexType : struct, IVertexType
+    {
+        GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+        foreach (var pass in effect.CurrentTechnique.Passes)
+        {
+            pass.Apply();
+        }
+        graphicsDevice.DrawUserIndexedPrimitives<VertexType>(
+          PrimitiveType.TriangleList, arr, 0, arr.Length, indices, 0, arr.Length / 2);
+    }
+
+    /// <summary>
+    /// Prepares vertices for a basic trail
+    /// </summary>
+    /// <param name="oldPos"></param>
+    /// <param name="colorFunc"></param>
+    /// <param name="widthFunc"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
+    public static VertexPositionColorTexture[] PrepareSimpleTrailing(
+        Vector2[] oldPos,
+        Func<float, Color> colorFunc,
+        Func<float, float> widthFunc, 
+        Vector2? offset = null)
     {
 
+
+        Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+        float numPoints = oldPos.Length * 2;
+
+        oldPos = DrawUtilities.PruneFarPoints(oldPos);
+
+        if (oldPos.Length <= 2)
+            return new VertexPositionColorTexture[4];
+
+        numPoints = oldPos.Length * 2;
+        Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+        return TrailVertexHelper.FillVertexArray(trailingPoints, colorFunc, widthFunc, trailOffset);
+    }
+    public static BackgroundDrawParameters CalculateScaledBackgroundDraw(Vector2 textureSize)
+    {
+        Vector2 drawOrigin = textureSize * 0.5f;
+        int sw = Main.screenWidth;
+        int sh = Main.screenHeight;
+        Rectangle drawRectangle = new Rectangle(0, 0, sw * 2, sh * 2);
+        return new BackgroundDrawParameters(drawRectangle, -new Vector2(sw / 2, sh / 2));
+    }
+
+    public static Vector2 RandomScreenPositionForForegroundParticles()
+    {
+        float xPosition = Main.rand.Next(-(int)(Main.screenWidth * 0.52f), (int)(Main.screenWidth * 0.52f));
+        float yPosition = Main.rand.NextFloat(-Main.screenHeight * 0.52f, 0);
+        Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
+        return pos; 
+    }
+
+    public static Vector2 CalculateScreenOffset(Rectangle drawLocation, float scale = 1f)
+    {
+        Vector2 texelSize = Vector2.One / new Vector2(drawLocation.Width, drawLocation.Height);
+        Vector2 screenoffset = Main.screenPosition * texelSize;
+        screenoffset *= (1f / scale);
+        return screenoffset;
+    }
+    public static Vector2[] PruneFarPoints(Vector2[] oldPos)
+    {
+        float tooFar = 1000 * 1000;
         List<Vector2> prunedPoints = new List<Vector2>();
         Vector2 prevAddedPoint = oldPos[0];
         for (int i = 0; i < oldPos.Length - 1; i++)
         {
             Vector2 cur = oldPos[i];
             Vector2 next = oldPos[i + 1];
-            float d = Vector2.Distance(cur, next);
-            if (cur == Vector2.Zero || d > 1000)
+            float d = Vector2.DistanceSquared(cur, next);
+            if (cur == Vector2.Zero || d > tooFar)
             {
                 break;
             }
@@ -453,6 +569,38 @@ public static class DrawUtilities
             spriteBatch.Draw(spritebatchDrawer);
         }
     }
+
+    public static void DrawBasicGlow(SpriteBatch spriteBatch, Vector2 position, float scale, Color color)
+    {
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, position);
+        glowDrawer.color = color;
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= scale;
+        spriteBatch.Draw(glowDrawer);
+    }
+}
+
+public static class SpriteBatchExtensions
+{
+    /// <summary>
+    /// Ends the spritebatch and spits out the parameters it was using to draw
+    /// </summary>
+    /// <param name="spriteBatch"></param>
+    /// <param name="parameters"></param>
+    public static void EndOut(this SpriteBatch spriteBatch, out SpritebatchParams parameters)
+    {
+        parameters = spriteBatch.Parameters;
+        spriteBatch.End();
+   
+    }
+
+    extension(SpriteBatch spriteBatch)
+    {
+        /// <summary>
+        /// Retrieves the parameters from the sprite batch
+        /// </summary>
+        public SpritebatchParams Parameters => SpritebatchParams.FromSpritebatch(spriteBatch);
+    }
 }
 
 /// <summary>
@@ -460,28 +608,6 @@ public static class DrawUtilities
 /// </summary>
 public struct SpritebatchParams
 {
-    private readonly static FieldInfo _blendStateField;
-    private readonly static FieldInfo _samplerStateField;
-    private readonly static FieldInfo _depthStencilStateField;
-    private readonly static FieldInfo _rasterizerStateField;
-    private readonly static FieldInfo _matrixField;
-    private readonly static FieldInfo _effectField;
-    private readonly static FieldInfo _beginCalledInfoBackingField;
-    private readonly static FieldInfo _sortModeField;
-    static SpritebatchParams()
-    {
-        //Cache reflection fields
-        _sortModeField = GetPrivateSpritebatchField("sortMode");
-        _beginCalledInfoBackingField = GetPrivateSpritebatchField("beginCalled");
-        _effectField = GetPrivateSpritebatchField("customEffect");
-        _matrixField = GetPrivateSpritebatchField("transformMatrix");
-        _rasterizerStateField = GetPrivateSpritebatchField("rasterizerState");
-        _depthStencilStateField = GetPrivateSpritebatchField("depthStencilState");
-        _samplerStateField = GetPrivateSpritebatchField("samplerState");
-        _blendStateField = GetPrivateSpritebatchField("blendState");
-        _sortModeField = GetPrivateSpritebatchField("sortMode");
-    }
-
     public BlendState blendState;
     public SamplerState samplerState;
     public RasterizerState rasterizerState;
@@ -489,61 +615,16 @@ public struct SpritebatchParams
     public Effect effect;
     public SpriteSortMode sortMode;
     public Matrix matrix;
-    private static FieldInfo GetPrivateSpritebatchField(string name)
-    {
-        return typeof(SpriteBatch).GetField(name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic)!;
-    }
-
-    public static SpriteSortMode GetSortMode(SpriteBatch spriteBatch)
-    {
-        return (SpriteSortMode)_sortModeField.GetValue(spriteBatch)!;
-    }
-
-    public static BlendState GetBlendState(SpriteBatch spriteBatch)
-    {
-        return (BlendState)_blendStateField.GetValue(spriteBatch)!;
-    }
-
-    public static SamplerState GetSamplerState(SpriteBatch spriteBatch)
-    {
-        return (SamplerState)_samplerStateField.GetValue(spriteBatch)!;
-    }
-
-    public static DepthStencilState GetDepthStencilState(SpriteBatch spriteBatch)
-    {
-        return (DepthStencilState)_depthStencilStateField.GetValue(spriteBatch)!;
-    }
-
-    public static RasterizerState GetRasterizerState(SpriteBatch spriteBatch)
-    {
-        return (RasterizerState)_rasterizerStateField.GetValue(spriteBatch)!;
-    }
-
-    public static Matrix GetTransformMatrix(SpriteBatch spriteBatch)
-    {
-        return (Matrix)_matrixField.GetValue(spriteBatch)!;
-    }
-
-    public static Effect GetEffect(SpriteBatch spriteBatch)
-    {
-        return (Effect)_effectField.GetValue(spriteBatch)!;
-    }
-
-    public static bool GetBeginCalled(SpriteBatch spriteBatch)
-    {
-        bool beginCalled = (bool)_beginCalledInfoBackingField.GetValue(spriteBatch)!;
-        return beginCalled;
-    }
     public static SpritebatchParams FromSpritebatch(SpriteBatch spriteBatch)
     {
         SpritebatchParams starter = new SpritebatchParams();
-        starter.blendState = GetBlendState(spriteBatch);
-        starter.samplerState = GetSamplerState(spriteBatch);
-        starter.sortMode = GetSortMode(spriteBatch);
-        starter.depthStencilState = GetDepthStencilState(spriteBatch);
-        starter.effect = GetEffect(spriteBatch);
-        starter.matrix = GetTransformMatrix(spriteBatch);
-        starter.rasterizerState = GetRasterizerState(spriteBatch);
+        starter.blendState = spriteBatch.blendState;
+        starter.samplerState = spriteBatch.samplerState;
+        starter.sortMode = spriteBatch.sortMode;
+        starter.depthStencilState = spriteBatch.depthStencilState;
+        starter.effect = spriteBatch.customEffect;
+        starter.matrix = spriteBatch.transformMatrix;
+        starter.rasterizerState = spriteBatch.rasterizerState;
         return starter;
     }
 
@@ -594,7 +675,7 @@ public static class SpritebatchDrawExtensions
     public static void Begin(this SpriteBatch spriteBatch, SpritebatchParams spritebatchParams) => spritebatchParams.Begin(spriteBatch);
 }
 
-public class SpritebatchContext : IDisposable
+public struct SpritebatchContext : IDisposable
 {
     private SpritebatchParams? _oldParameters;
     private SpriteBatch? _spriteBatch;
@@ -604,7 +685,7 @@ public class SpritebatchContext : IDisposable
     {
         spriteBatchParameters = requiredParameters;
         _spriteBatch = spriteBatch;
-        bool beginCalled = SpritebatchParams.GetBeginCalled(spriteBatch);
+        bool beginCalled = spriteBatch.beginCalled;
         if (beginCalled)
         {
             _oldParameters = SpritebatchParams.FromSpritebatch(spriteBatch);
@@ -656,7 +737,7 @@ public struct SpritebatchStarter :
     public void Begin(SpriteBatch spriteBatch)
     {
         _spriteBatch = spriteBatch;
-        bool beginCalled = SpritebatchParams.GetBeginCalled(spriteBatch);
+        bool beginCalled = spriteBatch.beginCalled;
         if (beginCalled)
         {
             _oldParameters = SpritebatchParams.FromSpritebatch(spriteBatch);
@@ -712,6 +793,12 @@ public struct SpritebatchDrawer
     public SpriteEffects spriteEffects;
     public Vector2 scale;
     public bool blackIsTransparency;
+
+    public void Flip(ref float xPosition)
+    {
+        xPosition = sourceRect.Value.Width - xPosition;
+    }
+
     public void VerticalFrame(int frameIndex, int frameCount)
     {
         sourceRect = texture.GetFrame(frameIndex, frameCount);
@@ -805,6 +892,19 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
         }
     }
+
+    public static SpritebatchDrawer FromZTileDraw(Asset<Texture2D> textureAsset, ZTileDrawData drawData)
+    {
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, drawData.drawPosition + Main.screenPosition);
+        drawer.sourceRect = drawData.frame;
+        drawer.color = drawData.drawColor;
+        drawer.rotation = drawData.drawRotation;
+        drawer.drawOrigin = drawData.drawOrigin;
+        drawer.scale = drawData.drawScale;
+        drawer.spriteEffects = drawData.spriteEffects;
+        return drawer;
+    }
+
     public static SpritebatchDrawer FromTextureAsset(Asset<Texture2D> textureAsset, Vector2 worldPosition)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();

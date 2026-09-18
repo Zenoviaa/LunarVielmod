@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Biomes;
-using Stellamod.Helpers;
+﻿using Stellamod.Content.Biomes;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -13,7 +10,6 @@ namespace Stellamod.Core.Skies
     {
         private Vector2 _parallax;
         private Vector2 _lastCameraPos;
-        private bool _active;
         private float _strength;
         private float _windSpeed;
 
@@ -22,12 +18,12 @@ namespace Stellamod.Core.Skies
 
         public override void Activate(Vector2 position, params object[] args)
         {
-            _active = true;
+
         }
 
         public override void Deactivate(params object[] args)
         {
-            _active = false;
+
         }
 
         public override bool IsActive() =>
@@ -35,7 +31,7 @@ namespace Stellamod.Core.Skies
 
         public override void Reset()
         {
-            _active = false;
+
         }
 
         public override void Update(GameTime gameTime)
@@ -107,14 +103,14 @@ namespace Stellamod.Core.Skies
             get
             {
                 Color primaryColor = Color.White;
- 
+
                 Color cloudColor = Color.Lerp(primaryColor, Color.Black, 0.5f);
                 if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneAegislavSurface)
                     cloudColor = Color.IndianRed;
                 if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneEdgeoftheMoon)
                     cloudColor = Color.Lerp(Color.White, Color.Black, 0.99f);
                 cloudColor.A = 0;
-       
+
                 return cloudColor;
             }
         }

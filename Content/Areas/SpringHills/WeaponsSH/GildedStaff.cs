@@ -1,8 +1,8 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using System;
 using Terraria;

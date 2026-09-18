@@ -1,7 +1,7 @@
 ﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Dusts;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using System;

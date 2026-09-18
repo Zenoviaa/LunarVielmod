@@ -250,7 +250,7 @@ namespace Stellamod.Content
     }
     public class ConvulgingMatterRarity : ModRarity
     {
-        public override Color RarityColor => new Color(49, 39, 124);
+        public override Color RarityColor => new Color(180, 210, 233);
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
             if (offset > 0)

@@ -9,8 +9,8 @@ namespace Stellamod.UI.CollectionSystem
     {
         public CollectionBookUI bookUI;
         public CommonBackButton backButton;
-        public int RelativeLeft => Main.screenWidth / 2 + 450;
-        public int RelativeTop => Main.screenHeight / 2 - 800 / 2 + 128;
+        public int RelativeLeft => Main.screenWidth / 2 - 64;
+        public int RelativeTop => Main.screenHeight / 2 + 312 ;
         public CollectionBookUIState() : base()
         {
 
@@ -21,8 +21,9 @@ namespace Stellamod.UI.CollectionSystem
             base.Update(gameTime);
          //in.NewText("Guh");   Ma
             backButton.Left.Pixels = RelativeLeft;
-            backButton.Top.Pixels = 128;
- 
+            backButton.Top.Pixels = RelativeTop;
+            backButton.alpha = bookUI.book.alpha;
+
          
         }
         public override void OnInitialize()
@@ -31,9 +32,6 @@ namespace Stellamod.UI.CollectionSystem
             Append(bookUI);
 
             backButton = new CommonBackButton(() => ModContent.GetInstance<CollectionBookUISystem>().CloseBookUI());
-//            backButton.Left.Set(0f, 1f);
-            backButton.asXButton = true;
-            backButton.axXBigButton = true;
             Append(backButton);
         }
     }

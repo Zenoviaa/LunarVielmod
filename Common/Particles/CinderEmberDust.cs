@@ -1,8 +1,8 @@
 ﻿using Stellamod.Core.Pixelation;
-using System;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
+
 
 
 public struct CinderEmberDustData : IParticleData
@@ -24,7 +24,6 @@ public struct CinderEmberDustData : IParticleData
     public float parallaxStrength;
     public bool IsActive => timeleft > 0;
 }
-
 public class CinderEmberDustBackground : CinderEmberDust
 {
     public override void LoadSafe()
@@ -44,7 +43,6 @@ public class CinderEmberDustBackground : CinderEmberDust
         PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.BehindTiles);
     }
 }
-
 public class CinderEmberDust : ParticleUpdater<CinderEmberDustData>
 {
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 1 };

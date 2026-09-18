@@ -1,18 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core;
-using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
-using System;
 using Terraria;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
@@ -43,11 +35,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Projectile.extraUpdates = 3;
             }
         }
-                
+
         private float GetTrailWidth(float completionRatio)
         {
             float w = MathHelper.SmoothStep(32, 24, completionRatio);
-            float outScale = (float)Projectile.timeLeft / 30f;
+            float outScale = Projectile.timeLeft / 30f;
             outScale = EasingFunction.InOutSine(outScale);
             w *= outScale;
             return w;
@@ -59,7 +51,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
-           //  DrawTrail();
+            //  DrawTrail();
             return base.PreDraw(ref lightColor);
         }
 
@@ -139,12 +131,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 if (_oldTexture == null)
                 {
                     _oldTexture = new string[NPC.oldPos.Length];
-                    for(int i = 0; i < _oldTexture.Length; i++)
+                    for (int i = 0; i < _oldTexture.Length; i++)
                     {
                         _oldTexture[i] = Texture;
                     }
                 }
-                    
+
                 return _oldTexture;
             }
         }
@@ -248,7 +240,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             base.FindFrame(frameHeight);
             Animator.Update();
             NPC.frame.Y = Animator.GetFrameY(frameHeight);
-          
+
         }
 
         private Vector2 GetDrawOrigin()
@@ -256,9 +248,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             var drawOrigin = Animator.GetDrawOrigin();
             if (drawOrigin.HasValue)
             {
-                return (Vector2)drawOrigin.Value;
+                return drawOrigin.Value;
             }
-        
+
             return NPC.frame.Size() / 2f;
         }
 
@@ -285,7 +277,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
 
-           // PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
+            // PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
             DrawTelegraphLine(spriteBatch, screenPos);
             DrawAfterImages(spriteBatch, screenPos, Color.White);
             DrawSprite(spriteBatch, screenPos, Color.White);
@@ -317,7 +309,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             if (NPC.spriteDirection == -1)
                 drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
-            spriteBatch.Draw(eTexture, drawCenter, frame, drawColor, rotation, drawOrigin, _drawScale , spriteEffects, 0f);
+            spriteBatch.Draw(eTexture, drawCenter, frame, drawColor, rotation, drawOrigin, _drawScale, spriteEffects, 0f);
         }
         private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -332,10 +324,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Vector2 oldPos = NPC.oldPos[i];
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
-                float interpolant = f / (float)NPC.oldPos.Length;
+                float interpolant = f / NPC.oldPos.Length;
                 Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * (0.3f + _extraAfterImageAlpha);
                 oldDrawPos += NPC.Size / 2f;
-          
+
                 spriteBatch.Draw(eTexture, oldDrawPos, OldFrame[i], fadeColor, NPC.oldRot[i], drawOrigin, _drawScale, spriteEffects, 0f);
             }
         }
@@ -355,10 +347,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             outlineOffset = 4;
             v = Vector2.UnitY * outlineOffset;
             h = Vector2.UnitX * outlineOffset;
-            DrawSprite(spriteBatch, screenPos + v , Color.Black);
-            DrawSprite(spriteBatch, screenPos - v , Color.Black);
-            DrawSprite(spriteBatch, screenPos + h , Color.Black);
-            DrawSprite(spriteBatch, screenPos - h , Color.Black);
+            DrawSprite(spriteBatch, screenPos + v, Color.Black);
+            DrawSprite(spriteBatch, screenPos - v, Color.Black);
+            DrawSprite(spriteBatch, screenPos + h, Color.Black);
+            DrawSprite(spriteBatch, screenPos - h, Color.Black);
 
             outlineOffset = 2;
             v = Vector2.UnitY * outlineOffset;

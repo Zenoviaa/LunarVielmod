@@ -13,7 +13,6 @@ using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Town;
 using Stellamod.UI.Dialogue;
 using System;
@@ -65,8 +64,15 @@ namespace Stellamod
             byte player;
             switch (id)
             {
+                case MessageType.RequestZTileData:
+                    if(Main.netMode == NetmodeID.Server)
+                    {
+                        ModContent.GetInstance<ZTileMap>().HandleZTileRequestPacket(reader, whoAmI);
+                    }
+                    break;
                 case MessageType.ZTileSync:
-                    ModContent.GetInstance<ZTileMap>().HandleZTileSyncPacket(reader);
+                    ZTileMap.ReceiveZTileSync(reader);
+
                     break;
                 case MessageType.BossDowned:
                     DownedBossRewardPlayer.HandleBossDownedMessage(reader, whoAmI);
@@ -255,12 +261,12 @@ namespace Stellamod
                         instanceData.type = reader.ReadUInt16();
                         instanceData.value = reader.ReadByte();
 
-                        ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
-                        tileMap.Add(layer, tilePosition, instanceData);
+                        ZTileMap.Add(layer, tilePosition, instanceData);
                         if (Main.netMode == NetmodeID.Server)
-                        {
+                        {     
                             //Forward all changes to other clients
-                            tileMap.SyncPlaceTile(-1, whoAmI, layer, tilePosition, instanceData);
+                          
+                            ZTileMap.SendZTileData(-1, -1, tilePosition.x, tilePosition.y, 4, 4);
                         }
                     }
 
@@ -276,7 +282,7 @@ namespace Stellamod
                         if (Main.netMode == NetmodeID.Server)
                         {
                             //Forward all changes to other clients
-                            tileMap.SyncBreakTile(-1, whoAmI, tilePosition);
+                            ZTileMap.SendZTileData(-1, -1, tilePosition.X, tilePosition.Y, 4, 4);
                         }
                     }
 
@@ -326,15 +332,6 @@ namespace Stellamod
             switch (dialogueType)
             {
                 case DialogueType.Start_Verlia:
-                    foreach (NPC npc in Main.ActiveNPCs)
-                    {
-                        if (npc.type == ModContent.NPCType<StarteV>())
-                        {
-                            StarteV verlia = npc.ModNPC as StarteV;
-                            verlia.State = StarteV.ActionState.Death;
-                            verlia.ResetTimers();
-                        }
-                    }
                     break;
 
                 case DialogueType.Start_Irradia:
@@ -362,13 +359,7 @@ namespace Stellamod
             {
                 case DialogueType.Start_Verlia:
                     {
-                        DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
-                        //2. Create a new instance of your dialogue
-                        VerliasDialogue exampleDialogue = new VerliasDialogue();
-
-                        //3. Start it
-                        dialogueSystem.StartDialogue(exampleDialogue);
                     }
                     break;
                 case DialogueType.Start_Irradia:

@@ -4,7 +4,7 @@ using Stellamod.Gores;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
-
+using Stellamod.Content.Dusts;
 namespace Stellamod.Projectiles.Magic
 {
     public class RibbonStaffTieProj : ModProjectile
@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles.Magic
                 for (int i = 0; i < 3; i++)
                 {
                     Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
-                        ModContent.DustType<Dusts.GunFlash>(), newColor: Color.White);
+                        ModContent.DustType<GunFlash>(), newColor: Color.White);
                 }
             }
 

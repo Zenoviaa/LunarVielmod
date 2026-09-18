@@ -6,13 +6,6 @@ namespace Stellamod.Items.Harvesting
 {
     public class WickofSorcery : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Violin Stick");
-            /* Tooltip.SetDefault("Hmph, what is this used for?" +
-			"\nBest use for weapons and musical items!"); */
-        }
-
         public override void SetDefaults()
         {
             Item.damage = 90;

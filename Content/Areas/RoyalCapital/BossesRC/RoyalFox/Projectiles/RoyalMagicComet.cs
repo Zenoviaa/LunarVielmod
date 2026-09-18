@@ -1,11 +1,11 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Dusts;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
-using Stellamod.Dusts;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -20,8 +20,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
 public class RoyalMagicCometStarsRenderer : ModSystem
 {
     private Asset<Texture2D> _royalSmokeMaskTextureAsset;
-    private RenderTargetProvider _starsRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     private readonly RoyalMagicRenderer.Particles _particles = new(252);
     private bool _activeParticles;
     public override void Load()
@@ -117,52 +115,50 @@ public class RoyalMagicCometStarsRenderer : ModSystem
 
     private void RenderStars()
     {
-
         if (!_activeParticles)
             return;
-
-        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-        SpriteBatch sb = Main.spriteBatch;
-        gDevice.SetRenderTarget(_maskRT);
-        gDevice.Clear(Color.Transparent);
-
-        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
-        DrawMaskParticles(sb);
-        sb.End();
-
-        gDevice.SetRenderTarget(_starsRT);
-        gDevice.Clear(Color.Transparent);
-
-
-        RoyalMagicStarsShader starsShader = ShaderContent.GetInstance<RoyalMagicStarsShader>();
-        starsShader.Time = Main.GlobalTimeWrappedHourly * 4;
-        starsShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
-        starsShader.ScreenOffset = GetScreenOffset(scale: 1);
-
-        sb.Begin(
-            SpriteSortMode.Immediate,
-            BlendState.AlphaBlend,
-            SamplerState.PointWrap,
-            DepthStencilState.None,
-            RasterizerState.CullNone,
-            starsShader.Effect);
-
-        sb.Draw(AssetManager.Noise.CometStars.Value, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Blue);
-
-        sb.End();
         PixelationManager.QueueSpritebatchDrawAction(DrawToScreen, DrawLayer.BehindNPCsWithOutline);
     }
 
     private void DrawToScreen(SpriteBatch sb, Vector2 screenPos)
     {
 
+        sb.EndOut(out var oldParameters);
+        RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle starsRT = RenderTargets.ScreenTarget;
+
+        using(new RenderTargetContext(maskRT))
+        {
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
+            DrawMaskParticles(sb);
+            sb.End();
+        }
+
+        using(new RenderTargetContext(starsRT))
+        {
+            RoyalMagicStarsShader starsShader = ShaderContent.GetInstance<RoyalMagicStarsShader>();
+            starsShader.Time = Main.GlobalTimeWrappedHourly * 4;
+            starsShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
+            starsShader.ScreenOffset = GetScreenOffset(scale: 1);
+
+            sb.Begin(
+                SpriteSortMode.Immediate,
+                BlendState.AlphaBlend,
+                SamplerState.PointWrap,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                starsShader.Effect);
+
+            sb.Draw(AssetManager.Noise.CometStars.Value, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Blue);
+            sb.End();
+        }
+
         MaskCombineShader starMix = ShaderContent.GetInstance<MaskCombineShader>();
-        starMix.MixTexture = _starsRT;
-        sb.Restart(effect: starMix.Effect);
-        sb.Draw(_maskRT, Vector2.Zero, Color.White);
-        sb.RestartDefaults();
-
-
+        starMix.MixTexture = starsRT;
+        sb.Begin(oldParameters with { effect = starMix.Effect });
+        sb.Draw(maskRT, Vector2.Zero, Color.White);
+        sb.End();
+        sb.Begin(oldParameters);
     }
 }
 

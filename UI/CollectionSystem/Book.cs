@@ -1,5 +1,4 @@
-﻿using Stellamod.Helpers;
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
 using Terraria.GameInput;
 using Terraria.ModLoader;
@@ -9,8 +8,6 @@ namespace Stellamod.UI.CollectionSystem
 {
     public class Book : UIElement
     {
-        private readonly int _context;
-        private int timer = 0;
         private int _frame;
         private float _closeTimer;
         private float _frameCounter;
@@ -129,28 +126,33 @@ namespace Stellamod.UI.CollectionSystem
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            Rectangle rectangle = GetDimensions().ToRectangle();
-
-            bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
+            SpritebatchParams drawParams = SpritebatchParams.UI with { samplerState = SamplerState.PointClamp };
+            using(new SpritebatchContext(spriteBatch, drawParams))
             {
-                Main.LocalPlayer.mouseInterface = true;
-     
+                Rectangle rectangle = GetDimensions().ToRectangle();
+
+                bool contains = ContainsPoint(Main.MouseScreen);
+                if (contains && !PlayerInput.IgnoreMouseInterface)
+                {
+                    Main.LocalPlayer.mouseInterface = true;
+
+                }
+
+                //Draw Backing
+                Color color2 = Main.inventoryBack;
+                Vector2 pos = rectangle.TopLeft();
+
+                Texture2D texture = ModContent.Request<Texture2D>(
+                    $"{CollectionBookUISystem.RootTexturePath}Book").Value;
+
+                int offset = (int)(texture.Size().Y / 2);
+                Vector2 drawOrigin = texture.GetFrame(_frame, totalFrameCount: 10).Size() / 2f;
+                Vector2 centerPos = pos + drawOrigin;
+
+                centerPos += Offset;
+                spriteBatch.Draw(texture, centerPos, texture.GetFrame(_frame, totalFrameCount: 10), Color.White, 0f, drawOrigin, Scale, SpriteEffects.None, 0f);
             }
-
-            //Draw Backing
-            Color color2 = Main.inventoryBack;
-            Vector2 pos = rectangle.TopLeft();
-
-            Texture2D texture = ModContent.Request<Texture2D>(
-                $"{CollectionBookUISystem.RootTexturePath}Book").Value;
-
-            int offset = (int)(texture.Size().Y / 2);
-            Vector2 drawOrigin = texture.GetFrame(_frame, totalFrameCount: 10).Size() / 2f;
-            Vector2 centerPos = pos + drawOrigin;
-
-            centerPos += Offset;
-            spriteBatch.Draw(texture, centerPos, texture.GetFrame(_frame, totalFrameCount: 10), Color.White, 0f, drawOrigin, Scale, SpriteEffects.None, 0f);
+         
 
         }
 

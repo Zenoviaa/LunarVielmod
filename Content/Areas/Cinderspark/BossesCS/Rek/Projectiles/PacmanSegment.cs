@@ -1,7 +1,5 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Particles;
-using Stellamod.Dusts;
-using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -62,7 +60,7 @@ public class PacmanSegment : ModProjectile
     {
         base.AI();
         _timer++;
-        if(_timer == 1)
+        if (_timer == 1)
         {
             _initialPosition = Projectile.Center;
         }
@@ -111,8 +109,8 @@ public class PacmanSegment : ModProjectile
             var segment = rek.Segments[SegmentIndex];
             segment.noWorm = false;
         }
-        return;
-        for(float f = 0; f < 12; f++)
+
+        for (float f = 0; f < 6; f++)
         {
             Vector2 pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(16, 16);
@@ -127,9 +125,9 @@ public class PacmanSegment : ModProjectile
                 scale = new Vector2(Main.rand.NextFloat(1f, 2f))
             });
         }
-        
 
-  //      FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Red, duration: 12, baseSize: 0.24f);
+
+        //      FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Red, duration: 12, baseSize: 0.24f);
         SoundEngine.PlaySound(SoundID.Item74 with { PitchVariance = 0.6f }, Projectile.position);
     }
 }

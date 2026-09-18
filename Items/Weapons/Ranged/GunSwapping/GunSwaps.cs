@@ -12,7 +12,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+using Stellamod.Content.Dusts;
 namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 {
     public abstract class MiniGun : ModItem
@@ -174,9 +174,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 7; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
                 }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
                 if (Main.myPlayer == player.whoAmI)
                     Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
                 int Sound = Main.rand.Next(1, 3);
@@ -230,9 +230,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 7; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
                 }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
                 if (Main.myPlayer == player.whoAmI)
                     Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
                 int Sound = Main.rand.Next(1, 3);
@@ -283,10 +283,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 14; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Orange, Main.rand.NextFloat(0.4f, 0.8f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Orange, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             if (Main.myPlayer == player.whoAmI)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 16,
@@ -321,10 +321,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 14; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Purple, Main.rand.NextFloat(0.4f, 0.8f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Purple, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkViolet, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkViolet, 1);
             if (Main.myPlayer == player.whoAmI)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 16,
@@ -361,10 +361,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 14; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Orange, Main.rand.NextFloat(0.4f, 0.8f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Orange, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
 
             if (Main.myPlayer == player.whoAmI)
             {
@@ -409,9 +409,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkBlue, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkBlue, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Blue, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.Blue, 1);
             projToShoot = Main.rand.Next(new int[] { ModContent.ProjectileType<FroBall2>(), ModContent.ProjectileType<FroBall1>() });
 
             if (Main.myPlayer == player.whoAmI)
@@ -456,10 +456,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 4; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightCyan, Main.rand.NextFloat(0.4f, 0.8f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightCyan, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
             for (int i = 0; i < Main.rand.Next(2, 5); i++)
             {
                 Vector2 vel = velocity * 16;
@@ -521,7 +521,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 7; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.IndianRed, Main.rand.NextFloat(0.2f, 0.8f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.IndianRed, Main.rand.NextFloat(0.2f, 0.8f));
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2"));
                 AttackSpeed = 30;
@@ -529,10 +529,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             }
             if (_comboCounter > 75)
             {
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.TSmokeDust>(), new Vector2(0, 0) + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
+                Dust.NewDustPerfect(position, ModContent.DustType<TSmokeDust>(), new Vector2(0, 0) + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
             if (AttackSpeed > 2)
             {
                 AttackSpeed--;
@@ -569,11 +569,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 Vector2 direction = offset.RotatedByRandom(spread);
 
 
-                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, new Color(180, 50, 40), Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<GlowDust>(), direction * Main.rand.NextFloat(8), 125, new Color(180, 50, 40), Main.rand.NextFloat(0.2f, 0.5f));
             }
 
-            Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-            Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+            Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+            Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
         }
     }
 
@@ -610,9 +610,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 4; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightCyan, Main.rand.NextFloat(0.2f, 0.5f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightCyan, Main.rand.NextFloat(0.2f, 0.5f));
                 }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.LightCyan, 1);
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.LightCyan, 1);
                 int numProjectiles = Main.rand.Next(1, 2);
                 for (int p = 0; p < numProjectiles; p++)
                 {
@@ -674,9 +674,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 7; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
                 }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
                 if (Main.myPlayer == player.whoAmI)
                 {
                     Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<RavestblastProj>(), damage, knockback, player.whoAmI);
@@ -711,9 +711,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             Vector2 vel = velocity * 16;
             vel = vel.RotatedByRandom(MathHelper.PiOver4 / 15);
             if (Main.myPlayer == player.whoAmI)
@@ -766,9 +766,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 20; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.OrangeRed, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.OrangeRed, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             if (Main.myPlayer == player.whoAmI)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ProjectileID.Bullet,
@@ -816,9 +816,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             for (int i = 0; i < Main.rand.Next(1, 3); i++)
             {
                 Vector2 vel = velocity * 16;
@@ -867,9 +867,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.LightGoldenrodYellow, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.LightGoldenrodYellow, 1);
 
             Vector2 vel = velocity * 16;
             vel = vel.RotatedByRandom(MathHelper.PiOver4 / 15);
@@ -921,9 +921,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.AliceBlue, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.AliceBlue, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.LightGoldenrodYellow, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.LightGoldenrodYellow, 1);
 
             Vector2 vel = velocity * 16;
             vel = vel.RotatedByRandom(MathHelper.PiOver4 / 15);
@@ -975,9 +975,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             for (int i = 0; i < Main.rand.Next(1, 3); i++)
             {
                 Vector2 vel = velocity * 16;
@@ -1021,10 +1021,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 14; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.White, Main.rand.NextFloat(0.4f, 0.8f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.White, Main.rand.NextFloat(0.4f, 0.8f));
                 }
 
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
                 for (int i = 0; i < Main.rand.Next(3, 7); i++)
                 {
                     Vector2 vel = velocity * 16;
@@ -1068,10 +1068,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 14; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkBlue, Main.rand.NextFloat(0.4f, 0.8f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkBlue, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkBlue, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkBlue, 1);
             Vector2 vel = velocity * 12;
             vel = vel.RotatedByRandom(MathHelper.PiOver4 / 15);
             if (Main.myPlayer == player.whoAmI)
@@ -1131,8 +1131,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int p = 0; p < numProjectiles; p++)
             {
                 //Particles and stuff
-                Dust.NewDustPerfect(position + offset * distance, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-                Dust.NewDustPerfect(player.Center + offset * distance, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+                Dust.NewDustPerfect(position + offset * distance, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+                Dust.NewDustPerfect(player.Center + offset * distance, ModContent.DustType<TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
 
                 //Get a random velocity
                 Vector2 startVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 2);
@@ -1183,10 +1183,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 14; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Orange, Main.rand.NextFloat(0.4f, 0.8f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Orange, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             if (Main.myPlayer == player.whoAmI)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 16,
@@ -1230,9 +1230,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkOrange, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkOrange, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkOrange, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkOrange, 1);
             int projectileType = ModContent.ProjectileType<CarrotPatrolProj>();
             if (Main.myPlayer == player.whoAmI)
             {
@@ -1291,9 +1291,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     for (int k = 0; k < 7; k++)
                     {
                         Vector2 newDirection = velocity.RotatedByRandom(spread);
-                        Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Black, Main.rand.NextFloat(0.2f, 0.5f));
+                        Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Black, Main.rand.NextFloat(0.2f, 0.5f));
                     }
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Black, 1);
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.Black, 1);
                     if (Main.myPlayer == player.whoAmI)
                     {
                         Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<PINKX>(), damage, knockback, player.whoAmI);
@@ -1308,9 +1308,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     for (int k = 0; k < 7; k++)
                     {
                         Vector2 newDirection = velocity.RotatedByRandom(spread);
-                        Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Black, Main.rand.NextFloat(0.2f, 0.5f));
+                        Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Black, Main.rand.NextFloat(0.2f, 0.5f));
                     }
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Black, 1);
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.Black, 1);
                     if (Main.myPlayer == player.whoAmI)
                     {
                         Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<BLACKX>(), damage, knockBack, player.whoAmI);
@@ -1359,9 +1359,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 7; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Turquoise, Main.rand.NextFloat(0.2f, 0.5f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Turquoise, Main.rand.NextFloat(0.2f, 0.5f));
                 }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Turquoise, 1);
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.Turquoise, 1);
                 if (Main.myPlayer == player.whoAmI)
                 {
                     Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, ModContent.ProjectileType<NLUX>(), damage, knockback, player.whoAmI);
@@ -1411,9 +1411,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 7; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
                 }
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Red, 1);
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.Red, 1);
                 if (Main.myPlayer == player.whoAmI)
                 {
                     Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockBack, player.whoAmI);
@@ -1463,10 +1463,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             for (int k = 0; k < 14; k++)
             {
                 Vector2 newDirection = velocity.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkGreen, Main.rand.NextFloat(0.4f, 0.8f));
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkGreen, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkGreen, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkGreen, 1);
             Vector2 vel = velocity * 16;
             vel = vel.RotatedByRandom(MathHelper.PiOver4 / 15);
             if (Main.myPlayer == player.whoAmI)
@@ -1508,10 +1508,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 for (int k = 0; k < 14; k++)
                 {
                     Vector2 newDirection = velocity.RotatedByRandom(spread);
-                    Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightGoldenrodYellow, Main.rand.NextFloat(0.4f, 0.8f));
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightGoldenrodYellow, Main.rand.NextFloat(0.4f, 0.8f));
                 }
 
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
                 if (Main.myPlayer == player.whoAmI)
                 {
                     Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity * 8, projToShoot, damage, knockback, player.whoAmI);
@@ -1528,7 +1528,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 {
                     Vector2 direction2 = offset.RotatedByRandom(spread);
 
-                    Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
+                    Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
                 }
 
 
@@ -1537,8 +1537,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 {
 
 
-                    Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
-                    Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+                    Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+                    Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
 
 
 

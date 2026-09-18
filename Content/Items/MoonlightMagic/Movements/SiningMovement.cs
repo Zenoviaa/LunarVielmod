@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using Terraria;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Movements
@@ -8,17 +7,14 @@ namespace Stellamod.Content.Items.MoonlightMagic.Movements
     {
         float distance = 8;
         int rotationalSpeed = 4;
-        int afterImgCancelDrawCount = 0;
         float t = 0;
         bool initialized = false;
-        float alphaCounter;
         Vector2 initialSpeed = Vector2.Zero;
         int TimerSpeed = 0;
 
         public override void AI()
         {
             Projectile.velocity *= 0.991f;
-            alphaCounter += 0.04f;
             int rightValue = (int)Projectile.ai[1] - 1;
             if (rightValue < (double)Main.projectile.Length && rightValue != -1)
             {

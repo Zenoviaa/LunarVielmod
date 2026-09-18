@@ -96,7 +96,6 @@ public sealed class RippleParticleManager : ParticleManager
 public sealed class RippleRenderer : ModSystem
 {
     private RippleParticleManager _particleManager;
-    private RenderTargetProvider _rippleRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public override void Load()
     {
         base.Load();
@@ -117,41 +116,7 @@ public sealed class RippleRenderer : ModSystem
     public override void PostUpdateDusts()
     {
         base.PostUpdateDusts();
-       // DebugSpawnRippler();
         _particleManager.Update();
-    }
-
-    private void DrawToRippleTexture()
-    {
-        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-        SpriteBatch sb = Main.spriteBatch;
-        gDevice.SetRenderTarget(_rippleRT);
-        gDevice.Clear(Color.Transparent);
-
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        RippleWriteShader writeShader = ShaderContent.GetInstance<RippleWriteShader>();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, writeShader.Effect);
-        SpritebatchDrawer rippleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Vector2.Zero);
-        for (int i = 0; i < _particleManager.Particles.Length; i++)
-        {
-            ref float timeLeft = ref _particleManager.Particles.timeLeft[i];
-            if (timeLeft <= 0)
-                continue;
-
-            ref Vector2 position = ref _particleManager.Particles.position[i];
-            ref Vector2 scale = ref _particleManager.Particles.scale[i];
-            rippleDrawer.worldPosition = position;
-            rippleDrawer.scale = scale;
-            rippleDrawer.color = Color.Lerp(Color.Transparent, Color.White, timeLeft / 100f);
-            spriteBatch.Draw(rippleDrawer);
-        }
-
-        spriteBatch.End();
-        gDevice.SetRenderTarget(null);
-
-        Rippler s = ScreenShader.GetInstance<Rippler>();
-        s.rippleTexture = _rippleRT;
-        s.alpha = 1;
     }
 
     private void DrawToRippleArray()
@@ -184,17 +149,6 @@ public sealed class RippleRenderer : ModSystem
         DrawToRippleArray();
     }
 
-    private void DebugSpawnRippler()
-    {
-        if(Main.mouseLeft && Main.mouseLeftRelease)
-        {
-            _particleManager.SpawnParticle(Main.MouseWorld, Vector2.Zero, Vector2.One * 0, 90);
-        }
-    }
-    private void DebugDrawToScreen(SpriteBatch sb, Vector2 screenPos)
-    {
-       // sb.Draw(_rippleRT, Vector2.Zero, Color.White);
-    }
 
 }
 

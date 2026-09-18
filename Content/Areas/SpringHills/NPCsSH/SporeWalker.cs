@@ -59,7 +59,7 @@ public class SporeShroomClouds : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSmog, DrawLayer.OverNPCsWithOutline);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSmog, DrawLayer.OverNPCs);
         return false;
       //  return base.PreDraw(ref lightColor);
     }

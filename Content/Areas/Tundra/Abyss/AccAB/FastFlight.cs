@@ -4,7 +4,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Terraria;
@@ -22,8 +22,8 @@ public class MoonFlightRenderer : ModSystem
     private Asset<Texture2D> _wingTextureAsset;
     private Asset<Texture2D> _wingOutlineTextureAsset;
     private Asset<Texture2D> _wingTextureAsset2;
-    public RenderTargetProvider moonFlightRT = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Width = 256, Height = 256 });
-    public RenderTargetProvider moonFlightSwapRT = new RenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Width = 256, Height = 256 });
+    public LazyRenderTargetProvider moonFlightRT = new LazyRenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Width = 256, Height = 256 });
+    public LazyRenderTargetProvider moonFlightSwapRT = new LazyRenderTargetProvider(() => RenderTargetParameters.DefaultScreenTarget with { Width = 256, Height = 256 });
     public override void OnModLoad()
     {
         base.OnModLoad();
@@ -271,11 +271,13 @@ public class FastFlightPlayer : ModPlayer
     private float _wingTimer;
     public bool hasFastFlight;
     public bool hasMoonFlight;
+    public bool weakWinged;
     public override void ResetEffects()
     {
         base.ResetEffects();
         hasFastFlight = false;
         hasMoonFlight = false;
+        weakWinged = false;
     }
     public override void PostUpdateEquips()
     {
@@ -318,8 +320,15 @@ public class FastFlightPlayer : ModPlayer
         if (hasMoonFlight)
         {
             Player.wingTimeMax = Player.wingTimeMax + 7;
+   
             Player.GetDamage(DamageClass.Generic) += 0.05f;
             Player.moveSpeed += 0.2f;
+        }
+        if (weakWinged)
+        {
+            Player.wingTimeMax = (int)(Player.wingTimeMax );
+            Player.rocketTime = 0;
+            Player.rocketTimeMax = 0;
         }
     }
 

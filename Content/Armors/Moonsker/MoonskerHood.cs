@@ -254,17 +254,17 @@ namespace Stellamod.Content.Armors.Moonsker
             Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
             Vector2 glowDrawOrigin = glowMask.Size() / 2f;
             Color glowColor = Color.Goldenrod;
-            glowColor = Color.Lerp(Color.Goldenrod, Color.DarkGoldenrod, ExtraMath.Osc(0f, 1f, speed: 8));
+            glowColor = Color.Lerp(Color.Goldenrod, Color.DarkOrange, ExtraMath.Osc(0.5f, 1f, speed: 8)) * 0.5f;
             glowColor.A = 0;
-            spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.15f, SpriteEffects.None, 0);
             // spriteBatch.RestartDefaults();
 
 
             glowMask = AssetManager.GlowMask.SpiralVortex.Value;
             glowDrawOrigin = glowMask.Size() / 2f;
-            glowColor = Color.Goldenrod;
+            glowColor = Color.Orange * 0.5f;
             glowColor.A = 0;
-            spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.2f, SpriteEffects.None, 0);
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.22f, SpriteEffects.None, 0);
 
 
         }
@@ -277,7 +277,9 @@ namespace Stellamod.Content.Armors.Moonsker
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
             drawCenter.Y += ExtraMath.Osc(-1f, 1f);
-            spriteBatch.Draw(texture, drawCenter, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            Color glowColor = Color.White * ExtraMath.Osc(0.4f, 0.8f);
+            glowColor.A = 0;
+            spriteBatch.Draw(texture, drawCenter, null, glowColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
     }

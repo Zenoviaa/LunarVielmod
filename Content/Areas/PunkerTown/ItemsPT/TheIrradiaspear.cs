@@ -2,13 +2,13 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trailing;
@@ -63,7 +63,6 @@ public class IrradiaspearSlash : BaseSwingProjectileV2
     
     private bool _init;
     private bool _hit;
-    private bool _didHitStop;
     private float _traveledRotation;
     private float _oldRot;
     public override void DefineCombo()
@@ -242,7 +241,7 @@ public class IrradiaspearBoom : ModProjectile,
         Timer++;
         if (Timer == 1)
         {
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Land") with { PitchVariance = 0.6f };
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Land") with { PitchVariance = 0.6f, Volume = 0.4f };
             SoundEngine.PlaySound(soundStyle, Projectile.position);
             PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.LightGreen, 45, 64);
 
@@ -422,7 +421,7 @@ public class TheIrradiaspearP : ModProjectile,
 
         if ((int)Timer == (int)ChargeTime)
         {
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Teleport");
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Teleport") with { Volume = 0.4f };
             SoundEngine.PlaySound(soundStyle, Projectile.position);
 
             FlashTimer = 1;
@@ -471,7 +470,7 @@ public class TheIrradiaspearP : ModProjectile,
         if (Timer == 1 && MaxCharge)
         {
             //Throw Sound
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Shot");
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Shot") with { Volume = 0.4f };
             SoundEngine.PlaySound(soundStyle, Projectile.position);
 
             //Rocket Boost
@@ -582,7 +581,7 @@ public class TheIrradiaspearP : ModProjectile,
         if (MaxCharge)
         {
             //Big impact sound
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Wave");
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Wave") with { Volume = 0.4f };
             SoundEngine.PlaySound(soundStyle, Projectile.position);
 
             HitStunTimer = 15;

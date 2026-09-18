@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.Rendering;
+﻿using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using Terraria;
@@ -42,16 +42,14 @@ namespace Stellamod.Common.Shaders
     [Autoload(Side = ModSide.Client)]
     public class OutlineRenderSystem : ModSystem
     {
-        private List<IDrawOutlines> _outlinesToDraw;
-        private List<Color> _lightColors;
-        private RenderTargetProvider _playerOutlineRenderRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private readonly List<IDrawOutlines> _outlinesToDraw = new();
+        private readonly List<Color> _lightColors = new();
         public bool canDrawNPCOutlines;
         public override void OnModLoad()
         {
             base.OnModLoad();
             On_Main.DrawNPCs += DrawOutlines;
             On_Main.CheckMonoliths += DrawToPlayerOutlineRT;
-            On_Main.DoDraw_DrawNPCsOverTiles += DrawPlayerOutlineRTToScreen;
         }
 
 
@@ -60,10 +58,8 @@ namespace Stellamod.Common.Shaders
             base.OnModUnload();
             On_Main.DrawNPCs -= DrawOutlines;
             On_Main.CheckMonoliths -= DrawToPlayerOutlineRT;
-            On_Main.DoDraw_DrawNPCsOverTiles -= DrawPlayerOutlineRTToScreen;
-
-            _outlinesToDraw = null;
-            _lightColors = null;
+            _outlinesToDraw?.Clear();
+            _lightColors?.Clear();
         }
 
         public override void PreUpdateNPCs()
@@ -71,18 +67,33 @@ namespace Stellamod.Common.Shaders
             base.PreUpdateNPCs();
             canDrawNPCOutlines = true;
         }
+
         private void DrawToPlayerOutlineRT(On_Main.orig_CheckMonoliths orig)
         {
             if (OutlineAnyPlayers() && Main.netMode != NetmodeID.Server && !Main.gameMenu)
             {
-                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-                SpriteBatch spriteBatch = Main.spriteBatch;
+                OutlineRenderer.Queue(DrawWhite);
+            }
+            orig();
+        }
 
-                LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
-                graphicsDevice.SetRenderTarget(_playerOutlineRenderRT);
-                graphicsDevice.Clear(Color.Transparent);
+        private bool OutlineAnyPlayers()
+        {
+            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+            return clientConfig.OutlinePlayer || clientConfig.OutlineOtherPlayers;
 
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null);
+        }
+
+        private void DrawWhite(SpriteBatch sb)
+        {
+            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            RenderTargetHandle screenTarget = RenderTargets.ScreenTarget;
+            sb.EndOut(out var oldParameters);
+            using(new RenderTargetContext(screenTarget))
+            {
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null);
 
                 if (clientConfig.OutlinePlayer)
                 {
@@ -100,33 +111,13 @@ namespace Stellamod.Common.Shaders
                 }
 
                 spriteBatch.End();
-                graphicsDevice.SetRenderTarget(null);
-                OutlineRenderer.Queue(DrawWhite);
             }
-            orig();
-        }
 
-        private bool OutlineAnyPlayers()
-        {
-            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
-            return clientConfig.OutlinePlayer || clientConfig.OutlineOtherPlayers;
+            sb.Begin(oldParameters with { matrix = Matrix.identity });
+            sb.Draw(screenTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            sb.End();
 
-        }
-
-        private void DrawPlayerOutlineRTToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
-        {
-            orig(self);
-            if (!OutlineAnyPlayers())
-                return;
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-        }
-
-
-        private void DrawWhite(SpriteBatch sb)
-        {
-            sb.Draw(_playerOutlineRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            sb.Begin(oldParameters);
         }
 
         private void DrawLocalPlayer(Player player)
@@ -141,10 +132,6 @@ namespace Stellamod.Common.Shaders
         }
         private void DrawOutlines(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
-
-            _outlinesToDraw ??= new List<IDrawOutlines>();
-            _lightColors ??= new List<Color>();
-
             _outlinesToDraw.Clear();
             _lightColors.Clear();
 

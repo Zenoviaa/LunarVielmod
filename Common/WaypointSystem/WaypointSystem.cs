@@ -9,10 +9,10 @@ using Stellamod.Common.UI;
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Content.Areas.SpringHills.NPCsSH;
 using Stellamod.Content.Armors.Sanctorous;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using Stellamod.Visual.Particles;
@@ -79,7 +79,6 @@ public class OrganDragon : ModNPC
     private Asset<Texture2D>[] _frontLegTextureAssets;
     private Asset<Texture2D>[] _backLegTextureAssets;
     private Asset<Texture2D>[] _wingTextureAssets;
-
     private DragonSegment _headSegment;
     private DragonSegment[] _bodySegments;
     private Vector2 _teleportPosition;
@@ -164,7 +163,7 @@ public class OrganDragon : ModNPC
         NPC.friendly = true; // NPC Will not attack player
         NPC.width = 32;
         NPC.height = 32;
-        NPC.aiStyle = 0;
+        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
         NPC.damage = 90;
         NPC.defense = 42;
         NPC.lifeMax = 200;
@@ -287,8 +286,10 @@ public class OrganDragon : ModNPC
     {
         int targetTileType = (int)TeleportTarget;
         ZTileMap zTileMap = ModContent.GetInstance<ZTileMap>();
-        var tilePosition = zTileMap.Find((ushort)targetTileType);
-        return new Point(tilePosition.x, tilePosition.y);
+        if(zTileMap.Find((ushort)targetTileType, out var tp)){
+            return new Point(tp.x, tp.y);
+        }
+        return Main.LocalPlayer.position.ToTileCoordinates();
     }
 
     private void AI_SwoopUp()

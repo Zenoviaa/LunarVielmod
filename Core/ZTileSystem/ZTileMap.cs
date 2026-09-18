@@ -1,6 +1,6 @@
-﻿using Stellamod.Helpers;
+﻿using Microsoft.CodeAnalysis.Text;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,6 +8,7 @@ using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -27,6 +28,27 @@ public enum Rotation : byte
     Degrees_90,
     Degrees_180,
     Degrees_270,
+}
+
+//So to fix this
+//We drop the dictionary
+//and instead straight up store a List of every ZTile in the world?
+
+public struct ActiveZTileData
+{
+    public ActiveZTileData()
+    {
+
+    }
+    public ActiveZTileData(ZTilePosition position, ZTileInstanceData instanceData, ZRenderLayer renderLayer)
+    {
+        this.position = position;
+        this.instanceData = instanceData;
+        this.renderLayer = renderLayer;
+    }
+    public ZTilePosition position;
+    public ZTileInstanceData instanceData;
+    public ZRenderLayer renderLayer;
 }
 
 /// <summary>
@@ -138,81 +160,175 @@ public class ZTileSerializer : TagSerializer<ZTileSaveData, TagCompound>
         };
     }
 }
-/// <summary>
-/// Represents a collection of tiles to render
-/// </summary>
-public class TileScene : IEnumerable
+
+public class ZTilePlayer : ModPlayer
 {
-    private IDictionary<ZTilePosition, ZTileInstanceData> _tiles;
-
-    public TileScene()
+    public override void OnEnterWorld()
     {
-        _tiles = new Dictionary<ZTilePosition, ZTileInstanceData>();
+        base.OnEnterWorld();
+        if (Main.netMode == NetmodeID.SinglePlayer)
+            return;
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
+        ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
+        tileMap.RequestAllZTileData();
     }
+}
+public class ZTileMap : ModSystem
+{
+    private static bool _needsResorting;
+    private static Point _lastChunk = new Point(-9999, -9999);
+    private readonly static List<ActiveZTileData> _zTileInstances = new List<ActiveZTileData>();
+    private static List<ActiveZTileData> _zTileInstancesOrdered = new List<ActiveZTileData>();
+    private List<ActiveZTileData>[] _zTileActiveDrawingInstances;
 
-    public bool FindTile(ushort type, out ZTilePosition instanceData)
+    public const int Chunk_Size = 64;
+
+    public static event Action OnRenderForeground;
+    public bool Find(ushort type, out ZTilePosition tilePosition)
     {
-        foreach (var kvp in _tiles)
+        foreach(var instance in _zTileInstances)
         {
-            if (kvp.Value.type == type)
+            if(instance.instanceData.type == type)
             {
-                instanceData = kvp.Key;
+                tilePosition = instance.position;
                 return true;
             }
-
         }
-        instanceData = default;
-        return false;
-        //return default;
-    }
-
-    public void AddorSet(ZTilePosition tilePosition, ZTileInstanceData tileData)
-    {
-        if (_tiles.ContainsKey(tilePosition))
-            _tiles[tilePosition] = tileData;
-        else
-            _tiles.Add(tilePosition, tileData);
-    }
-
-    public void Remove(ZTilePosition tilePosition)
-    {
-
-        _tiles.Remove(tilePosition);
-    }
-
-    public void Remove(Point point)
-    {
-        IEnumerable<ZTilePosition> pointsToRemove = _tiles.Keys.Where(x => x.x == point.X && x.y == point.Y);
-        foreach (ZTilePosition tilePosition in pointsToRemove)
-            _tiles.Remove(tilePosition);
-    }
-
-    public void Clear()
-    {
-        _tiles.Clear();
-    }
-
-    public bool TryGet(ZTilePosition key, out ZTileInstanceData tileData)
-    {
-        if (_tiles.TryGetValue(key, out tileData))
-            return true;
+        tilePosition = default;
         return false;
     }
 
-    public void Render(SpriteBatch spriteBatch, Vector2 screenPos)
+
+
+
+
+    public override void OnModLoad()
     {
-        //At this point we can assume that everything in this scene is either on screen or very close to being on screen
-        //So we should render everything within the scene
-        var sortedDict = _tiles.OrderBy(x => x.Key.z);
-        foreach (var kvp in sortedDict)
+        base.OnModLoad();
+        _zTileActiveDrawingInstances = new List<ActiveZTileData>[Enum.GetValues<ZRenderLayer>().Length];
+        for(int i = 0; i < _zTileActiveDrawingInstances.Length; i++)
         {
-            ZTilePosition tilePosition = kvp.Key;
-            ZTileInstanceData tileData = kvp.Value;
+            _zTileActiveDrawingInstances[i] = new List<ActiveZTileData>();
+        }
+        On_Main.DoDraw_WallsAndBlacks += RenderOverWalls;
+        On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
+        On_Main.DrawDust += RenderForeground;
+        RekSilhouetteSystem.OnPrepareSilhouettes += PrepareSilhouettes;
+    }
+    public override void Unload()
+    {
+        base.Unload();
+        RekSilhouetteSystem.OnPrepareSilhouettes -= PrepareSilhouettes;
+    }
+    private void PrepareSilhouettes()
+    {
+        ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
+        foreach (var tileDatas in _zTileActiveDrawingInstances)
+        {
+            foreach (var tileData in tileDatas)
+            {
+                var zTile = zTileLoader.GetTile(tileData.instanceData.type);
+                if (zTile.waterSilhouette)
+                {
+                    ZTilePosition tilePosition = tileData.position;
+                    ZTileInstanceData t = tileData.instanceData;
+                    ZTileDrawParams drawParams = new ZTileDrawParams
+                    {
+                        tilePosition = tilePosition,
+                        tileData = t,
+                        lightColor = Color.DarkBlue
+                    };
+                    var silhouetteSystem = ModContent.GetInstance<RekSilhouetteSystem>();
+                    silhouetteSystem.SilhouettesToDraw.Add((SpriteBatch sb) =>
+                    {
+                        zTile.DrawSilhouette(sb, Main.screenPosition, drawParams);
+                    });
+                }
+            }
+        }
+    }
 
+    public override void PostUpdateEverything()
+    {
+        base.PostUpdateEverything();
+        ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
+        foreach (var tileDatas in _zTileActiveDrawingInstances)
+        {
+            foreach(var tileData in tileDatas)
+            {
+                var zTile = zTileLoader.GetTile(tileData.instanceData.type);
+                zTile.Update(tileData.position.x, tileData.position.y);
+            }
+        }
+        Point chunk = GetCameraChunk();
+        if (_lastChunk == chunk)
+            return;
 
+        _lastChunk = chunk;
+        CollectInstanceData(chunk);
+    }
+
+    public static void Refresh()
+    {
+        _lastChunk = new Point(-9999, -9999);
+        _needsResorting = true;
+    }
+
+    public void CollectInstanceData(in Point currentChunk)
+    {
+    //    Stopwatch instanceDataWatch = Stopwatch.StartNew();
+        if (_needsResorting)
+        {
+            _zTileInstancesOrdered = _zTileInstances.OrderBy(X => X.position.z).ToList();
+            _needsResorting = false;
+        }
+       
+        for(int i = 0; i < _zTileActiveDrawingInstances.Length; i++)
+        {
+            _zTileActiveDrawingInstances[i].Clear();
+        }
+        foreach(ActiveZTileData tileData in _zTileInstancesOrdered)
+        {
+            //Calculate the chunk
+            int chunkX = tileData.position.x / ZTileMap.Chunk_Size;
+            int chunkY = tileData.position.y / ZTileMap.Chunk_Size;
+            Point chunk = new Point(chunkX, chunkY);
+            int dx = Math.Abs(chunk.X - currentChunk.X);
+            int dy = Math.Abs(chunk.Y - currentChunk.Y);
+
+            //If not adjacent or inside don't render
+            if (dx + dy > 2)
+                continue;
+            int index = (int)tileData.renderLayer;
+            _zTileActiveDrawingInstances[index].Add(tileData);
+        }
+    //    instanceDataWatch.Stop();
+    //    Mod.Logger.Info($"{instanceDataWatch.ElapsedTicks} collect z tile data ticks");
+    }
+
+    public void RenderRedBoxesLayer(SpriteBatch spriteBatch, in List<ActiveZTileData> drawingData)
+    {
+        Rectangle frame = new Rectangle(0, 0, 16, 16);
+        foreach (var tileData in drawingData)
+        {
+            ZTilePosition tilePosition = tileData.position;
+            Vector2 position = new Vector2(tilePosition.x, tilePosition.y).ToWorldCoordinates();
+            Vector2 drawPosition = position - Main.screenPosition;
+            spriteBatch.Draw(TextureAssets.Tile[0].Value, drawPosition, frame, Color.Red, 0, frame.Size() / 2f, 1f, SpriteEffects.None, 0);
+        }
+    }
+    public void RenderLayer(SpriteBatch spriteBatch, in List<ActiveZTileData> drawingData)
+    {
+      //  var watch = Stopwatch.StartNew();
+        ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
+        foreach (var zTile in drawingData)
+        {
+            ZTilePosition tilePosition = zTile.position;
+            ZTileInstanceData tileData = zTile.instanceData;
 
             //Get the z tile
-            ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
             ZTile tile = zTileLoader.GetTile(tileData.type);
             ZTileDrawParams drawParams = new ZTileDrawParams
             {
@@ -247,293 +363,100 @@ public class TileScene : IEnumerable
                         tile.RightClick(new Point(tilePosition.x, tilePosition.y));
                         Main.mouseRightRelease = false;
                     }
-                    tile.DrawOutline(spriteBatch, screenPos, drawParams);
+                    tile.DrawOutline(spriteBatch, Main.screenPosition, drawParams);
                 }
-                //Primitives2D.DrawRectangle(spriteBatch, selectionBoundary, Color.Red);
-
-                //TODO: check if mouse intersects and whatnot
             }
-            tile.Draw(spriteBatch, screenPos, drawParams);
+            tile.Draw(spriteBatch, Main.screenPosition, drawParams);
         }
+    //    watch.Stop();
+     //   Main.NewText($"{watch.ElapsedTicks} ticks");
     }
-    public void RenderRedBoxes(SpriteBatch spriteBatch, Vector2 screenPos)
-    {
-        //At this point we can assume that everything in this scene is either on screen or very close to being on screen
-        //So we should render everything within the scene
-        var sortedDict = _tiles.OrderBy(x => x.Key.z);
-        Rectangle frame = new Rectangle(0, 0, 16, 16);
-        foreach (var kvp in sortedDict)
-        {
-            ZTilePosition tilePosition = kvp.Key;
-            Vector2 position = new Vector2(tilePosition.x, tilePosition.y).ToWorldCoordinates();
-            Vector2 drawPosition = position - screenPos;
-            spriteBatch.Draw(TextureAssets.Tile[0].Value, drawPosition, frame, Color.Red, 0, frame.Size() / 2f, 1f, SpriteEffects.None, 0);
-        }
-    }
-
-    public IEnumerator GetEnumerator()
-    {
-        return ((IEnumerable)_tiles).GetEnumerator();
-    }
-}
-
-public class ZTileRenderLayer
-{
-    private readonly TileScene[] _sceneRenderBuffer;
-    private readonly IDictionary<Point, TileScene> _tileScenes;
-    public ZTileRenderLayer()
-    {
-        _sceneRenderBuffer = new TileScene[9];
-        _tileScenes = new Dictionary<Point, TileScene>();
-    }
-
-    public bool FindTile(ushort type, out ZTilePosition instanceData)
-    {
-        foreach (var value in _tileScenes.Values)
-        {
-            if (value.FindTile(type, out instanceData))
-            {
-                return true;
-            }
-        }
-        instanceData = default;
-        return false;
-    }
-    /// <summary>
-    /// Adds a z tile to the render layer
-    /// </summary>
-    /// <param name="tilePosition"></param>
-    /// <param name="tileData"></param>
-    public void Add(ZTilePosition tilePosition, ZTileInstanceData tileData)
-    {
-        //Calculate the chunk
-        int chunkX = tilePosition.x / ZTileMap.Chunk_Size;
-        int chunkY = tilePosition.y / ZTileMap.Chunk_Size;
-        Point chunk = new Point(chunkX, chunkY);
-
-        //Get the tile scene
-        //If it doesn't exist we have to create a new one
-        TileScene tileScene;
-        if (!_tileScenes.TryGetValue(chunk, out tileScene))
-        {
-            tileScene = new TileScene();
-            _tileScenes.Add(chunk, tileScene);
-        }
-
-        //Add it to the tile scene
-        tileScene.AddorSet(tilePosition, tileData);
-    }
-    public void Remove(ZTilePosition tilePosition)
-    {
-        //Calculate the chunk
-        int chunkX = tilePosition.x / ZTileMap.Chunk_Size;
-        int chunkY = tilePosition.y / ZTileMap.Chunk_Size;
-        Point chunk = new Point(chunkX, chunkY);
-
-        //Get the tile scene
-        //If it doesn't exist we have to create a new one
-        TileScene tileScene;
-        if (!_tileScenes.TryGetValue(chunk, out tileScene))
-        {
-            tileScene = new TileScene();
-            _tileScenes.Add(chunk, tileScene);
-        }
-
-        //Add it to the tile scene
-        tileScene.Remove(tilePosition);
-    }
-    public void Remove(Point tilePosition)
-    {
-        //Calculate the chunk
-        int chunkX = tilePosition.X / ZTileMap.Chunk_Size;
-        int chunkY = tilePosition.Y / ZTileMap.Chunk_Size;
-        Point chunk = new Point(chunkX, chunkY);
-
-        if (_tileScenes.TryGetValue(chunk, out TileScene tileScene))
-        {
-            tileScene.Remove(tilePosition);
-        }
-
-        //Add it to the tile scene
-
-    }
-    public void Clear()
-    {
-        _tileScenes.Clear();
-    }
-
-    /// <summary>
-    /// Draws the entire scene, make sure to begin the spritebatch before calling this function
-    /// </summary>
-    /// <param name="spriteBatch"></param>
-    /// <param name="chunk"></param>
-    public void Render(SpriteBatch spriteBatch, Vector2 screenPos, Point chunk, bool redBoxes = false)
-    {
-        //We have to get all of our chunks
-        int index = 0;
-
-        Point left = new Point(-1, 0);
-        Point right = new Point(1, 0);
-        Point up = new Point(0, -1);
-        Point down = new Point(0, 1);
-
-        _tileScenes.TryGetValue(chunk, out _sceneRenderBuffer[index++]);
-
-        _tileScenes.TryGetValue(chunk + left, out _sceneRenderBuffer[index++]);
-        _tileScenes.TryGetValue(chunk + right, out _sceneRenderBuffer[index++]);
-        _tileScenes.TryGetValue(chunk + up, out _sceneRenderBuffer[index++]);
-        _tileScenes.TryGetValue(chunk + down, out _sceneRenderBuffer[index++]);
-
-        _tileScenes.TryGetValue(chunk + up + left, out _sceneRenderBuffer[index++]);
-        _tileScenes.TryGetValue(chunk + up + right, out _sceneRenderBuffer[index++]);
-        _tileScenes.TryGetValue(chunk + down + left, out _sceneRenderBuffer[index++]);
-        _tileScenes.TryGetValue(chunk + down + right, out _sceneRenderBuffer[index++]);
-
-        for (int i = 0; i < index; i++)
-        {
-            TileScene scene = _sceneRenderBuffer[i];
-            if (scene == null)
-                continue;
-            if (redBoxes)
-            {
-                scene.RenderRedBoxes(spriteBatch, screenPos);
-            }
-            else
-            {
-                scene.Render(spriteBatch, screenPos);
-            }
-
-
-        }
-    }
-
-
-    public TileScene[] GetScenes()
-    {
-        return _tileScenes.Values.ToArray();
-    }
-}
-
-public class ZTileMap : ModSystem
-{
-    private ZTileRenderLayer[] _renderLayers;
-    public const int Chunk_Size = 64;
-
-    public static event Action OnRenderForeground;
-    public ZTilePosition Find(ushort type)
-    {
-        foreach (ZTileRenderLayer layer in _renderLayers)
-        {
-            if (layer.FindTile(type, out ZTilePosition instanceData))
-            {
-                return instanceData;
-            }
-        }
-        return default;
-    }
-
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        int numLayers = Enum.GetValues<ZRenderLayer>().Length;
-
-        //Initialize our render layers
-        _renderLayers = new ZTileRenderLayer[numLayers];
-        for (int i = 0; i < _renderLayers.Length; i++)
-        {
-            _renderLayers[i] = new ZTileRenderLayer();
-        }
-        On_Main.DoDraw_WallsAndBlacks += RenderOverWalls;
-        On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
-        On_Main.DrawDust += RenderForeground;
-    }
-
-
-    public override void Unload()
-    {
-        base.Unload();
-        On_Main.DoDraw_WallsAndBlacks -= RenderOverWalls;
-        On_Main.DrawPlayers_AfterProjectiles -= RenderOverPlayers;
-        On_Main.DrawDust -= RenderForeground;
-    }
-
+   
 
     public override void SaveWorldData(TagCompound tag)
     {
         base.SaveWorldData(tag);
-        Stopwatch watch = new Stopwatch();
-        watch.Start();
         List<List<ZTileSaveData>> tileDataList = new List<List<ZTileSaveData>>();
-        for (int i = 0; i < _renderLayers.Length; i++)
+        for(int i = 0; i < 4; i++)
+            tileDataList.Add(new());
+
+        for(int i = 0; i < _zTileInstances.Count; i++)
         {
-            var layer = _renderLayers[i];
-            TileScene[] scenes = layer.GetScenes();
-            List<ZTileSaveData> saveData = new List<ZTileSaveData>();
-            for (int j = 0; j < scenes.Length; j++)
-            {
-                TileScene scene = scenes[j];
-
-                foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
-                {
-                    ZTileSaveData tileSaveData = new ZTileSaveData();
-                    tileSaveData.x = tilePair.Key.x;
-                    tileSaveData.y = tilePair.Key.y;
-                    tileSaveData.z = tilePair.Key.z;
-                    tileSaveData.scale = tilePair.Value.scale;
-                    tileSaveData.flipX = tilePair.Value.flipX;
-                    tileSaveData.frameNumber = tilePair.Value.frameNumber;
-                    tileSaveData.rotation = (int)tilePair.Value.rotation;
-                    tileSaveData.type = tilePair.Value.type;
-                    tileSaveData.value = tilePair.Value.value;
-                    saveData.Add(tileSaveData);
-                }
-
-            }
-            tileDataList.Add(saveData);
+            var tileData = _zTileInstances[i];
+            ZTileSaveData tileSaveData = new ZTileSaveData();
+            tileSaveData.x = tileData.position.x;
+            tileSaveData.y = tileData.position.y;
+            tileSaveData.z = tileData.position.z;
+            tileSaveData.scale = tileData.instanceData.scale;
+            tileSaveData.flipX = tileData.instanceData.flipX;
+            tileSaveData.frameNumber = tileData.instanceData.frameNumber;
+            tileSaveData.rotation = (int)tileData.instanceData.rotation;
+            tileSaveData.type = tileData.instanceData.type;
+            tileSaveData.value = tileData.instanceData.value;
+            tileDataList[(int)tileData.renderLayer].Add(tileSaveData);
         }
 
         tag["zTileData"] = tileDataList;
-        watch.Stop();
-        Stellamod.Instance.Logger.Info($"Saving Z Tile Data {watch.ElapsedMilliseconds}ms");
+    }
+
+    public override void LoadWorldData(TagCompound tag)
+    {
+        base.LoadWorldData(tag);
+        _zTileInstances.Clear();
+        List<List<ZTileSaveData>> tileDataList = tag.Get<List<List<ZTileSaveData>>>("zTileData");
+        for (int i = 0; i < tileDataList.Count; i++)
+        {
+            List<ZTileSaveData> tileSaveDataList = tileDataList[i];
+            for (int j = 0; j < tileSaveDataList.Count; j++)
+            {
+                ZTileSaveData saveData = tileSaveDataList[j];
+                ZTilePosition zTilePosition = new ZTilePosition();
+                zTilePosition.x = saveData.x;
+                zTilePosition.y = saveData.y;
+                zTilePosition.z = saveData.z;
+
+                ZTileInstanceData instanceData = new ZTileInstanceData();
+                instanceData.type = saveData.type;
+                instanceData.rotation = (Rotation)saveData.rotation;
+                instanceData.frameNumber = (ushort)saveData.frameNumber;
+                instanceData.scale = saveData.scale;
+                instanceData.flipX = saveData.flipX;
+                instanceData.value = saveData.value;
+                ActiveZTileData zTileData = new ActiveZTileData(zTilePosition, instanceData, (ZRenderLayer)i);
+                _zTileInstances.Add(zTileData);
+            }
+        }
+        Refresh();
     }
 
     public void SaveTileData(TagCompound tag, Rectangle worldBounds, Point bottomLeft)
     {
-
         List<List<ZTileSaveData>> tileDataList = new List<List<ZTileSaveData>>();
-        for (int i = 0; i < _renderLayers.Length; i++)
+        for (int i = 0; i < 4; i++)
+            tileDataList.Add(new());
+        for (int i = 0; i < _zTileInstances.Count; i++)
         {
-            var layer = _renderLayers[i];
-            TileScene[] scenes = layer.GetScenes();
-            List<ZTileSaveData> saveData = new List<ZTileSaveData>();
-            for (int j = 0; j < scenes.Length; j++)
-            {
-                TileScene scene = scenes[j];
-                foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
-                {
-                    if (!worldBounds.Contains(new Point(tilePair.Key.x, tilePair.Key.y)))
-                        continue;
+            var tileData = _zTileInstances[i];
+            if (!worldBounds.Contains(new Point(tileData.position.x, tileData.position.y)))
+                continue;
 
 
+            int xOffset = tileData.position.x - bottomLeft.X;
+            int yOffset = bottomLeft.Y - tileData.position.y;
 
-                    int xOffset = tilePair.Key.x - bottomLeft.X;
-                    int yOffset = bottomLeft.Y - tilePair.Key.y;
-                    ZTileSaveData tileSaveData = new ZTileSaveData();
-                    tileSaveData.x = xOffset;
-                    tileSaveData.y = yOffset;
-                    tileSaveData.z = tilePair.Key.z;
-                    tileSaveData.scale = tilePair.Value.scale;
-                    tileSaveData.flipX = tilePair.Value.flipX;
-                    tileSaveData.frameNumber = tilePair.Value.frameNumber;
-                    tileSaveData.rotation = (int)tilePair.Value.rotation;
-                    tileSaveData.type = tilePair.Value.type;
-                    tileSaveData.value = tilePair.Value.value;
-                    saveData.Add(tileSaveData);
-                }
-
-            }
-            tileDataList.Add(saveData);
+            ZTileSaveData tileSaveData = new ZTileSaveData();
+            tileSaveData.x = xOffset;
+            tileSaveData.y = yOffset;
+            tileSaveData.z = tileData.position.z;
+            tileSaveData.scale = tileData.instanceData.scale;
+            tileSaveData.flipX = tileData.instanceData.flipX;
+            tileSaveData.frameNumber = tileData.instanceData.frameNumber;
+            tileSaveData.rotation = (int)tileData.instanceData.rotation;
+            tileSaveData.type = tileData.instanceData.type;
+            tileSaveData.value = tileData.instanceData.value;
+            tileDataList[(int)tileData.renderLayer].Add(tileSaveData);
         }
+
 
         if (tileDataList.Count <= 0)
             return;
@@ -546,7 +469,6 @@ public class ZTileMap : ModSystem
         List<List<ZTileSaveData>> tileDataList = tag.Get<List<List<ZTileSaveData>>>("zTileData");
         for (int i = 0; i < tileDataList.Count; i++)
         {
-            ZTileRenderLayer layer = _renderLayers[i];
             List<ZTileSaveData> tileSaveDataList = tileDataList[i];
             for (int j = 0; j < tileSaveDataList.Count; j++)
             {
@@ -568,44 +490,19 @@ public class ZTileMap : ModSystem
                 instanceData.scale = saveData.scale;
                 instanceData.flipX = saveData.flipX;
                 instanceData.value = saveData.value;
-                layer.Add(zTilePosition, instanceData);
+                ActiveZTileData zTileData = new ActiveZTileData(zTilePosition, instanceData, (ZRenderLayer)i);
+                _zTileInstances.Add(zTileData);
             }
         }
-    }
-    public override void LoadWorldData(TagCompound tag)
-    {
-        base.LoadWorldData(tag);
-        List<List<ZTileSaveData>> tileDataList = tag.Get<List<List<ZTileSaveData>>>("zTileData");
-        for (int i = 0; i < tileDataList.Count; i++)
-        {
-            ZTileRenderLayer layer = _renderLayers[i];
-            List<ZTileSaveData> tileSaveDataList = tileDataList[i];
-            for (int j = 0; j < tileSaveDataList.Count; j++)
-            {
-                ZTileSaveData saveData = tileSaveDataList[j];
-                ZTilePosition zTilePosition = new ZTilePosition();
-                zTilePosition.x = saveData.x;
-                zTilePosition.y = saveData.y;
-                zTilePosition.z = saveData.z;
-
-                ZTileInstanceData instanceData = new ZTileInstanceData();
-                instanceData.type = saveData.type;
-                instanceData.rotation = (Rotation)saveData.rotation;
-                instanceData.frameNumber = (ushort)saveData.frameNumber;
-                instanceData.scale = saveData.scale;
-                instanceData.flipX = saveData.flipX;
-                instanceData.value = saveData.value;
-                layer.Add(zTilePosition, instanceData);
-            }
-        }
+        Refresh();
     }
 
     public override void NetSend(BinaryWriter writer)
     {
         base.NetSend(writer);
-        SendZTileSyncPacket();
     }
 
+  
 
     public override void NetReceive(BinaryReader reader)
     {
@@ -613,68 +510,81 @@ public class ZTileMap : ModSystem
 
     }
 
-    public void SendZTileSyncPacket()
+    public void RequestAllZTileData()
     {
-        //We need a completely separate packet to sync this, so we just send this when world data gets sent
-        //Should work just fine lol
-        try
+        ModPacket packet = Stellamod.Instance.GetPacket(capacity: 16);
+        packet.Write((byte)MessageType.RequestZTileData);
+        packet.Send();
+    }
+
+    public void HandleZTileRequestPacket(BinaryReader reader, int whoAmI)
+    {
+        int sections = 4;
+        int sectionsX = Main.maxTilesX / sections;
+        int sectionsY = Main.maxTilesY / sections;
+        for (int x = 0; x < sections; x++)
         {
-            ModPacket packet = Stellamod.Instance.GetPacket(capacity: 65536);
-            packet.Write((byte)MessageType.ZTileSync);
-            int length = 0;
-            for (int i = 0; i < _renderLayers.Length; i++)
+            for (int y = 0; y < sections; y++)
             {
-                var layer = _renderLayers[i];
-                TileScene[] scenes = layer.GetScenes();
-                for (int j = 0; j < scenes.Length; j++)
-                {
-                    TileScene scene = scenes[j];
-                    foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
-                    {
-                        length++;
-                    }
-                }
+                SendZTileData(whoAmI, -1, sectionsX * x, sectionsY * y, sectionsX, sectionsY);
             }
-            packet.Write(length);
-            for (int i = 0; i < _renderLayers.Length; i++)
-            {
-                var layer = _renderLayers[i];
-                TileScene[] scenes = layer.GetScenes();
-                for (int j = 0; j < scenes.Length; j++)
-                {
-                    TileScene scene = scenes[j];
-                    foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
-                    {
-                        packet.Write((byte)i);
-                        packet.Write((ushort)tilePair.Key.x);
-                        packet.Write((ushort)tilePair.Key.y);
-                        packet.Write((ushort)tilePair.Key.z);
-                        packet.Write(tilePair.Value.scale);
-                        packet.Write(tilePair.Value.flipX);
-                        packet.Write(tilePair.Value.frameNumber);
-                        packet.Write((byte)tilePair.Value.rotation);
-                        packet.Write(tilePair.Value.type);
-                        packet.Write(tilePair.Value.value);
-                    }
-                }
-            }
-            packet.Send();
-        }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine(ex);
         }
     }
 
-    public void HandleZTileSyncPacket(BinaryReader reader)
+    public static void SendZTileData(int requester, int ignore, int x, int y, int width, int height)
     {
-        //Console.WriteLine($"Receive Z Tile Sync {reader.BaseStream.Length}");
-        for (int i = 0; i < _renderLayers.Length; i++)
+        Rectangle rectangle = new Rectangle(x, y, width, height);
+        List<ActiveZTileData> datasToSync = new();
+        for(int i = 0; i < _zTileInstances.Count; i++)
         {
-            _renderLayers[i].Clear();
+            var tileData = _zTileInstances[i];
+            if(rectangle.Contains(tileData.position.x, tileData.position.y))
+            {
+                datasToSync.Add(tileData);
+            }
         }
 
+
+        int bytesPerTileData = 128;
+        int totalBytes = bytesPerTileData * (datasToSync.Count + 16);
+        ModPacket packet = Stellamod.Instance.GetPacket(capacity: totalBytes);
+        packet.Write((byte)MessageType.ZTileSync);
+        packet.Write(datasToSync.Count);
+        packet.Write(x);
+        packet.Write(y);
+        packet.Write(width);
+        packet.Write(height);
+        for (int i = 0; i < datasToSync.Count; i++)
+        {
+            var tileData = datasToSync[i];
+            packet.Write((byte)tileData.renderLayer);
+            packet.Write((ushort)tileData.position.x);
+            packet.Write((ushort)tileData.position.y);
+            packet.Write((ushort)tileData.position.z);
+            packet.Write(tileData.instanceData.scale);
+            packet.Write(tileData.instanceData.flipX);
+            packet.Write(tileData.instanceData.frameNumber);
+            packet.Write((byte)tileData.instanceData.rotation);
+            packet.Write(tileData.instanceData.type);
+            packet.Write(tileData.instanceData.value);
+        }
+        packet.Send(toClient: requester, ignore);
+    }
+
+    /// <summary>
+    /// Handles a sync packet for Z Tile data
+    /// </summary>
+    /// <param name="reader"></param>
+    public static void ReceiveZTileSync(BinaryReader reader)
+    {
         int length = reader.ReadInt32();
+        int x = reader.ReadInt32();
+        int y = reader.ReadInt32();
+        int width = reader.ReadInt32();
+        int height = reader.ReadInt32();
+
+        Rectangle rectangle = new Rectangle(x, y, width, height);
+        _zTileInstances.RemoveAll(x => rectangle.Contains(x.position.x, x.position.y));
         for (int i = 0; i < length; i++)
         {
             ZRenderLayer renderLayer = (ZRenderLayer)reader.ReadByte();
@@ -692,6 +602,14 @@ public class ZTileMap : ModSystem
             instanceData.value = reader.ReadByte();
             Add(renderLayer, tilePosition, instanceData);
         }
+
+        if (Main.netMode == NetmodeID.Server)
+        {
+            // Forward the changes to the other clients
+            ZTileMap.SendZTileData(-1, -1, x, y, width, height);
+        }
+
+        Refresh();
     }
 
     private void RenderOverWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
@@ -753,61 +671,68 @@ public class ZTileMap : ModSystem
 
     }
 
+    private List<ActiveZTileData> GetZTileDatas(ZRenderLayer renderLayer)
+    {
+        return _zTileActiveDrawingInstances[(int)renderLayer];
+    }
+
     private void DrawBehindWalls()
     {
+        var data = GetZTileDatas(ZRenderLayer.BehindWalls);
+        if (data.Count <= 0)
+            return;
+
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-        Point chunk = GetCameraChunk();
-        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.BehindWalls);
-        renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        RenderLayer(spriteBatch, data);
+        //renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
         if (IsHoldingDecorationBuilder)
-            renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
+            RenderRedBoxesLayer(spriteBatch, data);
     }
 
     private void DrawInFrontOfWalls()
     {
+        var data = GetZTileDatas(ZRenderLayer.InFrontOfWalls);
+        if (data.Count <= 0)
+            return;
+
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-        Point chunk = GetCameraChunk();
-        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.InFrontOfWalls);
-        renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        RenderLayer(spriteBatch, data);
+        //renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
         if (IsHoldingDecorationBuilder)
-            renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
+            RenderRedBoxesLayer(spriteBatch, data);
     }
 
     private void DrawInFrontOfPlayer()
     {
+        var data = GetZTileDatas(ZRenderLayer.Midground);
+        if (data.Count <= 0)
+            return;
+
         SpriteBatch spriteBatch = Main.spriteBatch;
-
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-        Point chunk = GetCameraChunk();
-        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.Midground);
-        renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        RenderLayer(spriteBatch, data);
+        //renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
         if (IsHoldingDecorationBuilder)
-            renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
+            RenderRedBoxesLayer(spriteBatch, data);
         spriteBatch.End();
-
     }
     private void DrawForeground()
     {
+        var data = GetZTileDatas(ZRenderLayer.Foreground);
+        if (data.Count <= 0)
+            return;
         SpriteBatch spriteBatch = Main.spriteBatch;
 
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-        Point chunk = GetCameraChunk();
-        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.Foreground);
-        renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        RenderLayer(spriteBatch, data);
+        //renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
         if (IsHoldingDecorationBuilder)
-            renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
+            RenderRedBoxesLayer(spriteBatch, data);
         spriteBatch.End();
-    }
-
-    private ZTileRenderLayer GetRenderLayer(ZRenderLayer renderLayer)
-    {
-        int index = (int)renderLayer;
-        ZTileRenderLayer tileRenderLayer = _renderLayers[index];
-        return tileRenderLayer;
     }
 
     private Point GetCameraChunk()
@@ -829,10 +754,7 @@ public class ZTileMap : ModSystem
     public void KillTile(Vector2 mouseWorld)
     {
         Point tileCoordinates = mouseWorld.ToTileCoordinates();
-        foreach (var layer in _renderLayers)
-        {
-            layer.Remove(tileCoordinates);
-        }
+        KillAnyTile(tileCoordinates);
         if (Main.netMode != NetmodeID.SinglePlayer)
         {
             int clientToIgnore = Main.LocalPlayer.whoAmI;
@@ -843,14 +765,28 @@ public class ZTileMap : ModSystem
 
     }
 
+    /// <summary>
+    /// Kills any tile at any z layer at these tile coordinates
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    public void KillAnyTile(in int x, in int y) => KillAnyTile(new Point(x, y));
+
+    /// <summary>
+    /// Kills any tile at any z layer at this position
+    /// </summary>
+    /// <param name="tileCoordinates"></param>
     public void KillAnyTile(Point tileCoordinates)
     {
-        foreach (var layer in _renderLayers)
-        {
-            layer.Remove(tileCoordinates);
-        }
+        _zTileInstances.RemoveAll(x => x.position.x == tileCoordinates.X && x.position.y == tileCoordinates.Y);
+        Refresh();
     }
 
+    public void KillAnyArea(Rectangle area)
+    {
+        _zTileInstances.RemoveAll(x => area.Contains(new Point(x.position.x, x.position.y)));
+        Refresh();
+    }
     /// <summary>
     /// Creates a tile at the chosen position
     /// </summary>
@@ -882,7 +818,10 @@ public class ZTileMap : ModSystem
                 tileData.value).Send(ignoreClient: clientToIgnore);
         }
         Add(renderLayer, zTilePosition, tileData);
+        Refresh();
     }
+
+    /*
 
     public void SyncPlaceTile(int toWho, int fromWho, ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
     {
@@ -907,25 +846,17 @@ public class ZTileMap : ModSystem
             (ushort)tilePosition.Y).Send(toWho, fromWho);
     }
 
+    */
 
+    public static void Add(ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
+    {
+        _zTileInstances.Add(new ActiveZTileData(tilePosition, tileData, renderLayer));
+    }
 
-    public void Add(ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
-    {
-        ZTileRenderLayer tileRenderLayer = GetRenderLayer(renderLayer);
-        tileRenderLayer.Add(tilePosition, tileData);
-    }
-    public void Remove(ZRenderLayer renderLayer, ZTilePosition tilePosition)
-    {
-        ZTileRenderLayer tileRenderLayer = GetRenderLayer(renderLayer);
-        tileRenderLayer.Remove(tilePosition);
-    }
     public override void ClearWorld()
     {
         base.ClearWorld();
-        for (int i = 0; i < _renderLayers.Length; i++)
-        {
-            _renderLayers[i].Clear();
-        }
+        Refresh();
     }
 
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
+using ReLogic.Content;
+using Stellamod.Content.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
 using Terraria;
@@ -16,7 +17,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus
 {
     public class AurelusChest : ModTile
     {
-
+        private Asset<Texture2D> _highlightTextureAsset;
         public override LocalizedText DefaultContainerName(int frameX, int frameY)
         {
             int option = frameX / 36;
@@ -266,6 +267,18 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus
                 player.cursorItemIconEnabled = false;
                 player.cursorItemIconID = ItemID.None;
             }
+        }
+
+        public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
+        {
+            base.PostDraw(i, j, spriteBatch);
+            _highlightTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Highlight");
+            Tile tile = Main.tile[i, j];
+            Rectangle srcRect = new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16);
+            Vector2 pos = TileUtilities.ToWorldCoordinatesFromTileRendering(i, j);
+            Color glowColor = Color.White * ExtraMath.Osc(0.15f, 0.9f, offset: i);
+            glowColor.A = 0;
+            spriteBatch.Draw(_highlightTextureAsset.Value, pos - Main.screenPosition, srcRect, glowColor);
         }
     }
 }

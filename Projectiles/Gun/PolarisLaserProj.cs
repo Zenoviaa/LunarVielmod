@@ -1,18 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
@@ -86,7 +80,7 @@ namespace Stellamod.Projectiles.Gun
                     dustParticle.outerColor = Color.Violet;
                 }
 
-                for(float f = 0; f < 12; f++)
+                for (float f = 0; f < 12; f++)
                 {
                     Vector2 initialVelocity = -Vector2.UnitY;
                     initialVelocity *= 4;
@@ -101,7 +95,7 @@ namespace Stellamod.Projectiles.Gun
                 }
 
                 float numZaps = 4;
-                for(float f = 0; f < numZaps; f++)
+                for (float f = 0; f < numZaps; f++)
                 {
                     Vector2 initialVelocity = -Vector2.UnitY;
                     initialVelocity *= 4;
@@ -196,7 +190,7 @@ namespace Stellamod.Projectiles.Gun
         {
             float osc = VectorHelper.Osc(0.75f, 1f);
 
-            float width = (float)Projectile.timeLeft / 45f;
+            float width = Projectile.timeLeft / 45f;
             return (Projectile.width * Projectile.scale) * osc * width * Size * 5;
         }
         public float WidthFunction2(float completionRatio)
@@ -224,7 +218,7 @@ namespace Stellamod.Projectiles.Gun
         {
             return false;
         }
-      
+
         public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             //Put in the points

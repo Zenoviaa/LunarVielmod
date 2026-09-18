@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -13,15 +14,6 @@ public class BlackSeaRenderer : ModSystem
 {
     private BlackSeaPlatformManager _platformManager;
     private LittleStarParticleManager _starParticleManager;
-    private RenderTargetProvider _pixelRT = new RenderTargetProvider(() =>
-
-        RenderTargetParameters.DefaultScreenTarget with { Width = Main.screenWidth / 8, Height = Main.screenHeight / 8 }
-    );
-
-    private RenderTargetProvider _blackHurricaneRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _reflectionGradientRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _reflectionRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _magicGroundRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
     public bool drawBlackSea;
     public bool renderBlackSea;
     public Vector2? miniOrbDrawPosition;
@@ -30,7 +22,6 @@ public class BlackSeaRenderer : ModSystem
     public override void Load()
     {
         base.Load();
-        On_Main.CheckMonoliths += RenderBlackHurricaneRT;
         On_Main.DrawNPCs += DrawBlackHurricaneRTToScreen;
         On_OverlayManager.Draw += ApplyReflection;
     }
@@ -39,7 +30,6 @@ public class BlackSeaRenderer : ModSystem
     public override void Unload()
     {
         base.Unload();
-        On_Main.CheckMonoliths -= RenderBlackHurricaneRT;
         On_Main.DrawNPCs -= DrawBlackHurricaneRTToScreen;
         On_OverlayManager.Draw -= ApplyReflection;
     }
@@ -58,125 +48,6 @@ public class BlackSeaRenderer : ModSystem
     }
 
 
-    private void RenderToBlackHurricaneRT()
-    {
-        if (Main.gameMenu)
-            return;
-
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_blackHurricaneRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-        var config = ModContent.GetInstance<LunarVeilClientConfig>();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, Main.Rasterizer);
-        if (!config.FocusMode)
-        {
-            Vector2 drawCenter = Main.Camera.Center;
-            drawCenter.Y += ExtraMath.Osc(-2, 2, speed: 8);
-            Vector2 screenPos = Main.screenPosition;
-            DrawSingularity(drawCenter, screenPos);
-            _platformManager.Draw(spriteBatch, screenPos);
-            _starParticleManager.Draw();
-        }
-
-        DrawHoveringPlatform(spriteBatch);
-        spriteBatch.End();
-
-
-
-        graphicsDevice.SetRenderTarget(null);
-    }
-
-    private void RenderToReflectionGradientRT()
-    {
-        if (Main.gameMenu)
-            return;
-
-        DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
-        //Calculate a gradient texture so we know where the reflection mapping goes
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_reflectionGradientRT);
-        graphicsDevice.Clear(Color.Black);
-
-        YGradientShader yGradientShader = YGradientShader.Instance;
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, yGradientShader.Effect);
-
-        Vector2 drawPosition = new Vector2(Main.Camera.Center.X, singularityFallSystem.hoverPlatformY);
-        drawPosition -= Main.screenPosition;
-        drawPosition.Y += 48;
-        drawPosition.X -= _reflectionGradientRT.Width / 2;
-
-        spriteBatch.Draw(_reflectionGradientRT, drawPosition, null, Color.White, 0, Vector2.Zero, new Vector2(1f, 1), SpriteEffects.None, 0f);
-        spriteBatch.End();
-
-
-        graphicsDevice.SetRenderTarget(null);
-    }
-    private void RenderToReflectionRT()
-    {
-        if (Main.gameMenu)
-            return;
-
-        GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        graphicsDevice.SetRenderTarget(_reflectionRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-        var reflectionRT = ModContent.GetInstance<MoonWaterSystem>().GetReflectionRenderTarget();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
-
-        spriteBatch.Draw(reflectionRT, Vector2.Zero - new Vector2(Main.offScreenRange), null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-
-        spriteBatch.End();
-        graphicsDevice.SetRenderTarget(null);
-    }
-
-    private void RenderToMagicGroundRT()
-    {
-        if (Main.gameMenu)
-            return;
-
-        GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        graphicsDevice.SetRenderTarget(_magicGroundRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-
-        Effect reflectionCombineEffect = GameShaders.Misc["LunarVeil:SingularReflection"].Shader;
-        float mipBias = 1;
-        float reflectionDistance = 512;
-        Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2(_reflectionRT.Width, _reflectionRT.Height);
-
-        reflectionCombineEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
-        reflectionCombineEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
-        reflectionCombineEffect.Parameters["reflectionPower"].SetValue(4);
-        reflectionCombineEffect.Parameters["HeightMapTexture"].SetValue(_reflectionGradientRT);
-
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, reflectionCombineEffect);
-
-        spriteBatch.Draw(_reflectionRT, Vector2.Zero, Color.White * alpha);
-
-        spriteBatch.End();
-        graphicsDevice.SetRenderTarget(null);
-    }
-
-    private void RenderToPixelRT()
-    {
-
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_pixelRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer);
-        spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1 / 8f, SpriteEffects.None, 0);
-        spriteBatch.End();
-
-        graphicsDevice.SetRenderTarget(null);
-    }
     private void DrawHoveringPlatform(SpriteBatch spriteBatch)
     {
         DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
@@ -200,58 +71,72 @@ public class BlackSeaRenderer : ModSystem
             spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, -rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
     }
-    private void RenderBlackHurricaneRT(On_Main.orig_CheckMonoliths orig)
-    {
-        if (renderBlackSea)
-        {
 
-            RenderToBlackHurricaneRT();
-            RenderToReflectionRT();
-            RenderToReflectionGradientRT();
-            RenderToMagicGroundRT();
-            RenderToPixelRT();
-        }
-
-        orig();
-    }
 
     private void DrawBlackHurricaneRTToScreen(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
         if (!Main.gameMenu && behindTiles)
         {
-            if (drawBlackSea)
+            if (renderBlackSea || drawBlackSea)
             {
-                spriteBatch.GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.End();
-                spriteBatch.Begin();
+                RenderTargetHandle blackHurricaneRT = RenderTargets.ScreenTarget;
 
-                Color drawColor = Color.Lerp(Color.White, Color.Black, 0.35f);
-                spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, null, drawColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.EndOut(out var oldParameters);
+                using (new RenderTargetContext(blackHurricaneRT))
+                {
+                    var config = ModContent.GetInstance<LunarVeilClientConfig>();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, Main.Rasterizer);
+                    if (!config.FocusMode)
+                    {
+                        Vector2 drawCenter = Main.Camera.Center;
+                        drawCenter.Y += ExtraMath.Osc(-2, 2, speed: 8);
+                        Vector2 screenPos = Main.screenPosition;
+                        DrawSingularity(drawCenter, screenPos);
+                        _platformManager.Draw(spriteBatch, screenPos);
+                        _starParticleManager.Draw();
+                    }
 
-                spriteBatch.End();
-                spriteBatch.Begin();
+                    DrawHoveringPlatform(spriteBatch);
+                    spriteBatch.End();
+
+                }
+                spriteBatch.Begin(oldParameters);
+
+                if (drawBlackSea)
+                {
+                    spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+                    spriteBatch.End();
+                    spriteBatch.Begin();
+
+                    Color drawColor = Color.Lerp(Color.White, Color.Black, 0.35f);
+                    spriteBatch.Draw(blackHurricaneRT, Vector2.Zero, null, drawColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+                    spriteBatch.End();
+                    spriteBatch.Begin(oldParameters);
+                }
+
+                if (miniOrbDrawPosition.HasValue)
+                {
+                    Effect featherEffect = FeatherShader.Instance.Effect;
+                    spriteBatch.EndOut(out var oldParameters2);
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer,
+                        featherEffect);
+
+                    Vector2 positionToDrawOrbAt = miniOrbDrawPosition.Value;
+                    Vector2 drawPosition = positionToDrawOrbAt - Main.screenPosition;
+                    Texture2D hurricaneTexture = blackHurricaneRT;
+                    Vector2 drawOrigin = hurricaneTexture.Size() / 2f;
+                    spriteBatch.Draw(hurricaneTexture, drawPosition, null, Color.White, 0, drawOrigin, miniOrbDrawScale, SpriteEffects.None, 0f);
+
+                    spriteBatch.End();
+                    spriteBatch.Begin(oldParameters2);
+                    miniOrbDrawPosition = null;
+                }
             }
+
 
             DrawHoveringPlatform(spriteBatch);
-            if (miniOrbDrawPosition.HasValue)
-            {
-                Effect featherEffect = FeatherShader.Instance.Effect;
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer,
-                    featherEffect);
-
-                Vector2 positionToDrawOrbAt = miniOrbDrawPosition.Value;
-                Vector2 drawPosition = positionToDrawOrbAt - Main.screenPosition;
-                Texture2D hurricaneTexture = _blackHurricaneRT;
-                Vector2 drawOrigin = hurricaneTexture.Size() / 2f;
-                spriteBatch.Draw(hurricaneTexture, drawPosition, null, Color.White, 0, drawOrigin, miniOrbDrawScale, SpriteEffects.None, 0f);
-
-                spriteBatch.End();
-                spriteBatch.Begin();
-                miniOrbDrawPosition = null;
-            }
-
         }
 
         orig(self, behindTiles);
@@ -262,8 +147,57 @@ public class BlackSeaRenderer : ModSystem
     {
         if (layer == RenderLayers.ForegroundWater && !Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<E>()) && drawBlackSea)
         {
+            RenderTargetHandle reflectionRT = RenderTargets.ScreenTarget;
+            RenderTargetHandle reflectionGradientRT = RenderTargets.ScreenTarget;
+            RenderTargetHandle magicGroundRT = RenderTargets.ScreenTarget;
+            spriteBatch.EndOut(out var oldParameters);
+            using (new RenderTargetContext(reflectionRT))
+            {
+                var rfRT = ModContent.GetInstance<MoonWaterSystem>().GetReflectionRenderTarget();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
+                spriteBatch.Draw(rfRT, Vector2.Zero - new Vector2(Main.offScreenRange), null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
+
+            using(new RenderTargetContext(reflectionGradientRT, Color.Black))
+            {
+                DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
+                YGradientShader yGradientShader = YGradientShader.Instance;
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, yGradientShader.Effect);
+
+                Vector2 drawPosition = new Vector2(Main.Camera.Center.X, singularityFallSystem.hoverPlatformY);
+                drawPosition -= Main.screenPosition;
+                drawPosition.Y += 48;
+                drawPosition.X -= reflectionGradientRT.Width / 2;
+
+                spriteBatch.Draw(reflectionGradientRT, drawPosition, null, Color.White, 0, Vector2.Zero, new Vector2(1f, 1), SpriteEffects.None, 0f);
+                spriteBatch.End();
+            }
+
+
+            using (new RenderTargetContext(magicGroundRT))
+            {
+                Effect reflectionCombineEffect = GameShaders.Misc["LunarVeil:SingularReflection"].Shader;
+                float mipBias = 1;
+                float reflectionDistance = 512;
+                Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2(reflectionRT.Width, reflectionRT.Height);
+
+                reflectionCombineEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
+                reflectionCombineEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
+                reflectionCombineEffect.Parameters["reflectionPower"].SetValue(4);
+                reflectionCombineEffect.Parameters["HeightMapTexture"].SetValue(reflectionGradientRT);
+
+
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, reflectionCombineEffect);
+                spriteBatch.Draw(reflectionRT, Vector2.Zero, Color.White * alpha);
+                spriteBatch.End();
+            }
+
+                
+            spriteBatch.Begin(oldParameters);
+
             //  spriteBatch.GraphicsDevice.Clear(Color.Transparent);
-            spriteBatch.Draw(_magicGroundRT, Vector2.Zero, Color.White * 0.95f);
+            spriteBatch.Draw(magicGroundRT, Vector2.Zero, Color.White * 0.95f);
 
         }
         orig(self, spriteBatch, layer, beginSpriteBatch);

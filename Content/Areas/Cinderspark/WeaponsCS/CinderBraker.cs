@@ -2,11 +2,11 @@
 using Stellamod.Assets;
 using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
@@ -204,7 +204,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
         }
-        private bool _thrust;
         public float thrustSpeed = 5;
         public float stabRange;
         public override void AI()

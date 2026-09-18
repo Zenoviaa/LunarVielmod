@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Buffs;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
@@ -52,7 +52,6 @@ namespace Stellamod.Projectiles.GunHolster
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<AcidFlame>(), 180);
             target.AddBuff(BuffID.Venom, 180);
             target.AddBuff(BuffID.Slow, 180);
         }

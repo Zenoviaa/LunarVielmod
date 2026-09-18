@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets.Biomes;
+﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -44,7 +43,7 @@ namespace Stellamod.NPCs.Morrow
             NPC.DeathSound = SoundID.DD2_SkeletonDeath;
             NPC.value = 563f;
             NPC.knockBackResist = .45f;
-            NPC.aiStyle = 3;
+            NPC.aiStyle = NPCAIStyleID.Fighter;
             AIType = NPCID.SnowFlinx;
         }
 

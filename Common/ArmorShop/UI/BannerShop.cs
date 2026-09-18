@@ -58,8 +58,6 @@ public class BannerShop
                 View = new(
                     shopParameters.AvailableItemsFunction(), 
                     shopParameters);
-                View.Width.Pixels = Width.Pixels;
-                View.Height.Pixels = Height.Pixels;
                 View.Activate();
                 _initItems = true;
                 Append(View);
@@ -209,13 +207,23 @@ public class BannerShop
         {
             base.Update(gameTime);
             float gap = 128;
-            backButton.Left.Pixels = RelativeLeft - backButton.Width.Pixels / 2;
-            backButton.Top.Pixels = RelativeTop + 256;
-            backButton.Left.Pixels -= gap;
+            if(ShopParameters.BuyFunction != null)
+            {
+                backButton.Left.Pixels = RelativeLeft - backButton.Width.Pixels / 2;
+                backButton.Top.Pixels = RelativeTop + 256;
+                backButton.Left.Pixels -= gap;
 
-            buyButton.Left.Pixels = RelativeLeft - backButton.Width.Pixels / 2;
-            buyButton.Left.Pixels += gap;
-            buyButton.Top.Pixels = RelativeTop + 256;
+                buyButton.Left.Pixels = RelativeLeft - backButton.Width.Pixels / 2;
+                buyButton.Left.Pixels += gap;
+                buyButton.Top.Pixels = RelativeTop + 256;
+            }
+            else
+            {
+                backButton.Left.Pixels = RelativeLeft - backButton.Width.Pixels / 2;
+                backButton.Top.Pixels = RelativeTop + 256;
+                buyButton.Left.Pixels = 999999999999999;
+            }
+   
             if (FullyClosed())
             {
                 CloseAction();

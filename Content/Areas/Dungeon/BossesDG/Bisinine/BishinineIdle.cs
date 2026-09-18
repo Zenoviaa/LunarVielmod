@@ -2,7 +2,6 @@
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.TriggersSystem.Triggers;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -19,14 +18,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
     {
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.TrailCacheLength[NPC.type] = 5;
-            NPCID.Sets.TrailingMode[Type] = 3;
+            base.SetStaticDefaults();
             Main.npcFrameCount[NPC.type] = 5;
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCID.Sets.ActsLikeTownNPC[Type] = true;
-            NPCID.Sets.SpawnsWithCustomName[Type] = true;
-            NPCID.Sets.NoTownNPCHappiness[Type] = true;
         }
 
         public override void SetDefaults()
@@ -34,7 +27,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 54;
             NPC.height = 106;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
             NPC.damage = 90;
             NPC.defense = 42;
             NPC.lifeMax = 2000;

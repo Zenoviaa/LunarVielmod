@@ -4,7 +4,6 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Achievements;
 using Stellamod.Core;
 using Stellamod.Core.LunarLightingSystem;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
@@ -33,16 +32,6 @@ public class MagicWitchCauldron : VeilTownNPC
     {
         base.SetStaticDefaults();
         Main.npcFrameCount[Type] = 60;
-        NPCID.Sets.ActsLikeTownNPC[Type] = true;
-        NPCID.Sets.SpawnsWithCustomName[Type] = true;
-        NPCID.Sets.NoTownNPCHappiness[Type] = true;
-        NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
-        {
-            Velocity = 1f,
-            Direction = 1
-        };
-
-        NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
     }
 
     public override void SetDefaults()
@@ -164,7 +153,7 @@ public class MagicWitchCauldron : VeilTownNPC
                 NPC.netUpdate = true;
                 NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
             }
-            if(Main.netMode != NetmodeID.Server)
+            if (Main.netMode != NetmodeID.Server)
             {
                 ModContent.GetInstance<WitchsBabySteps>().BrewCountCondition.Value++;
             }
@@ -179,7 +168,7 @@ public class MagicWitchCauldron : VeilTownNPC
             Item item = new Item((int)ItemType);
             string get = item.Name;
             Color color = Color.White;
-            if (item.IsAir || item.type == 0)
+            if (item.IsAir || item.type == ItemID.None)
             {
                 color = Color.DarkGray;
                 get = "...........";

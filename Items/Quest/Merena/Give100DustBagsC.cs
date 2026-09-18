@@ -18,14 +18,5 @@ namespace Stellamod.Items.Quest.Merena
             Item.rare = ItemRarityID.Quest;
             Item.questItem = true;
         }
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 100);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 100);
-            recipe.AddIngredient(ModContent.ItemType<Give100DustBags>(), 1);
-            recipe.Register();
-        }
     }
 }

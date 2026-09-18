@@ -29,7 +29,7 @@ namespace Stellamod.Tiles.Veil
 
             TileObjectData.addTile(Type);
             LocalizedText name = CreateMapEntryName();
-            DustType = 7;
+            DustType = DustID.WoodFurniture;
         }
     }
 }

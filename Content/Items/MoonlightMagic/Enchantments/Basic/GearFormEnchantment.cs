@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Items.MoonlightMagic.Elements;
+﻿using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Content.Items.MoonlightMagic.Forms;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -10,8 +7,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
 {
     public class GearFormEnchantment : BaseEnchantment
     {
-        bool HitOnce = false;
-        int Attagain = 14;
         public override float GetStaffManaModifier()
         {
             return 0.1f;
@@ -22,10 +17,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
             return ModContent.ItemType<BasicElement>();
         }
 
-
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-
             return true;
         }
 
@@ -39,14 +32,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
         {
             Projectile.penetrate += 2;
             MagicProj.Form = FormRegistry.Gear.Value;
-
-
         }
-
-
-
-
     }
-
-
 }

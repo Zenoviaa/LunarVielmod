@@ -3,6 +3,7 @@ using Stellamod.Core.ClassSelect;
 using Stellamod.Items.Accessories.Players;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -20,7 +21,7 @@ public class ClassReworkPlayer : ModPlayer
             if (_quiverAmmoItem == null)
             {
                 _quiverAmmoItem = new Item(0);
-                _quiverAmmoItem.SetDefaults(0);
+                _quiverAmmoItem.SetDefaults(ItemID.None);
             }
             return _quiverAmmoItem;
         }
@@ -156,7 +157,7 @@ public class ClassReworkPlayer : ModPlayer
     {
         base.PostUpdateEquips();
 
-        if (!hasSpawned)
+        if (!hasSpawned && Main.netMode != NetmodeID.Server)
         {
             Item[] startingITems = ModContent.GetInstance<ClassSystem>().GetClassStartingItems((int)playerClass);
             Player.inventory[0] = startingITems[0].Clone();

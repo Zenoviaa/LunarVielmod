@@ -107,11 +107,6 @@ namespace Stellamod.Projectiles
         }
 
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (Main.rand.NextBool(5))
-                target.AddBuff(ModContent.BuffType<Wounded>(), 180);
-        }
         public override bool PreDraw(ref Color lightColor)
         {
             Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);

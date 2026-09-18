@@ -1,11 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
-using Stellamod.Core.Foggy;
-using Stellamod.Core.Godrays;
-using Stellamod.Helpers;
+﻿using Stellamod.Core.Godrays;
 using Stellamod.Tiles;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -31,7 +25,7 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
 
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
-            if (Main.rand.NextBool(100))
+            if (Main.rand.NextBool(100) && Main.hasFocus)
             {
                 GodrayRenderer godrayRenderer = ModContent.GetInstance<GodrayRenderer>();
                 Vector2 centerPos = new Point(i, j).ToWorldCoordinates();

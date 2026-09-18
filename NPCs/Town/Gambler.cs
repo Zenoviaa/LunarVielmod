@@ -2,7 +2,7 @@
 using Stellamod.Buffs;
 using Stellamod.Content.Areas.Shop.AccShop;
 using Stellamod.Content.Currencies;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
 using System.Collections.Generic;

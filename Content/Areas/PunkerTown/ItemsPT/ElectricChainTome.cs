@@ -253,20 +253,10 @@ public class ElectricChain : ModProjectile
     private void DrawPixelatedLightning(GraphicsDevice gDevice)
     {
         List<Vector2> points = new List<Vector2>();
-        float numPointsEachChain = 32;
-        void AddPoints(Vector2 start, Vector2 end)
-        {
-            for (float f = 0; f < numPointsEachChain; f++)
-            {
-                float ratio = (f / numPointsEachChain);
-                points.Add(Vector2.Lerp(start, end, ratio));
-            }
-        }
-
         void DrawLightningBolt(Vector2 start, Vector2 end)
         {
             points.Clear();
-            float numPoints = Vector2.Distance(start, end) / 8f;
+            float numPoints = Vector2.DistanceSquared(start, end) / 64f;
             numPoints += 2;
             for (float f = 0; f < numPoints; f++)
             {

@@ -2,7 +2,6 @@ using ReLogic.Content;
 using Stellamod.Content.Areas.Tundra.Abyss.AccAB;
 using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -74,7 +73,7 @@ namespace Stellamod.NPCs.Abyssal
             Player player = spawnInfo.Player;
             if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon) && Main.hardMode)
             {
-                return spawnInfo.Player.ZoneAbyss() ? 1.5f : 0f;
+                return spawnInfo.Player.ZoneAbyss ? 1.5f : 0f;
             }
             return 0f;
         }

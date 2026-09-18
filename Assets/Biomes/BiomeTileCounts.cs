@@ -8,14 +8,12 @@ using Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus;
 using Stellamod.Content.Areas.Underground.TilesUG;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Tiles;
-using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Ishtar;
 using Stellamod.Tiles.RoyalCapital;
 using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
 using System;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -164,7 +162,6 @@ namespace Stellamod
             //   CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];
             MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
             SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
-            AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
             AbyssCount = tileCounts[ModContent.TileType<AbyssalDirt>()];
             AurelusCount = tileCounts[ModContent.TileType<AurelusTempleBlock>()];
             GovheilCount = tileCounts[ModContent.TileType<GovheilCastleTile>()];
@@ -179,7 +176,6 @@ namespace Stellamod
             CinderCount = tileCounts[ModContent.TileType<CindersparkDirt>()];
             ManorCount = tileCounts[ModContent.TileType<ManorBlock>()];
             MechCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
-            LabCount = tileCounts[ModContent.TileType<LostScrapT>()];
             IlluriaCount = tileCounts[ModContent.TileType<IlluriaGrass>()];
             VeilCount = tileCounts[ModContent.TileType<CatagrassBlock>()];
             IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()] + tileCounts[ModContent.TileType<IshtarTempleBlock>()];

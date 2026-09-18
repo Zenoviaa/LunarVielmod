@@ -1,5 +1,5 @@
 ﻿using Stellamod.Assets;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;

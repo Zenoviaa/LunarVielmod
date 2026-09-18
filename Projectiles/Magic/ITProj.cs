@@ -1,7 +1,4 @@
 ﻿using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -19,7 +16,7 @@ public class ITExplosionProj : ModProjectile, IDrawToRenderTarget
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGreen, Color.DarkGreen, 6, baseSize: 0.24f);
             PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.LightGreen, 24, 128);
@@ -122,11 +119,11 @@ public class ITProj : ModProjectile
         {
             if (Main.rand.NextBool(2))
             {
-            var sp =    SmokeParticle.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY);
+                var sp = SmokeParticle.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY);
                 sp.fadeToColor = Color.Black;
                 sp.initialColor = Color.DarkGray;
             }
-            
+
         }
         WhiteTimer = MathHelper.Lerp(WhiteTimer, 0, 0.1f);
         Rectangle myRect = Projectile.getRect();
@@ -141,7 +138,7 @@ public class ITProj : ModProjectile
             {
                 if (Projectile.ai[1] <= 100)
                 {
-                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ITPrimer"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ITPrimer") with { Volume = 0.3f }, Projectile.position);
                     Projectile.ai[1] = 111;
                 }
             }
@@ -163,15 +160,15 @@ public class ITProj : ModProjectile
         int S1 = Main.rand.Next(0, 3);
         if (S1 == 0)
         {
-            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb1"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb1") with { Volume = 0.3f }, Projectile.position);
         }
         if (S1 == 1)
         {
-            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb2"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb2") with { Volume = 0.3f }, Projectile.position);
         }
         if (S1 == 2)
         {
-            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb3"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb3") with { Volume = 0.3f }, Projectile.position);
         }
         FXUtil.ShakeCamera(Projectile.Center, 2048, 8);
     }

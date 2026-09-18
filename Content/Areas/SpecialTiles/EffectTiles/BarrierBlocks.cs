@@ -1,9 +1,9 @@
-﻿using Stellamod.Common.Shaders;
-using Stellamod.Core.Foggy;
-using Stellamod.Core.LunarLightingSystem;
-using Stellamod.Helpers;
+﻿using Stellamod.Core;
+using Stellamod.Core.Rendering.RTs;
 using System;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.Localization;
@@ -101,11 +101,135 @@ public class BarrierBlockSystem : ModSystem
     }
 }
 
+public class BarrierFogGlobalTile : GlobalTile
+{
+    public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+    {
+        base.DrawEffects(i, j, type, spriteBatch, ref drawData);
+        Tile tile = Main.tile[i, j];
+        if (!tile.HasTile)
+            return;
+        if (TileID.Sets.BarrierFog[type] == 0)
+            return;
+        if (!Main.tileSolid[type])
+            return;
 
+        switch (TileID.Sets.BarrierFog[type])
+        {
+            case 1:
+                BarrierFog.WhiteFogPoints.Add(new Point(i, j));
+                break;
+            case 2:
+                BarrierFog.RedFogPoints.Add(new Point(i, j));
+                break;
+        }
+    }
+}
+
+
+[Autoload(Side = ModSide.Client)]
+public class BarrierFog : ModSystem
+{
+    public override void Load()
+    {
+        base.Load();
+        On_Main.DrawPlayers_AfterProjectiles += RenderFogOverPlayers;
+        On_Main.RenderTiles += ResetDustPoints;
+    }
+    private void ResetDustPoints(On_Main.orig_RenderTiles orig, Main self)
+    {
+        if (!Main.drawToScreen)
+        {
+            WhiteFogPoints.Clear();
+            RedFogPoints.Clear();
+        }
+        orig(self);
+    }
+
+    public static List<Point> WhiteFogPoints = new List<Point>();
+    public static List<Point> RedFogPoints = new List<Point>();
+    private void RenderFogOverPlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
+    {
+        orig(self);
+        if (Main.gameMenu)
+            return;
+
+
+        if (WhiteFogPoints.Count > 0 || RedFogPoints.Count > 0)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
+            using(new RenderTargetContext(maskRT))
+            {
+                SpritebatchParams worldParams = SpritebatchParams.InWorldAndZoomed();
+                HlslSampler spriteSampler = new();
+                spriteSampler.Texture = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
+                spriteSampler.Sampler = SamplerState.LinearWrap;
+
+                var pass = AssetReferences.Effects.Generic.BigFog.CreatePixelPass();
+                pass.Parameters.spriteSampler = spriteSampler;
+                pass.Parameters.time = Main.GlobalTimeWrappedHourly * 1.5f;
+                pass.Apply();
+
+                worldParams = worldParams with { effect = pass.Shader };
+
+
+                SpritebatchParams blackParams = SpritebatchParams.InWorldAndZoomed();
+
+                //Draw the darkest possible color as a backdrop
+                spriteBatch.Begin(blackParams);
+
+                SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, Vector2.Zero);
+                foreach (Point fogTilePoint in WhiteFogPoints)
+                {
+                    Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
+                    blackDrawer.worldPosition = worldPos;
+                    spriteBatch.Draw(blackDrawer);
+                }
+                foreach (Point fogTilePoint in RedFogPoints)
+                {
+                    Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
+                    blackDrawer.worldPosition = worldPos;
+                    spriteBatch.Draw(blackDrawer);
+                }
+                spriteBatch.End();
+
+                //Draw oover ttop of that using max blend state so the colors blend nicely creating one seamless texture
+                spriteBatch.Begin(worldParams with { blendState = CustomBlendStates.Max });
+                foreach (Point fogTilePoint in WhiteFogPoints)
+                {
+                    Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
+                    SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
+                    fogDrawer.color = Color.White;
+                    float a = ExtraMath.Osc(0f, 1f, speed: 0, offset: fogTilePoint.X * fogTilePoint.Y);
+                    fogDrawer.color *= a;
+                    fogDrawer.scale *= 0.16f;
+                    spriteBatch.Draw(fogDrawer);
+                }
+                foreach (Point fogTilePoint in RedFogPoints)
+                {
+                    Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
+                    SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
+                    fogDrawer.color = Color.Red;
+                    float a = ExtraMath.Osc(0f, 1f, speed: 0, offset: fogTilePoint.X * fogTilePoint.Y);
+                    fogDrawer.color *= a;
+                    fogDrawer.scale *= 0.16f;
+                    spriteBatch.Draw(fogDrawer);
+                }
+                spriteBatch.End();
+            }
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            spriteBatch.Draw(maskRT, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
+            spriteBatch.End();
+        }
+    }
+}
 public abstract class BaseBarrierBlock : ModTile
 {
     public override void SetStaticDefaults()
     {
+        TileID.Sets.BarrierFog[Type] = 2;
         Main.tileSolid[Type] = true;
         Main.tileMerge[Type][Type] = true;
         Main.tileBlockLight[Type] = true;
@@ -114,69 +238,19 @@ public abstract class BaseBarrierBlock : ModTile
         Main.tileBlendAll[Type] = true;
         Main.tileLighted[Type] = true;
         Main.tileBlockLight[Type] = true;
+
         LocalizedText name = CreateMapEntryName();
         AddMapEntry(new Color(178, 163, 190), name);
 
         MineResist = 1f;
         MinPick = 145;
     }
-
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
     {
-        LunarLightingRenderer fogSystem = ModContent.GetInstance<LunarLightingRenderer>();
-        Point point = new Point(i, j);
-        Fog fog = fogSystem.SetupFog(point, FogCreateFunction);
-        fog.updateFunc = FogUpdateFunction;
-        return false;
-    }
-
-    private void FogCreateFunction(Fog fog)
-    {
-        fog.shaderFunc = FogShaderFunction;
-        fog.startColor = Color.Red;
-        fog.startScale = new Vector2(Main.rand.NextFloat(0.75f, 1.0f), Main.rand.NextFloat(0.7f, 0.9f)) * 0.25f;
-        fog.pulseWidth = Main.rand.NextFloat(0.96f, 0.98f);
-        fog.texture = TextureRegistry.Clouds6;
-        fog.rotation = Main.rand.NextFloat(-1f, 1f);
-        fog.offset = Main.rand.NextVector2Circular(16, 16);
-    }
-    private void FogUpdateFunction(Fog fog)
-    {
-        bool isSolid = Main.tileSolid[Type];
-        if (!isSolid)
-        {
-            fog.startColor = Color.Lerp(fog.startColor, Color.Transparent, 0.1f);
-        }
-        else
-        {
-            fog.startColor = Color.Lerp(fog.startColor, Color.Red, 0.1f);
-        }
-    }
-
-    public BaseShader FogShaderFunction()
-    {
-        var shader = Fog2Shader.Instance;
-        shader.FogTexture = TextureRegistry.Clouds6;
-        shader.EdgePower = 0.5f;
-        shader.ProgressPower = 1.5f;
-        shader.Speed = 10f;
-        shader.Apply();
-        return shader;
-    }
-    public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
-    {
-        Tile tile = Framing.GetTileSafely(i, j);
-        Tile tileBelow = Framing.GetTileSafely(i, j + 1);
-        Tile tileAbove = Framing.GetTileSafely(i, j - 1);
-
-        if (!tileAbove.HasTile || !tileBelow.HasTile)
-        {
-            r = 0.05f;
-            g = 0.15f;
-            b = 0.25f;
-        }
+        return true;
     }
 }
+
 public class BossBarrierBlockItem : ModItem
 {
     public override void SetStaticDefaults()
@@ -204,6 +278,7 @@ public class BossBarrierBlock : ModTile
 {
     public override void SetStaticDefaults()
     {
+        TileID.Sets.BarrierFog[Type] = 1;
         Main.tileSolid[Type] = true;
         Main.tileMerge[Type][Type] = true;
         Main.tileBlockLight[Type] = true;
@@ -212,67 +287,16 @@ public class BossBarrierBlock : ModTile
         Main.tileBlendAll[Type] = true;
         Main.tileLighted[Type] = true;
         Main.tileBlockLight[Type] = true;
+
         LocalizedText name = CreateMapEntryName();
         AddMapEntry(new Color(178, 163, 190), name);
 
         MineResist = 1f;
         MinPick = 145;
     }
-
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
     {
-        LunarLightingRenderer fogSystem = ModContent.GetInstance<LunarLightingRenderer>();
-        Point point = new Point(i, j);
-        Fog fog = fogSystem.SetupFog(point, FogCreateFunction);
-        fog.updateFunc = FogUpdateFunction;
-        return false;
-    }
-
-    private void FogCreateFunction(Fog fog)
-    {
-        fog.shaderFunc = FogShaderFunction;
-        fog.startColor = Color.Gray;
-        fog.startScale = new Vector2(Main.rand.NextFloat(0.75f, 1.0f), Main.rand.NextFloat(0.7f, 0.9f)) * 0.25f;
-        fog.pulseWidth = Main.rand.NextFloat(0.96f, 0.98f);
-        fog.texture = TextureRegistry.Clouds6;
-        fog.rotation = Main.rand.NextFloat(-1f, 1f);
-        fog.offset = Main.rand.NextVector2Circular(16, 16);
-    }
-    private void FogUpdateFunction(Fog fog)
-    {
-        bool isSolid = Main.tileSolid[Type];
-        if (!isSolid)
-        {
-            fog.startColor = Color.Lerp(fog.startColor, Color.Transparent, 0.1f);
-        }
-        else
-        {
-            fog.startColor = Color.Lerp(fog.startColor, Color.Gray, 0.1f);
-        }
-    }
-
-    public BaseShader FogShaderFunction()
-    {
-        var shader = Fog2Shader.Instance;
-        shader.FogTexture = TextureRegistry.Clouds6;
-        shader.EdgePower = 0.5f;
-        shader.ProgressPower = 1.5f;
-        shader.Speed = 10f;
-        shader.Apply();
-        return shader;
-    }
-    public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
-    {
-        Tile tile = Framing.GetTileSafely(i, j);
-        Tile tileBelow = Framing.GetTileSafely(i, j + 1);
-        Tile tileAbove = Framing.GetTileSafely(i, j - 1);
-
-        if (!tileAbove.HasTile || !tileBelow.HasTile)
-        {
-            r = 0.05f;
-            g = 0.15f;
-            b = 0.25f;
-        }
+        return true;
     }
 }
 public abstract class BarrierBlockItem<T> : ModItem where T : BaseBarrierBlock
@@ -296,6 +320,7 @@ public abstract class BarrierBlockItem<T> : ModItem where T : BaseBarrierBlock
         Item.consumable = true;
         Item.createTile = ModContent.TileType<T>();
     }
+
 }
 
 public class RavagerBarrierBlockItem : BarrierBlockItem<RavagerBarrierBlock>

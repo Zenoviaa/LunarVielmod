@@ -2,7 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,13 +85,9 @@ namespace Stellamod.Core.WallBackgroundSystem
     }
 
     [Autoload(Side = ModSide.Client)]
-    public class MaskedWallRenderer : ModSystem,
-        IRenderer
+    public class MaskedWallRenderer : ModSystem
     {
-        private int _renderTimer;
-        private Queue<Point> _drawQueue;
-        private RenderTargetProvider _wallMaskRenderTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-        private RenderTargetProvider _backgroundTarget = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+        private readonly Queue<Point> _drawQueue = new();
 
         private MaskedWallBackground[] _maskedWallBackgrounds;
         private MaskedWallBackground _activeMaskedWallBackground;
@@ -100,10 +96,10 @@ namespace Stellamod.Core.WallBackgroundSystem
         public override void OnModLoad()
         {
             base.OnModLoad();
-            _drawQueue = new Queue<Point>();
             _maskedWallBackgrounds = ModContent.GetContent<MaskedWallBackground>().ToArray();
             On_Main.DoDraw_WallsTilesNPCs += DrawWalls;
         }
+
         private void QueueDraws()
         {
             int width = Main.screenWidth;
@@ -138,18 +134,26 @@ namespace Stellamod.Core.WallBackgroundSystem
                     QueueDraw(new Point(x, y));
                 }
             }
-            _renderTimer = 64;
 
         }
         private void DrawWalls(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
         {
-
-
-            _renderTimer--;
-            if (_renderTimer > 0 && _activeMaskedWallBackground != null)
+            SelectActiveMaskedWallBackground();
+            if (_activeMaskedWallBackground != null)
             {
-               
-                DrawMaskedBG();
+                QueueDraws();
+                if(_drawQueue.Count > 0)
+                {
+                    SpriteBatch spriteBatch = Main.spriteBatch;
+                    spriteBatch.EndOut(out var oldParameters);
+
+                    RenderTargetHandle wallMaskTarget = RenderTargets.ScreenTarget;
+                    RenderTargetHandle backgroundTarget = RenderTargets.ScreenTarget;
+                    RenderMask(wallMaskTarget, backgroundTarget);
+
+                    spriteBatch.Begin(oldParameters);
+                    spriteBatch.Draw(backgroundTarget, Vector2.Zero, null, Color.White);
+                }
             }
 
             orig(self);
@@ -163,15 +167,8 @@ namespace Stellamod.Core.WallBackgroundSystem
         }
 
 
-        private void DrawMaskedBG()
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Draw(_backgroundTarget, Vector2.Zero, null, Color.White);
-        }
-
         private void SelectActiveMaskedWallBackground()
         {
-
             //What we're gonna do is select the first background that has an alpha
             _activeMaskedWallBackground = null;
             for (int i = 0; i < _maskedWallBackgrounds.Length; i++)
@@ -200,34 +197,14 @@ namespace Stellamod.Core.WallBackgroundSystem
                 }
             }
         }
-        public void Render()
+
+        private void RenderMask(RenderTargetHandle wallMaskRenderTarget, RenderTargetHandle backgroundTarget)
         {
-            SelectActiveMaskedWallBackground();
-            if (_activeMaskedWallBackground != null)
-            {
-                QueueDraws();
-            }
-            if (_activeMaskedWallBackground == null)
-                return;
-
-
-            RenderMask();
-        }
-
-        private void RenderMask()
-        {
-
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_wallMaskRenderTarget);
-            graphicsDevice.Clear(Color.Transparent);
-            if (_drawQueue.Count > 0)
+            using (new RenderTargetContext(wallMaskRenderTarget))
             {
-
-
-
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, null,
-                    Main.GameViewMatrix.TransformationMatrix);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, null);
 
                 Texture2D texture = AssetManager.GlowMask.WhiteSquare.Value;
                 Vector2 drawOrigin = new Vector2(8);
@@ -244,57 +221,53 @@ namespace Stellamod.Core.WallBackgroundSystem
             }
 
 
-            graphicsDevice.SetRenderTarget(_backgroundTarget);
-            graphicsDevice.Clear(Color.Transparent);
-
-            if (_activeMaskedWallBackground.UseCustomDrawing())
+            using(new RenderTargetContext(backgroundTarget))
             {
-                _activeMaskedWallBackground.Draw(spriteBatch);
-            }
-            else
-            {
-                for (int i = 0; i < _activeMaskedWallBackground.DrawLayers.Length; i++)
+                if (_activeMaskedWallBackground.UseCustomDrawing())
                 {
-                    MaskedWallDrawLayer drawLayer = _activeMaskedWallBackground.DrawLayers[i];
-                    if (drawLayer == null)
-                        break;
-                    if (drawLayer.textureAsset == null)
-                        break;
-                    BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
-                    Vector2 cameraMovement = Main.Camera.Center - _activeMaskedWallBackground.StartParallaxPosition;
-                    backgroundShader.Parallax = drawLayer.parallax * 0.001f * (cameraMovement);
-                    spriteBatch.Begin(default,
-                        default,
-                        SamplerState.PointWrap,
-                        default,
-                        default,
-                        effect: backgroundShader.Effect);
-                    Vector2 drawPosition = Vector2.Zero;
-                    Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2);
-                    Color drawColor = _activeMaskedWallBackground.Color * _activeMaskedWallBackground.Alpha;
-                    if (drawLayer.additive)
-                        drawColor.A = 0;
-                    Vector2 drawOrigin = drawLayer.textureAsset.Value.Size() * 0.5f;
-                    if (_activeMaskedWallBackground.dontDrawCenter)
-                        drawOrigin = Vector2.Zero;
-                    spriteBatch.Draw(drawLayer.textureAsset.Value, drawPosition, drawRectangle, drawColor, 0, drawOrigin, _activeMaskedWallBackground.DrawScale, SpriteEffects.None, 0);
-                    spriteBatch.End();
+                    _activeMaskedWallBackground.Draw(spriteBatch);
+                }
+                else
+                {
+                    for (int i = 0; i < _activeMaskedWallBackground.DrawLayers.Length; i++)
+                    {
+                        MaskedWallDrawLayer drawLayer = _activeMaskedWallBackground.DrawLayers[i];
+                        if (drawLayer == null)
+                            break;
+                        if (drawLayer.textureAsset == null)
+                            break;
+                        BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
+                        Vector2 cameraMovement = Main.Camera.Center - _activeMaskedWallBackground.StartParallaxPosition;
+                        backgroundShader.Parallax = drawLayer.parallax * 0.001f * (cameraMovement);
+                        spriteBatch.Begin(default,
+                            default,
+                            SamplerState.PointWrap,
+                            default,
+                            default,
+                            effect: backgroundShader.Effect);
+                        Vector2 drawPosition = Vector2.Zero;
+                        Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2);
+                        Color drawColor = _activeMaskedWallBackground.Color * _activeMaskedWallBackground.Alpha;
+                        if (drawLayer.additive)
+                            drawColor.A = 0;
+                        Vector2 drawOrigin = drawLayer.textureAsset.Value.Size() * 0.5f;
+                        if (_activeMaskedWallBackground.dontDrawCenter)
+                            drawOrigin = Vector2.Zero;
+                        spriteBatch.Draw(drawLayer.textureAsset.Value, drawPosition, drawRectangle, drawColor, 0, drawOrigin, _activeMaskedWallBackground.DrawScale, SpriteEffects.None, 0);
+                        spriteBatch.End();
+                    }
+
                 }
 
-
+                spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply);
+                spriteBatch.Draw(wallMaskRenderTarget, Vector2.Zero, null, Color.White);
+                spriteBatch.End();
             }
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply);
-            spriteBatch.Draw(_wallMaskRenderTarget, Vector2.Zero, null, Color.White);
-            spriteBatch.End();
-
         }
         public static void QueueDraw(Point tilePoint)
         {
             MaskedWallRenderer renderer = ModContent.GetInstance<MaskedWallRenderer>();
             renderer._drawQueue.Enqueue(tilePoint);
         }
-
-
     }
 }

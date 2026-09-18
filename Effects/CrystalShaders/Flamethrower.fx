@@ -22,7 +22,7 @@ float4 uSourceRect;
 float2 uZoom;
 
 
-float4 metaballs[32];
+float4 metaballs[64];
 float3 innerColor;
 float3 outerColor;
 int length;

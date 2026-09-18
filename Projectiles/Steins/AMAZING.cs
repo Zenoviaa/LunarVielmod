@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
@@ -11,7 +11,6 @@ namespace Stellamod.Projectiles.Steins
 
     public class AMAZING : ModProjectile
     {
-        private static float _orbitCounter;
         public enum AttackState
         {
             Frost_Attack = 0,

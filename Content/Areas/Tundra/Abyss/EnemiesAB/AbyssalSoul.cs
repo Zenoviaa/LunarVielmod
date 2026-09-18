@@ -1,0 +1,157 @@
+﻿
+using Stellamod.Assets;
+using Stellamod.Common;
+using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
+using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Rendering;
+using Stellamod.Visual.Particles;
+using System;
+using System.IO;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
+
+public class AbyssalSoul : ModNPC, IWaterSilhouette
+{
+    private Vector2 _wanderPos;
+    private ref float Timer => ref NPC.ai[0];
+    private ref float WanderTimer => ref NPC.ai[1];
+    public override string Texture => TextureRegistry.EmptyTexture;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        NPCSets.UseAseprite[Type] = true;
+        this.AddToAbyssCritter();
+        this.PreferLand();
+    }
+
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_wanderPos);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _wanderPos = reader.ReadVector2();
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        NPC.width = NPC.height = 32;
+        NPC.lifeMax = 32;
+        NPC.HitSound = SoundID.NPCHit36;
+        NPC.DeathSound = SoundID.NPCDeath39;
+        NPC.aiStyle = -1;
+        NPC.noGravity = true;
+        NPC.noTileCollide = true;
+    }
+
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
+    }
+
+    private void FaceMovement()
+    {
+        if (NPC.velocity.X < 0)
+            NPC.spriteDirection = -1;
+        else
+            NPC.spriteDirection = 1;
+    }
+
+    private void NewWanderPos()
+    {
+        _wanderPos = NPC.Center;
+        _wanderPos.X += Main.rand.Next(-32, 32);
+        _wanderPos.Y += Main.rand.Next(-32, 32);
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        Vector2 targetPos = _wanderPos;
+        targetPos.X += MathF.Sin(Timer * 0.005f) * 9;
+        targetPos.Y += MathF.Sin(Timer * 0.01f) * 9;
+        Vector2 targetVelocity = targetPos - NPC.Center;
+        targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+        float speed = 1f;
+        targetVelocity *= speed;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.03f);
+        FaceMovement();
+        WanderTimer--;
+        if ((WanderTimer <= 0 || Vector2.DistanceSquared(NPC.Center, targetPos) < 64) && MultiplayerHelper.IsHost)
+        {
+            NewWanderPos();
+            WanderTimer = 120;
+            NPC.netUpdate = true;
+        }
+
+        this.AseAnimator.PlayAnimation("Idle", AnimationParams.Default);
+        this.AseAnimator.drawEffects.DrawOrigin = new Vector2(18, 38);
+        Lighting.AddLight(NPC.Center, Vector3.One * 0.2f);
+    }
+
+    public override bool PreDraw(SpriteBatch sb, Vector2 screenPos, Color drawColor)
+    {
+        DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch spriteBatch) =>
+        {
+            NPC.DrawAnimator(spriteBatch, drawColor);
+
+            Color glowColor = Color.White;
+            glowColor.A = 0;
+            NPC.DrawAnimator(spriteBatch, glowColor);
+
+            Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
+            drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f;
+            drawer.color.A = 0;
+            drawer.scale *= 0.25f;
+            spriteBatch.Draw(drawer);
+        });
+
+        return false;
+    }
+
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+        float numDust = 3;
+        for (float n = 0; n < numDust; n++)
+        {
+            Vector2 inverseVelocity = -NPC.oldVelocity;
+            inverseVelocity = inverseVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f);
+            var dp = DustParticle.Spawn(NPC.Center, inverseVelocity);
+            dp.dampening = 0.1f;
+            dp.Scale *= 0.5f;
+            dp.innerColor = Color.White;
+            dp.outerColor = Color.SkyBlue;
+        }
+        if(NPC.life <= 0 && Main.netMode != NetmodeID.Server)
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                { 
+                    position = NPC.Center,
+                    velocity = Main.rand.NextVector2Circular(24, 24),
+                    velocityPerTickMult = 0.92f,
+                    scale = new Vector2(Main.rand.NextFloat(0.8f, 2.4f))
+                });
+            }
+        }
+    }
+
+    public void PrepareSilhouetteDrawing(RekSilhouetteSystem system)
+    {
+        void DrawWhite(SpriteBatch spriteBatch)
+        {
+            NPC.DrawAnimator(spriteBatch, Color.Black);
+        }
+        system.SilhouettesToDraw.Add(DrawWhite);
+    }
+}

@@ -27,7 +27,7 @@ public sealed class ParticleBuffer<ParticleStructType>
 {
 
     public int length;
-    protected ParticleStructType _dummyParticle;
+    private ParticleStructType _dummyParticle;
     public readonly ParticleStructType[] _particles;
     public ParticleBuffer(int poolSize)
     {

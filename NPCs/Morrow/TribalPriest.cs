@@ -1,7 +1,6 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -83,7 +82,7 @@ namespace Stellamod.NPCs.Morrow
             {
                 case ActionState.Asleep:
                     counter++;
-                    NPC.aiStyle = 22;
+                    NPC.aiStyle = NPCAIStyleID.HoveringFighter;
                     NPC.velocity.Y *= 1.01f;
                     FallAsleep();
                     break;

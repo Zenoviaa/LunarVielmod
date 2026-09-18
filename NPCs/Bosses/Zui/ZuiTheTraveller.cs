@@ -1,11 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
+﻿using Stellamod.Buffs;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Vanity.Verlia;
-using Stellamod.Items.Consumables;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Zui;
 using Stellamod.NPCs.Bosses.Zui.Projectiles;
@@ -135,7 +130,7 @@ namespace Stellamod.NPCs.Bosses.Zui
             NPC.npcSlots = 10f;
             NPC.scale = 2f;
 
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
 
 
 
@@ -2179,7 +2174,6 @@ namespace Stellamod.NPCs.Bosses.Zui
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Consumables.Gambit>(), 1, 5, 10));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MagiciansCodeHat>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RadianuiBar>(), 1, 10, 40));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShopNote>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<ZuiBomb>()));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CompletedFlowerBag>(), minimumDropped: 1, maximumDropped: 3));

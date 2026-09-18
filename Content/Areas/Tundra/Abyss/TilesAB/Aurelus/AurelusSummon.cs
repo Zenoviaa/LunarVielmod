@@ -2,7 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Terraria;

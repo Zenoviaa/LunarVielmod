@@ -321,7 +321,6 @@ public class VerliaGreatBlade : ModProjectile
     private void DrawTrails(GraphicsDevice gDevice)
     {
         Vector2[] swingPos = new Vector2[Projectile.oldRot.Length];
-        float radians = MathHelper.PiOver4 * 0.5f;
         for (int i = 0; i < swingPos.Length; i++)
         {
             swingPos[i] = (Projectile.oldRot[i]).ToRotationVector2() * 484 * 2f + Projectile.Center;

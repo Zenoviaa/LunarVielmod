@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Camera;
+﻿using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Effects.ScreenRipples;
@@ -12,6 +13,18 @@ namespace Stellamod.Helpers;
 
 public static class FXUtil
 {
+    public static void SetZoomTarget(float targetZoomMultiplier)
+    {
+        CameraZoomSystem.TargetZoomMultiplier = targetZoomMultiplier;
+    }
+    public static void MakeSoilParticle(in Vector2 position, in Vector2 velocity)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        Vector2 spawnPosition = position;
+        Vector2 spawnVelocity = velocity;
+        ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
+    }
     public static void ApplyContrast(float strength)
     {
         if (Main.netMode == NetmodeID.Server)
@@ -57,12 +70,7 @@ public static class FXUtil
             particle.Rotation = particle.Velocity.ToRotation();
         }
     }
-    public static FogParticle Fog(Vector2 position, Vector2 velocity)
-    {
-        FogParticle particle = LegacyParticle.NewParticle<FogParticle>(position, Vector2.Zero);
-        particle.Velocity = velocity;
-        return particle;
-    }
+
     public static GlowDonutParticle GlowDonutParticle(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor, Color fadeToColor, bool distortOut = false)
     {
         GlowDonutParticle particle = LegacyParticle.NewParticle<GlowDonutParticle>(position, Vector2.Zero);

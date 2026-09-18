@@ -1,39 +1,50 @@
 ﻿using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.Particles;
 
 //Helper methods for spawning particles
-[Autoload(Side = ModSide.Client)]
 public sealed class Particles : ModSystem
 {
     private List<IParticleUpdater> _particleUpdaters;
 
-    public static BitDust BitDust;
-    public static RagingFlameDust RagingFlameDust;
-    public static FaintSmokeDust FaintSmokeDust;
-    public static CinderEmberDust CinderEmberDust;
-    public static CinderEmberDustBackground CinderEmberDustBackground;
-    public static SwirlingFlameDust SwirlingFlameDust;
-    public static RoarDust RoarDust;
+    //TODO: look into source genning these
+
+    /// <summary>
+    /// A glowy dust that stretches and collides with particles
+    /// </summary>
+    public static readonly BitDust BitDust = new();
+
+    /// <summary>
+    /// A firey dust used for raging flame torches
+    /// </summary>
+    public static readonly RagingFlameDust RagingFlameDust = new();
+    
+    public static readonly FaintSmokeDust FaintSmokeDust = new();
+    public static readonly CinderEmberDust CinderEmberDust = new();
+    public static readonly CinderEmberDustBackground CinderEmberDustBackground = new();
+    public static readonly SwirlingFlameDust SwirlingFlameDust = new();
+    public static readonly RoarDust RoarDust = new();
+    public static readonly FeatherDust FeatherDust = new();
+    public static readonly AbyssFloatingFlowerDust AbyssFloatingFlowerDust = new();
 
     /// <summary>
     /// A circle particle that draws on the water target, creating the illusion of splashing water
     /// </summary>
-    public static WaterDust WaterDust;
+    public static readonly WaterDust WaterDust = new();
+    public static readonly BloodyMurderDust BloodyMurderDust = new();
+    public static readonly WaterfallCrashDust WaterfallCrashDust = new();
+    public static readonly TinyWhiteMothDust TinyWhiteMothDust = new();
+    public static readonly InDonutDust InDonutDust = new();
+    public static readonly CometMagicDust CometMagicDust = new();
+    public static readonly CrackImpactDust CrackDust = new();
+    public static readonly GoldenLeaf GoldenLeaf = new();
+    public static readonly GoldenLeaf GoldenLeafTornado = new();
     public override void Load()
     {
         base.Load();
-
-        BitDust = new();
-        RagingFlameDust = new();
-        FaintSmokeDust = new();
-        CinderEmberDust = new();
-        CinderEmberDustBackground = new();
-        SwirlingFlameDust = new();
-        RoarDust = new();
-        WaterDust = new();
         _particleUpdaters = new List<IParticleUpdater>
         {
             BitDust,
@@ -43,8 +54,21 @@ public sealed class Particles : ModSystem
             CinderEmberDustBackground,
             SwirlingFlameDust,
             RoarDust,
-            WaterDust
+            WaterDust,
+            AbyssFloatingFlowerDust,
+            FeatherDust,
+            BloodyMurderDust,
+            WaterfallCrashDust,
+            TinyWhiteMothDust,
+            InDonutDust,
+            CometMagicDust,
+            CrackDust,
+            GoldenLeaf,
+            GoldenLeafTornado
         };
+
+        if (Main.netMode == NetmodeID.Server)
+            return;
 
         for (int i = 0; i < _particleUpdaters.Count; i++)
         {
@@ -60,6 +84,8 @@ public sealed class Particles : ModSystem
         base.Unload();
         if (_particleUpdaters == null)
             return;
+        if (Main.netMode == NetmodeID.Server)
+            return;
 
         for (int i = 0; i < _particleUpdaters.Count; i++)
         {
@@ -73,28 +99,6 @@ public sealed class Particles : ModSystem
     }
 
 
-    private void UpdateParticles(object? state)
-    {
-
-        void UpdateParticles_Inner()
-        {
-            double oldUpdate = Main.GameUpdateCount;
-
-            while (true)
-            {
-                double newUpdate = Main.GameUpdateCount;
-                if (newUpdate != oldUpdate)
-                {
-                    oldUpdate = newUpdate;
-                    for (int i = 0; i < _particleUpdaters.Count; i++)
-                    {
-                        _particleUpdaters[i].Update();
-                    }
-                }
-            }
-        }
-        UpdateParticles_Inner();
-    }
     public override void PostUpdateDusts()
     {
         base.PostUpdateDusts();
@@ -104,32 +108,6 @@ public sealed class Particles : ModSystem
         }
     }
 
-    private void RagingFlameDustTest()
-    {
-        if (Main.mouseLeft && Main.GameUpdateCount % 2 == 0)
-        {
-            RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = Main.MouseWorld, timeleft = 70 });
-        }
-    }
-
-    private void BitDustPerfTest()
-    {
-        if (Main.mouseLeft)
-        {
-            BitDustFactory factory = BitDustFactory.Default;
-            factory.position = Main.MouseWorld;
-            factory.outerColor = Main.DiscoColor.ToVector4();
-            factory.innerColor = factory.outerColor;
-            for (int i = 0; i < 100; i++)
-            {
-
-
-                factory.velocity = Main.rand.NextVector2Circular(16, 16);
-                BitDust.Spawn(factory);
-            }
-        }
-
-    }
     public override void PostDrawTiles()
     {
         base.PostDrawTiles();

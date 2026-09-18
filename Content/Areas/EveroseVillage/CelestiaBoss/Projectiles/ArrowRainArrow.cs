@@ -4,7 +4,6 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -21,7 +20,6 @@ public class ArrowRainBow : ModProjectile
     private Vector2 _mirageOffset;
     private Vector2 _pullScale;
     private Vector2 _targetPullScale;
-    private int _frameCounter;
     private ref float Timer => ref Projectile.ai[0];
     private Player Target => Main.player[(int)Projectile.ai[1]];
     private ref float AttackTimer => ref Projectile.ai[2];
@@ -81,7 +79,7 @@ public class ArrowRainBow : ModProjectile
             if (AttackTimer == 10 || AttackTimer == 20 || AttackTimer == 30)
             {
 
-                _targetPullScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), (float)(Projectile.frame + 1) / 4f);
+                _targetPullScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), (Projectile.frame + 1) / 4f);
                 Projectile.frame = (int)Math.Floor(AttackTimer / 10f);
             }
 
@@ -121,8 +119,8 @@ public class ArrowRainBow : ModProjectile
 
 
         NPC parent = Main.npc[parentIndex];
-        
-        if(AttackTimer < 60)
+
+        if (AttackTimer < 60)
         {
             Projectile.Center = parent.Center;
         }
@@ -197,7 +195,7 @@ public class ArrowRainBow : ModProjectile
         bloomlineDrawer.color.A = 0;
 
         float dist = Vector2.Distance(Projectile.Center, Target.Center);
-        float bloomLineSize = dist / (float)bloomlineDrawer.texture.Width;
+        float bloomLineSize = dist / bloomlineDrawer.texture.Width;
         bloomlineDrawer.scale.X *= bloomLineSize;
         bloomlineDrawer.scale.Y *= 0.025f;
         bloomlineDrawer.LeftCenterOrigin();
@@ -385,7 +383,7 @@ public class ArrowRainArrow : ModProjectile
             Vector2 pos = Projectile.oldPos[i];
             pos += Projectile.Size * 0.5f;
             celestialArrowDrawer.worldPosition = pos;
-            celestialArrowDrawer.color = Color.Lerp(Color.Turquoise, Color.Black, (float)i / (float)Projectile.oldPos.Length) * 0.1f;
+            celestialArrowDrawer.color = Color.Lerp(Color.Turquoise, Color.Black, i / (float)Projectile.oldPos.Length) * 0.1f;
             celestialArrowDrawer.color.A = 0;
             Main.spriteBatch.Draw(celestialArrowDrawer);
 
@@ -405,8 +403,8 @@ public class ArrowRainArrow : ModProjectile
         base.OnKill(timeLeft);
         if (this.OwnedByLocalClient())
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Target.Center, Projectile.velocity, 
-                ModContent.ProjectileType<MiniCelestialArrowRainer>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Target.Center, Projectile.velocity,
+                ModContent.ProjectileType<MiniCelestialArrowRainer>(), Projectile.damage, Projectile.knockBack, Projectile.owner,
                 ai1: Target.whoAmI);
         }
     }
@@ -434,12 +432,12 @@ public class MiniCelestialArrowRainer : ModProjectile
         base.AI();
         OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundStyle arrowRainStart = AssetRegistry.Sounds.Celestia.ArrowRainStart with { PitchVariance = 0.3f, Volume = 0.5f };
             SoundEngine.PlaySound(arrowRainStart, Target.position);
         }
-        if(Timer % 7 == 0 && this.OwnedByLocalClient())
+        if (Timer % 7 == 0 && this.OwnedByLocalClient())
         {
             Vector2 pos = Target.Center;
             pos.Y -= 768;
@@ -459,7 +457,7 @@ public class MiniCelestialArrowRainer : ModProjectile
         SpriteBatch spriteBatch = Main.spriteBatch;
         Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, (int)(Main.screenHeight * 0.2f * MathHelper.Lerp(0.2f, 1f, EasingFunction.QuadraticBump(Timer / 100f))));
         Color drawColor = Color.Lerp(Color.Transparent, Color.Turquoise, EasingFunction.OutExpo(Timer / 30f) *
-            EasingFunction.InOutSine((float)Projectile.timeLeft / 30f));
+            EasingFunction.InOutSine(Projectile.timeLeft / 30f));
         drawColor *= 0.5f;
         drawColor.A = 0;
         spriteBatch.Draw(gradientTexture.Value, drawRect, drawColor);

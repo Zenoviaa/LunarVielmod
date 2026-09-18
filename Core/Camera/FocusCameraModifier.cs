@@ -53,7 +53,7 @@ namespace Stellamod.Core.Camera
                 transitionProgress = easedExitProgress;
             }
 
-
+         
             //Get the target position
             Vector2 targetPos = _entity != null ? _entity.Center : _focusTargetPosition.Value;
             targetPos.X -= Main.screenWidth * 0.5f;

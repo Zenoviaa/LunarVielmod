@@ -7,7 +7,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+using Stellamod.Content.Dusts;
 namespace Stellamod.Items.Weapons.Ranged
 {
     public class WaterGun : ClassSwapItem
@@ -68,7 +68,7 @@ namespace Stellamod.Items.Weapons.Ranged
             float rot = velocity.ToRotation();
             float distance = 16;
             Vector2 offset = new Vector2(3.2f, -0.1f * player.direction).RotatedBy(rot);
-            Dust.NewDustPerfect(position + (offset * distance) + new Vector2(0, 6), ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.LightSkyBlue, 1);
+            Dust.NewDustPerfect(position + (offset * distance) + new Vector2(0, 6), ModContent.DustType<GlowDust>(), new Vector2(0, 0), 125, Color.LightSkyBlue, 1);
 
             if (!hasConnector)
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Dusts;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -24,7 +25,7 @@ namespace Stellamod.Tiles.Structures
             MineResist = 4f;
             MinPick = 200;
 
-            DustType = ModContent.DustType<Dusts.SalfaceDust>();
+            DustType = ModContent.DustType<SalfaceDust>();
             AdjTiles = new int[] { TileID.Bookcases };
             Main.tileFrameImportant[Type] = true;
             Main.tileNoAttach[Type] = true;

@@ -36,16 +36,16 @@ public class NoMapAutoSave : ModSystem
     public override void Load()
     {
         base.Load();
-        On_Player.SavePlayer += DisableMapAutoSave;
+        On_Player.InternalSaveMap += DisableMapSave;
     }
 
-    private void DisableMapAutoSave(On_Player.orig_SavePlayer orig, PlayerFileData playerFile, bool skipMapSave)
+    private void DisableMapSave(On_Player.orig_InternalSaveMap orig, bool isCloudSave)
     {
         if (ModContent.GetInstance<LunarVeilClientConfig>().skipMapAutoSave)
         {
-            skipMapSave = true;
+            return;
         }
-        orig(playerFile, skipMapSave);
+        orig(isCloudSave);
     }
 }
 

@@ -17,7 +17,73 @@ public struct SteinUppercutParameters
 
 public class MovementUtilities
 {
+    public static void FaceMovementVelocity(NPC npc)
+    {
+        npc.spriteDirection = npc.velocity.X < 0 ? -1 : 1;
+    }
 
+    public static void AIMoveTowardsTarget(Vector2 currentPosition, Vector2 targetPosition,
+        ref Vector2 velocity, float speed, float lerp)
+    {
+        Vector2 directionTo = targetPosition - currentPosition;
+        directionTo = directionTo.SafeNormalize(Vector2.Zero);
+        Vector2 targetVelocity = directionTo * speed;
+        velocity = Vector2.Lerp(velocity, targetVelocity, lerp);
+    }
+
+    /// <summary>
+    /// A
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
+    public static Vector2 FindCeiling(in Vector2 worldPosition, int maxTileSteps = 100)
+    {
+        Point tilePoint = worldPosition.ToTileCoordinates();
+        int x = tilePoint.X;
+        int y = tilePoint.Y;
+        for(int i = 0; i < maxTileSteps && y > 0; i++)
+        {
+            y--;
+            Tile tile = Main.tile[x, y];
+            if(tile.HasTile && Main.tileSolid[tile.TileType])
+            {
+                return new Point(x, y).ToWorldCoordinates();
+            }
+        }
+        return worldPosition;
+    }
+    public static Vector2 FindFloor(in Vector2 worldPosition, int maxTileSteps = 100)
+    {
+        Point tilePoint = worldPosition.ToTileCoordinates();
+        int x = tilePoint.X;
+        int y = tilePoint.Y;
+        for (int i = 0; i < maxTileSteps && y > 0; i++)
+        {
+            y++;
+            Tile tile = Main.tile[x, y];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+            {
+                return new Point(x, y).ToWorldCoordinates();
+            }
+        }
+        return worldPosition;
+    }
+    public static Vector2 FindFloorWet(in Vector2 worldPosition, int maxTileSteps = 100)
+    {
+        Point tilePoint = worldPosition.ToTileCoordinates();
+        int x = tilePoint.X;
+        int y = tilePoint.Y;
+        for (int i = 0; i < maxTileSteps && y > 0; i++)
+        {
+            y++;
+            Tile tile = Main.tile[x, y];
+            if ((tile.HasTile && Main.tileSolid[tile.TileType]) || tile.LiquidAmount > 0)
+            {
+                return new Point(x, y).ToWorldCoordinates();
+            }
+        }
+        return worldPosition;
+    }
     public static Vector2 SteinGetEndPoint(Player player, in Vector2 startPosition, in Vector2 targetPosition, in float maxDistance)
     {
         float adjustedMaxDistance = player.GetModPlayer<MeleeEffectsPlayer>().steinDistanceBonus * maxDistance + maxDistance;

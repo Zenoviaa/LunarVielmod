@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Projectiles.Gun;
@@ -57,7 +57,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-5f, 0f);
+            return new Vector2(8, 0f);
         }
 
         public override void AddRecipes()
@@ -68,6 +68,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
+            muzzleOrigin = new Vector2(64, 10);
             base.ShootEffects(position, velocity);
         }
 

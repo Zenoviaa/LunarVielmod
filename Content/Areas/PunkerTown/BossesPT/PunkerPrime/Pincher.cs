@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
-using Stellamod.Core.Particles;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
+﻿using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -22,7 +18,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
 
         private bool _revvedUp;
-        private bool _shouldHome;
         private int _frame;
         private AIState State
         {
@@ -176,7 +171,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 revLoopSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(revLoopSound, NPC.position);
 
-                _shouldHome = true;
                 Vector2 targetVelocity = NPC.rotation.ToRotationVector2() * 18f;
                 NPC.velocity = targetVelocity;
                 ShakeScreenPosition.Shake = 10;
@@ -199,7 +193,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             }
 
 
-            if(Timer >= 30 && Timer < 60)
+            if (Timer >= 30 && Timer < 60)
             {
                 Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(NPC.Center, Target.Center, NPC.velocity, 5);
                 NPC.velocity = homingVelocity;
@@ -209,9 +203,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             float sawTime = 180;
             float completionRatio = Timer / sawTime;
 
-            if(NPC.velocity.Y < 20)
+            if (NPC.velocity.Y < 20)
                 NPC.velocity.Y += 0.6f;
-                NPC.rotation = NPC.velocity.ToRotation();
+            NPC.rotation = NPC.velocity.ToRotation();
             SetAngles(MathHelper.Lerp(-330, -165, completionRatio));
 
 

@@ -2,19 +2,36 @@
 using Stellamod.Common.Animations;
 using Stellamod.Core.NPCHelpers;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.ContentReader.Aseprite;
 
 public static class AnimationExtensions
 {
+    public static readonly AseAnimator DummyAnimator = new();
+
+    extension(ModNPC modNpc)
+    {
+        public AseAnimator AseAnimator
+        {
+            get
+            {
+                if (modNpc.NPC.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animator))
+                    return animator.Animator;
+                return DummyAnimator;
+            }
+        }
+    }
     public static AseAnimator GetAnimator(this ModNPC modNpc)
     {
         return modNpc.NPC.GetAnimator();
     }
     public static AseAnimator GetAnimator(this NPC npc)
     {
-        return npc.GetGlobalNPC<AnimatorGlobalNPC>().Animator;
+        if (npc.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animator))
+            return animator.Animator;
+        return DummyAnimator;
     }
     public static void SetDrawOrigin(this ModNPC modNpc, Vector2 drawOrigin)
     {
@@ -30,6 +47,25 @@ public static class AnimationExtensions
     {
         var Animator = modNpc.GetAnimator().spriteEffects = spriteEffects;
     }
+    public static SpritebatchDrawer GetAnimatorDrawInfo(this NPC npc, Color drawColor)
+    {
+        var Animator = npc.GetAnimator();
+        SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
+        drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        drawer.spriteEffects |= Animator.spriteEffects;
+        drawer.rotation = npc.rotation;
+        drawer.color = drawColor;
+        if (npc.spriteDirection == -1)
+        {
+            drawer.drawOrigin.X = drawer.sourceRect!.Value.Width - drawer.drawOrigin.X;
+        }
+
+        //Offset it even with the draw origin so the sprite is still in the center of the hitbox
+        Vector2 offset = drawer.drawOrigin - Animator.centerDrawOrigin;
+        drawer.worldPosition += offset;
+        return drawer;
+    }
+
     public static void DrawAnimator(this NPC npc, SpriteBatch spriteBatch, Color drawColor)
     {
         var Animator = npc.GetAnimator();
@@ -72,6 +108,7 @@ public class AnimatorGlobalNPC : GlobalNPC
 {
     public override bool InstancePerEntity => true;
 
+
     public AseAnimator Animator;
     public override void FindFrame(NPC npc, int frameHeight)
     {
@@ -85,13 +122,17 @@ public class AnimatorGlobalNPC : GlobalNPC
     public override void SetDefaults(NPC entity)
     {
         base.SetDefaults(entity);
+        Animator = new AseAnimator();
         if (AsepriteAssets.Npc == null)
             return;
-        Animator = new AseAnimator(AsepriteAssets.Npc[entity.type]);
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        Animator.SetSpriteAsset(AsepriteAssets.Npc[entity.type]);
     }
 
     public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
     {
+
         if (NPCSets.UseAseprite[entity.type])
             return true && lateInstantiation;
         return false;
@@ -112,19 +153,26 @@ public class AseAnimator
 {
     private float _frameCounter;
     private int _frameIndex;
-    public AseAnimator(Asset<AseSprite> sprite)
+    public AseAnimator()
     {
-        Sprite = sprite;
+
         drawEffects = default;
-        centerDrawOrigin = new Vector2(sprite.Value.FrameWidth * 0.5f, sprite.Value.FrameHeight * 0.5f);
+
     }
-    public readonly Asset<AseSprite> Sprite;
+
+
+    public Asset<AseSprite> Sprite;
     public AseTags playingTag;
     public string currentAnimation;
     public bool isLooping;
     public DrawEffects drawEffects;
     public SpriteEffects spriteEffects;
     public Vector2 centerDrawOrigin;
+    public void SetSpriteAsset(Asset<AseSprite> sprite)
+    {
+        Sprite = sprite;
+        centerDrawOrigin = new Vector2(sprite.Value.FrameWidth * 0.5f, sprite.Value.FrameHeight * 0.5f);
+    }
     public SpritebatchDrawer GetSprite() => GetSprite(Vector2.Zero);
     public SpritebatchDrawer GetSprite(Vector2 worldPosition)
     {
@@ -136,6 +184,8 @@ public class AseAnimator
     }
     public void PlayAnimation(string name, AnimationParams? animationParams = null)
     {
+        if (Main.netMode == NetmodeID.Server)
+            return;
         if (animationParams == null)
         {
             animationParams = AnimationParams.Default;
@@ -152,6 +202,8 @@ public class AseAnimator
 
     public void Update()
     {
+        if (Main.netMode == NetmodeID.Server)
+            return;
         if (playingTag == null)
             return;
         //TODO: instead take in an elapsed time and calculate the current frame

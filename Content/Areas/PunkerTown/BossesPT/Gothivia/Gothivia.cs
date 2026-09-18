@@ -80,7 +80,7 @@ public partial class Gothivia : ScarletBoss
             return _patternBackingField;
         }
     }
-    private PatternManager<int>? _patternManagerBackingField;
+    private PatternManager<int> _patternManagerBackingField;
     private PatternManager<int> ComboPattern
     {
         get
@@ -96,7 +96,7 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
-    private List<float>? _shootRotations;
+    private List<float> _shootRotations;
     private List<float> ShootRotations
     {
         get
@@ -106,6 +106,7 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
+    private float _arenaY;
     private int _timer;
     private bool _phase2Transition;
     private bool _keyDown;
@@ -129,8 +130,6 @@ public partial class Gothivia : ScarletBoss
     private float _numDirections;
 
     private int _bowFrame;
-    private float _dashDirection;
-
     private Vector2 _teleportPosition;
     private Vector2 _startCDashOffset;
     private Vector2 _endCDashOffset;
@@ -140,7 +139,6 @@ public partial class Gothivia : ScarletBoss
 
     private Outliner _outliner;
     private AnimationFramer _wingAnimationFrame;
-    private AnimationFramer _bowAnimationFrame;
     private ref float Timer => ref NPC.ai[0];
 
     private AIState State
@@ -235,25 +233,31 @@ public partial class Gothivia : ScarletBoss
             NPC.netUpdate = true;
         }
     }
-    private float Ground => 16000;
+    private float Ground => _arenaY;
 
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.WriteVector2(_teleportPosition);
+        writer.Write(_arenaY);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         _teleportPosition = reader.ReadVector2();
+        _arenaY = reader.ReadSingle();
     }
     private void EnablePlatformArena()
     {
-        DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
-        fallSystem.noWings = true;
-        fallSystem.inSpace = true;
-        fallSystem.hoveringPlatform = true;
-        fallSystem.hoverPlatformY = Ground;
+        NPCUtilities.SetDomainArenaY(NPC, ref _arenaY);
+        DomainExpansionManager.UseDomain(new DomainParameters
+        {
+            noWings = true,
+            inSpace = true,
+            hoveringPlatform = true,
+            hoverPlatformY = _arenaY,
+            noRender = true
+        });
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -633,7 +637,6 @@ public partial class Gothivia : ScarletBoss
     }
     private void ExitOutAttack() => ChooseAttack();
 
-    private AIState _lastState;
     private void ChooseAttack()
     {
         if (MultiplayerHelper.IsHost)
@@ -1975,9 +1978,7 @@ public partial class Gothivia : ScarletBoss
     }
 
     private float _circleDegrees;
-    private float _circleDistance;
     private float _circleSpeed;
-    private float _movementSpeed;
     private float _accelTimer;
     private void FaceTarget()
     {
@@ -2017,30 +2018,29 @@ public partial class Gothivia : ScarletBoss
         float ai1 = NPC.whoAmI;
         if (Timer == 3)
         {
-            _circleDistance = 270;
+
         }
 
         if (Timer == 80)
         {
-            _movementSpeed = 12;
+
             _circleSpeed = 3;
         }
 
         if (Timer == 170)
         {
-            _movementSpeed = 25;
+
 
         }
 
         if (Timer == 210)
         {
-            _movementSpeed = 16;
+  
         }
 
 
         if (Timer == 240)
         {
-            _movementSpeed = 12;
             _circleSpeed = 2;
         }
 

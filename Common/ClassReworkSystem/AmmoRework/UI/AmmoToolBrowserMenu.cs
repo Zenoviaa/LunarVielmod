@@ -54,8 +54,6 @@ public class AmmoToolBrowserMenu : UIPanel
             shopParameters.ViewItemFunction = ViewCombatTool;
             shopParameters.SelectedItemFunction = HasSelectedCombatTool;
             View = new(shopParameters.AvailableItemsFunction(), shopParameters);
-            View.Width.Pixels = Width.Pixels;
-            View.Height.Pixels = Height.Pixels;
             View.Activate();
             _initItems = true;
             Append(View);

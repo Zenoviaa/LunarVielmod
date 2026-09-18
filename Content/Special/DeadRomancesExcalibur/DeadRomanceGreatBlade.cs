@@ -42,11 +42,7 @@ public class DeadRomanceGreatBlade : ModProjectile
     private Player Owner => Main.player[Projectile.owner];
     private Vector2[] _swingTrailCache;
     private Vector2 _rotationalVelocity;
-    private Vector2 _startProjectileCenter;
-    private Vector2 _initialVelocity;
     private Vector2 _initialOffset;
-    private float _startProjectileRotation;
-
     private OvalSwing _ovalSwing;
 
     private float _ratio;
@@ -59,9 +55,6 @@ public class DeadRomanceGreatBlade : ModProjectile
     private float _trailWidthLerp;
     private int _stage;
     private float _growTimer;
-    private float _nextGrowPoint;
-
-
     public float chargeUpTime => 60  * fixer;
     public float holdBackTime => 60 * fixer;
     public float swingTime => 64 * fixer;
@@ -335,12 +328,6 @@ public class DeadRomanceGreatBlade : ModProjectile
             _growTimer++;
         }
         Timer++;
-        if(Timer == 1)
-        {
-            _startProjectileCenter = Projectile.Center;
-            _startProjectileRotation = Projectile.rotation;
-
-        }
         float Interpolant = Timer / swingTime;
         Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
         _trailWidthLerp = EasingFunction.QuadraticBump(Interpolant);

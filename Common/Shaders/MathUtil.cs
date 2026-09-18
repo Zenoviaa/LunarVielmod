@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Terraria;
 
 namespace Stellamod.Common.Shaders
@@ -8,7 +9,8 @@ namespace Stellamod.Common.Shaders
     public static class MathUtil
     {
 
-        public static Vector2 GetRotation(Vector2[] oldPos, int index)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 GetRotation(Vector2[] oldPos, in int index)
         {
             if (oldPos.Length == 1)
                 return oldPos[0];

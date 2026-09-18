@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
+using Stellamod.Content.Dusts;
 using Stellamod.Tiles;
 using Terraria;
 using Terraria.GameContent.Creative;

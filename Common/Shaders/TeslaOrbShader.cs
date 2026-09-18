@@ -1,12 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Assets;
 using Terraria;
 
 namespace Stellamod.Common.Shaders
@@ -20,7 +12,6 @@ namespace Stellamod.Common.Shaders
         private EffectParameter _outerColorParam;
 
         private EffectParameter _lightninginnerColorParam;
-        private EffectParameter _lightningouterColorParam;
 
         private static TeslaOrbShader _instance;
         public static TeslaOrbShader Instance

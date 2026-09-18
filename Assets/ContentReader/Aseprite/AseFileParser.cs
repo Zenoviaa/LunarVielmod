@@ -115,7 +115,7 @@ public static class AseFileParser
         var reader = new BinaryReader(ms);
         var header = ParseHeader(reader);
         var sprite = ParseFrames(header, reader);
-        sprite.sheet = sprite.CreateVerticalSpriteSheet();
+        sprite.sheet = sprite.CreateSpriteSheet();
         reader.Dispose();
         ms.Dispose();
         return sprite;

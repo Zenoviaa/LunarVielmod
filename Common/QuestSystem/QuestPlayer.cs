@@ -183,6 +183,8 @@ namespace Stellamod.Common.QuestSystem
 
             if (Player.dead)
                 return;
+            if (Main.netMode == NetmodeID.Server)
+                return;
             if (Main.GameUpdateCount % 30 == 0)
             {
                 CheckQuestProgression();
@@ -190,6 +192,7 @@ namespace Stellamod.Common.QuestSystem
         }
         private void CheckQuestProgression()
         {
+
             //Very first quest that you start off with
             if (FreshQuests())
             {

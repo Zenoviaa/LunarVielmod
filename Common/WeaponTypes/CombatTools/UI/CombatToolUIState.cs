@@ -1,20 +1,19 @@
 ﻿using Terraria.UI;
 
-namespace Stellamod.Common.WeaponTypes.CombatTools.UI
+namespace Stellamod.Common.WeaponTypes.CombatTools.UI;
+
+public class CombatToolUIState : UIState
 {
-    public class CombatToolUIState : UIState
+    public CombatToolSlotPanel panel;
+    public CombatToolUIState() : base()
     {
-        public CombatToolSlotPanel panel;
-        public CombatToolUIState() : base()
-        {
 
-        }
-
-        public override void OnInitialize()
-        {
-            panel = new();
-            Append(panel);
-        }
     }
-    
+
+    public override void OnInitialize()
+    {
+        panel = new();
+        Append(panel);
+    }
 }
+

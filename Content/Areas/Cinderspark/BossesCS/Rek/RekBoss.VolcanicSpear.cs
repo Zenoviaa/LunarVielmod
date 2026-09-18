@@ -2,7 +2,6 @@
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core.Camera;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -11,7 +10,6 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
-    private float _jumpRadians;
     private int Volcanic_Spear_Damage => 50;
     private float Volcanic_Spear_Come_Up_Time => 80;
     private float Volcanic_Spear_Go_Down_Time => 130;
@@ -131,7 +129,7 @@ public partial class RekBoss
                     Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f);
                     CameraTargetSystem.AddTarget(panning);
 
-                    if(Timer >= Volcanic_Spear_Crash_Time * 0.5f)
+                    if (Timer >= Volcanic_Spear_Crash_Time * 0.5f)
                         Animator.PlayAnimation(ANIM_SPEAR_READY, AnimationParams.NoLooping);
                     float timePerSpearAlpha = Volcanic_Spear_Crash_Time / 3f;
                     for (int i = 0; i < _spearAlphas.Length; i++)
@@ -140,7 +138,7 @@ public partial class RekBoss
                         spearAlpha = (Timer - i * timePerSpearAlpha) / timePerSpearAlpha;
                         spearAlpha = EasingFunction.InOutExpo7(spearAlpha);
                     }
-                    if(Timer % (int)timePerSpearAlpha == 0)
+                    if (Timer % (int)timePerSpearAlpha == 0)
                     {
                         var sound = AssetRegistry.Sounds.Rek.SmallFlameBlast with { PitchVariance = 0.4f };
                         SoundEngine.PlaySound(sound, NPC.position);
@@ -163,7 +161,7 @@ public partial class RekBoss
                 break;
             case 3:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         var sound = AssetRegistry.Sounds.Rek.RekBigroar;
                         SoundEngine.PlaySound(sound, NPC.position);
@@ -172,7 +170,7 @@ public partial class RekBoss
                         if (MultiplayerHelper.IsHost)
                         {
                             ProjFirer firer = ProjFirer.From<RekSpiralDashTrail>(NPC);
-                            firer.ai1= NPC.whoAmI;
+                            firer.ai1 = NPC.whoAmI;
                             firer.New();
                         }
                     }
@@ -204,7 +202,7 @@ public partial class RekBoss
 
                     if (Main.rand.NextBool(2))
                     {
-                        for(int i = 0; i < 3; i++)
+                        for (int i = 0; i < 3; i++)
                         {
                             int seg = Main.rand.Next(0, Segments.Length);
                             var segment = Segments[seg];
@@ -220,7 +218,7 @@ public partial class RekBoss
 
                     }
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.4f);
-                    if(Timer >= Volcanic_Spear_Stab_Time)
+                    if (Timer >= Volcanic_Spear_Stab_Time)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -230,7 +228,7 @@ public partial class RekBoss
                 break;
             case 4:
                 {
-                    if(Timer < 25)
+                    if (Timer < 25)
                     {
                         Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.15f);
                         CameraTargetSystem.AddTarget(panning);
@@ -249,7 +247,7 @@ public partial class RekBoss
                         if (_destroyArena)
                         {
                             //Destroy the main platform
-                            foreach(var npc in Main.ActiveNPCs)
+                            foreach (var npc in Main.ActiveNPCs)
                             {
                                 if (npc.type == ModContent.NPCType<BigMoltenPlatform>())
                                     npc.Kill();

@@ -2,18 +2,13 @@
 using Stellamod.Common;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponTypes;
-using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -319,12 +314,12 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             }
             if (Main.rand.NextBool(4))
             {
-                DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), 
+                DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32),
                     -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.4f, 3f));
                 sp.outerColor = Color.SkyBlue;
                 sp.gravity = 0;
 
-                    }
+            }
 
             if (Main.rand.NextBool(8))
             {
@@ -336,7 +331,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
                 sp.Scale *= 0.25f;
             }
 
-            if(Timer >= 15)
+            if (Timer >= 15)
             {
                 Projectile.tileCollide = true;
             }
@@ -410,7 +405,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
                 if (this.OwnedByLocalClient())
                 {
                     Vector2 velocity = (Projectile.Center - Owner.Center).SafeNormalize(Vector2.Zero) * 15;
-                    Projectile.NewProjectile(Owner.GetSource_FromThis(), Projectile.Center - Vector2.UnitY * 1250 + Main.rand.NextVector2Circular(1000, 64), Vector2.UnitY * 15, 
+                    Projectile.NewProjectile(Owner.GetSource_FromThis(), Projectile.Center - Vector2.UnitY * 1250 + Main.rand.NextVector2Circular(1000, 64), Vector2.UnitY * 15,
                         ModContent.ProjectileType<IcicleManaBlast>(), Projectile.damage, Projectile.knockBack, Owner.whoAmI);
                 }
 
@@ -750,7 +745,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
 
         public override bool PreDraw(ref Color lightColor)
         {
-      
+
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Vector2 drawScale = Vector2.One * 0.1f;
             SpriteBatch spriteBatch = Main.spriteBatch;

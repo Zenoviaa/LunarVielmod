@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Terraria;

@@ -1,13 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Dusts;
 using Stellamod.Items;
-using Stellamod.Projectiles.Swords;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
 using System;
@@ -335,7 +332,7 @@ public class StarvastStarProj : ModProjectile,
     public override void AI()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
         }
 

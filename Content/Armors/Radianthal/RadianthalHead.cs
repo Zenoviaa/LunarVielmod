@@ -49,7 +49,7 @@ public class RadianthalAura : ModProjectile
             SoundEngine.PlaySound(spawnSound, Projectile.position);
         }
 
-        if (Timer % 12 == 0)
+        if (Timer % 24 == 0)
         {
             SparkleParticle sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero, Color.White, Scale: 0.5f);
             sp.fast = true;
@@ -230,7 +230,7 @@ public class RadianthalHead : ModItem
         var stats = player.GetStats();
         stats.meleeAttackSpeed -= 0.05f;
         stats.meleeAggressiveness += 200;
-        stats.defenseBonus += 18;
+        stats.defenseBonus += 13;
         stats.accessorySlots++;
     }
 
@@ -266,7 +266,7 @@ public class RadianthalBody : ModItem
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.defenseBonus += 27;
+        stats.defenseBonus += 22;
         stats.stamina += 1;
         stats.meleeDamage += 0.5f;
         stats.accessorySlots++;

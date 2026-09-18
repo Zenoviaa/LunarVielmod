@@ -117,6 +117,8 @@ namespace Stellamod.NPCs.Underground
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
+            return 0;
+
             //You can't be in the surface and underground at the same time so this should work
             //0.05f should make it 20 less Core than normal spawns.
             return SpawnRates.GetFlowerSpawnChance(spawnInfo);

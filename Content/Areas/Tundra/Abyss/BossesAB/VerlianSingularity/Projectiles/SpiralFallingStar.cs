@@ -1,10 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
-using Stellamod.Helpers;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -13,7 +9,6 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Proje
 {
     public class SpiralFallingStar : VSProjectile
     {
-        private Color _outlineColor;
         private float _scale;
         public override void SetDefaults()
         {
@@ -44,7 +39,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Proje
                 Projectile.velocity *= 1.004f;
             }
             float distanceToParent = Vector2.Distance(parent.Center, Projectile.Center);
-            if(distanceToParent <= 64)
+            if (distanceToParent <= 64)
             {
                 Projectile.velocity *= 1.04f;
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile.Center, parent.Center, Projectile.velocity, 16);

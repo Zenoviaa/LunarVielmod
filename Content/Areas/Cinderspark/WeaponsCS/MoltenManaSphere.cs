@@ -3,11 +3,11 @@ using Stellamod.Common;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
@@ -27,7 +27,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.shoot = ModContent.ProjectileType<MoltenManaBlast>();
             Item.shootSpeed = 15;
             Item.damage = 13;
-            Item.UseSound = SoundID.DD2_BetsyFireballShot;
+            Item.UseSound = SoundID.DD2_BetsyFireballShot with { Volume = 0.5f };
         }
 
 

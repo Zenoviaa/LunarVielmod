@@ -1,4 +1,4 @@
 displayName = Lunar Veil
 author = Zenovia
 version = 2.0
-buildIgnore = *.csproj, *.user, *.suo, bin/, obj/, .vs/, .git/
+buildIgnore = *.csproj, *.user, *.suo, bin/, obj/, .vs/, .git/, .github/

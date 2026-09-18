@@ -1,5 +1,4 @@
-﻿using Stellamod.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -228,7 +227,7 @@ public class CombatTool : GlobalItem
                 if (item == inv)
                 {
                     player.inventory[i] = new Item();
-                    player.inventory[i].SetDefaults(0);
+                    player.inventory[i].SetDefaults(ItemID.None);
                 }
             }
         }

@@ -2,7 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
+using static Stellamod.Core.AssetReferences.Effects.Generic;
 
 namespace Stellamod.Effects.RoyalMagic;
 
@@ -417,13 +418,14 @@ public class RoyalMagicRenderer : ModSystem
         public readonly int Length;
     }
 
+    private bool _anyParticles;
     private Vector2 _oldMouseWorld;
-    private readonly Particles _smearParticles = new Particles(384);
+    private readonly Particles _smearParticles = new Particles(512);
 
-    private RenderTargetProvider _directionRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _swirlRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-    private RenderTargetProvider _outlineRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+  //  private RenderTargetProvider _directionRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+  //  private RenderTargetProvider _swirlRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+   // private RenderTargetProvider _maskRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+  //  private RenderTargetProvider _outlineRT = new RenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
 
     private Queue<PrimitiveDrawAction> _primitiveDrawActions;// = new Queue<PrimitiveDrawAction>();
 
@@ -504,12 +506,14 @@ public class RoyalMagicRenderer : ModSystem
     }
     private void SimulateParticles()
     {
+        _anyParticles = false;
         for (int i = 0; i < _smearParticles.Length; i++)
         {
             ref float timeLeft = ref _smearParticles.timeleft[i];
             if (timeLeft <= 0)
                 continue;
             timeLeft--;
+            _anyParticles = true;
 
             ref Vector2 position = ref _smearParticles.position[i];
             ref Vector2 velocity = ref _smearParticles.velocity[i];
@@ -554,119 +558,122 @@ public class RoyalMagicRenderer : ModSystem
     }
     private void RenderSwirls()
     {
-        // return;
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-        gDevice.SetRenderTarget(_maskRT);
-        gDevice.Clear(Color.Transparent);
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
-        DrawMaskParticles(spriteBatch);
-        spriteBatch.End();
-
-        while (_primitiveDrawActions.Count > 0)
-        {
-            _primitiveDrawActions.Dequeue()(gDevice);
-        }
-
-        gDevice.SetRenderTarget(_directionRT);
-        gDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Brightest, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
-
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Vector2.Zero);
-        for (int i = 0; i < _smearParticles.Length; i++)
-        {
-            ref float timeLeft = ref _smearParticles.timeleft[i];
-            if (timeLeft <= 0)
-                continue;
-            ref Vector2 position = ref _smearParticles.position[i];
-            sbDrawer.worldPosition = position;
-            float progress = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(timeLeft / 180f));
-
-
-            ref Vector2 velocity = ref _smearParticles.velocity[i];
-            float angle = MathF.Atan2(-velocity.Y, -velocity.X);
-
-            //Normalize the angle between 0-1
-            float normalAngle = angle / MathHelper.Pi * 0.5f + 0.5f;
-            Color color = new Color(normalAngle, 0, 0, progress);
-
-            sbDrawer.color = color;
-            sbDrawer.scale = new Vector2(1);
-            spriteBatch.Draw(sbDrawer);
-        }
-
-        spriteBatch.End();
-
-
-        gDevice.SetRenderTarget(_swirlRT);
-        gDevice.Clear(Color.Transparent);
-
-        //Prepare to draw this effect
-        RoyalSwirlsShader swirlsShader = ShaderContent.GetInstance<RoyalSwirlsShader>();
-        swirlsShader.Time = Main.GlobalTimeWrappedHourly;
-        swirlsShader.Resolution = new Vector2(Main.screenWidth, Main.screenHeight);
-        swirlsShader.ScreenOffset = GetScreenOffset(scale: 1);
-        Color lightColor = new Color(34, 41, 59);
-        lightColor = Color.Lerp(lightColor, Color.White, 0.25f);
-
-        Color darkColor = new Color(8, 7, 34);
-        swirlsShader.LightColor = lightColor;
-        swirlsShader.DarkColor = darkColor;
-        swirlsShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
-        swirlsShader.DirectionTexture = _directionRT;
-        swirlsShader.StarTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/FogEmpty").Value;
-
-        //So, For this effect we want the swirls to be swiling around and scrolling around probably
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, swirlsShader.Effect);
-
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.Swirl, Vector2.Zero);
-        drawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-        drawer.drawOrigin = Vector2.Zero;
-        drawer.color = Color.White;
-        spriteBatch.Draw(drawer);
-        spriteBatch.End();
-
-
-
-        Color outlineColor = new Color(150, 150, 235) * 0.5f;
-        Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
-        gDevice.SetRenderTarget(_outlineRT);
-        gDevice.Clear(Color.Transparent);
-
-        RoyalOutlineShader mixerShader2 = ShaderContent.GetInstance<RoyalOutlineShader>();
-        mixerShader2.TexelSize = texelSize;
-        mixerShader2.OutlineColor = outlineColor;
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, mixerShader2.Effect);
-        spriteBatch.Draw(_swirlRT, Vector2.Zero, Color.White);
-        spriteBatch.End();
-
-        gDevice.SetRenderTarget(_directionRT);
-        gDevice.Clear(Color.Transparent);
-
-
-
-        RoyalMixShader mixerShader = ShaderContent.GetInstance<RoyalMixShader>();
-        mixerShader.MixTexture = _outlineRT;
-
-        mixerShader.TexelSize = texelSize;
-        mixerShader.OutlineColor = outlineColor;
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, mixerShader.Effect);
-        spriteBatch.Draw(_maskRT, Vector2.Zero, Color.White);
-        spriteBatch.End();
-
-
-
+        if (!_anyParticles)
+            return;
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelated, DrawLayer.BehindNPCsWithOutline);
-        //    throw new NotImplementedException();
     }
 
 
     private void DrawPixelated(SpriteBatch sb, Vector2 sp)
     {
-        //    Main.NewText("G");
+        sb.EndOut(out var parameters);
 
-        sb.Draw(_directionRT, Vector2.Zero, Color.White);
+        RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle directionRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle swirlRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle outlineRT = RenderTargets.ScreenTarget;
+        RenderTargetHandle directionRT2 = RenderTargets.ScreenTarget;
+
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+        using (new RenderTargetContext(maskRT))
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
+            DrawMaskParticles(spriteBatch);
+            spriteBatch.End();
+
+            while (_primitiveDrawActions.Count > 0)
+            {
+                _primitiveDrawActions.Dequeue()(gDevice);
+            }
+        }
+
+        using (new RenderTargetContext(directionRT))
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Brightest, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
+
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Vector2.Zero);
+            for (int i = 0; i < _smearParticles.Length; i++)
+            {
+                ref float timeLeft = ref _smearParticles.timeleft[i];
+                if (timeLeft <= 0)
+                    continue;
+                ref Vector2 position = ref _smearParticles.position[i];
+                sbDrawer.worldPosition = position;
+                float progress = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(timeLeft / 180f));
+
+
+                ref Vector2 velocity = ref _smearParticles.velocity[i];
+                float angle = MathF.Atan2(-velocity.Y, -velocity.X);
+
+                //Normalize the angle between 0-1
+                float normalAngle = angle / MathHelper.Pi * 0.5f + 0.5f;
+                Color color = new Color(normalAngle, 0, 0, progress);
+
+                sbDrawer.color = color;
+                sbDrawer.scale = new Vector2(1);
+                spriteBatch.Draw(sbDrawer);
+            }
+
+            spriteBatch.End();
+        }
+
+
+        using (new RenderTargetContext(swirlRT))
+        {
+            //Prepare to draw this effect
+            RoyalSwirlsShader swirlsShader = ShaderContent.GetInstance<RoyalSwirlsShader>();
+            swirlsShader.Time = Main.GlobalTimeWrappedHourly;
+            swirlsShader.Resolution = new Vector2(Main.screenWidth, Main.screenHeight);
+            swirlsShader.ScreenOffset = GetScreenOffset(scale: 1);
+            Color lightColor = new Color(34, 41, 59);
+            lightColor = Color.Lerp(lightColor, Color.White, 0.25f);
+
+            Color darkColor = new Color(8, 7, 34);
+            swirlsShader.LightColor = lightColor;
+            swirlsShader.DarkColor = darkColor;
+            swirlsShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
+            swirlsShader.DirectionTexture = directionRT;
+            swirlsShader.StarTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/FogEmpty").Value;
+
+            //So, For this effect we want the swirls to be swiling around and scrolling around probably
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, swirlsShader.Effect);
+
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.Swirl, Vector2.Zero);
+            drawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+            drawer.drawOrigin = Vector2.Zero;
+            drawer.color = Color.White;
+            spriteBatch.Draw(drawer);
+            spriteBatch.End();
+        }
+
+        Color outlineColor = new Color(150, 150, 235) * 0.5f;
+        Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
+        using (new RenderTargetContext(outlineRT))
+        {
+
+            RoyalOutlineShader mixerShader2 = ShaderContent.GetInstance<RoyalOutlineShader>();
+            mixerShader2.TexelSize = texelSize;
+            mixerShader2.OutlineColor = outlineColor;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, mixerShader2.Effect);
+            spriteBatch.Draw(swirlRT, Vector2.Zero, Color.White);
+            spriteBatch.End();
+        }
+
+        using (new RenderTargetContext(directionRT2))
+        {
+            RoyalMixShader mixerShader = ShaderContent.GetInstance<RoyalMixShader>();
+            mixerShader.MixTexture = outlineRT;
+            mixerShader.TexelSize = texelSize;
+            mixerShader.OutlineColor = outlineColor;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, mixerShader.Effect);
+            spriteBatch.Draw(maskRT, Vector2.Zero, Color.White);
+            spriteBatch.End();
+        }
+
+
+        sb.Begin(parameters);
+        sb.Draw(directionRT2, Vector2.Zero, Color.White);
         // sb.Draw(_swirlRT, Vector2.Zero, Color.White);
     }
 }

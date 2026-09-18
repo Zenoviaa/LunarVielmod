@@ -1,5 +1,7 @@
-﻿using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
+﻿using Stellamod.Content.Dusts;
+using Stellamod.Content.Rendering.Abyssal;
+using Stellamod.Core;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
@@ -92,13 +94,59 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool PreDraw(ref Color lightColor)
         {
-
+            SpritebatchDrawer flyDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+            Main.spriteBatch.Draw(flyDrawer);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+            glowDrawer.color = Color.Aquamarine * 0.3f * ExtraMath.Osc(0.5f, 1f, speed: 18, Projectile.identity);
+            glowDrawer.color.A = 0;
+            glowDrawer.scale *= 0.1f;
+            Main.spriteBatch.Draw(glowDrawer);
             return false;
         }
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = 32;
+            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+        }
 
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Main.DiscoColor * 0.3f, Color.Transparent, completionRatio);
+        }
+        private Color GetColorFunction(float completionRatio)
+        {
+            Color inColor = Color.White;
+            Color trailColor = Color.Lerp(Color.SpringGreen, Color.DarkBlue, completionRatio);
+
+
+            Color rainbow = Color.Red;
+            float degrees = completionRatio * 360f;
+            degrees += Main.GlobalTimeWrappedHourly * 400;
+            degrees %= 360;
+            rainbow.ScrollHue(degrees);
+            //DrawUtilities.IncreaseHueBy(ref rainbow, degrees, out float hue);
+            trailColor = Color.Lerp(trailColor, rainbow, 0.5f);
+            Color easeColor = Color.Lerp(inColor, trailColor, EasingFunction.InExpo(Timer / 60f));
+            return easeColor;
+        }
+
+        private float GetWidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(15, 2, completionRatio);
+        }
+
+        private float GetWidthFunction2(float completionRatio)
+        {
+            return WidthFunction(completionRatio) * 0.5f;
+        }
         public void DrawToRenderTargets()
         {
 
+            var verts1 = DrawUtilities.PrepareSimpleTrailing(Projectile.oldPos, GetColorFunction, GetWidthFunction, Projectile.Size * 0.5f);
+            var verts2 = DrawUtilities.PrepareSimpleTrailing(Projectile.oldPos, GetColorFunction, GetWidthFunction2, Projectile.Size * 0.5f);
+            var renderer = ModContent.GetInstance<MoonArrowTrailRenderer>();
+            renderer.PrepareForRendering(verts1);
+            renderer.PrepareForBigRendering(verts2);
         }
     }
 }

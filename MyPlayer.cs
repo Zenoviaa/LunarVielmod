@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Stellamod.Buffs;
-using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Camera;
-using Stellamod.Dusts;
-using Stellamod.Items.Armors.Ducanblitz;
-using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
@@ -24,21 +21,11 @@ namespace Stellamod
 
     public class MyPlayer : ModPlayer
     {
-        public bool Bossdeath = false;
-        public bool Boots = false;
-        public int extraSlots;
         public bool TAuraSpawn;
-        public bool AdvancedBrooches;
-        public bool HikersBSpawn;
-        public bool PlantH;
         public bool Dice;
-        public bool PlantHL;
         public int increasedLifeRegen;
         public int TAuraCooldown = 600;
-        public int HikersBCooldown = 30;
-        public int DiceCooldown = 0;
         public bool ArcaneM;
-        public bool ThornedBook;
         public int ArcaneMCooldown = 0;
         public bool ZoneMorrow = false;
         public int Timer = 0;
@@ -49,18 +36,9 @@ namespace Stellamod
         public int SwordComboR;
         public int lastSelectedI;
         public bool Lovestruck;
-        public bool ZoneCathedral = false;
         public int LovestruckBCooldown = 0;
         public bool ADisease;
         public bool ZoneFable = false;
-        public bool ReflectionS;
-
-
-        public int GoldenRingCooldown = 0;
-        public int GoldenSparkleCooldown = 0;
-        public int RayCooldown = 0;
-        public int VerliaBDCooldown = 5;
-        public int BurningGBDCooldown = 5;
         public bool GovheilB;
         public bool GovheilC;
         public int GovheilBCooldown = 0;
@@ -68,11 +46,7 @@ namespace Stellamod
         public int DucanBCooldown = 0;
         public bool Daedstruck;
         public int DaedstruckBCooldown = 1;
-        public bool MasteryMagic;
-        public int MasteryMagicBCooldown = 0;
-
-
-
+ 
         //----------------------------------------- Pikmin stuff
 
         public int OnionDamage = 0;
@@ -93,75 +67,10 @@ namespace Stellamod
         public bool MagicTomeDusts = false;
 
         //---------------------------------------------------------------------------------------------------------------
-        // Brooches
-        public bool BroochSpragald;
-        public int SpragaldBCooldown = 1;
-        public bool BroochFrile;
-        public int FrileBCooldown = 1;
-        public int FrileBDCooldown = 1;
-        public bool BroochFlyfish;
-        public int FlyfishBCooldown = 1;
-        public bool BroochMorrow;
-        public int MorrowBCooldown = 1;
-        public bool BroochSlime;
-        public int SlimeBCooldown = 1;
-        public bool BroochDiari;
-        public int DiariBCooldown = 1;
-        public bool BroochVerlia;
-        public int VerliaBCooldown = 1;
-        public bool BroochAmethyst;
-        public int AmethystBCooldown = 1;
-        public bool BroochAmber;
-        public int AmberBCooldown = 1;
-        public bool BroochLonelyBones;
-        public int LonelyBonesBCooldown = 1;
-        public bool BroochMagesticWood;
-        public int MagesticWoodBCooldown = 1;
-        public bool BroochFamiliarWood;
-        public int FamiliarWoodBCooldown = 1;
-        public bool BroochMerchantsCoat;
-        public int MerchantsCoatBCooldown = 1;
-        public bool BroochMorrowedJellies;
-        public int MorrowedJelliesBCooldown = 1;
-        public bool BroochAllEye;
-        public int AllEyeBCooldown = 1;
-        public bool BroochMOS;
-        public int MOSBCooldown = 1;
-        public bool BroochBonedEye;
-        public int BonedEyeBCooldown = 1;
-        public bool BroochGint;
-        public int GintBCooldown = 1;
-        public bool BroochAureBlight;
-        public int AureBCooldown = 1;
 
-        public bool BroochDread;
-        public int DreadBCooldown = 1;
-        public bool BroochStone;
-        public int StoneBCooldown = 1;
-        public bool BroochMal;
-        public int MalBCooldown = 1;
-        public bool BroochVixed;
-        public int VixedBCooldown = 1;
-        public bool BroochBear;
-        public int BearBCooldown = 1;
-        public bool BroochGovheill;
-        public int GovheillBCooldown = 1;
-        public bool BroochBurningG;
-        public int BurningGBCooldown = 1;
-        public bool ArchariliteSC;
 
         //---------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-        public float screenFlash;
-        //private float screenFlashSpeed = 0.05f;
-        //private Vector2? screenFlashCenter;
         private float shakeDrama;
         public Vector2 startPoint;
 
@@ -169,28 +78,12 @@ namespace Stellamod
         public float focusTransition;
         public float focusLength;
         public bool shouldFocus;
-        public bool Leather;
-        public bool HMArmor;
-        public bool FCArmor;
-        public float FCArmorTime;
-        public float HMArmorTime;
-
-
-
-
-
-
         public bool ZoneAbyss;
         public bool ZoneAurelus;
         public bool ZoneStarbloom;
         public bool ZoneAcid;
         public bool ZoneGovheil;
-        public bool ZoneNaxtrin;
         public bool ZoneAlcadzia;
-        public bool ZoneVeri;
-        public bool ZoneCatacombsFire;
-        public bool ZoneCatacombsTrap;
-        public bool ZoneCatacombsWater;
         public bool ZoneVillage;
         public bool ZoneCinder;
         public bool ZoneDrakonic;
@@ -207,10 +100,6 @@ namespace Stellamod
         public bool ZoneMothlight;
         public bool ZoneWonder;
 
-        public float AssassinsSlashes;
-        public float AssassinsTime;
-        public bool AssassinsSlash;
-        public NPC AssassinsSlashnpc;
         public bool StealthRune;
         public bool SingularityFragment;
         public bool NiiviFight;
@@ -220,53 +109,20 @@ namespace Stellamod
         public float CorsageTime;
 
         public bool DetonationRune;
-        public bool Towned = false;
         public bool GIBomb = false;
         public bool RadiantBomb = false;
         public int RadiantBombCooldown = 0;
 
-        public bool ClamsPearl;
-
-        public bool WindRuneOn;
-        public bool WindRune;
-        public bool ShadeRune = false;
         public bool SpiritPendent = false;
 
-        public NPC CrysalizerNpc;
 
-        public int CrysalizerHits;
-
-        public int GHETime;
-        public bool GHE;
-        public Vector2 GHEVector;
-        public Entity GHETarget;
-
-        public bool heart = false;
-        public int heartDead = 0;
-
-        public int IrradiatedKilled;
         public int Bridget = 0;
 
-
-        public bool Dead;
-        public bool DreadMonOne = false;
-        public bool DreadMonTwo = false;
-        public bool DreadMonThree = false;
-
-
-        public bool Teric = false;
-        public int TericGramTime = 0;
-        public int TericGramLevel = 0;
-        public bool TericGram = false;
 
         public bool HasAlcaliteSet;
         public bool Waterwhisps;
 
 
-
-        public NPC VoidBlasterNPC;
-        public int VoidBlasterHits;
-        public int VoidBlasterHitsTime;
 
         public void ShakeAtPosition(Vector2 position, float distance, float strength)
         {
@@ -324,12 +180,6 @@ namespace Stellamod
 
         public override void OnHitAnything(float x, float y, Entity victim)
         {
-            if (GHE)
-            {
-                GHETarget = victim;
-            }
-
-
             if (RadiantBomb && RadiantBombCooldown <= 0)
             {
                 for (int d = 0; d < 4; d++)
@@ -459,15 +309,8 @@ namespace Stellamod
         public override void ResetEffects()
         {
             // Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
-            Teric = false;
             TAuraSpawn = false;
-            ArchariliteSC = false;
-            HikersBSpawn = false;
-            Player.lifeRegen += increasedLifeRegen;
-            increasedLifeRegen = 0;
             ArcaneM = false;
-            PlantH = false;
-            ThornedBook = false;
             Waterwhisps = false;
             Dice = false;
             NotiaB = false;
@@ -477,38 +320,14 @@ namespace Stellamod
             DucanB = false;
             GovheilC = false;
             Daedstruck = false;
-            BroochSpragald = false;
-            BroochFrile = false;
-            BroochFlyfish = false;
-            BroochMorrow = false;
-            BroochSlime = false;
-            BroochDiari = false;
-            BroochVerlia = false;
-            BroochAureBlight = false;
-            BroochGint = false;
-            BroochDread = false;
-            BroochMal = false;
-            BroochVixed = false;
-            BroochBear = false;
-            BroochGovheill = false;
-            BroochBurningG = false;
-            BroochStone = false;
-            HasAlcaliteSet = false;
 
-            ReflectionS = false;
+            HasAlcaliteSet = false;
             SpiritPendent = false;
-            GHE = false;
-            ShadeRune = false;
-            FCArmor = false;
-            ClamsPearl = false;
-            HMArmor = false;
 
             DetonationRune = false;
             CorsageRune = false;
             StealthRune = false;
-            Leather = false;
-            MasteryMagic = false;
-            WindRune = false;
+          
             RadiantBomb = false;
             GIBomb = false;
 
@@ -548,6 +367,9 @@ namespace Stellamod
         public override void PostUpdateMiscEffects()
         {
 
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
             Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
             //   Player.ManageSpecialBiomeVisuals("Stellamod:AuroreanStars", ZoneAlcadzia);
             //     Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", false);
@@ -567,23 +389,21 @@ namespace Stellamod
             Main.NewText(LangText.Misc("EnterWorld"));
         }
 
-        private bool _pressed;
-        private Vector2 _lockPos;
 
-        private bool _pressed2;
         public override void PostUpdate()
         {
-
+            /*
             if (!_pressed)
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.J))
                 {
                     _pressed = true;
                 }
-            } else if (_pressed && Keyboard.GetState().IsKeyUp(Keys.J))
+            }
+            else if (_pressed && Keyboard.GetState().IsKeyUp(Keys.J))
             {
                 _pressed = false;
-                if(_lockPos == Vector2.Zero)
+                if (_lockPos == Vector2.Zero)
                 {
                     _lockPos = Main.Camera.Center;
                 }
@@ -593,7 +413,7 @@ namespace Stellamod
                 }
 
             }
-
+            */
 
             /*
             if (!_pressed2)
@@ -611,11 +431,6 @@ namespace Stellamod
 
             }*/
 
-            if (_lockPos != Vector2.Zero)
-            {
-                CameraTargetSystem.AddTarget(_lockPos);
-                // OffsetCameraModifier.FocusTargetOffset = (_lockPos - Main.Camera.Center);
-            }
 
             /*
             if (Main.netMode != NetmodeID.Server)
@@ -692,17 +507,6 @@ namespace Stellamod
                 }
             }*/
 
-            if (VoidBlasterHits >= 0)
-            {
-                VoidBlasterHitsTime++;
-                if (VoidBlasterHitsTime >= 100)
-                {
-                    VoidBlasterHits = 0;
-                    VoidBlasterHitsTime = 0;
-
-                }
-
-            }
 
 
             if (Aurorean >= 0.5f)
@@ -731,32 +535,7 @@ namespace Stellamod
             if (!player.active)
                 return;
             MyPlayer CVA = player.GetModPlayer<MyPlayer>();
-            if (Dead)
-            {
-                HMArmorTime = 0;
-                HMArmor = false;
 
-                Dead = false;
-
-            }
-
-
-            if (GHE)
-            {
-                if (GHETarget.active)
-                {
-                    GHETime++;
-                    if (GHETime >= 30)
-                    {
-                        Vector2 direction = Vector2.Normalize(GHETarget.Center - Player.Center) * 8.5f;
-                        GHETime = 0;
-                        GHEVector.X = Main.rand.NextFloat(GHETarget.Center.X - 130, GHETarget.Center.X + 130);
-                        GHEVector.Y = Main.rand.NextFloat(GHETarget.Center.Y - 130, GHETarget.Center.Y + 130);
-                        var EntitySource = GHETarget.GetSource_FromThis();
-                        //    Projectile.NewProjectile(EntitySource, GHEVector.X, GHEVector.Y, direction.X, direction.Y, ModContent.ProjectileType<GhostExcaliburProj>(), 42, 1, Player.whoAmI, 0, 0);
-                    }
-                }
-            }
 
             bool expertMode = Main.expertMode;
             if (ZoneIlluria)
@@ -824,38 +603,6 @@ namespace Stellamod
             }
 
 
-            if (AssassinsSlash)
-            {
-                AssassinsTime++;
-                if (AssassinsTime >= 8)
-                {
-                    AssassinsSlashes += 1;
-                    if (AssassinsSlashes >= 7)
-                    {
-                        for (int i = 0; i < 14; i++)
-                        {
-                            Dust.NewDustPerfect(AssassinsSlashnpc.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
-                        }
-                        AssassinsSlashnpc = null;
-                        AssassinsSlashes = 0;
-                        AssassinsTime = 0;
-                        AssassinsSlash = false;
-                    }
-                    if (AssassinsSlashnpc.active == false)
-                    {
-                        AssassinsSlashnpc = null;
-                        AssassinsSlashes = 0;
-                        AssassinsTime = 0;
-                        AssassinsSlash = false;
-                    }
-                    AssassinsTime = 0;
-                    var EntitySource = AssassinsSlashnpc.GetSource_FromThis();
-
-
-                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSpawnEffect>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSlashProj>(), 0, 1, Player.whoAmI, 0, 0);
-                }
-            }
 
             if (SwordComboSlash > 5)
             {
@@ -883,11 +630,6 @@ namespace Stellamod
                 Main.gore[a].velocity.Y = Main.rand.NextFloat(1f, 3f);
             }
 
-            if (ZoneIshtar && !DownedBossSystem.downedZuiBoss)
-            {
-                player.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 10);
-            }
-
             if (CorsageTime >= 1)
             {
                 var entitySource = Player.GetSource_FromThis();
@@ -906,32 +648,11 @@ namespace Stellamod
                 }
             }
 
-
-
-
-
-
-
-
-
-
             if (NotiaB && NotiaBCooldown == 301)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-                for (int j = 0; j < 1; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-                    //   Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Noti>(), 120, 1f, Player.whoAmI);
-                }
-
-
             }
-            /*	if (NotiaB && NotiaBCooldown > 300)
-                {
-                    Player.GetDamage(DamageClass.Magic) *= 2f;
-                    Player.GetDamage(DamageClass.Ranged) *= 2f;
 
-                }*/
             if (NotiaB && NotiaBCooldown == 420)
             {
                 NotiaBCooldown = 0;
@@ -948,43 +669,13 @@ namespace Stellamod
 
 
 
-
-            if (GovheilB && GovheilBCooldown == 301)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-                for (int j = 0; j < 1; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilBows>(), 20, 1f, Player.whoAmI);
-                }
-            }
-
-            /*if (GovheilB && GovheilBCooldown > 300)
-			{
-				Player.GetDamage(DamageClass.Magic) *= 2f;
-				Player.GetDamage(DamageClass.Summon) *= 2f;
-
-			}*/
             if (GovheilB && GovheilBCooldown == 540)
             {
                 GovheilBCooldown = 0;
-
-
             }
 
 
 
-            if (GovheilC && GovheilBCooldown == 301)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-                for (int j = 0; j < 1; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilSwords>(), 25, 1f, Player.whoAmI);
-                }
-
-
-            }
 
             if (DucanB && DucanBCooldown == 520)
             {
@@ -993,27 +684,6 @@ namespace Stellamod
 
             }
 
-
-
-            if (DucanB && DucanBCooldown == 301)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-                for (int j = 0; j < 1; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3,
-                        ModContent.ProjectileType<Dulcans>(), 200, 1f, Player.whoAmI);
-                }
-
-
-            }
-
-            /*		if (GovheilC && GovheilBCooldown > 300)
-					{
-						Player.GetDamage(DamageClass.Ranged) *= 2f;
-						Player.GetDamage(DamageClass.Melee) *= 2f;
-
-					}*/
             if (GovheilC && GovheilBCooldown == 520)
             {
                 GovheilBCooldown = 0;
@@ -1021,32 +691,10 @@ namespace Stellamod
 
             }
 
-
-
-
-            if (Boots)
-            {
-                if (Player.controlJump)
-                {
-                    const float jumpSpeed = 6.01f;
-                    if (Player.gravDir == 1)
-                    {
-                        Player.velocity.Y -= Player.gravDir * 1f;
-                        if (Player.velocity.Y <= -jumpSpeed) Player.velocity.Y = -jumpSpeed;
-                        Dust.NewDust(new Vector2(Player.position.X, Player.position.Y + Player.height), Player.width, 0, ModContent.DustType<Dusts.Sparkle>());
-                    }
-                    else
-                    {
-                        Player.velocity.Y += Player.gravDir * 0.5f;
-                        if (Player.velocity.Y >= jumpSpeed) Player.velocity.Y = jumpSpeed;
-                    }
-                }
-            }
-
             if (Dice)
             {
                 Timer++;
-                if (Timer == 90 || DiceCooldown == 90)
+                if (Timer == 90)
                 {
                     var entitySource = player.GetSource_FromThis();
 
@@ -1449,17 +1097,11 @@ namespace Stellamod
         public override void SaveData(TagCompound tag)
         {
             tag["Sirestiastalk"] = Sirestiastalk;
-            tag["MonO"] = DreadMonOne;
-            tag["MonTw"] = DreadMonTwo;
-            tag["MonTh"] = DreadMonThree;
             tag["Zuitalk"] = Zuitalk;
         }
 
         public override void LoadData(TagCompound tag)
         {
-            DreadMonOne = tag.GetBool("MonO");
-            DreadMonTwo = tag.GetBool("MonTw");
-            DreadMonThree = tag.GetBool("MonTh");
             Sirestiastalk = tag.GetBool("Sirestiastalk");
             Zuitalk = tag.GetBool("Zuitalk");
         }
@@ -1555,8 +1197,6 @@ namespace Stellamod
 
                         break;
                     case 7:
-
-                        npc.AddBuff((ModContent.BuffType<Wounded>()), 240);
 
                         break;
                 }

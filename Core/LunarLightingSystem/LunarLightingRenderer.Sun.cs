@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
+using Stellamod.Core.Rendering.RTs;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -70,12 +71,15 @@ public partial class LunarLightingRenderer
         if (!Lighting.UsingNewLighting)
             return;
 
+        if (ModContent.GetInstance<DomainExpansionManager>().noRender)
+            return;
+
         Vector2 stepSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
         stepSize *= 4 * -LightingGlobals.ShadowDirection;
 
         var shader = ShaderContent.GetInstance<SunLightShader>();
         shader.StepSize = stepSize;
-        shader.ShadowAlpha = LightingHelper.DayLightEase;
+        shader.ShadowAlpha = LightingHelper.DayLightEase * sunShadowAlpha;
 
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -90,39 +94,33 @@ public partial class LunarLightingRenderer
         spriteBatch.End();
     }
 
-    private void RenderShadows()
+    private void RenderShadows(RenderTargetHandle tileBlurRT, RenderTargetHandle tileSunShadowRT)
     {
-        if (Main.gameMenu)
-            return;
-        if (!Lighting.UsingNewLighting)
-            return;
-
-
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+        using(new RenderTargetContext(tileBlurRT))
+        {
+            Effect effect = GameShaders.Misc["LunarVeil:SunShadow"].Shader;
+            effect.Parameters["mipBias"].SetValue(0.1f);
 
-        graphicsDevice.SetRenderTarget(_tileBlurRT);
-        graphicsDevice.Clear(Color.Transparent);
+            Vector2 sunDirection = LightingGlobals.ShadowDirection;
+            effect.Parameters["sunDirection"].SetValue(-sunDirection * 1400);
+            effect.Parameters["falloff"].SetValue(0.1f);
+            effect.Parameters["uScreenResolution"].SetValue(Main.ScreenSize.ToVector2());
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, effect);
+            spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, Color.Black * 0.9f * LightingHelper.DayLightEase, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.End();
 
-        Effect effect = GameShaders.Misc["LunarVeil:SunShadow"].Shader;
-        effect.Parameters["mipBias"].SetValue(0.1f);
+        }
 
-        Vector2 sunDirection = LightingGlobals.ShadowDirection;
-        effect.Parameters["sunDirection"].SetValue(-sunDirection * 1400);
-        effect.Parameters["falloff"].SetValue(0.1f);
-        effect.Parameters["uScreenResolution"].SetValue(Main.ScreenSize.ToVector2());
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, effect);
-        spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, null, Color.Black * 0.9f * LightingHelper.DayLightEase, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-        spriteBatch.End();
-
-
-        graphicsDevice.SetRenderTarget(_tileSunShadowRT);
-        graphicsDevice.Clear(Color.Transparent);
-        Effect blurEffect = GameShaders.Misc["LunarVeil:SunBlur"].Shader;
-        blurEffect.Parameters["mipBias"].SetValue(12);
-        blurEffect.Parameters["uScreenResolution"].SetValue(Main.ScreenSize.ToVector2());
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, blurEffect);
-        spriteBatch.Draw(_tileBlurRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-        spriteBatch.End();
+        using(new RenderTargetContext(tileSunShadowRT))
+        {
+            Effect blurEffect = GameShaders.Misc["LunarVeil:SunBlur"].Shader;
+            blurEffect.Parameters["mipBias"].SetValue(12);
+            blurEffect.Parameters["uScreenResolution"].SetValue(Main.ScreenSize.ToVector2());
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, blurEffect);
+            spriteBatch.Draw(tileBlurRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.End();
+        }
     }
 }

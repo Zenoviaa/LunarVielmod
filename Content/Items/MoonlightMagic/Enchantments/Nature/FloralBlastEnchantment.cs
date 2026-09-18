@@ -1,160 +1,154 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Core.Bases;
 using Stellamod.Core.ProjectileHelpers;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
+namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature;
+
+public class FloralBlastEnchantment : BaseEnchantment
 {
-    public class FloralBlastEnchantment : BaseEnchantment
+    public override int GetElementType()
     {
-        public override int GetElementType()
-        {
-            return ModContent.ItemType<NaturalElement>();
-        }
-
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            //Spawn the explosion
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<FloralBlastEnchantmentExplosion>(),
-              Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
-            return true;
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            base.OnHitNPC(target, hit, damageDone);
-
-            //Spawn the explosion
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<FloralBlastEnchantmentExplosion>(),
-                Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
-        }
+        return ModContent.ItemType<NaturalElement>();
     }
 
-    public class FloralBlastEnchantmentExplosion : BaseExplosionProjectile
+
+    public override bool OnTileCollide(Vector2 oldVelocity)
     {
-        int trailMode;
-        int rStart = 4;
-        int rEnd = 128;
-        public override void SetStaticDefaults()
+        //Spawn the explosion
+        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<FloralBlastEnchantmentExplosion>(),
+          Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+        return true;
+    }
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+
+        //Spawn the explosion
+        Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<FloralBlastEnchantmentExplosion>(),
+            Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+    }
+}
+
+public class FloralBlastEnchantmentExplosion : BaseExplosionProjectile
+{
+    int trailMode;
+    int rStart = 4;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        ProjectileSets.BossMultihitDamageFalloff[Type] = true;
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 48;
+        Projectile.height = 48;
+        Projectile.friendly = true;
+        Projectile.penetrate = -1;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
+        Projectile.timeLeft = 24;
+        rStart = Main.rand.Next(2, 4);
+    }
+
+    protected override float BeamWidthFunction(float p)
+    {
+        //How wide the trail is going to be
+        float trailWidth = MathHelper.Lerp(64, 8, p);
+        float fadeWidth = MathHelper.Lerp(0, trailWidth, EasingFunction.QuadraticBump(p)) * Main.rand.NextFloat(0.75f, 1.0f);
+        return fadeWidth;
+    }
+
+    protected override Color ColorFunction(float p)
+    {
+        //Main color of the beam
+        Color c;
+        switch (trailMode)
         {
-            base.SetStaticDefaults();
-            ProjectileSets.BossMultihitDamageFalloff[Type] = true;
-        }
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            Projectile.width = 48;
-            Projectile.height = 48;
-            Projectile.friendly = true;
-            Projectile.penetrate = -1;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.timeLeft = 24;
-            rStart = Main.rand.Next(2, 4);
-            rEnd = Main.rand.Next(96, 128);
-        }
-
-        protected override float BeamWidthFunction(float p)
-        {
-            //How wide the trail is going to be
-            float trailWidth = MathHelper.Lerp(64, 8, p);
-            float fadeWidth = MathHelper.Lerp(0, trailWidth, EasingFunction.QuadraticBump(p)) * Main.rand.NextFloat(0.75f, 1.0f);
-            return fadeWidth;
-        }
-
-        protected override Color ColorFunction(float p)
-        {
-            //Main color of the beam
-            Color c;
-            switch (trailMode)
-            {
-                default:
-                case 0:
-                    c = Color.Lerp(Color.White, new Color(147, 252, 121) * 0.5f, p);
-                    break;
-                case 1:
-                    c = Color.Lerp(Color.White, new Color(147, 252, 121) * 0f, p);
-                    break;
-                case 2:
-                    c = Color.White;
-                    c.A = 0;
-                    break;
-            }
-
-            return c;
-        }
-
-        protected override float RadiusFunction(float p)
-        {
-            //How large the circle is going to be
-            return MathHelper.Lerp(rStart, 164, EasingFunction.OutCirc(p));
-        }
-
-        protected override BaseShader ReadyShader()
-        {
-            var shader = SimpleTrailShader.Instance;
-
-            //Main trailing texture
-            shader.TrailingTexture = TrailRegistry.GlowTrail;
-
-            //Blends with the main texture
-            shader.SecondaryTrailingTexture = TrailRegistry.GlowTrail;
-
-            //Used for blending the trail colors
-            //Set it to any noise texture
-            shader.TertiaryTrailingTexture = TrailRegistry.CrystalTrail;
-            shader.PrimaryColor = Color.DarkGoldenrod;
-            shader.SecondaryColor = Color.Purple;
-            shader.Speed = 20;
-
-            //Alpha Blend/Additive
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.FillShape = true;
-            return shader;
+            default:
+            case 0:
+                c = Color.Lerp(Color.White, new Color(147, 252, 121) * 0.5f, p);
+                break;
+            case 1:
+                c = Color.Lerp(Color.White, new Color(147, 252, 121) * 0f, p);
+                break;
+            case 2:
+                c = Color.White;
+                c.A = 0;
+                break;
         }
 
-        private void DrawMainShader()
-        {
-            //Trail
-            // trailMode = 0;
-            var shader = MagicNaturalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.NoiseTextureLeaves;
-            shader.NoiseTexture = TrailRegistry.NoiseTextureLeaves;
-            shader.ShapeTexture = TrailRegistry.DottedTrail;
-            shader.BlendState = BlendState.AlphaBlend;
-            shader.PrimaryColor = new Color(95, 106, 47);
-            shader.NoiseColor = Color.White;
-            shader.Speed = 0.5f;
-            shader.Distortion = 0.1f;
-            shader.Threshold = 0.1f;
+        return c;
+    }
 
-            //This just applis the shader changes
-            //Main Fill
-            TrailDrawer.Draw(Main.spriteBatch, _circlePos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
-        }
+    protected override float RadiusFunction(float p)
+    {
+        //How large the circle is going to be
+        return MathHelper.Lerp(rStart, 164, EasingFunction.OutCirc(p));
+    }
+
+    protected override BaseShader ReadyShader()
+    {
+        var shader = SimpleTrailShader.Instance;
+
+        //Main trailing texture
+        shader.TrailingTexture = TrailRegistry.GlowTrail;
+
+        //Blends with the main texture
+        shader.SecondaryTrailingTexture = TrailRegistry.GlowTrail;
+
+        //Used for blending the trail colors
+        //Set it to any noise texture
+        shader.TertiaryTrailingTexture = TrailRegistry.CrystalTrail;
+        shader.PrimaryColor = Color.DarkGoldenrod;
+        shader.SecondaryColor = Color.Purple;
+        shader.Speed = 20;
+
+        //Alpha Blend/Additive
+        shader.BlendState = BlendState.Additive;
+        shader.SamplerState = SamplerState.PointWrap;
+        shader.FillShape = true;
+        return shader;
+    }
+
+    private void DrawMainShader()
+    {
+        //Trail
+        // trailMode = 0;
+        var shader = MagicNaturalShader.Instance;
+        shader.PrimaryTexture = TrailRegistry.NoiseTextureLeaves;
+        shader.NoiseTexture = TrailRegistry.NoiseTextureLeaves;
+        shader.ShapeTexture = TrailRegistry.DottedTrail;
+        shader.BlendState = BlendState.AlphaBlend;
+        shader.PrimaryColor = new Color(95, 106, 47);
+        shader.NoiseColor = Color.White;
+        shader.Speed = 0.5f;
+        shader.Distortion = 0.1f;
+        shader.Threshold = 0.1f;
+
+        //This just applis the shader changes
+        //Main Fill
+        TrailDrawer.Draw(Main.spriteBatch, _circlePos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+    }
 
 
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            DrawMainShader();
-            // DrawOutlineShader();
-            return false;
-        }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        DrawMainShader();
+        // DrawOutlineShader();
+        return false;
+    }
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            base.OnHitNPC(target, hit, damageDone);
-            //  target.AddBuff(BuffID.OnFire, 90);
-        }
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        //  target.AddBuff(BuffID.OnFire, 90);
     }
 }

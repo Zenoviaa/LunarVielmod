@@ -212,7 +212,9 @@ public class MainMenuFallingLeavesParticleSystem
 
         SpriteDrawingShader shader = ShaderContent.GetInstance<SpriteDrawingShader>();
         shader.SpriteTexture = _leavesTextureAsset;
-        shader.ApplyPasses();
+        shader.Effect.Parameters["transformMatrix"].SetValue(TrailDrawer.UnscaledWorldViewPoint);
+        shader.ApplyPassesFromEffect();
+
         graphicsDevice.RasterizerState = RasterizerState.CullNone;
         graphicsDevice.DrawUserIndexedPrimitives(
             PrimitiveType.TriangleList, vertexBuffer, 0, vertexBuffer.Length, _indexBuffer, 0, primCount);

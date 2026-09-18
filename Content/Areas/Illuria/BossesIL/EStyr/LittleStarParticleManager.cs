@@ -58,6 +58,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spinTime = 100f;
             alpha = 1f;
             rotationAxis = new Vector3(1f, 1f, 0.2f);
+            osc = true;
         }
         public LittleStarParticleManager(int particleCount, int trailLength, Func<float, float> getTrailWidth) : this(particleCount, trailLength)
         {
@@ -69,6 +70,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 float ratio = (float)i / (float)trailLength;
                 _trailWidths[i] = getTrailWidth(ratio) * Vector2.One;
             }
+            osc = true;
         }
         public LittleStarParticleManager(int particleCount, int trailLength, Func<float, float> getTrailWidth, Func<float, Color> getTrailColor) : this(particleCount, trailLength)
         {
@@ -81,6 +83,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 _trailWidths[i] = getTrailWidth(ratio) * Vector2.One;
                 _trailColors[i] = getTrailColor(ratio);
             }
+            osc = true;
         }
 
         public readonly int ParticleCount;
@@ -93,6 +96,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public float spinTime;
         public float alpha;
         public bool topOnly;
+        public bool osc;
         public float scale;
         /// <summary>
         /// Calculate the position of the particle at specific a timestep
@@ -131,7 +135,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float maxY = yOvalRadius;
             if (topOnly)
                 maxY *=0.5f;
-            float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(minY, maxY, 0f, offset: off);
+            float yRadius;
+            if(osc)
+                yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(minY, maxY, 0f, offset: off);
+            else
+                yRadius = ExtraMath.Osc(minY, maxY, 0f, offset: off);
 
             yRadius *= scale;
             Vector3 initialPosition = new Vector3(xRadius, yRadius / 2f, yRadius);
@@ -292,6 +300,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
+            graphicsDevice.DrawUserPrimitives(
+              PrimitiveType.TriangleList, _particleVertexBufferArr, 0, _particleVertexBufferArr.Length / 3);
+
+        }
+        public void DrawAdd()
+        {
+            var particleShader = TileShadowShader.Instance;
+            particleShader.ApplyPasses();
+
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            graphicsDevice.BlendState = BlendState.Additive;
             graphicsDevice.DrawUserPrimitives(
               PrimitiveType.TriangleList, _particleVertexBufferArr, 0, _particleVertexBufferArr.Length / 3);
 

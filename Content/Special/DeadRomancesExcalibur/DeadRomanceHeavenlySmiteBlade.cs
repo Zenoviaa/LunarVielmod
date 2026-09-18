@@ -1,9 +1,5 @@
-﻿using Stellamod.Assets;
-using Stellamod.Content.Gores;
-using Stellamod.Core.Particles;
+﻿using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -16,8 +12,6 @@ namespace Stellamod.Content.Special.DeadRomancesExcalibur;
 public class DeadRomanceHeavenlySmiteBlade : ModProjectile
 {
     private float _scale;
-    private float _lineRot;
-    private float _lineRotLerp;
     private Vector2 _targetCenter;
     private int Target
     {
@@ -41,7 +35,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
         base.SendExtraAI(writer);
         writer.WriteVector2(_targetCenter);
     }
-    
+
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
@@ -55,7 +49,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
         ProjectileID.Sets.TrailCacheLength[Type] = 24;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
-    
+
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -81,7 +75,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             _scale = Projectile.scale = Main.rand.NextFloat(0.5f, 1f);
         }
 
-        int denom = 16 * (Projectile.extraUpdates+1);
+        int denom = 16 * (Projectile.extraUpdates + 1);
         if (Timer % denom == 0)
         {
             Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
@@ -147,7 +141,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             sp2.noRot = true;
             sp2.behindLayer = true;*/
         }
-        if(State == AIState.Fall)
+        if (State == AIState.Fall)
         {
             denom = 18 * (Projectile.extraUpdates + 1);
             if (Main.rand.NextBool(denom))
@@ -166,7 +160,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
     private void AI_Fall()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundStyle sound = AssetRegistry.Sounds.Stars.Starsingle1;
             sound.PitchVariance = 0.5f;
@@ -175,18 +169,17 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGoldenrodYellow, Color.DarkGoldenrod);
         }
 
-      //  SmokeParticles();
+        //  SmokeParticles();
         float speed = 15;
         Projectile.extraUpdates = 4;
         Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.velocity.SafeNormalize(Vector2.Zero) * speed, 0.2f);
         Projectile.rotation = Projectile.velocity.ToRotation();
-        _lineRot = Projectile.rotation;
     }
 
     private void AI_Stick()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
 
             var boom = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Goldenrod, Color.DarkGoldenrod);
@@ -232,7 +225,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             }
 
             float numDust = 4;
-            for(float f = 0; f < numDust; f++)
+            for (float f = 0; f < numDust; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(8, 8);
                 SparkleParticle sp = SparkleParticle.Spawn(Projectile.Center, vel, Scale: 0.5f);
@@ -267,7 +260,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
         SwitchState(AIState.Stick);
-        return false; 
+        return false;
     }
 
     public override void OnKill(int timeLeft)
@@ -278,7 +271,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
     {
         base.ModifyHitNPC(target, ref modifiers);
-        
+
     }
 
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -292,13 +285,13 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
         drawer.scale *= new Vector2(1f, 0.4f);
-        for(int i = 0; i < Projectile.oldPos.Length; i++)
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
             Vector2 pos = Projectile.oldPos[i];
             Vector2 worldPos = pos + Projectile.Size * 0.5f;
             drawer.worldPosition = worldPos;
             drawer.rotation = Projectile.oldRot[i];
-            float ratio = (float)i / (float)Projectile.oldPos.Length;
+            float ratio = i / (float)Projectile.oldPos.Length;
             float ease = EasingFunction.InOutSine(ratio);
             Color bladeColor = Color.Lerp(Color.Goldenrod, Color.Black, ease);
             bladeColor.A = 0;
@@ -331,6 +324,6 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
     {
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedBlade);
         return false;
-       // return base.PreDraw(ref lightColor);
+        // return base.PreDraw(ref lightColor);
     }
 }

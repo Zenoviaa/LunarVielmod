@@ -12,7 +12,8 @@ public struct RagingFlameDustData : IParticleData
         position = Vector2.Zero,
         velocity = Vector2.Zero,
         timeleft = 120,
-        frameIndex = 0
+        frameIndex = 0,
+        style = 0
     };
 
     //Colors on this one is calculated
@@ -20,6 +21,7 @@ public struct RagingFlameDustData : IParticleData
     public Vector2 velocity;
     public float timeleft;
     public int frameIndex;
+    public int style;
     public bool IsActive => timeleft > 0;
 }
 public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
@@ -73,27 +75,78 @@ public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
     public override void Draw(SpriteBatch spriteBatch, ref RagingFlameDustData particle)
     {
         float lerpValue = Utils.GetLerpValue(0, 70, particle.timeleft, clamped: true);
-        Color particleColor = DrawUtilities.InterpolateColorArray(EasingFunction.InSine(lerpValue), Color.Black, Color.DarkBlue, Color.Black, Color.DarkRed,  Color.Pink, Color.Lerp(Color.Red, Color.White, 0.5f));
-        (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frameIndex);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
-        drawer.sourceRect = frame;
-        drawer.CenterOrigin();
-        drawer.rotation = particle.timeleft * 0.01f;
-        drawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.Lerp(Vector2.Zero, new Vector2(1.1f), EasingFunction.QuadraticBump(lerpValue)), lerpValue);
-        drawer.color = particleColor;
-        drawer.color.A = 0;
-        spriteBatch.Draw(drawer);
+        Color particleColor;
+        switch (particle.style)
+        {
+            default:
+            case 0:
+                {
+                    particleColor = DrawUtilities.InterpolateColorArray(EasingFunction.InSine(lerpValue),
+                        Color.Black,
+                        Color.DarkBlue,
+                        Color.Black,
+                        Color.DarkRed,
+                        Color.Pink,
+                        Color.Lerp(Color.Red, Color.White, 0.5f));
 
-        drawer.scale *= 4f;
-        drawer.color.R = 125;
-        drawer.color.B = 0;
-        drawer.color.G = 0;
-        drawer.color *= 0.05f;
-        spriteBatch.Draw(drawer);
+                    (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frameIndex);
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                    drawer.sourceRect = frame;
+                    drawer.CenterOrigin();
+                    drawer.rotation = particle.timeleft * 0.01f;
+                    drawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.Lerp(Vector2.Zero, new Vector2(1.1f), EasingFunction.QuadraticBump(lerpValue)), lerpValue);
+                    drawer.color = particleColor;
+                    drawer.color.A = 0;
+                    spriteBatch.Draw(drawer);
 
-        drawer.scale *= 2;
-        drawer.color *= 0.25f;
-        spriteBatch.Draw(drawer);
+                    drawer.scale *= 4f;
+                    drawer.color.R = 125;
+                    drawer.color.B = 0;
+                    drawer.color.G = 0;
+                    drawer.color *= 0.05f;
+                    spriteBatch.Draw(drawer);
+
+                    drawer.scale *= 2;
+                    drawer.color *= 0.25f;
+                    spriteBatch.Draw(drawer);
+                }
+                break;
+            case 1:
+                {
+                    particleColor = DrawUtilities.InterpolateColorArray(EasingFunction.InSine(lerpValue),
+                        Color.Black,
+                        Color.DarkBlue,
+                        Color.Black,
+                        Color.SkyBlue,
+                        Color.Blue,
+                        Color.Lerp(Color.Cyan, Color.White, 0.5f));
+
+                    (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frameIndex);
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                    drawer.sourceRect = frame;
+                    drawer.CenterOrigin();
+                    drawer.rotation = particle.timeleft * 0.01f;
+                    drawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.Lerp(Vector2.Zero, new Vector2(1.1f), EasingFunction.QuadraticBump(lerpValue)), lerpValue);
+                    drawer.color = particleColor;
+                    drawer.color.A = 0;
+                    spriteBatch.Draw(drawer);
+
+                    drawer.scale *= 4f;
+                    drawer.color.R = 0;
+                    drawer.color.B = 125;
+                    drawer.color.G = 0;
+                    drawer.color *= 0.05f;
+                    spriteBatch.Draw(drawer);
+
+                    drawer.scale *= 2;
+                    drawer.color *= 0.25f;
+                    spriteBatch.Draw(drawer);
+                }
+                    
+                break;
+        }
+     
+
     }
 }
 
