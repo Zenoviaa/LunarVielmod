@@ -12174,5 +12174,10 @@ AmalgamRapidfirebow: {
 
 GhostshotgunLantern: {
 	DisplayName: Ghostshotgun Lantern
-	Tooltip: "Turns musket balls into a spread of three little ghosts that home towards your cursor!"
+	Tooltip: Turns musket balls into a spread of three little ghosts that home towards your cursor!
+}
+
+SparklemistFlaskArtifact: {
+	DisplayName: Sparklemist Flask Artifact
+	Tooltip: Throws out a slow, sparkly mist that hurts anything within it...
 }
