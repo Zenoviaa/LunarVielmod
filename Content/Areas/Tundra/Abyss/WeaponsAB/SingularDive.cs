@@ -238,7 +238,7 @@ public class SingularDiveDive : ModProjectile
         Projectile.rotation = rotationToHave + stylishRotation;
         Projectile.Center = posToMoveTo;
         Projectile.PlayerOwner.moveToPosition = posToMoveTo;
-        Projectile.PlayerOwner.SetImmuneTimeForAllTypes(30);
+        Projectile.PlayerOwner.SetImmuneTimeForAllTypes(60);
         if (Timer >= Time)
         {
             Projectile.Kill();
