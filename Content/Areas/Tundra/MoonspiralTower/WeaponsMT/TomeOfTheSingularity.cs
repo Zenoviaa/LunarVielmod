@@ -113,7 +113,7 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.WeaponsMT
 
         public override bool PreDraw(ref Color lightColor)
         {
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrail, DrawLayer.OverNPCsWithOutline);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrail, DrawLayer.OverNPCs);
 
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Color drawColor = Color.White;

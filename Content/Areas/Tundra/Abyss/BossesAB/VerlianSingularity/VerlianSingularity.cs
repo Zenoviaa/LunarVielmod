@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Projectiles;
 using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Wings;
 using Stellamod.Skies;
@@ -215,16 +217,18 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             Phase2Transition,
             BlackLightning,
             BerserkLaser,
+            SweepingLaser,
             Death,
             Despawn
         }
 
         private int ShootingStarDamage => 24;
-        private int SpiralStarDamage => 16;
+        private int SpiralStarDamage => 13;
         private int SingularityBoom => 32;
         private int BlackLightningDamage => 20;
         private int BerserkLaserDamage => 50;
 
+        private float _xDirection;
         private float _spinTimer;
         private ref float Timer => ref NPC.ai[0];
         private ref float AttackCounter => ref NPC.ai[1];
@@ -239,12 +243,14 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             base.SendExtraAI(writer);
             writer.Write(_spinTimer);
             writer.Write(_starField);
+            writer.Write(_xDirection);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _spinTimer = reader.ReadSingle();
             _starField = reader.ReadBoolean();
+            _xDirection = reader.ReadSingle();
         }
 
         public override void SetStaticDefaults()
@@ -316,18 +322,6 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             if (NPC.rotation == 0f)
                 NPC.rotation += MathHelper.ToRadians(15);
             NPC.rotation += 0.001f;
-            if (!_starField)
-            {
-
-                NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.02f) * 0.5f;
-                NPC.velocity.X = 0;
-
-
-            }
-            else
-            {
-                NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.01f) * 2.2f;
-            }
 
             if (_spazzingTimer > 0)
             {
@@ -355,6 +349,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             _warning = false;
             _ragingGlowCircle = false;
             SuckNearbyPlayers();
+            IdleVelocity();
             switch (State)
             {
                 case AIState.Spawn:
@@ -407,6 +402,9 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                 case AIState.BerserkLaser:
                     AI_BerserkLaser();
                     break;
+                case AIState.SweepingLaser:
+                    AI_SweepingLaser();
+                    break;
                 case AIState.Death:
                     AI_Death();
                     break;
@@ -414,6 +412,20 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                     AI_Despawn();
                     break;
             }
+        }
+
+        private void IdleVelocity()
+        {
+            if (!_starField)
+            {
+                NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.02f) * 0.5f;
+                NPC.velocity.X = 0;
+            }
+            else
+            {
+                NPC.velocity = Vector2.UnitY.RotatedBy(_spinTimer * 0.01f) * 2.2f;
+            }
+
         }
 
         private void AI_Despawn()
@@ -473,6 +485,78 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             }
         }
 
+        private void AI_SweepingLaser()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                PixelPrimitiveCircleFactory.CreateInWhiteSuck(NPC.Center);
+                SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2");
+                SoundEngine.PlaySound(chargeSound, NPC.position);
+                SpawnPulse();
+                _xDirection = NPC.XDirectionToTarget;
+            }
+            if(Timer % 40 == 0 && Timer < 120)
+            {
+                PixelPrimitiveCircleFactory.CreateInWhiteSuck(NPC.Center);
+            }
+
+            if (Timer < 60)
+            {
+                _spawnScale = MathHelper.Lerp(_spawnScale, 0.5f, 0.01f);
+            }
+
+            if(Timer < 120)
+            {
+                for(int i = 0; i < 2; i++)
+                {
+                    Vector2 posAimingFrom = NPC.Center + new Vector2(_xDirection * 256, -256);
+                    Vector2 vel = NPC.Center - posAimingFrom;
+                    vel = vel.SafeNormalize(Vector2.Zero);
+                    vel *= Main.rand.NextFloat(5f, 45);
+                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    {
+                        position = NPC.Center + Main.rand.NextVector2Circular(64, 64) -vel * 4,
+                        velocity = -vel,
+                        innerColor = Color.White.ToVector4(),
+                        outerColor = Color.Blue.ToVector4(),
+                        scale = new Vector2(Main.rand.NextFloat(0.2f, 0.5f))
+                    });
+                }
+        
+            }
+            if (Timer == 120)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
+                }
+
+                if (MultiplayerHelper.IsHost)
+                {
+                    int damage = BerserkLaserDamage;
+                    int projType = ModContent.ProjectileType<SweepingLaser>();
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, -Vector2.UnitY * 1000,
+                        projType, damage, 2, Main.myPlayer, ai0: NPC.whoAmI, ai2: _xDirection);
+                }
+            }
+            if (Timer >= 120 && Timer % 2 == 0)
+            {
+      
+                _shakeOffset = Main.rand.NextVector2Circular(12, 12);
+            }
+            if (Timer >= 120)
+            {
+                _ragingGlowCircle = true;
+                _bloomLine *= 0.9f;
+                SuckingParticles();
+            }
+            if(Timer >= 240)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
         private void AI_BerserkLaser()
         {
             Timer++;
@@ -699,10 +783,13 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                     case 4:
                         SwitchState(AIState.SingularityBoom);
                         break;
+                    case 5:
+                        SwitchState(AIState.SweepingLaser);
+                        break;
                 }
 
                 AttackCycle++;
-                if (AttackCycle >= 5)
+                if (AttackCycle >= 6)
                 {
                     AttackCycle = 0;
                 }
@@ -1219,9 +1306,28 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                 spriteBatch.Draw(glowCircleTexture, drawPosition, null, glowDrawColor, NPC.rotation, glowCircleDrawOrigin, drawScale * scaleOsc * 6, SpriteEffects.None, 0);
                 spriteBatch.Draw(glowCircleTexture, drawPosition, null, glowDrawColor, NPC.rotation, glowCircleDrawOrigin, drawScale * scaleOsc * 6, SpriteEffects.None, 0);
             }
+            if (_starField)
+            {
+                PixelationManager.QueueSpritebatchDrawAction(DrawVerlianAura, DrawLayer.OverWater);
+            }
             return false;
         }
      
+        private void DrawVerlianAura(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            var pass = AssetReferences.Effects.Abyss.VerlianAura.CreatePixelPass();
+            pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+            pass.Apply();
+            using(new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { effect = pass.Shader }))
+            {
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(
+                    AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.VerlianAura.Asset, NPC.Center);
+                drawer.color = Color.White;
+                drawer.scale *= 2.9f;
+                drawer.rotation = Main.GlobalTimeWrappedHourly * 0.3f;
+                Main.spriteBatch.Draw(drawer);
+            }
+        }
         private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Draw Incresion Disk
