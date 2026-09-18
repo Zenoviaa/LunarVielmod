@@ -222,8 +222,8 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             Despawn
         }
 
-        private int ShootingStarDamage => 24;
-        private int SpiralStarDamage => 13;
+        private int ShootingStarDamage => 15;
+        private int SpiralStarDamage => 11;
         private int SingularityBoom => 32;
         private int BlackLightningDamage => 20;
         private int BerserkLaserDamage => 50;
