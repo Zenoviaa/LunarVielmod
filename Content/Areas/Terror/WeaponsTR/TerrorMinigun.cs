@@ -20,7 +20,7 @@ public class TerrorMinigun : BaseGun
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.damage = 12;
+        Item.damage = 9;
         Item.ArmorPenetration = 15;
         Item.DamageType = DamageClass.Ranged;
         Item.width = 40;
@@ -87,7 +87,7 @@ public class TerrorMinigun : BaseGun
         {
             s = new SoundStyle("Stellamod/Assets/Sounds/XX41602");
         }
-        s = s with { PitchVariance = 0.6f, Volume = 0.7f };
+        s = s with { PitchVariance = 0.6f, Volume = 0.35f };
         SoundEngine.PlaySound(s, position);
         BasicMuzzleFlash(position, velocity, Color.White, Color.DarkRed);
     }
