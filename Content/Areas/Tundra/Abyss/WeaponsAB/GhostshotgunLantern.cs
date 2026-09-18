@@ -74,14 +74,7 @@ public class GhostShot : ModProjectile
 
         if (Timer >= 180)
             Projectile.Kill();
-        if (Main.rand.NextBool(30))
-        {
-            var smoke = FaintSmokeParticle.SpawnInAlphaLayer(
-                Projectile.Center + Main.rand.NextVector2Circular(32, 32), 
-                -Projectile.velocity.SafeNormalize(Vector2.Zero));
-            smoke.color = Color.DarkGray;
-            smoke.Scale *= 0.2f;
-        }
+
 
         float targetRotation = Projectile.velocity.ToRotation();
         Projectile.rotation = Utils.AngleLerp(Projectile.rotation, targetRotation, 0.35f);
@@ -122,6 +115,20 @@ public class GhostShot : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        for(float f = 0; f < 10; f++)
+        {
+            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            Vector2 vel = Main.rand.NextVector2Circular(12, 12);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = Color.White.ToVector4(),
+                outerColor = Color.Blue.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.6f, 1.5f))
+            });
+        }
+        /*
         for(float f = 0; f < 3; f++)
         {
             var smoke = FaintSmokeParticle.SpawnInAlphaLayer(
@@ -130,7 +137,7 @@ public class GhostShot : ModProjectile
             smoke.color = Color.DarkGray;
             smoke.expand = true;
             smoke.Scale *= 0.1f;
-        }
+        }*/
         PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.DarkGray, Color.Black, 25, 64);
         var shadeHand = AssetReferences.Assets.Sounds.ShadeHand.Asset with { PitchVariance = 1f, Volume = 0.4f };
         SoundEngine.PlaySound(shadeHand, Projectile.position);
