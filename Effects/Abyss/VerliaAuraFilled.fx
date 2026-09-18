@@ -10,14 +10,12 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     float osc = sin(dist * 3.14 + time + coords.y * 38.0) * 0.001;
     low += osc;
  
-    if (dist > low && dist < low + range)
+    if (dist < low + range)
     {
-        float a = dist - low;
-        a /= range;
-        float s = sin(a * 3.14);
-        float4 aura = float4(1.0, 0.2 + osc * 4.0, 1.0, 1.0) * 0.8 * sampleColor;
-        return aura * s;
-    }
+        float4 aura = float4(1.0, 1.0, 1.0, 1.0) * sampleColor;
+        return aura;
+    } 
+
     return float4(0.0, 0.0, 0.0, 0.0);
 
 }

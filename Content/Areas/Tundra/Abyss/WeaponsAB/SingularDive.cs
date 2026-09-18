@@ -21,11 +21,11 @@ public class SingularDive : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 22;
+        Item.damage = 27;
         Item.shoot = ModContent.ProjectileType<SingularDiveSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<SingularDiveDive>();
         meleeWeaponType = MeleeWeaponType.Greatsword;
-        staminaCost = 3;
+        staminaCost = 2;
         staminaDamageMultiplier = 5;
     }
 
@@ -288,6 +288,7 @@ public class SingularDiveSlash : BaseSwingProjectileV2
         base.DefineCombo();
         SwingV2Helper.AddGreatswordSwingStyle3(this);
         hitStopTime = EXTRA_UPDATE_COUNT * 8;
+        trailOffsetOverride = 2f;
     }
 
     public override void DrawSwingTrail(ref Color lightColor, Vector2[] swingTrailCache)

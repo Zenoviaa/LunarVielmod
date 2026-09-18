@@ -148,6 +148,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
                 _patternBackingFieldp2.AddPattern(AIState.RockSpikeRun, 1.0f);
                 _patternBackingFieldp2.AddPattern(AIState.AnkleBreakerMaybe, 1.0f);
                 _patternBackingFieldp2.AddPattern(AIState.CommandGrab, 1.0f);
+                _patternBackingFieldp2.QueueSetPattern(AIState.CommandGrab);
             }
             return _patternBackingFieldp2;
         }
@@ -190,7 +191,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         base.SetDefaults();
         NPC.width = 80;
         NPC.height = 96;
-        NPC.damage = 100;
+        NPC.damage = 1;
         NPC.defense = 23;
         NPC.lifeMax = 22000;
 

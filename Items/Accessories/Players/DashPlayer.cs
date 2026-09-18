@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Cinderspark.AccCS;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.AccMT;
+using Stellamod.Content.Buffs;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -299,6 +300,11 @@ namespace Stellamod.Items.Accessories.Players
                 Player.velocity = newVelocity;
             }
 
+            if (Player.HasBuff<Stunlocked>())
+            {
+                DashCount = 0;
+          
+            }
             if (DashDelay > 0)
             {
                 DashDelay--;

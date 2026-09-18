@@ -44,6 +44,7 @@ public class STARPUNCH : ModProjectile
         Projectile.hostile = true;
         Projectile.penetrate = -1;
         Projectile.timeLeft = 36;
+       
     }
     public override void AI()
     {

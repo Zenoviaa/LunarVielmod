@@ -8,6 +8,7 @@ using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Wings;
 using Stellamod.Skies;
@@ -223,8 +224,10 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
         }
 
         private int ShootingStarDamage => 15;
-        private int SpiralStarDamage => 11;
-        private int SingularityBoom => 32;
+        private int SpiralStarDamage => 14;
+        private int SingularityBoom => 46;
+        private int MiniSingularityBoom => 22;
+
         private int BlackLightningDamage => 20;
         private int BerserkLaserDamage => 50;
 
@@ -306,7 +309,15 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                     SwitchState(AIState.Despawn);
                 }
             }
-            CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f));
+            if(State == AIState.Death)
+            {
+                CameraTargetSystem.AddTarget(NPC.Center);
+            }
+            else
+            {
+                CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f));
+            }
+  
             _spinTimer++;
             if (_starField)
             {
@@ -530,7 +541,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<SingularityBoom>(), SingularityBoom, 2, Main.myPlayer);
+                        ModContent.ProjectileType<SingularityBoom>(), 0, 2, Main.myPlayer);
                 }
 
                 if (MultiplayerHelper.IsHost)
@@ -1308,25 +1319,57 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             }
             if (_starField)
             {
-                PixelationManager.QueueSpritebatchDrawAction(DrawVerlianAura, DrawLayer.OverWater);
+                PixelationManager.QueueSpritebatchDrawAction(DrawVerlianAura, DrawLayer.OverNPCs);
             }
             return false;
         }
      
         private void DrawVerlianAura(SpriteBatch spriteBatch, Vector2 screenPos)
         {
+            RenderTargetHandle maskTarget = RenderTargets.ScreenTarget;
+            spriteBatch.EndOut(out var oldParameters);
+            using(new RenderTargetContext(maskTarget))
+            {
+                //Draw a circle
+                var circlePass = AssetReferences.Effects.Abyss.VerliaAuraFilled.CreatePixelPass();
+                circlePass.Parameters.time = Main.GlobalTimeWrappedHourly;
+                circlePass.Apply();
+                using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { effect = circlePass.Shader, matrix = Matrix.identity }))
+                {
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(
+                        AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.VerlianAura.Asset, NPC.Center);
+                    drawer.color = Color.Lerp(Main.DiscoColor, Color.White, 0.5f);
+                    drawer.scale *= 2.9f;
+                    drawer.rotation = Main.GlobalTimeWrappedHourly * 0.3f;
+                    Main.spriteBatch.Draw(drawer);
+                }
+            }
+
+            var mistPass = AssetReferences.Effects.Abyss.VerlianMist.CreatePixelPass();
+            var cloudSampler = new HlslSampler();
+            cloudSampler.Sampler = SamplerState.LinearWrap;
+            cloudSampler.Texture = AssetReferences.Assets.NoiseTextures.Clouds6.Asset.Value;
+            mistPass.Parameters.cloudSampler = cloudSampler;
+            mistPass.Parameters.time = Main.GlobalTimeWrappedHourly;
+            mistPass.Apply();
+            using(new SpritebatchContext(spriteBatch, oldParameters with { effect = mistPass.Shader }))
+            {
+                spriteBatch.Draw(maskTarget, Vector2.Zero, Color.White);
+            }
+
             var pass = AssetReferences.Effects.Abyss.VerlianAura.CreatePixelPass();
             pass.Parameters.time = Main.GlobalTimeWrappedHourly;
             pass.Apply();
-            using(new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { effect = pass.Shader }))
+            using(new SpritebatchContext(spriteBatch, oldParameters with { effect = pass.Shader }))
             {
                 SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(
                     AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.VerlianAura.Asset, NPC.Center);
-                drawer.color = Color.White;
+                drawer.color = Color.Lerp(Main.DiscoColor, Color.White, 0.5f);
                 drawer.scale *= 2.9f;
                 drawer.rotation = Main.GlobalTimeWrappedHourly * 0.3f;
                 Main.spriteBatch.Draw(drawer);
             }
+            spriteBatch.Begin(oldParameters);
         }
         private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

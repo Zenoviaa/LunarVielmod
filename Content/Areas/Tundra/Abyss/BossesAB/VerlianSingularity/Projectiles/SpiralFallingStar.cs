@@ -136,7 +136,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Proje
             Vector2 drawOrigin = drawFrame.Size() / 2;
             float scale = Projectile.scale * _scale * 0.3f;
             float rotation = Projectile.rotation;
-            Color drawcolor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12)).MultiplyRGB(lightColor);
+            Color drawcolor = Color.Lerp(Color.Red, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 12));
             drawcolor.A = 0;
             spriteBatch.Draw(texture, drawPos, drawFrame, drawcolor, rotation, drawOrigin, scale, spriteEffects, 0);
         }

@@ -1247,3 +1247,8 @@ Grounded: {
 	DisplayName: Grounded
 	Description: Mods.Stellamod.Buffs.Grounded.Description
 }
+
+Stunlocked: {
+	DisplayName: Stunlocked
+	Description: Mods.Stellamod.Buffs.Stunlocked.Description
+}

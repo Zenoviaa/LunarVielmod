@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Buffs;
 using Stellamod.Content.Rendering.GenericEffects;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -10,6 +11,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
+
 public class GotYouPlayer : ModPlayer
 {
     public Vector2? grabPosition;
@@ -20,6 +22,7 @@ public class GotYouPlayer : ModPlayer
         if (grabPosition.HasValue)
         {
             Player.velocity = grabPosition.Value - Player.Center;
+            Player.AddBuff(ModContent.BuffType<Stunlocked>(), 60);
             grabPosition = null;
         }
         float diff = grabRotation - 0.01f;

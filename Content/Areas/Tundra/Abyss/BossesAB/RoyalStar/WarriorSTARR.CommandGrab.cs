@@ -14,8 +14,7 @@ public partial class WarriorSTARR
 {
     private ref Vector2 StartDashPosition => ref _vector1;
     private ref Vector2 EndDashPosition => ref _vector2;
-    private float Grab_Start_Time => 60;
-    private int Got_You_Damage => 70;
+    private int Got_You_Damage => 90;
     private float Got_You_Back_Time => 45;
     private float Fake_Out_Count => 4;
     private float Grab_Time => 39;
