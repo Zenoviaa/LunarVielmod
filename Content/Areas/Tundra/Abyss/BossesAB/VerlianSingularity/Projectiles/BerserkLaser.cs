@@ -80,6 +80,8 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Proje
             }
 
             NPC parentNpc = GetParentNPC();
+            if (!parentNpc.active && Projectile.timeLeft > 60)
+                Projectile.timeLeft = 60;
             Projectile.Center = parentNpc.Center;
 
 
@@ -133,6 +135,8 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Proje
             return width * inScale * outScale * Main.rand.NextFloat(0.95f, 1f) * EasingFunction.QuadraticBump(interpolant) * groScale;
         }
 
+        private float Out => EasingFunction.InOutSine(Projectile.timeLeft / 30f);
+
         private Color ColorFunction(float interpolant)
         {
             Color color = Color.Lerp(Color.Black, Color.White, interpolant);
@@ -165,7 +169,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Proje
             float ep = EasingFunction.OutCirc(p);
             float circleWidth = MathHelper.Lerp(0, w, ep);
             float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
-            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
+            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio)) * Out;
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -214,7 +218,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.Proje
 
             _sparkTexture ??= ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect);
             Vector2 lightDrawOrigin = _sparkTexture.Size() / 2f;
-            float inScale = EasingFunction.InOutSine(_inTimer / 30f);
+            float inScale = EasingFunction.InOutSine(_inTimer / 30f) * Out;
             float sparkyRot = Projectile.rotation;
             float scaleOsc2 = ExtraMath.Osc(1f, 1.05f, speed: 8);
             scaleOsc2 *= Main.rand.NextFloat(0.75f, 1f);

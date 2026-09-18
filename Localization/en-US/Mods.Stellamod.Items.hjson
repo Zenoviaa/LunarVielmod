@@ -3325,8 +3325,8 @@ Venatici: {
 	DisplayName: Venatici
 	Tooltip:
 		'''
-		Shoots an exploding star!
-		I never knew there was a black hole this big :(
+		Hold and release to charge a 5 five-pointed star that splits into smaller exploding stars!
+		Colorful...
 		'''
 }
 
