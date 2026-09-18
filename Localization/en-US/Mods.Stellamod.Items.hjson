@@ -12181,3 +12181,8 @@ SparklemistFlaskArtifact: {
 	DisplayName: Sparklemist Flask Artifact
 	Tooltip: Throws out a slow, sparkly mist that hurts anything within it...
 }
+
+RoyalTileBlock: {
+	DisplayName: Royal Tile
+	Tooltip: "Fit for a queen..."
+}
