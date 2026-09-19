@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.Dungeon;
 using Stellamod.Content.Areas.PunkerTown;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;
@@ -9,6 +10,7 @@ using Stellamod.Content.Areas.Underground;
 using Stellamod.Content.Areas.WaterSide;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Items.Placeable.Cathedral;
+using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.WorldG;
 using System.Collections.Generic;
 using Terraria;
@@ -251,5 +253,11 @@ public class NPCSpawnHelper : GlobalNPC
             }
 
         }
+        if (spawnInfo.Player.InModBiome<MistyDungeonBiome>())
+        {
+
+        }
+        Main.tileDungeon[ModContent.TileType<MothlightBrick>()] = true;
+        TileID.Sets.DungeonBiome[ModContent.TileType<MothlightBrick>()] = 1;
     }
 }

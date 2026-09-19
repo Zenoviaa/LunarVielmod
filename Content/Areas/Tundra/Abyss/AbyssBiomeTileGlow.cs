@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Biomes;
+﻿using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
+using Stellamod.Content.Biomes;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -13,11 +14,13 @@ public class AbyssBiomeTileGlow : GlobalTile
         if (!Main.LocalPlayer.ZoneAbyss)
             return;
         Tile tile = Main.tile[i, j];
-        if (WorldGen.TileIsExposedToAir(i, j))
+        bool isAbyssalDirt = tile.TileType == ModContent.TileType<AbyssalDirt>();
+        bool isAbyssalCoarseDirt = tile.TileType == ModContent.TileType<AbyssalCoarseDirt>();
+        if (WorldGen.TileIsExposedToAir(i, j) && (isAbyssalDirt || isAbyssalCoarseDirt))
         {
-            r = 0.5f;
-            g = 0.51f;
-            b = 0.8f;
+            r *= 0.5f;
+            g *= 0.51f;
+            b *= 0.8f;
         }
     }
 }

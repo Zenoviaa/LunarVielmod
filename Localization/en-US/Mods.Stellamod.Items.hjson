@@ -12178,11 +12178,16 @@ GhostshotgunLantern: {
 }
 
 SparklemistFlaskArtifact: {
-	DisplayName: Sparklemist Flask Artifact
+	DisplayName: The Fog Artifact
 	Tooltip: Throws out a slow, sparkly mist that hurts anything within it...
 }
 
 RoyalTileBlock: {
 	DisplayName: Royal Tile
-	Tooltip: "Fit for a queen..."
+	Tooltip: Fit for a queen...
+}
+
+GrafittiCan: {
+	DisplayName: Grafitti Can
+	Tooltip: ""
 }

@@ -64,7 +64,7 @@ public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
     private void DrawParticles(On_Main.orig_DrawDust orig, Main self)
     {
         orig(self);
-        PixelationManager.QueueSpritebatchDrawAction(Draw, PixelationDrawLayer);
+        PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.OverNPCs);
     }
 
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)

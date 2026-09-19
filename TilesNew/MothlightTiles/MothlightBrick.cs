@@ -12,6 +12,7 @@ namespace Stellamod.TilesNew.MothlightTiles
 
         public override void SetStaticDefaults()
         {
+
             Main.tileDungeon[Type] = true;
             Main.tileSolid[Type] = true;
             Main.tileMerge[Type][Type] = true;
@@ -20,6 +21,8 @@ namespace Stellamod.TilesNew.MothlightTiles
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
             TileID.Sets.CanBeClearedDuringOreRunner[Type] = false;
+            Main.tileDungeon[Type] = true;
+            TileID.Sets.DungeonBiome[Type] = 1;
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(178, 163, 190), name);
 

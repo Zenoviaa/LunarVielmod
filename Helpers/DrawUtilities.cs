@@ -668,6 +668,7 @@ public struct SpritebatchParams
             return starter;
         }
     }
+
 }
 
 public static class SpritebatchDrawExtensions
