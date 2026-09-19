@@ -85,6 +85,7 @@ public static class SavedGenerationParameters
     public static int SnowRight;
     public static int SnowTop;
     public static int SnowBottom;
+    public static int DarkspaceTop;
     public static double RockLayerHigh;
     public static Rectangle AbyssTempleRectangle;
 }
@@ -385,6 +386,13 @@ public partial class StellaWorld : ModSystem
         //Final Structures and Whatnot
         passWriter.SetInsertionIndex("Final Cleanup");
         passWriter.NextPass(new PassLegacy("Shimmer Fix", ReplaceLavaWithShimmerPass));
+
+        passWriter.NextPass(new PassLegacy("Grow Kelp In Abyss", (GenerationProgress progress, GameConfiguration configuration) =>
+        {
+            progress.Message = "Kelping";
+            VeilGen.GrowKelpInAbyss();
+        })); 
+
         passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
         passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("World Gen Manor", WorldGenManor));
@@ -417,7 +425,7 @@ public partial class StellaWorld : ModSystem
     private void WorldGen_TreasureTrove(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Treasure Trove";
-        Point caveOrigin = AbyssCenter;
+        Point caveOrigin = VeilGen.AbyssCenterTile;
 
         caveOrigin.Y -= 800;
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("TreasureTrove");
@@ -6211,210 +6219,23 @@ public partial class StellaWorld : ModSystem
 
     }
     #endregion
-    #region Abyss
-    public Point AbyssCenter;
+
     private void WorldGenAbysm(GenerationProgress progress, GameConfiguration configuration)
     {
-        //Save the snow attributes
-        SavedGenerationParameters.SnowLeft = GenVars.snowOriginLeft;
-        SavedGenerationParameters.SnowRight = GenVars.snowOriginRight;
-        SavedGenerationParameters.SnowBottom = GenVars.snowBottom;
-        SavedGenerationParameters.SnowTop = GenVars.snowTop;
-        SavedGenerationParameters.RockLayerHigh = GenVars.rockLayerHigh;
         progress.Message = "Shifting Shadows deep in the Ice";
-        //Calculate center of the abyss
-        AbyssCenter = new Point();
-        AbyssCenter.X = GenVars.snowOriginLeft + GenVars.snowOriginRight;
-        AbyssCenter.X /= 2;
-        AbyssCenter.Y = (int)(GenVars.rockLayerHigh + Main.maxTilesY * 0.15);
-        AbyssCenter.Y -= 20;
-        //Place the center like a circle
-
-        ushort abyssTile = (ushort)ModContent.TileType<AbyssalDirt>();
-
-        int abyssHigh = AbyssCenter.Y - 500;
-        int abyssLow = AbyssCenter.Y + 350;
-
-        //Fill the entire area with abyss dirt tiles
-        for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
-        {
-            for (int y = abyssHigh; y < abyssLow; y++)
-            {
-                Tile tile = Main.tile[x, y];
-                tile.TileFrameX = -1;
-                tile.TileFrameY = -1;
-                tile.HasTile = true;
-                tile.TileType = abyssTile;
-            }
-        }
-
-        var genRand = WorldGen.genRand;
-
-        //Sprinkle Blotches of Ice, Snow, and Thick Snow tiles
-        //This will add nice variation within the blocks
-        Span<ushort> pool = new ushort[3].AsSpan();
-        pool[0] = (ushort)ModContent.TileType<ThickSnowTile>();
-        pool[1] = TileID.SnowBlock;
-        pool[2] = TileID.IceBlock;
-
-        int numAbyssBlotchSteps = 150;
-        for (int i = 0; i < 3; i++)
-        {
-            ushort tileType = pool[i];
-            for (int n = 0; n < numAbyssBlotchSteps; n++)
-            {
-                //Get a random center point to place the blotch
-                Point p = new Point();
-                p.X = genRand.Next(GenVars.snowOriginLeft, GenVars.snowOriginRight);
-                p.Y = genRand.Next(abyssHigh, abyssLow);
-
-                float strength = genRand.NextFloat(8, 16);
-                int steps = genRand.Next(10, 20);
-                WorldGen.OreRunner(p.X, p.Y, strength, steps, tileType);
-            }
-        }
-
-
-        //Let's try an implementation with fast noise lite
-        FastNoiseLite fnl = new FastNoiseLite();
-        fnl.SetSeed(genRand.Next(0, 20000));
-        fnl.SetFrequency(0.005f);
-        fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
-        fnl.SetDomainWarpAmp(65);
-
-        for (int x = GenVars.snowOriginLeft; x < GenVars.snowOriginRight; x++)
-        {
-            for (int y = abyssHigh; y < abyssLow; y++)
-            {
-                float noise = fnl.GetNoise(x, y);
-                if (noise < 0.5f)
-                {
-                    Tile tile = Main.tile[x, y];
-                    tile.ClearTile();
-                }
-            }
-        }
+        //Save the snow attributes
+        VeilGen.SetAbyssGenerationParameters();
+        VeilGen.GenerateAbyss();
     }
 
-    private void NewCaveFormationAbysm(GenerationProgress progress, GameConfiguration configuration)
-    {
 
-
-
-    }
     private void WorldGenAurelusTemple(GenerationProgress progress, GameConfiguration configuration)
     {
-        StructureMap structures = GenVars.structures;
-        Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Aurelus/AurelusTemple2");
-        progress.Message = "Singularities Singing!";
-
-        bool placed = false;
-        int attempts = 0;
-        while (!placed && attempts++ < 1000000)
-        {
-            Point Loc = AbyssCenter;
-            Loc.X -= rectangle.Width / 2;
-            Loc.Y += rectangle.Height / 2;
-            rectangle.Location = Loc;
-            StructureLoader.ProtectStructure(Loc, "Struct/Aurelus/AurelusTemple2");
-            int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple2");
-            foreach (int chestIndex in ChestIndexs)
-            {
-                var chest = Main.chest[chestIndex];
-                // etc
-
-                // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                var itemsToAdd = new List<(int type, int stack)>();
-
-                // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-                // Using a switch statement and a random choice to add sets of items.
-                switch (Main.rand.Next(7))
-                {
-                    case 0:
-                        itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-
-                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
-                        itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-                        itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
-                        itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
-                        break;
-                    case 1:
-                        itemsToAdd.Add((ModContent.ItemType<Venatici>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                        itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-
-                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
-                        itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-                        itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-                        break;
-                    case 2:
-                        itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-                        break;
-                    case 3:
-                        //     itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
-                        // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
-                        itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                        itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-                        itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
-                        itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
-
-                        break;
-                    case 4:
-                        itemsToAdd.Add((ModContent.ItemType<HolmbergScythe>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                        itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-
-                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
-                        itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-                        itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-                        break;
-
-                    case 5:
-                        itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
-                        itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-                        break;
-
-                    case 6:
-
-                        itemsToAdd.Add((ModContent.ItemType<VeiledScriptureMiner8>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ItemID.Shiverthorn, Main.rand.Next(2, 15)));
-                        itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
-                        itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
-                        itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
-                        break;
-                }
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                int chestItemIndex = 0;
-                foreach (var itemToAdd in itemsToAdd)
-                {
-                    Item item = new Item();
-                    item.SetDefaults(itemToAdd.type);
-                    item.stack = itemToAdd.stack;
-                    chest.item[chestItemIndex] = item;
-                    chestItemIndex++;
-                    if (chestItemIndex >= 40)
-                        break; // Make sure not to exceed the capacity of the chest
-                }
-            }
-            placed = true;
-        }
-
-
+        progress.Message = "Singularities are Singing!";
+        VeilGen.PlaceAbysmTemple();
     }
 
-    #endregion
+
 
 
     Point pointL;

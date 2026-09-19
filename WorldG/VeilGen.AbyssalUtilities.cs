@@ -25,6 +25,26 @@ namespace Stellamod.WorldG;
 
 public partial class VeilGen
 {
+    private static readonly List<Point> _placedAbyssFlowers = new();
+    public static Point AbyssCenterTile
+    {
+        get
+        {
+            int left = SavedGenerationParameters.SnowLeft;
+            int right = SavedGenerationParameters.SnowRight;
+            int top = SavedGenerationParameters.SnowTop;
+            int bottom = ModContent.GetInstance<StellaWorld>().DarkspaceStart;
+
+            //Calculate center of the abyss
+            Point AbyssCenter = new Point();
+            AbyssCenter.X = left + right;
+            AbyssCenter.X /= 2;
+            AbyssCenter.Y = (int)(SavedGenerationParameters.RockLayerHigh + Main.maxTilesY * 0.15);
+            AbyssCenter.Y -= 20;
+            return AbyssCenter;
+        }
+    }
+
     public static Rectangle AbyssRectangle
     {
         get
@@ -49,6 +69,18 @@ public partial class VeilGen
     }
 
     /// <summary>
+    /// Sets the saved generation parameters in genvars for the snow origin points
+    /// </summary>
+    public static void SetAbyssGenerationParameters()
+    {
+        SavedGenerationParameters.SnowLeft = GenVars.snowOriginLeft;
+        SavedGenerationParameters.SnowRight = GenVars.snowOriginRight;
+        SavedGenerationParameters.SnowBottom = GenVars.snowBottom;
+        SavedGenerationParameters.SnowTop = GenVars.snowTop;
+        SavedGenerationParameters.RockLayerHigh = GenVars.rockLayerHigh;
+        SavedGenerationParameters.DarkspaceTop = DarkspaceTop;
+    }
+    /// <summary>
     /// Generates the entire abyss biome
     /// </summary>
     public static void GenerateAbyss()
@@ -57,7 +89,7 @@ public partial class VeilGen
         int left = SavedGenerationParameters.SnowLeft;
         int right = SavedGenerationParameters.SnowRight;
         int top = SavedGenerationParameters.SnowTop;
-        int bottom = ModContent.GetInstance<StellaWorld>().DarkspaceStart;
+        int bottom = SavedGenerationParameters.DarkspaceTop;
 
         //Calculate center of the abyss
         Point AbyssCenter = new Point();
@@ -238,24 +270,6 @@ public partial class VeilGen
             }
             return otherPoints;
         }
-        List<Vector2> FindAnyPointsICanConnectTo(Vector2 referencePoint, float connectRadius = 150)
-        {
-            float maxConnectionRadiusSquared = connectRadius * connectRadius;
-            List<Vector2> otherPoints = new List<Vector2>(16);
-            foreach (var kvp in caveConnectPoints)
-            {
-                foreach (Vector2 cavePoint in kvp.Value)
-                {
-                    float distanceSquared = Vector2.DistanceSquared(referencePoint, cavePoint);
-                    if (distanceSquared <= maxConnectionRadiusSquared)
-                    {
-                        otherPoints.Add(cavePoint);
-                    }
-                }
-            }
-            return otherPoints;
-        }
-
 
         //Sprinkle several long caves throughout the biome
         int numCaves = 18;
@@ -298,34 +312,6 @@ public partial class VeilGen
         }
 
 
-        //Create numerous clearings in the abyss
-        int numClearings = 8;
-
-        /*
-        for (int n = 0; n < numClearings; n++)
-        {
-            int dir = 1;
-            if (fastRandom.Next(2) == 0)
-                dir = -1;
-            Vector2 p = new Vector2();
-            p.X = fastRandom.Next(left - 25, left + 25);
-            if (dir == -1)
-                p.X = fastRandom.Next(right - 25, right);
-            p.X += fastRandom.Next(-250, 250);
-            p.Y = (int)MathHelper.Lerp(abyssHigh, abyssLow, n / (float)numClearings);
-
-            //All caves should be moving to the right
-            Vector2 initialDirection = Vector2.UnitX;
-            if (dir == -1)
-                initialDirection *= -1;
-
-            bool success = CreateAbyssClearing(n, p, initialDirection, operationRectangle);
-            if (!success)
-            {
-                n--;
-            }
-        }
-        */
         //NOW WE CONNECT CAVES
         //Let's make two connections per layer
         //or atleast try to
@@ -383,7 +369,7 @@ public partial class VeilGen
         //How do we palce these uhhhh
         //Yeahs
         int numBellFlowers = 5;
-        List<Point> placedFlowers = new List<Point>();
+        _placedAbyssFlowers.Clear();
         List<Vector2> allPoints = new List<Vector2>();
         foreach (var kvp in caveConnectPoints)
             allPoints.AddRange(kvp.Value);
@@ -396,9 +382,9 @@ public partial class VeilGen
                 bool TooCloseToAnotherPlacedFlower(Point p)
                 {
                     int dx = Math.Abs(p.X - AbyssCenter.X);
-                    if (dx < 120)
+                    if (dx < 165)
                         return true;
-                    foreach (Point placed in placedFlowers)
+                    foreach (Point placed in _placedAbyssFlowers)
                     {
                         if (TileUtilities.TooCloseToTilePoint(p, placed, proximity: 200))
                             return true;
@@ -406,51 +392,49 @@ public partial class VeilGen
                     return false;
                 }
 
-                Vector2 GetRandomConnectionPoint(Vector2 referencePoint, float checkDistance)
+                bool IsValidToConnectTo(Vector2 p, Vector2 referencePoint, float checkDistance)
                 {
                     float checkDistanceSquared = checkDistance * checkDistance;
-                    for (int a = 0; a < 50; a++)
-                    {
-                        Vector2 p = allPoints[fastRandom.Next(0, allPoints.Count)];
-                        float distanceSquare = Vector2.DistanceSquared(referencePoint, p);
-                        if (distanceSquare <= checkDistanceSquared)
-                            return p;
-                    }
-                    return allPoints[fastRandom.Next(0, allPoints.Count)];
+                    float distanceSquare = Vector2.DistanceSquared(referencePoint, p);
+                    if (distanceSquare <= checkDistanceSquared)
+                        return true;
+                    return false;
                 }
-                int maxAttempts = 100;
-                int a = 0;
 
 
-                while (a < maxAttempts)
+                void Fail()
                 {
-                    Point randPoint = validPointsForFlowers[fastRandom.Next(0, validPointsForFlowers.Count)];
-                    if (TooCloseToAnotherPlacedFlower(randPoint))
-                    {
-                        a++;
-                        continue;
-                    }
-
-
-                    //List<Vector2> pointsICanConnectTo = FindAnyPointsICanConnectTo(randPoint.ToVector2(), connectRadius: 250);
-                    //pointsICanConnectTo = pointsICanConnectTo.OrderBy(x => Vector2.Distance(randPoint.ToVector2(), x)).ToList();
-                    Vector2 pointToConnectTo = GetRandomConnectionPoint(randPoint.ToVector2(), checkDistance: 250);
-                    if (pointToConnectTo.Y > randPoint.Y)
-                        continue;
-
-
-                    VeilGen.CreateBellFlowerClearing(randPoint.ToVector2());
-
-                    CreateAbyssConnectionCaveMini(randPoint.ToVector2() + new Vector2(0, -16), pointToConnectTo);
-                    placedFlowers.Add(randPoint);
-                    break;
+                    Main.NewText("Fail to PLACED BELL FLOWER", Color.Red);
+                    Stellamod.Instance.Logger.Info($"Failed to place Bell Flower");
                 }
-                if (a >= maxAttempts)
+
+
+                //Find all points that would would not be too close to another flower
+                //Previously we were doing this randomly, but just iterating over every connection point and checking it's validity is definitely faster
+                //And more reliable, that reliability is especially important.
+                List<Point> pointsNotTooCloseToFlowers = validPointsForFlowers.Where(x => !TooCloseToAnotherPlacedFlower(x)).ToList();
+                if(pointsNotTooCloseToFlowers.Count == 0)
                 {
-                    Main.NewText("FAIL TO PLACED BELL FLOWER", Color.Red);
+                    Fail();
+                    continue;
                 }
+
+                Point randPoint = pointsNotTooCloseToFlowers[fastRandom.Next(0, pointsNotTooCloseToFlowers.Count)];
+
+                //Find all points that are close enough to connect to for creating path ways
+                List<Vector2> validConnectionPoints = allPoints.Where(x =>
+                 x.Y <= randPoint.Y && IsValidToConnectTo(x, randPoint.ToVector2(), checkDistance: 250)).ToList();
+                if (validConnectionPoints.Count <= 0)
+                {
+                    Fail();
+                    continue;
+                }
+
+                Vector2 pointToConnectTo = validConnectionPoints[fastRandom.Next(0, validConnectionPoints.Count)];
+                VeilGen.CreateBellFlowerClearing(randPoint.ToVector2());
+                CreateAbyssConnectionCaveMini(randPoint.ToVector2() + new Vector2(0, -16), pointToConnectTo);
+                _placedAbyssFlowers.Add(randPoint);
             }
-
         }
 
         for(int i = 0; i < 3; i++)
@@ -534,14 +518,10 @@ public partial class VeilGen
 
         VeilGen.DecorateEdgeTilesWithWalls(rect, groundTiles,
              (ushort)ModContent.WallType<AbyssalGrassWallDark>(), 1);
-        VeilGen.GrowKelpArea<AbyssalKelp>(rect, minHeight: 5, maxHeight: 9, denom: 7);
 
-        //Extra kelp around flowers
-        foreach(Point p in placedFlowers)
-        {
-            Rectangle kelpRect = TileUtilities.CenterTileRectangle(p, 50, 50);
-            VeilGen.GrowKelpArea<AbyssalKelp>(kelpRect, minHeight: 20, maxHeight: 35, denom: 4);
-        }
+        TileID.Sets.CanBeClearedDuringGeneration[abyssTile] = false;
+        TileID.Sets.CanBeClearedDuringOreRunner[abyssTile] = false;
+        /*
         if (!WorldGen.SkipFramingBecauseOfGen)
         {
             for (int x = left; x < right; x++)
@@ -553,11 +533,45 @@ public partial class VeilGen
                 }
             }
         }
-        VeilGen.PlaceAbysmTemple(AbyssCenter + new Point(0, 256));
+
         if (!WorldGen.SkipFramingBecauseOfGen)
         {
             TileUtilities.UpdateMap(rect, 255);
+        }*/
+    }
+
+    public static void GrowKelpInAbyss()
+    {
+        VeilGen.GrowKelpArea<AbyssalKelp>(AbyssRectangle, minHeight: 5, maxHeight: 9, denom: 7);
+
+        //Extra kelp around flowers
+        foreach (Point p in _placedAbyssFlowers)
+        {
+            Rectangle kelpRect = TileUtilities.CenterTileRectangle(p, 50, 50);
+            VeilGen.GrowKelpArea<AbyssalKelp>(kelpRect, minHeight: 20, maxHeight: 35, denom: 4);
         }
+    }
+    public static void PlaceAbysmTemple()
+    {
+        VeilGen.PlaceAbysmTemple(AbyssCenterTile + new Point(0, 256));
+    }
+
+    public static Point FindSurfaceOfWater(Point tilePoint, int maxSteps)
+    {     
+        Tile tile = Main.tile[tilePoint];
+        for(int s = 0; s < maxSteps; s++)
+        {
+            if (tilePoint.Y <= 0)
+            {
+                tilePoint.Y = 0;
+                return tilePoint;
+            }
+            Tile wetTile = Main.tile[tilePoint];
+            if ((wetTile.HasTile && WorldGen.SolidTile(tilePoint)) || wetTile.LiquidAmount <= 0)
+                return tilePoint;
+            tilePoint.Y--;
+        }
+        return tilePoint;
     }
 
     public static bool HasNumAirTilesAbove(Point tilePoint, int steps)
@@ -571,7 +585,7 @@ public partial class VeilGen
                 return true;
 
             Tile tileAbove = Main.tile[nextPoint];
-            if (tileAbove.HasTile)
+            if (tileAbove.HasTile && WorldGen.SolidTile(nextPoint))
                 return false;
         }
         return true;
@@ -602,7 +616,7 @@ public partial class VeilGen
         SavedGenerationParameters.AbyssTempleRectangle = templeRectangle;
         StructureLoader.ProtectStructure(Loc, "Struct/Aurelus/AurelusTemple2");
         int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple2");
-
+        //Should prob make a chest loot apie
         foreach (int chestIndex in ChestIndexs)
         {
             var chest = Main.chest[chestIndex];
@@ -642,7 +656,6 @@ public partial class VeilGen
                     // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
                     itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
                     itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-                    itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
                     itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
                     itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
 

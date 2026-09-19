@@ -969,14 +969,35 @@ public class MoonWaterSystem : ModSystem
                 {
 
                     //Move upward until we hit an air tile, so we know how deep this water tile is
-                    while (height < maxGradientHeight)
+                    if (Main.LocalPlayer.ZoneOverworldHeight)
                     {
-                        Tile aboveTile = Main.tile[j, i - height];
-                        if (aboveTile.LiquidAmount == 0 && !WorldGen.SolidTile(j, i - height) && !aboveTile.IsHalfBlock)
+                        while (height < maxGradientHeight)
                         {
-                            break;
+                            Tile aboveTile = Main.tile[j, i - height];
+                            if (aboveTile.LiquidAmount == 0 && !aboveTile.IsHalfBlock)
+                            {
+                                break;
+                            }
+                            height++;
                         }
-                        height++;
+
+                    }
+                    else
+                    {
+                        Point waterSurface = VeilGen.FindSurfaceOfWater(new Point(j, i), 16);
+                        if (!VeilGen.HasNumAirTilesAbove(waterSurface, 5))
+                            continue;
+
+                        while (height < maxGradientHeight)
+                        {
+                            Tile aboveTile = Main.tile[j, i - height];
+                            if (aboveTile.LiquidAmount == 0 && !WorldGen.SolidTile(j, i - height) && !aboveTile.IsHalfBlock)
+                            {
+                                break;
+                            }
+                            height++;
+                        }
+
                     }
 
                     HeightDraw heightDraw = new HeightDraw();

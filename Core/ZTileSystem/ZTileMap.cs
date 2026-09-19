@@ -250,6 +250,7 @@ public class ZTileMap : ModSystem
         }
     }
 
+
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
@@ -856,6 +857,7 @@ public class ZTileMap : ModSystem
     public override void ClearWorld()
     {
         base.ClearWorld();
+        _zTileInstances.Clear();
         Refresh();
     }
 
