@@ -352,7 +352,7 @@ public partial class StellaWorld : ModSystem
 
         passWriter.NextPass(new PassLegacy("Marsh Housing", WorldGenMarshHousing));
         passWriter.NextPass(new PassLegacy("Aegislav", WorldGen_AegislavFull));
-        passWriter.NextPass(new PassLegacy("Water Wobble Cave", WorldGen_WaterWobbleCave));
+
         passWriter.NextPass(new PassLegacy("Craftsman Cave", WorldGen_CraftsMenCaves));
         passWriter.NextPass(new PassLegacy("Treasure Trove", WorldGen_TreasureTrove));
         passWriter.NextPass(new PassLegacy("Moonspiral Tower", WorldGen_MoonspiralTower));
@@ -362,7 +362,6 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new ReworkedVanillaIceBiomePass());
         passWriter.NextPass(new PassLegacy("Ice Clumping", IceClump));
         passWriter.NextPass(new PassLegacy("Ice Spikes", MakingIcyRandomness));
-        passWriter.NextPass(new PassLegacy("World Gen Abysm", WorldGenAbysm));
         passWriter.NextPass(new PassLegacy("Icey Caverns", WorldGenIceCaverns));
         passWriter.NextPass(new PassLegacy("Ice Housing 3", SurfaceIceHouses));
 
@@ -387,20 +386,27 @@ public partial class StellaWorld : ModSystem
         passWriter.SetInsertionIndex("Final Cleanup");
         passWriter.NextPass(new PassLegacy("Shimmer Fix", ReplaceLavaWithShimmerPass));
 
-        passWriter.NextPass(new PassLegacy("Grow Kelp In Abyss", (GenerationProgress progress, GameConfiguration configuration) =>
-        {
-            progress.Message = "Kelping";
-            VeilGen.GrowKelpInAbyss();
-        })); 
+
 
         passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
+        passWriter.NextPass(new PassLegacy("Water Wobble Cave", WorldGen_WaterWobbleCave));
         passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("World Gen Manor", WorldGenManor));
         passWriter.NextPass(new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
         passWriter.NextPass(new PassLegacy("World Gen Dock", WorldGenDock));
         //   passWriter.NextPass(new PassLegacy("World Gen Evil", WorldGenEvil));
         passWriter.NextPass(new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+
+        //Generate abyss late to avoid ores and whatnot
+        passWriter.NextPass(new PassLegacy("World Gen Abysm", WorldGenAbysm));
         passWriter.NextPass(new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+        passWriter.NextPass(new PassLegacy("Grow Kelp In Abyss", (GenerationProgress progress, GameConfiguration configuration) =>
+        {
+            progress.Message = "Kelping";
+            VeilGen.GrowKelpInAbyss();
+        }));
+
+
         passWriter.NextPass(new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
         passWriter.NextPass(new PassLegacy("World Gen Colosseum", WorldGenColosseum));
         passWriter.NextPass(new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
@@ -1826,12 +1832,12 @@ public partial class StellaWorld : ModSystem
             WallID.GraniteBlock,
             WallID.Granite
         };
-
+        int padding = 1800;
         DarkspaceStart = yMin;
         DarkspaceEnd = yMax;
         //Create a wavey blotch of granite
         //Instead of using GenActions or PlaceTile we can just set the tile directly, fastest way to do it.
-        for (int x = 0; x < Main.maxTilesX; x++)
+        for (int x = padding; x < Main.maxTilesX - padding; x++)
         {
             int dyMin = yMin + (int)MathF.Sin(x) * 8 + genRand.Next(-2, 2);
             int dyMax = yMax + (int)MathF.Sin(x * 0.05f) * 8 + genRand.Next(-2, 2);
@@ -1868,7 +1874,7 @@ public partial class StellaWorld : ModSystem
         int minCaveDistance = 35;
         int maxCaveDistance = 72;
         (int, int)[] heights = new (int, int)[Main.maxTilesX];
-        for (int x = 0; x < Main.maxTilesX; x++)
+        for (int x = padding; x < Main.maxTilesX - padding; x++)
         {
             float SampleNoise(int x, int y)
             {
@@ -1900,7 +1906,7 @@ public partial class StellaWorld : ModSystem
         }
 
         //Walker algorithm over the entire cave to place granite blotches and what not
-        for (int x = 0; x < heights.Length; x++)
+        for (int x = padding; x < heights.Length - padding; x++)
         {
             if (!genRand.NextBool(4))
                 continue;
@@ -1909,7 +1915,8 @@ public partial class StellaWorld : ModSystem
             VeilGen.Walker(x, yMid + heightToUse, genRand.Next(32, 128), TileID.Granite, 10);
         }
 
-        for (int x = 0; x < Main.maxTilesX; x++)
+
+        for (int x = padding; x < Main.maxTilesX - padding; x++)
         {
             if (!genRand.NextBool(4))
                 continue;
@@ -1920,7 +1927,7 @@ public partial class StellaWorld : ModSystem
         //Again, not going to use gen actions here
         //Just going to create squares of shimmer water since it gets settled in a later pass
         int shimmerBlotchCount = 0;
-        for (int x = 0; x < Main.maxTilesX; x++)
+        for (int x = padding; x < Main.maxTilesX - padding; x++)
         {
             //1 in X chance per tile to generate shimmer pool
             if (!genRand.NextBool(128))
@@ -1945,7 +1952,7 @@ public partial class StellaWorld : ModSystem
         progress.Set(0.66D);
 
         //Here we're placing walls and silk tiles, this is a bit slow, so maybe optimize it a bit later.
-        for (int x = 0; x < Main.maxTilesX; x++)
+        for (int x = padding; x < Main.maxTilesX - padding; x++)
         {
             for (int y = yMin - 100; y < yMax + 100; y++)
             {
@@ -2000,6 +2007,35 @@ public partial class StellaWorld : ModSystem
             }
         }
 
+        //Create curves at the edges of the darkspace so it smooths out 
+        int right = Main.maxTilesX - padding;
+        int left = padding;
+        int width = 64;
+        ushort graniteType = TileID.Granite;
+        for(int y = DarkspaceStart; y < DarkspaceEnd; y++)  
+        {
+            int localY = y - DarkspaceStart;
+            int steps = DarkspaceEnd - DarkspaceStart;
+            float ratio = (float)localY / (float)steps;
+            float xOffset = MathHelper.Lerp(0, 54, EasingFunction.QuadraticBump(ratio));
+  
+            for(int x = 0; x < width; x++)
+            {
+                Point darkspacePointRight = new Point(right + (int)xOffset + x - width , y);
+                Tile darkspaceTile = Main.tile[darkspacePointRight];
+                darkspaceTile.HasTile = true;
+                darkspaceTile.TileType = graniteType;
+                darkspaceTile.TileFrameX = -1;
+                darkspaceTile.TileFrameY = -1;
+
+                Point darkspacePointLeft = new Point(left + (int)-xOffset + x, y);
+                darkspaceTile = Main.tile[darkspacePointLeft];
+                darkspaceTile.HasTile = true;
+                darkspaceTile.TileType = graniteType;
+                darkspaceTile.TileFrameX = -1;
+                darkspaceTile.TileFrameY = -1;
+            }
+        }
         progress.Set(1D);
 
 
@@ -3431,7 +3467,7 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Stay Shimmering";
         Rectangle rec = new Rectangle(0, DarkspaceStart, Main.maxTilesX, DarkspaceEnd - DarkspaceStart);
-        for (int x = rec.Left; x < rec.Right; x++)
+        for (int x = rec.Left + 1800; x < rec.Right - 1800; x++)
         {
             for (int y = rec.Top; y < rec.Bottom; y++)
             {

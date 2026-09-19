@@ -66,7 +66,7 @@ namespace Stellamod.WorldG
 
             double worldSurface = 1569;
             double rockLayer = worldSurface + Main.maxTilesY * 0.13;
-            rockLayer *= GenBase._random.Next(90, 110) * 0.01;
+            rockLayer *= 100 * 0.01;
 
             double worldSurfaceLow = worldSurface;
             double worldSurfaceHigh = worldSurface;

@@ -44,6 +44,7 @@ public class AbyssalCoarseDirt : ModTile
         Main.tileMerge[TileID.SnowBlock][Type] = true;
         Main.tileMerge[ModContent.TileType<AbyssalIce>()][Type] = true;
         Main.tileBlendAll[Type] = true;
+        TileSets.BlockMineshafts[Type] = true;
         RegisterItemDrop(ModContent.ItemType<AbyssalCoarseDirtItem>());
         AddMapEntry(new Color(57, 55, 172));
     }
@@ -156,6 +157,7 @@ public class AbyssalDirt : ModTile
         Main.tileMerge[TileID.SnowBlock][Type] = true;
         Main.tileMerge[ModContent.TileType<AbyssalIce>()][Type] = true;
         Main.tileBlendAll[Type] = true;
+        TileSets.BlockMineshafts[Type] = true;
         RegisterItemDrop(ModContent.ItemType<AbyssalDirtItem>());
         AddMapEntry(new Color(57, 55, 172));
     }

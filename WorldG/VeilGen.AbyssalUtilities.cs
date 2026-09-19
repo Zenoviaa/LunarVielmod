@@ -551,6 +551,7 @@ public partial class VeilGen
             VeilGen.GrowKelpArea<AbyssalKelp>(kelpRect, minHeight: 20, maxHeight: 35, denom: 4);
         }
     }
+
     public static void PlaceAbysmTemple()
     {
         VeilGen.PlaceAbysmTemple(AbyssCenterTile + new Point(0, 256));
