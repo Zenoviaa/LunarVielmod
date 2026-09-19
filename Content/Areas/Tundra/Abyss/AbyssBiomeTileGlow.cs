@@ -16,11 +16,11 @@ public class AbyssBiomeTileGlow : GlobalTile
         Tile tile = Main.tile[i, j];
         bool isAbyssalDirt = tile.TileType == ModContent.TileType<AbyssalDirt>();
         bool isAbyssalCoarseDirt = tile.TileType == ModContent.TileType<AbyssalCoarseDirt>();
-        if (WorldGen.TileIsExposedToAir(i, j) && (isAbyssalDirt || isAbyssalCoarseDirt))
+        if (WorldGen.TileIsExposedToAir(i, j) && (isAbyssalDirt || isAbyssalCoarseDirt || tile.LiquidAmount > 0))
         {
-            r *= 0.5f;
-            g *= 0.51f;
-            b *= 0.8f;
+            r = 0.5f;
+            g = 0.51f;
+            b = 0.8f;
         }
     }
 }

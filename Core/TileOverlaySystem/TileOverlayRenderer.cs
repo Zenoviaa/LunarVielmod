@@ -272,6 +272,34 @@ public abstract class TileOverlayType : ModType
 }
 
 
+public class GrafittiSponge : ModItem
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Item.width = 62;
+        Item.height = 32;
+        Item.scale = 0.9f;
+        Item.rare = ItemRarityID.Expert;
+        Item.useTime = 2;
+        Item.useAnimation = 2;
+        Item.useStyle = ItemUseStyleID.Shoot;
+        Item.autoReuse = false;
+    }
+
+    public override bool? UseItem(Player player)
+    {
+        Point tilePoint = Main.MouseWorld.ToTileCoordinates();
+        TileOverlayUtility.KillTileOverlay(tilePoint.X, tilePoint.Y);
+        return true;
+    }
+}
+
 public class GrafittiCan : ModItem
 {
     public override void SetStaticDefaults()
@@ -345,19 +373,15 @@ public class TileOverlayGlobalTile : GlobalTile
     public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
     {
         base.DrawEffects(i, j, type, spriteBatch, ref drawData);
-        Tile tile = Main.tile[i, j];
-        ref TileOverlayData overlayData = ref tile.Get<TileOverlayData>();
-        if (overlayData.overlayType != 0)
-        {
 
-            TileOverlayRenderer.DrawData.Add(new TileOverlayDrawData(i, j, overlayData));
-        }
     }
+   
 }
 public class TileOverlayRenderer : ModSystem
 {
     //This should be ooptimized I think, I believe this sorts when it's enumerated on, not when the elements are added.
     //Profile different data structures later
+    public static readonly IComparer<TileOverlayDrawData> Comparer = new TileOverlayDataDataComparerByType();
     public static TileOverlayType[] TileOverlays;
     public static readonly Dictionary<string, byte> TileOverlayTypeLookup = new();
     public static readonly List<TileOverlayDrawData> DrawData = new();
@@ -393,14 +417,27 @@ public class TileOverlayRenderer : ModSystem
 
     private void ResetDustPoints(On_Main.orig_RenderTiles orig, Main self)
     {
-        if (!Main.drawToScreen)
-        {
-            DrawData.Clear();
-        }
+
         orig(self);
+        DrawData.Clear();
+        Rectangle drawArea = TileUtilities.GetScreenDrawArea();
+        for (int x = drawArea.Left; x < drawArea.Right; x++)
+        {
+            for (int y = drawArea.Top; y < drawArea.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                ref TileOverlayData overlayData = ref tile.Get<TileOverlayData>();
+                if (overlayData.overlayType != 0)
+                {
+                    TileOverlayRenderer.DrawData.Add(new TileOverlayDrawData(x, y, overlayData));
+                }
+            }
+        }
+        //  Main.NewText(drawArea);
+
         if (DrawData.Count > 0)
         {
-            DrawData.Sort(new TileOverlayDataDataComparerByType());
+            DrawData.Sort(Comparer);
         }
 
     }
@@ -465,7 +502,7 @@ public static class TileOverlayUtility
     public static void KillTileOverlay(int x, int y)
     {
         Tile tile = Main.tile[x, y];
-        TileOverlayData overlayData = tile.Get<TileOverlayData>();
+        ref TileOverlayData overlayData = ref tile.Get<TileOverlayData>();
         overlayData.overlayType = 0;
     }
 }

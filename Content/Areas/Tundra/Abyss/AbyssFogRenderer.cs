@@ -271,6 +271,11 @@ public class AbyssEffectsRenderer : ModSystem
         (Point ceil, int steps) = TileUtilities.FindCeiling(i, j, 64);
         if (steps == -1)
             return;
+        int range = 8;
+        Rectangle solidRect = new Rectangle(ceil.X - range/ 2, ceil.Y - range / 2, range, range);
+        float percent = VeilGen.CountSolidsPercent(solidRect);
+        if (percent < 0.5f)
+            return;
         if (steps > 30)
         {
             Point bottom = ceil + new Point(0, steps);

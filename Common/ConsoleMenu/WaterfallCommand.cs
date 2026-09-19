@@ -1,22 +1,23 @@
-﻿using Terraria;
-using Terraria.ModLoader;
+﻿using Stellamod.Content.Biomes;
+using Terraria;
 
 namespace Stellamod.Common.ConsoleMenu;
 
-public class CloudsCommand : ConsoleCommand
+public class WaterfallCommand : ConsoleCommand
 {
     public override string GetCommandName()
     {
-        return "clouds";
+        return "waterfalls";
     }
-
+    
     public override Arguments GetArguments()
     {
         return null;
     }
+
     public override bool Invoke(params string[] args)
     {
-        LunarDebugging.clouds = !LunarDebugging.clouds;
+        Main.LocalPlayer.GetModPlayer<BiomePlayer>().justEnteredAbyss = true;
         return true;
     }
 }

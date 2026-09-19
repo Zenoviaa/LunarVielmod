@@ -2,26 +2,19 @@
 using Stellamod.Assets;
 using Stellamod.Assets.ContentReader.Pal;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Rendering.RTs;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
+using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.GameContent.Liquid;
 using Terraria.Graphics.Effects;
-using Terraria.Graphics.Light;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Rendering;
@@ -399,7 +392,7 @@ public class MoonWaterSystem : ModSystem
         graphicsDevice.Clear(Color.Black);
 
         spriteBatch.Begin();
-        spriteBatch.Draw(Main.screenTarget, Vector2.Zero + new Vector2(Main.offScreenRange) / 2f, null, Color.White, 0, Vector2.Zero, 1f / (float)DownSamples, SpriteEffects.None, 0f);
+        spriteBatch.Draw(Main.screenTarget, Vector2.Zero + new Vector2(Main.offScreenRange) / 2f, null, Color.White, 0, Vector2.Zero, 1f / DownSamples, SpriteEffects.None, 0f);
         spriteBatch.End();
 
         //Draw the current render back so no data is loss
@@ -463,15 +456,15 @@ public class MoonWaterSystem : ModSystem
                 c.A = 0;
                 spriteBatch.Draw(Main.waterTarget, pos, c * waterAlpha);
                 spriteBatch.End();
-             
-                
-                
+
+
+
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
             else
             {
 
-                if(_pixelWater.Palette != null)
+                if (_pixelWater.Palette != null)
                 {
                     _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombinePaletteRTDrawing"];
                     _waterEffect.Parameters["ColorSpectrumTexture"].SetValue(_pixelWater.Palette.ColorAtlas);
@@ -486,7 +479,7 @@ public class MoonWaterSystem : ModSystem
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     _waterEffect, Main.Transform);
 
- 
+
                 spriteBatch.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
 
                 Color c = Color.White * 0.43f;
@@ -495,7 +488,7 @@ public class MoonWaterSystem : ModSystem
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
-        //   spriteBatch.Draw(_waterEdgeShadingRT, pos, Color.White);
+            //   spriteBatch.Draw(_waterEdgeShadingRT, pos, Color.White);
             //DrawWaterBaseToScreen();
         }
     }
@@ -549,7 +542,7 @@ public class MoonWaterSystem : ModSystem
         graphicsDevice.Clear(Color.Transparent);
 
 
-        if(Main.GameUpdateCount % 30 == 0)
+        if (Main.GameUpdateCount % 30 == 0)
         {
             CalculateEdgePoints();
         }
@@ -650,7 +643,7 @@ public class MoonWaterSystem : ModSystem
             return;
 
         //var sw = Stopwatch.StartNew();
-        if(Main.GameUpdateCount % 8 == 0)
+        if (Main.GameUpdateCount % 8 == 0)
             CalculateHeightsToDraw();
         RenderIntoHeightMapTarget();
         RenderIntoWaterTextureTarget();
@@ -679,8 +672,8 @@ public class MoonWaterSystem : ModSystem
         catch
         {
         }
-        Main.sceneWaterPos.X = Main.screenPosition.X - (float)Main.offScreenRange;
-        Main.sceneWaterPos.Y = Main.screenPosition.Y - (float)Main.offScreenRange;
+        Main.sceneWaterPos.X = Main.screenPosition.X - Main.offScreenRange;
+        Main.sceneWaterPos.Y = Main.screenPosition.Y - Main.offScreenRange;
 
         spriteBatch.End();
         graphicsDevice.SetRenderTarget(null);
@@ -739,7 +732,7 @@ public class MoonWaterSystem : ModSystem
                 RasterizerState.CullNone,
                 lavaShader.Effect);
 
-            Color drawColor = _pixelWater.BackgroundColor * 0.8f ;
+            Color drawColor = _pixelWater.BackgroundColor * 0.8f;
             if (!_pixelWater.ignoreSkyColor)
             {
                 drawColor = drawColor.MultiplyRGB(Main.ColorOfTheSkies);
@@ -775,10 +768,10 @@ public class MoonWaterSystem : ModSystem
 
         //Draw the base texture
         spriteBatch.Begin(SpriteSortMode.Deferred,
-            BlendState.AlphaBlend, 
+            BlendState.AlphaBlend,
             SamplerState.AnisotropicClamp,
-            DepthStencilState.None, 
-            RasterizerState.CullNone, 
+            DepthStencilState.None,
+            RasterizerState.CullNone,
             _waterEffect);
 
         Color baseColor = _pixelWater.BackgroundColor * 0.75f;
@@ -797,7 +790,7 @@ public class MoonWaterSystem : ModSystem
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         //Set gradient effect values
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["GradientDrawing"];
-    
+
         //  ApplyScreenOffset();
         //Draw gradient
         graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
@@ -878,7 +871,7 @@ public class MoonWaterSystem : ModSystem
 
         float mipBias = 1;
         float reflectionDistance = 128;
-        Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2((float)_reflectionRT.Width, (float)_reflectionRT.Height);
+        Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2(_reflectionRT.Width, _reflectionRT.Height);
 
 
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["ReflectionDrawing"];
@@ -902,7 +895,7 @@ public class MoonWaterSystem : ModSystem
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["PosterizeDrawing"];
         _waterEffect.Parameters["levels"].SetValue(10);
 
-   
+
 
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_waterTextureRTOutput);
@@ -932,7 +925,7 @@ public class MoonWaterSystem : ModSystem
         _activePixelWaterStyle.ModifyPixelWater(ref _pixelWater);
 
 
-        
+
     }
 
     private void RenderIntoWaterTextureTarget()
@@ -940,10 +933,10 @@ public class MoonWaterSystem : ModSystem
         LoadAssets();
         _drawLocation = new Rectangle(0, 0, _waterTextureRTSwap.Width, _waterTextureRTSwap.Height);
         SpriteBatch spriteBatch = Main.spriteBatch;
-        
+
         UpdatePixelWater();
         DrawWaterBase(spriteBatch);
-        if(!_pixelWater.noReflection)
+        if (!_pixelWater.noReflection)
             DrawReflection(spriteBatch);
         // 
         DrawPosterization(spriteBatch);
@@ -953,7 +946,7 @@ public class MoonWaterSystem : ModSystem
     {
         TileDrawing tilesRenderer = Main.instance.TilesRenderer;
         Vector2 unscaledPosition = Main.Camera.UnscaledPosition;
-        Vector2 vector = new Vector2((float)Main.offScreenRange, (float)Main.offScreenRange);
+        Vector2 vector = new Vector2(Main.offScreenRange, Main.offScreenRange);
         WaterHelpers.GetScreenDrawArea(tilesRenderer, unscaledPosition, vector, out int firstTileX, out int lastTileX, out int firstTileY, out int lastTileY);
         int maxGradientHeight = _pixelWater.maxHeight;
         _heightsToDraw.Clear();
@@ -971,13 +964,15 @@ public class MoonWaterSystem : ModSystem
                 {
                     height++;
                 }
+       
                 if (tile.LiquidAmount > 0 || firstAboveTile.LiquidAmount > 0)
                 {
+
                     //Move upward until we hit an air tile, so we know how deep this water tile is
                     while (height < maxGradientHeight)
                     {
                         Tile aboveTile = Main.tile[j, i - height];
-                        if (aboveTile.LiquidAmount == 0 && !WorldGen.SolidTile(j, i  - height))
+                        if (aboveTile.LiquidAmount == 0 && !WorldGen.SolidTile(j, i - height) && !aboveTile.IsHalfBlock)
                         {
                             break;
                         }
@@ -988,7 +983,7 @@ public class MoonWaterSystem : ModSystem
                     heightDraw.tilePoint = new Vector2(j, i).ToWorldCoordinates(0, 0);
 
                     //Calculate the height value between 0-1
-                    float heightSmoothing = (float)height / (float)maxGradientHeight;
+                    float heightSmoothing = height / (float)maxGradientHeight;
                     heightDraw.height = 1f - heightSmoothing;
                     _heightsToDraw.Add(heightDraw);
                 }
@@ -999,7 +994,7 @@ public class MoonWaterSystem : ModSystem
     {
         TileDrawing tilesRenderer = Main.instance.TilesRenderer;
         Vector2 unscaledPosition = Main.Camera.UnscaledPosition;
-        Vector2 vector = new Vector2((float)Main.offScreenRange, (float)Main.offScreenRange);
+        Vector2 vector = new Vector2(Main.offScreenRange, Main.offScreenRange);
         WaterHelpers.GetScreenDrawArea(tilesRenderer, unscaledPosition, vector, out int firstTileX, out int lastTileX, out int firstTileY, out int lastTileY);
         int maxGradientHeight = _pixelWater.maxHeight;
         _gradientRects.Clear();
@@ -1051,8 +1046,8 @@ public class MoonWaterSystem : ModSystem
 
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["HeightDrawing"];
         _waterEffect.Parameters["maxDepth"].SetValue(_pixelWater.maxHeight);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, 
-            SamplerState.AnisotropicClamp, DepthStencilState.None,RasterizerState.CullNone, _waterEffect);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+            SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
         foreach (HeightDraw heightDraw in _heightsToDraw)
         {
             Point lightTilePoint = heightDraw.tilePoint.ToTileCoordinates();
@@ -1060,7 +1055,7 @@ public class MoonWaterSystem : ModSystem
 
 
             Vector3 lightColor = Lighting.GetColor(lightTilePoint).ToVector3();
-            if(_pixelWater.noLighting)
+            if (_pixelWater.noLighting)
                 lightColor = Vector3.One;
             Color drawColor = new Color(lightColor.X, lightColor.Y, lightColor.Z, heightDraw.height);
 

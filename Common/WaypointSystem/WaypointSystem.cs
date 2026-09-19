@@ -679,10 +679,6 @@ public class OrganWaypointTracker : ModSystem
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
-        if (Keyboard.GetState().IsKeyDown(Keys.O))
-        {
-            ResetWaypoints();
-        }
         if (darknessAnimation > 0)
             darknessAnimation--;
     }

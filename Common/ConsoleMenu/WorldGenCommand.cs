@@ -1,4 +1,6 @@
-﻿using Stellamod.WorldG;
+﻿using Stellamod.Content.Biomes;
+using Stellamod.WorldG;
+using Terraria;
 
 namespace Stellamod.Common.ConsoleMenu;
 
@@ -28,6 +30,7 @@ public class WorldGenCommand : ConsoleCommand
         {
             case "abyss":
                 VeilGen.GenerateAbyss();
+                Main.LocalPlayer.GetModPlayer<BiomePlayer>().justEnteredAbyss = true;
                 return true;
         }
 

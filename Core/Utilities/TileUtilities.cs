@@ -7,6 +7,31 @@ namespace Stellamod.Core.Utilities;
 public static class TileUtilities
 {
     /// <summary>
+    /// Returns the area that tiles are drawing in
+    /// </summary>
+    /// <returns></returns>
+    public static Rectangle GetScreenDrawArea()
+    {
+        //This is copied directly from vanilla's code
+        //Just edited to return a rectangle so it's easier to work with
+        Vector2 unscaledPosition = Main.Camera.UnscaledPosition;
+        Vector2 vector = new Vector2(Main.offScreenRange, Main.offScreenRange);
+        if (Main.drawToScreen)
+        {
+            vector = Vector2.Zero;
+        }
+
+        Main.instance.TilesRenderer.GetScreenDrawArea(
+            unscaledPosition,
+            vector + (Main.Camera.UnscaledPosition - Main.Camera.ScaledPosition),
+            out var firstTileX,
+            out var lastTileX,
+            out var firstTileY, 
+            out var lastTileY);
+        return new Rectangle(firstTileX, firstTileY, lastTileX - firstTileX, lastTileY - firstTileY);
+    }
+
+    /// <summary>
     /// Returns the corrected world coordinates for a sprite being rendered during the tile rendering loop (they have a weird offset)
     /// </summary>
     /// <param name="i"></param>

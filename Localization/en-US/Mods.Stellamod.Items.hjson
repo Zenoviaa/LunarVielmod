@@ -12191,3 +12191,8 @@ GrafittiCan: {
 	DisplayName: Grafitti Can
 	Tooltip: ""
 }
+
+GrafittiSponge: {
+	DisplayName: Grafitti Sponge
+	Tooltip: ""
+}

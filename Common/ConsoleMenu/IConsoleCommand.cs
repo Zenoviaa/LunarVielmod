@@ -17,6 +17,8 @@ namespace Stellamod.Common.ConsoleMenu;
 public static class LunarDebugging
 {
     public static bool clouds;
+    public static bool lockCamera;
+    public static Vector2 lockCameraPosition;
 }
 
 

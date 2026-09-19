@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.ArmorShop;
 using Stellamod.Common.QuestSystem;
+using Stellamod.Common.WaypointSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.PlayerLevelingSystem;
 using Stellamod.Items;
@@ -24,7 +25,8 @@ public class ResetCommand : ConsoleCommand
             "gintze",
             "quests",
             "cauldron",
-            "armor"
+            "armor",
+            "waypoints"
         };
 
         return arguments0;
@@ -76,6 +78,12 @@ public class ResetCommand : ConsoleCommand
             case "armor":
                 {
                     player.GetModPlayer<ArmorShopPlayer>().PurchasedArmors.Clear();
+                }
+                return true;
+            case "waypoints":
+                {
+                    OrganWaypointTracker tracker = ModContent.GetInstance<OrganWaypointTracker>();
+                    tracker.ResetWaypoints();
                 }
                 return true;
         }

@@ -1,22 +1,18 @@
-﻿using Terraria;
-using Terraria.ModLoader;
+﻿namespace Stellamod.Common.ConsoleMenu;
 
-namespace Stellamod.Common.ConsoleMenu;
-
-public class CloudsCommand : ConsoleCommand
+public class AllBossesCommand : ConsoleCommand
 {
     public override string GetCommandName()
     {
-        return "clouds";
+        return "allbosses";
     }
-
     public override Arguments GetArguments()
     {
         return null;
     }
     public override bool Invoke(params string[] args)
     {
-        LunarDebugging.clouds = !LunarDebugging.clouds;
+        DownedBossTracker.AllBosses();
         return true;
     }
 }

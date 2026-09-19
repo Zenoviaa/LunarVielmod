@@ -618,12 +618,6 @@ public class LevelingTabLeftPanel : UIPanel
         base.DrawSelf(spriteBatch);
         this.QuickMouseInteraction();
 
-        if (Keyboard.GetState().IsKeyDown(Keys.G))
-        {
-            //Main.NewText("g");
-            DownedBossTracker.AllBosses();
-        
-        }
 
         for(int i = 0; i < _scales.Length; i++)
         {
