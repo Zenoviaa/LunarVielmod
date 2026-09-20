@@ -687,9 +687,7 @@ public class ZTileMap : ModSystem
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
         RenderLayer(spriteBatch, data);
-        //renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
-        if (IsHoldingDecorationBuilder)
-            RenderRedBoxesLayer(spriteBatch, data);
+
     }
 
     private void DrawInFrontOfWalls()
@@ -702,15 +700,13 @@ public class ZTileMap : ModSystem
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
         RenderLayer(spriteBatch, data);
-        //renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
-        if (IsHoldingDecorationBuilder)
-            RenderRedBoxesLayer(spriteBatch, data);
+        
     }
 
     private void DrawInFrontOfPlayer()
     {
         var data = GetZTileDatas(ZRenderLayer.Midground);
-        if (data.Count <= 0)
+        if (data.Count <= 0 && !IsHoldingDecorationBuilder)
             return;
 
         SpriteBatch spriteBatch = Main.spriteBatch;
@@ -718,7 +714,13 @@ public class ZTileMap : ModSystem
         RenderLayer(spriteBatch, data);
         //renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
         if (IsHoldingDecorationBuilder)
+        {
+            RenderRedBoxesLayer(spriteBatch, GetZTileDatas(ZRenderLayer.Foreground));
+            RenderRedBoxesLayer(spriteBatch, GetZTileDatas(ZRenderLayer.BehindWalls));
+            RenderRedBoxesLayer(spriteBatch, GetZTileDatas(ZRenderLayer.InFrontOfWalls));
             RenderRedBoxesLayer(spriteBatch, data);
+        }
+    
         spriteBatch.End();
     }
     private void DrawForeground()
@@ -730,9 +732,7 @@ public class ZTileMap : ModSystem
 
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
         RenderLayer(spriteBatch, data);
-        //renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
-        if (IsHoldingDecorationBuilder)
-            RenderRedBoxesLayer(spriteBatch, data);
+
         spriteBatch.End();
     }
 

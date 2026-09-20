@@ -22,6 +22,7 @@ public class RoyalTile : ModTile
         Main.tileBlockLight[Type] = true;
         Main.tileLargeFrames[Type] = 2;
         TileID.Sets.ChecksForMerge[Type] = true;
+        TileID.Sets.CantSpawnEnemies[Type] = true;
 
         MineResist = 2f;
         MinPick = 225;

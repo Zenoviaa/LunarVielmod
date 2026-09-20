@@ -34,7 +34,7 @@ public struct ZTileDrawData
 /// </summary>
 public abstract class ZTile : ModTexturedType, ILocalizedModType
 {
-    private Asset<Texture2D> _tileTextureAsset;
+    protected Asset<Texture2D> _tileTextureAsset;
     private Asset<Texture2D> _outlineTextureAsset;
     public ushort type;
     public TilePlacementRules placementRules;

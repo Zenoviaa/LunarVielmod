@@ -3,6 +3,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using System;
 using Terraria;
+using Terraria.ID;
 
 namespace Stellamod.Common.Particles;
 
@@ -30,7 +31,7 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
 
     public ref BitDustParticleData Spawn(in BitDustFactory factory)
     {
-        if (_length >= _particles.Length)
+        if (_length >= _particles.Length || Main.netMode == NetmodeID.Server)
             return ref _dummyParticle;
 
         int index = _length;

@@ -43,6 +43,7 @@ public class AbyssBiome : BaseUrdveilBiome,
     public override bool IsBiomeActive(Player player)
     {
         Rectangle abyssRectangle = VeilGen.AbyssRectangle;
+        abyssRectangle.Height += 150;
         Point tilePoint = player.position.ToTileCoordinates();
         return abyssRectangle.Contains(tilePoint) && !player.InModBiome<AurelusBiome>();
     }

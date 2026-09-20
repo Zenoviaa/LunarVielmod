@@ -12195,3 +12195,17 @@ GrafittiSponge: {
 	DisplayName: Grafitti Sponge
 	Tooltip: ""
 }
+
+SwirlyWoodWallItem: {
+	DisplayName: Swirly Wood Wall
+	Tooltip: ""
+}
+
+AutoHammer: {
+	DisplayName: Auto Hammer
+	Tooltip:
+		'''
+		Sets a tile to a specific slope type or a half block
+		Right click to cycle tile types
+		'''
+}

@@ -257,7 +257,9 @@ public class NPCSpawnHelper : GlobalNPC
         {
 
         }
-        Main.tileDungeon[ModContent.TileType<MothlightBrick>()] = true;
-        TileID.Sets.DungeonBiome[ModContent.TileType<MothlightBrick>()] = 1;
+
+        //No enemies can spawn on this tile
+        if (TileID.Sets.CantSpawnEnemies[spawnInfo.SpawnTileType])
+            pool.Clear();
     }
 }

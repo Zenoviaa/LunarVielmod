@@ -17,6 +17,7 @@ public class TileSets : ModSystem
     }
     public static bool[] ThickSnow;
     public static bool[] AegisMisty;
+    public static bool[] CantSpawnEnemies;
 
     /// <summary>
     /// When set to 0, does nothing
@@ -30,6 +31,7 @@ public class TileSets : ModSystem
         AegisMisty = TileID.Sets.Factory.CreateBoolSet();
         ThickSnow = TileID.Sets.Factory.CreateBoolSet();
         BarrierFog = TileID.Sets.Factory.CreateIntSet();
+        CantSpawnEnemies = TileID.Sets.Factory.CreateBoolSet();
     }
 }
 
@@ -38,5 +40,6 @@ public static class TileSetsExtensions
     extension(TileID.Sets)
     {
         public static int[] BarrierFog => TileSets.BarrierFog;
+        public static bool[] CantSpawnEnemies => TileSets.CantSpawnEnemies;
     }
 }
