@@ -41,6 +41,31 @@ namespace Stellamod.Helpers
 
         }
 
+        /// <summary>
+        /// Returns the rectangle for the given structure if it were to be placed at this location.
+        /// </summary>
+        /// <param name="location">The location at which the structure will be placed</param>
+        /// <param name="Path">The structure file</param>
+        /// <returns></returns>
+        public static Rectangle StructureRectangleAtPoint(in Point location, string Path)
+        {
+            try
+            {
+                string path = Path;
+                if (!path.Contains(".str"))
+                    path += ".str";
+                using var stream = Mod.GetFileStream(path);
+                Rectangle structureRect = ReadRectangle(stream);
+                structureRect.Location = location;
+                structureRect.Location += new Point(0, -structureRect.Height);
+                return structureRect;
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Rectangle.Empty;
+            }
+        }
+
         public static int[] DefaultTileBlend = new int[] { TileID.RubyGemspark };
         public static int[] PlaceAndProtect(StructurePlacementParams @params)
         {
@@ -74,6 +99,14 @@ namespace Stellamod.Helpers
             rectangle.Location = location;
             structures.AddProtectedStructure(rectangle);
         }
+
+        public static void ProtectArea(Rectangle structureRectangle, StructureMap structures = null)
+        {
+            structures ??= GenVars.structures;
+            structures ??= new StructureMap();
+            structures.AddProtectedStructure(structureRectangle);
+        }
+
 
         public static bool SafePlaceAndProtectStructure(Point tilePoint, string structureFile, StructureMap structures, int[] tileBlend, out int[] chestIndices)
         {

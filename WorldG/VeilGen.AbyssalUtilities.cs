@@ -159,7 +159,7 @@ public partial class VeilGen
         int innerLeft = left + xPadding;
         int innerRight = right - xPadding;
         int innerHigh = abyssHigh + 125;
-        int innerLow = abyssLow - 170;
+        int innerLow = abyssLow - 450;
         for (int x = innerLeft; x < innerRight; x += skip)
         {
             for (int y = innerHigh; y < innerLow; y += skip)
@@ -182,13 +182,11 @@ public partial class VeilGen
         BellFlowerSystem.ClearBellFlowers();
         bool IsCloseToAFlower(Point p, int distance)
         {
-            int checkDistanceSquared = distance * distance;
+            int dq = distance * distance;
             foreach(Point placed in _placedAbyssFlowers)
             {
-                int dx = Math.Abs(placed.X - p.X);
-                int dy = Math.Abs(placed.Y - p.Y);
-                int distSquared = dx * dx + dy * dy;
-                if (distSquared <= checkDistanceSquared)
+                float dist = Vector2.DistanceSquared(p.ToVector2(), placed.ToVector2());
+                if (dist <= dq)
                     return true;
             }
             return false;
@@ -270,7 +268,7 @@ public partial class VeilGen
                 }
             }
         }
-
+        Main.NewText(_placedAbyssFlowers.Count);
         Dictionary<int, List<Vector2>> caveConnectPoints = new Dictionary<int, List<Vector2>>();
         bool CreateAbyssCavernCave(int index, Vector2 originPoint, Vector2 velocity, Rectangle scanArea)
         {
@@ -288,13 +286,18 @@ public partial class VeilGen
                 connectPointCounter--;
                 if (cavingSteps > 0)
                 {
-                    if (connectPointCounter <= 0)
+               
+                    if(!IsCloseToAFlower(new Point((int)cavernPoint.X, (int)cavernPoint.Y), 100))
                     {
-                        caveConnectPoints[index].Add(cavernPoint);
+                        if (connectPointCounter <= 0)
+                        {
+                            caveConnectPoints[index].Add(cavernPoint);
+                        }
+                        WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
+                            strength: strength,
+                            fastRandom.Next(7, 27), -1);
                     }
-                    WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
-                          strength: strength,
-                          fastRandom.Next(7, 27), -1);
+            
                     success = true;
                 }
                 cavingSteps--;
@@ -324,13 +327,17 @@ public partial class VeilGen
                 connectPointCounter--;
                 if (cavingSteps > 0)
                 {
-                    if (connectPointCounter <= 0)
+                  
+                    if (!IsCloseToAFlower(new Point((int)cavernPoint.X, (int)cavernPoint.Y), 100))
                     {
-                        caveConnectPoints[index].Add(cavernPoint);
-                    }
-                    WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
+                        if (connectPointCounter <= 0)
+                        {
+                            caveConnectPoints[index].Add(cavernPoint);
+                        }
+                        WorldGen.TileRunner((int)cavernPoint.X, (int)cavernPoint.Y,
                           strength: strength,
                           fastRandom.Next(27, 32), -1);
+                    }
                     success = true;
                 }
                 cavingSteps--;
@@ -366,7 +373,7 @@ public partial class VeilGen
             }
             return otherPoints;
         }
-
+        GenerateBellFlowers();
         //Sprinkle several long caves throughout the biome
         int numCaves = 18;
         Rectangle operationRectangle = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
@@ -440,15 +447,38 @@ public partial class VeilGen
                 VeilGen.CreateAbyssConnectionCave(referencePoint, pointsICanConnectTo[fastRandom.Next(0, min)]);
             }
         }
+           List<Vector2> FindAnyPointsICanConnectTo(Vector2 referencePoint, float connectRadius = 150)
+        {
+            float maxConnectionRadiusSquared = connectRadius * connectRadius;
+            List<Vector2> otherPoints = new List<Vector2>(16);
+            foreach (var kvp in caveConnectPoints)
+            {
+                foreach (Vector2 cavePoint in kvp.Value)
+                {
+                    float distanceSquared = Vector2.DistanceSquared(referencePoint, cavePoint);
+                    if (distanceSquared <= maxConnectionRadiusSquared)
+                    {
+                        otherPoints.Add(cavePoint);
+                    }
+                }
+            }
+            return otherPoints;
+        }
 
+        foreach(Point bellFlower in _placedAbyssFlowers)
+        {
+            List<Vector2> connectionPoints = FindAnyPointsICanConnectTo(bellFlower.ToVector2(), 250);
+            connectionPoints.RemoveAll(x => x.Y > bellFlower.Y);
+            Vector2 rand = connectionPoints[fastRandom.Next(0, connectionPoints.Count)];
+            VeilGen.CreateAbyssConnectionCaveMini( rand, bellFlower.ToVector2());
+        }
 
 
         for(int i = 0; i < 3; i++)
             VeilGen.PruneLonelyTiles(rect);
         VeilGen.GenerateWaterBowls(rect, 512, new Point(5, 12), new Point(5, 12));
         VeilGen.GenerateWaterBlobs(rect, 4, new Point(64, 100));
-        GenerateBellFlowers();
-
+   
         var types = new ushort[]
         {
             ModContent.ZTileType<AbyssalFlower>(),
@@ -981,9 +1011,14 @@ public partial class VeilGen
         {
             float lerp = f / steps;
             Vector2 pos = Vector2.Lerp(start, end, lerp);
-            WorldGen.TileRunner((int)pos.X, (int)pos.Y,
-                 strength: strength,
-                 genRand.Next(5, 12), -1);
+            float d = Vector2.DistanceSquared(pos, end);
+            if(d > 30 * 30)
+            {
+                WorldGen.TileRunner((int)pos.X, (int)pos.Y,
+                     strength: strength,
+                     genRand.Next(5, 12), -1);
+            }
+
         }
     }
     public static void DecorateSurfaceEdgesWithZTile(in EdgeDecorationParameters parameters)

@@ -4628,15 +4628,26 @@ public partial class StellaWorld : ModSystem
             {
                 smy++;
             }
+
             smy += 45;
             Point Loc = new Point(smx, smy + 15);
             Point Loc22 = new Point(smx, smy + 58);
             string path = "Structures/Overworld/StoneGolemCave";
-
-
-            var stoneGolemCaveRectangle = Structurizer.ReadRectangle(path);
+            Rectangle stoneGolemCaveRectangle = Structurizer.StructureRectangleAtPoint(Loc, path);
             int[] ChestIndexs = Structurizer.ReadStruct(Loc, path, null);
-            Structurizer.ProtectStructure(Loc, path);
+            Structurizer.ProtectArea(stoneGolemCaveRectangle);
+            foreach (Point point in stoneGolemCaveRectangle.Points)
+            {
+                Tile tile = Main.tile[point];
+                if (tile.WallType == WallID.EchoWall)
+                    tile.WallType = WallID.None;
+            }
+
+            foreach(Point tilePoint in stoneGolemCaveRectangle.Points)
+            {
+                WorldGen.SquareWallFrame(tilePoint.X, tilePoint.Y);
+            }
+
             placed = true;
 
 
