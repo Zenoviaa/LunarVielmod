@@ -12201,6 +12201,11 @@ SwirlyWoodWallItem: {
 	Tooltip: ""
 }
 
+SwirlyWood: {
+	DisplayName: Swirly Wood
+	Tooltip: ""
+}
+
 AutoHammer: {
 	DisplayName: Auto Hammer
 	Tooltip:
@@ -12208,4 +12213,9 @@ AutoHammer: {
 		Sets a tile to a specific slope type or a half block
 		Right click to cycle tile types
 		'''
+}
+
+RoyalSwirlyWallItem: {
+	DisplayName: Royal Swirly Wall
+	Tooltip: ""
 }

@@ -4,16 +4,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 
-public class RoyalTileBlock : ModItem
+public class SwirlyWood : ModItem
 {
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.DefaultToPlaceableTile(ModContent.TileType<RoyalTile>());
+        Item.DefaultToPlaceableTile(ModContent.TileType<SwirlyWoodTile>());
     }
 }
-
-public class RoyalTile : ModTile
+public class SwirlyWoodTile : ModTile
 {
     public override void SetStaticDefaults()
     {
@@ -26,8 +25,7 @@ public class RoyalTile : ModTile
 
         MineResist = 2f;
         MinPick = 225;
-        RegisterItemDrop(ModContent.ItemType<RoyalTileBlock>());
-        AddMapEntry(new Color(175, 175, 40));
+        RegisterItemDrop(ModContent.ItemType<SwirlyWood>());
+        AddMapEntry(Color.RosyBrown);
     }
 }
-
