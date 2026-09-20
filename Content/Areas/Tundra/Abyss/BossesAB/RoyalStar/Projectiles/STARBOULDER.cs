@@ -78,6 +78,8 @@ public class STARBOULDER : ModProjectile, IDrawToRenderTarget
     public override void AI()
     {
         base.AI();
+        if (!NPC.AnyNPCs(ModContent.NPCType<WarriorSTARR>()))
+            Projectile.Kill();
         _spawnTimer++;
         Projectile.frame = Style;
         Projectile.hostile = _isFlying;

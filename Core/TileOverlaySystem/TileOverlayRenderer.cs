@@ -1,13 +1,16 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Stellamod.Common.ConsoleMenu;
+using Stellamod.Core.ZTileSystem;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
@@ -87,8 +90,8 @@ public class TileOverlayUIPanel : UIPanel
         base.OnInitialize();
         Width.Pixels = Height.Pixels = 252;
         Append(_dropdownBtn);
-        
-        for(int i = 0; i < TileOverlayRenderer.TileOverlays.Length; i++)
+
+        for (int i = 0; i < TileOverlayRenderer.TileOverlays.Length; i++)
         {
             var tileOverlay = TileOverlayRenderer.TileOverlays[i];
             TileOverlayDropdownButton btn = new(tileOverlay.Type);
@@ -96,7 +99,7 @@ public class TileOverlayUIPanel : UIPanel
         }
 
         float index = 0;
-        foreach(var btn in _btns)
+        foreach (var btn in _btns)
         {
             btn.Top.Pixels = index * 24;
             Append(btn);
@@ -206,7 +209,38 @@ public class TileOverlaySelector : ModSystem
         }
     }
 }
-public struct TileOverlayData : ITileData
+public class TileOverlaySerializer : TagSerializer<TileOverlaySaveData, TagCompound>
+{
+    public override TileOverlaySaveData Deserialize(TagCompound tag)
+    {
+        TileOverlaySaveData deserializedData = new TileOverlaySaveData();
+        deserializedData.x = tag.Get<ushort>("x");
+        deserializedData.y = tag.Get<ushort>("y");
+        deserializedData.overlayType = TileOverlayUtility.NameToType(tag.Get<string>("overlayType"));
+        deserializedData.overlayFrame = tag.Get<byte>("overlayFrame");
+        return deserializedData;
+    }
+
+    public override TagCompound Serialize(TileOverlaySaveData value)
+    {
+        return new TagCompound
+        {
+            ["x"] = value.x,
+            ["y"] = value.y,
+            ["overlayType"] = TileOverlayUtility.TypeToName(value.overlayType),
+            ["overlayFrame"] = value.overlayFrame,
+        };
+    }
+}
+public struct TileOverlaySaveData
+{
+    public ushort x;
+    public ushort y;
+    public byte overlayType;
+    public byte overlayFrame;
+}
+
+public struct TileOverlayData
 {
     public byte overlayType;
     public byte overlayFrame;
@@ -229,7 +263,7 @@ public class TileOverlayDataDataComparerByType : IComparer<TileOverlayDrawData>
     public int Compare(TileOverlayDrawData x, TileOverlayDrawData y)
     {
         int compareType = x.Data.overlayType.CompareTo(y.Data.overlayType);
-        if(compareType == 0)
+        if (compareType == 0)
         {
             return y.Y.CompareTo(x.Y);
         }
@@ -258,16 +292,18 @@ public abstract class TileOverlayType : ModType
 
     public virtual void PlaceTile(in int x, in int y, in TileOverlayPlacer placer)
     {
-        ref TileOverlayData overlayData = ref Framing.GetTileSafely(x, y).Get<TileOverlayData>();
+        Point point = new Point(x, y);
+        TileOverlayData overlayData = new();
         overlayData.overlayType = (byte)Type;
         overlayData.overlayFrame = placer.frame;
+        TileOverlayUtility.PlacedTileOverlays[point] = overlayData;
     }
 
     public void PlaceStyleBlock2x2(in int x, in int y, in TileOverlayPlacer placer)
     {
 
     }
-    
+
     public abstract void BeginSpritebatch(SpriteBatch spriteBatch);
     public abstract void DrawTileOverlay(in TileOverlayDrawData drawData, SpriteBatch spriteBatch);
 }
@@ -283,9 +319,6 @@ public class GrafittiSponge : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.width = 62;
-        Item.height = 32;
-        Item.scale = 0.9f;
         Item.rare = ItemRarityID.Expert;
         Item.useTime = 2;
         Item.useAnimation = 2;
@@ -295,8 +328,14 @@ public class GrafittiSponge : ModItem
 
     public override bool? UseItem(Player player)
     {
-        Point tilePoint = Main.MouseWorld.ToTileCoordinates();
-        TileOverlayUtility.KillTileOverlay(tilePoint.X, tilePoint.Y);
+        if (Main.myPlayer == player.whoAmI)
+        {
+            Point tilePoint = Main.MouseWorld.ToTileCoordinates();
+            TileOverlayUtility.KillTileOverlay(tilePoint.X, tilePoint.Y);
+            if(Main.netMode != NetmodeID.SinglePlayer)
+                TileOverlayUtility.SendTileOverlayData(-1, -1, tilePoint.X, tilePoint.Y, 1, 1);
+        }
+
         return true;
     }
 }
@@ -311,9 +350,6 @@ public class GrafittiCan : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.width = 62;
-        Item.height = 32;
-        Item.scale = 0.9f;
         Item.rare = ItemRarityID.Expert;
         Item.useTime = 2;
         Item.useAnimation = 2;
@@ -327,16 +363,22 @@ public class GrafittiCan : ModItem
     }
     public override bool? UseItem(Player player)
     {
-        if(Main.myPlayer == player.whoAmI && player.altFunctionUse == 2)
+        if (Main.myPlayer == player.whoAmI)
         {
-            TileOverlaySelector.OverlayCenter = Main.MouseScreen;
-            TileOverlaySelector selector = ModContent.GetInstance<TileOverlaySelector>();
-            selector.ToggleUI();
+            if (player.altFunctionUse == 2)
+            {
+                TileOverlaySelector.OverlayCenter = Main.MouseScreen;
+                TileOverlaySelector selector = ModContent.GetInstance<TileOverlaySelector>();
+                selector.ToggleUI();
+            }
+
+            Point tilePoint = Main.MouseWorld.ToTileCoordinates();
+            byte type = TileOverlayUtility.TileOverlayType<GoldenLeafTileOverlayData>();
+            TileOverlayUtility.PlaceTileOverlay(tilePoint.X, tilePoint.Y, type, new TileOverlayPlacer { frame = (byte)Main.rand.Next(20) });
+            if (Main.netMode != NetmodeID.SinglePlayer)
+                TileOverlayUtility.SendTileOverlayData(-1, -1, tilePoint.X, tilePoint.Y, 1, 1);
         }
 
-        Point tilePoint = Main.MouseWorld.ToTileCoordinates();
-        byte type = TileOverlayUtility.TileOverlayType<GoldenLeafTileOverlayData>();
-        TileOverlayUtility.PlaceTileOverlay(tilePoint.X, tilePoint.Y, type, new TileOverlayPlacer { frame = (byte)Main.rand.Next(20) });
         return true;
     }
 }
@@ -376,7 +418,7 @@ public class TileOverlayGlobalTile : GlobalTile
         base.DrawEffects(i, j, type, spriteBatch, ref drawData);
 
     }
-   
+
 }
 public class TileOverlayRenderer : ModSystem
 {
@@ -392,6 +434,7 @@ public class TileOverlayRenderer : ModSystem
         On_Main.RenderTiles += ResetDustPoints;
         On_Main.DrawDust += DrawTileOverlays;
     }
+
     public override void PostSetupContent()
     {
         base.PostSetupContent();
@@ -416,40 +459,38 @@ public class TileOverlayRenderer : ModSystem
         }
     }
 
+    public override void ClearWorld()
+    {
+        base.ClearWorld();
+        TileOverlayUtility.PlacedTileOverlays.Clear();
+    }
+
     //Referenced from SLR's system
-    public override unsafe void SaveWorldData(TagCompound tag)
+    public override void SaveWorldData(TagCompound tag)
     {
         base.SaveWorldData(tag);
-        TileOverlayData[] myData = Main.tile.GetData<TileOverlayData>();
-        byte[] data = new byte[myData.Length];
-
-        fixed (TileOverlayData* ptr = myData)
+        int i = 0;
+        List<TileOverlaySaveData> overlays = new();
+        foreach (var kvp in TileOverlayUtility.PlacedTileOverlays)
         {
-            byte* bytePtr = (byte*)ptr;
-            var span = new Span<byte>(bytePtr, myData.Length);
-            var target = new Span<byte>(data);
-            span.CopyTo(target);
+            overlays.Add(new TileOverlaySaveData {
+                x = (ushort)kvp.Key.X, 
+                y = (ushort)kvp.Key.Y, 
+                overlayType = kvp.Value.overlayType, 
+                overlayFrame = kvp.Value.overlayFrame });
         }
 
-        tag["tileOverlayData"] = data;
+        tag["tData"] = overlays;
     }
-    
-    public override unsafe void LoadWorldData(TagCompound tag)
+
+    public override void LoadWorldData(TagCompound tag)
     {
         base.LoadWorldData(tag);
-        TileOverlayData[] targetData = Main.tile.GetData<TileOverlayData>();
-        byte[] data = tag.GetByteArray("tileOverlayData");
-        if (targetData.Length != data.Length)
+        TileOverlayUtility.PlacedTileOverlays.Clear();
+        List<TileOverlaySaveData> overlaySaveData = tag.Get<List<TileOverlaySaveData>>("tData");
+        foreach (var data in overlaySaveData)
         {
-            return;
-        }
-
-        fixed (TileOverlayData* ptr = targetData)
-        {
-            byte* bytePtr = (byte*)ptr;
-            var span = new Span<byte>(bytePtr, targetData.Length);
-            var target = new Span<byte>(data);
-            target.CopyTo(span);
+            TileOverlayUtility.PlacedTileOverlays.Add(new Point(data.x, data.y), new TileOverlayData { overlayType = data.overlayType, overlayFrame = data.overlayFrame });
         }
     }
 
@@ -463,12 +504,16 @@ public class TileOverlayRenderer : ModSystem
         {
             for (int y = drawArea.Top; y < drawArea.Bottom; y++)
             {
-                Tile tile = Main.tile[x, y];
-                ref TileOverlayData overlayData = ref tile.Get<TileOverlayData>();
-                if (overlayData.overlayType != 0)
+                Point p = new Point(x, y);
+                if (TileOverlayUtility.PlacedTileOverlays.ContainsKey(p))
                 {
-                    TileOverlayRenderer.DrawData.Add(new TileOverlayDrawData(x, y, overlayData));
+                    var overlayData = TileOverlayUtility.PlacedTileOverlays[p];
+                    if (overlayData.overlayType != 0)
+                    {
+                        TileOverlayRenderer.DrawData.Add(new TileOverlayDrawData(x, y, overlayData));
+                    }
                 }
+
             }
         }
         //  Main.NewText(drawArea);
@@ -518,12 +563,136 @@ public class TileOverlayRenderer : ModSystem
     {
 
     }
-
-
 }
 
-public static class TileOverlayUtility
+public class TileOverlayPlayer : ModPlayer
 {
+    public override void OnEnterWorld()
+    {
+        base.OnEnterWorld();
+        if (Main.netMode == NetmodeID.SinglePlayer)
+            return;
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        Main.NewText("Request Tile Overlay Data");
+        TileOverlayUtility.RequestTileOverlayData();
+    }
+}
+
+public class TileOverlayUtility : ModSystem
+{
+    public static readonly Dictionary<Point, TileOverlayData> PlacedTileOverlays = new Dictionary<Point, TileOverlayData>();
+    public static void RequestTileOverlayData()
+    {
+        ModPacket packet = Stellamod.Instance.GetPacket(capacity: 16);
+        packet.Write((byte)MessageType.RequestTileOverlayData);
+        packet.Send();
+    }
+
+    public static void ReceiveTileOverlaySync(BinaryReader reader, int whoAmI)
+    {
+        List<Point> points = new List<Point>();
+        int oX = reader.ReadInt32();
+        int oY = reader.ReadInt32();
+        int oW = reader.ReadInt32();
+        int oH = reader.ReadInt32();
+        Rectangle rect = new Rectangle(oX, oY, oW, oH);
+        for(int i = rect.Left; i < rect.Right; i++)
+        {
+            for(int j = rect.Top; j < rect.Bottom; j++)
+            {
+                Point p = new Point(i, j);
+                if (PlacedTileOverlays.ContainsKey(p))
+                    PlacedTileOverlays.Remove(p);
+            }
+        }
+
+        int count = reader.ReadInt32();
+        for (int i = 0; i < count; i++)
+        {
+            int x = reader.ReadUInt16();
+            int y = reader.ReadUInt16();
+            byte overlapType = reader.ReadByte();
+            byte overlayFrame = reader.ReadByte();
+            PlacedTileOverlays[new Point(x,y)] = new TileOverlayData { overlayType = overlapType, overlayFrame = overlayFrame };
+            points.Add(new(x, y));
+        }
+
+        if (Main.netMode == NetmodeID.Server)
+        {
+            // Forward the changes to the other clients
+            SendTileOverlayData(-1, -1, rect, points);
+        }
+    }
+    public static void SendTileOverlayData(int requester, int ignore, Rectangle overlayArea, List<Point> points)
+    {
+        var packet = Stellamod.Instance.GetPacket();
+        packet.Write((byte)MessageType.TileOverlaySync);
+        packet.Write(overlayArea.X);
+        packet.Write(overlayArea.Y);
+        packet.Write(overlayArea.Width);
+        packet.Write(overlayArea.Height);
+        packet.Write(points.Count);
+        for (int i = 0; i < points.Count; i++)
+        {
+            Point p = points[i];
+            var data = PlacedTileOverlays[p];
+            packet.Write((ushort)p.X);
+            packet.Write((ushort)p.Y);
+            packet.Write(data.overlayType);
+            packet.Write(data.overlayFrame);
+        }
+        packet.Send(toClient: requester);
+    }
+
+    public static void SendTileOverlayData(int requester, int ignore, int x, int y, int width, int height)
+    {
+        Rectangle rect = new Rectangle(x, y, width, height);
+        List<Point> points = new List<Point>();
+        for (int i = rect.Left; i < rect.Right; i++)
+        {
+            for (int j = rect.Top; j < rect.Bottom; j++)
+            {
+                Point overlayPoint = new Point(i, j);
+                if (PlacedTileOverlays.ContainsKey(overlayPoint))
+                    points.Add(overlayPoint);
+            }
+        }
+        SendTileOverlayData(requester, ignore, rect, points);
+    }
+
+    public static void HandleRequestPacket(BinaryReader reader, int whoAmI)
+    {
+        //This should loop over the world, appending points and when it gets to big it cuts it off and goes next
+        List<Point> points = new List<Point>();
+        for (int x = 0; x < Main.maxTilesX; x++)
+        {
+            for (int y = 0; y < Main.maxTilesY; y++)
+            {
+                Point tilePoint = new Point(x, y);
+                if (PlacedTileOverlays.ContainsKey(tilePoint))
+                {
+                    points.Add(tilePoint);
+                    if (points.Count >= 2000)
+                    {
+                        SendTileOverlayData(whoAmI, -1, Rectangle.Empty, points);
+                        points.Clear();
+                    }
+                }
+            }
+        }
+        if(points.Count > 0)
+        {
+            SendTileOverlayData(whoAmI, -1, Rectangle.Empty, points);
+        }
+    }
+
+    public static string TypeToName(byte type)
+    {
+        var tile = TileOverlayRenderer.TileOverlays[type];
+        return tile.Name;
+    }
+    public static byte NameToType(string name) => TileOverlayRenderer.TileOverlayTypeLookup[name];
     public static byte TileOverlayType<T>() where T : TileOverlayType
     {
         string name = typeof(T).Name;
@@ -539,8 +708,9 @@ public static class TileOverlayUtility
 
     public static void KillTileOverlay(int x, int y)
     {
-        Tile tile = Main.tile[x, y];
-        ref TileOverlayData overlayData = ref tile.Get<TileOverlayData>();
-        overlayData.overlayType = 0;
+        Point tilePoint = new Point(x, y);
+        if (!PlacedTileOverlays.ContainsKey(tilePoint))
+            return;
+        PlacedTileOverlays.Remove(tilePoint);
     }
 }

@@ -8,6 +8,7 @@ using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Stellamod.Core;
 using Stellamod.Core.PlayerLevelingSystem;
 using Stellamod.Core.RibbonSystem;
+using Stellamod.Core.TileOverlaySystem;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
@@ -64,6 +65,15 @@ namespace Stellamod
             byte player;
             switch (id)
             {
+                case MessageType.TileOverlaySync:
+                    TileOverlayUtility.ReceiveTileOverlaySync(reader, whoAmI);
+                    break;
+                case MessageType.RequestTileOverlayData:
+                    if(Main.netMode == NetmodeID.Server)
+                    {
+                        TileOverlayUtility.HandleRequestPacket(reader, whoAmI);
+                    }
+                    break;
                 case MessageType.RequestZTileData:
                     if(Main.netMode == NetmodeID.Server)
                     {

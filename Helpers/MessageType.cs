@@ -39,7 +39,10 @@
         LevelingPlayerSync,
         ClassReworkPlayerSync,
 
-        RequestZTileData
+        RequestZTileData,
+
+        RequestTileOverlayData,
+        TileOverlaySync
     }
 
     public enum DialogueType : byte

@@ -137,5 +137,19 @@ public class STARDISC : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.Gold, 20, 64);
+        for (float f = 0; f < 16; f++)
+        {
+            Vector2 pos = Projectile.Center;
+            Vector2 vel = Main.rand.NextVector2Circular(8, 8);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = Color.LightGoldenrodYellow.ToVector4(),
+                outerColor = Color.DarkGoldenrod.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.4f, 0.8f))
+            });
+        }
     }
 }

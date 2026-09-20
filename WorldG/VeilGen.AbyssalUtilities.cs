@@ -153,6 +153,100 @@ public partial class VeilGen
         TileID.Sets.CanBeClearedDuringGeneration[abyssTile] = true;
         TileID.Sets.CanBeClearedDuringOreRunner[abyssTile] = true;
 
+        List<Point> validPointsForFlowers = new List<Point>();
+        int skip = 4;
+        int xPadding = 50;
+        int innerLeft = left + xPadding;
+        int innerRight = right - xPadding;
+        int innerHigh = abyssHigh + 125;
+        int innerLow = abyssLow - 170;
+        for (int x = innerLeft; x < innerRight; x += skip)
+        {
+            for (int y = innerHigh; y < innerLow; y += skip)
+            {
+                Rectangle tileBounds = TileUtilities.CenterTileRectangle(new Point(x, y), 100, 100);
+                if (!VeilGen.IsFilledEnough(tileBounds, 0.95f))
+                {
+                    continue;
+                }
+                validPointsForFlowers.Add(new Point(x, y));
+            }
+        }
+
+
+        //Place Clearings
+        //How do we palce these uhhhh
+        //Yeahs
+        int numBellFlowers = 5;
+        _placedAbyssFlowers.Clear();
+        BellFlowerSystem.ClearBellFlowers();
+        bool IsCloseToAFlower(Point p, int distance)
+        {
+            int checkDistanceSquared = distance * distance;
+            foreach(Point placed in _placedAbyssFlowers)
+            {
+                int dx = Math.Abs(placed.X - p.X);
+                int dy = Math.Abs(placed.Y - p.Y);
+                int distSquared = dx * dx + dy * dy;
+                if (distSquared <= checkDistanceSquared)
+                    return true;
+            }
+            return false;
+        }
+
+        void GenerateBellFlowers()
+        {
+            for (int n = 0; n < numBellFlowers; n++)
+            {
+
+                bool TooCloseToAnotherPlacedFlower(Point p)
+                {
+                    int dx = Math.Abs(p.X - AbyssCenter.X);
+                    if (dx < 165)
+                        return true;
+                    foreach (Point placed in _placedAbyssFlowers)
+                    {
+                        if (TileUtilities.TooCloseToTilePoint(p, placed, proximity: 175))
+                            return true;
+                    }
+                    return false;
+                }
+
+                void Fail()
+                {
+                    Main.NewText("Fail to PLACED BELL FLOWER", Color.Red);
+                    Stellamod.Instance.Logger.Info($"Failed to place Bell Flower");
+                }
+
+
+                //Find all points that would would not be too close to another flower
+                //Previously we were doing this randomly, but just iterating over every connection point and checking it's validity is definitely faster
+                //And more reliable, that reliability is especially important.
+                List<Point> pointsNotTooCloseToFlowers = validPointsForFlowers.Where(x => !TooCloseToAnotherPlacedFlower(x)).ToList();
+                if (pointsNotTooCloseToFlowers.Count == 0)
+                {
+                    Fail();
+                    continue;
+                }
+
+                Point randPoint = pointsNotTooCloseToFlowers[fastRandom.Next(0, pointsNotTooCloseToFlowers.Count)];
+
+                //Find all points that are close enough to connect to for creating path ways
+                /*
+                List<Vector2> validConnectionPoints = allPoints.Where(x =>
+                 x.Y <= randPoint.Y && IsValidToConnectTo(x, randPoint.ToVector2(), checkDistance: 250)).ToList();
+                if (validConnectionPoints.Count <= 0)
+                {
+                    Fail();
+                    continue;
+                }
+
+                Vector2 pointToConnectTo = validConnectionPoints[fastRandom.Next(0, validConnectionPoints.Count)];*/
+                VeilGen.CreateBellFlowerClearing(randPoint.ToVector2());
+                _placedAbyssFlowers.Add(randPoint);
+            }
+        }
+
         Span<ushort> pool = new ushort[1].AsSpan();
         pool[0] = (ushort)ModContent.TileType<AbyssalCoarseDirt>();
 
@@ -189,6 +283,8 @@ public partial class VeilGen
             bool success = false;
             while (scanArea.Contains(cavernPoint.ToPoint()) && failSafe < 500)
             {
+                Point cPoint = cavernPoint.ToPoint();
+                
                 connectPointCounter--;
                 if (cavingSteps > 0)
                 {
@@ -345,97 +441,7 @@ public partial class VeilGen
             }
         }
 
-        List<Point> validPointsForFlowers = new List<Point>();
-        int skip = 6;
-        int xPadding = 50;
-        int innerLeft = left + xPadding;
-        int innerRight = right - xPadding;
-        int innerHigh = abyssHigh + 150;
-        int innerLow = abyssLow - 125;
-        for(int x = innerLeft; x < innerRight; x+= skip)
-        {
-            for(int y = innerHigh; y < innerLow; y+= skip)
-            {
-                Rectangle tileBounds = TileUtilities.CenterTileRectangle(new Point(x, y), 100, 100);
-                if (!VeilGen.IsFilledEnough(tileBounds, 0.95f))
-                {
-                    continue;
-                }
-                validPointsForFlowers.Add(new Point(x, y));
-            }
-        }
 
-        //Place Clearings
-        //How do we palce these uhhhh
-        //Yeahs
-        int numBellFlowers = 5;
-        _placedAbyssFlowers.Clear();
-        List<Vector2> allPoints = new List<Vector2>();
-        foreach (var kvp in caveConnectPoints)
-            allPoints.AddRange(kvp.Value);
-        BellFlowerSystem.ClearBellFlowers();
-        void GenerateBellFlowers()
-        {
-            for (int n = 0; n < numBellFlowers; n++)
-            {
-
-                bool TooCloseToAnotherPlacedFlower(Point p)
-                {
-                    int dx = Math.Abs(p.X - AbyssCenter.X);
-                    if (dx < 165)
-                        return true;
-                    foreach (Point placed in _placedAbyssFlowers)
-                    {
-                        if (TileUtilities.TooCloseToTilePoint(p, placed, proximity: 200))
-                            return true;
-                    }
-                    return false;
-                }
-
-                bool IsValidToConnectTo(Vector2 p, Vector2 referencePoint, float checkDistance)
-                {
-                    float checkDistanceSquared = checkDistance * checkDistance;
-                    float distanceSquare = Vector2.DistanceSquared(referencePoint, p);
-                    if (distanceSquare <= checkDistanceSquared)
-                        return true;
-                    return false;
-                }
-
-
-                void Fail()
-                {
-                    Main.NewText("Fail to PLACED BELL FLOWER", Color.Red);
-                    Stellamod.Instance.Logger.Info($"Failed to place Bell Flower");
-                }
-
-
-                //Find all points that would would not be too close to another flower
-                //Previously we were doing this randomly, but just iterating over every connection point and checking it's validity is definitely faster
-                //And more reliable, that reliability is especially important.
-                List<Point> pointsNotTooCloseToFlowers = validPointsForFlowers.Where(x => !TooCloseToAnotherPlacedFlower(x)).ToList();
-                if(pointsNotTooCloseToFlowers.Count == 0)
-                {
-                    Fail();
-                    continue;
-                }
-
-                Point randPoint = pointsNotTooCloseToFlowers[fastRandom.Next(0, pointsNotTooCloseToFlowers.Count)];
-
-                //Find all points that are close enough to connect to for creating path ways
-                List<Vector2> validConnectionPoints = allPoints.Where(x =>
-                 x.Y <= randPoint.Y && IsValidToConnectTo(x, randPoint.ToVector2(), checkDistance: 250)).ToList();
-                if (validConnectionPoints.Count <= 0)
-                {
-                    Fail();
-                    continue;
-                }
-
-                Vector2 pointToConnectTo = validConnectionPoints[fastRandom.Next(0, validConnectionPoints.Count)];
-                VeilGen.CreateBellFlowerClearing(randPoint.ToVector2());
-                CreateAbyssConnectionCaveMini(randPoint.ToVector2() + new Vector2(0, -16), pointToConnectTo);
-                _placedAbyssFlowers.Add(randPoint);
-            }
-        }
 
         for(int i = 0; i < 3; i++)
             VeilGen.PruneLonelyTiles(rect);

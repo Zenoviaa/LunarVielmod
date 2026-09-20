@@ -400,6 +400,7 @@ public partial class StellaWorld : ModSystem
         //Generate abyss late to avoid ores and whatnot
         passWriter.NextPass(new PassLegacy("World Gen Abysm", WorldGenAbysm));
         passWriter.NextPass(new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+        passWriter.NextPass(new PassLegacy("World Gen Royal Starr", WorldGenWariorStarrHouse));
         passWriter.NextPass(new PassLegacy("Grow Kelp In Abyss", (GenerationProgress progress, GameConfiguration configuration) =>
         {
             progress.Message = "Kelping";
@@ -6264,6 +6265,51 @@ public partial class StellaWorld : ModSystem
         VeilGen.GenerateAbyss();
     }
 
+    private void WorldGenWariorStarrHouse(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Star Needs a House";
+
+        int royalTileType = ModContent.TileType<RoyalTile>();
+        void PlaceBlock(int tileX, int tileY, Color c)
+        {
+            Tile tile = Main.tile[tileX, tileY];
+            tile.ClearEverything();
+            tile.TileType = (ushort)royalTileType;
+            tile.TileFrameX = -1;
+            tile.TileFrameY = -1;
+            tile.HasTile = true;
+        }
+
+        void SetTile(int tileX, int tileY, Color c)
+        {
+            Tile tile = Main.tile[tileX, tileY];
+            if (c.R == 255 && c.G == 0 && c.B == 0)
+            {
+                tile.ClearEverything();
+            }
+            if (c.R == 255 && c.G == 255 && c.B == 255)
+            {
+                tile.ClearEverything();
+            }
+            if (c.R == 0 && c.G == 0 && c.B == 255)
+            {
+                tile.ClearEverything();
+                tile.LiquidAmount = 255;
+                tile.LiquidType = LiquidID.Water;
+            }
+        }
+
+        Point abyssCenter = VeilGen.AbyssCenterTile;
+        abyssCenter.X += 300;
+        abyssCenter.Y += 100;
+   
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("STARRHouse");
+        Rectangle rect = new Rectangle(abyssCenter.X, abyssCenter.Y, prefab.Width, prefab.Height);
+        VeilGen.KillZTilesInArea(rect);
+        prefab.PasteErase(abyssCenter.X, abyssCenter.Y, PrefabPlacementType.FromTopLeft, PlaceBlock);
+        prefab.PasteErase(abyssCenter.X, abyssCenter.Y, PrefabPlacementType.FromTopLeft, SetTile);
+
+    }
 
     private void WorldGenAurelusTemple(GenerationProgress progress, GameConfiguration configuration)
     {
