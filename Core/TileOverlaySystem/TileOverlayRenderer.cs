@@ -10,6 +10,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 
 namespace Stellamod.Core.TileOverlaySystem;
@@ -412,6 +413,43 @@ public class TileOverlayRenderer : ModSystem
             string name = tileOverlay.GetType().Name;
             TileOverlayTypeLookup.Add(name, i);
             Mod.Logger.Info($"Register Tile Overlay {name} with id: {i}");
+        }
+    }
+
+    //Referenced from SLR's system
+    public override unsafe void SaveWorldData(TagCompound tag)
+    {
+        base.SaveWorldData(tag);
+        TileOverlayData[] myData = Main.tile.GetData<TileOverlayData>();
+        byte[] data = new byte[myData.Length];
+
+        fixed (TileOverlayData* ptr = myData)
+        {
+            byte* bytePtr = (byte*)ptr;
+            var span = new Span<byte>(bytePtr, myData.Length);
+            var target = new Span<byte>(data);
+            span.CopyTo(target);
+        }
+
+        tag["tileOverlayData"] = data;
+    }
+    
+    public override unsafe void LoadWorldData(TagCompound tag)
+    {
+        base.LoadWorldData(tag);
+        TileOverlayData[] targetData = Main.tile.GetData<TileOverlayData>();
+        byte[] data = tag.GetByteArray("tileOverlayData");
+        if (targetData.Length != data.Length)
+        {
+            return;
+        }
+
+        fixed (TileOverlayData* ptr = targetData)
+        {
+            byte* bytePtr = (byte*)ptr;
+            var span = new Span<byte>(bytePtr, targetData.Length);
+            var target = new Span<byte>(data);
+            target.CopyTo(span);
         }
     }
 
