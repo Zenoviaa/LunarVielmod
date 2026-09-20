@@ -1245,10 +1245,15 @@ Amalgamating: {
 
 Grounded: {
 	DisplayName: Grounded
-	Description: Mods.Stellamod.Buffs.Grounded.Description
+	Description: Get back down where you belong.
 }
 
 Stunlocked: {
 	DisplayName: Stunlocked
-	Description: Mods.Stellamod.Buffs.Stunlocked.Description
+	Description: I can't do anything...
+}
+
+MoonEnchanted: {
+	DisplayName: Moon Enchanted
+	Description: You feel the power of the moon within you...
 }
