@@ -8,6 +8,7 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
 using System;
@@ -284,7 +285,7 @@ public class TulahalSlash : BaseSwingProjectileV2
         }
         if (SwingDirection == 2)
         {
-
+            Owner.GetModPlayer<DashPlayer>().noRecharge = true;
             swordBeamLength = 420;
         }
 
@@ -568,6 +569,7 @@ public class TulahalThrow : ModProjectile
     public override void AI()
     {
         base.AI();
+        Owner.GetModPlayer<DashPlayer>().noRecharge = true;
         switch (Style)
         {
             case 0:

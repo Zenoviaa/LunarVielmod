@@ -158,6 +158,16 @@ namespace Stellamod.Common.ArmorReforge
     {
         public AccessoryReforgeType accessoryReforgeType;
         public override bool InstancePerEntity => true;
+        public override bool CanReforge(Item item)
+        {
+            return base.CanReforge(item) && accessoryReforgeType == AccessoryReforgeType.None;
+        }
+        public override void PostReforge(Item item)
+        {
+            base.PostReforge(item);
+            if (accessoryReforgeType != AccessoryReforgeType.None)
+                accessoryReforgeType = AccessoryReforgeType.None;
+        }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
          
@@ -333,6 +343,16 @@ namespace Stellamod.Common.ArmorReforge
     {
         public ArmorReforgeType reforgeType;
         public override bool InstancePerEntity => true;
+        public override bool CanReforge(Item item)
+        {
+            return base.CanReforge(item) && reforgeType == ArmorReforgeType.None;
+        }
+        public override void PostReforge(Item item)
+        {
+            base.PostReforge(item);
+            if (reforgeType != ArmorReforgeType.None)
+                reforgeType = ArmorReforgeType.None;
+        }
         public override void UpdateEquip(Item item, Player player)
         {
             base.UpdateEquip(item, player);
@@ -461,7 +481,7 @@ namespace Stellamod.Common.ArmorReforge
                     break;
                 case ArmorReforgeType.Berserker:
                     player.GetAttackSpeed(DamageClass.Generic) += 0.05f;
-                    player.statLifeMax2 -= 15;
+                    player.statLifeMax2 -= 25;
                     player.statDefense -= 3;
                     break;
                 case ArmorReforgeType.Acrobatic:
@@ -485,7 +505,7 @@ namespace Stellamod.Common.ArmorReforge
 
                     break;
                 case ArmorReforgeType.Summoned:
-                    player.GetModPlayer<BellPlayer>().incomingDamageMultiplier += 0.85f;
+                    player.GetModPlayer<BellPlayer>().incomingDamageMultiplier += 0.55f;
                     player.endurance -= 0.5f;
                     player.maxMinions += 1;
 
@@ -504,7 +524,7 @@ namespace Stellamod.Common.ArmorReforge
                     player.GetStats().movementSpeedBonus -= 0.2f;
                     break;
                 case ArmorReforgeType.RavenousRaged:
-                    player.GetStats().meleeAttackSpeed += 0.3f;
+                    player.GetStats().meleeAttackSpeed += 0.15f;
                     player.GetDamage(DamageClass.Generic) -= 0.05f;
                     player.GetStats().generalEndurance -= 0.15f;
                     break;
@@ -530,7 +550,7 @@ namespace Stellamod.Common.ArmorReforge
 
                 case ArmorReforgeType.Villainnous:
                     player.GetStats().accessorySlots -= 2;
-                    player.GetDamage(DamageClass.Generic) += 0.5f;
+                    player.GetDamage(DamageClass.Generic) += 0.4f;
                     break;
 
                 case ArmorReforgeType.Cooked:
@@ -555,7 +575,7 @@ namespace Stellamod.Common.ArmorReforge
 
                 case ArmorReforgeType.Greedy:
                     player.endurance -= 1f;
-                    player.GetDamage(DamageClass.Generic) += 0.25f;
+                    player.GetDamage(DamageClass.Generic) += 0.2f;
                     break;
 
                 case ArmorReforgeType.Inventorious:

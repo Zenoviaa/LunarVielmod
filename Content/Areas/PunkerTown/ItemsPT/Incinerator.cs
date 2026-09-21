@@ -131,7 +131,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
-            Projectile.idStaticNPCHitCooldown = 7;
+            Projectile.idStaticNPCHitCooldown = 15;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.tileCollide = true;
             Projectile.timeLeft = (int)LifeTime;

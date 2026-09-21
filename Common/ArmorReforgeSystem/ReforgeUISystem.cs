@@ -108,7 +108,7 @@ public class ReforgeUISystem : BaseUISystem
 
         ArmorReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<ArmorReforgeGlobalItem>();
         armorReforgeGlobalItem.reforgeType = chosenReforge;
-
+        item.ResetPrefix();
         item.NetStateChanged();
         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
 
@@ -130,6 +130,7 @@ public class ReforgeUISystem : BaseUISystem
 
         AccessoryReforgeGlobalItem armorReforgeGlobalItem = item.GetGlobalItem<AccessoryReforgeGlobalItem>();
         armorReforgeGlobalItem.accessoryReforgeType = chosenReforge;
+        item.ResetPrefix();
         item.NetStateChanged();
 
         string text = LangText.AccessoryReforge(chosenReforge, "DisplayName") + " " + item.Name;

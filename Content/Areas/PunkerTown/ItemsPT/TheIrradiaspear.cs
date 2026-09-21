@@ -11,6 +11,7 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
 using System;
@@ -49,6 +50,7 @@ public class TheIrradiaspear : BaseSwingItemV2
         Item.useAnimation = 20;
         Item.useTime = 20;
         staminaDamageMultiplier = 1.5f;
+        staminaCost = 3;
     }
 
     public override void AddRecipes()
@@ -361,6 +363,7 @@ public class TheIrradiaspearP : ModProjectile,
 
     public override void AI()
     {
+        Owner.GetModPlayer<DashPlayer>().noRecharge = true;
         FlashTimer -= 0.02f;
         if (FlashTimer <= 0)
             FlashTimer = 0;

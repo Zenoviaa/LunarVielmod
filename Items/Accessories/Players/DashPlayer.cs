@@ -105,6 +105,17 @@ namespace Stellamod.Items.Accessories.Players
     }
 
 
+    public class StaminaRegenerationSystem : ModSystem
+    {
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            foreach(var player in Main.ActivePlayers)
+            {
+                player.GetModPlayer<DashPlayer>().UpdateStamina();
+            }
+        }
+    }
     public class DashPlayer : ModPlayer
     {
         private bool _isImmune;
@@ -155,6 +166,7 @@ namespace Stellamod.Items.Accessories.Players
         public int extraStaminaCost;
         public int dashRestoreChance;
         public bool noRoll;
+        public bool noRecharge;
         private HashSet<NPC> _dashedThroughSetBacking;
         public HashSet<NPC> DashedThroughSet
         {
@@ -185,6 +197,7 @@ namespace Stellamod.Items.Accessories.Players
             DashCooldown = 44;
             doubleStaminaCost = false;
             justConsumedStamina = false;
+            noRecharge = false;
             IsDashing = DashTimer > 0;
             extraStaminaCost = 0;
             dashRestoreChance = 0;
@@ -397,17 +410,18 @@ namespace Stellamod.Items.Accessories.Players
             base.PostUpdateMiscEffects();
            
         }
-        public override void PostUpdate()
+
+        
+        public void UpdateStamina()
         {
-            base.PostUpdate();
+            if (noRecharge)
+                return;
 
             if (DashCount < MaxDashCount)
             {
                 DashCountTimer++;
 
                 float maxDashCountTimer = MaxDashCountTimer;
-
-
                 maxDashCountTimer *= MathHelper.Lerp(1f, 0f, ExtraMath.Saturate(DashRegenerationBonus));
 
                 float add = MaxDashCountTimer * DashRegenerationPenalty;
@@ -417,8 +431,8 @@ namespace Stellamod.Items.Accessories.Players
                     DashCount++;
                     DashCountTimer = 0;
                 }
-
             }
+
             if (DashCount >= MaxDashCount)
             {
                 DashCount = MaxDashCount;

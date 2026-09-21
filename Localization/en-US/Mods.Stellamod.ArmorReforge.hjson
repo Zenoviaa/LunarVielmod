@@ -24,7 +24,7 @@ GraftProtected: {
 
 RavenousRaged: {
 	DisplayName: Ravenous-Raged
-	Upside: +30% melee attack speed
+	Upside: +15% melee attack speed
 	Downside:
 		'''
 		-5% damage
@@ -264,7 +264,7 @@ Berserker: {
 	Upside: +5% increased attack speed
 	Downside:
 		'''
-		-15 max life
+		-25 max life
 		-3 defense
 		'''
 }
@@ -314,8 +314,8 @@ Summoned: {
 	Upside: +1 max minion
 	Downside:
 		'''
-		+50% incoming damage to you!
-		+85% incoming damage to minions and guardians
+		+55% incoming damage to you!
+		+50% incoming damage to minions and guardians
 		'''
 }
 
@@ -461,7 +461,7 @@ Accessorous: {
 
 Villainnous: {
 	DisplayName: Villainnous
-	Upside: +50% damage
+	Upside: +40% damage
 	Downside: -2 accessory slots
 }
 
@@ -491,7 +491,7 @@ Vampirical: {
 
 Greedy: {
 	DisplayName: Greedy
-	Upside: +25% damage
+	Upside: +20% damage
 	Downside: +100% incoming damage
 }
 

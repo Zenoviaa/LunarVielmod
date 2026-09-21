@@ -8,6 +8,7 @@ using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Items;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
 using System;
@@ -79,6 +80,7 @@ public class SwingalingSlash : BaseSwingProjectileV2
     public override void AI()
     {
         base.AI();
+
         outlineColor = Color.Lerp(Color.White, Color.Black, ExtraMath.Osc(0f, 1f, speed: 12, 0));
     }
 
@@ -426,6 +428,7 @@ public class SwingalingCharge : ModProjectile
 
     private void AI_Charge()
     {
+     
         Timer++;
         Vector2 mouseWorld = Main.MouseWorld;
         Vector2 directionToMouseWorld = Owner.Center.DirectionTo(mouseWorld);
@@ -517,6 +520,7 @@ public class SwingalingCharge : ModProjectile
     public override void AI()
     {
         base.AI();
+        Owner.GetModPlayer<DashPlayer>().noRecharge = true;
         switch (State)
         {
             case 0:

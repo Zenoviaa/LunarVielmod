@@ -193,7 +193,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         NPC.height = 96;
         NPC.damage = 1;
         NPC.defense = 23;
-        NPC.lifeMax = 22000;
+        NPC.lifeMax = 23500;
 
         NPC.scale = 1f;
         NPC.value = Item.buyPrice(gold: 5);
