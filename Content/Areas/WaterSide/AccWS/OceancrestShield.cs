@@ -23,7 +23,7 @@ public class OceanShieldPlayer : ModPlayer
     public override void PostUpdateEquips()
     {
         base.PostUpdateEquips();
-        if (hasOceanShield)
+        if (!hasOceanShield)
             return;
         _cooldown--;
     }
@@ -48,7 +48,7 @@ public class OceanShieldPlayer : ModPlayer
      
         if (hasOceanShield && modifiers.Dodgeable && _cooldown <= 0)
         {
-            int cooldownInSeconds = 30;
+            int cooldownInSeconds = 45;
             int cooldownInTicks = cooldownInSeconds * 60;
 
             _cooldown = cooldownInTicks;

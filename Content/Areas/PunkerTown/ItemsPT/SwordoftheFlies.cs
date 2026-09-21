@@ -42,7 +42,7 @@ public class SwordoftheFlies : BaseSwingItemV2
         staminaProjectileShoot = ModContent.ProjectileType<SwordoftheFliesSuperSword>();
         meleeWeaponType = MeleeWeaponType.Sword;
         staminaCost = 4;
-        staminaDamageMultiplier = 2f;
+        staminaDamageMultiplier = 1.5f;
     }
     public override void AddRecipes()
     {
