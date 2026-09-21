@@ -683,16 +683,6 @@ public partial class VeilGen
 
         Rectangle templeRectangle = rectangle;
         templeRectangle.Y -= rectangle.Height;
-        /*
-        for(int x = templeRectangle.Left; x< templeRectangle.Right; x++)
-        {
-            for(int y = templeRectangle.Top; y < templeRectangle.Bottom; y++)
-            {
-                Tile tile = Main.tile[x, y];
-                tile.HasTile = false;
-            }
-        }
-        */
         VeilGen.KillZTilesInArea(templeRectangle);
         SavedGenerationParameters.AbyssTempleRectangle = templeRectangle;
         StructureLoader.ProtectStructure(Loc, "Struct/Aurelus/AurelusTemple2");

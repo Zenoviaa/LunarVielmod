@@ -88,7 +88,9 @@ public static class SavedGenerationParameters
     public static int DarkspaceTop;
     public static double RockLayerHigh;
     public static Rectangle AbyssTempleRectangle;
+    public static Rectangle StarrHouseRectangle;
 }
+
 public partial class StellaWorld : ModSystem
 {
 
@@ -110,8 +112,7 @@ public partial class StellaWorld : ModSystem
     public Point CoralwaysLocation { get; private set; }
     public Point SnowClumpOriginPoint { get; private set; }
     public Point GothiviaSpawnOffset => new Point(246, -99);
-    public Point BublbtrifierSpawnOffset => new Point(246, -99);
-
+ 
     public int CindersparkStart { get; private set; }
     public int CindersparkEnd { get; private set; }
     public int DarkspaceStart { get; private set; }
@@ -6310,16 +6311,17 @@ public partial class StellaWorld : ModSystem
             }
         }
 
-        Point abyssCenter = VeilGen.AbyssCenterTile;
-        abyssCenter.X += 300;
-        abyssCenter.Y += 100;
+        Point starrHousePoint = VeilGen.AbyssCenterTile;
+        starrHousePoint.X += 300;
+        starrHousePoint.Y += 100;
    
+        //TODO: after building the structure replace it with that.
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("STARRHouse");
-        Rectangle rect = new Rectangle(abyssCenter.X, abyssCenter.Y, prefab.Width, prefab.Height);
+        Rectangle rect = new Rectangle(starrHousePoint.X, starrHousePoint.Y, prefab.Width, prefab.Height);
         VeilGen.KillZTilesInArea(rect);
-        prefab.PasteErase(abyssCenter.X, abyssCenter.Y, PrefabPlacementType.FromTopLeft, PlaceBlock);
-        prefab.PasteErase(abyssCenter.X, abyssCenter.Y, PrefabPlacementType.FromTopLeft, SetTile);
-
+        prefab.PasteErase(starrHousePoint.X, starrHousePoint.Y, PrefabPlacementType.FromTopLeft, PlaceBlock);
+        prefab.PasteErase(starrHousePoint.X, starrHousePoint.Y, PrefabPlacementType.FromTopLeft, SetTile);
+        SavedGenerationParameters.StarrHouseRectangle = rect;
     }
 
     private void WorldGenAurelusTemple(GenerationProgress progress, GameConfiguration configuration)
@@ -6881,10 +6883,8 @@ public partial class StellaWorld : ModSystem
         writer.Write(SavedGenerationParameters.SnowTop);
         writer.Write(SavedGenerationParameters.SnowBottom);
         writer.Write(SavedGenerationParameters.RockLayerHigh);
-        writer.Write(SavedGenerationParameters.AbyssTempleRectangle.X);
-        writer.Write(SavedGenerationParameters.AbyssTempleRectangle.Y);
-        writer.Write(SavedGenerationParameters.AbyssTempleRectangle.Width);
-        writer.Write(SavedGenerationParameters.AbyssTempleRectangle.Height);
+        writer.Write(SavedGenerationParameters.AbyssTempleRectangle);
+        writer.Write(SavedGenerationParameters.StarrHouseRectangle);
     }
     public override void NetReceive(BinaryReader reader)
     {
@@ -6904,12 +6904,8 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.SnowTop = reader.ReadInt32();
         SavedGenerationParameters.SnowBottom = reader.ReadInt32();
         SavedGenerationParameters.RockLayerHigh = reader.ReadDouble();
-
-
-        SavedGenerationParameters.AbyssTempleRectangle.X = reader.ReadInt32();
-        SavedGenerationParameters.AbyssTempleRectangle.Y = reader.ReadInt32();
-        SavedGenerationParameters.AbyssTempleRectangle.Width = reader.ReadInt32();
-        SavedGenerationParameters.AbyssTempleRectangle.Height = reader.ReadInt32();
+        SavedGenerationParameters.AbyssTempleRectangle = reader.ReadRectangle();
+        SavedGenerationParameters.StarrHouseRectangle = reader.ReadRectangle();
     }
 
     public override void SaveWorldData(TagCompound tag)
@@ -6929,6 +6925,7 @@ public partial class StellaWorld : ModSystem
         tag["SnowBottom"] = SavedGenerationParameters.SnowBottom;
         tag["RockLayerHigh"] = SavedGenerationParameters.RockLayerHigh;
         tag["AbyssTemple"] = SavedGenerationParameters.AbyssTempleRectangle;
+        tag["StarrHouse"] = SavedGenerationParameters.StarrHouseRectangle;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -6948,5 +6945,6 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.SnowBottom = tag.Get<int>("SnowBottom");
         SavedGenerationParameters.RockLayerHigh = tag.Get<double>("RockLayerHigh");
         SavedGenerationParameters.AbyssTempleRectangle = tag.Get<Rectangle>("AbyssTemple");
+        SavedGenerationParameters.StarrHouseRectangle = tag.Get<Rectangle>("StarrHouse");
     }
 }

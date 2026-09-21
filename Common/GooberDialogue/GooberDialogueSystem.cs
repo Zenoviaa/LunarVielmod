@@ -1,31 +1,13 @@
-﻿using ReLogic.Content;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Rendering.RTs;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Common.GooberDialogue;
-
-public static class GooberDialoguePresets
-{
-    public static GooberDialogueParameters Zui => new()
-    {
-        startGradientColor = new Color(240, 122, 35),
-        endGradientColor = new Color(202, 68, 43),
-        outlineColor = new Color(202, 68, 43),
-        portraitTextureAsset = AssetReferences.Content.GooberPortraits.ZuiMiniPortrait.Asset,
-        bubblePosition = Vector2.Zero,
-        name = "You ain't put no text",
-        text = string.Empty
-    };
-}
 
 public interface IUpdateable
 {
@@ -43,7 +25,7 @@ public class UpdateableSystem : ModSystem
             return;
 
         _inactiveUpdateables.Clear();
-        foreach(var a in Updateables)
+        foreach (var a in Updateables)
         {
             a.Update();
             if (!a.IsActive)
@@ -56,106 +38,7 @@ public class UpdateableSystem : ModSystem
         _inactiveUpdateables.Clear();
     }
 }
-public class GooberDialogueSpeaker : 
-    IUpdateable
-{
-    private int _textIndex;
-    private float _timer;
-    public GooberDialogueSpeaker(SpeechBubbleWrapper speechBubbleWrapper)
-    {
-        SpeechBubble = speechBubbleWrapper;
-        timeBetweenTexts = 3;
-        _timer = 0;
-        talkingSound = AssetReferences.Assets.Sounds.AssassinsKnifeHit.Asset;
-        isActive = true;
-    }
-    public bool isActive;
-    public float timeBetweenTexts;
-    public SoundStyle talkingSound;
-    public readonly SpeechBubbleWrapper SpeechBubble;
-    public bool IsActive => isActive; 
-    public bool IsFinishedTyping()
-    {
-        return _textIndex > SpeechBubble.Bubble.parameters.text.Length;
-    }
 
-    public void Reset()
-    {
-        _timer = 0;
-        _textIndex = 0;
-    }
-
-    public void Update()
-    {
-      //  isActive = false;
-        if (!IsFinishedTyping())
-        {
-            _timer++;
-            if (_timer >= timeBetweenTexts)
-            {
-                SpeechBubble.Bubble.parameters.textIndex = _textIndex;
-                _textIndex++;
-                _timer = 0;
-                if (_textIndex % 3 == 0)
-                    SoundEngine.PlaySound(talkingSound);
-            }
-        }
-        else
-        {
-            isActive = false;
-    
-        }
-
-    }
-}
-
-
-/// <summary>
-/// Parameters for a speech bubble that's going to be drawn in the world
-/// </summary>
-public struct GooberDialogueParameters
-{
-    public Asset<Texture2D> portraitTextureAsset;
-    public Color startGradientColor;
-    public Color endGradientColor;
-    public Color outlineColor;
-    public Vector2 bubblePosition;
-    public int textIndex;
-    public string text;
-    public string name;
-}
-
-public class SpeechBubble
-{
-    public GooberDialogueParameters parameters;
-    public float activeTimer;
-    public float inOutTimer;
-    public float EaseInOut => EasingFunction.OutCirc(inOutTimer / EaseTime);
-    public static float EaseTime => 45;
-}
-
-
-/// <summary>
-/// Wrapper for a speech bubble class so we can automatically update the active timer when accessing it
-/// </summary>
-public class SpeechBubbleWrapper
-{
-    private readonly SpeechBubble _bubble;
-    public SpeechBubbleWrapper(SpeechBubble bubble)
-    {
-        _bubble = bubble;
-        _bubble.activeTimer = 10;
-    }
-
-    public SpeechBubble Bubble
-    {
-        get
-        {
-            _bubble.activeTimer = 10;
-            return _bubble;
-        }
-    }
-}
 [Autoload(Side = ModSide.Client)]
 public class GooberDialogueSystem : ModSystem
 {
@@ -171,7 +54,7 @@ public class GooberDialogueSystem : ModSystem
     {
         base.PostUpdateEverything();
 
-     
+
         if (_speechBubbles.Count <= 0)
             return;
         foreach (var bubble in _speechBubbles)
@@ -205,6 +88,8 @@ public class GooberDialogueSystem : ModSystem
         if (!ShouldRender())
             return;
 
+
+
         RenderTargetHandle pixelTarget = RenderTargets.HalfScreenTarget;
         RenderTargetHandle boxRenderTarget = RenderTargets.ScreenTarget;
         RenderTargetHandle boxRenderTargetSwap = RenderTargets.ScreenTarget;
@@ -234,7 +119,14 @@ public class GooberDialogueSystem : ModSystem
             spriteBatch.Draw(arrowDrawer);
         }
         spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        spriteBatch.Begin(
+            SpriteSortMode.Deferred, 
+            BlendState.AlphaBlend, 
+            SamplerState.LinearClamp, 
+            DepthStencilState.None,
+            RasterizerState.CullNone, 
+            null, 
+            Main.GameViewMatrix.TransformationMatrix);
         foreach (var bubble in _speechBubbles)
         {
             if (!string.IsNullOrEmpty(bubble.parameters.text))
@@ -272,7 +164,7 @@ public class GooberDialogueSystem : ModSystem
         _squareQuad.vertices[0] = new VertexPositionColorTexture(new Vector3(anchorPoint.X, anchorPoint.Y, 0), startColor, Vector2.Zero);
 
         //Top Right
-        _squareQuad.vertices[1] = new VertexPositionColorTexture(new Vector3(anchorPoint.X + size.X, anchorPoint.Y - 48 , 0), endColor, new Vector2(1, 0));
+        _squareQuad.vertices[1] = new VertexPositionColorTexture(new Vector3(anchorPoint.X + size.X, anchorPoint.Y - 48, 0), endColor, new Vector2(1, 0));
 
         //Bottom Left
         _squareQuad.vertices[2] = new VertexPositionColorTexture(new Vector3(anchorPoint.X + 16, anchorPoint.Y + size.Y - 48, 0), startColor, new Vector2(0, 1));
@@ -283,7 +175,7 @@ public class GooberDialogueSystem : ModSystem
 
     private void DrawOutline(RenderTargetHandle src, RenderTargetHandle dst, SpriteBatch spriteBatch, Effect effect, Color outlineColor)
     {
-        using(new RenderTargetContext(dst))
+        using (new RenderTargetContext(dst))
         {
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
@@ -299,7 +191,7 @@ public class GooberDialogueSystem : ModSystem
 
     private void PrepareSpeechBubbleContent(RenderTargetHandle pixelTarget, RenderTargetHandle boxRenderTarget, RenderTargetHandle boxRenderTargetSwap)
     {
-        foreach(var bubble in _speechBubbles)
+        foreach (var bubble in _speechBubbles)
         {
             RenderDialogueBoxToPixelTarget(bubble, pixelTarget, boxRenderTarget, boxRenderTargetSwap);
         }
@@ -309,7 +201,7 @@ public class GooberDialogueSystem : ModSystem
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        using(new RenderTargetContext(boxRenderTarget))
+        using (new RenderTargetContext(boxRenderTarget))
         {
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             HlslSampler noiseSpriteSampler = new();
@@ -359,7 +251,7 @@ public class GooberDialogueSystem : ModSystem
         var noisePass = AssetReferences.Effects.Generic.Scroll.CreatePixelPass();
         noisePass.Parameters.time = Main.GlobalTimeWrappedHourly * 4;
 
-        using(new RenderTargetContext(pixelTarget))
+        using (new RenderTargetContext(pixelTarget))
         {
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,

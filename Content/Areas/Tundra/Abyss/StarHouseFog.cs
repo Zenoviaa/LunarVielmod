@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Stellamod.Content.Biomes;
+﻿using Stellamod.Content.Biomes;
 using Stellamod.Core.DungeonFogSystem;
 using Stellamod.WorldG;
 using System.Collections.Generic;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss;
-public class AbyssTempleFog : DungeonFogType
+
+public class StarHouseFog : DungeonFogType
 {
     private float _alpha;
     private bool ShouldRenderFog()
@@ -15,8 +15,6 @@ public class AbyssTempleFog : DungeonFogType
         {
             return false;
         }
-        if (Main.LocalPlayer.ZoneAurelus)
-            return false;
         return true;
     }
     protected override void PrepareFogRectangle(List<DungeonFog> fogRectangles)
@@ -25,7 +23,7 @@ public class AbyssTempleFog : DungeonFogType
         if (_alpha < 0.02f)
             return;
 
-        Rectangle rectangle = SavedGenerationParameters.AbyssTempleRectangle;
+        Rectangle rectangle = SavedGenerationParameters.StarrHouseRectangle;
         rectangle.Width *= 16;
         rectangle.Height *= 16;
         rectangle.Location = rectangle.Location.ToWorldCoordinates().ToPoint();
