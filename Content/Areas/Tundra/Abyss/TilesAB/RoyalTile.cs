@@ -27,7 +27,7 @@ public class RoyalTile : ModTile
         MineResist = 2f;
         MinPick = 225;
         RegisterItemDrop(ModContent.ItemType<RoyalTileBlock>());
-        AddMapEntry(new Color(175, 175, 40));
+        AddMapEntry(new Color(31, 40, 69));
     }
 }
 
