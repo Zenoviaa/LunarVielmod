@@ -455,6 +455,7 @@ public partial class WarriorSTARR
         {
             if (proj.type == projType && proj.ai[1] == index)
             {
+                proj.velocity = Vector2.UnitX * NPC.spriteDirection * 15;
                 proj.ai[2] = 10;
             }
         }

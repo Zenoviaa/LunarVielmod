@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Dusts;
+﻿using Stellamod.Content.Dusts;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
@@ -12,7 +10,6 @@ using Terraria.GameContent.Metadata;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 using Terraria.Utilities;
 
@@ -27,7 +24,7 @@ namespace Stellamod.TilesNew.RainforestTiles
             Main.tileNoAttach[Type] = true;
             Main.tileLavaDeath[Type] = true;
 
-         
+
             TileObjectData.newTile.Width = 1;
             TileObjectData.newTile.Height = 2;
             TileObjectData.newTile.Origin = new Point16(0, 1);
@@ -153,7 +150,8 @@ namespace Stellamod.TilesNew.RainforestTiles
             {
                 if (!_treeTopsToNotDraw.Contains(point))
                     _treeTopsToNotDraw.Add(point);
-            };
+            }
+            ;
         }
     }
 

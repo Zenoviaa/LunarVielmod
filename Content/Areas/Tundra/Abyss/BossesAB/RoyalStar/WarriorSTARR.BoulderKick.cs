@@ -35,9 +35,11 @@ public partial class WarriorSTARR
         //Gotta make sure he's always facing the boulders, so he can't swap the way he's punching when he does this attack
         if(AttackCycle < 2)
         {
-            FaceTarget();
+       
             _kickPunchDirection = Vector2.UnitX * NPC.spriteDirection;
         }
+        FaceTarget();
+
         switch (AttackCycle)
         {
             case 0:
@@ -87,7 +89,11 @@ public partial class WarriorSTARR
                                     firer.damage /= 2;
                                 firer.ai1 = i;
                                 firer.ai2 = -10;
-                                firer.New();
+                                var proj = firer.NewDirect();
+                                if(proj is STARBOULDER starBoulder)
+                                {
+                                    starBoulder.parentIndex = NPC.whoAmI;
+                                }
                             }
                         }
                     }

@@ -3,7 +3,6 @@ using System;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
-
 public struct FeatherDustData : IParticleData
 {
     public static readonly FeatherDustData Default = new FeatherDustData { timeLeft = 240, scale = 1f };

@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Projectiles;
 public class STARDISC : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
+    private ref float BounceCount => ref Projectile.ai[1];
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -66,10 +67,10 @@ public class STARDISC : ModProjectile
             });
         }
 
-        if(Timer % 8 == 0)
+        if(Timer % 16 == 0)
         {
             var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(48, 48), Vector2.Zero);
-            sp.innerColor = Color.PaleGoldenrod;
+            sp.innerColor = Color.Gold;
             sp.outerColor = Color.DarkOrange;
             sp.gravity = 0;
             sp.dampening = 0f;
@@ -96,7 +97,10 @@ public class STARDISC : ModProjectile
 
     private void BounceEffect()
     {
-        for(int i = 0; i < 8; i++)
+        BounceCount++;
+        if (BounceCount >= 3)
+            Projectile.Kill();
+        for (int i = 0; i < 8; i++)
         {
             var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(48, 48), Main.rand.NextVector2CircularEdge(6, 6));
             sp.innerColor = Color.PaleGoldenrod;

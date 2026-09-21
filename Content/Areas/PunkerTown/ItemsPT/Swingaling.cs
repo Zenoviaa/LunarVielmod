@@ -31,7 +31,7 @@ public class Swingaling : BaseSwingItemV2
         Item.shoot = ModContent.ProjectileType<SwingalingSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<SwingalingCharge>();
         meleeWeaponType = MeleeWeaponType.Sword;
-        staminaCost = 3;
+        staminaCost = 2;
     }
 
     public override void AddRecipes()

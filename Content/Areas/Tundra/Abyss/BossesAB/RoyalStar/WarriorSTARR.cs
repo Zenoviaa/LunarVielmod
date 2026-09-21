@@ -204,6 +204,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ROYALSTARR");
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
+       
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -302,6 +303,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, _afterImages ? 1f : 0f, 0.1f);
         this.SetDrawOrigin(new Vector2(68, 114));
         _outliner.Update();
+        Lighting.AddLight(NPC.Center, TorchID.Torch);
     }
 
     private void AI_Phase2Transition()
@@ -425,6 +427,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
 
             //SwitchState(AIState.CommandGrab);
         }
+
     }
 
 

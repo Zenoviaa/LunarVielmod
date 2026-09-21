@@ -27,12 +27,14 @@ public class STARBOULDER : ModProjectile, IDrawToRenderTarget
     }
     private ref float Index => ref Projectile.ai[1];
     private ref float Kick => ref Projectile.ai[2];
+    public int parentIndex;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.Write(_isFlying);
         writer.Write(_timer);
         writer.Write(_spawnTimer);
+        writer.Write(parentIndex);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -40,6 +42,7 @@ public class STARBOULDER : ModProjectile, IDrawToRenderTarget
         _isFlying = reader.ReadBoolean();
         _timer = reader.ReadSingle();
         _spawnTimer = reader.ReadSingle();
+        parentIndex = reader.ReadInt32();
     }
 
 
@@ -105,6 +108,11 @@ public class STARBOULDER : ModProjectile, IDrawToRenderTarget
                 break;
         }
 
+        if (!_isFlying)
+        {
+            NPC parent = Main.npc[parentIndex];
+            Projectile.Center = parent.Bottom + Vector2.UnitX * parent.spriteDirection * 48 + -Vector2.UnitY * 1 * 36 + -Vector2.UnitY * 18;
+        }
 
         if (!_isFlying)
             return;

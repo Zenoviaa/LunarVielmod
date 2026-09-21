@@ -7,6 +7,7 @@ using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -286,7 +287,9 @@ public class GoldenLeafTileOverlayData : TileOverlayType
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(goldenLeafAsset, drawData.WorldPosition + new Vector2(8, -16));
         drawer.worldPosition += new Vector2(0, 24);
         drawer.sourceRect = frame;
-        drawer.CenterOrigin();
+        drawer.TopCenterOrigin();
+        drawer.worldPosition += new Vector2(0, -16);
+        drawer.rotation = ExtraMath.Osc(-0.12f, 0.12f, speed: 1, offset: drawData.WorldPosition.X);
         spriteBatch.Draw(drawer);
 
     }
@@ -411,6 +414,7 @@ public class TileOverlayRenderer : ModSystem
             return;
 
         DrawTileOverlays(Main.spriteBatch);
+
     }
 
 
@@ -434,6 +438,20 @@ public class TileOverlayRenderer : ModSystem
 
         if (spriteBatch.beginCalled)
         {
+            spriteBatch.End();
+        }
+
+        bool overlayed = Main.LocalPlayer.HeldItem.type == ModContent.ItemType<GrafittiSponge>();
+        if (overlayed)
+        {
+            spriteBatch.Begin(SpritebatchParams.InWorldAndZoomed());
+            foreach (TileOverlayDrawData drawData in DrawData)
+            {
+                Vector2 pos = drawData.WorldPosition;
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Core.TileOverlaySystem.GrafittiBox.Asset, pos);
+                drawer.color = Color.Red * ExtraMath.Osc(0.6f, 0.8f, 6);
+                spriteBatch.Draw(drawer);
+            }
             spriteBatch.End();
         }
     }
