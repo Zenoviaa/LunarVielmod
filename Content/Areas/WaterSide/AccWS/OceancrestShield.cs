@@ -1,99 +1,82 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Core;
 using Stellamod.Items;
-using Stellamod.Projectiles;
 using Terraria;
-using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.WaterSide.AccWS
+namespace Stellamod.Content.Areas.WaterSide.AccWS;
+
+public class OceanShieldPlayer : ModPlayer
 {
-    public class OceanShieldPlayer : ModPlayer
+    private int _cooldown;
+    public bool hasOceanShield;
+
+    public override void ResetEffects()
     {
-        private Projectile _waterShieldProj;
-        private int _cooldown;
-        public bool hasOceanShield;
+        hasOceanShield = false;
+    }
 
-        public override void ResetEffects()
+    public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+    {
+        base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
+        if (!hasOceanShield)
+            return;
+        if (drawInfo.shadow != 0)
+            return;
+        if (_cooldown > 0)
+            return;
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.WaterSide.AccWS.WaterShield.Asset, drawInfo.drawPlayer.Center);
+        drawer.scale *= ExtraMath.Osc(0.9f, 1f, speed: 3);
+        drawer.color.A = 0;
+        Main.spriteBatch.Draw(drawer);
+    }
+
+    public override void ModifyHurt(ref Player.HurtModifiers modifiers)
+    {
+     
+        if (hasOceanShield && modifiers.Dodgeable && _cooldown <= 0)
         {
-            hasOceanShield = false;
-        }
+            int cooldownInSeconds = 30;
+            int cooldownInTicks = cooldownInSeconds * 60;
 
-        public override void UpdateEquips()
-        {
-            if (Main.myPlayer != Player.whoAmI)
-                return;
-            if (hasOceanShield)
+            _cooldown = cooldownInTicks;
+            modifiers.FinalDamage *= 0f;
+
+            int count = 48;
+            float degreesPer = 360 / (float)count;
+            for (int k = 0; k < count; k++)
             {
-                if (_cooldown != 0)
-                {
-                    _cooldown--;
-                }
-                else if (_waterShieldProj == null || !_waterShieldProj.active)
-                {
-                    _waterShieldProj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-                        ModContent.ProjectileType<WaterShield>(), 0, 0, Player.whoAmI);
-                }
-                else
-                {
-                    _waterShieldProj.timeLeft = 60;
-                }
-            }
-            else if (_waterShieldProj != null && _waterShieldProj.active)
-            {
-                _waterShieldProj.Kill();
-                _waterShieldProj = null;
-            }
-        }
-
-        public override void ModifyHurt(ref Player.HurtModifiers modifiers)
-        {
-            if (hasOceanShield && modifiers.Dodgeable && _cooldown <= 0)
-            {
-                int cooldownInSeconds = 30;
-                int cooldownInTicks = cooldownInSeconds * 60;
-
-                _cooldown = cooldownInTicks;
-                modifiers.FinalDamage *= 0f;
-
-                int count = 48;
-                float degreesPer = 360 / (float)count;
-                for (int k = 0; k < count; k++)
-                {
-                    float degrees = k * degreesPer;
-                    Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
-                    Vector2 vel = direction * 4;
-                    Dust.NewDust(Player.Center, 1, 1, DustID.Water, vel.X, vel.Y);
-                }
-
-                _waterShieldProj.Kill();
-                _waterShieldProj = null;
+                float degrees = k * degreesPer;
+                Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
+                Vector2 vel = direction * 4;
+                Dust.NewDust(Player.Center, 1, 1, DustID.Water, vel.X, vel.Y);
             }
         }
     }
+}
 
-    public class OceancrestShield : ModItem
+public class OceancrestShield : ModItem
+{
+    public override void SetDefaults()
     {
-        public override void SetDefaults()
-        {
-            Item.width = 30;
-            Item.height = 42;
-            Item.accessory = true;
-            Item.defense = 4;
-            Item.rare = ItemRarityID.LightRed;
-            Item.value = Item.sellPrice(gold: 2);
-        }
+        Item.width = 30;
+        Item.height = 42;
+        Item.accessory = true;
+        Item.defense = 4;
+        Item.rare = ItemRarityID.LightRed;
+        Item.value = Item.sellPrice(gold: 2);
+    }
 
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
-            player.GetModPlayer<OceanShieldPlayer>().hasOceanShield = true;
-        }
+    public override void UpdateAccessory(Player player, bool hideVisual)
+    {
+        player.GetModPlayer<OceanShieldPlayer>().hasOceanShield = true;
+    }
 
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            this.RegisterBrew<MusicalHarmonise, BlankAccessory>();
-        }
+    public override void AddRecipes()
+    {
+        base.AddRecipes();
+        this.RegisterBrew<MusicalHarmonise, BlankAccessory>();
     }
 }

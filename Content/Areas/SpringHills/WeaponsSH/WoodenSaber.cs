@@ -98,7 +98,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
                 WindColor = Color.Green,
                 LightColor = Color.LightGreen,
                 RimHighlightColor = Color.White,
-                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive
+                BlendState = BlendState.Additive
             };
             var SlashTrailer = new SlashTrailer();
             SlashTrailer.TrailWidthFunction = GetTrailWidth;
@@ -119,8 +119,8 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
             Add(new OvalSwing
             {
-                Duration = 60,
-                XSwingRadius = 84,
+                Duration = 32,
+                XSwingRadius = 64,
                 YSwingRadius = 42,
                 SwingDegrees = 720,
                 Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
@@ -129,8 +129,8 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
             Add(new OvalSwing
             {
-                Duration = 60,
-                XSwingRadius = 72,
+                Duration = 32,
+                XSwingRadius = 64,
                 YSwingRadius = 36,
                 SwingDegrees = 720,
                 Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
@@ -140,10 +140,32 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
             Add(new OvalSwing
             {
-                Duration = 60,
-                XSwingRadius = 72,
+                Duration = 32,
+                XSwingRadius = 80,
                 YSwingRadius = 36,
                 SwingDegrees = 720,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound2,
+            });
+
+
+            Add(new OvalSwing
+            {
+                Duration = 32,
+                XSwingRadius = 80,
+                YSwingRadius = 36,
+                SwingDegrees = 720,
+                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
+                Sound = swingSound2,
+            });
+
+
+            Add(new OvalSwing
+            {
+                Duration = 32,
+                XSwingRadius = 100,
+                YSwingRadius = 36,
+                SwingDegrees = 1080,
                 Easing = (float lerpValue) => Easing.InOutExpo(lerpValue),
                 Sound = swingSound2,
             });
@@ -174,19 +196,29 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
             SoundStyle spearHit2 = SoundRegistry.NSwordHit1;
             spearHit2.PitchVariance = 0.2f;
+            spearHit2.Volume = 0.3f;
+            spearHit2.Pitch = -0.5f;
             SoundEngine.PlaySound(spearHit2, Projectile.position);
 
-            modifiers.FinalDamage *= 3;
+            modifiers.FinalDamage *= 4;
             modifiers.Knockback *= 4;
         }
 
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+            if (!this.OwnedByLocalClient())
+                return;
+            if (isChildProjectile)
+                return;
             ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
             int combo = (int)(ComboIndex + 1);
             int dir = comboPlayer.ComboDirection;
-            if (ComboIndex < 2)
+            if (dir == -1)
+                dir = 1;
+            else
+                dir = -1;
+            if (ComboIndex < 4)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity, Projectile.type, Projectile.damage, Projectile.knockBack,
                             Owner.whoAmI, ai2: combo, ai1: dir);

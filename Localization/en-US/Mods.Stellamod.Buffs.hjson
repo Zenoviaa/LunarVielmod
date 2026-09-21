@@ -64,8 +64,8 @@ HMMinionBuff: {
 }
 
 FCMinionBuff: {
-	Description: Getting powerful now aren't we?
-	DisplayName: F C Buff
+	Description: A foresty bow aids you!
+	DisplayName: Forest Core
 }
 
 DripplerMinionBuff: {

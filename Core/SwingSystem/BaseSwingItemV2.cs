@@ -171,7 +171,7 @@ namespace Stellamod.Core.SwingSystem
                 int combo = comboPlayer.StaminaComboCounter;
                 int dir = comboPlayer.ComboDirection;
 
-                Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
+                Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, staminaDamage, knockback,
                     player.whoAmI, ai1: dir, ai2: combo);
                 if (p.ModProjectile is BaseSwingProjectileV2 swingV2)
                 {

@@ -45,15 +45,22 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             base.DefineCombo();
             SlashTrailer slashTrailer = TrailPresets.CreateIvynSlashTrail();
             slashTrailer.TrailWidthFunction = GetTrailWidth;
+            slashTrailer.TrailColorFunction = GetTrailColor;
+            slashTrailer.invert = SwingDirection == -1;
             Trailer = slashTrailer;
+           
             SwingV2Helper.AddHammerSwingStyle(this);
             useAfterImage = true;
             hitStopTime = 4 * EXTRA_UPDATE_COUNT;
         }
 
+        private Color GetTrailColor(float interpolant)
+        {
+            return Color.Lerp(Color.Transparent, Color.White, interpolant);
+        }
         private float GetTrailWidth(float interpolant)
         {
-            return EasingFunction.QuadraticBump(interpolant) * 8;
+            return MathHelper.SmoothStep(18, 9, interpolant); //(interpolant) * 16;
         }
 
         public override void AI()
@@ -90,8 +97,8 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             if (!_hit)
             {
                 Bounce(8);
-                FXUtil.ShakeCamera(target.Center, 1024, 16);
-                FXUtil.PunchCamera(target.Center, Projectile.velocity, 0.5f, 2, 30);
+                FXUtil.ShakeCamera(target.Center, 1024, 8);
+                FXUtil.PunchCamera(target.Center, Projectile.velocity, 0.5f, 2, 15);
                 _hit = true;
             }
         }
