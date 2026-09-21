@@ -4,6 +4,7 @@ using Stellamod.Common.Players;
 using Stellamod.Common.WaypointSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
+using Stellamod.Content.Areas.Tundra.Abyss;
 using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Stellamod.Core;
 using Stellamod.Core.PlayerLevelingSystem;
@@ -65,6 +66,15 @@ namespace Stellamod
             byte player;
             switch (id)
             {
+                case MessageType.RequestWaterfallData:
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        FancyWaterfalls.HandleRequestPacket(reader, whoAmI);
+                    }
+                    break;
+                case MessageType.WaterfallSync:
+                    FancyWaterfalls.ReceiveWaterfallSync(reader, whoAmI);
+                    break;
                 case MessageType.TileOverlaySync:
                     TileOverlayUtility.ReceiveTileOverlaySync(reader, whoAmI);
                     break;

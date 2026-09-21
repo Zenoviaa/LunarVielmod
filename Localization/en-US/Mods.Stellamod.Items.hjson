@@ -12219,3 +12219,8 @@ RoyalSwirlyWallItem: {
 	DisplayName: Royal Swirly Wall
 	Tooltip: ""
 }
+
+WaterfallMaker: {
+	DisplayName: Waterfall Maker
+	Tooltip: ""
+}

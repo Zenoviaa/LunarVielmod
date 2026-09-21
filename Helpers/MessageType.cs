@@ -42,7 +42,10 @@
         RequestZTileData,
 
         RequestTileOverlayData,
-        TileOverlaySync
+        TileOverlaySync,
+
+        RequestWaterfallData,
+        WaterfallSync
     }
 
     public enum DialogueType : byte

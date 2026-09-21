@@ -9,13 +9,13 @@ using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
-using Terraria.Utilities;
+using Terraria.WorldBuilding;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss;
-
 
 public struct WaterfallDraw
 {
@@ -24,13 +24,12 @@ public struct WaterfallDraw
 }
 
 
+
 [Autoload(Side = ModSide.Client)]
 public class AbyssEffectsRenderer : ModSystem
 {
     private float _thickFogAlpha;
     private Vector2 _abyssWaterFall;
-    
-    private int _renderCountdown;
     public Vector2 sceneWaterfallPos;
 
     /// <summary>
@@ -43,11 +42,6 @@ public class AbyssEffectsRenderer : ModSystem
     /// All waterfalls that should be rendered to the screen
     /// </summary>
     public static readonly List<WaterfallDraw> AbyssWaterfallPoints = new();
-    
-    /// <summary>
-    /// All waterfalls in the world
-    /// </summary>
-    public static readonly List<WaterfallDraw> AllWaterfalls = new();
     public static readonly List<Action> OverWater = new();
     public override void Load()
     {
@@ -180,7 +174,9 @@ public class AbyssEffectsRenderer : ModSystem
     private void ResetSpecialPoints(On_Main.orig_RenderTiles orig, Main self)
     {
 
+        /*
         ref bool justEnteredAbyss = ref Main.LocalPlayer.GetModPlayer<BiomePlayer>().justEnteredAbyss;
+        //This should be the generate waterfalls pass
         if (justEnteredAbyss)
         {
             AllWaterfalls.Clear();
@@ -207,32 +203,7 @@ public class AbyssEffectsRenderer : ModSystem
                     }
                 }
             }
-            /*
-            (Point tl, Point bottomRight) = TileUtilities.CameraTileBounds(900);
-            tl.Y += 1;
-            for (int x = tl.X; x < bottomRight.X; x++)
-            {
-                for (int y = tl.Y; y < bottomRight.Y; y++)
-                {
-                    Tile tile = Main.tile[x, y];
-                    Tile tileAbove = Main.tile[x, y - 1];
-                    if (tile.LiquidAmount > 0 && !tileAbove.HasTile && tileAbove.LiquidAmount <= 0)
-                    {
-                        int w = 4;
-                        int h = 4;
-                        Rectangle rect = new Rectangle(x - w / 2, y, w, h);
-                        rect = TileUtilities.Clamp(rect);
-                        float pct = VeilGen.CountLiquidsPercent(rect);
-                        if (pct > 0.35f)
-                        {
-                            ScanUpforWaterfall(x, y);
-                        }
-                    }
-                }
-            }*/
-
-         //   watch.Stop();
-        }
+        }*/
 
         orig(self);
 
@@ -266,54 +237,42 @@ public class AbyssEffectsRenderer : ModSystem
     }
 
 
-    private void ScanUpforWaterfall(int i, int j)
-    {
-        (Point ceil, int steps) = TileUtilities.FindCeiling(i, j, 64);
-        if (steps == -1)
-            return;
-        int range = 8;
-        Rectangle solidRect = new Rectangle(ceil.X - range/ 2, ceil.Y - range / 2, range, range);
-        float percent = VeilGen.CountSolidsPercent(solidRect);
-        if (percent < 0.5f)
-            return;
-        if (steps > 30)
-        {
-            Point bottom = ceil + new Point(0, steps);
-
-            Vector2 topWorld = ceil.ToWorldCoordinates();
-            Vector2 bottomWorld = bottom.ToWorldCoordinates();
-            Rectangle rect = new Rectangle((int)topWorld.X, (int)topWorld.Y, 32, (int)(bottomWorld.Y - topWorld.Y));
-            rect.Height -= 8;
-            rect = rect.CenterPad(32);
-
-            WaterfallDraw waterfallDraw = new WaterfallDraw
-            {
-                waterfallRect = rect,
-                waterfallColor = LunarColor.AbyssWaterfall * 0.35f * ExtraMath.Osc(0.7f, 1f, speed: 0, offset: rect.X)
-            };
-
-            AllWaterfalls.Add(waterfallDraw);
-        }
-    }
-
     private void FindWaterfallsToRender()
     {
-  
+
         Rectangle screnRect = new Rectangle(
             (int)Main.screenPosition.X,
             (int)Main.screenPosition.Y,
             Main.screenWidth,
             Main.screenHeight);
-        screnRect = screnRect.CenterPad(512);
+        screnRect = screnRect.CenterPad(1900);
+
+
         AbyssWaterfallPoints.Clear();
-        foreach(var wf in AllWaterfalls)
+
+
+        Point location = new Vector2(screnRect.Location.X, screnRect.Location.Y).ToTileCoordinates();
+        Point size = new Point(screnRect.Width / 16, screnRect.Height / 16);
+        Rectangle tileRect = new Rectangle(location.X, location.Y, size.X, size.Y);
+
+        foreach (var waterfall in FancyWaterfalls.FancyWaterfallPoints)
         {
-            var crashRect = wf.waterfallRect;
-            if (!screnRect.Intersects(crashRect) && !screnRect.Contains(crashRect))
+            if (!tileRect.Contains(waterfall.TilePoint))
                 continue;
-            AbyssWaterfallPoints.Add(wf);
+
+            Point bottom = waterfall.TilePoint + new Point(0, waterfall.FallHeight);
+            Vector2 topWorld = waterfall.TilePoint.ToWorldCoordinates();
+            Vector2 bottomWorld = bottom.ToWorldCoordinates();
+            Rectangle rect = new Rectangle((int)topWorld.X, (int)topWorld.Y, 16, (int)(bottomWorld.Y - topWorld.Y));
+            rect.Height -= 8;
+            rect = rect.CenterPad(32);
+            WaterfallDraw waterfallDraw = new WaterfallDraw
+            {
+                waterfallRect = rect,
+                waterfallColor = LunarColor.AbyssWaterfall * 0.35f * ExtraMath.Osc(0.7f, 1f, speed: 0, offset: rect.X)
+            };
+            AbyssWaterfallPoints.Add(waterfallDraw);
         }
-   
     }
 
     public override void PostUpdateEverything()
@@ -323,10 +282,6 @@ public class AbyssEffectsRenderer : ModSystem
         if (BellFlowerSystem.WhisperingCountdown > 0)
             targetAlpha = 0;
         _thickFogAlpha = MathHelper.Lerp(_thickFogAlpha, targetAlpha, 0.05f);
-        if (AllWaterfalls.Count <= 0)
-            return;
-        if (!BiomeWaterfallsAvailable())
-            return;
 
 
         float gameUpdateCount = Main.GameUpdateCount;
@@ -339,11 +294,9 @@ public class AbyssEffectsRenderer : ModSystem
         if (AbyssWaterfallPoints.Count <= 0)
             return;
 
-        foreach (var wf in AbyssWaterfallPoints)
+        foreach (WaterfallDraw wf in AbyssWaterfallPoints)
         {
-            var crashRect = wf.waterfallRect;
-
- 
+            Rectangle crashRect = wf.waterfallRect;
             if (rand.Next(0, 16) != 0)
                 continue;
 

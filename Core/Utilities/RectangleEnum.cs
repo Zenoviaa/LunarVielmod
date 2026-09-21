@@ -25,19 +25,19 @@ public struct RectangleEnum : IEnumerator
     public Rectangle _rectangle;
     public RectangleEnum(in Rectangle orientation)
     {
-        _y = _rectangle.Top - 1;
-        _x = _rectangle.Left;
+        _y = - 1;
+        _x = 0;
         _rectangle = orientation;
     }
 
     public bool MoveNext()
     {
         _y++;
-        if (_y >= _rectangle.Bottom)
+        if (_y >= _rectangle.Height)
         {
             _y = 0;
             _x++;
-            if (_x >= _rectangle.Right)
+            if (_x >= _rectangle.Width)
                 return false;
         }
         return true;
@@ -61,7 +61,7 @@ public struct RectangleEnum : IEnumerator
     {
         get
         {
-            return new Point(_x, _y);
+            return _rectangle.Location + new Point(_x, _y);
         }
     }
 }

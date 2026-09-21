@@ -92,22 +92,16 @@ public class TileOverlayUtility : ModSystem
     {
         //This should loop over the world, appending points and when it gets to big it cuts it off and goes next
         List<Point> points = new List<Point>();
-        for (int x = 0; x < Main.maxTilesX; x++)
+        foreach(var kvp in PlacedTileOverlays)
         {
-            for (int y = 0; y < Main.maxTilesY; y++)
+            points.Add(kvp.Key);
+            if (points.Count >= 2000)
             {
-                Point tilePoint = new Point(x, y);
-                if (PlacedTileOverlays.ContainsKey(tilePoint))
-                {
-                    points.Add(tilePoint);
-                    if (points.Count >= 2000)
-                    {
-                        SendTileOverlayData(whoAmI, -1, Rectangle.Empty, points);
-                        points.Clear();
-                    }
-                }
+                SendTileOverlayData(whoAmI, -1, Rectangle.Empty, points);
+                points.Clear();
             }
         }
+
         if(points.Count > 0)
         {
             SendTileOverlayData(whoAmI, -1, Rectangle.Empty, points);

@@ -180,6 +180,7 @@ public partial class VeilGen
         int numBellFlowers = 5;
         _placedAbyssFlowers.Clear();
         BellFlowerSystem.ClearBellFlowers();
+
         bool IsCloseToAFlower(Point p, int distance)
         {
             int dq = distance * distance;
@@ -557,6 +558,32 @@ public partial class VeilGen
 
         TileID.Sets.CanBeClearedDuringGeneration[abyssTile] = false;
         TileID.Sets.CanBeClearedDuringOreRunner[abyssTile] = false;
+        FancyWaterfalls.FancyWaterfallPoints.Clear();
+        //Generate Waterfalls Here
+  
+        foreach (Point tilePoint in rect.Points)
+        {
+   
+            Tile tile = Main.tile[tilePoint];
+            Tile tileAbove = Main.tile[tilePoint + new Point(0, -1)];
+            if (tile.LiquidAmount > 0 && !tileAbove.HasTile && tileAbove.LiquidAmount <= 0)
+            {
+                int w = 4;
+                int h = 4;
+                Rectangle countRect = new Rectangle(tilePoint.X - w / 2, tilePoint.Y, w, h);
+                countRect = TileUtilities.Clamp(countRect);
+                float pct = VeilGen.CountLiquidsPercent(countRect);
+                if (pct > 0.35f)
+                {
+                    int wfFall = ScanUpforWaterfall(tilePoint.X, tilePoint.Y);
+                    if(wfFall != -1)
+                    {
+                    
+                        FancyWaterfalls.PlaceWaterfall(tilePoint + new Point(0, -wfFall), wfFall);
+                    }
+                }
+            }
+        }
         /*
         if (!WorldGen.SkipFramingBecauseOfGen)
         {
@@ -576,6 +603,23 @@ public partial class VeilGen
         }*/
     }
 
+    public static int ScanUpforWaterfall(int i, int j)
+    {
+        (Point ceil, int steps) = TileUtilities.FindCeiling(i, j, 64);
+        if (steps == -1)
+            return -1;
+        int range = 8;
+        Rectangle solidRect = new Rectangle(ceil.X - range / 2, ceil.Y - range / 2, range, range);
+        solidRect = TileUtilities.Clamp(solidRect);
+        float percent = VeilGen.CountSolidsPercent(solidRect);
+        if (percent < 0.5f)
+            return -1;
+        if (steps > 30)
+        {
+            return steps;
+        }
+        return -1;
+    }
     public static void GrowKelpInAbyss()
     {
         VeilGen.GrowKelpArea<AbyssalKelp>(AbyssRectangle, minHeight: 5, maxHeight: 9, denom: 7);
