@@ -183,5 +183,6 @@ public partial class WarriorSTARR
                 }
                 break;
         }
+        _canFakeOut = true;
     }
 }

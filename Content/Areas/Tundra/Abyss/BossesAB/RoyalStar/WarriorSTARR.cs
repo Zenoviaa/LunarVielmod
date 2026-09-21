@@ -433,7 +433,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
 
     private void AI_Idle()
     {
-        _canFakeOut = true;
+  
         Timer++;
         if(Timer == 1)
         {
