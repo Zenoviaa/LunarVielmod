@@ -11,9 +11,9 @@ public class GooberDialogueSpeaker :
     public GooberDialogueSpeaker(SpeechBubbleWrapper speechBubbleWrapper)
     {
         SpeechBubble = speechBubbleWrapper;
-        timeBetweenTexts = 3;
+        timeBetweenTexts = 2;
         _timer = 0;
-        talkingSound = AssetReferences.Assets.Sounds.AssassinsKnifeHit.Asset;
+        talkingSound = AssetReferences.Assets.Sounds.wow.Asset;
         isActive = true;
     }
     public bool isActive;

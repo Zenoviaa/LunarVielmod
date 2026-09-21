@@ -5,8 +5,8 @@ float height;
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     float2 uv = coords;
-    uv.x = floor(uv.x * width) / width;
-    uv.y = floor(uv.y * height) / height;
+    uv.x = round(uv.x * width) / width;
+    uv.y = round(uv.y * height) / height;
     return tex2D(uImage0, uv) * sampleColor;
 }
 

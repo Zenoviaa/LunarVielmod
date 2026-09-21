@@ -25,6 +25,14 @@ public class RenderTargets : ModSystem
     });
 
     /// <summary>
+    /// A render target that's pretty small
+    /// </summary>
+    public static readonly RenderTargetPool SpeechBubbleTarget = new RenderTargetPool(() =>
+    {
+        return RenderTargetParameters.DefaultScreenTarget with { Width = 256, Height = 256 };
+    });
+
+    /// <summary>
     /// A render target that matches half the screen size
     /// </summary>
     public static readonly RenderTargetPool HalfScreenTarget = new RenderTargetPool(RenderTargetParameters.DownsizedFunc(2));
@@ -67,7 +75,8 @@ public class RenderTargets : ModSystem
         TileTarget,
         EigthScreenTarget,
         WaterTarget,
-        HalfWaterTargets
+        HalfWaterTargets,
+        SpeechBubbleTarget
     };
 
     /// <summary>

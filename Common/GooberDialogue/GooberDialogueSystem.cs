@@ -90,24 +90,29 @@ public class GooberDialogueSystem : ModSystem
 
 
 
-        RenderTargetHandle pixelTarget = RenderTargets.HalfScreenTarget;
-        RenderTargetHandle boxRenderTarget = RenderTargets.ScreenTarget;
-        RenderTargetHandle boxRenderTargetSwap = RenderTargets.ScreenTarget;
-        PrepareSpeechBubbleContent(pixelTarget, boxRenderTarget, boxRenderTargetSwap);
-
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-        spriteBatch.Draw(pixelTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-        spriteBatch.End();
-
-        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.PortraitLine.Asset, Vector2.Zero);
-        SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.DialogueArrow.Asset, Vector2.Zero);
-        SpritebatchParams worldParams = SpritebatchParams.InWorldAndZoomed();
-        spriteBatch.Begin(worldParams);
-        foreach (var bubble in _speechBubbles)
+        //I think what we're going to do here is just render each bubble individually
+        //We're not going to make a ton of bubbles so doing them one at a time is probably fine?
+        foreach(var bubble in _speechBubbles)
         {
+            RenderTargetHandle pixelTarget = RenderTargets.HalfScreenTarget;
+            RenderTargetHandle boxRenderTarget = RenderTargets.ScreenTarget;
+            RenderTargetHandle boxRenderTargetSwap = RenderTargets.ScreenTarget;
+
+            RenderDialogueBoxToPixelTarget(bubble, pixelTarget, boxRenderTarget, boxRenderTargetSwap);
+
+
+            var spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+            spriteBatch.Draw(pixelTarget,Vector2.Zero, null, Color.White, 0, Vector2.Zero,  2 * bubble.Scale, SpriteEffects.None, 0);
+            spriteBatch.End();
+
+            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.PortraitLine.Asset, Vector2.Zero);
+            SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.DialogueArrow.Asset, Vector2.Zero);
+            SpritebatchParams worldParams = SpritebatchParams.InWorldAndZoomed();
+            spriteBatch.Begin(worldParams);
             var portraitDrawer = SpritebatchDrawer.FromTextureAsset(bubble.parameters.portraitTextureAsset, bubble.parameters.bubblePosition + new Vector2(-3, -48));
             portraitDrawer.color = Color.White;
+            portraitDrawer.scale = Vector2.One * bubble.Scale;
             spriteBatch.Draw(portraitDrawer);
 
             lineDrawer.worldPosition = bubble.parameters.bubblePosition + new Vector2(0, 2);
@@ -115,25 +120,24 @@ public class GooberDialogueSystem : ModSystem
             spriteBatch.Draw(lineDrawer);
 
             arrowDrawer.worldPosition = bubble.parameters.bubblePosition + new Vector2(368, 85);
-            arrowDrawer.color = Color.White;
+            arrowDrawer.color = Color.White * ExtraMath.Osc(0.8f, 1f, speed: 3);
             spriteBatch.Draw(arrowDrawer);
-        }
-        spriteBatch.End();
-        spriteBatch.Begin(
-            SpriteSortMode.Deferred, 
-            BlendState.AlphaBlend, 
-            SamplerState.LinearClamp, 
-            DepthStencilState.None,
-            RasterizerState.CullNone, 
-            null, 
-            Main.GameViewMatrix.TransformationMatrix);
-        foreach (var bubble in _speechBubbles)
-        {
+            spriteBatch.End();
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.LinearClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                null,
+                Main.GameViewMatrix.TransformationMatrix);
             if (!string.IsNullOrEmpty(bubble.parameters.text))
             {
+                var chatText = bubble.parameters.text;
+                chatText = chatText.Substring(0, bubble.parameters.textIndex);
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch,
                     FontAssets.DeathText.Value,
-                    bubble.parameters.text,
+                    chatText,
                     bubble.parameters.bubblePosition - Main.screenPosition + new Vector2(32, 0),
                     Color.White,
                     0,
@@ -153,8 +157,10 @@ public class GooberDialogueSystem : ModSystem
                     Vector2.One * 0.75f,
                     maxWidth: 128);
             }
+            spriteBatch.End();
         }
-        spriteBatch.End();
+
+
     }
 
 
@@ -193,7 +199,7 @@ public class GooberDialogueSystem : ModSystem
     {
         foreach (var bubble in _speechBubbles)
         {
-            RenderDialogueBoxToPixelTarget(bubble, pixelTarget, boxRenderTarget, boxRenderTargetSwap);
+  
         }
     }
 

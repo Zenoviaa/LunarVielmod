@@ -170,7 +170,11 @@ public static class DrawUtilities
             else
             {
                 float d2 = Vector2.DistanceSquared(cur, prevAddedPoint);
+                if (d2 < 4)
+                    continue;
+
                 prevAddedPoint = cur;
+     
                 prunedPoints.Add(cur);
             }
 

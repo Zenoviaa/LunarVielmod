@@ -20,3 +20,7 @@ Cave entrance to the area, put fog over it
 * We can do this by storing the connection points we had when generating the abyss and picking a location that's at least decently far to connect to
 
 Bigger Fish Rack sprite
+
+Bunny Storm
+* Make his bunnies form the shape of the attack he's doing instead of having the glow mask over top
+* We could manually set the points, that'd likely be the easiest way to do it, another way is to try generating a mesh 

@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Microsoft.Xna.Framework.Input;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.ZTileSystem;
 using System;
@@ -43,6 +44,41 @@ public class PixelTarget
     public void QueuePrimitiveDrawAction(PrimitivesDrawAction action)
     {
         _primitivesActionsQueue.Enqueue(action);
+    }
+    private void PrepareContent(RenderTargetHandle screenTarget)
+    {
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        GraphicsDevice graphicsDevice = spriteBatch.graphicsDevice;
+        using (new RenderTargetContext(screenTarget))
+        {
+            //Primitives cannot draw within the spritebatch cause they modify the graphics state
+            //Which would cause inconsistent results if they drew within the spritebatch
+            //To get around this we just have them draw before
+            while (_primitivesActionsQueue.Count > 0)
+            {
+                graphicsDevice.RasterizerState = RasterizerState.CullNone;
+                PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
+                drawAction(graphicsDevice);
+                _renderCount++;
+            }
+
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                Main.Rasterizer,
+                null,
+                Main.GameViewMatrix.TransformationMatrix);
+
+            while (_spritebatchActionsQueue.Count > 0)
+            {
+                SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
+                drawAction(spriteBatch, Main.screenPosition);
+                _renderCount++;
+            }
+            spriteBatch.End();
+        }
     }
 
     private void PreparePixelatedContent(RenderTargetHandle screenTarget, RenderTargetHandle halfScreenTarget)
@@ -90,14 +126,8 @@ public class PixelTarget
 
     }
 
-    public void DrawToScreen()
+    private void DrawToScreenRTPixelate()
     {
-        //Prepared Pixelated Content
-        _renderCount = 0;
-        if (_primitivesActionsQueue.Count <= 0 && _spritebatchActionsQueue.Count <= 0)
-        {
-            return;
-        }
 
         RenderTargetHandle screenTarget = _mipMap ? RenderTargets.ScreenTargetMipMapped : RenderTargets.ScreenTarget;
         RenderTargetHandle halfScreenTarget = RenderTargets.HalfScreenTarget;
@@ -111,10 +141,10 @@ public class PixelTarget
             outlinePass.Apply();
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
-                _blendState, 
-                SamplerState.PointClamp, 
-                DepthStencilState.None, 
-                Main.Rasterizer, 
+                _blendState,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                Main.Rasterizer,
                 outlinePass.Shader);
             spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, outlineColor.Value, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
             spriteBatch.End();
@@ -122,16 +152,70 @@ public class PixelTarget
         else
         {
             spriteBatch.Begin(
-                SpriteSortMode.Deferred, 
-                _blendState, 
-                SamplerState.PointClamp, 
-                DepthStencilState.None, 
-                Main.Rasterizer, 
+                SpriteSortMode.Deferred,
+                _blendState,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                Main.Rasterizer,
                 null);
             spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
             spriteBatch.End();
         }
 
+    }
+
+    private void DrawToScreenShaderPixelate()
+    {
+        RenderTargetHandle screenTarget = _mipMap ? RenderTargets.ScreenTargetMipMapped : RenderTargets.ScreenTarget;
+        PrepareContent(screenTarget);
+        if (outlineColor.HasValue)
+        {
+            var pixelattePass = AssetReferences.Effects.CrystalShaders.PixelateWithOutline.CreatePixelPass();
+            pixelattePass.Parameters.width = screenTarget.Width / _downSamples;
+            pixelattePass.Parameters.height = screenTarget.Height / _downSamples;
+            pixelattePass.Parameters.texelSize = screenTarget.Target.GetTexelSize() * 2;
+            pixelattePass.Apply();
+            var spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                _blendState,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                Main.Rasterizer,
+                pixelattePass.Shader);
+            spriteBatch.Draw(screenTarget, Vector2.Zero, null, outlineColor.Value, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.End();
+        }
+        else
+        {
+            var pixelattePass = AssetReferences.Effects.CrystalShaders.Pixelate.CreatePixelPass();
+            pixelattePass.Parameters.width = screenTarget.Width / _downSamples;
+            pixelattePass.Parameters.height = screenTarget.Height / _downSamples;
+            pixelattePass.Apply();
+            var spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                _blendState,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                Main.Rasterizer,
+                pixelattePass.Shader);
+            spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.End();
+        }
+
+
+    }
+    public void DrawToScreen()
+    {
+        //Prepared Pixelated Content
+        _renderCount = 0;
+        if (_primitivesActionsQueue.Count <= 0 && _spritebatchActionsQueue.Count <= 0)
+        {
+            return;
+        }
+
+        DrawToScreenShaderPixelate();
     }
     public void DrawToScreenNoRestart()
     {
