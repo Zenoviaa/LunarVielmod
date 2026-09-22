@@ -20,9 +20,10 @@ namespace Stellamod.Common.BossBannerSystem
         private UIGrid _slotGrid;
         private FancyScrollbar _scrollbar;
         private BossPageUI _pageUI;
-        public BossTabUI(BossPageUI pageUI) : base()
+        public BossTabUI(BossPageUI pageUI, FancyScrollbar scrollbar) : base()
         {
             _pageUI = pageUI;
+            _scrollbar = scrollbar;
         }
 
         public int RelativeLeft => UIHelper.BookLeftPageX;
@@ -51,7 +52,7 @@ namespace Stellamod.Common.BossBannerSystem
 
             _panel.Append(_slotGrid);
 
-            _scrollbar = new FancyScrollbar();
+   
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(340, 0);
             _scrollbar.Left.Set(0, 0.98f);
@@ -59,7 +60,7 @@ namespace Stellamod.Common.BossBannerSystem
 
             float maxViewSize = 48 * 8f;
             _scrollbar.SetView(0, maxViewSize);
-            Append(_scrollbar);
+//            Append(_scrollbar);
 
 
             _uiList = new UIList();
@@ -103,8 +104,12 @@ namespace Stellamod.Common.BossBannerSystem
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-            UIHelper.SizePanelandScrollbar(_scrollbar, _panel, Height.Pixels, _slotGrid.GetTotalHeight());
-        }
+
+            _scrollbar.Left.Set(0, 0);
+            _scrollbar.Top.Set(0, 0);
+            _scrollbar.Left.Pixels = Left.Pixels + 300;
+            UIHelper.SizePanelandScrollbar(_scrollbar, _panel, Height.Pixels, _slotGrid.GetTotalHeight(), Top.Pixels);
+         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {

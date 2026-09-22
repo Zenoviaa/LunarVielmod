@@ -82,15 +82,18 @@ namespace Stellamod.UI.CollectionSystem
     public class CollectionItemTabUIState : UIState
     {
         public CollectionItemTabUI ui;
+        public FancyScrollbar scrollbar;
         public CollectionItemTabUIState() : base()
         {
-
+        
         }
 
         public override void OnInitialize()
         {
-            ui = new CollectionItemTabUI();
+            scrollbar = new();
+            ui = new CollectionItemTabUI(scrollbar);
             Append(ui);
+            Append(scrollbar);
         }
     }
 }

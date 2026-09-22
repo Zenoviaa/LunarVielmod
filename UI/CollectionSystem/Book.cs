@@ -22,7 +22,7 @@ namespace Stellamod.UI.CollectionSystem
         }
 
         private State _state;
-        private float Scale => 2f;
+        private float Scale => 1f;
         public Book()
         {
             _state = State.Closed;
@@ -147,7 +147,7 @@ namespace Stellamod.UI.CollectionSystem
 
                 int offset = (int)(texture.Size().Y / 2);
                 Vector2 drawOrigin = texture.GetFrame(_frame, totalFrameCount: 10).Size() / 2f;
-                Vector2 centerPos = pos + drawOrigin;
+                Vector2 centerPos = pos + drawOrigin * 0.5f;
 
                 centerPos += Offset;
                 spriteBatch.Draw(texture, centerPos, texture.GetFrame(_frame, totalFrameCount: 10), Color.White, 0f, drawOrigin, Scale, SpriteEffects.None, 0f);

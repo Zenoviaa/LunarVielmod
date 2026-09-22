@@ -77,6 +77,25 @@ namespace Stellamod.Helpers
                 scrollbar.Top.Set(0, 0f);
             }
         }
+
+        public static void SizePanelandScrollbar(FancyScrollbar scrollbar, UIPanel panel, float height, float totalHeight, float pixelOffset)
+        {
+
+            panel.Height.Pixels = totalHeight + 32;
+            float progress = panel.Height.Pixels / height;
+            progress = MathHelper.Clamp(progress, 0f, 1f);
+            scrollbar.Height.Set(height * progress, 0);
+            //Hacky way to get invisible scrollbar when there's no need for it
+            if (panel.Height.Pixels < height)
+            {
+                scrollbar.Top.Set(500000, 0f);
+            }
+            else
+            {
+                scrollbar.Top.Set(0, 0f);
+                scrollbar.Top.Pixels = pixelOffset;
+            }
+        }
         /// <summary>
         /// Helper function for setting the mouse interface to true
         /// </summary>

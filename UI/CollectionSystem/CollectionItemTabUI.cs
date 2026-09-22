@@ -526,6 +526,10 @@ public class CollectionItemTabUI : UIPanel
 
     public int RelativeLeft => Main.screenWidth / 2 - width / 2 - 128;
     public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
+    public CollectionItemTabUI(FancyScrollbar scrollbar)
+    {
+        _scrollbar = scrollbar;
+    }
     public override void OnInitialize()
     {
         base.OnInitialize();
@@ -550,7 +554,7 @@ public class CollectionItemTabUI : UIPanel
 
         _panel.Append(_slotGrid);
 
-        _scrollbar = new FancyScrollbar();
+      //  _scrollbar = new FancyScrollbar();
         _scrollbar.Width.Set(20, 0);
         _scrollbar.Height.Set(340, 0);
         _scrollbar.Left.Set(0, 0.94f);
@@ -558,7 +562,7 @@ public class CollectionItemTabUI : UIPanel
 
         float maxViewSize = 48 * 8f;
         _scrollbar.SetView(0, maxViewSize);
-        Append(_scrollbar);
+     //   Append(_scrollbar);
 
 
         _uiList = new UIList();
@@ -603,12 +607,21 @@ public class CollectionItemTabUI : UIPanel
         base.Update(gameTime);
         //Constantly lock the UI in the position regardless of resolution changes
         Left.Pixels = RelativeLeft;
-        Top.Pixels = RelativeTop;
+        Top.Pixels = RelativeTop + 16;
 
+        _scrollbar.Left.Set(0, 0);
+        _scrollbar.Top.Set(0, 0);
+
+        _scrollbar.Left.Pixels = RelativeLeft + 340;
+        
+
+        _slotGrid.Top.Pixels = 0;
         _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
+      
         float progress = _panel.Height.Pixels / Height.Pixels;
         progress = MathHelper.Clamp(progress, 0f, 1f);
         _scrollbar.Height.Set(Height.Pixels * progress, 0);
+
 
         //Hacky way to get invisible scrollbar when there's no need for it
         if (_panel.Height.Pixels < Height.Pixels)
@@ -618,6 +631,7 @@ public class CollectionItemTabUI : UIPanel
         else
         {
             _scrollbar.Top.Set(0, 0f);
+            _scrollbar.Top.Pixels = RelativeTop + 12;
         }
 
     }

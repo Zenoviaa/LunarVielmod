@@ -5,9 +5,9 @@ BossPage: {
 }
 
 StoneGolemPage: {
-	DisplayName: Stone Golem
+	DisplayName: Stone Guardian
 	WhereToFind: Guarding the exit to the cave in Spring Hills
-	Lore: Birthed by your mom
+	Lore: A warrior of the great fallen Illuria given life by only what people can assume as a dying will. A protector that stomped on everyone alive.
 }
 
 BishininePage: {

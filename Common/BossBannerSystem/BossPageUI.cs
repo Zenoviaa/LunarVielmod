@@ -195,13 +195,13 @@ public class BossPageUI : RightPageUI
         Top.Pixels = RelativeTop;
 
         _bossRecordButton.Left.Set(-16, 1f);
-        _bossRecordButton.Top.Set(0, 0.1f);
+        _bossRecordButton.Top.Set(0, 0.52f);
 
         _bossPhotoUI.Top.Pixels = 32;
         _bossPhotoUI.Left.Pixels = 16;
 
         _displayNameText.Top.Pixels = 8;
-        _displayNameText.Left.Pixels = 8;
+        _displayNameText.Left.Pixels = 12;
         _glassUI.Top.Pixels = 210;
         _bossLoreUI.Top.Pixels = _glassUI.Top.Pixels;
         _bossLoreUI.Left.Pixels = _glassUI.Left.Pixels + 48;
@@ -211,7 +211,7 @@ public class BossPageUI : RightPageUI
 
         int width = BossPage.RequestBossIcon().Width();
         _bossStarsUI.Left.Pixels = width + 4;
-        _bossStarsUI.Top.Pixels = 48;
+        _bossStarsUI.Top.Pixels = 39;
 
         //rewards
         int padding = 64;
