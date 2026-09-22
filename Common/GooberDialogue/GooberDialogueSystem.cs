@@ -160,17 +160,6 @@ public class GooberDialogueSystem : ModSystem
             {
                 var chatText = bubble.speaker.text;
                 StringBuilder sb = new StringBuilder();
-                int index = Math.Min(bubble.speaker.textIndex, chatText.Length);
-                sb.Append(chatText.Substring(0, index));
-          
-                if(index < bubble.speaker.text.Length)
-                {
-                    sb.Append("[c/FFFF00:");
-                    sb.Append(bubble.speaker.text.Substring(index, bubble.speaker.text.Length - index));
-                    sb.Append("]");
-                }
-    
-                /*
                 for(int i = 0; i < chatText.Length; i++)
                 {
                     if (i < bubble.speaker.textIndex || chatText[i] == ' ')
@@ -184,7 +173,7 @@ public class GooberDialogueSystem : ModSystem
                         sb.Append("\u00A0");
 
                     }
-                }*/
+                }
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch,
                     FontAssets.DeathText.Value,
                     sb.ToString(),
