@@ -1,8 +1,6 @@
 # Moonspiral Tower, Abyss and Ice
-
 Finish the mini dialogue system for cutscenes
-* Block player inputs during a dialogue/cutscene?
-* In multiplayer, the person who started the cutscene should be the one required to progress it
+* Block player inputs during a dialogue/cutscene? only listen for control use item but don't allow using items
 
 Simple Networking Wrapper
 * Setting up with the multiplayer helper thing is a bit clunky, would be better if we could just define packets 
@@ -28,3 +26,7 @@ Bunny Storm
 * Add helper functions for generating edges of a trail, triangular, circular, etc, would prevent the need for making head sprites
 * Merge most math helper functions into one class for ease of use
 * Look into better circular primitives
+* Get rid of all the other asset registry systems and just use asset refs
+* Move all UI textures to Assets/Textures/UI and update asset refs, hardcode the height/width values when necessary instead of force loading the assets on load
+* Move all effect textures into Assets/Textures/VFX and update asset refs
+* I don't really like having both a Core and Common folder, move everything from Core to Common. Should be able to just do a global find replace of "Core" to "Common" and then move the scripts
