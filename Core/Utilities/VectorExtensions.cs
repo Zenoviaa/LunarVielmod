@@ -19,6 +19,7 @@ public static class VectorExtensions
         }
         arr[0] = newElement;
     }
+    public static Vector2 XY(this Vector3 vector3) => new Vector2(vector3.X, vector3.Y);
     public static Vector2 Resize(this Vector2 vector, float newLength)
     {
         return vector.SafeNormalize(Vector2.Zero) * newLength;

@@ -11,7 +11,7 @@ public class ZuiTestCutscene : ACutsceneType
     {
         ref var zuiSpeaker = ref CutsceneHandler.SpeakerNPCs[0];
         Add(GooberDialoguePresets.SpeechBubbleZui(
-            "Hey there little guy, did you get lost? Would you like to have some of my magic?", zuiSpeaker));
+            "Hey there little guy, did you get lost? Would you like to have some of my magic? Hey there little guy, did you get lost? Would you like to have some of my magic?Hey there little guy, did you get lost? Would you like to have some of my magic?Hey there little guy, did you get lost? Would you like to have some of my magic?", zuiSpeaker));
         Add(GooberDialoguePresets.SpeechBubbleZui(
             "Don't worry, I'm not going to kidnap you in my white van, not like I have one or anything...", zuiSpeaker));
         Add(GooberDialoguePresets.SpeechBubbleZui(

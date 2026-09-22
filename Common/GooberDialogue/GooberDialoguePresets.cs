@@ -12,7 +12,7 @@ public static class GooberDialoguePresets
         outlineColor = new Color(202, 68, 43),
         portraitTextureAsset = AssetReferences.Content.GooberPortraits.ZuiMiniPortrait.Asset,
         timeBetweenTexts = 2,
-        talkingSound = AssetReferences.Assets.Sounds.Voice.StellaTalk.Asset,
+        talkingSound = AssetReferences.Assets.Sounds.Voice.SpaeraTalk.Asset with { Volume = 0.07f },
         name = "Zui"
     };
 
