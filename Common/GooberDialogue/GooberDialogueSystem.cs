@@ -129,11 +129,13 @@ public class GooberDialogueSystem : ModSystem
             var portraitDrawer = SpritebatchDrawer.FromTextureAsset(bubble.speaker.profile.portraitTextureAsset, bubble.speaker.bubblePosition + new Vector2(-3, -48));
             portraitDrawer.color = Color.White;
             portraitDrawer.scale = Vector2.One * bubble.Scale;
+            portraitDrawer.rotation = MathHelper.ToRadians(-7);
             portraitDrawer.worldPosition += BubbleOffsetForElements;
             spriteBatch.Draw(portraitDrawer);
 
             lineDrawer.worldPosition = bubble.speaker.bubblePosition + new Vector2(0, 2);
             lineDrawer.worldPosition += BubbleOffsetForElements;
+            lineDrawer.rotation = MathHelper.ToRadians(-7);
             lineDrawer.color = Color.White;
             lineDrawer.scale *= bubble.Scale;
             spriteBatch.Draw(lineDrawer);
@@ -206,17 +208,38 @@ public class GooberDialogueSystem : ModSystem
 
     private void PrepareQuad(Vector2 anchorPoint, Vector2 size, Color startColor, Color endColor)
     {
+        float yRange = 4;
+        Vector3 topLeftOffset = new Vector3();
+        topLeftOffset.X = ExtraMath.Osc(-16f, 16f, speed: 1);
+        topLeftOffset.Y = ExtraMath.Osc(-yRange, yRange, speed: 1);
+
+        Vector3 topRightOffset = new Vector3();
+        topRightOffset.X = ExtraMath.Osc(-16f, 16f, speed: 1);
+        topRightOffset.Y = ExtraMath.Osc(-yRange, yRange, speed: 1, offset: 3.14f);
+
+        Vector3 bottomLeftOffset = new Vector3();
+        bottomLeftOffset.X = ExtraMath.Osc(-16f, 16f, speed: 1, offset: 3.14f);
+        bottomLeftOffset.Y = ExtraMath.Osc(-yRange, yRange, speed: 1);
+
+        Vector3 bottomRightOffset = new Vector3();
+        bottomRightOffset.X = ExtraMath.Osc(-16f, 16f, speed: 1, offset: 3.14f);
+        bottomRightOffset.Y = ExtraMath.Osc(-yRange, yRange, speed: 1, offset: 3.14f);
+
         //Top Left
-        _squareQuad.vertices[0] = new VertexPositionColorTexture(new Vector3(anchorPoint.X, anchorPoint.Y, 0), startColor, Vector2.Zero);
+        _squareQuad.vertices[0] = new VertexPositionColorTexture(
+            new Vector3(anchorPoint.X, anchorPoint.Y, 0) + topLeftOffset, startColor, Vector2.Zero);
 
         //Top Right
-        _squareQuad.vertices[1] = new VertexPositionColorTexture(new Vector3(anchorPoint.X + size.X, anchorPoint.Y - 48, 0), endColor, new Vector2(1, 0));
+        _squareQuad.vertices[1] = new VertexPositionColorTexture(
+            new Vector3(anchorPoint.X + size.X, anchorPoint.Y - 48, 0) + topRightOffset, endColor, new Vector2(1, 0));
 
         //Bottom Left
-        _squareQuad.vertices[2] = new VertexPositionColorTexture(new Vector3(anchorPoint.X + 16, anchorPoint.Y + size.Y - 48, 0), startColor, new Vector2(0, 1));
+        _squareQuad.vertices[2] = new VertexPositionColorTexture(
+            new Vector3(anchorPoint.X + 16, anchorPoint.Y + size.Y - 48, 0) + bottomLeftOffset, startColor, new Vector2(0, 1));
 
         //Bottom Right
-        _squareQuad.vertices[3] = new VertexPositionColorTexture(new Vector3(anchorPoint.X + size.X + 8, anchorPoint.Y + size.Y - 8, 0), endColor, Vector2.One);
+        _squareQuad.vertices[3] = new VertexPositionColorTexture(
+            new Vector3(anchorPoint.X + size.X + 8, anchorPoint.Y + size.Y - 8, 0) + bottomRightOffset, endColor, Vector2.One);
     }
 
     private void DrawOutline(RenderTargetHandle src, RenderTargetHandle dst, SpriteBatch spriteBatch, Effect effect, Color outlineColor)
