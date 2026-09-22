@@ -2,17 +2,19 @@
 
 public class SpeechBubble
 {
-    public GooberDialogueParameters parameters;
+    public SpeakerParameters speaker;
     public float activeTimer;
     public float inOutTimer;
-    public float EaseInOut => EasingFunction.OutCirc(inOutTimer / EaseTime);
     public float Scale
     {
         get
         {
-            float inScale = EasingFunction.OutSine(inOutTimer / EaseTime);
+            float inScale = EasingFunction.InOutCubic(inOutTimer / EaseTime);
             return inScale;
         }
     }
-    public static float EaseTime => 45;
+    public bool showArrow;
+    public bool IsActive() => inOutTimer > 0;
+    public bool IsValid() => speaker.profile.portraitTextureAsset != null;
+    public static float EaseTime => 37;
 }

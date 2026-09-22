@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.ClassReworkSystem;
 using Stellamod.Common.DungeonGeneration;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Common.Players;
 using Stellamod.Common.WaypointSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
@@ -66,6 +67,9 @@ namespace Stellamod
             byte player;
             switch (id)
             {
+                case MessageType.CutsceneSync:
+                    CutsceneHandler.ReceiveCutsceneSync(reader, whoAmI);
+                    break;
                 case MessageType.RequestWaterfallData:
                     if (Main.netMode == NetmodeID.Server)
                     {

@@ -29,7 +29,10 @@ public class GovheilProtection : ModBuff
             pos.Y = Main.rand.Next(0, player.height);
             SparkleParticle sp = SparkleParticle.Spawn(pos + player.position, -Vector2.UnitY, Color.White);
             sp.outerColor = Color.Goldenrod;
-            sp.Scale *= 0.66f;
+            sp.Scale *= 0.36f;
+            sp.innerColor = Color.LightGoldenrodYellow;
+            sp.gravity = 0;
+            sp.dampening = 0.05f;
         }
     }
 }

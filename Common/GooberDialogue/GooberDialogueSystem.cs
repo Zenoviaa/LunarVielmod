@@ -1,7 +1,9 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Rendering.RTs;
+using System;
 using System.Collections.Generic;
+using System.Text;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -9,77 +11,82 @@ using Terraria.UI.Chat;
 
 namespace Stellamod.Common.GooberDialogue;
 
-public interface IUpdateable
-{
-    void Update();
-    bool IsActive { get; }
-}
-public class UpdateableSystem : ModSystem
-{
-    private static readonly List<IUpdateable> _inactiveUpdateables = new();
-    public static readonly List<IUpdateable> Updateables = new();
-    public override void PostUpdateEverything()
-    {
-        base.PostUpdateEverything();
-        if (Updateables.Count <= 0)
-            return;
-
-        _inactiveUpdateables.Clear();
-        foreach (var a in Updateables)
-        {
-            a.Update();
-            if (!a.IsActive)
-            {
-                _inactiveUpdateables.Add(a);
-            }
-        }
-        foreach (var item in _inactiveUpdateables)
-            Updateables.Remove(item);
-        _inactiveUpdateables.Clear();
-    }
-}
-
 [Autoload(Side = ModSide.Client)]
 public class GooberDialogueSystem : ModSystem
 {
+    private static int _speechBubbleIndex;
     private readonly static Quad<VertexPositionColorTexture> _squareQuad = new();
-    private readonly static List<SpeechBubble> _speechBubbles = new();
+
+    private static SpeechBubble[] SpeechBubbles
+    {
+        get
+        {
+            if(field == null)
+            {
+                field = new SpeechBubble[16];
+                for (int i = 0; i < field.Length; i++)
+                    field[i] = new SpeechBubble();
+            }
+            return field;
+        }
+    }
+
+    private Vector2 BubbleOffset => new Vector2(64);
+    private Vector2 BubbleOffsetForTail => new Vector2(96, -64);
+    private Vector2 BubbleOffsetForElements => new Vector2(32, -128);
+    public static event Action OnClearSpeechBubbles;
     public override void Load()
     {
         base.Load();
 
         On_Main.DrawPlayers_AfterProjectiles += RenderToScreen;
     }
+
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
-
-
-        if (_speechBubbles.Count <= 0)
-            return;
-        foreach (var bubble in _speechBubbles)
+        _speechBubbleIndex = 0;
+        foreach(var speechBubble in SpeechBubbles)
         {
-            bubble.activeTimer--;
-            if (bubble.activeTimer <= 0)
+            speechBubble.showArrow = false;
+        }
+        OnClearSpeechBubbles?.Invoke();
+        foreach(var speechBubble in SpeechBubbles)
+        {
+            speechBubble.activeTimer--;
+            if(speechBubble.activeTimer <= 0)
             {
-                bubble.inOutTimer--;
+                speechBubble.activeTimer = 0;
+                speechBubble.inOutTimer--;
             }
             else
             {
-                bubble.inOutTimer++;
+                speechBubble.inOutTimer++;
             }
-            bubble.inOutTimer = MathHelper.Clamp(bubble.inOutTimer, 0, SpeechBubble.EaseTime);
+            speechBubble.inOutTimer = MathHelper.Clamp(speechBubble.inOutTimer, 0, SpeechBubble.EaseTime);
         }
-        _speechBubbles.RemoveAll(x => x.inOutTimer <= 0);
+    }
+
+    public static SpeechBubble GetSpeechBubble()
+    {
+        //failsafe
+        if (_speechBubbleIndex >= SpeechBubbles.Length)
+            return SpeechBubbles[0];
+        var bubble =  SpeechBubbles[_speechBubbleIndex++];
+        bubble.activeTimer = 15;
+        return bubble;
     }
 
     private bool ShouldRender()
     {
         if (Main.gameMenu)
             return false;
-        if (_speechBubbles.Count <= 0)
-            return false;
-        return true;
+        foreach(var bubble in SpeechBubbles)
+        {
+            if (bubble.IsActive())
+                return true;
+        }
+        return false;
     }
 
     private void RenderToScreen(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
@@ -92,36 +99,54 @@ public class GooberDialogueSystem : ModSystem
 
         //I think what we're going to do here is just render each bubble individually
         //We're not going to make a ton of bubbles so doing them one at a time is probably fine?
-        foreach(var bubble in _speechBubbles)
+        foreach(var bubble in SpeechBubbles)
         {
+            if (!bubble.IsActive())
+                continue;
+            if (!bubble.IsValid())
+                continue;
+
             RenderTargetHandle pixelTarget = RenderTargets.HalfScreenTarget;
             RenderTargetHandle boxRenderTarget = RenderTargets.ScreenTarget;
             RenderTargetHandle boxRenderTargetSwap = RenderTargets.ScreenTarget;
 
             RenderDialogueBoxToPixelTarget(bubble, pixelTarget, boxRenderTarget, boxRenderTargetSwap);
-
-
             var spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-            spriteBatch.Draw(pixelTarget,Vector2.Zero, null, Color.White, 0, Vector2.Zero,  2 * bubble.Scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(pixelTarget,
+                bubble.speaker.bubblePosition - Main.screenPosition + BubbleOffsetForTail, 
+                null, 
+                Color.White,
+                0, 
+                BubbleOffset, 
+                2 * bubble.Scale, SpriteEffects.None, 0);
             spriteBatch.End();
 
             SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.PortraitLine.Asset, Vector2.Zero);
             SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.DialogueArrow.Asset, Vector2.Zero);
             SpritebatchParams worldParams = SpritebatchParams.InWorldAndZoomed();
             spriteBatch.Begin(worldParams);
-            var portraitDrawer = SpritebatchDrawer.FromTextureAsset(bubble.parameters.portraitTextureAsset, bubble.parameters.bubblePosition + new Vector2(-3, -48));
+            var portraitDrawer = SpritebatchDrawer.FromTextureAsset(bubble.speaker.profile.portraitTextureAsset, bubble.speaker.bubblePosition + new Vector2(-3, -48));
             portraitDrawer.color = Color.White;
             portraitDrawer.scale = Vector2.One * bubble.Scale;
+            portraitDrawer.worldPosition += BubbleOffsetForElements;
             spriteBatch.Draw(portraitDrawer);
 
-            lineDrawer.worldPosition = bubble.parameters.bubblePosition + new Vector2(0, 2);
+            lineDrawer.worldPosition = bubble.speaker.bubblePosition + new Vector2(0, 2);
+            lineDrawer.worldPosition += BubbleOffsetForElements;
             lineDrawer.color = Color.White;
+            lineDrawer.scale *= bubble.Scale;
             spriteBatch.Draw(lineDrawer);
 
-            arrowDrawer.worldPosition = bubble.parameters.bubblePosition + new Vector2(368, 85);
-            arrowDrawer.color = Color.White * ExtraMath.Osc(0.8f, 1f, speed: 3);
-            spriteBatch.Draw(arrowDrawer);
+            if (bubble.showArrow)
+            {
+                arrowDrawer.scale *= bubble.Scale;
+                arrowDrawer.worldPosition = bubble.speaker.bubblePosition + new Vector2(368, 85);
+                arrowDrawer.color = Color.White * ExtraMath.Osc(0.8f, 1f, speed: 3);
+                arrowDrawer.worldPosition += BubbleOffsetForElements;
+                spriteBatch.Draw(arrowDrawer);
+            }
+
             spriteBatch.End();
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
@@ -131,30 +156,56 @@ public class GooberDialogueSystem : ModSystem
                 RasterizerState.CullNone,
                 null,
                 Main.GameViewMatrix.TransformationMatrix);
-            if (!string.IsNullOrEmpty(bubble.parameters.text))
+            if (!string.IsNullOrEmpty(bubble.speaker.text))
             {
-                var chatText = bubble.parameters.text;
-                chatText = chatText.Substring(0, bubble.parameters.textIndex);
+                var chatText = bubble.speaker.text;
+                StringBuilder sb = new StringBuilder();
+                int index = Math.Min(bubble.speaker.textIndex, chatText.Length);
+                sb.Append(chatText.Substring(0, index));
+          
+                if(index < bubble.speaker.text.Length)
+                {
+                    sb.Append("[c/FFFF00:");
+                    sb.Append(bubble.speaker.text.Substring(index, bubble.speaker.text.Length - index));
+                    sb.Append("]");
+                }
+    
+                /*
+                for(int i = 0; i < chatText.Length; i++)
+                {
+                    if (i < bubble.speaker.textIndex || chatText[i] == ' ')
+                        sb.Append(chatText[i]);
+                    else
+                    {
+                        //Add invisible white space
+                        //This makes it so the text doesn't just jump when it's wrapping,
+                        //cause it already knows the general area of where the words go ahead of time
+                        sb.Append("\u00A0");
+                        sb.Append("\u00A0");
+
+                    }
+                }*/
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch,
                     FontAssets.DeathText.Value,
-                    chatText,
-                    bubble.parameters.bubblePosition - Main.screenPosition + new Vector2(32, 0),
-                    Color.White,
+                    sb.ToString(),
+                    bubble.speaker.bubblePosition - Main.screenPosition + new Vector2(32, 0) + BubbleOffsetForElements,
+                    Color.White * bubble.Scale,
                     0,
                     Vector2.Zero,
                     Vector2.One * 0.5f,
                     maxWidth: 342);
             }
-            if (!string.IsNullOrEmpty(bubble.parameters.name))
+
+            if (!string.IsNullOrEmpty(bubble.speaker.profile.name))
             {
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch,
                     FontAssets.DeathText.Value,
-                    bubble.parameters.name,
-                    bubble.parameters.bubblePosition + new Vector2(42, -46) - Main.screenPosition,
+                    bubble.speaker.profile.name,
+                    bubble.speaker.bubblePosition + new Vector2(42, -46) - Main.screenPosition + BubbleOffsetForElements,
                     Color.White,
                     MathHelper.ToRadians(-8),
                     Vector2.Zero,
-                    Vector2.One * 0.75f,
+                    Vector2.One * 0.75f * bubble.Scale,
                     maxWidth: 128);
             }
             spriteBatch.End();
@@ -195,13 +246,6 @@ public class GooberDialogueSystem : ModSystem
         }
     }
 
-    private void PrepareSpeechBubbleContent(RenderTargetHandle pixelTarget, RenderTargetHandle boxRenderTarget, RenderTargetHandle boxRenderTargetSwap)
-    {
-        foreach (var bubble in _speechBubbles)
-        {
-  
-        }
-    }
 
     private void RenderDialogueBoxToPixelTarget(SpeechBubble speechBubble, RenderTargetHandle pixelTarget, RenderTargetHandle boxRenderTarget, RenderTargetHandle boxRenderTargetSwap)
     {
@@ -215,16 +259,17 @@ public class GooberDialogueSystem : ModSystem
             noiseSpriteSampler.Sampler = SamplerState.PointClamp;
 
             var pass = AssetReferences.Effects.Generic.Square.CreatePrimitivesPass();
-            pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+            pass.Parameters.transformMatrix = TrailDrawer.ViewProjection;
             pass.Parameters.time = Main.GlobalTimeWrappedHourly;
             pass.Parameters.spriteSampler = noiseSpriteSampler;
             pass.Apply();
             pass.Shader.CurrentTechnique.Passes[0].Apply();
+            var offset = BubbleOffset;
             PrepareQuad(
-                speechBubble.parameters.bubblePosition,
+                offset,
                 new Vector2(384, 128),
-                speechBubble.parameters.startGradientColor * 0.8f
-                , speechBubble.parameters.endGradientColor * 0.8f);
+                speechBubble.speaker.profile.startGradientColor * 0.8f
+                , speechBubble.speaker.profile.endGradientColor * 0.8f);
             _squareQuad.Draw();
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
@@ -234,8 +279,8 @@ public class GooberDialogueSystem : ModSystem
                 RasterizerState.CullNone,
                 null,
                 Main.GameViewMatrix.TransformationMatrix);
-            SpritebatchDrawer tailDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.Tail.Asset, speechBubble.parameters.bubblePosition + new Vector2(0, 72));
-            tailDrawer.color = speechBubble.parameters.startGradientColor;
+            SpritebatchDrawer tailDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.Tail.Asset, Main.screenPosition + offset + new Vector2(0, 72));
+            tailDrawer.color = speechBubble.speaker.profile.startGradientColor;
             spriteBatch.Draw(tailDrawer);
             spriteBatch.End();
         }
@@ -252,7 +297,7 @@ public class GooberDialogueSystem : ModSystem
         outlinerPass.Apply();
         DrawOutline(boxRenderTarget, boxRenderTargetSwap, spriteBatch, outlinerPass.Shader, Color.White);
         DrawOutline(boxRenderTargetSwap, boxRenderTarget, spriteBatch, outlinerPass.Shader, Color.White);
-        DrawOutline(boxRenderTarget, boxRenderTargetSwap, spriteBatch, outlinerPass.Shader, speechBubble.parameters.outlineColor);
+        DrawOutline(boxRenderTarget, boxRenderTargetSwap, spriteBatch, outlinerPass.Shader, speechBubble.speaker.profile.outlineColor);
 
         var noisePass = AssetReferences.Effects.Generic.Scroll.CreatePixelPass();
         noisePass.Parameters.time = Main.GlobalTimeWrappedHourly * 4;
@@ -270,14 +315,5 @@ public class GooberDialogueSystem : ModSystem
         }
     }
 
-    /// <summary>
-    /// Creates a new speech bubble
-    /// </summary>
-    /// <returns></returns>
-    public static SpeechBubbleWrapper CreateBubble()
-    {
-        SpeechBubble bubble = new SpeechBubble();
-        _speechBubbles.Add(bubble);
-        return new SpeechBubbleWrapper(bubble);
-    }
 }
+

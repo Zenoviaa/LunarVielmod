@@ -1,12 +1,8 @@
 # Moonspiral Tower, Abyss and Ice
 
 Finish the mini dialogue system for cutscenes
-* Make the speech bubble scale in and out when it spawns
-* Make the speech bubble arrow bob up and down/flicker when it's waiting for an input from the player
 * Block player inputs during a dialogue/cutscene?
 * In multiplayer, the person who started the cutscene should be the one required to progress it
-* The text should pop in as it's typing (typewriter effect)
-* Ideally the typewriter effect would be perfectly wrapped, actually just do what we did in Angels Moon where it just has empty characters
 
 Simple Networking Wrapper
 * Setting up with the multiplayer helper thing is a bit clunky, would be better if we could just define packets 
@@ -23,4 +19,8 @@ Bigger Fish Rack sprite
 
 Bunny Storm
 * Make his bunnies form the shape of the attack he's doing instead of having the glow mask over top
-* We could manually set the points, that'd likely be the easiest way to do it, another way is to try generating a mesh 
+* We could manually set the points, that'd likely be the easiest way to do it, another way is to try generating a mesh
+
+
+* Add helper functions for generating edges of a trail, triangular, circular, etc, would prevent the need for making head sprites
+* 

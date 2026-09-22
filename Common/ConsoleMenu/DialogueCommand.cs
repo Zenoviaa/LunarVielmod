@@ -1,5 +1,15 @@
 ﻿using Stellamod.Common.GooberDialogue;
+using Stellamod.Core.TileOverlaySystem;
+using Stellamod.NPCs.Town;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Terraria;
+using Terraria.Graphics.Effects;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace Stellamod.Common.ConsoleMenu;
 
@@ -15,15 +25,8 @@ public class DialogueCommand : ConsoleCommand
     }
     public override bool Invoke(params string[] args)
     {
-        SpeechBubbleWrapper wrapper = GooberDialogueSystem.CreateBubble();
-        wrapper.Bubble.parameters = GooberDialoguePresets.Zui with
-        {
-            text = "This is placeholder text to test if the dialogue wraps around the speech bubble as expected...",
-            name = "Zui",
-            bubblePosition = Main.LocalPlayer.TopRight
-        };
-        GooberDialogueSpeaker speaker = new GooberDialogueSpeaker(wrapper);
-        UpdateableSystem.Updateables.Add(speaker);
+        CutsceneHandler.SpeakerNPCs[0] = NPC.FindFirstNPC(ModContent.NPCType<Zui>());
+        CutsceneHandler.Play(ModContent.GetInstance<ZuiTestCutscene>());
         return true;
     }
 }

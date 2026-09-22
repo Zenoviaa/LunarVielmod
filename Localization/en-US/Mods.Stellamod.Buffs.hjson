@@ -1130,7 +1130,7 @@ MildCurse: {
 
 GovheilProtection: {
 	DisplayName: Govheil Protection
-	Description: Mods.Stellamod.Buffs.GovheilProtection.Description
+	Description: You feel protected!
 }
 
 VeliozaLifeDrain: {

@@ -45,7 +45,8 @@
         TileOverlaySync,
 
         RequestWaterfallData,
-        WaterfallSync
+        WaterfallSync,
+        CutsceneSync
     }
 
     public enum DialogueType : byte
