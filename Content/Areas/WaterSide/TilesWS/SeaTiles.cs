@@ -1,4 +1,4 @@
-﻿using Stellamod.Common;
+﻿using Stellamod.Core.Grass;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

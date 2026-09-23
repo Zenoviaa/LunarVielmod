@@ -259,6 +259,13 @@ public static class TileUtilities
         bottomRightTile = Clamp(bottomRightTile);
         return (topLeftTile, bottomRightTile);
     }
+
+    public static Rectangle CameraTileRectangle(float fluff)
+    {
+        var points = CameraTileBounds(fluff);
+        Rectangle rect = new Rectangle(points.topLeft.X, points.topLeft.Y, points.bottomRight.X - points.topLeft.X, points.bottomRight.Y - points.topLeft.Y);
+        return rect;
+    }
     public static (Point topLeft, Point bottomRight) CameraTileBounds(float fluff, int inside)
     {
         Vector2 cameraCenterWorld = Main.Camera.Center;

@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
+using Stellamod.Core.Grass;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;

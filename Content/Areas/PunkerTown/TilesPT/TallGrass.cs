@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Grass;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
@@ -18,8 +19,8 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             frameCount = 4;
             maxHeight = 90;
             maxWidth = 4.4f;
-            maxExtraBladesPerPatch = 1;
-            minBladesPerPatch = 1;
+            minBladesPerPatch = 2;
+            maxExtraBladesPerPatch = 6;
             grassColor = new Color(80, 107, 26);
 
             RegisterReed<CatTail>();
@@ -28,19 +29,13 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
         public override GrassProfile GetVariantProfile(int i, int j)
         {
-            minBladesPerPatch = 2;
-            maxExtraBladesPerPatch = 6;
-            _random ??= new UnifiedRandom();
-
-            float x = i;
-            _random.SetSeed(i * 8);
-            int c = (int)ExtraMath.Osc(0f, 2f, 0, i);
-
-            if (_random.NextBool(2))
-                return ModContent.GetInstance<TallerGrass>();
-            if(_random.NextBool(16))
+            var h = i;
+            if (h % 16 == 0)
                 return ModContent.GetInstance<WildBush>();
 
+            if (h % 2 == 0)
+                return ModContent.GetInstance<TallerGrass>();
+       
             return base.GetVariantProfile(i, j);
         }
     }
@@ -52,19 +47,11 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             frameCount = 3;
             maxHeight = 90;
             maxWidth = 4.4f;
-            maxExtraBladesPerPatch = 2;
             minBladesPerPatch = 1;
+            maxExtraBladesPerPatch = 3;
             grassColor = new Color(80, 107, 26);
 
             RegisterReed<CatTail>();
-        }
-
-
-        public override void Grow(int i, int j)
-        {
-            base.Grow(i, j);
-            minBladesPerPatch = 1;
-            maxExtraBladesPerPatch = 3;
         }
     }
     public class WildBush : GrassProfile

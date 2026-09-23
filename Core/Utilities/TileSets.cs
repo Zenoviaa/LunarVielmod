@@ -25,6 +25,11 @@ public class TileSets : ModSystem
     /// When set to 2, renders red fog if the tile is solid
     /// </summary>
     public static int[] BarrierFog;
+
+    /// <summary>
+    /// Tiles that can render the cool grass
+    /// </summary>
+    public static int[] MarshyGrass;
     public override void ResizeArrays()
     {
         base.ResizeArrays();
@@ -32,6 +37,7 @@ public class TileSets : ModSystem
         ThickSnow = TileID.Sets.Factory.CreateBoolSet();
         BarrierFog = TileID.Sets.Factory.CreateIntSet();
         CantSpawnEnemies = TileID.Sets.Factory.CreateBoolSet();
+        MarshyGrass = TileID.Sets.Factory.CreateIntSet(-1);
     }
 }
 
@@ -41,5 +47,6 @@ public static class TileSetsExtensions
     {
         public static int[] BarrierFog => TileSets.BarrierFog;
         public static bool[] CantSpawnEnemies => TileSets.CantSpawnEnemies;
+        public static int[] MarshyGrass => TileSets.MarshyGrass;
     }
 }
