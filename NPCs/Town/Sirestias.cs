@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Core;
 using Stellamod.Helpers;
 
@@ -310,28 +312,11 @@ namespace Stellamod.NPCs.Town
             }
         }
 
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
+            talkingParameters.profile = GooberDialoguePresets.Sirestias;
             buttons.Add(new Tuple<string, Action>("Talk", Talk));
-
-            portrait = "SirestiasPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiOpenDialogue1";
-        }
-
-        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
-        {
-            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-            portrait = "SirestiasPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiIdleChat1";
         }
 
     }

@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine;
+﻿using ReLogic.Content;
+using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine;
+using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Terraria;
 using Terraria.DataStructures;
@@ -9,6 +11,10 @@ namespace Stellamod.Content.Dialogue
 {
     public class BishinineStart : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.Bishinine.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

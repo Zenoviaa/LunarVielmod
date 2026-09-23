@@ -1,4 +1,6 @@
-﻿using Stellamod.Core.DialogueSystem;
+﻿using ReLogic.Content;
+using Stellamod.Core;
+using Stellamod.Core.DialogueSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,10 @@ namespace Stellamod.Content.Dialogue
 {
     public class ZuiComeQuickDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.Zui.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -23,6 +29,10 @@ namespace Stellamod.Content.Dialogue
 
     public class ZuiWhoAreYouDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.Zui.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -36,6 +46,10 @@ namespace Stellamod.Content.Dialogue
 
     public class ZuiTalkingToYouDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.Zui.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -49,6 +63,10 @@ namespace Stellamod.Content.Dialogue
 
     public class EFoundYouDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.E.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -62,6 +80,10 @@ namespace Stellamod.Content.Dialogue
 
     public class ZuiGetOuttaHereDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.Zui.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -74,6 +96,22 @@ namespace Stellamod.Content.Dialogue
     }
     public class EEndingDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            switch (lineNumber)
+            {
+                case 5:
+                case 6:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 0:
+                    return AssetReferences.Core.DialogueSystem.EreshDark.Asset;
+                default:
+                    return AssetReferences.Core.DialogueSystem.E.Asset;
+            }
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -86,6 +124,10 @@ namespace Stellamod.Content.Dialogue
     }
     public class EFearDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.E.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

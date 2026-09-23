@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Core;
@@ -82,23 +84,6 @@ namespace Stellamod.NPCs.Town
             return true;
         }
 
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-        {
-            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the preferred biomes of this town NPC listed in the bestiary.
-				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
-
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A traveller of the lands who may hold great power")),
-
-				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Zui the Traveller", "2"))
-            });
-        }
-
         public override string GetChat()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
@@ -116,41 +101,13 @@ namespace Stellamod.NPCs.Town
             return chat; // chat is implicitly cast to a string.
         }
 
-
-        public override List<string> SetNPCNameList()
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            return new List<string>() {
-                "Jack the Scholar",
-            };
-        }
-
-
-       
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
-        {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
+            talkingParameters.profile = GooberDialoguePresets.Jack;
             //Set buttons
-            buttons.Add(new Tuple<string, Action>("Talk", Talk));
-            buttons.Add(new Tuple<string, Action>("Challenge", Challenge));
-
-
-            portrait = "JackPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "JackOpenChat1";
-        }
-
-        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
-        {
-            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-            portrait = "JackPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "JackIdleChat1";
+            buttons.Add(new("Talk", Talk));
+            buttons.Add(new("Challenge", Challenge));
         }
 
         private void Challenge()

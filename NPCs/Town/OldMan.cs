@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Content.Quests.OldManQuest;
 using Stellamod.Core;
@@ -87,38 +89,13 @@ namespace Stellamod.NPCs.Town
             });
         }
 
-
-        public override List<string> SetNPCNameList()
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            return new List<string>() {
-                "Veiizal the Hunter",
-            };
-        }
-
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
-        {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
+            talkingParameters.profile = GooberDialoguePresets.GardenerWilly;
             //Set buttons
             buttons.Add(new Tuple<string, Action>("Talk", Talk));
             buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
-
-            portrait = "GardenerWilly";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiOpenDialogue1";
-        }
-
-        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
-        {
-            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-            portrait = "GardenerWilly";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiIdleChat1";
         }
 
         public override void SetQuestLine(List<Quest> quests)

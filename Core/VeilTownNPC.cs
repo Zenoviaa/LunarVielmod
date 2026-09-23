@@ -1,10 +1,10 @@
-﻿using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;
 using Stellamod.NPCs;
-using Stellamod.UI.DialogueTowning;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -158,15 +158,11 @@ namespace Stellamod.Core
             towningUISystem.Interact(this);
         }
 
-        public virtual void OpenTownDialogue(
-            ref string text,
-            ref string portrait,
-            ref float timeBetweenTexts,
-            ref SoundStyle? talkingSound,
-            List<Tuple<string, Action>> buttons)
+        public virtual void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
 
         }
+
         public void CloseTownDialogue()
         {
             DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();

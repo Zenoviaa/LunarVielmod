@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using ReLogic.Content;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
+using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,10 @@ namespace Stellamod.Content.Dialogue
 {
     public class MinervaStartDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.Minerva.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

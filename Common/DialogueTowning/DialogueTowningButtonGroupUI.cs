@@ -6,46 +6,47 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
 
-namespace Stellamod.UI.DialogueTowning;
+namespace Stellamod.Common.DialogueTowning;
 
 public class DialogueTowningButtonGroupUI : UIPanel
 {
     private int _index;
     private DialogueTowningButtonUI[] _buttons;
-    private UIGrid _buttonsGrid;
     public int RelativeLeft => Main.screenWidth / 2;
     public int RelativeTop => Main.screenHeight - 380;
 
     public Vector2 offset;
     public float alpha;
+    public SpeechBoxTalkingParameters Parameters
+    {
+        set
+        {
+            foreach(var btn in _buttons)
+            {
+                btn.talkingParameters = value;
+            }
+        }
+    }
     public override void OnInitialize()
     {
         base.OnInitialize();
         Width.Pixels = 428 * 3;
-        Height.Pixels = 128;
+        Height.Pixels = 154;
         Left.Pixels = RelativeLeft;
         Top.Pixels = RelativeTop;
         BackgroundColor = Color.Transparent;
         BorderColor = Color.Transparent;
 
-        _buttonsGrid = new UIGrid();
-        _buttonsGrid.Width.Set(0, 1f);
-        _buttonsGrid.Height.Set(0, 1f);
-        _buttonsGrid.HAlign = 0.5f;
-        _buttonsGrid.ListPadding = 2f;
-
         _buttons = new DialogueTowningButtonUI[4];
         for (int i = 0; i < _buttons.Length; i++)
         {
             _buttons[i] = new DialogueTowningButtonUI();
-            _buttonsGrid.Add(_buttons[i]);
+            Append(_buttons[i]);
         }
-        Append(_buttonsGrid);
     }
 
     public void ClearButtons()
     {
-        _buttonsGrid.Clear();
         _index = 0;
         for(int i =0; i < _buttons.Length; i++)
         {
@@ -62,13 +63,12 @@ public class DialogueTowningButtonGroupUI : UIPanel
         button.alpha = 0;
 
         _buttons[_index++] = button;
-        _buttonsGrid.Add(button);
-        _buttonsGrid.Recalculate();
     }
 
     public override void Update(GameTime gameTime)
     {
-        Width.Pixels = 214 * (_buttonsGrid.Count) + 32;
+ 
+        Width.Pixels = 214 * (_buttons.Length) + 32;
         Height.Pixels = 100;
         base.Update(gameTime);
         //Constantly lock the UI in the position regardless of resolution changes
@@ -76,9 +76,21 @@ public class DialogueTowningButtonGroupUI : UIPanel
         Top.Pixels = RelativeTop;
         Left.Pixels += offset.X;
         Top.Pixels += offset.Y;
+
+        int index = 0;
         foreach (var btn in _buttons)
         {
             btn.alpha = alpha;
+  
+            btn.Left.Pixels = index * 212;
+            btn.Top.Pixels = ExtraMath.Osc(0, 8, speed: 2, offset: index);
+            if (index >= _index)
+            {
+                btn.alpha = 0;
+                btn.Left.Pixels += 9999999999;
+            }
+            
+            index++;
         }
     }
 }

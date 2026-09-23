@@ -69,6 +69,8 @@ namespace Stellamod.Helpers
 
         public static string TownDialogue(string Path)
         {
+            if (string.IsNullOrEmpty(Path))
+                return string.Empty;
             return Language.GetTextValue($"Mods.Stellamod.TownDialogue." + Path);
         }
 

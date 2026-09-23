@@ -985,9 +985,7 @@ public class MoonWaterSystem : ModSystem
                     else
                     {
                         Point waterSurface = VeilGen.FindSurfaceOfWater(new Point(j, i), 16);
-                        if (!VeilGen.HasNumAirTilesAbove(waterSurface, 1))
-                            continue;
-
+       
                         while (height < maxGradientHeight)
                         {
                             Tile aboveTile = Main.tile[j, i - height];

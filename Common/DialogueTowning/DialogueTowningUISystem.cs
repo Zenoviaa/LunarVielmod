@@ -1,9 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
-using Stellamod.Helpers;
+using Stellamod.UI;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -11,9 +9,8 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Stellamod.UI.DialogueTowning
+namespace Stellamod.Common.DialogueTowning
 {
     [Autoload(Side = ModSide.Client)]
     public class DialogueTowningUISystem : BaseUISystem
@@ -42,7 +39,6 @@ namespace Stellamod.UI.DialogueTowning
         public float Duration { get; set; }
 
         public int WhosTalking { get; set; }
-        public static string RootTexturePath => "Stellamod/UI/DialogueTowning/";
         public static string RootPortraitTexturePath => typeof(BaseDialogue).DirectoryHere() + "/";
         public override int uiSlot => -1;
         public override void OnModLoad()
@@ -83,15 +79,12 @@ namespace Stellamod.UI.DialogueTowning
         {
             _oldSpeakingNPC = townNPC;
             SoundEngine.PlaySound(SoundID.Chat);
-            string text = string.Empty;
-            string portrait = "FenixPortrait";
-            float timeBetweenTexts = 0.05f;
-            SoundStyle? talkingSound = null;
+            SpeechBoxTalkingParameters parameters = new();
             ClearButtons();
 
             //Create buttons and open dialogue
             List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
-            townNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            townNPC.OpenTownDialogue(ref parameters, buttons);
 
             //Some goofballs you can only interact with no dialogue
             if (townNPC.OnlyInteract)
@@ -110,16 +103,16 @@ namespace Stellamod.UI.DialogueTowning
 
             OpenUI();
             dialogueTowningUIState.dialogueTownUI.ResetText();
-            dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
-            dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-
-
-            SetPortrait(portrait);
+            parameters.text = LangText.TownDialogue(parameters.text);
+            dialogueTowningUIState.dialogueTownUI.TalkingParameters = parameters;
+            dialogueTowningUIState.dialogueTownButtonsUI.Parameters = parameters;
             _talkWorld = Main.LocalPlayer.position;
             WhosTalking = townNPC.NPC.type;
         }
+
         public void ChatWith(Quest quest)
         {
+            SpeechBoxTalkingParameters parameters = new();
             string text = string.Empty;
             string portrait = "FenixPortrait";
             float timeBetweenTexts = 0.05f;
@@ -127,8 +120,7 @@ namespace Stellamod.UI.DialogueTowning
             quest.QuestIntroDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
-            dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-            SetPortrait(portrait);
+         //   dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
         }
 
         public void ChatWith(BaseDialogue dialogue, int lineNumber)
@@ -136,12 +128,12 @@ namespace Stellamod.UI.DialogueTowning
             DialogueTowningUI ui = dialogueTowningUIState.dialogueTownUI;
             ui.ClearText();
             ui.PrepareForTalking();
-   
+
             OpenUI();
             SoundStyle? talkingSound = SoundID.Item1;
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = dialogue.GetLine(lineNumber);
-            dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
+         //   dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
         }
 
         public void OpenTalkOptions(BaseDialogue[] dialogues)
@@ -152,26 +144,22 @@ namespace Stellamod.UI.DialogueTowning
 
             TalkingOptionsButtonGroupUI options = dialogueTowningUIState.talkingOptionsUI;
             options.ClearButtons();
-            foreach(BaseDialogue dialogue in dialogues)
+            foreach (BaseDialogue dialogue in dialogues)
             {
                 DialogueTalkingOption talkingoption = new DialogueTalkingOption(dialogue.DisplayName, dialogue);
                 options.AddButton(talkingoption);
-          
+
             }
             _oldDialogues = dialogues;
         }
 
         public void RefreshTalkOptions()
         {
-            string text = string.Empty;
-            string portrait = "FenixPortrait";
-            float timeBetweenTexts = 0.05f;
-            SoundStyle? talkingSound = null;
-
+            SpeechBoxTalkingParameters parameters = new();
             //Create buttons and open dialogue
             var townNPC = _oldSpeakingNPC;
             List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
-            townNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            townNPC.OpenTownDialogue(ref parameters, buttons);
 
             //Some goofballs you can only interact with no dialogue
             if (townNPC.OnlyInteract)
@@ -201,11 +189,6 @@ namespace Stellamod.UI.DialogueTowning
             options.ClearButtons();
         }
 
-        public void SetPortrait(string portrait)
-        {
-            portrait = portrait.Replace("Portrait", string.Empty);
-            dialogueTowningUIState.dialogueTownUI.Portrait = ModContent.Request<Texture2D>(RootPortraitTexturePath + $"{portrait}");
-        }
         public override void UpdateUI(GameTime gameTime)
         {
             Duration = 1f;
@@ -214,7 +197,7 @@ namespace Stellamod.UI.DialogueTowning
             {
                 _userInterface.Update(gameTime);
             }
-            if(_talkWorld != Vector2.Zero)
+            if (_talkWorld != Vector2.Zero)
             {
                 float dist = Vector2.Distance(Main.LocalPlayer.position, _talkWorld);
                 if (dist > 160)

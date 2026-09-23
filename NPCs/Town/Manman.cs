@@ -1,4 +1,6 @@
 ﻿using Stellamod.Common.ArmorShop.UI;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Core;
 using System;
 using System.Collections.Generic;
@@ -65,58 +67,14 @@ namespace Stellamod.NPCs.Town
             return true;
         }
 
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the preferred biomes of this town NPC listed in the bestiary.
-				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
-
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Freezing to death")),
-
-				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Veldris the assassin", "2"))
-            });
-        }
-
-
-        public override List<string> SetNPCNameList()
-        {
-            return new List<string>() {
-                "Manman the Armor Smith",
-            };
-        }
-
-
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
-        {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
+            talkingParameters.profile = GooberDialoguePresets.ManMan;
             //Set buttons
-            buttons.Add(new Tuple<string, Action>("Talk", Talk));
-            buttons.Add(new Tuple<string, Action>("ArmorShop", OpenArmorShop));
-
-            portrait = "ManManPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiOpenDialogue1";
+            buttons.Add(new("Talk", Talk));
+            buttons.Add(new("ArmorShop", OpenArmorShop));
         }
-
-        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
-        {
-            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-            portrait = "ManManPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiIdleChat1";
-        }
-
         private void OpenArmorShop()
         {
             Main.CloseNPCChatOrSign();

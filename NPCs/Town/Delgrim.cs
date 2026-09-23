@@ -1,4 +1,6 @@
-﻿using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Content.Areas.Junkyard.WeaponsJY;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Quests.DelgrimQuest;
@@ -108,18 +110,14 @@ namespace Stellamod.NPCs.Town
             npcShop.Register(); // Name of this shop tab		
         }
 
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
+            talkingParameters.profile = GooberDialoguePresets.Delgrim;
             //Set buttons
-            buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
-            buttons.Add(new Tuple<string, Action>("CellConverter", OpenCellConverter));
+            buttons.Add(new("Shop", OpenShop));
+            buttons.Add(new("CellConverter", OpenCellConverter));
 
-            //Delgrim Portrait
-            text = "TestDialogue";
-            portrait = "DelgrimPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
         }
 
         private void OpenCellConverter()

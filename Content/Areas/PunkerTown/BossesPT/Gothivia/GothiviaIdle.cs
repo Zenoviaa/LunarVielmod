@@ -1,4 +1,6 @@
-﻿using Stellamod.Core;
+﻿using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
+using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.NPCs;
 using Stellamod.WorldG;
@@ -62,32 +64,14 @@ public class GothiviaIdle : VeilTownNPC
         Point spawnPoint = stellaWorld.MarshLocation + stellaWorld.GothiviaSpawnOffset;
         spawner.spawnTileOffset = spawnPoint;
     }
-    public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+    public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
     {
-        base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+        base.OpenTownDialogue(ref talkingParameters, buttons);
+        talkingParameters.profile = GooberDialoguePresets.Gothivia;
         //Set buttons
         buttons.Add(new Tuple<string, Action>("Talk", Talk));
-
-        portrait = "ZuiPortrait";
-        timeBetweenTexts = 0.015f;
-        talkingSound = SoundID.Item1;
-
-        //This pulls from the new Dialogue localization
-        text = "ZuiOpenDialogue1";
     }
 
-    public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
-    {
-        base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-        portrait = "ZuiPortrait";
-        timeBetweenTexts = 0.015f;
-        talkingSound = SoundID.Item1;
-
-        //This pulls from the new Dialogue localization
-        text = "ZuiIdleChat1";
-
-
-    }
     public override void FindFrame(int frameHeight)
     {
         /*

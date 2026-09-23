@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Areas.Tundra.MoonspiralTower.CariyaBoss;
+﻿using ReLogic.Content;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.CariyaBoss;
+using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Utilities;
 using Terraria;
@@ -8,6 +10,10 @@ namespace Stellamod.Content.Dialogue;
 
 public class CariyaStartDialogue : BaseDialogue
 {
+    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    {
+        return AssetReferences.Core.DialogueSystem.Cariya.Asset;
+    }
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();

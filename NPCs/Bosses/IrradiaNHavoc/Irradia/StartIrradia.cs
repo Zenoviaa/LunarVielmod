@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.UI.Dialogue;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -84,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                 case ActionState.Wait:
                     counter++;
-                    NPC.aiStyle = 86;
+                    NPC.aiStyle = NPCAIStyleID.AncientVision;
                     NPC.velocity *= 0.96f;
                     Wait();
                     break;
@@ -202,13 +198,14 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                 if (Main.netMode == NetmodeID.SinglePlayer)
                 {
+                    /*
                     DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
                     //2. Create a new instance of your dialogue
                     IrradiaDialogue exampleDialogue = new IrradiaDialogue();
-
+          
                     //3. Start it
-                    dialogueSystem.StartDialogue(exampleDialogue);
+                    dialogueSystem.StartDialogue(exampleDialogue);          */
                 }
                 else
                 {

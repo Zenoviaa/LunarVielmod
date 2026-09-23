@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Dialogue;
 using Stellamod.Core;
@@ -176,9 +177,9 @@ public class CariyaSitting : VeilTownNPC,
         _drawOutlines = false;
     }
 
-    public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+    public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
     {
-        base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+        base.OpenTownDialogue(ref talkingParameters, buttons);
         //SO multiple people can't open the dialogue at the same time
         if (State == 1)
             return;

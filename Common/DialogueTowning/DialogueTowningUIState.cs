@@ -1,6 +1,6 @@
 ﻿using Terraria.UI;
 
-namespace Stellamod.UI.DialogueTowning
+namespace Stellamod.Common.DialogueTowning
 {
     public class DialogueTowningUIState : UIState
     {

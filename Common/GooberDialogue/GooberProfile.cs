@@ -18,6 +18,7 @@ public struct SpeakerParameters
 /// </summary>
 public struct GooberProfile
 {
+    public Asset<Texture2D> bigPortraitTextureAsset;
     public Asset<Texture2D> portraitTextureAsset;
     public SoundStyle? talkingSound;
     public Color startGradientColor;

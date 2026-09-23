@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using ReLogic.Content;
 using Stellamod.Content.Areas.Dock.BossesDK.Jiitas;
+using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Terraria;
 using Terraria.DataStructures;
@@ -10,6 +12,10 @@ namespace Stellamod.Content.Dialogue
 {
     public class JiitasStartDialogue : BaseDialogue
     {
+        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        {
+            return AssetReferences.Core.DialogueSystem.Jiitas.Asset;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

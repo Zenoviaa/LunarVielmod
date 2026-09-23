@@ -2,13 +2,11 @@
 using Stellamod.Core;
 using Stellamod.Core.Rendering.RTs;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-using static Stellamod.Core.LocalizationReferences.Mods.Stellamod.Projectiles;
 
 namespace Stellamod.Common.GooberDialogue;
 
@@ -23,7 +21,7 @@ public class GooberDialogueSystem : ModSystem
     {
         get
         {
-            if(field == null)
+            if (field == null)
             {
                 field = new SpeechBubble[16];
                 for (int i = 0; i < field.Length; i++)
@@ -79,9 +77,9 @@ public class GooberDialogueSystem : ModSystem
             RenderDialogueBoxToPixelTarget(bubble, pixelTarget, boxRenderTarget, boxRenderTargetSwap);
 
             //Prepare a mask for the portrait to mask onto
-            using(new RenderTargetContext(boxRenderTarget))
+            using (new RenderTargetContext(boxRenderTarget))
             {
-                using(new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity }))
+                using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity }))
                 {
                     spriteBatch.Draw(pixelTarget,
                         bubble.speaker.bubblePosition - Main.screenPosition + BubbleOffsetForTail,
@@ -169,7 +167,7 @@ public class GooberDialogueSystem : ModSystem
 
 
 
-           // spriteBatch.Draw(portraitDrawer);
+            // spriteBatch.Draw(portraitDrawer);
 
             if (bubble.showArrow)
             {
@@ -177,7 +175,7 @@ public class GooberDialogueSystem : ModSystem
                 arrowDrawer.worldPosition = _squareQuad.vertices[3].Position.XY() + bubble.speaker.bubblePosition + new Vector2(-64, -222);
 
                 arrowDrawer.color = Color.White * ExtraMath.Osc(0.8f, 1f, speed: 3);
-  
+
                 spriteBatch.Draw(arrowDrawer);
             }
 
@@ -247,15 +245,15 @@ public class GooberDialogueSystem : ModSystem
     {
         base.PostUpdateEverything();
         _speechBubbleIndex = 0;
-        foreach(var speechBubble in SpeechBubbles)
+        foreach (var speechBubble in SpeechBubbles)
         {
             speechBubble.showArrow = false;
         }
         OnClearSpeechBubbles?.Invoke();
-        foreach(var speechBubble in SpeechBubbles)
+        foreach (var speechBubble in SpeechBubbles)
         {
             speechBubble.activeTimer--;
-            if(speechBubble.activeTimer <= 0)
+            if (speechBubble.activeTimer <= 0)
             {
                 speechBubble.activeTimer = 0;
                 speechBubble.inOutTimer--;
@@ -273,7 +271,7 @@ public class GooberDialogueSystem : ModSystem
         //failsafe
         if (_speechBubbleIndex >= SpeechBubbles.Length)
             return SpeechBubbles[0];
-        var bubble =  SpeechBubbles[_speechBubbleIndex++];
+        var bubble = SpeechBubbles[_speechBubbleIndex++];
         bubble.activeTimer = 15;
         return bubble;
     }
@@ -282,7 +280,7 @@ public class GooberDialogueSystem : ModSystem
     {
         if (Main.gameMenu)
             return false;
-        foreach(var bubble in SpeechBubbles)
+        foreach (var bubble in SpeechBubbles)
         {
             if (bubble.IsActive())
                 return true;

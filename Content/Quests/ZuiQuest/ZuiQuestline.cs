@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Vanity.Witchen;
 using Stellamod.Helpers;
@@ -10,7 +11,6 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Town;
-using Stellamod.UI.DialogueTowning;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

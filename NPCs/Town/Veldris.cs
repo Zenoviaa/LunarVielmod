@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ArmorReforgeSystem;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Core;
 using Stellamod.Helpers;
@@ -93,31 +95,15 @@ namespace Stellamod.NPCs.Town
             };
         }
 
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
+            talkingParameters.profile = GooberDialoguePresets.Veldris;
             //Set buttons
             buttons.Add(new Tuple<string, Action>("Talk", Talk));
             buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
             buttons.Add(new Tuple<string, Action>("ArmorReforge", OpenReforgeMenu));
 
-            portrait = "VeldrisPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiOpenDialogue1";
-        }
-
-        public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
-        {
-            base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-            portrait = "VeldrisPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiIdleChat1";
         }
 
         private void OpenReforgeMenu()

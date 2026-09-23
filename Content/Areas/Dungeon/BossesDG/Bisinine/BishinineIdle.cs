@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Dialogue;
+﻿using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
+using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.TriggersSystem.Triggers;
@@ -46,11 +48,10 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             DialogueSystemV2 dialogueSystem = ModContent.GetInstance<DialogueSystemV2>();
             dialogueSystem.StartDialogueSequence(ModContent.GetInstance<BishinineStart>());
         }
-
-
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
+            talkingParameters.profile = GooberDialoguePresets.Bishinine;
             StartDialogue();
             Main.CloseNPCChatOrSign();
         }
@@ -67,23 +68,6 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         public override bool CheckActive()
         {
             return false;
-        }
-
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-        {
-            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the preferred biomes of this town NPC listed in the bestiary.
-				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
-
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A traveller of the lands who may hold great power")),
-
-				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Zui the Traveller", "2"))
-            });
         }
 
         public override List<string> SetNPCNameList()

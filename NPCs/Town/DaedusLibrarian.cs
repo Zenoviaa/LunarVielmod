@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
+﻿using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
+using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Content.Areas.Tundra.Snow.WeaponsSN;
 using Stellamod.Core;
@@ -177,37 +179,21 @@ public class DaedusLibrarian : VeilTownNPC
         RobeSegment.AI();
     }
 
-    public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+    public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
     {
-        base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+        base.OpenTownDialogue(ref talkingParameters, buttons);
+        talkingParameters.profile = GooberDialoguePresets.Daedus;
         //Set buttons
-        buttons.Add(new Tuple<string, Action>("Talk", Talk));
+        buttons.Add(new("Talk", Talk));
         if (DownedBossTracker.IsDowned(DownedBossFlag.Daedus))
         {
-            buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
+            buttons.Add(new("Shop", OpenShop));
         }
 
-        buttons.Add(new Tuple<string, Action>("Challenge", Challenge));
+        buttons.Add(new("Challenge", Challenge));
 
-
-        portrait = "DaedusPortrait";
-        timeBetweenTexts = 0.015f;
-        talkingSound = SoundID.Item1;
-
-        //This pulls from the new Dialogue localization
-        text = "DaedusOpenChat1";
     }
 
-    public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
-    {
-        base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-        portrait = "DaedusPortrait";
-        timeBetweenTexts = 0.015f;
-        talkingSound = SoundID.Item1;
-
-        //This pulls from the new Dialogue localization
-        text = "DaedusIdleChat1";
-    }
 
     private void Challenge()
     {

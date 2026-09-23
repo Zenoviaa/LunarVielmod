@@ -1,8 +1,6 @@
-﻿using Stellamod.Helpers;
-using Stellamod.UI.Dialogue;
-using Stellamod.UI.DialogueTowning;
+﻿using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.DialogueSystem
@@ -50,15 +48,15 @@ namespace Stellamod.Core.DialogueSystem
                         uiSystem.RefreshTalkOptions();
                     }
 
-                        _dialogueActor = null;
-           
+                    _dialogueActor = null;
+
                 }
                 else
                 {
                     _dialogueActor.ProgressLine();
                 }
-                  
- 
+
+
                 Main.mouseLeftRelease = false;
             }
         }
@@ -146,6 +144,7 @@ namespace Stellamod.Core.DialogueSystem
             }
         }
 
+        public abstract Asset<Texture2D> GetPortrait(int lineNumber);
         public string GetLine(int lineNumber)
         {
             return this.GetLocalization($"Line{lineNumber}").Value;

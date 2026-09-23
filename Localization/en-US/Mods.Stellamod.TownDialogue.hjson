@@ -41,174 +41,67 @@ DaedusOpenChat1: This is placeholder text
 DaedusIdleChat1: This is placeholder text
 
 BishinineStart: {
-	Line0:
-		'''
-		[PORTRAIT=Bishinine]
-		Sneaking up on me now are you?
-		'''
+	Line0: Sneaking up on me now are you?
 	Line1:
 		'''
-		[PORTRAIT=Bishinine]
 		Well. No matter...
 		You've been going around making a name for yourself you know?
 		'''
-	Line2:
-		'''
-		[PORTRAIT=Bishinine]
-		Ereshy is gonna really like it if I tear you to shreds, maybe even big brother will compliment me!
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Bishinine]
-		She might even talk to me again!!
-		'''
-	Line4:
-		'''
-		[PORTRAIT=Bishinine]
-		You hear that? That means you gotta go!
-		'''
-	Line5:
-		'''
-		[PORTRAIT=Bishinine]
-		Not like you stand a chance against one of Illuria's Great Generals anyways. Let alone the Royals...
-		'''
-	Line6:
-		'''
-		[PORTRAIT=Bishinine]
-		Running is useless, I am the fastest and most deadly of the generals...
-		'''
-	Line7:
-		'''
-		[PORTRAIT=Bishinine]
-		Prepare yourself!
-		'''
+	Line2: Ereshy is gonna really like it if I tear you to shreds, maybe even big brother will compliment me!
+	Line3: She might even talk to me again!!
+	Line4: You hear that? That means you gotta go!
+	Line5: Not like you stand a chance against one of Illuria's Great Generals anyways. Let alone the Royals...
+	Line6: Running is useless, I am the fastest and most deadly of the generals...
+	Line7: Prepare yourself!
 	DisplayName: ""
 }
 
 RysaGotAnythingDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=Rysa]
-		Hey dude!
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Rysa]
-		Um yeah, I have some items in my shop with some vanitites and whatnot, why don't you take a peak?
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Rysa]
-		I'm Rysa by the way, I just make some goofy little things in my shop.
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Rysa]
-		Nice to meet you.
-		'''
+	Line0: Hey dude!
+	Line1: Um yeah, I have some items in my shop with some vanitites and whatnot, why don't you take a peak?
+	Line2: I'm Rysa by the way, I just make some goofy little things in my shop.
+	Line3: Nice to meet you.
 	DisplayName: Got anything for me?
 }
 
 RysaLivingDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=Rysa]
-		Yep, I work best out here honestly.
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Rysa]
-		I was thinking of attending the witch academy, but I need to make up some money to go.
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Rysa]
-		Speaking of money, I've got a shop that I've spent a lot of work organizing, so please get some stuff!
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Rysa]
-		It'd help me a lot.
-		'''
+	Line0: Yep, I work best out here honestly.
+	Line1: I was thinking of attending the witch academy, but I need to make up some money to go.
+	Line2: Speaking of money, I've got a shop that I've spent a lot of work organizing, so please get some stuff!
+	Line3: It'd help me a lot.
 	DisplayName: Living all out on your own?
 }
 
 JiitasStartDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=Jiitas]
-		Wait...
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Jiitas]
-		NONONONo.
-		'''
+	Line0: Wait...
+	Line1: NONONONo.
 	Line2:
 		'''
-		[PORTRAIT=Jiitas]
 		You don�t want to worship Sirestias, our great and eldest???? 
 		That cannot stand, not under my rule...
 		'''
-	Line3:
-		'''
-		[PORTRAIT=Jiitas]
-		You scareeeee me.
-		'''
-	Line4:
-		'''
-		[PORTRAIT=Jiitas]
-		I�m gonna get ya.
-		'''
+	Line3: You scareeeee me.
+	Line4: I'm gonna get ya.
 	DisplayName: I don't want to worship...
 }
 
 MinervaStartDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=Minerva]
-		What are you doing down here?
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Minerva]
-		Are you yet another that is trying to trample upon my garden?
-		'''
+	Line0: What are you doing down here?
+	Line1: Are you yet another that is trying to trample upon my garden?
 	Line2:
 		'''
-		[PORTRAIT=Minerva]
 		I'm sorry, but this pretty refuge is mine and mine alone!
 		You have no place in it!
 		'''
-	Line3:
-		'''
-		[PORTRAIT=Minerva]
-		Begone!
-		'''
+	Line3: Begone!
 	DisplayName: Trample Garden
 }
 
 ZuiComeQuickDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=Zui]
-		Hey um, I don't know how to say this, but could you come over here?
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Zui]
-		We have a big problem.
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Zui]
-		Something looks like they are about to attack the witch town.
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Zui]
-		Please hurry.
-		'''
+	Line0: Hey um, I don't know how to say this, but could you come over here?
+	Line1: We have a big problem.
+	Line2: Something looks like they are about to attack the witch town.
+	Line3: Please hurry.
 	DisplayName: Zui!
 }
 
@@ -227,153 +120,49 @@ ZuiWhoAreYouDialogue: {
 }
 
 ZuiTalkingToYouDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=Zui]
-		Hey I'm talking to you, y'know!! If you don't answer you better leave this place...
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Zui]
-		I don't like scouting, state your purpose.
-		'''
+	Line0: Hey I'm talking to you, y'know!! If you don't answer you better leave this place...
+	Line1: I don't like scouting, state your purpose.
 	Line2: If you're with Ereshkigal, you better say something...
 	DisplayName: Who are you???
 }
 
 EFoundYouDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=E]
-		Found you...
-		'''
+	Line0: Found you...
 	DisplayName: E Found Your Mom
 }
 
 ZuiGetOuttaHereDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=Zui]
-		This isn't good...
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Zui]
-		Get out of here!!
-		'''
+	Line0: This isn't good...
+	Line1: Get out of here!!
 	DisplayName: Who are you???
 }
 
 EEndingDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=EreshDark]
-		Styr...
-		'''
-	Line1:
-		'''
-		[PORTRAIT=E]
-		.....
-		'''
-	Line2:
-		'''
-		[PORTRAIT=E]
-		Yes?
-		'''
-	Line3:
-		'''
-		[PORTRAIT=E]
-		I'm getting rid of them.
-		'''
-	Line4:
-		'''
-		[PORTRAIT=E]
-		We need this.
-		'''
-	Line5:
-		'''
-		[PORTRAIT=EreshDark]
-		You're out of time...
-		'''
-	Line6:
-		'''
-		[PORTRAIT=EreshDark]
-		And I would like my sword back too...
-		'''
-	Line7:
-		'''
-		[PORTRAIT=E]
-		But I'm not done here yet!
-		'''
-	Line8:
-		'''
-		[PORTRAIT=E]
-		These idiots shouldn't even be able to get near you my love.
-		'''
-	Line9:
-		'''
-		[PORTRAIT=EreshDark]
-		Sure, sure... I can handle that myself.
-		'''
-	Line10:
-		'''
-		[PORTRAIT=EreshDark]
-		Please do return my sword now though, otherwise it will soon eat you alive.
-		'''
-	Line11:
-		'''
-		[PORTRAIT=EreshDark]
-		I do not need to lose a member of my troupe
-		'''
-	Line12:
-		'''
-		[PORTRAIT=EreshDark]
-		Return now...
-		'''
-	Line13:
-		'''
-		[PORTRAIT=E]
-		Yes ma'am.
-		'''
+	Line0: Styr...
+	Line1: .....
+	Line2: Yes?
+	Line3: I'm getting rid of them.
+	Line4: We need this.
+	Line5: You're out of time...
+	Line6: And I would like my sword back too...
+	Line7: But I'm not done here yet!
+	Line8: These idiots shouldn't even be able to get near you my love.
+	Line9: Sure, sure... I can handle that myself.
+	Line10: Please do return my sword now though, otherwise it will soon eat you alive.
+	Line11: I do not need to lose a member of my troupe
+	Line12: Return now...
+	Line13: Yes ma'am.
 	DisplayName: Who are you???
 }
 
 EFearDialogue: {
-	Line0:
-		'''
-		[PORTRAIT=E]
-		Until we meet again, you.
-		'''
-	Line1:
-		'''
-		[PORTRAIT=E]
-		You now know my name.
-		'''
-	Line2:
-		'''
-		[PORTRAIT=E]
-		It will strike fear in you next we meet.
-		'''
-	Line3:
-		'''
-		[PORTRAIT=E]
-		You'll be gone.
-		'''
-	Line4:
-		'''
-		[PORTRAIT=E]
-		Styr.
-		'''
-	Line5:
-		'''
-		[PORTRAIT=E]
-		Remember me.
-		'''
-	Line6:
-		'''
-		[PORTRAIT=E]
-		Even if I don't have this sword, you will perish...
-		'''
+	Line0: Until we meet again, you.
+	Line1: You now know my name.
+	Line2: It will strike fear in you next we meet.
+	Line3: You'll be gone.
+	Line4: Styr.
+	Line5: Remember me.
+	Line6: Even if I don't have this sword, you will perish...
 	DisplayName: Who are you???
 }
 
@@ -381,69 +170,25 @@ BaseDialogue.Line0: ""
 
 BulbtrifierHiDialogue: {
 	DisplayName: Hi?
-	Line0:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		Hi, do you care to get anything from this shop? The name is Bulbtrifier and we always have new and fresh selections!
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		Afterall, I make the best food in the entire world! Even Zui has eaten here before...
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		Grab a bite, or hell, get some drinks too.
-		'''
+	Line0: Hi, do you care to get anything from this shop? The name is Bulbtrifier and we always have new and fresh selections!
+	Line1: Afterall, I make the best food in the entire world! Even Zui has eaten here before...
+	Line2: Grab a bite, or hell, get some drinks too.
 }
 
 BulbtrifierWhoDialogue: {
 	DisplayName: Who is that lady at the top?
-	Line0:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		I am not so sure, she kind of joined along for the ride, but she hasn't left and she keeps telling me about how her sister is a succubus.
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		You could say I pulled a baddie...
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		Well I did, I'm the best cook afterall.
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		I need to kick her out, but she is like an immovable object.
-		'''
+	Line0: I am not so sure, she kind of joined along for the ride, but she hasn't left and she keeps telling me about how her sister is a succubus.
+	Line1: You could say I pulled a baddie...
+	Line2: Well I did, I'm the best cook afterall.
+	Line3: I need to kick her out, but she is like an immovable object.
 }
 
 BulbtrifierHowMuchDialogue: {
 	DisplayName: How much do you make?
-	Line0:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		A bit of a rude question...
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		But if you ask, I make plenty of money! I just might need a little bit of help...
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		I may join that witch academy Zui posts about everywhere, it's so renowned...
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Bulbtrifier]
-		I'm sure to get some money there!
-		'''
+	Line0: A bit of a rude question...
+	Line1: But if you ask, I make plenty of money! I just might need a little bit of help...
+	Line2: I may join that witch academy Zui posts about everywhere, it's so renowned...
+	Line3: I'm sure to get some money there!
 }
 
 ListAloneDialogue: {
@@ -488,245 +233,69 @@ ListZuiDialogue: {
 
 CariyaStartDialogue: {
 	DisplayName: Cariya Start
-	Line0:
-		'''
-		[PORTRAIT=Cariya]
-		Oh, warrior from afar...
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Cariya]
-		You dare trespass this sacred tower to get to my friend Verlia?
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Cariya]
-		She was wronged...
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Cariya]
-		I will not let you pass me, for I feel as the last person on her side keeping her alive.
-		'''
-	Line4:
-		'''
-		[PORTRAIT=Cariya]
-		Unfortunately for you, your journey ends here.
-		'''
-	Line5:
-		'''
-		[PORTRAIT=Cariya]
-		Prepare your blade, witch.
-		'''
+	Line0: Oh, warrior from afar...
+	Line1: You dare trespass this sacred tower to get to my friend Verlia?
+	Line2: She was wronged...
+	Line3: I will not let you pass me, for I feel as the last person on her side keeping her alive.
+	Line4: Unfortunately for you, your journey ends here.
+	Line5: Prepare your blade, witch.
 }
 
 VerliaKillDialogue: {
 	DisplayName: Kill your Friend
-	Line0:
-		'''
-		[PORTRAIT=Verlia]
-		Wait, what??
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Verlia]
-		I knew it was too good to be true..
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Verlia]
-		Ereshkigal sent you to finish the job, huh?
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Verlia]
-		Well, guess what?
-		'''
-	Line4:
-		'''
-		[PORTRAIT=Verlia]
-		I'm not letting you kill me, I gotta live.
-		'''
-	Line5:
-		'''
-		[PORTRAIT=Verlia]
-		Even if it means defeating you and the entire Illuria who has betrayed me.
-		'''
-	Line6:
-		'''
-		[PORTRAIT=Verlia]
-		I want to see my family again.
-		'''
+	Line0: Wait, what??
+	Line1: I knew it was too good to be true..
+	Line2: Ereshkigal sent you to finish the job, huh?
+	Line3: Well, guess what?
+	Line4: I'm not letting you kill me, I gotta live.
+	Line5: Even if it means defeating you and the entire Illuria who has betrayed me.
+	Line6: I want to see my family again.
 }
 
 VerliaFreeingDialogue: {
 	DisplayName: Freed
-	Line0:
-		'''
-		[PORTRAIT=Verlia]
-		Holy shit, I'm actually free!
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Verlia]
-		Wait, where am I?
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Verlia]
-		The last thing I remember was being down in that ishtar place with queen right after I was supposed to be executed?
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Verlia]
-		What happened to me?
-		'''
-	Line4:
-		'''
-		[PORTRAIT=Verlia]
-		I mean how long have I been gone? I'm glad I'm alive, but what year is it??
-		'''
-	Line5:
-		'''
-		[PORTRAIT=Verlia]
-		It's been 8 years? What happened in the war?? Is that damned Ereshkigal dead??
-		'''
-	Line6:
-		'''
-		[PORTRAIT=Verlia]
-		I need to see my family, I'll head out soon, but thank you so so very much!
-		'''
-	Line7:
-		'''
-		[PORTRAIT=Verlia]
-		I guess while I was trapped I still grew? Interesting, and- oh yeah, I got some little small spells out of this book I learned too, so if you want I guess I can sell these to you before I go!
-		'''
-	Line8:
-		'''
-		[PORTRAIT=Verlia]
-		Be careful though, since these are charged with moi, must've been Zui who made them since they are so old, but be careful!
-		'''
-	Line9:
-		'''
-		[PORTRAIT=Verlia]
-		Again, thank you so much. I need to find my sister.
-		'''
+	Line0: Holy shit, I'm actually free!
+	Line1: Wait, where am I?
+	Line2: The last thing I remember was being down in that ishtar place with queen right after I was supposed to be executed?
+	Line3: What happened to me?
+	Line4: I mean how long have I been gone? I'm glad I'm alive, but what year is it??
+	Line5: It's been 8 years? What happened in the war?? Is that damned Ereshkigal dead??
+	Line6: I need to see my family, I'll head out soon, but thank you so so very much!
+	Line7: I guess while I was trapped I still grew? Interesting, and- oh yeah, I got some little small spells out of this book I learned too, so if you want I guess I can sell these to you before I go!
+	Line8: Be careful though, since these are charged with moi, must've been Zui who made them since they are so old, but be careful!
+	Line9: Again, thank you so much. I need to find my sister.
 }
 
 VerliaHappenedDialogue: {
 	DisplayName: What happened to you??
-	Line0:
-		'''
-		[PORTRAIT=Verlia]
-		Ugh...
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Verlia]
-		Long story short, I got framed for an execution by the queen Ereshkigal, and she staged an entire execution for some plan of hers-
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Verlia]
-		And I wanna like destroy the shit out of her, but I have not a clue where she is.
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Verlia]
-		She said something about a plan, but I'm not too sure about everything, I'm just really glad I'm out!
-		'''
-	Line4:
-		'''
-		[PORTRAIT=Verlia]
-		Speaking of, I hope Fenix doesn't hate me, I mean she probably does since she most likely thinks I killed her parents, but I swear I didn't!
-		'''
-	Line5:
-		'''
-		[PORTRAIT=Verlia]
-		There's something wrong with Ereshkigal, I don't even want to call her my queen anymore.
-		'''
-	Line6:
-		'''
-		[PORTRAIT=Verlia]
-		I'm just gonna get going soon anyway, I don't need to think about this stuff.
-		'''
+	Line0: Ugh...
+	Line1: Long story short, I got framed for an execution by the queen Ereshkigal, and she staged an entire execution for some plan of hers-
+	Line2: And I wanna like destroy the shit out of her, but I have not a clue where she is.
+	Line3: She said something about a plan, but I'm not too sure about everything, I'm just really glad I'm out!
+	Line4: Speaking of, I hope Fenix doesn't hate me, I mean she probably does since she most likely thinks I killed her parents, but I swear I didn't!
+	Line5: There's something wrong with Ereshkigal, I don't even want to call her my queen anymore.
+	Line6: I'm just gonna get going soon anyway, I don't need to think about this stuff.
 }
 
 VerliaFamilyDialogue: {
 	DisplayName: Family?
-	Line0:
-		'''
-		[PORTRAIT=Verlia]
-		Yeah!
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Verlia]
-		I love my family dude, my bigger sister is like, super cool, you gotta meet her sometime! I bet she'd kiss you freed me, haha.
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Verlia]
-		I'm so glad to get back to them sometime, I mean if you want I'd be more than happy to introduce you to them!
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Verlia]
-		Dude, I'm so excited to go back you have no idea.
-		'''
-	Line4:
-		'''
-		[PORTRAIT=Verlia]
-		I wonder how Irradia is doing too, she's probably also worried sick about me- the entire village! Oh, I wanna see the look on their faces when I show up smiling and safe.
-		'''
-	Line5:
-		'''
-		[PORTRAIT=Verlia]
-		Thanks to you of course! If you ever need anything, I'll always be here to help you, afterall you did king of save my life, so I'm in your debt.
-		'''
+	Line0: Yeah!
+	Line1: I love my family dude, my bigger sister is like, super cool, you gotta meet her sometime! I bet she'd kiss you freed me, haha.
+	Line2: I'm so glad to get back to them sometime, I mean if you want I'd be more than happy to introduce you to them!
+	Line3: Dude, I'm so excited to go back you have no idea.
+	Line4: I wonder how Irradia is doing too, she's probably also worried sick about me- the entire village! Oh, I wanna see the look on their faces when I show up smiling and safe.
+	Line5: Thanks to you of course! If you ever need anything, I'll always be here to help you, afterall you did king of save my life, so I'm in your debt.
 	Line6: ""
 }
 
 VerliaWingsDialogue: {
 	DisplayName: You have wings?
-	Line0:
-		'''
-		[PORTRAIT=Verlia]
-		I do?? Since when?
-		'''
-	Line1:
-		'''
-		[PORTRAIT=Verlia]
-		I didn't have these before...
-		'''
-	Line2:
-		'''
-		[PORTRAIT=Verlia]
-		Wait.
-		'''
-	Line3:
-		'''
-		[PORTRAIT=Verlia]
-		Oh my Lunar Veils.
-		'''
-	Line4:
-		'''
-		[PORTRAIT=Verlia]
-		When Ereshkigal chained me down in her dungeon thing, she punched a whole ass singularity next to me, and I got absorbed into a crystal or something, or at least that’s the last I saw.
-		'''
-	Line5:
-		'''
-		[PORTRAIT=Verlia]
-		But, before I went into that crystal, I saw so much knowledge just overflowing my brain. I think these wings are a part of my moi? 
-		'''
-	Line6:
-		'''
-		[PORTRAIT=Verlia]
-		My body also grew quite a bit too so maybe being that crystal for 8 years actually did something, but I don’t remember anything during that time.
-		'''
-	Line7:
-		'''
-		[PORTRAIT=Verlia]
-		Well, I guess I’ll have to see what I can do now! I bet I’m the strongest in my hometown finally! Maybe I can even get a rematch against Ashoti, I’m definitely stronger now!
-		'''
+	Line0: I do?? Since when?
+	Line1: I didn't have these before...
+	Line2: Wait.
+	Line3: Oh my Lunar Veils.
+	Line4: When Ereshkigal chained me down in her dungeon thing, she punched a whole ass singularity next to me, and I got absorbed into a crystal or something, or at least that’s the last I saw.
+	Line5: "But, before I went into that crystal, I saw so much knowledge just overflowing my brain. I think these wings are a part of my moi? "
+	Line6: My body also grew quite a bit too so maybe being that crystal for 8 years actually did something, but I don’t remember anything during that time.
+	Line7: Well, I guess I’ll have to see what I can do now! I bet I’m the strongest in my hometown finally! Maybe I can even get a rematch against Ashoti, I’m definitely stronger now!
 }

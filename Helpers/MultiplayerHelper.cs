@@ -17,7 +17,6 @@ using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Town;
-using Stellamod.UI.Dialogue;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -83,13 +82,13 @@ namespace Stellamod
                     TileOverlayUtility.ReceiveTileOverlaySync(reader, whoAmI);
                     break;
                 case MessageType.RequestTileOverlayData:
-                    if(Main.netMode == NetmodeID.Server)
+                    if (Main.netMode == NetmodeID.Server)
                     {
                         TileOverlayUtility.HandleRequestPacket(reader, whoAmI);
                     }
                     break;
                 case MessageType.RequestZTileData:
-                    if(Main.netMode == NetmodeID.Server)
+                    if (Main.netMode == NetmodeID.Server)
                     {
                         ModContent.GetInstance<ZTileMap>().HandleZTileRequestPacket(reader, whoAmI);
                     }
@@ -287,9 +286,9 @@ namespace Stellamod
 
                         ZTileMap.Add(layer, tilePosition, instanceData);
                         if (Main.netMode == NetmodeID.Server)
-                        {     
+                        {
                             //Forward all changes to other clients
-                          
+
                             ZTileMap.SendZTileData(-1, -1, tilePosition.x, tilePosition.y, 4, 4);
                         }
                     }
@@ -379,6 +378,7 @@ namespace Stellamod
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
+            /*
             switch (dialogueType)
             {
                 case DialogueType.Start_Verlia:
@@ -408,7 +408,7 @@ namespace Stellamod
                         dialogueSystem.StartDialogue(exampleDialogue);
                     }
                     break;
-            }
+            }*/
         }
         public static void SpawnNPCFromClient(byte whoAmI, int type, int x, int y, float ai0 = 0, float ai1 = 0, float ai2 = 0, float ai3 = 0) =>
             Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.SpawnNPC, whoAmI, type, x, y, ai0, ai1, ai2, ai3).Send(-1);

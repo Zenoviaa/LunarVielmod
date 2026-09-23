@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
+﻿using ReLogic.Content;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
+using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Utilities;
 using Terraria;
@@ -19,7 +21,10 @@ public class VerliaKillDialogue : BaseDialogue
         return 7;
     }
 
-
+    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    {
+        return AssetReferences.Core.DialogueSystem.Verlia.Asset;
+    }
     public override void OnComplete()
     {
         base.OnComplete();

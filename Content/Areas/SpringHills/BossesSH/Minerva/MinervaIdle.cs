@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Dialogue;
+﻿using Stellamod.Common.DialogueTowning;
+using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.TriggersSystem.Triggers;
@@ -56,9 +57,9 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         }
 
 
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
             StartDialogue();
             Main.CloseNPCChatOrSign();
         }

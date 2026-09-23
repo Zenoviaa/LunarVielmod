@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Dialogue;
+﻿using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
+using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.NPCs;
@@ -79,18 +81,13 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             spawner.spawnTileOffset = new Point(60, -30);
         }
 
-        public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
+        public override void OpenTownDialogue(ref SpeechBoxTalkingParameters talkingParameters, List<Tuple<string, Action>> buttons)
         {
-            base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+            base.OpenTownDialogue(ref talkingParameters, buttons);
+            talkingParameters.profile = GooberDialoguePresets.Jiitas;
+
             //Set buttons
-            buttons.Add(new Tuple<string, Action>("Talk", Talk));
-
-            portrait = "JiitasPortrait";
-            timeBetweenTexts = 0.015f;
-            talkingSound = SoundID.Item1;
-
-            //This pulls from the new Dialogue localization
-            text = "ZuiOpenDialogue1";
+            buttons.Add(new("Talk", Talk));
         }
 
         public override void Talk()
