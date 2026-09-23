@@ -41,6 +41,8 @@ public struct ZuiDialogueStyle : IBoxStyle
 
         var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.JaggedWaves.Asset, quad.vertices[1].Position.XY());
         drawer.worldPosition = topRight;
+        drawer.worldPosition.X += 182;
+        drawer.worldPosition.Y += 48;
         drawer.worldPosition += Main.screenPosition;
         drawer.VerticalFrame(0, 2);
         drawer.CenterOrigin();
@@ -67,12 +69,27 @@ public struct ZuiDialogueStyle : IBoxStyle
                     var circleDrawer = drawer;
                     var ratio = time / 3f;
                     circleDrawer.color = color * 0.5f;
-                    circleDrawer.scale *= time * 1.6f;
+                    circleDrawer.scale *= time ;
                     circleDrawer.rotation = f;
                     spriteBatch.Draw(circleDrawer);
                 }
 
-    
+                float t = 8;
+                for (float f = 0; f < num; f++)
+                {
+
+                    float time = Main.GlobalTimeWrappedHourly * 0.15f;
+                    time += (f / num) * t;
+                    time %= t;
+
+                    var circleDrawer = drawer;
+                    var ratio = time / t;
+                    circleDrawer.color = color * 0.37f * EasingFunction.QuadraticBump(ratio);
+                    circleDrawer.scale *= time;
+                    circleDrawer.rotation = f;
+                    spriteBatch.Draw(circleDrawer);
+                }
+
             }
             /*
             using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
@@ -98,7 +115,7 @@ public struct ZuiDialogueStyle : IBoxStyle
                 }
             }
             */
- 
+
 
         }
         using (new RenderTargetContext(pixelTarget))
