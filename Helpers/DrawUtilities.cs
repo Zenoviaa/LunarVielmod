@@ -71,6 +71,21 @@ public static class DrawUtilities
         return indicesSpan.ToArray();
     }
 
+    public static void DrawOutlinedRectangle(SpriteBatch spriteBatch, in Rectangle rectangle, in Color color, in int outlineSize)
+    {
+        var top = new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, outlineSize);
+        var bottom = new Rectangle(rectangle.Left, rectangle.Bottom - outlineSize, rectangle.Width, outlineSize);
+        var left = new Rectangle(rectangle.Left, rectangle.Top, outlineSize, rectangle.Height);
+        var right = new Rectangle(rectangle.Right - outlineSize, rectangle.Top, outlineSize, rectangle.Height);
+
+        var square = AssetReferences.Assets.GlowMasks.WhiteSquare.Asset.Value;
+        spriteBatch.Draw(square, top, color);
+        spriteBatch.Draw(square, bottom, color);
+        spriteBatch.Draw(square, left, color);
+        spriteBatch.Draw(square, right, color);
+
+    }
+
     /// <summary>
     /// Draws indexed primitives with an effect then reverts back to the previous graphics device state afterward
     /// </summary>
