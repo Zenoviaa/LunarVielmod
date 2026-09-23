@@ -617,6 +617,7 @@ public class Verlia : ScarletBoss,
         NPC.npcSlots = 10f;
         NPC.scale = 1f;
         NPC.aiStyle = -1;
+      
 
         // The following code assigns a music track to the boss in a simple way.
         if (!Main.dedServ)
@@ -769,6 +770,7 @@ public class Verlia : ScarletBoss,
         {
             _outlineColor = Color.Lerp(_outlineColor, Color.Transparent, 0.1f);
         }
+        Lighting.AddLight(NPC.position, TorchID.White);
     }
 
     private void AI_Despawn()

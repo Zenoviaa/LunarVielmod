@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
+using Stellamod.Core;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -226,10 +227,8 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         {
             float outRatio = Timer / Time;
 
-            string path = $"Stellamod/Content/Areas/MoonspiralTower/VerliaBoss/VerlianSigil";
-            Asset<Texture2D> sigilTextureAsset = ModContent.Request<Texture2D>(path);
 
-            SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(sigilTextureAsset, Projectile.Center);
+            SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.VerlianSigil.Asset, Projectile.Center);
             waveDrawer.rotation = 0;
             waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 2f, EasingFunction.InOutSine(outRatio));
             waveDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.QuadraticBump(outRatio));
