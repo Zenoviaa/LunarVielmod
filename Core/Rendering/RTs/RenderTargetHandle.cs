@@ -1,12 +1,16 @@
-﻿namespace Stellamod.Core.Rendering.RTs;
+﻿using System.Collections.Generic;
+
+namespace Stellamod.Core.Rendering.RTs;
 
 public class RenderTargetHandle
 {
+    public static readonly List<RenderTarget2D> InUseTargets = new List<RenderTarget2D>();
     public RenderTargetHandle(RenderTargetParameters parameters, RenderTarget2D target, RenderTargetPool pool)
     {
         Parameters = parameters;
         Pool = pool;
         Target = target;
+        InUseTargets.Add(Target);
     }
 
     public readonly RenderTargetParameters Parameters;
@@ -26,7 +30,7 @@ public class RenderTargetHandle
             return;
         hasReleased = true;
         Pool.Return(this);
-    
+        InUseTargets.Remove(Target);
         //the api would be this
         //RenderTargetHandle handle = RenderTargets.ScreenTarget;
         //using (new RenderTargetContext(handle))

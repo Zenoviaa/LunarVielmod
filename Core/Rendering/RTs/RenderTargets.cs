@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -108,6 +109,7 @@ public class RenderTargets : ModSystem
         {
             pool.OnLoad();
         }
+        On_Main.Draw += Draw;
 
         On_Main.InitTargets_int_int += ResizeTargets;
         Main.QueueMainThreadAction(() =>
@@ -115,6 +117,7 @@ public class RenderTargets : ModSystem
             FailsafeTarget = new RenderTarget2D(Main.graphics.graphicsDevice, 1, 1);
         });
     }
+
 
     private void ResizeTargets(On_Main.orig_InitTargets_int_int orig, Main self, int width, int height)
     {
@@ -155,4 +158,13 @@ public class RenderTargets : ModSystem
             FailsafeTarget?.Dispose();
         });
     }
+
+    [StackTraceHidden]
+    private void Draw(On_Main.orig_Draw orig, Main self, GameTime gameTime)
+    {
+        orig(self, gameTime);
+        if (RenderTargetHandle.InUseTargets.Count > 0)
+            throw new Exception("A render target was not returned to its pool, did you forget to use it?");
+    }
+
 }
