@@ -142,6 +142,7 @@ public struct ZuiDialogueStyle : IBoxStyle
 
                 spriteBatch.Draw(sunDrawer);
             }
+            /*
             using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity, blendState = BlendState.Additive}))
             {
 
@@ -156,7 +157,7 @@ public struct ZuiDialogueStyle : IBoxStyle
     
                 glow.scale *= 0.85f;
                 spriteBatch.Draw(glow);
-            }
+            }*/
             var zuiSwirlPass = AssetReferences.Effects.Dialogue.ZuiSunSwirl.CreatePixelPass();
             zuiSwirlPass.Parameters.time = Main.GlobalTimeWrappedHourly * 2f;
             zuiSwirlPass.Parameters.texelSize = AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineLong.Asset.Value.GetTexelSize();
