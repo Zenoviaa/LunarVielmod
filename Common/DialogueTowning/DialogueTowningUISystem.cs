@@ -39,7 +39,6 @@ namespace Stellamod.Common.DialogueTowning
         public float Duration { get; set; }
 
         public int WhosTalking { get; set; }
-        public static string RootPortraitTexturePath => typeof(BaseDialogue).DirectoryHere() + "/";
         public override int uiSlot => -1;
         public override void OnModLoad()
         {
