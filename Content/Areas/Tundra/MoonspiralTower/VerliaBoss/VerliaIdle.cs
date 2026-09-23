@@ -175,6 +175,7 @@ public class VerliaIdle : VeilTownNPC,
         {
             NPC.active = false;
         }
+        Lighting.AddLight(NPC.position, TorchID.White);
     }
     public override void AddShops()
     {
