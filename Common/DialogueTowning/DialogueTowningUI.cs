@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stellamod.Common.Shaders;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -25,8 +26,8 @@ public class DialogueTowningUI : UIPanel
     private int _textIndex;
     private DialogueBoxState _state;
 
-    public int RelativeLeft => Main.screenWidth / 2;
-    public int RelativeTop => Main.screenHeight - 300;
+    public int RelativeLeft => Main.screenWidth / 2 - 76;
+    public int RelativeTop => Main.screenHeight - 220;
     public Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
     public float TimeBetweenTexts { get; set; } = 0.015f;
 
@@ -175,7 +176,7 @@ public class DialogueTowningUI : UIPanel
         spriteBatch.EndOut(out var oldParameters);
         var box = DialogueTownRenderer.RenderSpeechWindow(TalkingParameters with
         {
-            size = new Vector2(1280, 384)
+            size = new Vector2(1600, 252)
         });
 
         spriteBatch.Begin(oldParameters);
@@ -196,16 +197,53 @@ public class DialogueTowningUI : UIPanel
             return;
 
         //Need to drawn with point clamp to look cleaner
+        
+        var spriteWhite = ShaderContent.GetInstance<SpriteWhiteShader>();
+        var pos2 = DrawPos;
+        pos2.Y += 6;
+        pos2.Y += ExtraMath.Osc(-4, 4, 2);
+        pos2.X += 8;
+        pos2.X -= 100;
+        pos2.Y -= 44;
+        using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { samplerState = SamplerState.PointClamp, effect = spriteWhite }))
+        {
+            Texture2D texture = TalkingParameters.profile.bigPortraitTextureAsset.Value;
+            Vector2 drawPos = pos2;
+            drawPos.Y -= 6;
+            drawPos.X -= 8;
+            Vector2 startDrawPos = drawPos;
+            Vector2 endDrawPos = startDrawPos;
+
+            Vector2 finalDrawPos = Vector2.Lerp(startDrawPos, endDrawPos, VectorHelper.Osc(0f, 1f, speed: 1f));
+ 
+            finalDrawPos += Offset;
+            finalDrawPos.Y = MathF.Floor(finalDrawPos.Y);
+            finalDrawPos.X = MathF.Floor(finalDrawPos.X);
+            float rotation = 0;
+            Vector2 drawOrigin = new Vector2(0, 0);
+            float drawScale = 1f;
+            foreach (var offset in TextHelper.ShadowOffsets)
+            {
+                var pos = finalDrawPos + offset * 2;
+           //     spriteBatch.Draw(texture, pos, null, Color.White * Alpha, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            }
+
+        }
+        
         using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { samplerState = SamplerState.PointClamp }))
         {
             Texture2D texture = TalkingParameters.profile.bigPortraitTextureAsset.Value;
-            Vector2 drawPos = DrawPos;
+            Vector2 drawPos = pos2;
+            drawPos.Y -= 6;
+            drawPos.X -= 8;
             Vector2 startDrawPos = drawPos;
-            Vector2 endDrawPos = startDrawPos + new Vector2(0, 8);
-            Vector2 finalDrawPos = Vector2.Lerp(startDrawPos, endDrawPos, VectorHelper.Osc(0f, 1f, speed: 1f));
-            finalDrawPos.Y = MathF.Floor(finalDrawPos.Y);
-            finalDrawPos += Offset;
+            Vector2 endDrawPos = startDrawPos;
 
+            Vector2 finalDrawPos = Vector2.Lerp(startDrawPos, endDrawPos, VectorHelper.Osc(0f, 1f, speed: 1f));
+       
+            finalDrawPos += Offset;
+            finalDrawPos.Y = MathF.Floor(finalDrawPos.Y);
+            finalDrawPos.X = MathF.Floor(finalDrawPos.X);
             float rotation = 0;
             Vector2 drawOrigin = new Vector2(0, 0);
             float drawScale = 1f;
@@ -218,7 +256,16 @@ public class DialogueTowningUI : UIPanel
 
     private bool IsFinishedTyping()
     {
-        return _textIndex > LocalizedText.Length;
+        var whiteSpaceCount = 0;
+        for(var i = 0; i < LocalizedText.Length; i++)
+        {
+            if (LocalizedText[i] == ' ')
+                whiteSpaceCount++;
+        }
+
+        var length = LocalizedText.Length;
+        length -= whiteSpaceCount;
+        return _textIndex > length;
     }
 
     public void ResetText()
@@ -240,9 +287,9 @@ public class DialogueTowningUI : UIPanel
             return;
         Rectangle ret = GetDimensions().ToRectangle();
         Vector2 pos = ret.TopLeft();
-        pos.X += 200;
+        pos.X += 100;
 
-        var snippets = TextHelper.ParseMessage(FontAssets.DeathText.Value, LocalizedText, pos, Vector2.One * 0.65f, lineSpacing: 65, maxWidth: 400);
+        var snippets = TextHelper.ParseMessage(FontAssets.DeathText.Value, LocalizedText, pos, Vector2.One * 0.5f, lineSpacing: 65, maxWidth: 650);
         for(int i = 0; i < snippets.Length; i++)
         {
             if(i > _textIndex)

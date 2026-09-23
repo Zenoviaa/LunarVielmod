@@ -7,8 +7,8 @@ namespace Stellamod.Common.DialogueTowning
     {
         private int _index;
         private TalkingOptionButtonUI[] _buttons;
-        public int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2) + 80;
-        public int RelativeTop => Main.screenHeight - 300;
+        public int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2) - 54;
+        public int RelativeTop => Main.screenHeight - 220;
         public Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
 
         public const int Max_Dialogue_Options = 4;
@@ -61,12 +61,27 @@ namespace Stellamod.Common.DialogueTowning
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
+
+
+            var dx = 0;
+            var dy = 0;
             for (int y = 0; y < _buttons.Length; y++)
             {
+                var f = (float)y / (float)_index;
                 var btn = _buttons[y];
-                btn.Top.Pixels = y * 48;
+
+                btn.Top.Pixels = dy * 64 - 14 ;
+                btn.Top.Pixels += ExtraMath.Osc(-2f, 2f, speed: 2, y);
+                btn.Left.Pixels = dx * 380 - 8;
                 btn.Alpha = y < _index ? 1 : 0;
                 btn.Alpha *= Alpha;
+
+                dx++;
+                if(dx >= 2)
+                {
+                    dx = 0;
+                    dy++;
+                }
             }
         }
     }

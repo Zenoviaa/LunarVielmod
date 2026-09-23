@@ -13,7 +13,7 @@ public class DialogueTowningButtonGroupUI : UIPanel
     private int _index;
     private DialogueTowningButtonUI[] _buttons;
     public int RelativeLeft => Main.screenWidth / 2;
-    public int RelativeTop => Main.screenHeight - 380;
+    public int RelativeTop => Main.screenHeight - 300;
 
     public Vector2 offset;
     public float alpha;
@@ -71,11 +71,15 @@ public class DialogueTowningButtonGroupUI : UIPanel
         Width.Pixels = 214 * (_buttons.Length) + 32;
         Height.Pixels = 100;
         base.Update(gameTime);
+
         //Constantly lock the UI in the position regardless of resolution changes
         Left.Pixels = RelativeLeft - Width.Pixels / 2;
         Top.Pixels = RelativeTop;
         Left.Pixels += offset.X;
         Top.Pixels += offset.Y;
+
+        var totalWidth = _index * 212;
+        float offset2 = Width.Pixels / 2 - totalWidth / 2;
 
         int index = 0;
         foreach (var btn in _buttons)
@@ -83,7 +87,9 @@ public class DialogueTowningButtonGroupUI : UIPanel
             btn.alpha = alpha;
   
             btn.Left.Pixels = index * 212;
+            btn.Left.Pixels += offset2;
             btn.Top.Pixels = ExtraMath.Osc(0, 8, speed: 2, offset: index);
+            btn.Top.Pixels -= 42;
             if (index >= _index)
             {
                 btn.alpha = 0;

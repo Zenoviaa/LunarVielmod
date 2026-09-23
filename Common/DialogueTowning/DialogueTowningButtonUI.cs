@@ -120,13 +120,13 @@ namespace Stellamod.Common.DialogueTowning
 
             using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { effect = gradientPass.Shader }))
             {
-   
+                nameTagDrawer.color *= 0.5f;
                 spriteBatch.Draw(nameTagDrawer);
             }
             var nameTagOutlineDrawer = nameTagDrawer;
             nameTagOutlineDrawer.texture = AssetReferences.Content.GooberPortraits.NameTagOutline.Asset.Value;
             nameTagOutlineDrawer.color = Color.Lerp(Color.White, terrariaYellow, _realHoverAlpha) * _spriteAlpha;
-
+            nameTagOutlineDrawer.color *= 0.25f;
             spriteBatch.Draw(nameTagOutlineDrawer);
 
             Vector2 pos = rect.Center();

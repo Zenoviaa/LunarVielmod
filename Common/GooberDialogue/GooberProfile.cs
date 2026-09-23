@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
 using Terraria.Audio;
 
 namespace Stellamod.Common.GooberDialogue;
@@ -20,6 +21,7 @@ public struct GooberProfile
 {
     public Asset<Texture2D> bigPortraitTextureAsset;
     public Asset<Texture2D> portraitTextureAsset;
+    public IBoxStyle boxStyle;
     public SoundStyle? talkingSound;
     public Color startGradientColor;
     public Color endGradientColor;

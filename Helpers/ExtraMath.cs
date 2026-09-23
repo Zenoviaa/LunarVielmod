@@ -6,6 +6,13 @@ namespace Stellamod.Helpers
 {
     public static class ExtraMath
     {
+        public static Rectangle CreateRectangle(in Vector2 topLeft, in Vector2 bottomRight)
+        {
+            Vector2 size = bottomRight - topLeft;
+            var rect = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)size.X, (int)size.Y);
+            return rect;
+        }
+
         public static float AngleDiff(float a, float b)
         {
             float a1 = MathHelper.ToDegrees(a);

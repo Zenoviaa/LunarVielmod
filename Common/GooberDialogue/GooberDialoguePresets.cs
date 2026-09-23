@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.ConsoleMenu;
+using Stellamod.Common.DialogueTowning;
 using Stellamod.Core;
 
 namespace Stellamod.Common.GooberDialogue;
@@ -118,7 +119,7 @@ public static class GooberDialoguePresets
     {
         startGradientColor = new Color(50, 50, 50),
         endGradientColor = new Color(0, 0, 0),
-        outlineColor = new Color(240, 240, 235),
+        outlineColor = Color.Red,
         bigPortraitTextureAsset = AssetReferences.Core.DialogueSystem.QuestionMark.Asset,
         portraitTextureAsset = AssetReferences.Content.GooberPortraits.ZuiMiniPortrait.Asset,
         timeBetweenTexts = 2,
@@ -131,6 +132,7 @@ public static class GooberDialoguePresets
         startGradientColor = new Color(240, 122, 35),
         endGradientColor = new Color(202, 68, 43),
         outlineColor = new Color(202, 68, 43),
+        boxStyle = new ZuiDialogueStyle(),
         bigPortraitTextureAsset = AssetReferences.Core.DialogueSystem.Zui.Asset,
         portraitTextureAsset = AssetReferences.Content.GooberPortraits.ZuiMiniPortrait.Asset,
         timeBetweenTexts = 2,

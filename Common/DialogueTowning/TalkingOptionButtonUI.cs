@@ -83,19 +83,24 @@ namespace Stellamod.Common.DialogueTowning
             rect.Y += 8;
 
             //Daraw the background for the button
-            var nameTagDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.NameTag.Asset, Vector2.Zero);
+            var nameTagDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.ChatButton.Asset, Vector2.Zero);
 
             nameTagDrawer.worldPosition = Main.screenPosition + rect.Center();
 
             nameTagDrawer.color = Color.White * _alpha;
-            var scale = rect.Size() / AssetReferences.Content.GooberPortraits.NameTag.Asset.Value.Size();
+            var scale = rect.Size() / AssetReferences.Content.GooberPortraits.ChatButton.Asset.Value.Size();
             nameTagDrawer.scale = scale;
+            nameTagDrawer.scale.X = 1.1f;
             nameTagDrawer.CenterOrigin();
-
+            nameTagDrawer.worldPosition.Y -= 14;
+            nameTagDrawer.worldPosition.X += 54;
+            nameTagDrawer.worldPosition.X += MathHelper.Lerp(0, 8, _realHoverAlpha);
+            nameTagDrawer.color = Color.Black * _alpha * 0.5f;
+            spriteBatch.Draw(nameTagDrawer);
             var pos = rect.TopLeft();
             pos.X += 8;
-            pos.X += MathHelper.Lerp(0, 32, _realHoverAlpha);
-            nameTagDrawer.worldPosition.X += MathHelper.Lerp(0, 32, _realHoverAlpha);
+            pos.X += MathHelper.Lerp(0, 8, _realHoverAlpha);
+ 
             var textScale = new Vector2(0.5f);
             var text = _talkingOption.GetDisplayName();
             var textSize = FontAssets.DeathText.Value.MeasureString(text);
@@ -116,12 +121,15 @@ namespace Stellamod.Common.DialogueTowning
             TextHelper.DrawStringIndividually(FontAssets.DeathText.Value, spriteBatch, snippets);
    
             var nameTagOutlineDrawer = nameTagDrawer;
-            nameTagOutlineDrawer.texture = AssetReferences.Content.GooberPortraits.NameTagOutline.Asset.Value;
-            nameTagOutlineDrawer.worldPosition.Y -= 14;
-            nameTagOutlineDrawer.worldPosition.X += 18;
+            nameTagOutlineDrawer.texture = AssetReferences.Content.GooberPortraits.ChatButtonOutline.Asset.Value;
+     
             nameTagOutlineDrawer.scale.X = 1.1f;
             if (IsMouseHovering)
                 nameTagOutlineDrawer.color = highlightColor * _alpha;
+            else
+            {
+                nameTagOutlineDrawer.color = Color.White * _alpha * 0.3f;
+            }
             spriteBatch.Draw(nameTagOutlineDrawer);
             /*
             Color drawColor = Color.White.MultiplyRGB(Color.DarkGray);
