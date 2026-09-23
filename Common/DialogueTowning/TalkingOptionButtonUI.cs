@@ -103,10 +103,15 @@ namespace Stellamod.Common.DialogueTowning
             var terrariaYellow = new Color(255, 231, 71);
             var highlightColor = IsMouseHovering ? terrariaYellow : Color.White;
             var textColor = Color.Lerp(Color.White, highlightColor, ExtraMath.Osc(0f, 1f, speed: 6));
+            var visibleCharacters = (int)MathHelper.Lerp(-2, snippets.Length, _alpha);
             for (int i = 0; i < snippets.Length; i++)
             {
+             
                 ref var snippet = ref snippets[i];
-                snippet.characterColor = textColor * _alpha;
+                snippet.characterColor = textColor;
+                if (i > visibleCharacters)
+                    snippet.characterColor = Color.Transparent;
+
             }
             TextHelper.DrawStringIndividually(FontAssets.DeathText.Value, spriteBatch, snippets);
    
