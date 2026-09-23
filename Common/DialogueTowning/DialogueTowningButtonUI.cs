@@ -88,7 +88,7 @@ namespace Stellamod.Common.DialogueTowning
             {
                 Main.LocalPlayer.mouseInterface = true;
             }
-
+            Height.Pixels = 42;
             var terrariaYellow = new Color(255, 230, 71);
             var textColor = Color.Lerp(Color.White, terrariaYellow, _realHoverAlpha);
             CalculatedStyle dimensions = GetDimensions();
@@ -138,7 +138,8 @@ namespace Stellamod.Common.DialogueTowning
                 ref var snippet = ref snippets[i];
                 snippet.characterColor = textColor * _spriteAlpha;
             }
-   
+
+
             TextHelper.DrawStringIndividually(FontAssets.DeathText.Value, spriteBatch, snippets);
             /*
             Color drawColor = Color.White.MultiplyRGB(Color.DarkGray);

@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI.Chat;
 
 namespace Stellamod.Common.DialogueTowning;
@@ -270,17 +271,19 @@ public class DialogueTowningUI : UIPanel
 
     public void ResetText()
     {
+        LocalizedText = string.Empty;
         _textIndex = 0;
     }
     public void ClearText()
     {
+        LocalizedText = string.Empty;
         _textIndex = 0;
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
         base.DrawSelf(spriteBatch);
-
+       
         DrawBackground(spriteBatch);
         DrawPortrait(spriteBatch);
         if (string.IsNullOrEmpty(LocalizedText))

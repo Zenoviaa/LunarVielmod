@@ -28,7 +28,7 @@ namespace Stellamod.Common.DialogueTowning
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-            Width.Pixels = 214;
+            Width.Pixels = 352;
             Height.Pixels = 44;
 
             OnLeftClick += OnButtonClick;
@@ -78,8 +78,10 @@ namespace Stellamod.Common.DialogueTowning
             if (_talkingOption == null)
                 return;
 
+ 
             CalculatedStyle dimensions = GetDimensions();
             Rectangle rect = dimensions.ToRectangle();
+            rect.Width = 214;
             rect.Y += 8;
 
             //Daraw the background for the button
