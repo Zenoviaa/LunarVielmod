@@ -89,8 +89,8 @@ public class FenixDomain : ModSystem
             RenderTargetHandle domainTarget = RenderTargets.ScreenTarget;
             RenderTargetHandle domainTargetSwap = RenderTargets.ScreenTarget;
             
-            using (RT.Context(domainTarget)) ;
-            using (RT.Context(domainTargetSwap)) ;
+            using (RT.Context(domainTarget)) 
+            using (RT.Context(domainTargetSwap)) 
 
             PrepareDomainContent(domainTarget, domainTargetSwap);
 

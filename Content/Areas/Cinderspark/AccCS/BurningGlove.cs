@@ -68,7 +68,7 @@ public class BurningGlove : AbstractMeleeAddon
 
         if (!_hasShotSwingProj[id] && projectile.Interpolant >= 0.1f)
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 Projectile.NewProjectile(projectile.Projectile.GetSource_FromAI(), projectile.Owner.Center,
                               projectile.Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(0.1) * 15, ModContent.ProjectileType<MoltenManaBlast>(),

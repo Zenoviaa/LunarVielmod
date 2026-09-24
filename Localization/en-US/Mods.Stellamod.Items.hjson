@@ -36,8 +36,9 @@ Common: {
 		Stat:
 			'''
 			{0} general endurance
+			{1} max life
 
-			[c/FFA500:Gain 1% general endurance for each point.]
+			[c/FFA500:Gain 1% general endurance and 2 max life for each point.]
 			'''
 	}
 

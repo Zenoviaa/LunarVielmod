@@ -382,7 +382,7 @@ public class GooberDialogueSystem : ModSystem
             int length = Math.Min(speechBubble.speaker.textIndex, speechBubble.speaker.text.Length);
             Vector2 currentTextSize = ChatManager.GetStringSize(FontAssets.DeathText.Value,
                 speechBubble.speaker.text.Substring(0, length), Vector2.One * 0.5f, 342);
-            currentTextSize.X = Math.Min(currentTextSize.X, 342) + 80;
+            currentTextSize.X = Math.Min(342, 342) + 80;
             currentTextSize.Y += 64;
             _speechBubbleSize = Vector2.Lerp(_speechBubbleSize, currentTextSize, 0.15f);
             PrepareQuad(

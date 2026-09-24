@@ -88,7 +88,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
     public override void AI()
     {
         base.AI();
-        if (Timer > 18)
+        if (Timer > 35)
         {
             Projectile.hostile = false;
         }

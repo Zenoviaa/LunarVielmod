@@ -26,14 +26,16 @@ public class VerliaMiniMoonFriendlyBoom : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 128;
-        Projectile.height = 128;
+        Projectile.width = 164;
+        Projectile.height = 164;
         Projectile.penetrate = -1;
         Projectile.timeLeft = 30;
         Projectile.tileCollide = false;
         Projectile.light = 0.8f;
         Projectile.ignoreWater = true;
         Projectile.friendly = true;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
     }
 
     public override void AI()
@@ -103,10 +105,13 @@ public class VerliaMiniMoonFriendlyBoom : ModProjectile
 }
 public class VerliaMiniMoonFriendly : ModProjectile
 {
+    private float _rotationDirection;
     private float _flashAlpha;
     private Vector2 _squishScale;
     private Vector2 _targetScale;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float TargetX => ref Projectile.ai[1];
+    private ref float TargetY => ref Projectile.ai[2];
     private Asset<Texture2D> _scrollingMoonTextureAsset;
     private Asset<Texture2D> _shadowTextureAsset;
     private Asset<Texture2D> _outlineMoonTextureAsset;
@@ -123,7 +128,6 @@ public class VerliaMiniMoonFriendly : ModProjectile
         base.SetDefaults();
         Projectile.width = 32;
         Projectile.height = 32;
-        Projectile.penetrate = -1;
         Projectile.timeLeft = 130;
         Projectile.tileCollide = false;
         Projectile.ignoreWater = true;
@@ -136,6 +140,7 @@ public class VerliaMiniMoonFriendly : ModProjectile
         Timer++;
         if (Timer == 1)
         {
+            
             SoundStyle spawnSound = new SoundStyle($"Stellamod/Assets/Sounds/SoftSummon");
             spawnSound.PitchVariance = 0.4f;
             SoundEngine.PlaySound(spawnSound, Projectile.position);
@@ -153,15 +158,43 @@ public class VerliaMiniMoonFriendly : ModProjectile
             spawnSound.Volume = 0.3f;
             SoundEngine.PlaySound(spawnSound, Projectile.position);
         }
-        if (Timer > 24)
-            Projectile.tileCollide = true;
+
         var closest = NPCHelper.FindClosestNPC(Projectile.position, 1024);
         if(closest != null)
         {
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 2), 0.2f);
         }
 
-        Projectile.velocity *= 1.01f;
+        if(Timer == 1 && this.OwnedByLocalClient())
+        {
+            _rotationDirection = Main.rand.NextBool(2) ? -1 : 1;
+           
+            Projectile.netUpdate = true;
+        }
+        Projectile.velocity *= 1.003f;
+        if(Timer < 36)
+        {
+            Projectile.velocity = Projectile.velocity.RotatedBy(_rotationDirection * 0.15f);
+        }
+        if(this.OwnedByLocalClient() && Timer == 40)
+        {
+            TargetX = Main.MouseWorld.X;
+            TargetY = Main.MouseWorld.Y;
+            Projectile.netUpdate = true;
+        }
+
+        if(Timer >= 40)
+        {
+            Vector2 target = new Vector2(TargetX, TargetY);
+            Vector2 targetVelocity = (target - Projectile.Center).SafeNormalize(Vector2.Zero);
+            targetVelocity *= 12;
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.2f);
+            var dqSquared = Vector2.DistanceSquared(Projectile.Center, target);
+            if(dqSquared < 32 * 32)
+            {
+                Projectile.Kill();
+            }
+        }
         if (Projectile.velocity.Length() < 25)
         {
             if (Timer % 7 == 0)
@@ -184,7 +217,7 @@ public class VerliaMiniMoonFriendly : ModProjectile
                 sp.gravity = 0;
             }
 
-            Projectile.velocity *= 1.1f;
+        
         }
     }
 
@@ -275,6 +308,11 @@ public class VerliaMiniMoonFriendly : ModProjectile
         return false;
     }
 
+    public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitNPC(target, ref modifiers);
+        modifiers.FinalDamage *= 0.02f;
+    }
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
@@ -303,9 +341,9 @@ public class Moonblaster : BaseGun
     {
         base.SetDefaults();
         Item.DefaultToGun();
-        Item.damage = 65;
+        Item.damage = 120;
         Item.shoot = ModContent.ProjectileType<VerliaMiniMoonFriendly>();
-        Item.shootSpeed = 15;
+        Item.shootSpeed = 7;
         Item.noMelee = true;
         muzzleOrigin = new Vector2(52, 12);
         
@@ -320,12 +358,13 @@ public class Moonblaster : BaseGun
     public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
 
-        Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<VerliaMiniMoonFriendly>(), damage, knockback, player.whoAmI, ai0: remainingAmmo);
+        Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<VerliaMiniMoonFriendly>(), damage, knockback, player.whoAmI);
         return false;
     }
 
     public override void ShootEffects(Vector2 position, Vector2 velocity)
     {
+
         var shootSound = AssetReferences.Assets.Sounds.Verlia.Moonblaster.Asset;
         shootSound.PitchVariance = 0.75f;
         shootSound.Volume = 0.5f;

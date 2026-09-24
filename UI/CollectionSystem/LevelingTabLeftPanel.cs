@@ -274,6 +274,8 @@ public static class Leveler
                 break;
             case 1:
                 baseStats[0] = 0.01f;
+                baseStats[1] = 2;
+                asNumber[1] = true;
                 break;
             case 2:
                 baseStats[0] = 0.01f;

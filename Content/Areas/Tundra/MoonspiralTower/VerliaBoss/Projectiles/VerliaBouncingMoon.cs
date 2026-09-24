@@ -100,7 +100,7 @@ public class VerliaBouncingMoon : ModProjectile
 
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
 
-        OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
+        OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -142);
         _targetScale = Vector2.One;
         switch (State)
         {

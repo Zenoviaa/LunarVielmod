@@ -106,6 +106,7 @@ public class LevelingPlayer : ModPlayer
 
         //Endurance
         stats.generalEndurance += 0.01f * FinalEndurance;
+        Player.statLifeMax2 += (int)(2 * FinalEndurance);
 
         //Agility
         //We apply this in post update buffs because that happens before armorstats player applies affects
