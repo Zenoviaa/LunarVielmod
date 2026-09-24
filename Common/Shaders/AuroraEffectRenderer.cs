@@ -35,8 +35,8 @@ public class AuroraEffectRenderer : ModSystem
             if (!Main.gameMenu && _activeTimer > 0)
             {
                 spriteBatch.EndOut(out var oldParameters);
-                RenderTargetHandle auroraRT = RenderTargets.QuarterScreenTarget;
-                using (new RenderTargetContext(auroraRT))
+                using var auroraRT = RT.Context(RenderTargets.QuarterScreenTarget);
+                using (RT.Clear(auroraRT, Color.Transparent))
                 {
                     PrepareAuroraContent(auroraRT);
                 }

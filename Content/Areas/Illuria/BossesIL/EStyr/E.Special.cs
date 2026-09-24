@@ -497,7 +497,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (invert)
                 color = Color.White;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            using(new RenderTargetContext(riverMaskRT))
+            using(RT.Clear(riverMaskRT, Color.Transparent))
             {
                 if (_draws.Count > 0)
                 {
@@ -521,7 +521,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
             }
 
-            using(new RenderTargetContext(riverRT, Color.Black))
+            using(RT.Clear(riverRT, Color.Black))
             {
                 MixerShader mixerShader = MixerShader.Instance;
                 Asset<Texture2D> mixTexture = _waterTextureAsset;
@@ -535,7 +535,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 spriteBatch.End();
             }
 
-            using(new RenderTargetContext(pixelRT, Color.Transparent))
+            using(RT.Clear(pixelRT, Color.Transparent))
             {
                 MaskCombineShader maskCombineShader = MaskCombineShader.Instance;
                 //Draw at half size to downscale
@@ -601,9 +601,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (!shouldRender)
                 return;
 
-            RenderTargetHandle pixelRT = RenderTargets.HalfScreenTarget;
-            RenderTargetHandle riverRT = RenderTargets.ScreenTarget;
-            RenderTargetHandle riverMaskRT = RenderTargets.ScreenTarget;
+            using var pixelRT = RT.Context(RenderTargets.HalfScreenTarget);
+            using var riverRT = RT.Context(RenderTargets.ScreenTarget);
+            using var riverMaskRT = RT.Context(RenderTargets.ScreenTarget);
             PrepareRenderTargetContent(pixelRT, riverRT, riverMaskRT);
 
             SpriteBatch spriteBatch = Main.spriteBatch;

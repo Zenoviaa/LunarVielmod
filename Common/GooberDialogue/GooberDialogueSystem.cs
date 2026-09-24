@@ -69,15 +69,15 @@ public class GooberDialogueSystem : ModSystem
             portraitDrawer.worldPosition += BubbleOffsetForElements;
 
 
-            RenderTargetHandle pixelTarget = RenderTargets.HalfScreenTarget;
-            RenderTargetHandle boxRenderTarget = RenderTargets.ScreenTarget;
-            RenderTargetHandle boxRenderTargetSwap = RenderTargets.ScreenTarget;
+            using var pixelTarget = RT.Context(RenderTargets.HalfScreenTarget);
+            using var boxRenderTarget = RT.Context(RenderTargets.ScreenTarget);
+            using var boxRenderTargetSwap = RT.Context(RenderTargets.ScreenTarget);
 
 
             RenderDialogueBoxToPixelTarget(bubble, pixelTarget, boxRenderTarget, boxRenderTargetSwap);
 
             //Prepare a mask for the portrait to mask onto
-            using (new RenderTargetContext(boxRenderTarget))
+            using (RT.Clear(boxRenderTarget, Color.Transparent))
             {
                 using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity }))
                 {
@@ -92,7 +92,7 @@ public class GooberDialogueSystem : ModSystem
             }
 
             //Prpeare the portrait draw
-            using (new RenderTargetContext(boxRenderTargetSwap))
+            using (RT.Clear(boxRenderTargetSwap, Color.Transparent))
             {
                 using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed()))
                 {
@@ -336,7 +336,7 @@ public class GooberDialogueSystem : ModSystem
 
     private void DrawOutline(RenderTargetHandle src, RenderTargetHandle dst, SpriteBatch spriteBatch, Effect effect, Color outlineColor)
     {
-        using (new RenderTargetContext(dst))
+        using (RT.Clear(dst, Color.Transparent))
         {
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
@@ -355,7 +355,7 @@ public class GooberDialogueSystem : ModSystem
     private void RenderDialogueBoxToPixelTarget(SpeechBubble speechBubble,
         RenderTargetHandle pixelTarget, RenderTargetHandle boxRenderTarget, RenderTargetHandle boxRenderTargetSwap)
     {
-        RenderTargetHandle maskTarget = RenderTargets.ScreenTargetMipMapped;
+        using var maskTarget = RT.Context(RenderTargets.ScreenTargetMipMapped);
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         void RenderBox()
@@ -407,11 +407,11 @@ public class GooberDialogueSystem : ModSystem
             spriteBatch.Draw(tailDrawer);
             spriteBatch.End();
         }
-        using (new RenderTargetContext(boxRenderTarget))
+        using (RT.Clear(boxRenderTarget, Color.Transparent))
         {
             RenderBox();
         }
-        using (new RenderTargetContext(maskTarget))
+        using (RT.Clear(maskTarget, Color.Transparent))
         {
             RenderBox();
         }
@@ -437,7 +437,7 @@ public class GooberDialogueSystem : ModSystem
         }
 
 
-        using (new RenderTargetContext(pixelTarget))
+        using (RT.Clear(pixelTarget, Color.Transparent))
         {
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,

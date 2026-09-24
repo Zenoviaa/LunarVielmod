@@ -31,8 +31,8 @@ public class RoyalFoxCloneRenderer : ModSystem
         if (_cloneDrawActions.Count <= 0)
             return;
 
-        RenderTargetHandle cloneRT = RenderTargets.ScreenTarget;
-        using(new RenderTargetContext(cloneRT))
+        using var cloneRT = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(cloneRT, Color.Transparent))
         {
             SpriteBatch sb = Main.spriteBatch;
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);

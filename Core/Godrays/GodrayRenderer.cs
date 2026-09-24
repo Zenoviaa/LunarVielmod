@@ -8,6 +8,7 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -123,7 +124,9 @@ namespace Stellamod.Core.Godrays
             LunarVeilClientConfig config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.Godrays)
                 return;
+
             UpdateParticles();
+
         }
         public override void PostDrawTiles()
         {

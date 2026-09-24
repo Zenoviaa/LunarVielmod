@@ -25,8 +25,8 @@ public class OutlineRenderer : ModSystem
         if (!Main.gameMenu && _drawQueue.Count > 0)
         {
             SpriteBatch sb = Main.spriteBatch;
-            RenderTargetHandle outlineTarget = RenderTargets.ScreenTarget;
-            using (new RenderTargetContext(outlineTarget))
+            using var outlineTarget = RT.Context(RenderTargets.ScreenTarget);
+            using (RT.Clear(outlineTarget, Color.Transparent))
             {
                 var whiteShader = SpriteWhiteShader.Instance;
                 sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,

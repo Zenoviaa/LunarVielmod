@@ -86,12 +86,8 @@ public class FenixDomain : ModSystem
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.Clear(Color.Transparent);
 
-            RenderTargetHandle domainTarget = RenderTargets.ScreenTarget;
-            RenderTargetHandle domainTargetSwap = RenderTargets.ScreenTarget;
-            
-            using (RT.Context(domainTarget)) 
-            using (RT.Context(domainTargetSwap)) 
-
+            using var domainTarget = RT.Context(RenderTargets.ScreenTarget);
+            using var domainTargetSwap = RT.Context(RenderTargets.ScreenTarget);
             PrepareDomainContent(domainTarget, domainTargetSwap);
 
             Color drawColor2 = Color.SkyBlue;

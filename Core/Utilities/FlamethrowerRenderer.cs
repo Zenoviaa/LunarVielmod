@@ -139,9 +139,9 @@ public class FlamethrowerRenderer : ModSystem
     private void DrawToScreen(SpriteBatch sb, Vector2 sp)
     {
         sb.EndOut(out var oldParameters);
-        RenderTargetHandle fireTarget = RenderTargets.ScreenTarget;
-        RenderTargetHandle metaballTarget = RenderTargets.ScreenTarget;
-        using (new RenderTargetContext(metaballTarget))
+        using var fireTarget = RT.Context(RenderTargets.ScreenTarget);
+        using var metaballTarget = RT.Context(RenderTargets.ScreenTarget);
+        using (RT.Clear(metaballTarget, Color.Transparent))
         {
             FlamethrowerShader fireShader = ShaderContent.GetInstance<FlamethrowerShader>();
             fireShader.InnerColor = Color.Yellow;
@@ -156,7 +156,7 @@ public class FlamethrowerRenderer : ModSystem
             _metaballWorldPositions.Clear();
         }
 
-        using(new RenderTargetContext(fireTarget))
+        using(RT.Clear(fireTarget, Color.Transparent))
         {
             FlamethrowerNoiseShader noiseShader = ShaderContent.GetInstance<FlamethrowerNoiseShader>();
             noiseShader.Time = Main.GlobalTimeWrappedHourly * -16;

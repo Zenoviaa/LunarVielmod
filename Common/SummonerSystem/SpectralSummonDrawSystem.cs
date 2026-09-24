@@ -44,8 +44,8 @@ public class SpectralSummonDrawSystem : ModSystem
         if (_spectralDraws.Count <= 0)
             return;
 
-        RenderTargetHandle screenTarget = RenderTargets.ScreenTarget;
-        using (new RenderTargetContext(screenTarget))
+        using var screenTarget = RT.Context(RenderTargets.ScreenTarget);
+        using (RT.Clear(screenTarget, Color.Transparent))
         {
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
             foreach (var drawer in _spectralDraws)

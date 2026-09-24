@@ -131,11 +131,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            RenderTargetHandle whiteTarget = RenderTargets.ScreenTarget;
-            using(new RenderTargetContext(whiteTarget, Color.White))
-            {
-
-            }
+            using var whiteTarget = RT.Context(RenderTargets.ScreenTarget);
 
             var bloodyShader = BloodyShader.Instance;
             bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.7f);
@@ -208,7 +204,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            using (new RenderTargetContext(pixelRTScreen))
+            using (RT.Clear(pixelRTScreen, Color.Transparent))
             {
                 //Alright, so what we're going to do is actually use two render targets to get around the issue of misplaced pixels
                 //This costs a bit of extra performance but it'll look good
@@ -223,7 +219,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 spriteBatch.End();
             }
 
-            using (new RenderTargetContext(pixelRTDown))
+            using (RT.Clear(pixelRTDown, Color.Transparent))
             {
 
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
@@ -250,8 +246,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (_draws.Count <= 0)
                 return;
 
-            RenderTargetHandle pixelRenderRT = RenderTargets.QuarterScreenTarget;
-            RenderTargetHandle pixelTargetScren = RenderTargets.ScreenTarget;
+            using var pixelRenderRT = RT.Context(RenderTargets.QuarterScreenTarget);
+            using var pixelTargetScren = RT.Context(RenderTargets.ScreenTarget);
             PreparePixelatedContent(pixelRenderRT, pixelTargetScren);
 
             var bloodyShader = BloodyShader.Instance;

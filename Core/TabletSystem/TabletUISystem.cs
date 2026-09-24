@@ -191,8 +191,8 @@ public class TabletUISystem : BaseUISystem
 
                         SpriteBatch spriteBatch = Main.spriteBatch;
                         spriteBatch.EndOut(out var parameters);
-                        RenderTargetHandle uiTarget = RenderTargets.ScreenTarget;
-                        using(new RenderTargetContext(uiTarget))
+                        using var uiTarget = RT.Context(RenderTargets.ScreenTarget);
+                        using(RT.Clear(uiTarget, Color.Transparent))
                         {
                             using(new SpritebatchContext(spriteBatch, parameters))
                             {

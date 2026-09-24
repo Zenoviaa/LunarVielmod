@@ -568,15 +568,15 @@ public class RoyalMagicRenderer : ModSystem
     {
         sb.EndOut(out var parameters);
 
-        RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle directionRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle swirlRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle outlineRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle directionRT2 = RenderTargets.ScreenTarget;
+        using var maskRT = RT.Context(RenderTargets.ScreenTarget);
+        using var directionRT = RT.Context(RenderTargets.ScreenTarget);
+        using var swirlRT = RT.Context(RenderTargets.ScreenTarget);
+        using var outlineRT = RT.Context(RenderTargets.ScreenTarget);
+        using var directionRT2 = RT.Context(RenderTargets.ScreenTarget);
 
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-        using (new RenderTargetContext(maskRT))
+        using (RT.Clear(maskRT, Color.Transparent))
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
             DrawMaskParticles(spriteBatch);
@@ -588,7 +588,7 @@ public class RoyalMagicRenderer : ModSystem
             }
         }
 
-        using (new RenderTargetContext(directionRT))
+        using (RT.Clear(directionRT, Color.Transparent))
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Brightest, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
 
@@ -619,7 +619,7 @@ public class RoyalMagicRenderer : ModSystem
         }
 
 
-        using (new RenderTargetContext(swirlRT))
+        using (RT.Clear(swirlRT, Color.Transparent))
         {
             //Prepare to draw this effect
             RoyalSwirlsShader swirlsShader = ShaderContent.GetInstance<RoyalSwirlsShader>();
@@ -649,7 +649,7 @@ public class RoyalMagicRenderer : ModSystem
 
         Color outlineColor = new Color(150, 150, 235) * 0.5f;
         Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
-        using (new RenderTargetContext(outlineRT))
+        using (RT.Clear(outlineRT, Color.Transparent))
         {
 
             RoyalOutlineShader mixerShader2 = ShaderContent.GetInstance<RoyalOutlineShader>();
@@ -660,7 +660,7 @@ public class RoyalMagicRenderer : ModSystem
             spriteBatch.End();
         }
 
-        using (new RenderTargetContext(directionRT2))
+        using (RT.Clear(directionRT2, Color.Transparent))
         {
             RoyalMixShader mixerShader = ShaderContent.GetInstance<RoyalMixShader>();
             mixerShader.MixTexture = outlineRT;

@@ -1326,9 +1326,9 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
      
         private void DrawVerlianAura(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            RenderTargetHandle maskTarget = RenderTargets.ScreenTarget;
+            using var maskTarget = RT.Context(RenderTargets.ScreenTarget);
             spriteBatch.EndOut(out var oldParameters);
-            using(new RenderTargetContext(maskTarget))
+            using(RT.Clear(maskTarget, Color.Transparent))
             {
                 //Draw a circle
                 var circlePass = AssetReferences.Effects.Abyss.VerliaAuraFilled.CreatePixelPass();

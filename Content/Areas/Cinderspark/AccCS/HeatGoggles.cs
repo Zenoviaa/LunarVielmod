@@ -33,8 +33,8 @@ public class InfraredRenderer : ModSystem
             return;
 
         SpriteBatch spriteBatch = Main.spriteBatch;
-        RenderTargetHandle screenTarget = RenderTargets.ScreenTarget;
-        using(new RenderTargetContext(screenTarget))
+        using var screenTarget = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(screenTarget, Color.Transparent))
         {
             var target = Main.instance.tileTarget;
 

@@ -194,9 +194,9 @@ public class RoyalStarBombRenderer : ModSystem
     }
     private void DrawToScreen(SpriteBatch sb, Vector2 screenPos)
     {
-        RenderTargetHandle bombRT = RenderTargets.ScreenTarget;
+        using var bombRT = RT.Context(RenderTargets.ScreenTarget);
         sb.EndOut(out var oldParameters);
-        using(new RenderTargetContext(bombRT))
+        using(RT.Clear(bombRT, Color.Transparent))
         {
        
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
@@ -207,18 +207,7 @@ public class RoyalStarBombRenderer : ModSystem
             sb.End();
         }
 
-        Color outlineColor = new Color(150, 150, 235) * 0.85f;
-        Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
-
-        RoyalOutlineShader outlineShader = ShaderContent.GetInstance<RoyalOutlineShader>();
-        outlineShader.TexelSize = texelSize;
-        outlineShader.OutlineColor = outlineColor;
-        outlineShader.Levels = 2;
-        // sb.Restart(effect: outlineShader.Effect);
-        // sb.Draw(_bombRT, Vector2.Zero, Color.White);
-        // sb.RestartDefaults();
-
-        sb.Begin(oldParameters with { effect = outlineShader.Effect });
+        sb.Begin(oldParameters with { effect = null });
         sb.Draw(bombRT, Vector2.Zero, Color.White);
         sb.End();
         sb.Begin(oldParameters);

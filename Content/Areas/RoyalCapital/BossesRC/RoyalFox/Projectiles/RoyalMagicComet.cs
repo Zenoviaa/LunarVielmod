@@ -124,17 +124,17 @@ public class RoyalMagicCometStarsRenderer : ModSystem
     {
 
         sb.EndOut(out var oldParameters);
-        RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle starsRT = RenderTargets.ScreenTarget;
+        using var maskRT = RT.Context(RenderTargets.ScreenTarget);
+        using var starsRT = RT.Context(RenderTargets.ScreenTarget);
 
-        using(new RenderTargetContext(maskRT))
+        using(RT.Clear(maskRT, Color.Transparent))
         {
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
             DrawMaskParticles(sb);
             sb.End();
         }
 
-        using(new RenderTargetContext(starsRT))
+        using(RT.Clear(starsRT, Color.Transparent))
         {
             RoyalMagicStarsShader starsShader = ShaderContent.GetInstance<RoyalMagicStarsShader>();
             starsShader.Time = Main.GlobalTimeWrappedHourly * 4;

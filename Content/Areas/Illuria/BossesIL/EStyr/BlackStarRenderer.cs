@@ -50,9 +50,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-                RenderTargetHandle maskTarget = RenderTargets.ScreenTarget;
-                RenderTargetHandle blackStarTarget = RenderTargets.ScreenTarget;
-                using(new RenderTargetContext(blackStarTarget))
+                using var maskTarget = RT.Context(RenderTargets.ScreenTarget);
+                using var blackStarTarget = RT.Context(RenderTargets.ScreenTarget);
+                using(RT.Clear(blackStarTarget, Color.Transparent))
                 {
                     Texture2D starTexture = AssetReferences.Assets.NoiseTextures.Extra_62.Asset.Value;
                     Vector2 drawOrigin = starTexture.Size() / 2f;
@@ -75,7 +75,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     spriteBatch.End();
                 }
 
-                using(new RenderTargetContext(maskTarget))
+                using(RT.Clear(maskTarget, Color.Transparent))
                 {
                     spriteBatch.Begin();
                     while (_blackStarDraws.Count > 0)

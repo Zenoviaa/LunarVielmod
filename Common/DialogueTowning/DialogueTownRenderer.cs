@@ -49,7 +49,7 @@ public static class DialogueTownRenderer
 
     private static void DrawOutline(RenderTargetHandle src, RenderTargetHandle dst, SpriteBatch spriteBatch, Effect effect, Color outlineColor)
     {
-        using (new RenderTargetContext(dst))
+        using (RT.Clear(dst, Color.Transparent))
         {
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
@@ -69,7 +69,7 @@ public static class DialogueTownRenderer
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        using (new RenderTargetContext(boxRenderTarget))
+        using (RT.Clear(boxRenderTarget, Color.Transparent))
         {
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             HlslSampler noiseSpriteSampler = new();
@@ -113,7 +113,7 @@ public static class DialogueTownRenderer
         }
 
 
-        using (new RenderTargetContext(pixelTarget))
+        using (RT.Clear(pixelTarget, Color.Transparent))
         {
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
@@ -142,10 +142,10 @@ public static class DialogueTownRenderer
 
     public static RenderTarget2D RenderSpeechWindow(in SpeechBoxTalkingParameters parameters)
     {
-        RenderTargetHandle pixelTarget = RenderTargets.HalfScreenTarget;
-        RenderTargetHandle boxRenderTarget = RenderTargets.ScreenTarget;
-        RenderTargetHandle boxRenderTargetSwap = RenderTargets.ScreenTarget;
+        using var pixelTarget = RT.Context(RenderTargets.HalfScreenTarget);
+        using var boxRenderTarget = RT.Context(RenderTargets.ScreenTarget);
+        using var boxRenderTargetSwap = RT.Context(RenderTargets.ScreenTarget);
         RenderDialogueBoxToPixelTarget(parameters, pixelTarget, boxRenderTarget, boxRenderTargetSwap);
-        return pixelTarget;
+        return pixelTarget.Target;
     }
 }

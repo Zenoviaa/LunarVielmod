@@ -106,6 +106,4 @@ public class RenderTargetPool
             return;
         TargetPool.Enqueue(handle.Target);
     }
-
-    public static implicit operator RenderTargetHandle(RenderTargetPool pool) => pool.Request();
 }

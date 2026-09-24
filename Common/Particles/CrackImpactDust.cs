@@ -60,10 +60,10 @@ public class CrackImpactDust : ParticleUpdater<CrackImpactDust.Data>
 
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        RenderTargetHandle tileTargetMask = RenderTargets.ScreenTarget;
-        RenderTargetHandle crackMask = RenderTargets.ScreenTarget;
+        using var tileTargetMask = RT.Context(RenderTargets.ScreenTarget);
+        using var crackMask = RT.Context(RenderTargets.ScreenTarget);
         spriteBatch.EndOut(out var oldParameters);
-        using(new RenderTargetContext(crackMask))
+        using(RT.Clear(crackMask, Color.Transparent))
         {
             spriteBatch.Begin();
             (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
@@ -84,7 +84,7 @@ public class CrackImpactDust : ParticleUpdater<CrackImpactDust.Data>
             spriteBatch.End();
         }
 
-        using(new RenderTargetContext(tileTargetMask))
+        using(RT.Clear(tileTargetMask, Color.Transparent))
         {
             spriteBatch.Begin();
             spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, Color.White);

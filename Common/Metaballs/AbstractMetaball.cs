@@ -54,8 +54,8 @@ public class RekFireBreathRenderer : ModSystem
     {
         spriteBatch.EndOut(out var oldParameters);
 
-        RenderTargetHandle flameThrowerMask = RenderTargets.ScreenTarget;
-        using(new RenderTargetContext(flameThrowerMask))
+        using var flameThrowerMask = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(flameThrowerMask, Color.Transparent))
         {
             SpritebatchParams defaultParams = SpritebatchParams.InWorldAndZoomed();
             defaultParams.effect = MetaballContent.RekFireMetaball.PrepareMetaballShader();

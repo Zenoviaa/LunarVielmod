@@ -180,8 +180,8 @@ namespace Stellamod.Core.LunarLightingSystem
             if (behindTiles && DrawSunShadows2() && IsActive && LightingHelper.CanRenderPostProcessingEffects)
             {
                 spriteBatch.EndOut(out var oldParameters);
-                RenderTargetHandle tileBlurRT = RenderTargets.ScreenTarget;
-                RenderTargetHandle sunShadowRT = RenderTargets.ScreenTarget;
+                using var tileBlurRT = RT.Context(RenderTargets.ScreenTarget);
+                using var sunShadowRT = RT.Context(RenderTargets.ScreenTarget);
                 RenderShadows(tileBlurRT, sunShadowRT);
                 spriteBatch.Begin(oldParameters);
                 spriteBatch.Draw(sunShadowRT, Vector2.Zero, Color.White);

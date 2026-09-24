@@ -80,10 +80,10 @@ public class BlackSeaRenderer : ModSystem
         {
             if (renderBlackSea || drawBlackSea)
             {
-                RenderTargetHandle blackHurricaneRT = RenderTargets.ScreenTarget;
+                using var blackHurricaneRT = RT.Context(RenderTargets.ScreenTarget);
 
                 spriteBatch.EndOut(out var oldParameters);
-                using (new RenderTargetContext(blackHurricaneRT))
+                using (RT.Clear(blackHurricaneRT, Color.Transparent))
                 {
                     var config = ModContent.GetInstance<LunarVeilClientConfig>();
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, Main.Rasterizer);
@@ -147,11 +147,11 @@ public class BlackSeaRenderer : ModSystem
     {
         if (layer == RenderLayers.ForegroundWater && !Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<E>()) && drawBlackSea)
         {
-            RenderTargetHandle reflectionRT = RenderTargets.ScreenTarget;
-            RenderTargetHandle reflectionGradientRT = RenderTargets.ScreenTarget;
-            RenderTargetHandle magicGroundRT = RenderTargets.ScreenTarget;
+            using var reflectionRT = RT.Context(RenderTargets.ScreenTarget);
+            using var reflectionGradientRT = RT.Context(RenderTargets.ScreenTarget);
+            using var magicGroundRT = RT.Context(RenderTargets.ScreenTarget);
             spriteBatch.EndOut(out var oldParameters);
-            using (new RenderTargetContext(reflectionRT))
+            using (RT.Clear(reflectionRT, Color.Transparent))
             {
                 var rfRT = ModContent.GetInstance<MoonWaterSystem>().GetReflectionRenderTarget();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
@@ -159,7 +159,7 @@ public class BlackSeaRenderer : ModSystem
                 spriteBatch.End();
             }
 
-            using(new RenderTargetContext(reflectionGradientRT, Color.Black))
+            using(RT.Clear(reflectionGradientRT, Color.Black))
             {
                 DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
                 YGradientShader yGradientShader = YGradientShader.Instance;
@@ -175,7 +175,7 @@ public class BlackSeaRenderer : ModSystem
             }
 
 
-            using (new RenderTargetContext(magicGroundRT))
+            using (RT.Clear(magicGroundRT, Color.Transparent))
             {
                 Effect reflectionCombineEffect = GameShaders.Misc["LunarVeil:SingularReflection"].Shader;
                 float mipBias = 1;

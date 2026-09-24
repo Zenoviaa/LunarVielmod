@@ -102,10 +102,10 @@ public class AegislavDustRenderer : ModSystem
     private void RenderDustClouds(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         spriteBatch.EndOut(out var oldParameters);
-        RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle cloudRT = RenderTargets.ScreenTarget;
+        using var maskRT = RT.Context(RenderTargets.ScreenTarget);
+        using var cloudRT = RT.Context(RenderTargets.ScreenTarget);
 
-        using(new RenderTargetContext(maskRT))
+        using(RT.Clear(maskRT, Color.Transparent))
         {
             _maskTexture = AssetManager.GlowMask.SimpleGlowCircle;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null,
@@ -126,7 +126,7 @@ public class AegislavDustRenderer : ModSystem
 
         }
 
-        using(new RenderTargetContext(cloudRT))
+        using(RT.Clear(cloudRT, Color.Transparent))
         {
             _cloudTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds2");
             BackgroundParallaxShader pShader = BackgroundParallaxShader.Instance;

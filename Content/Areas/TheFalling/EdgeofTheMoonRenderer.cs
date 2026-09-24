@@ -236,7 +236,7 @@ public class EdgeofTheMoonRenderer : ModSystem
         GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.EndOut(out var oldParameters);
-        using(new RenderTargetContext(maskRT))
+        using(RT.Clear(maskRT, Color.Transparent))
         {
 
             //First we draw the mask texture that the clouds are going to be scrolling over
@@ -267,7 +267,7 @@ public class EdgeofTheMoonRenderer : ModSystem
             spriteBatch.End();
         }
 
-        using(new RenderTargetContext(cloudsRT))
+        using(RT.Clear(cloudsRT, Color.Transparent))
         {
 
 
@@ -296,7 +296,7 @@ public class EdgeofTheMoonRenderer : ModSystem
 
         }
 
-        using (new RenderTargetContext(maskRT))
+        using (RT.Clear(maskRT, Color.Transparent))
         {
 
 
@@ -418,8 +418,8 @@ public class EdgeofTheMoonRenderer : ModSystem
             {
                 //   spriteBatch.Draw(MaskRT, Vector2.Zero, Color.DarkBlue);
                 //       spriteBatch.Draw(MaskRT, Vector2.Zero, Color.Blue);
-                RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
-                RenderTargetHandle cloudsRT = RenderTargets.ScreenTarget;
+                using var maskRT = RT.Context(RenderTargets.ScreenTarget);
+                using var cloudsRT = RT.Context(RenderTargets.ScreenTarget);
                 PrepareRenderTargetContent(cloudsRT, maskRT);
                 spriteBatch.Draw(maskRT, Vector2.Zero, Color.White * _alpha);
                 //spriteBatch.Draw(MaskRT, Vector2.Zero, Color.White);

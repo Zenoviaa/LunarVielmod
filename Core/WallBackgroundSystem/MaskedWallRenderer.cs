@@ -147,8 +147,8 @@ namespace Stellamod.Core.WallBackgroundSystem
                     SpriteBatch spriteBatch = Main.spriteBatch;
                     spriteBatch.EndOut(out var oldParameters);
 
-                    RenderTargetHandle wallMaskTarget = RenderTargets.ScreenTarget;
-                    RenderTargetHandle backgroundTarget = RenderTargets.ScreenTarget;
+                    using var wallMaskTarget = RT.Context(RenderTargets.ScreenTarget);
+                    using var backgroundTarget = RT.Context(RenderTargets.ScreenTarget);
                     RenderMask(wallMaskTarget, backgroundTarget);
 
                     spriteBatch.Begin(oldParameters);
@@ -202,7 +202,7 @@ namespace Stellamod.Core.WallBackgroundSystem
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            using (new RenderTargetContext(wallMaskRenderTarget))
+            using (RT.Clear(wallMaskRenderTarget, Color.Transparent))
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, null);
 
@@ -221,7 +221,7 @@ namespace Stellamod.Core.WallBackgroundSystem
             }
 
 
-            using(new RenderTargetContext(backgroundTarget))
+            using(RT.Clear(backgroundTarget, Color.Transparent))
             {
                 if (_activeMaskedWallBackground.UseCustomDrawing())
                 {

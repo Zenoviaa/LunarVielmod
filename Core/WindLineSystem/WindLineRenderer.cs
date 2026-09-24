@@ -5,6 +5,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ModLoader;
 

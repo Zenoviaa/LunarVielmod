@@ -51,7 +51,7 @@ public class GothiviaDomain : ModSystem
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.EndOut(out var oldParameters);
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        using (new RenderTargetContext(domainRT, Color.Lerp(Color.Red, Color.Black, 0.9f)))
+        using (RT.Clear(domainRT, Color.Lerp(Color.Red, Color.Black, 0.9f)))
         {
             FireVortexShader fireShader = ShaderContent.GetInstance<FireVortexShader>();
             fireShader.Time = Main.GlobalTimeWrappedHourly * 0.1f;
@@ -82,7 +82,7 @@ public class GothiviaDomain : ModSystem
             spriteBatch.End();
         }
  
-        using(new RenderTargetContext(domainSwapRT, Color.Lerp(Color.Red, Color.Black, 0.9f)))
+        using(RT.Clear(domainSwapRT, Color.Lerp(Color.Red, Color.Black, 0.9f)))
         {
             PalettizerShader palettizerShader = PalettizerShader.Instance;
             palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(PaletteAssets.HELL).Value.ColorAtlas;//PaletteHelper.GetColorSpectrum("Hell.pal");
@@ -96,7 +96,7 @@ public class GothiviaDomain : ModSystem
         }
 
 
-        using (new RenderTargetContext(domainRT, Color.Lerp(Color.Red, Color.Black, 0.9f)))
+        using (RT.Clear(domainRT, Color.Lerp(Color.Red, Color.Black, 0.9f)))
         {
             spriteBatch.Begin();
             spriteBatch.Draw(domainSwapRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
@@ -115,8 +115,8 @@ public class GothiviaDomain : ModSystem
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.Clear(Color.Transparent);
 
-            RenderTargetHandle domainRT = RenderTargets.ScreenTarget;
-            RenderTargetHandle domainRTSwap = RenderTargets.ScreenTarget;
+            using var domainRT = RT.Context(RenderTargets.ScreenTarget);
+            using var domainRTSwap = RT.Context(RenderTargets.ScreenTarget);
             PrepareDomainContent(domainRT, domainRTSwap);
 
             Color drawColor2 = Color.Lerp(Color.White, Color.Black, 0f);

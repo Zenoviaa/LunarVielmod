@@ -62,8 +62,8 @@ public class Sparklemist : ParticleUpdater<Sparklemist.Data>
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         spriteBatch.EndOut(out var oldParameters);
-        RenderTargetHandle cloudTarget = RenderTargets.ScreenTarget;
-        using(new RenderTargetContext(cloudTarget))
+        using var cloudTarget = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(cloudTarget, Color.Transparent))
         {
             using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with
             {

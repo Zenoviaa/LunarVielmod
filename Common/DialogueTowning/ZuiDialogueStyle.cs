@@ -35,9 +35,9 @@ public struct ZuiDialogueStyle : IBoxStyle
         Color outlineColor = new Color(179, 45, 11);
         outlineColor = Color.Lerp(outlineColor, Color.Black, 0.3f);
 
-        RenderTargetHandle target1 = RenderTargets.ScreenTarget;
-        RenderTargetHandle target2 = RenderTargets.ScreenTarget;
-        RenderTargetHandle pixelTarget = RenderTargets.QuarterScreenTarget;
+        using var target1 = RT.Context(RenderTargets.ScreenTarget);
+        using var target2 = RT.Context(RenderTargets.ScreenTarget);
+        using var pixelTarget = RT.Context(RenderTargets.QuarterScreenTarget);
         //Here we can assume we're already drawing to the box render target
         //so let's just do whatever we awnt
         //gonna draw a big glow ball to test
@@ -61,7 +61,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         rect = rect.CenterPad(-4);
 
 
-        using (new RenderTargetContext(target1))
+        using (RT.Clear(target1, Color.Transparent))
         {
             var color = new Color(179, 44, 11);
             color = Color.Lerp(color, Color.Black, 0.6f);
@@ -100,7 +100,7 @@ public struct ZuiDialogueStyle : IBoxStyle
                 }
             }
         }
-        using (new RenderTargetContext(pixelTarget))
+        using (RT.Clear(pixelTarget,Color.Transparent))
         {
             var zuiWaves = AssetReferences.Effects.Dialogue.ZuiWaves.CreatePixelPass();
             zuiWaves.Parameters.time = Main.GlobalTimeWrappedHourly;
@@ -113,7 +113,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         }
 
         //output gradient and whatnot
-        using(new RenderTargetContext2(output, Color.Transparent))
+        using(RT.Clear(output, Color.Transparent))
         {
             using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
             {
@@ -123,7 +123,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         }
 
 
-        using (new RenderTargetContext(target2))
+        using (RT.Clear(target2, Color.Transparent))
         {
 
             var sunpass = AssetReferences.Effects.Dialogue.ZuiSun.CreatePixelPass();
@@ -147,14 +147,14 @@ public struct ZuiDialogueStyle : IBoxStyle
                 spriteBatch.Draw(sunDrawer);
             }
         }
-        using (new RenderTargetContext(pixelTarget))
+        using (RT.Clear(pixelTarget, Color.Transparent))
         {
             using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
             {
                 spriteBatch.Draw(target2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.25f, SpriteEffects.None, 0);
             }
         }
-        using (new RenderTargetContext2(output))
+        using (RT.Clear(output))
         {
             var paletteShader = PalettizerShader.Use(PaletteAssets.ZUISUN);
             paletteShader.DitherAlpha = 0f;
@@ -172,7 +172,7 @@ public struct ZuiDialogueStyle : IBoxStyle
 
 
         
-        using (new RenderTargetContext(target1))
+        using (RT.Clear(target1, Color.Transparent))
         {
             using (new SpritebatchContext(spriteBatch, 
                 SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
@@ -199,7 +199,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         }
         
 
-        using (new RenderTargetContext2(output))
+        using (RT.Clear(output))
         {
 
 
@@ -264,9 +264,9 @@ public struct ZuiDialogueStyle : IBoxStyle
         Color outlineColor = new Color(179, 45, 11);
         outlineColor = Color.Lerp(outlineColor, Color.Black, 0.3f);
 
-        RenderTargetHandle target1 = RenderTargets.ScreenTarget;
-        RenderTargetHandle target2 = RenderTargets.ScreenTarget;
-        RenderTargetHandle pixelTarget = RenderTargets.HalfScreenTarget;
+        using var target1 = RT.Context(RenderTargets.ScreenTarget);
+        using var target2 = RT.Context(RenderTargets.ScreenTarget);
+        using var pixelTarget = RT.Context(RenderTargets.HalfScreenTarget);
 
         //Here we can assume we're already drawing to the box render target
         //so let's just do whatever we awnt
@@ -282,7 +282,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         drawer.VerticalFrame(0, 2);
         drawer.CenterOrigin();
 
-        using (new RenderTargetContext(target1))
+        using (RT.Clear(target1, Color.Transparent))
         {
             var color = new Color(179, 44, 11);
             color = Color.Lerp(color, Color.Black, 0.6f);
@@ -323,7 +323,7 @@ public struct ZuiDialogueStyle : IBoxStyle
             }
         }
 
-        using (new RenderTargetContext(pixelTarget))
+        using (RT.Clear(pixelTarget, Color.Transparent))
         {
             var zuiWaves = AssetReferences.Effects.Dialogue.ZuiWaves.CreatePixelPass();
             zuiWaves.Parameters.time = Main.GlobalTimeWrappedHourly;
@@ -336,7 +336,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         }
 
         //output gradient and whatnot
-        using (new RenderTargetContext2(output, Color.Transparent))
+        using (RT.Clear(output, Color.Transparent))
         {
             using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
             {
@@ -344,7 +344,7 @@ public struct ZuiDialogueStyle : IBoxStyle
             }
         }
 
-        using (new RenderTargetContext(target2))
+        using (RT.Clear(target2, Color.Transparent))
         {
             var sunpass = AssetReferences.Effects.Dialogue.ZuiSun.CreatePixelPass();
             sunpass.Parameters.time = Main.GlobalTimeWrappedHourly;
@@ -371,7 +371,7 @@ public struct ZuiDialogueStyle : IBoxStyle
             }
         }
 
-        using (new RenderTargetContext(pixelTarget))
+        using (RT.Clear(pixelTarget, Color.Transparent))
         {
             using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
             {
@@ -379,7 +379,7 @@ public struct ZuiDialogueStyle : IBoxStyle
             }
         }
 
-        using (new RenderTargetContext2(output))
+        using (RT.Clear(output))
         {
             var paletteShader = PalettizerShader.Use(PaletteAssets.ZUISUN);
             paletteShader.DitherAlpha = 0f;
@@ -396,7 +396,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         }
 
 
-        using (new RenderTargetContext(target1))
+        using (RT.Clear(target1, Color.Transparent))
         {
             using (new SpritebatchContext(spriteBatch,
                 SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
@@ -418,7 +418,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         }
 
 
-        using (new RenderTargetContext2(output))
+        using (RT.Clear(output))
         {
             var zuiSwirlPass = AssetReferences.Effects.Dialogue.ZuiSunSwirl.CreatePixelPass();
             zuiSwirlPass.Parameters.time = Main.GlobalTimeWrappedHourly * 2f;

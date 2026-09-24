@@ -141,15 +141,15 @@ public class PieceOfArtRenderer : ModSystem
         GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
         SpriteBatch spriteBatch = Main.spriteBatch;
 
-        RenderTargetHandle maskTarget = RenderTargets.ScreenTarget;
-        RenderTargetHandle blobTarget = RenderTargets.ScreenTarget;
+        using var maskTarget = RT.Context(RenderTargets.ScreenTarget);
+        using var blobTarget = RT.Context(RenderTargets.ScreenTarget);
 
-        using(new RenderTargetContext(maskTarget))
+        using(RT.Clear(maskTarget, Color.Transparent))
         {
             DrawDusts(spriteBatch);
         }
 
-        using(new RenderTargetContext(blobTarget))
+        using(RT.Clear(blobTarget, Color.Transparent))
         {
             while (_drawActions.Count > 0)
             {

@@ -89,9 +89,9 @@ namespace Stellamod.Common.Shaders
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            RenderTargetHandle screenTarget = RenderTargets.ScreenTarget;
+            using var screenTarget = RT.Context(RenderTargets.ScreenTarget);
             sb.EndOut(out var oldParameters);
-            using(new RenderTargetContext(screenTarget))
+            using(RT.Clear(screenTarget, Color.Transparent))
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null);
 

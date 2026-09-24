@@ -43,9 +43,9 @@ public class ReksGreatFireBreathRenderer : ModSystem
     {
         spriteBatch.EndOut(out var oldParameters);
         SpritebatchParams startParams = SpritebatchParams.InWorldAndZoomed();
-        RenderTargetHandle greatFireRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle greatFireRT2 = RenderTargets.ScreenTarget;
-        using(new RenderTargetContext(greatFireRT2))
+        using var greatFireRT = RT.Context(RenderTargets.ScreenTarget);
+        using var greatFireRT2 = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(greatFireRT2, Color.Transparent))
         {
             spriteBatch.Begin(startParams);
             foreach (var drawAction in FirebreathDrawActions)
@@ -56,7 +56,7 @@ public class ReksGreatFireBreathRenderer : ModSystem
             FirebreathDrawActions.Clear();
         }
 
-        using (new RenderTargetContext(greatFireRT))
+        using (RT.Clear(greatFireRT, Color.Transparent))
         {
             var palette = DitheredColorPaletteShader.PrepareForDrawing(PaletteAssets.FromPaletteFile(PaletteAssets.FIREBREATH).Value.ColorAtlas, greatFireRT.Size());
             startParams.effect = palette.Effect;

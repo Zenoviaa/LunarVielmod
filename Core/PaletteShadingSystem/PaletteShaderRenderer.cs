@@ -94,8 +94,8 @@ namespace Stellamod.Core.PaletteShadingSystem
     
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-            RenderTargetHandle screenTarget = RenderTargets.ScreenTarget;
-            using(new RenderTargetContext(screenTarget))
+            using var screenTarget = RT.Context(RenderTargets.ScreenTarget);
+            using(RT.Clear(screenTarget, Color.Transparent))
             {
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null);
                 spriteBatch.Draw(Main.screenTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);

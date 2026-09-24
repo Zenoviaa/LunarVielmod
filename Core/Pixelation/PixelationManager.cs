@@ -49,7 +49,7 @@ public class PixelTarget
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.graphicsDevice;
-        using (new RenderTargetContext(screenTarget))
+        using (RT.Clear(screenTarget, Color.Transparent))
         {
             //Primitives cannot draw within the spritebatch cause they modify the graphics state
             //Which would cause inconsistent results if they drew within the spritebatch
@@ -85,7 +85,7 @@ public class PixelTarget
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.graphicsDevice;
-        using (new RenderTargetContext(screenTarget))
+        using (RT.Clear(screenTarget, Color.Transparent))
         {
             //Primitives cannot draw within the spritebatch cause they modify the graphics state
             //Which would cause inconsistent results if they drew within the spritebatch
@@ -116,7 +116,7 @@ public class PixelTarget
             spriteBatch.End();
         }
 
-        using (new RenderTargetContext(halfScreenTarget))
+        using (RT.Clear(halfScreenTarget, Color.Transparent))
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             float downScale = 1f / _downSamples;
@@ -125,7 +125,7 @@ public class PixelTarget
         }
 
     }
-
+    /*
     private void DrawToScreenRTPixelate()
     {
 
@@ -162,11 +162,11 @@ public class PixelTarget
             spriteBatch.End();
         }
 
-    }
+    }*/
 
     private void DrawToScreenShaderPixelate()
     {
-        RenderTargetHandle screenTarget = _mipMap ? RenderTargets.ScreenTargetMipMapped : RenderTargets.ScreenTarget;
+        using var screenTarget = _mipMap ? RT.Context(RenderTargets.ScreenTargetMipMapped) : RT.Context(RenderTargets.ScreenTarget);
         PrepareContent(screenTarget);
         if (outlineColor.HasValue)
         {
@@ -225,8 +225,8 @@ public class PixelTarget
         }
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.EndOut(out var oldParaemeters);
-        RenderTargetHandle screenTarget = _mipMap ? RenderTargets.ScreenTargetMipMapped : RenderTargets.ScreenTarget;
-        RenderTargetHandle halfScreenTarget = RenderTargets.HalfScreenTarget;
+        using var screenTarget = _mipMap ? RT.Context(RenderTargets.ScreenTargetMipMapped) : RT.Context(RenderTargets.ScreenTarget);
+        using var halfScreenTarget = RT.Context(RenderTargets.HalfScreenTarget);
 
         PreparePixelatedContent(screenTarget, halfScreenTarget);
         spriteBatch.Begin(oldParaemeters);

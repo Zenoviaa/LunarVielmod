@@ -214,8 +214,8 @@ public class AbyssEffectsRenderer : ModSystem
         pass.Parameters.texelSize = Main.instance.tileTarget.GetTexelSize() * 2;
         pass.Apply();
         SpriteBatch spriteBatch = Main.spriteBatch;
-        RenderTargetHandle tileTargetSwap = RenderTargets.TileTarget;
-        using(new RenderTargetContext(tileTargetSwap))
+        using var tileTargetSwap = RT.Context(RenderTargets.TileTarget);
+        using(RT.Clear(tileTargetSwap, Color.Transparent))
         {
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
@@ -420,10 +420,10 @@ public class AbyssEffectsRenderer : ModSystem
             spriteBatch.EndOut(out var oldParameters);
             
             //Render to waterfall render target
-            RenderTargetHandle handle = RenderTargets.ScreenTarget;
+            using var handle = RT.Context(RenderTargets.ScreenTarget);
 
             //A target is needed to properly blend the waterfalls together
-            using(new RenderTargetContext(handle))
+            using(RT.Clear(handle))
             {
                 PrepareWaterfallTargetContent();
             }

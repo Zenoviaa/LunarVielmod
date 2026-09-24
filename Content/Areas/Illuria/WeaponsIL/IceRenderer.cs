@@ -32,12 +32,12 @@ public class IceRenderer : ModSystem,
 
     private void DrawMaskToPixelTarget(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        RenderTargetHandle iceRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle icicleMaskRT = RenderTargets.ScreenTarget;
-        RenderTargetHandle icicleRT = RenderTargets.ScreenTarget;
+        using var iceRT = RT.Context(RenderTargets.ScreenTarget);
+        using var icicleMaskRT = RT.Context(RenderTargets.ScreenTarget);
+        using var icicleRT = RT.Context(RenderTargets.ScreenTarget);
         spriteBatch.EndOut(out var parameters);
 
-        using (new RenderTargetContext(icicleMaskRT))
+        using (RT.Clear(icicleMaskRT, Color.Transparent))
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             while (_drawActionQueue.Count > 0)
@@ -48,7 +48,7 @@ public class IceRenderer : ModSystem,
             spriteBatch.End();
         }
 
-        using (new RenderTargetContext(iceRT))
+        using (RT.Clear(iceRT, Color.Transparent))
         {
             IceShader iceShader = IceShader.Instance;
             iceShader.NoiseTexture = TrailRegistry.Clouds3;
@@ -59,7 +59,7 @@ public class IceRenderer : ModSystem,
             spriteBatch.End();
         }
 
-        using (new RenderTargetContext(icicleRT))
+        using (RT.Clear(icicleRT, Color.Transparent))
         {
             MaskCombineShader combineShader = MaskCombineShader.Instance;
             combineShader.MixTexture = iceRT;

@@ -70,8 +70,8 @@ public class CometMagicDust : ParticleUpdater<CometMagicDustData>
     {
 
         spriteBatch.EndOut(out var oldParameters);
-        RenderTargetHandle temp = RenderTargets.ScreenTarget;
-        using(new RenderTargetContext(temp))
+        using var temp = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(temp, Color.Transparent))
         {
             var pass = AssetReferences.Effects.Generic.BasicBloom.CreatePixelPass();
             pass.Apply();

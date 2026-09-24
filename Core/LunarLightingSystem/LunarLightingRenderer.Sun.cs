@@ -98,7 +98,7 @@ public partial class LunarLightingRenderer
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        using(new RenderTargetContext(tileBlurRT))
+        using(RT.Clear(tileBlurRT, Color.Transparent))
         {
             Effect effect = GameShaders.Misc["LunarVeil:SunShadow"].Shader;
             effect.Parameters["mipBias"].SetValue(0.1f);
@@ -113,7 +113,7 @@ public partial class LunarLightingRenderer
 
         }
 
-        using(new RenderTargetContext(tileSunShadowRT))
+        using(RT.Clear(tileSunShadowRT, Color.Transparent))
         {
             Effect blurEffect = GameShaders.Misc["LunarVeil:SunBlur"].Shader;
             blurEffect.Parameters["mipBias"].SetValue(12);

@@ -158,8 +158,8 @@ public class BarrierFog : ModSystem
         if (WhiteFogPoints.Count > 0 || RedFogPoints.Count > 0)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            RenderTargetHandle maskRT = RenderTargets.ScreenTarget;
-            using(new RenderTargetContext(maskRT))
+            using var maskRT = RT.Context(RenderTargets.ScreenTarget);
+            using(RT.Clear(maskRT, Color.Transparent))
             {
                 SpritebatchParams worldParams = SpritebatchParams.InWorldAndZoomed();
                 HlslSampler spriteSampler = new();
