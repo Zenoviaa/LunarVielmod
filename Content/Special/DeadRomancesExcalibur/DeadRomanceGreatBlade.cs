@@ -617,8 +617,8 @@ public class DeadRomanceGreatBlade : ModProjectile
         Asset<Texture2D> glowSwordTextureAsset = GetGlowSwordTexture();
         SpritebatchDrawer glowSwordSprite = SpritebatchDrawer.FromTextureAsset(glowSwordTextureAsset, Projectile.Center);
         glowSwordSprite.rotation = rotation - MathHelper.PiOver4;
-        glowSwordSprite.blackIsTransparency = true;
         glowSwordSprite.color = Color.White;
+        glowSwordSprite.color.A = 0;
         glowSwordSprite.scale = growScale;
         glowSwordSprite.worldPosition += (Projectile.rotation-MathHelper.PiOver4).ToRotationVector2() * swordOffset * _bladeRatio;
        
@@ -738,8 +738,8 @@ public class DeadRomanceGreatBlade : ModProjectile
             SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         bloomSprite.rotation = Projectile.rotation;
         bloomSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 90 * _bladeRatio; ;
-        bloomSprite.blackIsTransparency = true;
         bloomSprite.color = Color.Goldenrod;
+        bloomSprite.color.A = 0;
         bloomSprite.scale = new Vector2(2f, 0.5f) * _bladeRatio; ;
         bloomSprite.rotation -= MathHelper.PiOver4;
         spriteBatch.Draw(bloomSprite);

@@ -517,8 +517,6 @@ public static class DrawUtilities
 
     public static void Draw(this SpriteBatch spriteBatch, SpritebatchDrawer drawer)
     {
-        if (drawer.blackIsTransparency)
-            drawer.color.A = 0;
         if (drawer.dstRect.HasValue)
         {
             spriteBatch.Draw(drawer.texture, drawer.dstRect.Value, drawer.sourceRect, drawer.color, drawer.rotation, drawer.drawOrigin, drawer.spriteEffects, 0);
@@ -623,6 +621,42 @@ public static class SpriteBatchExtensions
 }
 
 /// <summary>
+/// A collection of helper function for the sprite batch
+/// </summary>
+public static class SB
+{
+    public static SpritebatchParams InWorldScaled
+    {
+        get
+        {
+            SpritebatchParams starter = new SpritebatchParams();
+            starter.blendState = BlendState.AlphaBlend;
+            starter.samplerState = SamplerState.PointClamp;
+            starter.sortMode = SpriteSortMode.Deferred;
+            starter.depthStencilState = DepthStencilState.None;
+            starter.effect = null!;
+            starter.matrix = Main.GameViewMatrix.TransformationMatrix;
+            starter.rasterizerState = Main.Rasterizer;
+            return starter;
+        }
+    }
+    public static SpritebatchParams InWorldUnscaled
+    {
+        get
+        {
+            SpritebatchParams starter = new SpritebatchParams();
+            starter.blendState = BlendState.AlphaBlend;
+            starter.samplerState = SamplerState.PointClamp;
+            starter.sortMode = SpriteSortMode.Deferred;
+            starter.depthStencilState = DepthStencilState.None;
+            starter.effect = null!;
+            starter.matrix =Matrix.identity;
+            starter.rasterizerState = Main.Rasterizer;
+            return starter;
+        }
+    }
+}
+/// <summary>
 /// Accesses the current parameters of the spritebatch
 /// </summary>
 public struct SpritebatchParams
@@ -660,6 +694,8 @@ public struct SpritebatchParams
             matrix);
     }
 
+
+
     public static SpritebatchParams InWorldAndZoomed()
     {
         SpritebatchParams starter = new SpritebatchParams();
@@ -693,6 +729,7 @@ public struct SpritebatchParams
 public static class SpritebatchDrawExtensions
 {
     public static void Begin(this SpriteBatch spriteBatch, SpritebatchParams spritebatchParams) => spritebatchParams.Begin(spriteBatch);
+    public static SpritebatchContext Ctx(this SpriteBatch spriteBatch, SpritebatchParams requiredParameters) => new SpritebatchContext(spriteBatch, requiredParameters);
 }
 
 public struct SpritebatchContext : IDisposable
@@ -812,8 +849,6 @@ public struct SpritebatchDrawer
     public Vector2 drawOrigin;
     public SpriteEffects spriteEffects;
     public Vector2 scale;
-    public bool blackIsTransparency;
-
     public void Flip(ref float xPosition)
     {
         xPosition = sourceRect.Value.Width - xPosition;

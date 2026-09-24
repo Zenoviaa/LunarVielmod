@@ -140,8 +140,8 @@ public class DeadRomancePlayer : ModPlayer
             var haloTexture = ModContent.GetInstance<HeavenlyLove>().SigilTextureAsset;
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(haloTexture, Player.Center);
             drawer.worldPosition += Vector2.UnitY * -64;
-            drawer.blackIsTransparency = true;
             drawer.color = Color.Goldenrod;
+            drawer.color.A = 0;
             drawer.worldPosition.Y += ExtraMath.Osc(0f, -4f);
             sb.Draw(drawer);
         }

@@ -298,8 +298,8 @@ public class DeadRomanceParryBuster : ModProjectile
         sb.Restart(effect: shader.Effect);
         SpritebatchDrawer glowSwordSprite = SpritebatchDrawer.FromProjectile(Projectile);
         glowSwordSprite.rotation = rotation;
-        glowSwordSprite.blackIsTransparency = true;
         glowSwordSprite.color = Color.White;
+        glowSwordSprite.color.A = 0;
         glowSwordSprite.scale = new Vector2(1f, 1f) * squishScale;
         sb.Draw(glowSwordSprite);
 

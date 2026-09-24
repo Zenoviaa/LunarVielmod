@@ -156,7 +156,7 @@ public class GooberDialogueSystem : ModSystem
                 Sampler = SamplerState.PointClamp
             };
             invertedMask.Apply();
-            using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity, effect = invertedMask.Shader }))
+            using (spriteBatch.Ctx(SB.InWorldUnscaled with { effect = invertedMask.Shader }))
             {
                 spriteBatch.Draw(boxRenderTargetSwap, Vector2.Zero, Color.White);
             }

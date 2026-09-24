@@ -104,7 +104,7 @@ public class PericarditisProj : ModProjectile
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         drawer.color = Color.Red;
-        drawer.blackIsTransparency = true;
+        drawer.color.A = 0;
         drawer.rotation = Main.GlobalTimeWrappedHourly * 9;
         drawer.scale *= 0.25f;
         sb.Draw(drawer);

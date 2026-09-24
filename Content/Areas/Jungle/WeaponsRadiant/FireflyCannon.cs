@@ -196,7 +196,8 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             glowColor.A = 0;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(TextureRegistry.DimLight, Projectile.Center);
-            glowDrawer.blackIsTransparency = true;
+            glowDrawer.color = glowColor;
+            glowDrawer.color.A = 0;
             glowDrawer.worldPosition = Projectile.Center;
             spriteBatch.Draw(glowDrawer);
 
