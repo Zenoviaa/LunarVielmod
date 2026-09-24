@@ -51,6 +51,19 @@ public class ShockwavePlayer : ModPlayer
         }
     }
 }
+
+
+public class VerliaBouncingMoonShockwaveFriendly : VerliaBouncingMoonShockwave
+{
+    public override string Texture => AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaBouncingMoonShockwave.KEY;
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.hostile = false;
+        Projectile.friendly = true;
+    }
+}
+
 public class VerliaBouncingMoonShockwave : ModProjectile
 {
     private float Time => 120f;

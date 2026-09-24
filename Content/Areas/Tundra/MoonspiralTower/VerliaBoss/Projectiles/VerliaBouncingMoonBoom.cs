@@ -2,12 +2,21 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles;
+
+public class VerliaBouncingMoonBoomFriendly : VerliaBouncingMoonBoom
+{
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.hostile = false;
+        Projectile.friendly = true;
+    }
+}
 
 public class VerliaBouncingMoonBoom : ModProjectile
 {

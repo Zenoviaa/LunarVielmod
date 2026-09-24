@@ -159,6 +159,12 @@ public class GhostshotgunLantern : BaseGun
         fireParams.maxAmmo = 7;
         fireParams.reloadWindow = 150;
     }
+    public override void ModifyMuzzleFlashColors(ref Color hottestColor, ref Color coldestColor)
+    {
+        base.ModifyMuzzleFlashColors(ref hottestColor, ref coldestColor);
+        hottestColor = Color.White;
+        coldestColor = Color.Blue;
+    }
 
     public override Vector2? HoldoutOffset()
     {

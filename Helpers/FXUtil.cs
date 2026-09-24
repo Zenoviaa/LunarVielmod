@@ -13,6 +13,11 @@ namespace Stellamod.Helpers;
 
 public static class FXUtil
 {
+    public static DustParticle GlowDust(Vector2 position, Vector2 velocity, DustParticleSpawnParams? spawnParams = null)
+    {
+        return DustParticle.Spawn(position, velocity, spawnParams);
+    }
+
     public static void SetZoomTarget(float targetZoomMultiplier)
     {
         CameraZoomSystem.TargetZoomMultiplier = targetZoomMultiplier;

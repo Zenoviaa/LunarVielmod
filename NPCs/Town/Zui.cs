@@ -5,6 +5,7 @@ using Stellamod.Content.Ammo;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Tundra.Snow.AccsSN;
 using Stellamod.Content.Currencies;
+using Stellamod.Content.Dialogue;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Content.Vanity.Witchen;
 using Stellamod.Core;
@@ -342,10 +343,17 @@ namespace Stellamod.NPCs.Town
             talkingParameters.profile = GooberDialoguePresets.Zui;
 
             //Set buttons
-            buttons.Add(new Tuple<string, Action>("Talk", Talk));
+            buttons.Add(new Tuple<string, Action>("Talk", GoobeR));
             buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
         }
 
+        private void GoobeR()
+        {
+            OpenTalkOptions(
+ModContent.GetInstance<VerliaHappenedDialogue>(),
+ModContent.GetInstance<VerliaFamilyDialogue>(),
+ModContent.GetInstance<VerliaWingsDialogue>());
+        }
         public override void SetQuestLine(List<Quest> quests)
         {
             base.SetQuestLine(quests);

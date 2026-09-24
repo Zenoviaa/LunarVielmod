@@ -28,10 +28,12 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     diff /= numSamples;
     if (diff > 0.004)
     {
-        float4 col = tintColor;
-        float x = (1.0 - coords.x) * 1.2;
-        col.a = x;
-
+        float4 col = baseColor;
+        float4 foreground = float4(0.0, 0.0, 0.0, 0.5);
+        float A = lerp(0.35, 0.0, coords.x);
+        col.r = col.r * (1 - A) + foreground.r * A;
+        col.g = col.g * (1 - A) + foreground.g * A;
+        col.b = col.b * (1 - A) + foreground.b * A;
         return col;// + smoothstep(coords.x * 0.25f, 0.0, 1.0);
     } 
     else

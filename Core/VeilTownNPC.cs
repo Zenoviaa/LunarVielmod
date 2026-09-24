@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Dialogue;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;

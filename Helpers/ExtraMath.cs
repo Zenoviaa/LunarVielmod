@@ -2,10 +2,28 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
+using static Terraria.ModLoader.BackupIO;
 namespace Stellamod.Helpers
 {
     public static class ExtraMath
     {
+        /// <summary>
+        /// Goes up to a point, but does not go through walls, useful for laser calculations
+        /// </summary>
+        /// <param name="referencePoint"></param>
+        /// <param name="hitPoint"></param>
+        /// <returns></returns>
+        public static Vector2 UpToPointNotThroughWalls(Vector2 referencePoint, Vector2 hitPoint)
+        {
+            var direction = (hitPoint - referencePoint).SafeNormalize(Vector2.Zero);
+            var l = Vector2.Distance(referencePoint, hitPoint);
+            var velocity = direction * l;
+            var distance = ProjectileHelper.PerformBeamHitscan(referencePoint, velocity, l);
+            var newPosition = referencePoint + direction * distance;
+            return newPosition;
+        }
+
         public static Rectangle CreateRectangle(in Vector2 topLeft, in Vector2 bottomRight)
         {
             Vector2 size = bottomRight - topLeft;

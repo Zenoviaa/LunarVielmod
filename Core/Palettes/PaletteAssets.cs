@@ -30,6 +30,7 @@ public class PaletteAssets : ModSystem
     public const string SANGUINESINGULARITY = "SanguineSingularity";
     public const string VILEPIPESNGARDEN = "VilepipesNGarden";
     public const string WITCHTOWN = "Witchtown";
+    public const string ZUISUN = "ZuiSun";
     public const string FIREBREATH = "FireBreath";
     public override void Unload()
     {

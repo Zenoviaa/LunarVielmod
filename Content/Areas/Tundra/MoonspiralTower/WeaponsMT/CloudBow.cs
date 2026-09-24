@@ -11,8 +11,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.WeaponsMT;
-
-
 public class CloudBow : BaseCrossbowItem
 {
     public override void SetDefaults()
