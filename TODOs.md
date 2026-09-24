@@ -30,3 +30,4 @@ Bunny Storm
 * Move all UI textures to Assets/Textures/UI and update asset refs, hardcode the height/width values when necessary instead of force loading the assets on load
 * Move all effect textures into Assets/Textures/VFX and update asset refs
 * I don't really like having both a Core and Common folder, move everything from Core to Common. Should be able to just do a global find replace of "Core" to "Common" and then move the scripts
+* Move the Spritebatch helper classes into the rendering folder, and have them in separate files

@@ -205,6 +205,61 @@ namespace Stellamod.Core.Utilities
             return vertices.ToArray();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VertexPositionColorTexture[] FillVertexArrayWrapped(Vector2[] trailingPoints, Func<float, Color> colorFunc, Func<float, float> widthFunc, Vector2 offset)
+        {
+            const float coord1 = 0;
+            const float coord2 = 1;
+
+            int numVertices = (trailingPoints.Length - 1) * 4;
+            int index = 0;
+            //  VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[numVertices];
+            var vertices = new VertexPositionColorTexture[numVertices];
+            for (int i = 0; i < trailingPoints.Length - 1; i++)
+            {
+
+                Vector2 pos1 = trailingPoints[i];
+                Vector2 pos2 = trailingPoints[i + 1];
+
+                float uv = i / (float)trailingPoints.Length;
+                float uv2 = (i + 1) / (float)trailingPoints.Length;
+
+                Vector2 width = widthFunc(uv) * Vector2.One;
+                Vector2 width2 = widthFunc(uv2) * Vector2.One;
+
+                pos2 += offset;
+                pos1 += offset;
+
+
+                Vector2 off1 = MathUtil.GetRotation(trailingPoints, i) * width;
+                Vector2 off2 = MathUtil.GetRotation(trailingPoints, i + 1) * width2;
+
+                Color col1 = colorFunc(uv);
+                Color col2 = colorFunc(uv2);
+
+                VertexPositionColorTexture topLeft = new VertexPositionColorTexture(new Vector3(pos1 + off1, 0f), col1, new Vector2(uv, coord1));
+                VertexPositionColorTexture bottomRight = new VertexPositionColorTexture(new Vector3(pos1 - off1, 0f), col1, new Vector2(uv, coord2));
+                VertexPositionColorTexture topRight = new VertexPositionColorTexture(new Vector3(pos2 + off2, 0f), col2, new Vector2(uv2, coord1));
+                VertexPositionColorTexture bottomLeft = new VertexPositionColorTexture(new Vector3(pos2 - off2, 0f), col2, new Vector2(uv2, coord2));
+
+                //0
+                vertices[index++] = topLeft;
+
+                //1
+                vertices[index++] = bottomRight;
+
+                //2
+                vertices[index++] = topRight;
+
+                //3
+                vertices[index++] = bottomLeft;
+
+            }
+
+            vertices[index - 2].Position = vertices[0].Position;
+            vertices[1].Position = vertices[index - 1].Position;
+            return vertices;
+        }
 
         /// <summary>
         /// Draws primitives to the screen

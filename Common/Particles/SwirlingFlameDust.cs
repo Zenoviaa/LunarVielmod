@@ -117,7 +117,7 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
         if (_length <= 0)
             return;
 
-        spriteBatch.End();
+        spriteBatch.EndOut(out var oldParameters);
         UpdateInstances();
         _gpuInstancedBuffer.PrepareForDrawing(spriteBatch.GraphicsDevice);
         BitDustShader shader = BitDustShader.Instance;
@@ -134,7 +134,7 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
         graphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2, _length);
 
 
-        spriteBatch.Begin(SpritebatchParams.InWorldAndZoomed());
+        spriteBatch.Begin(oldParameters);
     }
     public override void Draw(SpriteBatch spriteBatch, ref BitDustParticleData particle)
     {

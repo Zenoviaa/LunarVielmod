@@ -168,6 +168,7 @@ public class PixelTarget
     {
         using var screenTarget = _mipMap ? RT.Context(RenderTargets.ScreenTargetMipMapped) : RT.Context(RenderTargets.ScreenTarget);
         PrepareContent(screenTarget);
+
         if (outlineColor.HasValue)
         {
             var pixelattePass = AssetReferences.Effects.CrystalShaders.PixelateWithOutline.CreatePixelPass();

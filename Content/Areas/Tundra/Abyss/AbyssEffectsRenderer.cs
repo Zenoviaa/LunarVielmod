@@ -416,6 +416,7 @@ public class AbyssEffectsRenderer : ModSystem
         //     Main.NewText(AbyssWaterfallPoints.Count);
         if (AbyssWaterfallPoints.Count > 0)
         {
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.EndOut(out var oldParameters);
             
@@ -423,7 +424,7 @@ public class AbyssEffectsRenderer : ModSystem
             using var handle = RT.Context(RenderTargets.ScreenTarget);
 
             //A target is needed to properly blend the waterfalls together
-            using(RT.Clear(handle))
+            using(RT.Clear(handle, Color.Transparent))
             {
                 PrepareWaterfallTargetContent();
             }
