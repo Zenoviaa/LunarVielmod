@@ -538,7 +538,6 @@ public class FliesSuperBoom : ModProjectile
             }
             PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.SkyBlue, 12, 512);
             ShakeScreenPosition.Shake = 6;
-            FXUtil.CreateRipple(Projectile.Center);
 
             if (this.OwnedByLocalClient())
             {

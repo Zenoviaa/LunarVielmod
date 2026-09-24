@@ -355,9 +355,10 @@ public class GooberDialogueSystem : ModSystem
     private void RenderDialogueBoxToPixelTarget(SpeechBubble speechBubble,
         RenderTargetHandle pixelTarget, RenderTargetHandle boxRenderTarget, RenderTargetHandle boxRenderTargetSwap)
     {
+        RenderTargetHandle maskTarget = RenderTargets.ScreenTargetMipMapped;
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        using (new RenderTargetContext(boxRenderTarget))
+        void RenderBox()
         {
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             HlslSampler noiseSpriteSampler = new();
@@ -406,13 +407,22 @@ public class GooberDialogueSystem : ModSystem
             spriteBatch.Draw(tailDrawer);
             spriteBatch.End();
         }
+        using (new RenderTargetContext(boxRenderTarget))
+        {
+            RenderBox();
+        }
+        using (new RenderTargetContext(maskTarget))
+        {
+            RenderBox();
+        }
+
 
         HlslSampler spriteSampler = new();
         spriteSampler.Texture = boxRenderTarget;
         spriteSampler.Sampler = SamplerState.PointClamp;
 
         Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
-        var outlinerPass = AssetReferences.Effects.Generic.Outliner.CreatePixelPass();
+        var outlinerPass = AssetReferences.Effects.Generic.OutlinerNoTransparency.CreatePixelPass();
 
         outlinerPass.Parameters.spriteSampler = spriteSampler;
         outlinerPass.Parameters.texelSize = texelSize;
@@ -421,8 +431,11 @@ public class GooberDialogueSystem : ModSystem
         DrawOutline(boxRenderTargetSwap, boxRenderTarget, spriteBatch, outlinerPass.Shader, Color.White);
         DrawOutline(boxRenderTarget, boxRenderTargetSwap, spriteBatch, outlinerPass.Shader, speechBubble.speaker.profile.outlineColor);
 
-        var noisePass = AssetReferences.Effects.Generic.Scroll.CreatePixelPass();
-        noisePass.Parameters.time = Main.GlobalTimeWrappedHourly * 4;
+        if (speechBubble.speaker.profile.boxStyle != null)
+        {
+            speechBubble.speaker.profile.boxStyle.RenderMini(boxRenderTarget, Main.spriteBatch, _squareQuad);
+        }
+
 
         using (new RenderTargetContext(pixelTarget))
         {
@@ -433,6 +446,20 @@ public class GooberDialogueSystem : ModSystem
                 DepthStencilState.None,
                 RasterizerState.CullNone);
             spriteBatch.Draw(boxRenderTargetSwap, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+            spriteBatch.End();       
+            
+            //now draw using mask combine
+            var maskCombine = AssetReferences.Effects.CrystalShaders.MaskCombine.CreatePixelPass();
+            maskCombine.Parameters.mixTexture = boxRenderTarget;
+            maskCombine.Apply();
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                maskCombine.Shader);
+            spriteBatch.Draw(maskTarget, Vector2.Zero, null, Color.White * 0.75f, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
             spriteBatch.End();
         }
     }

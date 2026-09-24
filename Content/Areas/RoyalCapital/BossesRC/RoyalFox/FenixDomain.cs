@@ -31,7 +31,7 @@ public class FenixDomain : ModSystem
         Rectangle targetRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.EndOut(out var oldParameters);
-        using(new RenderTargetContext(domainTarget))
+        using(RT.Clear(domainTarget, Color.Transparent))
         {
             FenixDomainShader fenixDomainShader = ShaderContent.GetInstance<FenixDomainShader>();
             fenixDomainShader.GradientMap = TextureRegistry.CloudNoise3.Value;
@@ -53,7 +53,7 @@ public class FenixDomain : ModSystem
             spriteBatch.End();
         }
 
-        using(new RenderTargetContext(domainTargetSwap))
+        using(RT.Clear(domainTargetSwap, Color.Transparent))
         {
 
             Color outlineColor = new Color(150, 150, 235) * 0.5f;
@@ -88,6 +88,10 @@ public class FenixDomain : ModSystem
 
             RenderTargetHandle domainTarget = RenderTargets.ScreenTarget;
             RenderTargetHandle domainTargetSwap = RenderTargets.ScreenTarget;
+            
+            using (RT.Context(domainTarget)) ;
+            using (RT.Context(domainTargetSwap)) ;
+
             PrepareDomainContent(domainTarget, domainTargetSwap);
 
             Color drawColor2 = Color.SkyBlue;
