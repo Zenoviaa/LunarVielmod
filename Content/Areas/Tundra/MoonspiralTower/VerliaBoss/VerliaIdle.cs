@@ -3,7 +3,10 @@ using Stellamod.Assets;
 using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.GooberDialogue;
 using Stellamod.Content.Areas.Tundra.Abyss.AccAB;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.AccMT;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.WeaponsMT;
 using Stellamod.Content.Dialogue;
+using Stellamod.Content.Vanity.VerliaHat;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Particles;
@@ -177,13 +180,18 @@ public class VerliaIdle : VeilTownNPC,
     public override void AddShops()
     {
         var npcShop = new NPCShop(Type, "Shop")
-         .Add(new Item(ModContent.ItemType<MoonFlight>())
-         {
-             shopCustomPrice = 30,
-             shopSpecialCurrency = Stellamod.MedalCurrencyID
-         });
+            .AddShopItem<DeepswordArtifact>(40)
+            .AddShopItem<ThrowingMoonArtifact>(40)
+            .AddShopItem<Vixyl>(40)
+            .AddShopItem<Moonblaster>(40)
+            .AddShopItem<MoonFlight>(40)
+            .AddShopItem<Moonheart>(40)
+            .AddShopItem<VerliaHat>(2)
+            .AddShopItem<VerliaHatMoon>(2);
+
         npcShop.Register();
     }
+
     public bool CanSpawn()
     {
         if (NPC.AnyNPCs(ModContent.NPCType<VerliaIdle>()))

@@ -1697,12 +1697,9 @@ VerliaHat: {
 	Tooltip:
 		'''
 		Great for style!
-		Increased life by 25!
-		Increased Mana by 50!
-		Magic damage increased by 10%
 		I know you wanna wear it...
 		'''
-	DisplayName: Verlias Hat
+	DisplayName: Verlia's Hat
 }
 
 VerliaBroochA: {
@@ -12254,6 +12251,10 @@ DeepswordArtifact: {
 }
 
 VerliaHatMoon: {
-	DisplayName: Verlia Hat Moon
-	Tooltip: ""
+	DisplayName: Verlia's Moon Hat
+	Tooltip:
+		'''
+		Great for style!
+		I know you wanna wear it...
+		'''
 }

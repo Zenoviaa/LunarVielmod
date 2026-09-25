@@ -18,6 +18,16 @@ namespace Stellamod.Helpers
             //npc.netUpdate = true;
         }
 
+        public static NPCShop AddShopItem<T>(this NPCShop shop, int ruinMedalCost) where T : ModItem
+        {
+            shop.Add(new Item(ModContent.ItemType<T>())
+            {
+                shopCustomPrice = ruinMedalCost,
+                shopSpecialCurrency = Stellamod.MedalCurrencyID
+            };
+            return shop;
+        }
+
         public static void OpenShop(NPC npc)
         {
             if (npc.ModNPC == null)
