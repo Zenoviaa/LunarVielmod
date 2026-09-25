@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.ConsoleMenu;
 using Stellamod.Common.DialogueTowning;
 using Stellamod.Core;
+using System;
 
 namespace Stellamod.Common.GooberDialogue;
 
@@ -158,5 +159,28 @@ public static class GooberDialoguePresets
     public static SpeechBubbleAction SpeechBubbleZui(string text, int zuiSpeaker)
     {
         return new SpeechBubbleAction(SpeakZui(text) with { speakerNpcWhoAmI = zuiSpeaker});
+    }
+    public static SpeakerParameters Speak(GooberProfile profile, string text)
+    {
+        return new SpeakerParameters
+        {
+            profile = profile,
+            text = text,
+            textIndex = 0
+        };
+    }
+
+    public static SpeechBubbleAction SpeechBubbleVerlia(string text, int zuiSpeaker)
+    {
+        return new SpeechBubbleAction(Speak(Verlia, text) with { speakerNpcWhoAmI = zuiSpeaker });
+    }
+
+    public static FunctionInvocationAction Invoke(Action function)
+    {
+        return new FunctionInvocationAction(function);
+    }
+    public static FunctionInvocationAction ClearFlag(GameFlag flag)
+    {
+        return new FunctionInvocationAction(() => GameFlags.ClearFlag(flag));
     }
 }

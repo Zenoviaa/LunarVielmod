@@ -206,30 +206,7 @@ public class DialogueTowningUI : UIPanel
         pos2.X += 8;
         pos2.X -= 100;
         pos2.Y -= 44;
-        using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { samplerState = SamplerState.PointClamp, effect = spriteWhite }))
-        {
-            Texture2D texture = TalkingParameters.profile.bigPortraitTextureAsset.Value;
-            Vector2 drawPos = pos2;
-            drawPos.Y -= 6;
-            drawPos.X -= 8;
-            Vector2 startDrawPos = drawPos;
-            Vector2 endDrawPos = startDrawPos;
 
-            Vector2 finalDrawPos = Vector2.Lerp(startDrawPos, endDrawPos, VectorHelper.Osc(0f, 1f, speed: 1f));
- 
-            finalDrawPos += Offset;
-            finalDrawPos.Y = MathF.Floor(finalDrawPos.Y);
-            finalDrawPos.X = MathF.Floor(finalDrawPos.X);
-            float rotation = 0;
-            Vector2 drawOrigin = new Vector2(0, 0);
-            float drawScale = 1f;
-            foreach (var offset in TextHelper.ShadowOffsets)
-            {
-                var pos = finalDrawPos + offset * 2;
-           //     spriteBatch.Draw(texture, pos, null, Color.White * Alpha, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            }
-
-        }
         
         using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { samplerState = SamplerState.PointClamp }))
         {

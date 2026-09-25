@@ -77,7 +77,7 @@ public static class DialogueTownRenderer
             noiseSpriteSampler.Sampler = SamplerState.PointClamp;
 
             var pass = AssetReferences.Effects.Generic.Square.CreatePrimitivesPass();
-            pass.Parameters.transformMatrix = TrailDrawer.ViewProjection;
+            pass.Parameters.transformMatrix = TrailDrawer.UIViewProjection;
             pass.Parameters.time = Main.GlobalTimeWrappedHourly;
             pass.Parameters.spriteSampler = noiseSpriteSampler;
             pass.Apply();

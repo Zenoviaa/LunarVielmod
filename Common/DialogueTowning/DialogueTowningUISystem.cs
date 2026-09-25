@@ -25,6 +25,7 @@ namespace Stellamod.Common.DialogueTowning
             Close
         }
 
+        private Vector2 _cameraFocusPosition;
         private Animation _animation;
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -191,6 +192,25 @@ namespace Stellamod.Common.DialogueTowning
             options.ClearButtons();
         }
 
+        public override void PreUpdateNPCs()
+        {
+            base.PreUpdateNPCs();
+            if (_talkWorld != Vector2.Zero)
+            {
+                if (WhosTalkingWhoAmI != -1)
+                {
+                    var target = Main.npc[WhosTalkingWhoAmI].Center;
+                    var dist = Vector2.Distance(_cameraFocusPosition, target);
+                    if(dist > 32)
+                    {
+                        _cameraFocusPosition = target;
+                    }
+                    CameraTargetSystem.AddTarget(_cameraFocusPosition);
+                    CameraZoomSystem.TargetZoomMultiplier = 1.2f;
+                }
+            }
+        }
+
         public override void UpdateUI(GameTime gameTime)
         {
             Duration = 1f;
@@ -206,11 +226,7 @@ namespace Stellamod.Common.DialogueTowning
                 {
                     CloseUI();
                 }
-                if (WhosTalkingWhoAmI != -1)
-                {
-                    CameraTargetSystem.AddTarget(Main.npc[WhosTalkingWhoAmI].Center);
-                    CameraZoomSystem.TargetZoomMultiplier = 1.2f;
-                }
+
                
             }
 

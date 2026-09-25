@@ -261,8 +261,8 @@ VerliaFreeingDialogue: {
 	Line4: I mean how long have I been gone? I'm glad I'm alive, but what year is it??
 	Line5: It's been 8 years? What happened in the war?? Is that damned Ereshkigal dead??
 	Line6: I need to see my family, I'll head out soon, but thank you so so very much!
-	Line7: I guess while I was trapped I still grew? Interesting, and- oh yeah, I got some little small spells out of this book I learned too, so if you want I guess I can sell these to you before I go!
-	Line8: Be careful though, since these are charged with moi, must've been Zui who made them since they are so old, but be careful!
+	Line7: I guess while I was trapped I still grew? Interesting, and- oh yeah, I learned some small spells out of this book I have too. So, if you want I guess I can sell these to you before I go!
+	Line8: Be careful though, since these are charged with moi, it must've been Zui who made them since they are so old... but be careful!
 	Line9: Again, thank you so much. I need to find my sister.
 }
 
@@ -271,7 +271,7 @@ VerliaHappenedDialogue: {
 	Line0: Ugh...
 	Line1: Long story short, I got framed for an execution by the queen Ereshkigal, and she staged an entire execution for some plan of hers-
 	Line2: And I wanna like destroy the shit out of her, but I have not a clue where she is.
-	Line3: She said something about a plan, but I'm not too sure about everything, I'm just really glad I'm out!
+	Line3: She said something about a plan, but I'm not too sure about everything. I'm just really glad I'm out!
 	Line4: Speaking of, I hope Fenix doesn't hate me, I mean she probably does since she most likely thinks I killed her parents, but I swear I didn't!
 	Line5: There's something wrong with Ereshkigal, I don't even want to call her my queen anymore.
 	Line6: I'm just gonna get going soon anyway, I don't need to think about this stuff.
@@ -280,11 +280,11 @@ VerliaHappenedDialogue: {
 VerliaFamilyDialogue: {
 	DisplayName: Family?
 	Line0: Yeah!
-	Line1: I love my family dude, my bigger sister is like, super cool, you gotta meet her sometime! I bet she'd kiss you freed me, haha.
-	Line2: I'm so glad to get back to them sometime, I mean if you want I'd be more than happy to introduce you to them!
-	Line3: Dude, I'm so excited to go back you have no idea.
+	Line1: I love my family dude, my bigger sister is like, super cool, you gotta meet her sometime! I bet she'd kiss you since you freed me, haha.
+	Line2: I'm so glad to get back to them sometime, I mean, if you want, I'd be more than happy to introduce you to them!
+	Line3: Dude, I'm so excited to go back. You have no idea.
 	Line4: I wonder how Irradia is doing too, she's probably also worried sick about me- the entire village! Oh, I wanna see the look on their faces when I show up smiling and safe.
-	Line5: Thanks to you of course! If you ever need anything, I'll always be here to help you, afterall you did king of save my life, so I'm in your debt.
+	Line5: Thanks to you of course! If you ever need anything, I'll always be here to help you, afterall you did kind of save my life, so I'm in your debt.
 	Line6: ""
 }
 
@@ -294,8 +294,8 @@ VerliaWingsDialogue: {
 	Line1: I didn't have these before...
 	Line2: Wait.
 	Line3: Oh my Lunar Veils.
-	Line4: When Ereshkigal chained me down in her dungeon thing, she punched a whole ass singularity next to me, and I got absorbed into a crystal or something, or at least that’s the last I saw.
-	Line5: "But, before I went into that crystal, I saw so much knowledge just overflowing my brain. I think these wings are a part of my moi? "
-	Line6: My body also grew quite a bit too so maybe being that crystal for 8 years actually did something, but I don’t remember anything during that time.
-	Line7: Well, I guess I’ll have to see what I can do now! I bet I’m the strongest in my hometown finally! Maybe I can even get a rematch against Ashoti, I’m definitely stronger now!
+	Line4: When Ereshkigal chained me down in her dungeon thing, she punched a whole ass singularity next to me, and I got absorbed into a crystal or something, or at least that's the last I saw.
+	Line5: "But, before I went into that crystal, I saw so much knowledge just overflowing my brain. I think these wings are a part of my moi?"
+	Line6: My body also grew quite a bit too so maybe being that crystal for 8 years actually did something, but I don't remember anything during that time.
+	Line7: Well, I guess I'll have to see what I can do now! I bet I'm the strongest in my hometown finally! Maybe I can even get a rematch against Ashoti, I'm definitely stronger now!
 }

@@ -107,7 +107,7 @@ public class GooberDialogueSystem : ModSystem
                     using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { effect = gradientPass.Shader }))
                     {
                         nameTagDrawer.worldPosition = pos;
-                        nameTagDrawer.worldPosition += new Vector2(64, -100);
+                        nameTagDrawer.worldPosition += new Vector2(76, -100);
                         nameTagDrawer.rotation = MathHelper.ToRadians(-8);
                         nameTagDrawer.color = Color.White * bubble.Scale;
                         nameTagDrawer.LeftCenterOrigin();
@@ -229,7 +229,7 @@ public class GooberDialogueSystem : ModSystem
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch,
                     FontAssets.DeathText.Value,
                     bubble.speaker.profile.name,
-                    pos - Main.screenPosition + BubbleOffsetForElements + new Vector2(36, 7) + new Vector2(0, -upOffset),
+                    pos - Main.screenPosition + BubbleOffsetForElements + new Vector2(48, 7) + new Vector2(0, -upOffset),
                     Color.White,
                    nameRot,
                     Vector2.Zero,

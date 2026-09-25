@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.ArmorShop;
+using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Common.WaypointSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
@@ -26,7 +27,8 @@ public class ResetCommand : ConsoleCommand
             "quests",
             "cauldron",
             "armor",
-            "waypoints"
+            "waypoints",
+            "flags"
         };
 
         return arguments0;
@@ -84,6 +86,11 @@ public class ResetCommand : ConsoleCommand
                 {
                     OrganWaypointTracker tracker = ModContent.GetInstance<OrganWaypointTracker>();
                     tracker.ResetWaypoints();
+                }
+                return true;
+            case "flags":
+                {
+                    GameFlags.ResetFlags();
                 }
                 return true;
         }

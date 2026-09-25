@@ -125,6 +125,15 @@ public class CutsceneHandler : ModSystem
             SendCutsceneSync();
         }
     }
+    public static void Play<CutsceneType>() where CutsceneType : ACutsceneType
+    {
+        var type = ModContent.GetInstance<CutsceneType>();
+        Timeline.Play(type);
+        if (Main.netMode != NetmodeID.SinglePlayer)
+        {
+            SendCutsceneSync();
+        }
+    }
 
     public static void Play(ACutsceneType type)
     {

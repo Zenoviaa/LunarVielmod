@@ -125,6 +125,7 @@ public class VerliaPrison : ModNPC,
         {
             ShakeScreenPosition.Shake = 16;
             FXUtil.ShakeCamera(NPC.Center, 2048, 32);
+
             if (Main.netMode != NetmodeID.Server)
             {
                 ShockwavePlayer shockwavePlayer = Main.LocalPlayer.GetModPlayer<ShockwavePlayer>();
@@ -132,7 +133,7 @@ public class VerliaPrison : ModNPC,
                 shockwavePlayer.shockwavePosition = NPC.Center;
                 shockwavePlayer.rippleSize = 5;
                 DialogueSystemV2 dialogueSystem = ModContent.GetInstance<DialogueSystemV2>();
-                DelayHelper.Invoke(120, () => dialogueSystem.StartDialogueSequence(ModContent.GetInstance<VerliaFreeingDialogue>()));
+    
 
                 int headGore = Mod.Find<ModGore>($"{Name}_Gore_0").Type;
                 int legGore = Mod.Find<ModGore>($"{Name}_Gore_1").Type;

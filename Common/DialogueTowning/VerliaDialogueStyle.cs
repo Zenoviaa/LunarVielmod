@@ -7,8 +7,8 @@ namespace Stellamod.Common.DialogueTowning;
 
 public struct VerliaDialogueStyle : IBoxStyle
 {
-    public void Render(RenderTargetHandle output, 
-        SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad)
+    private void RenderBoxInner(RenderTargetHandle output,
+        SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad, bool mini)
     {
         if (Main.GameUpdateCount % 2 == 0 && Main.hasFocus)
         {
@@ -17,7 +17,17 @@ public struct VerliaDialogueStyle : IBoxStyle
             Particles.Particles.StarDonut.Spawn(new()
             {
                 position = new Vector2(Main.rand.Next(0, 1920), Main.rand.Next(0, 1080)),
-                color =  color,
+                color = color,
+                timeLeft = 120
+            });
+        }
+        if (Main.GameUpdateCount % 2 == 0 && Main.hasFocus)
+        {
+            var color = Color.Lerp(Color.Blue, Color.Pink, Main.rand.NextFloat(0f, 0.5f)) * 0.25f;
+            Particles.Particles.StarSmoke.Spawn(new()
+            {
+                position = new Vector2(Main.rand.Next(0, 1920), Main.rand.Next(0, 1080)),
+                color = color,
                 timeLeft = 120
             });
         }
@@ -43,7 +53,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             };
 
             panelPass.Apply();
-            using(spriteBatch.Ctx(SB.InWorldUnscaled with { effect = panelPass.Shader }))
+            using (spriteBatch.Ctx(SB.InWorldUnscaled with { effect = panelPass.Shader }))
             {
                 var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.StarSmoke.Asset, Vector2.Zero);
                 var rect2 = new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2);
@@ -52,24 +62,38 @@ public struct VerliaDialogueStyle : IBoxStyle
                 drawer.drawOrigin = Vector2.Zero;
                 spriteBatch.Draw(drawer);
             }
-            using (spriteBatch.Ctx(SB.InWorldUnscaled))
-            {
-                Particles.Particles.StarDonut.Draw(spriteBatch, Main.screenPosition);
-            }
 
             using (spriteBatch.Ctx(SB.InWorldUnscaled with { blendState = BlendState.Additive }))
             {
+                Particles.Particles.StarSmoke.Draw(spriteBatch, Main.screenPosition);
+            
+            }
 
-                var sunOutlineColor = Color.White;
-                DrawUtilities.DrawOutlinedRectangle(spriteBatch, rect, sunOutlineColor, 16);
+            using(spriteBatch.Ctx(SB.InWorldUnscaled))
+            {
+                Particles.Particles.StarDonut.Draw(spriteBatch, Main.screenPosition);
+            }
+            if (!mini)
+            {
+                using (spriteBatch.Ctx(SB.InWorldUnscaled with { blendState = BlendState.Additive }))
+                {
+
+                    var sunOutlineColor = Color.White;
+                    DrawUtilities.DrawOutlinedRectangle(spriteBatch, rect, sunOutlineColor, 16);
+                }
             }
         }
+    }
+    public void Render(RenderTargetHandle output, 
+        SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad)
+    {
+        RenderBoxInner(output, spriteBatch, quad, false);
     }
 
     public void RenderMini(RenderTargetHandle output, 
         SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad)
     {
-
+        RenderBoxInner(output, spriteBatch, quad, true);
     }
 
     public void Update()

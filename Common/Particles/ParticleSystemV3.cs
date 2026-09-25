@@ -45,6 +45,7 @@ public sealed class Particles : ModSystem
     public static readonly Sparklemist Sparklemist = new();
     public static readonly FallingBigGoldenLeaf FallingBigGoldenLeaf = new();
     public static readonly StarDonutDust StarDonut = new();
+    public static readonly StarSmokeDust StarSmoke = new();
     public override void Load()
     {
         base.Load();
@@ -70,7 +71,8 @@ public sealed class Particles : ModSystem
             GoldenLeafTornado,
             Sparklemist,
             FallingBigGoldenLeaf,
-            StarDonut
+            StarDonut,
+            StarSmoke
         };
 
         if (Main.netMode == NetmodeID.Server)

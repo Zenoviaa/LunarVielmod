@@ -59,7 +59,9 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     finalColor.b += 0.5;
     finalColor.rgb *= 0.35;
     finalColor += stars * 0.5 + stars2 * (cos(time + offset) * 0.5 + 0.5);
-
+    finalColor.rgb += coords.x * coords.x;
+    finalColor.r += coords.x * coords.x * 0.35;
+    finalColor *= 0.5;
   //  finalColor -= smokeColor4 * 0.2;
     return finalColor;
   

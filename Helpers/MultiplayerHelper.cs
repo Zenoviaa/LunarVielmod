@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.ClassReworkSystem;
+using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.GooberDialogue;
 using Stellamod.Common.Players;
@@ -99,6 +100,12 @@ namespace Stellamod
                     break;
                 case MessageType.BossDowned:
                     DownedBossRewardPlayer.HandleBossDownedMessage(reader, whoAmI);
+                    break;
+                case MessageType.GameFlagClear:
+                    GameFlags.HandleFlagClearMessage(reader, whoAmI);
+                    break;
+                case MessageType.GameFlagReset:
+                    GameFlags.HandleFlagResetMessage(reader, whoAmI);
                     break;
                 case MessageType.RomanceDodge:
                     DeadRomancePlayer.HandleExampleDodgeMessage(reader, whoAmI);

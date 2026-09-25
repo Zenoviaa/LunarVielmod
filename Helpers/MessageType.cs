@@ -46,7 +46,10 @@
 
         RequestWaterfallData,
         WaterfallSync,
-        CutsceneSync
+        CutsceneSync,
+
+        GameFlagClear,
+        GameFlagReset,
     }
 
     public enum DialogueType : byte

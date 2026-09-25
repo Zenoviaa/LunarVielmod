@@ -128,23 +128,6 @@ public class VerliaIdle : VeilTownNPC,
         dialogueSystem.StartDialogueSequence(ModContent.GetInstance<VerliaKillDialogue>());
     }
 
-    public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-    {
-        // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-        bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the preferred biomes of this town NPC listed in the bestiary.
-				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
-
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A traveller of the lands who may hold great power")),
-
-				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Zui the Traveller", "2"))
-            });
-    }
-
     public override void AI()
     {
         Timer++;
@@ -162,6 +145,17 @@ public class VerliaIdle : VeilTownNPC,
                 smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.14f);
                 smokeParticle.extraUpdates = Main.rand.Next(0, 1);
                 smokeParticle.fadeToColor = Color.Black;
+            }
+        }
+
+        if(Timer == 120)
+        {
+            if (MultiplayerHelper.IsHost && !GameFlags.IsCleared(GameFlag.VerliaAwakeningCutscene))
+            {
+                //Start free cutscene
+                CutsceneHandler.SpeakerNPCs[0] = NPC.whoAmI;
+                CutsceneHandler.Play<VerliaAwakeningCutscene>();
+  
             }
         }
 

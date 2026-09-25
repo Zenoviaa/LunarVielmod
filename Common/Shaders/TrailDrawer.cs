@@ -109,6 +109,15 @@ namespace Stellamod.Common.Shaders
                 return view * projection;
             }
         }
+        public static Matrix UIViewProjection
+        {
+            get
+            {
+                Matrix view = Matrix.identity;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+                return view * projection;
+            }
+        }
         private static void ApplyPasses(Effect effect)
         {
             foreach (var pass in effect.CurrentTechnique.Passes)

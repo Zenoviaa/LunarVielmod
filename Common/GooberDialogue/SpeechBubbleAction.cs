@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Core.Camera;
+using Terraria;
 
 namespace Stellamod.Common.GooberDialogue;
 
@@ -20,7 +21,8 @@ public record class SpeechBubbleAction(
         Entity parent = GetParent();
         if (parent != null)
         {
-            speaker.bubblePosition = parent.TopRight;
+            speaker.bubblePosition = parent.TopRight + new Vector2(18, -18);
+            CameraTargetSystem.AddTarget(parent.Center);
         }
         _bubble = GooberDialogueSystem.GetSpeechBubble();
         _bubble.speaker = speaker;
