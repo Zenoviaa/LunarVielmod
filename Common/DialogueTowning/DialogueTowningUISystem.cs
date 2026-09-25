@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.UI;
 using System;
@@ -39,6 +40,7 @@ namespace Stellamod.Common.DialogueTowning
         public float Duration { get; set; }
 
         public int WhosTalking { get; set; }
+        public int WhosTalkingWhoAmI { get; set; }
         public override int uiSlot => -1;
         public override void OnModLoad()
         {
@@ -107,6 +109,7 @@ namespace Stellamod.Common.DialogueTowning
             dialogueTowningUIState.dialogueTownButtonsUI.Parameters = parameters;
             _talkWorld = Main.LocalPlayer.position;
             WhosTalking = townNPC.NPC.type;
+            WhosTalkingWhoAmI = townNPC.NPC.whoAmI;
         }
 
         public void ChatWith(Quest quest)
@@ -203,6 +206,12 @@ namespace Stellamod.Common.DialogueTowning
                 {
                     CloseUI();
                 }
+                if (WhosTalkingWhoAmI != -1)
+                {
+                    CameraTargetSystem.AddTarget(Main.npc[WhosTalkingWhoAmI].Center);
+                    CameraZoomSystem.TargetZoomMultiplier = 1.2f;
+                }
+               
             }
 
 

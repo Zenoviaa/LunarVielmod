@@ -4,8 +4,6 @@ using Stellamod.Effects.Generic;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
-
-
 public class RoarDust : ParticleUpdater<RoarDustData>
 {
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 1 };

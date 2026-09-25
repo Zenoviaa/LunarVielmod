@@ -103,8 +103,12 @@ public static class GooberDialoguePresets
 
     public static GooberProfile Verlia => Default with
     {
+        startGradientColor = new Color(18, 21, 59),
+        endGradientColor = new Color(38, 52, 105),
+        outlineColor = new Color(24, 36, 96),
         bigPortraitTextureAsset = AssetReferences.Core.DialogueSystem.Verlia.Asset,
-        portraitTextureAsset = null,
+        portraitTextureAsset = AssetReferences.Content.GooberPortraits.VerliaMiniPortrait.Asset,
+        boxStyle = new VerliaDialogueStyle(),
         name = "Verlia"
     };
 

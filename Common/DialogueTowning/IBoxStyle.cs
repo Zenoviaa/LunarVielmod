@@ -7,6 +7,7 @@ namespace Stellamod.Common.DialogueTowning;
 /// </summary>
 public interface IBoxStyle
 {
+    void Update();
     void RenderMini(RenderTargetHandle output, SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad);
     void Render(RenderTargetHandle output, SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad);
 }

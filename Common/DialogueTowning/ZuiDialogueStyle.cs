@@ -30,6 +30,10 @@ public struct ZuiDialogueStyle : IBoxStyle
             return color;
         }
     }
+    public void Update()
+    {
+
+    }
     private void DrawV1(RenderTargetHandle output, SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad)
     {
         Color outlineColor = new Color(179, 45, 11);
@@ -46,6 +50,11 @@ public struct ZuiDialogueStyle : IBoxStyle
         var bottomRight = quad.vertices[3].Position.XY();
         var rect = ExtraMath.CreateRectangle(topLeft, bottomRight);
 
+        rect.Width += 242;
+        rect.Height += 48;
+        rect.Y += 2;
+        rect = rect.CenterPad(-4);
+
         var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.JaggedWaves.Asset, quad.vertices[1].Position.XY());
         drawer.worldPosition = topRight;
         drawer.worldPosition.X += 242;
@@ -54,11 +63,6 @@ public struct ZuiDialogueStyle : IBoxStyle
         drawer.VerticalFrame(0, 2);
         drawer.CenterOrigin();
 
-
-        rect.Width += 242;
-        rect.Height += 48;
-        rect.Y += 2;
-        rect = rect.CenterPad(-4);
 
 
         using (RT.Clear(target1, Color.Transparent))
