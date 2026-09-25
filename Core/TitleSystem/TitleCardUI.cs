@@ -112,7 +112,7 @@ namespace Stellamod.Core.TitleSystem
             //Fix the position
             drawPos.X -= texture.Width / 2f;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
             for(int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(texture, drawPos + texture.Size() / 2f, null, Color.White * _flashInAlpha, 0, texture.Size() / 2f, drawScale + Vector2.One * _flashInAlpha * new Vector2(2, 1), SpriteEffects.None, 0f);
@@ -121,7 +121,7 @@ namespace Stellamod.Core.TitleSystem
 
             spriteBatch.Draw(texture, drawPos, null, Color.White * easedProgress, 0, Vector2.Zero, drawScale, SpriteEffects.None, 0f);
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, default, Main.Rasterizer, default, Main.UIScaleMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, default, Main.Rasterizer, default, Main.UIScaleMatrix);
         
         }
     }

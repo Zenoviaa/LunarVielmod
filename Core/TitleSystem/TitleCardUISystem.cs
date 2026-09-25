@@ -75,7 +75,11 @@ namespace Stellamod.Core.TitleSystem
                     {
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
-                            _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                            using(Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with { samplerState = SamplerState.AnisotropicClamp }))
+                            {
+                                _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                            }
+                      
                         }
                         return true;
                     },

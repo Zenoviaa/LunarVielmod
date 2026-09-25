@@ -14,6 +14,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles;
 
@@ -333,11 +334,15 @@ public class VerliaBouncingMoon : ModProjectile
         Main.spriteBatch.Draw(glowDrawer);
 
 
+
+        Main.spriteBatch.Draw(glowDrawer);
+
+
         ScrollingMoonShader scrollingMoonShader = ScrollingMoonShader.Instance;
         scrollingMoonShader.ScrollingTexture = _scrollingMoonTextureAsset.Value;
         scrollingMoonShader.MaskSize = TextureAssets.Projectile[Type].Value.Size();
 
-        float time = Main.GlobalTimeWrappedHourly * 0.6f * Direction;
+        float time = Main.GlobalTimeWrappedHourly * 0.6f * 1;
         time += Projectile.whoAmI * 0.5f;
         scrollingMoonShader.ScrollOffset = new Vector2(time, 0f);
         scrollingMoonShader.BendStrength = 1.8f;
@@ -347,12 +352,10 @@ public class VerliaBouncingMoon : ModProjectile
         //Draw the moon itself
         sb.Restart(effect: scrollingMoonShader.Effect);
         moonSprite.rotation = MathHelper.ToRadians(-12);
-        moonSprite.color = Color.Lerp(Color.White, Color.Black, 0.18f);
-        moonSprite.scale *= _squishScale * _targetScale;
+        moonSprite.color = Color.White; // Color.Lerp(Color.White, Color.DarkBlue, 0.5f);
+        moonSprite.scale *= _targetScale * _squishScale;
         Main.spriteBatch.Draw(moonSprite);
         sb.RestartDefaults();
-
-
 
         Player player = Main.LocalPlayer;
         Point tile = player.Center.ToTileCoordinates();
@@ -384,6 +387,8 @@ public class VerliaBouncingMoon : ModProjectile
 
         moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha);
         Main.spriteBatch.Draw(moonSprite);
+
+
     }
     private void DrawPixelatedTrails(GraphicsDevice gDevice)
     {
@@ -410,6 +415,7 @@ public class VerliaBouncingMoon : ModProjectile
     {
         return Color.Lerp(Color.White, Color.SkyBlue, ratio);
     }
+    private Vector2 Scale => _squishScale * _targetScale;
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueueSpritebatchDrawAction(DrawAfterImage, DrawLayer.BehindTiles);
@@ -419,17 +425,33 @@ public class VerliaBouncingMoon : ModProjectile
 
 
         _shadowMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Shadow");
+
+        Vector2 scale = Vector2.One * Scale;
         SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
-        shadowDrawer.color *= 0.58f;
-        shadowDrawer.scale *= _squishScale * _targetScale;
+
+        Color flashColor = Color.White;
+        Color darkColor = Color.Lerp(Color.Blue, Color.Black, 0.8f) * 0.5f;
+        shadowDrawer.color = Color.Lerp(darkColor, flashColor, _flashAlpha);
+        shadowDrawer.scale *= scale * 1.05f;
         Main.spriteBatch.Draw(shadowDrawer);
 
-
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineMoonTextureAsset, Projectile.Center);
-        outlineDrawer.color = _outlineColor;
-        outlineDrawer.scale *= _squishScale * _targetScale;
-        Main.spriteBatch.Draw(outlineDrawer);
+        outlineDrawer.color = Color.Red;
+        outlineDrawer.scale *= scale;
 
+        SpritebatchDrawer moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
+        moonSprite.scale = scale * 1.05f;
+        moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha);
+        Main.spriteBatch.Draw(moonSprite);
+
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        glowDrawer.color = Color.White * 0.16f * MathHelper.Lerp(1f, 2f, _flashAlpha);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.5f;
+        glowDrawer.scale *= scale * 3f;
+        Main.spriteBatch.Draw(glowDrawer);
+
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMoon);
         return false;
         //return base.PreDraw(ref lightColor);
     }

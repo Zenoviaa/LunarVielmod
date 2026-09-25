@@ -8,6 +8,7 @@ public class StarDonutDust : ParticleUpdater<StarDonutDust.Data>
     {
         public Color color;
         public Vector2 position;
+        public float scale;
         public float timeLeft;
         public bool IsActive => timeLeft > 0;
     }
@@ -38,7 +39,7 @@ public class StarDonutDust : ParticleUpdater<StarDonutDust.Data>
         drawer.color = Color.Lerp(Color.Transparent, particle.color, interpolant);
         drawer.color *= 0.5f;
         drawer.color.A = 0;
-        drawer.scale *= MathHelper.SmoothStep(2f, 1f, lerpValue);
+        drawer.scale *= MathHelper.SmoothStep(2f, 1f, lerpValue) * particle.scale;
         spriteBatch.Draw(drawer);
     }
 }

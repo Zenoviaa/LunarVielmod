@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -21,6 +22,7 @@ public class VerliaDesperationMoon : ModProjectile
 
     private ref float Timer => ref Projectile.ai[0];
     private ref float GrabbingState => ref Projectile.ai[1];
+    private ref float ShootFlash => ref Projectile.ai[2];
     private NPC Parent => Main.npc[parentIndex];
     private float _growthCount;
     private float _shootFlash;
@@ -127,6 +129,7 @@ public class VerliaDesperationMoon : ModProjectile
                 Timer = 0;
                 _growthCount++;
             }
+            CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.5f));
             return;
 
         }
@@ -153,6 +156,10 @@ public class VerliaDesperationMoon : ModProjectile
             Timer = 800;
         }
 
+        if(Timer < 700)
+        {
+            CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.5f));
+        }
         if (Timer >= 60 && Timer < 700 && !noVerl)
         {
             _magicCircleAlpha = MathHelper.Lerp(_magicCircleAlpha, 1f, 0.1f);
@@ -173,6 +180,7 @@ public class VerliaDesperationMoon : ModProjectile
 
                 }
             }
+     
         }
         else
         {
@@ -266,17 +274,20 @@ public class VerliaDesperationMoon : ModProjectile
 
         _scale = MathHelper.Lerp(_scale, 1f, 0.1f);
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
-        _shootFlash = MathHelper.Lerp(_shootFlash, 0f, 0.1f);
+        ShootFlash = MathHelper.Lerp(ShootFlash, 0f, 0.1f);
+
     }
+    private Vector2 MoonHover => Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 4, ExtraMath.Osc(0f, 1f, speed: 2));
     private void DrawPixelatedMoon(SpriteBatch sb, Vector2 screenPos)
     {
         Vector2 scale = Vector2.One * _scale;
 
         SpritebatchDrawer circleSprite = SpritebatchDrawer.FromTextureAsset(_magicCircleTextureAsset, Projectile.Center);
-        circleSprite.color = Color.Lerp(Color.Black, Color.White, _flashAlpha + _shootFlash);// * ExtraMath.Osc(0.5f, 1f, speed: 6);
+        circleSprite.color = Color.Lerp(Color.Black, Color.White, _flashAlpha + ShootFlash);// * ExtraMath.Osc(0.5f, 1f, speed: 6);
         circleSprite.color.A = 0;
         circleSprite.rotation = Main.GlobalTimeWrappedHourly;
         circleSprite.scale *= 1.2f;
+        circleSprite.worldPosition += MoonHover;
         sb.Draw(circleSprite);
 
         SpritebatchDrawer moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
@@ -286,10 +297,11 @@ public class VerliaDesperationMoon : ModProjectile
         _scrollingMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_ScrollingMoon");
         moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-        glowDrawer.color = Color.Lerp(Color.Blue, Color.White, _flashAlpha + _shootFlash) * 0.8f * ExtraMath.Osc(0.5f, 1f, speed: 6);
+        glowDrawer.color = Color.Lerp(Color.Blue, Color.White, _flashAlpha + ShootFlash) * 0.8f * ExtraMath.Osc(0.5f, 1f, speed: 6);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 1.8f;
         glowDrawer.scale *= scale;
+        glowDrawer.worldPosition += MoonHover;
         Main.spriteBatch.Draw(glowDrawer);
 
 
@@ -300,6 +312,7 @@ public class VerliaDesperationMoon : ModProjectile
         glowDrawer.scale.X *= 1.2f;
         glowDrawer.scale.Y *= 0.6f;
         glowDrawer.scale *= scale;
+        glowDrawer.worldPosition += MoonHover;
         Main.spriteBatch.Draw(glowDrawer);
 
 
@@ -319,6 +332,7 @@ public class VerliaDesperationMoon : ModProjectile
         moonSprite.rotation = MathHelper.ToRadians(-12);
         moonSprite.color = Color.White; // Color.Lerp(Color.White, Color.DarkBlue, 0.5f);
         moonSprite.scale *= scale;
+        moonSprite.worldPosition += MoonHover;
         Main.spriteBatch.Draw(moonSprite);
         sb.RestartDefaults();
 
@@ -328,6 +342,7 @@ public class VerliaDesperationMoon : ModProjectile
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
         glowDrawer.scale *= scale * 3f;
+        glowDrawer.worldPosition += MoonHover;
         Main.spriteBatch.Draw(glowDrawer);
 
     }
@@ -343,8 +358,9 @@ public class VerliaDesperationMoon : ModProjectile
 
         Color flashColor = Color.White;
         Color darkColor = Color.Lerp(Color.Blue, Color.Black, 0.8f) * 0.5f;
-        shadowDrawer.color = Color.Lerp(darkColor, flashColor, _flashAlpha + _shootFlash);
+        shadowDrawer.color = Color.Lerp(darkColor, flashColor, _flashAlpha + ShootFlash);
         shadowDrawer.scale *= scale * 1.05f;
+        shadowDrawer.worldPosition += MoonHover;
         Main.spriteBatch.Draw(shadowDrawer);
 
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
@@ -354,7 +370,8 @@ public class VerliaDesperationMoon : ModProjectile
 
         SpritebatchDrawer moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
         moonSprite.scale = scale * 1.05f;
-        moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha + _shootFlash);
+        moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha + ShootFlash);
+        moonSprite.worldPosition += MoonHover;
         Main.spriteBatch.Draw(moonSprite);
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMoon);
         return false;

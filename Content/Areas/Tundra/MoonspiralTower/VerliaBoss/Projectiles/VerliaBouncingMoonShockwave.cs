@@ -74,11 +74,19 @@ public class VerliaBouncingMoonShockwave : ModProjectile
     {
         base.SetStaticDefaults();
     }
+
+
+    public override void ModifyDamageHitbox(ref Rectangle hitbox)
+    {
+        base.ModifyDamageHitbox(ref hitbox);
+        hitbox.Y -= 512;
+    }
+
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 512;
-        Projectile.height = 64;
+        Projectile.width = 1024;
+        Projectile.height = 1024;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
@@ -256,6 +264,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
             waveDrawer.worldPosition.Y -= 128;
             Main.spriteBatch.Draw(waveDrawer);
         }
+
         return false;
     }
     public override void OnKill(int timeLeft)

@@ -124,8 +124,11 @@ public class VerliaIdle : VeilTownNPC,
 
     private void KillYourFriend()
     {
-        DialogueSystemV2 dialogueSystem = ModContent.GetInstance<DialogueSystemV2>();
-        dialogueSystem.StartDialogueSequence(ModContent.GetInstance<VerliaKillDialogue>());
+        CutsceneHandler.SpeakerNPCs[0] = NPC.whoAmI;
+        CutsceneHandler.Play<VerliaKillingCutscene>();
+        CloseTownDialogue();
+     //   DialogueSystemV2 dialogueSystem = ModContent.GetInstance<DialogueSystemV2>();
+     //   dialogueSystem.StartDialogueSequence(ModContent.GetInstance<VerliaKillDialogue>());
     }
 
     public override void AI()

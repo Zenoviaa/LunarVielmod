@@ -59,6 +59,7 @@ public class ThrowingMoon : ModProjectile
         Projectile.timeLeft = 2000;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
+        Projectile.light = 0.7f;
     }
 
     public override void AI()

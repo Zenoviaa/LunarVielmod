@@ -21,8 +21,9 @@ public record class SpeechBubbleAction(
         Entity parent = GetParent();
         if (parent != null)
         {
-            speaker.bubblePosition = parent.TopRight + new Vector2(18, -18);
+            speaker.bubblePosition = parent.TopRight + new Vector2(36, 18);
             CameraTargetSystem.AddTarget(parent.Center);
+            CameraZoomSystem.TargetZoomMultiplier = 1.2f;
         }
         _bubble = GooberDialogueSystem.GetSpeechBubble();
         _bubble.speaker = speaker;

@@ -8,6 +8,7 @@ public class StarSmokeDust : ParticleUpdater<StarSmokeDust.Data>
     {
         public Color color;
         public Vector2 position;
+        public float scale;
         public float timeLeft;
         public bool IsActive => timeLeft > 0;
     }
@@ -37,7 +38,7 @@ public class StarSmokeDust : ParticleUpdater<StarSmokeDust.Data>
         drawer.CenterOrigin();
         drawer.color = Color.Lerp(Color.Transparent, particle.color, interpolant) * 1.3f;
         //.color *= 0.5f;
-        drawer.scale *= MathHelper.SmoothStep(3f, 2f, lerpValue);
+        drawer.scale *= MathHelper.SmoothStep(3f, 2f, lerpValue) * particle.scale;
         spriteBatch.Draw(drawer);
     }
 }

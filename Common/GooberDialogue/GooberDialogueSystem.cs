@@ -79,7 +79,7 @@ public class GooberDialogueSystem : ModSystem
             //Prepare a mask for the portrait to mask onto
             using (RT.Clear(boxRenderTarget, Color.Transparent))
             {
-                using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity }))
+                using (new SpritebatchContext(spriteBatch, SB.InWorldUnscaled))
                 {
                     spriteBatch.Draw(pixelTarget,
                         bubble.speaker.bubblePosition - Main.screenPosition + BubbleOffsetForTail,
@@ -94,7 +94,7 @@ public class GooberDialogueSystem : ModSystem
             //Prpeare the portrait draw
             using (RT.Clear(boxRenderTargetSwap, Color.Transparent))
             {
-                using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed()))
+                using (new SpritebatchContext(spriteBatch, SB.InWorldUnscaled))
                 {
 
                     var nameTagDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.NameTag.Asset, Vector2.Zero);
@@ -162,7 +162,7 @@ public class GooberDialogueSystem : ModSystem
             }
 
             SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.DialogueArrow.Asset, Vector2.Zero);
-            SpritebatchParams worldParams = SpritebatchParams.InWorldAndZoomed();
+            SpritebatchParams worldParams = SB.InWorldUnscaled;
             spriteBatch.Begin(worldParams);
 
 
@@ -180,14 +180,7 @@ public class GooberDialogueSystem : ModSystem
             }
 
             spriteBatch.End();
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
-                SamplerState.LinearClamp,
-                DepthStencilState.None,
-                RasterizerState.CullNone,
-                null,
-                Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SB.InWorldUnscaled);
             if (!string.IsNullOrEmpty(bubble.speaker.text))
             {
                 var chatText = bubble.speaker.text;
@@ -366,7 +359,7 @@ public class GooberDialogueSystem : ModSystem
             noiseSpriteSampler.Sampler = SamplerState.PointClamp;
 
             var pass = AssetReferences.Effects.Generic.Square.CreatePrimitivesPass();
-            pass.Parameters.transformMatrix = TrailDrawer.ViewProjection;
+            pass.Parameters.transformMatrix = TrailDrawer.UIViewProjection;
             pass.Parameters.time = Main.GlobalTimeWrappedHourly;
             pass.Parameters.spriteSampler = noiseSpriteSampler;
             pass.Apply();
@@ -391,14 +384,7 @@ public class GooberDialogueSystem : ModSystem
                 speechBubble.speaker.profile.startGradientColor * 0.8f
                 , speechBubble.speaker.profile.endGradientColor * 0.8f);
             _squareQuad.Draw();
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                RasterizerState.CullNone,
-                null,
-                Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SB.InWorldUnscaled);
             Vector3 bottomLeftVertex = _squareQuad.vertices[2].Position;
             Vector2 bottomLeft = new Vector2(bottomLeftVertex.X, bottomLeftVertex.Y);
             SpritebatchDrawer tailDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.Tail.Asset,
