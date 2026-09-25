@@ -15,6 +15,13 @@ public class VerliaBouncingMoonBoomFriendly : VerliaBouncingMoonBoom
         base.SetDefaults();
         Projectile.hostile = false;
         Projectile.friendly = true;
+        Projectile.width = 2048;
+        Projectile.height = 2048;
+    }
+    public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitNPC(target, ref modifiers);
+        modifiers.FinalDamage *= MathHelper.Lerp(1f, 3f, Projectile.ai[1]);
     }
 }
 

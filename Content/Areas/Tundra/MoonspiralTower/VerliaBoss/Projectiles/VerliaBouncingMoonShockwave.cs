@@ -69,6 +69,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
     private float Time => 120f;
     private ref float Timer => ref Projectile.ai[0];
     private ref float Style => ref Projectile.ai[1];
+    private float Strength => 1f + Projectile.ai[2];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -131,7 +132,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
                 dp.flickering = true;
             }
 
-            if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
+            if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects && Strength >= 1)
             {
                 SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                 effectsPlayer.darknessCurve = MathHelper.Lerp(0.5f, 0f, EasingFunction.InExpo(Timer / Time));
@@ -179,6 +180,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         sbDrawer.scale.X *= MathHelper.Lerp(0f, 3.8f, EasingFunction.OutExpo(Timer / Time));
         sbDrawer.scale.Y += MathHelper.Lerp(8f, 0f, EasingFunction.InOutExpo(Timer / Time));
         sbDrawer.scale.Y *= MathHelper.Lerp(0.2f, 2f, EasingFunction.QuadraticBump(Timer / Time));
+        sbDrawer.scale *= Strength;
         sbDrawer.color *= 0.5f;
         sbDrawer.color.A = 0;
 
@@ -196,6 +198,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         sbDrawer.scale.X *= MathHelper.Lerp(0f, 1.9f, EasingFunction.OutExpo(Timer / Time));
         sbDrawer.scale.Y += MathHelper.Lerp(4f, 0f, EasingFunction.InOutExpo(Timer / Time));
         sbDrawer.scale.Y *= MathHelper.Lerp(0.2f, 2f, EasingFunction.QuadraticBump(Timer / Time));
+        sbDrawer.scale *= Strength;
         sbDrawer.color *= 0.5f;
         sbDrawer.color.A = 0;
         sbDrawer.worldPosition.Y += height;
@@ -209,6 +212,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         glowLineDrawer.worldPosition.Y += height;
         glowLineDrawer.scale.X *= MathHelper.Lerp(1f, 8f, EasingFunction.OutExpo(Timer / Time));
         glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.2f;
+        glowLineDrawer.scale *= Strength;
         glowLineDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
         glowLineDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowLineDrawer);
@@ -220,6 +224,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
             glowLineDrawer.worldPosition.Y += height;
             glowLineDrawer.scale.X *= MathHelper.Lerp(6, 8f, EasingFunction.OutExpo(Timer / Time)) * 1.15f;
             glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.2f;
+            glowLineDrawer.scale *= Strength;
             glowLineDrawer.color = Color.Blue;
             glowLineDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
             glowLineDrawer.color.A = 0;
@@ -230,6 +235,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
             glowLineDrawer.worldPosition.Y += height;
             glowLineDrawer.scale.X *= MathHelper.Lerp(6, 8f, EasingFunction.OutExpo(Timer / Time)) * 0.8f;
             glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.5f;
+            glowLineDrawer.scale *= Strength;
             glowLineDrawer.color = Color.White;
             glowLineDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
             glowLineDrawer.color.A = 0;
@@ -244,6 +250,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
             SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.VerlianSigil.Asset, Projectile.Center);
             waveDrawer.rotation = 0;
             waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 2f, EasingFunction.InOutSine(outRatio));
+            waveDrawer.scale *= Strength;
             waveDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.QuadraticBump(outRatio));
             waveDrawer.color.A = 0;
             waveDrawer.worldPosition.Y -= 128;

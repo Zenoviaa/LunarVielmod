@@ -20,10 +20,12 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.WeaponsMT;
 public class ThrowingMoon : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Throw => ref Projectile.ai[1];
     private float _growthCount;
     private float _shootFlash;
     private float _scale;
     private float _flashAlpha;
+    private Player Owner => Main.player[Projectile.owner];
     private Asset<Texture2D> _outlineTextureAsset;
     private Asset<Texture2D> _scrollingMoonTextureAsset;
     private Asset<Texture2D> _shadowMoonTextureAsset;
@@ -62,8 +64,38 @@ public class ThrowingMoon : ModProjectile
     {
         base.AI();
 
-        if (_growthCount < 3)
+        if(Throw == 0 && !Owner.CheckMana(1, pay: false))
         {
+            Throw = 1;
+        }
+        if ( Throw == 0)
+        {
+            if(_growthCount < 4)
+            {
+                if (Timer % 2 == 0)
+                    Owner.CheckMana(1, true);
+            }
+   
+
+            if(this.OwnedByLocalClient() && Owner.channel)
+            {
+                Vector2 posToMoveTo = Owner.Center - new Vector2(0, 64 * _growthCount + 64);
+                Vector2 targetVelocity = posToMoveTo - Projectile.Center;
+                Projectile.velocity = targetVelocity * 0.2f;
+                Projectile.netUpdate = true;
+            }
+            if(this.OwnedByLocalClient() && !Owner.channel)
+            {
+                Throw = 1;
+                Vector2 posToMoveTo =Main.MouseWorld;
+                Vector2 targetVelocity = posToMoveTo - Projectile.Center;
+                targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+                targetVelocity *= 12;
+                targetVelocity.Y -= 12;
+                Projectile.velocity = targetVelocity ;
+                Projectile.netUpdate = true;
+            }
+
             Timer++;
             if (Timer == 1)
             {
@@ -86,33 +118,51 @@ public class ThrowingMoon : ModProjectile
                 _flashAlpha = 1f;
             }
 
-            if (Timer % 2 == 0)
+            if(_growthCount < 4)
             {
-                float range = Main.rand.NextFloat(252, 512);
-                Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(range, range);
-                Vector2 vel = (Projectile.Center - pos);
-                vel *= 0.1f;
-                FXUtil.GlowStretch(pos, vel);
-            }
+                if (Timer % 2 == 0)
+                {
+                    float range = Main.rand.NextFloat(252, 512);
+                    Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(range, range);
+                    Vector2 vel = (Projectile.Center - pos);
+                    vel *= 0.1f;
+                    FXUtil.GlowStretch(pos, vel);
+                }
 
-            if (Timer % 2 == 0)
-            {
-                float range = Main.rand.NextFloat(384, 666);
-                Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(range, range);
-                Vector2 vel = (Projectile.Center - pos);
-                vel *= 0.1f;
-                var fx = FXUtil.GlowStretch(pos, vel);
-                fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
-                fx.VectorScale *= 0.5f;
+                if (Timer % 2 == 0)
+                {
+                    float range = Main.rand.NextFloat(384, 666);
+                    Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(range, range);
+                    Vector2 vel = (Projectile.Center - pos);
+                    vel *= 0.1f;
+                    var fx = FXUtil.GlowStretch(pos, vel);
+                    fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
+                    fx.VectorScale *= 0.5f;
+                }
             }
+   
             float maxScale = MathHelper.Lerp(0f, 1f, (_growthCount + 1) / 3f);
             _scale = MathHelper.Lerp(_scale, maxScale, 0.1f);
             _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
-            if (Timer >= 90)
+            if (Timer >= 90 && _growthCount < 3)
             {
                 Timer = 0;
                 _growthCount++;
             }
+            if(Timer >= 180 && _growthCount == 3)
+            {
+                Timer = 0;
+                _growthCount++;
+            }
+            if (_growthCount >= 3)
+            {
+                ShakeScreenPosition.Shake = 3;
+            }
+
+            var rot = (Projectile.Center - Owner.Center).ToRotation();
+            rot += ExtraMath.Osc(-0.05f, 0.05f);
+            rot -= MathHelper.PiOver2;
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rot);
             return;
         }
 
@@ -129,8 +179,8 @@ public class ThrowingMoon : ModProjectile
 
         if (Timer % 8 == 0)
         {
-            var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Bottom, -Projectile.velocity);
-            p2.Scale *= 3f;
+            var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
+            p2.Scale *= 3f * _scale;
         }
         if (Projectile.velocity.Y < 1)
             Projectile.velocity.Y += 0.5f;
@@ -140,7 +190,7 @@ public class ThrowingMoon : ModProjectile
             Projectile.tileCollide = true;
         }
 
-        _scale = MathHelper.Lerp(_scale, 1f, 0.1f);
+        _scale = MathHelper.Lerp(_scale, ((_growthCount+1) / 3f) * 1f, 0.1f);
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
         _shootFlash = MathHelper.Lerp(_shootFlash, 0f, 0.1f);
     }
@@ -149,7 +199,7 @@ public class ThrowingMoon : ModProjectile
         _outlineTextureAsset ??= AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaDesperationMoon_Outline.Asset;//ModContent.Request<Texture2D>(Texture + "_Outline");
         _scrollingMoonTextureAsset ??= AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaDesperationMoon_ScrollingMoon.Asset;
         _shadowMoonTextureAsset ??= AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaDesperationMoon_Shadow.Asset;
-        _magicCircleTextureAsset ??= AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaDesperationMoon_Shadow.Asset;
+        _magicCircleTextureAsset ??= AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaDesperationMoon_Sigil.Asset;
     }
 
     private void DrawPixelatedMoon(SpriteBatch sb, Vector2 screenPos)
@@ -245,10 +295,16 @@ public class ThrowingMoon : ModProjectile
         Vector2 pos = tile.ToWorldCoordinates();
         if (this.OwnedByLocalClient())
         {
+            var ratio = _growthCount / 4f;
+            var originalRatio = ratio;
+            ratio = MathHelper.Lerp(-0.8f, 1f, ratio);
+            var style = 0;
+            if (ratio > 0)
+                style = 1;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, Vector2.Zero,
-                ModContent.ProjectileType<VerliaBouncingMoonShockwaveFriendly>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+                ModContent.ProjectileType<VerliaBouncingMoonShockwaveFriendly>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: style, ai2: ratio);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, Vector2.Zero,
-                ModContent.ProjectileType<VerliaBouncingMoonBoomFriendly>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                ModContent.ProjectileType<VerliaBouncingMoonBoomFriendly>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: originalRatio);
         }
 
         var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
@@ -275,18 +331,22 @@ public class ThrowingMoonArtifact : ModItem
         base.SetDefaults();
         Item.DefaultToArtifact();
         Item.shoot = ModContent.ProjectileType<ThrowingMoon>();
-        Item.mana = 150;
+        Item.mana = 50;
         Item.damage = 200;
         Item.knockBack = 1;
         Item.useTime = Item.useAnimation = 60;
         Item.useStyle = ItemUseStyleID.HoldUp;
+        Item.channel = true;
+        Item.autoReuse = false;
+        Item.noUseGraphic = true;
+        Item.noMelee = true;
     }
 
     public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
     {
         base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
         velocity = Vector2.UnitY * 0.2f;
-        position = ExtraMath.UpToPointNotThroughWalls(position, Main.MouseWorld);
+        position = player.Center + new Vector2(0, -64);
     }
 
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

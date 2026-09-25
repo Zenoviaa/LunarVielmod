@@ -12243,5 +12243,5 @@ Moonheart: {
 
 ThrowingMoonArtifact: {
 	DisplayName: Throwing Moon Artifact
-	Tooltip: ""
+	Tooltip: "Hold and release to throw a GIANT DAMN MOON."
 }
