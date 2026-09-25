@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Particles;
+using Stellamod.Common.ShockCircleSystem;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
@@ -140,7 +141,7 @@ public class VerliaMiniMoonFriendly : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-            
+            ShockCircles.CreateQuickWhiteFlash(Projectile.Center);
             SoundStyle spawnSound = new SoundStyle($"Stellamod/Assets/Sounds/SoftSummon");
             spawnSound.PitchVariance = 0.4f;
             SoundEngine.PlaySound(spawnSound, Projectile.position);

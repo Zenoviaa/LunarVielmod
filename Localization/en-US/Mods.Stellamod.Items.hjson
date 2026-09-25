@@ -7429,14 +7429,9 @@ IceCubeMaker: {
 
 Vixyl: {
 	DisplayName: Vixyl
-	Tooltip:
-		'''
-		Perfectly time your slash and get hit to parry an attack!
-		Parrying negates all damage and does a powerful slash
-		For a short time after parrying, you do a flurry of swipes just like Verlia!
-		'''
-	BasicSlash: ""
-	StaminaSlash: No Effect
+	Tooltip: "Stylin'"
+	BasicSlash: "Slowly speeds up over time, and then releases a flurry of slashes!"
+	StaminaSlash: "Prepares to parry, perfectly time it to counter an attack and deal HUGE damage!"
 }
 
 ManifestedHumility: {
@@ -12247,7 +12242,7 @@ ThrowingMoonArtifact: {
 
 DeepswordArtifact: {
 	DisplayName: Deepsword Artifact
-	Tooltip: ""
+	Tooltip: Hold and swing a giant magical sword charged with lunar energy, just like Verlia!
 }
 
 VerliaHatMoon: {

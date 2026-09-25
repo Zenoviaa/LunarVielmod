@@ -24,7 +24,7 @@ namespace Stellamod.Helpers
             {
                 shopCustomPrice = ruinMedalCost,
                 shopSpecialCurrency = Stellamod.MedalCurrencyID
-            };
+            });
             return shop;
         }
 

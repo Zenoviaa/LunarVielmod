@@ -172,20 +172,20 @@ public class VixylParryingBlade : ModProjectile
         if (Timer == 1)
         {
             Owner.GetModPlayer<VixylPlayer>().StartParry();
-            FXUtil.ShakeCamera(Projectile.Center, 1024, 2);
             SoundStyle parrySound = AssetReferences.Assets.Sounds.SwordSheethe.Asset with { PitchVariance = 0.75f };
             parrySound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(parrySound, Projectile.position);
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 24; i++)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Vector2 velocity = Main.rand.NextVector2CircularEdge(8, 8);
                 var sp = SparkleParticle.Spawn(Projectile.Center, velocity);
                 sp.outerColor = Color.DarkBlue;
                 sp.innerColor = Color.SkyBlue;
-                sp.Scale *= 0.6f;
+                sp.Scale *= 0.4f;
                 sp.noTileCollide = true;
                 sp.gravity = 0;
+                sp.dampening = 0.05f;
             }
         }
 
