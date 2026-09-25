@@ -120,7 +120,7 @@ public class DeadRomancePlayer : ModPlayer
     public void StartParry()
     {
         hitParry = false;
-        parryTimer = 24;
+        parryTimer = 7;
     }
     public void ConsumeGreatBlade()
     {

@@ -60,7 +60,7 @@ public class VerliaBouncingMoonShockwaveFriendly : VerliaBouncingMoonShockwave
     {
         base.SetDefaults();
         Projectile.hostile = false;
-        Projectile.friendly = true;
+        Projectile.friendly = false;
     }
 }
 

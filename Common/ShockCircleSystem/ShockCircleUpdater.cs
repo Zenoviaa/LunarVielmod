@@ -67,6 +67,7 @@ public class ShockCircleUpdater : ModSystem
             circle.Update();
         }
         _circles.RemoveAll(x => x.timer >= x.data.time);
+        
         /*
         if(Main.mouseLeft && Main.mouseLeftRelease)
         {

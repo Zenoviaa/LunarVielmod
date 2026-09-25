@@ -31,6 +31,7 @@ public class ThrowingMoon : ModProjectile
     private Asset<Texture2D> _shadowMoonTextureAsset;
     private Asset<Texture2D> _magicCircleTextureAsset;
     public override string Texture => AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaDesperationMoon.KEY;
+    private float MaxScale => 0.45f;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -68,9 +69,9 @@ public class ThrowingMoon : ModProjectile
         {
             Throw = 1;
         }
-        if ( Throw == 0)
+        if (Throw == 0)
         {
-            if(_growthCount < 4)
+            if(_growthCount < 2)
             {
                 if (Timer % 2 == 0)
                     Owner.CheckMana(1, true);
@@ -79,7 +80,7 @@ public class ThrowingMoon : ModProjectile
 
             if(this.OwnedByLocalClient() && Owner.channel)
             {
-                Vector2 posToMoveTo = Owner.Center - new Vector2(0, 64 * _growthCount + 64);
+                Vector2 posToMoveTo = Owner.Center - new Vector2(0, 32 * _growthCount + 64);
                 Vector2 targetVelocity = posToMoveTo - Projectile.Center;
                 Projectile.velocity = targetVelocity * 0.2f;
                 Projectile.netUpdate = true;
@@ -101,15 +102,14 @@ public class ThrowingMoon : ModProjectile
             {
                 if (_growthCount == 0)
                 {
+                    /*
                     SoundStyle e = new SoundStyle($"Stellamod/Assets/Sounds/StarCharge");
-                    SoundEngine.PlaySound(e, Projectile.position);
+                    SoundEngine.PlaySound(e, Projectile.position);*/
                 }
 
                 if (Main.netMode != NetmodeID.Server)
                 {
-                    ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                    shaderSystem.TintScreen(Color.LightBlue, 0.2f, 15);
-                    PixelPrimitiveCircleFactory.CreateVerliaMoonBoom(Projectile.Center);
+                    PixelPrimitiveCircleFactory.CreateVerliaMoonBoom3(Projectile);
                 }
 
                 SoundStyle inSound = AssetRegistry.Sounds.Verlia.BigMoonGrow;
@@ -118,7 +118,7 @@ public class ThrowingMoon : ModProjectile
                 _flashAlpha = 1f;
             }
 
-            if(_growthCount < 4)
+            if(_growthCount < 3)
             {
                 if (Timer % 2 == 0)
                 {
@@ -141,24 +141,14 @@ public class ThrowingMoon : ModProjectile
                 }
             }
    
-            float maxScale = MathHelper.Lerp(0f, 1f, (_growthCount + 1) / 3f);
+            float maxScale = MathHelper.Lerp(0f, MaxScale, (_growthCount + 1) / 3f);
             _scale = MathHelper.Lerp(_scale, maxScale, 0.1f);
             _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
-            if (Timer >= 90 && _growthCount < 3)
+            if (Timer >= 45 && _growthCount < 3)
             {
                 Timer = 0;
                 _growthCount++;
             }
-            if(Timer >= 180 && _growthCount == 3)
-            {
-                Timer = 0;
-                _growthCount++;
-            }
-            if (_growthCount >= 3)
-            {
-                ShakeScreenPosition.Shake = 3;
-            }
-
             var rot = (Projectile.Center - Owner.Center).ToRotation();
             rot += ExtraMath.Osc(-0.05f, 0.05f);
             rot -= MathHelper.PiOver2;
@@ -190,7 +180,7 @@ public class ThrowingMoon : ModProjectile
             Projectile.tileCollide = true;
         }
 
-        _scale = MathHelper.Lerp(_scale, ((_growthCount+1) / 3f) * 1f, 0.1f);
+        _scale = MathHelper.Lerp(_scale, ((_growthCount+1) / 3f) * MaxScale, 0.1f);
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
         _shootFlash = MathHelper.Lerp(_shootFlash, 0f, 0.1f);
     }
@@ -211,7 +201,7 @@ public class ThrowingMoon : ModProjectile
         circleSprite.color = Color.Lerp(Color.Black, Color.White, _flashAlpha + _shootFlash);// * ExtraMath.Osc(0.5f, 1f, speed: 6);
         circleSprite.color.A = 0;
         circleSprite.rotation = Main.GlobalTimeWrappedHourly;
-        circleSprite.scale *= 1.2f;
+        circleSprite.scale *= 0.6f;
         sb.Draw(circleSprite);
 
         var moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
@@ -260,6 +250,8 @@ public class ThrowingMoon : ModProjectile
         glowDrawer.scale *= 0.5f;
         glowDrawer.scale *= scale * 3f;
         Main.spriteBatch.Draw(glowDrawer);
+
+
     }
 
     public override bool PreDraw(ref Color lightColor)
@@ -282,8 +274,20 @@ public class ThrowingMoon : ModProjectile
         moonSprite.scale = scale * 1.05f;
         moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha + _shootFlash);
         Main.spriteBatch.Draw(moonSprite);
+
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        glowDrawer.color = Color.White * 0.36f;
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.5f;
+        glowDrawer.scale *= scale * 3f;
+        Main.spriteBatch.Draw(glowDrawer);
+
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMoon);
         return false;
+    }
+    private void DrawMoon(SpriteBatch sb, Vector2 sp)
+    {
+
     }
     public override void OnKill(int timeLeft)
     {
@@ -297,7 +301,7 @@ public class ThrowingMoon : ModProjectile
         {
             var ratio = _growthCount / 4f;
             var originalRatio = ratio;
-            ratio = MathHelper.Lerp(-0.8f, 1f, ratio);
+            ratio = MathHelper.Lerp(-0.8f, -0.3f, ratio);
             var style = 0;
             if (ratio > 0)
                 style = 1;

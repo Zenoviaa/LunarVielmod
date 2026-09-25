@@ -17,6 +17,7 @@ public struct SteinUppercutParameters
 
 public class MovementUtilities
 {
+
     public static void FaceMovementVelocity(NPC npc)
     {
         npc.spriteDirection = npc.velocity.X < 0 ? -1 : 1;
@@ -127,7 +128,19 @@ public class MovementUtilities
         Vector2 ovalOffset = MovementUtilities.LocalOvalRotate(ovalPoint, parameters.direction, parameters.rotation);
         return parameters.start + ovalOffset;
     }
-
+    public static Vector2[] SwingPoints(Vector2 offset, in float maxProgress, in float numPoints, in float radians, in float xSize, in float ySize, in float rotation)
+    {
+        var points = new Vector2[(int)numPoints];
+        for(var i = 0; i < points.Length; i++)
+        {
+            var progress = (float)i / (float)points.Length;
+            var ovalOffset = OvalProgressPoint(progress * maxProgress, radians, xSize, ySize);
+            ovalOffset = ovalOffset.RotatedBy(rotation);
+            ref var point = ref points[i];
+            point = offset + ovalOffset;
+        }
+        return points;
+    }
     public static Vector2 OvalProgressPoint(in float progress, in float radians, in float xSize, in float ySize)
     {
         float x = MathF.Sin(progress * radians) * xSize;

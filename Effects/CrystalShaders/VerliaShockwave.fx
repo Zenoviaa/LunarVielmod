@@ -12,6 +12,8 @@ float QuadraticBump(float t)
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     float2 uv = coords;
+    float alpha = uv.y;
+    float yAlpha = saturate(alpha / 0.15);
     //float frequency = 4.0;
     //float amplitude = 0.5;
        
@@ -27,6 +29,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     // Output to screen
     float4 fragColor = float4(col.r, col.g, col.b, 1.0) * sampleColor;
+    fragColor *= yAlpha;
     return fragColor;
 }
 

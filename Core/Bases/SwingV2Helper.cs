@@ -1264,5 +1264,180 @@ namespace Stellamod.Core.Bases
                 Sound = swingSound3
             });
         }
+
+        public static void AddSwordSwingStyleVixyl(ISwingProjectile swings)
+        {
+            SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.NormalSwordSlash1;
+            swingSound1.PitchVariance = 0.25f;
+            swingSound1.Volume = 0.25f;
+
+            SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.NormalSwordSlash2;
+            swingSound2.PitchVariance = 0.25f;
+
+            SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.SwordSpin1;
+            swingSound3.PitchVariance = 0.5f;
+            swingSound3.Volume = 0.5f;
+
+
+            SoundStyle swingSoundAlt1 = AssetRegistry.Sounds.Melee.SwordSwing2;
+            swingSoundAlt1.PitchVariance = 0.25f;
+
+            SoundStyle swingSoundAlt2 = AssetRegistry.Sounds.Melee.SwordSwing3;
+            swingSoundAlt2.PitchVariance = 0.25f;
+
+
+            int style = 0;
+            SoundStyle s1 = style == 0 ? swingSound1 : swingSoundAlt1;
+            SoundStyle s2 = style == 0 ? swingSound2 : swingSoundAlt2;
+            swings.Add(new OvalSwing
+            {
+                Duration = 26,
+                XSwingRadius = 96,
+                YSwingRadius = 32,
+                SwingDegrees = 265,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 26,
+                XSwingRadius = 96,
+                YSwingRadius = 32,
+                SwingDegrees = 265,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 20,
+                XSwingRadius = 48,
+                YSwingRadius = 80,
+                SwingDegrees = 270,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 20,
+                XSwingRadius = 48,
+                YSwingRadius = 80,
+                SwingDegrees = 270,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 17,
+                XSwingRadius = 96,
+                YSwingRadius = 48,
+                SwingDegrees = 320,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 17,
+                XSwingRadius = 96,
+                YSwingRadius = 48,
+                SwingDegrees = 320,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 14,
+                XSwingRadius = 96,
+                YSwingRadius = 32,
+                SwingDegrees = 200,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
+            });
+            swings.Add(new OvalSwing
+            {
+                Duration = 14,
+                XSwingRadius = 96,
+                YSwingRadius = 32,
+                SwingDegrees = 200,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+            swings.Add(new OvalSwing
+            {
+                Duration = 14,
+                XSwingRadius = 96,
+                YSwingRadius = 48,
+                SwingDegrees = 320,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 14,
+                XSwingRadius = 96,
+                YSwingRadius = 48,
+                SwingDegrees = 320,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 12,
+                XSwingRadius = 96,
+                YSwingRadius = 32,
+                SwingDegrees = 200,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
+            });
+            swings.Add(new OvalSwing
+            {
+                Duration = 12,
+                XSwingRadius = 96,
+                YSwingRadius = 32,
+                SwingDegrees = 200,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 10,
+                XSwingRadius = 96,
+                YSwingRadius = 48,
+                SwingDegrees = 320,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 10,
+                XSwingRadius = 96,
+                YSwingRadius = 48,
+                SwingDegrees = 320,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 32,
+                XSwingRadius = 96,
+                YSwingRadius = 76,
+                SwingDegrees = 320,
+                Easing = EasingFunction.GreatswordAnticipation,
+                Sound = swingSound3,
+            });
+        }
     }
 }

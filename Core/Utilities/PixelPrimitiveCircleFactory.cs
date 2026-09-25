@@ -124,6 +124,9 @@ public static class PixelPrimitiveCircleFactory
             var bloomTrailShader = BloomTrailShader.Instance;
             bloomTrailShader.InnerColor = colors.bloomInnerColor;
             bloomTrailShader.OuterColor = colors.bloomOuterColor;
+            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            graphicsDevice.BlendState = BlendState.Additive;
             DrawUtilities.DrawUserIndexedPrimitivesWithEffect(draw.vertices, draw.indices, bloomTrailShader);
         }
         void RenderFire(TrailCircleDraw draw)
@@ -132,12 +135,16 @@ public static class PixelPrimitiveCircleFactory
             blackFireShader.InnerColor = colors.fireInnerColor;
             blackFireShader.OuterColor = colors.fireOuterColor;
             blackFireShader.BackColor = colors.fireBackColor;
+            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            graphicsDevice.BlendState = BlendState.Additive;
             DrawUtilities.DrawUserIndexedPrimitivesWithEffect(draw.vertices, draw.indices, blackFireShader);
         }
+        var circle2 = PixelCircleUpdater.Create(RenderFire, parent.Center, getTrailWidthFunction, getTrailColorFunction, minRadius, maxRadius, time);
+        circle2.parent = parent;
         var circle = PixelCircleUpdater.Create(RenderBloom, parent.Center, getTrailWidthFunction, getTrailColorFunction, minRadius, maxRadius, time);
         circle.parent = parent;
-        circle = PixelCircleUpdater.Create(RenderFire, parent.Center, getTrailWidthFunction, getTrailColorFunction, minRadius, maxRadius, time);
-        circle.parent = parent;
+    
     }
 
     public static void CreateOrganBoom(Vector2 position)
@@ -154,6 +161,36 @@ public static class PixelPrimitiveCircleFactory
         }
 
         CreateDefaultFireBloomCircle(position, GetTrailWidthFunction, GetTrailColorFunction, new(Color.White, Color.LightGoldenrodYellow, Color.DarkGoldenrod, Color.Goldenrod, Color.DarkGoldenrod), 0, 500, 60);
+    }
+    public static void CreateVerliaMoonBoom3(Vector2 position)
+    {
+        float GetTrailWidthFunction(TrailCircleStep interpolant)
+        {
+            return MathHelper.SmoothStep(64, 0, interpolant.progressInCircle);
+        }
+        Color GetTrailColorFunction(TrailCircleStep interpolant)
+        {
+            Color lerp1 = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0.5f, 1f, speed: 8));
+            lerp1 = Color.Lerp(Color.Blue, lerp1, interpolant.progressInCircle);
+            return lerp1;
+        }
+
+        CreateDefaultFireBloomCircle(position, GetTrailWidthFunction, GetTrailColorFunction, new(Color.White, Color.DarkGray, Color.Black, Color.White, Color.Blue), 333, 0, 25);
+    }
+    public static void CreateVerliaMoonBoom3(Entity parent)
+    {
+        float GetTrailWidthFunction(TrailCircleStep interpolant)
+        {
+            return MathHelper.SmoothStep(32, 0, interpolant.progressInCircle);
+        }
+        Color GetTrailColorFunction(TrailCircleStep interpolant)
+        {
+            Color lerp1 = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0.5f, 1f, speed: 8));
+            lerp1 = Color.Lerp(Color.Blue, lerp1, interpolant.progressInCircle);
+            return lerp1;
+        }
+
+        CreateDefaultFireBloomCircle(parent, GetTrailWidthFunction, GetTrailColorFunction, new(Color.White, Color.DarkGray, Color.Black, Color.White, Color.Blue), 333, 0, 25);
     }
     public static void CreateVerliaMoonBoom(Vector2 position)
     {
