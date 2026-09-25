@@ -22,6 +22,6 @@ public class CameraZoomSystem : ModSystem
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
-        ZoomMultiplier = MathHelper.Lerp(ZoomMultiplier, TargetZoomMultiplier, 0.05f);
+        ZoomMultiplier = MathHelper.Lerp(ZoomMultiplier, TargetZoomMultiplier, 0.025f);
     }
 }
