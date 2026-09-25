@@ -73,6 +73,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
+        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2400;
     }
 
 

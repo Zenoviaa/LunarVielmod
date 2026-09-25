@@ -4,6 +4,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles;
@@ -31,6 +32,11 @@ public class VerliaBouncingMoonBoom : ModProjectile
 {
     public override string Texture => TextureRegistry.EmptyTexture;
     private ref float Timer => ref Projectile.ai[0];
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2048;
+    }
     public override void SetDefaults()
     {
         base.SetDefaults();

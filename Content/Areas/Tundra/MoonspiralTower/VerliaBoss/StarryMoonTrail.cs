@@ -1,7 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
@@ -41,14 +40,14 @@ public class StarryMoonTrail : ModProjectile
 
 
         float distanceToParent = Vector2.Distance(Parent.Center, Projectile.Center);
-        if(!Parent.active || distanceToParent > 64)
+        if (!Parent.active || distanceToParent > 64)
         {
             ShouldKill = 1;
         }
 
         if (Main.rand.NextBool(6))
         {
-           var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Vector2.Zero);
+            var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Vector2.Zero);
             sp.innerColor = Color.White;
             sp.outerColor = Color.Blue;
             sp.behindLayer = true;
@@ -73,12 +72,12 @@ public class StarryMoonTrail : ModProjectile
         StarMixShader laserShader = StarMixShader.Instance;
         laserShader.MaskTexture = TrailRegistry.Beamlight;
         laserShader.InnerTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarNoise");
-       // laserShader.t
+        // laserShader.t
         laserShader.InnerColor = Color.White;
         laserShader.OuterColor = Color.DarkBlue;
-        laserShader.Tiling = Vector2.One ;
+        laserShader.Tiling = Vector2.One;
         laserShader.Time = Main.GlobalTimeWrappedHourly * -0.5f;
-       
+
         TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor, GetTrailWidth, laserShader, Projectile.Size * 0.5f);
 
         BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
@@ -112,7 +111,7 @@ public class StarryMoonTrail : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedStarTrail, DrawLayer.BehindTiles); 
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedStarTrail, DrawLayer.BehindTiles);
         return false;
     }
 
