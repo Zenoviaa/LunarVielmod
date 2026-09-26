@@ -827,6 +827,7 @@ public class Verlia : ScarletBoss,
     }
     private void ChooseAttack()
     {
+        
         if (MultiplayerHelper.IsHost)
         {
             AIState state;

@@ -819,6 +819,11 @@ public static class SpritebatchDrawExtensions
 {
     public static void Begin(this SpriteBatch spriteBatch, SpritebatchParams spritebatchParams) => spritebatchParams.Begin(spriteBatch);
     public static SpritebatchContext Ctx(this SpriteBatch spriteBatch, SpritebatchParams requiredParameters) => new SpritebatchContext(spriteBatch, requiredParameters);
+
+    extension(Projectile projectile)
+    {
+        public SpritebatchDrawer Drawer => SpritebatchDrawer.FromProjectile(projectile);
+    }
 }
 
 public struct SpritebatchContext : IDisposable

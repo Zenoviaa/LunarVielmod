@@ -1,7 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Core;
+﻿using Stellamod.Core;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -10,6 +8,22 @@ namespace Stellamod.Helpers
 {
     public static class ProjectileHelper
     {
+        public static bool Bounce(Projectile projectile, Vector2 oldVelocity)
+        {
+            if (projectile.velocity.X != oldVelocity.X)
+            {
+                projectile.velocity.X = -oldVelocity.X;
+                return true;
+            }
+
+            if (projectile.velocity.Y != oldVelocity.Y)
+            {
+                projectile.velocity.Y = oldVelocity.Y;
+                return true;
+            }
+
+            return false;
+        }
         /// <summary>
         /// Short hand for checking if the projectile is owned by the local client
         /// </summary>
@@ -27,7 +41,7 @@ namespace Stellamod.Helpers
             {
                 Vector2 position = positions[i];
                 Vector2 previousPosition = positions[i - 1];
-     
+
                 if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, lineWidth, ref collisionPoint))
                     return true;
             }
