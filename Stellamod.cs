@@ -35,10 +35,7 @@ namespace Stellamod
     {
         public Stellamod()
         {
-#if DEBUG
             MusicAutoloadingEnabled = false;
-#endif
-            //     Music
         }
 
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
