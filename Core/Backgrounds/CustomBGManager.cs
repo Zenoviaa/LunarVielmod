@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;

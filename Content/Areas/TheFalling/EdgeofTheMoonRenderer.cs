@@ -461,7 +461,10 @@ public class EdgeofTheMoonBiome : ModBiome
     public override Color? BackgroundColor => base.BackgroundColor;
     public override bool IsBiomeActive(Player player)
     {
-        return player.Bottom.ToTileCoordinates().Y < 700;
+        var pct = 0.14f;
+        var y = (int)(pct * Main.maxTilesY);
+
+        return player.Bottom.ToTileCoordinates().Y < y;
     }
 
     public override void OnEnter(Player player)

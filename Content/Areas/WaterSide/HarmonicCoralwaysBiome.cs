@@ -108,6 +108,8 @@ public class HarmonicCoralwaysBiome : ModBiome,
         StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
         int heightOffset = 100;
         Rectangle biomeRect = new Rectangle(stellaWorld.CoralwaysLocation.X, stellaWorld.CoralwaysLocation.Y + heightOffset, 1000, 1800 - heightOffset);
+        if (biomeRect.X == 0)
+            return false;
         return biomeRect.Contains(player.Center.ToTileCoordinates());
     }
 
