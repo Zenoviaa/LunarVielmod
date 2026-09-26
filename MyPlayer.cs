@@ -9,6 +9,7 @@ using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Projectiles.Swords;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -392,100 +393,9 @@ namespace Stellamod
 
         public override void PostUpdate()
         {
-            /*
-            if (!_pressed2)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.K))
-                {
-                    _pressed2 = true;
-                }
-            } else if (_pressed2 && Keyboard.GetState().IsKeyUp(Keys.K))
-            {
-                _pressed2 = false;
-                int x = (int)Player.Center.X - 128;
-                int y = (int)Player.Center.Y;
-                NPC.NewNPC(Player.GetSource_FromThis(), x, y, ModContent.NPCType<Celestia>());
-
-            }*/
 
 
-            /*
-            if (Main.netMode != NetmodeID.Server)
-            {
-
-                if (!Sirestiastalk)
-                {
-
-                    DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                    //2. Create a new instance of your dialogue
-                    SirestiasBeginDialogue exampleDialogue = new SirestiasBeginDialogue();
-
-                    //3. Start it
-                    dialogueSystem.StartDialogue(exampleDialogue);
-
-                    Sirestiastalk = true;
-                }
-                if (NPC.downedPlantBoss && Sirestiastalk && !Zuitalk)
-                {
-
-                    DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                    //2. Create a new instance of your dialogue
-                    ZuiPlantDialogue exampleDialogue = new ZuiPlantDialogue();
-
-                    //3. Start it
-                    dialogueSystem.StartDialogue(exampleDialogue);
-
-                    Zuitalk = true;
-                }
-
-
-                if (!DreadMonOne && DownedBossSystem.downedDreadMonolith1)
-                {
-
-                    DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                    //2. Create a new instance of your dialogue
-                    DreadDialogue1 exampleDialogue = new DreadDialogue1();
-
-                    //3. Start it
-                    dialogueSystem.StartDialogue(exampleDialogue);
-
-                    DreadMonOne = true;
-                }
-
-                if (!DreadMonTwo && DownedBossSystem.downedDreadMonolith2)
-                {
-
-                    DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                    //2. Create a new instance of your dialogue
-                    DreadDialogue2 exampleDialogue = new DreadDialogue2();
-
-                    //3. Start it
-                    dialogueSystem.StartDialogue(exampleDialogue);
-
-                    DreadMonTwo = true;
-                }
-
-                if (!DreadMonThree && DownedBossSystem.downedDreadMonolith3)
-                {
-
-                    DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
-                    //2. Create a new instance of your dialogue
-                    DreadDialogue3 exampleDialogue = new DreadDialogue3();
-
-                    //3. Start it
-                    dialogueSystem.StartDialogue(exampleDialogue);
-
-                    DreadMonThree = true;
-                }
-            }*/
-
-
-
+     
             if (Aurorean >= 0.5f)
             {
                 AuroreanBool = true;
@@ -508,9 +418,8 @@ namespace Stellamod
                 Aurorean += 0.02f;
             }
 
-            Player player = Main.LocalPlayer;
-            if (!player.active)
-                return;
+
+            Player player = Player;
             MyPlayer CVA = player.GetModPlayer<MyPlayer>();
 
 

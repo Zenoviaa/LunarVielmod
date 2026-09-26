@@ -23,17 +23,8 @@ namespace Stellamod.Core.StructureSelector
             _saveUserInterface = new UserInterface();
             _userInterface = new UserInterface();
             selectorUIState = new StructureSelectorUIState();
-            selectorUIState.Activate();
-
             saveUIState = new StructureSaveUIState();
-            saveUIState.Activate();
-
             magicWandUIState = new MagicWandUIState();
-            magicWandUIState.Activate();
-
-
-            _userInterface.SetState(null);
-            _saveUserInterface.SetState(null);
         }
 
         public override void UpdateUI(GameTime gameTime)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Diagnostics;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -13,6 +14,7 @@ namespace Stellamod.Core.Skies
             base.PostUpdateMiscEffects();
             if (Main.netMode == NetmodeID.Server)
                 return;
+
 
             if (!SkyManager.Instance["CrystalMoon:CloudySky"].IsActive()
                 && Player.ZoneOverworldHeight || Player.ZoneSkyHeight || Player.ZoneUnderworldHeight)

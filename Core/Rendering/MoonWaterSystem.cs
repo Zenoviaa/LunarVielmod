@@ -8,6 +8,7 @@ using Stellamod.Core.Rendering.RTs;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Terraria;

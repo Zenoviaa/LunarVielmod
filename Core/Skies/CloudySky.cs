@@ -81,29 +81,12 @@ namespace Stellamod.Core.Skies
             }
         }
 
-        private void DrawGradient(SpriteBatch spriteBatch)
-        {
-            var texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds3");
-            var cloudTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap");
-            MiscShaderData eff = ShaderRegistry.GradientShader;
-            eff.Shader.Parameters["StartGradientColor"].SetValue(Color.Transparent.ToVector4());
-            eff.Shader.Parameters["EndGradientColor"].SetValue(Color.LightCyan.ToVector4() * Fogginess);
-            eff.Apply();
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
-
-            spriteBatch.Draw(texture.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White * 0.3f);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.BackgroundViewMatrix.TransformationMatrix);
-        }
 
         private Color CloudColor
         {
             get
             {
                 Color primaryColor = Color.White;
-
                 Color cloudColor = Color.Lerp(primaryColor, Color.Black, 0.5f);
                 if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneAegislavSurface)
                     cloudColor = Color.IndianRed;

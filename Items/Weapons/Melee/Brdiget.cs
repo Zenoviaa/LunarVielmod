@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Melee
             // Tooltip.SetDefault("Spinny Winny damage the binny");
 
         }
-
+        
 
         public override void SetDefaults()
         {
