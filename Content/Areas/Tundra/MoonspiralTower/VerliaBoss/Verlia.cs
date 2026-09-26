@@ -856,7 +856,8 @@ public class Verlia : ScarletBoss,
         {
             SwitchState(AIState.Desperation_Big_Moon);
         }
-  
+
+
     }
 
     private void Teleport(Vector2 pos)

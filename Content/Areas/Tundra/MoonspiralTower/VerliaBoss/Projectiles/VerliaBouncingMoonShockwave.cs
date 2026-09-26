@@ -73,7 +73,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2400;
+        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 9999;
     }
 
 
@@ -102,6 +102,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         {
             Projectile.hostile = false;
         }
+
         Timer++;
         if (Timer == 1)
         {
@@ -190,7 +191,8 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         sbDrawer.scale.Y += MathHelper.Lerp(8f, 0f, EasingFunction.InOutExpo(Timer / Time));
         sbDrawer.scale.Y *= MathHelper.Lerp(0.2f, 2f, EasingFunction.QuadraticBump(Timer / Time));
         sbDrawer.scale *= Strength;
-        sbDrawer.color *= 0.5f;
+        sbDrawer.color = Color.White;
+        sbDrawer.color *= 0.35f;
         sbDrawer.color.A = 0;
 
         int height = 16;
@@ -208,7 +210,8 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         sbDrawer.scale.Y += MathHelper.Lerp(4f, 0f, EasingFunction.InOutExpo(Timer / Time));
         sbDrawer.scale.Y *= MathHelper.Lerp(0.2f, 2f, EasingFunction.QuadraticBump(Timer / Time));
         sbDrawer.scale *= Strength;
-        sbDrawer.color *= 0.5f;
+        sbDrawer.color = Color.White;
+        sbDrawer.color *= 0.35f;
         sbDrawer.color.A = 0;
         sbDrawer.worldPosition.Y += height;
         Main.spriteBatch.Draw(sbDrawer);
@@ -222,6 +225,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         glowLineDrawer.scale.X *= MathHelper.Lerp(1f, 8f, EasingFunction.OutExpo(Timer / Time));
         glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.2f;
         glowLineDrawer.scale *= Strength;
+        glowLineDrawer.color = Color.White;
         glowLineDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
         glowLineDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowLineDrawer);
