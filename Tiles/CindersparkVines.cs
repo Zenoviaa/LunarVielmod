@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -61,37 +62,7 @@ public class CindersparkVines : ModTile
 
     public override void RandomUpdate(int i, int j)
     {
-        Tile tileBelow = Framing.GetTileSafely(i, j + 1);
-        if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile)
-        {
-            bool placeVine = false;
-            int yTest = j;
-            while (yTest > j - 10)
-            {
-                Tile testTile = Framing.GetTileSafely(i, yTest);
-                if (testTile.BottomSlope)
-                {
-                    break;
-                }
-                else if (!testTile.HasTile || testTile.TileType != ModContent.TileType<CindersparkDirt>())
-                {
-                    yTest--;
-                    continue;
-                }
-                placeVine = true;
-                break;
-            }
-            if (placeVine)
-            {
-                tileBelow.TileType = Type;
-                tileBelow.HasTile = true;
-                WorldGen.SquareTileFrame(i, j + 1, true);
-                if (Main.netMode == NetmodeID.Server)
-                {
-                    NetMessage.SendTileSquare(-1, i, j + 1, 3, TileChangeType.None);
-                }
-            }
-        }
+
     }
 
 

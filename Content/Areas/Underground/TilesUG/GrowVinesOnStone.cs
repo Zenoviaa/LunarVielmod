@@ -1,4 +1,5 @@
 ﻿using Stellamod.Tiles;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,9 +10,11 @@ public class GrowVinesOnStone : GlobalTile
 {
     public override void RandomUpdate(int i, int j, int type)
     {
+
         if (type == TileID.Stone)
         {
-            Tile tile = Framing.GetTileSafely(i, j);
+
+                Tile tile = Framing.GetTileSafely(i, j);
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
             //Tile tileAbove = Framing.GetTileSafely(i, j - 1);
 
@@ -42,6 +45,7 @@ public class GrowVinesOnStone : GlobalTile
                     }
                 }
             }
+
         }
     }
 }

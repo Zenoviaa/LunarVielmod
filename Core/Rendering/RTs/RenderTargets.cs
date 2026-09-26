@@ -10,6 +10,7 @@ namespace Stellamod.Core.Rendering.RTs;
 [Autoload(Side = ModSide.Client)]
 public class RenderTargets : ModSystem
 {
+    public static int TargetCounts;
     /// <summary>
     /// A render target that matches the screen size
     /// </summary>
@@ -164,6 +165,7 @@ public class RenderTargets : ModSystem
     private void Draw(On_Main.orig_Draw orig, Main self, GameTime gameTime)
     {
         orig(self, gameTime);
+        RenderTargets.TargetCounts = 0;
         if (RenderTargetHandle.InUseTargets.Count > 0)
             throw new Exception("A render target was not returned to its pool, did you forget to use it?");
     }

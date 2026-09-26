@@ -58,8 +58,8 @@ public class ReforgeUISystem : BaseUISystem
       
         inTimer = MathHelper.Clamp(inTimer, 0f, InterpolationTime);
 
-        float dist = Vector2.Distance(Main.LocalPlayer.position, _worldPos);
-        if (dist > 160)
+        float dist = Vector2.DistanceSquared(Main.LocalPlayer.position, _worldPos);
+        if (dist > 160 * 160)
         {
             CloseUI();
         }
@@ -73,18 +73,6 @@ public class ReforgeUISystem : BaseUISystem
         if (_userInterface?.CurrentState != null)
         {
             _userInterface.Update(gameTime);
-        }
-    }
-
-    public void ToggleUI()
-    {
-        if (_userInterface.CurrentState != null)
-        {
-            CloseUI();
-        }
-        else
-        {
-            OpenUI();
         }
     }
 

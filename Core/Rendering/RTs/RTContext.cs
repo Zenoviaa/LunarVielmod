@@ -8,6 +8,7 @@ public readonly record struct RTContext : IDisposable
     private readonly RenderTargetHandle _handle;
     public RTContext(RenderTargetHandle handle)
     {
+        RenderTargets.TargetCounts++;
         _handle = handle;
     }
 

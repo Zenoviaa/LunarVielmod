@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.Diagnostics;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -65,6 +66,7 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
         public override void RandomUpdate(int i, int j)
         {
             base.RandomUpdate(i, j);
+
             int[] tilesToChooseFrom = new int[]
             {
                 ModContent.WallType<SpringFlower>(),
@@ -95,6 +97,7 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
 
                 }
             }
+
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using Stellamod.Gores;
 using System;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -66,6 +67,7 @@ public class IlluriaVines : ModTile
 
     public override void RandomUpdate(int i, int j)
     {
+
         Tile tileBelow = Framing.GetTileSafely(i, j + 1);
         if (WorldGen.genRand.NextBool(16) && !tileBelow.HasTile)
         {
@@ -97,6 +99,7 @@ public class IlluriaVines : ModTile
                 }
             }
         }
+
     }
 
 

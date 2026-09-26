@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,7 +22,6 @@ namespace Stellamod.Common.BlackSystem
             base.OnModLoad();
             _userInterface = new UserInterface();
             _black = new BlackUIState();
-            _black.Activate();
         }
 
         public static void SetColor(Color tintColor, float alpha)
@@ -36,7 +36,6 @@ namespace Stellamod.Common.BlackSystem
 
         public override void UpdateUI(GameTime gameTime)
         {
-
             if (Alpha > 0)
             {
                 _black.ui.Color = ScreenTintColor * Alpha;

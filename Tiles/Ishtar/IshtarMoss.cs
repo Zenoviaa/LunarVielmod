@@ -24,6 +24,7 @@ namespace Stellamod.Tiles.Ishtar
         public override bool CanExplode(int i, int j) => false;
         public override void RandomUpdate(int i, int j)
         {
+         
             Tile tile = Framing.GetTileSafely(i, j);
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
             Tile tileAbove = Framing.GetTileSafely(i, j - 1);

@@ -1,5 +1,6 @@
 using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.WorldG;
+using System.Diagnostics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -61,11 +62,6 @@ public class AbyssalCoarseDirt : ModTile
     {
 
         base.DrawEffects(i, j, spriteBatch, ref drawData);
-        if (BellFlowerSystem.WhisperingAlpha > 0)
-        {
-            //            Main.instance.TilesRenderer.AddSpecialLegacyPoint(new Point(i, j));
-        }
-
     }
     public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
     {
@@ -79,6 +75,11 @@ public class AbyssalCoarseDirt : ModTile
     public override void RandomUpdate(int i, int j)
     {
 
+        if (!Main.rand.NextBool(96))
+            return;
+        if (!MultiplayerHelper.IsHost)
+            return;
+
         Tile tile = Framing.GetTileSafely(i, j);
         Tile tileBelow = Framing.GetTileSafely(i, j + 1);
         int[] pool = new int[]
@@ -89,11 +90,6 @@ public class AbyssalCoarseDirt : ModTile
             ModContent.TileType<TealBulb2>(),
             ModContent.TileType<TealBulb3>()
         };
-
-        if (!Main.rand.NextBool(32))
-            return;
-        if (!MultiplayerHelper.IsHost)
-            return;
 
         //Tile tileAbove = Framing.GetTileSafely(i, j - 1);
         if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass

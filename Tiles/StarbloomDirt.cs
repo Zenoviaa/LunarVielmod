@@ -26,31 +26,6 @@ namespace Stellamod.Tiles
 
         public override void RandomUpdate(int i, int j)
         {
-            Tile tile = Framing.GetTileSafely(i, j);
-            Tile tileBelow = Framing.GetTileSafely(i, j + 1);
-            Tile tileAbove = Framing.GetTileSafely(i, j - 1);
-
-
-
-
-
-            if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
-            {
-                if (!tile.BottomSlope)
-                {
-                    tileBelow.TileType = (ushort)ModContent.TileType<CarianVines>();
-                    tileBelow.HasTile = true;
-                    WorldGen.SquareTileFrame(i, j + 1, true);
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        NetMessage.SendTileSquare(-1, i, j + 1, 3, TileChangeType.None);
-                    }
-                }
-            }
-
-            //try place foliage
-
-
 
         }
 
