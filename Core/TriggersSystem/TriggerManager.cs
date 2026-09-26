@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -174,6 +175,7 @@ namespace Stellamod.Core.TriggersSystem
         {
             base.PostUpdateEverything();
             debugTriggers = Main.LocalPlayer.HeldItem.type == ModContent.ItemType<TriggerWand>() || Main.LocalPlayer.HeldItem.type == ModContent.ItemType<TriggerEraser>();
+
             foreach (var kvp in _triggerIndex)
             {
                 Trigger trigger = kvp.Value;
@@ -182,6 +184,7 @@ namespace Stellamod.Core.TriggersSystem
                     trigger.Invoke();
                 }
             }
+
         }
 
         public void RemoveTrigger(Point point)

@@ -1,5 +1,4 @@
 ﻿using ReLogic.Content;
-using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.IO;
@@ -72,17 +71,14 @@ public class CharacterListUIOverhaul : ModSystem
     {
         if (ModContent.GetInstance<MainMenuOverhaul>().IsMenuActive && Main.gameMenu)
         {
-            typeof(UIScrollbar).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic)
-                .SetValue(self, _scrollbarTexture);
+            self._texture = _scrollbarTexture;
         }
-
 
         orig(self, spriteBatch);
 
         if (ModContent.GetInstance<MainMenuOverhaul>().IsMenuActive && Main.gameMenu)
         {
-            typeof(UIScrollbar).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic)
-                .SetValue(self, ModContent.Request<Texture2D>("Terraria/Images/UI/Scrollbar"));
+            self._texture = ModContent.Request<Texture2D>("Terraria/Images/UI/Scrollbar");
         }
     }
 
@@ -91,28 +87,15 @@ public class CharacterListUIOverhaul : ModSystem
         orig(self);
         if (!ModContent.GetInstance<MainMenuOverhaul>().IsMenuActive)
             return;
-        typeof(UIWorldListItem).GetField("_buttonSeedTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonSeedTexture);
-        typeof(UIWorldListItem).GetField("_innerPanelTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _newInnerPanelTextureAsset);
-        typeof(UIWorldListItem).GetField("_buttonDeleteTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonDeleteTexture);
-        typeof(UIWorldListItem).GetField("_buttonRenameTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonRenameTexture);
-        typeof(UIWorldListItem).GetField("_buttonPlayTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonPlayTexture);
-        typeof(UIWorldListItem).GetField("_buttonPlayTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonPlayTexture);
-        typeof(UIWorldListItem).GetField("_buttonFavoriteInactiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonFavoriteInactiveTexture);
-        typeof(UIWorldListItem).GetField("_buttonFavoriteActiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonFavoriteActiveTexture);
-        typeof(UIWorldListItem).GetField("_buttonFavoriteActiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonFavoriteActiveTexture);
-        typeof(UIWorldListItem).GetField("_buttonCloudInactiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-           .SetValue(self, _buttonCloudInactiveTexture);
-        typeof(UIWorldListItem).GetField("_buttonCloudActiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-          .SetValue(self, _buttonCloudActiveTexture);
+        self._buttonSeedTexture = _buttonSeedTexture;
+        self._innerPanelTexture = _newInnerPanelTextureAsset;
+        self._buttonDeleteTexture = _buttonDeleteTexture;
+        self._buttonRenameTexture = _buttonRenameTexture;
+        self._buttonPlayTexture = _buttonPlayTexture;
+        self._buttonFavoriteInactiveTexture = _buttonFavoriteInactiveTexture;
+        self._buttonFavoriteActiveTexture = _buttonFavoriteActiveTexture;
+        self._buttonCloudInactiveTexture = _buttonCloudInactiveTexture;
+        self._buttonCloudActiveTexture = _buttonCloudActiveTexture;
     }
 
     private void ReplaceAsset(On_UICharacterListItem.orig_InitializeTmlFields orig, UICharacterListItem self, PlayerFileData data)
@@ -121,36 +104,13 @@ public class CharacterListUIOverhaul : ModSystem
         if (!ModContent.GetInstance<MainMenuOverhaul>().IsMenuActive)
             return;
 
-        typeof(UICharacterListItem).GetField("_innerPanelTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _newInnerPanelTextureAsset);
-        typeof(UICharacterListItem).GetField("_buttonDeleteTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonDeleteTexture);
-        typeof(UICharacterListItem).GetField("_buttonRenameTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonRenameTexture);
-        typeof(UICharacterListItem).GetField("_buttonPlayTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonPlayTexture);
-        typeof(UICharacterListItem).GetField("_buttonPlayTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonPlayTexture);
-        typeof(UICharacterListItem).GetField("_buttonFavoriteInactiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonFavoriteInactiveTexture);
-        typeof(UICharacterListItem).GetField("_buttonFavoriteActiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonFavoriteActiveTexture);
-        typeof(UICharacterListItem).GetField("_buttonFavoriteActiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(self, _buttonFavoriteActiveTexture);
-        typeof(UICharacterListItem).GetField("_buttonCloudInactiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-           .SetValue(self, _buttonCloudInactiveTexture);
-        typeof(UICharacterListItem).GetField("_buttonCloudActiveTexture", BindingFlags.Instance | BindingFlags.NonPublic)
-          .SetValue(self, _buttonCloudActiveTexture);
+        self._innerPanelTexture = _newInnerPanelTextureAsset;
+        self._buttonDeleteTexture = _buttonDeleteTexture;
+        self._buttonRenameTexture = _buttonRenameTexture;
+        self._buttonPlayTexture = _buttonPlayTexture;
+        self._buttonFavoriteInactiveTexture = _buttonFavoriteInactiveTexture;
+        self._buttonFavoriteActiveTexture = _buttonFavoriteActiveTexture;
+        self._buttonCloudInactiveTexture = _buttonCloudInactiveTexture;
+        self._buttonCloudActiveTexture = _buttonCloudActiveTexture;
     }
-
-    private void UnloadTMLCommon()
-    {
-        //    UICommon.ButtonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed");
-        //       UICommon.ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded");
-        //   UICommon.ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError");
-        //       UICommon.ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation");
-    }
-
-
-
 }

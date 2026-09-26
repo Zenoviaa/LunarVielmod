@@ -3,6 +3,7 @@ using Stellamod.Common.ConsoleMenu;
 using Stellamod.Core.ZTileSystem;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;

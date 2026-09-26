@@ -21,8 +21,6 @@ namespace Stellamod.Core.TitleSystem
             base.OnModLoad();
             _userInterface = new UserInterface();
             titleUIState = new TitleCardUIState();
-            titleUIState.Activate();
-
         }
 
         public override void UpdateUI(GameTime gameTime)
@@ -75,6 +73,7 @@ namespace Stellamod.Core.TitleSystem
                     {
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
+                
                             using(Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with { samplerState = SamplerState.AnisotropicClamp }))
                             {
                                 _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
