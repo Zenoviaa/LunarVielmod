@@ -1,15 +1,10 @@
 ﻿using ReLogic.Content;
-using Stellamod.Common.UI;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Rendering.RTs;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.UI;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -94,12 +89,12 @@ namespace Stellamod.Common.WeaponUpgrade.UI
                 _inTimer++;
 
             }
-          
+
             _inTimer = MathHelper.Clamp(_inTimer, 0f, easeInTime);
             _inRatio = _inTimer / easeInTime;
 
 
-            if(!_isClosing && _userInterface.CurrentState != null)
+            if (!_isClosing && _userInterface.CurrentState != null)
             {
                 float dist = Vector2.Distance(Main.LocalPlayer.position, _worldPos);
                 if (dist > 160)
@@ -203,7 +198,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 
                             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
 
-     
+
                             Vector2 offset = Vector2.Lerp(-Vector2.UnitX * 100, Vector2.Zero, EasingFunction.OutCirc(_inRatio));
                             Color color = Color.Lerp(Color.Transparent, Color.White, _inRatio);
                             spriteBatch.Draw(uiTarget, offset + uiTarget.Size() * 0.5f, null, color, 0, uiTarget.Size() * 0.5f, MathHelper.Lerp(0f, 1f, EasingFunction.OutCirc(_inRatio)), SpriteEffects.None, 0);

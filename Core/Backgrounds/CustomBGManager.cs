@@ -14,7 +14,9 @@ public class CustomBGGlobalWall : GlobalWall
     public override void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
     {
 
+
         float lightStrength = CustomBGGlobalLightPlayer.LightStrength;
+        
         if (lightStrength > 0)
         {
             r = MathHelper.Clamp(r + lightStrength, 0, 1);

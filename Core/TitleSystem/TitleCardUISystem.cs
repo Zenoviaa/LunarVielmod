@@ -43,9 +43,9 @@ namespace Stellamod.Core.TitleSystem
         public void OpenUI(string text, float duration)
         {
             //Set State
-
-            titleUIState.titleCardUI.ShowWave(text, duration);
             _userInterface.SetState(titleUIState);
+            titleUIState.titleCardUI.ShowWave(text, duration);
+          
         }
 
         public void CloseUI()
