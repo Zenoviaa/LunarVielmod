@@ -35,6 +35,25 @@ public partial class Zigguratra : ScarletBoss
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+
+    PatternManager<AIState> AttackPattern
+    {
+        get
+        {
+            if(field == null)
+            {
+                field = new();
+                field.AddPattern(AIState.Axe_Crash, 1f);
+            }
+
+            return field;
+        }
+    }
+
+    private const string ANIM_AXE_WALK = "AxeWalk";
+    private const string ANIM_AXE_READY = "AxeReady";
+    private const string ANIM_AXE_SLAM = "AxeSlam";
+
     private ref float AttackCycle => ref NPC.ai[2];
     private ref float AttackCounter => ref NPC.ai[3];
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -67,6 +86,13 @@ public partial class Zigguratra : ScarletBoss
     public override void AI()
     {
         base.AI();
+        if (!NPC.HasValidTarget)
+        {
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget && State != AIState.Despawn)
+                SwitchState(AIState.Despawn);
+        }
+
         _outliner.SetDefaults();
         _version2 = false;
         switch (State)
@@ -102,6 +128,22 @@ public partial class Zigguratra : ScarletBoss
         }
         _outliner.Update();
     }
+    void ChooseAttack()
+    {
+
+    }
+
+    private void SwitchState(AIState state)
+    {
+        if (MultiplayerHelper.IsHost)
+        {
+            Timer = 0;
+            AttackCycle = 0;
+            AttackCounter = 0;
+            State = state;
+            NPC.netUpdate = true;
+        }
+    }
     private void AI_Spawn()
     {
 
@@ -109,7 +151,11 @@ public partial class Zigguratra : ScarletBoss
     
     private void AI_Despawn()
     {
-
+        Timer++;
+        if (Timer >= 90)
+        {
+            NPC.active = false;
+        }
     }
     
     private void AI_Idle()
@@ -127,10 +173,7 @@ public partial class Zigguratra : ScarletBoss
         base.HitEffect(hit);
     }
 
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        return base.PreDraw(spriteBatch, screenPos, drawColor);
-    }
+
 
     public override void OnKill()
     {
