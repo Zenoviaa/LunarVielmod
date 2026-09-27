@@ -129,7 +129,7 @@ public class ThornyBounceBall : ModProjectile,
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        var shootSound = AssetReferences.Assets.Sounds.MorrowSalfi.Asset with { PitchVariance = 0.4f };
+        var shootSound = AssetReferences.Assets.Sounds.NaturalCast.Asset with { PitchVariance = 0.4f };
         SoundEngine.PlaySound(shootSound, Projectile.position);
         var goreType = ModContent.GoreType<GreenFallenLeaf>();
         for(var f = 0;f < 18; f++)
