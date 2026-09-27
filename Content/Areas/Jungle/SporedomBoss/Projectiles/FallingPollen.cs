@@ -103,7 +103,17 @@ public class FallingPollen : ModProjectile
         drawer.VerticalFrame(1, 2);
         drawer.color = Color.Gold * ExtraMath.Osc(0.5f, 1f, speed: 2, Projectile.whoAmI) * 0.3f;
         Main.spriteBatch.Draw(drawer);
+        OutlineRenderer.Queue(DrawOutline);
         return false;
+    }
+
+    private void DrawOutline(SpriteBatch sb)
+    {
+        var drawer = Projectile.Drawer;
+        drawer.scale *= RandScale * MathHelper.Lerp(1f, 0f, EasingFunction.InQuad(LifeRatio));
+        drawer.scale *= OutScale;
+        drawer.color = Color.Red;
+        Main.spriteBatch.Draw(drawer);
     }
 
     public override void OnKill(int timeLeft)

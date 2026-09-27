@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Jungle.SporedomBoss.Gores;
 using Stellamod.Core;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -134,39 +135,53 @@ public class CorePellet : ModProjectile
         base.OnKill(timeLeft);
         if (this.OwnedByLocalClient())
         {
-            for(float f = 0; f < 14; f++)
+            for(float f = 0; f < 20; f++)
             {
                 var firer = ProjFirer.From<FallingPollen>(Projectile);
-                firer.velocity.X = Main.rand.NextFloat(-16, 16);
+                firer.velocity.X = Main.rand.NextFloat(-54, 54);
                 firer.velocity.Y -= 12;
                 firer.New();
             }
         }
 
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.Gold, Color.DarkOrange, 25, 256);
         FXUtil.GlowCircleBoom(Projectile.Center, Color.Gold, Color.Gold, Color.DarkOrange, duration: 0.23f, baseSize: 0.20f);
         for (var f = 0; f < 16; f++)
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(24, 24),
-                velocity = -Projectile.velocity.RotatedByRandom(0.4f) * Main.rand.NextFloat(0.5f, 1f),
+                velocity = Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.5f, 1f),
                 innerColor = PollenLightColor.ToVector4(),
                 outerColor = PollenDarkColor.ToVector4(),
-                scale = new Vector2(Main.rand.NextFloat(0.5f, 1f)),
+                scale = new Vector2(Main.rand.NextFloat(0.5f, 3f)),
                 timeLeft = 120
             });
         }
-
-        for (var f = 0; f < 16; f++)
+        var goreType = ModContent.GoreType<GreenFallenLeaf>();
+        for (var f = 0; f < 12; f++)
+        {
+            var vel = Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.6f, 1f);
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            var gore = Gore.NewGore(pos, vel, goreType, Main.rand.NextFloat(0.7f, 1f));
+        }
+        goreType = ModContent.GoreType<WhiteFallenPetal>();
+        for (var f = 0; f < 12; f++)
+        {
+            var vel = Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.6f, 1f);
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            var gore = Gore.NewGore(pos, vel, goreType, Main.rand.NextFloat(0.7f, 1f));
+        }
+        for (var f = 0; f < 32; f++)
         {
             var dp = DustParticle.Spawn(Projectile.Center,
-                -Projectile.velocity.RotatedByRandom(0.4f) * Main.rand.NextFloat(0.5f, 1f),
+                Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.5f, 1f),
                 DustParticleSpawnParams.Default with
                 {
                     innerColor = PollenLightColor,
                     outerColor = PollenDarkColor,
                     gravity = 0.2f,
-                    scaleRange = new Vector2(0.3f, 0.7f)
+                    scaleRange = new Vector2(0.3f, 2f)
                 });
             dp.dampening = 0.05f;
         }

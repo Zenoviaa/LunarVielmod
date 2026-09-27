@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Areas.Jungle.SporedomBoss.Projectiles;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Jungle.SporedomBoss.Gores;
+using Stellamod.Content.Areas.Jungle.SporedomBoss.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
@@ -74,7 +76,7 @@ public class Sporedom : ScarletBoss,
         NPC.height = 64;
         NPC.damage = 90;
         NPC.defense = 24;
-        NPC.lifeMax = 8000;
+        NPC.lifeMax = 4000;
         NPC.knockBackResist = 0f;
 
         NPC.boss = true;
@@ -152,7 +154,6 @@ public class Sporedom : ScarletBoss,
     {
         var pattern = PatternManager.NextPattern();
         SwitchState(pattern);
-        SwitchState(AIState.SproutBoom);
     }
 
     private void AI_Spawn()
@@ -163,9 +164,120 @@ public class Sporedom : ScarletBoss,
             SwitchState(AIState.Idle);
         }
     }
+    private void DeathEffect()
+    {
+        PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.Gold, Color.DarkOrange, 25, 256);
+        FXUtil.GlowCircleBoom(NPC.Center, Color.Gold, Color.Gold, Color.DarkOrange, duration: 0.23f, baseSize: 0.20f);
+        for (var f = 0; f < 16; f++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = NPC.Center + Main.rand.NextVector2Circular(24, 24),
+                velocity = Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.5f, 1f),
+                innerColor = PollenLightColor.ToVector4(),
+                outerColor = PollenDarkColor.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.5f, 3f)),
+                timeLeft = 120
+            });
+        }
+        var goreType = ModContent.GoreType<GreenFallenLeaf>();
+        for (var f = 0; f < 12; f++)
+        {
+            var vel = Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.6f, 1f);
+            var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
+            var gore = Gore.NewGore(pos, vel, goreType, Main.rand.NextFloat(0.7f, 1f));
+        }
+        goreType = ModContent.GoreType<WhiteFallenPetal>();
+        for (var f = 0; f < 12; f++)
+        {
+            var vel = Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.6f, 1f);
+            var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
+            var gore = Gore.NewGore(pos, vel, goreType, Main.rand.NextFloat(0.7f, 1f));
+        }
+        for (var f = 0; f < 32; f++)
+        {
+            var dp = DustParticle.Spawn(NPC.Center,
+                Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.5f, 1f),
+                DustParticleSpawnParams.Default with
+                {
+                    innerColor = PollenLightColor,
+                    outerColor = PollenDarkColor,
+                    gravity = 0.2f,
+                    scaleRange = new Vector2(0.3f, 2f)
+                });
+            dp.dampening = 0.05f;
+        }
+        var explodeSound = AssetReferences.Assets.Sounds.WetDeath.Asset with { PitchVariance = 0.8f };
+        SoundEngine.PlaySound(explodeSound, NPC.position);
+    }
     private void AI_Death()
     {
+        Timer++;
+        CameraTargetSystem.AddTarget(NPC.Center);
+        CameraTargetSystem.SetLingerTime(120);
 
+        if (Timer % 4 == 0)
+        {
+            float range = Main.rand.NextFloat(128, 256);
+            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+            Vector2 vel = (NPC.Center - pos);
+            vel *= 0.1f;
+            FXUtil.GlowStretch(pos, vel);
+        }
+
+        if (Timer % 4 == 0)
+        {
+            float range = Main.rand.NextFloat(252, 400);
+            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+            Vector2 vel = (NPC.Center - pos);
+            vel *= 0.1f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.OuterGlowColor = Color.Lerp(Color.White, Color.Gold, Main.rand.NextFloat(0f, 1f));
+            fx.VectorScale *= 0.5f;
+        }
+
+        if (Timer >= 120)
+        {
+            var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Gold, Color.DarkOrange, duration: 45, baseSize: 0.24f);
+            fx.Scale *= 1.5f;
+
+            var fx2 = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Gold, Color.DarkOrange, duration: 45, baseSize: 0.18f);
+            fx2.Scale *= 1.5f;
+            for (float f = 0; f < 32; f++)
+            {
+                var d = DustParticle.Spawn(NPC.Center, Main.rand.NextVector2Circular(24, 24));
+                d.outerColor = Color.Black;
+                d.innerColor = Color.Gold;
+                d.Scale *= 2.1f;
+                d.dampening = 0.05f;
+                d.noTileCollide = true;
+                d.gravity = 0;
+            }
+            DeathEffect();
+            ShakeScreenPosition.Shake = 8;
+            FXUtil.ShakeCamera(NPC.Center, 1024, 4);
+            if (Main.netMode != NetmodeID.Server)
+            {
+                int headGore = Mod.Find<ModGore>($"{Name}_Gore_0").Type;
+                int legGore = Mod.Find<ModGore>($"{Name}_Gore_1").Type;
+                int legGore2 = Mod.Find<ModGore>($"{Name}_Gore_2").Type;
+                int legGore3 = Mod.Find<ModGore>($"{Name}_Gore_3").Type;
+
+                // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(-16, 34), NPC.velocity, legGore);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(16, 34), NPC.velocity, legGore2);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, -8), NPC.velocity, legGore3);
+            }
+            SoundStyle roarSound = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode") with { PitchVariance = 0.3f };
+            SoundEngine.PlaySound(roarSound, MyTarget.Center);
+            NPC.Kill();
+        }
+
+        if (Timer >= 180)
+        {
+            NPC.Kill();
+        }
     }
     private void AI_Idle()
     {
@@ -189,7 +301,7 @@ public class Sporedom : ScarletBoss,
 
     private void SpitEffect()
     {
-        var hitSound = AssetReferences.Assets.Sounds.Nature.PollenSpit.Asset with { PitchVariance = 0.7f };
+        var hitSound = AssetReferences.Assets.Sounds.Nature.PollenSpit.Asset with { PitchVariance = 1f };
         SoundEngine.PlaySound(hitSound, NPC.position);
         var spitPos = NPC.Center;
         spitPos.Y -= 32;
@@ -262,6 +374,7 @@ public class Sporedom : ScarletBoss,
                     {
                         SpitEffect();
                     }
+                    _outliner.attacking = true;
                     if (Timer == 4 && MultiplayerHelper.IsHost)
                     {
                         var baseFirer = ProjFirer.From<PollenSpit>(NPC);
@@ -426,7 +539,8 @@ public class Sporedom : ScarletBoss,
 
             case 1:
                 {
-                    if(Timer == 4)
+                    _outliner.attacking = true;
+                    if (Timer == 4)
                     {
                         SpitEffect();
                     }
@@ -469,7 +583,7 @@ public class Sporedom : ScarletBoss,
                 break;
             case 3:
                 {
-
+                    _outliner.attacking = true;
                     if (Timer == 4)
                     {
                         this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
