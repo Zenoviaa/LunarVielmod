@@ -53,8 +53,12 @@ public class PollenSpitRenderer : ModSystem
             Texture = noiseTexture
         };
 
-        pollenMixPass.Parameters.darkColor = new Color(242, 92, 0).ToVector4();
-        pollenMixPass.Parameters.lightColor = new Color(255, 189, 162).ToVector4();
+        var darkColor = new Color(242, 92, 0);
+        var lightColor = new Color(255, 189, 162);
+        darkColor = Color.Lerp(darkColor, Color.Black, 0.5f);
+        lightColor = Color.Lerp(lightColor, Color.Gold, 0.9f);
+        pollenMixPass.Parameters.darkColor = darkColor.ToVector4();
+        pollenMixPass.Parameters.lightColor = lightColor.ToVector4();
         pollenMixPass.Parameters.spriteSize = maskTarget.Target.Size();
         pollenMixPass.Parameters.noiseTexelSize = noiseTexture.GetTexelSize();
         pollenMixPass.Apply();

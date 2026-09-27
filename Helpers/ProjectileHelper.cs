@@ -18,7 +18,7 @@ namespace Stellamod.Helpers
 
             if (projectile.velocity.Y != oldVelocity.Y)
             {
-                projectile.velocity.Y = oldVelocity.Y;
+                projectile.velocity.Y = -oldVelocity.Y;
                 return true;
             }
 

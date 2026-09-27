@@ -1,17 +1,22 @@
-﻿using Stellamod.Core;
+﻿using Stellamod.Content.Areas.Jungle.SporedomBoss.Projectiles;
+using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Pixelation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Jungle.SporedomBoss;
 
-public class Sporedom : ScarletBoss
+public class Sporedom : ScarletBoss,
+    IDrawToRenderTarget
 {
     private enum AIState
     {
@@ -25,6 +30,7 @@ public class Sporedom : ScarletBoss
     }
 
     private bool _contactDamage;
+    private Vector2 _squishScale;
     private Outliner _outliner;
     private ref float Timer => ref NPC.ai[0];
     private AIState State
@@ -33,7 +39,10 @@ public class Sporedom : ScarletBoss
         set => NPC.ai[1] = (float)value;
     }
     private ref float AttackCycle => ref NPC.ai[2];
-
+    private ref float AttackCounter => ref NPC.ai[3];
+    private float IdleTime => 60;
+    private float BulbTime => 50;
+    private float ShootTime => 30;
     private PatternManager<AIState> PatternManager
     {
         get
@@ -48,6 +57,12 @@ public class Sporedom : ScarletBoss
             return field;
         }
     }
+    private const string ANIM_IDLE = "Idle";
+    private const string ANIM_BULB = "Bulb";
+    private const string ANIM_SHOOT = "Shoot";
+
+    private int DamagePollenSpit => 20;
+    private int DamageThornyBounceBall => 25;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -58,21 +73,22 @@ public class Sporedom : ScarletBoss
     {
         base.SetDefaults();
         NPC.width = 128;
-        NPC.height = 128;
+        NPC.height = 64;
         NPC.damage = 90;
         NPC.defense = 24;
         NPC.lifeMax = 8000;
-
         NPC.knockBackResist = 0f;
-        NPC.boss = true;
-        NPC.noGravity = true;
-        NPC.noTileCollide = true;
-        NPC.npcSlots = 30f;
-        NPC.behindTiles = true;
 
+        NPC.boss = true;
+        NPC.npcSlots = 30f;
         Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ViciousFoe");
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
+    }
+
+    public override bool AllowNameplateToBeShown()
+    {
+        return State != AIState.Despawn && State != AIState.Spawn && State != AIState.Death;
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -83,8 +99,15 @@ public class Sporedom : ScarletBoss
     public override void AI()
     {
         base.AI();
+        if (!NPC.HasValidTarget)
+        {
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget && State != AIState.Despawn)
+                SwitchState(AIState.Despawn);
+        }
         _outliner.SetDefaults();
         _contactDamage = false;
+        _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
         switch (State)
         {
             case AIState.Spawn:
@@ -95,6 +118,9 @@ public class Sporedom : ScarletBoss
                 break;
             case AIState.Despawn:
                 AI_Despawn();
+                break;
+            case AIState.Death:
+                AI_Death();
                 break;
             case AIState.BigSpit:
                 AI_BigSpit();
@@ -109,7 +135,7 @@ public class Sporedom : ScarletBoss
         if (_contactDamage)
             _outliner.attacking = true;
         _outliner.Update();
-
+        this.SetDrawOrigin(new Vector2(53, 86));
     }
 
     private void SwitchState(AIState state)
@@ -118,6 +144,7 @@ public class Sporedom : ScarletBoss
         {
             Timer = 0;
             AttackCycle = 0;
+            AttackCounter = 0;
             State = state;
             NPC.netUpdate = true;
         }
@@ -127,31 +154,226 @@ public class Sporedom : ScarletBoss
     {
         var pattern = PatternManager.NextPattern();
         SwitchState(pattern);
+        SwitchState(AIState.BigSpit);
     }
 
     private void AI_Spawn()
+    {
+        Timer++;
+        if(Timer >= 60)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+    private void AI_Death()
     {
 
     }
     private void AI_Idle()
     {
-
+        Timer++;
+        if(Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
+        if(Timer >= IdleTime)
+        {
+            ChooseAttack();
+        }
     }
+    
     private void AI_Despawn()
     {
-
+        Timer++;
+        if (Timer >= 60)
+            NPC.active = false;
     }
+
     private void AI_BigSpit()
     {
+        OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _outliner.warning = true;
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    NPC.velocity.X *= 0.96f;
+                    _squishScale = Vector2.Lerp(_squishScale, new Vector2(1.1f, 0.9f), EasingFunction.OutSine(Timer / BulbTime));
+                    this.AseAnimator.PlayAnimation(ANIM_BULB, AnimationParams.NoLooping);
+                    if (Timer >= BulbTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                    if(AttackCounter > 0)
+                    {
+                        if (Timer >= BulbTime * 0.66f)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                    }
+                }
 
+                break;
+
+            case 1:
+                {
+
+                    if(Timer == 4)
+                    {
+                        var hitSound = AssetReferences.Assets.Sounds.Nature.PollenSpit.Asset with { PitchVariance = 0.7f };
+                        SoundEngine.PlaySound(hitSound, NPC.position);
+                    }
+                    if (Timer == 4 && MultiplayerHelper.IsHost)
+                    {
+                        var baseFirer = ProjFirer.From<PollenSpit>(NPC);
+                        for (var i = 0; i < 8; i++)
+                        {
+                            var firer = baseFirer;
+                            var dirToTarget = NPC.XDirectionToTarget;
+
+                            firer.velocity = -Vector2.UnitY * 15;
+                            firer.velocity = firer.velocity.RotatedByRandom(0.8f);
+                            firer.velocity.X += dirToTarget * 5;
+                            firer.position += new Vector2(Main.rand.NextFloat(-24, 24), Main.rand.NextFloat(-48, 0));
+                            firer.damage = DamagePollenSpit;
+                            firer.knockback = 1;
+                            firer.New();
+                        }
+                        for (var i = 0; i < 5; i++)
+                        {
+                            var firer = baseFirer;
+                            var dirToTarget = NPC.XDirectionToTarget;
+
+                            firer.velocity = -Vector2.UnitY * 12;
+                            firer.velocity = firer.velocity.RotatedByRandom(0.8f);
+                            firer.velocity.X += dirToTarget * 3;
+                            firer.position += new Vector2(Main.rand.NextFloat(-24, 24), Main.rand.NextFloat(-48, 0));
+                            firer.damage = DamagePollenSpit;
+                            firer.knockback = 1;
+                            firer.New();
+                        }
+                    }
+                    _squishScale = Vector2.Lerp(new Vector2(1f, 1.1f), Vector2.One, EasingFunction.InSine(Timer / BulbTime));
+                    this.AseAnimator.PlayAnimation(ANIM_SHOOT, AnimationParams.NoLooping);
+                    if (Timer >= ShootTime)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if (AttackCounter >= 5)
+                        {
+                            AttackCycle++;
+                        }
+                        else
+                        {
+                            AttackCycle = 0;
+                        }
+                    }
+                }
+                break;
+
+            case 2:
+                {
+                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
+                    if (Timer >= 30)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
     }
     private void AI_BouncingBalls()
     {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _outliner.warning = true;
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    NPC.velocity.X *= 0.96f;
+                    _squishScale = Vector2.Lerp(_squishScale, new Vector2(1.1f, 0.9f), EasingFunction.OutSine(Timer / BulbTime));
+                    this.AseAnimator.PlayAnimation(ANIM_BULB, AnimationParams.NoLooping);
+                    if (Timer >= BulbTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
 
+                break;
+
+            case 1:
+                {
+                    if (Timer == 4 && MultiplayerHelper.IsHost)
+                    {
+                        var firer = ProjFirer.From<ThornyBounceBall>(NPC);
+                        firer.velocity = -Vector2.UnitY * 15;
+                        if(AttackCounter == 1)
+                        {
+                            firer.velocity = -Vector2.UnitY * 10;
+                        }
+                        firer.damage = DamageThornyBounceBall;
+                        firer.knockback = 1;
+                        firer.New();
+                    }
+                    _squishScale = Vector2.Lerp(new Vector2(1f, 1.1f), Vector2.One, EasingFunction.InSine(Timer / BulbTime));
+                    this.AseAnimator.PlayAnimation(ANIM_SHOOT, AnimationParams.NoLooping);
+                    if(Timer >= ShootTime)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if(AttackCounter >= 2)
+                        {
+                            AttackCycle++;
+                        }
+                        else
+                        {
+                            AttackCycle = 0;
+                        }
+                    }
+                }
+                break;
+
+            case 2:
+                {
+                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
+                    if(Timer >= 30)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
     }
     private void AI_SproutBoom()
     {
 
+    }
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        NPC.DrawAnimator(spriteBatch, drawColor);
+        return false;
+    }
+
+    public void DrawToRenderTargets()
+    {
+        OutlineRenderer.Queue((SpriteBatch sb) => NPC.DrawAnimator(sb, _outliner.outlineColor));
+    }
+
+    public override void OnKill()
+    {
+        base.OnKill();
     }
     public override void HitEffect(NPC.HitInfo hit)
     {
@@ -165,5 +387,7 @@ public class Sporedom : ScarletBoss
             SwitchState(AIState.Death);
         }
     }
+
+
 }
 

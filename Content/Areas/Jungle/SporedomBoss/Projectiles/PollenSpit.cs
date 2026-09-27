@@ -1,7 +1,9 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Core;
 using Stellamod.Core.Pixelation;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,6 +15,9 @@ public class PollenSpit : ModProjectile,
     private float MaxFallSpeed => 15;
     private float Gravity => 0.3f;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float RandScale => ref Projectile.ai[1];
+    private Color PollenLightColor => Color.Lerp(Color.Gold, Color.Black, 0.8f);
+    private Color PollenDarkColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.8f);
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -30,12 +35,19 @@ public class PollenSpit : ModProjectile,
         Projectile.tileCollide = true;
         Projectile.penetrate = -1;
         Projectile.timeLeft = 120;
+        Projectile.light = 0.55f;
     }
 
     public override void AI()
     {
         base.AI();
         Timer++;
+        if(Timer == 1 && this.OwnedByLocalClient())
+        {
+            RandScale = Main.rand.NextFloat(0.26f, 0.5f);
+            Projectile.netUpdate = true;
+        }
+
         Projectile.velocity.X *= XSlowing;
         if (Projectile.velocity.Y < MaxFallSpeed)
             Projectile.velocity.Y += Gravity;
@@ -47,14 +59,39 @@ public class PollenSpit : ModProjectile,
             Dust.NewDustPerfect(pos, DustID.GemTopaz, vel, Scale: Main.rand.NextFloat(0.2f, 0.6f));
         }
 
-        if (Timer % 8 == 0)
+        if (Main.rand.NextBool(8))
         {
-            Vector2 offset = Projectile.rotation.ToRotationVector2() * MathHelper.Lerp(0, 384f, Main.rand.NextFloat(0f, 1f));
-            var sp = FaintSmokeParticle.SpawnInAlphaLayer(Projectile.Center + offset, Main.rand.NextVector2Circular(15, 15));
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = Projectile.Center + Main.rand.NextVector2Circular(24, 24),
+                velocity = -Projectile.velocity.RotatedByRandom(0.4f) * Main.rand.NextFloat(0.5f, 1f),
+                innerColor = PollenLightColor.ToVector4(),
+                outerColor = PollenDarkColor.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.5f, 1f)),
+                timeLeft = 120
+            });
+        }
+
+        if (Timer % 16 == 0)
+        {
+            Vector2 offset = Projectile.rotation.ToRotationVector2() * MathHelper.Lerp(0, 32, Main.rand.NextFloat(0f, 1f));
+            var sp = FaintSmokeParticle.Spawn(Projectile.Center + offset, Main.rand.NextVector2Circular(15, 15));
             sp.behindLayer = true;
             sp.fadeToColor = Color.Black;
-            sp.color = Color.Lerp(Color.Orange, Color.Gold, Main.rand.NextFloat(0f, 1f));
+            sp.color = PollenDarkColor;
+           
             sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+            sp.Scale *= 0.3f;
+            sp.dampening = 0.05f;
+        }
+        Projectile.rotation = Projectile.velocity.ToRotation();
+        Projectile.frameCounter++;
+        if(Projectile.frameCounter >= 5)
+        {
+            Projectile.frameCounter = 0;
+            Projectile.frame++;
+            if (Projectile.frame >= Main.projFrames[Type])
+                Projectile.frame = 0;
         }
     }
 
@@ -66,14 +103,16 @@ public class PollenSpit : ModProjectile,
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        var hitSound = AssetReferences.Assets.Sounds.Nature.PollenHit.Asset with { PitchVariance = 0.7f };
+        SoundEngine.PlaySound(hitSound, Projectile.position);
         for (var f = 0; f < 4; f++)
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(24, 24),
                 velocity = -Projectile.velocity.RotatedByRandom(0.4f) * Main.rand.NextFloat(0.5f, 1f),
-                innerColor = Color.Gold.ToVector4(),
-                outerColor = Color.DarkOrange.ToVector4(),
+                innerColor = PollenLightColor.ToVector4(),
+                outerColor =PollenDarkColor.ToVector4(),
                 scale = new Vector2(Main.rand.NextFloat(0.5f, 1f)),
                 timeLeft = 120
             });
@@ -85,8 +124,8 @@ public class PollenSpit : ModProjectile,
                 -Projectile.velocity.RotatedByRandom(0.4f) * Main.rand.NextFloat(0.5f, 1f),
                 DustParticleSpawnParams.Default with
                 {
-                    innerColor = Color.Gold,
-                    outerColor = Color.DarkOrange,
+                    innerColor = PollenLightColor,
+                    outerColor = PollenDarkColor,
                     gravity = 0.2f,
                     scaleRange = new Vector2(0.3f, 0.7f)
                 });
@@ -106,12 +145,25 @@ public class PollenSpit : ModProjectile,
         scale.X = MathHelper.Lerp(startScale.X, endScale.X, ExtraMath.Osc(0f, 1f, speed: 2));
         scale.Y = MathHelper.Lerp(startScale.Y, endScale.Y, ExtraMath.Osc(0f, 1f, speed: 2, offset: 3.14f));
         drawer.scale *= scale;
+        drawer.scale *= RandScale;
         spriteBatch.Draw(drawer);
     }
-
+    private void PollenDrawEvil(SpriteBatch spriteBatch)
+    {
+        var drawer = Projectile.Drawer;
+        var startScale = new Vector2(1.1f, 0.9f);
+        var endScale = new Vector2(0.9f, 1.1f);
+        var scale = Vector2.One;
+        scale.X = MathHelper.Lerp(startScale.X, endScale.X, ExtraMath.Osc(0f, 1f, speed: 2));
+        scale.Y = MathHelper.Lerp(startScale.Y, endScale.Y, ExtraMath.Osc(0f, 1f, speed: 2, offset: 3.14f));
+        drawer.scale *= scale;
+        drawer.scale *= RandScale;
+        drawer.color = Color.Red;
+        spriteBatch.Draw(drawer);
+    }
     public void DrawToRenderTargets()
     {
         PollenSpitRenderer.DrawActionQueue.Enqueue(PollenDraw);
-        OutlineRenderer.Queue(PollenDraw);
+        OutlineRenderer.Queue(PollenDrawEvil);
     }
 }

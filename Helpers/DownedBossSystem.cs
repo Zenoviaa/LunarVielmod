@@ -38,7 +38,9 @@ namespace Stellamod.Helpers
         E=26,
         BunnyStorm=27,
 
-        TheWhisperer=28
+        TheWhisperer=28,
+        RoyalSTARR=29,
+        Sporedom=30
     }
 
     public class Flawless : ModBuff
