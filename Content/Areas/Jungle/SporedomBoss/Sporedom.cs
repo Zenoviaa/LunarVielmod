@@ -192,6 +192,7 @@ public class Sporedom : ScarletBoss,
         var hitSound = AssetReferences.Assets.Sounds.Nature.PollenSpit.Asset with { PitchVariance = 0.7f };
         SoundEngine.PlaySound(hitSound, NPC.position);
         var spitPos = NPC.Center;
+        spitPos.Y -= 32;
         for (var i = 0; i < 6; i++)
         {
             var sp = FaintSmokeParticle.Spawn(spitPos + new Vector2(0, -12), Main.rand.NextVector2Circular(10, 10));
@@ -203,7 +204,8 @@ public class Sporedom : ScarletBoss,
             sp.Scale *= 0.3f;
             sp.dampening = 0.05f;
         }
-        FXUtil.GlowCircleBoom(spitPos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, duration: 30, baseSize: 0.2f);
+        var fx = FXUtil.GlowCircleBoom(spitPos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, duration: 30, baseSize: 0.2f);
+        fx.Scale *= 0.66f;
         for(var i = 0; i < 6; i++)
         {
             var up = -Vector2.UnitY * 12;
@@ -399,6 +401,7 @@ public class Sporedom : ScarletBoss,
     }
     private void AI_SproutBoom()
     {
+        OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
         Timer++;
         switch (AttackCycle)
         {
@@ -423,10 +426,14 @@ public class Sporedom : ScarletBoss,
 
             case 1:
                 {
+                    if(Timer == 4)
+                    {
+                        SpitEffect();
+                    }
                     if (Timer == 4 && MultiplayerHelper.IsHost)
                     {
                         var firer = ProjFirer.From<CorePellet>(NPC);
-                        firer.velocity = -Vector2.UnitY * 15;
+                        firer.velocity = -Vector2.UnitY * 12;
                         firer.ai0 = NPC.whoAmI;
                         firer.damage = DamageThornyBounceBall;
                         firer.knockback = 1;
@@ -465,6 +472,7 @@ public class Sporedom : ScarletBoss,
 
                     if (Timer == 4)
                     {
+                        this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
                         SpitEffect();
                     }
                     if (Timer == 4 && MultiplayerHelper.IsHost)
@@ -472,7 +480,7 @@ public class Sporedom : ScarletBoss,
                         var firer = ProjFirer.From<SmallPellet>(NPC);
                         var dirToTarget = NPC.XDirectionToTarget;
                         firer.ai0 = NPC.whoAmI;
-                        firer.velocity = -Vector2.UnitY * 15;
+                        firer.velocity = -Vector2.UnitY * 12;
                         firer.damage = DamagePollenSpit;
                         firer.knockback = 1;
                         firer.New();
@@ -490,7 +498,7 @@ public class Sporedom : ScarletBoss,
                         }
                         else
                         {
-                            AttackCycle = 2;
+                    
                         }
                     }
                 }

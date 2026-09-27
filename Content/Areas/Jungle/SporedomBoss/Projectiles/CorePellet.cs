@@ -10,6 +10,9 @@ namespace Stellamod.Content.Areas.Jungle.SporedomBoss.Projectiles;
 
 public class CorePellet : ModProjectile
 {
+    private Vector2 _pulseShakeOffset;
+    private float _pulseAlpha;
+    private float _lastExplode;
     private Color PollenLightColor => Color.Lerp(Color.Gold, Color.Black, 0.8f);
     private Color PollenDarkColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.8f);
     private NPC Parent => Main.npc[(int)Projectile.ai[0]];
@@ -36,9 +39,47 @@ public class CorePellet : ModProjectile
         Projectile.penetrate = -1;
     }
 
+
+    private void WiggleEffect()
+    {
+        for (var i = 0; i < 16; i++)
+        {
+            var up = -Vector2.UnitY * 12;
+            up = up.RotatedByRandom(6.28f);
+            var dp = DustParticle.Spawn(Projectile.Center,
+                up * Main.rand.NextFloat(0.5f, 1f),
+                DustParticleSpawnParams.Default with
+                {
+                    innerColor = PollenLightColor,
+                    outerColor = PollenDarkColor,
+                    gravity = 0.2f,
+                    scaleRange = new Vector2(0.3f, 0.7f)
+                });
+            dp.dampening = 0.04f;
+        }
+        _pulseAlpha = 1f;
+    }
+
     public override void AI()
     {
         base.AI();
+        _pulseAlpha = MathHelper.Lerp(_pulseAlpha, 0f, 0.08f);
+        if(_pulseAlpha > 0.3f)
+        {
+            if(Timer % 4 == 0)
+            {
+                _pulseShakeOffset = Main.rand.NextVector2Circular(4, 4);
+            }
+        }
+        else
+        {
+            _pulseShakeOffset = Vector2.Zero;
+        }
+        if(_lastExplode != Explode) 
+        {
+            WiggleEffect();
+            _lastExplode = Explode;
+        }
         Timer++;
         if (Timer % 16 == 0)
         {
@@ -75,7 +116,16 @@ public class CorePellet : ModProjectile
     {
         var drawer = Projectile.Drawer;
         drawer.scale *= WigglyScale;
+        drawer.scale *= MathHelper.Lerp(1f, 1.2f, EasingFunction.OutExpo(_pulseAlpha));
+        drawer.worldPosition += _pulseShakeOffset;
+        drawer.rotation += MathHelper.Lerp(-0.05f, 0.05f, _pulseAlpha);
+        drawer.worldPosition.Y += ExtraMath.Osc(0f, 16f, 2);
         Main.spriteBatch.Draw(drawer);
+
+        var pusleDrwaer = drawer;
+        pusleDrwaer.color = Color.Lerp(Color.Transparent, Color.Yellow, _pulseAlpha);
+        pusleDrwaer.color.A = 0;
+        Main.spriteBatch.Draw(pusleDrwaer);
         return false;
     }
     
