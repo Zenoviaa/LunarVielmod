@@ -73,7 +73,7 @@ public class Sporedom : ScarletBoss,
     {
         base.SetDefaults();
         NPC.width = 128;
-        NPC.height = 64;
+        NPC.height = 108;
         NPC.damage = 50;
         NPC.defense = 5;
         NPC.lifeMax = 2200;
@@ -139,7 +139,7 @@ public class Sporedom : ScarletBoss,
         if (_contactDamage)
             _outliner.attacking = true;
         _outliner.Update();
-        this.SetDrawOrigin(new Vector2(53, 86));
+        this.SetDrawOrigin(new Vector2(60, 107));
     }
 
     private void SwitchState(AIState state)
@@ -290,7 +290,7 @@ public class Sporedom : ScarletBoss,
         {
             NPC.TargetClosest();
         }
-        this.AseAnimator.PlayAnimation(ANIM_IDLE);
+        this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         if (Timer >= IdleTime)
         {
             ChooseAttack();
@@ -497,7 +497,7 @@ public class Sporedom : ScarletBoss,
 
             case 2:
                 {
-                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
+                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
                     if (Timer >= 30)
                     {
                         SwitchState(AIState.Idle);
@@ -624,7 +624,7 @@ public class Sporedom : ScarletBoss,
                 break;
             case 4:
                 {
-                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
+                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
                     if (Timer >= 30)
                     {
                         SwitchState(AIState.Idle);
