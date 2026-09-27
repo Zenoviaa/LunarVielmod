@@ -38,7 +38,7 @@ public class Sporedom : ScarletBoss,
     }
     private ref float AttackCycle => ref NPC.ai[2];
     private ref float AttackCounter => ref NPC.ai[3];
-    private float IdleTime => 60;
+    private float IdleTime => 120;
     private float BulbTime => 50;
     private float ShootTime => 30;
     private float BigPollenBulbTime => 90;
