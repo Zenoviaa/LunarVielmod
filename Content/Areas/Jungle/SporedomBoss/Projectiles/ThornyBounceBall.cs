@@ -14,7 +14,7 @@ namespace Stellamod.Content.Areas.Jungle.SporedomBoss.Projectiles;
 public class ThornyBounceBall : ModProjectile,
     IDrawToRenderTarget
 {
-    private float XSpeed => 6;
+    private float XSpeed => 5.5f;
     private float Tracking => 0.03f;
     private float Gravity => 0.3f;
     private ref float Timer => ref Projectile.ai[0];
