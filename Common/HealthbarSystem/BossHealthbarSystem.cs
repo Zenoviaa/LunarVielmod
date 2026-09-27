@@ -2,6 +2,7 @@
 using Stellamod.Core;
 using Stellamod.UI;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -42,7 +43,19 @@ namespace Stellamod.Common.HealthbarSystem
                 uiState.ui.ResetEaseTimer();
                 uiState.ui.TrackingNpc = null;
             }
-            ActiveBosses.Clear();
+
+            if(Main.GameUpdateCount % 15 == 0)
+            {
+                ActiveBosses.Clear();
+                foreach (var npc in Main.ActiveNPCs)
+                {
+                    if (npc.boss && npc.ModNPC is ScarletBoss boss)
+                    {
+                        Add(boss);
+                    }
+                }
+            }
+
 
             //Close if inventory isn't open lol
             if (_userInterface.CurrentState != null && !uiState.ui.IsTracking())

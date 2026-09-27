@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Particles;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Jungle.SporedomBoss.Gores;
 using Stellamod.Content.Areas.Jungle.SporedomBoss.Projectiles;
 using Stellamod.Core;
@@ -7,6 +8,7 @@ using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Visual.Particles;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -26,12 +28,14 @@ public class Sporedom : ScarletBoss,
         Death,
         BigSpit,
         BouncingBalls,
-        SproutBoom
+        SproutBoom,
+        SpitSide
     }
 
     private bool _contactDamage;
     private Vector2 _squishScale;
     private Outliner _outliner;
+    private float _attackSide;
     private ref float Timer => ref NPC.ai[0];
     private AIState State
     {
@@ -44,6 +48,8 @@ public class Sporedom : ScarletBoss,
     private float BulbTime => 50;
     private float ShootTime => 30;
     private float BigPollenBulbTime => 90;
+    private float BigShotChargeTime => 150;
+    private float BigShotShootTime => 30;
     private PatternManager<AIState> PatternManager
     {
         get
@@ -58,6 +64,21 @@ public class Sporedom : ScarletBoss,
             return field;
         }
     }
+    private PatternManager<AIState> PatternManagerP2
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = new();
+                field.AddPattern(AIState.BigSpit, 1);
+                field.AddPattern(AIState.BouncingBalls, 1);
+                field.AddPattern(AIState.SproutBoom, 1);
+                field.AddPattern(AIState.SpitSide, 1);
+            }
+            return field;
+        }
+    }
     private const string ANIM_IDLE = "Idle";
     private const string ANIM_BULB = "Bulb";
     private const string ANIM_SHOOT = "Shoot";
@@ -66,6 +87,17 @@ public class Sporedom : ScarletBoss,
     private int DamagePollenSpit => 20;
     private int DamageThornyBounceBall => 19;
     public override string Texture => TextureRegistry.EmptyTexture;
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.Write(_attackSide);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _attackSide = reader.ReadSingle();
+    }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -141,6 +173,9 @@ public class Sporedom : ScarletBoss,
             case AIState.SproutBoom:
                 AI_SproutBoom();
                 break;
+            case AIState.SpitSide:
+                AI_SpitSide();
+                break;
         }
         if (_contactDamage)
             _outliner.attacking = true;
@@ -163,7 +198,116 @@ public class Sporedom : ScarletBoss,
     private void ChooseAttack()
     {
         var pattern = PatternManager.NextPattern();
+        if (NPC.life < NPC.lifeMax * 0.5f)
+            pattern = PatternManagerP2.NextPattern();
         SwitchState(pattern);
+    }
+
+    private void ChargeParticles()
+    {
+        var spitPos = NPC.Center;
+        var spitOffset = new Vector2(0, -90);
+        spitOffset = spitOffset.RotatedBy(NPC.rotation);
+        spitPos += spitOffset;
+        spitPos += Main.rand.NextVector2Circular(48, 48);
+        if (Main.rand.NextBool(2))
+        {
+            var pos = spitPos + new Vector2(0, -12);
+            var sp = FaintSmokeParticle.Spawn(pos, Main.rand.NextVector2Circular(10, 10));
+            sp.Velocity = (NPC.Center -pos).SafeNormalize(Vector2.Zero) * 5;
+            sp.behindLayer = true;
+            sp.fadeToColor = Color.Black;
+            sp.color = PollenDarkColor;
+
+            sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+            sp.Scale *= 0.8f;
+            sp.dampening = 0.05f;
+        }
+
+        if (Main.rand.NextBool(2))
+        {
+            var pos = spitPos + new Vector2(0, -12);
+            var vel = (NPC.Center - pos).SafeNormalize(Vector2.Zero) * 5;
+            DustParticle.Spawn(spitPos,
+                vel * Main.rand.NextFloat(0.5f, 1f),
+                DustParticleSpawnParams.Default with
+                {
+                    innerColor = PollenLightColor,
+                    outerColor = PollenDarkColor,
+                    gravity = 0,
+                    scaleRange = new Vector2(0.3f, 0.7f)
+                });
+        }
+    }
+    private void AI_SpitSide()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        _attackSide = NPC.XDirectionToTarget;
+                    }
+
+                    this.AseAnimator.PlayAnimation(ANIM_BULB, AnimationParams.NoLooping);
+                    var targetRotation = _attackSide * 0.1f;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRotation, 0.02f);
+                    ChargeParticles();
+                    _squishScale = Vector2.Lerp(Vector2.One, new Vector2(0.9f, 2f), EasingFunction.InOutSine(Timer / BigShotChargeTime));
+                    _outliner.warning = true;
+                    if(Timer >= BigShotChargeTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    _outliner.attacking = true;
+                    if(Timer == 4)
+                    {
+                        SpitEffect();
+                    }
+
+                    if (Timer == 4 && MultiplayerHelper.IsHost)
+                    {
+                        var baseFirer = ProjFirer.From<PollenSpit>(NPC);
+                        for (var i = 0; i < 60; i++)
+                        {
+                            var firer = baseFirer;
+                            var dirToTarget = _attackSide;
+                            firer.velocity = -Vector2.UnitY * 18 * Main.rand.NextFloat(0.5f, 1f);
+                            firer.velocity = firer.velocity.RotatedByRandom(0.8f);
+                            firer.velocity = firer.velocity.RotatedBy(_attackSide * 0.35f);
+                            firer.velocity.X += dirToTarget * 5;
+                            firer.position += new Vector2(Main.rand.NextFloat(-24, 24), Main.rand.NextFloat(-48, 0));
+                            firer.damage = DamagePollenSpit;
+                            firer.knockback = 1;
+                            firer.New();
+                        }
+                    }
+
+                    this.AseAnimator.PlayAnimation(ANIM_SHOOT, AnimationParams.NoLooping);
+                    if(Timer >= BigShotShootTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    if(Timer >= 30)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
     }
 
     private void AI_Spawn()
@@ -309,6 +453,7 @@ public class Sporedom : ScarletBoss,
     }
     private void AI_Idle()
     {
+        NPC.rotation *= 0.96f;
         Timer++;
         if (Timer == 1)
         {

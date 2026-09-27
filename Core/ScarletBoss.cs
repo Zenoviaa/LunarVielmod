@@ -159,8 +159,16 @@ public abstract class ScarletBoss : ModNPC
     public string Texture_BossIcon => base.Texture + "_BossIcon";
     public string Texture_BossBar => base.Texture + "_BossBar";
 
+    void UpdateHealthbar()
+    {
+
+    }
     public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
     {
+        if (!NPC.boss)
+            return false;
+
+
         return false;
     }
 
@@ -192,11 +200,7 @@ public abstract class ScarletBoss : ModNPC
         }
 
         //Healthbar isn't going to appear instantly, so we can do funny things where the boss isn't a boss for a second
-        _bossHealthbarDelay++;
-        if (_bossHealthbarDelay < 15)
-            return;
 
-        ModContent.GetInstance<BossHealthbarSystem>().Add(this);
     }
 
     public override void OnKill()

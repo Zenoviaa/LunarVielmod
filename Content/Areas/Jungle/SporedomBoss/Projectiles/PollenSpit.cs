@@ -34,7 +34,7 @@ public class PollenSpit : ModProjectile,
         Projectile.hostile = true;
         Projectile.tileCollide = true;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 120;
+        Projectile.timeLeft = 180;
         Projectile.light = 0.55f;
     }
 

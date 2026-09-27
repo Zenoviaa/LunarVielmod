@@ -8,8 +8,10 @@ using Stellamod.Core.Effects;
 using Stellamod.Helpers;
 using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
 using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Common.HealthbarSystem
@@ -63,7 +65,6 @@ namespace Stellamod.Common.HealthbarSystem
             Height.Pixels = BarTextureAsset[0].Height();
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-            Append(_bossNameText);
         }
         public Asset<Texture2D>[] BarTextureAsset;
         public Asset<Texture2D> FillTextureAsset;
@@ -165,7 +166,11 @@ namespace Stellamod.Common.HealthbarSystem
             spriteBatch.Draw(FillTextureAsset.Value, fillTopLeft, null, Color.Red * _easeInAlpha, 0f, default, _redFillScale, SpriteEffects.None, 0f);
             if (IsTracking())
             {
-                _bossNameText.SetText(GetBossTitle());
+                var pos = topLeft;
+                pos.X += 64;
+                pos.Y -= 6;
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.DeathText.Value, GetBossTitle(), pos, Color.White, 0, Vector2.Zero, Vector2.One * 0.5f);
+              
                 Asset<Texture2D> bossIconTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossIcon);
                 Asset<Texture2D> bossFillTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossBar);
   
