@@ -1,10 +1,12 @@
-﻿using Terraria;
+﻿using Stellamod.Core.Pixelation;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Jungle.SporedomBoss.Projectiles;
 
-public class SmallPellet : ModProjectile
+public class SmallPellet : ModProjectile,
+    IDrawToRenderTarget
 {
     private Vector2 FindTargetToMoveTo
     {
@@ -46,6 +48,7 @@ public class SmallPellet : ModProjectile
     public override void AI()
     {
         base.AI();
+        Timer++;
         if(Timer == 1)
         {
             InitialSpeed = Projectile.velocity.Length();
@@ -64,6 +67,10 @@ public class SmallPellet : ModProjectile
         }
     }
 
+    public override bool PreDraw(ref Color lightColor)
+    {
+        return false; 
+    }
     private void Eat()
     {
         var type = ModContent.ProjectileType<CorePellet>();
@@ -80,7 +87,34 @@ public class SmallPellet : ModProjectile
         }
         Projectile.Kill();
     }
-
+    private void PollenDraw(SpriteBatch spriteBatch)
+    {
+        var drawer = Projectile.Drawer;
+        var startScale = new Vector2(1.1f, 0.9f);
+        var endScale = new Vector2(0.9f, 1.1f);
+        var scale = Vector2.One;
+        scale.X = MathHelper.Lerp(startScale.X, endScale.X, ExtraMath.Osc(0f, 1f, speed: 2));
+        scale.Y = MathHelper.Lerp(startScale.Y, endScale.Y, ExtraMath.Osc(0f, 1f, speed: 2, offset: 3.14f));
+        drawer.scale *= scale;
+        spriteBatch.Draw(drawer);
+    }
+    private void PollenDrawEvil(SpriteBatch spriteBatch)
+    {
+        var drawer = Projectile.Drawer;
+        var startScale = new Vector2(1.1f, 0.9f);
+        var endScale = new Vector2(0.9f, 1.1f);
+        var scale = Vector2.One;
+        scale.X = MathHelper.Lerp(startScale.X, endScale.X, ExtraMath.Osc(0f, 1f, speed: 2));
+        scale.Y = MathHelper.Lerp(startScale.Y, endScale.Y, ExtraMath.Osc(0f, 1f, speed: 2, offset: 3.14f));
+        drawer.scale *= scale;
+        drawer.color = Color.Red;
+        spriteBatch.Draw(drawer);
+    }
+    public void DrawToRenderTargets()
+    {
+        PollenSpitRenderer.DrawActionQueue.Enqueue(PollenDraw);
+        OutlineRenderer.Queue(PollenDrawEvil);
+    }
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);

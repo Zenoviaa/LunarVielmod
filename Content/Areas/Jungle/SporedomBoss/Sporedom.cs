@@ -39,6 +39,7 @@ public class Sporedom : ScarletBoss,
     private float IdleTime => 60;
     private float BulbTime => 50;
     private float ShootTime => 30;
+    private float BigPollenBulbTime => 90;
     private PatternManager<AIState> PatternManager
     {
         get
@@ -151,7 +152,7 @@ public class Sporedom : ScarletBoss,
     {
         var pattern = PatternManager.NextPattern();
         SwitchState(pattern);
-        SwitchState(AIState.BigSpit);
+        SwitchState(AIState.SproutBoom);
     }
 
     private void AI_Spawn()
@@ -385,10 +386,127 @@ public class Sporedom : ScarletBoss,
                 break;
         }
     }
+
+    private bool IsThereASprout()
+    {
+        var type = ModContent.ProjectileType<CorePellet>();
+        foreach(var proj in Main.ActiveProjectiles)
+        {
+            if (proj.type == type && proj.ai[0] == NPC.whoAmI)
+                return true;
+        }
+        return false;
+    }
     private void AI_SproutBoom()
     {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _outliner.warning = true;
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    NPC.velocity.X *= 0.96f;
+                    _squishScale = Vector2.Lerp(_squishScale, new Vector2(1.1f, 0.9f), EasingFunction.OutSine(Timer / BigPollenBulbTime));
+                    this.AseAnimator.PlayAnimation(ANIM_BULB, AnimationParams.NoLooping);
+                    if (Timer >= BigPollenBulbTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
 
+                break;
+
+            case 1:
+                {
+                    if (Timer == 4 && MultiplayerHelper.IsHost)
+                    {
+                        var firer = ProjFirer.From<CorePellet>(NPC);
+                        firer.velocity = -Vector2.UnitY * 15;
+                        firer.ai0 = NPC.whoAmI;
+                        firer.damage = DamageThornyBounceBall;
+                        firer.knockback = 1;
+                        firer.New();
+                    }
+                    _squishScale = Vector2.Lerp(new Vector2(1f, 1.1f), Vector2.One, EasingFunction.InSine(Timer / BulbTime));
+                    this.AseAnimator.PlayAnimation(ANIM_SHOOT, AnimationParams.NoLooping);
+                    if (Timer >= ShootTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 2:
+                {
+                    _outliner.warning = true;
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    NPC.velocity.X *= 0.96f;
+                    _squishScale = Vector2.Lerp(_squishScale, new Vector2(1.1f, 0.9f), EasingFunction.OutSine(Timer / BigPollenBulbTime));
+                    this.AseAnimator.PlayAnimation(ANIM_BULB, AnimationParams.NoLooping);
+                    if (Timer >= BulbTime * 0.66f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+
+                break;
+            case 3:
+                {
+
+                    if (Timer == 4)
+                    {
+                        SpitEffect();
+                    }
+                    if (Timer == 4 && MultiplayerHelper.IsHost)
+                    {
+                        var firer = ProjFirer.From<SmallPellet>(NPC);
+                        var dirToTarget = NPC.XDirectionToTarget;
+                        firer.ai0 = NPC.whoAmI;
+                        firer.velocity = -Vector2.UnitY * 15;
+                        firer.damage = DamagePollenSpit;
+                        firer.knockback = 1;
+                        firer.New();
+                    }
+
+                    _squishScale = Vector2.Lerp(new Vector2(1f, 1.1f), Vector2.One, EasingFunction.InSine(Timer / BulbTime));
+                    this.AseAnimator.PlayAnimation(ANIM_SHOOT, AnimationParams.NoLooping);
+                    if (Timer >= ShootTime)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if (!IsThereASprout())
+                        {
+                            AttackCycle++;
+                        }
+                        else
+                        {
+                            AttackCycle = 2;
+                        }
+                    }
+                }
+                break;
+            case 4:
+                {
+                    this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
+                    if (Timer >= 30)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
     }
+
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         NPC.DrawAnimator(spriteBatch, drawColor);

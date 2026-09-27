@@ -13,6 +13,7 @@ public class FallingPollen : ModProjectile
     private float LifeRatio => Timer / Lifetime;
     private ref float Timer => ref Projectile.ai[0];
     private ref float RandScale => ref Projectile.ai[1];
+    private float OutScale => EasingFunction.InOutSine(Projectile.timeLeft / 60f);
     public override void OnSpawn(IEntitySource source)
     {
         base.OnSpawn(source);
@@ -62,6 +63,11 @@ public class FallingPollen : ModProjectile
         var drawer = Projectile.Drawer;
         drawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InSine(LifeRatio));
         drawer.scale *= RandScale;
+        drawer.scale *= OutScale;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.VerticalFrame(1, 2);
+        drawer.color = Color.Gold * ExtraMath.Osc(0.5f, 1f, speed: 2, Projectile.whoAmI);
         Main.spriteBatch.Draw(drawer);
         return false;
     }
