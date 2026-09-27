@@ -74,18 +74,22 @@ public class Sporedom : ScarletBoss,
         base.SetDefaults();
         NPC.width = 128;
         NPC.height = 64;
-        NPC.damage = 90;
-        NPC.defense = 24;
-        NPC.lifeMax = 4000;
+        NPC.damage = 50;
+        NPC.defense = 5;
+        NPC.lifeMax = 2200;
         NPC.knockBackResist = 0f;
 
         NPC.boss = true;
         NPC.npcSlots = 30f;
-        Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ViciousFoe");
+        Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/VisciousFoe");
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
     }
 
+    public override BossLevel GetBossLevel()
+    {
+        return BossLevel.Miniboss;
+    }
     public override bool AllowNameplateToBeShown()
     {
         return State != AIState.Despawn && State != AIState.Spawn && State != AIState.Death;
