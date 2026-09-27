@@ -18,7 +18,6 @@ namespace Stellamod.Common.HealthbarSystem
 {
     public class BossHealthbarUI : UIPanel
     {
-        private UIText _bossNameText;
         private Vector2 _barFillScale;
         private Vector2 _redFillScale;
         private Vector2 _whiteFillScale;
@@ -33,7 +32,7 @@ namespace Stellamod.Common.HealthbarSystem
 
         public BossHealthbarUI()
         {
-            _bossNameText = new UIText("Boss");
+
             string directory = this.GetType().DirectoryHere();
 
             string barPath = directory + "/Healthbar_";
@@ -91,10 +90,7 @@ namespace Stellamod.Common.HealthbarSystem
                 _easeInTimer = 0;
             }
 
-   
-                _bossNameText.Left.Pixels = 48;
-            _bossNameText.Top.Pixels = -10;
-            _bossNameText.TextColor = Color.Lerp(Color.Transparent, Color.White, _easeInAlpha);
+
         }
 
         private float GetFill()
@@ -169,7 +165,9 @@ namespace Stellamod.Common.HealthbarSystem
                 var pos = topLeft;
                 pos.X += 64;
                 pos.Y -= 6;
-                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.DeathText.Value, GetBossTitle(), pos, Color.White, 0, Vector2.Zero, Vector2.One * 0.5f);
+
+                var textColor =  Color.Lerp(Color.Transparent, Color.White, _easeInAlpha);
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.DeathText.Value, GetBossTitle(), pos, textColor, 0, Vector2.Zero, Vector2.One * 0.5f);
               
                 Asset<Texture2D> bossIconTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossIcon);
                 Asset<Texture2D> bossFillTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossBar);
