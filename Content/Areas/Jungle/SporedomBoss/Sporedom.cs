@@ -3,11 +3,7 @@ using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -47,7 +43,7 @@ public class Sporedom : ScarletBoss,
     {
         get
         {
-            if(field == null)
+            if (field == null)
             {
                 field = new();
                 field.AddPattern(AIState.BigSpit, 1);
@@ -60,7 +56,8 @@ public class Sporedom : ScarletBoss,
     private const string ANIM_IDLE = "Idle";
     private const string ANIM_BULB = "Bulb";
     private const string ANIM_SHOOT = "Shoot";
-
+    private Color PollenLightColor => Color.Lerp(Color.Gold, Color.Black, 0.8f);
+    private Color PollenDarkColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.8f);
     private int DamagePollenSpit => 20;
     private int DamageThornyBounceBall => 25;
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -160,7 +157,7 @@ public class Sporedom : ScarletBoss,
     private void AI_Spawn()
     {
         Timer++;
-        if(Timer >= 60)
+        if (Timer >= 60)
         {
             SwitchState(AIState.Idle);
         }
@@ -172,21 +169,54 @@ public class Sporedom : ScarletBoss,
     private void AI_Idle()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             NPC.TargetClosest();
         }
-        if(Timer >= IdleTime)
+        if (Timer >= IdleTime)
         {
             ChooseAttack();
         }
     }
-    
+
     private void AI_Despawn()
     {
         Timer++;
         if (Timer >= 60)
             NPC.active = false;
+    }
+
+    private void SpitEffect()
+    {
+        var hitSound = AssetReferences.Assets.Sounds.Nature.PollenSpit.Asset with { PitchVariance = 0.7f };
+        SoundEngine.PlaySound(hitSound, NPC.position);
+        var spitPos = NPC.Center;
+        for (var i = 0; i < 6; i++)
+        {
+            var sp = FaintSmokeParticle.Spawn(spitPos + new Vector2(0, -12), Main.rand.NextVector2Circular(10, 10));
+            sp.behindLayer = true;
+            sp.fadeToColor = Color.Black;
+            sp.color = PollenDarkColor;
+
+            sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+            sp.Scale *= 0.3f;
+            sp.dampening = 0.05f;
+        }
+        FXUtil.GlowCircleBoom(spitPos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, duration: 30, baseSize: 0.2f);
+        for(var i = 0; i < 6; i++)
+        {
+            var up = -Vector2.UnitY * 12;
+            up = up.RotatedByRandom(0.6f);
+            DustParticle.Spawn(spitPos,
+                up * Main.rand.NextFloat(0.5f, 1f),
+                DustParticleSpawnParams.Default with
+                {
+                    innerColor = PollenLightColor,
+                    outerColor = PollenDarkColor,
+                    gravity = 0.2f,
+                    scaleRange = new Vector2(0.3f, 0.7f)
+                });
+        }
     }
 
     private void AI_BigSpit()
@@ -210,7 +240,7 @@ public class Sporedom : ScarletBoss,
                         Timer = 0;
                         AttackCycle++;
                     }
-                    if(AttackCounter > 0)
+                    if (AttackCounter > 0)
                     {
                         if (Timer >= BulbTime * 0.66f)
                         {
@@ -225,10 +255,9 @@ public class Sporedom : ScarletBoss,
             case 1:
                 {
 
-                    if(Timer == 4)
+                    if (Timer == 4)
                     {
-                        var hitSound = AssetReferences.Assets.Sounds.Nature.PollenSpit.Asset with { PitchVariance = 0.7f };
-                        SoundEngine.PlaySound(hitSound, NPC.position);
+                        SpitEffect();
                     }
                     if (Timer == 4 && MultiplayerHelper.IsHost)
                     {
@@ -319,7 +348,7 @@ public class Sporedom : ScarletBoss,
                     {
                         var firer = ProjFirer.From<ThornyBounceBall>(NPC);
                         firer.velocity = -Vector2.UnitY * 15;
-                        if(AttackCounter == 1)
+                        if (AttackCounter == 1)
                         {
                             firer.velocity = -Vector2.UnitY * 10;
                         }
@@ -329,11 +358,11 @@ public class Sporedom : ScarletBoss,
                     }
                     _squishScale = Vector2.Lerp(new Vector2(1f, 1.1f), Vector2.One, EasingFunction.InSine(Timer / BulbTime));
                     this.AseAnimator.PlayAnimation(ANIM_SHOOT, AnimationParams.NoLooping);
-                    if(Timer >= ShootTime)
+                    if (Timer >= ShootTime)
                     {
                         Timer = 0;
                         AttackCounter++;
-                        if(AttackCounter >= 2)
+                        if (AttackCounter >= 2)
                         {
                             AttackCycle++;
                         }
@@ -348,7 +377,7 @@ public class Sporedom : ScarletBoss,
             case 2:
                 {
                     this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
-                    if(Timer >= 30)
+                    if (Timer >= 30)
                     {
                         SwitchState(AIState.Idle);
                     }
