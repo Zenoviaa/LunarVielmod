@@ -4,6 +4,7 @@ using Stellamod.Content.Areas.Jungle.SporedomBoss.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -19,6 +20,7 @@ public class Sporedom : ScarletBoss,
     private enum AIState
     {
         Spawn,
+        Awaken,
         Idle,
         Despawn,
         Death,
@@ -80,7 +82,6 @@ public class Sporedom : ScarletBoss,
         NPC.knockBackResist = 0f;
 
         NPC.boss = true;
-        NPC.npcSlots = 30f;
         Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/VisciousFoe");
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
@@ -112,10 +113,15 @@ public class Sporedom : ScarletBoss,
         _outliner.SetDefaults();
         _contactDamage = false;
         _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
+        if (State != AIState.Spawn)
+            NPC.boss = true;
         switch (State)
         {
             case AIState.Spawn:
                 AI_Spawn();
+                break;
+            case AIState.Awaken:
+                AI_Awaken();
                 break;
             case AIState.Idle:
                 AI_Idle();
@@ -162,11 +168,8 @@ public class Sporedom : ScarletBoss,
 
     private void AI_Spawn()
     {
-        Timer++;
-        if (Timer >= 60)
-        {
-            SwitchState(AIState.Idle);
-        }
+        NPC.boss = false;
+        this.AseAnimator.PlayAnimation(ANIM_BULB, AnimationParams.NoLooping);
     }
     private void DeathEffect()
     {
@@ -281,6 +284,27 @@ public class Sporedom : ScarletBoss,
         if (Timer >= 180)
         {
             NPC.Kill();
+        }
+    }
+
+    private void AI_Awaken()
+    {
+        Timer++;
+        if (Timer == 1)
+        {
+            SoundStyle roarSound = AssetRegistry.Sounds.Ravager.RavagerRoar;
+            roarSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(roarSound, NPC.position);
+        }
+        if (Timer % 10 == 0)
+        {
+            FXUtil.ShakeCamera(NPC.position, 1024, 24);
+            LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+        }
+        this.AseAnimator.PlayAnimation(ANIM_SHOOT, AnimationParams.NoLooping);
+        if (Timer >= 120)
+        {
+            SwitchState(AIState.Idle);
         }
     }
     private void AI_Idle()
@@ -659,6 +683,10 @@ public class Sporedom : ScarletBoss,
         if (NPC.life <= 1 && State != AIState.Death)
         {
             SwitchState(AIState.Death);
+        }
+        if(State == AIState.Spawn)
+        {
+            SwitchState(AIState.Awaken);
         }
     }
 
