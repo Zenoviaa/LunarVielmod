@@ -62,7 +62,7 @@ public class Sporedom : ScarletBoss,
     private Color PollenLightColor => Color.Lerp(Color.Gold, Color.Black, 0.8f);
     private Color PollenDarkColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.8f);
     private int DamagePollenSpit => 20;
-    private int DamageThornyBounceBall => 25;
+    private int DamageThornyBounceBall => 19;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
