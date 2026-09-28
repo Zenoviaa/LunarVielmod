@@ -1,12 +1,26 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
 
 public partial class Zigguratra
 {
+    Vector2 AxeBackPosition
+    {
+        get
+        {
+            var axePosition = NPC.Center;
+            axePosition.X -= NPC.direction * 111;
+            axePosition.Y = NPC.Bottom.Y;
+            axePosition.Y -= 12;
+
+            return axePosition;
+        }
+    }
     Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
     Color DarkGoldenColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.5f);
 
@@ -35,12 +49,15 @@ public partial class Zigguratra
         color = Color.Lerp(color, Color.White, 0.6f);
         Particles.LightningBolt.Spawn(new()
         {
-            position = pos,
+            position = pos - vel.SafeNormalize(Vector2.Zero) * 24, 
             velocity = vel,
             color = color,
             timeLeft = 60
         });
 
+        var zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain.Asset with { PitchVariance = 0.6f };
+        zapSound.Volume = 0.5f;
+        SoundEngine.PlaySound(zapSound, centerPos);
         var darkColor = Color.Lerp(color, Color.Aquamarine, 0.25f);
         FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Aquamarine, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)

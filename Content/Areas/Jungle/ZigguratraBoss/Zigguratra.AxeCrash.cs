@@ -95,11 +95,9 @@ public partial class Zigguratra
                     NPC.SpriteFaceTarget();
                     FocusOnMe();
                     this.AseAnimator.PlayAnimation(ANIM_AXE_WALK, AnimationParams.Default);
-                    var axePosition = NPC.Center;
-                    axePosition.X -= NPC.direction * 96;
-                    axePosition.Y = NPC.Bottom.Y;
-                    axePosition.Y -= 12;
+                    var axePosition = AxeBackPosition;
                     axePosition += Main.rand.NextVector2Circular(32, 32);
+                    _axeLightningAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / AxeCrash_WalkingTimePerCharge));
                     AmbientThundercloudParticles(axePosition);
                     AmbientElectricParticles(axePosition);
                     AmbientLightningParticles(axePosition);

@@ -54,7 +54,7 @@ public partial class Zigguratra : ScarletBoss
 
 
 
-
+    float _axeLightningAlpha;
     const string ANIM_RELEASE_THE_BEES = "ReleaseTheBees";
     const string ANIM_RELEASE_THE_BEES_HOLD = "ReleaseTheBeesHold";
     const string ANIM_RELEASE_THE_BEES_OUT = "ReleaseTheBeesOut";
@@ -115,6 +115,7 @@ public partial class Zigguratra : ScarletBoss
 
         _outliner.SetDefaults();
         _version2 = false;
+        _axeLightningAlpha = MathHelper.Lerp(_axeLightningAlpha, 0f, 0.1f);
         switch (State)
         {
             case AIState.Spawn:
