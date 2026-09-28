@@ -24,6 +24,18 @@ public partial class Zigguratra
     Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
     Color DarkGoldenColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.5f);
 
+   public static void PlayLightningSound(Vector2 position)
+    {
+
+        var zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain1.Asset with { PitchVariance = 1 };
+        if (Main.rand.NextBool(2))
+            zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain2.Asset with { PitchVariance = 1 };
+        if (Main.rand.NextBool(2))
+            zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain3.Asset with { PitchVariance = 1 };
+        zapSound.Volume = 0.5f;
+        SoundEngine.PlaySound(zapSound, position);
+    }
+
     void AmbientThundercloudParticles(Vector2 centerPos)
     {
         if (Timer % 8 != 0)
@@ -55,9 +67,7 @@ public partial class Zigguratra
             timeLeft = 60
         });
 
-        var zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain.Asset with { PitchVariance = 0.6f };
-        zapSound.Volume = 0.5f;
-        SoundEngine.PlaySound(zapSound, centerPos);
+        PlayLightningSound(centerPos);
         var darkColor = Color.Lerp(color, Color.Aquamarine, 0.25f);
         FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Aquamarine, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)
