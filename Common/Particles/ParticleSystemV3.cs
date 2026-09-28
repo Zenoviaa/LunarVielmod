@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Stellamod.Common.Particles.Electric;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

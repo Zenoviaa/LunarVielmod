@@ -2,7 +2,8 @@
 using Stellamod.Core.Pixelation;
 using Terraria;
 
-namespace Stellamod.Common.Particles;
+
+namespace Stellamod.Common.Particles.Electric;
 
 public class LightningImpact : ParticleUpdater<LightningImpact.Data>
 {

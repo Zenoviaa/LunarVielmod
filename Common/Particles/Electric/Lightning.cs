@@ -2,7 +2,7 @@
 using Stellamod.Core.Pixelation;
 using Terraria;
 
-namespace Stellamod.Common.Particles;
+namespace Stellamod.Common.Particles.Electric;
 
 public class LightningSpark : ParticleUpdater<LightningSpark.Data>
 {
