@@ -614,68 +614,6 @@ public static class DrawUtilities
         spriteBatch.Draw(drawer.texture, drawer.worldPosition - Main.screenPosition, drawer.sourceRect, drawer.color, drawer.rotation, drawer.drawOrigin, drawer.scale, drawer.spriteEffects, 0);
     }
 
-    /// <summary>
-    /// Draws an after image trail
-    /// </summary>
-    /// <param name="spriteBatch"></param>
-    /// <param name="modProjectile"></param>
-    public static void DrawBasicAfterImage(SpriteBatch spriteBatch, Projectile projectile, GetTrailColor getTrailColor, GetTrailWidth getTrailWidth)
-    {
-        Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-        SpritebatchDrawer spritebatchDrawer = SpritebatchDrawer.FromProjectile(projectile);
-
-        //Create an after image effect
-        //Gonna extract this to a function
-        for (int i = 0; i < projectile.oldPos.Length; i++)
-        {
-            float ratio = i / (float)projectile.oldPos.Length;
-            Color afterImageColor = getTrailColor(ratio);
-            float afterImageScale = getTrailWidth(ratio);
-
-            spritebatchDrawer.worldPosition = projectile.oldPos[i] + projectile.Size * 0.5f;
-            spritebatchDrawer.color = afterImageColor;
-            spritebatchDrawer.scale = Vector2.One * afterImageScale;
-            spritebatchDrawer.rotation = projectile.oldRot[i];
-            spriteBatch.Draw(spritebatchDrawer);
-        }
-    }
-    public static void DrawBasicAfterImage(SpriteBatch spriteBatch, NPC npc, GetTrailColor getTrailColor, GetTrailWidth getTrailWidth, SpritebatchDrawer spritebatchDrawer)
-    {
-        //Create an after image effect
-        //Gonna extract this to a function
-        for (int i = 0; i < npc.oldPos.Length; i++)
-        {
-            float ratio = i / (float)npc.oldPos.Length;
-            Color afterImageColor = getTrailColor(ratio);
-            float afterImageScale = getTrailWidth(ratio);
-
-            spritebatchDrawer.worldPosition = npc.oldPos[i] + npc.Size * 0.5f;
-            spritebatchDrawer.color = afterImageColor;
-            spritebatchDrawer.scale = Vector2.One * afterImageScale;
-            spritebatchDrawer.rotation = npc.oldRot[i];
-            spriteBatch.Draw(spritebatchDrawer);
-        }
-    }
-    public static void DrawBasicAfterImage(SpriteBatch spriteBatch, Projectile projectile, GetTrailColor getTrailColor, GetTrailWidth getTrailWidth, SpritebatchDrawer spritebatchDrawer)
-    {
-        Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-
-        //Create an after image effect
-        //Gonna extract this to a function
-        for (int i = 0; i < projectile.oldPos.Length; i++)
-        {
-            float ratio = i / (float)projectile.oldPos.Length;
-            Color afterImageColor = getTrailColor(ratio);
-            float afterImageScale = getTrailWidth(ratio);
-
-            spritebatchDrawer.worldPosition = projectile.oldPos[i] + projectile.Size * 0.5f;
-            spritebatchDrawer.color = afterImageColor;
-            spritebatchDrawer.scale = Vector2.One * afterImageScale;
-            spritebatchDrawer.rotation = projectile.oldRot[i];
-            spriteBatch.Draw(spritebatchDrawer);
-        }
-    }
-
     public static void DrawBasicGlow(SpriteBatch spriteBatch, Vector2 position, float scale, Color color)
     {
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, position);

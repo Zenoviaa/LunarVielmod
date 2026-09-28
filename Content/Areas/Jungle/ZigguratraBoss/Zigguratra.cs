@@ -50,12 +50,32 @@ public partial class Zigguratra : ScarletBoss
         }
     }
 
-    private const string ANIM_AXE_WALK = "AxeWalk";
-    private const string ANIM_AXE_READY = "AxeReady";
-    private const string ANIM_AXE_SLAM = "AxeSlam";
+    float IdleTime => 100;
 
-    private ref float AttackCycle => ref NPC.ai[2];
-    private ref float AttackCounter => ref NPC.ai[3];
+
+
+
+    const string ANIM_RELEASE_THE_BEES = "ReleaseTheBees";
+    const string ANIM_RELEASE_THE_BEES_HOLD = "ReleaseTheBeesHold";
+    const string ANIM_RELEASE_THE_BEES_OUT = "ReleaseTheBeesOut";
+    const string ANIM_AXE_SUMMON = "AxeSummon";
+    const string ANIM_AXE_CHARGE_1 = "AxeCharge1";
+    const string ANIM_AXE_CHARGE_2 = "AxeCharge2";
+    const string ANIM_AXE_CHARGE_3 = "AxeCharge3";
+    const string ANIM_AXE_CHARGE_DASH_OUT = "AxeChargeDashOut";
+    const string ANIM_AXE_READY = "AxeReady";
+    const string ANIM_AXE_WALK = "AxeWalk";
+    const string ANIM_AXE_SLAM = "AxeSlam";
+    const string ANIM_AXE_SLAM_DASH_AWAY = "AxeSlamDashAway";
+    const string ANIM_AXE_SLAM_DASH_OUT = "AxeSlamDashOut";
+    const string ANIM_WALL_CLING = "WallCling";
+    const string ANIM_WALL_DASH = "WallDash";
+    const string ANIM_WALL_AXE_CRASH = "WallAxeCrash";
+    const string ANIM_SUPER_AXE_CRASH = "SuperAxeCrash";
+    const string ANIM_FALLING_AXE_CRASH = "FallingAxeCrash";
+    const string ANIM_SPIN = "Spin";
+    ref float AttackCycle => ref NPC.ai[2];
+    ref float AttackCounter => ref NPC.ai[3];
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -78,7 +98,7 @@ public partial class Zigguratra : ScarletBoss
         NPC.boss = true;
         NPC.npcSlots = 30;
 
-        Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/VisciousFoe");
+        Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/JazziestBugs");
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
     }
@@ -130,7 +150,9 @@ public partial class Zigguratra : ScarletBoss
     }
     void ChooseAttack()
     {
-
+        var state = AttackPattern.NextPattern();
+        SwitchState(state);
+        SwitchState(AIState.Axe_Crash);
     }
 
     private void SwitchState(AIState state)
@@ -160,7 +182,11 @@ public partial class Zigguratra : ScarletBoss
     
     private void AI_Idle()
     {
-
+        Timer++;
+        if(Timer >= IdleTime)
+        {
+            ChooseAttack();
+        }
     }
 
     private void AI_Death()

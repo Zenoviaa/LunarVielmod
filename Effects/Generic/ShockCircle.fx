@@ -1,4 +1,4 @@
-#include "Math.fxh"
+#include "../Helpers/Math.fxh"
 
 sampler spriteSampler : register(s0);
 float time;
