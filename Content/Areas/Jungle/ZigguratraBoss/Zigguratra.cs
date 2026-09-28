@@ -89,7 +89,7 @@ public partial class Zigguratra : ScarletBoss
     {
         base.SetDefaults();
         NPC.width = 128;
-        NPC.height = 108;
+        NPC.height = 158;
         NPC.damage = 50;
         NPC.defense = 5;
         NPC.lifeMax = 2200;
@@ -147,6 +147,7 @@ public partial class Zigguratra : ScarletBoss
            
         }
         _outliner.Update();
+        this.SetDrawOrigin(new Vector2(170, 299));
     }
     void ChooseAttack()
     {
@@ -168,7 +169,11 @@ public partial class Zigguratra : ScarletBoss
     }
     private void AI_Spawn()
     {
-
+        Timer++;
+        if(Timer >= 90)
+        {
+            SwitchState(AIState.Idle);
+        }
     }
     
     private void AI_Despawn()

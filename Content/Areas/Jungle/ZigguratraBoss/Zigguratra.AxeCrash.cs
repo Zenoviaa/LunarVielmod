@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
 using static Stellamod.Core.AssetReferences.Assets.NoiseTextures;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
@@ -12,11 +13,12 @@ public partial class Zigguratra
 {
     int AxeCrash_Damage => 32;
     float AxeCrash_ChargeCount => 3;
-    float AxeCrash_WalkingSpeed => 3;
+    float AxeCrash_WalkingSpeed => 1.6f;
     float AxeCrash_WalkingTimePerCharge => 100;
     float AxeCrash_ReadyTime => 30;
+    float AxeCrash_SummonTime => 80;
     float AxeCrash_HoldTime => 80;
-    float AxeCrash_SlamTime => 30;
+    float AxeCrash_SlamTime => 71;
 
     //Slowly walks up to you with the axe behind his back
     //every few steps he readies it more and it charges with lightning,
@@ -32,6 +34,29 @@ public partial class Zigguratra
         {
             case 0:
                 {
+                    if (Timer == 1)
+                    {
+                        GruntSound();
+                        NPC.TargetClosest();
+                    }
+
+                    //He'll sit here and look at you for a second, 
+                    //Then he'll ready his axe behind him before he starts walking
+                    //So basicaly
+                    this.AseAnimator.PlayAnimation(ANIM_AXE_SUMMON, AnimationParams.NoLooping);
+                    NPC.StayGroundedAndRooted();
+                    NPC.SpriteFaceTarget();
+                    FocusOnMe();
+                    SwirlParticlesAround(NPC.Center);
+                    if (Timer >= AxeCrash_SummonTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
                     if(Timer == 1)
                     {
                         GruntSound();
@@ -43,7 +68,7 @@ public partial class Zigguratra
                     //So basicaly
                     this.AseAnimator.PlayAnimation(ANIM_AXE_READY, AnimationParams.NoLooping);
                     NPC.StayGroundedAndRooted();
-                    NPC.FaceTarget();
+                    NPC.SpriteFaceTarget();
                     FocusOnMe();
                     SwirlParticlesAround(NPC.Center);
                     if(Timer >= AxeCrash_ReadyTime)
@@ -54,21 +79,34 @@ public partial class Zigguratra
                 }
                 break;
 
-            case 1:
+            case 2:
                 {
                     if(Timer == 1)
                     {
                         GruntSound();
                     }
 
+           
                     //Here he walks towards the player
                     //AI move towards player lmao
                     var xDirection = NPC.XDirectionToTarget;
                     var walkVelocity = xDirection * AxeCrash_WalkingSpeed;
                     NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, walkVelocity, 0.1f);
-                    NPC.FaceTarget();
+                    NPC.SpriteFaceTarget();
+                    FocusOnMe();
                     this.AseAnimator.PlayAnimation(ANIM_AXE_WALK, AnimationParams.Default);
-                   if(Timer >= AxeCrash_WalkingTimePerCharge)
+                    var axePosition = NPC.Center;
+                    axePosition.X -= NPC.direction * 96;
+                    axePosition.Y = NPC.Bottom.Y;
+                    axePosition.Y -= 12;
+                    axePosition += Main.rand.NextVector2Circular(32, 32);
+                    AmbientThundercloudParticles(axePosition);
+                    AmbientElectricParticles(axePosition);
+                    AmbientLightningParticles(axePosition);
+                    SwirlParticlesAround(axePosition);
+
+                    var xDistToTarget = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+                   if(Timer >= AxeCrash_WalkingTimePerCharge || xDistToTarget < 154)
                     {
                         Timer = 0;
                         AttackCounter++;
@@ -80,8 +118,9 @@ public partial class Zigguratra
                 }
                 break;
 
-            case 2:
+            case 3:
                 {
+                    _outliner.warning = true;
                     if (Timer == 1)
                     {
                         GruntSound();
@@ -89,7 +128,8 @@ public partial class Zigguratra
 
                     NPC.StayGroundedAndRooted();
                     this.AseAnimator.PlayAnimation(ANIM_AXE_SLAM, AnimationParams.NoLooping);
-                    if(Timer >= AxeCrash_SlamTime)
+                    FocusOnMe();
+                    if (Timer >= AxeCrash_SlamTime)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -97,10 +137,14 @@ public partial class Zigguratra
                 }
                 break;
 
-            case 3:
+            case 4:
                 {
-
-                    if(Timer == 1 && MultiplayerHelper.IsHost)
+                    _outliner.attacking = true;
+                    if(Timer == 1)
+                    {
+                        NPC.velocity.X += NPC.direction * 4;
+                    }
+                    if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
                         var firer = ProjFirer.From<AxeLightningCrash>(NPC);
                         firer.position = NPC.Bottom;
@@ -119,7 +163,7 @@ public partial class Zigguratra
                     }
                 }
                 break;
-            case 4:
+            case 5:
                 {
                     SwitchState(AIState.Idle);
                 }

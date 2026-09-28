@@ -47,8 +47,17 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
         {
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
-            particle.velocity *= 0.96f;
-            particle.scale *= 0.98f;
+            if (particle.timeLeft % 15 == 0)
+            {
+                particle.velocity = particle.velocity.RotatedByRandom(Main.rand.NextBool(2)  ? -MathHelper.PiOver4 : MathHelper.PiOver4);
+            }
+            if(particle.timeLeft < 30)
+            {
+                particle.velocity *= 0.94f;
+                particle.scale *= 0.91f;
+            }
+  
+          
             particle.timeLeft--;
         }
     }
@@ -68,7 +77,7 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
         var pass = AssetReferences.Effects.Electric.Sparking.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Apply();
-        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
+        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader, blendState = BlendState.Additive }))
         {
             for (var i = 0; i < _length; i++)
             {
@@ -77,10 +86,16 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
                 var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
                 var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
                 drawer.color = particle.color;
-                drawer.color *= fade;
+                drawer.color = Color.Lerp(drawer.color, Color.Aqua, 1f - fade);
                 drawer.sourceRect = frame;
                 drawer.rotation = particle.velocity.ToRotation();
+                drawer.scale *= particle.scale;
+                drawer.scale.X *= fade * 2.5f;
                 drawer.CenterOrigin();
+                spriteBatch.Draw(drawer);
+
+                drawer.scale *= 2f;
+                drawer.color *= 0.5f;
                 spriteBatch.Draw(drawer);
             }
         }

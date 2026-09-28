@@ -46,7 +46,14 @@ public class LightningBolt : ParticleUpdater<LightningBolt.Data>
         {
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
-            particle.velocity *= 0.96f;
+            if (particle.velocity.LengthSquared() > 1)
+                particle.velocity *= 0.75f;
+            else
+                particle.velocity = particle.velocity.Resize(0.2f);
+            if(particle.timeLeft % 24 == 0)
+            {
+                particle.frame = (byte)Main.rand.Next(FrameData.FrameCount);
+            }
             particle.timeLeft--;
         }
     }
@@ -66,7 +73,7 @@ public class LightningBolt : ParticleUpdater<LightningBolt.Data>
         var pass = AssetReferences.Effects.Electric.SparkyBolt.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Apply();
-        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
+        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader, blendState = BlendState.Additive }))
         {
             for (var i = 0; i < _length; i++)
             {
@@ -76,10 +83,23 @@ public class LightningBolt : ParticleUpdater<LightningBolt.Data>
                 var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
                 var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
                 drawer.color = particle.color;
+                drawer.color = Color.Lerp(drawer.color, Color.Aquamarine, 1f - fade);
                 drawer.color *= fade;
+                if (particle.timeLeft > 55)
+                    drawer.color *= 2;
                 drawer.sourceRect = frame;
                 drawer.rotation = particle.velocity.ToRotation();
-                drawer.CenterOrigin();
+                drawer.scale.Y *= 0.5f;
+                drawer.scale.Y *= fade;
+                drawer.LeftCenterOrigin();
+                spriteBatch.Draw(drawer);
+
+                drawer.scale.Y *= 1.5f;
+                drawer.color *= 0.5f;
+                spriteBatch.Draw(drawer);
+
+                drawer.scale.Y *= 1.5f;
+                drawer.color *= 0.25f;
                 spriteBatch.Draw(drawer);
             }
         }
