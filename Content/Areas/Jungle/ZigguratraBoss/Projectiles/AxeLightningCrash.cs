@@ -4,6 +4,7 @@ using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -32,8 +33,27 @@ public class AxeLightningCrash : ModProjectile
         Projectile.penetrate = -1;
         Projectile.light = 1f;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 36;
+        Projectile.timeLeft = 33;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeLightningSpikeySpark(Vector2 pos)
+    {
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+        var color = Color.Orange;
+        Particles.LightningSpikeySpark.Spawn(new()
+        {
+            position = pos,
+            velocity = vel,
+            color = color,
+            timeLeft = 200
+        });
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeCracks(Vector2 pos)
     {
         Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, timeLeft = 200, color = Color.DarkOrange });
@@ -42,6 +62,42 @@ public class AxeLightningCrash : ModProjectile
         Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeBigLightningBolt(Vector2 pos)
+    {
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+        vel.Y -= 6;
+
+        var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.6f);
+        Particles.LightningBoltBig.Spawn(new()
+        {
+            position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
+            velocity = vel,
+            color = color,
+            timeLeft = Main.rand.NextFloat(45, 100)
+        });
+
+        Zigguratra.PlayLightningSound(pos);
+        var darkColor = Color.Lerp(color, Color.Aquamarine, 0.25f);
+        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Aquamarine, 25, baseSize: 0.16f);
+        for (var f = 0; f < 16; f++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos + Main.rand.NextVector2Circular(32, 32),
+                velocity = Main.rand.NextVector2Circular(16, 16),
+                innerColor = color.ToVector4(),
+                outerColor = darkColor.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.6f, 1.2f)),
+                timeLeft = 90
+            });
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeLightningBolt(Vector2 pos)
     {
         var vel = -Vector2.UnitY;
@@ -74,6 +130,8 @@ public class AxeLightningCrash : ModProjectile
             });
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeLightningSpark(Vector2 pos)
     {
         var vel = -Vector2.UnitY;
@@ -91,7 +149,6 @@ public class AxeLightningCrash : ModProjectile
             scale = Main.rand.NextFloat(0.7f, 1.5f) * 0.3f,
             timeLeft = 60
         });
-
     }
 
     public override void AI()
@@ -104,6 +161,11 @@ public class AxeLightningCrash : ModProjectile
         }
         if(Timer == 1)
         {
+            for(var i = 0; i < 4; i++)
+            {
+                MakeBigLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(64, 64));
+            }
+
             ShockCircles.CreateQuickWhiteFlash(Projectile.Center);
             MakeCracks(Projectile.Center);
             var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.LightGoldenrodYellow, Color.Gold, Color.Black, 20, baseSize: 0.21f);
@@ -205,6 +267,11 @@ public class AxeLightningCrash : ModProjectile
             for(var i = 0; i < 24; i++)
             {
                 MakeLightningSpark(Projectile.Center + Main.rand.NextVector2Circular(64, 64));
+            }
+            for (var i = 0; i < 24; i++)
+            {
+                var edge = Main.rand.NextFloat(200, 252);
+                MakeLightningSpikeySpark(Projectile.Center + Main.rand.NextVector2CircularEdge(edge, edge));
             }
         }
     }

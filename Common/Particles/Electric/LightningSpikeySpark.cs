@@ -3,9 +3,10 @@ using Stellamod.Core.Pixelation;
 using Terraria;
 
 namespace Stellamod.Common.Particles.Electric;
-public class LightningSpark : ParticleUpdater<LightningSpark.Data>
+
+public class LightningSpikeySpark : ParticleUpdater<LightningSpikeySpark.Data>
 {
-    public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 4 };
+    public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 3 };
     public struct Data : IParticleData
     {
         public static readonly Data Default = new()
@@ -25,7 +26,7 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
 
     public override int GetPoolSize()
     {
-        return 256;
+        return 64;
     }
 
     public override void OnSpawn(ref Data particle, in int index)
@@ -46,17 +47,14 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
         {
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
-            if (particle.timeLeft % 15 == 0)
-            {
-                particle.velocity = particle.velocity.RotatedByRandom(Main.rand.NextBool(2)  ? -MathHelper.PiOver4 : MathHelper.PiOver4);
-            }
-            if(particle.timeLeft < 30)
+            particle.velocity *= 0.8f;
+            if (particle.timeLeft < 30)
             {
                 particle.velocity *= 0.94f;
                 particle.scale *= 0.91f;
             }
-  
-          
+
+
             particle.timeLeft--;
         }
     }

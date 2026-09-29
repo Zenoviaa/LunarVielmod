@@ -50,6 +50,8 @@ public sealed class Particles : ModSystem
     public static readonly LightningSpark LightningSpark = new();
     public static readonly LightningBolt LightningBolt = new();
     public static readonly LightningImpact LightningImpact = new();
+    public static readonly LightningBoltBig LightningBoltBig = new();
+    public static readonly LightningSpikeySpark LightningSpikeySpark = new();
     public override void Load()
     {
         base.Load();
@@ -81,7 +83,10 @@ public sealed class Particles : ModSystem
 
             LightningSpark,
             LightningBolt,
-            LightningImpact
+            LightningImpact,
+            LightningBoltBig,
+            LightningSpikeySpark
+
         };
 
         if (Main.netMode == NetmodeID.Server)
