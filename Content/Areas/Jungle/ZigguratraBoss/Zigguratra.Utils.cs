@@ -48,6 +48,15 @@ public partial class Zigguratra
         SoundEngine.PlaySound(zapSound, position);
     }
 
+    void Teleport(Vector2 centerPos)
+    {
+        if (MultiplayerHelper.IsHost)
+        {
+            _teleportPos = centerPos;
+            NPC.netUpdate = true;
+        }
+    }
+
     void AmbientThundercloudParticles(Vector2 centerPos)
     {
         if (Timer % 8 != 0)

@@ -27,6 +27,7 @@ public partial class Zigguratra : ScarletBoss
         Splitting_Lightning,
     }
 
+    Vector2 _teleportPos;
     private bool _version2;
     private Outliner _outliner;
     private ref float Timer => ref NPC.ai[0];
@@ -55,6 +56,7 @@ public partial class Zigguratra : ScarletBoss
 
 
     float _axeLightningAlpha;
+    bool _axeLightningDashed;
     const string ANIM_RELEASE_THE_BEES = "ReleaseTheBees";
     const string ANIM_RELEASE_THE_BEES_HOLD = "ReleaseTheBeesHold";
     const string ANIM_RELEASE_THE_BEES_OUT = "ReleaseTheBeesOut";
@@ -113,6 +115,11 @@ public partial class Zigguratra : ScarletBoss
                 SwitchState(AIState.Despawn);
         }
 
+        if(_teleportPos != Vector2.Zero)
+        {
+            NPC.Center = _teleportPos;
+            _teleportPos = Vector2.Zero;
+        }
         _outliner.SetDefaults();
         _version2 = false;
         _axeLightningAlpha = MathHelper.Lerp(_axeLightningAlpha, 0f, 0.1f);

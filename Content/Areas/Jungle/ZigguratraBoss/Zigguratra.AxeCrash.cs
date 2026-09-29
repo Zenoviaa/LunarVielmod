@@ -15,6 +15,8 @@ public partial class Zigguratra
     float AxeCrash_SummonTime => 80;
     float AxeCrash_HoldTime => 80;
     float AxeCrash_SlamTime => 71;
+
+    float AxeCrash_FastSlamTime => 37;
     float AxeCrash_ChargeLevel => (AttackCounter + 1) / AxeCrash_ChargeCount;
 
     //Slowly walks up to you with the axe behind his back
@@ -27,12 +29,14 @@ public partial class Zigguratra
     private void AI_AxeCrash()
     {
         Timer++;
+        var slamAnimation = _axeLightningDashed ? ANIM_SUPER_AXE_CRASH : ANIM_AXE_SLAM;
         switch (AttackCycle)
         {
             case 0:
                 {
                     if (Timer == 1)
                     {
+                        _axeLightningDashed = false;
                         GruntSound();
                         NPC.TargetClosest();
                     }
@@ -128,7 +132,16 @@ public partial class Zigguratra
                         AttackCounter++;
                         if (AttackCounter >= AxeCrash_ChargeCount)
                         {
-                            AttackCycle++;
+                            if (xDistToTarget > 200)
+                            {
+                                _axeLightningDashed = true;
+                                AttackCycle = 3;
+                            }
+                            else
+                            {
+                                AttackCycle = 4;
+                            }
+                     
                         }
                     }
                 }
@@ -136,30 +149,10 @@ public partial class Zigguratra
 
             case 3:
                 {
-                    _outliner.attacking = true;
-                    if (Timer == 1)
-                    {
-                        GruntSound();
-                    }
-                    if(Timer > 24)
-                    {
-                        var axePosition = AxeAboveHeadPosition;
-                        axePosition += Main.rand.NextVector2Circular(32, 32);
-
-                        if (Timer % 14 == 0)
-                        {
-                            MakeLightningParticle(axePosition);
-                        }
-                        AmbientThundercloudParticles(axePosition);
-                        AmbientElectricParticles(axePosition);
-                        AmbientLightningParticles(axePosition);
-
-                    }
-
-                    NPC.StayGroundedAndRooted();
-                    this.AseAnimator.PlayAnimation(ANIM_AXE_SLAM, AnimationParams.NoLooping);
+                    this.AseAnimator.PlayAnimation(ANIM_AXE_CHARGE_DASH_OUT, AnimationParams.NoLooping);
+                    NPC.SpriteFaceTarget();
                     FocusOnMe();
-                    if (Timer >= AxeCrash_SlamTime)
+                    if(Timer >= 30)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -168,6 +161,67 @@ public partial class Zigguratra
                 break;
 
             case 4:
+                {
+                    _outliner.attacking = true;
+                    if (Timer == 1)
+                    {
+                        if (_axeLightningDashed)
+                        {
+                            var side = -NPC.XDirectionToTarget;
+                            var pos = MyTarget.Bottom;
+                            pos.X += side * 154;
+                            pos.Y -= NPC.height / 2;
+                            Teleport(pos);
+                        }
+                        GruntSound();
+                    }
+                    if (!_axeLightningDashed)
+                    {
+                        if (Timer > 24)
+                        {
+                            var axePosition = AxeAboveHeadPosition;
+                            axePosition += Main.rand.NextVector2Circular(32, 32);
+
+                            if (Timer % 14 == 0)
+                            {
+                                MakeLightningParticle(axePosition);
+                            }
+                            AmbientThundercloudParticles(axePosition);
+                            AmbientElectricParticles(axePosition);
+                            AmbientLightningParticles(axePosition);
+
+                        }
+
+                    }
+                    else
+                    {
+                        if (Timer > 12)
+                        {
+                            var axePosition = AxeAboveHeadPosition;
+                            axePosition += Main.rand.NextVector2Circular(32, 32);
+                            if (Timer % 14 == 0)
+                            {
+                                MakeLightningParticle(axePosition);
+                            }
+                            AmbientThundercloudParticles(axePosition);
+                            AmbientElectricParticles(axePosition);
+                            AmbientLightningParticles(axePosition);
+                        }
+                    }
+          
+                    NPC.StayGroundedAndRooted();
+                    this.AseAnimator.PlayAnimation(slamAnimation, AnimationParams.NoLooping);
+                    FocusOnMe();
+                    var time = _axeLightningDashed ? AxeCrash_FastSlamTime : AxeCrash_SlamTime;
+                    if (Timer >= time)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 5:
                 {
                     _outliner.attacking = true;
                     if (Timer == 1)
@@ -185,7 +239,7 @@ public partial class Zigguratra
                     }
 
                     NPC.StayGroundedAndRooted();
-                    this.AseAnimator.PlayAnimation(ANIM_AXE_SLAM, AnimationParams.NoLooping);
+                    this.AseAnimator.PlayAnimation(slamAnimation, AnimationParams.NoLooping);
                     if (Timer >= AxeCrash_HoldTime)
                     {
                         Timer = 0;
@@ -193,7 +247,7 @@ public partial class Zigguratra
                     }
                 }
                 break;
-            case 5:
+            case 6:
                 {
                     SwitchState(AIState.Idle);
                 }
