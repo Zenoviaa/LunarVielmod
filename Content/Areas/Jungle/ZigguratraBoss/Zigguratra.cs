@@ -2,6 +2,7 @@
 using Stellamod.Core.NPCHelpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,6 +80,24 @@ public partial class Zigguratra : ScarletBoss
     ref float AttackCycle => ref NPC.ai[2];
     ref float AttackCounter => ref NPC.ai[3];
     public override string Texture => TextureRegistry.EmptyTexture;
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _teleportPos = reader.ReadVector2();
+        _axeLightningDashed = reader.ReadBoolean();
+        _version2 = reader.ReadBoolean();
+    }
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_teleportPos);
+        writer.Write(_axeLightningDashed);
+        writer.Write(_version2);
+    }
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
+    }
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
