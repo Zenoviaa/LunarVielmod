@@ -304,7 +304,7 @@ public class AxeLightningCrash : ModProjectile
             Projectile.hostile = false;
         }
 
-        FXUtil.ApplyContrast(MathHelper.Lerp(0.26f, 0f, EasingFunction.InSine(Timer / 60f)));
+   
     }
     public override bool ShouldUpdatePosition()
     {
@@ -316,6 +316,9 @@ public class AxeLightningCrash : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
+        var contrast = MathHelper.Lerp(1.16f, 1f, EasingFunction.InSine(Timer / 60f));
+        var brightness = MathHelper.Lerp(-0.04f, 0f, EasingFunction.InSine(Timer / 60f));
+        FXUtil.ApplyContrastBrightness(contrast, brightness);
         return false;
         //return base.PreDraw(ref lightColor);
     }
