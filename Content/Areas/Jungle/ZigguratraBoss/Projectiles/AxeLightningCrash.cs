@@ -30,9 +30,17 @@ public class AxeLightningCrash : ModProjectile
         Projectile.penetrate = -1;
         Projectile.light = 1f;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 30;
+        Projectile.timeLeft = 36;
     }
-    void MakeLightningSpark(Vector2 pos)
+    void MakeCracks(Vector2 pos)
+    {
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, timeLeft = 200, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
+    }
+
+    void MakeLightningBolt(Vector2 pos)
     {
         var vel = -Vector2.UnitY;
         vel *= 6;
@@ -40,6 +48,39 @@ public class AxeLightningCrash : ModProjectile
 
         var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.6f);
+        Particles.LightningBolt.Spawn(new()
+        {
+            position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
+            velocity = vel,
+            color = color,
+            timeLeft = 60
+        });
+
+        Zigguratra.PlayLightningSound(pos);
+        var darkColor = Color.Lerp(color, Color.Aquamarine, 0.25f);
+        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Aquamarine, 25, baseSize: 0.16f);
+        for (var f = 0; f < 16; f++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos + Main.rand.NextVector2Circular(32, 32),
+                velocity = Main.rand.NextVector2Circular(16, 16),
+                innerColor = color.ToVector4(),
+                outerColor = darkColor.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.6f, 1.2f)),
+                timeLeft = 90
+            });
+        }
+    }
+    void MakeLightningSpark(Vector2 pos)
+    {
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+        vel *= Main.rand.NextFloat(0.5f, 1f);
+
+        var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.9f);
         Particles.LightningSpark.Spawn(new()
         {
             position = pos,
@@ -55,8 +96,31 @@ public class AxeLightningCrash : ModProjectile
     {
         base.AI();
         Timer++;
+        if(Timer % 6 == 0)
+        {
+            MakeLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(100, 100));
+        }
         if(Timer == 1)
         {
+            MakeCracks(Projectile.Center);
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.LightGoldenrodYellow, Color.Gold, Color.Black, 20, baseSize: 0.21f);
+            fx.Scale *= 2.4f;
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 24);
+            ShakeScreenPosition.Shake = 4;
+
+            for(var i = 0; i < Main.rand.Next(5, 8); i++)
+            {
+                var pos = Projectile.Center;
+                pos += Main.rand.NextVector2Circular(32, 32);
+                var vel = Main.rand.NextVector2Circular(8, 8);
+                Particles.LightningBolt.Spawn(new()
+                {
+                    position = pos,
+                    velocity = vel,
+                    timeLeft = Main.rand.Next(20, 60),
+                    color = Color.Gold
+                });
+            }
             //Lightning crash vfx
             Particles.LightningImpact.Spawn(new()
             {
@@ -65,6 +129,7 @@ public class AxeLightningCrash : ModProjectile
                 color = Color.LightGoldenrodYellow,
                 velocity = -Vector2.UnitY
             });
+            
             for(var i = 0; i < 16; i++)
             {
                 var pos = Projectile.Center + Main.rand.NextVector2Circular(80, 32);
@@ -72,7 +137,7 @@ public class AxeLightningCrash : ModProjectile
                 sp.initialColor = Color.Lerp(Color.DarkGray, Color.Black, 0.6f);
                 sp.fadeToColor = Color.Black;
                 sp.behindLayer = true;
-                sp.Scale *= 3;
+                sp.Scale *= 4;
             }
             for(var i = 0; i < 24; i++)
             {
