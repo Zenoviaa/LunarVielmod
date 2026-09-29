@@ -149,6 +149,7 @@ public partial class Zigguratra : ScarletBoss
         }
         _outliner.Update();
         this.SetDrawOrigin(new Vector2(170, 299));
+        Lighting.AddLight(NPC.Center, TorchID.Torch);
     }
     void ChooseAttack()
     {
