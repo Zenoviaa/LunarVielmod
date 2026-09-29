@@ -304,7 +304,7 @@ public class AxeLightningCrash : ModProjectile
             Projectile.hostile = false;
         }
 
-        FXUtil.ApplyContrast(MathHelper.Lerp(0.7f, 0f, EasingFunction.InSine(Timer / 60f)));
+        FXUtil.ApplyContrast(MathHelper.Lerp(0.26f, 0f, EasingFunction.InSine(Timer / 60f)));
     }
     public override bool ShouldUpdatePosition()
     {
