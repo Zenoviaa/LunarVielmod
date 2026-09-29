@@ -3,9 +3,10 @@ using Stellamod.Core.Pixelation;
 using Terraria;
 
 namespace Stellamod.Common.Particles.Electric;
-public class LightningSpark : ParticleUpdater<LightningSpark.Data>
+
+public class LightningArcCrawl : ParticleUpdater<LightningArcCrawl.Data>
 {
-    public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 4 };
+    public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 9 };
     public struct Data : IParticleData
     {
         public static readonly Data Default = new()
@@ -25,13 +26,12 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
 
     public override int GetPoolSize()
     {
-        return 256;
+        return 32;
     }
-
     public override void OnSpawn(ref Data particle, in int index)
     {
         base.OnSpawn(ref particle, index);
-        particle.frame = (byte)Main.rand.Next(FrameData.FrameCount);
+        particle.frame = (byte)Main.rand.Next(FrameData.FrameCount / 2);
     }
 
     public override void LoadSafe()
@@ -45,18 +45,14 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
         for (var i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];
-            particle.position += particle.velocity;
-            if (particle.timeLeft % 15 == 0)
+            //particle.position += particle.velocity;
+            if (particle.timeLeft % 5 == 0)
             {
-                particle.velocity = particle.velocity.RotatedByRandom(Main.rand.NextBool(2)  ? -MathHelper.PiOver4 : MathHelper.PiOver4);
+                particle.frame++;
+                if (particle.frame >= 10)
+                    particle.timeLeft = -1;
             }
-            if(particle.timeLeft < 30)
-            {
-                particle.velocity *= 0.94f;
-                particle.scale *= 0.91f;
-            }
-  
-          
+
             particle.timeLeft--;
         }
     }
@@ -86,21 +82,20 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
                 var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
                 drawer.color = particle.color;
                 drawer.color = Color.Lerp(drawer.color, Color.DarkOrange, 1f - fade);
+    
                 drawer.sourceRect = frame;
-                drawer.rotation = particle.velocity.ToRotation();
                 drawer.scale *= particle.scale;
-                drawer.scale.X *= fade * 2.5f;
-                drawer.CenterOrigin();
-                spriteBatch.Draw(drawer);
-
-                drawer.scale *= 2f;
-                drawer.color *= 0.5f;
+  
+                drawer.LeftCenterOrigin();
+                if (particle.velocity.X < 0)
+                    drawer.spriteEffects = SpriteEffects.FlipHorizontally;
                 spriteBatch.Draw(drawer);
             }
         }
     }
+
     public override void Draw(SpriteBatch spriteBatch, ref Data particle)
     {
-
+ 
     }
 }

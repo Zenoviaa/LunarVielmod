@@ -78,8 +78,8 @@ public partial class Zigguratra
         });
 
         PlayLightningSound(centerPos);
-        var darkColor = Color.Lerp(color, Color.Aquamarine, 0.25f);
-        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Aquamarine, 25, baseSize: 0.16f);
+        var darkColor = Color.Lerp(color, Color.Black, 0.25f);
+        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Black, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with

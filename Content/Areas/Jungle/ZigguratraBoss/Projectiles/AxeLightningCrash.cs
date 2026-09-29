@@ -35,6 +35,21 @@ public class AxeLightningCrash : ModProjectile
         Projectile.tileCollide = false;
         Projectile.timeLeft = 33;
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeCrawlingLightning(Vector2 pos)
+    {
+        var vel = Main.rand.NextVector2Circular(4, 0.2f);
+        var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.6f);
+        Particles.LightningArcCrawl.Spawn(new()
+        {
+            position = pos,
+            velocity = vel,
+            scale = Main.rand.NextFloat(0.9f, 1f),
+            color = color,
+            timeLeft = 100
+        });
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeLightningSpikeySpark(Vector2 pos)
@@ -82,8 +97,8 @@ public class AxeLightningCrash : ModProjectile
         });
 
         Zigguratra.PlayLightningSound(pos);
-        var darkColor = Color.Lerp(color, Color.Aquamarine, 0.25f);
-        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Aquamarine, 25, baseSize: 0.16f);
+        var darkColor = Color.Lerp(color, Color.DarkOrange, 0.25f);
+        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
@@ -116,8 +131,8 @@ public class AxeLightningCrash : ModProjectile
         });
 
         Zigguratra.PlayLightningSound(pos);
-        var darkColor = Color.Lerp(color, Color.Aquamarine, 0.25f);
-        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Aquamarine, 25, baseSize: 0.16f);
+        var darkColor = Color.Lerp(color, Color.DarkOrange, 0.25f);
+        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
@@ -276,6 +291,12 @@ public class AxeLightningCrash : ModProjectile
                 var edge = Main.rand.NextFloat(64, 164);
                 MakeLightningSpikeySpark(Projectile.Center + Main.rand.NextVector2CircularEdge(edge, edge));
             }
+            /*
+            for (var i = 0; i < 4; i++)
+            {
+                var edge = 16;
+                MakeCrawlingLightning(Projectile.Center + Main.rand.NextVector2Circular(edge, edge));
+            }*/
         }
     }
     public override bool ShouldUpdatePosition()

@@ -83,7 +83,7 @@ public class LightningBoltBig : ParticleUpdater<LightningBoltBig.Data>
                 var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
                 var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
                 drawer.color = particle.color;
-                drawer.color = Color.Lerp(drawer.color, Color.Aquamarine, 1f - fade);
+                drawer.color = Color.Lerp(drawer.color, Color.DarkOrange, 1f - fade);
                 drawer.color *= fade;
                 if (particle.timeLeft > 55)
                     drawer.color *= 2;
@@ -188,7 +188,7 @@ public class LightningBolt : ParticleUpdater<LightningBolt.Data>
                 var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
                 var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
                 drawer.color = particle.color;
-                drawer.color = Color.Lerp(drawer.color, Color.Aquamarine, 1f - fade);
+                drawer.color = Color.Lerp(drawer.color, Color.DarkOrange, 1f - fade);
                 drawer.color *= fade;
                 if (particle.timeLeft > 55)
                     drawer.color *= 2;

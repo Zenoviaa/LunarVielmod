@@ -52,6 +52,7 @@ public sealed class Particles : ModSystem
     public static readonly LightningImpact LightningImpact = new();
     public static readonly LightningBoltBig LightningBoltBig = new();
     public static readonly LightningSpikeySpark LightningSpikeySpark = new();
+    public static readonly LightningArcCrawl LightningArcCrawl = new();
     public override void Load()
     {
         base.Load();
@@ -85,7 +86,8 @@ public sealed class Particles : ModSystem
             LightningBolt,
             LightningImpact,
             LightningBoltBig,
-            LightningSpikeySpark
+            LightningSpikeySpark,
+            LightningArcCrawl
 
         };
 
