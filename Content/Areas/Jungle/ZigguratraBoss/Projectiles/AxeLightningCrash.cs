@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Common.ShockCircleSystem;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
@@ -77,7 +79,7 @@ public class AxeLightningCrash : ModProjectile
         var vel = -Vector2.UnitY;
         vel *= 6;
         vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
-        vel *= Main.rand.NextFloat(0.5f, 1f);
+        vel *= Main.rand.NextFloat(0.5f, 3f);
 
         var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.9f);
@@ -102,12 +104,61 @@ public class AxeLightningCrash : ModProjectile
         }
         if(Timer == 1)
         {
+            ShockCircles.CreateQuickWhiteFlash(Projectile.Center);
             MakeCracks(Projectile.Center);
             var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.LightGoldenrodYellow, Color.Gold, Color.Black, 20, baseSize: 0.21f);
             fx.Scale *= 2.4f;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 24);
             ShakeScreenPosition.Shake = 4;
 
+            for(var i = 0; i < 100; i++)
+            {
+                var pos = Projectile.Center;
+                pos.X += Main.rand.NextFloat(-64, 64);
+                pos.Y -= 64;
+                pos.Y += Main.rand.NextFloat(-16, 16);
+                var vel = pos - Projectile.Center;
+                vel = vel.SafeNormalize(Vector2.Zero);
+                vel *= Main.rand.NextFloat(6f, 45);
+                if(i % 2 == 0)
+                {
+                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                    {
+                        innerColor = Color.LightGoldenrodYellow.ToVector4(),
+                        outerColor = Color.DarkOrange.ToVector4(),
+                        position = pos,
+                        velocity = vel,
+                        timeLeft = Main.rand.NextFloat(40, 120),
+                        scale = new Vector2(Main.rand.NextFloat(0.5f, 1.5f)),
+
+                    });
+                }
+                else
+                {
+                    Particles.BitDust.Spawn(BitDustFactory.Default with
+                    {
+                        innerColor = Color.LightGoldenrodYellow.ToVector4(),
+                        outerColor = Color.DarkOrange.ToVector4(),
+                        position = pos,
+                        velocity = vel,
+                        velocityPerTickMult = 0.9f,
+                        timeLeft = Main.rand.NextFloat(40, 120),
+                        scale = new Vector2(Main.rand.NextFloat(0.5f, 1.5f)),
+
+                    });
+                }
+      
+            }
+
+            for(var i = 0; i < 24; i++)
+            {
+                var pos = Projectile.Center;
+                pos.X += Main.rand.NextFloat(-768, 768);
+                var vel = -Vector2.UnitY;
+                vel *= 6;
+                vel *= Main.rand.NextFloat(1f, 2f);
+                FXUtil.MakeSoilParticle(pos, vel);
+            }
             for(var i = 0; i < Main.rand.Next(5, 8); i++)
             {
                 var pos = Projectile.Center;
@@ -129,8 +180,20 @@ public class AxeLightningCrash : ModProjectile
                 color = Color.LightGoldenrodYellow,
                 velocity = -Vector2.UnitY
             });
-            
-            for(var i = 0; i < 16; i++)
+
+
+            for (var i = 0; i < 24; i++)
+            {
+                var pos = Projectile.Center;
+                pos.X += Main.rand.NextFloat(-768, 768);
+                var sp = FaintSmokeParticle.Spawn(pos, Main.rand.NextVector2Circular(1, 1), Scale: Main.rand.NextFloat(0.6f, 1.2f));
+                sp.color *= 0.5f;
+                sp.fadeToColor = Color.Black;
+                sp.behindLayer = true;
+                sp.Scale *= 2;
+            }
+
+            for (var i = 0; i < 16; i++)
             {
                 var pos = Projectile.Center + Main.rand.NextVector2Circular(80, 32);
                 var sp = SmokeParticle.SpawnInAlphaLayer(pos, Main.rand.NextVector2Circular(1, 1), Scale: Main.rand.NextFloat(0.6f, 1.2f));

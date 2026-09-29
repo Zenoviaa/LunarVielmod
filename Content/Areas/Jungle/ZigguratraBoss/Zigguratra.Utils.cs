@@ -48,10 +48,8 @@ public partial class Zigguratra
         sp.Scale *= 3;
     }
 
-    void AmbientLightningParticles(Vector2 centerPos)
+    void MakeLightningParticle(Vector2 centerPos)
     {
-        if (!Main.rand.NextBool(32))
-            return;
         var pos = centerPos + Main.rand.NextVector2Circular(32, 32);
         var vel = -Vector2.UnitY;
         vel *= 6;
@@ -61,7 +59,7 @@ public partial class Zigguratra
         color = Color.Lerp(color, Color.White, 0.6f);
         Particles.LightningBolt.Spawn(new()
         {
-            position = pos - vel.SafeNormalize(Vector2.Zero) * 24, 
+            position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
             velocity = vel,
             color = color,
             timeLeft = 60
@@ -82,6 +80,12 @@ public partial class Zigguratra
                 timeLeft = 90
             });
         }
+    }
+    void AmbientLightningParticles(Vector2 centerPos)
+    {
+        if (!Main.rand.NextBool(32))
+            return;
+        MakeLightningParticle(centerPos);
     }
     void AmbientElectricParticles(Vector2 centerPos)
     {

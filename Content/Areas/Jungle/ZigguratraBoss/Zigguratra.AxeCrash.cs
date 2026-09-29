@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
+using Stellamod.Core.Camera;
 using System;
 using Terraria;
 
@@ -83,6 +84,11 @@ public partial class Zigguratra
                     }
 
 
+                    if(Timer == 14)
+                    {
+                        MakeLightningParticle(AxeBackPosition);
+                    }
+
                     //Here he walks towards the player
                     //AI move towards player lmao
                     var xDirection = NPC.XDirectionToTarget;
@@ -117,6 +123,7 @@ public partial class Zigguratra
 
                     if (Timer >= AxeCrash_WalkingTimePerCharge)
                     {
+                        PixelPrimitiveCircleFactory.CreateInElectricSuck(AxeBackPosition);
                         Timer = 0;
                         AttackCounter++;
                         if (AttackCounter >= AxeCrash_ChargeCount)
