@@ -61,7 +61,7 @@ public class AxeLightningCrash : ModProjectile
             Particles.LightningImpact.Spawn(new()
             {
                 position = Projectile.Center,
-                timeLeft = 60,
+                timeLeft = 30,
                 color = Color.LightGoldenrodYellow,
                 velocity = -Vector2.UnitY
             });

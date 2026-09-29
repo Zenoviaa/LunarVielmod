@@ -56,7 +56,7 @@ public class LightningImpact : ParticleUpdater<LightningImpact.Data>
 
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        var pass = AssetReferences.Effects.Electric.Sparking.CreatePixelPass();
+        var pass = AssetReferences.Effects.Electric.SparkImpact.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Apply();
         using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
@@ -68,10 +68,14 @@ public class LightningImpact : ParticleUpdater<LightningImpact.Data>
                 var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
                 var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
                 drawer.color = particle.color;
-                drawer.color *= fade;
+                drawer.color.A = (byte)(fade * 255);
                 drawer.sourceRect = frame;
                 drawer.rotation = particle.velocity.ToRotation();
                 drawer.LeftCenterOrigin();
+                spriteBatch.Draw(drawer);
+
+                drawer.scale *= 1.4f;
+                drawer.color *= 0.7f;
                 spriteBatch.Draw(drawer);
             }
         }
