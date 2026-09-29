@@ -48,8 +48,9 @@ public class AxeLightningCrash : ModProjectile
         {
             position = pos,
             velocity = vel,
+            scale = Main.rand.NextFloat(0.4f, 0.8f),
             color = color,
-            timeLeft = 200
+            timeLeft = 100
         });
     }
     
@@ -206,10 +207,8 @@ public class AxeLightningCrash : ModProjectile
                         velocityPerTickMult = 0.9f,
                         timeLeft = Main.rand.NextFloat(40, 120),
                         scale = new Vector2(Main.rand.NextFloat(0.5f, 1.5f)),
-
                     });
                 }
-      
             }
 
             for(var i = 0; i < 24; i++)
@@ -221,6 +220,7 @@ public class AxeLightningCrash : ModProjectile
                 vel *= Main.rand.NextFloat(1f, 2f);
                 FXUtil.MakeSoilParticle(pos, vel);
             }
+
             for(var i = 0; i < Main.rand.Next(5, 8); i++)
             {
                 var pos = Projectile.Center;
@@ -234,6 +234,7 @@ public class AxeLightningCrash : ModProjectile
                     color = Color.Gold
                 });
             }
+
             //Lightning crash vfx
             Particles.LightningImpact.Spawn(new()
             {
@@ -264,13 +265,15 @@ public class AxeLightningCrash : ModProjectile
                 sp.behindLayer = true;
                 sp.Scale *= 4;
             }
+
             for(var i = 0; i < 24; i++)
             {
                 MakeLightningSpark(Projectile.Center + Main.rand.NextVector2Circular(64, 64));
             }
-            for (var i = 0; i < 24; i++)
+
+            for (var i = 0; i < 12; i++)
             {
-                var edge = Main.rand.NextFloat(200, 252);
+                var edge = Main.rand.NextFloat(64, 164);
                 MakeLightningSpikeySpark(Projectile.Center + Main.rand.NextVector2CircularEdge(edge, edge));
             }
         }

@@ -51,7 +51,6 @@ public class LightningSpikeySpark : ParticleUpdater<LightningSpikeySpark.Data>
             if (particle.timeLeft < 30)
             {
                 particle.velocity *= 0.94f;
-                particle.scale *= 0.91f;
             }
 
 
@@ -84,10 +83,11 @@ public class LightningSpikeySpark : ParticleUpdater<LightningSpikeySpark.Data>
                 var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
                 drawer.color = particle.color;
                 drawer.color = Color.Lerp(drawer.color, Color.Aqua, 1f - fade);
+                drawer.color *= fade;
+                drawer.color *= 0.6f;
                 drawer.sourceRect = frame;
                 drawer.rotation = particle.velocity.ToRotation();
                 drawer.scale *= particle.scale;
-                drawer.scale.X *= fade * 2.5f;
                 drawer.CenterOrigin();
                 spriteBatch.Draw(drawer);
 
