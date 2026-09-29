@@ -141,6 +141,20 @@ public partial class Zigguratra
                     {
                         GruntSound();
                     }
+                    if(Timer > 24)
+                    {
+                        var axePosition = AxeAboveHeadPosition;
+                        axePosition += Main.rand.NextVector2Circular(32, 32);
+
+                        if (Timer % 14 == 0)
+                        {
+                            MakeLightningParticle(axePosition);
+                        }
+                        AmbientThundercloudParticles(axePosition);
+                        AmbientElectricParticles(axePosition);
+                        AmbientLightningParticles(axePosition);
+
+                    }
 
                     NPC.StayGroundedAndRooted();
                     this.AseAnimator.PlayAnimation(ANIM_AXE_SLAM, AnimationParams.NoLooping);

@@ -9,6 +9,18 @@ namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
 
 public partial class Zigguratra
 {
+    Vector2 AxeAboveHeadPosition
+    {
+        get
+        {
+            var axePosition = NPC.Center;
+            axePosition.X += NPC.direction * 60;
+            axePosition.Y = NPC.Top.Y;
+            axePosition.Y += 36;
+
+            return axePosition;
+        }
+    }
     Vector2 AxeBackPosition
     {
         get
