@@ -33,7 +33,7 @@ public class AxeLightningCrash : ModProjectile
         Projectile.penetrate = -1;
         Projectile.light = 1f;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 33;
+        Projectile.timeLeft = 60;
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeCrawlingLightning(Vector2 pos)
@@ -298,6 +298,13 @@ public class AxeLightningCrash : ModProjectile
                 MakeCrawlingLightning(Projectile.Center + Main.rand.NextVector2Circular(edge, edge));
             }*/
         }
+
+        if(Timer >= 33)
+        {
+            Projectile.hostile = false;
+        }
+
+        FXUtil.ApplyContrast(MathHelper.Lerp(0.7f, 0f, EasingFunction.InSine(Timer / 60f)));
     }
     public override bool ShouldUpdatePosition()
     {
