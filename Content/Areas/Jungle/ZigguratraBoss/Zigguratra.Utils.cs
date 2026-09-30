@@ -143,6 +143,19 @@ public partial class Zigguratra
         sp.Scale *= 1.2f;
         sp.fast = true;
     }
+    void MakeSparklyParticles(Vector2 position)
+    {
+        if (Timer % 3 != 0)
+            return;
+        var pos = position + Main.rand.NextVector2Circular(32, 32);
+        var sp = SparkleParticle.Spawn(pos, Main.rand.NextVector2Circular(8, 8), Scale: Main.rand.NextFloat(0.35f, 0.66f));
+        sp.innerColor = Color.Gold;
+        sp.outerColor = Color.DarkOrange;
+        sp.gravity = 0;
+        sp.fast = true;
+        sp.dampening = 0.05f;
+    }
+
     public GlowDonutParticle MakeGoldenDonut(Vector2 position, Vector2 velocity)
     {
         var p = LegacyParticle.NewParticle<GlowDonutParticle>(position, velocity);

@@ -64,6 +64,8 @@ public partial class Zigguratra
                         JumpEndPosition.Y = JumpStartPosition.Y;
                     }
 
+                    //Here I wanna create soem sparkly particles
+                    MakeSparklyParticles(NPC.Center);
                     _targetAfterIamgeAlpha = 1f;
                     _outliner.attacking = true;
                     var upward = -RudeBuster_JumpHeight;
