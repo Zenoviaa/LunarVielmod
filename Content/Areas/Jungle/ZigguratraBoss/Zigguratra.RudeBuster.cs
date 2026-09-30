@@ -64,7 +64,7 @@ public partial class Zigguratra
                         JumpEndPosition.Y = JumpStartPosition.Y;
                     }
 
-
+                    _targetAfterIamgeAlpha = 1f;
                     _outliner.attacking = true;
                     var upward = -RudeBuster_JumpHeight;
                     var time = RudeBuster_JumpTime;
@@ -118,7 +118,7 @@ public partial class Zigguratra
                         NPC.velocity = Vector2.UnitX * NPC.spriteDirection * 15;
                     }
                     MakeJumpingParticles(NPC.Bottom);
-
+                    _targetAfterIamgeAlpha = 1f;
 
                     this.AseAnimator.PlayAnimation(ANIM_JUMPSTART, AnimationParams.NoLooping);
                     NPC.SpriteFaceTarget();

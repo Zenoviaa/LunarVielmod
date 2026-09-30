@@ -54,6 +54,8 @@ public partial class Zigguratra : ScarletBoss
     float IdleTime => 100;
 
 
+    float _targetAfterIamgeAlpha;
+    float _afterImageAlpha;
     float _invisibleAlpha;
     float _axeLightningAlpha;
     bool _axeLightningDashed;
@@ -159,6 +161,7 @@ public partial class Zigguratra : ScarletBoss
         _version2 = false;
         _axeLightningAlpha = MathHelper.Lerp(_axeLightningAlpha, 0f, 0.1f);
         _invisibleAlpha = 1f;
+        _targetAfterIamgeAlpha = 0f;
         switch (State)
         {
             case AIState.Spawn:
@@ -193,6 +196,7 @@ public partial class Zigguratra : ScarletBoss
                 break;
 
         }
+        _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, _targetAfterIamgeAlpha, 0.1f);
         _outliner.Update();
         this.SetDrawOrigin(new Vector2(170, 299));
         Lighting.AddLight(NPC.Center, TorchID.Torch);
