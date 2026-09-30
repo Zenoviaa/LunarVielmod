@@ -2,6 +2,7 @@
 using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.ScreenEffectsSystem;
@@ -30,6 +31,7 @@ public class ScreenEffectSystem : ModSystem
 
     private void ApplyScreenEffects(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
     {
+
         if (!Main.gameMenu)
         {
             var gDevice = Main.spriteBatch.graphicsDevice;

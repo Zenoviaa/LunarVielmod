@@ -25,7 +25,7 @@ public static partial class CombatUtil
         /// </summary>
         public void StayGroundedAndRooted()
         {
-            npc.velocity.X *= 0.96f;
+            npc.velocity.X *= 0.945f;
             npc.noTileCollide = false;
             npc.noGravity = false;
         }

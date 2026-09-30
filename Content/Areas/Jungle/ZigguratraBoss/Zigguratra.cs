@@ -52,12 +52,15 @@ public partial class Zigguratra : ScarletBoss
         }
     }
 
+    Vector2 _vector21;
+    Vector2 _vector22;
     float IdleTime => 100;
 
 
 
     float _axeLightningAlpha;
     bool _axeLightningDashed;
+    const string ANIM_IDLE = "Idle";
     const string ANIM_RELEASE_THE_BEES = "ReleaseTheBees";
     const string ANIM_RELEASE_THE_BEES_HOLD = "ReleaseTheBeesHold";
     const string ANIM_RELEASE_THE_BEES_OUT = "ReleaseTheBeesOut";
@@ -77,8 +80,15 @@ public partial class Zigguratra : ScarletBoss
     const string ANIM_SUPER_AXE_CRASH = "SuperAxeCrash";
     const string ANIM_FALLING_AXE_CRASH = "FallingAxeCrash";
     const string ANIM_SPIN = "Spin";
+
+    const string ANIM_JUMPSTART = "JumpStart";
+    const string ANIM_SPINBUSTER = "SpinBuster";
+    const string ANIM_JUMP = "Jump";
     ref float AttackCycle => ref NPC.ai[2];
     ref float AttackCounter => ref NPC.ai[3];
+
+
+    int Damage_RudeLightning => 37;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -86,6 +96,9 @@ public partial class Zigguratra : ScarletBoss
         _teleportPos = reader.ReadVector2();
         _axeLightningDashed = reader.ReadBoolean();
         _version2 = reader.ReadBoolean();
+        _vector21 = reader.ReadVector2();
+        _vector22 = reader.ReadVector2();
+        _rudelySwung = reader.ReadBoolean();
     }
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -93,7 +106,11 @@ public partial class Zigguratra : ScarletBoss
         writer.WriteVector2(_teleportPos);
         writer.Write(_axeLightningDashed);
         writer.Write(_version2);
+        writer.WriteVector2(_vector21);
+        writer.WriteVector2(_vector22);
+        writer.Write(_rudelySwung);
     }
+
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return false;

@@ -1,14 +1,8 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Common.ShockCircleSystem;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
@@ -23,7 +17,7 @@ public class AxeLightningCrash : ModProjectile
     {
         base.SetStaticDefaults();
     }
-    
+
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -68,7 +62,7 @@ public class AxeLightningCrash : ModProjectile
             timeLeft = 100
         });
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeCracks(Vector2 pos)
     {
@@ -171,13 +165,13 @@ public class AxeLightningCrash : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer % 6 == 0)
+        if (Timer % 6 == 0)
         {
             MakeLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(100, 100));
         }
-        if(Timer == 1)
+        if (Timer == 1)
         {
-            for(var i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 MakeBigLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(64, 64));
             }
@@ -189,7 +183,7 @@ public class AxeLightningCrash : ModProjectile
             FXUtil.ShakeCamera(Projectile.Center, 1024, 24);
             ShakeScreenPosition.Shake = 4;
 
-            for(var i = 0; i < 100; i++)
+            for (var i = 0; i < 100; i++)
             {
                 var pos = Projectile.Center;
                 pos.X += Main.rand.NextFloat(-64, 64);
@@ -198,7 +192,7 @@ public class AxeLightningCrash : ModProjectile
                 var vel = pos - Projectile.Center;
                 vel = vel.SafeNormalize(Vector2.Zero);
                 vel *= Main.rand.NextFloat(6f, 45);
-                if(i % 2 == 0)
+                if (i % 2 == 0)
                 {
                     Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                     {
@@ -226,7 +220,7 @@ public class AxeLightningCrash : ModProjectile
                 }
             }
 
-            for(var i = 0; i < 24; i++)
+            for (var i = 0; i < 24; i++)
             {
                 var pos = Projectile.Center;
                 pos.X += Main.rand.NextFloat(-768, 768);
@@ -236,7 +230,7 @@ public class AxeLightningCrash : ModProjectile
                 FXUtil.MakeSoilParticle(pos, vel);
             }
 
-            for(var i = 0; i < Main.rand.Next(5, 8); i++)
+            for (var i = 0; i < Main.rand.Next(5, 8); i++)
             {
                 var pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(32, 32);
@@ -281,7 +275,7 @@ public class AxeLightningCrash : ModProjectile
                 sp.Scale *= 4;
             }
 
-            for(var i = 0; i < 24; i++)
+            for (var i = 0; i < 24; i++)
             {
                 MakeLightningSpark(Projectile.Center + Main.rand.NextVector2Circular(64, 64));
             }
@@ -299,12 +293,12 @@ public class AxeLightningCrash : ModProjectile
             }*/
         }
 
-        if(Timer >= 33)
+        if (Timer >= 33)
         {
             Projectile.hostile = false;
         }
 
-   
+
     }
     public override bool ShouldUpdatePosition()
     {

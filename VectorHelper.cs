@@ -7,11 +7,6 @@ namespace Stellamod
 {
     public static class VectorHelper
     {
-        public static Vector2 PointOnCircle(Vector2 origin, float xRadius, float yRadius, float startRadians, float endRadians, float i, float length)
-        {
-            float p = i / length;
-            return PointOnCircle(origin, xRadius, yRadius, startRadians, endRadians, i / length);
-        }
         public static Vector2 PointOnCircle(in Vector2 origin, in float xRadius, in float yRadius, in float startRadians, in float endRadians, in float p)
         {
             float radians = MathHelper.Lerp(startRadians, endRadians, p);
@@ -21,7 +16,6 @@ namespace Stellamod
             return pos;
         }
 
-
         public static Rectangle CenterPad(this Rectangle rect, int padding)
         {
             rect.Width += padding;
@@ -29,6 +23,7 @@ namespace Stellamod
             rect.Location += new Point(-padding / 2, -padding / 2);
             return rect;
         }
+
         public static Rectangle CenterPad(this Rectangle rect, int paddingX, int paddingY)
         {
             rect.Width += paddingX;

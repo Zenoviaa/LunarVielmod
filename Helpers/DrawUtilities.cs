@@ -6,6 +6,7 @@ using System;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -881,16 +882,27 @@ public struct SpritebatchDrawer
     public Vector2 drawOrigin;
     public SpriteEffects spriteEffects;
     public Vector2 scale;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Apply(Projectile projectile, OldPosition oldPosition)
+    {
+        rotation = projectile.oldRot[oldPosition.index];
+        worldPosition = oldPosition.position + projectile.Size * 0.5f;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Flip(ref float xPosition)
     {
         xPosition = sourceRect.Value.Width - xPosition;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void VerticalFrame(int frameIndex, int frameCount)
     {
         sourceRect = texture.GetFrame(frameIndex, frameCount);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void LeftCenterOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(0f, 0.5f);
@@ -905,6 +917,7 @@ public struct SpritebatchDrawer
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void BottomLeftOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(0f, 1f);
@@ -918,6 +931,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void RightCenterOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(1f, 0.5f);
@@ -931,6 +946,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void BottomCenterOrigin()
     {
         if (sourceRect.HasValue)
@@ -943,6 +960,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height);
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Origin(float xPct, float yPct)
     {
         if (sourceRect.HasValue)
@@ -955,6 +974,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * xPct, texture.Height * yPct);
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void TopCenterOrigin()
     {
         if (sourceRect.HasValue)
@@ -967,6 +988,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * 0.5f, 0);
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void CenterOrigin()
     {
         if (sourceRect.HasValue)
@@ -980,6 +1003,7 @@ public struct SpritebatchDrawer
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromZTileDraw(Asset<Texture2D> textureAsset, ZTileDrawData drawData)
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, drawData.drawPosition + Main.screenPosition);
@@ -992,6 +1016,7 @@ public struct SpritebatchDrawer
         return drawer;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromTextureAsset(Asset<Texture2D> textureAsset, Vector2 worldPosition)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
@@ -1005,6 +1030,8 @@ public struct SpritebatchDrawer
         spritebatchDrawer.scale = Vector2.One;
         return spritebatchDrawer;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromTextureAsset(Texture2D textureAsset, Vector2 worldPosition)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
@@ -1020,6 +1047,7 @@ public struct SpritebatchDrawer
     }
 
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromProjectile(Projectile projectile)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
@@ -1035,6 +1063,7 @@ public struct SpritebatchDrawer
     }
 
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromNPC(NPC npc)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
