@@ -13,6 +13,7 @@ namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
 public class RudeLightningBuster : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
+    ref float Style => ref Projectile.ai[1];
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeLightningSpikeySpark(Vector2 pos)
@@ -46,6 +47,7 @@ public class RudeLightningBuster : ModProjectile
         Projectile.penetrate = -1;
         Projectile.light = 1f;
         Projectile.tileCollide = false;
+        Projectile.timeLeft = 180;
     }
 
     public override void AI()
@@ -54,7 +56,8 @@ public class RudeLightningBuster : ModProjectile
         Timer++;
         if (Timer >= 15)
         {
-            Projectile.tileCollide = true;
+            if(Style == 0)
+                Projectile.tileCollide = true;
             Projectile.velocity *= 1.2f;
         }
         if (Main.rand.NextBool(8))

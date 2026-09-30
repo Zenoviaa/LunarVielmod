@@ -1,4 +1,5 @@
-﻿using Stellamod.Core;
+﻿using Stellamod.Common.Animations;
+using Stellamod.Core;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
@@ -12,6 +13,7 @@ public partial class Zigguratra
             var drawInfo = NPC.GetAnimatorDrawInfo(drawColor);
             for(var i =0; i < NPC.oldPos.Length; i++)
             {
+
                 var ratio = (float)i / (float)NPC.oldPos.Length;
                 var afDrawInfo = drawInfo;
                 var op = NPC.oldPos[i];
@@ -20,6 +22,9 @@ public partial class Zigguratra
                 afDrawInfo.worldPosition = posToDraw;
                 afDrawInfo.color = Color.Lerp(Color.Gold, Color.Transparent, ratio) * 0.3f;
                 afDrawInfo.color.A = 0;
+
+                var offset = afDrawInfo.drawOrigin - this.AseAnimator.centerDrawOrigin;
+                afDrawInfo.worldPosition += offset;
                 Main.spriteBatch.Draw(afDrawInfo);
             }
         }

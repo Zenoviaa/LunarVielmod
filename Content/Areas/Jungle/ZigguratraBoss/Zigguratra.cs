@@ -205,7 +205,7 @@ public partial class Zigguratra : ScarletBoss
     {
         var state = AttackPattern.NextPattern();
         SwitchState(state);
-        SwitchState(AIState.Rude_Buster);
+        SwitchState(AIState.Splitting_Lightning);
     }
 
     private void SwitchState(AIState state)

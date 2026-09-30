@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
+using Stellamod.Core.Camera;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
@@ -10,8 +12,10 @@ public partial class Zigguratra
     float SplittingLightning_FallingCrashTime => 40;
     float SplittingLightning_AxeChargeCount => 3;
     float SplittingLightning_CrashHoldTime => 45;
+    float SplittingLightning_CrashCount => 3;
     void AI_SplittingLightningCrash()
     {
+
         Timer++;
         FocusOnMe();
         switch (AttackCycle)
@@ -20,9 +24,32 @@ public partial class Zigguratra
                 {
                     if (Timer == 1)
                     {
-                        Teleport(MyTarget.Top + new Vector2(0, -24));
+                        this.AseAnimator.PlayAnimation(ANIM_AXE_CHARGE_DASH_OUT, AnimationParams.NoLooping);
+                        var velOffset = MyTarget.velocity * 24;
+                        if (velOffset.Y > 0)
+                            velOffset.Y = 0;
+                        Teleport(MyTarget.Top + new Vector2(0, -24) + velOffset);
                     }
+                    _targetAfterIamgeAlpha = 1f;
+                    if (Timer % 10 == 0)
+                    {
+                        var pos = NPC.Top;
+                        pos += Main.rand.NextVector2Circular(32, 32);
 
+                        var vel = -Vector2.UnitY;
+                        vel *= 6;
+                        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+                        var color = Color.Orange;
+                        Particles.LightningSpikeySpark.Spawn(new()
+                        {
+                            position = pos,
+                            velocity = vel,
+                            scale = Main.rand.NextFloat(0.4f, 0.8f),
+                            color = color,
+                            timeLeft = 100
+                        });
+                    }
                     _outliner.attacking = true;
                     NPC.StayGroundedAndRooted();
                     this.AseAnimator.PlayAnimation(ANIM_FALLING_AXE_CRASH, AnimationParams.NoLooping);
@@ -47,10 +74,20 @@ public partial class Zigguratra
                         firer.New();
                     }
                     _invisibleAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / SplittingLightning_CrashHoldTime));
-                    NPC.velocity.Y = MathHelper.Lerp(0, -12, EasingFunction.InExpo(Timer / SplittingLightning_CrashHoldTime));
-                    if (Timer >= SplittingLightning_CrashHoldTime)
+                //    NPC.velocity.Y = MathHelper.Lerp(-4, -8, EasingFunction.InExpo(Timer / SplittingLightning_CrashHoldTime));
+                    if (Timer >= SplittingLightning_CrashHoldTime )
                     {
-                        SwitchState(AIState.Idle);
+                        AttackCounter++;
+                        if(AttackCounter >= SplittingLightning_CrashCount)
+                        {
+                            SwitchState(AIState.Idle);
+                        }
+                        else
+                        {
+                            Timer = 0;
+                            AttackCycle--;
+                        }
+       
                     }
                 }
                 break;
@@ -129,6 +166,10 @@ public partial class Zigguratra
             case 1:
                 {
                     this.AseAnimator.PlayAnimation(ANIM_AXE_CHARGE_DASH_OUT, AnimationParams.NoLooping);
+                    if(Timer == 30)
+                    {
+                        Teleport(MyTarget.Top + new Vector2(0, -24));
+                    }
                     if (Timer >= SplittingLightning_AwayTime)
                     {
                         SwitchState(AIState.Splitting_Lightning_Crash);

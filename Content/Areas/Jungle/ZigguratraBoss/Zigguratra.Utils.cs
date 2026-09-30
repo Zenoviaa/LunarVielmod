@@ -39,7 +39,10 @@ public partial class Zigguratra
     {
         get
         {
-            return AxeBackPosition;
+            var axePosition = NPC.Center;
+            axePosition.Y = NPC.Top.Y;
+            
+            return axePosition;
         }
     }
     
@@ -47,8 +50,12 @@ public partial class Zigguratra
     {
         get
         {
-            //TODO, fix this to be aligned
-            return AxeBackPosition;
+            var axePosition = NPC.Center;
+            axePosition.X -= NPC.direction * 80;
+            axePosition.Y = NPC.Center.Y;
+            axePosition.Y -= 24;
+        
+            return axePosition;
         }
     }
     

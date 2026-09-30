@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.ShockCircleSystem;
+using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
@@ -181,9 +182,22 @@ public class AxeLightningCrash : ModProjectile
             {
                 var lightningFirer = ProjFirer.From<AxeLightningStrike>(Projectile);
                 lightningFirer.velocity = Vector2.UnitY;
-                lightningFirer.position += new Vector2(0, -256);
+                lightningFirer.position += new Vector2(0, -512);
                 lightningFirer.New();
             }
+            if (this.OwnedByLocalClient())
+            {
+                /*
+                var busterFierer = ProjFirer.From<RudeLightningBuster>(Projectile);
+                busterFierer.velocity = -Vector2.UnitX;
+                busterFierer.position.Y -= 64;
+                busterFierer.ai1 = 1;
+                busterFierer.New();
+
+                busterFierer.velocity = Vector2.UnitX;
+                busterFierer.New();*/
+            }
+       
         }
 
         if (Timer % 6 == 0)
@@ -378,13 +392,11 @@ public class AxeLightningStrike : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-            SoundStyle zap = SoundID.DD2_LightningBugZap;
-            zap.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(zap, Projectile.position);
+
             _lightningPower = 10;
         }
 
-        if (Timer == 15)
+        if (Timer == 5)
         {
             _lightningPower = 5;
         }
@@ -396,7 +408,7 @@ public class AxeLightningStrike : ModProjectile
 
         float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.position, Projectile.velocity.SafeNormalize(Vector2.Zero), 2400);
         BeamLength = targetBeamLength;
-        if (Timer == 30)
+        if (Timer == 2)
         {
             _lightningPower = 0.9f;
             _lightningTime = 0;
@@ -572,7 +584,7 @@ public class AxeLightningStrike : ModProjectile
 
     public override bool? CanDamage()
     {
-        return Timer > 30;
+        return Timer < 30;
     }
 
     public override bool OnTileCollide(Vector2 oldVelocity)
@@ -598,8 +610,8 @@ public class AxeLightningStrike : ModProjectile
         lightningShader.Time = _lightningTime;
         lightningShader.Power = _lightningPower;
         TrailDrawer.Draw(spriteBatch, BeamPoints, BeamRot, LightningColorFunction, LightningWidthFunction, lightningShader);
-        if (Timer >= 30)
-            TrailDrawer.Draw(spriteBatch, BeamPoints, BeamRot, LightningColorFunction, LightningWidthFunction, lightningShader);
+        if(Timer < 15)
+           TrailDrawer.Draw(spriteBatch, BeamPoints, BeamRot, LightningColorFunction, LightningWidthFunction, lightningShader);
 
         return false;
     }
@@ -611,7 +623,7 @@ public class AxeLightningStrike : ModProjectile
 
     private Color LightningColorFunction(float completionRatio)
     {
-        Color lerpColor = Color.Lerp(Color.White, Color.Blue, (Timer - 30f) / 30f);
+        Color lerpColor = Color.Lerp(Color.White, Color.DarkOrange, Timer / 30f);
         return Color.Lerp(Color.Transparent, lerpColor, EasingFunction.QuadraticBump(completionRatio)); ;
     }
 
