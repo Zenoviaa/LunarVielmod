@@ -1,7 +1,15 @@
-﻿using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
+﻿using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
 
@@ -256,3 +264,4 @@ public partial class Zigguratra
         }
     }
 }
+

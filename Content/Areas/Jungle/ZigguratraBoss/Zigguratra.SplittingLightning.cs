@@ -15,7 +15,6 @@ public partial class Zigguratra
     float SplittingLightning_FallingCrashTime => 40;
     float SplittingLightning_AxeChargeCount => 3;
     float SplittingLightning_CrashHoldTime => 45;
-    float Splittin
     private void AI_SplittingLightning()
     {
         Timer++;
@@ -119,6 +118,7 @@ public partial class Zigguratra
                     if(Timer == 1)
                     {
                         var firer = ProjFirer.From<AxeLightningCrash>(NPC);
+                        firer.ai1 = 1;
                         firer.position = NPC.Bottom;
                         firer.damage = Damage_SplittingLightningCrash;
                         firer.knockback = 1;
