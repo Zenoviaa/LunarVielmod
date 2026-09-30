@@ -52,6 +52,11 @@ public class RudeLightningBuster : ModProjectile
     {
         base.AI();
         Timer++;
+        if (Timer >= 15)
+        {
+            Projectile.tileCollide = true;
+            Projectile.velocity *= 1.1f;
+        }
         if (Main.rand.NextBool(8))
         {
             MakeLightningSpikeySpark(Projectile.Center + Main.rand.NextVector2Circular(32, 32));
@@ -95,22 +100,13 @@ public class RudeLightningBuster : ModProjectile
 
     void DrawPixelatedSlash(SpriteBatch sb, Vector2 sp)
     {
-        var drawer = Projectile.Drawer;
-        foreach (OldPosition oldPos in Projectile.IterateOldPosBackwards())
-        {
-            var afDrawer = drawer;
-            afDrawer.Apply(Projectile, oldPos);
-            afDrawer.color = Color.Lerp(Color.Gold, Color.Transparent, oldPos.progress) * 0.3f;
-            afDrawer.color.A = 0;
-            sb.Draw(afDrawer);
-        }
 
         var noiseTexture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset;
         var pass = AssetReferences.Effects.Electric.RudeLightningSlash.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.spriteSize = TextureAssets.Projectile[Type].Size();
         pass.Parameters.noiseTexelSize = noiseTexture.Value.GetTexelSize();
-        pass.Parameters.distortionStrength = 0.03f;
+        pass.Parameters.distortionStrength = 0.16f;
         pass.Parameters.noiseSampler = new HlslSampler
         {
             Texture = noiseTexture.Value,
@@ -122,7 +118,25 @@ public class RudeLightningBuster : ModProjectile
         //Just drawing like this should be fine.
         using (sb.Ctx(sb.Parameters with { effect = pass.Shader }))
         {
-            drawer.color *= ExtraMath.Osc(0.9f, 1f, speed: 16);
+            var drawer = Projectile.Drawer;
+            drawer.scale *= 0.47f;
+            foreach (OldPosition oldPos in Projectile.IterateOldPosBackwards())
+            {
+                var afDrawer = drawer;
+                afDrawer.Apply(Projectile, oldPos);
+                afDrawer.color = Color.Lerp(Color.Gold, Color.Transparent, oldPos.progress) * 0.15f;
+                afDrawer.color.A = 0;
+                afDrawer.scale *= MathHelper.Lerp(1f, 0f, oldPos.progress);
+                sb.Draw(afDrawer);
+            }
+
+            drawer.color = Color.White;
+            drawer.color *= ExtraMath.Osc(0.29f, 1f, speed: 64);
+            sb.Draw(drawer);
+
+            drawer.scale *= 1.5f;
+            drawer.color = Color.Gold * 0.3f;
+            drawer.color.A = 0;
             sb.Draw(drawer);
         }
 

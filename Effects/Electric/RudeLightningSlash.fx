@@ -17,10 +17,10 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     float4 spriteColor = tex2D(spriteSampler, distortedCoords);
     spriteColor *= 1.6;
     
-    float osc = sin(time * 8.0) * 0.5 + 0.5;
-    float osc2 = lerp(0.6, 1.0, osc);
+    float osc = sin(time * 16.0) * 0.5 + 0.5;
+    float osc2 = lerp(0.95, 1.0, osc);
     spriteColor *= osc;   
-    return spriteColor;
+    return spriteColor * tintColor;
 }
 
 technique Technique1

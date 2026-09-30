@@ -20,7 +20,7 @@ public class RudeLightningCrash : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.height = Projectile.width = 128;
+        Projectile.height = Projectile.width = 256;
         Projectile.hostile = true;
         Projectile.penetrate = -1;
         Projectile.light = 1f;

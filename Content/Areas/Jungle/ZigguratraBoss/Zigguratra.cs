@@ -1,11 +1,6 @@
 ﻿using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,6 +21,8 @@ public partial class Zigguratra : ScarletBoss
         Release_The_Bees,
         Call_The_Bees,
         Splitting_Lightning,
+        Splitting_Lightning_Crash,
+        Splitting_Lightning_WallJump,
     }
 
     Vector2 _teleportPos;
@@ -42,7 +39,7 @@ public partial class Zigguratra : ScarletBoss
     {
         get
         {
-            if(field == null)
+            if (field == null)
             {
                 field = new();
                 field.AddPattern(AIState.Axe_Crash, 1f);
@@ -153,7 +150,7 @@ public partial class Zigguratra : ScarletBoss
                 SwitchState(AIState.Despawn);
         }
 
-        if(_teleportPos != Vector2.Zero)
+        if (_teleportPos != Vector2.Zero)
         {
             NPC.Center = _teleportPos;
             _teleportPos = Vector2.Zero;
@@ -191,7 +188,10 @@ public partial class Zigguratra : ScarletBoss
             case AIState.Splitting_Lightning:
                 AI_SplittingLightning();
                 break;
-           
+            case AIState.Splitting_Lightning_Crash:
+                AI_SplittingLightningCrash();
+                break;
+
         }
         _outliner.Update();
         this.SetDrawOrigin(new Vector2(170, 299));
@@ -201,7 +201,7 @@ public partial class Zigguratra : ScarletBoss
     {
         var state = AttackPattern.NextPattern();
         SwitchState(state);
-        SwitchState(AIState.Axe_Crash);
+        SwitchState(AIState.Rude_Buster);
     }
 
     private void SwitchState(AIState state)
@@ -218,12 +218,12 @@ public partial class Zigguratra : ScarletBoss
     private void AI_Spawn()
     {
         Timer++;
-        if(Timer >= 90)
+        if (Timer >= 90)
         {
             SwitchState(AIState.Idle);
         }
     }
-    
+
     private void AI_Despawn()
     {
         Timer++;
@@ -232,11 +232,14 @@ public partial class Zigguratra : ScarletBoss
             NPC.active = false;
         }
     }
-    
+
     private void AI_Idle()
     {
+        this.AseAnimator.PlayAnimation(ANIM_IDLE);
+        NPC.SpriteFaceTarget();
+        NPC.StayGroundedAndRooted();
         Timer++;
-        if(Timer >= IdleTime)
+        if (Timer >= IdleTime)
         {
             ChooseAttack();
         }

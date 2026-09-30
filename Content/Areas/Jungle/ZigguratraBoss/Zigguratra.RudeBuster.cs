@@ -13,14 +13,16 @@ public partial class Zigguratra
     bool _rudelySwung;
     ref Vector2 JumpStartPosition => ref _vector21;
     ref Vector2 JumpEndPosition => ref _vector22;
-    float RudeBuster_JumpHeight => 252;
+    float RudeBuster_JumpHeight => 384;
     float RudeBuster_JumpPrepTime => 30;
-    float RudeBuster_JumpTime => 60;
-    float RudeBuster_SlideTime => 45;
+    float RudeBuster_JumpTime => 73;
+    float RudeBuster_SlideTime => 26;
     float RudeBuster_SwingCount => 5;
     float RudeBuster_EndTime => 35;
     private void AI_RudeBuster()
     {
+        FocusOnMe();
+
         Timer++;
         switch (AttackCycle)
         {
@@ -48,8 +50,10 @@ public partial class Zigguratra
 
                     if(Timer == 1)
                     {
+                        _rudelySwung = false;
                         JumpStartPosition = NPC.Center;
-                        JumpEndPosition = JumpStartPosition.FlipX(MyTarget.Center);
+                        JumpEndPosition = MyTarget.Center;
+                        JumpEndPosition.Y = JumpStartPosition.Y;
                     }
 
 
@@ -70,7 +74,7 @@ public partial class Zigguratra
                     NPC.Center = pos;
 
                     
-                    if(ratio < 0.45f)
+                    if(ratio < 0.35f)
                     {
                         //Jump towards player
                         //I thinks for this we'll just make two points and do easing so it's clean
@@ -79,13 +83,14 @@ public partial class Zigguratra
                     else
                     {
                         this.AseAnimator.PlayAnimation(ANIM_SPINBUSTER, AnimationParams.NoLooping);
-                        if(!_rudelySwung && ratio >= 0.55f)
+                        if(!_rudelySwung && ratio >= 0.65f)
                         {
                             var firer = ProjFirer.From<RudeLightningBuster>(NPC);
                             firer.damage = Damage_RudeLightning;
                             firer.knockback = 1;
-                            firer.velocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
+                            firer.velocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 4;
                             firer.New();
+                            _rudelySwung = true;
                         }
                     }
 
