@@ -6,7 +6,7 @@ public partial class Zigguratra
 {
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        NPC.DrawAnimator(spriteBatch, drawColor);
+        NPC.DrawAnimator(spriteBatch, drawColor * _invisibleAlpha);
         var axeGlowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, AxeBackPosition);
         axeGlowDrawer.color = Color.Gold * ExtraMath.Osc(0.6f, 1f, speed: 16) * 0.6f * _axeLightningAlpha * AxeCrash_ChargeLevel;
         axeGlowDrawer.color.A = 0;
@@ -27,6 +27,6 @@ public partial class Zigguratra
 
     void DrawOutline(SpriteBatch spriteBatch)
     {
-        NPC.DrawAnimator(spriteBatch, _outliner.outlineColor);
+        NPC.DrawAnimator(spriteBatch, _outliner.outlineColor * _invisibleAlpha);
     }
 }

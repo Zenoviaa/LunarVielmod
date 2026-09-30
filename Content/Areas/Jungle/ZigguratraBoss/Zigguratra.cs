@@ -57,7 +57,7 @@ public partial class Zigguratra : ScarletBoss
     float IdleTime => 100;
 
 
-
+    float _invisibleAlpha;
     float _axeLightningAlpha;
     bool _axeLightningDashed;
     const string ANIM_IDLE = "Idle";
@@ -89,6 +89,7 @@ public partial class Zigguratra : ScarletBoss
 
 
     int Damage_RudeLightning => 37;
+    int Damage_SplittingLightningCrash => 50;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -159,6 +160,7 @@ public partial class Zigguratra : ScarletBoss
         _outliner.SetDefaults();
         _version2 = false;
         _axeLightningAlpha = MathHelper.Lerp(_axeLightningAlpha, 0f, 0.1f);
+        _invisibleAlpha = 1f;
         switch (State)
         {
             case AIState.Spawn:

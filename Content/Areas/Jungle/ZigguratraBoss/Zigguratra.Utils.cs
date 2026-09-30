@@ -33,6 +33,32 @@ public partial class Zigguratra
             return axePosition;
         }
     }
+
+    Vector2 AxeFirstSplittingPosition
+    {
+        get
+        {
+            return AxeBackPosition;
+        }
+    }
+    
+    Vector2 AxeSecondSplittingPosition
+    {
+        get
+        {
+            //TODO, fix this to be aligned
+            return AxeBackPosition;
+        }
+    }
+    
+    Vector2 AxeThirdSplittingPosition
+    {
+        get
+        {
+            return AxeBackPosition;
+        }
+    }
+
     Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
     Color DarkGoldenColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.5f);
 

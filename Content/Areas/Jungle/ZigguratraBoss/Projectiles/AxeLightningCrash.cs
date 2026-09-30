@@ -29,6 +29,7 @@ public class AxeLightningCrash : ModProjectile
         Projectile.tileCollide = false;
         Projectile.timeLeft = 60;
     }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeCrawlingLightning(Vector2 pos)
     {
