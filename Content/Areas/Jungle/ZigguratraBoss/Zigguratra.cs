@@ -90,6 +90,7 @@ public partial class Zigguratra : ScarletBoss
 
     int Damage_RudeLightning => 37;
     int Damage_SplittingLightningCrash => 50;
+    int Damage_ReleaseTheBees => 26;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void ReceiveExtraAI(BinaryReader reader)
     {
