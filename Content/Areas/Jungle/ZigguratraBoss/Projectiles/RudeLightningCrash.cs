@@ -150,11 +150,12 @@ public class RudeLightningCrash : ModProjectile
         Timer++;
         if (Timer % 12 == 0)
         {
-            MakeLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(100, 100));
+       //     MakeLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(100, 100));
         }
         if (Timer == 1)
         {
-            for (var i = 0; i < 2; i++)
+            MakeLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(32, 32));
+            for (var i = 0; i < 1; i++)
             {
                 MakeBigLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(64, 64));
             }

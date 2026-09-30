@@ -55,7 +55,7 @@ public class RudeLightningBuster : ModProjectile
         if (Timer >= 15)
         {
             Projectile.tileCollide = true;
-            Projectile.velocity *= 1.1f;
+            Projectile.velocity *= 1.2f;
         }
         if (Main.rand.NextBool(8))
         {
