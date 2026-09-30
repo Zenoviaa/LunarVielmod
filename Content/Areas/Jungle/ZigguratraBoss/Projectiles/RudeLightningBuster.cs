@@ -1,7 +1,10 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Common.ShockCircleSystem;
+using Stellamod.Core;
+using Stellamod.Core.Pixelation;
 using System.Runtime.CompilerServices;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -78,10 +81,7 @@ public class RudeLightningBuster : ModProjectile
 
         Projectile.rotation = Projectile.velocity.ToRotation();
     }
-    public override bool ShouldUpdatePosition()
-    {
-        return false;
-    }
+
     public override void OnHitPlayer(Player target, Player.HurtInfo info)
     {
         base.OnHitPlayer(target, info);
@@ -89,20 +89,43 @@ public class RudeLightningBuster : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSlash, DrawLayer.OverPlayers);
+        return false;
+    }
+
+    void DrawPixelatedSlash(SpriteBatch sb, Vector2 sp)
+    {
         var drawer = Projectile.Drawer;
-        foreach(OldPosition oldPos in Projectile.IterateOldPosBackwards())
+        foreach (OldPosition oldPos in Projectile.IterateOldPosBackwards())
         {
             var afDrawer = drawer;
             afDrawer.Apply(Projectile, oldPos);
             afDrawer.color = Color.Lerp(Color.Gold, Color.Transparent, oldPos.progress) * 0.3f;
             afDrawer.color.A = 0;
-            Main.spriteBatch.Draw(afDrawer);
+            sb.Draw(afDrawer);
         }
 
-        drawer.color *= ExtraMath.Osc(0.9f, 1f, speed: 16);
-        Main.spriteBatch.Draw(drawer);
-        return false;
-        //return base.PreDraw(ref lightColor);
+        var noiseTexture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset;
+        var pass = AssetReferences.Effects.Electric.RudeLightningSlash.CreatePixelPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.spriteSize = TextureAssets.Projectile[Type].Size();
+        pass.Parameters.noiseTexelSize = noiseTexture.Value.GetTexelSize();
+        pass.Parameters.distortionStrength = 0.03f;
+        pass.Parameters.noiseSampler = new HlslSampler
+        {
+            Texture = noiseTexture.Value,
+            Sampler = SamplerState.PointWrap
+        };
+        pass.Apply();
+
+        //No point to batch this, bro doesn't spam this projectile
+        //Just drawing like this should be fine.
+        using (sb.Ctx(sb.Parameters with { effect = pass.Shader }))
+        {
+            drawer.color *= ExtraMath.Osc(0.9f, 1f, speed: 16);
+            sb.Draw(drawer);
+        }
+
     }
     public override void OnKill(int timeLeft)
     {
