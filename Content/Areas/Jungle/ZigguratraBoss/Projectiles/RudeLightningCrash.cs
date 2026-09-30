@@ -154,6 +154,7 @@ public class RudeLightningCrash : ModProjectile
         }
         if (Timer == 1)
         {
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
             MakeLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(32, 32));
             for (var i = 0; i < 1; i++)
             {

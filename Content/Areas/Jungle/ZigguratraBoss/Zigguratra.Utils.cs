@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -127,6 +128,28 @@ public partial class Zigguratra
                 timeLeft = 90
             });
         }
+    }
+    void MakeJumpingParticles(Vector2 position)
+    {
+        if (Timer % 2 != 0)
+            return;
+
+        var pos = position + Main.rand.NextVector2Circular(48, 48);
+        pos.Y -= 32;
+        var sp = SmokeParticle.SpawnInAlphaLayer(pos, Main.rand.NextVector2Circular(1, 1), Scale: Main.rand.NextFloat(0.6f, 1.2f));
+        sp.initialColor = Color.Lerp(Color.DarkGray, Color.Black, 0.8f);
+        sp.fadeToColor = Color.Black;
+        sp.behindLayer = true;
+        sp.Scale *= 1.2f;
+        sp.fast = true;
+    }
+    public GlowDonutParticle MakeGoldenDonut(Vector2 position, Vector2 velocity)
+    {
+        var p = LegacyParticle.NewParticle<GlowDonutParticle>(position, velocity);
+        p.innerColor = Color.Gold;
+        p.outerColor = Color.DarkOrange;
+        p.fadeToColor = Color.Black;
+        return p;
     }
     void AmbientLightningParticles(Vector2 centerPos)
     {

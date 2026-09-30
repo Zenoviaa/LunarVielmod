@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
 
@@ -50,6 +51,13 @@ public partial class Zigguratra
 
                     if(Timer == 1)
                     {
+                        SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
+                        bellHit.PitchVariance = 0.2f;
+                        SoundEngine.PlaySound(bellHit, NPC.position);
+
+                        float xDirection = NPC.Center.X < MyTarget.Center.X ? 1 : -1;
+                        MakeGoldenDonut(NPC.Bottom, Vector2.UnitY);
+
                         _rudelySwung = false;
                         JumpStartPosition = NPC.Center;
                         JumpEndPosition = MyTarget.Center;
@@ -109,6 +117,9 @@ public partial class Zigguratra
                     {
                         NPC.velocity = Vector2.UnitX * NPC.spriteDirection * 15;
                     }
+                    MakeJumpingParticles(NPC.Bottom);
+
+
                     this.AseAnimator.PlayAnimation(ANIM_JUMPSTART, AnimationParams.NoLooping);
                     NPC.SpriteFaceTarget();
                     NPC.StayGroundedAndRooted();
