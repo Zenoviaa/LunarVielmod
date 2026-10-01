@@ -14,6 +14,204 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
 
+public class AxeLightningLingering : ModProjectile
+{
+    Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
+    Color DarkGoldenColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.5f);
+    private ref float Timer => ref Projectile.ai[0];
+    public override string Texture => TextureRegistry.EmptyTexture;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.height = 256;
+        Projectile.width = 256;
+        Projectile.hostile = true;
+        Projectile.penetrate = -1;
+        Projectile.light = 1f;
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = 240;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeCrawlingLightning(Vector2 pos)
+    {
+        var vel = Main.rand.NextVector2Circular(4, 0.2f);
+        var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.6f);
+        Particles.LightningArcCrawl.Spawn(new()
+        {
+            position = pos,
+            velocity = vel,
+            scale = Main.rand.NextFloat(0.9f, 1f),
+            color = color,
+            timeLeft = 100
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeLightningSpikeySpark(Vector2 pos)
+    {
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+        var color = Color.Orange;
+        Particles.LightningSpikeySpark.Spawn(new()
+        {
+            position = pos,
+            velocity = vel,
+            scale = Main.rand.NextFloat(0.4f, 0.8f),
+            color = color,
+            timeLeft = 100
+        });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeCracks(Vector2 pos)
+    {
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, timeLeft = 200, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeBigLightningBolt(Vector2 pos)
+    {
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+        vel.Y -= 6;
+
+        var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.6f);
+        Particles.LightningBoltBig.Spawn(new()
+        {
+            position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
+            velocity = vel,
+            color = color,
+            timeLeft = Main.rand.NextFloat(45, 100)
+        });
+
+        Zigguratra.PlayLightningSound(pos);
+        var darkColor = Color.Lerp(color, Color.DarkOrange, 0.25f);
+        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, 25, baseSize: 0.16f);
+        for (var f = 0; f < 16; f++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos + Main.rand.NextVector2Circular(32, 32),
+                velocity = Main.rand.NextVector2Circular(16, 16),
+                innerColor = color.ToVector4(),
+                outerColor = darkColor.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.6f, 1.2f)),
+                timeLeft = 90
+            });
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeLightningBolt(Vector2 pos)
+    {
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+        var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.6f);
+        Particles.LightningBolt.Spawn(new()
+        {
+            position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
+            velocity = vel,
+            color = color,
+            timeLeft = 60
+        });
+
+        Zigguratra.PlayLightningSound(pos);
+        var darkColor = Color.Lerp(color, Color.DarkOrange, 0.25f);
+        FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, 25, baseSize: 0.16f);
+        for (var f = 0; f < 16; f++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos + Main.rand.NextVector2Circular(32, 32),
+                velocity = Main.rand.NextVector2Circular(16, 16),
+                innerColor = color.ToVector4(),
+                outerColor = darkColor.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.6f, 1.2f)),
+                timeLeft = 90
+            });
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    void MakeLightningSpark(Vector2 pos)
+    {
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+        vel *= Main.rand.NextFloat(0.5f, 3f);
+
+        var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.9f);
+        Particles.LightningSpark.Spawn(new()
+        {
+            position = pos,
+            velocity = vel,
+            color = color,
+            scale = Main.rand.NextFloat(0.7f, 1.5f) * 0.3f,
+            timeLeft = 60
+        });
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if(Timer == 1)
+        {
+            Particles.LightningCrackedGround.Spawn(new()
+            {
+                position = Projectile.Center + new Vector2(0, -64),
+                velocity = Vector2.Zero,
+                timeLeft = 240,
+                color = Color.Gold
+            });
+        }
+        if(Timer % 5 == 0)
+        {
+            var pos = Projectile.position;
+            pos.X += Main.rand.Next(0, Projectile.width);
+            pos.Y += Main.rand.Next(0, Projectile.height);
+            MakeLightningSpikeySpark(pos);
+        }
+    }
+    public override bool ShouldUpdatePosition()
+    {
+        return false;
+    }
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        var contrast = MathHelper.Lerp(1.16f, 1f, EasingFunction.InSine(Timer / 60f));
+        var brightness = MathHelper.Lerp(-0.04f, 0f, EasingFunction.InSine(Timer / 60f));
+        FXUtil.ApplyContrastBrightness(contrast, brightness);
+        return false;
+        //return base.PreDraw(ref lightColor);
+    }
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+    }
+}
 public class AxeLightningCrash : ModProjectile
 {
     Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
@@ -185,17 +383,11 @@ public class AxeLightningCrash : ModProjectile
                 lightningFirer.position += new Vector2(0, -512);
                 lightningFirer.New();
             }
+
             if (this.OwnedByLocalClient())
             {
-                /*
-                var busterFierer = ProjFirer.From<RudeLightningBuster>(Projectile);
-                busterFierer.velocity = -Vector2.UnitX;
-                busterFierer.position.Y -= 64;
-                busterFierer.ai1 = 1;
-                busterFierer.New();
-
-                busterFierer.velocity = Vector2.UnitX;
-                busterFierer.New();*/
+                var firer = ProjFirer.From<AxeLightningLingering>(Projectile);
+                firer.New();
             }
        
         }

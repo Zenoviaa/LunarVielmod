@@ -98,6 +98,9 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
                 spriteBatch.Draw(drawer);
             }
         }
+
+
+
     }
     public override void Draw(SpriteBatch spriteBatch, ref Data particle)
     {

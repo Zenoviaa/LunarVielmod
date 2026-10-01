@@ -4,7 +4,6 @@ using Terraria;
 
 
 namespace Stellamod.Common.Particles.Electric;
-
 public class LightningBoltBig : ParticleUpdater<LightningBoltBig.Data>
 {
     public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 3 };
@@ -89,7 +88,7 @@ public class LightningBoltBig : ParticleUpdater<LightningBoltBig.Data>
                     drawer.color *= 2;
                 drawer.sourceRect = frame;
                 drawer.rotation = particle.velocity.ToRotation();
-                drawer.scale.Y *= 0.7f;
+                drawer.scale.Y *= 0.5f;
                 drawer.scale.Y *= MathHelper.Lerp(0.9f, 1f, fade);
                 drawer.LeftCenterOrigin();
                 spriteBatch.Draw(drawer);
