@@ -131,7 +131,7 @@ public class LittleBee : ModProjectile
                 break;
             case 1:
                 {
-                    Projectile.extraUpdates = 1;
+
                     if (Main.rand.NextBool(32))
                     {
                         Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
