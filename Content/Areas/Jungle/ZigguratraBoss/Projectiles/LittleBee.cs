@@ -19,6 +19,7 @@ public class LittleBee : ModProjectile
     ref float Timer => ref Projectile.ai[0];
     ref float Style => ref Projectile.ai[1];
     ref float AttackCycle => ref Projectile.ai[2];
+    
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -49,6 +50,7 @@ public class LittleBee : ModProjectile
     {
         base.SetStaticDefaults();
         Projectile.SetTrailCacheLength(8);
+        Main.projFrames[Type] = 9;
     }
     public override void SetDefaults()
     {
@@ -90,7 +92,18 @@ public class LittleBee : ModProjectile
         {
             case 0:
                 {
-                
+
+                    Projectile.frameCounter++;
+                    if(Projectile.frameCounter >= 4)
+                    {
+                        Projectile.frameCounter = 0;
+                        Projectile.frame++;
+                        if(Projectile.frame >= 5)
+                        {
+                            Projectile.frame = 4;
+                        }
+                    }
+
                     Projectile.hostile = false;
 
                     var maxTicks = 90;
@@ -116,6 +129,22 @@ public class LittleBee : ModProjectile
                 break;
             case 1:
                 {
+                    if(Projectile.frame < 5)
+                    {
+                        Projectile.frame = 5;
+                    }
+
+                    Projectile.frameCounter++;
+                    if (Projectile.frameCounter >= 4)
+                    {
+                        Projectile.frameCounter = 0;
+                        Projectile.frame++;
+                        if (Projectile.frame >= 9)
+                        {
+                            Projectile.frame = 5;
+                        }
+                    }
+
                     _scale = 1f;
                     Projectile.hostile = true;
                     var normalDirection = (attackEndPosition - attackStartPosition).SafeNormalize(Vector2.Zero);
