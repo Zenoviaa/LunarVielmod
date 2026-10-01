@@ -22,9 +22,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
 
     spriteColor *= 1.6;
     
-    float osc = sin(time * 16.0) * 0.5 + 0.5;
-    float osc2 = lerp(0.95, 1.0, osc);
-    spriteColor *= osc;   
+
     return spriteColor * tintColor;
 }
 

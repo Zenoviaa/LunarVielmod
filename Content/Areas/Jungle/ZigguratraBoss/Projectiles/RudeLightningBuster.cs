@@ -134,7 +134,6 @@ public class RudeLightningBuster : ModProjectile
             }
 
             drawer.color = Color.White;
-            drawer.color *= ExtraMath.Osc(0.29f, 1f, speed: 64);
             sb.Draw(drawer);
 
             drawer.scale *= 1.5f;
