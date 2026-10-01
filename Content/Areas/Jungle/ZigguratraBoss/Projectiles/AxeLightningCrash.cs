@@ -28,8 +28,8 @@ public class AxeLightningLingering : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.height = 256;
-        Projectile.width = 256;
+        Projectile.height = Projectile.width = 188;
+
         Projectile.hostile = true;
         Projectile.penetrate = -1;
         Projectile.light = 1f;
