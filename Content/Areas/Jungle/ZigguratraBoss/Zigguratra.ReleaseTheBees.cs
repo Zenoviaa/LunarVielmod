@@ -1,8 +1,16 @@
 ﻿using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
+using System;
+using System.Collections.Generic;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
 
+
+file struct BeeAttack
+{
+    public Vector2 spawnPosition;
+    public Vector2 attackPosition;
+}
 public partial class Zigguratra
 {
     float ReleaseTheBees_StartupTime => 30;
@@ -12,12 +20,31 @@ public partial class Zigguratra
     int ReleaseTheBees_LineLength => 15;
     float ReleaseTheBees_LineStartOffset => 384;
     float ReleaseTheBees_Density => 333;
+    float ReleaseTheBees_FlapTime => 60;
     private void AI_ReleaseTheBees()
     {
         Timer++;
         switch (AttackCycle)
         {
             case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+
+                    NPC.StayGroundedAndRooted();
+                    NPC.SpriteFaceTarget();
+                    this.AseAnimator.PlayAnimation(ANIM_FLAPWINGSBEFORE, AnimationParams.Default);
+                    if(Timer >= ReleaseTheBees_FlapTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 1:
                 {
                     if (Timer == 1)
                     {
@@ -32,28 +59,17 @@ public partial class Zigguratra
                     }
                 }
                 break;
-            case 1:
+
+            case 2:
                 {
                     if(Timer == 1 && MultiplayerHelper.IsHost)
                     {
                         //Pick a random side,
                         //Create a line of 7 points
                         //Then pick a random point on that line and move in a straight line disabling them
-                        var line = new bool[ReleaseTheBees_LineLength];
-                        for(var i=  0; i < line.Length; i++)
-                        {
-                            line[i] = true;
-                        }
 
-                        var randIndex = Main.rand.Next(0, ReleaseTheBees_LineLength / 2);
-                        var emptyLength = 4;
-                        for(var i = 0; i < emptyLength; i++)
-                        {
-                            var newIndex = randIndex + i;
-                            line[newIndex] = false;
-                        }
-
-
+                        var bees = new BeeAttack[ReleaseTheBees_LineLength];
+  
                         var side = Main.rand.Next(4);
                         var offset = Vector2.UnitX;
                         switch (side)
@@ -77,28 +93,40 @@ public partial class Zigguratra
 
 
                         var centerPos = MyTarget.Center + offset;
-                        for(var i = 0; i < line.Length; i++)
+                        for(var i = 0; i < ReleaseTheBees_LineLength; i++)
                         {
-                            if (!line[i])
-                                continue;
+                            ref var bee = ref bees[i];
 
-           
-                            var ratio = (float)i / (float)line.Length;
+                            var ratio = (float)i / (float)ReleaseTheBees_LineLength;
                             var topPos = centerPos + perpOffset * ReleaseTheBees_Density;
                             var bottomPos = centerPos - perpOffset * ReleaseTheBees_Density;
-                            var spawnPos = Vector2.Lerp(topPos, bottomPos, ratio);
-                            var attackPos = spawnPos + -offset * 2;
-                            
+                            bee.spawnPosition = Vector2.Lerp(topPos, bottomPos, ratio);
+                            bee.attackPosition = bee.spawnPosition + -offset * 2;
+                        }
+
+                        Array.Sort(bees, (x, y) => Vector2.Distance(y.spawnPosition, MyTarget.Center).CompareTo(Vector2.Distance(x.spawnPosition, MyTarget.Center)));
+                        var ignoreStart = ReleaseTheBees_LineLength / 2;
+                        ignoreStart += Main.rand.Next(-1, 1);
+                        var ignoreEnd = ignoreStart + 5;
+                        for(var i = 0; i < ReleaseTheBees_LineLength; i++)
+                        {
+                            if (i >= ignoreStart && i <= ignoreEnd)
+                                continue;
+
+                            ref var bee = ref bees[i];
                             var firer = ProjFirer.From<LittleBee>(NPC);
                             firer.damage = Damage_ReleaseTheBees;
-                            firer.velocity = -Vector2.UnitY * 8;
+                            firer.velocity = -Vector2.UnitY * 18;
                             firer.ai2 = 0;
                             firer.knockback = 1;
-                            
+
+                 
                             var littleBee = firer.NewDirect<LittleBee>();
-                            littleBee.attackStartPosition = spawnPos;
-                            littleBee.attackEndPosition = attackPos;
+                            littleBee.attackStartPosition = bee.spawnPosition;
+                            littleBee.attackEndPosition = bee.attackPosition;
+                            littleBee.attackStartupMidPosition = MyTarget.Center;
                         }
+                     
                     }
 
                     _outliner.warning = true;
@@ -114,7 +142,7 @@ public partial class Zigguratra
                     }
                 }
                 break;
-            case 2:
+            case 3:
                 {
                     this.AseAnimator.PlayAnimation(ANIM_RELEASE_THE_BEES_OUT, AnimationParams.NoLooping);
                     if (Timer >= ReleaseTheBees_OutTime)

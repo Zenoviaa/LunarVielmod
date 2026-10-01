@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Stellamod.Common.Particles;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -7,6 +8,7 @@ namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
 
 public class LittleBee : ModProjectile
 {
+    float _trailAlpha;
     float _scale;
     float _fadingAlpha;
     Vector2 _startPosition;
@@ -55,7 +57,7 @@ public class LittleBee : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = Projectile.height = 24;
+        Projectile.width = Projectile.height = 32;
         Projectile.hostile = true;
         Projectile.timeLeft = 600;
         Projectile.tileCollide = false;
@@ -76,7 +78,6 @@ public class LittleBee : ModProjectile
                 AI_MoveTowardsPointThenMoveToEndPointRotating();
                 break;
         }
-        Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.velocity.X * 0.05f, 0.01f);
     }
 
     void AI_MoveTowardsPointThenMoveToEndPointRotating()
@@ -94,7 +95,7 @@ public class LittleBee : ModProjectile
                 {
 
                     Projectile.frameCounter++;
-                    if(Projectile.frameCounter >= 4)
+                    if(Projectile.frameCounter >= 15)
                     {
                         Projectile.frameCounter = 0;
                         Projectile.frame++;
@@ -116,10 +117,11 @@ public class LittleBee : ModProjectile
 
                     var lerp1 = Vector2.Lerp(_startPosition, attackStartupMidPosition, ratio);
                     var lerp2 = Vector2.Lerp(attackStartupMidPosition, attackStartPosition, ratio); 
-                    var posToMoveTo = Vector2.Lerp(lerp1, lerp2, ease);
-                    _scale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(ratio));
+                    var posToMoveTo = Vector2.Lerp(_startPosition, attackStartPosition, ease);
+                    _scale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
                     Projectile.Center = posToMoveTo;
                     Projectile.velocity = Vector2.Zero;
+                    Projectile.rotation = Utils.AngleLerp(Projectile.rotation, (attackEndPosition - attackStartPosition).ToRotation(), 0.1f);
                     if (Timer >= maxTicks)
                     {
                         AttackCycle++;
@@ -129,6 +131,20 @@ public class LittleBee : ModProjectile
                 break;
             case 1:
                 {
+                    Projectile.extraUpdates = 1;
+                    if (Main.rand.NextBool(32))
+                    {
+                        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                        {
+                            position = Projectile.Center + Main.rand.NextVector2Circular(32, 32),
+                            innerColor = Color.Gold.ToVector4(),
+                            outerColor = Color.DarkOrange.ToVector4(),
+                            scale = new Vector2(Main.rand.NextFloat(0.5f, 1f)),
+                            timeLeft = 60
+                        });
+                    }
+
+                    _trailAlpha = MathHelper.Lerp(_trailAlpha, 1f, 0.1f);
                     if(Projectile.frame < 5)
                     {
                         Projectile.frame = 5;
@@ -172,6 +188,15 @@ public class LittleBee : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
+        foreach(OldPosition oldPos in Projectile.IterateOldPosBackwards())
+        {
+            var afDrawer = Projectile.Drawer;
+            afDrawer.Apply(Projectile, oldPos);
+            afDrawer.color = Color.Lerp(Color.Gold, Color.Transparent, oldPos.progress) * _trailAlpha * _fadingAlpha;
+            afDrawer.color.A = 0;
+            Main.spriteBatch.Draw(afDrawer);
+        }
+
         var drawer = Projectile.Drawer;
         drawer.color *= _fadingAlpha;
         drawer.scale = new Vector2(_scale);

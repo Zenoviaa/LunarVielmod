@@ -60,6 +60,13 @@ public partial class Zigguratra : ScarletBoss
     float _invisibleAlpha;
     float _axeLightningAlpha;
     bool _axeLightningDashed;
+    const string ANIM_FLAPWINGSBEFORE = "Flapwingsbefore";
+    const string ANIM_SUMMONHOLDEMPTY = "SummonholdEmpty";
+    const string ANIM_SLAMPART = "Slampart";
+    const string ANIM_FALLHOLD = "Fallhold";
+    const string ANIM_HOLDDOWN = "HoldDown";
+    const string ANIM_CLOSEGROUNDLANDSPIN = "ClosegroundLandSpin";
+    const string ANIM_SPINHALSIES = "SpinHalsies";
     const string ANIM_IDLE = "Idle";
     const string ANIM_RELEASE_THE_BEES = "ReleaseTheBees";
     const string ANIM_RELEASE_THE_BEES_HOLD = "ReleaseTheBeesHold";
@@ -206,7 +213,7 @@ public partial class Zigguratra : ScarletBoss
     {
         var state = AttackPattern.NextPattern();
         SwitchState(state);
-        SwitchState(AIState.Axe_Crash);
+        SwitchState(AIState.Release_The_Bees);
     }
 
     private void SwitchState(AIState state)
