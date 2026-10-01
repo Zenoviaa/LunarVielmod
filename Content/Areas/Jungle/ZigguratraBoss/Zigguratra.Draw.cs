@@ -20,7 +20,7 @@ public partial class Zigguratra
                 var posToDraw = op + NPC.Size * 0.5f;
                 afDrawInfo.rotation = NPC.oldRot[i];
                 afDrawInfo.worldPosition = posToDraw;
-                afDrawInfo.color = Color.Lerp(Color.Gold, Color.Transparent, ratio) * 0.3f;
+                afDrawInfo.color = Color.Lerp(Color.Gold, Color.Transparent, ratio) * 0.15f * _afterImageAlpha;
                 afDrawInfo.color.A = 0;
 
                 var offset = afDrawInfo.drawOrigin - this.AseAnimator.centerDrawOrigin;

@@ -120,7 +120,7 @@ public partial class Zigguratra : ScarletBoss
     {
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
-        NPCID.Sets.TrailCacheLength[Type] = 32;
+        NPCID.Sets.TrailCacheLength[Type] = 12;
         NPCID.Sets.TrailingMode[Type] = 3;
     }
 
@@ -205,7 +205,7 @@ public partial class Zigguratra : ScarletBoss
     {
         var state = AttackPattern.NextPattern();
         SwitchState(state);
-        SwitchState(AIState.Splitting_Lightning);
+        SwitchState(AIState.Rude_Buster);
     }
 
     private void SwitchState(AIState state)

@@ -158,7 +158,7 @@ public class RudeLightningCrash : ModProjectile
             MakeLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(32, 32));
             for (var i = 0; i < 1; i++)
             {
-                MakeBigLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(64, 64));
+               // MakeBigLightningBolt(Projectile.Center + Main.rand.NextVector2Circular(64, 64));
             }
 
             ShockCircles.CreateQuickWhiteFlash(Projectile.Center);
