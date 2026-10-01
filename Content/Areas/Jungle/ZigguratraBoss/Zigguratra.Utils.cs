@@ -155,11 +155,12 @@ public partial class Zigguratra
         if (Timer % 3 != 0)
             return;
         var pos = position + Main.rand.NextVector2Circular(32, 32);
-        var sp = SparkleParticle.Spawn(pos, Main.rand.NextVector2Circular(8, 8), Scale: Main.rand.NextFloat(0.35f, 0.66f));
-        sp.innerColor = Color.Gold;
+        var sp = SparkleParticle.Spawn(pos, Main.rand.NextVector2Circular(2, 2), Scale: 0.3f);
+        sp.innerColor = Color.LightGoldenrodYellow;
         sp.outerColor = Color.DarkOrange;
         sp.gravity = 0;
         sp.fast = true;
+        sp.behindLayer = true;
         sp.dampening = 0.05f;
     }
 

@@ -7,11 +7,14 @@ namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
 
 public class LittleBee : ModProjectile
 {
+    float _scale;
     float _fadingAlpha;
     Vector2 _startPosition;
     float _originalSpeed;
+    public Vector2 attackStartupMidPosition;
     public Vector2 attackStartPosition;
     public Vector2 attackEndPosition;
+
 
     ref float Timer => ref Projectile.ai[0];
     ref float Style => ref Projectile.ai[1];
@@ -23,6 +26,7 @@ public class LittleBee : ModProjectile
         writer.WriteVector2(attackEndPosition);
         writer.WriteVector2(_startPosition);
         writer.Write(_originalSpeed);
+        writer.WriteVector2(attackStartupMidPosition);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -32,6 +36,7 @@ public class LittleBee : ModProjectile
         attackEndPosition = reader.ReadVector2();
         _startPosition = reader.ReadVector2();
         _originalSpeed = reader.ReadSingle();
+        attackStartupMidPosition = reader.ReadVector2();
     }
     public override void OnSpawn(IEntitySource source)
     {
@@ -85,14 +90,24 @@ public class LittleBee : ModProjectile
         {
             case 0:
                 {
+                
                     Projectile.hostile = false;
-                    var steps = 16 * 16;
-                    var ticksToMove = Vector2.DistanceSquared(_startPosition, attackStartPosition) / steps;
+
+                    var maxTicks = 90;
+                    var ticksToMove = Vector2.Distance(_startPosition, attackStartPosition);
+                    ticksToMove /= 10;
+                    ticksToMove = MathHelper.Clamp(ticksToMove, 0, maxTicks);
+
                     var ratio = Timer / ticksToMove;
-                    var ease = EasingFunction.InOutExpo(ratio);
-                    var posToMoveTo = Vector2.Lerp(_startPosition, attackStartPosition, ease);
+                    var ease = EasingFunction.InOutSine(ratio);
+
+                    var lerp1 = Vector2.Lerp(_startPosition, attackStartupMidPosition, ratio);
+                    var lerp2 = Vector2.Lerp(attackStartupMidPosition, attackStartPosition, ratio); 
+                    var posToMoveTo = Vector2.Lerp(lerp1, lerp2, ease);
+                    _scale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(ratio));
                     Projectile.Center = posToMoveTo;
-                    if (Timer >= ticksToMove)
+                    Projectile.velocity = Vector2.Zero;
+                    if (Timer >= maxTicks)
                     {
                         AttackCycle++;
                         Timer = 0;
@@ -101,6 +116,7 @@ public class LittleBee : ModProjectile
                 break;
             case 1:
                 {
+                    _scale = 1f;
                     Projectile.hostile = true;
                     var normalDirection = (attackEndPosition - attackStartPosition).SafeNormalize(Vector2.Zero);
                     var velocity = normalDirection * _originalSpeed;
@@ -129,6 +145,7 @@ public class LittleBee : ModProjectile
     {
         var drawer = Projectile.Drawer;
         drawer.color *= _fadingAlpha;
+        drawer.scale = new Vector2(_scale);
         Main.spriteBatch.Draw(drawer);
         OutlineRenderer.Queue(DrawOutline);
         return false;

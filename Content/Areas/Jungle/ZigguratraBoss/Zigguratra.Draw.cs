@@ -30,7 +30,7 @@ public partial class Zigguratra
         }
 
         NPC.DrawAnimator(spriteBatch, drawColor * _invisibleAlpha);
-        var axeGlowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, AxeBackPosition);
+        var axeGlowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, AxeFirstSplittingPosition);
         axeGlowDrawer.color = Color.Gold * ExtraMath.Osc(0.6f, 1f, speed: 16) * 0.6f * _axeLightningAlpha * AxeCrash_ChargeLevel;
         axeGlowDrawer.color.A = 0;
         axeGlowDrawer.scale *= 0.5f;

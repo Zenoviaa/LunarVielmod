@@ -15,14 +15,16 @@ namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
 
 public partial class Zigguratra
 {
-    int AxeCrash_Damage => 32;
+    int AxeCrash_Damage => 40;
     float AxeCrash_ChargeCount => 4;
     float AxeCrash_WalkingSpeed => 1.6f;
-    float AxeCrash_WalkingTimePerCharge => 100;
+    float AxeCrash_WalkingTimePerCharge => 15;
     float AxeCrash_ReadyTime => 30;
-    float AxeCrash_SummonTime => 80;
-    float AxeCrash_HoldTime => 80;
+    float AxeCrash_SummonTime => 150;
+    float AxeCrash_HoldTime => 40;
     float AxeCrash_SlamTime => 71;
+
+
 
     float AxeCrash_FastSlamTime => 37;
     float AxeCrash_ChargeLevel => (AttackCounter + 1) / AxeCrash_ChargeCount;
@@ -51,19 +53,46 @@ public partial class Zigguratra
 
                     //He'll sit here and look at you for a second, 
                     //Then he'll ready his axe behind him before he starts walking
-                    //So basicaly
+                    //So here we'll do the charging
                     this.AseAnimator.PlayAnimation(ANIM_AXE_SUMMON, AnimationParams.NoLooping);
                     NPC.StayGroundedAndRooted();
                     NPC.SpriteFaceTarget();
+
+                    var axePosition = AxeFirstSplittingPosition;
+                    axePosition += Main.rand.NextVector2Circular(32, 32);
+                    _axeLightningAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / AxeCrash_SummonTime));
+                    AmbientThundercloudParticles(axePosition);
+                    AmbientElectricParticles(axePosition);
+                    AmbientLightningParticles(axePosition);
+                    SwirlParticlesAround(axePosition);
+
+                    if(Timer % (int)(AxeCrash_SummonTime / 3) == 0)
+                    {
+                        MakeLightningParticle(AxeFirstSplittingPosition);
+                        PixelPrimitiveCircleFactory.CreateInElectricSuck(AxeFirstSplittingPosition);
+                    }
                     FocusOnMe();
                     SwirlParticlesAround(NPC.Center);
                     if (Timer >= AxeCrash_SummonTime)
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        var xDist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+                        if (xDist < 196)
+                        {
+                            _axeLightningDashed = false;
+                            Timer = 0;
+                            AttackCycle = 4;
+                        }
+                        else
+                        {
+                            Timer = 0;
+                            _axeLightningDashed = true;
+                            AttackCycle = 3;
+                        }
+              
                     }
                 }
                 break;
+
             case 1:
                 {
                     if (Timer == 1)
@@ -120,9 +149,9 @@ public partial class Zigguratra
                     NPC.SpriteFaceTarget();
                     FocusOnMe();
 
+
                     var axePosition = AxeBackPosition;
                     axePosition += Main.rand.NextVector2Circular(32, 32);
-                    _axeLightningAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / AxeCrash_WalkingTimePerCharge));
                     AmbientThundercloudParticles(axePosition);
                     AmbientElectricParticles(axePosition);
                     AmbientLightningParticles(axePosition);
@@ -135,21 +164,12 @@ public partial class Zigguratra
 
                     if (Timer >= AxeCrash_WalkingTimePerCharge)
                     {
-                        PixelPrimitiveCircleFactory.CreateInElectricSuck(AxeBackPosition);
                         Timer = 0;
                         AttackCounter++;
                         if (AttackCounter >= AxeCrash_ChargeCount)
                         {
-                            if (xDistToTarget > 200)
-                            {
-                                _axeLightningDashed = true;
-                                AttackCycle = 3;
-                            }
-                            else
-                            {
-                                AttackCycle = 4;
-                            }
-                     
+                            _axeLightningDashed = true;
+                            AttackCycle = 3;
                         }
                     }
                 }

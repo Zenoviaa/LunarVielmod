@@ -7,11 +7,11 @@ public partial class Zigguratra
 {
     float ReleaseTheBees_StartupTime => 30;
     float ReleaseTheBees_WaveCount => 7;
-    float ReleaseTheBees_TimeBetweenWaves => 100;
+    float ReleaseTheBees_TimeBetweenWaves => 80;
     float ReleaseTheBees_OutTime => 80;
-    int ReleaseTheBees_LineLength => 7;
+    int ReleaseTheBees_LineLength => 15;
     float ReleaseTheBees_LineStartOffset => 384;
-    float ReleaseTheBees_Density => 48;
+    float ReleaseTheBees_Density => 333;
     private void AI_ReleaseTheBees()
     {
         Timer++;
@@ -46,7 +46,7 @@ public partial class Zigguratra
                         }
 
                         var randIndex = Main.rand.Next(0, ReleaseTheBees_LineLength / 2);
-                        var emptyLength = 2;
+                        var emptyLength = 4;
                         for(var i = 0; i < emptyLength; i++)
                         {
                             var newIndex = randIndex + i;
@@ -82,14 +82,16 @@ public partial class Zigguratra
                             if (!line[i])
                                 continue;
 
+           
                             var ratio = (float)i / (float)line.Length;
                             var topPos = centerPos + perpOffset * ReleaseTheBees_Density;
-                            var bottomPos = centerPos + perpOffset * ReleaseTheBees_Density;
+                            var bottomPos = centerPos - perpOffset * ReleaseTheBees_Density;
                             var spawnPos = Vector2.Lerp(topPos, bottomPos, ratio);
                             var attackPos = spawnPos + -offset * 2;
                             
                             var firer = ProjFirer.From<LittleBee>(NPC);
                             firer.damage = Damage_ReleaseTheBees;
+                            firer.velocity = -Vector2.UnitY * 8;
                             firer.ai2 = 0;
                             firer.knockback = 1;
                             

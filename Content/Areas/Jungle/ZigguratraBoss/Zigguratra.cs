@@ -53,6 +53,7 @@ public partial class Zigguratra : ScarletBoss
     Vector2 _vector22;
     float IdleTime => 100;
 
+    bool _axeWalk;
 
     float _targetAfterIamgeAlpha;
     float _afterImageAlpha;
@@ -205,7 +206,7 @@ public partial class Zigguratra : ScarletBoss
     {
         var state = AttackPattern.NextPattern();
         SwitchState(state);
-        SwitchState(AIState.Rude_Buster);
+        SwitchState(AIState.Axe_Crash);
     }
 
     private void SwitchState(AIState state)

@@ -7,12 +7,12 @@ namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
 
 public partial class Zigguratra
 {
-    float SplittingLightning_ChargeTime => 60;
+    float SplittingLightning_ChargeTime => 25;
     float SplittingLightning_AwayTime => 60;
     float SplittingLightning_FallingCrashTime => 45;
     float SplittingLightning_AxeChargeCount => 3;
     float SplittingLightning_CrashHoldTime => 53;
-    float SplittingLightning_CrashCount => 3;
+    float SplittingLightning_CrashCount => 1;
     void AI_SplittingLightningCrash()
     {
 
