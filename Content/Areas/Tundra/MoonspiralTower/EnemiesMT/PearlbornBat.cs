@@ -751,17 +751,17 @@ public class PearlbornSoulRenderer : ModSystem
             return;
         if (_soulDrawQueue.Count <= 0)
             return;
-        PixelationManager.QueuePrimitivesDrawAction(DrawPrimitives, DrawLayer.OverPlayers);
+        PixelationManager.QueuePrimitivesDrawAction(DrawPrimitives, DrawLayer.OverNPCs);
     }
 
     float GetTrailWidth(float progress)
     {
-        return MathHelper.SmoothStep(32, 0, progress);
+        return MathHelper.SmoothStep(24, 0, progress);
     }
 
     Color GetTrailColor(float progress)
     {
-        return DrawUtilities.InterpolateColorArray(progress, Color.White, Color.SkyBlue, Color.DarkBlue, Color.Purple);
+        return DrawUtilities.InterpolateColorArray(progress, Color.White, Color.SkyBlue);
     }
 
     void DrawPrimitives(GraphicsDevice gDevice)
@@ -774,7 +774,7 @@ public class PearlbornSoulRenderer : ModSystem
             batch.AddRange(vertices);
         }
 
-        var indices = DrawUtilities.PrepareIndicesForDrawing(batch.Count / 2);
+        var indices = DrawUtilities.PrepareIndicesForDrawing(batch.Count / 3);
         var pass = AssetReferences.Effects.Generic.SoulTrail.CreatePrimitivesPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.spriteSampler = new()
@@ -791,7 +791,10 @@ public class PearlbornSoulRenderer : ModSystem
         pass.Apply();
 
         //Now we just need to make and draw the shader
+        gDevice.RasterizerState = RasterizerState.CullNone;
         DrawUtilities.DrawUserIndexedPrimitivesWithEffect(batch.ToArray(), indices, pass.Shader);
+
+
     }
 
     public static void PrepareForRendering(in SoulDrawData drawData)
@@ -846,7 +849,8 @@ public class PearlbornDash : ModProjectile
         return false;
     }
 }
-public class PearlbornSoul : ModNPC
+public class PearlbornSoul : ModNPC,
+    IDrawToRenderTarget
 {
     enum AIState : byte
     {
@@ -873,8 +877,8 @@ public class PearlbornSoul : ModNPC
     float ChaseSpeed => 6;
     float ChaseTime => 120;
     float ZigZagPrepareTime => 30;
-    float ZigZagDashTime => 30;
-    float ZigZagRange => 256;
+    float ZigZagDashTime => 45;
+    float ZigZagRange => 192;
     int Damage_PearlbornDash => 25;
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -895,7 +899,8 @@ public class PearlbornSoul : ModNPC
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        NPCID.Sets.TrailCacheLength[Type] = 32;
+        Main.npcFrameCount[Type] = 2;
+        NPCID.Sets.TrailCacheLength[Type] = 96;
         NPCID.Sets.TrailingMode[Type] = 3;
     }
 
@@ -921,6 +926,7 @@ public class PearlbornSoul : ModNPC
     public override void AI()
     {
         base.AI();
+
         switch (State)
         {
             case AIState.Idle:
@@ -936,6 +942,7 @@ public class PearlbornSoul : ModNPC
                 AI_ZigZag();
                 break;
         }
+        NPC.rotation = NPC.velocity.ToRotation();
     }
     void SwitchState(AIState state)
     {
@@ -976,8 +983,7 @@ public class PearlbornSoul : ModNPC
         var speed = MathF.Min(moveSpeed, Vector2.Distance(posToTrack, NPC.Center));
         targetVelocity *= speed;
         NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
-        NPC.rotation = NPC.velocity.X * 0.05f;
-
+    
 
         if (NPC.HasValidTarget && Vector2.Distance(NPC.Center, Main.player[NPC.target].Center) <= ChaseDistance)
         {
@@ -997,7 +1003,7 @@ public class PearlbornSoul : ModNPC
         //I'll see what it looks like first
         var directionToTarget = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.Zero);
         var perpDirection = directionToTarget.RotatedBy(MathHelper.PiOver2);
-        var targetDirection = Vector2.Lerp(directionToTarget, perpDirection, MathF.Sin(Timer * 0.5f) * 0.5f + 0.5f);
+        var targetDirection = Vector2.Lerp(directionToTarget, perpDirection, MathF.Sin(Timer * 0.05f) * 0.5f + 0.5f);
         var targetVelocity = targetDirection * ChaseSpeed;
         NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
         if (Timer >= ChaseTime)
@@ -1016,7 +1022,7 @@ public class PearlbornSoul : ModNPC
                 _side = Main.rand.NextBool(2) ? -1 : 1;
                 _startDashPoint = NPC.Center;
                 _endDashPoint = Main.player[NPC.target].Center;
-                _endDashPoint += new Vector2(0, _side * 128);
+                _endDashPoint += new Vector2(0, _side * 256);
                 NPC.netUpdate = true;
             }
         }
@@ -1031,12 +1037,12 @@ public class PearlbornSoul : ModNPC
         var startPos = _startDashPoint;
         var endPos = _endDashPoint;
         var ratio = Timer / ZigZagPrepareTime;
-        var ease = EasingFunction.InOutBounce(ratio);
+        var ease = EasingFunction.InOutSine(ratio);
         var posToMoveTo = Vector2.Lerp(startPos, endPos, ease);
         var targetVelocity = posToMoveTo - NPC.Center;
         NPC.velocity = targetVelocity;
 
-        if (Timer >= ZigZagPrepareTime)
+        if (Timer >= ZigZagPrepareTime * 1.2f)
         {
             SwitchState(AIState.ZigZag);
         }
@@ -1047,6 +1053,7 @@ public class PearlbornSoul : ModNPC
         Timer++;
         if (Timer == 1)
         {
+
             _startDashPoint = NPC.Center;
             _endDashPoint = _startDashPoint + new Vector2(0, 384 * -_side);
             if (MultiplayerHelper.IsHost)
@@ -1064,7 +1071,7 @@ public class PearlbornSoul : ModNPC
         var pos = Vector2.Lerp(_startDashPoint, _endDashPoint, ease);
         pos.X += MathF.Sin(ratio * 12f) * ZigZagRange;
         var targetVelocity = pos - NPC.Center;
-        NPC.velocity = targetVelocity;
+        NPC.velocity = Vector2.Lerp(Vector2.Zero, targetVelocity, EasingFunction.InSine(Timer / 40f));
         if (Timer >= ZigZagDashTime)
         {
             SwitchState(AIState.Idle);
@@ -1101,14 +1108,33 @@ public class PearlbornSoul : ModNPC
     {
         base.OnKill();
     }
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
+    }
+
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.scale *= 0.35f;
+        drawer.scale *= new Vector2(1.65f, 1f);
+        drawer.scale *= 1.1f;
+        drawer.color = Color.White;
+        spriteBatch.Draw(drawer);
+
+        drawer.VerticalFrame(1, 2);
+        drawer.scale = Vector2.One;
+        spriteBatch.Draw(drawer);
+        return false;
+    }
+
+    public void DrawToRenderTargets()
     {
         PearlbornSoulRenderer.PrepareForRendering(new()
         {
             TrailCache = NPC.oldPos,
             TrailOffset = NPC.Size * 0.5f
         });
-        return false;
     }
 }
 

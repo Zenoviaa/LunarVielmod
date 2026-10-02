@@ -30,7 +30,9 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     float2 texCoords = input.TextureCoordinates.xy;
-    float4 spriteColor = tex2D(spriteSampler, texCoords);
+    texCoords += float2(time * -0.25, 0.0);
+    texCoords = frac(texCoords);
+    float4 spriteColor = tex2D(spriteSampler, frac(texCoords * float2(8.0, 1.0)));
     
     float2 noiseOffsetCoords = texCoords;
     noiseOffsetCoords += float2(time * 0.05, 0.0);
@@ -39,7 +41,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float osc = sin(noiseColor * 3.14) * 0.5 + 0.5;
     float osc2 = lerp(osc, 0.8, 1.0);
     spriteColor *= osc2;
-    spriteColor += QuadraticBump(texCoords.y) * 0.4f;
+    spriteColor += pow(QuadraticBump(texCoords.y), 3.0);
     spriteColor *= input.Color;
     return spriteColor;
 }
