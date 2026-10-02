@@ -1,3 +1,4 @@
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
 using Stellamod.Content.CommonMaterials;
 using System.IO;
 using Terraria;
@@ -161,6 +162,14 @@ public class WinterSoul : ModNPC
 
     void AI_MoveTowardsPlayer()
     {
+        if (NPC.HasBuff<Pearlflame>())
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PearlbornSoul>());
+            }
+            NPC.active = false;
+        }
         if (!NPC.HasValidTarget)
             NPC.TargetClosest();
         var target = Main.player[NPC.target];

@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -9,6 +10,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.EnemiesSN;
 
 public class WinterbornBat : ModNPC
 {
+    int _frame = 0;
     public override void SetStaticDefaults()
     {
         // DisplayName.SetDefault("Winterborn Slime");
@@ -23,26 +25,24 @@ public class WinterbornBat : ModNPC
         return chance;
     }
 
-    int frame = 0;
+
     public override void FindFrame(int frameHeight)
     {
         NPC.frameCounter += 1.1f;
         if (NPC.frameCounter >= 6)
         {
-            frame++;
+            _frame++;
             NPC.frameCounter = 0;
         }
-        if (frame >= 4)
-        {
-            frame = 0;
-        }
-        NPC.frame.Y = frameHeight * frame;
+        
+        _frame %= Main.npcFrameCount[Type];
+        NPC.frame.Y = frameHeight * _frame;
     }
 
     public override void SetDefaults()
     {
-        NPC.width = 30;
-        NPC.height = 28;
+        NPC.width = NPC.height = 30;
+
         NPC.defense = 3;
         NPC.lifeMax = 40;
         NPC.damage = 13;
@@ -87,15 +87,21 @@ public class WinterbornBat : ModNPC
         }
     }
 
-    float alphaCounter;
     public override void AI()
     {
         NPC.spriteDirection = NPC.direction;
-        float num = 1f - NPC.alpha / 255f;
-        alphaCounter += 0.04f;
         NPC.rotation = NPC.velocity.X * 0.03f;
+        if (NPC.HasBuff<Pearlflame>())
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PearlbornBat>());
+            }
+            NPC.active = false;
+        }
     }
 
+ 
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         base.ModifyNPCLoot(npcLoot);

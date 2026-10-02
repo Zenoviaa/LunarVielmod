@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
 using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -51,11 +52,16 @@ public class WinterBornSlime : ModNPC
         }
     }
 
-    float alphaCounter;
     public override void AI()
     {
-        float num = 1f - NPC.alpha / 255f;
-        alphaCounter += 0.04f;
+        if (NPC.HasBuff<Pearlflame>())
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PearlbornSlime>());
+            }
+            NPC.active = false;
+        }
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
