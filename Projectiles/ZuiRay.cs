@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles
         public override void AI()
         {
             // Fade in.
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(_degrees);
+          //  Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(_degrees);
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
             Projectile.scale = MathF.Sin(Time / 120f * MathHelper.Pi) * 3f;
