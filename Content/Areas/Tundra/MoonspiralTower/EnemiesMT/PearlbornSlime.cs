@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Visual.Particles;
@@ -46,6 +47,11 @@ public class PearlbornSlime : ModNPC,
     float SniperSpikeSquishTime => 120;
     int DamagePearlbornSpike => 30;
 
+    const string ANIM_IDLE = "Idle";
+    const string ANIM_CIRCLE = "Circle";
+    const string ANIM_SLIM = "Slim";
+    public override string Texture => TextureRegistry.EmptyTexture;
+
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return false;
@@ -54,6 +60,7 @@ public class PearlbornSlime : ModNPC,
     {
         base.ModifyNPCLoot(npcLoot);
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 2, maximumDropped: 4));
+        npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 2, 5));
     }
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -73,6 +80,7 @@ public class PearlbornSlime : ModNPC,
         Main.npcFrameCount[Type] = 2;
         NPCID.Sets.TrailCacheLength[Type] = 32;
         NPCID.Sets.TrailingMode[Type] = 3;
+        NPCSets.UseAseprite[Type] = true;
     }
 
     public override void SetDefaults()
@@ -137,6 +145,7 @@ public class PearlbornSlime : ModNPC,
                 timeLeft = 120
             });
         }
+        this.SetDrawOrigin(new Vector2(25, 40));
     }
 
     void SwitchState(AIState state)
@@ -157,11 +166,13 @@ public class PearlbornSlime : ModNPC,
         if (Timer == 1 || !NPC.HasValidTarget)
             NPC.TargetClosest();
 
+  
         var sqrDist = Vector2.DistanceSquared(NPC.Center, Main.player[NPC.target].Center);
         if (sqrDist <= ChaseDistance)
         {
             SwitchState(AIState.JumpTo);
         }
+        this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         NPC.velocity.X *= 0.96f;
         if (Timer >= IdleTime)
         {
@@ -195,6 +206,7 @@ public class PearlbornSlime : ModNPC,
             SoundEngine.PlaySound(bellHit, NPC.position);
             MakeDonut(NPC.Bottom, Vector2.UnitY);
         }
+        this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         NPC.velocity.X *= 0.96f;
         if (NPC.velocity.Y < -5)
             NPC.velocity.Y *= 0.96f;
@@ -202,6 +214,12 @@ public class PearlbornSlime : ModNPC,
         {
             SwitchState(AIState.Idle);
         }
+    }
+
+    void SpikeSound()
+    {
+        var sound = AssetReferences.Assets.Sounds.TentacleBubbleOut.Asset with { PitchVariance = 0.6f };
+        SoundEngine.PlaySound(sound, NPC.position);
     }
 
     void AI_JumpTo()
@@ -221,7 +239,7 @@ public class PearlbornSlime : ModNPC,
             MakeDonut(NPC.Bottom, Vector2.UnitY);
         }
 
-
+        this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         var jumpTicks = Vector2.Distance(_jumpStartPosition, _jumpEndPosition) / 6f;
         jumpTicks = MathF.Max(jumpTicks, 54);
         var ratio = Timer / jumpTicks;
@@ -283,13 +301,14 @@ public class PearlbornSlime : ModNPC,
                 });
             }
         }
-
+        this.AseAnimator.PlayAnimation(ANIM_CIRCLE, AnimationParams.NoLooping);
         float ratio = Timer / CircularSquishTime;
         Squish(ratio);
         NPC.velocity *= 0.96f;
         NPC.noTileCollide = false;
         if (Timer == 30)
         {
+            SpikeSound();
             if (MultiplayerHelper.IsHost)
             {
                 var spikeFirer = ProjFirer.From<PearlbornSpear>(NPC);
@@ -307,6 +326,7 @@ public class PearlbornSlime : ModNPC,
                 }
             }
         }
+
 
         if (Timer >= CircularSquishTime)
         {
@@ -333,12 +353,14 @@ public class PearlbornSlime : ModNPC,
             });
         }
 
+        this.AseAnimator.PlayAnimation(ANIM_SLIM, AnimationParams.NoLooping);
         float ratio = Timer / SniperSpikeSquishTime;
         Squish(ratio);
         NPC.velocity *= 0.96f;
         NPC.noTileCollide = false;
         if (Timer == 60)
         {
+            SpikeSound();
             if (MultiplayerHelper.IsHost)
             {
                 var spikeFirer = ProjFirer.From<PearlbornSpear>(NPC);
@@ -375,7 +397,7 @@ public class PearlbornSlime : ModNPC,
         for(var i = 0; i < NPC.oldPos.Length; i++)
         {
             var oldPos = NPC.oldPos[i] + NPC.Size * 0.5f;
-            var drawer2 = SpritebatchDrawer.FromNPC(NPC);
+            var drawer2 = NPC.GetAnimatorDrawInfo(Lighting.GetColor(NPC.position.ToTileCoordinates()));
             drawer2.worldPosition = oldPos;
             drawer2.color = Color.Lerp(Color.SkyBlue, Color.Transparent, (float)i / (float)NPC.oldPos.Length) * 0.15f;
             drawer2.color.A = 0;
@@ -399,7 +421,7 @@ public class PearlbornSlime : ModNPC,
     }
     void DrawSprite(SpriteBatch spriteBatch)
     {
-        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        var drawer = NPC.GetAnimatorDrawInfo(Lighting.GetColor(NPC.position.ToTileCoordinates()));
         drawer.scale = _squishScale;
         drawer.color *= 0.6f;
         drawer.BottomCenterOrigin();
@@ -409,7 +431,7 @@ public class PearlbornSlime : ModNPC,
 
     void DrawOutline(SpriteBatch spriteBatch)
     {
-        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        var drawer = NPC.GetAnimatorDrawInfo(Lighting.GetColor(NPC.position.ToTileCoordinates()));
         drawer.scale = _squishScale;
         drawer.color = _outliner.outlineColor;
         drawer.BottomCenterOrigin();
