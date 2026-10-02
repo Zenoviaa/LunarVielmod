@@ -1257,3 +1257,8 @@ MoonEnchanted: {
 	DisplayName: Moon Enchanted
 	Description: You feel the power of the moon within you...
 }
+
+Pearlflame: {
+	DisplayName: Pearlflame
+	Description: Mods.Stellamod.Buffs.Pearlflame.Description
+}

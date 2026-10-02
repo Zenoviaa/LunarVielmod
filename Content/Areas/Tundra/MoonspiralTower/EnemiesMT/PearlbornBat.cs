@@ -253,6 +253,7 @@ public class PearlbornClone : ModProjectile,
     AIState _state;
     Vector2 _dashVelocity;
     Vector2 _initialVelocity;
+    Vector2 _targetPoint;
     float _side;
     float _alpha;
     ref float Timer => ref Projectile.ai[0];
@@ -276,6 +277,7 @@ public class PearlbornClone : ModProjectile,
         base.SendExtraAI(writer);
         writer.WriteVector2(_initialVelocity);
         writer.WriteVector2(_dashVelocity);
+        writer.WriteVector2(_targetPoint);
         writer.Write((byte)_state);
         writer.Write(_side);
     }
@@ -284,6 +286,7 @@ public class PearlbornClone : ModProjectile,
         base.ReceiveExtraAI(reader);
         _initialVelocity = reader.ReadVector2();
         _dashVelocity = reader.ReadVector2();
+        _targetPoint = reader.ReadVector2();
         _state = (AIState)reader.ReadByte();
         _side = reader.ReadSingle();
     }
@@ -299,6 +302,7 @@ public class PearlbornClone : ModProjectile,
     {
         base.SetStaticDefaults();
         Main.projFrames[Type] = 7;
+        Projectile.SetTrailCacheLength(12);
     }
 
     public override void SetDefaults()
@@ -342,7 +346,11 @@ public class PearlbornClone : ModProjectile,
                 Projectile.frame = 0;
         }
 
-        Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.velocity.X * 0.05f, 0.1f);
+        if (Projectile.velocity.X < 0)
+            Projectile.spriteDirection = -1;
+        else
+            Projectile.spriteDirection = 1;
+        Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.velocity.X * 0.025f, 0.1f);
     }
 
     void SwitchState(AIState state)
@@ -355,19 +363,32 @@ public class PearlbornClone : ModProjectile,
         }
     }
 
+    void SpawnInParticles()
+    {
+        var pos = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
+        var vel = Main.rand.NextVector2Circular(8, 8);
+        Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+        {
+            position = pos,
+            velocity = vel,
+            innerColor = Color.SkyBlue.ToVector4(),
+            outerColor = Color.DarkBlue.ToVector4(),
+            scale = new Vector2(Main.rand.NextFloat(0.5f, 1f)),
+            timeLeft = 120
+        });
+    }
     void DisperseEffect()
     {
-        FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 20, baseSize: 0.16f);
-        for (var i = 0; i < 8; i++)
+        for (var i = 0; i < 16; i++)
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(24, 24);
             var vel = (pos - Projectile.Center);
-            vel = vel.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(10, 20);
+            vel = vel.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 10);
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
-                innerColor = Color.White.ToVector4(),
+                innerColor = Color.SkyBlue.ToVector4(),
                 outerColor = Color.DarkBlue.ToVector4(),
                 scale = new Vector2(Main.rand.NextFloat(0.5f, 1f)),
                 timeLeft = 120
@@ -380,12 +401,17 @@ public class PearlbornClone : ModProjectile,
         Timer++;
         if (Timer == 1)
         {
+            _targetPoint = Target.Center + SideOffset;
             DisperseEffect();
         }
-        var targetPos = Target.Center + SideOffset;
-        var targetVelocity = targetPos - Projectile.Center;
+
+        if (Main.rand.NextBool(8))
+        {
+            SpawnInParticles();
+        }
+        var targetVelocity = _targetPoint - Projectile.Center;
         var ratio = Timer / PrepTime;
-        var easing = EasingFunction.Anticipation2(ratio);
+        var easing = EasingFunction.InSine(ratio);
         var newVelocity = Vector2.Lerp(_initialVelocity, targetVelocity, easing);
         Projectile.hostile = false;
         Projectile.velocity = newVelocity;
@@ -402,10 +428,10 @@ public class PearlbornClone : ModProjectile,
         {
             _dashVelocity = (Target.Center - Projectile.Center);
             _dashVelocity = _dashVelocity.SafeNormalize(Vector2.Zero);
-            _dashVelocity *= 15;
+            _dashVelocity *= 25;
         }
         Projectile.hostile = true;
-        Projectile.velocity = Vector2.Lerp(Projectile.velocity, _dashVelocity, 0.03f);
+        Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Lerp(-_dashVelocity * 0.5f, _dashVelocity, EasingFunction.Anticipation2(Timer / 30f)), 0.03f);
         if (Timer >= DashTime)
         {
             SwitchState(AIState.Out);
@@ -429,6 +455,14 @@ public class PearlbornClone : ModProjectile,
         drawer.color *= 0.6f;
         drawer.color *= ExtraMath.Osc(0.9f, 1f, speed: 16, offset: Projectile.identity);
         drawer.color *= _alpha;
+
+        foreach(OldPosition oldPos in Projectile.IterateOldPosBackwards())
+        {
+            var afDrawer = drawer;
+            afDrawer.color = Color.Lerp(Color.SkyBlue, Color.Transparent, oldPos.progress) * 0.1f;
+            afDrawer.worldPosition = oldPos.position + Projectile.Size * 0.5f;
+            Main.spriteBatch.Draw(afDrawer);
+        }
         Main.spriteBatch.Draw(drawer);
         return false;
     }
@@ -474,8 +508,8 @@ public class PearlbornBat : ModNPC
     float ChaseTime => 120;
     float AttackDistance => 128;
     float ChaseDistance => 384;
-    int CloneCount => 7;
-    int TimeBetweenClones => 45;
+    int CloneCount => 14;
+    int TimeBetweenClones => 30;
     int Damage_Clone => 25;
     public override void SetStaticDefaults()
     {
@@ -532,6 +566,7 @@ public class PearlbornBat : ModNPC
                 break;
         }
         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+        Lighting.AddLight(NPC.position, TorchID.Ice);
     }
 
     void SwitchState(AIState state)
@@ -568,6 +603,10 @@ public class PearlbornBat : ModNPC
         var speed = MathF.Min(Vector2.Distance(pointToMoveTo, NPC.Center), maxSpeed);
         targetVelocity *= speed;
         NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.15f);
+        if (NPC.velocity.X < 0)
+            NPC.spriteDirection = -1;
+        else
+            NPC.spriteDirection = 1;
         var distance = Vector2.Distance(NPC.Center, Main.player[NPC.target].Center);
         if (distance <= ChaseDistance)
         {
@@ -589,9 +628,13 @@ public class PearlbornBat : ModNPC
 
             var myTarget = Main.player[NPC.target];
             var targetPos = myTarget.Center;
-            targetPos += new Vector2(0, -90).RotatedBy(Timer * 0.03f);
+            targetPos += new Vector2(0, -90).RotatedBy(Timer * 0.006f);
             var targetVelocity = (targetPos - NPC.Center);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.03f);
+            targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+            var speed = 8;
+            var dist = Vector2.Distance(NPC.Center, targetPos);
+            targetVelocity *= MathF.Min(speed, dist);
+            NPC.velocity = NPC.velocity.MoveTowards(targetVelocity, 0.3f);
             NPC.SpriteFaceTarget();
             if (Timer >= ChaseTime && Vector2.Distance(NPC.Center, targetPos) < AttackDistance)
             {
@@ -637,7 +680,7 @@ public class PearlbornBat : ModNPC
             if (MultiplayerHelper.IsHost)
             {
                 var cloneFirer = ProjFirer.From<PearlbornClone>(NPC);
-                cloneFirer.velocity = Main.rand.NextVector2CircularEdge(12, 12);
+                cloneFirer.velocity = Main.rand.NextVector2CircularEdge(8, 8);
                 cloneFirer.damage = Damage_Clone;
                 cloneFirer.New();
             }
@@ -681,6 +724,7 @@ public class PearlbornBat : ModNPC
         NPC.frameCounter += 0.2f;
         if (NPC.frameCounter >= 1f)
         {
+            NPC.frameCounter = 0;
             _frame++;
             _frame %= Main.npcFrameCount[Type];
         }
