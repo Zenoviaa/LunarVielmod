@@ -1,19 +1,17 @@
 ﻿using Stellamod.Common.Particles;
-using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering.RTs;
 using Stellamod.Visual.Particles;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+
 
 namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
 
@@ -29,6 +27,7 @@ public class PearlbornSlime : ModNPC,
         SniperSpike
     }
 
+    Outliner _outliner;
     Vector2 _squishScale;
     Vector2 _jumpStartPosition;
     Vector2 _jumpEndPosition;
@@ -106,6 +105,7 @@ public class PearlbornSlime : ModNPC,
     {
         base.AI();
 
+        _outliner.SetDefaults();
         switch (State)
         {
             case AIState.Idle:
@@ -124,6 +124,7 @@ public class PearlbornSlime : ModNPC,
                 AI_SniperSpike();
                 break;
         }
+        _outliner.Update();
         if (Main.rand.NextBool(4))
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
@@ -249,6 +250,16 @@ public class PearlbornSlime : ModNPC,
         }
     }
 
+    void Squish(in float ratio)
+    {
+        var size1 = Vector2.Lerp(Vector2.One, new Vector2(1.25f), EasingFunction.OutExpo(ratio));
+        var size2 = Vector2.Lerp(new Vector2(1.25f), Vector2.One, EasingFunction.InSine(ratio));
+        var size3 = Vector2.Lerp(size1, size2, ratio);
+        var size4 = Vector2.Lerp(new Vector2(1.3f, 0.5f), Vector2.One, EasingFunction.InSine(ratio / 0.5f));
+        var size5 = Vector2.Lerp(new Vector2(0.8f, 1.2f), Vector2.One, EasingFunction.InSine(ratio));
+        _squishScale = size3 * size4 * size5;
+    }
+
     void AI_CircularSpike()
     {
         Timer++;
@@ -274,12 +285,7 @@ public class PearlbornSlime : ModNPC,
         }
 
         float ratio = Timer / CircularSquishTime;
-        var size1 = Vector2.Lerp(Vector2.One, new Vector2(1.25f), EasingFunction.OutExpo(ratio));
-        var size2 = Vector2.Lerp(new Vector2(1.25f), Vector2.One, EasingFunction.InSine(ratio));
-        var size3 = Vector2.Lerp(size1, size2, ratio);
-        var size4 = Vector2.Lerp(new Vector2(1.3f, 0.5f), Vector2.One, EasingFunction.InSine(ratio / 0.5f));
-        var size5 = Vector2.Lerp(new Vector2(0.8f, 1.2f), Vector2.One, EasingFunction.InSine(ratio));
-        _squishScale = size3 * size4 * size5;
+        Squish(ratio);
         NPC.velocity *= 0.96f;
         NPC.noTileCollide = false;
         if (Timer == 30)
@@ -328,12 +334,7 @@ public class PearlbornSlime : ModNPC,
         }
 
         float ratio = Timer / SniperSpikeSquishTime;
-        var size1 = Vector2.Lerp(Vector2.One, new Vector2(1.25f), EasingFunction.OutExpo(ratio));
-        var size2 = Vector2.Lerp(new Vector2(1.25f), Vector2.One, EasingFunction.InSine(ratio));
-        var size3 = Vector2.Lerp(size1, size2, ratio);
-        var size4 = Vector2.Lerp(new Vector2(0.5f, 1.3f), Vector2.One, EasingFunction.InSine(ratio / 0.5f));
-        var size5 = Vector2.Lerp(new Vector2(0.8f, 1.2f), Vector2.One, EasingFunction.InSine(ratio));
-        _squishScale = size3 * size4 * size5;
+        Squish(ratio);
         NPC.velocity *= 0.96f;
         NPC.noTileCollide = false;
         if (Timer == 60)
@@ -406,27 +407,27 @@ public class PearlbornSlime : ModNPC,
         spriteBatch.Draw(drawer);
     }
 
+    void DrawOutline(SpriteBatch spriteBatch)
+    {
+        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.scale = _squishScale;
+        drawer.color = _outliner.outlineColor;
+        drawer.BottomCenterOrigin();
+        drawer.worldPosition.Y += NPC.height / 2;
+        spriteBatch.Draw(drawer);
+    }
+
     public void DrawToRenderTargets()
     {
         PearlbornSlimeRenderer.PrepareForRenderingSprite(DrawSprite);
+        PearlbornSlimeRenderer.PrepareForRenderingSpriteOutline(DrawOutline);
     }
 }
+
 public class PearlbornSpear : ModProjectile,
     IDrawToRenderTarget
 {
     float _ease;
-    float Ease
-    {
-        get
-        {
-            var ratio = Timer / Time;
-            var ease1 = MathHelper.Lerp(0.25f, 1f, EasingFunction.OutSine(ratio));
-            var ease2 = MathHelper.Lerp(1f, 0f, EasingFunction.InSine(ratio));
-
-            var ease3 = ease1 * ease2;
-            return ease3;
-        }
-    }
     Vector2[] TrailPoints
     {
         get
@@ -475,10 +476,11 @@ public class PearlbornSpear : ModProjectile,
     {
         base.SetStaticDefaults();
     }
+
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.hostile = true;
+        Projectile.hostile = false;
         Projectile.width = 16;
         Projectile.height = 16;
         Projectile.timeLeft = (int)Time;
@@ -505,6 +507,8 @@ public class PearlbornSpear : ModProjectile,
         Projectile.Center += Projectile.velocity.SafeNormalize(Vector2.Zero) * 3;
         Projectile.velocity = Projectile.velocity.RotatedBy(MathF.Sin(Timer * 0.1f + Projectile.identity) * 0.01f);
         var time = 24;
+        if (Timer >= 25)
+            Projectile.hostile = true;
         if(Timer <= time)
         {
 
@@ -538,6 +542,13 @@ public class PearlbornSpear : ModProjectile,
         return easeColor * 0.75f;
     }
 
+    Color GetTrailOutlineColor(float progress)
+    {
+        if (Projectile.hostile)
+            return Color.Red;
+        return Color.Yellow;
+    }
+
     public override bool PreDraw(ref Color lightColor)
     {
 
@@ -546,7 +557,6 @@ public class PearlbornSpear : ModProjectile,
 
     public void DrawToRenderTargets()
     {
-
         PearlbornSlimeRenderer.PrepareForRendering(new()
         {
             GetTrailWidth = GetTrailWidth,
@@ -554,109 +564,14 @@ public class PearlbornSpear : ModProjectile,
             TrailOffset = Vector2.Zero,
             Points = TrailPoints
         });
-    }
-}
-[Autoload(Side = ModSide.Client)]
-public class PearlbornSlimeRenderer : ModSystem
-{
-   
-    public record struct SlimeDrawData(Vector2[] Points, Func<float, Color> GetTrailColor, Func<float, float> GetTrailWidth, Vector2 TrailOffset);
-    static readonly Queue<Action<SpriteBatch>> _spriteDrawQueue = new();
-    static readonly Queue<SlimeDrawData> _drawQueue = new();
-   
-    public override void Load()
-    {
-        base.Load();
-        On_Main.DrawPlayers_AfterProjectiles += DrawSlime;
-    }
-
-    private void DrawSlime(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
-    {
-        orig(self);
-        if (Main.gameMenu)
-            return;
-        if (_drawQueue.Count <= 0 && _spriteDrawQueue.Count <= 0)
-            return;
-        var sb = Main.spriteBatch;
-        using var slimeTarget = RT.Context(RenderTargets.ScreenTarget);
-        using var pixelSlimeTarget = RT.Context(RenderTargets.ScreenTarget);
-        using (RT.Clear(pixelSlimeTarget, Color.Transparent))
+        
+        PearlbornSlimeRenderer.PrepareForRenderingOutline(new()
         {
-            //May need to render this to a render target first so we can outline it, will see how it looks first.
-            var batch = new List<VertexPositionColorTexture>();
-            while (_drawQueue.Count > 0)
-            {
-                var drawData = _drawQueue.Dequeue();
-                var vertices = DrawUtilities.PrepareSimpleTrailing(drawData.Points, drawData.GetTrailColor, drawData.GetTrailWidth, drawData.TrailOffset);
-                batch.AddRange(vertices);
-            }
-
-            var indices = DrawUtilities.PrepareIndicesForDrawing(batch.Count / 4);
-            var pass = AssetReferences.Effects.Generic.SlimeTrail.CreatePrimitivesPass();
-            pass.Parameters.time = Main.GlobalTimeWrappedHourly;
-            pass.Parameters.spriteSampler = new()
-            {
-                Sampler = SamplerState.PointWrap,
-                Texture = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornSlime_Spike.Asset.Value
-            };
-            pass.Parameters.noiseSampler = new()
-            {
-                Sampler = SamplerState.PointWrap,
-                Texture = AssetReferences.Assets.LaserTextures.FlameTrail.Asset.Value
-            };
-            pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
-            pass.Apply();
-            sb.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-            //Now we just need to make and draw the shader
-            DrawUtilities.DrawUserIndexedPrimitivesWithEffect(batch.ToArray(), indices, pass.Shader);
-        }
-
-        using (RT.Clear(slimeTarget, Color.Transparent))
-        {
-            using (sb.Ctx(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity }))
-            {
-                while (_spriteDrawQueue.Count > 0)
-                {
-                    _spriteDrawQueue.Dequeue()(sb);
-                }
-            }
-
-            var pixelattePass = AssetReferences.Effects.CrystalShaders.Pixelate.CreatePixelPass();
-            pixelattePass.Parameters.width = pixelSlimeTarget.Width / 2;
-            pixelattePass.Parameters.height = pixelSlimeTarget.Height / 2;
-            pixelattePass.Apply();
-            var spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                Main.Rasterizer,
-                pixelattePass.Shader);
-            spriteBatch.Draw(pixelSlimeTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.End();
-        }
-
-        var color = new Color(21, 4, 206);
-        var outliner = AssetReferences.Effects.Generic.OutlinerNoTransparencyThreshold.CreatePixelPass();
-        outliner.Parameters.texelSize = slimeTarget.Target.GetTexelSize() * 2f;
-        outliner.Parameters.threshold = 0;
-        outliner.Apply();
-        using (sb.Ctx(SpritebatchParams.InWorldAndZoomed() with { effect = outliner.Shader }))
-        {
-            sb.Draw(slimeTarget, Vector2.Zero, color);
-        }
-
-    }
-
-
-    public static void PrepareForRenderingSprite(Action<SpriteBatch> drawAction)
-    {
-        _spriteDrawQueue.Enqueue(drawAction);
-    }
-    public static void PrepareForRendering(SlimeDrawData drawData)
-    {
-        _drawQueue.Enqueue(drawData);
+            GetTrailWidth = GetTrailWidth,
+            GetTrailColor = GetTrailOutlineColor,
+            TrailOffset = Vector2.Zero,
+            Points = TrailPoints
+        });
     }
 }
 
