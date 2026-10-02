@@ -4,7 +4,7 @@ float threshold;
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     float4 baseColor = tex2D(spriteSampler, coords);
-    if(baseColor.a > 0)
+    if (baseColor.a > threshold)
         return baseColor;
 
     float a = 0.0;
@@ -19,7 +19,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
         }
     }
     
-    if (a > 0.0)
+    if (a > threshold)
         return sampleColor;
     return float4(0.0, 0.0, 0.0, 0.0);
 }

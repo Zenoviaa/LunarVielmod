@@ -41,7 +41,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float osc = sin(noiseColor * 3.14) * 0.5 + 0.5;
     float osc2 = lerp(osc, 0.8, 1.0);
     spriteColor *= osc2;
-    spriteColor += pow(QuadraticBump(texCoords.y), 3.0);
+    spriteColor += pow(QuadraticBump(texCoords.y), 3.0)  * input.Color * 1.2;
     spriteColor *= input.Color;
     return spriteColor;
 }

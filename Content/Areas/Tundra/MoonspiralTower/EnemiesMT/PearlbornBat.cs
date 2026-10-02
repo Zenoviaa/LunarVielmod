@@ -182,7 +182,7 @@ public class MoonEffect : AScreenEffect
     public override ScreenEffectPriority Priority => ScreenEffectPriority.Very_Late;
     public override void Apply(SpriteBatch spriteBatch, RenderTarget2D src, RenderTarget2D dst)
     {
-        var temp = RT.Context(RenderTargets.ScreenTarget);
+        using var temp = RT.Context(RenderTargets.ScreenTarget);
         using (RT.Clear(temp, Color.Transparent))
         {
             var beginner = SpritebatchParams.InWorldAndZoomed();
@@ -737,7 +737,9 @@ public class PearlbornBat : ModNPC
 public class PearlbornSoulRenderer : ModSystem
 {
     public record struct SoulDrawData(Vector2[] TrailCache, Vector2 TrailOffset);
-    static readonly Queue<SoulDrawData> _soulDrawQueue = new();
+    static Queue<SoulDrawData> _soulDrawQueue = new();
+    static Queue<SoulDrawData> _yellowOutlineSoulDrawQueue = new();
+    static Queue<SoulDrawData> _redOutlineSoulDrawQueue = new();
     public override void Load()
     {
         base.Load();
@@ -749,14 +751,25 @@ public class PearlbornSoulRenderer : ModSystem
         orig();
         if (Main.gameMenu)
             return;
-        if (_soulDrawQueue.Count <= 0)
-            return;
-        PixelationManager.QueuePrimitivesDrawAction(DrawPrimitives, DrawLayer.OverNPCs);
+        if (_redOutlineSoulDrawQueue.Count > 0)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawSoulTrailOutline, DrawLayer.OverNPCs);
+        }
+        if (_yellowOutlineSoulDrawQueue.Count > 0)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawSoulTrailOutlineYellow, DrawLayer.OverNPCs);
+        }
+
+
+        if (_soulDrawQueue.Count > 0)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawSoulTrail, DrawLayer.OverNPCs);
+        }
     }
 
     float GetTrailWidth(float progress)
     {
-        return MathHelper.SmoothStep(24, 0, progress);
+        return MathHelper.SmoothStep(18, 0, progress);
     }
 
     Color GetTrailColor(float progress)
@@ -764,17 +777,24 @@ public class PearlbornSoulRenderer : ModSystem
         return DrawUtilities.InterpolateColorArray(progress, Color.White, Color.SkyBlue);
     }
 
-    void DrawPrimitives(GraphicsDevice gDevice)
+
+    void DrawSoulTrailInner(
+        SpriteBatch sb, 
+        ref Queue<SoulDrawData> drawQueue, 
+        List<VertexPositionColorTexture> batch,
+        List<Vector3> points)
     {
-        var batch = new List<VertexPositionColorTexture>();
-        while (_soulDrawQueue.Count > 0)
+        while (drawQueue.Count > 0)
         {
-            var drawData = _soulDrawQueue.Dequeue();
+            var drawData = drawQueue.Dequeue();
             var vertices = DrawUtilities.PrepareSimpleTrailing(drawData.TrailCache, GetTrailColor, GetTrailWidth, drawData.TrailOffset);
             batch.AddRange(vertices);
+
+            var drawPoint = new Vector3(drawData.TrailCache[1], (drawData.TrailCache[1] - drawData.TrailCache[0]).ToRotation());
+            points.Add(drawPoint);
         }
 
-        var indices = DrawUtilities.PrepareIndicesForDrawing(batch.Count / 3);
+        var indices = DrawUtilities.PrepareIndicesForDrawing(batch.Count / 4);
         var pass = AssetReferences.Effects.Generic.SoulTrail.CreatePrimitivesPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.spriteSampler = new()
@@ -791,12 +811,148 @@ public class PearlbornSoulRenderer : ModSystem
         pass.Apply();
 
         //Now we just need to make and draw the shader
-        gDevice.RasterizerState = RasterizerState.CullNone;
+        sb.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
         DrawUtilities.DrawUserIndexedPrimitivesWithEffect(batch.ToArray(), indices, pass.Shader);
-
-
     }
 
+    void DrawSoulTrailOutlineYellow(SpriteBatch sb, Vector2 sp)
+    {
+        using var temp = RT.Context(RenderTargets.ScreenTarget);
+        sb.EndOut(out var oldParameters);
+
+        using (RT.Clear(temp, Color.Transparent))
+        {
+            var batch = new List<VertexPositionColorTexture>();
+            var points = new List<Vector3>();
+            DrawSoulTrailInner(sb, ref _yellowOutlineSoulDrawQueue, batch, points);
+            sb.Begin(oldParameters with { matrix = Matrix.Identity });
+            foreach (var p in points)
+            {
+                var textureAsset = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornSoul.Asset;
+                var drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, p.XY() + new Vector2(8));
+                drawer.VerticalFrame(0, 2);
+                drawer.CenterOrigin();
+                drawer.scale *= 0.35f;
+                drawer.scale *= new Vector2(1.65f, 1f);
+                drawer.scale *= 1.1f;
+                drawer.color = Color.White;
+                drawer.rotation = p.Z;
+                sb.Draw(drawer);
+
+                drawer.VerticalFrame(1, 2);
+                drawer.scale = Vector2.One;
+                sb.Draw(drawer);
+            }
+
+            sb.End();
+        }
+
+        var outliner = AssetReferences.Effects.Generic.OutlinerNoTransparencyThreshold.CreatePixelPass();
+        outliner.Parameters.texelSize = temp.Target.GetTexelSize() * 2f;
+        outliner.Parameters.threshold = 0.7f;
+        outliner.Apply();
+        using (sb.Ctx(oldParameters with { effect = outliner.Shader }))
+        {
+            sb.Draw(temp, Vector2.Zero, Color.Yellow);
+        }
+        sb.Begin(oldParameters);
+    }
+
+    void DrawSoulTrailOutline(SpriteBatch sb, Vector2 sp)
+    {
+        using var temp = RT.Context(RenderTargets.ScreenTarget);
+        sb.EndOut(out var oldParameters);
+     
+        using(RT.Clear(temp, Color.Transparent))
+        {
+            var batch = new List<VertexPositionColorTexture>();
+            var points = new List<Vector3>();
+            DrawSoulTrailInner(sb, ref _redOutlineSoulDrawQueue, batch, points);
+            sb.Begin(oldParameters with { matrix = Matrix.Identity });
+            foreach (var p in points)
+            {
+                var textureAsset = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornSoul.Asset;
+                var drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, p.XY() + new Vector2(8));
+                drawer.VerticalFrame(0, 2);
+                drawer.CenterOrigin();
+                drawer.scale *= 0.35f;
+                drawer.scale *= new Vector2(1.65f, 1f);
+                drawer.scale *= 1.1f;
+                drawer.color = Color.White;
+                drawer.rotation = p.Z;
+                sb.Draw(drawer);
+
+                drawer.VerticalFrame(1, 2);
+                drawer.scale = Vector2.One;
+                sb.Draw(drawer);
+            }
+
+            sb.End();
+        }
+
+        var outliner = AssetReferences.Effects.Generic.OutlinerNoTransparencyThreshold.CreatePixelPass();
+        outliner.Parameters.texelSize = temp.Target.GetTexelSize() * 2f;
+        outliner.Parameters.threshold = 0.7f;
+        outliner.Apply();
+        using (sb.Ctx(oldParameters with { effect = outliner.Shader }))
+        {
+            sb.Draw(temp, Vector2.Zero, Color.Red);
+        }
+        sb.Begin(oldParameters);
+    }
+
+    void DrawSoulTrail(SpriteBatch sb, Vector2 sp)
+    {
+        using var temp = RT.Context(RenderTargets.ScreenTarget);
+        sb.EndOut(out var oldParameters);
+        using(RT.Clear(temp, Color.Transparent))
+        {
+            var batch = new List<VertexPositionColorTexture>();
+            var points = new List<Vector3>();
+            DrawSoulTrailInner(sb, ref _soulDrawQueue, batch, points);
+            sb.Begin(oldParameters with { matrix = Matrix.Identity });
+            foreach(var p in points)
+            {
+                var textureAsset = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornSoul.Asset;
+                var drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, p.XY() + new Vector2(8));
+                drawer.VerticalFrame(0, 2);
+                drawer.CenterOrigin();
+                drawer.scale *= 0.35f;
+                drawer.scale *= new Vector2(1.65f, 1f);
+                drawer.scale *= 1.1f;
+                drawer.color = Color.White;
+                drawer.rotation = p.Z;
+                sb.Draw(drawer);
+
+                drawer.VerticalFrame(1, 2);
+                drawer.scale = Vector2.One;
+                sb.Draw(drawer);
+            }
+            sb.End();
+
+        }
+
+        var outliner = AssetReferences.Effects.Generic.OutlinerNoTransparencyThreshold.CreatePixelPass();
+        outliner.Parameters.texelSize = temp.Target.GetTexelSize() * 2f;
+        outliner.Parameters.threshold = 0.7f;
+        outliner.Apply();
+        using(sb.Ctx(oldParameters with { effect =  outliner.Shader }))
+        {
+            sb.Draw(temp, Vector2.Zero, Color.Lerp(Color.SkyBlue, Color.Black, 0.5f));
+        }
+
+        sb.Begin(oldParameters);
+    }
+    public static void PrepareForRenderingRed(in SoulDrawData drawData)
+    {
+        _redOutlineSoulDrawQueue.Enqueue(drawData);
+    }
+
+    public static void PrepareForRenderingYellow(in SoulDrawData drawData)
+    {
+        _yellowOutlineSoulDrawQueue.Enqueue(drawData);
+    }
+    
     public static void PrepareForRendering(in SoulDrawData drawData)
     {
         _soulDrawQueue.Enqueue(drawData);
@@ -824,9 +980,11 @@ public class PearlbornDash : ModProjectile
         Projectile.ignoreWater = true;
         Projectile.hostile = true;
     }
+    
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        return ProjectileHelper.OldPosColliding(Projectile.oldPos, projHitbox, targetHitbox);
+        var points = DrawUtilities.PruneFarPoints(Projectile.oldPos);
+        return ProjectileHelper.OldPosColliding(points, projHitbox, targetHitbox);
     }
 
     public override void AI()
@@ -1017,6 +1175,14 @@ public class PearlbornSoul : ModNPC,
         Timer++;
         if (Timer == 1)
         {
+            var sound = AssetReferences.Assets.Sounds.StormDragon_CloudBolt.Asset with
+            {
+                PitchVariance = 0.4f,
+                Pitch = 0.5f,
+                Volume = 0.25f
+            };
+
+            SoundEngine.PlaySound(sound, NPC.position);
             if (MultiplayerHelper.IsHost)
             {
                 _side = Main.rand.NextBool(2) ? -1 : 1;
@@ -1053,7 +1219,6 @@ public class PearlbornSoul : ModNPC,
         Timer++;
         if (Timer == 1)
         {
-
             _startDashPoint = NPC.Center;
             _endDashPoint = _startDashPoint + new Vector2(0, 384 * -_side);
             if (MultiplayerHelper.IsHost)
@@ -1064,6 +1229,14 @@ public class PearlbornSoul : ModNPC,
                 firer.damage = Damage_PearlbornDash;
                 firer.New();
             }
+        }
+        if(Timer == 7)
+        {
+            var sound = AssetReferences.Assets.Sounds.StormDragon_FlyingIn.Asset with { 
+                PitchVariance = 0.4f,
+                Pitch = 0.5f,
+                Volume = 0.25f };
+            SoundEngine.PlaySound(sound, NPC.position);
         }
 
         var ratio = Timer / ZigZagDashTime;
@@ -1115,26 +1288,37 @@ public class PearlbornSoul : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        var drawer = SpritebatchDrawer.FromNPC(NPC);
-        drawer.scale *= 0.35f;
-        drawer.scale *= new Vector2(1.65f, 1f);
-        drawer.scale *= 1.1f;
-        drawer.color = Color.White;
-        spriteBatch.Draw(drawer);
-
-        drawer.VerticalFrame(1, 2);
-        drawer.scale = Vector2.One;
-        spriteBatch.Draw(drawer);
         return false;
     }
 
     public void DrawToRenderTargets()
     {
-        PearlbornSoulRenderer.PrepareForRendering(new()
+
+        if(State == AIState.ZigZag)
         {
-            TrailCache = NPC.oldPos,
-            TrailOffset = NPC.Size * 0.5f
-        });
+            PearlbornSoulRenderer.PrepareForRenderingRed(new()
+            {
+                TrailCache = NPC.oldPos,
+                TrailOffset = NPC.Size * 0.5f
+            });
+        } 
+        else if(State == AIState.ZigZagPrepare)
+        {
+            PearlbornSoulRenderer.PrepareForRenderingYellow(new()
+            {
+                TrailCache = NPC.oldPos,
+                TrailOffset = NPC.Size * 0.5f
+            });
+        } 
+        else
+        {
+            PearlbornSoulRenderer.PrepareForRendering(new()
+            {
+                TrailCache = NPC.oldPos,
+                TrailOffset = NPC.Size * 0.5f
+            });
+
+        }
     }
 }
 
