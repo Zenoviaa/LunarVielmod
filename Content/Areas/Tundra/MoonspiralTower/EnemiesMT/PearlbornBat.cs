@@ -1,12 +1,15 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Common.ScreenEffectsSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -17,6 +20,210 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
 
+public class PearlbornCrystal : ModNPC
+{
+    enum AIState : byte
+    {
+        Idle,
+        PickedUp,
+        Throw
+    }
+    ref float Timer => ref NPC.ai[0];
+    AIState State
+    {
+        get => (AIState)NPC.ai[1];
+        set => NPC.ai[1] = (float)value;
+    }
+    Player PickedUpTarget
+    {
+        get => Main.player[(int)NPC.ai[2]];
+    }
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+    }
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        NPC.width = NPC.height = 32;
+        NPC.damage = 1;
+        NPC.defense = 9999;
+        NPC.lifeMax = 15;
+
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        switch (State)
+        {
+            case AIState.Idle:
+                AI_Idle();
+                break;
+            case AIState.PickedUp:
+                AI_PickedUp();
+                break;
+        }
+
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+    }
+    void SwitchState(AIState state)
+    {
+        if (MultiplayerHelper.IsHost)
+        {
+            Timer = 0;
+            State = state;
+            NPC.netUpdate = true;
+        }
+    }
+
+    void AI_Idle()
+    {
+        Timer++;
+        NPC.velocity.X *= 0.94f;
+    }
+
+    void AI_PickedUp()
+    {
+        Timer++;
+    }
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        spriteBatch.Draw(drawer);
+        return false;
+    }
+    
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+    }
+
+    public override void OnKill()
+    {
+        base.OnKill();
+    }
+}
+public class MoonAura : ModNPC
+{
+    float AuraRadius => 1024;
+    ref float Timer => ref NPC.ai[0];
+    ref float LifeTime => ref NPC.ai[1];
+    public override string Texture => TextureRegistry.EmptyTexture;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+    }
+ 
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        NPC.damage = 1;
+        NPC.lifeMax = 1;
+        NPC.dontTakeDamage = true;
+        NPC.dontCountMe = true;
+        NPC.dontTakeDamageFromHostiles = true;
+        NPC.noGravity = true;
+        NPC.defense = 1;
+    }
+    
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
+    }
+    
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        LifeTime--;
+        if (LifeTime <= 0)
+            NPC.active = false;
+        var buffType = ModContent.BuffType<Pearlflame>();
+        foreach(var npc in Main.ActiveNPCs)
+        {
+            var sqrDst = Vector2.DistanceSquared(NPC.Center, npc.Center);
+            if(sqrDst <= AuraRadius * AuraRadius)
+            {
+                npc.AddBuff(buffType, 120);
+            }
+        }
+    }
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        var moonEffect = ModContent.GetInstance<MoonEffect>();
+        moonEffect.isActive = true;
+        MoonEffect.PrepareForRenderering(DrawMask);
+        return false;
+    }
+
+    void DrawMask(SpriteBatch spriteBatch)
+    {
+        var inRatio = EasingFunction.InOutSine(Timer / 60f);
+        var outRatio = EasingFunction.InOutSine(LifeTime / 60f);
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        drawer.color = Color.White;
+        drawer.color.A = 0;
+        drawer.scale = Vector2.One * inRatio * outRatio;
+        spriteBatch.Draw(drawer);
+    }
+}
+
+public class MoonEffect : AScreenEffect
+{
+    static readonly Queue<Action<SpriteBatch>> _drawQueue = new();
+    public override ScreenEffectPriority Priority => ScreenEffectPriority.Very_Late;
+    public override void Apply(SpriteBatch spriteBatch, RenderTarget2D src, RenderTarget2D dst)
+    {
+        var temp = RT.Context(RenderTargets.ScreenTarget);
+        using (RT.Clear(temp, Color.Transparent))
+        {
+            var beginner = SpritebatchParams.InWorldAndZoomed();
+            spriteBatch.Begin(beginner);
+            while (_drawQueue.Count > 0)
+            { 
+                _drawQueue.Dequeue()(spriteBatch);
+            }
+            spriteBatch.End();
+        }
+
+        var pass = AssetReferences.Effects.Generic.MoonAuraMask.CreatePixelPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.maskSampler = new()
+        {
+            Sampler = SamplerState.PointClamp,
+            Texture = temp
+        };
+        pass.Parameters.noiseSampler = new()
+        {
+            Sampler = SamplerState.PointWrap,
+            Texture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset.Value
+        };
+        pass.Parameters.distortionStrength = 0.03f;
+        pass.Apply();
+        spriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointClamp,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            pass.Shader);
+        spriteBatch.Draw(src, Vector2.Zero, Color.SkyBlue);
+        spriteBatch.End();
+    }
+
+    public static void PrepareForRenderering(Action<SpriteBatch> drawAction)
+    {
+        _drawQueue.Enqueue(drawAction);
+    }
+}
 public class Pearlflame : ModBuff
 {
     public override void SetStaticDefaults()
