@@ -389,6 +389,12 @@ public class PearlbornBat : ModNPC
             spriteBatch.Draw(afDraw);
         }
         spriteBatch.Draw(drawer);
+
+        var glow = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornBat_Glow.Asset;
+        var glowDrawer = drawer with { texture = glow.Value };
+        glowDrawer.color = Color.White * ExtraMath.Osc(0.3f, 0.6f, speed: 2, offset: NPC.whoAmI);
+        glowDrawer.color.A = 0;
+        spriteBatch.Draw(glowDrawer);
         return false;
         //return base.PreDraw(spriteBatch, screenPos, drawColor);
     }
