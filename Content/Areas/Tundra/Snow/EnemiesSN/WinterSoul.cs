@@ -1,5 +1,4 @@
 using Stellamod.Content.CommonMaterials;
-using System;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -12,43 +11,66 @@ namespace Stellamod.Content.Areas.Tundra.Snow.EnemiesSN;
 
 public class WinterSoul : ModNPC
 {
+    enum AIState : byte
+    {
+        MoveTowardsPlayer,
+        DashAtPlayer
+    }
+
+    Outliner _outliner;
+    Vector2 _dashDirection;
+    bool _contactDamage;
+    ref float Timer => ref NPC.ai[0];
+    AIState State
+    {
+        get => (AIState)NPC.ai[1];
+        set => NPC.ai[1] = (float)value;
+    }
+
+    ref float AttackCycle => ref NPC.ai[2];
     public int Style = -1;
+    float GetCloseDistance => 128;
+    float DashTime => 60;
+    float IdleTime => 100;
+    float ChaseSpeed => 8;
+    int _frame = 0;
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+    }
+
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
+        writer.WriteVector2(_dashDirection);
         writer.Write(Style);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
+        _dashDirection = reader.ReadVector2();
         Style = reader.ReadInt32();
     }
 
     public override void SetStaticDefaults()
     {
-        // DisplayName.SetDefault("Storm Spirit");
         Main.npcFrameCount[NPC.type] = 5;
-        NPCID.Sets.TrailCacheLength[NPC.type] = 10;
+        NPCID.Sets.TrailCacheLength[NPC.type] = 16;
         NPCID.Sets.TrailingMode[NPC.type] = 0;
     }
 
     public override void SetDefaults()
     {
-        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
-        NPC.noGravity = true;
-        NPC.noTileCollide = true;
+        NPC.width = 16;
+        NPC.height = 16;
         NPC.defense = 3;
         NPC.lifeMax = 40;
         NPC.damage = 15;
-        NPC.value = 65f;
-        NPC.knockBackResist = 0.55f;
-        NPC.width = 16;
-        NPC.height = 16;
-        NPC.scale = 1.1f;
         NPC.lavaImmune = false;
-        NPC.alpha = 0;
-        NPC.dontTakeDamage = false;
+        NPC.noGravity = true;
+        NPC.noTileCollide = true;
+
         NPC.HitSound = SoundID.NPCHit30;
         NPC.DeathSound = SoundID.NPCDeath38;
     }
@@ -61,32 +83,28 @@ public class WinterSoul : ModNPC
         return chance;
     }
 
-    int frame = 0;
+
     public override void FindFrame(int frameHeight)
     {
-        //bool expertMode = Main.expertMode;
-        //Player player = Main.player[NPC.target];
         NPC.frameCounter += 0.25f;
         if (NPC.frameCounter >= 1)
         {
-            frame++;
+            _frame++;
             NPC.frameCounter = 0;
         }
-        if (frame >= 5)
+        if (_frame >= 5)
         {
-            frame = 0;
+            _frame = 0;
         }
-        NPC.frame.Y = frameHeight * frame;
+        NPC.frame.Y = frameHeight * _frame;
     }
 
     public override void HitEffect(NPC.HitInfo hit)
     {
         int d = DustID.BlueTorch;
-        int d1 = DustID.Frost;
-        for (int k = 0; k < 30; k++)
+        for (int k = 0; k < 8; k++)
         {
             Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.White, 0.7f);
-            Dust.NewDust(NPC.position, NPC.width, NPC.height, d1, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), .74f);
         }
         if (NPC.life <= 0)
         {
@@ -108,7 +126,7 @@ public class WinterSoul : ModNPC
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WinterbornShard>(), minimumDropped: 2, maximumDropped: 4));
     }
 
-    float alphaCounter;
+
     public override void AI()
     {
         if (MultiplayerHelper.IsHost && Style == -1)
@@ -116,98 +134,86 @@ public class WinterSoul : ModNPC
             Style = Main.rand.Next(0, 3);
             NPC.netUpdate = true;
         }
-        alphaCounter = 4;
-
-        float num = 1f - NPC.alpha / 255f;
-        alphaCounter = 4;
-        bool expertMode = Main.expertMode;
-        NPC.spriteDirection = NPC.direction;
-        Player player = Main.player[NPC.target];
-        NPC.TargetClosest(true);
-        NPC.rotation = NPC.velocity.X * 0.08f;
-
-        float velMax = 1f;
-        float acceleration = 0.011f;
-
-        Vector2 center = NPC.Center;
-        float deltaX = Main.player[NPC.target].position.X + Main.player[NPC.target].width / 2 - center.X;
-        float deltaY = Main.player[NPC.target].position.Y + Main.player[NPC.target].height / 2 - center.Y;
-        float distance = (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-        if (NPC.ai[1] > 200.0)
+        _outliner.SetDefaults();
+        switch (State)
         {
-
-            if (NPC.ai[1] > 300.0)
-            {
-                NPC.ai[1] = 0f;
-            }
+            case AIState.MoveTowardsPlayer:
+                AI_MoveTowardsPlayer();
+                break;
+            case AIState.DashAtPlayer:
+                AI_DashAtPlayer();
+                break;
         }
-        else if (distance < 120.0)
+        _outliner.Update();
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+    }
+
+    void SwitchState(AIState state)
+    {
+        if (MultiplayerHelper.IsHost)
         {
-            NPC.ai[0] += 0.9f;
-            if (NPC.ai[0] > 0f)
-            {
-                NPC.velocity.Y = NPC.velocity.Y + 0.039f;
-            }
-            else
-            {
-                NPC.velocity.Y = NPC.velocity.Y - 0.019f;
-            }
-            if (NPC.ai[0] < -100f || NPC.ai[0] > 100f)
-            {
-                NPC.velocity.X = NPC.velocity.X + 0.029f;
-            }
-            else
-            {
-                NPC.velocity.X = NPC.velocity.X - 0.029f;
-            }
-            if (NPC.ai[0] > 25f)
-            {
-                NPC.ai[0] = -200f;
-            }
-        }
-        if (Main.rand.NextBool(30) && Main.netMode != NetmodeID.MultiplayerClient)
-        {
-            if (Main.rand.NextBool(2))
-            {
-                NPC.velocity.Y = NPC.velocity.Y + 0.439f;
-            }
-            else
-            {
-                NPC.velocity.Y = NPC.velocity.Y - 0.419f;
-            }
+            Timer = 0;
+            State = state;
+            AttackCycle = 0;
             NPC.netUpdate = true;
         }
-        if (distance > 350.0)
+    }
+
+    void AI_MoveTowardsPlayer()
+    {
+        if (!NPC.HasValidTarget)
+            NPC.TargetClosest();
+        var target = Main.player[NPC.target];
+        var targetPosition = target.Center;
+        var distanceToTarget = Vector2.Distance(NPC.Center, targetPosition);
+
+        if (!NPC.HasValidTarget)
         {
-            velMax = 5f;
-            acceleration = 0.2f;
+            NPC.velocity *= 0.97f;
         }
-        else if (distance > 300.0)
+        else
         {
-            velMax = 3f;
-            acceleration = 0.25f;
+            if (distanceToTarget <= GetCloseDistance)
+            {
+                NPC.velocity *= 0.96f;
+                if (Timer >= IdleTime * 0.5f)
+                {
+                    _outliner.warning = true;
+                }
+                Timer++;
+                if (Timer >= IdleTime)
+                {
+                    var direction = targetPosition - NPC.Center;
+                    direction = direction.SafeNormalize(Vector2.Zero);
+                    _dashDirection = direction;
+                    SwitchState(AIState.DashAtPlayer);
+                }
+            }
+            else
+            {
+                var targetVelocity = (target.Center - NPC.Center);
+                targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+                targetVelocity *= ChaseSpeed;
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.12f);
+            }
         }
-        else if (distance > 250.0)
+
+    }
+
+    void AI_DashAtPlayer()
+    {
+        Timer++;
+        if (Timer >= DashTime)
         {
-            velMax = 2.5f;
-            acceleration = 0.13f;
+            SwitchState(AIState.MoveTowardsPlayer);
         }
-        float stepRatio = velMax / distance;
-        float velLimitX = deltaX * stepRatio;
-        float velLimitY = deltaY * stepRatio;
-        if (Main.player[NPC.target].dead)
-        {
-            velLimitX = (float)(NPC.direction * velMax / 2.0);
-            velLimitY = (float)(-velMax / 2.0);
-        }
-        if (NPC.velocity.X < velLimitX)
-            NPC.velocity.X = NPC.velocity.X + acceleration;
-        else if (NPC.velocity.X > velLimitX)
-            NPC.velocity.X = NPC.velocity.X - acceleration;
-        if (NPC.velocity.Y < velLimitY)
-            NPC.velocity.Y = NPC.velocity.Y + acceleration;
-        else if (NPC.velocity.Y > velLimitY)
-            NPC.velocity.Y = NPC.velocity.Y - acceleration;
+        _contactDamage = true;
+        _outliner.attacking = true;
+        var ratio = Timer / DashTime;
+        var ease = EasingFunction.Anticipation2(ratio);
+        var vel = Vector2.Lerp(-_dashDirection * 2, _dashDirection * 15, ease);
+        NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.06f);
+
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -222,43 +228,48 @@ public class WinterSoul : ModNPC
             drawTexturePath += "_3";
         }
         Texture2D drawTexture = ModContent.Request<Texture2D>(drawTexturePath).Value;
-        Vector2 drawPos = NPC.Center - screenPos;
-        Vector2 drawOrigin = NPC.frame.Size() / 2;
 
-        SpriteEffects spriteEffects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.texture = drawTexture;
 
-        spriteBatch.Draw(drawTexture, drawPos, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
-        spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-        for (float f = 0; f < 1f; f += 0.1f)
+        for (var i = 0.0f; i < 1.0f; i += 0.25f)
         {
-            float rot = f * MathHelper.TwoPi;
-            Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(1f, 6);
-            spriteBatch.Draw(drawTexture, drawPos + offset, NPC.frame, drawColor * 0.3f, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            var rot = i * MathHelper.TwoPi;
+            rot += Main.GlobalTimeWrappedHourly;
+            var offset = rot.ToRotationVector2();
+            var glowDrawer = drawer;
+            glowDrawer.worldPosition += offset * 4 * ExtraMath.Osc(0.8f, 1f, speed: 2, offset: NPC.whoAmI);
+            glowDrawer.color *= ExtraMath.Osc(0.86f, 1f, speed: 1, NPC.whoAmI + i);
+            spriteBatch.Draw(glowDrawer);
         }
 
-        spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+        spriteBatch.Draw(drawer);
+        OutlineRenderer.Queue(DrawOutline);
         return false;
+    }
+
+    void DrawOutline(SpriteBatch spriteBatch)
+    {
+        string drawTexturePath = Texture;
+        if (Style == 1)
+        {
+            drawTexturePath += "_2";
+        }
+        if (Style == 2)
+        {
+            drawTexturePath += "_3";
+        }
+        Texture2D drawTexture = ModContent.Request<Texture2D>(drawTexturePath).Value;
+
+        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.texture = drawTexture;
+        drawer.color = _outliner.outlineColor;
+        spriteBatch.Draw(drawer);
     }
 
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         base.PostDraw(spriteBatch, screenPos, drawColor);
-        Lighting.AddLight(NPC.Center, Color.Blue.ToVector3() * (alphaCounter / 4) * Main.essScale);
-        Texture2D drawTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
-        Vector2 drawPos = NPC.Center - screenPos;
-        Vector2 drawOrigin = NPC.frame.Size() / 2;
-
-        SpriteEffects spriteEffects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        spriteBatch.Draw(drawTexture, drawPos, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
-
-        Texture2D dimLight = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-        for (int i = 0; i < 4; i++)
-        {
-            spriteBatch.Draw(dimLight, drawPos, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(55f * alphaCounter), 0), NPC.rotation, new Vector2(64 / 2, 64 / 2), 0.2f * (2 + 0.3f * 2), SpriteEffects.None, 0f);
-        }
+        Lighting.AddLight(NPC.Center, Color.Blue.ToVector3() * Main.essScale);
     }
 }

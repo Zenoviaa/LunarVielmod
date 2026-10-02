@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -7,10 +8,10 @@ using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -285,6 +286,12 @@ public class PearlbornBat : ModNPC
         base.ReceiveExtraAI(reader);
         _randomPointToTrack = reader.ReadVector2();
     }
+    public override void ModifyNPCLoot(NPCLoot npcLoot)
+    {
+        base.ModifyNPCLoot(npcLoot);
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 2, maximumDropped: 4));
+    }
+
 
     public override void AI()
     {
@@ -556,6 +563,7 @@ public class PearlbornDash : ModProjectile
     {
         base.AI();
         Time--;
+        Projectile.Center = Parent.Center;
         if (Time <= 0 || !Parent.active || Parent.type != ModContent.NPCType<PearlbornSoul>())
         {
             Projectile.Kill();
@@ -638,7 +646,11 @@ public class PearlbornSoul : ModNPC
         NPC.HitSound = SoundID.NPCHit30;
         NPC.DeathSound = SoundID.NPCDeath38;
     }
-
+    public override void ModifyNPCLoot(NPCLoot npcLoot)
+    {
+        base.ModifyNPCLoot(npcLoot);
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 2, maximumDropped: 4));
+    }
     public override void AI()
     {
         base.AI();
@@ -672,12 +684,12 @@ public class PearlbornSoul : ModNPC
     void AI_Idle()
     {
         Timer++;
-        if(!NPC.HasValidTarget || Timer == 1)
+        if (!NPC.HasValidTarget || Timer == 1)
         {
             NPC.TargetClosest();
         }
 
-        if(Timer == 1 || _circleOriginPoint == default(Vector2))
+        if (Timer == 1 || _circleOriginPoint == default(Vector2))
         {
             _circleOriginPoint = NPC.Center;
         }
@@ -700,7 +712,7 @@ public class PearlbornSoul : ModNPC
         NPC.rotation = NPC.velocity.X * 0.05f;
 
 
-        if(NPC.HasValidTarget && Vector2.Distance(NPC.Center, Main.player[NPC.target].Center) <= ChaseDistance)
+        if (NPC.HasValidTarget && Vector2.Distance(NPC.Center, Main.player[NPC.target].Center) <= ChaseDistance)
         {
             SwitchState(AIState.Chase);
         }
@@ -713,7 +725,7 @@ public class PearlbornSoul : ModNPC
             SwitchState(AIState.Idle);
 
         //Just move towards the player while moving up and down
-        
+
         //honestly no clue what this gonna do lol
         //I'll see what it looks like first
         var directionToTarget = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.Zero);
@@ -721,7 +733,7 @@ public class PearlbornSoul : ModNPC
         var targetDirection = Vector2.Lerp(directionToTarget, perpDirection, MathF.Sin(Timer * 0.5f) * 0.5f + 0.5f);
         var targetVelocity = targetDirection * ChaseSpeed;
         NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
-        if(Timer >= ChaseTime)
+        if (Timer >= ChaseTime)
         {
             SwitchState(AIState.ZigZagPrepare);
         }
@@ -730,7 +742,7 @@ public class PearlbornSoul : ModNPC
     void AI_ZigZagPrepare()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             if (MultiplayerHelper.IsHost)
             {
@@ -742,7 +754,7 @@ public class PearlbornSoul : ModNPC
             }
         }
 
-        if(Timer == 1)
+        if (Timer == 1)
         {
             PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.SkyBlue, 25, 64);
             FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 20, baseSize: 0.16f);
@@ -757,7 +769,7 @@ public class PearlbornSoul : ModNPC
         var targetVelocity = posToMoveTo - NPC.Center;
         NPC.velocity = targetVelocity;
 
-        if(Timer >= ZigZagPrepareTime)
+        if (Timer >= ZigZagPrepareTime)
         {
             SwitchState(AIState.ZigZag);
         }
@@ -766,7 +778,7 @@ public class PearlbornSoul : ModNPC
     void AI_ZigZag()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _startDashPoint = NPC.Center;
             _endDashPoint = _startDashPoint + new Vector2(0, 384 * -_side);
@@ -786,20 +798,20 @@ public class PearlbornSoul : ModNPC
         pos.X += MathF.Sin(ratio * 12f) * ZigZagRange;
         var targetVelocity = pos - NPC.Center;
         NPC.velocity = targetVelocity;
-        if(Timer >= ZigZagDashTime)
+        if (Timer >= ZigZagDashTime)
         {
             SwitchState(AIState.Idle);
         }
     }
-    
+
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
-        if(NPC.life <= 0 && Main.netMode != NetmodeID.Server)
+        if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
         {
             PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.SkyBlue, 25, 64);
             FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 20, baseSize: 0.16f);
-            for(var i = 0; i < 16; i++)
+            for (var i = 0; i < 16; i++)
             {
                 var pos = NPC.Center;
                 pos += Main.rand.NextVector2Circular(24, 24);
@@ -853,7 +865,7 @@ public class PearlbornSlimeRenderer : ModSystem
             return;
         PixelationManager.QueuePrimitivesDrawAction(RenderSlime, DrawLayer.OverPlayers);
     }
-    
+
     void RenderSlime(GraphicsDevice gDevice)
     {
         //May need to render this to a render target first so we can outline it, will see how it looks first.
@@ -897,16 +909,16 @@ public class PearlbornSpear : ModProjectile
     {
         get
         {
-            if(field == null)
+            if (field == null)
             {
                 field = new Vector2[32];
                 var start = Projectile.Center;
                 var end = Projectile.Center + Projectile.velocity;
-                for (var i =0; i < field.Length; i++)
+                for (var i = 0; i < field.Length; i++)
                 {
                     ref var pos = ref field[i];
-     
-                    pos = Vector2.Lerp(start, end, (float)i / (float)field.Length);
+
+                    pos = Vector2.Lerp(start, end, i / (float)field.Length);
                 }
             }
             return field;
@@ -1005,6 +1017,11 @@ public class PearlbornSlime : ModNPC
     float CircularSquishTime => 60;
     float SniperSpikeSquishTime => 120;
     int DamagePearlbornSpike => 30;
+    public override void ModifyNPCLoot(NPCLoot npcLoot)
+    {
+        base.ModifyNPCLoot(npcLoot);
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 2, maximumDropped: 4));
+    }
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -1042,7 +1059,7 @@ public class PearlbornSlime : ModNPC
     {
         base.FindFrame(frameHeight);
         NPC.frameCounter += 0.15f;
-        if(NPC.frameCounter >=1f)
+        if (NPC.frameCounter >= 1f)
         {
             _frame++;
             _frame %= Main.npcFrameCount[Type];
@@ -1093,17 +1110,17 @@ public class PearlbornSlime : ModNPC
             NPC.TargetClosest();
 
         var sqrDist = Vector2.DistanceSquared(NPC.Center, Main.player[NPC.target].Center);
-        if(sqrDist <= ChaseDistance)
+        if (sqrDist <= ChaseDistance)
         {
             SwitchState(AIState.JumpTo);
         }
         NPC.velocity.X *= 0.96f;
-        if(Timer >= IdleTime)
+        if (Timer >= IdleTime)
         {
             SwitchState(AIState.Jump);
         }
     }
-        
+
 
     public GlowDonutParticle MakeDonut(Vector2 position, Vector2 velocity)
     {
@@ -1118,7 +1135,7 @@ public class PearlbornSlime : ModNPC
     {
         _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             NPC.velocity.Y = -15;
             if (MultiplayerHelper.IsHost)
@@ -1133,7 +1150,7 @@ public class PearlbornSlime : ModNPC
         NPC.velocity.X *= 0.96f;
         if (NPC.velocity.Y < -5)
             NPC.velocity.Y *= 0.96f;
-        if(NPC.velocity.Y >= -0.5f)
+        if (NPC.velocity.Y >= -0.5f)
         {
             SwitchState(AIState.Idle);
         }
@@ -1143,7 +1160,7 @@ public class PearlbornSlime : ModNPC
     {
         _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             var target = Main.player[NPC.target];
             _jumpStartPosition = NPC.Center;
@@ -1167,7 +1184,7 @@ public class PearlbornSlime : ModNPC
         NPC.velocity = Vector2.Zero;
         NPC.noTileCollide = true;
         NPC.Center = posToMoveTo;
-        if(Timer >= jumpTicks)
+        if (Timer >= jumpTicks)
         {
             //decide attack;
             if (MultiplayerHelper.IsHost)
@@ -1187,7 +1204,7 @@ public class PearlbornSlime : ModNPC
     void AI_CircularSpike()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             for (var i = 0; i < 8; i++)
             {
@@ -1212,7 +1229,7 @@ public class PearlbornSlime : ModNPC
         _squishScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 1f), EasingFunction.QuadraticBump(ratio));
         NPC.velocity *= 0.96f;
         NPC.noTileCollide = false;
-        if(Timer == 30)
+        if (Timer == 30)
         {
             if (MultiplayerHelper.IsHost)
             {
@@ -1220,9 +1237,9 @@ public class PearlbornSlime : ModNPC
                 spikeFirer.damage = DamagePearlbornSpike;
                 spikeFirer.knockback = 1;
                 spikeFirer.ai1 = NPC.whoAmI;
-                for(var i = 0; i < 8; i++)
+                for (var i = 0; i < 8; i++)
                 {
-                    var progress = (float)i / 8f;
+                    var progress = i / 8f;
                     var rotatedSpikeFirer = spikeFirer;
                     var rot = progress * MathHelper.TwoPi;
                     var rotationOffset = rot.ToRotationVector2();
@@ -1232,7 +1249,7 @@ public class PearlbornSlime : ModNPC
             }
         }
 
-        if(Timer >= CircularSquishTime)
+        if (Timer >= CircularSquishTime)
         {
             SwitchState(AIState.Idle);
         }
@@ -1241,7 +1258,7 @@ public class PearlbornSlime : ModNPC
     void AI_SniperSpike()
     {
         Timer++;
-        if(Timer % 4 == 0)
+        if (Timer % 4 == 0)
         {
             var pos = NPC.Center;
             pos += Main.rand.NextVector2Circular(128, 128);
@@ -1278,7 +1295,7 @@ public class PearlbornSlime : ModNPC
             }
         }
 
-        if(Timer >= SniperSpikeSquishTime)
+        if (Timer >= SniperSpikeSquishTime)
         {
             SwitchState(AIState.Idle);
         }
@@ -1288,7 +1305,7 @@ public class PearlbornSlime : ModNPC
     {
         base.HitEffect(hit);
     }
-    
+
     public override void OnKill()
     {
         base.OnKill();
