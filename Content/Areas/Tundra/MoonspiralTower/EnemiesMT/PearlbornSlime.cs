@@ -567,32 +567,21 @@ public class PearlbornSlimeRenderer : ModSystem
     public override void Load()
     {
         base.Load();
-        On_Main.CheckMonoliths += DrawPixelated;
+        On_Main.DrawPlayers_AfterProjectiles += DrawSlime;
     }
 
-    private void DrawPixelated(On_Main.orig_CheckMonoliths orig)
+    private void DrawSlime(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
     {
-        orig();
+        orig(self);
         if (Main.gameMenu)
             return;
         if (_drawQueue.Count <= 0 && _spriteDrawQueue.Count <= 0)
             return;
-        PixelationManager.QueueSpritebatchDrawAction(RenderSlime, DrawLayer.OverPlayers);
-    }
-
-    void RenderSlime(SpriteBatch sb, Vector2 sp)
-    {
-        sb.EndOut(out var oldParameters);
+        var sb = Main.spriteBatch;
         using var slimeTarget = RT.Context(RenderTargets.ScreenTarget);
-        using(RT.Clear(slimeTarget, Color.Transparent))
+        using var pixelSlimeTarget = RT.Context(RenderTargets.ScreenTarget);
+        using (RT.Clear(pixelSlimeTarget, Color.Transparent))
         {
-            using (sb.Ctx(oldParameters with { matrix = Matrix.Identity }))
-            {
-                while (_spriteDrawQueue.Count > 0)
-                {
-                    _spriteDrawQueue.Dequeue()(sb);
-                }
-            }
             //May need to render this to a render target first so we can outline it, will see how it looks first.
             var batch = new List<VertexPositionColorTexture>();
             while (_drawQueue.Count > 0)
@@ -620,8 +609,32 @@ public class PearlbornSlimeRenderer : ModSystem
             sb.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
             //Now we just need to make and draw the shader
             DrawUtilities.DrawUserIndexedPrimitivesWithEffect(batch.ToArray(), indices, pass.Shader);
+        }
 
- 
+        using (RT.Clear(slimeTarget, Color.Transparent))
+        {
+            using (sb.Ctx(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity }))
+            {
+                while (_spriteDrawQueue.Count > 0)
+                {
+                    _spriteDrawQueue.Dequeue()(sb);
+                }
+            }
+
+            var pixelattePass = AssetReferences.Effects.CrystalShaders.Pixelate.CreatePixelPass();
+            pixelattePass.Parameters.width = pixelSlimeTarget.Width / 2;
+            pixelattePass.Parameters.height = pixelSlimeTarget.Height / 2;
+            pixelattePass.Apply();
+            var spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                Main.Rasterizer,
+                pixelattePass.Shader);
+            spriteBatch.Draw(pixelSlimeTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.End();
         }
 
         var color = new Color(21, 4, 206);
@@ -629,14 +642,13 @@ public class PearlbornSlimeRenderer : ModSystem
         outliner.Parameters.texelSize = slimeTarget.Target.GetTexelSize() * 2f;
         outliner.Parameters.threshold = 0;
         outliner.Apply();
-        using (sb.Ctx(oldParameters with { effect = outliner.Shader }))
+        using (sb.Ctx(SpritebatchParams.InWorldAndZoomed() with { effect = outliner.Shader }))
         {
             sb.Draw(slimeTarget, Vector2.Zero, color);
         }
 
-        sb.Begin(oldParameters);
-  
     }
+
 
     public static void PrepareForRenderingSprite(Action<SpriteBatch> drawAction)
     {
