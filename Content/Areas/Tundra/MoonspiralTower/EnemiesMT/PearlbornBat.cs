@@ -976,6 +976,7 @@ public class PearlbornSpear : ModProjectile
         return false;
     }
 }
+
 public class PearlbornSlime : ModNPC
 {
     enum AIState : byte
@@ -1052,6 +1053,7 @@ public class PearlbornSlime : ModNPC
     public override void AI()
     {
         base.AI();
+
         switch (State)
         {
             case AIState.Idle:
@@ -1114,6 +1116,7 @@ public class PearlbornSlime : ModNPC
 
     void AI_Jump()
     {
+        _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
         Timer++;
         if(Timer == 1)
         {
@@ -1138,6 +1141,7 @@ public class PearlbornSlime : ModNPC
 
     void AI_JumpTo()
     {
+        _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
         Timer++;
         if(Timer == 1)
         {
@@ -1293,6 +1297,7 @@ public class PearlbornSlime : ModNPC
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         var drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.scale = _squishScale;
         spriteBatch.Draw(drawer);
         return false;
 
