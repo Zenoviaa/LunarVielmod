@@ -88,7 +88,8 @@ public class PearlbornSlimeRenderer : ModSystem
 
         using (RT.Clear(slimeTarget, Color.Transparent))
         {
-            using (sb.Ctx(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity }))
+            var whiteShader = SpriteWhiteShader.Instance;
+            using (sb.Ctx(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity, effect = whiteShader }))
             {
                 while (_spriteOutlineDrawQueue.Count > 0)
                 {

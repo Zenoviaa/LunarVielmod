@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Particles;
+﻿using Stellamod.Common.Animations;
+using Stellamod.Common.Particles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
@@ -40,7 +41,7 @@ public class PearlbornSlime : ModNPC,
         set => NPC.ai[1] = (float)value;
     }
     ref float AttackCycle => ref NPC.ai[2];
-    float IdleTime => 90;
+    float IdleTime => 50;
     float ChaseDistance => 384 * 384;
     float JumpHeight => -256;
     float CircularSquishTime => 100;
@@ -145,7 +146,7 @@ public class PearlbornSlime : ModNPC,
                 timeLeft = 120
             });
         }
-        this.SetDrawOrigin(new Vector2(25, 40));
+        this.SetDrawOrigin(new Vector2(28, 44));
     }
 
     void SwitchState(AIState state)
@@ -154,7 +155,6 @@ public class PearlbornSlime : ModNPC,
         {
             Timer = 0;
             State = state;
-            AttackCycle = 0;
             NPC.netUpdate = true;
         }
     }
@@ -168,7 +168,7 @@ public class PearlbornSlime : ModNPC,
 
   
         var sqrDist = Vector2.DistanceSquared(NPC.Center, Main.player[NPC.target].Center);
-        if (sqrDist <= ChaseDistance)
+        if (sqrDist <= ChaseDistance && Timer >= IdleTime)
         {
             SwitchState(AIState.JumpTo);
         }
@@ -256,7 +256,7 @@ public class PearlbornSlime : ModNPC,
             //decide attack;
             if (MultiplayerHelper.IsHost)
             {
-                if (Main.rand.NextBool(2))
+                if (AttackCycle % 2 == 0)
                 {
                     SwitchState(AIState.CircularSpike);
                 }
@@ -264,18 +264,15 @@ public class PearlbornSlime : ModNPC,
                 {
                     SwitchState(AIState.SniperSpike);
                 }
+                AttackCycle++;
             }
         }
     }
 
     void Squish(in float ratio)
     {
-        var size1 = Vector2.Lerp(Vector2.One, new Vector2(1.25f), EasingFunction.OutExpo(ratio));
-        var size2 = Vector2.Lerp(new Vector2(1.25f), Vector2.One, EasingFunction.InSine(ratio));
-        var size3 = Vector2.Lerp(size1, size2, ratio);
-        var size4 = Vector2.Lerp(new Vector2(1.3f, 0.5f), Vector2.One, EasingFunction.InSine(ratio / 0.5f));
-        var size5 = Vector2.Lerp(new Vector2(0.8f, 1.2f), Vector2.One, EasingFunction.InSine(ratio));
-        _squishScale = size3 * size4 * size5;
+        var size1 = Vector2.Lerp(new Vector2(1.3f, 0.8f), Vector2.One, EasingFunction.InSine(ratio / 0.5f));
+        _squishScale = size1;
     }
 
     void AI_CircularSpike()
@@ -306,7 +303,7 @@ public class PearlbornSlime : ModNPC,
         Squish(ratio);
         NPC.velocity *= 0.96f;
         NPC.noTileCollide = false;
-        if (Timer == 30)
+        if (Timer == 20)
         {
             SpikeSound();
             if (MultiplayerHelper.IsHost)
@@ -326,7 +323,14 @@ public class PearlbornSlime : ModNPC,
                 }
             }
         }
-
+        if (Timer >= 44)
+        {
+            _outliner.attacking = true;
+        }
+        else
+        {
+            _outliner.warning = true;
+        }
 
         if (Timer >= CircularSquishTime)
         {
@@ -358,7 +362,15 @@ public class PearlbornSlime : ModNPC,
         Squish(ratio);
         NPC.velocity *= 0.96f;
         NPC.noTileCollide = false;
-        if (Timer == 60)
+        if(Timer >= 24)
+        {
+            _outliner.attacking = true;
+        }
+        else
+        {
+            _outliner.warning = true;
+        }
+        if (Timer == 5)
         {
             SpikeSound();
             if (MultiplayerHelper.IsHost)
@@ -394,26 +406,27 @@ public class PearlbornSlime : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        for(var i = 0; i < NPC.oldPos.Length; i++)
+        for(var i = 0; i < NPC.oldPos.Length; i+=2)
         {
             var oldPos = NPC.oldPos[i] + NPC.Size * 0.5f;
             var drawer2 = NPC.GetAnimatorDrawInfo(Lighting.GetColor(NPC.position.ToTileCoordinates()));
-            drawer2.worldPosition = oldPos;
-            drawer2.color = Color.Lerp(Color.SkyBlue, Color.Transparent, (float)i / (float)NPC.oldPos.Length) * 0.15f;
+            Vector2 offset = drawer2.drawOrigin - this.AseAnimator.centerDrawOrigin;
+            drawer2.worldPosition = oldPos + offset;
+            drawer2.color = Color.Lerp(Color.SkyBlue, Color.Transparent, (float)i / (float)NPC.oldPos.Length) * 0.05f;
             drawer2.color.A = 0;
             spriteBatch.Draw(drawer2);
         }
         var aura = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, NPC.Center);
         aura.scale *= 0.35f;
         aura.rotation = Main.GlobalTimeWrappedHourly * 3;
-        aura.color = Color.SkyBlue;
+        aura.color = Color.SkyBlue * 0.4f;
         aura.color.A = 0;
         Main.spriteBatch.Draw(aura);
 
         var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
         glowDrawer.scale *= 0.35f;
         glowDrawer.rotation = Main.GlobalTimeWrappedHourly * 3;
-        glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.6f, 1f);
+        glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.6f, 1f) * 0.4f;
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);
         return false;
@@ -425,7 +438,6 @@ public class PearlbornSlime : ModNPC,
         drawer.scale = _squishScale;
         drawer.color *= 0.6f;
         drawer.BottomCenterOrigin();
-        drawer.worldPosition.Y += NPC.height / 2;
         spriteBatch.Draw(drawer);
     }
 
@@ -435,7 +447,6 @@ public class PearlbornSlime : ModNPC,
         drawer.scale = _squishScale;
         drawer.color = _outliner.outlineColor;
         drawer.BottomCenterOrigin();
-        drawer.worldPosition.Y += NPC.height / 2;
         spriteBatch.Draw(drawer);
     }
 
@@ -543,7 +554,7 @@ public class PearlbornSpear : ModProjectile,
         }
         else
         {
-            _ease = MathHelper.Lerp(1f, 0f, EasingFunction.InSine((Timer - 60f) / 30f));
+            _ease = MathHelper.Lerp(1f, 0f, EasingFunction.InSine((Timer - 60f) / 30f)) * Rand;
         }
     }
 
@@ -552,7 +563,7 @@ public class PearlbornSpear : ModProjectile,
         var startSize = 2;
         var endSize = 4;
         var size = MathHelper.Lerp(startSize, endSize, _ease);
-        return MathHelper.SmoothStep(size, 0, progress);
+        return MathHelper.SmoothStep(size, 1, progress);
     }
 
     Color GetTrailColor(float progress)
