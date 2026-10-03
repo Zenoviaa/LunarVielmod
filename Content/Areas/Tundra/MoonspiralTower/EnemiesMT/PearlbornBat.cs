@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -177,6 +178,8 @@ public class PearlbornClone : ModProjectile,
         {
             _targetPoint = Target.Center + SideOffset;
             DisperseEffect();
+            var sound = AssetReferences.Assets.Sounds.VoidHit.Asset with { PitchVariance = 0.6F, Volume = 0.5F };
+            SoundEngine.PlaySound(sound, Projectile.position);
         }
 
         if (Main.rand.NextBool(8))
