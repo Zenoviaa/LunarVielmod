@@ -52,7 +52,7 @@ public class MoonAura : ModNPC
     {
         base.AI();
         Timer++;
-        if (Main.rand.NextBool(64))
+        if (Main.rand.NextBool(16))
         {
             var pos = NPC.Center + Main.rand.NextVector2Circular(512, 512);
             var spr = SparkleParticle.Spawn(pos, Vector2.Zero, Scale: Main.rand.NextFloat(0.4f, 0.6f));
@@ -119,6 +119,7 @@ public class MoonAura : ModNPC
         };
         if (LifeTime < 20)
             return;
+        bool lfoundEnemy = false;
         foreach(var npc in Main.ActiveNPCs)
         {
             var sqrDst = Vector2.DistanceSquared(NPC.Center, npc.Center);
@@ -129,11 +130,18 @@ public class MoonAura : ModNPC
                 {
                     if (pearlEnemies[i] == npc.type)
                     {
-                        LifeTime++;
-                        break;
+                        lfoundEnemy = true;
                     }
                 }
             }
+        }
+        if (lfoundEnemy)
+        {
+            LifeTime++;
+        }
+        else if(LifeTime > 60 && Timer > 180)
+        {
+            LifeTime = 60;
         }
     }
 

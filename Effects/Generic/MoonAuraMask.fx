@@ -15,14 +15,19 @@ float distortionStrength;
 float4 Stars(float2 coords : TEXCOORD0) : COLOR0
 {
     float2 uv = coords;
+    coords += screenFixer;
+    coords *= 0.6;
+
     coords = frac(coords);
     float l = length(coords);
     float2 starNoiseCoords = coords * spriteSize * starsTexelSize;
+    starNoiseCoords += float2(time * -0.05, time * -0.05);
+    starNoiseCoords = frac(starNoiseCoords);
     float starNoise = tex2D(starsSampler, starNoiseCoords).r;
     float distortingNoise = tex2D(noiseSampler, frac((coords * sin(l * 50.0)) + float2(time * -0.03, time * -0.015))).r;
-    starNoise *= lerp(0, 1.4, distortingNoise);
+    starNoise *= lerp(-1.4, 2.4, distortingNoise);
     
-    float4 finalColor = float4(starNoise, starNoise, starNoise, 0.0);
+    float4 finalColor = float4(starNoise, starNoise, starNoise, 0.0) * starNoise;
     return finalColor;
 }
 
@@ -38,7 +43,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     
     float strengthAtPoint = lerp(1.0, 0.0, maskColor.r);
     strengthAtPoint *= distortionStrength;
-    float2 scrollingCoords = frac(coords + float2(time * -0.05, time * -0.025));
+    float2 scrollingCoords = frac(coords + float2(time * -0.05, time * -0.025) + screenFixer);
     float noise = tex2D(noiseSampler, scrollingCoords).r;
     float2 distortionOffset = float2(cos(noise * 3.14), sin(noise * 3.14)) * strengthAtPoint * noise * (1.0 - maskColor.r);
     
@@ -71,7 +76,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     distortedColor = lerp(distortedColor, tintColor, 0.14);
 
     distortedColor.b += 0.15;
-    distortedColor += Stars(coords);
+    distortedColor += Stars(coords) * 0.4;
 
     float4 finalColor = lerp(originalColor, distortedColor, pow(maskColor.r, 0.2) * 0.8);
     return finalColor;

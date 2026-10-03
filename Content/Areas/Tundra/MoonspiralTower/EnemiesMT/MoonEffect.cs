@@ -46,6 +46,7 @@ public class MoonEffect : AScreenEffect
         pass.Parameters.starsTexelSize = AssetReferences.Assets.NoiseTextures.StarNoise.Asset.Value.GetTexelSize();
         pass.Parameters.spriteSize = Main.ScreenSize.ToVector2();
         pass.Parameters.distortionStrength = 2f;
+        pass.Parameters.screenFixer = Main.screenPosition * (Vector2.One / Main.ScreenSize.ToVector2());
         pass.Apply();
         spriteBatch.Begin(
             SpriteSortMode.Deferred,
