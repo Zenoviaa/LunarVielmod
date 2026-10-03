@@ -1,21 +1,131 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
+
 namespace Stellamod.Content.Areas.Tundra.Snow.EnemiesSN;
 
-public class WinterBornSlime : ModNPC
+public class WinterBornSlippery : ModBuff
 {
+    public override void Update(Player player, ref int buffIndex)
+    {
+        base.Update(player, ref buffIndex);
+
+    }
+}
+
+public class WinterBornSlipPlayer : ModPlayer
+{
+    public bool superSlippy;
+    public override void ResetEffects()
+    {
+        base.ResetEffects();
+        superSlippy = false;
+    }
+
+    public override void PostUpdateRunSpeeds()
+    {
+        base.PostUpdateRunSpeeds();
+        if (Player.HasBuff<WinterBornSlippery>())
+        {
+            Player.runAcceleration *= 9f;
+            Player.maxRunSpeed *= 10;
+        }
+    }
+    public override void PreUpdateMovement()
+    {
+        base.PreUpdateMovement();
+
+    }
+}
+public class WinterBornSlimeSlime : ModProjectile
+{
+    float Slime_Radius => 36;
+    ref float Timer => ref Projectile.ai[0];
+    public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
-        // DisplayName.SetDefault("Winterborn Slime");
-        Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BlueSlime];
+        base.SetStaticDefaults();
+        
+    }
+    
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 32;
+        Projectile.height = 32;
+        Projectile.timeLeft = 60;
+        Projectile.light = 0.4f;
+        Projectile.penetrate = -1;
+        Projectile.tileCollide = false;
+    }
+    
+    public override void AI()
+    {
+        base.AI();
+       
+        foreach(var player in Main.ActivePlayers)
+        {
+            var sqrDistance = Vector2.DistanceSquared(player.Center, Projectile.Center);
+            if(sqrDistance < Slime_Radius * Slime_Radius)
+            {
+                player.AddBuff(ModContent.BuffType<WinterBornSlippery>(), 30);
+            }
+        }
+        Timer++;
+        if(Timer % 15 == 0)
+        {
+            var pos = Projectile.Center;
+            Particles.SplatDust.Spawn(new()
+            {
+                position = pos,
+                timeLeft = 180,
+                color = Color.Lerp(new Color(98, 192, 213), Color.White, 0.4f),
+                scale = Main.rand.NextFloat(0.8f, 1.2f)
+            });
+        }
+        if(Timer % 4 == 0)
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(20, 20);
+            var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, Main.rand.NextVector2Circular(1, 1), Scale: Main.rand.NextFloat(0.4f, 0.6f) * 2);
+            d.noGravity = true;
+        }
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        return false;
+        //return base.PreDraw(ref lightColor);
+    }
+}
+public class WinterBornSlime : ModNPC
+{
+    float _direction;
+    ref float Timer => ref NPC.ai[0];
+    int _frame;
+    public override void FindFrame(int frameHeight)
+    {
+        base.FindFrame(frameHeight);
+        NPC.frameCounter += 0.15f;
+        if (NPC.frameCounter >= 1f)
+        {
+            NPC.frameCounter = 0;
+            _frame++;
+            _frame %= Main.npcFrameCount[Type];
+        }
+
+        NPC.frame.Y = frameHeight * _frame;
+    }
+
+    public override void SetStaticDefaults()
+    {
+        Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.BlueSlime];
     }
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -26,11 +136,16 @@ public class WinterBornSlime : ModNPC
         return chance;
     }
 
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
+    }
+
     public override void SetDefaults()
     {
         NPC.damage = 10;
-        NPC.width = 38;
-        NPC.height = 15;
+        NPC.width = 34; 
+        NPC.height = 25;
         NPC.lifeMax = 55;
         NPC.defense = 3;
         NPC.lifeMax = 40;
@@ -38,9 +153,7 @@ public class WinterBornSlime : ModNPC
         NPC.DeathSound = SoundID.NPCDeath15;
         NPC.value = 60f;
         NPC.knockBackResist = 0.65f;
-        NPC.aiStyle = 1;
-        AIType = NPCID.BlueSlime;
-        AnimationType = NPCID.BlueSlime;
+        NPC.noGravity = false;
     }
 
     public override void HitEffect(NPC.HitInfo hit)
@@ -54,6 +167,37 @@ public class WinterBornSlime : ModNPC
 
     public override void AI()
     {
+        base.AI();
+        Timer++;
+        if(Timer % 5 == 0)
+        {
+            var pos = NPC.Center + Main.rand.NextVector2Circular(16, 16);
+            var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, Scale: Main.rand.NextFloat(0.4f, 0.6f));
+            d.scale *= 0.5f;
+            d.noGravity = true;
+        }
+        if(Timer % 30 == 0)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                var firer = ProjFirer.From<WinterBornSlimeSlime>(NPC);
+                firer.New();
+            }
+        }
+
+        if (Timer >= 100)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                _direction = Main.rand.NextBool(2) ? -1 : 1;
+                NPC.netUpdate = true;
+            }
+
+      
+            Timer = 0;
+        }
+        NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, _direction, 0.02f);
+
         if (NPC.HasBuff<Pearlflame>())
         {
             WinterbornCommon.TransformEffect(NPC.Center);
@@ -69,45 +213,14 @@ public class WinterBornSlime : ModNPC
     {
         Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
         Lighting.AddLight(NPC.Center, Color.LightSkyBlue.ToVector3() * 0.25f * Main.essScale);
-
-        // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-        Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-        float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-        Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
-        Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-        Vector2 frameOrigin = NPC.frame.Size();
-        Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 0, NPC.height - NPC.frame.Height + 0);
-        Vector2 drawPos = NPC.position - screenPos + frameOrigin + offset;
-
-        float time = Main.GlobalTimeWrappedHourly;
-        float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
-
-        time %= 4f;
-        time /= 2f;
-
-        if (time >= 1f)
-        {
-            time = 2f - time;
-        }
-
-        time = time * 0.5f + 0.5f;
-        SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        for (float i = 0f; i < 1f; i += 0.25f)
-        {
-            float radians = (i + timer) * MathHelper.TwoPi;
-
-            spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, NPC.frame, new Color(100, 70, 255, 50), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
-        }
-
-        for (float i = 0f; i < 1f; i += 0.34f)
-        {
-            float radians = (i + timer) * MathHelper.TwoPi;
-
-            spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, NPC.frame, new Color(140, 210, 255, 77), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
-        }
-
-        return true;
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.9f, 1f, offset: NPC.whoAmI) * 0.2f;
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.3f;
+        spriteBatch.Draw(glowDrawer);
+        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        spriteBatch.Draw(drawer);
+        return false;
     }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)

@@ -1262,3 +1262,8 @@ Pearlflame: {
 	DisplayName: Pearlflame
 	Description: Mods.Stellamod.Buffs.Pearlflame.Description
 }
+
+WinterBornSlippery: {
+	DisplayName: Winter Born Slippery
+	Description: Mods.Stellamod.Buffs.WinterBornSlippery.Description
+}
