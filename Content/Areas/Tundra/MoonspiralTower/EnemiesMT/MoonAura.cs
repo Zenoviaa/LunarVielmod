@@ -65,7 +65,7 @@ public class MoonAura : ModNPC
         var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.CircleGradient.Asset, NPC.Center);
         drawer.color = Color.White;
         drawer.color.A = 0;
-        drawer.scale = Vector2.One * inRatio * outRatio * 1f;
+        drawer.scale = Vector2.One * inRatio * outRatio * 1.3f;
         spriteBatch.Draw(drawer);
     }
 }

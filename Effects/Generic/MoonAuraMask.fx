@@ -9,7 +9,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
 {
     float4 originalColor = tex2D(spriteSampler, coords);
     float2 maskCoords = coords;
-    maskCoords.x += sin(coords.y * 8.0 + time * 4.0) * 0.005;
+    maskCoords.x += sin(coords.y * 64.0 + time * 4.0) * 0.001;
     float4 maskColor = tex2D(maskSampler, maskCoords);
     if(maskColor.r <= 0.0)
         return originalColor;
@@ -23,7 +23,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     
     float2 scrollingCoords2 = frac(coords + float2(0.0, time * -0.4));
     float noise3 = tex2D(noiseSampler, scrollingCoords2).r;
-    distortionOffset.y += noise3 * 0.03;
+    distortionOffset.y += noise3 * 0.;
     
     
     
@@ -33,11 +33,14 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     
     float r = maskColor.r;
 
-    float b = saturate(r / 0.5);
+    float b = saturate(r / 0.25);
     float4 ringColor = lerp(float4(1.0, 1.0, 1.0, 1.0), tintColor, QuadraticBump(b));
+    ringColor.r += sin(time);
+    ringColor.g += cos(time);
+    ringColor *= 3.0;
     distortedColor.r = max(distortedColor.g, max(distortedColor.b, distortedColor.r));
     distortedColor.gb = distortedColor.r;
-    distortedColor += ringColor * QuadraticBump(b) * 2.5 * sin(coords.y * 8.0 + time);
+    distortedColor += ringColor * QuadraticBump(b) * 2.5 * sin(coords.y * 8.0 + time) * 0.03;
     
     float noise2 = tex2D(noiseSampler, frac(scrollingCoords * 4.0)).r;
     noise2 = pow(noise2, 3.0);
