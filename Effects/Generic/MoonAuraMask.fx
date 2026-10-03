@@ -3,8 +3,30 @@ sampler2D spriteSampler : register(s0);
 sampler2D maskSampler : register(s1);
 sampler2D noiseSampler : register(s2);
 
+
+sampler2D starsSampler : register(s3);
+float2 screenFixer;
+float2 starsTexelSize;
+float2 spriteSize;
 float time;
 float distortionStrength;
+
+
+float4 Stars(float2 coords : TEXCOORD0) : COLOR0
+{
+    float2 uv = coords;
+    coords = frac(coords);
+    float l = length(coords);
+    float2 starNoiseCoords = coords * spriteSize * starsTexelSize;
+    float starNoise = tex2D(starsSampler, starNoiseCoords).r;
+    float distortingNoise = tex2D(noiseSampler, frac((coords * sin(l * 50.0)) + float2(time * -0.03, time * -0.015))).r;
+    starNoise *= lerp(0, 1.4, distortingNoise);
+    
+    float4 finalColor = float4(starNoise, starNoise, starNoise, 0.0);
+    return finalColor;
+}
+
+
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
 {
     float4 originalColor = tex2D(spriteSampler, coords);
@@ -49,6 +71,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     distortedColor = lerp(distortedColor, tintColor, 0.14);
 
     distortedColor.b += 0.15;
+    distortedColor += Stars(coords);
 
     float4 finalColor = lerp(originalColor, distortedColor, pow(maskColor.r, 0.2) * 0.8);
     return finalColor;

@@ -2,6 +2,7 @@
 using Stellamod.Core;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -142,6 +143,8 @@ public class PearlbornCrystal : ModNPC
 
     void Break()
     {
+        var deathSound = SoundID.DD2_CrystalCartImpact;
+        SoundEngine.PlaySound(deathSound, NPC.position);
         FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 0.22f, baseSize: 0.18f);
         for(var i = 0; i < 48; i++)
         {

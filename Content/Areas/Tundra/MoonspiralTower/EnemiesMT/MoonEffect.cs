@@ -37,6 +37,14 @@ public class MoonEffect : AScreenEffect
             Sampler = SamplerState.PointWrap,
             Texture = AssetReferences.Assets.NoiseTextures.BlurryPerlinNoise.Asset.Value
         };
+
+        pass.Parameters.starsSampler = new()
+        {
+            Sampler = SamplerState.PointWrap,
+            Texture = AssetReferences.Assets.NoiseTextures.StarNoise.Asset.Value
+        };
+        pass.Parameters.starsTexelSize = AssetReferences.Assets.NoiseTextures.StarNoise.Asset.Value.GetTexelSize();
+        pass.Parameters.spriteSize = Main.ScreenSize.ToVector2();
         pass.Parameters.distortionStrength = 2f;
         pass.Apply();
         spriteBatch.Begin(
