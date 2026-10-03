@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.ShockCircleSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
@@ -24,6 +25,8 @@ public class PearlbornClone : ModProjectile,
         Out
     }
 
+    bool _warning;
+    bool _hostile;
     AIState _state;
     Vector2 _dashVelocity;
     Vector2 _initialVelocity;
@@ -95,6 +98,8 @@ public class PearlbornClone : ModProjectile,
     public override void AI()
     {
         base.AI();
+        _warning = false;
+        _hostile = false;
         switch (_state)
         {
             case AIState.Prepare:
@@ -176,6 +181,10 @@ public class PearlbornClone : ModProjectile,
         Timer++;
         if (Timer == 1)
         {
+            if(Main.netMode != NetmodeID.Server)
+            {
+                ShockCircles.CreateQuickWhiteFlash(Projectile.Center);
+            }
             _targetPoint = Target.Center + SideOffset;
             DisperseEffect();
             var sound = AssetReferences.Assets.Sounds.VoidHit.Asset with { PitchVariance = 0.6F, Volume = 0.5F };
@@ -207,8 +216,18 @@ public class PearlbornClone : ModProjectile,
             _dashVelocity = _dashVelocity.SafeNormalize(Vector2.Zero);
             _dashVelocity *= 25;
         }
-        Projectile.hostile = true;
-        Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Lerp(-_dashVelocity * 0.5f, _dashVelocity, EasingFunction.Anticipation2(Timer / 30f)), 0.03f);
+        if(Timer >= DashTime / 2f)
+        {
+            _hostile = true;
+            Projectile.hostile = true;
+        }
+        else
+        {
+            _warning = true;
+            Projectile.hostile = false;
+        }
+        
+        Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Lerp(-_dashVelocity * 0.5f, _dashVelocity, EasingFunction.Anticipation2(Timer / (DashTime / 2f))), 0.03f);
         if (Timer >= DashTime)
         {
             SwitchState(AIState.Out);
@@ -229,7 +248,7 @@ public class PearlbornClone : ModProjectile,
     public override bool PreDraw(ref Color lightColor)
     {
         var drawer = Projectile.Drawer;
-        drawer.color *= 0.6f;
+        drawer.color *= 0.3f;
         drawer.color *= ExtraMath.Osc(0.9f, 1f, speed: 16, offset: Projectile.identity);
         drawer.color *= _alpha;
 
@@ -246,7 +265,11 @@ public class PearlbornClone : ModProjectile,
 
     void DrawOutline(SpriteBatch spriteBatch)
     {
-        var color = !Projectile.hostile ? Color.Yellow : Color.Red;
+        var color = Color.Transparent;
+        if (_warning)
+            color = Color.Yellow;
+        if (_hostile)
+          color = Color.Red;
         var drawer = Projectile.Drawer;
         drawer.color = color;
         drawer.color *= _alpha;
@@ -294,7 +317,7 @@ public class PearlbornBat : ModNPC,
     float AttackDistance => 128;
     float ChaseDistance => 384;
     int CloneCount => 14;
-    int TimeBetweenClones => 30;
+    int TimeBetweenClones => 60;
     int Damage_Clone => 25;
     public override void SetStaticDefaults()
     {
@@ -434,6 +457,11 @@ public class PearlbornBat : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        var glowDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        glowDrawer2.color = Color.SkyBlue * 0.6f;
+        glowDrawer2.color.A = 0;
+        glowDrawer2.scale *= 0.45f;
+        spriteBatch.Draw(glowDrawer2);
         var drawer = SpritebatchDrawer.FromNPC(NPC);
 
         for (var i = 0; i < NPC.oldPos.Length; i++)
@@ -447,6 +475,7 @@ public class PearlbornBat : ModNPC,
             spriteBatch.Draw(afDraw);
         }
         spriteBatch.Draw(drawer);
+
 
         var glow = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornBat_Glow.Asset;
         var glowDrawer = drawer with { texture = glow.Value };
