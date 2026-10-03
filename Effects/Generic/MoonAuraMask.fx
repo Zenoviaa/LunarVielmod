@@ -1,3 +1,4 @@
+#include "../Helpers/Math.fxh"
 sampler2D spriteSampler : register(s0);
 sampler2D maskSampler : register(s1);
 sampler2D noiseSampler : register(s2);
@@ -7,7 +8,9 @@ float distortionStrength;
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
 {
     float4 originalColor = tex2D(spriteSampler, coords);
-    float4 maskColor = tex2D(maskSampler, coords);
+    float2 maskCoords = coords;
+    maskCoords.x += sin(coords.y * 8.0 + time * 4.0) * 0.005;
+    float4 maskColor = tex2D(maskSampler, maskCoords);
     if(maskColor.r <= 0.0)
         return originalColor;
     
@@ -15,11 +18,37 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     strengthAtPoint *= distortionStrength;
     float2 scrollingCoords = frac(coords + float2(time * -0.05, time * -0.025));
     float noise = tex2D(noiseSampler, scrollingCoords).r;
-    float2 distortionOffset = float2(cos(noise * 3.14), sin(noise * 3.14)) * strengthAtPoint;
+    float2 distortionOffset = float2(cos(noise * 3.14), sin(noise * 3.14)) * strengthAtPoint * noise * (1.0 - maskColor.r);
+    
+    
+    float2 scrollingCoords2 = frac(coords + float2(0.0, time * -0.4));
+    float noise3 = tex2D(noiseSampler, scrollingCoords2).r;
+    distortionOffset.y += noise3 * 0.03;
+    
+    
+    
     float4 distortedColor = tex2D(spriteSampler, coords + distortionOffset);
-    float4 finalTint = lerp(float4(1.0, 1.0, 1.0, 1.0), tintColor, maskColor.r);
-    distortedColor *= finalTint;
-    return distortedColor;
+    float4 finalTint = lerp(float4(1.0, 1.0, 1.0, 1.0), tintColor, 1.0 - maskColor.r);
+    distortedColor *= tintColor;
+    
+    float r = maskColor.r;
+
+    float b = saturate(r / 0.5);
+    float4 ringColor = lerp(float4(1.0, 1.0, 1.0, 1.0), tintColor, QuadraticBump(b));
+    distortedColor.r = max(distortedColor.g, max(distortedColor.b, distortedColor.r));
+    distortedColor.gb = distortedColor.r;
+    distortedColor += ringColor * QuadraticBump(b) * 2.5 * sin(coords.y * 8.0 + time);
+    
+    float noise2 = tex2D(noiseSampler, frac(scrollingCoords * 4.0)).r;
+    noise2 = pow(noise2, 3.0);
+    distortedColor += noise2 * 0.3;
+    distortedColor = floor(distortedColor * 8.0) / 8.0;
+    distortedColor = lerp(distortedColor, tintColor, 0.14);
+
+    distortedColor.b += 0.15;
+
+    float4 finalColor = lerp(originalColor, distortedColor, pow(maskColor.r, 0.2) * 0.8);
+    return finalColor;
 }
 
 technique Technique1

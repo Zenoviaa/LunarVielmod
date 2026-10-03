@@ -62,10 +62,10 @@ public class MoonAura : ModNPC
     {
         var inRatio = EasingFunction.InOutSine(Timer / 60f);
         var outRatio = EasingFunction.InOutSine(LifeTime / 60f);
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.CircleGradient.Asset, NPC.Center);
         drawer.color = Color.White;
         drawer.color.A = 0;
-        drawer.scale = Vector2.One * inRatio * outRatio;
+        drawer.scale = Vector2.One * inRatio * outRatio * 1f;
         spriteBatch.Draw(drawer);
     }
 }

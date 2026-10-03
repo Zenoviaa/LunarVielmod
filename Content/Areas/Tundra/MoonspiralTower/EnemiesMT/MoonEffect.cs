@@ -35,9 +35,9 @@ public class MoonEffect : AScreenEffect
         pass.Parameters.noiseSampler = new()
         {
             Sampler = SamplerState.PointWrap,
-            Texture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset.Value
+            Texture = AssetReferences.Assets.NoiseTextures.BlurryPerlinNoise.Asset.Value
         };
-        pass.Parameters.distortionStrength = 0.03f;
+        pass.Parameters.distortionStrength = 2f;
         pass.Apply();
         spriteBatch.Begin(
             SpriteSortMode.Deferred,
@@ -46,7 +46,7 @@ public class MoonEffect : AScreenEffect
             DepthStencilState.None,
             RasterizerState.CullNone,
             pass.Shader);
-        spriteBatch.Draw(src, Vector2.Zero, Color.SkyBlue);
+        spriteBatch.Draw(src, Vector2.Zero, Color.LightSkyBlue);
         spriteBatch.End();
     }
 
