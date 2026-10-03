@@ -1,5 +1,8 @@
 ﻿using Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core;
+using Stellamod.Core.Pixelation;
+using System.IO;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -8,13 +11,43 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.Content.Areas.Tundra.Snow.EnemiesSN;
 
-public class WinterbornBat : ModNPC
+public class WinterbornBat : ModNPC,
+    IDrawToRenderTarget
 {
+    enum AIState : byte
+    {
+        Chase,
+        Swoop
+    }
+
+    Vector2 _dashDirection;
+    Outliner _outliner;
+    bool _contactDamage;
+    ref float Timer => ref NPC.ai[0];
+    AIState State
+    {
+        get => (AIState)NPC.ai[1];
+        set => NPC.ai[1] = (float)value;
+    }
+    ref float AttackCycle => ref NPC.ai[2];
+    float DashTime => 90;
+    Player MyTarget => Main.player[NPC.target];
     int _frame = 0;
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_dashDirection);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _dashDirection = reader.ReadVector2();
+    }
     public override void SetStaticDefaults()
     {
-        // DisplayName.SetDefault("Winterborn Slime");
         Main.npcFrameCount[NPC.type] = 4;
+        NPCID.Sets.TrailCacheLength[Type] = 8;
+        NPCID.Sets.TrailingMode[Type] = 0;
     }
 
     public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -42,40 +75,38 @@ public class WinterbornBat : ModNPC
     public override void SetDefaults()
     {
         NPC.width = NPC.height = 30;
-
-        NPC.defense = 3;
         NPC.lifeMax = 40;
         NPC.damage = 13;
+        NPC.defense = 3;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath15;
-        NPC.value = 60f;
         NPC.knockBackResist = 0.65f;
-        NPC.aiStyle = NPCAIStyleID.Bat;
+        NPC.noGravity = true;
     }
 
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-        Vector2 drawPos = NPC.position - screenPos;
-        SpriteEffects spriteEffects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
-        spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-        for (float f = 0; f < 1f; f += 0.2f)
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        glowDrawer.color = Color.SkyBlue;
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.2f;
+        spriteBatch.Draw(glowDrawer);
+        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        for(var i = 0; i < NPC.oldPos.Length; i++)
         {
-            float rot = f * MathHelper.TwoPi;
-            Vector2 off = rot.ToRotationVector2() * VectorHelper.Osc(1, 3);
-            Vector2 glowDrawPos = NPC.Center + off - screenPos;
-            glowDrawPos.Y += 4;
-            Color glowColor = Color.White;
-            spriteBatch.Draw(texture, glowDrawPos, NPC.frame, glowColor, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, spriteEffects, 0);
+            var afDrawer = drawer;
+            var ratio = (float)i / (float)NPC.oldPos.Length;
+            afDrawer.color = Color.Lerp(Color.SkyBlue, Color.Transparent, ratio) * 0.15f;
+            afDrawer.rotation = NPC.oldRot[i];
+            spriteBatch.Draw(afDrawer);
         }
 
-        spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //   spriteBatch.Draw(texture, NPC.Center - screenPos, NPC.frame, Color.Black, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, spriteEffects, 0);
-        return true;
+        spriteBatch.Draw(drawer);
+        return false;
     }
 
     public override void HitEffect(NPC.HitInfo hit)
@@ -101,12 +132,119 @@ public class WinterbornBat : ModNPC
             }
             NPC.active = false;
         }
+        if (Main.rand.NextBool(16))
+        {
+            var pos = NPC.Center + Main.rand.NextVector2Circular(24, 24);
+            var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, Scale: Main.rand.NextFloat(0.3f, 0.6f));
+            d.noGravity = true;
+        }
+
+        _contactDamage = false;
+        _outliner.SetDefaults();
+        switch (State)
+        {
+            case AIState.Chase:
+                AI_Chase();
+                break;
+            case AIState.Swoop:
+                AI_Swoop();
+                break;
+        }
+        _outliner.Update();
+        Lighting.AddLight(NPC.Center, new Vector3(0.1f, 0.1f, 0.3f));
     }
 
- 
+    void SwitchState(AIState state)
+    {
+        if (MultiplayerHelper.IsHost)
+        {
+            Timer = 0;
+            AttackCycle = 0;
+            State = state;
+            NPC.netUpdate = true;
+        }
+    }
+
+    void AI_Chase()
+    {
+        Timer++;
+        if (Timer == 1 || !NPC.HasValidTarget)
+            NPC.TargetClosest();
+        if (Collision.CanHitLine(NPC.position, 1, 1, MyTarget.position, 1, 1))
+        {
+            var positionToTrack = MyTarget.Center + new Vector2(0, -32);
+            var targetVelocity = positionToTrack - NPC.Center;
+            targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+            targetVelocity *= 4;
+            NPC.aiStyle = -1;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.06f);
+            NPC.SpriteFaceTarget();
+            _dashDirection = Vector2.UnitY;
+            var dist = Vector2.Distance(NPC.Center, positionToTrack);
+            if(dist <= 100)
+            {
+                SwitchState(AIState.Swoop);
+            }
+        }
+        else
+        {
+            NPC.aiStyle = NPCAIStyleID.Bat;
+            NPC.spriteDirection = NPC.velocity.X < 0 ? -1 : 1;
+        }
+    }
+
+    void AI_Swoop()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _outliner.warning = true;
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, -Vector2.UnitY, 0.05f);
+                    NPC.velocity.X *= 0.9f;
+                    if(Timer >= 30)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    var ratio = Timer / DashTime;
+                    var ease = EasingFunction.Anticipation2(ratio);
+                    var vel = Vector2.Lerp(-_dashDirection * 2, _dashDirection * 15, ease);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.06f);
+                    if (Timer >= DashTime)
+                    {
+                        SwitchState(AIState.Chase);
+                    }
+                }
+                break;
+        }
+    }
+
+
+    void DrawOutline(SpriteBatch spriteBatch)
+    {
+        var drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.color = _outliner.outlineColor;
+        spriteBatch.Draw(drawer);
+    }
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         base.ModifyNPCLoot(npcLoot);
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WinterbornShard>(), minimumDropped: 2, maximumDropped: 4));
+    }
+
+    public void DrawToRenderTargets()
+    {
+        if (_outliner.outlineColor.A < 5)
+            return;
+
+        OutlineRenderer.Queue(DrawOutline);
     }
 }
