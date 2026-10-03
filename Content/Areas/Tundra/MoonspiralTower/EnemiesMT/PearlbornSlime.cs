@@ -406,6 +406,7 @@ public class PearlbornSlime : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        Lighting.AddLight(NPC.position, TorchID.Ice);
         for(var i = 0; i < NPC.oldPos.Length; i+=2)
         {
             var oldPos = NPC.oldPos[i] + NPC.Size * 0.5f;
@@ -436,7 +437,7 @@ public class PearlbornSlime : ModNPC,
     {
         var drawer = NPC.GetAnimatorDrawInfo(Lighting.GetColor(NPC.position.ToTileCoordinates()));
         drawer.scale = _squishScale;
-        drawer.color *= 0.6f;
+        drawer.color *= 1f;
         drawer.BottomCenterOrigin();
         spriteBatch.Draw(drawer);
     }

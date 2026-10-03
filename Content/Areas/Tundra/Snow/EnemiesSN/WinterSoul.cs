@@ -30,7 +30,10 @@ public class WinterSoul : ModNPC
     }
 
     ref float AttackCycle => ref NPC.ai[2];
+
+    ref float RandTimer => ref NPC.ai[3];
     public int Style = -1;
+    float _dir;
     float GetCloseDistance => 128;
     float DashTime => 60;
     float IdleTime => 100;
@@ -46,6 +49,7 @@ public class WinterSoul : ModNPC
         base.SendExtraAI(writer);
         writer.WriteVector2(_dashDirection);
         writer.Write(Style);
+        writer.Write(_dir);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -53,6 +57,7 @@ public class WinterSoul : ModNPC
         base.ReceiveExtraAI(reader);
         _dashDirection = reader.ReadVector2();
         Style = reader.ReadInt32();
+        _dir = reader.ReadSingle();
     }
 
     public override void SetStaticDefaults()
@@ -156,7 +161,7 @@ public class WinterSoul : ModNPC
         }
         _outliner.Update();
         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
-        NPC.SpriteFaceTarget();
+
     }
 
     void SwitchState(AIState state)
@@ -214,10 +219,19 @@ public class WinterSoul : ModNPC
             }
             else
             {
-                var targetVelocity = (target.Center - NPC.Center);
-                targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
-                targetVelocity *= ChaseSpeed;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.04f);
+                RandTimer--;
+                if(RandTimer <= 0)
+                {
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        _dir = Main.rand.NextFloat(-2f, 2f);
+                        NPC.netUpdate = true;
+                    }
+                    RandTimer = 200;
+                }
+
+                NPC.spriteDirection = NPC.velocity.X < 0 ? -1 : 1;
+                NPC.velocity = Vector2.Lerp(NPC.velocity, _dir.ToRotationVector2() * 0.4f, 0.03f);
             }
         }
 
@@ -236,7 +250,7 @@ public class WinterSoul : ModNPC
         var ease = EasingFunction.Anticipation2(ratio);
         var vel = Vector2.Lerp(-_dashDirection * 2, _dashDirection * 15, ease);
         NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.06f);
-
+        NPC.SpriteFaceTarget();
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

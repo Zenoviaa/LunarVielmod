@@ -2,6 +2,7 @@
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -20,6 +21,7 @@ public class WinterbornBat : ModNPC,
         Swoop
     }
 
+    float _frameSpeed;
     Vector2 _dashDirection;
     Outliner _outliner;
     bool _contactDamage;
@@ -28,6 +30,9 @@ public class WinterbornBat : ModNPC,
     float _attackCycle;
     float DashTime => 90;
     Player MyTarget => Main.player[NPC.target];
+
+    ref float RandTimer => ref NPC.ai[0];
+    ref float Dir => ref NPC.ai[1];
     int _frame = 0;
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -63,7 +68,7 @@ public class WinterbornBat : ModNPC,
 
     public override void FindFrame(int frameHeight)
     {
-        NPC.frameCounter += 1.1f;
+        NPC.frameCounter += 1.1f * _frameSpeed;
         if (NPC.frameCounter >= 6)
         {
             _frame++;
@@ -76,9 +81,11 @@ public class WinterbornBat : ModNPC,
 
     public override void SetDefaults()
     {
+        base.SetDefaults();
+        _frameSpeed = 1;
         NPC.width = NPC.height = 30;
-        NPC.lifeMax = 40;
-        NPC.damage = 13;
+        NPC.lifeMax = 70;
+        NPC.damage = 36;
         NPC.defense = 3;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath15;
@@ -102,8 +109,9 @@ public class WinterbornBat : ModNPC,
         {
             var afDrawer = drawer;
             var ratio = (float)i / (float)NPC.oldPos.Length;
-            afDrawer.color = Color.Lerp(Color.SkyBlue, Color.Transparent, ratio) * 0.15f;
+            afDrawer.color = Color.Lerp(Color.SkyBlue, Color.Transparent, ratio) * 0.25f;
             afDrawer.rotation = NPC.oldRot[i];
+            afDrawer.worldPosition = NPC.oldPos[i] + NPC.Size * 0.5f;
             spriteBatch.Draw(afDrawer);
         }
 
@@ -124,7 +132,7 @@ public class WinterbornBat : ModNPC,
     public override void AI()
     {
         NPC.spriteDirection = NPC.direction;
-        NPC.rotation = NPC.velocity.X * 0.03f;
+
         if (NPC.HasBuff<Pearlflame>())
         {
             WinterbornCommon.TransformEffect(NPC.Center);
@@ -137,12 +145,13 @@ public class WinterbornBat : ModNPC,
         if (Main.rand.NextBool(16))
         {
             var pos = NPC.Center + Main.rand.NextVector2Circular(24, 24);
-            var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, Scale: Main.rand.NextFloat(0.3f, 0.6f));
+            var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, Scale: Main.rand.NextFloat(0.3f, 0.6f) * 1.5f);
             d.noGravity = true;
         }
 
         _contactDamage = false;
         _outliner.SetDefaults();
+        _frameSpeed = 1f;
         switch (_state)
         {
             case AIState.Chase:
@@ -170,18 +179,19 @@ public class WinterbornBat : ModNPC,
     void AI_Chase()
     {
         _timer++;
-        if (_timer == 1 || !NPC.HasValidTarget)
+        if (_timer % 30 == 0 || !NPC.HasValidTarget)
             NPC.TargetClosest();
-        if (Collision.CanHitLine(NPC.position, 1, 1, MyTarget.position, 1, 1))
+        var dist2 = Vector2.Distance(NPC.Center, MyTarget.Center);
+        if (dist2 <= 300 && Collision.CanHitLine(NPC.position, 1, 1, MyTarget.position, 1, 1))
         {
-            var positionToTrack = MyTarget.Center + new Vector2(0, -32);
+            var positionToTrack = MyTarget.Center + new Vector2(0, -100);
             var targetVelocity = positionToTrack - NPC.Center;
             targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
             targetVelocity *= 4;
             NPC.aiStyle = -1;
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.06f);
             NPC.SpriteFaceTarget();
-            _dashDirection = Vector2.UnitY;
+     
             var dist = Vector2.Distance(NPC.Center, positionToTrack);
             if(dist <= 100)
             {
@@ -190,9 +200,21 @@ public class WinterbornBat : ModNPC,
         }
         else
         {
-            NPC.aiStyle = NPCAIStyleID.Bat;
+            RandTimer--;
+            if (RandTimer <= 0)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Dir = Main.rand.NextFloat(-2f, 2f);
+                    NPC.netUpdate = true;
+                }
+                RandTimer = 200;
+            }
+
             NPC.spriteDirection = NPC.velocity.X < 0 ? -1 : 1;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, Dir.ToRotationVector2() * 0.4f, 0.03f);
         }
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
     }
 
     void AI_Swoop()
@@ -202,10 +224,14 @@ public class WinterbornBat : ModNPC,
         {
             case 0:
                 {
+
+                    _frameSpeed = 2;
+                    _dashDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                     _outliner.warning = true;
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, -Vector2.UnitY, 0.05f);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, -_dashDirection, 0.05f);
                     NPC.velocity.X *= 0.9f;
-                    if(_timer >= 30)
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.Length() * 0.25f * MathF.Sign(NPC.velocity.X), 0.1f);
+                    if(_timer >= 45)
                     {
                         _timer = 0;
                         _attackCycle++;
@@ -214,12 +240,16 @@ public class WinterbornBat : ModNPC,
                 break;
             case 1:
                 {
+                    NPC.frameCounter = 0;
+                    _frame = 2;
                     _contactDamage = true;
                     _outliner.attacking = true;
                     var ratio = _timer / DashTime;
+
                     var ease = EasingFunction.Anticipation2(ratio);
-                    var vel = Vector2.Lerp(-_dashDirection * 2, _dashDirection * 15, ease);
+                    var vel = Vector2.Lerp(Vector2.Zero, _dashDirection * 12, ease);
                     NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.06f);
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.25f, 0.1f);
                     if (_timer >= DashTime)
                     {
                         SwitchState(AIState.Chase);
