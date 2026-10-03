@@ -23,13 +23,9 @@ public class WinterbornBat : ModNPC,
     Vector2 _dashDirection;
     Outliner _outliner;
     bool _contactDamage;
-    ref float Timer => ref NPC.ai[0];
-    AIState State
-    {
-        get => (AIState)NPC.ai[1];
-        set => NPC.ai[1] = (float)value;
-    }
-    ref float AttackCycle => ref NPC.ai[2];
+    float _timer;
+    AIState _state;
+    float _attackCycle;
     float DashTime => 90;
     Player MyTarget => Main.player[NPC.target];
     int _frame = 0;
@@ -37,11 +33,17 @@ public class WinterbornBat : ModNPC,
     {
         base.SendExtraAI(writer);
         writer.WriteVector2(_dashDirection);
+        writer.Write(_timer);
+        writer.Write((byte)_state);
+        writer.Write(_attackCycle);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         _dashDirection = reader.ReadVector2();
+        _timer = reader.ReadSingle();
+        _state = (AIState)reader.ReadByte();
+        _attackCycle = reader.ReadSingle();
     }
     public override void SetStaticDefaults()
     {
@@ -141,7 +143,7 @@ public class WinterbornBat : ModNPC,
 
         _contactDamage = false;
         _outliner.SetDefaults();
-        switch (State)
+        switch (_state)
         {
             case AIState.Chase:
                 AI_Chase();
@@ -158,17 +160,17 @@ public class WinterbornBat : ModNPC,
     {
         if (MultiplayerHelper.IsHost)
         {
-            Timer = 0;
-            AttackCycle = 0;
-            State = state;
+            _timer = 0;
+            _attackCycle = 0;
+            _state = state;
             NPC.netUpdate = true;
         }
     }
 
     void AI_Chase()
     {
-        Timer++;
-        if (Timer == 1 || !NPC.HasValidTarget)
+        _timer++;
+        if (_timer == 1 || !NPC.HasValidTarget)
             NPC.TargetClosest();
         if (Collision.CanHitLine(NPC.position, 1, 1, MyTarget.position, 1, 1))
         {
@@ -195,18 +197,18 @@ public class WinterbornBat : ModNPC,
 
     void AI_Swoop()
     {
-        Timer++;
-        switch (AttackCycle)
+        _timer++;
+        switch (_attackCycle)
         {
             case 0:
                 {
                     _outliner.warning = true;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, -Vector2.UnitY, 0.05f);
                     NPC.velocity.X *= 0.9f;
-                    if(Timer >= 30)
+                    if(_timer >= 30)
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        _timer = 0;
+                        _attackCycle++;
                     }
                 }
                 break;
@@ -214,11 +216,11 @@ public class WinterbornBat : ModNPC,
                 {
                     _contactDamage = true;
                     _outliner.attacking = true;
-                    var ratio = Timer / DashTime;
+                    var ratio = _timer / DashTime;
                     var ease = EasingFunction.Anticipation2(ratio);
                     var vel = Vector2.Lerp(-_dashDirection * 2, _dashDirection * 15, ease);
                     NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.06f);
-                    if (Timer >= DashTime)
+                    if (_timer >= DashTime)
                     {
                         SwitchState(AIState.Chase);
                     }
