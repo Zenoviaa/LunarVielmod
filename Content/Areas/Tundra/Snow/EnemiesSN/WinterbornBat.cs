@@ -87,12 +87,14 @@ public class WinterbornBat : ModNPC
         }
     }
 
+
     public override void AI()
     {
         NPC.spriteDirection = NPC.direction;
         NPC.rotation = NPC.velocity.X * 0.03f;
         if (NPC.HasBuff<Pearlflame>())
         {
+            WinterbornCommon.TransformEffect(NPC.Center);
             if (MultiplayerHelper.IsHost)
             {
                 NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PearlbornBat>());

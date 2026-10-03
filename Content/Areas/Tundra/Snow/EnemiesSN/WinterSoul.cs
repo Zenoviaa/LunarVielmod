@@ -164,6 +164,7 @@ public class WinterSoul : ModNPC
     {
         if (NPC.HasBuff<Pearlflame>())
         {
+            WinterbornCommon.TransformEffect(NPC.Center);
             if (MultiplayerHelper.IsHost)
             {
                 NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PearlbornSoul>());

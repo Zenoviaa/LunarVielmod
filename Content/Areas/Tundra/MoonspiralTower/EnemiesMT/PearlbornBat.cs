@@ -136,6 +136,7 @@ public class PearlbornClone : ModProjectile,
         }
     }
 
+
     void SpawnInParticles()
     {
         var pos = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
