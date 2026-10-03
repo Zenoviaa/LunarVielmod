@@ -70,6 +70,7 @@ public class PearlbornCrystal : ModNPC
             SpawnParticles();
         }
         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+        Lighting.AddLight(NPC.Center, TorchID.White);
     }
     void SwitchState(AIState state)
     {
