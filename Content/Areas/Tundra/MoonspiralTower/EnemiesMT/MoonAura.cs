@@ -130,6 +130,7 @@ public class MoonAura : ModNPC
                     if (pearlEnemies[i] == npc.type)
                     {
                         LifeTime++;
+                        break;
                     }
                 }
             }
