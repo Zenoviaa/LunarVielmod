@@ -252,6 +252,12 @@ public class PearlbornClone : ModProjectile,
         drawer.color *= _alpha;
         spriteBatch.Draw(drawer);
     }
+    void DrawExclusionMask(SpriteBatch spriteBatch)
+    {
+        var drawer = Projectile.Drawer;
+        drawer.scale *= 1.05f;
+        spriteBatch.Draw(drawer);
+    }
 
     public override void OnKill(int timeLeft)
     {
@@ -262,10 +268,12 @@ public class PearlbornClone : ModProjectile,
     public void DrawToRenderTargets()
     {
         OutlineRenderer.Queue(DrawOutline);
+        MoonEffect.PrepareForExclusionRendering(DrawExclusionMask);
     }
 }
 
-public class PearlbornBat : ModNPC
+public class PearlbornBat : ModNPC,
+    IDrawToRenderTarget
 {
     enum AIState
     {
@@ -506,6 +514,16 @@ public class PearlbornBat : ModNPC
             _frame %= Main.npcFrameCount[Type];
         }
         NPC.frame.Y = frameHeight * _frame;
+    }
+
+    public void DrawToRenderTargets()
+    {
+        MoonEffect.PrepareForExclusionRendering((SpriteBatch sb) =>
+        {
+            var drawer = SpritebatchDrawer.FromNPC(NPC);
+            drawer.scale *= 1.05f;
+            sb.Draw(drawer);
+        });
     }
 }
 

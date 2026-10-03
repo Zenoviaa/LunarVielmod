@@ -35,7 +35,7 @@ public class WinterBornSlipPlayer : ModPlayer
         if (Player.HasBuff<WinterBornSlippery>())
         {
             Player.runAcceleration *= 9f;
-            Player.maxRunSpeed *= 10;
+            Player.maxRunSpeed *= 3;
         }
     }
     public override void PreUpdateMovement()

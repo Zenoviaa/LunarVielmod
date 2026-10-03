@@ -327,6 +327,11 @@ public class PearlbornSoul : ModNPC,
             });
 
         }
+        PearlbornSoulRenderer.PrepareForExclusionRenderer(new()
+        {
+            TrailCache = NPC.oldPos,
+            TrailOffset = NPC.Size * 0.5f
+        });
     }
 }
 
@@ -336,6 +341,7 @@ public class PearlbornSoul : ModNPC,
 public class PearlbornSoulRenderer : ModSystem
 {
     public record struct SoulDrawData(Vector2[] TrailCache, Vector2 TrailOffset);
+    static Queue<SoulDrawData> _maskDrawQueue = new();
     static Queue<SoulDrawData> _soulDrawQueue = new();
     static Queue<SoulDrawData> _yellowOutlineSoulDrawQueue = new();
     static Queue<SoulDrawData> _redOutlineSoulDrawQueue = new();
@@ -362,7 +368,12 @@ public class PearlbornSoulRenderer : ModSystem
         {
             PixelationManager.QueueSpritebatchDrawAction(DrawSoulTrail, DrawLayer.OverNPCs);
         }
+        if(_maskDrawQueue.Count > 0)
+        {
+            MoonEffect.PrepareForExclusionRendering(DrawExclusionMask);
+        }
     }
+
 
     float GetTrailWidth(float progress)
     {
@@ -540,6 +551,16 @@ public class PearlbornSoulRenderer : ModSystem
 
         sb.Begin(oldParameters);
     }
+
+    void DrawExclusionMask(SpriteBatch sb)
+    {
+        sb.EndOut(out var oldParameters);
+        var batch = new List<VertexPositionColorTexture>();
+        var points = new List<Vector3>();
+        DrawSoulTrailInner(sb, ref _maskDrawQueue, batch, points);
+        sb.Begin(oldParameters);
+    }
+
     public static void PrepareForRenderingRed(in SoulDrawData drawData)
     {
         _redOutlineSoulDrawQueue.Enqueue(drawData);
@@ -550,6 +571,10 @@ public class PearlbornSoulRenderer : ModSystem
         _yellowOutlineSoulDrawQueue.Enqueue(drawData);
     }
 
+    public static void PrepareForExclusionRenderer( in SoulDrawData drawData)
+    {
+        _maskDrawQueue.Enqueue(drawData);
+    }
     public static void PrepareForRendering(in SoulDrawData drawData)
     {
         _soulDrawQueue.Enqueue(drawData);

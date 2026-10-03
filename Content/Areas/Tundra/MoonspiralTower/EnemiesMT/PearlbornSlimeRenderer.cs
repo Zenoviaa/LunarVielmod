@@ -19,7 +19,7 @@ public class PearlbornSlimeRenderer : ModSystem
     private VertexPositionColorTexture[] _outlineVertices;
     private short[] _outlineIndices;
     public record struct SlimeDrawData(Vector2[] Points, Func<float, Color> GetTrailColor, Func<float, float> GetTrailWidth, Vector2 TrailOffset);
-    static readonly Queue<Action<SpriteBatch>> _spriteDrawQueue = new();
+    static readonly List<Action<SpriteBatch>> _spriteDraws = new();
     static readonly Queue<SlimeDrawData> _drawQueue = new();
 
     static readonly Queue<Action<SpriteBatch>> _spriteOutlineDrawQueue = new();
@@ -29,7 +29,16 @@ public class PearlbornSlimeRenderer : ModSystem
     public override void Load()
     {
         base.Load();
+        On_Main.CheckMonoliths += ResetDraws;
         On_Main.DrawPlayers_AfterProjectiles += DrawSlime;
+    }
+
+    private void ResetDraws(On_Main.orig_CheckMonoliths orig)
+    {
+        orig();
+        if (Main.gameMenu)
+            return;
+
     }
 
     private void Batch()
@@ -56,6 +65,84 @@ public class PearlbornSlimeRenderer : ModSystem
         }
         _outlineVertices = batch.ToArray();
         _outlineIndices = DrawUtilities.PrepareIndicesForDrawing(batch.Count / 4);
+    }
+
+
+    void DrawExclusion(SpriteBatch sb)
+    {
+        sb.EndOut(out var oldParameters);
+        //May need to render this to a render target first so we can outline it, will see how it looks first.
+        var pass = AssetReferences.Effects.Generic.WhiteTrail.CreatePrimitivesPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.spriteSampler = new()
+        {
+            Sampler = SamplerState.PointWrap,
+            Texture = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornSlime_Spike.Asset.Value
+        };
+        pass.Parameters.noiseSampler = new()
+        {
+            Sampler = SamplerState.PointWrap,
+            Texture = AssetReferences.Assets.LaserTextures.FlameTrail.Asset.Value
+        };
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+        pass.Apply();
+        sb.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+        //Now we just need to make and draw the shader
+        DrawUtilities.DrawUserIndexedPrimitivesWithEffect(_vertices, _indices, pass.Shader);
+        DrawUtilities.DrawUserIndexedPrimitivesWithEffect(_outlineVertices, _outlineIndices, pass.Shader);
+
+
+
+        //Draw Outline to Screen
+        using var slimeTarget = RT.Context(RenderTargets.ScreenTarget);
+        using var pixelSlimeTarget = RT.Context(RenderTargets.ScreenTarget);
+        using (RT.Clear(pixelSlimeTarget, Color.Transparent))
+        {
+            //Now we just need to make and draw the shader
+            DrawUtilities.DrawUserIndexedPrimitivesWithEffect(_outlineVertices, _outlineIndices, pass.Shader);
+        }
+
+        using (RT.Clear(slimeTarget, Color.Transparent))
+        {
+            var whiteShader = SpriteWhiteShader.Instance;
+            using (sb.Ctx(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity, effect = whiteShader }))
+            {
+                while (_spriteOutlineDrawQueue.Count > 0)
+                {
+                    _spriteOutlineDrawQueue.Dequeue()(sb);
+                }
+            }
+
+            var pixelattePass = AssetReferences.Effects.CrystalShaders.Pixelate.CreatePixelPass();
+            pixelattePass.Parameters.width = pixelSlimeTarget.Width / 2;
+            pixelattePass.Parameters.height = pixelSlimeTarget.Height / 2;
+            pixelattePass.Apply();
+
+            sb.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                Main.Rasterizer,
+                pixelattePass.Shader);
+            sb.Draw(pixelSlimeTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            sb.End();
+        }
+
+        OutlineShader outlineShader = OutlineShader.Instance;
+        Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
+        outlineShader.TexelSize = texelSize;
+        sb.Begin(SpritebatchParams.InWorldAndZoomed() with { effect = outlineShader });
+        sb.Draw(slimeTarget, Vector2.Zero, Color.White);
+        sb.End();
+
+        sb.Begin(oldParameters);
+
+        foreach(var draw in _spriteDraws)
+        {
+            draw(sb);
+        }
+        _spriteDraws.Clear();
     }
 
     void DrawOutlines(SpriteBatch sb)
@@ -127,7 +214,7 @@ public class PearlbornSlimeRenderer : ModSystem
         if (Main.gameMenu)
             return;
 
-        if (_drawQueue.Count <= 0 && _spriteDrawQueue.Count <= 0)
+        if (_drawQueue.Count <= 0 && _spriteDraws.Count <= 0)
             return;
 
         Batch();
@@ -161,9 +248,9 @@ public class PearlbornSlimeRenderer : ModSystem
         using (RT.Clear(slimeTarget, Color.Transparent))
         {
             sb.Begin(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity });
-            while (_spriteDrawQueue.Count > 0)
+            foreach(var action in _spriteDraws)
             {
-                _spriteDrawQueue.Dequeue()(sb);
+                action(sb);
             }
             sb.End();
 
@@ -199,6 +286,7 @@ public class PearlbornSlimeRenderer : ModSystem
             DrawOutlines(sb);
             _outlineDrawQueue.Clear();
         }
+        MoonEffect.PrepareForExclusionRendering(DrawExclusion);
     }
 
     public static void PrepareForRenderingSpriteOutline(Action<SpriteBatch> drawAction)
@@ -213,7 +301,7 @@ public class PearlbornSlimeRenderer : ModSystem
 
     public static void PrepareForRenderingSprite(Action<SpriteBatch> drawAction)
     {
-        _spriteDrawQueue.Enqueue(drawAction);
+        _spriteDraws.Add(drawAction);
     }
 
     public static void PrepareForRendering(SlimeDrawData drawData)

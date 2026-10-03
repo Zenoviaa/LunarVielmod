@@ -2,9 +2,18 @@
 sampler2D spriteSampler : register(s0);
 sampler2D maskSampler : register(s1);
 sampler2D noiseSampler : register(s2);
-
-
 sampler2D starsSampler : register(s3);
+
+texture exclusionTexture;
+sampler2D exclusionSampler = sampler_state
+{
+    texture = <exclusionTexture>;
+    magfilter = POINT;
+    minfilter = POINT;
+    mipfilter = POINT;
+    AddressU = clamp;
+    AddressV = clamp;
+};
 float2 screenFixer;
 float2 starsTexelSize;
 float2 spriteSize;
@@ -39,6 +48,9 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     maskCoords.x += sin(coords.y * 64.0 + time * 4.0) * 0.001;
     float4 maskColor = tex2D(maskSampler, maskCoords);
     if(maskColor.r <= 0.0)
+        return originalColor;
+    float4 exclusionColor = tex2D(exclusionSampler, maskCoords);
+    if(exclusionColor.a > 0.0)
         return originalColor;
     
     float strengthAtPoint = lerp(1.0, 0.0, maskColor.r);

@@ -10,10 +10,12 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
 public class MoonEffect : AScreenEffect
 {
     static readonly Queue<Action<SpriteBatch>> _drawQueue = new();
+    static readonly List<Action<SpriteBatch>> _exclusionList = new();
     public override ScreenEffectPriority Priority => ScreenEffectPriority.Very_Late;
     public override void Apply(SpriteBatch spriteBatch, RenderTarget2D src, RenderTarget2D dst)
     {
         using var temp = RT.Context(RenderTargets.ScreenTarget);
+        using var temp2 = RT.Context(RenderTargets.ScreenTarget);
         using (RT.Clear(temp, Color.Transparent))
         {
             var beginner = SpritebatchParams.InWorldAndZoomed();
@@ -24,6 +26,19 @@ public class MoonEffect : AScreenEffect
             }
             spriteBatch.End();
         }
+
+        using(RT.Clear(temp2, Color.Transparent))
+        {
+            var beginner = SpritebatchParams.InWorldAndZoomed();
+            spriteBatch.Begin(beginner);
+            foreach (var action in _exclusionList)
+            {
+                action(spriteBatch);
+            }
+            spriteBatch.End();
+            _exclusionList.Clear();
+        }
+
 
         var pass = AssetReferences.Effects.Generic.MoonAuraMask.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
@@ -45,6 +60,11 @@ public class MoonEffect : AScreenEffect
             Sampler = SamplerState.PointWrap,
             Texture = stars
         };
+        pass.Parameters.exclusionSampler = new()
+        {
+            Sampler = SamplerState.PointWrap,
+            Texture = temp2
+        };
         pass.Parameters.starsTexelSize = stars.GetTexelSize();
         pass.Parameters.spriteSize = Main.ScreenSize.ToVector2();
         pass.Parameters.distortionStrength = 2f;
@@ -59,6 +79,11 @@ public class MoonEffect : AScreenEffect
             pass.Shader);
         spriteBatch.Draw(src, Vector2.Zero, Color.LightSkyBlue);
         spriteBatch.End();
+    }
+
+    public static void PrepareForExclusionRendering(Action<SpriteBatch> drawAction)
+    {
+        _exclusionList.Add(drawAction);
     }
 
     public static void PrepareForRenderering(Action<SpriteBatch> drawAction)

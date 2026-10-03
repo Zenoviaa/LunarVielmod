@@ -87,6 +87,9 @@ public class PearlbornCrystal : ModNPC
     {
         Timer++;
         NPC.velocity.X *= 0.94f;
+        NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.3f;
+        NPC.noGravity = true;
+
         NPC.TargetClosest();
         var playerWhoCanPickMeUp = Main.player[NPC.target];
         if (playerWhoCanPickMeUp.controlUseItem && Vector2.Distance(playerWhoCanPickMeUp.Center, NPC.Center) <= PickupRange)
@@ -133,6 +136,7 @@ public class PearlbornCrystal : ModNPC
     void AI_Throw()
     {
         Timer++;
+        NPC.noGravity = false;
         NPC.rotation += MathF.Sign(NPC.velocity.X) * 0.07f;
         NPC.velocity.Y += 0.04f;
         if(NPC.collideX || NPC.collideY)
