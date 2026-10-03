@@ -91,7 +91,7 @@ public class PearlbornSlime : ModNPC,
         NPC.height = 32;
         NPC.knockBackResist = 0;
         NPC.damage = 24;
-        NPC.lifeMax = 200;
+        NPC.lifeMax = 250;
         NPC.defense = 15;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
@@ -241,7 +241,7 @@ public class PearlbornSlime : ModNPC,
 
         this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         var jumpTicks = Vector2.Distance(_jumpStartPosition, _jumpEndPosition) / 6f;
-        jumpTicks = MathF.Max(jumpTicks, 54);
+        jumpTicks = MathF.Max(jumpTicks, 80);
         var ratio = Timer / jumpTicks;
         var posToMoveTo = Vector2.Lerp(_jumpStartPosition, _jumpEndPosition, ratio);
         var up = MathHelper.Lerp(0, JumpHeight, EasingFunction.OutExpo(ratio));

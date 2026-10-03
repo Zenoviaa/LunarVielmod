@@ -77,7 +77,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
 
     distortedColor.b += 0.15;
     distortedColor += Stars(coords) * 0.4;
-
+    distortedColor -= maskColor.r * 0.2;
+    
     float4 finalColor = lerp(originalColor, distortedColor, pow(maskColor.r, 0.2) * 0.8);
     return finalColor;
 }

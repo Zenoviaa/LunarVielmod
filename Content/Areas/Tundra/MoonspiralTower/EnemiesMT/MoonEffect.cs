@@ -32,6 +32,8 @@ public class MoonEffect : AScreenEffect
             Sampler = SamplerState.PointClamp,
             Texture = temp
         };
+
+        var stars = AssetReferences.Assets.NoiseTextures.StarNoise2.Asset.Value;
         pass.Parameters.noiseSampler = new()
         {
             Sampler = SamplerState.PointWrap,
@@ -41,9 +43,9 @@ public class MoonEffect : AScreenEffect
         pass.Parameters.starsSampler = new()
         {
             Sampler = SamplerState.PointWrap,
-            Texture = AssetReferences.Assets.NoiseTextures.StarNoise.Asset.Value
+            Texture = stars
         };
-        pass.Parameters.starsTexelSize = AssetReferences.Assets.NoiseTextures.StarNoise.Asset.Value.GetTexelSize();
+        pass.Parameters.starsTexelSize = stars.GetTexelSize();
         pass.Parameters.spriteSize = Main.ScreenSize.ToVector2();
         pass.Parameters.distortionStrength = 2f;
         pass.Parameters.screenFixer = Main.screenPosition * (Vector2.One / Main.ScreenSize.ToVector2());

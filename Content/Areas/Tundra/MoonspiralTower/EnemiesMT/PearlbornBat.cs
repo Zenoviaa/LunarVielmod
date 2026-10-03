@@ -303,7 +303,7 @@ public class PearlbornBat : ModNPC
         NPC.noTileCollide = true;
         NPC.knockBackResist = 0;
         NPC.damage = 24;
-        NPC.lifeMax = 200;
+        NPC.lifeMax = 252;
         NPC.defense = 15;
         NPC.noGravity = true;
         NPC.HitSound = SoundID.NPCHit1;
