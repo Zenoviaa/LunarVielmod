@@ -1,5 +1,6 @@
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.EnemiesMT;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -135,6 +136,14 @@ public class WinterSoul : ModNPC
             Style = Main.rand.Next(0, 3);
             NPC.netUpdate = true;
         }
+        if (Main.rand.NextBool(12))
+        {
+            var pos = NPC.Center + Main.rand.NextVector2Circular(10, 10);
+            var p = Dust.NewDustPerfect(pos, DustID.GemDiamond, Main.rand.NextVector2Circular(1, 1), Scale: Main.rand.NextFloat(0.66f, 1f));
+            p.noGravity = true;
+        }
+
+        _contactDamage = false;
         _outliner.SetDefaults();
         switch (State)
         {
@@ -147,6 +156,7 @@ public class WinterSoul : ModNPC
         }
         _outliner.Update();
         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+        NPC.SpriteFaceTarget();
     }
 
     void SwitchState(AIState state)
@@ -185,17 +195,20 @@ public class WinterSoul : ModNPC
         {
             if (distanceToTarget <= GetCloseDistance)
             {
+                var direction = targetPosition - NPC.Center;
+                direction = direction.SafeNormalize(Vector2.Zero);
+                _dashDirection = direction;
                 NPC.velocity *= 0.96f;
                 if (Timer >= IdleTime * 0.5f)
                 {
+                    NPC.velocity -= _dashDirection * 0.1f;
                     _outliner.warning = true;
                 }
                 Timer++;
                 if (Timer >= IdleTime)
                 {
-                    var direction = targetPosition - NPC.Center;
-                    direction = direction.SafeNormalize(Vector2.Zero);
-                    _dashDirection = direction;
+               
+             
                     SwitchState(AIState.DashAtPlayer);
                 }
             }
@@ -204,7 +217,7 @@ public class WinterSoul : ModNPC
                 var targetVelocity = (target.Center - NPC.Center);
                 targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
                 targetVelocity *= ChaseSpeed;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.12f);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.04f);
             }
         }
 
@@ -240,20 +253,35 @@ public class WinterSoul : ModNPC
         Texture2D drawTexture = ModContent.Request<Texture2D>(drawTexturePath).Value;
 
         var drawer = SpritebatchDrawer.FromNPC(NPC);
+      
         drawer.texture = drawTexture;
-
-        for (var i = 0.0f; i < 1.0f; i += 0.25f)
+        for(var i = 0; i < NPC.oldPos.Length; i++)
         {
-            var rot = i * MathHelper.TwoPi;
-            rot += Main.GlobalTimeWrappedHourly;
-            var offset = rot.ToRotationVector2();
-            var glowDrawer = drawer;
-            glowDrawer.worldPosition += offset * 4 * ExtraMath.Osc(0.8f, 1f, speed: 2, offset: NPC.whoAmI);
-            glowDrawer.color *= ExtraMath.Osc(0.86f, 1f, speed: 1, NPC.whoAmI + i);
-            spriteBatch.Draw(glowDrawer);
+            var pos = NPC.oldPos[i] + NPC.Size * 0.5f;
+            var afDrawer = drawer;
+            afDrawer.worldPosition = pos;
+            var ratio = (float)i / (float)NPC.oldPos.Length;
+            afDrawer.color = Color.Lerp(Color.White, Color.Transparent, ratio) * 0.1f;
+            spriteBatch.Draw(afDrawer);
         }
-
+        var npcDrawer = drawer;
         spriteBatch.Draw(drawer);
+
+
+        drawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, speed: 3, NPC.whoAmI);
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
+
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        glowDrawer.color = Color.SkyBlue * 0.2f * ExtraMath.Osc(0.7f, 1f, speed: 3, NPC.whoAmI);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.2f;
+        spriteBatch.Draw(glowDrawer);
+
+        var eyes = AssetReferences.Content.Areas.Tundra.Snow.EnemiesSN.WinterSoul_Glow.Asset;
+        var eyeDrawer = npcDrawer;
+        eyeDrawer.texture = eyes.Value;
+        spriteBatch.Draw(eyeDrawer);
         OutlineRenderer.Queue(DrawOutline);
         return false;
     }
