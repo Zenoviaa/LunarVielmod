@@ -11,7 +11,7 @@ public interface ISwordMovement
 {
     SwordMovement CalculateSwordMovement(in SwingInput input);
 }
-public record struct SwordMovement(Vector2 Offset, float EasedInterpolant, bool CanHurt);
+public record struct SwordMovement(Vector2 Offset, float EasedInterpolant, bool CanHurt, float? OverrideRotation = null);
 public readonly record struct SwingInput(float uneasedLerpValue, int dir);
 public class SwordSwing : ISwing
 {
@@ -39,6 +39,7 @@ public class SwordSwing : ISwing
 
     public void CalculateAfterImagePoints(BaseSwingProjectileV2 swingProjectile)
     {
+
         ref Vector2[] trailCache = ref swingProjectile.afterImageCache;
         float[] oldTime = swingProjectile.oldTime;
         ref float[] trailRotationCache = ref swingProjectile.swingRotationCache;
@@ -54,6 +55,9 @@ public class SwordSwing : ISwing
             var swordEasing = GetOffset(time, targetRotation);
             trailCache[t] = swingProjectile.Owner.Center + swordEasing.Offset;
             trailRotationCache[t] = (trailCache[t] - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;
+            if (swordEasing.OverrideRotation.HasValue)
+                trailRotationCache[t] = swordEasing.OverrideRotation.Value + targetRotation + MathHelper.PiOver4;
+
         }
     }
 
@@ -141,6 +145,7 @@ public class SwordSwing : ISwing
 
         projectile.Center = swingProjectile.Owner.Center + swordEasing.Offset;
         projectile.rotation = (projectile.Center - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;
-
+        if (swordEasing.OverrideRotation.HasValue)
+            projectile.rotation = swordEasing.OverrideRotation.Value + targetRotation + MathHelper.PiOver4;
     }
 }

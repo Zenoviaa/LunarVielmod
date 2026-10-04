@@ -752,8 +752,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             drawColor *= 0.5f;
             float drawScale = 1.15f + growScale;
             Vector2 position = afterImageCache[a];
-            float drawRotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
-
+            float drawRotation = swingRotationCache[a];
 
 
             SpriteEffects spriteEffects = SpriteEffects.None;

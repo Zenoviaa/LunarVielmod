@@ -1,9 +1,5 @@
 ﻿using Stellamod.Core.SwingSystem;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Stellamod.Core.Bases;
@@ -13,6 +9,28 @@ namespace Stellamod.Core.Bases;
 /// </summary>
 public static class Swings
 {
+    //Throws backward and then upward and arcs slightly upward
+    public struct ChainsawSwing : ISwordMovement
+    {
+        public float thrustDistance;
+        public float backupDistance;
+        public float arcRadians;
+        public SwordMovement CalculateSwordMovement(in SwingInput input)
+        {
+            var backupOffsetStart = Vector2.Lerp(Vector2.Zero, -Vector2.UnitX * backupDistance, EasingFunction.OutExpo(input.uneasedLerpValue / 0.7f));
+            var backupOffsetEnd = Vector2.Lerp(-Vector2.UnitX * backupDistance, Vector2.Zero, EasingFunction.InCirc(input.uneasedLerpValue / 0.7f));
+            var backupOffset = Vector2.Lerp(backupOffsetStart, backupOffsetEnd, input.uneasedLerpValue);
+
+            var forwardOffsetStart = Vector2.Lerp(Vector2.Zero, Vector2.UnitX * thrustDistance, EasingFunction.OutCirc(input.uneasedLerpValue));
+            var forwardOffsetEnd = Vector2.Lerp(Vector2.UnitX * thrustDistance, Vector2.Zero, EasingFunction.InExpo(input.uneasedLerpValue));
+            var forwardOffset = Vector2.Lerp(forwardOffsetStart, forwardOffsetEnd, EasingFunction.InCirc(input.uneasedLerpValue));
+            var combinedOffset = backupOffset + forwardOffset;
+
+            combinedOffset = combinedOffset.RotatedBy(MathHelper.Lerp(arcRadians, -arcRadians, EasingFunction.InSine(input.uneasedLerpValue)));
+            return new SwordMovement(combinedOffset, input.uneasedLerpValue, combinedOffset.X > 4, forwardOffset.ToRotation());
+        }
+    }
+
     /// <summary>
     /// Spins around the player for the time
     /// </summary>
