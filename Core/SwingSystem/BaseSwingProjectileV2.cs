@@ -332,6 +332,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
     public override bool? CanDamage()
     {
+        if (bounceTimer > 0)
+            return false;
         //Only damage in the mid part of the swing
         return _canHurtThings;
     }

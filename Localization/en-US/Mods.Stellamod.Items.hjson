@@ -1670,12 +1670,9 @@ ShrineLifeCI: {
 
 Curlistine: {
 	DisplayName: Curlistine
-	Tooltip:
-		'''
-		Only works if an enemy is nearby.
-		Shoots out many chained swords guided by the swirling stars..
-		Verlia's wish is granted upon you.
-		'''
+	Tooltip: ""
+	BasicSlash: Slashes out the blade a short distance from you, on a chain!
+	StaminaSlash: Does multiple circular chain swipes around you
 }
 
 AlcadizPowder: {

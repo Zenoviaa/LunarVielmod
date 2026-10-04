@@ -2,6 +2,7 @@
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.ShockCircleSystem;
+using Stellamod.Content.Areas.PunkerTown.ItemsPT;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Content.CommonMaterials;
@@ -22,6 +23,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.WeaponsMT;
+
+
 
 public class MagicalAxe : BaseSwingItemV2
 {
@@ -392,7 +395,7 @@ public class MagicalAxeGravityHold : ModProjectile
         o -= MathHelper.Lerp(0, 0.5f, EasingFunction.OutExpo(ratio));
         startOffset = startOffset.RotatedBy(o * dir);
         var endOffset = Vector2.UnitX * dir;
-        var offset = startOffset.RotatedBy(dir * (  -o) * ease);
+        var offset = -Vector2.UnitY * EasingFunction.QuadraticBump(ratio);
         offset *= SwingHoldOffset;
         return offset;
     }
@@ -814,6 +817,7 @@ public class MagicalAxeSlam : ModProjectile
 }
 public class MagicalAxeSwing : BaseSwingProjectileV2
 {
+    private float _hitCount;
     bool _hit;
     bool _slammed;
     public override void DefineCombo()
@@ -867,13 +871,13 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
 
         Add(new OvalSwing
         {
-            Duration = 30,
-            SwingDegrees = 420,
+            Duration = 44,
+            SwingDegrees = 330,
             XSwingRadius = 64,
             YSwingRadius = 64,
-            Easing = (float lerpValue) => lerpValue,
-            Sound = hammerSlash1,
-            HitCount = 1
+            Easing = (float lerpValue) => EasingFunction.GreatswordAnticipation(lerpValue),
+            Sound = hammerSlash2,
+            HitCount = 2
         });
 
         hitStopTime = EXTRA_UPDATE_COUNT * 4;
@@ -920,6 +924,18 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
     public override void AI()
     {
         base.AI();
+        if (ComboIndex == 3)
+        {
+            Projectile.Kill();
+            //Throw
+            if (this.OwnedByLocalClient())
+            {
+                var firer = ProjFirer.From<MagicalAxeGravityHold>(Projectile);
+                firer.velocity = (Main.MouseWorld - Owner.Center);
+                firer.damage *= 2;
+                firer.New();
+            }
+        }
         growScale = MathHelper.Lerp(0f, 0.1f, EasingFunction.QuadraticBump(Interpolant));
         outlineColor = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 6));
     }
@@ -933,6 +949,13 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
 
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
+        if (_hitCount < 1 && ComboIndex == 0)
+        {
+            Bounce(8);
+        }
+
+
+        _hitCount++;
         base.OnHitNPC(target, hit, damageDone);
         target.AddBuff(ModContent.BuffType<MagicalPull>(), 180);
         if(ComboIndex == 0)
@@ -989,6 +1012,7 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
 
        //     comboPlayer.ResetCombo();
         }
+        /*
         if (_hit && ComboIndex == 2)
         {
             int combo = ComboIndex + 1;
@@ -1000,9 +1024,9 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Main.MouseWorld - Owner.Center, Projectile.type, Projectile.damage, Projectile.knockBack,
                             Projectile.owner, ai2: combo, ai1: dir);
             }
-        }
+        }*/
 
-        if(ComboIndex == 3)
+        if(ComboIndex == 2)
         {
             //Throw
             if (this.OwnedByLocalClient())
