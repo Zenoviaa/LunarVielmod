@@ -48,6 +48,26 @@ public static class DrawUtilities
 {
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
+
+    /// <summary>
+    /// Draws an after image trail that is additively drawn, using the A = 0 method.
+    /// </summary>
+    /// <param name="projectile"></param>
+    /// <param name="startColor"></param>
+    /// <param name="endColor"></param>
+    /// <param name="alpha"></param>
+    public static void DrawAdditiveFadingTrail(Projectile projectile, Color startColor, Color endColor, float alpha)
+    {
+        foreach (OldPosition oldPos in projectile.IterateOldPosBackwards())
+        {
+            var afDrawer = projectile.Drawer;
+            afDrawer.color = Color.Lerp(startColor, endColor, oldPos.progress) * alpha;
+            afDrawer.color.A = 0;
+            afDrawer.rotation = projectile.oldRot[oldPos.index];
+            Main.spriteBatch.Draw(afDrawer);
+        }
+    }
+
     public static short[] PrepareIndicesForDrawingWrappedAround(int length)
     {
         int connectIndex = 0;

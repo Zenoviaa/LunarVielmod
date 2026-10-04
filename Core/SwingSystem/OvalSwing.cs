@@ -109,30 +109,9 @@ namespace Stellamod.Core.SwingSystem
 
             //Set Offset
             xyOffset = xyOffset.RotatedBy(targetRotation);
-
             return xyOffset;
         }
-        private void CalculateXY2(float interpolant, Vector2 velocity, out float xOffset, out float yOffset)
-        {
-            float range = _swingRadians;
-            float startRads = -range / 2;
-            float endRads = range / 2;
 
-            startRads *= _dir;
-            endRads *= _dir;
-
-            float rads = MathHelper.Lerp(startRads, endRads, interpolant);
-            rads += MathHelper.PiOver2;
-
-            // rads += targetRotation;
-            float xRadius = 64 + _throw;
-            float yRadius = 64 + _throw;
-
-
-            xOffset = xRadius * MathF.Sin(rads);
-            yOffset = yRadius * MathF.Cos(rads);
-
-        }
         public void CalculateTrailingPoints(float time, Vector2 velocity, ref Vector2[] trailCache)
         {
             //Alright, calculating trail points
