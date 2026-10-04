@@ -44,7 +44,7 @@ namespace Stellamod.Common.ItemBrowser
         public override void PostAddRecipes()
         {
             base.PostAddRecipes();
-            //InitializeCategories();
+            InitializeCategories();
         }
 
 
@@ -216,7 +216,7 @@ namespace Stellamod.Common.ItemBrowser
     public static class ItemBrowserUtility
     {
         public delegate bool CompareFunction(Item item);
-       
+     
         private static void ItemSearchInnerLoop(Category category, Item item, List<Item> output)
         {
             if (category == null)
@@ -250,12 +250,12 @@ namespace Stellamod.Common.ItemBrowser
         {
             List<Item> result = new List<Item>();
  
-
-            for(int i = 0; i < ItemLoader.ItemCount; i++)
+            
+            foreach(var kvp in ContentSamples.ItemsByType)
             {
-                Item item = new Item(i);
-                ItemSearchInnerLoop(category, item, result);
+                ItemSearchInnerLoop(category, kvp.Value, result);
             }
+
 
             category.items = result.ToArray();
         }

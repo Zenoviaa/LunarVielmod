@@ -1,4 +1,5 @@
-﻿using Stellamod.UI;
+﻿using Microsoft.Xna.Framework.Input;
+using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -14,6 +15,7 @@ public class ItemBrowserSystem : BaseUISystem
 
     //Here's how it'll work
     //Since the player's inventory is on the left we'll naturally right align it but you can drag the window anywhere
+    bool _pressed;
     private UserInterface _userInterface;
     private GameTime _lastUpdateUiGameTime;
     public ItemBrowserUIState browserUIState;
@@ -41,40 +43,32 @@ public class ItemBrowserSystem : BaseUISystem
 
         _userInterface.SetState(null);
     }
+    public void ToggleUI()
+    {
+        if (_userInterface.CurrentState == null)
+            OpenUI();
+        else
+            CloseUI();
+    }
 
     public override void UpdateUI(GameTime gameTime)
     {
-        /*
+        
         if (InputHelper.KeyDown(Keys.F1))
         {
             _pressed = true;
         }
         else if (_pressed && InputHelper.KeyUp(Keys.F1))
         {
-            if (_userInterface.CurrentState == null)
-                OpenUI();
-            else
-                CloseUI();
-
+            ToggleUI();
             _pressed = false;
-        }*/
+        }
         _lastUpdateUiGameTime = gameTime;
         if (_userInterface?.CurrentState != null)
         {
             _userInterface.Update(gameTime);
         }
     }
-
-    public override void PreSaveAndQuit()
-    {
-        //Calls Deactivate and drops the item
-        if (_userInterface.CurrentState != null)
-        {
-            //   RenamePetUI.saveItemInUI = true;
-            _userInterface.SetState(null);
-        }
-    }
-
 
     public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
     {
