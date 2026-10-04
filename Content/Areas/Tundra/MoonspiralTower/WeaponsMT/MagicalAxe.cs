@@ -30,7 +30,7 @@ public class MagicalAxe : BaseSwingItemV2
         base.SetDefaults2();
         Item.damage = 26;
         Item.shoot = ModContent.ProjectileType<MagicalAxeSwing>();
-        staminaProjectileShoot = ModContent.ProjectileType<MagicalAxeThrow>();
+        staminaProjectileShoot = ModContent.ProjectileType<MagicalAxeSlamSwing>();
         meleeWeaponType = MeleeWeaponType.Hammer;
         staminaCost = 1;
         staminaDamageMultiplier = 3;
@@ -43,8 +43,294 @@ public class MagicalAxe : BaseSwingItemV2
     }
 }
 
+public class MagicalAxeGravity : ModProjectile
+{
+    public override string Texture => ModContent.GetInstance<MagicalAxe>().Texture;
+    NPC PullNPC => Main.npc[(int)Projectile.ai[0]];
+    ref float Timer => ref Projectile.ai[1];
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        Projectile.SetTrailCacheLength(24);
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = Projectile.height = 32;
+        Projectile.penetrate = -1;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
+        Projectile.timeLeft = 180;
+        Projectile.light = 0.7f;
+        Projectile.ignoreWater = true;
+    }
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        Projectile.velocity.Y += 0.73f;
+        PullNPC.Center = Projectile.Center;
+        Projectile.rotation += 0.35f;
+        if (Main.rand.NextBool(12))
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(24, 24);
+            var vel = Main.rand.NextVector2Circular(6, 6);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = Color.SkyBlue.ToVector4(),
+                outerColor = Color.DarkBlue.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.5f, 1f))
+            });
+        }
+    }
+
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+        var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
+        fx.VectorScale.Y *= 2.6f;
+        fx.VectorScale.X *= 0.55f;
+        for(var i =0; i < 20; i++)
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(24, 24);
+            var vel = Main.rand.NextVector2Circular(24, 24);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = Color.SkyBlue.ToVector4(),
+                outerColor = Color.DarkBlue.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.5f, 1f))
+            });
+        }
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        var drawer = Projectile.Drawer;
+        DrawUtilities.DrawAdditiveFadingTrail(Projectile, Color.SkyBlue, Color.Transparent, 0.25f);
+        return false;
+    }
+}
+
+public class MagicalPull : ModBuff
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        Main.debuff[Type] = true;
+    }
+
+    public override void Update(NPC npc, ref int buffIndex)
+    {
+        base.Update(npc, ref buffIndex);
+        if (Main.rand.NextBool(16))
+        {
+            var pos = npc.RandomPositionInNPCRect();
+            var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, Vector2.Zero, Scale: Main.rand.NextFloat(0.5f, 1f));
+            d.noGravity = true;
+        }
+    }
+}
+
 public class MagicalAxeSlamSwing : ModProjectile
 {
+    bool _swingSound;
+    bool _groundedVer;
+    bool _slammed;
+    Vector2 _swingOffset;
+    Player Owner => Main.player[Projectile.owner];
+    ref float Timer => ref Projectile.ai[0];
+    float RealSwingTime
+    {
+        get
+        {
+            var st = SwingTime;
+            if (!_groundedVer)
+                st *= 1.2f;
+            return st;
+        }
+    }
+    float SwingTime => 32;
+    float SwingHoldOffset => 72;
+    public override string Texture => ModContent.GetInstance<MagicalAxe>().Texture;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        Projectile.SetTrailCacheLength(32);
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 48;
+        Projectile.height = 48;
+        Projectile.friendly = true;
+        Projectile.tileCollide = false;
+        Projectile.penetrate = -1;
+        Projectile.light = 0.6f;
+        Projectile.ignoreWater = true;
+        Projectile.timeLeft = (int)SwingTime * 2;
+    }
+
+    public override bool ShouldUpdatePosition()
+    {
+        return false;
+    }
+    private float GetTrailWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(0, 32, ratio);
+    }
+    private Color GetTrailColor(float ratio)
+    {
+        return DrawUtilities.InterpolateColorArray(1f - ratio, Color.White, Color.Aqua) * 1.4f * MathHelper.SmoothStep(0f, 1f, ratio);
+    }
+
+    public void RenderSwingTrail(ref Color lightColor, Vector2[] points)
+    {
+        AlcadSlashShader shader = ShaderContent.GetInstance<AlcadSlashShader>();
+        shader.ScrollingLaser = TrailRegistry.Beamlight.Value;
+        shader.Noise = AssetManager.Noise.Whirly.Value;
+        shader.Slash = AssetManager.GlowMask.SwordSlashForward.Asset.Value;
+        shader.BloomColor = Color.Blue;
+        shader.Time = Main.GlobalTimeWrappedHourly * 24;
+        shader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        shader.Distortion = 0.15f;
+        TrailDrawer.Draw(points, GetTrailColor, GetTrailWidth, shader);
+    }
+
+    public override void AI()
+    {
+        base.AI();
+
+        Timer++;
+        if(Timer == 2)
+        {
+
+            var v = TileUtilities.FallToSolidTile(Owner.Center);
+            var dist = Vector2.Distance(Owner.Center, v);
+            _groundedVer = dist <= 100;
+        }
+        var ratio = Timer / RealSwingTime;
+        var ease = EasingFunction.InExpo(ratio);
+        var dir = MathF.Sign(Projectile.velocity.X);
+        var startOffset = -Vector2.UnitY;
+        var o = -.52f;
+        o -= MathHelper.Lerp(0, 0.5f, EasingFunction.OutExpo(ratio));
+        startOffset = startOffset.RotatedBy(o * dir);
+        var endOffset = Vector2.UnitX * dir;
+        var extra = 0F;
+        if (!_groundedVer)
+            extra += 0.3f;
+        var offset = startOffset.RotatedBy(dir * (MathHelper.PiOver2 + 0.3f + extra + -o) * ease);
+        offset *= SwingHoldOffset;
+        _swingOffset = offset;
+        Projectile.Center = Owner.Center + _swingOffset;
+        Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+        var nearGround = false;
+
+        if (!_swingSound && ease >= 0.4f)
+        {
+            SoundStyle hammerSlash1 = SoundRegistry.HeavySwordSlash1;
+            hammerSlash1.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(hammerSlash1, Projectile.position);
+            _swingSound = true;
+        }
+        if(!_slammed && this.OwnedByLocalClient() && ease >= 0.8f && _groundedVer)
+        {
+            var firer = ProjFirer.From<MagicalAxeSlam>(Projectile);
+            firer.position.Y += 16;
+            firer.New();
+            _slammed = true;
+            Projectile.Kill();
+        }
+        if (Timer >= RealSwingTime)
+        {
+            Projectile.Kill();
+        }
+        Owner.ChangeDir((int)(Projectile.velocity.X < 0 ? -1 : 1));
+
+        if (Projectile.velocity.X < 0)
+        {
+            Projectile.spriteDirection = -1;
+            Projectile.rotation += MathHelper.PiOver2;
+        }
+
+        else
+            Projectile.spriteDirection = 1;
+        if (Main.rand.NextBool(4))
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            var vel = Main.rand.NextVector2Circular(4, 4);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                innerColor = Color.SkyBlue.ToVector4(),
+                outerColor = Color.DarkBlue.ToVector4(),
+                position = pos,
+                velocity = vel,
+                timeLeft = 120,
+                scale = new Vector2(Main.rand.NextFloat(0.55f, 1f))
+            });
+        }
+        Owner.itemTime = 2;
+        Owner.itemAnimation = 2;
+        Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, (Projectile.Center - Owner.Center).ToRotation() - MathHelper.PiOver2);
+    }
+
+    void RenderPixelatedSwingTrail(GraphicsDevice gDevice)
+    {
+        var points = new List<Vector2>();
+
+        for(var i = 64; i > 0; i--)
+        {
+            var t = Timer;
+            t -= i * 0.5f;
+            var ratio = t / RealSwingTime;
+            var ease = EasingFunction.InExpo(ratio);
+            var dir = MathF.Sign(Projectile.velocity.X);
+            var startOffset = -Vector2.UnitY;
+            var o = -.52f;
+            o -= MathHelper.Lerp(0, 0.5f, EasingFunction.OutExpo(ratio));
+            startOffset = startOffset.RotatedBy(o * dir);
+            var endOffset = Vector2.UnitX * dir;
+            var offset = startOffset.RotatedBy(dir * (MathHelper.PiOver2 + 0.3f + -o) * ease);
+            offset *= SwingHoldOffset;
+            points.Add(Owner.Center + offset);
+        }
+        var c = Color.White;
+        RenderSwingTrail(ref c, points.ToArray());
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedSwingTrail, DrawLayer.OverNPCs);
+        var drawer = Projectile.Drawer;
+        Main.spriteBatch.Draw(drawer);
+
+        var drawer2 = drawer;
+        drawer2.color = Color.Lerp(Color.SkyBlue, Color.Transparent, EasingFunction.OutCirc(Timer / RealSwingTime));
+        drawer2.color.A = 0;
+        Main.spriteBatch.Draw(drawer2);
+
+        drawer2.color = Color.Lerp(Color.Transparent, Color.SkyBlue, EasingFunction.InCirc(Timer / RealSwingTime));
+        drawer2.color.A = 0;
+        Main.spriteBatch.Draw(drawer2);
+
+        return false;
+    }
+
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+
+        var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 25, baseSize: 0.19f);
+        fx.Scale *= 1.2f;
+    }
+}
+
+public class MagicalAxeGravityHold : ModProjectile
+{
+    float GravityRadius => 512;
     bool _slammed;
     Vector2 _swingOffset;
     Player Owner => Main.player[Projectile.owner];
@@ -96,12 +382,9 @@ public class MagicalAxeSlamSwing : ModProjectile
         TrailDrawer.Draw(points, GetTrailColor, GetTrailWidth, shader);
     }
 
-    public override void AI()
+    Vector2 CalculateSwingOffset(float timer)
     {
-        base.AI();
-
-        Timer++;
-        var ratio = Timer / SwingTime;
+        var ratio = timer / SwingTime;
         var ease = EasingFunction.InExpo(ratio);
         var dir = MathF.Sign(Projectile.velocity.X);
         var startOffset = -Vector2.UnitY;
@@ -109,19 +392,40 @@ public class MagicalAxeSlamSwing : ModProjectile
         o -= MathHelper.Lerp(0, 0.5f, EasingFunction.OutExpo(ratio));
         startOffset = startOffset.RotatedBy(o * dir);
         var endOffset = Vector2.UnitX * dir;
-        var offset = startOffset.RotatedBy(dir * (MathHelper.PiOver2 + 0.3f + -o) * ease);
+        var offset = startOffset.RotatedBy(dir * (  -o) * ease);
         offset *= SwingHoldOffset;
-        _swingOffset = offset;
+        return offset;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if(Timer == 1)
+        {
+            var gravity = AssetReferences.Assets.Sounds.IceyWind.Asset with { Pitch = -0.7f, PitchVariance = 0.5f };
+            SoundEngine.PlaySound(gravity, Projectile.position);
+        }
+
+        if(Timer == 1 && this.OwnedByLocalClient())
+        {
+            foreach(var npc in Main.ActiveNPCs)
+            {
+                var sqrDist = Vector2.DistanceSquared(Projectile.Center, npc.Center);
+                if(sqrDist < GravityRadius  * GravityRadius && npc.HasBuff<MagicalPull>())
+                {
+                    var firer = ProjFirer.From<MagicalAxeGravity>(Projectile);
+                    firer.ai0 = npc.whoAmI;
+                    firer.velocity = new Vector2(0, -6);
+                    firer.position = npc.Center;
+                    firer.New();
+                }
+            }
+        }
+
+        _swingOffset = CalculateSwingOffset(Timer);
         Projectile.Center = Owner.Center + _swingOffset;
         Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
-        if(!_slammed && this.OwnedByLocalClient() && ease >= 0.8f)
-        {
-            var firer = ProjFirer.From<MagicalAxeSlam>(Projectile);
-            firer.position.Y += 16;
-            firer.New();
-            _slammed = true;
-            Projectile.Kill();
-        }
         Owner.ChangeDir((int)(Projectile.velocity.X < 0 ? -1 : 1));
 
         if (Projectile.velocity.X < 0)
@@ -155,21 +459,11 @@ public class MagicalAxeSlamSwing : ModProjectile
     {
         var points = new List<Vector2>();
 
-        for(var i = 64; i > 0; i--)
+        for (var i = 64; i > 0; i--)
         {
             var t = Timer;
             t -= i * 0.5f;
-            var ratio = t / SwingTime;
-            var ease = EasingFunction.InExpo(ratio);
-            var dir = MathF.Sign(Projectile.velocity.X);
-            var startOffset = -Vector2.UnitY;
-            var o = -.52f;
-            o -= MathHelper.Lerp(0, 0.5f, EasingFunction.OutExpo(ratio));
-            startOffset = startOffset.RotatedBy(o * dir);
-            var endOffset = Vector2.UnitX * dir;
-            var offset = startOffset.RotatedBy(dir * (MathHelper.PiOver2 + 0.3f + -o) * ease);
-            offset *= SwingHoldOffset;
-            points.Add(Owner.Center + offset);
+            points.Add(Owner.Center + CalculateSwingOffset(t));
         }
         var c = Color.White;
         RenderSwingTrail(ref c, points.ToArray());
@@ -178,8 +472,6 @@ public class MagicalAxeSlamSwing : ModProjectile
     {
         PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedSwingTrail, DrawLayer.OverNPCs);
         var drawer = Projectile.Drawer;
-        if(Timer >= 18)
-            DrawUtilities.DrawAdditiveFadingTrail(Projectile, Color.SkyBlue, Color.Transparent, 0.3f);
         Main.spriteBatch.Draw(drawer);
 
         var drawer2 = drawer;
@@ -196,12 +488,16 @@ public class MagicalAxeSlamSwing : ModProjectile
 
     public override void OnKill(int timeLeft)
     {
+    
         base.OnKill(timeLeft);
-        var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 25, baseSize: 0.19f);
-        fx.Scale *= 1.2f;
+        if (this.OwnedByLocalClient())
+        {
+            var firer = ProjFirer.From<MagicalAxeSlamSwing>(Projectile);
+            firer.velocity = (Main.MouseWorld - Owner.Center);
+            firer.New();
+        }
     }
 }
-
 public class MagicalAxeThrow : ModProjectile
 {
     struct CaughtNPC
@@ -501,8 +797,8 @@ public class MagicalAxeSlam : ModProjectile
             return;
         if (NPCSets.Heavy[target.type])
             return;
-
-        target.velocity.Y = -12;
+        target.AddBuff(ModContent.BuffType<MagicalPull>(), 180);
+        target.velocity.Y = -15;
     }
 
     public override bool PreDraw(ref Color lightColor)
@@ -638,6 +934,7 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
+        target.AddBuff(ModContent.BuffType<MagicalPull>(), 180);
         if(ComboIndex == 0)
         {
             if(IsValidForKnockup(target))
@@ -690,7 +987,7 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
         if (!_hit)
         {
 
-            comboPlayer.ResetCombo();
+       //     comboPlayer.ResetCombo();
         }
         if (_hit && ComboIndex == 2)
         {
@@ -710,7 +1007,7 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
             //Throw
             if (this.OwnedByLocalClient())
             {
-                var firer = ProjFirer.From<MagicalAxeThrow>(Projectile);
+                var firer = ProjFirer.From<MagicalAxeGravityHold>(Projectile);
                 firer.velocity = (Main.MouseWorld - Owner.Center);
                 firer.damage *= 2;
                 firer.New();

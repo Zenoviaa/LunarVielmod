@@ -64,6 +64,7 @@ public static class DrawUtilities
             afDrawer.color = Color.Lerp(startColor, endColor, oldPos.progress) * alpha;
             afDrawer.color.A = 0;
             afDrawer.rotation = projectile.oldRot[oldPos.index];
+            afDrawer.worldPosition = oldPos.position + projectile.Size * 0.5f;
             Main.spriteBatch.Draw(afDrawer);
         }
     }

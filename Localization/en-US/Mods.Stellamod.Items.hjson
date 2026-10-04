@@ -5077,8 +5077,8 @@ Aquamare: {
 MagicalAxe: {
 	DisplayName: Magical Axe
 	Tooltip: It's so magical it turned itself into a "chad" axe :)
-	BasicSlash: "Uppercuts enemies into the air and can throw the axe for a combo into a SLAM!"
-	StaminaSlash: "Throws the axe, pulling all enemies with it and then erupts into a big slam at the end"
+	BasicSlash: Uppercuts enemies into the air and can then pulls them back down into a SLAM!
+	StaminaSlash: Slams the axe onto the ground, knocking all enemies upward
 }
 
 WaterSong: {
