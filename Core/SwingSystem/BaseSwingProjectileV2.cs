@@ -275,6 +275,12 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         }
     }
 
+    public void SetSwingDirection()
+    {
+        ISwing swing = GetSwing();
+        swing.SetDirection((int)SwingDirection);
+    }
+
     private void AI_Initialize()
     {
         if (!_hasInitialized)

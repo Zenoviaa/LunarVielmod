@@ -9,6 +9,31 @@ namespace Stellamod.Core.Bases;
 /// </summary>
 public static class Swings
 {
+
+
+    public struct GroundSwipeSwing : ISwordMovement
+    {
+        public float thrustDistance;
+        public float arcRadians;
+        public SwordMovement CalculateSwordMovement(in SwingInput input)
+        {
+            var halfArcRadians = arcRadians / 2f;
+            var leftRadians = -halfArcRadians;
+            var rightRadians = halfArcRadians;
+
+            var radians = MathHelper.Lerp(rightRadians, leftRadians, EasingFunction.InOutBack(input.uneasedLerpValue));
+            radians *= input.dir;
+
+            var forwardOffsetStart = Vector2.Lerp(Vector2.Zero, Vector2.UnitX * thrustDistance, EasingFunction.OutCirc(input.uneasedLerpValue));
+            var forwardOffsetEnd = Vector2.Lerp(Vector2.UnitX * thrustDistance, Vector2.Zero, EasingFunction.InExpo(input.uneasedLerpValue));
+            var forwardOffset = Vector2.Lerp(forwardOffsetStart, forwardOffsetEnd, EasingFunction.InCirc(input.uneasedLerpValue));
+            var combinedOffset = forwardOffset;
+            combinedOffset = combinedOffset.RotatedBy(radians);
+            
+            return new SwordMovement(combinedOffset, input.uneasedLerpValue, combinedOffset.X > 4, combinedOffset.ToRotation());
+        }
+    }
+
     //Throws backward and then upward and arcs slightly upward
     public struct ChainsawSwing : ISwordMovement
     {

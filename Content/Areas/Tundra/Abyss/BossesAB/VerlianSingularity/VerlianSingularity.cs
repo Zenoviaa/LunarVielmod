@@ -30,8 +30,8 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 20;
-            Projectile.height = 20;
+            Projectile.width = 28;
+            Projectile.height = 28;
             Projectile.penetrate = -1;
             Projectile.hostile = true;
         }
