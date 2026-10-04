@@ -656,6 +656,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         glowSwordSprite.color = Color.Goldenrod;
         glowSwordSprite.scale *= 1.2f;
         glowSwordSprite.color *= 0.5f;
+        glowSwordSprite.color.A = 0;
         spriteBatch.Draw(glowSwordSprite);
         spriteBatch.RestartDefaults();
 

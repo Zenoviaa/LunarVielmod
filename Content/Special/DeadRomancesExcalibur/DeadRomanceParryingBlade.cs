@@ -307,13 +307,14 @@ public class DeadRomanceParryBuster : ModProjectile
         glowSwordSprite.color = Color.Goldenrod;
         glowSwordSprite.scale *= 1.2f;
         glowSwordSprite.color *= 0.5f;
+        glowSwordSprite.color.A = 0;
         sb.Draw(glowSwordSprite);
         sb.RestartDefaults();
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
-        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedAura);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedAura, DrawLayer.OverPlayers);
         return false;
     }
 }

@@ -37,7 +37,7 @@ public class SpiralingWindTrailRenderer : MeshRenderer<VertexPositionColorTextur
     {
         VertexPositionColorTexture[] arr = _verticesToRenderer.ToArray();
         VertexPositionColorTexture[] arr2 = _bigVerticesToRender.ToArray();
-        short[] indices = DrawUtilities.PrepareIndicesForDrawing(arr.Length / 2);
+        short[] indices = DrawUtilities.PrepareIndicesForDrawing(arr.Length / 4);
 
         graphicsDevice.RasterizerState = RasterizerState.CullNone;
         graphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
