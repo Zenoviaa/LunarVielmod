@@ -1670,12 +1670,9 @@ ShrineLifeCI: {
 
 Curlistine: {
 	DisplayName: Curlistine
-	Tooltip:
-		'''
-		Only works if an enemy is nearby.
-		Shoots out many chained swords guided by the swirling stars..
-		Verlia's wish is granted upon you.
-		'''
+	Tooltip: ""
+	BasicSlash: Slashes out the blade a short distance from you, on a chain!
+	StaminaSlash: Does multiple circular chain swipes around you
 }
 
 AlcadizPowder: {
@@ -5077,6 +5074,8 @@ Aquamare: {
 MagicalAxe: {
 	DisplayName: Magical Axe
 	Tooltip: It's so magical it turned itself into a "chad" axe :)
+	BasicSlash: Uppercuts enemies into the air and can then pulls them back down into a SLAM!
+	StaminaSlash: Slams the axe onto the ground, knocking all enemies upward
 }
 
 WaterSong: {

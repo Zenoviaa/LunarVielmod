@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
+﻿using Stellamod.Common.ScreenEffectsSystem;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
@@ -30,6 +31,20 @@ public static class FXUtil
         Vector2 spawnVelocity = velocity;
         ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
     }
+
+    public static void ApplyContrastBrightness(float contrast, float brightness)
+    {
+        var config = ModContent.GetInstance<LunarVeilClientConfig>();
+        if (!config.DramaticEffects)
+            return;
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        var eff = ModContent.GetInstance<ContrastBrightnessScreenEffect>();
+        eff.isActive = true;
+        eff.contrast = contrast;
+        eff.brightness = brightness;
+    }
+
     public static void ApplyContrast(float strength)
     {
         if (Main.netMode == NetmodeID.Server)

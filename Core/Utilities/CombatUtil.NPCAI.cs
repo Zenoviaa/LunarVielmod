@@ -9,7 +9,7 @@ public static partial class CombatUtil
         /// <summary>
         /// Faces the current target by changing both the sprite direction and direction
         /// </summary>
-        public void FaceTarget()
+        public void SpriteFaceTarget()
         {
             var player = Main.player[npc.target];
             if (player.Center.X < npc.Center.X)
@@ -19,12 +19,13 @@ public static partial class CombatUtil
             npc.direction = npc.spriteDirection;
         }
 
+
         /// <summary>
         /// Slows down the x velocity and makes sure tile collide and gravity are both enabled
         /// </summary>
         public void StayGroundedAndRooted()
         {
-            npc.velocity.X *= 0.96f;
+            npc.velocity.X *= 0.945f;
             npc.noTileCollide = false;
             npc.noGravity = false;
         }

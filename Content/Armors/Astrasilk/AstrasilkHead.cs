@@ -101,7 +101,6 @@ namespace Stellamod.Content.Armors.Astrasilk
         {
             var stats = player.GetStats();
             stats.accessorySlots += 2;
-            stats.magicDamage += 0.12f;
             stats.defenseBonus += 4;
         }
 
@@ -121,7 +120,7 @@ namespace Stellamod.Content.Armors.Astrasilk
         public override void UpdateEquip(Player player)
         {
             var stats = player.GetStats();
-            stats.totalMana += 50;
+            stats.totalMana += 100;
             stats.defenseBonus += 3;
             stats.accessorySlots += 1;
         }

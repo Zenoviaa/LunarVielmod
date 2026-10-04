@@ -2,10 +2,7 @@
 using Stellamod.Content.Scrolls;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Tooltips;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
-using Stellamod.Visual.Explosions;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -27,14 +24,14 @@ namespace Stellamod.Core.SwingSystem
             if (item.ModItem == null)
                 return;
             bool noStamina = false;
-            if(item.TryGetGlobalItem<ScrollGlobalItem>(out var g))
+            if (item.TryGetGlobalItem<ScrollGlobalItem>(out var g))
             {
                 if (g.scroll != ScrollAbility._None)
 
                 {
                     noStamina = true;
                 }
-                        //    return;
+                //    return;
 
             }
 
@@ -70,7 +67,7 @@ namespace Stellamod.Core.SwingSystem
                 lines.Add(line);
             }
 
-            if(item.ModItem is BaseGun gun)
+            if (item.ModItem is BaseGun gun)
             {
                 line = new TooltipLine(Mod, "Gun", Helpers.LangText.Common("WeaponTypeGun"))
                 {
@@ -148,11 +145,11 @@ namespace Stellamod.Core.SwingSystem
             int dir = comboPlayer.ComboDirection;
             Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
                 player.whoAmI, ai1: dir, ai2: combo);
-            if(p.ModProjectile is BaseSwingProjectileV2 swingV2)
+            if (p.ModProjectile is BaseSwingProjectileV2 swingV2)
             {
                 comboPlayer.IncreaseCombo();
             }
-       
+
         }
 
 
@@ -187,7 +184,8 @@ namespace Stellamod.Core.SwingSystem
             PixelPrimitiveCircleFactory.CreateGenericInBoom(player.Center, Color.White, Color.White, 24, 128);
         }
 
-        protected virtual void ShootStaminaProj(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        protected virtual void ShootStaminaProj(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
         }
         public override bool AltFunctionUse(Player player)

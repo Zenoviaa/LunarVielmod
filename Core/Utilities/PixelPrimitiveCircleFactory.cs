@@ -282,6 +282,21 @@ public static class PixelPrimitiveCircleFactory
 
         CreateDefaultFireBloomCircle(position, GetTrailWidthFunction, GetTrailColorFunction, new(Color.White, Color.DarkGray, Color.Black, Color.White, Color.DarkGray), 333, 0, 25);
     }
+    public static void CreateInElectricSuck(Vector2 position)
+    {
+        float GetTrailWidthFunction(TrailCircleStep interpolant)
+        {
+            return MathHelper.SmoothStep(64, 0, interpolant.progressInCircle);
+        }
+        Color GetTrailColorFunction(TrailCircleStep interpolant)
+        {
+            Color lerp1 = Color.Lerp(Color.White, Color.LightGray, ExtraMath.Osc(0.5f, 1f, speed: 8));
+            lerp1 = Color.Lerp(Color.Gray, lerp1, interpolant.progressInCircle);
+            return lerp1;
+        }
+
+        CreateDefaultFireBloomCircle(position, GetTrailWidthFunction, GetTrailColorFunction, new(Color.LightGoldenrodYellow, Color.Gold, Color.Black, Color.White, Color.DarkOrange), 80, 0, 25);
+    }
     public static void CreateEelInSuckQuick(Vector2 position)
     {
         float GetTrailWidthFunction(TrailCircleStep interpolant)

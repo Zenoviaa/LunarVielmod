@@ -6,6 +6,7 @@ using System;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -47,6 +48,27 @@ public static class DrawUtilities
 {
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
+
+    /// <summary>
+    /// Draws an after image trail that is additively drawn, using the A = 0 method.
+    /// </summary>
+    /// <param name="projectile"></param>
+    /// <param name="startColor"></param>
+    /// <param name="endColor"></param>
+    /// <param name="alpha"></param>
+    public static void DrawAdditiveFadingTrail(Projectile projectile, Color startColor, Color endColor, float alpha)
+    {
+        foreach (OldPosition oldPos in projectile.IterateOldPosBackwards())
+        {
+            var afDrawer = projectile.Drawer;
+            afDrawer.color = Color.Lerp(startColor, endColor, oldPos.progress) * alpha;
+            afDrawer.color.A = 0;
+            afDrawer.rotation = projectile.oldRot[oldPos.index];
+            afDrawer.worldPosition = oldPos.position + projectile.Size * 0.5f;
+            Main.spriteBatch.Draw(afDrawer);
+        }
+    }
+
     public static short[] PrepareIndicesForDrawingWrappedAround(int length)
     {
         int connectIndex = 0;
@@ -614,68 +636,6 @@ public static class DrawUtilities
         spriteBatch.Draw(drawer.texture, drawer.worldPosition - Main.screenPosition, drawer.sourceRect, drawer.color, drawer.rotation, drawer.drawOrigin, drawer.scale, drawer.spriteEffects, 0);
     }
 
-    /// <summary>
-    /// Draws an after image trail
-    /// </summary>
-    /// <param name="spriteBatch"></param>
-    /// <param name="modProjectile"></param>
-    public static void DrawBasicAfterImage(SpriteBatch spriteBatch, Projectile projectile, GetTrailColor getTrailColor, GetTrailWidth getTrailWidth)
-    {
-        Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-        SpritebatchDrawer spritebatchDrawer = SpritebatchDrawer.FromProjectile(projectile);
-
-        //Create an after image effect
-        //Gonna extract this to a function
-        for (int i = 0; i < projectile.oldPos.Length; i++)
-        {
-            float ratio = i / (float)projectile.oldPos.Length;
-            Color afterImageColor = getTrailColor(ratio);
-            float afterImageScale = getTrailWidth(ratio);
-
-            spritebatchDrawer.worldPosition = projectile.oldPos[i] + projectile.Size * 0.5f;
-            spritebatchDrawer.color = afterImageColor;
-            spritebatchDrawer.scale = Vector2.One * afterImageScale;
-            spritebatchDrawer.rotation = projectile.oldRot[i];
-            spriteBatch.Draw(spritebatchDrawer);
-        }
-    }
-    public static void DrawBasicAfterImage(SpriteBatch spriteBatch, NPC npc, GetTrailColor getTrailColor, GetTrailWidth getTrailWidth, SpritebatchDrawer spritebatchDrawer)
-    {
-        //Create an after image effect
-        //Gonna extract this to a function
-        for (int i = 0; i < npc.oldPos.Length; i++)
-        {
-            float ratio = i / (float)npc.oldPos.Length;
-            Color afterImageColor = getTrailColor(ratio);
-            float afterImageScale = getTrailWidth(ratio);
-
-            spritebatchDrawer.worldPosition = npc.oldPos[i] + npc.Size * 0.5f;
-            spritebatchDrawer.color = afterImageColor;
-            spritebatchDrawer.scale = Vector2.One * afterImageScale;
-            spritebatchDrawer.rotation = npc.oldRot[i];
-            spriteBatch.Draw(spritebatchDrawer);
-        }
-    }
-    public static void DrawBasicAfterImage(SpriteBatch spriteBatch, Projectile projectile, GetTrailColor getTrailColor, GetTrailWidth getTrailWidth, SpritebatchDrawer spritebatchDrawer)
-    {
-        Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-
-        //Create an after image effect
-        //Gonna extract this to a function
-        for (int i = 0; i < projectile.oldPos.Length; i++)
-        {
-            float ratio = i / (float)projectile.oldPos.Length;
-            Color afterImageColor = getTrailColor(ratio);
-            float afterImageScale = getTrailWidth(ratio);
-
-            spritebatchDrawer.worldPosition = projectile.oldPos[i] + projectile.Size * 0.5f;
-            spritebatchDrawer.color = afterImageColor;
-            spritebatchDrawer.scale = Vector2.One * afterImageScale;
-            spritebatchDrawer.rotation = projectile.oldRot[i];
-            spriteBatch.Draw(spritebatchDrawer);
-        }
-    }
-
     public static void DrawBasicGlow(SpriteBatch spriteBatch, Vector2 position, float scale, Color color)
     {
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, position);
@@ -943,16 +903,27 @@ public struct SpritebatchDrawer
     public Vector2 drawOrigin;
     public SpriteEffects spriteEffects;
     public Vector2 scale;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Apply(Projectile projectile, OldPosition oldPosition)
+    {
+        rotation = projectile.oldRot[oldPosition.index];
+        worldPosition = oldPosition.position + projectile.Size * 0.5f;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Flip(ref float xPosition)
     {
         xPosition = sourceRect.Value.Width - xPosition;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void VerticalFrame(int frameIndex, int frameCount)
     {
         sourceRect = texture.GetFrame(frameIndex, frameCount);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void LeftCenterOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(0f, 0.5f);
@@ -967,6 +938,7 @@ public struct SpritebatchDrawer
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void BottomLeftOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(0f, 1f);
@@ -980,6 +952,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void RightCenterOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(1f, 0.5f);
@@ -993,6 +967,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void BottomCenterOrigin()
     {
         if (sourceRect.HasValue)
@@ -1005,6 +981,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height);
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Origin(float xPct, float yPct)
     {
         if (sourceRect.HasValue)
@@ -1017,6 +995,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * xPct, texture.Height * yPct);
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void TopCenterOrigin()
     {
         if (sourceRect.HasValue)
@@ -1029,6 +1009,8 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * 0.5f, 0);
         }
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void CenterOrigin()
     {
         if (sourceRect.HasValue)
@@ -1042,6 +1024,7 @@ public struct SpritebatchDrawer
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromZTileDraw(Asset<Texture2D> textureAsset, ZTileDrawData drawData)
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, drawData.drawPosition + Main.screenPosition);
@@ -1054,6 +1037,7 @@ public struct SpritebatchDrawer
         return drawer;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromTextureAsset(Asset<Texture2D> textureAsset, Vector2 worldPosition)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
@@ -1067,6 +1051,8 @@ public struct SpritebatchDrawer
         spritebatchDrawer.scale = Vector2.One;
         return spritebatchDrawer;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromTextureAsset(Texture2D textureAsset, Vector2 worldPosition)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
@@ -1082,6 +1068,7 @@ public struct SpritebatchDrawer
     }
 
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromProjectile(Projectile projectile)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
@@ -1097,6 +1084,7 @@ public struct SpritebatchDrawer
     }
 
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromNPC(NPC npc)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();

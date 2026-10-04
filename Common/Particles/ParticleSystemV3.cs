@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Stellamod.Common.Particles.Electric;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -46,6 +47,14 @@ public sealed class Particles : ModSystem
     public static readonly FallingBigGoldenLeaf FallingBigGoldenLeaf = new();
     public static readonly StarDonutDust StarDonut = new();
     public static readonly StarSmokeDust StarSmoke = new();
+    public static readonly LightningSpark LightningSpark = new();
+    public static readonly LightningBolt LightningBolt = new();
+    public static readonly LightningImpact LightningImpact = new();
+    public static readonly LightningBoltBig LightningBoltBig = new();
+    public static readonly LightningSpikeySpark LightningSpikeySpark = new();
+    public static readonly LightningArcCrawl LightningArcCrawl = new();
+    public static readonly LightningCrackedGround LightningCrackedGround = new();
+    public static readonly SplatDust SplatDust = new();
     public override void Load()
     {
         base.Load();
@@ -71,8 +80,18 @@ public sealed class Particles : ModSystem
             GoldenLeafTornado,
             Sparklemist,
             FallingBigGoldenLeaf,
+
             StarDonut,
-            StarSmoke
+            StarSmoke,
+
+            LightningSpark,
+            LightningBolt,
+            LightningImpact,
+            LightningBoltBig,
+            LightningSpikeySpark,
+            LightningArcCrawl,
+            LightningCrackedGround,
+            SplatDust
         };
 
         if (Main.netMode == NetmodeID.Server)

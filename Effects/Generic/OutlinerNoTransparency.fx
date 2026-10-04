@@ -1,5 +1,6 @@
 ﻿sampler spriteSampler : register(s0);
 float2 texelSize;
+float threshold;
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     float4 baseColor = tex2D(spriteSampler, coords);
@@ -18,7 +19,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
         }
     }
     
-    if(a > 0.0)
+    if (a > 0.0)
         return sampleColor;
     return float4(0.0, 0.0, 0.0, 0.0);
 }

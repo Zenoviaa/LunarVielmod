@@ -1,9 +1,20 @@
-﻿using Terraria;
+﻿using System.Runtime.CompilerServices;
+using Terraria;
 
 namespace Stellamod.Core.Utilities;
 
 public static class VectorExtensions
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 FlipX(this Vector2 point, Vector2 origin)
+    {
+        var dirX = point.X - origin.X;
+        var oppDir = dirX * -1;
+        var newPoint = point;
+        newPoint.X = origin.X + oppDir;
+        return newPoint;
+    }
+
     public static void ClearForTrailing(this Vector2[] arr)
     {
         for (int i = 0; i < arr.Length; i++)
