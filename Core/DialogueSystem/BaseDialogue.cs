@@ -144,7 +144,7 @@ namespace Stellamod.Core.DialogueSystem
             }
         }
 
-        public abstract Asset<Texture2D> GetPortrait(int lineNumber);
+        public abstract void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber);
         public string GetLine(int lineNumber)
         {
             return this.GetLocalization($"Line{lineNumber}").Value;

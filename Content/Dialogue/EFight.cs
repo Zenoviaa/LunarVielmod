@@ -1,4 +1,6 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using System;
@@ -12,9 +14,9 @@ namespace Stellamod.Content.Dialogue
 {
     public class ZuiComeQuickDialogue : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
-            return AssetReferences.Core.DialogueSystem.Zui.Asset;
+            parameters.profile = GooberDialoguePresets.Zui;
         }
         public override void SetStaticDefaults()
         {
@@ -29,9 +31,9 @@ namespace Stellamod.Content.Dialogue
 
     public class ZuiWhoAreYouDialogue : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
-            return AssetReferences.Core.DialogueSystem.Zui.Asset;
+            parameters.profile = GooberDialoguePresets.Zui;
         }
         public override void SetStaticDefaults()
         {
@@ -46,9 +48,9 @@ namespace Stellamod.Content.Dialogue
 
     public class ZuiTalkingToYouDialogue : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
-            return AssetReferences.Core.DialogueSystem.Zui.Asset;
+            parameters.profile = GooberDialoguePresets.Zui;
         }
         public override void SetStaticDefaults()
         {
@@ -63,9 +65,9 @@ namespace Stellamod.Content.Dialogue
 
     public class EFoundYouDialogue : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
-            return AssetReferences.Core.DialogueSystem.E.Asset;
+            parameters.profile = GooberDialoguePresets.E;
         }
         public override void SetStaticDefaults()
         {
@@ -80,9 +82,9 @@ namespace Stellamod.Content.Dialogue
 
     public class ZuiGetOuttaHereDialogue : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
-            return AssetReferences.Core.DialogueSystem.Zui.Asset;
+            parameters.profile = GooberDialoguePresets.Zui;
         }
         public override void SetStaticDefaults()
         {
@@ -96,7 +98,7 @@ namespace Stellamod.Content.Dialogue
     }
     public class EEndingDialogue : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
             switch (lineNumber)
             {
@@ -107,9 +109,11 @@ namespace Stellamod.Content.Dialogue
                 case 11:
                 case 12:
                 case 0:
-                    return AssetReferences.Core.DialogueSystem.EreshDark.Asset;
+                    parameters.profile = GooberDialoguePresets.EreshDark;
+                    break;
                 default:
-                    return AssetReferences.Core.DialogueSystem.E.Asset;
+                    parameters.profile = GooberDialoguePresets.E;
+                    break;
             }
         }
         public override void SetStaticDefaults()
@@ -124,9 +128,9 @@ namespace Stellamod.Content.Dialogue
     }
     public class EFearDialogue : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
-            return AssetReferences.Core.DialogueSystem.E.Asset;
+            parameters.profile = GooberDialoguePresets.E;
         }
         public override void SetStaticDefaults()
         {

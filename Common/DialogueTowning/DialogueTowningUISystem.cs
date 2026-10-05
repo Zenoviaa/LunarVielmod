@@ -123,11 +123,13 @@ namespace Stellamod.Common.DialogueTowning
             quest.QuestIntroDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
+
          //   dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
         }
 
         public void ChatWith(BaseDialogue dialogue, int lineNumber)
         {
+            SpeechBoxTalkingParameters parameters = new();
             DialogueTowningUI ui = dialogueTowningUIState.dialogueTownUI;
             ui.ClearText();
             ui.PrepareForTalking();
@@ -136,7 +138,9 @@ namespace Stellamod.Common.DialogueTowning
             SoundStyle? talkingSound = SoundID.Item1;
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = dialogue.GetLine(lineNumber);
-         //   dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
+            dialogue.GetTalkingParameters(ref parameters, lineNumber);
+            dialogueTowningUIState.dialogueTownUI.TalkingParameters = parameters;
+            //   dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
         }
 
         public void OpenTalkOptions(BaseDialogue[] dialogues)

@@ -1,4 +1,6 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
@@ -21,10 +23,11 @@ public class VerliaKillDialogue : BaseDialogue
         return 7;
     }
 
-    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
     {
-        return AssetReferences.Core.DialogueSystem.Verlia.Asset;
+        parameters.profile = GooberDialoguePresets.Verlia;
     }
+
     public override void OnComplete()
     {
         base.OnComplete();

@@ -1,4 +1,6 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 
@@ -6,9 +8,9 @@ namespace Stellamod.Content.Dialogue;
 
 public class BulbtrifierHiDialogue : BaseDialogue
 {
-    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
     {
-        return AssetReferences.Core.DialogueSystem.Bulbtrifier.Asset;
+        parameters.profile = GooberDialoguePresets.Bulbtrifier;
     }
     public override int GetLength()
     {
@@ -18,9 +20,9 @@ public class BulbtrifierHiDialogue : BaseDialogue
 
 public class BulbtrifierWhoDialogue : BaseDialogue
 {
-    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
     {
-        return AssetReferences.Core.DialogueSystem.Bulbtrifier.Asset;
+        parameters.profile = GooberDialoguePresets.Bulbtrifier;
     }
     public override int GetLength()
     {
@@ -29,9 +31,9 @@ public class BulbtrifierWhoDialogue : BaseDialogue
 }
 public class BulbtrifierHowMuchDialogue : BaseDialogue
 {
-    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
     {
-        return AssetReferences.Core.DialogueSystem.Bulbtrifier.Asset;
+        parameters.profile = GooberDialoguePresets.Bulbtrifier;
     }
     public override int GetLength()
     {

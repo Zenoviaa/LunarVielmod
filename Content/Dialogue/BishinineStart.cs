@@ -1,4 +1,6 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
@@ -11,10 +13,11 @@ namespace Stellamod.Content.Dialogue
 {
     public class BishinineStart : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
-            return AssetReferences.Core.DialogueSystem.Bishinine.Asset;
+            parameters.profile = GooberDialoguePresets.Bishinine;
         }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

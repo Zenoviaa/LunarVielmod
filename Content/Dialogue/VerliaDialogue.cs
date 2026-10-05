@@ -1,4 +1,6 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 
@@ -11,10 +13,11 @@ public class VerliaHappenedDialogue : BaseDialogue
     {
         base.SetStaticDefaults();
     }
-    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
     {
-        return AssetReferences.Core.DialogueSystem.Verlia.Asset;
+        parameters.profile = GooberDialoguePresets.Verlia;
     }
+
     public override int GetLength()
     {
         return 6;
@@ -27,9 +30,10 @@ public class VerliaFamilyDialogue : BaseDialogue
     {
         base.SetStaticDefaults();
     }
-    public override Asset<Texture2D> GetPortrait(int lineNumber)
+
+    public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
     {
-        return AssetReferences.Core.DialogueSystem.Verlia.Asset;
+        parameters.profile = GooberDialoguePresets.Verlia;
     }
 
     public override int GetLength()
@@ -45,10 +49,11 @@ public class VerliaWingsDialogue : BaseDialogue
         base.SetStaticDefaults();
     }
 
-    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
     {
-        return AssetReferences.Core.DialogueSystem.Verlia.Asset;
+        parameters.profile = GooberDialoguePresets.Verlia;
     }
+
     public override int GetLength()
     {
         return 8;

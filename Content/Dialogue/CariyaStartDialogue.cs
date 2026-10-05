@@ -1,4 +1,6 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.CariyaBoss;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
@@ -10,9 +12,9 @@ namespace Stellamod.Content.Dialogue;
 
 public class CariyaStartDialogue : BaseDialogue
 {
-    public override Asset<Texture2D> GetPortrait(int lineNumber)
+    public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
     {
-        return AssetReferences.Core.DialogueSystem.Cariya.Asset;
+        parameters.profile = GooberDialoguePresets.Cariya;
     }
     public override void SetStaticDefaults()
     {

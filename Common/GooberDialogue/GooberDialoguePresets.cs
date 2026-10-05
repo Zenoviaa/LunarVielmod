@@ -7,6 +7,30 @@ namespace Stellamod.Common.GooberDialogue;
 
 public static class GooberDialoguePresets
 {
+    public static GooberProfile Cariya => Default with
+    {
+        bigPortraitTextureAsset = AssetReferences.Core.DialogueSystem.Cariya.Asset,
+        portraitTextureAsset = null,
+        name = "Cariya"
+    };
+    public static GooberProfile EreshDark => Default with
+    {
+        bigPortraitTextureAsset = AssetReferences.Core.DialogueSystem.EreshDark.Asset,
+        portraitTextureAsset = null,
+        name = "???"
+    };
+    public static GooberProfile E => Default with
+    {
+        bigPortraitTextureAsset = AssetReferences.Core.DialogueSystem.E.Asset,
+        portraitTextureAsset = null,
+        name = "???"
+    };
+    public static GooberProfile Minerva => Default with
+    {
+        bigPortraitTextureAsset = AssetReferences.Core.DialogueSystem.Minerva.Asset,
+        portraitTextureAsset = null,
+        name = "Minerva"
+    };
     public static GooberProfile Delgrim => Default with
     {
         bigPortraitTextureAsset = AssetReferences.Core.DialogueSystem.Delgrim.Asset,

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Content;
+using Stellamod.Common.DialogueTowning;
+using Stellamod.Common.GooberDialogue;
 using Stellamod.Content.Areas.Dock.BossesDK.Jiitas;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
@@ -12,9 +14,9 @@ namespace Stellamod.Content.Dialogue
 {
     public class JiitasStartDialogue : BaseDialogue
     {
-        public override Asset<Texture2D> GetPortrait(int lineNumber)
+        public override void GetTalkingParameters(ref SpeechBoxTalkingParameters parameters, int lineNumber)
         {
-            return AssetReferences.Core.DialogueSystem.Jiitas.Asset;
+            parameters.profile = GooberDialoguePresets.Jiitas;
         }
         public override void SetStaticDefaults()
         {
