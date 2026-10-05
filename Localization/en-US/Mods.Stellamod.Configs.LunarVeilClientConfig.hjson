@@ -234,3 +234,8 @@ fontReplace: {
 	Label: font Replace
 	Tooltip: ""
 }
+
+AudioRefreshes: {
+	Label: Audio Refreshes
+	Tooltip: ""
+}

@@ -99,7 +99,6 @@ public class CometMagicDust : ParticleUpdater<CometMagicDustData>
         PalettizerShader palettizerShader = PalettizerShader.Instance;
         palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(PaletteAssets.ABYSSWATERFALL).Value.ColorAtlas;//PaletteHelper.GetColorSpectrum("MoonspiralTower.pal");
         palettizerShader.Progress = 1f;
-        palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
         palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
         palettizerShader.DitherAlpha = 0.125f;
 

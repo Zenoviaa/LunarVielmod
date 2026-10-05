@@ -87,7 +87,6 @@ public class GothiviaDomain : ModSystem
             PalettizerShader palettizerShader = PalettizerShader.Instance;
             palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(PaletteAssets.HELL).Value.ColorAtlas;//PaletteHelper.GetColorSpectrum("Hell.pal");
             palettizerShader.Progress = 1f;
-            palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
             palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
             palettizerShader.DitherAlpha = 0.125f;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, palettizerShader.Effect);

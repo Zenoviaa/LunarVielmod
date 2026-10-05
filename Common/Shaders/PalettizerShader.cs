@@ -55,13 +55,6 @@ public class PalettizerShader : BaseShader
             Effect.Parameters["uProgress"].SetValue(value);
         }
     }
-    public bool Dither
-    {
-        set
-        {
-            Effect.Parameters["dither"].SetValue(value);
-        }
-    }
     public Vector2 ImageSize
     {
         set
@@ -82,8 +75,6 @@ public class PalettizerShader : BaseShader
     {
         PalettizerShader palettizerShader = ShaderContent.GetInstance<PalettizerShader>();
         palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(palette).Value.ColorAtlas;
-        palettizerShader.Progress = 1f;
-        palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
         palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
         palettizerShader.DitherAlpha = 0.125f;
         palettizerShader.DitherTexture = AssetManager.Dithering.Dither8x8Double.Asset.Value;

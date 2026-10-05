@@ -2,7 +2,6 @@
 using System;
 using System.ComponentModel;
 using Terraria;
-using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -31,23 +30,6 @@ public class DisableBossNameHover : GlobalNPC
 
 }
 
-public class NoMapAutoSave : ModSystem
-{
-    public override void Load()
-    {
-        base.Load();
-        On_Player.InternalSaveMap += DisableMapSave;
-    }
-
-    private void DisableMapSave(On_Player.orig_InternalSaveMap orig, bool isCloudSave)
-    {
-        if (ModContent.GetInstance<LunarVeilClientConfig>().skipMapAutoSave)
-        {
-            return;
-        }
-        orig(isCloudSave);
-    }
-}
 
 public class LunarVeilClientConfig : ModConfig
 {
@@ -64,9 +46,6 @@ public class LunarVeilClientConfig : ModConfig
     public bool Godrays;
 
     [DefaultValue(true)]
-    public bool SunShadows;
-
-    [DefaultValue(true)]
     public bool SunShadows2;
 
     [Header("Visual")] // Headers are like titles in a config. You only need to declare a header on the item it should appear over, not every item in the category.                                       // [Tooltip("$Some.Key")] // A tooltip is a description showed when you hover your mouse over the option. It can be used as a more in-depth explanation of the option. Like with Label, a specific key can be provided.
@@ -78,7 +57,7 @@ public class LunarVeilClientConfig : ModConfig
     public bool FocusMode;
 
     [DefaultValue(true)]
-    public bool Dither;
+    public bool AudioRefreshes;
 
     [DefaultValue(true)]
     public bool DramaticEffects;
@@ -96,11 +75,6 @@ public class LunarVeilClientConfig : ModConfig
     [DefaultValue(true)] // This sets the configs default value.// Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
     [ReloadRequired]
     public bool VanillaUIRespritesToggle;
-
-    // To see the implementation of this option, see ExampleWings.cs
-
-    [DefaultValue(true)] // This sets the configs default value. // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
-    public bool VanillaParticlesToggle;
 
     [DefaultValue(true)]
     public bool VanillaBiomesPaletteShadersToggle;
@@ -130,40 +104,36 @@ public class LunarVeilClientConfig : ModConfig
     [DefaultValue(true)]
     public bool ShakeToggle;
 
+    [DefaultValue(90)]
     [Range(0f, 100f)]
     public float CameraSmoothness = 100;
-
-    [DefaultValue(false)]
-    public bool LowDetailShadersToggle;
 
     [Header("UI")]
     [DefaultValue(true)]
     public bool fontReplace;
 
-    [Range(0f, 100f)]
-    public float EnchantMenuX = 50;
-    [Range(0f, 100f)]
-    public float EnchantMenuY = 50;
 
-    [Range(0f, 100f)]
-    public float StaminaMeterX = 50;
-    [Range(0f, 100f)]
-    public float StaminaMeterY = 3;
+    [DefaultValue(75)]
     [Range(0f, 100f)]
     public float DashMeterX = 50;
+
+    [DefaultValue(15)]
     [Range(0f, 100f)]
     public float DashMeterY = 50;
 
+    [DefaultValue(50)]
     [Range(0f, 100f)]
     public float EnchantmentMenuX = 50;
+
+    [DefaultValue(50)]
     [Range(0f, 100f)]
     public float EnchantmentMenuY = 50;
 
+    [DefaultValue(75)]
     [Range(0f, 100f)]
     public float AmmoBarX = 50;
+
+    [DefaultValue(25)]
     [Range(0f, 100f)]
     public float AmmoBarY = 50;
-
-    [Header("Dev")]
-    public bool skipMapAutoSave;
 }

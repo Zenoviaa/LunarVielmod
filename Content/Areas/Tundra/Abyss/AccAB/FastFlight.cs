@@ -74,7 +74,6 @@ public class MoonFlightRenderer : ModSystem
         PalettizerShader palettizerShader = PalettizerShader.Instance;
         palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(PaletteAssets.MOONSPIRALTOWER).Value.ColorAtlas;//PaletteHelper.GetColorSpectrum("MoonspiralTower.pal");
         palettizerShader.Progress = 1f;
-        palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
         palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
         palettizerShader.DitherAlpha = 0.125f;
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, palettizerShader.Effect);

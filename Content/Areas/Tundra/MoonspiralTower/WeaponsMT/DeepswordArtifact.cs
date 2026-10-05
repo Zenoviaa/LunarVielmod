@@ -53,7 +53,6 @@ public class VerliaPaletteRenderer : ModSystem
         var palettizerShader = PalettizerShader.Instance;
         palettizerShader.PaletteTexture = PaletteAssets.FromPaletteFile(PaletteAssets.MOONSPIRALTOWER).Value.ColorAtlas;//PaletteHelper.GetColorSpectrum("MoonspiralTower.pal");
         palettizerShader.Progress = 1f;
-        palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
         palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
         palettizerShader.DitherAlpha = 0.125f;
         using (sb.Ctx(oldParameters with { effect = palettizerShader }))

@@ -206,6 +206,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         writer.Write(bounceTimer);
         writer.Write(isAfterImageProjectile);
         writer.Write(isStaminaMove);
+      
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)

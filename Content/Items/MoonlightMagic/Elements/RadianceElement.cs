@@ -1,12 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -15,378 +10,327 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Items.MoonlightMagic.Elements
+namespace Stellamod.Content.Items.MoonlightMagic.Elements;
+
+public class RadianceElement : BaseElement
 {
-    public class RadianceElement : BaseElement
+    public override void ModifySisters(List<int> sisters)
     {
-        public override void ModifySisters(List<int> sisters)
+        base.ModifySisters(sisters);
+        sisters.Add(ModContent.ItemType<HolinessElement>());
+    }
+    public override int GetOppositeElementType()
+    {
+        return ModContent.ItemType<PhantasmalElement>();
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+
+        SoundStyle chargeSoundStyle = AssetRegistry.Sounds.MagicWand.FireCharge;
+        chargeSoundStyle.PitchVariance = 0.15f;
+        ChargeSound = chargeSoundStyle;
+
+        SoundStyle chargeShotSoundStyle = AssetRegistry.Sounds.MagicWand.FireChargeShot;
+        chargeShotSoundStyle.PitchVariance = 0.15f;
+        CastSound = chargeShotSoundStyle;
+
+        SoundStyle hitStyle = SoundRegistry.RadianceHit1;
+        hitStyle.PitchVariance = 0.25f;
+        HitSound = hitStyle;
+    }
+
+    public override Color GetElementColor()
+    {
+        return ColorFunctions.RadianceYellow;
+    }
+
+    public override bool DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset)
+    {
+        base.DrawTextShader(spriteBatch, item, line, ref yOffset);
+        EnchantmentDrawHelper.DrawTextShader(spriteBatch, item, line, ref yOffset,
+            glowColor: Color.OrangeRed,
+            primaryColor: Color.Lerp(Color.White, new Color(255, 207, 79), 0.5f),
+            noiseColor: new Color(206, 101, 0));
+        return true;
+    }
+
+    public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+    {
+        base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.RadianceYellow);
+    }
+
+    public override void DrawForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
+    {
+        DrawHighDetailForm(spriteBatch, formTexture, drawPos, drawColor, lightColor, drawRotation, drawScale);
+        if (MagicProj.orb)
         {
-            base.ModifySisters(sisters);
-            sisters.Add(ModContent.ItemType<HolinessElement>());
+            /*
+            DustShader shader = DustShader.Instance;
+            shader.InnerColor = Color.Yellow;
+            shader.OuterColor = Color.Red;
+            shader.Apply();
+            spriteBatch.Restart(effect: shader.Effect, blendState: BlendState.Additive);*/
+            Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            Vector2 glowDrawOrigin = glowMask.Size() / 2f;
+            Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
+            glowColor.A = 0;
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
+            // spriteBatch.RestartDefaults();
+
+
+            glowMask = AssetManager.GlowMask.SpiralVortex.Value;
+            glowDrawOrigin = glowMask.Size() / 2f;
+            glowColor = Color.Red;
+            glowColor.A = 0;
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
         }
-        public override int GetOppositeElementType()
+    }
+
+
+    public MoonSparkleShader SparkleShader;
+    private void DrawHighDetailForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
+    {
+        //TODO: batch this
+        //Make a radiance renderer, gonna do this soon actually
+        Vector2 drawOrigin = formTexture.Size() / 2;
+        if (!MagicProj.orb)
+            drawPos -= Projectile.velocity * 2f;
+        drawScale *= 1.3f;
+        SparkleShader ??= new MoonSparkleShader();
+        SparkleShader.ApplyToEffect();
+        spriteBatch.Restart(effect: SparkleShader.Effect, blendState: BlendState.Additive);
+        spriteBatch.Draw(formTexture, drawPos, null, Color.White, drawRotation, drawOrigin, drawScale * 1.15f +
+            ExtraMath.Osc(-0.1f, 0.1f, speed: 16), SpriteEffects.None, 0);
+        spriteBatch.RestartDefaults();
+
+
+        spriteBatch.Draw(formTexture, drawPos, null, Color.Lerp(Color.Black, Color.Red, MathUtil.Osc(0f, 1f, speed: 12)),
+           drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        spriteBatch.Restart(blendState: BlendState.Additive);
+        spriteBatch.Draw(formTexture, drawPos, null, Color.White * 0.3f, drawRotation, drawOrigin, drawScale +
+            ExtraMath.Osc(-0.1f, 0.1f, speed: 4), SpriteEffects.None, 0);
+        spriteBatch.RestartDefaults();
+    }
+
+    public override void DustEffects()
+    {
+        base.DustEffects();
+        if (Main.rand.NextBool(8))
         {
-            return ModContent.ItemType<PhantasmalElement>();
+            int oldPosIndex = Main.rand.Next(0, MagicProj.OldPos.Length - 1);
+            float lerpValue = oldPosIndex / (float)MagicProj.OldPos.Length;
+            float scaleFactor = MathHelper.Lerp(1.0f, 0.8f, lerpValue);
+
+            Vector2 spawnPoint = MagicProj.OldPos[oldPosIndex] + Projectile.Size / 2;
+            Vector2 velocity = MagicProj.OldPos[oldPosIndex + 1] - MagicProj.OldPos[oldPosIndex];
+            velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+
+            Vector2 offset = Main.rand.NextVector2Circular(16, 16);
+            offset *= scaleFactor;
+            spawnPoint += offset;
+
+            scaleFactor *= Main.rand.NextFloat(0.5f, 0.8f);
+
+            Color color = Color.RosyBrown;
+            //  LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
+            Particle<TexturedCloudParticle>.Spawn(spawnPoint, velocity, color, Scale: scaleFactor);
         }
-
-        public override void SetDefaults()
+        if (MagicProj.orb)
         {
-            base.SetDefaults();
 
-            SoundStyle chargeSoundStyle = AssetRegistry.Sounds.MagicWand.FireCharge;
-            chargeSoundStyle.PitchVariance = 0.15f;
-            ChargeSound = chargeSoundStyle;
+            /*
+            SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, Main.rand.NextVector2Circular(3, 3), Scale: Main.rand.NextFloat(0.5f, 1f));
+            smokeParticle.initialColor = Color.Red;
+            smokeParticle.parent = Projectile;*/
 
-            SoundStyle chargeShotSoundStyle = AssetRegistry.Sounds.MagicWand.FireChargeShot;
-            chargeShotSoundStyle.PitchVariance = 0.15f;
-            CastSound = chargeShotSoundStyle;
 
-            SoundStyle hitStyle = SoundRegistry.RadianceHit1;
-            hitStyle.PitchVariance = 0.25f;
-            HitSound = hitStyle;
-        }
+            FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), Scale: Main.rand.NextFloat(0.2f, 0.35f));
+            dp.innerColor = Color.Goldenrod;
+            dp.outerColor = Color.Red;
+            dp.parent = Projectile;
+            dp.gravity = 0f;
+            dp.dampening = 0.05f;
+            dp.fast = true;
 
-        public override Color GetElementColor()
-        {
-            return ColorFunctions.RadianceYellow;
-        }
-
-        public override bool DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset)
-        {
-            base.DrawTextShader(spriteBatch, item, line, ref yOffset);
-            EnchantmentDrawHelper.DrawTextShader(spriteBatch, item, line, ref yOffset,
-                glowColor: Color.OrangeRed,
-                primaryColor: Color.Lerp(Color.White, new Color(255, 207, 79), 0.5f),
-                noiseColor: new Color(206, 101, 0));
-            return true;
-        }
-
-        public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.RadianceYellow);
-        }
-
-        public override void DrawForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
-        {
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            if (!config.LowDetailShadersToggle)
+            if (Main.rand.NextBool(5))
             {
-                DrawHighDetailForm(spriteBatch, formTexture, drawPos, drawColor, lightColor, drawRotation, drawScale);
+                switch (Main.rand.Next(2))
+                {
+                    case 0:
+                        DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 16), Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                        sp.gravity = 0f;
+                        sp.fast = true;
+                        sp.dampening = 0.1f;
+                        break;
+                    case 1:
+                        FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 16), Scale: Main.rand.NextFloat(0.1f, 0.2f));
+                        sp2.gravity = 0f;
+                        sp2.fast = true;
+                        sp2.dampening = 0.1f;
+                        break;
+                }
+
             }
-            else
-            {
-                DrawLowDetailForm(spriteBatch, formTexture, drawPos, drawColor, lightColor, drawRotation, drawScale);
-            }
-            if (MagicProj.orb)
-            {
-                /*
-                DustShader shader = DustShader.Instance;
-                shader.InnerColor = Color.Yellow;
-                shader.OuterColor = Color.Red;
-                shader.Apply();
-                spriteBatch.Restart(effect: shader.Effect, blendState: BlendState.Additive);*/
-                Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
-                Vector2 glowDrawOrigin = glowMask.Size() / 2f;
-                Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
-                glowColor.A = 0;
-                spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
-                // spriteBatch.RestartDefaults();
 
-            
-                glowMask = AssetManager.GlowMask.SpiralVortex.Value;
-                glowDrawOrigin = glowMask.Size() / 2f;
-                glowColor = Color.Red;
-                glowColor.A = 0;
-                spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
-            }
-        }
-
-        private void DrawLowDetailForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
-        {
-            base.DrawForm(spriteBatch, formTexture, drawPos, drawColor, lightColor, drawRotation, drawScale);
-        }
-        public MoonSparkleShader SparkleShader;
-        private void DrawHighDetailForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
-        {
-            Vector2 drawOrigin = formTexture.Size() / 2;
-            if(!MagicProj.orb)
-              drawPos -= Projectile.velocity * 2f;
-            drawScale *= 1.3f;
-            SparkleShader ??= new MoonSparkleShader();
-            SparkleShader.ApplyToEffect();
-            spriteBatch.Restart(effect: SparkleShader.Effect, blendState: BlendState.Additive);
-            spriteBatch.Draw(formTexture, drawPos, null, Color.White, drawRotation, drawOrigin, drawScale * 1.15f +
-                ExtraMath.Osc(-0.1f, 0.1f, speed: 16), SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();
-
-
-            spriteBatch.Draw(formTexture, drawPos, null, Color.Lerp(Color.Black, Color.Red, MathUtil.Osc(0f, 1f, speed: 12)),
-               drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            spriteBatch.Draw(formTexture, drawPos, null, Color.White * 0.3f, drawRotation, drawOrigin, drawScale +
-                ExtraMath.Osc(-0.1f, 0.1f, speed: 4), SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();
-        }
-
-        public override void DustEffects()
-        {
-            base.DustEffects();
             if (Main.rand.NextBool(8))
             {
-                int oldPosIndex = Main.rand.Next(0, MagicProj.OldPos.Length - 1);
-                float lerpValue = (float)oldPosIndex / (float)MagicProj.OldPos.Length;
-                float scaleFactor = MathHelper.Lerp(1.0f, 0.8f, lerpValue);
-
-                Vector2 spawnPoint = MagicProj.OldPos[oldPosIndex] + Projectile.Size / 2;
-                Vector2 velocity = MagicProj.OldPos[oldPosIndex + 1] - MagicProj.OldPos[oldPosIndex];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
-
-                Vector2 offset = Main.rand.NextVector2Circular(16, 16);
-                offset *= scaleFactor;
-                spawnPoint += offset;
-
-                scaleFactor *= Main.rand.NextFloat(0.5f, 0.8f);
-
-                Color color = Color.RosyBrown;
-              //  LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
-                Particle<TexturedCloudParticle>.Spawn(spawnPoint, velocity, color, Scale: scaleFactor);
+                FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f),
+                    color: Color.OrangeRed, Scale: Main.rand.NextFloat(0.35f, 0.75f));
+                sp.gravity = 0f;
+                sp.fast = true;
+                sp.dampening = 0.1f;
             }
-            if (MagicProj.orb)
+
+        }
+    }
+
+    public override void DrawTrail(Vector2[] oldPos)
+    {
+        base.DrawTrail(oldPos);
+        DrawMainShader(oldPos);
+    }
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        if (Main.rand.NextBool(3))
+        {
+            target.AddBuff(BuffID.OnFire, time: 360);
+        }
+    }
+
+    public override void DrawOrb(SpriteBatch spriteBatch, Vector2 drawPosition)
+    {
+        base.DrawOrb(spriteBatch, drawPosition);
+    }
+
+    public override void OnKill()
+    {
+        base.OnKill();
+        SpawnDeathParticles();
+    }
+
+    private void SpawnDeathParticles()
+    {
+        //Kill Trail
+        for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
+        {
+            Vector2 offset = Main.rand.NextVector2Circular(16, 16);
+            Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
+            Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
+            velocity = velocity.SafeNormalize(Vector2.Zero) * -1;
+            if (Main.rand.NextBool(4))
             {
-
-                /*
-                SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, Main.rand.NextVector2Circular(3, 3), Scale: Main.rand.NextFloat(0.5f, 1f));
-                smokeParticle.initialColor = Color.Red;
-                smokeParticle.parent = Projectile;*/
-
-
-                FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), Scale: Main.rand.NextFloat(0.2f, 0.35f));
-                dp.innerColor = Color.Goldenrod;
-                dp.outerColor = Color.Red;
-                dp.parent = Projectile;
-                dp.gravity = 0f;
-                dp.dampening = 0.05f;
-                dp.fast = true;
-
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(2))
                 {
-                    switch (Main.rand.Next(2))
-                    {
-                        case 0:
-                            DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 16), Scale: Main.rand.NextFloat(0.5f, 1.5f));
-                            sp.gravity = 0f;
-                            sp.fast = true;
-                            sp.dampening = 0.1f;
-                            break;
-                        case 1:
-                            FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 16), Scale: Main.rand.NextFloat(0.1f, 0.2f));
-                            sp2.gravity = 0f;
-                            sp2.fast = true;
-                            sp2.dampening = 0.1f;
-                            break;
-                    }
-       
+                    Color color = Color.RosyBrown;
+                    color.A = 0;
+                    LegacyParticle.NewBlackParticle<FireSmokeParticle>(spawnPoint, velocity, color);
                 }
-
-                if (Main.rand.NextBool(8))
+                else
                 {
-                    FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f), 
-                        color: Color.OrangeRed,Scale: Main.rand.NextFloat(0.35f, 0.75f));
-                    sp.gravity = 0f;
-                    sp.fast = true;
-                    sp.dampening = 0.1f;
+                    Color color = ColorFunctions.RadianceYellow;
+                    color.A = 0;
+                    LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewBlackParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
                 }
-              
             }
         }
 
-        public override void DrawTrail(Vector2[] oldPos)
+        for (float f = 0f; f < 1f; f += 0.2f)
         {
-            base.DrawTrail(oldPos);
-            DrawMainShader(oldPos);
-        }
+            float rot = f * MathHelper.TwoPi;
+            Vector2 spawnPoint = Projectile.position;
+            Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(0f, 2f);
 
-        /*
-        public override void DrawOrbCircle(VertexPositionColorTexture[] vertices, int[] indices)
-        {
-            base.DrawOrbCircle(vertices, indices);
-            TrailVertexHelper trailVertexHelper = ModContent.GetInstance<TrailVertexHelper>();
-            BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
-            blackSmokeShader.Time = Main.GlobalTimeWrappedHourly * 8;
-            blackSmokeShader.Tiling = new Vector2(5f);
-            blackSmokeShader.NoiseTexture = TextureRegistry.Clouds6;
-            trailVertexHelper.DrawPrimitives(vertices, indices, blackSmokeShader);
-            BlackFireShader blackFireShader = BlackFireShader.Instance;
-            //  blackFireShader.PrimaryTexture = TextureRegistry.Clouds6;
-
-            blackFireShader.InnerColor = Color.Goldenrod;
-            blackFireShader.OuterColor = Color.Red;
-
-            //   InnerEmitColor = Color.Yellow;
-            // OuterEmiteColor = Color.Red;
-            blackFireShader.BackColor = Color.DarkRed;
-            //      blackFireShader.PrimaryTexture = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
-            //blackFireShader.PrimaryTexture2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
-
-            blackFireShader.Tiling = new Vector2(12);
-            blackFireShader.Distortion = 0.2f;
-            blackFireShader.Time = Main.GlobalTimeWrappedHourly * 16;
-            trailVertexHelper.DrawPrimitives(vertices, indices, blackFireShader);
-        }*/
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            base.OnHitNPC(target, hit, damageDone);
-            if (Main.rand.NextBool(3))
+            if (Main.rand.NextBool(4))
             {
-                target.AddBuff(BuffID.OnFire, time: 360);
-            }
-        }
-
-        public override void DrawOrb(SpriteBatch spriteBatch, Vector2 drawPosition)
-        {
-            base.DrawOrb(spriteBatch, drawPosition);
-            /*
-            OrbFireShader orbFireShader = OrbFireShader.Instance;
-            orbFireShader.CenterColor = Color.Red;
-            orbFireShader.OuterColor = Color.Yellow;
-            orbFireShader.VortexLightColor = Color.Red;
-            orbFireShader.VortexDarkColor = Color.DarkRed;
-            orbFireShader.Time = Main.GlobalTimeWrappedHourly * 12;
-            spriteBatch.Restart(effect: orbFireShader.Effect);
-            Texture2D orbFireNoise = TextureRegistry.Clouds6.Value;
-            Vector2 drawOrigin = orbFireNoise.Size() / 2f;
-            spriteBatch.Draw(orbFireNoise, drawPosition, null, Color.White, Projectile.rotation, drawOrigin, Projectile.scale * 0.12f, SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();*/
-        }
-
-        public override void OnKill()
-        {
-            base.OnKill();
-            SpawnDeathParticles();
-        }
-
-        private void SpawnDeathParticles()
-        {
-            //Kill Trail
-            for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
-            {
-                Vector2 offset = Main.rand.NextVector2Circular(16, 16);
-                Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
-                Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -1;
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(2))
                 {
+                    Color color = Color.RosyBrown;
+                    color.A = 0;
+                    LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color);
+                }
+                else
+                {
+
+                    Color color = ColorFunctions.RadianceYellow;
                     if (Main.rand.NextBool(2))
-                    {
-                        Color color = Color.RosyBrown;
-                        color.A = 0;
-                        LegacyParticle.NewBlackParticle<FireSmokeParticle>(spawnPoint, velocity, color);
-                    }
-                    else
-                    {
-                        Color color = ColorFunctions.RadianceYellow;
-                        color.A = 0;
-                        LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
-                        LegacyParticle.NewBlackParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
-                    }
+                        color = Color.OrangeRed;
+
+                    LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
+                    LegacyParticle.NewParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
                 }
             }
-
-            for (float f = 0f; f < 1f; f += 0.2f)
-            {
-                float rot = f * MathHelper.TwoPi;
-                Vector2 spawnPoint = Projectile.position;
-                Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(0f, 2f);
-
-                if (Main.rand.NextBool(4))
-                {
-                    if (Main.rand.NextBool(2))
-                    {
-                        Color color = Color.RosyBrown;
-                        color.A = 0;
-                        LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color);
-                    }
-                    else
-                    {
-
-                        Color color = ColorFunctions.RadianceYellow;
-                        if (Main.rand.NextBool(2))
-                            color = Color.OrangeRed;
-
-                        LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
-                        LegacyParticle.NewParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
-                    }
-                }
-     
-            }
-
-            float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
-            FXUtil.GlowCircleBoom(Projectile.Center,
-                innerColor: Color.Yellow,
-                glowColor: Color.Red,
-                outerGlowColor: Color.DarkRed, duration: 25, baseSize: boomSize);
-            FXUtil.GlowCircleBoom(Projectile.Center,
-               innerColor: Color.Yellow,
-               glowColor: Color.Red,
-               outerGlowColor: Color.DarkRed, duration: 15, baseSize: boomSize * 2);
         }
 
-        private float WidthFunction(float completionRatio)
+        float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
+        FXUtil.GlowCircleBoom(Projectile.Center,
+            innerColor: Color.Yellow,
+            glowColor: Color.Red,
+            outerGlowColor: Color.DarkRed, duration: 25, baseSize: boomSize);
+        FXUtil.GlowCircleBoom(Projectile.Center,
+           innerColor: Color.Yellow,
+           glowColor: Color.Red,
+           outerGlowColor: Color.DarkRed, duration: 15, baseSize: boomSize * 2);
+    }
+
+    private float WidthFunction(float completionRatio)
+    {
+        if (MagicProj.laserLike)
         {
-            if (MagicProj.laserLike)
-            {
-                return MagicProj.GetTrailLaserWidth(completionRatio);
-            }
-            float width = 64 * MagicProj.ScaleMultiplier;
-            return MathHelper.SmoothStep(width, 0, completionRatio);
+            return MagicProj.GetTrailLaserWidth(completionRatio);
         }
+        float width = 64 * MagicProj.ScaleMultiplier;
+        return MathHelper.SmoothStep(width, 0, completionRatio);
+    }
 
-        private Color ColorFunction(float completionRatio)
+    private Color ColorFunction(float completionRatio)
+    {
+        Color tipColor = Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
+        Color finalColor = Color.Lerp(Color.Red, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
+        Color finalColor2 = Color.Lerp(Color.White, finalColor, EasingFunction.QuadraticBump(completionRatio));
+        return finalColor2;
+    }
+    public float SmokeWidthFunction(float completionRatio)
+    {
+        if (MagicProj.laserLike)
         {
-            Color tipColor = Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
-            Color finalColor = Color.Lerp(Color.Red, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
-            Color finalColor2 = Color.Lerp(Color.White, finalColor, EasingFunction.QuadraticBump(completionRatio));
-            return finalColor2;
+            return MagicProj.GetTrailLaserWidth(completionRatio) * 1.5f;
         }
-        public float SmokeWidthFunction(float completionRatio)
-        {
-            if (MagicProj.laserLike)
-            {
-                return MagicProj.GetTrailLaserWidth(completionRatio) * 1.5f;
-            }
-            float w = 150;
-            float ew = w / 10;
-            float width = w * MagicProj.ScaleMultiplier;
+        float w = 150;
+        float ew = w / 10;
+        float width = w * MagicProj.ScaleMultiplier;
 
-            float p = completionRatio / 0.5f;
-            float ep = EasingFunction.OutCirc(p);
-            float circleWidth = MathHelper.Lerp(0, w * MagicProj.ScaleMultiplier, ep);
-            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
-            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
-        }
+        float p = completionRatio / 0.5f;
+        float ep = EasingFunction.OutCirc(p);
+        float circleWidth = MathHelper.Lerp(0, w * MagicProj.ScaleMultiplier, ep);
+        float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
+        return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
+    }
 
-        public Color SmokeColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.OutCirc(completionRatio));
-        }
-        private void DrawMainShader(Vector2[] oldPos)
-        {
+    public Color SmokeColorFunction(float completionRatio)
+    {
+        return Color.Lerp(Color.Transparent, Color.White, EasingFunction.OutCirc(completionRatio));
+    }
+    private void DrawMainShader(Vector2[] oldPos)
+    {
 
-            BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
-            blackSmokeShader.Time = Main.GlobalTimeWrappedHourly * 8;
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
+        BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
+        blackSmokeShader.Time = Main.GlobalTimeWrappedHourly * 8;
+        TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
-            BlackFireShader blackFireShader = BlackFireShader.Instance;
+        BlackFireShader blackFireShader = BlackFireShader.Instance;
 
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
+        TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
 
-        }
+    }
 
-        private void DrawOutlineShader(Vector2[] oldPos)
-        {
+    private void DrawOutlineShader(Vector2[] oldPos)
+    {
 
-        }
     }
 }
