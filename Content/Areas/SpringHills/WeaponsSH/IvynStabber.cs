@@ -131,6 +131,9 @@ public class IvynStabber : AbstractBellSummon
         var closestEnemy = MovementUtilities.TargetClosestEnemy(Projectile.Center, 1024);
         if (closestEnemy == null)
             return;
+        if (!Collision.CanHitLine(Projectile.position, 1, 1, closestEnemy.position, 1, 1))
+            return;
+
         _targetNpc = closestEnemy.whoAmI;
     }
 
@@ -178,6 +181,11 @@ public class IvynStabber : AbstractBellSummon
         Projectile.velocity.X *= 0.96f;
         this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         ChaseTargetIfOneFound();
+        var sqrDist = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
+        if(sqrDist > 256 * 256)
+        {
+            SwitchState(AIState.GoHome);
+        }
     }
 
     void FlyingPathfinding()
@@ -217,8 +225,11 @@ public class IvynStabber : AbstractBellSummon
     bool IsGrounded()
     {
         var tilePointBelow = Projectile.Bottom.ToTileCoordinates();
+   
         var tileBelow = Main.tile[tilePointBelow];
-        return WorldGen.SolidOrSlopedTile(tileBelow);
+        tilePointBelow.Y++;
+        var tileBelow2 = Main.tile[tilePointBelow];
+        return WorldGen.SolidOrSlopedTile(tileBelow) || WorldGen.SolidOrSlopedTile(tileBelow2);
     }
 
     void PathfindWalkTo(Vector2 destination)
@@ -294,7 +305,7 @@ public class IvynStabber : AbstractBellSummon
         PathfindWalkTo(Owner.Center);
         HandleWalkingAnimation();
         ChaseTargetIfOneFound();
-        var distSqr = Vector2.Distance(Projectile.Center, Owner.Center);
+        var distSqr = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
         if(distSqr < 96 * 96)
         {
             SwitchState(AIState.Idle);
@@ -327,12 +338,14 @@ public class IvynStabber : AbstractBellSummon
             AttackCycle++;
         }
 
+        Projectile.velocity.X *= 0.96F;
         this.AseAnimator.PlayAnimation(ANIM_STABFRAME, AnimationParams.Default);
 
         if (Timer >= JumpTime && IsGrounded())
         {
             SwitchState(AIState.Idle);
         }
+        Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
     }
 
     void AI_FlyHome()
@@ -345,7 +358,7 @@ public class IvynStabber : AbstractBellSummon
         var drawer = Projectile.GetAnimatorDrawInfo(drawColor);
        
         spriteBatch.Draw(drawer);
-
+        _pathfinder.DebugDrawPath(spriteBatch, Color.White  * 0.3f);
     }
     
     public override void OnKill(int timeLeft)
