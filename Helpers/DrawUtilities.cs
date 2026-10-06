@@ -1098,4 +1098,16 @@ public struct SpritebatchDrawer
         spritebatchDrawer.scale = Vector2.One * npc.scale;
         return spritebatchDrawer;
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SpritebatchDrawer FromItemInUI(Item item)
+    {
+        SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
+        spritebatchDrawer.texture = TextureAssets.Item[item.type].Value;
+        spritebatchDrawer.sourceRect = null;
+        spritebatchDrawer.color = Color.White;
+        spritebatchDrawer.rotation = 0;
+        spritebatchDrawer.CenterOrigin();
+        spritebatchDrawer.scale = Vector2.One;
+        return spritebatchDrawer;
+    }
 }

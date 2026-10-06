@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Core;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -50,6 +51,40 @@ namespace Stellamod.Common.SummonerSystem
             if (isBellMinion)
                 return false;
             return base.CanUseItem(item, player);
+        }
+
+        public override bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            if (isBellMinion)
+            {
+                var scrollDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.SummonerSystem.SongScroll.Asset, Main.screenPosition + position);
+                scrollDrawer.color = drawColor;
+                scrollDrawer.worldPosition += new Vector2(-8);
+                spriteBatch.Draw(scrollDrawer);
+
+                var drawer = SpritebatchDrawer.FromItemInUI(item);
+                drawer.worldPosition = Main.screenPosition + position;
+                drawer.color = drawColor;
+                drawer.color *= ExtraMath.Osc(0.5f, 1f, speed: 2, item.type);
+                drawer.sourceRect = frame;
+                drawer.CenterOrigin();
+                drawer.scale = Vector2.One * scale;
+                spriteBatch.Draw(drawer);
+
+                var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Main.screenPosition + position);
+                glowDrawer.color = Color.SkyBlue;
+                glowDrawer.color.A = 0;
+                glowDrawer.color *= ExtraMath.Osc(0.45f, 0.55f, speed: 2, item.type) * 0.4f;
+                glowDrawer.scale *= 0.1f;
+                spriteBatch.Draw(glowDrawer);
+
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
