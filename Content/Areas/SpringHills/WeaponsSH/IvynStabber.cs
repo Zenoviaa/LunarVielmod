@@ -1,11 +1,16 @@
 ﻿using Stellamod.Common;
+using Stellamod.Common.Shaders;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Astar;
 using Stellamod.Core.Bases;
+using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Items;
+using System;
+using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
@@ -30,6 +35,17 @@ public class SongofIvyn : ModItem
 
 public class IvynStabber : AbstractBellSummon
 {
+    int _targetNpc;
+    NPC Target
+    {
+        get
+        {
+            if (_targetNpc == -1)
+                return Main.npc[0];
+            return Main.npc[_targetNpc];
+        }
+    }
+
     Pathfinder _pathfinder;
     enum AIState : byte
     {
@@ -53,10 +69,24 @@ public class IvynStabber : AbstractBellSummon
     }
     ref float AttackCycle => ref Projectile.ai[2];
     float Gravity => 0.2f;
+    float MaxJumpSpeed => 7;
+    float RunSpeed => 4;
+    float JumpTime => 25;
+  
+    public override string Texture => TextureRegistry.EmptyTexture;
+
+    Vector2 _targetOldPos;
+
+    const float REPATH_DISTANCE = 32 * 32;
+    const float JUMP_RANGE = 128 * 128;
+    const string ANIM_IDLE = "Idle";
+    const string ANIM_RUN = "Run";
+    const string ANIM_JUMPFRAME = "Jumpframe";
+    const string ANIM_STABFRAME = "Stabframe";
     public override void SetStaticDefaults()
     {
-        Main.projFrames[Projectile.type] = 1;
         Projectile.StaticDefaultToMinionProjectile();
+        ProjectileID.Sets.UsesAseprite[Type] = true;
     }
 
     public override void SetDefaults()
@@ -64,9 +94,11 @@ public class IvynStabber : AbstractBellSummon
         base.SetDefaults();
         _pathfinder = new();
         Projectile.DefaultToMinionProjectile();
-        Projectile.WidthAndHeight = 16;
+        Projectile.WidthAndHeight = 32;
         Projectile.LocalPiercingImmunityTime = 20;
         Projectile.tileCollide = true;
+        Projectile.friendly = true;
+  
     }
 
     void SwitchState(AIState state)
@@ -74,11 +106,38 @@ public class IvynStabber : AbstractBellSummon
         Timer = 0;
         State = state;
         AttackCycle = 0;
+        Projectile.netUpdate = true;
+    }
+
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.Write(_targetNpc);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _targetNpc = reader.ReadInt32();
+    }
+
+    public override bool MinionContactDamage()
+    {
+        return State == AIState.JumpToTarget;
+    }
+
+    void SearchForNewTarget()
+    {
+        _targetNpc = -1;
+        var closestEnemy = MovementUtilities.TargetClosestEnemy(Projectile.Center, 1024);
+        if (closestEnemy == null)
+            return;
+        _targetNpc = closestEnemy.whoAmI;
     }
 
     public override void AI()
     {
         base.AI();
+
         switch (State)
         {
             case AIState.Idle:
@@ -92,26 +151,37 @@ public class IvynStabber : AbstractBellSummon
                 break;
             case AIState.JumpToTarget:
                 AI_JumpToTarget();
+      
                 break;
             case AIState.FlyHome:
                 AI_FlyHome();
                 break;
         }
-       // Projectile.velocity.Y += Gravity;
+        Projectile.velocity.Y += Gravity;
         Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.velocity.X * 0.02f, 0.1f);
+        this.AseAnimator.DrawOrigin = new Vector2(15, 36);
+        this.AseAnimator.Update();
     }
 
+    void ChaseTargetIfOneFound()
+    {
+        SearchForNewTarget();
+        if(_targetNpc != -1)
+        {
+            SwitchState(AIState.FindTarget);
+        }
+    }
 
     void AI_Idle()
     {
         Timer++;
         Projectile.velocity.X *= 0.96f;
+        this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
+        ChaseTargetIfOneFound();
     }
 
-    void AI_GoHome()
+    void FlyingPathfinding()
     {
-        //alright
-        Timer++;
         if (Timer % 30 == 0)
             _pathfinder.NewPath(Projectile.Center, Owner.Center, 50);
         if (_pathfinder.currentNode != Vector2.Zero)
@@ -132,7 +202,8 @@ public class IvynStabber : AbstractBellSummon
                 _pathfinder.currentNode = Vector2.Zero;
             }
 
-            if(Projectile.getRect().Contains(_pathfinder.currentNode.ToPoint()) || Collision.CanHitLine(Projectile.position, 1, 1, _pathfinder.nextNode, 1, 1))
+            if (Projectile.getRect().Contains(_pathfinder.currentNode.ToPoint()) ||
+                Collision.CanHitLine(Projectile.position, 1, 1, _pathfinder.nextNode, 1, 1))
             {
                 _pathfinder.Pop();
             }
@@ -143,14 +214,125 @@ public class IvynStabber : AbstractBellSummon
         }
     }
 
+    bool IsGrounded()
+    {
+        var tilePointBelow = Projectile.Bottom.ToTileCoordinates();
+        var tileBelow = Main.tile[tilePointBelow];
+        return WorldGen.SolidOrSlopedTile(tileBelow);
+    }
+
+    void PathfindWalkTo(Vector2 destination)
+    {
+        //Everytime the target moves, a new path should be re calculated
+        if (Vector2.DistanceSquared(_targetOldPos, destination) > REPATH_DISTANCE)
+        {
+            _targetOldPos = destination;
+            var startPost = TileUtilities.FallToSolidTile(Projectile.Center);
+            startPost.Y -= 16;
+            _pathfinder.NewPath(destination, startPost, 50);
+        }
+
+        if (_pathfinder.currentNode != Vector2.Zero)
+        {
+            //We can make the assumption that whatever node we're moving too is VERY close to our actor
+            //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
+            //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
+            var targetRectangle = DrawUtilities.CenterRectangle(_pathfinder.currentNode, 16, 16);
+            var myRectangle = Projectile.getRect();
+
+            //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
+            myRectangle = myRectangle.CenterPad(4);
+            if (myRectangle.Intersects(targetRectangle))
+            {
+                _pathfinder.Pop();
+            }
+
+            //Since this is a grounded entity, we can't just directly move towards the point we wish to reach
+            //First we'll try to reach the target destination on the X axis, and once the X axis has been satisfied, we'll try to reach it on the y Axis
+            //If the y axis is above, then we'll jump
+            var diffX = (_pathfinder.currentNode.X - Projectile.Center.X);
+            var distX = MathF.Abs(diffX);
+            if(distX <= Projectile.width)
+            {
+                var diffY = (_pathfinder.currentNode.Y - Projectile.Center.Y);
+                var distY = MathF.Abs(diffY);
+                if(diffY < 0 && distY > myRectangle.Height && IsGrounded())
+                {
+                    var maxSpeed = MathF.Min(MaxJumpSpeed, distY / 8);
+                    Projectile.velocity.Y = -maxSpeed;
+                }
+            }
+           
+            var dirX = MathF.Sign(diffX);
+            var targetXVelocity = dirX * RunSpeed;
+            Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, targetXVelocity, 0.1f);
+            Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
+        }
+        else if (_pathfinder.path != null && _pathfinder.path.Count > 0)
+        {
+            _pathfinder.Pop();
+        }
+        Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
+    }
+
+    void HandleWalkingAnimation()
+    {
+        if (!IsGrounded())
+        {
+            this.AseAnimator.PlayAnimation(ANIM_JUMPFRAME, AnimationParams.Default);
+        }
+        else
+        {
+            this.AseAnimator.PlayAnimation(ANIM_RUN, AnimationParams.Default);
+        }
+    }
+
+    void AI_GoHome()
+    {
+        //alright
+        Timer++;
+        PathfindWalkTo(Owner.Center);
+        HandleWalkingAnimation();
+        ChaseTargetIfOneFound();
+        var distSqr = Vector2.Distance(Projectile.Center, Owner.Center);
+        if(distSqr < 96 * 96)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+
+
     void AI_FindTarget()
     {
-
+        Timer++;
+        PathfindWalkTo(Target.Center);
+        HandleWalkingAnimation();
+        var distSqr = Vector2.DistanceSquared(Projectile.Center, Target.Center);
+        if(distSqr <= JUMP_RANGE)
+        {
+            SwitchState(AIState.JumpToTarget);
+        }
     }
 
     void AI_JumpToTarget()
     {
+        Timer++;
+        if(AttackCycle == 0 && IsGrounded())
+        {
+            var jumpDir = (Target.Center - Projectile.Center);
+            jumpDir = jumpDir.SafeNormalize(Vector2.Zero);
+            jumpDir *= 8;
+            Projectile.velocity = jumpDir;
+         //   MovementUtilities.JumpTowards(ref Projectile.velocity, Projectile.Center, Target.Center, new Vector2(4, 16));
+            AttackCycle++;
+        }
 
+        this.AseAnimator.PlayAnimation(ANIM_STABFRAME, AnimationParams.Default);
+
+        if (Timer >= JumpTime && IsGrounded())
+        {
+            SwitchState(AIState.Idle);
+        }
     }
 
     void AI_FlyHome()
@@ -158,21 +340,12 @@ public class IvynStabber : AbstractBellSummon
 
     }
 
-
-    
     public override void DrawSpectral_Inner(SpriteBatch spriteBatch, Color drawColor)
     {
-        var drawer = Projectile.Drawer;
-        drawer.color = drawColor;
+        var drawer = Projectile.GetAnimatorDrawInfo(drawColor);
+       
         spriteBatch.Draw(drawer);
-        if (_pathfinder.path == null)
-            return;
 
-        foreach(var pos in _pathfinder.path)
-        {
-            var drawer2 = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, pos);
-            spriteBatch.Draw(drawer2);
-        }
     }
     
     public override void OnKill(int timeLeft)

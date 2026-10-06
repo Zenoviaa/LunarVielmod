@@ -1,79 +1,64 @@
-﻿sampler uImage0 : register(s0);
-sampler uImage1 : register(s1);
-sampler uImage2 : register(s2);
-sampler uImage3 : register(s3);
-float3 uColor;
-float3 uSecondaryColor;
-float2 uScreenResolution;
-float2 uScreenPosition;
-float2 uTargetPosition;
-float2 uDirection;
-float uOpacity;
-float uTime;
-float uIntensity;
-float uProgress;
-float2 uImageSize1;
-float2 uImageSize2;
-float2 uImageSize3;
-float2 uImageOffset;
-float uSaturation;
-float4 uSourceRect;
-float2 uZoom;
-
-//Vars
+﻿sampler spriteSampler : register(s0);
+sampler noiseSampler : register(s1);
 float time;
-float2 tiling;
-float3 innerColor;
-float3 outerColor;
-float distortion;
-
-texture noiseTexture;
-sampler2D noiseTex = sampler_state
-{
-    texture = <noiseTexture>;
-    magfilter = LINEAR;
-    minfilter = LINEAR;
-    mipfilter = LINEAR;
-    AddressU = wrap;
-    AddressV = wrap;
-};
-
-texture distortionTexture;
-sampler2D distortionTex = sampler_state
-{
-    texture = <distortionTexture>;
-    magfilter = LINEAR;
-    minfilter = LINEAR;
-    mipfilter = LINEAR;
-    AddressU = wrap;
-    AddressV = wrap;
-};
-
-float2 DistortCoordinates(float2 coords)
-{
-    float n = tex2D(distortionTex, coords + float2(time * -0.1, 0.0));
-    float2 distortedCoords = coords;
-    distortedCoords.y += lerp(-1.0, 1.0, n) * distortion;
-    distortedCoords.y = saturate(distortedCoords.y);
-    return distortedCoords;
-}
+float distortionStrength;
+float2 texelSize;
+float2 noiseTexelSize;
+float2 screenOffset;
 
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
-    //All we have to do is sample the white to black of the texture, using that as an interpolant for the colors
-    //Then using the time we can oscillate and add some glow with power?
-    float2 distortedCoords = DistortCoordinates(coords);
+    float2 noiseCoords2 = coords + float2(time * 0.025, time * 0.05);
+    noiseCoords2 += screenOffset;
+    noiseCoords2 = frac(noiseCoords2);
+    float noise2 = tex2D(noiseSampler, noiseCoords2).r;
+    noise2 *= 0.2;
+    
+    float2 noiseCoords = coords + float2(time * -0.05, time * -0.025);
+    noiseCoords += screenOffset;
+    noiseCoords = frac(noiseCoords);
+    float noise = tex2D(noiseSampler, noiseCoords).r;
+    
+    //Create distortions in the sprite
+    float2 spriteSize = float2(1.0, 1.0) / texelSize;
+    float2 distortionOffset = float2(0.0, distortionStrength * noise);
+    distortionOffset *= spriteSize * noiseTexelSize;
+    
+    //Create distortions in the color
+    float2 spriteCoords = coords + distortionOffset;
+    float4 spriteColor = tex2D(spriteSampler, spriteCoords);
+    spriteColor += noise2 * spriteColor.a;
+   
+    //Flicker brightly
+    float brightness = sin(time * 3.0) * 0.5 + 0.5;
+    brightness = lerp(brightness, 0.75, 1.7);
+    spriteColor *= brightness;
+    spriteColor.gb += spriteColor.a * 0.2;
+    spriteColor.g *= 0.8;
+    spriteColor.b *= 1.2;
+    
+    if (spriteColor.a <= 0.0)
+    {
+        for (int i = -1.0; i <= 1.0; i++)
+        {
+            for (int j = -1.0; j <= 1.0; j++)
+            {
+                float2 offset = float2(i, j);
+                offset *= texelSize * 2.0;
+                float4 col = tex2D(spriteSampler, coords + distortionOffset+ offset);
+                if (col.a > 0.0)
+                {
+                    spriteColor.rgb += 1.0 * sin(time * 4.0) * 0.5 + 0.5;
+                    spriteColor.rgb += 0.3;
+                }
 
-    float n1 = tex2D(noiseTex, (distortedCoords + float2(0.0, time * -0.025)) * tiling);
-    float n2 = tex2D(noiseTex, (distortedCoords + float2(0.0, time * -0.04)) * tiling);
-    float noise = saturate(n1 + n2);
-    float3 fireColor = lerp(outerColor, innerColor, noise);
+            }
 
-    float4 texColor = tex2D(uImage0, coords);
-    float4 trailColor1 = float4(fireColor, 1.0) * sampleColor;
-    float4 finalColor = lerp(texColor, trailColor1, 0.5) * texColor.a;
-    finalColor.a = texColor.a;
-    return finalColor * sampleColor.a;
+        }
+    }
+
+        return spriteColor * sampleColor;
+
 }
 
 technique SpriteDrawing

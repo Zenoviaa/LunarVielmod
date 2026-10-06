@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,8 +12,10 @@ public enum DebuffFlags
     Burning_Serpent = 1
 }
 
+
 public class ProjectileSets : ModSystem
 {
+    public static bool[] UsesAseprite;
     public static bool[] ResistedByFlamecrestShield;
     public static bool[] ResetBossMultihitDamageFalloff;
     public static bool[] BossMultihitDamageFalloff;
@@ -24,12 +27,18 @@ public class ProjectileSets : ModSystem
         ResetBossMultihitDamageFalloff = ProjectileID.Sets.Factory.CreateBoolSet(false);
         BossMultihitDamageFalloff = ProjectileID.Sets.Factory.CreateBoolSet(false);
         CommonDebuffs = ProjectileID.Sets.Factory.CreateCustomSet<DebuffFlags>(DebuffFlags.None);
+        UsesAseprite = ProjectileID.Sets.Factory.CreateBoolSet(false);
     }
 }
 
 
 public static class ProjectileSetExtensions
 {
+    extension(ProjectileID.Sets)
+    {
+        public static bool[] UsesAseprite => ProjectileSets.UsesAseprite;
+    }
+
     public static void AddCommonDebuff(this ModProjectile proj, DebuffFlags flags)
     {
         ProjectileSets.CommonDebuffs[proj.Type] |= flags;

@@ -1,7 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Terraria;
 
 namespace Stellamod.Core.Astar;
@@ -18,7 +16,14 @@ public class Pathfinder
     public void NewPath(Vector2 startWorld, Vector2 endWorld, int tileSearchRange = 15, int airPadding = 0) => NewPath(new SearchJob(startWorld, endWorld, tileSearchRange, airPadding));
     public void NewPath(SearchJob searchJob)
     {
-        path = Astar.Search(searchJob);
+        var result = Astar.Search(searchJob);
+      
+        path.Clear();
+        if (result == null)
+            return;
+
+        foreach (var node in result)
+            path.Push(node);
         if (path != null && path.Count > 0)
         {
             Pop();
@@ -36,6 +41,19 @@ public class Pathfinder
         currentNode = path.Pop();
         if (path.Count > 0)
             nextNode = path.Peek();
+    }
+
+    public void DebugDrawPath(SpriteBatch spriteBatch, Color color)
+    {
+        if (path == null || path.Count <= 0)
+            return;
+
+        foreach (var pos in path)
+        {
+            var drawer2 = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, pos);
+            drawer2.color = color;
+            spriteBatch.Draw(drawer2);
+        }
     }
 }
 
@@ -111,7 +129,7 @@ public class Astar
         }
         if (NextToGroundTile())
         {
-            weight += 100;
+            weight -= 300;
         }
 
         return weight;
@@ -160,7 +178,7 @@ public class Astar
         {
             for (int j = minTile.Y; j < maxTile.Y; j++)
             {
-                ref Cell c =ref  _cells[i, j];
+                ref Cell c = ref _cells[i, j];
                 c.f = float.MaxValue;
                 c.g = float.MaxValue;
                 c.h = float.MaxValue;
@@ -170,7 +188,7 @@ public class Astar
             }
         }
 
-      
+
         //Initialize starting node
         int x = start.X;
         int y = start.Y;
@@ -226,7 +244,7 @@ public class Astar
                         float hNew = Heuristic(newX, newY, end);
                         hNew += TileWeight(newX, newY);
                         float fNew = gNew + hNew;
-                     
+
 
                         if (_cells[newX, newY].f == float.MaxValue || _cells[newX, newY].f > fNew)
                         {

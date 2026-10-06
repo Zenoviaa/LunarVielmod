@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.ProjectileHelpers;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -10,6 +11,7 @@ namespace Stellamod.Assets.ContentReader.Aseprite;
 public static class AsepriteAssets
 {
     public static Asset<AseSprite>[] Npc;
+    public static Asset<AseSprite>[] Projectile;
 }
 
 
@@ -34,7 +36,19 @@ internal class AsepriteAssetLoader : ModSystem
                 AsepriteAssets.Npc[i] = ModContent.Request<AseSprite>(texture);
             }
         }
+
+        AsepriteAssets.Projectile = new Asset<AseSprite>[ProjectileID.Sets.UsesAseprite.Length];
+        for (int i = 0; i < AsepriteAssets.Projectile.Length; i++)
+        {
+            if (ProjectileID.Sets.UsesAseprite[i])
+            {
+                var modProj = ModContent.GetModProjectile(i);
+                string texture = $"{modProj.GetType().Namespace}.{modProj.Name}".Replace('.', '/');
+                AsepriteAssets.Projectile[i] = ModContent.Request<AseSprite>(texture);
+            }
+        }
     }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -54,6 +68,13 @@ internal class AsepriteAssetLoader : ModSystem
             }
             AsepriteAssets.Npc = null;
         }
-
+        if (AsepriteAssets.Npc != null)
+        {
+            for (int i = 0; i < AsepriteAssets.Projectile.Length; i++)
+            {
+                AsepriteAssets.Projectile[i]?.Dispose();
+            }
+            AsepriteAssets.Projectile = null;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Shaders;
+using Stellamod.Core;
 using Stellamod.Core.Rendering.RTs;
 using System.Collections.Generic;
 using Terraria;
@@ -64,10 +65,27 @@ public class SpectralSummonDrawSystem : ModSystem
             Main.spriteBatch.End();
         }
 
+        var pass = AssetReferences.Effects.CrystalShaders.Spectral.CreatePixelPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.distortionStrength = 0.002f;
+        var noiseTex = AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value;
+        pass.Parameters.noiseSampler = new()
+        {
+            Sampler = SamplerState.PointWrap,
+            Texture  = noiseTex
+        };
+        pass.Parameters.noiseTexelSize = noiseTex.GetTexelSize();
+        pass.Parameters.texelSize = screenTarget.Target.GetTexelSize();
+        pass.Parameters.screenOffset = Main.screenPosition;
+        pass.Apply();
 
-        var shader = SpectralShader.Instance;
-        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
-            shader.Effect);
+        Main.spriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            BlendState.AlphaBlend, 
+            SamplerState.PointClamp, 
+            DepthStencilState.None, 
+            Main.Rasterizer,
+            pass.Shader);
         Main.spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White * 0.87f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         Main.spriteBatch.End();
     }

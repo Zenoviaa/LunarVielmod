@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Animations;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.ProjectileHelpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +11,19 @@ namespace Stellamod.Assets.ContentReader.Aseprite;
 public static class AnimationExtensions
 {
     public static readonly AseAnimator DummyAnimator = new();
+
+    extension(ModProjectile modProjectile)
+    {
+        public AseAnimator AseAnimator
+        {
+            get
+            {
+                if (modProjectile.Projectile.TryGetGlobalProjectile<AnimatorGlobalProjectile>(out var animator))
+                    return animator.Animator;
+                return DummyAnimator;
+            }
+        }
+    }
 
     extension(ModNPC modNpc)
     {
@@ -23,29 +37,52 @@ public static class AnimationExtensions
             }
         }
     }
+
     public static AseAnimator GetAnimator(this ModNPC modNpc)
     {
         return modNpc.NPC.GetAnimator();
     }
+
     public static AseAnimator GetAnimator(this NPC npc)
     {
         if (npc.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animator))
             return animator.Animator;
         return DummyAnimator;
     }
+    public static AseAnimator GetAnimator(this Projectile npc)
+    {
+        if (npc.TryGetGlobalProjectile<AnimatorGlobalProjectile>(out var animator))
+            return animator.Animator;
+        return DummyAnimator;
+    }
+
     public static void SetDrawOrigin(this ModNPC modNpc, Vector2 drawOrigin)
     {
         ref DrawEffects drawEffects = ref modNpc.GetAnimator().drawEffects;
         drawEffects.DrawOrigin = drawOrigin;
     }
-    public static void SetScale(this ModNPC modNpc, Vector2 scale)
-    {
-        ref DrawEffects drawEffects = ref modNpc.GetAnimator().drawEffects;
-        drawEffects.Scale = scale;
-    }
+
     public static void SetSpriteEffects(this ModNPC modNpc, SpriteEffects spriteEffects)
     {
         var Animator = modNpc.GetAnimator().spriteEffects = spriteEffects;
+    }
+    public static SpritebatchDrawer GetAnimatorDrawInfo(this Projectile npc, Color drawColor)
+    {
+        var Animator = npc.GetAnimator();
+        SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
+        drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        drawer.spriteEffects |= Animator.spriteEffects;
+        drawer.rotation = npc.rotation;
+        drawer.color = drawColor;
+        if (npc.spriteDirection == -1)
+        {
+            drawer.drawOrigin.X = drawer.sourceRect!.Value.Width - drawer.drawOrigin.X;
+        }
+
+        //Offset it even with the draw origin so the sprite is still in the center of the hitbox
+        Vector2 offset = drawer.drawOrigin - Animator.centerDrawOrigin;
+        drawer.worldPosition += offset;
+        return drawer;
     }
     public static SpritebatchDrawer GetAnimatorDrawInfo(this NPC npc, Color drawColor)
     {
@@ -84,6 +121,7 @@ public static class AnimationExtensions
         drawer.worldPosition += offset;
         spriteBatch.Draw(drawer);
     }
+
     public static void DrawAnimator(this NPC npc, SpriteBatch spriteBatch, Color drawColor, Vector2 position)
     {
         var Animator = npc.GetAnimator();
@@ -104,6 +142,29 @@ public static class AnimationExtensions
     }
 }
 
+public class AnimatorGlobalProjectile : GlobalProjectile
+{
+    public override bool InstancePerEntity => true;
+
+    public AseAnimator Animator;
+    public override void SetDefaults(Projectile entity)
+    {
+        base.SetDefaults(entity);
+        Animator = new AseAnimator();
+        if (AsepriteAssets.Projectile == null)
+            return;
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        Animator.SetSpriteAsset(AsepriteAssets.Projectile[entity.type]);
+    }
+
+    public override bool AppliesToEntity(Projectile entity, bool lateInstantiation)
+    {
+        if (ProjectileID.Sets.UsesAseprite[entity.type])
+            return true && lateInstantiation;
+        return false;
+    }
+}
 public class AnimatorGlobalNPC : GlobalNPC
 {
     public override bool InstancePerEntity => true;
@@ -168,6 +229,13 @@ public class AseAnimator
     public DrawEffects drawEffects;
     public SpriteEffects spriteEffects;
     public Vector2 centerDrawOrigin;
+
+    public Vector2? DrawOrigin
+    {
+        set => drawEffects.DrawOrigin = value;
+        get => drawEffects.DrawOrigin;
+    }
+
     public void SetSpriteAsset(Asset<AseSprite> sprite)
     {
         Sprite = sprite;

@@ -15,8 +15,65 @@ public struct SteinUppercutParameters
     public float ySize;
 }
 
-public class MovementUtilities
+/// <summary>
+///  A collection of common functions for implementing projectiles and npcs
+/// </summary>
+public static class MovementUtilities
 {
+    /// <summary>
+    /// Returns the nearest enemy to the current position
+    /// </summary>
+    /// <param name="currentPosition"></param>
+    /// <param name="searchRange"></param>
+    /// <returns></returns>
+    public static NPC TargetClosestEnemy(Vector2 currentPosition, float searchRange)
+    {
+        NPC closest = null;
+        var closestDistance = 9999999F;
+        var sqrSearchDist = searchRange * searchRange;
+        foreach(var npc in Main.ActiveNPCs)
+        {
+            if (npc.friendly)
+                continue;
+            if (!npc.CanBeChasedBy())
+            {
+                continue;
+            }
+
+            var sqrDist = Vector2.DistanceSquared(currentPosition, npc.Center);
+            if (sqrDist > sqrSearchDist)
+                continue;
+
+            if(sqrDist < closestDistance)
+            {
+                closest = npc;
+                closestDistance = sqrDist;
+            }
+        }
+        return closest;
+    }
+
+    public static void JumpTowards(ref Vector2 velocity, Vector2 currentPosition, Vector2 targetPosition, Vector2 jumpSpeed)
+    {
+        var dirToTarget = (targetPosition - currentPosition).SafeNormalize(Vector2.Zero);
+        if(dirToTarget.Y < 0)
+        {
+            var yDiff = (targetPosition.Y - currentPosition.Y); 
+            var ySpeed = MathF.Min(-jumpSpeed.Y, yDiff);
+            velocity.Y = ySpeed;
+
+            var xDiff = (targetPosition.X - currentPosition.X);
+            var xDir = MathF.Sign(xDiff);
+            velocity.X = xDir * jumpSpeed.X;
+        }
+        else
+        {
+            //goober is below, what are we gonna jump towards
+            //just do a tiny hop aybe?
+            //unsure, doing nothing might be the best bet here
+        }
+    }
+
 
     public static void FaceMovementVelocity(NPC npc)
     {

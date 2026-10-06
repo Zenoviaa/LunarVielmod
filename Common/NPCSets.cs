@@ -62,6 +62,7 @@ namespace Stellamod.Core.NPCHelpers
         /// When set to true, attempts to load an aseprite asset for the associated NPC
         /// </summary>
         public static bool[] UseAseprite;
+
     }
 
 }
