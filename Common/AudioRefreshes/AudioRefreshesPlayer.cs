@@ -16,7 +16,7 @@ public class AudioRefreshesPlayer : ModPlayer
         var standingTile = Main.tile[pointBelow];
 
         //We're actually walking on a snow tile
-        if (!TileID.Sets.Snow[standingTile.type])
+        if (!TileID.Sets.Ices[standingTile.type] && !TileID.Sets.IcesSlush[standingTile.type])
             return false;
 
         //The tile is active

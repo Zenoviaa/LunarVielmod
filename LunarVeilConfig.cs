@@ -56,8 +56,6 @@ public class LunarVeilClientConfig : ModConfig
     [DefaultValue(false)]
     public bool FocusMode;
 
-    [DefaultValue(true)]
-    public bool AudioRefreshes;
 
     [DefaultValue(true)]
     public bool DramaticEffects;
@@ -101,6 +99,9 @@ public class LunarVeilClientConfig : ModConfig
     public bool OutlineOtherPlayers;
 
     [Header("Effects")]
+    [DefaultValue(true)]
+    public bool Overhaul;
+
     [DefaultValue(true)]
     public bool ShakeToggle;
 

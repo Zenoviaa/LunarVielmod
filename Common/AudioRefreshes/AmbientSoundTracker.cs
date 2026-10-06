@@ -103,7 +103,7 @@ public class AmbientSoundTracker : ModSystem
 
     public void Update()
     {
-        Enabled = ModContent.GetInstance<LunarVeilClientConfig>().AudioRefreshes;
+        Enabled = ModContent.GetInstance<LunarVeilClientConfig>().Overhaul;
         for(var i = 0; i < _ambientSounds.Length; i++)
         {
             ref var ambientSound = ref _ambientSounds[i];

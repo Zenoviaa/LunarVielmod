@@ -12250,3 +12250,8 @@ VerliaHatMoon: {
 		I know you wanna wear it...
 		'''
 }
+
+SongofIvyn: {
+	DisplayName: Songof Ivyn
+	Tooltip: ""
+}
