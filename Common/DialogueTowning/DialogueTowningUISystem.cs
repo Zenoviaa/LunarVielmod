@@ -137,9 +137,10 @@ namespace Stellamod.Common.DialogueTowning
             OpenUI();
             SoundStyle? talkingSound = SoundID.Item1;
             dialogueTowningUIState.dialogueTownUI.ResetText();
-            dialogueTowningUIState.dialogueTownUI.LocalizedText = dialogue.GetLine(lineNumber);
             dialogue.GetTalkingParameters(ref parameters, lineNumber);
             dialogueTowningUIState.dialogueTownUI.TalkingParameters = parameters;
+            dialogueTowningUIState.dialogueTownUI.LocalizedText = dialogue.GetLine(lineNumber);
+
             //   dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
         }
 

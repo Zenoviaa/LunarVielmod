@@ -239,3 +239,8 @@ AudioRefreshes: {
 	Label: Audio Refreshes
 	Tooltip: ""
 }
+
+Overhaul: {
+	Label: Overhaul
+	Tooltip: ""
+}
