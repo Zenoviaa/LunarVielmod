@@ -18,7 +18,7 @@ public class ExtraVanillaSounds : ModSystem
     {
         orig(inv, context, slot);
         bool flag = Main.mouseLeftRelease && Main.mouseLeft;
-        if (inv[slot].vanity && flag)
+        if ((inv[slot].vanity || inv[slot].wornArmor) && flag)
         {
             AudioRefreshesHelper.PlayEquipVanitySound();
         }
