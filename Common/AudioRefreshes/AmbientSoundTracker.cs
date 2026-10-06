@@ -36,7 +36,7 @@ public class AmbientSoundTracker : ModSystem
 
         RegisterAmbientSound(new(
             AssetReferences.Assets.Sounds.RefreshNAmbience.ForestSpringHillAmbience.Asset with { Volume = 0.33f }, 
-            () => Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneSpringHills || Main.LocalPlayer.ZonePurity,
+            () => (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneSpringHills || Main.LocalPlayer.ZonePurity) && Main.dayTime,
             VolumeOsc: true));
        
         RegisterAmbientSound(new(
