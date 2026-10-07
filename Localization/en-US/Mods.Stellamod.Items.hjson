@@ -12259,5 +12259,12 @@ IvynslicingNecronomicon: {
 
 WitchsCross: {
 	DisplayName: Witch's Cross
-	Tooltip: "Grants +5% damage for every cauldron material that's been completely discovered!"
+	Tooltip: Grants +5% damage for every cauldron material that's been completely discovered!
+}
+
+FlaskuserBlade: {
+	BasicSlash: "Swings and thrusts forward a bit in its swings, as the end of the combo throw up a potion that heals you!"
+	StaminaSlash: Uses your Xixian Flask with no penalty!
+	DisplayName: Flaskuser Blade
+	Tooltip: ""
 }

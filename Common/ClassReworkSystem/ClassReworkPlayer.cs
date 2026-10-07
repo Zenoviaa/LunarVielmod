@@ -216,6 +216,9 @@ public class ClassReworkPlayer : ModPlayer
     public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
     {
         base.ModifyWeaponDamage(item, ref damage);
+        if (playerClass == PlayerClass.God || playerClass == PlayerClass.Omni)
+            return;
+
         if(item.DamageType != damageClass)
         {
             damage *= 0.05f;

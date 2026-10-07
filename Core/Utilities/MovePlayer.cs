@@ -12,8 +12,21 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Utilities;
 
+public static class MovePlayerExtensions
+{
+    extension(Player p)
+    {
+        public Vector2? ImpulseVelocity
+        {
+            get => p.GetModPlayer<MovePlayer>().impulseVelocity;
+            set => p.GetModPlayer<MovePlayer>().impulseVelocity = value;
+        }
+    }
+}
+
 public class MovePlayer : ModPlayer
 {
+    public Vector2? impulseVelocity;
     public Vector2? targetSuckPosition;
     public Vector2? overrideVelocity;
     public Vector2? throwVelocity;
@@ -64,6 +77,12 @@ public class MovePlayer : ModPlayer
         {
             Player.velocity = overrideVelocity.Value;
             overrideVelocity = null;
+        }
+
+        if (impulseVelocity.HasValue)
+        {
+            Player.velocity = impulseVelocity.Value;
+            impulseVelocity = null;
         }
 
         if (throwVelocity.HasValue)

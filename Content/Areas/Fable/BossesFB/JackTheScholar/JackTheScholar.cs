@@ -263,7 +263,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
-                if (!NPC.HasValidTarget)
+                if (!NPC.HasValidTarget && State != AIState.Despawn)
                 {
                     SwitchState(AIState.Despawn);
                 }

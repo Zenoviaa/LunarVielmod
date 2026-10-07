@@ -10,6 +10,20 @@ namespace Stellamod.Core.Bases;
 public static class Swings
 {
 
+    /// <summary>
+    /// Thrusts and holds the sword up, this will not deal any damage.
+    /// </summary>
+    public struct HoldUpSwing : ISwordMovement
+    {
+        public float thrustDistance;
+        public SwordMovement CalculateSwordMovement(in SwingInput input)
+        {
+            var forwardOffsetStart = Vector2.Lerp(Vector2.Zero, Vector2.UnitX * thrustDistance, EasingFunction.OutCirc(input.uneasedLerpValue));
+            var forwardOffsetEnd = Vector2.Lerp(Vector2.UnitX * thrustDistance, Vector2.Zero, EasingFunction.InExpo(input.uneasedLerpValue));
+            var forwardOffset = Vector2.Lerp(forwardOffsetStart, forwardOffsetEnd, EasingFunction.InCirc(input.uneasedLerpValue));
+            return new(forwardOffset, input.uneasedLerpValue, false);
+        }
+    }
 
     public struct GroundSwipeSwing : ISwordMovement
     {

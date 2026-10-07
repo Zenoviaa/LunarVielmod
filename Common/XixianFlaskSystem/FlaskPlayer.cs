@@ -67,7 +67,7 @@ namespace Stellamod.Common.XixianFlaskSystem
             {
                 if (CanUseFlask())
                 {
-                    ProcEffects();
+                    DrinkXixianFlask();
                 }
             }
         }
@@ -128,13 +128,44 @@ namespace Stellamod.Common.XixianFlaskSystem
             return insoureCount;
 
         }
-        public void ProcEffects()
+        public int InsourceCount
+        {
+            get
+            {
+                var insources = GetInsources();
+                int insoureCount = 0;
+                for (int i = 0; i < maxInsourceCount && i < insources.Count; i++)
+                {
+                    insoureCount++;
+                }
+                return insoureCount;
+            }
+        }
+
+        /// <summary>
+        /// Drinks the xixian flask, applying cooldowns afterward. 
+        /// </summary>
+        public void DrinkXixianFlask()
+        {
+            ProcFlaskEffects();
+            float time = insourceTime;
+            ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
+            time *= (1f - statsPlayer.insourceTimeBonus);
+            time += insourceSecondsBonusPerInsource * InsourceCount;
+
+            Player.AddBuff(ModContent.BuffType<CannotUseFlask>(), insourceTime);
+            Player.AddBuff(BuffID.PotionSickness, insourceTime);
+            OnProc?.Invoke(Player);
+        }
+
+        /// <summary>
+        /// Triggers flask effects, this will NOT apply cooldowns.
+        /// </summary>
+        public void ProcFlaskEffects()
         {
             var insources = GetInsources();
-            int insoureCount = 0;
             for (int i = 0; i < maxInsourceCount && i < insources.Count; i++)
             {
-                insoureCount++;
                 var item = insources[i];
                 if (item.ModItem is InsourceItem myInsource)
                 {
@@ -142,8 +173,6 @@ namespace Stellamod.Common.XixianFlaskSystem
                     AddStack(item.type);
                 }
             }
-
-
             for (int i = 0; i < maxInsourceCount && i < insources.Count; i++)
             {
                 var item = insources[i];
@@ -152,20 +181,10 @@ namespace Stellamod.Common.XixianFlaskSystem
                     myInsource.UseInsource(this);
                 }
             }
-
-            float time = insourceTime;
-
-            ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
-            time *= (1f - statsPlayer.insourceTimeBonus);
-            time += insourceSecondsBonusPerInsource * insoureCount;
-
             SoundStyle xixianFlaskUseSound = SoundID.Item3;
             SoundEngine.PlaySound(xixianFlaskUseSound);
-            
-            Player.AddBuff(ModContent.BuffType<CannotUseFlask>(), insourceTime);
-            Player.AddBuff(BuffID.PotionSickness, insourceTime);
-            OnProc?.Invoke(Player);
         }
+
 
         public bool HasUnlocked(Item item)
         {
