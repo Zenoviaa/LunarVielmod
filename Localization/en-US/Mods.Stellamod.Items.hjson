@@ -10270,7 +10270,11 @@ ReturnRune: {
 
 HealthRune: {
 	DisplayName: Health Rune
-	Tooltip: Draw a triangle to heal up your summons up by 20%!
+	Tooltip:
+		'''
+		Draw a triangle to heal up your summons up by 50%!
+		Uses 3 stamina
+		'''
 }
 
 DamageRune: {
