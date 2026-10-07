@@ -38,7 +38,7 @@ namespace Stellamod.Common.SummonerSystem
             NPC.height = 32;
             NPC.damage = 1;
             NPC.defense = 0;
-            NPC.HitSound = SoundID.NPCHit16;
+          //  NPC.HitSound = SoundID.NPCHit16;
             NPC.friendly = true;
             NPC.aiStyle = -1;
             NPC.ShowNameOnHover = false;
@@ -46,6 +46,17 @@ namespace Stellamod.Common.SummonerSystem
 
         }
 
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit)
+        {
+            base.OnHitNPC(target, hit);
+       
+     
+        }
         public override void OnSpawn(IEntitySource source)
         {
             base.OnSpawn(source);
@@ -98,6 +109,7 @@ namespace Stellamod.Common.SummonerSystem
         public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
         {
             base.ModifyIncomingHit(ref modifiers);
+            modifiers.HideCombatText();
             BellPlayer bellPlayer = MyOwner.GetModPlayer<BellPlayer>();
             modifiers.FinalDamage *= bellPlayer.incomingDamageMultiplier;
         }
@@ -106,7 +118,8 @@ namespace Stellamod.Common.SummonerSystem
         {
             base.HitEffect(hit);
             Lifetime -= hit.SourceDamage;
-
+            var color = hit.Crit ? Color.SkyBlue : Color.LightSkyBlue;
+            CombatText.NewText(NPC.getRect(), Color.Lerp(color, Color.White, 0.25f) * 0.15f, hit.Damage, dramatic: hit.Crit);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

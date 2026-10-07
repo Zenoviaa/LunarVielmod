@@ -32,7 +32,7 @@ namespace Stellamod.Common.Players
                 {
                     CombatText.NewText(target.getRect(), Color.Lerp(Color.Red, Color.White, 0.25f), hit.Damage, dramatic: hit.Crit);
                 }
-                   
+
             }
         }
 
