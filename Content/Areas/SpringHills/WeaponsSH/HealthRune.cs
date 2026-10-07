@@ -8,6 +8,7 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,12 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             base.SetDefaults();
             Item.DefaultToRune(ModContent.ProjectileType<HealthRuneShaper>());
         }
+
+        public override bool CanShoot(Player player)
+        {
+            return base.CanShoot(player) && player.Stamina >= 3;
+        }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
@@ -108,6 +115,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void ApplyMagic(AbstractBellSummon minion)
         {
             minion.Heal();
+            Owner.UseStamina(3);
         }
 
 

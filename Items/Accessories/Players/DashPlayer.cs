@@ -116,6 +116,24 @@ namespace Stellamod.Items.Accessories.Players
             }
         }
     }
+    public static class StaminaPlayerExtensions
+    {
+        extension(Player p)
+        {
+            public int Stamina
+            {
+                get => p.GetModPlayer<DashPlayer>().DashCount;
+                set => p.GetModPlayer<DashPlayer>().DashCount = value;
+            }
+            public int MaxStamina
+            {
+                get => p.GetModPlayer<DashPlayer>().MaxDashCount;
+                set => p.GetModPlayer<DashPlayer>().MaxDashCount = value;
+            }
+            public void UseStamina(int stamina) => p.GetModPlayer<DashPlayer>().Consume(stamina);
+        }
+    }
+
     public class DashPlayer : ModPlayer
     {
         private bool _isImmune;
@@ -265,7 +283,12 @@ namespace Stellamod.Items.Accessories.Players
         public override void PreUpdateMovement()
         {
             // if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
-            if (Main.myPlayer == Player.whoAmI && CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0 && DashCount > extraStaminaCost)
+            if (Main.myPlayer == Player.whoAmI 
+                && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped)
+                && CanUseDash()
+                && DashDir != -1 
+                && DashDelay == 0 
+                && DashCount > extraStaminaCost)
             {
                 float dashVelocity = DashVelocity;
                 dashVelocity *= (1.0f + DashRegenerationBonus);
