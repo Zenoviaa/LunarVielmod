@@ -1,7 +1,10 @@
-﻿using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
+﻿using Stellamod.Common.ShockCircleSystem;
+using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
+using Stellamod.Core;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 
 namespace Stellamod.Content.Areas.Jungle.ZigguratraBoss;
 
@@ -14,8 +17,8 @@ file struct BeeAttack
 public partial class Zigguratra
 {
     float ReleaseTheBees_StartupTime => 30;
-    float ReleaseTheBees_WaveCount => 7;
-    float ReleaseTheBees_TimeBetweenWaves => 80;
+    float ReleaseTheBees_WaveCount => 5;
+    float ReleaseTheBees_TimeBetweenWaves => 41;
     float ReleaseTheBees_OutTime => 80;
     int ReleaseTheBees_LineLength => 15;
     float ReleaseTheBees_LineStartOffset => 384;
@@ -36,6 +39,11 @@ public partial class Zigguratra
                     NPC.StayGroundedAndRooted();
                     NPC.SpriteFaceTarget();
                     this.AseAnimator.PlayAnimation(ANIM_FLAPWINGSBEFORE, AnimationParams.Default);
+                    if(Timer % 30 == 0)
+                    {
+                        var sound = AssetReferences.Assets.Sounds.BeeBuzz.Asset with { PitchVariance = 0.5f };
+                        SoundEngine.PlaySound(sound, NPC.position);
+                    }
                     if(Timer >= ReleaseTheBees_FlapTime)
                     {
                         Timer = 0;
@@ -104,6 +112,7 @@ public partial class Zigguratra
                             bee.attackPosition = bee.spawnPosition + -offset * 2;
                         }
 
+                        ShockCircles.CreateQuickWhiteFlash(NPC.Center);
                         Array.Sort(bees, (x, y) => Vector2.Distance(y.spawnPosition, MyTarget.Center).CompareTo(Vector2.Distance(x.spawnPosition, MyTarget.Center)));
                         var ignoreStart = ReleaseTheBees_LineLength / 2;
                         ignoreStart += Main.rand.Next(-1, 1);
@@ -116,7 +125,8 @@ public partial class Zigguratra
                             ref var bee = ref bees[i];
                             var firer = ProjFirer.From<LittleBee>(NPC);
                             firer.damage = Damage_ReleaseTheBees;
-                            firer.velocity = -Vector2.UnitY * 18;
+                            firer.velocity = -Vector2.UnitY * 21;
+           
                             firer.ai2 = 0;
                             firer.knockback = 1;
 
