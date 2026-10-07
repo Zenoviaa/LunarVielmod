@@ -2133,3 +2133,5 @@ FlaskuserBladeSlash.DisplayName: Flaskuser Blade Slash
 FlaskuserBladeStaminaSlash.DisplayName: Flaskuser Blade Stamina Slash
 LittleFlask.DisplayName: Little Flask
 GunSlingThrow.DisplayName: Gun Sling Throw
+GrassySlingshotHeld.DisplayName: Grassy Slingshot Held
+SlingshotBall.DisplayName: Slingshot Ball

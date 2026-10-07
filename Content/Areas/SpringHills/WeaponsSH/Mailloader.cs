@@ -14,7 +14,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
-
 public class Mailloader : BaseGun
 {
     public override void SetDefaults()

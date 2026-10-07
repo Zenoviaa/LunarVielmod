@@ -12273,3 +12273,8 @@ GunSling: {
 	DisplayName: Gun Sling
 	Tooltip: Throws the gun after it runs out of ammo, and after it returns back to you it'll be fully reloaded!
 }
+
+GrassySlingshot: {
+	DisplayName: Grassy Slingshot
+	Tooltip: "Hold and release to fire a tiny ball that pierces through 10 points of defense"
+}
