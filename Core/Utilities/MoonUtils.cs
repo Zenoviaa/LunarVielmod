@@ -23,6 +23,28 @@ public struct SteinUppercutParameters
 public static class MoonUtils
 {
     const float REPATH_DISTANCE = 32 * 32;
+    public static Vector2 RayCast(Vector2 startPosition, Vector2 velocity, float maxBeamLength, int numSamplePoints = 3)
+    {
+        // By default, the hitscan interpolation starts at the Projectile's center.
+        // If the host Prism is fully charged, the interpolation starts at the Prism's center instead.
+        Vector2 samplingPoint = startPosition;
+
+        // Perform a laser scan to calculate the correct length of the beam.
+        // Alternatively, if you want the beam to ignore tiles, just set it to be the max beam length with the following line.
+        // return MaxBeamLength;
+        float[] laserScanResults = new float[numSamplePoints];
+
+
+        Vector2 direction = velocity.SafeNormalize(Vector2.Zero);
+        Collision.LaserScan(samplingPoint, direction, 0 * 1f, maxBeamLength, laserScanResults);
+        float averageLengthSample = 0f;
+        for (int i = 0; i < laserScanResults.Length; ++i)
+        {
+            averageLengthSample += laserScanResults[i];
+        }
+        averageLengthSample /= numSamplePoints;
+        return startPosition + direction * averageLengthSample;
+    }
 
     #region PathfindingAI
     public static void AIWalk_IvynStabber(Pathfinder pathfinder, Projectile entity, Vector2 destination, bool isGrounded, float runSpeed, float maxJumpSpeed, ref Vector2 targetOldPos)

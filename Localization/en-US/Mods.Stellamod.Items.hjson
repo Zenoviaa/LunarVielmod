@@ -12263,8 +12263,13 @@ WitchsCross: {
 }
 
 FlaskuserBlade: {
-	BasicSlash: "Swings and thrusts forward a bit in its swings, as the end of the combo throw up a potion that heals you!"
+	BasicSlash: Swings and thrusts forward a bit in its swings, as the end of the combo throw up a potion that heals you!
 	StaminaSlash: Uses your Xixian Flask with no penalty!
 	DisplayName: Flaskuser Blade
 	Tooltip: ""
+}
+
+GunSling: {
+	DisplayName: Gun Sling
+	Tooltip: Throws the gun after it runs out of ammo, and after it returns back to you it'll be fully reloaded!
 }

@@ -2,19 +2,11 @@
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.CommonMaterials;
 
 using Stellamod.Core.Particles;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -28,7 +20,7 @@ public class Mailloader : BaseGun
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.damage = 4;
+        Item.damage = 5;
         Item.DamageType = DamageClass.Ranged;
         Item.width = 40;
         Item.height = 40;
@@ -72,7 +64,7 @@ public class Mailloader : BaseGun
             type = ModContent.ProjectileType<Mailbomb>();
             damage *= 2;
         }
-    
+
         Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
         return false;
     }
@@ -121,7 +113,7 @@ public class Letterbomb : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             if (this.OwnedByLocalClient())
             {
@@ -130,18 +122,18 @@ public class Letterbomb : ModProjectile
             }
         }
 
-        if(Timer % 9 == 0)
+        if (Timer % 9 == 0)
         {
             Vector2 pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(32, 32);
-           var fx = FXUtil.GlowStretch(pos, -Projectile.velocity * 0.5f);
+            var fx = FXUtil.GlowStretch(pos, -Projectile.velocity * 0.5f);
             fx.VectorScale *= 0.24f;
             fx.OuterGlowColor = Color.OrangeRed;
         }
 
-        if(Timer % 15 == 0)
+        if (Timer % 15 == 0)
         {
-            LetterParticle.SpawnInAlphaLayer(Projectile.Center, Vector2.Zero, 
+            LetterParticle.SpawnInAlphaLayer(Projectile.Center, Vector2.Zero,
                 Scale: Main.rand.NextFloat(0.4f, 0.8f));
         }
 
@@ -158,13 +150,13 @@ public class Letterbomb : ModProjectile
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         Main.spriteBatch.Draw(sbDrawer);
         return false;
-    //    return base.PreDraw(ref lightColor);
+        //    return base.PreDraw(ref lightColor);
     }
 
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        for(float f = 0; f < Main.rand.Next(4, 8); f++)
+        for (float f = 0; f < Main.rand.Next(4, 8); f++)
         {
             Vector2 fireVelocity = -Vector2.UnitY;
             fireVelocity *= Main.rand.NextFloat(2f, 5f);
@@ -223,7 +215,7 @@ public class Mailboom : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
             hitSound.PitchVariance = 0.2f;
@@ -242,16 +234,18 @@ public class Mailboom : ModProjectile
             fx.OuterGlowColor = Color.Red;
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
 
-            for (float f = 0; f < 16; f++)
+            for (float f = 0; f < 12; f++)
             {
-               var dp = Particle<DustParticle>.Spawn(Projectile.Center, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(10, 15), Scale: Main.rand.NextFloat(0.5f, 1f));
+                var dp = Particle<DustParticle>.Spawn(Projectile.Center, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(10, 15), Scale: Main.rand.NextFloat(0.5f, 1f));
                 dp.innerColor = Color.Yellow;
                 dp.outerColor = Color.Red;
                 dp.noTileCollide = true;
                 dp.gravity = 0;
+                dp.dampening = 0.085f;
+                dp.fast = true;
             }
 
-            for(float f =0; f < 4; f++)
+            for (float f = 0; f < 4; f++)
             {
                 Vector2 pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(32, 32);
@@ -329,7 +323,7 @@ public class Mailboom : ModProjectile
     }
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
-        
+
         return base.OnTileCollide(oldVelocity);
     }
 }
@@ -356,7 +350,7 @@ public class Mailbomb : ModProjectile
     public override void AI()
     {
         base.AI();
- 
+
         Timer++;
         if (Timer % 15 == 0)
         {
@@ -369,14 +363,14 @@ public class Mailbomb : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        for(int i = 0; i < Projectile.oldPos.Length; i++)
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
             Vector2 pos = Projectile.oldPos[i];
             pos += Projectile.Size * 0.5f;
 
             SpritebatchDrawer afDrawer = SpritebatchDrawer.FromProjectile(Projectile);
             afDrawer.worldPosition = pos;
-            afDrawer.color = Color.Lerp(Color.OrangeRed, Color.Transparent, (float)i / (float)Projectile.oldPos.Length) * 0.3f;
+            afDrawer.color = Color.Lerp(Color.OrangeRed, Color.Transparent, i / (float)Projectile.oldPos.Length) * 0.3f;
             Main.spriteBatch.Draw(afDrawer);
         }
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
@@ -404,7 +398,7 @@ public class Mailbomb : ModProjectile
             float damage = Projectile.damage;
             float damageMult = MathHelper.Lerp(1f, 1.75f, EasingFunction.InOutSine(Timer / 30f));
             int finalDamage = (int)(damage * damageMult);
-            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<Mailboom>(), finalDamage, Projectile.knockBack, Projectile.owner);
         }
     }

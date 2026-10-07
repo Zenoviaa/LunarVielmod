@@ -1,10 +1,13 @@
 ﻿using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
+using Stellamod.Core;
 using Stellamod.Effects.Generic;
 using Stellamod.Gores;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -316,14 +319,112 @@ namespace Stellamod.Common.GunSystem
     {
 
     }
+    public class GunSlingThrow : ModProjectile
+    {
+        Player Owner => Main.player[Projectile.owner];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        Vector2 _startPoint;
+        Vector2 _endPoint;
+        float Time => 90;
+        ref float Timer => ref Projectile.ai[0];
+        public override void OnSpawn(IEntitySource source)
+        {
+            base.OnSpawn(source);
+            _startPoint = Projectile.Center;
+            _endPoint = MoonUtils.RayCast(_startPoint, Projectile.velocity, Projectile.velocity.Length());
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(_startPoint);
+            writer.WriteVector2(_endPoint);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _startPoint = reader.ReadVector2();
+            _endPoint = reader.ReadVector2();
+        }
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Projectile.SetTrailCacheLength(16);
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.WidthAndHeight = 24;
+            Projectile.timeLeft = (int)Time;
+            Projectile.tileCollide = false;
+            Projectile.LocalPiercingImmunityTime = 30;
+            Projectile.light = 0.5f;
+            Projectile.friendly = true;
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                Owner.AddBuff(ModContent.BuffType<Reloading>(), (int)Time);
+                var throwSound = AssetReferences.Assets.Sounds.Jiitas.JiitasLightSpin.Asset;
+                SoundEngine.PlaySound(throwSound, Projectile.position);
+            }
+
+            if (Main.rand.NextBool(16))
+            {
+                var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+                var vel = Main.rand.NextVector2Circular(3, 3);
+                var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, vel, Scale: Main.rand.NextFloat(0.5f, 1f));
+                d.noGravity = true;
+            }
+
+            Projectile.Center = Vector2.Lerp(Owner.Center, _endPoint, EasingFunction.QuickOutSlowIn(Timer / Time));
+            var dir = MathF.Sign((_endPoint - _startPoint).X);
+            Projectile.rotation += 0.16f * dir;
+            Owner.itemAnimation = 2;
+            Owner.itemTime = 2;
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, (Projectile.Center - Owner.Center).ToRotation() - MathHelper.PiOver2);
+        }
+
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            var texAsset = TextureAssets.Item[Owner.HeldItem.type];
+            var drawer = SpritebatchDrawer.FromTextureAsset(texAsset, Projectile.Center);
+            drawer.rotation = Projectile.rotation;
+            Main.spriteBatch.Draw(drawer);
+
+            var spin = AssetReferences.Assets.NoiseTextures.Spiin.Asset;
+            var drawer2 = SpritebatchDrawer.FromTextureAsset(spin, Projectile.Center);
+            drawer2.color = Color.White * EasingFunction.QuickOutSlowIn(Timer / Time) * 0.6f;
+            drawer2.color.A = 0;
+            drawer2.rotation = Projectile.rotation * 2;
+            drawer2.scale *= 0.35f;
+            Main.spriteBatch.Draw(drawer2);
+            return false;
+        }
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            Owner.GetModPlayer<GunHoldPlayer>().Reload();
+        }
+    }
+
     public class GunHoldPlayer : ModPlayer
     {
+        public bool gunSling;
         public bool isReloading;
         public float reloadTimer;
         public float reloadTime;
         public float marginOfError;
         public float reloadFireDelay;
-
         public bool doCoolReloadAnimation;
         public bool doFailAnimation;
         public bool forgivingReload;
@@ -347,6 +448,7 @@ namespace Stellamod.Common.GunSystem
         public override void ResetEffects()
         {
             base.ResetEffects();
+            gunSling = false;
             forgivingReload = false;
             isReloading = false;
             numberOfReloadsNeeded = 1;
@@ -416,8 +518,27 @@ namespace Stellamod.Common.GunSystem
             }
             if (heldGun.NeedsReloading() && !Player.channel)
             {
-                Player.AddBuff(ModContent.BuffType<Reloading>(), 2);
+                var type = ModContent.ProjectileType<GunSlingThrow>();
+                if (gunSling && Player.ownedProjectileCounts[type]== 0)
+                {
+        
+                    if (Main.myPlayer == Player.whoAmI)
+                    {
+                        var firer = ProjFirer.From<GunSlingThrow>(Player);
+                        firer.velocity = (Main.MouseWorld - Player.Center);
+                        firer.velocity = firer.velocity.SafeNormalize(Vector2.Zero);
+                        firer.velocity *= 252;
+                        firer.damage = heldGun.Item.damage * 2;
+                        firer.New();
+                    }
+                    return;
+                }
+
                 isReloading = true;
+                if (gunSling)
+                    return;
+
+                Player.AddBuff(ModContent.BuffType<Reloading>(), 2);
                 reloadTimer++;
                 if (reloadTimer >= reloadTime)
                 {
@@ -429,28 +550,7 @@ namespace Stellamod.Common.GunSystem
                 {
                     if (TimedReload())
                     {
-                        successfulReloads++;
-                        if (successfulReloads >= numberOfReloadsNeeded)
-                        {
-                            successfulReloads = 0;
-                            heldGun.Reload();
-                            reloadFireDelay = 60;
-                            OnReload?.Invoke(Player, heldGun);
-                        }
-                        else
-                        {
-                            SoundStyle gunReloadSound = AssetRegistry.Sounds.Gun.GunReload;
-                            gunReloadSound.PitchVariance = 0.2f;
-                            gunReloadSound.Pitch = MathHelper.Lerp(0f, 1f, successfulReloads / numberOfReloadsNeeded);
-                            gunReloadSound.Volume = 0.4f;
-                            SoundEngine.PlaySound(gunReloadSound);
-
-                            int combatText = CombatText.NewText(Player.getRect(), Color.White, $"{successfulReloads} / {numberOfReloadsNeeded}", true);
-                            CombatText numText = Main.combatText[combatText];
-                            numText.lifeTime = 60;
-                        }
-
-                        doCoolReloadAnimation = true;
+                        Reload();
                     }
 
                     if (Player.ownedProjectileCounts[ModContent.ProjectileType<ReloadBar>()] == 0)
@@ -468,6 +568,39 @@ namespace Stellamod.Common.GunSystem
 
         }
 
+        /// <summary>
+        /// Reloads the currently held gun
+        /// </summary>
+        public void Reload()
+        {
+            var heldGun = HeldGun;
+            if (heldGun == null)
+            {
+                reloadTimer = 0;
+                return;
+            }
+            successfulReloads++;
+            if (successfulReloads >= numberOfReloadsNeeded)
+            {
+                successfulReloads = 0;
+                heldGun.Reload();
+                reloadFireDelay = 60;
+                OnReload?.Invoke(Player, heldGun);
+            }
+            else
+            {
+                SoundStyle gunReloadSound = AssetRegistry.Sounds.Gun.GunReload;
+                gunReloadSound.PitchVariance = 0.2f;
+                gunReloadSound.Pitch = MathHelper.Lerp(0f, 1f, successfulReloads / numberOfReloadsNeeded);
+                gunReloadSound.Volume = 0.4f;
+                SoundEngine.PlaySound(gunReloadSound);
+
+                int combatText = CombatText.NewText(Player.getRect(), Color.White, $"{successfulReloads} / {numberOfReloadsNeeded}", true);
+                CombatText numText = Main.combatText[combatText];
+                numText.lifeTime = 60;
+            }
+            doCoolReloadAnimation = true;
+        }
     }
 
     public class GunHold : ModProjectile
@@ -635,7 +768,8 @@ namespace Stellamod.Common.GunSystem
 
         public override bool PreDraw(ref Color lightColor)
         {
-
+            if (GunHoldPlayer.gunSling && GunHoldPlayer.isReloading)
+                return false;
             if (Owner.HeldItem.ModItem == null)
                 return false;
 
