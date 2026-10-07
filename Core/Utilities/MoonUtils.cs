@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.SwingSystem;
+﻿using Stellamod.Core.Astar;
+using Stellamod.Core.SwingSystem;
 using System;
 using System.Runtime.CompilerServices;
 using Terraria;
@@ -21,6 +22,77 @@ public struct SteinUppercutParameters
 /// </summary>
 public static class MoonUtils
 {
+    const float REPATH_DISTANCE = 32 * 32;
+
+    #region PathfindingAI
+    public static void AIWalk_IvynStabber(Pathfinder pathfinder, Projectile entity, Vector2 destination, bool isGrounded, float runSpeed, float maxJumpSpeed, ref Vector2 targetOldPos)
+    {
+        if (Vector2.DistanceSquared( targetOldPos, destination) > REPATH_DISTANCE)
+        {
+            targetOldPos = destination;
+            var startPost = TileUtilities.FallToSolidTile(entity.Center);
+            pathfinder.NewPath(destination, startPost, 50);
+        }
+
+        if (pathfinder.currentNode != Vector2.Zero)
+        {
+            MoonUtils.AIWalk_IvynStabber(pathfinder, entity, destination, isGrounded, runSpeed, maxJumpSpeed);
+        }
+        else if (pathfinder.path != null && pathfinder.path.Count > 0)
+        {
+            pathfinder.Pop();
+        }
+    }
+
+    public static void AIWalk_IvynStabber(Pathfinder pathfinder, Projectile entity, Vector2 destination, bool isGrounded, float runSpeed, float maxJumpSpeed)
+    {
+        var target = pathfinder.currentNode;
+        if (Collision.CanHitLine(entity.position, 1, 1, destination, 1, 1))
+        {
+            target = destination;
+        }
+        //We can make the assumption that whatever node we're moving too is VERY close to our actor
+        //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
+        //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
+        var targetRectangle = DrawUtilities.CenterRectangle(pathfinder.currentNode, 16, 16);
+        var nextRectangle = DrawUtilities.CenterRectangle(pathfinder.nextNode, 16, 16);
+        var myRectangle = entity.getRect();
+
+        //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
+        myRectangle = myRectangle.CenterPad(4);
+
+        float distanceToCurrentNode = Vector2.Distance(entity.Center, pathfinder.currentNode);
+        float distanceToNextNode = Vector2.Distance(entity.Center, pathfinder.nextNode);
+
+        if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode || myRectangle.Intersects(nextRectangle))
+        {
+            pathfinder.Pop();
+        }
+
+        //Since this is a grounded entity, we can't just directly move towards the point we wish to reach
+        //First we'll try to reach the target destination on the X axis, and once the X axis has been satisfied, we'll try to reach it on the y Axis
+        //If the y axis is above, then we'll jump
+        var diffX = (target.X - entity.Center.X);
+        var distX = MathF.Abs(diffX);
+        if (distX <= entity.width)
+        {
+            var diffY = (target.Y - entity.Center.Y);
+            var distY = MathF.Abs(diffY);
+            if (diffY < 0 && distY > myRectangle.Height && isGrounded)
+            {
+                var maxSpeed = MathF.Min(maxJumpSpeed, distY / 8);
+                entity.velocity.Y = -maxSpeed;
+            }
+        }
+
+        var dirX = MathF.Sign(diffX);
+        var targetXVelocity = dirX * runSpeed;
+        var accel = ExtraMath.Osc(0.05f, 0.1f, speed: 0, offset: entity.identity);
+        entity.velocity.X = MathHelper.Lerp(entity.velocity.X, targetXVelocity, accel);
+        Collision.StepUp(ref entity.position, ref entity.velocity, entity.width, entity.height, ref entity.stepSpeed, ref entity.gfxOffY);
+    }
+    #endregion
+
     /// <summary>
     /// Checks if an entity is grounded by checking for a tile collision 1 tile underneath of it
     /// </summary>

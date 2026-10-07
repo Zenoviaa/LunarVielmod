@@ -210,66 +210,7 @@ public class IvynStabber : AbstractBellSummon
 
     void PathfindWalkTo(Vector2 destination)
     {
-        //Everytime the target moves, a new path should be re calculated
-        if (Vector2.DistanceSquared(_targetOldPos, destination) > REPATH_DISTANCE)
-        {
-            _targetOldPos = destination;
-            var startPost = TileUtilities.FallToSolidTile(Projectile.Center);
-//            startPost.Y -= 16;
-            _pathfinder.NewPath(destination, startPost, 50);
-        }
-
-        if (_pathfinder.currentNode != Vector2.Zero)
-        {
-            var target = _pathfinder.currentNode;
-            if(Collision.CanHitLine(Projectile.position, 1, 1, destination, 1, 1))
-            {
-                target = destination;
-            }
-            //We can make the assumption that whatever node we're moving too is VERY close to our actor
-            //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
-            //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
-            var targetRectangle = DrawUtilities.CenterRectangle(_pathfinder.currentNode, 16, 16);
-            var nextRectangle = DrawUtilities.CenterRectangle(_pathfinder.nextNode, 16, 16);
-            var myRectangle = Projectile.getRect();
-
-            //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
-            myRectangle = myRectangle.CenterPad(4);
-
-            float distanceToCurrentNode = Vector2.Distance(Projectile.Center, _pathfinder.currentNode);
-            float distanceToNextNode = Vector2.Distance(Projectile.Center, _pathfinder.nextNode);
-
-            if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode || myRectangle.Intersects(nextRectangle))
-            {
-                _pathfinder.Pop();
-            }
-
-            //Since this is a grounded entity, we can't just directly move towards the point we wish to reach
-            //First we'll try to reach the target destination on the X axis, and once the X axis has been satisfied, we'll try to reach it on the y Axis
-            //If the y axis is above, then we'll jump
-            var diffX = (target.X - Projectile.Center.X);
-            var distX = MathF.Abs(diffX);
-            if(distX <= Projectile.width)
-            {
-                var diffY = (target.Y - Projectile.Center.Y);
-                var distY = MathF.Abs(diffY);
-                if(diffY < 0 && distY > myRectangle.Height && IsGrounded())
-                {
-                    var maxSpeed = MathF.Min(MaxJumpSpeed, distY / 8);
-                    Projectile.velocity.Y = -maxSpeed;
-                }
-            }
-           
-            var dirX = MathF.Sign(diffX);
-            var targetXVelocity = dirX * RunSpeed;
-            var accel = ExtraMath.Osc(0.05f, 0.1f, speed: 0, offset: Projectile.identity);
-            Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, targetXVelocity, accel);
-            Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
-        }
-        else if (_pathfinder.path != null && _pathfinder.path.Count > 0)
-        {
-            _pathfinder.Pop();
-        }
+        MoonUtils.AIWalk_IvynStabber(_pathfinder, Projectile, destination, IsGrounded(), RunSpeed, MaxJumpSpeed, ref _targetOldPos);
         Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
     }
 
@@ -357,7 +298,6 @@ public class IvynStabber : AbstractBellSummon
     public override void DrawSpectral_Inner(SpriteBatch spriteBatch, Color drawColor)
     {
         var drawer = Projectile.GetAnimatorDrawInfo(drawColor);
-       
         spriteBatch.Draw(drawer);
         var kb = Keyboard.GetState();
         if(kb.IsKeyDown(Keys.LeftShift))
