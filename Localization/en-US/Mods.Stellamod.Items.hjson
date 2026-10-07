@@ -1821,13 +1821,13 @@ DaediaBreastplate: {
 }
 
 PotionOfLifeWand: {
-	DisplayName: Potion Of Life Wand
+	DisplayName: Song of Life
 	Tooltip: A sweet little potion summon that will give drop hearts occasionally!
 }
 
 PotionOfManaWand: {
 	Tooltip: A sweet little potion summon that will give drop mana occasionally!
-	DisplayName: Potion Of Mana Wand
+	DisplayName: Song of Mana
 }
 
 Ebistar: {
@@ -3141,8 +3141,8 @@ MoonMothStaff: {
 }
 
 SolMothStaff: {
-	DisplayName: Sol Moth Staff
-	Tooltip: Very good for clearing out small hordes!
+	DisplayName: Song of Sol Moths
+	Tooltip: Summons a moth that quickly rams into enemies
 }
 
 SolMoth: {
@@ -3325,12 +3325,10 @@ Venatici: {
 }
 
 IceboundStaff: {
-	DisplayName: Icebound Staff
+	DisplayName: Song of Ice Bats
 	Tooltip:
 		'''
-		Summons a winterborn bat to fight for you!
-		Bats consume half a minion slot, and will all swarm the same target
-		Frozen by the icebound and spirits!
+		Summons a winterborn bat to fight for you! They'll quickly swarm after their prey...
 		'''
 }
 
@@ -3725,8 +3723,8 @@ M61X: {
 }
 
 MushroomStave: {
-	DisplayName: Mushroom Stave
-	Tooltip: Get off me!
+	DisplayName: Song of Mushrooms
+	Tooltip: Summons a little mushroom to rain more shrooms upon other enemies!
 }
 
 StarbloomTempleBlock: {
