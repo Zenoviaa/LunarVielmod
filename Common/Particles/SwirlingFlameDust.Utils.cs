@@ -6,7 +6,7 @@ namespace Stellamod.Common.Particles;
 
 public static partial class ParticleUtils
 {
-    public readonly record struct ParticleFactory(Vector2 start, Vector2 end, TriColorPalette palette, Vector2 scaleRange, Vector2 speedRange, int particleCount)
+    public record struct ParticleFactory(Vector2 start, Vector2 end, TriColorPalette palette, Vector2 scaleRange, Vector2 speedRange, int particleCount)
     {
         public static ParticleFactory FromSmallBurst(Vector2 start, Vector2 end, TriColorPalette palette, Vector2 speedRange)
         {

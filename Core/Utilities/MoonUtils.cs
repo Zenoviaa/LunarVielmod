@@ -101,7 +101,11 @@ public static class MoonUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsGrounded(Entity entity)
     {
-        return Collision.TileCollision(entity.Bottom, new Vector2(0, 16), 1, 1) == Vector2.Zero;
+        var tilePointBelow = entity.Bottom.ToTileCoordinates();
+        var tileBelow = Main.tile[tilePointBelow];
+        tilePointBelow.Y++;
+        var tileBelow2 = Main.tile[tilePointBelow];
+        return WorldGen.SolidOrSlopedTile(tileBelow) || WorldGen.SolidOrSlopedTile(tileBelow2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

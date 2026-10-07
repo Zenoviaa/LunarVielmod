@@ -38,6 +38,7 @@ public class SongofIvyn : ModItem
 
 public class IvynStabber : AbstractBellSummon
 {
+    Vector2 _targetOldPos;
     float _extraSpeed;
     int _targetNpc;
     NPC Target
@@ -79,9 +80,8 @@ public class IvynStabber : AbstractBellSummon
   
     public override string Texture => TextureRegistry.EmptyTexture;
 
-    Vector2 _targetOldPos;
 
-    const float REPATH_DISTANCE = 32 * 32;
+
     const float JUMP_RANGE = 96 * 96;
     const string ANIM_IDLE = "Idle";
     const string ANIM_RUN = "Run";
@@ -289,6 +289,7 @@ public class IvynStabber : AbstractBellSummon
         Projectile.velocity = MoonUtils.VelocityTo(target, Projectile, 5);
 
         var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, target.Center, TriColorPalette.Foresty, new Vector2(5, 15f));
+        factory.particleCount = 8;
         ParticleUtils.CreateSwirlingDustBurst(factory);
 
         var throwSound = AssetReferences.Assets.Sounds.Jack_Throw.Asset with { PitchVariance = 0.5f, Volume = 0.55f };
@@ -313,5 +314,4 @@ public class IvynStabber : AbstractBellSummon
     {
         return false;
     }
-
 }
