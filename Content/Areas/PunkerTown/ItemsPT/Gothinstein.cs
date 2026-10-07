@@ -140,11 +140,11 @@ public class GothinsteinBarrage : ModProjectile
                     var sound = AssetRegistry.Sounds.Fire.FlaminChargeFast;
                     SoundEngine.PlaySound(sound with { PitchVariance = 0.3f }, Projectile.position);
                     _start = Owner.Center;
-                    _end = MovementUtilities.SteinGetEndPoint(Owner, _start, Main.MouseWorld, 212);
+                    _end = MoonUtils.SteinGetEndPoint(Owner, _start, Main.MouseWorld, 212);
                 }
                 else
                 {
-                    _end = MovementUtilities.SteinGetEndPoint(Owner, _start, Main.MouseWorld, 180);
+                    _end = MoonUtils.SteinGetEndPoint(Owner, _start, Main.MouseWorld, 180);
                 }
              
                 if (Style == 0)
@@ -213,7 +213,7 @@ public class GothinsteinBarrage : ModProjectile
         {
             case 0:
                 {
-                    Projectile.Center = MovementUtilities.SteinCalculateSwingPoint( Timer / 16f, _start, _end);
+                    Projectile.Center = MoonUtils.SteinCalculateSwingPoint( Timer / 16f, _start, _end);
                     Projectile.rotation = (_end - _start).ToRotation();
                     if(Timer >= 16)
                     {
@@ -235,9 +235,9 @@ public class GothinsteinBarrage : ModProjectile
                         rotation = Projectile.velocity.ToRotation(),
                         ySize = 256
                     };
-                    Vector2 upperCointPoint = MovementUtilities.SteinCalculateUppercutSwingPoint( parameters);
+                    Vector2 upperCointPoint = MoonUtils.SteinCalculateUppercutSwingPoint( parameters);
                     parameters.ratio += 0.05f;
-                    Vector2 p2 = MovementUtilities.SteinCalculateUppercutSwingPoint( parameters);
+                    Vector2 p2 = MoonUtils.SteinCalculateUppercutSwingPoint( parameters);
 
 
                     //Travel to those points

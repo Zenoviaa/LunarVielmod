@@ -457,7 +457,7 @@ public class VixylFlyingSlash : ModProjectile,
     private void DrawTrail(GraphicsDevice gDevice)
     {
         var maxProgress = EasingFunction.OutExpo(Timer / Time);
-        var points = MovementUtilities.SwingPoints(Projectile.Center, maxProgress, 64, MathHelper.ToRadians(270), X, Y, Projectile.velocity.ToRotation());
+        var points = MoonUtils.SwingPoints(Projectile.Center, maxProgress, 64, MathHelper.ToRadians(270), X, Y, Projectile.velocity.ToRotation());
         var pass = AssetReferences.Effects.Abyss.SingularTrail.CreatePrimitivesPass();
         pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
         pass.Parameters.insideColor = Color.DarkBlue.ToVector3();

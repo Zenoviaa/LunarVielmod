@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Items;
@@ -19,7 +20,7 @@ public class IvynslicingNecronomicon :ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.DefaultToNecronomicon(hintColor: Color.DarkGreen);
+        Item.DefaultToNecronomicon(1, hintColor: Color.DarkGreen);
         Item.damage = 12;
         Item.shoot = ModContent.ProjectileType<Ivynslicer>();
     }
@@ -35,10 +36,12 @@ public class Ivynslicer : ModProjectile
 {
     ref float Timer => ref Projectile.ai[0];
     ref float DeathTimer => ref Projectile.ai[1];
+    ref float Speed => ref Projectile.ai[2];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
         Projectile.SetTrailCacheLength(8);
+        Main.projFrames[Type] = 2;
     }
 
     public override void SetDefaults()
@@ -62,24 +65,28 @@ public class Ivynslicer : ModProjectile
             Projectile.velocity = Projectile.velocity.RotatedByRandom(0.75f);
             Projectile.netUpdate = true;
         }
-        Projectile.rotation = MathF.Sign(Projectile.velocity.X) * 0.15f;
-        if(Timer == 30)
+
+        Projectile.rotation += Projectile.velocity.Length() * 0.04f;
+        if(Timer == 15)
         {
             var useSound = SoundID.Item43 with { PitchVariance = 0.4f, Volume = 0.1f };
             SoundEngine.PlaySound(useSound, Projectile.position);
         }
 
-        if(Timer >= 30)
+        if(Timer >= 15)
         {
-            var npc = MovementUtilities.TargetClosestEnemy(Projectile.Center, 1024);
+            var npc = MoonUtils.TargetClosestEnemy(Projectile.Center, 1024);
             if(npc != null)
             {
                 var vel = (npc.Center - Projectile.Center);
                 vel = vel.SafeNormalize(Vector2.Zero);
-                vel *= 12;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, vel, 0.02f);
+                vel *= Speed;
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, vel, 0.045f);
+                if(Speed < 30)
+                    Speed += 0.65f;
             }
         }
+
 
         if (Main.rand.NextBool(12))
         {
@@ -101,15 +108,41 @@ public class Ivynslicer : ModProjectile
         outScale = 1f - outScale;
         Projectile.scale = inScale * outScale;
         var drawer = Projectile.Drawer;
-        DrawUtilities.DrawAdditiveFadingTrail(Projectile, Color.DarkGreen, Color.Transparent, 0.15f);
+        DrawUtilities.DrawAdditiveFadingTrail(Projectile, Color.DarkGreen, Color.Transparent, 0.75f);
         Main.spriteBatch.Draw(drawer);
+
+        var drawer2 = Projectile.Drawer;
+        drawer2.VerticalFrame(1, 2);
+        drawer2.CenterOrigin();
+        drawer2.color = Color.Lerp(Color.Transparent, Color.Green, ExtraMath.Osc(0.66f, 1f, speed: 3));
+        drawer2.color.A = 0;
+        Main.spriteBatch.Draw(drawer2);
         return false;
     }
+
 
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
         DeathTimer++;
+        for(var i = 0; i < 10; i++)
+        {
+            var vel = (Projectile.Center - target.Center);
+            vel = vel.SafeNormalize(Vector2.Zero);
+            vel = vel.RotatedByRandom(0.3f);
+            vel *= Main.rand.NextFloat(5, 15f);
+            var pos = target.Center;
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = Color.LightGreen.ToVector4(),
+                outerColor = Color.DarkGreen.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f)),
+                timeLeft = Main.rand.Next(30, 55)
+            });
+        }
+
     }
 
     public override void OnKill(int timeLeft)

@@ -349,8 +349,8 @@ public class HangingMoon : ModNPC
         base.AI();
         if (_rootPoint == Vector2.Zero)
         {
-            _rootPoint = MovementUtilities.FindCeiling(NPC.Center);
-            _floorPoint = MovementUtilities.FindFloor(_rootPoint);
+            _rootPoint = MoonUtils.FindCeiling(NPC.Center);
+            _floorPoint = MoonUtils.FindFloor(_rootPoint);
 
             NPC.Center = _rootPoint;
             _numSegments = Vector2.Distance(_floorPoint, _rootPoint) / 14f;

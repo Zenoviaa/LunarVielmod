@@ -427,7 +427,7 @@ public class BellFlower : ModNPC
         {
             MakeTinyWhiteMoth();
         }
-        Vector2 ground = MovementUtilities.FindFloorWet(NPC.Center);
+        Vector2 ground = MoonUtils.FindFloorWet(NPC.Center);
         ground.Y -= 64;
         NPC.velocity = ground - NPC.Center;
         if (Main.rand.NextBool(32))

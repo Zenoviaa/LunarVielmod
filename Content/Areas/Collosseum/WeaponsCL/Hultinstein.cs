@@ -102,7 +102,7 @@ public class HultinsteinBarrage : ModProjectile
             if (this.OwnedByLocalClient())
             {
                 _start = Owner.Center + Main.rand.NextVector2Circular(45, 45);
-                _end = MovementUtilities.SteinGetEndPoint(Owner, _start, Main.MouseWorld, maxDistance: 80);
+                _end = MoonUtils.SteinGetEndPoint(Owner, _start, Main.MouseWorld, maxDistance: 80);
                 Projectile.netUpdate = true;
             }
         }
@@ -124,7 +124,7 @@ public class HultinsteinBarrage : ModProjectile
             ts.color *= 0.5f;
             ts.Scale *= 0.2f;
         }
-        Projectile.Center = MovementUtilities.SteinCalculateSwingPoint(Timer / 12f, _start, _end);
+        Projectile.Center = MoonUtils.SteinCalculateSwingPoint(Timer / 12f, _start, _end);
         Projectile.rotation = Projectile.velocity.ToRotation();
     }
 

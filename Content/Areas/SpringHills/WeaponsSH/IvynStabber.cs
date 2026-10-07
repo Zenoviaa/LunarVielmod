@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
@@ -11,6 +12,7 @@ using Stellamod.Items;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -36,6 +38,7 @@ public class SongofIvyn : ModItem
 
 public class IvynStabber : AbstractBellSummon
 {
+    float _extraSpeed;
     int _targetNpc;
     NPC Target
     {
@@ -69,9 +72,9 @@ public class IvynStabber : AbstractBellSummon
         }
     }
     ref float AttackCycle => ref Projectile.ai[2];
-    float Gravity => 0.2f;
+    float Gravity => 0.4f;
     float MaxJumpSpeed => 7;
-    float RunSpeed => 4 * ExtraMath.Osc(0.8F, 1F, speed: 0, Projectile.minionPos);
+    float RunSpeed => 4 * ExtraMath.Osc(0.8F, 1F, speed: 0, Projectile.minionPos) + _extraSpeed;
     float JumpTime => 23;
   
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -131,7 +134,7 @@ public class IvynStabber : AbstractBellSummon
     void SearchForNewTarget()
     {
         _targetNpc = -1;
-        var closestEnemy = MovementUtilities.TargetClosestEnemy(Owner.Center, 1024);
+        var closestEnemy = MoonUtils.TargetClosestEnemy(Owner.Center, 512);
         if (closestEnemy == null)
             return;
         if (!Collision.CanHitLine(Projectile.position, 1, 1, closestEnemy.position, 1, 1))
@@ -143,7 +146,7 @@ public class IvynStabber : AbstractBellSummon
     public override void AI()
     {
         base.AI();
-
+        _extraSpeed = 0;
         switch (State)
         {
             case AIState.Idle:
@@ -194,48 +197,15 @@ public class IvynStabber : AbstractBellSummon
         }
     }
 
-    void FlyingPathfinding()
-    {
-        if (Timer % 30 == 0)
-            _pathfinder.NewPath(Projectile.Center, Owner.Center, 50);
-        if (_pathfinder.currentNode != Vector2.Zero)
-        {
-            Vector2 targetVelocity = (_pathfinder.currentNode - Projectile.Center).SafeNormalize(Vector2.Zero);
-            targetVelocity *= 5f;
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.1f);
-            Projectile.rotation = Projectile.velocity.X * 0.05f;
-            Projectile.direction = (_pathfinder.currentNode.X > Projectile.Center.X) ? 1 : -1;
-
-            //node has been crossed
-            //not sure howe ewll this is gonna work but we'll see
-
-            float distanceToCurrentNode = Vector2.Distance(Projectile.Center, _pathfinder.currentNode);
-            float distanceToNextNode = Vector2.Distance(Projectile.Center, _pathfinder.nextNode);
-            if (distanceToNextNode <= distanceToCurrentNode)
-            {
-                _pathfinder.currentNode = Vector2.Zero;
-            }
-
-            if (Projectile.getRect().Contains(_pathfinder.currentNode.ToPoint()) ||
-                Collision.CanHitLine(Projectile.position, 1, 1, _pathfinder.nextNode, 1, 1))
-            {
-                _pathfinder.Pop();
-            }
-        }
-        else if (_pathfinder.path != null && _pathfinder.path.Count > 0)
-        {
-            _pathfinder.Pop();
-        }
-    }
-
     bool IsGrounded()
     {
+        return MoonUtils.IsGrounded(Projectile);
+        /*
         var tilePointBelow = Projectile.Bottom.ToTileCoordinates();
-   
         var tileBelow = Main.tile[tilePointBelow];
         tilePointBelow.Y++;
         var tileBelow2 = Main.tile[tilePointBelow];
-        return WorldGen.SolidOrSlopedTile(tileBelow) || WorldGen.SolidOrSlopedTile(tileBelow2);
+        return WorldGen.SolidOrSlopedTile(tileBelow) || WorldGen.SolidOrSlopedTile(tileBelow2);*/
     }
 
     void PathfindWalkTo(Vector2 destination)
@@ -336,6 +306,7 @@ public class IvynStabber : AbstractBellSummon
     void AI_FindTarget()
     {
         Timer++;
+        _extraSpeed = 2;
         PathfindWalkTo(Target.Center);
         HandleWalkingAnimation();
         var distSqr = Vector2.DistanceSquared(Projectile.Center, Target.Center);
@@ -350,11 +321,7 @@ public class IvynStabber : AbstractBellSummon
         Timer++;
         if(AttackCycle == 0 && IsGrounded())
         {
-            var jumpDir = (Target.Center - Projectile.Center);
-            jumpDir = jumpDir.SafeNormalize(Vector2.Zero);
-            jumpDir *= 9;
-            Projectile.velocity = jumpDir;
-      
+            Projectile.velocity = MoonUtils.VelocityTo(Projectile, Target, 9);
             AttackCycle++;
         }
 
@@ -372,6 +339,19 @@ public class IvynStabber : AbstractBellSummon
     void AI_FlyHome()
     {
 
+    }
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        //Recoil a bit after hitting the enemy, exploding with some particles and a little sound effect
+        Projectile.velocity = MoonUtils.VelocityTo(target, Projectile, 5);
+
+        var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, target.Center, TriColorPalette.Foresty, new Vector2(5, 15f));
+        ParticleUtils.CreateSwirlingDustBurst(factory);
+
+        var throwSound = AssetReferences.Assets.Sounds.Jack_Throw.Asset with { PitchVariance = 0.5f, Volume = 0.55f };
+        SoundEngine.PlaySound(throwSound, target.position);
     }
 
     public override void DrawSpectral_Inner(SpriteBatch spriteBatch, Color drawColor)

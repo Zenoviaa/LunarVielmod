@@ -568,7 +568,7 @@ public class TheWhisperer : ModNPC,
         }
         else
         {
-            MovementUtilities.AIMoveTowardsTarget(
+            MoonUtils.AIMoveTowardsTarget(
                 NPC.Center,
                 MyTarget.Center,
                 ref NPC.velocity,

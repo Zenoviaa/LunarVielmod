@@ -2,10 +2,13 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using System;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.ID;
 
 namespace Stellamod.Common.Particles;
+
+
 
 public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
 {

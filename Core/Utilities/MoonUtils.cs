@@ -1,5 +1,6 @@
 ﻿using Stellamod.Core.SwingSystem;
 using System;
+using System.Runtime.CompilerServices;
 using Terraria;
 
 namespace Stellamod.Core.Utilities;
@@ -18,8 +19,31 @@ public struct SteinUppercutParameters
 /// <summary>
 ///  A collection of common functions for implementing projectiles and npcs
 /// </summary>
-public static class MovementUtilities
+public static class MoonUtils
 {
+    /// <summary>
+    /// Checks if an entity is grounded by checking for a tile collision 1 tile underneath of it
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsGrounded(Entity entity)
+    {
+        return Collision.TileCollision(entity.Bottom, new Vector2(0, 16), 1, 1) == Vector2.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 VelocityTo(Entity start, Entity end, float speed) => VelocityTo(start.Center, end.Center, speed);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 VelocityTo(Vector2 start, Vector2 end, float speed)
+    {
+        var dir = (end - start);
+        dir = dir.SafeNormalize(Vector2.Zero);
+        dir *= speed;
+        return dir;
+    }
+
     /// <summary>
     /// Returns the nearest enemy to the current position
     /// </summary>
@@ -181,8 +205,8 @@ public static class MovementUtilities
     {
         float radians = parameters.swingRadians;
         float xSize = Vector2.Distance(parameters.start, parameters.end);
-        Vector2 ovalPoint = MovementUtilities.OvalProgressPoint(parameters.ratio, radians, xSize, parameters.ySize);
-        Vector2 ovalOffset = MovementUtilities.LocalOvalRotate(ovalPoint, parameters.direction, parameters.rotation);
+        Vector2 ovalPoint = MoonUtils.OvalProgressPoint(parameters.ratio, radians, xSize, parameters.ySize);
+        Vector2 ovalOffset = MoonUtils.LocalOvalRotate(ovalPoint, parameters.direction, parameters.rotation);
         return parameters.start + ovalOffset;
     }
     public static Vector2[] SwingPoints(Vector2 offset, in float maxProgress, in float numPoints, in float radians, in float xSize, in float ySize, in float rotation)

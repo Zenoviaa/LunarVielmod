@@ -62,7 +62,7 @@ public class GoldenLeaf : ParticleUpdater<GoldenLeaf.Data>
                 ref var particle = ref _particles[i];
                 particle.progress += 0.02f;
                 particle.progress %= 1.0f;
-                Vector2 offset = MovementUtilities.OvalProgressPoint(particle.progress, MathHelper.TwoPi, particle.xRange, particle.yRange);
+                Vector2 offset = MoonUtils.OvalProgressPoint(particle.progress, MathHelper.TwoPi, particle.xRange, particle.yRange);
                 particle.position = particle.root.Center + particle.rootOffset + offset;
                 particle.rotation += 0.065f;
             }
@@ -74,7 +74,7 @@ public class GoldenLeaf : ParticleUpdater<GoldenLeaf.Data>
                 ref var particle = ref _particles[i];
                 particle.progress += 0.02f;
                 particle.progress %= 1.0f;
-                Vector2 offset = MovementUtilities.OvalProgressPoint(particle.progress, MathHelper.TwoPi, particle.xRange, particle.yRange);
+                Vector2 offset = MoonUtils.OvalProgressPoint(particle.progress, MathHelper.TwoPi, particle.xRange, particle.yRange);
                 particle.position = particle.root.Center + particle.rootOffset + offset;
                 particle.rotation += 0.065f;
                 particle.timeLeft--;

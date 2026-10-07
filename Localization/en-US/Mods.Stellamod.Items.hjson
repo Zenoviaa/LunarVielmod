@@ -3326,10 +3326,7 @@ Venatici: {
 
 IceboundStaff: {
 	DisplayName: Song of Ice Bats
-	Tooltip:
-		'''
-		Summons a winterborn bat to fight for you! They'll quickly swarm after their prey...
-		'''
+	Tooltip: Summons a winterborn bat to fight for you! They'll quickly swarm after their prey...
 }
 
 AurelusDoor: {
