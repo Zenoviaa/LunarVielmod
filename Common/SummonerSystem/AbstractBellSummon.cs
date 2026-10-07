@@ -112,6 +112,22 @@ public abstract class AbstractBellSummon : ModProjectile,
 
     private void AI_BellMinionLogic()
     {
+        if (Main.rand.NextBool(16))
+        {
+            var pos = Projectile.Top;
+            pos.Y += 4;
+            pos.X += Main.rand.Next(-Projectile.width / 2, Projectile.width / 2);
+            var vel = -Vector2.UnitY * Main.rand.NextFloat(3, 6);
+            Particles.Particles.SwirlingFlameDust.Spawn(Particles.BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                timeLeft = 30,
+                innerColor = Color.White.ToVector4(),
+                outerColor = Color.SkyBlue.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.6f, 0.8f))
+            });
+        }
         if (_damageBoostTimer > 0)
         {
             if (Main.rand.NextBool(4))

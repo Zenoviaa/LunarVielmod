@@ -178,6 +178,9 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public override bool IsActive(Player player)
         {
+            if (player.GetModPlayer<BiomePlayer>().ZoneSpringHills)
+                return false;
+
 
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneAshotiTemple)
@@ -188,7 +191,7 @@ namespace Stellamod.Core.PaletteShadingSystem
                 return false;
             if (player.ZoneDesert)
                 return true;
-
+   
             return false;
         }
 

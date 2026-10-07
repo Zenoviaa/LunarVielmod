@@ -71,7 +71,7 @@ public class IvynStabber : AbstractBellSummon
     float Gravity => 0.2f;
     float MaxJumpSpeed => 7;
     float RunSpeed => 4;
-    float JumpTime => 25;
+    float JumpTime => 21;
   
     public override string Texture => TextureRegistry.EmptyTexture;
 
@@ -95,11 +95,13 @@ public class IvynStabber : AbstractBellSummon
         _pathfinder = new();
         Projectile.DefaultToMinionProjectile();
         Projectile.WidthAndHeight = 32;
+        Projectile.width = 24;
         Projectile.LocalPiercingImmunityTime = 20;
         Projectile.tileCollide = true;
         Projectile.friendly = true;
   
     }
+   
 
     void SwitchState(AIState state)
     {
@@ -180,7 +182,8 @@ public class IvynStabber : AbstractBellSummon
         Timer++;
         Projectile.velocity.X *= 0.96f;
         this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
-        ChaseTargetIfOneFound();
+        if (Timer >= 30)
+            ChaseTargetIfOneFound();
         var sqrDist = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
         if(sqrDist > 256 * 256)
         {
@@ -239,7 +242,7 @@ public class IvynStabber : AbstractBellSummon
         {
             _targetOldPos = destination;
             var startPost = TileUtilities.FallToSolidTile(Projectile.Center);
-            startPost.Y -= 16;
+//            startPost.Y -= 16;
             _pathfinder.NewPath(destination, startPost, 50);
         }
 
@@ -249,11 +252,16 @@ public class IvynStabber : AbstractBellSummon
             //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
             //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
             var targetRectangle = DrawUtilities.CenterRectangle(_pathfinder.currentNode, 16, 16);
+            var nextRectangle = DrawUtilities.CenterRectangle(_pathfinder.nextNode, 16, 16);
             var myRectangle = Projectile.getRect();
 
             //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
             myRectangle = myRectangle.CenterPad(4);
-            if (myRectangle.Intersects(targetRectangle))
+
+            float distanceToCurrentNode = Vector2.Distance(Projectile.Center, _pathfinder.currentNode);
+            float distanceToNextNode = Vector2.Distance(Projectile.Center, _pathfinder.nextNode);
+
+            if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode || myRectangle.Intersects(nextRectangle))
             {
                 _pathfinder.Pop();
             }
@@ -304,7 +312,8 @@ public class IvynStabber : AbstractBellSummon
         Timer++;
         PathfindWalkTo(Owner.Center);
         HandleWalkingAnimation();
-        ChaseTargetIfOneFound();
+        if(Timer >= 30)
+            ChaseTargetIfOneFound();
         var distSqr = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
         if(distSqr < 96 * 96)
         {
@@ -319,7 +328,7 @@ public class IvynStabber : AbstractBellSummon
         PathfindWalkTo(Target.Center);
         HandleWalkingAnimation();
         var distSqr = Vector2.DistanceSquared(Projectile.Center, Target.Center);
-        if(distSqr <= JUMP_RANGE)
+        if(distSqr <= JUMP_RANGE && Timer >= 20)
         {
             SwitchState(AIState.JumpToTarget);
         }
@@ -334,11 +343,12 @@ public class IvynStabber : AbstractBellSummon
             jumpDir = jumpDir.SafeNormalize(Vector2.Zero);
             jumpDir *= 8;
             Projectile.velocity = jumpDir;
-         //   MovementUtilities.JumpTowards(ref Projectile.velocity, Projectile.Center, Target.Center, new Vector2(4, 16));
+      
             AttackCycle++;
         }
 
-        Projectile.velocity.X *= 0.96F;
+        Projectile.velocity.X *= 0.95F;
+        Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
         this.AseAnimator.PlayAnimation(ANIM_STABFRAME, AnimationParams.Default);
 
         if (Timer >= JumpTime && IsGrounded())
