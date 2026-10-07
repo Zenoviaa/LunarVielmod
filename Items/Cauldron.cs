@@ -16,11 +16,46 @@ using Terraria.Utilities;
 
 namespace Stellamod.Items
 {
+    public struct CauldronMaterialReport
+    {
+        public int ownedCrafts;
+        public int totalCrafts;
+    }
+
     public class CauldronPlayer : ModPlayer
     {
+        public bool needsRefresh;
         public float NothingFailChance;
         public float InkFailChance;
         public List<Item> Crafts = new List<Item>();
+        public CauldronMaterialReport[] Reports
+        {
+            get
+            {
+                if (needsRefresh || field == null)
+                {
+                    field = ReportProgress();
+                    needsRefresh = false;
+                }
+                return field;
+            }
+        }
+        public int CompletedMaterials
+        {
+            get
+            {
+                var count = 0;
+                foreach(var report in Reports)
+                {
+ 
+                    if(report.ownedCrafts >= report.totalCrafts)
+                    {
+                        count++;
+                    }
+                }
+                return count;
+            }
+        }
         public int CrystalStarCount;
         public override void ResetEffects()
         {
@@ -45,6 +80,30 @@ namespace Stellamod.Items
         {               
             Crafts.Add(item);
             Crafts = Crafts.DistinctBy(x => x.type).ToList();
+            needsRefresh = true;
+        }
+
+        public CauldronMaterialReport[] ReportProgress()
+        {
+            var reports = new List<CauldronMaterialReport>();
+            foreach(var materialType in Cauldron.BrewableMaterialTypes)
+            {
+                var report = new CauldronMaterialReport();
+                foreach(var brew in Cauldron.Brews)
+                {
+                    if (materialType != brew.material)
+                        continue;
+
+                    if (HasMadeItem(brew.result))
+                    {
+                        report.ownedCrafts++;
+                    }
+                    report.totalCrafts++;
+                }
+
+                reports.Add(report);
+            }
+            return reports.ToArray(); 
         }
 
         public int CountCraftsInMaterial(int materialType)
@@ -134,6 +193,7 @@ namespace Stellamod.Items
     }
     public class Cauldron : ModSystem
     {
+
         public static int[] MaterialOrder = ItemID.Sets.Factory.CreateIntSet(0);
         public static int[] MaterialRarity = ItemID.Sets.Factory.CreateIntSet(0);
         public static bool[] IsBrewingMaterial = ItemID.Sets.Factory.CreateBoolSet();
@@ -157,12 +217,8 @@ namespace Stellamod.Items
                 return _results;
             }
         }
-
-        private List<CauldronBrew> _brews = new List<CauldronBrew>()
-        {
-
-        };
-
+        public static readonly List<int> BrewableMaterialTypes = new();
+        public static readonly List<CauldronBrew> Brews = new();
         public CauldronBrew NothingBrew
         {
             get
@@ -179,7 +235,8 @@ namespace Stellamod.Items
         public override void OnModUnload()
         {
             base.OnModUnload();
-            _brews.Clear();
+            Brews.Clear();
+            BrewableMaterialTypes.Clear();
         }
 
         private static int _material;
@@ -210,31 +267,32 @@ namespace Stellamod.Items
                 weight = weight,
                 yield = yield
             };
-
-            _brews.Add(brew);
+            if(!BrewableMaterialTypes.Contains(material))
+                BrewableMaterialTypes.Add(material);
+            Brews.Add(brew);
             return brew;
         }
         private List<CauldronBrew> GetPossibleBrews(List<int> molds, int material, int materialCount)
         {
-            List<CauldronBrew> possibleBrews = _brews.Where
+            List<CauldronBrew> possibleBrews = Brews.Where
                 (x => molds.Contains(x.mold) && x.material == material && materialCount >= x.materialAmount).ToList();
             return possibleBrews;
         }
 
         private List<CauldronBrew> GetPossibleBrews(int material, int materialCount)
         {
-            List<CauldronBrew> possibleBrews = _brews.Where
+            List<CauldronBrew> possibleBrews = Brews.Where
                 (x => x.material == material && materialCount >= x.materialAmount).ToList();
             return possibleBrews;
         }
         public int CountCraftsInMaterial(int materialType)
         {
-            return _brews.Count(x => x.material == materialType);
+            return Brews.Count(x => x.material == materialType);
         }
 
         public Item FindMaterial(Item item)
         {
-            foreach (var brew in _brews)
+            foreach (var brew in Brews)
             {
                 if (brew.result == item.type)
                     return ModContent.GetModItem(brew.material).Item;
@@ -246,7 +304,7 @@ namespace Stellamod.Items
         public Item FindMold(Item item)
         {
             //TODO: optimize this to O(1) lookup time by making an array
-            foreach (var brew in _brews)
+            foreach (var brew in Brews)
             {
                 if (brew.result == item.type)
                     return ModContent.GetModItem(brew.mold).Item;
@@ -258,7 +316,7 @@ namespace Stellamod.Items
 
         public bool IsResult(Item item)
         {
-            foreach (var brew in _brews)
+            foreach (var brew in Brews)
             {
                 if (brew.result == item.type)
                     return true;
@@ -268,7 +326,7 @@ namespace Stellamod.Items
 
         public CauldronBrew FindBrew(Item item)
         {
-            foreach (var brew in _brews)
+            foreach (var brew in Brews)
             {
                 if (brew.result == item.type)
                     return brew;
@@ -282,7 +340,7 @@ namespace Stellamod.Items
         public Item[] GetMaterials()
         {
             List<Item> materials = new List<Item>();
-            foreach (var brew in _brews)
+            foreach (var brew in Brews)
             {
                 Item item = ModContent.GetModItem(brew.material).Item;
                 if (!materials.Contains(item))
@@ -294,7 +352,7 @@ namespace Stellamod.Items
         public Item[] GetCraftsFromMaterial(int materialType)
         {
             List<Item> crafts = new List<Item>();
-            List<CauldronBrew> brewsFromMaterial = _brews.Where(x => x.material == materialType).ToList();
+            List<CauldronBrew> brewsFromMaterial = Brews.Where(x => x.material == materialType).ToList();
             foreach (var brew in brewsFromMaterial)
             {
                 crafts.Add(new Item(brew.result));
@@ -306,7 +364,7 @@ namespace Stellamod.Items
 
         public int GetMaterial(int craft)
         {
-            foreach (var brew in _brews)
+            foreach (var brew in Brews)
             {
                 if(brew.result == craft)
                 {

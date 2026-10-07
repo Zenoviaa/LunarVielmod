@@ -1,5 +1,6 @@
 Common: {
 	Whisperer: The Whispers have stopped...
+	CompletedCrafts: You have {0} completed materials, +{1} damage!
 	BellFlower: Bell Flower
 	Buy: Buy
 	ArmorShop: Armor Forge
@@ -12254,4 +12255,9 @@ SongofIvyn: {
 IvynslicingNecronomicon: {
 	DisplayName: Ivynslicing Necronomicon
 	Tooltip: Summons an Ivynthorn shuriken that homes to a nearby enemy after a short time
+}
+
+WitchsCross: {
+	DisplayName: Witch's Cross
+	Tooltip: "Grants +5% damage for every cauldron material that's been completely discovered!"
 }
