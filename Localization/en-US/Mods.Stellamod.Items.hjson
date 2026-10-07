@@ -12252,6 +12252,6 @@ VerliaHatMoon: {
 }
 
 SongofIvyn: {
-	DisplayName: Songof Ivyn
-	Tooltip: ""
+	DisplayName: Song of Ivyn
+	Tooltip: "Summons an Ivyn Stabber to run around and stab enemies!"
 }
