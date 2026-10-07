@@ -50,7 +50,7 @@ namespace Stellamod.Visual.Particles
         public float WidthFunction(float completionRatio)
         {
             float osc = MathF.Sin(completionRatio * 384) * 0.5f + 0.5f;
-            return MathHelper.SmoothStep(7, 2, completionRatio) * MathHelper.Lerp(1f, 0f, osc) * EasingFunction.QuadraticBump(fadeIn / time);
+            return MathHelper.SmoothStep(7, 2, completionRatio) * MathHelper.Lerp(1f, 0.9f, osc) * EasingFunction.QuadraticBump(fadeIn / time);
         }
 
         public float WidthFunction2(float completionRatio)

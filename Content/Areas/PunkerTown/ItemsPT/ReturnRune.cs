@@ -186,20 +186,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         private void DrawRunePixelPrimitives(GraphicsDevice graphicsDevice)
         {
             DrawOuterSquare();
-            //DrawInnerSquare();
-            var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.White;
-            shader.InnerColor = Color.Lerp(Color.Cyan, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 32));
-            shader.OuterColor = Color.Blue;
-            shader.LaserTexture = AssetManager.LaserTextures.Lightning2;
-            TrailDrawer.Draw(Main.spriteBatch, OldDrawingCache, ColorFunction, WidthFunction, shader, Main.screenPosition);
-
-
-            shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
-            shader.LaserColor = Color.Blue * 0.2f;
-            shader.InnerColor = Color.Lerp(Color.Cyan, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 32)) * 0.2f;
-            shader.OuterColor = Color.Blue * 0.2f;
-            TrailDrawer.Draw(Main.spriteBatch, OldDrawingCache, ColorFunction, WidthFunction2, shader, Main.screenPosition);
+            RuneCommon.DrawRuneLaserPointerPixeled(OldDrawingCache, Color.Lerp(Color.Cyan, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 32)), Color.Blue);
         }
 
         private void DrawPointer(SpriteBatch spriteBatch, Vector2 screenPos)

@@ -176,20 +176,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         private void DrawRunePixelPrimitives(GraphicsDevice graphicsDevice)
         {
             DrawDottedLine(graphicsDevice);
-            //DrawInnerSquare();
-            var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.White;
-            shader.InnerColor = Color.Lerp(Color.Cyan, Color.Green, ExtraMath.Osc(0f, 1f, speed: 32));
-            shader.OuterColor = Color.Green;
-            shader.LaserTexture = AssetManager.LaserTextures.Lightning2;
-            TrailDrawer.Draw(Main.spriteBatch, OldDrawingCache, ColorFunction, WidthFunction, shader, Main.screenPosition);
-
-
-            shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
-            shader.LaserColor = Color.Green * 0.2f;
-            shader.InnerColor = Color.Lerp(Color.GreenYellow, Color.Green, ExtraMath.Osc(0f, 1f, speed: 32)) * 0.2f;
-            shader.OuterColor = Color.Green * 0.2f;
-            TrailDrawer.Draw(Main.spriteBatch, OldDrawingCache, ColorFunction, WidthFunction2, shader, Main.screenPosition);
+            RuneCommon.DrawRuneLaserPointerPixeled(OldDrawingCache, Color.Lerp(Color.Cyan, Color.Green, ExtraMath.Osc(0f, 1f, speed: 32)), Color.Green);
         }
 
         private void DrawPointer(SpriteBatch spriteBatch, Vector2 screenPos)
