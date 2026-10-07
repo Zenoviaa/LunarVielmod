@@ -1,4 +1,5 @@
-﻿using Stellamod.Common;
+﻿using Microsoft.Xna.Framework.Input;
+using Stellamod.Common;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
@@ -70,7 +71,7 @@ public class IvynStabber : AbstractBellSummon
     ref float AttackCycle => ref Projectile.ai[2];
     float Gravity => 0.2f;
     float MaxJumpSpeed => 7;
-    float RunSpeed => 4;
+    float RunSpeed => 4 * ExtraMath.Osc(0.8F, 1F, speed: 0, Projectile.minionPos);
     float JumpTime => 21;
   
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -95,11 +96,11 @@ public class IvynStabber : AbstractBellSummon
         _pathfinder = new();
         Projectile.DefaultToMinionProjectile();
         Projectile.WidthAndHeight = 32;
-        Projectile.width = 24;
+        Projectile.width = 12;
         Projectile.LocalPiercingImmunityTime = 20;
         Projectile.tileCollide = true;
         Projectile.friendly = true;
-  
+        Projectile.light = 0.67f;
     }
    
 
@@ -130,7 +131,7 @@ public class IvynStabber : AbstractBellSummon
     void SearchForNewTarget()
     {
         _targetNpc = -1;
-        var closestEnemy = MovementUtilities.TargetClosestEnemy(Projectile.Center, 1024);
+        var closestEnemy = MovementUtilities.TargetClosestEnemy(Owner.Center, 1024);
         if (closestEnemy == null)
             return;
         if (!Collision.CanHitLine(Projectile.position, 1, 1, closestEnemy.position, 1, 1))
@@ -162,6 +163,8 @@ public class IvynStabber : AbstractBellSummon
                 AI_FlyHome();
                 break;
         }
+
+
         Projectile.velocity.Y += Gravity;
         Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.velocity.X * 0.02f, 0.1f);
         this.AseAnimator.DrawOrigin = new Vector2(15, 36);
@@ -180,12 +183,12 @@ public class IvynStabber : AbstractBellSummon
     void AI_Idle()
     {
         Timer++;
-        Projectile.velocity.X *= 0.96f;
+        Projectile.velocity.X *= 0.9f;
         this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         if (Timer >= 30)
             ChaseTargetIfOneFound();
         var sqrDist = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
-        if(sqrDist > 256 * 256)
+        if(sqrDist > 64 * 64)
         {
             SwitchState(AIState.GoHome);
         }
@@ -248,6 +251,11 @@ public class IvynStabber : AbstractBellSummon
 
         if (_pathfinder.currentNode != Vector2.Zero)
         {
+            var target = _pathfinder.currentNode;
+            if(Collision.CanHitLine(Projectile.position, 1, 1, destination, 1, 1))
+            {
+                target = destination;
+            }
             //We can make the assumption that whatever node we're moving too is VERY close to our actor
             //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
             //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
@@ -269,11 +277,11 @@ public class IvynStabber : AbstractBellSummon
             //Since this is a grounded entity, we can't just directly move towards the point we wish to reach
             //First we'll try to reach the target destination on the X axis, and once the X axis has been satisfied, we'll try to reach it on the y Axis
             //If the y axis is above, then we'll jump
-            var diffX = (_pathfinder.currentNode.X - Projectile.Center.X);
+            var diffX = (target.X - Projectile.Center.X);
             var distX = MathF.Abs(diffX);
             if(distX <= Projectile.width)
             {
-                var diffY = (_pathfinder.currentNode.Y - Projectile.Center.Y);
+                var diffY = (target.Y - Projectile.Center.Y);
                 var distY = MathF.Abs(diffY);
                 if(diffY < 0 && distY > myRectangle.Height && IsGrounded())
                 {
@@ -284,7 +292,8 @@ public class IvynStabber : AbstractBellSummon
            
             var dirX = MathF.Sign(diffX);
             var targetXVelocity = dirX * RunSpeed;
-            Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, targetXVelocity, 0.1f);
+            var accel = ExtraMath.Osc(0.05f, 0.1f, speed: 0, offset: Projectile.identity);
+            Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, targetXVelocity, accel);
             Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
         }
         else if (_pathfinder.path != null && _pathfinder.path.Count > 0)
@@ -310,12 +319,14 @@ public class IvynStabber : AbstractBellSummon
     {
         //alright
         Timer++;
-        PathfindWalkTo(Owner.Center);
+        var poAroundPlayer = Owner.Center;
+        poAroundPlayer.X += ExtraMath.Osc(-24, 24, speed: 0, Projectile.minionPos);
+        PathfindWalkTo(poAroundPlayer);
         HandleWalkingAnimation();
         if(Timer >= 30)
             ChaseTargetIfOneFound();
-        var distSqr = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
-        if(distSqr < 96 * 96)
+        var distSqr = Vector2.DistanceSquared(Projectile.Center, poAroundPlayer);
+        if(distSqr < 32 * 32)
         {
             SwitchState(AIState.Idle);
         }
@@ -368,7 +379,9 @@ public class IvynStabber : AbstractBellSummon
         var drawer = Projectile.GetAnimatorDrawInfo(drawColor);
        
         spriteBatch.Draw(drawer);
-        _pathfinder.DebugDrawPath(spriteBatch, Color.White  * 0.3f);
+        var kb = Keyboard.GetState();
+        if(kb.IsKeyDown(Keys.LeftShift))
+            _pathfinder.DebugDrawPath(spriteBatch, Color.White  * 0.3f);
     }
     
     public override void OnKill(int timeLeft)

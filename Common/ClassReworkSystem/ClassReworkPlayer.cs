@@ -212,10 +212,13 @@ public class ClassReworkPlayer : ModPlayer
             case PlayerClass.God:
                 return;
         }
-
-        if (Player.HeldItem.DamageType != damageClass)
+    }
+    public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+    {
+        base.ModifyWeaponDamage(item, ref damage);
+        if(item.DamageType != damageClass)
         {
-            Player.GetDamage(Player.HeldItem.DamageType) *= 0.05f;
+            damage *= 0.05f;
         }
     }
 

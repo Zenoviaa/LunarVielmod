@@ -127,7 +127,15 @@ public class Astar
             }
             return false;
         }
-        if (NextToGroundTile())
+
+        bool IsGrounded()
+        {
+            var newY = y + 1;
+            if (WorldGen.SolidOrSlopedTile(x, newY))
+                return true;
+            return false;
+        }
+        if (IsGrounded())
         {
             weight -= 300;
         }

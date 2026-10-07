@@ -179,6 +179,7 @@ namespace Stellamod.Common.SummonerSystem
             for(int i = 0; i < Player.maxMinions && i < _minions.Count; i++)
             {
                 var minionItem = _minions[i];
+
                 int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
                 Vector2 startpos = Player.Bottom - new Vector2(0, 50);
                 startpos.X += Main.rand.NextFloat(-100, 100);
