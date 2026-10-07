@@ -72,14 +72,14 @@ public class IvynStabber : AbstractBellSummon
     float Gravity => 0.2f;
     float MaxJumpSpeed => 7;
     float RunSpeed => 4 * ExtraMath.Osc(0.8F, 1F, speed: 0, Projectile.minionPos);
-    float JumpTime => 21;
+    float JumpTime => 23;
   
     public override string Texture => TextureRegistry.EmptyTexture;
 
     Vector2 _targetOldPos;
 
     const float REPATH_DISTANCE = 32 * 32;
-    const float JUMP_RANGE = 128 * 128;
+    const float JUMP_RANGE = 96 * 96;
     const string ANIM_IDLE = "Idle";
     const string ANIM_RUN = "Run";
     const string ANIM_JUMPFRAME = "Jumpframe";
@@ -352,7 +352,7 @@ public class IvynStabber : AbstractBellSummon
         {
             var jumpDir = (Target.Center - Projectile.Center);
             jumpDir = jumpDir.SafeNormalize(Vector2.Zero);
-            jumpDir *= 8;
+            jumpDir *= 9;
             Projectile.velocity = jumpDir;
       
             AttackCycle++;
