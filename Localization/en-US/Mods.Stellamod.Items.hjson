@@ -12283,5 +12283,9 @@ IvynChakrams: {
 	BasicSlash: ""
 	StaminaSlash: No Effect
 	DisplayName: Ivyn Chakrams
-	Tooltip: ""
+	Tooltip:
+		'''
+		Pierces through 5 points of defense
+		Sometimes poisons enemies
+		'''
 }

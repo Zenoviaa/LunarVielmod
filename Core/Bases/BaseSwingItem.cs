@@ -20,7 +20,8 @@ namespace Stellamod.Core.Bases
         Greatsword,
         Hammer,
         Stein,
-        Dualsword
+        Dualsword,
+        Chakrams
     }
     public abstract class BaseSwingItem : ClassSwapItem
     {

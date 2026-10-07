@@ -21,7 +21,7 @@ public class IvynChakrams : BaseSwingItemV2
         Item.ArmorPenetration = 5;
         Item.DamageType = DamageClass.Summon;
         Item.shoot = ModContent.ProjectileType<IvynChakramsSlash>();
-   
+        meleeWeaponType = MeleeWeaponType.Chakrams;
     }
 
     public override void AddRecipes()
