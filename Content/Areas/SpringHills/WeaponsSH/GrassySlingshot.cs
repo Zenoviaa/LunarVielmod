@@ -8,7 +8,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
-
 public class GrassySlingshot : ModItem
 {
     public override void SetDefaults()

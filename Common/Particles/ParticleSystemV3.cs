@@ -55,6 +55,7 @@ public sealed class Particles : ModSystem
     public static readonly LightningArcCrawl LightningArcCrawl = new();
     public static readonly LightningCrackedGround LightningCrackedGround = new();
     public static readonly SplatDust SplatDust = new();
+    public static readonly IvynLeaf IvynLeaf = new();
     public override void Load()
     {
         base.Load();
@@ -80,6 +81,7 @@ public sealed class Particles : ModSystem
             GoldenLeafTornado,
             Sparklemist,
             FallingBigGoldenLeaf,
+            IvynLeaf,
 
             StarDonut,
             StarSmoke,
@@ -133,17 +135,5 @@ public sealed class Particles : ModSystem
         {
             _particleUpdaters[i].Update();
         }
-    }
-
-    public override void PostDrawTiles()
-    {
-        base.PostDrawTiles();
-
-        //Just for testing the atlas
-        /*
-        Main.spriteBatch.Begin();
-        var time = BitDust.elapsedString;
-        ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, FontAssets.MouseText.Value, time, Main.Camera.Center - Main.screenPosition + new Vector2(-144, -128), Color.White, 0, Vector2.Zero, Vector2.One * 1.2f);
-        Main.spriteBatch.End();*/
     }
 }

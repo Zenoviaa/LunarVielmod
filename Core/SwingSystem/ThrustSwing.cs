@@ -95,7 +95,7 @@ namespace Stellamod.Core.SwingSystem
                     dp.dampening = 0.1f;
                 }
 
-                ThrustParticle thrustParticle = ThrustParticle.Spawn(position , velocity * 2, Color.White, Scale: 1f);
+                ThrustParticle thrustParticle = ThrustParticle.Spawn(position , velocity * 2, Color.White * 0.6f, Scale: 1f);
                 thrustParticle.bloomColor = Color.LightSkyBlue;
                 if(swingProjectile.swordBeamLength > 0)
                 {

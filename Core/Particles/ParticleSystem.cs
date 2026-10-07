@@ -80,7 +80,7 @@ namespace Stellamod.Core.Particles
                 if (particle.ShouldUpdateCenter())
                     particle.Center += particle.Velocity;
 
-                if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
+                if (particle.shouldKilledOutScreen && !LegacyParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
 
                 if (particle.Scale < 0.001f)
@@ -102,7 +102,7 @@ namespace Stellamod.Core.Particles
                 if (particle.ShouldUpdateCenter())
                     particle.Center += particle.Velocity;
 
-                if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
+                if (particle.shouldKilledOutScreen && !LegacyParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
 
                 if (particle.Scale < 0.001f)
@@ -132,7 +132,7 @@ namespace Stellamod.Core.Particles
                 if (particle == null || !particle.active)
                     continue;
 
-                if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
+                if (!LegacyParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     continue;
 
                 if (particle.customShader != myCustomShader)
@@ -175,7 +175,7 @@ namespace Stellamod.Core.Particles
                 if (particle == null || !particle.active)
                     continue;
 
-                if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
+                if (!LegacyParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     continue;
 
                 if (particle.customShader != myCustomShader || spriteBatch.GraphicsDevice.BlendState != BlendState.Additive)

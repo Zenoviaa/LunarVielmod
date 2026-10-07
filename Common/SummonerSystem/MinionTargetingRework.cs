@@ -79,8 +79,8 @@ namespace Stellamod.Common.SummonerSystem
 
             if (NPC.HasBuff<RuneHealing>())
             {
-                float healingTime = 120f;
-                float totalHealingAMount = NPC.lifeMax * 0.2f;
+                float healingTime = 30f;
+                float totalHealingAMount = NPC.lifeMax * 0.5f;
                 float amountToHealPerTick = totalHealingAMount / healingTime;
                 Lifetime += amountToHealPerTick;
                 _totalAmountHealed += amountToHealPerTick;

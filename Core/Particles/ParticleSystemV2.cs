@@ -113,7 +113,7 @@ namespace Stellamod.Core.Particles
                 if (particle.behindLayer && !_drawBehind)
                     continue;
 
-                if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
+                if (!LegacyParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     continue;
 
                 if (particle.customShader != myCustomShader)
@@ -161,7 +161,7 @@ namespace Stellamod.Core.Particles
                 if (!particle.active)
                     continue;
 
-                if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
+                if (!LegacyParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     continue;
 
                 if (particle.customShader != myCustomShader)

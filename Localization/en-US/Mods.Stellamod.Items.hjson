@@ -12276,5 +12276,12 @@ GunSling: {
 
 GrassySlingshot: {
 	DisplayName: Grassy Slingshot
-	Tooltip: "Hold and release to fire a tiny ball that pierces through 10 points of defense"
+	Tooltip: Hold and release to fire a tiny ball that pierces through 10 points of defense
+}
+
+IvynChakrams: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Ivyn Chakrams
+	Tooltip: ""
 }
