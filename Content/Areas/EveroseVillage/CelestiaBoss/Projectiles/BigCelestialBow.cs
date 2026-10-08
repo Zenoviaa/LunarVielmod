@@ -688,7 +688,7 @@ public class BigCelestialBoom : ModProjectile
     public override void AI()
     {
         base.AI();
-        if (Timer > 24)
+        if (Timer > 26)
             Projectile.hostile = false;
         Timer++;
         if (Timer == 1)
