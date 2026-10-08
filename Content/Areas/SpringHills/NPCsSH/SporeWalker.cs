@@ -1,8 +1,10 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common;
 using Stellamod.Common.Animations;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
@@ -35,31 +37,30 @@ public class SporeShroomClouds : ModProjectile
     {
         base.AI();
         Timer++;
-        if (Timer % 16 == 0)
+        if(Timer % 6 == 0)
         {
-            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-            var fs = FaintSmokeParticle.SpawnInAlphaLayer(pos, Vector2.Zero);
-            fs.color = Color.OrangeRed * 0.8f;
-            fs.fadeToColor = Color.Lerp(fs.color, Color.Black, 0.8f) * 0.8f;
-            fs.Scale *= 0.1f * Projectile.scale;
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            Particles.RoughSmoke.Spawn(new()
+            {
+                position = pos,
+                timeLeft = 52,
+                color = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(0f, 1f), Color.OrangeRed, Color.DarkRed, Color.Gold, Color.Red, Color.DarkOrange, Color.DarkGoldenrod),
+                scale = Main.rand.NextFloat(0.8f, 1f),
+                rotation = Main.rand.NextFloat(6f)
+            });
         }
-        Projectile.velocity.Y -= 0.05f;
-    }
 
-    private void DrawPixelatedSmog(SpriteBatch sb , Vector2 screenPos)
-    {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-        float ratio = Timer / 60f;
-        float ease = EasingFunction.QuadraticBump(ratio);
-        drawer.color = Color.Lerp(Color.Transparent, Color.OrangeRed, ease) * 0.6f;
-        drawer.color.A = 0;
-        drawer.scale *= 0.5f;
-        sb.Draw(drawer);
+        if (Main.rand.NextBool(8))
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            var d = Dust.NewDustPerfect(pos, DustID.Torch, Vector2.Zero, Scale: 1f);
+            d.noGravity = true;
+         }
+        Projectile.velocity.Y -= 0.05f;
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
-        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSmog, DrawLayer.OverNPCs);
         return false;
       //  return base.PreDraw(ref lightColor);
     }
@@ -184,6 +185,7 @@ public class SporeWalker : ModNPC,
                 break;
         }
 
+        Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
         Color targetOutlineColor;
         if (_contactDamage)
             targetOutlineColor = Color.Red;
@@ -258,6 +260,29 @@ public class SporeWalker : ModNPC,
         Timer++;
         if(Timer == 1)
         {
+            if (MultiplayerHelper.IsHost)
+            {
+                Vector2 pos = NPC.Center;
+                Vector2 vel = Main.rand.NextVector2Circular(1, 1);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel,
+                    ModContent.ProjectileType<SporeShroomClouds>(), 10, 1, Main.myPlayer);
+            }
+
+            var factory = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, NPC.Center + new Vector2(0, -2), TriColorPalette.Fiery, new Vector2(5, 15f));
+            factory.particleCount *= 4;
+            ParticleUtils.CreateSwirlingDustCircle(factory);
+            for (var i = 0; i < 18; i++)
+            {
+                var pos = NPC.Center + Main.rand.NextVector2Circular(48, 48);
+                Particles.RoughSmoke.Spawn(new()
+                {
+                    position = pos,
+                    timeLeft = 35,
+                    color = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(0f, 1f), Color.OrangeRed, Color.DarkRed, Color.Gold, Color.Red, Color.DarkOrange, Color.DarkGoldenrod),
+                    scale = Main.rand.NextFloat(0.8f, 1f),
+                    rotation = Main.rand.NextFloat(6f)
+                });
+            }
             SoundStyle gasSound = new SoundStyle("Stellamod/Assets/Sounds/ExplosionGaseous");
             gasSound.PitchVariance = 0.3f;
             gasSound.Volume = 0.5f;
@@ -372,6 +397,8 @@ public class SporeWalker : ModNPC,
         Vector2 drawOrigin = DrawOrigin();
         SpriteEffects spriteEffects = NPC.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
         Vector2 drawCenter = NPC.Center - screenPos;
+        drawCenter.Y += NPC.gfxOffY;
+        drawCenter.Y += 2;
         float rotation = NPC.rotation;
         Vector2 scale = Vector2.One * NPC.scale;
         scale.X *= ExtraMath.Osc(1.1f, 0.9f, speed: 2);

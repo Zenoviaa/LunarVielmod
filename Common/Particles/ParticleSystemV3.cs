@@ -56,6 +56,7 @@ public sealed class Particles : ModSystem
     public static readonly LightningCrackedGround LightningCrackedGround = new();
     public static readonly SplatDust SplatDust = new();
     public static readonly IvynLeaf IvynLeaf = new();
+    public static readonly RoughSmoke RoughSmoke = new();
     public override void Load()
     {
         base.Load();
@@ -93,7 +94,8 @@ public sealed class Particles : ModSystem
             LightningSpikeySpark,
             LightningArcCrawl,
             LightningCrackedGround,
-            SplatDust
+            SplatDust,
+            RoughSmoke
         };
 
         if (Main.netMode == NetmodeID.Server)

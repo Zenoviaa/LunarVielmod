@@ -12285,14 +12285,10 @@ GrassySlingshot: {
 }
 
 IvynChakrams: {
-	BasicSlash: 	
-		'''
-		Pierces through 5 points of defense and sometimes poisons enemies
-		'''
+	BasicSlash: Pierces through 5 points of defense and sometimes poisons enemies
 	StaminaSlash: Throws out several Ivyn spikes that linger on the ground for a short while and poisons enemies
 	DisplayName: Ivyn Chakrams
-	Tooltip: "It's Leafy"
-	
+	Tooltip: It's Leafy
 }
 
 BombThrower: {
