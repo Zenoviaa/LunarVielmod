@@ -142,6 +142,7 @@ Common: {
 	Stein: Stein Weapon Type
 	Greatsword: Greatsword Weapon Type
 	Safunai: Safunai Weapon Type
+	Chakrams: Chakrams Weapon Type
 	Orb: Orb Weapon Type
 	PermanentFoodHelp: This buff is permanent, persisting through death and any trial you may face!
 	DrinkHelp: This buff lasts until you die!
@@ -12284,14 +12285,14 @@ GrassySlingshot: {
 }
 
 IvynChakrams: {
-	BasicSlash: ""
+	BasicSlash: 	
+		'''
+		Pierces through 5 points of defense and sometimes poisons enemies
+		'''
 	StaminaSlash: Throws out several Ivyn spikes that linger on the ground for a short while and poisons enemies
 	DisplayName: Ivyn Chakrams
-	Tooltip:
-		'''
-		Pierces through 5 points of defense
-		Sometimes poisons enemies
-		'''
+	Tooltip: "It's Leafy"
+	
 }
 
 BombThrower: {

@@ -54,7 +54,8 @@ public class IvynSpike : ModProjectile
         base.SetDefaults();
         Projectile.width = Projectile.height = 16;
         Projectile.LocalPiercingImmunityTime = 20;
-        Projectile.timeLeft = 120;
+        Projectile.timeLeft = 360;
+        Projectile.friendly = true;
     }
     public override void AI()
     {
@@ -70,14 +71,16 @@ public class IvynSpike : ModProjectile
 
         if (!IsGrounded)
         {
+            Projectile.velocity.X *= 0.96f;
             Projectile.rotation += Projectile.velocity.Length() * 0.04f * MathF.Sign(Projectile.velocity.X);
         }
         else
         {
+            Projectile.velocity.X *= 0.9f;
             Projectile.rotation = Utils.AngleLerp(Projectile.rotation, 0, 0.1f);
         }
 
-        Projectile.velocity.X *= 0.96f;
+  
         Projectile.velocity.Y += Gravity;
     }
 
@@ -107,7 +110,7 @@ public class IvynSpike : ModProjectile
 
         var outlineDrawer = drawer;
         outlineDrawer.VerticalFrame(1, Main.projFrames[Type]);
-        outlineDrawer.color = Color.Lerp(Color.Transparent, Color.Green, 0.5f) * ExtraMath.Osc(0.9f, 1f, speed: 6f);
+        outlineDrawer.color = Color.Lerp(Color.Transparent, Color.Green, 0.85f) * ExtraMath.Osc(0.9f, 1f, speed: 6f);
         outlineDrawer.color.A = 0;
         Main.spriteBatch.Draw(outlineDrawer);
         return false;
@@ -159,14 +162,17 @@ public class IvynChakramsStaminaSlash : BaseSwingProjectileV2
     public override void AI()
     {
         base.AI();
-        if (Timer % 128 == 0)
+        if (Timer % 32 == 0)
         {
             if (this.OwnedByLocalClient())
             {
                 var firer = ProjFirer.From<IvynSpike>(Projectile);
+                firer.position = Owner.Center;
                 firer.velocity = Projectile.velocity;
-                firer.velocity = firer.velocity.Resize(15).RotatedByRandom(0.6f);
+                firer.velocity = firer.velocity.Resize(12).RotatedByRandom(0.5f) * Main.rand.NextFloat(0.6f, 1.6f);
                 firer.velocity.Y -= 4;
+                firer.damage *= 2;
+                firer.knockback = 0;
                 firer.New();
             }
         }
