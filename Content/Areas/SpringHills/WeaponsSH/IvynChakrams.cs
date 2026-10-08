@@ -53,7 +53,7 @@ public class IvynSpike : ModProjectile
     {
         base.SetDefaults();
         Projectile.width = Projectile.height = 16;
-        Projectile.LocalPiercingImmunityTime = 20;
+        Projectile.StaticPiercingImmunityTime = 20;
         Projectile.timeLeft = 360;
         Projectile.friendly = true;
     }
