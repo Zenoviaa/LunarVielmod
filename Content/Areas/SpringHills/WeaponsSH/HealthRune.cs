@@ -61,7 +61,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
     public class HealthRuneShaper : AbstractRuneProjectile
     {
-
+        bool _consumed;
         public override bool MatchShapeCheck(Vector2[] shapePoints)
         {
             if (shapePoints.Length <= 2)
@@ -115,7 +115,11 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void ApplyMagic(AbstractBellSummon minion)
         {
             minion.Heal();
-            Owner.UseStamina(3);
+            if (!_consumed)
+            {
+                Owner.UseStamina(3);
+                _consumed = true;
+            }
         }
 
 

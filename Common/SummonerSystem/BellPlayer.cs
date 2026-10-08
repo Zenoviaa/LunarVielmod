@@ -18,7 +18,7 @@ namespace Stellamod.Common.SummonerSystem
         {
             base.SetStaticDefaults();
             Main.pvpBuff[Type] = true; // This buff can be applied by other players in Pvp, so we need this to be true.
-
+            Main.debuff[Type] = true;
         }
     }
 
@@ -37,9 +37,13 @@ namespace Stellamod.Common.SummonerSystem
                 var item = _minions[i];
                 if (item.IsAir)
                     continue;
-                var bellMinion = item.GetGlobalItem<BellMinionGlobalItem>();
-                if (bellMinion.isBellMinion)
-                    baseTime += bellMinion.addedCastingTime;
+                if(item.TryGetGlobalItem(out BellMinionGlobalItem bellMinion))
+                {
+                    if (bellMinion.isBellMinion)
+                        baseTime += bellMinion.addedCastingTime;
+                }
+
+                
             }
             baseTime *= 1.0f - Player.GetModPlayer<ArmorStatsPlayer>().summonCastTime;
             return baseTime;
@@ -163,33 +167,40 @@ namespace Stellamod.Common.SummonerSystem
             if(Guardian != null && !Guardian.IsAir && !alreadyHasGuardian)
             {
                 var minionItem = Guardian;
-                int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
-                Vector2 startpos = Player.Bottom - new Vector2(0, 50);
-                startpos.X += Main.rand.NextFloat(-100, 100);
+                if(minionItem.TryGetGlobalItem(out BellMinionGlobalItem gItem))
+                {
+                    int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
+                    Vector2 startpos = Player.Bottom - new Vector2(0, 50);
+                    startpos.X += Main.rand.NextFloat(-100, 100);
 
-                float health = minionItem.GetGlobalItem<BellMinionGlobalItem>().health;
-                ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
-                health *= 1.0f + statsPlayer.minionSummonHealth;
-                SummoningBeam beam = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), startpos, Vector2.Zero,
-                    ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
-                    ai1: minionItem.shoot, ai2: health).ModProjectile as SummoningBeam;
-                beam.isGuardian = true;
+                    float health = gItem.health;
+                    ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
+                    health *= 1.0f + statsPlayer.minionSummonHealth;
+                    SummoningBeam beam = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), startpos, Vector2.Zero,
+                        ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
+                        ai1: minionItem.shoot, ai2: health).ModProjectile as SummoningBeam;
+                    beam.isGuardian = true;
+                }
+
             }
 
             for(int i = 0; i < Player.maxMinions && i < _minions.Count; i++)
             {
                 var minionItem = _minions[i];
+                if(minionItem.TryGetGlobalItem(out BellMinionGlobalItem gItem))
+                {
+                    int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
+                    Vector2 startpos = Player.Bottom - new Vector2(0, 50);
+                    startpos.X += Main.rand.NextFloat(-100, 100);
 
-                int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
-                Vector2 startpos = Player.Bottom - new Vector2(0, 50);
-                startpos.X += Main.rand.NextFloat(-100, 100);
+                    float health = gItem.health;
+                    ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
+                    health *= 1.0f + statsPlayer.minionSummonHealth;
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), startpos, Vector2.Zero,
+                        ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
+                        ai1: minionItem.shoot, ai2: health);
+                }
 
-                float health = minionItem.GetGlobalItem<BellMinionGlobalItem>().health;
-                ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
-                health *= 1.0f + statsPlayer.minionSummonHealth;
-                Projectile.NewProjectile(Player.GetSource_FromThis(), startpos, Vector2.Zero,
-                    ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
-                    ai1: minionItem.shoot, ai2: health);
             }
 
             Player.AddBuff(ModContent.BuffType<BellExhaust>(), 600);

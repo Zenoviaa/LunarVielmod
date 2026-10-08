@@ -175,7 +175,7 @@ public abstract class AbstractBellSummon : ModProjectile,
     {
         if (isGuardian)
         {
-            DrawSprite();
+            DrawSpectral_Inner(Main.spriteBatch, lightColor);
         }
         return false;
     }

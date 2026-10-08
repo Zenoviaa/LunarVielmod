@@ -143,6 +143,23 @@ public static class TileUtilities
     {
         return FallToSolidTile(worldCoordinate.ToTileCoordinates()).ToWorldCoordinates();
     }
+    public static Vector2 FallToSolidTileOrPlatform(Vector2 worldCoordinate)
+    {
+        return FallToSolidTileOrPlatform(worldCoordinate.ToTileCoordinates()).ToWorldCoordinates();
+    }
+    public static Point FallToSolidTileOrPlatform(Point tile)
+    {
+        Point start = tile;
+        Point current = start;
+        for (int i = 0; i < Main.maxTilesY; i++)
+        {
+            if (WorldGen.InWorld(current.X, current.Y) && (WorldGen.SolidOrSlopedTile(current.X, current.Y)) || Main.tileSolidTop[
+                Main.tile[current].type])
+                return current;
+            current.Y += 1;
+        }
+        return Point.Zero;
+    }
     public static bool TooCloseToTilePoint(Point tilePoint, Point referencePoint, int proximity)
     {
         int dx = Math.Abs(referencePoint.X - tilePoint.X);

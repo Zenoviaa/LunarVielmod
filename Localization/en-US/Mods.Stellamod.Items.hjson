@@ -11260,8 +11260,8 @@ MoonFlight: {
 }
 
 DogBone: {
-	DisplayName: Dog Bone
-	Tooltip: ""
+	DisplayName: Song of the Guardian Dog
+	Tooltip: Summons a guard dog that attacks enemies ferociously, and grants 50% damage reduction to your other minions!
 }
 
 TotemOfTheVeil: {

@@ -98,14 +98,18 @@ public class IvynStabber : AbstractBellSummon
         base.SetDefaults();
         _pathfinder = new();
         Projectile.DefaultToMinionProjectile();
-        Projectile.WidthAndHeight = 32;
+        Projectile.WidthAndHeight = 8;
         Projectile.width = 12;
         Projectile.LocalPiercingImmunityTime = 20;
         Projectile.tileCollide = true;
         Projectile.friendly = true;
         Projectile.light = 0.67f;
     }
-   
+    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+    {
+        var myHitbox = DrawUtilities.CenterRectangle(Projectile.Center, 32, 32);
+        return myHitbox.Intersects(targetHitbox);
+    }
 
     void SwitchState(AIState state)
     {
@@ -299,10 +303,8 @@ public class IvynStabber : AbstractBellSummon
     public override void DrawSpectral_Inner(SpriteBatch spriteBatch, Color drawColor)
     {
         var drawer = Projectile.GetAnimatorDrawInfo(drawColor);
+        drawer.worldPosition.Y -= 12;
         spriteBatch.Draw(drawer);
-        var kb = Keyboard.GetState();
-        if(kb.IsKeyDown(Keys.LeftShift))
-            _pathfinder.DebugDrawPath(spriteBatch, Color.White  * 0.3f);
     }
     
     public override void OnKill(int timeLeft)

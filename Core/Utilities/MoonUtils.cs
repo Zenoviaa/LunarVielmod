@@ -49,11 +49,11 @@ public static class MoonUtils
     #region PathfindingAI
     public static void AIWalk_IvynStabber(Pathfinder pathfinder, Projectile entity, Vector2 destination, bool isGrounded, float runSpeed, float maxJumpSpeed, ref Vector2 targetOldPos)
     {
-        if (Vector2.DistanceSquared( targetOldPos, destination) > REPATH_DISTANCE)
+        if (Vector2.DistanceSquared( targetOldPos, destination) > REPATH_DISTANCE || Main.GameUpdateCount % 30 ==0)
         {
             targetOldPos = destination;
-            var startPost = TileUtilities.FallToSolidTile(entity.Center);
-            pathfinder.NewPath(destination, startPost, 50);
+        //    var startPost = TileUtilities.FallToSolidTileOrPlatform(entity.Center);
+            pathfinder.NewPath(destination, entity.Center, 75);
         }
 
         if (pathfinder.currentNode != Vector2.Zero)
@@ -78,16 +78,17 @@ public static class MoonUtils
         //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
         var targetRectangle = DrawUtilities.CenterRectangle(pathfinder.currentNode, 16, 16);
         var nextRectangle = DrawUtilities.CenterRectangle(pathfinder.nextNode, 16, 16);
-        var myRectangle = entity.getRect();
+        var myRectangle = DrawUtilities.CenterRectangle(entity.Center, 32, 32);
 
         //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
-        myRectangle = myRectangle.CenterPad(4);
-
+        
         float distanceToCurrentNode = Vector2.Distance(entity.Center, pathfinder.currentNode);
         float distanceToNextNode = Vector2.Distance(entity.Center, pathfinder.nextNode);
 
-        if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode || myRectangle.Intersects(nextRectangle))
+        if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode ||
+            myRectangle.Intersects(nextRectangle) || myRectangle.Contains(targetRectangle))
         {
+
             pathfinder.Pop();
         }
 
@@ -96,12 +97,16 @@ public static class MoonUtils
         //If the y axis is above, then we'll jump
         var diffX = (target.X - entity.Center.X);
         var distX = MathF.Abs(diffX);
-        if (distX <= entity.width)
+        if (distX <= myRectangle.Width)
         {
+     
             var diffY = (target.Y - entity.Center.Y);
+            
             var distY = MathF.Abs(diffY);
+
             if (diffY < 0 && distY > myRectangle.Height && isGrounded)
             {
+     
                 var maxSpeed = MathF.Min(maxJumpSpeed, distY / 8);
                 entity.velocity.Y = -maxSpeed;
             }
@@ -127,7 +132,7 @@ public static class MoonUtils
         var tileBelow = Main.tile[tilePointBelow];
         tilePointBelow.Y++;
         var tileBelow2 = Main.tile[tilePointBelow];
-        return WorldGen.SolidOrSlopedTile(tileBelow) || WorldGen.SolidOrSlopedTile(tileBelow2);
+        return WorldGen.SolidOrSlopedTile(tileBelow) || WorldGen.SolidOrSlopedTile(tileBelow2) || Main.tileSolidTop[tileBelow.type] || Main.tileSolidTop[tileBelow2.type];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

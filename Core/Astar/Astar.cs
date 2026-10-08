@@ -22,8 +22,16 @@ public class Pathfinder
         if (result == null)
             return;
 
+        var i = 0;
         foreach (var node in result)
-            path.Push(node);
+        {
+            if(i % 2 == 0)
+            {
+                path.Push(node);
+            }
+            i++;
+        }
+    
         if (path != null && path.Count > 0)
         {
             Pop();
@@ -106,7 +114,7 @@ public class Astar
         //If a tile is submerged in water, the weight increases slightly (avoid water if possible)
         //If a tile is completely within the air the weight increases slightly
         if (WorldGen.SolidOrSlopedTile(x, y))
-            weight += 1000;
+            weight += 10000;
         if (tile.LiquidAmount > 0)
             weight += 100;
         bool NextToGroundTile()
@@ -131,13 +139,25 @@ public class Astar
         bool IsGrounded()
         {
             var newY = y + 1;
-            if (WorldGen.SolidOrSlopedTile(x, newY))
+            if (WorldGen.SolidOrSlopedTile(x, newY) || Main.tileSolidTop[Main.tile[x, newY].type])
                 return true;
             return false;
         }
+
+        bool NextToWall()
+        {
+            var leftX = x - 1;
+            var rightX = x + 1;
+
+            return WorldGen.SolidOrSlopedTile(leftX, y) || WorldGen.SolidOrSlopedTile(rightX, y);
+        }
         if (IsGrounded())
         {
-            weight -= 300;
+            weight -= 1000;
+        }
+        if (NextToWall())
+        {
+            weight += 1000;
         }
 
         return weight;
