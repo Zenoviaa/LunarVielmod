@@ -37,6 +37,7 @@ public class GuardDog : AbstractBellSummon
     int _targetNpc;
     float _targetafAlpha;
     float _afAlpha;
+    bool _attacking;
     NPC Target
     {
         get
@@ -67,6 +68,7 @@ public class GuardDog : AbstractBellSummon
     const string ANIM_RUN = "run";
     const string ANIM_WALK = "walk";
     const string ANIM_DASH = "dash";
+    const string ANIM_CROUCH = "crouch";
     const string ANIM_JUMP = "jump";
     const string ANIM_BALL = "ball";
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -80,7 +82,7 @@ public class GuardDog : AbstractBellSummon
         }
     }
     float MaxJumpSpeed => 13;
-    float JumpRange => 100 * 100;
+    float JumpRange => 232 * 232;
     float JumpTime => 29;
     float Gravity => 0.35f;
     public override void SetStaticDefaults()
@@ -132,6 +134,7 @@ public class GuardDog : AbstractBellSummon
     public override void AI()
     {
         base.AI();
+        _attacking = false;
         _targetafAlpha = 0;
         Owner.GetModPlayer<BellPlayer>().incomingDamageMultiplier -= 0.5f;
         switch (State)
@@ -301,57 +304,75 @@ public class GuardDog : AbstractBellSummon
     }
     void AI_LungeTarget()
     {
-        _targetafAlpha = 1f;
         Timer++;
-        if (AttackCycle == 0 && IsGrounded())
+        _targetafAlpha = 1f;
+        switch (AttackCycle)
         {
+            case 0:
+                {
+                    Projectile.velocity.X *= 0.85f;
+                    if (IsGrounded())
+                    {
+                        AttackCycle++;
+                        Timer = 0;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    _startDashPos = Projectile.Center;
+                    _endDashPos = Target.Center;
+                    _endDashPos = MoonUtils.RayCast(_startDashPos, (_endDashPos - _startDashPos), Vector2.Distance(_startDashPos, _endDashPos));
+                    Projectile.velocity.X *= 0.92f;
+                    this.AseAnimator.PlayAnimation(ANIM_CROUCH, AnimationParams.NoLooping);
+                    if(Timer >= 45)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    if (Timer % 3 == 0)
+                    {
+                        var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center - Projectile.velocity.SafeNormalize(Vector2.Zero) * 3, TriColorPalette.Bloody, new Vector2(5, 15f));
+                        factory.particleCount = 4;
+                        ParticleUtils.CreateSwirlingDustBurst(factory);
+                    }
 
-            _startDashPos = Projectile.Center;
-            _endDashPos = Target.Center;
-            _endDashPos = MoonUtils.RayCast(_startDashPos, (_endDashPos - _startDashPos), Vector2.Distance(_startDashPos, _endDashPos));
-            Projectile.netUpdate = true;          
-            AttackCycle++;
+                    _attacking = true;
+                    var posToMoveTo = Vector2.Lerp(_startDashPos, _endDashPos, EasingFunction.OutCirc(Timer / JumpTime));
+                    var targetVelocity = _endDashPos - _startDashPos;
+                    targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+                    Projectile.velocity = targetVelocity * 20;
+                    this.AseAnimator.PlayAnimation(ANIM_DASH, AnimationParams.Default);
+
+                    Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
+                    if (Timer >= JumpTime / 3f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    Projectile.velocity *= 0.9f;
+                    if(Timer >= 30)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
         }
 
-        if(Timer % 3  == 0)
-        {
-            var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center - Projectile.velocity.SafeNormalize(Vector2.Zero) * 3, TriColorPalette.Bloody, new Vector2(5, 15f));
-            factory.particleCount = 4;
-            ParticleUtils.CreateSwirlingDustBurst(factory);
-        }
-
-        Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
-        this.AseAnimator.PlayAnimation(ANIM_DASH, AnimationParams.Default);
-
-        if (Timer >= JumpTime / 2f)
-        {
-            Projectile.velocity *= 0.92f;
-       
-        }
-        else
-        {
-            if(Timer >= JumpTime / 4f)
-            {
-                var posToMoveTo = Vector2.Lerp(_startDashPos, _endDashPos, EasingFunction.OutCirc(Timer / JumpTime));
-                var targetVelocity = _endDashPos - _startDashPos;
-                targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
-                Projectile.velocity = targetVelocity * 25;
-            }
-            else
-            {
-                Projectile.velocity *= 0.8f;
-            }
-
-        }
-        if(Timer >= JumpTime)
-        {
-            SwitchState(AIState.Idle);
-        }
+  
         Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
     }
     public override bool MinionContactDamage()
     {
-        return State == AIState.LungeTarget;
+        return _attacking;
     }
 
     public override bool OnTileCollide(Vector2 oldVelocity)

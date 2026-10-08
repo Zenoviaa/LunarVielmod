@@ -217,7 +217,7 @@ public class LittleFlask : ModProjectile
         base.AI();
         Timer++;
         Projectile.SetTrailCacheLength(12);
-        Projectile.rotation += Projectile.velocity.Length() + 0.01f;
+        Projectile.rotation += Projectile.velocity.Length() * 0.03f;
         Projectile.velocity.Y += 0.3f;
     }
 
@@ -233,7 +233,16 @@ public class LittleFlask : ModProjectile
         base.OnKill(timeLeft);
         var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center - new Vector2(0, 16), TriColorPalette.Health, new Vector2(5, 15f));
         ParticleUtils.CreateSwirlingDustBurst(factory);
-        Owner.Heal(2);
+        foreach(var player in Main.ActivePlayers)
+        {
+            var sqrDist = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
+            if(sqrDist < 192 * 192)
+            {
+                Owner.Heal(2);
+
+            }
+        }
+    
         SoundEngine.PlaySound(SoundID.Shatter with { PitchVariance = 0.6f, Volume = 0.24f }, Projectile.position);
     }
 }

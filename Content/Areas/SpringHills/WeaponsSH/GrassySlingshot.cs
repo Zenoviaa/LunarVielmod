@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Items;
 using Terraria;
@@ -53,6 +54,7 @@ public class SlingshotBall : ModProjectile
     {
         base.SetStaticDefaults();
         Projectile.SetTrailCacheLength(12);
+        Main.projFrames[Type] = 2;
     }
     public override void SetDefaults()
     {
@@ -72,9 +74,18 @@ public class SlingshotBall : ModProjectile
         {
             Timer++;
             if (Projectile.velocity.X != oldVelocity.X)
+            {
                 Projectile.velocity.X = -oldVelocity.X;
+            }
+    
             if (Projectile.velocity.Y != oldVelocity.Y)
+            {
                 Projectile.velocity.Y = -oldVelocity.Y;
+            }
+
+            var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center + Projectile.velocity, TriColorPalette.Foresty, new Vector2(5, 15f));
+            ParticleUtils.CreateSwirlingDustBurst(factory);
+            Projectile.velocity *= 0.7f;
         }
         return false; // base.OnTileCollide(oldVelocity);
     }
@@ -90,12 +101,17 @@ public class SlingshotBall : ModProjectile
             var d = Dust.NewDustPerfect(pos, DustID.Dirt, vel, Scale: Main.rand.NextFloat(0.6f, 0.8f));
             d.noGravity = true;
         }
-        Projectile.velocity.Y += 0.2f;
+
+        Projectile.velocity.Y += 0.4f;
     }
     public override bool PreDraw(ref Color lightColor)
     {
         DrawUtilities.DrawAdditiveFadingTrail(Projectile, Color.White, Color.Transparent, 0.4f);
         Main.spriteBatch.Draw(Projectile.Drawer);
+        var outlineDrawer = Projectile.Drawer;
+        outlineDrawer.VerticalFrame(1, 2);
+        outlineDrawer.color = Color.White * 0.5f;
+        Main.spriteBatch.Draw(outlineDrawer);
         return false;
     }
     public override void OnKill(int timeLeft)
