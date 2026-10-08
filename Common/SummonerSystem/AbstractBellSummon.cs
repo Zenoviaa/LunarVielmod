@@ -25,12 +25,16 @@ public abstract class AbstractBellSummon : ModProjectile,
 
     public float lifetime;
     public bool isGuardian;
+
+    public int RemainingHealth => GetAttachedNPC().life;
+    public int MaxHealth => GetAttachedNPC().lifeMax;
+    public float HealthPct => (float)RemainingHealth / (float)MaxHealth;
     public static event Action<Projectile> OnKillMinion;
     public virtual int GetAggro()
     {
         int aggro = -50;
         if (isGuardian)
-            aggro += 1000;
+            aggro += 200;
         return aggro;
     }
 
@@ -74,6 +78,8 @@ public abstract class AbstractBellSummon : ModProjectile,
             Death();
         }
     }
+
+
 
     public NPC GetAttachedNPC()
     {

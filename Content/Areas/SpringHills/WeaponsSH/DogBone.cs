@@ -22,7 +22,7 @@ public class DogBone : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.DefaultToBellMinion(ModContent.ProjectileType<Cupcake>(), isGuardian: true);
+        Item.DefaultToBellMinion(ModContent.ProjectileType<Cupcake>(), isGuardian: true, health: 150);
         Item.damage = 16;
         Item.knockBack = 3f;
     }
@@ -30,6 +30,9 @@ public class DogBone : ModItem
 
 public class Cupcake : AbstractBellSummon
 {
+    float _attackCounter;
+    bool _oldGrounded;
+    Vector2 _squishScale = Vector2.One;
     Vector2 _startDashPos;
     Vector2 _endDashPos;
     Vector2 _targetOldPos;
@@ -55,7 +58,11 @@ public class Cupcake : AbstractBellSummon
         GoHome,
         ChaseTarget,
         LungeTarget,
-        FlyHome
+        FlyHome,
+        
+        Rushdown,
+        Petting,
+        Panic
     }
     ref float Timer => ref Projectile.ai[0];
     AIState State
@@ -71,6 +78,7 @@ public class Cupcake : AbstractBellSummon
     const string ANIM_CROUCH = "crouch";
     const string ANIM_JUMP = "jump";
     const string ANIM_BALL = "ball";
+    const string ANIM_FALL = "fall";
     public override string Texture => TextureRegistry.EmptyTexture;
     float RunSpeed
     {
@@ -116,12 +124,14 @@ public class Cupcake : AbstractBellSummon
     {
         base.SendExtraAI(writer);
         writer.Write(_targetNpc);
+        writer.Write(_attackCounter);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         _targetNpc = reader.ReadInt32();
+        _attackCounter = reader.ReadInt32();
     }
 
     void SwitchState(AIState state)
@@ -129,6 +139,7 @@ public class Cupcake : AbstractBellSummon
         Timer = 0;
         AttackCycle = 0;
         State = state;
+        _attackCounter = 0;
     }
 
     public override void AI()
@@ -154,8 +165,27 @@ public class Cupcake : AbstractBellSummon
             case AIState.FlyHome:
                 AI_FlyHome();
                 break;
+            case AIState.Rushdown:
+                AI_Rushdown();
+                break;
+            case AIState.Panic:
+                AI_Panic();
+                break;
+            case AIState.Petting:
+                AI_Petting();
+                break;
         }
-
+        bool newIsGrounded = IsGrounded();
+        if (_oldGrounded != newIsGrounded && newIsGrounded)
+        {
+            _squishScale = new Vector2(0.9f, 1.1f);
+        }
+        else if (_oldGrounded != newIsGrounded && !newIsGrounded)
+        {
+            _squishScale = new Vector2(1.1f, 0.9f);
+        }
+        _oldGrounded = IsGrounded();
+        _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
         var distToOwner = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
         if(distToOwner >= 780 * 780 && State != AIState.FlyHome)
         {
@@ -167,6 +197,122 @@ public class Cupcake : AbstractBellSummon
         Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
         this.AseAnimator.DrawOrigin = new Vector2(62, 51);
         this.AseAnimator.Update();
+    }
+
+    void PlayGrowlSound()
+    {
+        var sound = AssetReferences.Assets.Sounds.DogGrowl.Asset with { PitchVariance = 0.5f, Volume = 0.3f, Pitch = -0.4f };
+        SoundEngine.PlaySound(sound, Projectile.position);
+    }
+    void PlayBiteSound()
+    {
+        var sound = AssetReferences.Assets.Sounds.DogBite.Asset with { PitchVariance = 0.5f, Volume = 0.3f, Pitch = -0.4f };
+        SoundEngine.PlaySound(sound, Projectile.position);
+    }
+    void SetBitePositions()
+    {
+        _startDashPos = Projectile.Center;
+        _endDashPos = Target.Center;
+        _endDashPos = MoonUtils.RayCast(_startDashPos, (_endDashPos - _startDashPos), Vector2.Distance(_startDashPos, _endDashPos));
+    }
+    void AI_Rushdown()
+    {
+        Timer++;
+        _targetafAlpha = 1f;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    Projectile.velocity.X *= 0.85f;
+                    if(Timer == 1)
+                    {
+                        PlayGrowlSound();
+                    }
+                    if (IsGrounded())
+                    {
+                        AttackCycle++;
+                        Timer = 0;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    SetBitePositions();
+                    Projectile.velocity.X *= 0.92f;
+                    this.AseAnimator.PlayAnimation(ANIM_CROUCH, AnimationParams.NoLooping);
+                    if (Timer >= 15)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    if (Timer % 3 == 0)
+                    {
+                        var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center - Projectile.velocity.SafeNormalize(Vector2.Zero) * 3, TriColorPalette.Bloody, new Vector2(5, 15f));
+                        factory.particleCount = 4;
+                        ParticleUtils.CreateSwirlingDustBurst(factory);
+                    }
+
+                    _attacking = true;
+                    var posToMoveTo = Vector2.Lerp(_startDashPos, _endDashPos, EasingFunction.OutCirc(Timer / JumpTime));
+                    var targetVelocity = _endDashPos - _startDashPos;
+                    targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+                    targetVelocity.Y *= 0.12f;
+                    Projectile.velocity = targetVelocity * 12;
+                    this.AseAnimator.PlayAnimation(ANIM_DASH, AnimationParams.Default);
+
+                    Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
+                    if (Timer >= JumpTime / 4f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    Projectile.velocity *= 0.9f;
+                    if (Timer >= 12)
+                    {
+                        _attackCounter++;
+                        if(_attackCounter >= 5)
+                        {
+                            SwitchState(AIState.Idle);
+                        }
+                        else
+                        {
+                            Timer = 0;
+                            AttackCycle = 1;
+                        } 
+                    }
+                }
+                break;
+        }
+
+
+        Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
+    }
+
+    void AI_Panic()
+    {
+        Timer++;
+        Projectile.rotation *= 0.8f;
+        var poAroundPlayer = Owner.Center;
+        poAroundPlayer.X += ExtraMath.Osc(-24, 24, speed: 0, Projectile.minionPos);
+        PathfindWalkTo(poAroundPlayer);
+        if (HealthPct > 0.2f)
+        {
+            SwitchState(AIState.Idle);
+        }
+        HandleWalkingAnimation();
+    }
+
+    void AI_Petting()
+    {
+
     }
 
     void AI_FlyHome()
@@ -204,14 +350,29 @@ public class Cupcake : AbstractBellSummon
         }
         if (Timer >= 15)
             ChaseTargetIfOneFound();
-
+        if (HealthPct < 0.2f)
+        {
+            SwitchState(AIState.Panic);
+        }
     }
 
+    void PlayAirbornAnimation()
+    {
+        if(Projectile.velocity.Y < 0)
+        {
+            this.AseAnimator.PlayAnimation(ANIM_JUMP, AnimationParams.Default);
+        }
+        else
+        {
+            this.AseAnimator.PlayAnimation(ANIM_FALL, AnimationParams.Default);
+
+        }
+    }
     void HandleWalkingAnimation()
     {
         if (!IsGrounded())
         {
-            this.AseAnimator.PlayAnimation(ANIM_JUMP, AnimationParams.Default);
+            PlayAirbornAnimation();
         }
         else
         {
@@ -220,9 +381,10 @@ public class Cupcake : AbstractBellSummon
     }
     void HandleRunningAnimation()
     {
+
         if (!IsGrounded())
         {
-            this.AseAnimator.PlayAnimation(ANIM_JUMP, AnimationParams.Default);
+            PlayAirbornAnimation();
         }
         else
         {
@@ -299,7 +461,18 @@ public class Cupcake : AbstractBellSummon
         }
         if (distSqr <= JumpRange && Timer >= 20)
         {
-            SwitchState(AIState.LungeTarget);
+            if (this.OwnedByLocalClient())
+            {
+                if (Main.rand.NextBool(2))
+                {
+                    SwitchState(AIState.Rushdown);
+                }
+                else
+                {
+                    SwitchState(AIState.LungeTarget);
+                }
+            }
+ 
         }
     }
     void AI_LungeTarget()
@@ -320,9 +493,7 @@ public class Cupcake : AbstractBellSummon
                 break;
             case 1:
                 {
-                    _startDashPos = Projectile.Center;
-                    _endDashPos = Target.Center;
-                    _endDashPos = MoonUtils.RayCast(_startDashPos, (_endDashPos - _startDashPos), Vector2.Distance(_startDashPos, _endDashPos));
+                    SetBitePositions();
                     Projectile.velocity.X *= 0.92f;
                     this.AseAnimator.PlayAnimation(ANIM_CROUCH, AnimationParams.NoLooping);
                     if(Timer >= 45)
@@ -334,6 +505,10 @@ public class Cupcake : AbstractBellSummon
                 break;
             case 2:
                 {
+                    if(Timer == 1)
+                    {
+                        PlayBiteSound();
+                    }
                     if (Timer % 3 == 0)
                     {
                         var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center - Projectile.velocity.SafeNormalize(Vector2.Zero) * 3, TriColorPalette.Bloody, new Vector2(5, 15f));
@@ -345,6 +520,7 @@ public class Cupcake : AbstractBellSummon
                     var posToMoveTo = Vector2.Lerp(_startDashPos, _endDashPos, EasingFunction.OutCirc(Timer / JumpTime));
                     var targetVelocity = _endDashPos - _startDashPos;
                     targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+                    targetVelocity.Y *= 0.12f;
                     Projectile.velocity = targetVelocity * 20;
                     this.AseAnimator.PlayAnimation(ANIM_DASH, AnimationParams.Default);
 
@@ -418,6 +594,7 @@ public class Cupcake : AbstractBellSummon
     {
         PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail, DrawLayer.OverNPCs);
         var drawer = Projectile.GetAnimatorDrawInfo(drawColor);
+        drawer.scale *= _squishScale;
         var offsetY = -18;
         drawer.worldPosition.Y += offsetY;
         foreach(OldPosition oldPos in Projectile.IterateOldPosBackwards())
