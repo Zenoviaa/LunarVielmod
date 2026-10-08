@@ -2,6 +2,7 @@
 
 public readonly partial record struct TriColorPalette(Color primaryColor, Color secondaryColor, Color accent)
 {
+    public static readonly TriColorPalette Fiery = new TriColorPalette(Color.Gold, Color.OrangeRed, Color.DarkRed);
     public static readonly TriColorPalette Bloody = new TriColorPalette(Color.DarkRed, Color.DarkBlue, Color.Black);
     public static readonly TriColorPalette Health = new TriColorPalette(Color.Red, Color.DarkRed, Color.Black);
     public static readonly TriColorPalette Silver = new TriColorPalette(Color.Silver, Color.DarkGray, Color.DarkBlue);

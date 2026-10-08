@@ -11,6 +11,19 @@ namespace Stellamod.Core.Bases
 {
     public static class ItemDefaultExtensions
     {
+        public static void DefaultToCustomChanneledWeapon<T>(this Item item) where T : ModProjectile
+        {
+            item.DamageType = DamageClass.Ranged;
+            item.useStyle = ItemUseStyleID.HoldUp;
+            item.channel = true;
+            item.autoReuse = false;
+            item.damage = 25;
+            item.knockBack = 1;
+            item.useTime = item.useAnimation = 20;
+            item.noMelee = true;
+            item.noUseGraphic = true;
+            item.shoot = ModContent.ProjectileType<T>();
+        }
         public static void DefaultToGun(this Item Item)
         {
             Item.damage = 16;

@@ -13,7 +13,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
-
 public class IvynChakrams : BaseSwingItemV2
 {
     public override void SetDefaults2()
