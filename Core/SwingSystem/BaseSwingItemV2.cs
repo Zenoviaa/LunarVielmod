@@ -37,10 +37,6 @@ namespace Stellamod.Core.SwingSystem
 
             Color noStaminaColor = new Color(50, 50, 50);
             TooltipLine line;
-            bool noExpand = item.ModItem is BaseSwingItemV2 mSwingItem && mSwingItem.meleeWeaponType == MeleeWeaponType.Chakrams;
-            if (noExpand)
-                return;
-
             if (item.ModItem is BaseSwingItemV2 swingItem)
             {
                 line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + swingItem.meleeWeaponType.ToString()));

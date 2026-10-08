@@ -12285,7 +12285,7 @@ GrassySlingshot: {
 
 IvynChakrams: {
 	BasicSlash: ""
-	StaminaSlash: No Effect
+	StaminaSlash: Throws out several Ivyn spikes that linger on the ground for a short while and poisons enemies
 	DisplayName: Ivyn Chakrams
 	Tooltip:
 		'''
