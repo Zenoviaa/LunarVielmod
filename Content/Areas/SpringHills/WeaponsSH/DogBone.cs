@@ -22,7 +22,7 @@ public class DogBone : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.DefaultToBellMinion(ModContent.ProjectileType<Cupcake>(), isGuardian: true, health: 150);
+        Item.DefaultToBellMinion(ModContent.ProjectileType<Cupcake>(), isGuardian: true, health: 100);
         Item.damage = 16;
         Item.knockBack = 3f;
     }
@@ -41,6 +41,7 @@ public class Cupcake : AbstractBellSummon
     float _targetafAlpha;
     float _afAlpha;
     bool _attacking;
+    bool _longAttack;
     NPC Target
     {
         get
@@ -91,6 +92,9 @@ public class Cupcake : AbstractBellSummon
     }
     float MaxJumpSpeed => 13;
     float JumpRange => 232 * 232;
+    float FarRange => 354 * 354;
+
+    float RushdownJumpRange => 64 * 64;
     float JumpTime => 29;
     float Gravity => 0.35f;
     public override void SetStaticDefaults()
@@ -148,6 +152,7 @@ public class Cupcake : AbstractBellSummon
         _attacking = false;
         _targetafAlpha = 0;
         Owner.GetModPlayer<BellPlayer>().incomingDamageMultiplier -= 0.5f;
+        Projectile.extraUpdates = 0;
         switch (State)
         {
             case AIState.Idle:
@@ -199,6 +204,11 @@ public class Cupcake : AbstractBellSummon
         this.AseAnimator.Update();
     }
 
+    void PlayWhineSound()
+    {
+        var sound = AssetReferences.Assets.Sounds.DogWhine.Asset with { PitchVariance = 0.5f, Volume = 0.3f, Pitch = -0.4f };
+        SoundEngine.PlaySound(sound, Projectile.position);
+    }
     void PlayGrowlSound()
     {
         var sound = AssetReferences.Assets.Sounds.DogGrowl.Asset with { PitchVariance = 0.5f, Volume = 0.3f, Pitch = -0.4f };
@@ -217,6 +227,7 @@ public class Cupcake : AbstractBellSummon
     }
     void AI_Rushdown()
     {
+        Projectile.extraUpdates = 1;
         Timer++;
         _targetafAlpha = 1f;
         switch (AttackCycle)
@@ -237,14 +248,30 @@ public class Cupcake : AbstractBellSummon
                 break;
             case 1:
                 {
+                    if(Timer == 1)
+                    {
+                        Projectile.ResetLocalNPCHitImmunity();
+                    }
                     SetBitePositions();
                     Projectile.velocity.X *= 0.92f;
                     this.AseAnimator.PlayAnimation(ANIM_CROUCH, AnimationParams.NoLooping);
-                    if (Timer >= 15)
+                    if(_attackCounter == 0)
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        if (Timer >= 66)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
                     }
+                    else
+                    {
+                        if (Timer >= 15)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                    }
+     
                 }
                 break;
             case 2:
@@ -274,6 +301,7 @@ public class Cupcake : AbstractBellSummon
                 break;
             case 3:
                 {
+                    _attacking = true;
                     Projectile.velocity *= 0.9f;
                     if (Timer >= 12)
                     {
@@ -299,6 +327,11 @@ public class Cupcake : AbstractBellSummon
     void AI_Panic()
     {
         Timer++;
+        if(Timer == 1)
+        {
+            PlayWhineSound();
+        }
+
         Projectile.rotation *= 0.8f;
         var poAroundPlayer = Owner.Center;
         poAroundPlayer.X += ExtraMath.Osc(-24, 24, speed: 0, Projectile.minionPos);
@@ -447,6 +480,19 @@ public class Cupcake : AbstractBellSummon
     void AI_ChaseTarget()
     {
         Timer++;
+        var distSqr = Vector2.DistanceSquared(Projectile.Center, Target.Center);
+        if (Timer == 1)
+        {
+            if (this.OwnedByLocalClient())
+            {
+                _longAttack = Main.rand.NextBool(2);
+                Projectile.netUpdate = true;
+            }
+            if(distSqr > FarRange)
+            {
+                _longAttack = true;
+            }
+        }
         if (IsGrounded())
         {
             PathfindWalkTo(Target.Center);
@@ -454,29 +500,28 @@ public class Cupcake : AbstractBellSummon
         }
         Projectile.rotation *= 0.8f;
         HandleRunningAnimation();
-        var distSqr = Vector2.DistanceSquared(Projectile.Center, Target.Center);
-        if(distSqr <= JumpRange)
+
+
+        if (_longAttack)
         {
-            Projectile.velocity *= 0.9f;
-        }
-        if (distSqr <= JumpRange && Timer >= 20)
-        {
-            if (this.OwnedByLocalClient())
+            if (distSqr <= JumpRange && Timer >= 20)
             {
-                if (Main.rand.NextBool(2))
-                {
-                    SwitchState(AIState.Rushdown);
-                }
-                else
-                {
-                    SwitchState(AIState.LungeTarget);
-                }
+                SwitchState(AIState.LungeTarget);
             }
- 
         }
+        else
+        {
+            if (distSqr <= RushdownJumpRange && Timer >= 20)
+            {
+                SwitchState(AIState.Rushdown);
+
+            }
+        }
+
     }
     void AI_LungeTarget()
     {
+       
         Timer++;
         _targetafAlpha = 1f;
         switch (AttackCycle)
@@ -551,6 +596,18 @@ public class Cupcake : AbstractBellSummon
         return _attacking;
     }
 
+    public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitNPC(target, ref modifiers);
+        if(State == AIState.LungeTarget)
+        {
+            modifiers.FinalDamage *= 1.5f;
+        }
+        if(State == AIState.Rushdown)
+        {
+            modifiers.FinalDamage *= 0.5f;
+        }
+    }
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
         return false;
