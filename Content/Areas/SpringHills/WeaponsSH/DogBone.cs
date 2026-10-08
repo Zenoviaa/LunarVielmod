@@ -22,13 +22,13 @@ public class DogBone : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.DefaultToBellMinion(ModContent.ProjectileType<GuardDog>(), isGuardian: true);
+        Item.DefaultToBellMinion(ModContent.ProjectileType<Cupcake>(), isGuardian: true);
         Item.damage = 16;
         Item.knockBack = 3f;
     }
 }
 
-public class GuardDog : AbstractBellSummon
+public class Cupcake : AbstractBellSummon
 {
     Vector2 _startDashPos;
     Vector2 _endDashPos;

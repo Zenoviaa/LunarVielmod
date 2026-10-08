@@ -13,14 +13,7 @@ namespace Stellamod.Common.SummonerSystem
         public override void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            BellMinionGlobalItem minionGlobal = item.GetGlobalItem<BellMinionGlobalItem>();
-            if (minionGlobal.isGuardian)
-            {
-                string path = this.GetType().DirectoryHere() + "/UI/GuardianSymbol";
-                Asset<Texture2D> iconTextureAsset = ModContent.Request<Texture2D>(path);
-                Vector2 drawOrigin = iconTextureAsset.Size() * 0.5f;
-                spriteBatch.Draw(iconTextureAsset.Value, position + new Vector2(12, 0), null, Color.White, 0, drawOrigin, scale * 0.75f, SpriteEffects.None, 0);
-            }
+
         }
 
         public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)

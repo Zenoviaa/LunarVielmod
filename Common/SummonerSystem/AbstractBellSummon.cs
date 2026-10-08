@@ -67,7 +67,7 @@ public abstract class AbstractBellSummon : ModProjectile,
         NPC npc = Main.npc[_npcWhoAmI];
         npc.Center = Projectile.Center;
         if (isGuardian)
-            npc.ai[1] += 2;
+            npc.ai[1] += 1;
         npc.AddBuff(ModContent.BuffType<SpectralMinion>(), 2);
         if (!npc.active)
         {
@@ -180,27 +180,7 @@ public abstract class AbstractBellSummon : ModProjectile,
         return false;
     }
 
-    private void DrawSprite()
-    {
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-        Vector2 drawPos = Projectile.Center - Main.screenPosition;
-        Rectangle frame = Projectile.Frame();
-        Vector2 drawOrigin = frame.Size() / 2f;
 
-        float rotation = Projectile.rotation;
-        Point p = Projectile.position.ToTileCoordinates();
-        Color lightColor = Lighting.GetColor(p.X, p.Y);
-        Color finalColor = Color.White.MultiplyRGB(lightColor);
-        if (_damageBoostTimer > 0)
-        {
-            Color flickerColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16));
-            flickerColor = flickerColor.MultiplyRGB(lightColor);
-            finalColor = flickerColor;
-        }
-
-        spriteBatch.Draw(texture, drawPos, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-    }
     public virtual void DrawSpectralWhites(SpriteBatch spriteBatch)
     {
         if (isGuardian)
