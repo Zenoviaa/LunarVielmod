@@ -6,6 +6,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
 using Stellamod.Items;
+using Stellamod.NPCs.Morrow;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -47,7 +48,7 @@ public class BombThrowerHeld : ModProjectile
     float BigChargeTIme => 100;
     float ChargeScale => AttackCycle == 0 ? EasingFunction.InOutSine(Timer / LittleChargeTime) : 1f;
     float BigChargeScale => AttackCycle == 1 ? EasingFunction.InOutSine(Timer / BigChargeTIme) : 0f;
-    float AggregateScale =>MathHelper.Lerp(0.5f, 1f, ChargeScale)+ BigChargeScale * 0.5f;
+    float AggregateScale =>MathHelper.Lerp(0.5f, 1f, ChargeScale);
     Vector2 HoldPosition => Owner.MountedCenter + new Vector2(0, -48);
     int ThrowingDamage
     {
@@ -316,6 +317,7 @@ public class ThrowingBombBoom : ModProjectile
     {
         var boomSprite = Projectile.Drawer;
         boomSprite.color = Color.Lerp(Color.White, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 7, offset: Projectile.identity));
+        boomSprite.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.QuickOutSlowIn(Timer / 15f));
         Main.spriteBatch.Draw(boomSprite);
         return false;
     }
@@ -332,6 +334,17 @@ public class ThrowingBomb : ModProjectile
     ref float DetonationTime => ref Projectile.ai[0];
     ref float FlashTime => ref Projectile.ai[1];
     ref float Scale => ref Projectile.ai[2];
+    public virtual Vector2 StringOffset => new Vector2(-8, -20);
+    Vector2 StringPosition
+    {
+        get
+        {
+            var muzzlePosition = Projectile.Center;
+            muzzlePosition += StringOffset.RotatedBy(Projectile.rotation);
+            muzzlePosition += Main.rand.NextVector2Circular(8, 8);
+            return muzzlePosition;
+        }
+    }
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -357,11 +370,31 @@ public class ThrowingBomb : ModProjectile
         }
         if (!_resized)
         {
+            var sound = AssetReferences.Assets.Sounds.Jiitas.JiitasBombFuse.Asset;
+            SoundEngine.PlaySound(sound, Projectile.position);
             var size = 32F * Scale;
             Projectile.Resize((int)size, (int)size);
             _resized = true;
         }
+        if (DetonationTime % 8 == 0)
+        {
 
+            for (float i = 0; i < 4; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleLongBoom(StringPosition,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Red,
+                    baseSize: Main.rand.NextFloat(0.025f, 0.035f),
+                    duration: Main.rand.NextFloat(15, 25));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+                particle.Scale *= 2;
+            }
+        }
 
         DetonationTime--;
         if (DetonationTime <= 0)
@@ -395,6 +428,11 @@ public class ThrowingBomb : ModProjectile
         glowDrawer.color = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.OutExpo(FlashTime / 10f));
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);
+        var flashDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, StringPosition);
+        flashDrawer.color = Color.Orange;
+        flashDrawer.color.A = 0;
+        flashDrawer.scale *= 0.12f;
+        Main.spriteBatch.Draw(flashDrawer);
         return false;
     }
 
@@ -411,7 +449,7 @@ public class ThrowingBomb : ModProjectile
 
 public class ThrowingBigBomb : ThrowingBomb
 {
-
+    public override Vector2 StringOffset => new Vector2(-16, -40);
     public override void OnKill(int timeLeft)
     {
         // base.OnKill(timeLeft);

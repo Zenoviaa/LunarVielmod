@@ -75,6 +75,9 @@ namespace Stellamod.Common.SummonerSystem
                 }
                 var cast = AssetReferences.Assets.Sounds.SpiritSummon.Asset with { PitchVariance = 0.5f };
                 SoundEngine.PlaySound(cast, Projectile.position);
+
+                cast = AssetReferences.Assets.Sounds.Aurora.Asset with { PitchVariance = 0.5f, Volume = 0.3f };
+                SoundEngine.PlaySound(cast, Projectile.position);
                 FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightBlue, Color.Black);
                 for (float f = 0; f < Main.rand.Next(3, 7); f++)
                 {

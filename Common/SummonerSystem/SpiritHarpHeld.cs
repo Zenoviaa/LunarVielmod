@@ -34,7 +34,7 @@ public class SpiritHarpHeld : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            _soundSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.SongofSpirits.Asset, Owner.Center);
+            _soundSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.WitchsHarp.Asset, Owner.Center);
         }
 
 

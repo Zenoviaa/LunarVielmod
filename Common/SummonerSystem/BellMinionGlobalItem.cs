@@ -50,6 +50,15 @@ namespace Stellamod.Common.SummonerSystem
         {
             if (isBellMinion || isGuardian)
             {
+                if (isGuardian)
+                {
+                    var auraDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Main.screenPosition + position);
+                    auraDrawer.color = Color.SkyBlue;
+                    auraDrawer.color.A = 0;
+                    auraDrawer.color *= ExtraMath.Osc(0.45f, 0.55f, speed: 2, item.type) * 0.4f;
+                    auraDrawer.scale *= 0.2f;
+                    spriteBatch.Draw(auraDrawer);
+                }
                 var scrollDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.SummonerSystem.SongScroll.Asset, Main.screenPosition + position);
                 scrollDrawer.color = drawColor;
                 scrollDrawer.worldPosition += new Vector2(-8);
@@ -58,7 +67,8 @@ namespace Stellamod.Common.SummonerSystem
                 var drawer = SpritebatchDrawer.FromItemInUI(item);
                 drawer.worldPosition = Main.screenPosition + position;
                 drawer.color = drawColor;
-                drawer.color *= ExtraMath.Osc(0.5f, 1f, speed: 2, item.type);
+                if(!isGuardian)
+                    drawer.color *= ExtraMath.Osc(0.5f, 1f, speed: 2, item.type);
                 drawer.sourceRect = frame;
                 drawer.CenterOrigin();
                 drawer.scale = Vector2.One * scale;

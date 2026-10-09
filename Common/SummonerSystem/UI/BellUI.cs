@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.UI;
+using Stellamod.Content.Armors.Verlian;
 using Stellamod.Core;
 using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
@@ -7,8 +8,11 @@ using Stellamod.Helpers;
 using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
+using static Stellamod.Core.AssetReferences.Assets.NoiseTextures;
 
 
 namespace Stellamod.Common.SummonerSystem.UI
@@ -137,6 +141,30 @@ namespace Stellamod.Common.SummonerSystem.UI
             Rectangle rectangle = ExpandableTooltip.GetBGRectangle((int)position.X, (int)position.Y, (int)Width.Pixels, (int)Height.Pixels);
             Utils.DrawInvBG(spriteBatch, rectangle, new Color(23, 25, 81, 255) * 0.925f);
             this.QuickMouseInteraction();
+
+            var summonTimeNotePosition = position;
+            summonTimeNotePosition += new Vector2(142, 20);
+            var summonTimeNote = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.SummonerSystem.UI.SummoningNote.Asset, summonTimeNotePosition + Main.screenPosition + new Vector2(-44, -7));
+            summonTimeNote.color = Color.White;
+            summonTimeNote.drawOrigin = Vector2.Zero;
+            spriteBatch.Draw(summonTimeNote);
+
+            var bellPlayer = Main.LocalPlayer.GetModPlayer<BellPlayer>();
+            float ticks = bellPlayer.GetCastingTime();
+            float seconds = ticks / 60;
+            string secondsString = seconds.ToString("#.#");
+            var castingTimeString = LangText.Common("TotalCastingHarpTime", secondsString);
+            using(spriteBatch.Ctx(spriteBatch.Parameters with { samplerState = SamplerState.AnisotropicClamp }))
+            {
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch,
+                    FontAssets.DeathText.Value, 
+                    castingTimeString, 
+                    summonTimeNotePosition, 
+                    Color.White, 
+                    0, 
+                    Vector2.Zero, 
+                    new Vector2(0.5f));
+            }
 
             var harpDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.SummonerSystem.UI.Harp.Asset, position + Main.screenPosition);
             harpDrawer.color = Color.White;

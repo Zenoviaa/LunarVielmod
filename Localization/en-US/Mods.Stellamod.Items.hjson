@@ -224,6 +224,7 @@ Common: {
 	BellUse: Put your minions into the harp, then hold [{0}] to summon them!
 	CastingTime: "{0} seconds added to your playing time"
 	TotalCastingTime: "{0} seconds of play time"
+	TotalCastingHarpTime: "{0} seconds"
 	ClassNerf: You are not proficient at using this damage class...
 	WeaponTypeGun: Gun Weapon Type
 	MagazineHelp: "{0} Ammo Capacity"

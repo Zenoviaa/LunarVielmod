@@ -77,7 +77,7 @@ public class RoughSmoke : ParticleUpdater<RoughSmoke.Data>
         }
 
         spriteBatch.Begin(oldParameters);
-        spriteBatch.Draw(maskTarget, Vector2.Zero, Color.White);
+        spriteBatch.Draw(maskTarget, Vector2.Zero, Color.White * 0.6f);
     }
 
     public override void Draw(SpriteBatch spriteBatch, ref Data particle)
