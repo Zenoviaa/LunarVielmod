@@ -120,15 +120,22 @@ namespace Stellamod.Common.SummonerSystem.UI
                     "Stellamod: Summoner Bell UI",
                     delegate
                     {
+                   
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
-                            _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                            var sb = Main.spriteBatch;
+                            using (sb.Ctx(sb.Parameters with { samplerState = SamplerState.PointClamp }))
+                            {
+                                _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                            }
+
 
                         }
                         if (_lastUpdateUiGameTime != null && _hudUserInterface?.CurrentState != null)
                         {
                             _hudUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
+
 
                         return true;
                     },

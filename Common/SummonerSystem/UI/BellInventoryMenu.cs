@@ -95,7 +95,7 @@ namespace Stellamod.Common.SummonerSystem.UI
             }
             else
             {
-                _scrollbar.Top.Set(0, 0f);
+                _scrollbar.Top.Set(12, 0f);
             }
         }
     }

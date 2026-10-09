@@ -63,7 +63,7 @@ namespace Stellamod.Common.SummonerSystem.UI
             Append(_guardianSlot);
 
             _scrollbar.Left.Set(-32, 1f);
-            _scrollbar.Top.Set(12, 0f);
+            _scrollbar.Top.Set(15, 0f);
             Append(_scrollbar);
 
             _backButton.Top.Set(-64, 1f);
@@ -90,7 +90,7 @@ namespace Stellamod.Common.SummonerSystem.UI
 
         private void Orient()
         {
-     
+
             _backButton.Left.Pixels = Width.Pixels / 2 - _backButton.Width.Pixels / 2;
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft + 100;
