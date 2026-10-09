@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.UI;
+using Stellamod.Core;
 using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -136,6 +137,11 @@ namespace Stellamod.Common.SummonerSystem.UI
             Rectangle rectangle = ExpandableTooltip.GetBGRectangle((int)position.X, (int)position.Y, (int)Width.Pixels, (int)Height.Pixels);
             Utils.DrawInvBG(spriteBatch, rectangle, new Color(23, 25, 81, 255) * 0.925f);
             this.QuickMouseInteraction();
+
+            var harpDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.SummonerSystem.UI.Harp.Asset, position + Main.screenPosition);
+            harpDrawer.color = Color.White;
+            harpDrawer.worldPosition += new Vector2(120);
+            spriteBatch.Draw(harpDrawer);
         }
 
         private void Close()

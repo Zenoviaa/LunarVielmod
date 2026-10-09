@@ -107,7 +107,7 @@ public class BombThrowerHeld : ModProjectile
             return;
         var pos = Projectile.Center + Main.rand.NextVector2CircularEdge(128, 128);
         var vel = (Projectile.Center - pos) * 0.09f;
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with { position = pos, velocity = vel, innerColor = Color.White.ToVector4(), outerColor = Color.SkyBlue.ToVector4(), timeLeft = 15, scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f)) });
+        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with { position = pos, velocity = vel, innerColor = Color.White.ToVector4(), outerColor = Color.SkyBlue.ToVector4(), timeLeft = 15, scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f)) * 0.4f });
     }
 
     void MakeSuckingParticleLittle()
