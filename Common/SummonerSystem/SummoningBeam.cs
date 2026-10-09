@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Dusts;
 using Stellamod.Core;
@@ -42,6 +43,23 @@ namespace Stellamod.Common.SummonerSystem
             float lerp = Timer / ticks;
             float interp = EasingFunction.QuadraticBump(lerp);
             _scale = Vector2.Lerp(new Vector2(0f, 1f), Vector2.One, interp);
+            if(Timer % 4 == 0)
+            {
+                var pos = Projectile.Center;
+                pos += Main.rand.NextVector2Circular(47, 12);
+                var vel = Main.rand.NextVector2Circular(3, 3);
+                vel.Y -= 5;
+                Particles.Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = pos,
+                    velocity = vel,
+                    innerColor = Color.White.ToVector4(),
+                    outerColor = Color.SkyBlue.ToVector4(),
+                    timeLeft = Main.rand.Next(60, 120),
+                    scale = new Vector2(Main.rand.NextFloat(0.5f, 1f))
+                });
+            }
+
             if (Timer == 15)
             {
                 if (Main.myPlayer == Projectile.owner)
@@ -87,8 +105,8 @@ namespace Stellamod.Common.SummonerSystem
             drawColor.A = 0;
             Vector2 beamScael = Vector2.One;
             beamScael.X *= 0.35f;
-            beamScael.X *= MathHelper.SmoothStep(0f, 1f, EasingFunction.QuadraticBump(Timer / 30f));
-            beamScael.Y *= MathHelper.SmoothStep(0f, 1f, Timer / 30f);
+            beamScael.X *= MathHelper.Lerp(0f, 1f, EasingFunction.QuickOutSlowIn(Timer / 30f));
+            beamScael.Y *= MathHelper.Lerp(0f, 1f, EasingFunction.OutCirc(Timer / 30f));
             spriteBatch.Draw(texture, drawPosition, null, drawColor, 0, drawOrigin, beamScael, SpriteEffects.None, 0);
             return false;
         }

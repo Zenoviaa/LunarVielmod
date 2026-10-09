@@ -102,12 +102,18 @@ namespace Stellamod.Common.SummonerSystem
                 if (proj.ModProjectile is AbstractBellSummon)
                     hasBellMinions = true;
             }
-            isSummoning = Player.HasBuff<BellSummoning>() && !Player.HasBuff<BellExhaust>();
+            isSummoning = Player.HasBuff<BellSummoning>() && CanSummon();
         }
+        public bool CanSummon()
+        {
+            return !Player.HasBuff<BellExhaust>();
+        }
+
 
         public override void PostUpdateEquips()
         {
             base.PostUpdateEquips();
+
             if (isSummoning
                 && Player.ownedProjectileCounts[ModContent.ProjectileType<SummoningCircle>()] == 0
                 && Main.myPlayer == Player.whoAmI)
@@ -309,9 +315,5 @@ namespace Stellamod.Common.SummonerSystem
             ManageUnlockedMinions();
         }
 
-        public bool CanUseFlask()
-        {
-            return true;
-        }
     }
 }

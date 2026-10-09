@@ -11,7 +11,8 @@ namespace Stellamod.Common.XixianFlaskSystem
     {
         public override void SetStaticDefaults()
         {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+            base.SetStaticDefaults();
+            ItemID.Sets.SpecialRarity[Type] = 3;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -31,7 +32,7 @@ namespace Stellamod.Common.XixianFlaskSystem
                 // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
                 var line = new TooltipLine(Mod, "xixian", "Click to put an insource in the flask, then drink it! It acts like an infinite potion!")
                 {
-                    OverrideColor = new Color(308, 71, 255)
+                    OverrideColor = Color.LightGreen
                 };
                 tooltips.Add(line);
             }
