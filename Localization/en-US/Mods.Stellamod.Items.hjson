@@ -221,9 +221,9 @@ Common: {
 	StaminaCost: Special attack costs {0} stamina to use
 	ExpandTooltipHelp: Tap [{0}] for more information
 	BellLock: Real
-	BellUse: Put your minions into the bell, then hold [{0}] to summon them!
-	CastingTime: "{0} seconds added to your casting time"
-	TotalCastingTime: "{0} seconds of casting time"
+	BellUse: Put your minions into the harp, then hold [{0}] to summon them!
+	CastingTime: "{0} seconds added to your playing time"
+	TotalCastingTime: "{0} seconds of play time"
 	ClassNerf: You are not proficient at using this damage class...
 	WeaponTypeGun: Gun Weapon Type
 	MagazineHelp: "{0} Ammo Capacity"
@@ -9424,7 +9424,7 @@ ArncharFlyingDrone: {
 }
 
 SummoningBell: {
-	DisplayName: Summoning Bell
+	DisplayName: Spirit Harp
 	Tooltip: ""
 }
 

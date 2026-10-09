@@ -108,7 +108,6 @@ namespace Stellamod.Common.SummonerSystem
         public override void PostUpdateEquips()
         {
             base.PostUpdateEquips();
-
             if (isSummoning
                 && Player.ownedProjectileCounts[ModContent.ProjectileType<SummoningCircle>()] == 0
                 && Main.myPlayer == Player.whoAmI)
@@ -116,6 +115,15 @@ namespace Stellamod.Common.SummonerSystem
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<SummoningCircle>(), 1, 1, Player.whoAmI);
             }
+
+            if (isSummoning
+                && Player.ownedProjectileCounts[ModContent.ProjectileType<SpiritHarpHeld>()] == 0
+                && Main.myPlayer == Player.whoAmI)
+            {
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                    ModContent.ProjectileType<SpiritHarpHeld>(), 1, 1, Player.whoAmI);
+            }
+
             if (isSummoning
                 && Player.ownedProjectileCounts[ModContent.ProjectileType<SummoningBar>()] == 0
                 && Main.myPlayer == Player.whoAmI)
