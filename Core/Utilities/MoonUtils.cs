@@ -31,6 +31,7 @@ public struct Targeter
             return Main.npc[targetNpc];
         }
     }
+    public bool HasValidTarget => targetNpc != -1 && Target.active;
     public void NetSend(BinaryWriter writer)
     {
         writer.Write(targetNpc);
@@ -46,6 +47,7 @@ public struct Targeter
 /// </summary>
 public static class MoonUtils
 {
+    const float SUMMON_SEARCH_DISTANCE = 512;
     const float REPATH_DISTANCE = 32 * 32;
     public static Vector2 RayCast(Vector2 startPosition, Vector2 velocity, float maxBeamLength, int numSamplePoints = 3)
     {
@@ -71,22 +73,60 @@ public static class MoonUtils
     }
 
     #region PathfindingAI
+
+    /// <summary>
+    /// Lerps velocity to the target point
+    /// </summary>
+    /// <param name="center"></param>
+    /// <param name="velocity"></param>
+    /// <param name="target"></param>
     public static void AI_FloatAbove( Vector2 center, ref Vector2 velocity, Vector2 target)
     {
         var targetVelocity = (target - center) * 0.05f;
         velocity = Vector2.Lerp(velocity, targetVelocity, 0.1f);
     }
 
-    public static void SearchForNewTarget(Vector2 centerSearchPos, Vector2 myPosition, ref int targetNpc)
+
+    /// <summary>
+    /// Searches for a new target based on what is close to the origin position and what can be seen from the current position
+    /// </summary>
+    /// <param name="centerSearchPos"></param>
+    /// <param name="myPosition"></param>
+    /// <param name="targetNpc"></param>
+    public static void SearchForNewTargetByLineOfSight(Vector2 centerSearchPos, Vector2 myPosition, ref int targetNpc)
     {
         targetNpc = -1;
-        var closestEnemy = MoonUtils.TargetClosestEnemy(centerSearchPos, 512);
+        var closestEnemy = MoonUtils.TargetClosestEnemy(centerSearchPos, SUMMON_SEARCH_DISTANCE);
         if (closestEnemy == null)
             return;
         if (!Collision.CanHitLine(myPosition, 1, 1, closestEnemy.position, 1, 1))
             return;
 
         targetNpc = closestEnemy.whoAmI;
+    }
+
+    /// <summary>
+    /// Searches for a new target purely based on what's around the origin point
+    /// </summary>
+    /// <param name="centerSearchPos"></param>
+    /// <param name="targetNpc"></param>
+    public static void SearchForNewTargetByDistance(Vector2 centerSearchPos, ref int targetNpc)
+    {
+        targetNpc = -1;
+        var closestEnemy = MoonUtils.TargetClosestEnemy(centerSearchPos, SUMMON_SEARCH_DISTANCE);
+        if (closestEnemy == null)
+            return;
+
+        targetNpc = closestEnemy.whoAmI;
+    }
+
+    public static Vector2 CalculateHoverAbovePoint(Vector2 center, float timer, float minionPos, float hoverRange = 32)
+    {
+
+        var xOfffset = MathHelper.Lerp(-64, 64, ExtraMath.Osc(0f, 1f, speed: 0, minionPos * 2));
+        xOfffset += MathHelper.Lerp(-hoverRange, hoverRange, MathF.Sin(timer * 0.025f) * 0.5f + 0.5f);
+        var targetPos = center + new Vector2(0, -48) + new Vector2(xOfffset, 0);
+        return targetPos;
     }
 
     public static void AIWalk_FloatingChaseRhapsody(Pathfinder pathfinder, Projectile entity, Vector2 destination, float runSpeed,ref Vector2 targetOldPos)

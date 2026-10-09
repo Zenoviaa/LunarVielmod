@@ -188,7 +188,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Timer++;
 
             if (Timer >= 30)
-                MoonUtils.SearchForNewTarget(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+                MoonUtils.SearchForNewTargetByLineOfSight(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
 
             var xOfffset = MathHelper.Lerp(-64, 64, ExtraMath.Osc(0f, 1f, speed: 0, Projectile.minionPos * 2));
             xOfffset += MathHelper.Lerp(-32f, 32f, MathF.Sin(_globalTimer * 0.025f) * 0.5f + 0.5f);
@@ -210,7 +210,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         void AI_GoHome()
         {
             _globalTimer++;
-            MoonUtils.SearchForNewTarget(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+            MoonUtils.SearchForNewTargetByLineOfSight(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
             MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, Owner.Center, RunSpeed, ref _targeter.targetOldPos);
 
             var sqrDist = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
@@ -229,12 +229,14 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         void AI_ChaseTarget()
         {
             MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, _targeter.Target.Center, RunSpeed, ref _targeter.targetOldPos);
-            MoonUtils.SearchForNewTarget(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+            MoonUtils.SearchForNewTargetByLineOfSight(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
             if (_targeter.targetNpc != -1 && 
                 Collision.CanHitLine(Projectile.position, 1,1 , _targeter.Target.position, 1, 1))
             {
                 SwitchState(AIState.AttackTarget);
             }
+            if (!_targeter.Target.active)
+                SwitchState(AIState.Idle);
         }
 
         void AI_AttackTarget()
