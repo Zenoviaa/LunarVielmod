@@ -54,6 +54,20 @@ public class SpiritHarpHeld : ModProjectile
                 scale = new Vector2(Main.rand.NextFloat(0.5f, 1f))
             });
         }
+        if(Timer % 8 == 0)
+        {
+            var pos = Projectile.Center;
+            pos.X += Main.rand.Next(-64, 64);
+            pos.Y += Main.rand.NextFloat(-8f, 8f);
+            var vel = -Vector2.UnitY * 3;
+            Particles.Particles.MusicNote.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                color = Color.Orange,
+                timeLeft = 120
+            });
+        }
 
         if (Main.rand.NextBool(18))
         {

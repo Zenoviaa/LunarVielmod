@@ -4,20 +4,23 @@ using Terraria;
 
 namespace Stellamod.Common.Particles;
 
-public struct TinyWhiteMothDustData : IParticleData
+public class MusicNote : ParticleUpdater<MusicNote.Data>
 {
-    public Vector2 position;
-    public Vector2 velocity;
-    public float timeLeft;
-    public bool IsActive => timeLeft > 0;
-}
+    public struct Data : IParticleData
+    {
+        public Color color;
+        public Vector2 position;
+        public Vector2 velocity;
+        public float timeLeft;
+        public byte frame;
+        public bool IsActive => timeLeft > 0;
+    }
 
-public class TinyWhiteMothDust : ParticleUpdater<TinyWhiteMothDustData>
-{
+    public override ParticleFrameData FrameData => base.FrameData with { FrameCount = 3 };
     public override DrawLayer PixelationDrawLayer => DrawLayer.OverNPCs;
     public override int GetPoolSize()
     {
-        return 250;
+        return 128;
     }
 
     public override void LoadSafe()
@@ -31,6 +34,7 @@ public class TinyWhiteMothDust : ParticleUpdater<TinyWhiteMothDustData>
         base.UnloadSafe();
         On_Main.DrawDust -= DrawParticles;
     }
+
     private void DrawParticles(On_Main.orig_DrawDust orig, Main self)
     {
         orig(self);
@@ -46,16 +50,13 @@ public class TinyWhiteMothDust : ParticleUpdater<TinyWhiteMothDustData>
         {
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
-            particle.velocity = particle.velocity.RotatedBy(0.01f);
             particle.velocity *= 0.96f;
             particle.timeLeft--;
         }
     }
 
-
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        //base.Draw(spriteBatch, screenPos);
         for (int i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];
@@ -69,26 +70,24 @@ public class TinyWhiteMothDust : ParticleUpdater<TinyWhiteMothDustData>
         }
     }
 
-    public override void Draw(SpriteBatch spriteBatch, ref TinyWhiteMothDustData particle)
+    public override void Draw(SpriteBatch spriteBatch, ref Data particle)
     {
-        float fade = MathHelper.Clamp(particle.timeLeft / 120f, 0f, 1f);// Utils.GetLerpValue(0, 1, particle.timeLeft / 120f, true);
+        float fade = MathHelper.Clamp(particle.timeLeft / 120f, 0f, 1f);
         fade = EasingFunction.QuadraticBump(fade);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.Particles.TinyWhiteMothDust.Asset.Value, particle.position);
-        drawer.color = Color.White * fade;
-
-        int frame = (int)particle.timeLeft / 3;
-        frame %= 6;
-        drawer.VerticalFrame(frame, 6);
+        var framing = GetParticleFrame(particle.frame);
+        var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position);
+        drawer.color = particle.color * fade;
+        drawer.sourceRect = framing.frame;
         drawer.CenterOrigin();
         spriteBatch.Draw(drawer);
     }
 
-    public void DrawGlow(SpriteBatch spriteBatch, ref TinyWhiteMothDustData particle)
+    public void DrawGlow(SpriteBatch spriteBatch, ref Data particle)
     {
-        float fade = MathHelper.Clamp(particle.timeLeft / 120f, 0f, 1f);// Utils.GetLerpValue(0, 1, particle.timeLeft / 120f, true);
+        float fade = MathHelper.Clamp(particle.timeLeft / 120f, 0f, 1f);
         fade = EasingFunction.QuadraticBump(fade);
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position);
-        glowDrawer.color = Color.White * 0.4f * fade;
+        glowDrawer.color = particle.color * 0.4f * fade;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.14f;
         spriteBatch.Draw(glowDrawer);
