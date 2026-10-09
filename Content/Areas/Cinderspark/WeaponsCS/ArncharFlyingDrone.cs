@@ -54,6 +54,7 @@ public class ArncharMinionProj : AbstractBellSummon
 
     float RunSpeed => 9;
     float HomeRange => 200 * 200;
+    float SqrDistHome => 800 * 800;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -226,6 +227,20 @@ public class ArncharMinionProj : AbstractBellSummon
         if (Main.rand.NextBool(16))
         {
             Dust.NewDustPerfect(Projectile.Center, DustID.Torch, Projectile.velocity * 0.1f, 0, Color.OrangeRed, 1f).noGravity = true;
+        }
+
+        var dstHome = Vector2.DistanceSquared(Owner.Center, Projectile.Center);
+        if (dstHome > SqrDistHome)
+        {
+            var posToGoTo = Owner.Center + new Vector2(0, -64);
+            var targetVelocity = posToGoTo - Projectile.Center;
+            Projectile.velocity = targetVelocity * 0.1f;
+            Projectile.tileCollide = false;
+            return;
+        }
+        else
+        {
+            Projectile.tileCollide = true;
         }
 
         switch (State)
