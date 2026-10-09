@@ -69,7 +69,7 @@ SwarmerMinion.DisplayName: Swarmer Minion
 TheBurningRodMinion.DisplayName: The Burning Rod Minion
 ToxicHornetMinion.DisplayName: Toxic Hornet Minion
 VampireTorchMinion.DisplayName: Vampire Torch Minion
-VehementMinion.DisplayName: Vehement Minion
+VehementMinion.DisplayName: Rhapsody Guard
 VoidMinion.DisplayName: Void Minion
 ProbeMinion.DisplayName: Probe Minion
 XScissorMinion.DisplayName: X Scissor Minion
@@ -1201,7 +1201,7 @@ AcidBlast3.DisplayName: Acid Blast3
 XScissorMinionProj.DisplayName: X Scissor Minion Proj
 PotOfGreedMinionProj.DisplayName: Pot Of Greed Minion Proj
 VoidMinionProj.DisplayName: Void Minion Proj
-VehementMinionProj.DisplayName: Vehement Minion
+VehementMinionProj.DisplayName: Rhapsody Guard
 VampireTorchMinionProj.DisplayName: Vampire Torch Minion Proj
 ToxicHornetMinionProj.DisplayName: Toxic Hornet Minion Proj
 TheBurningRodMinionProj.DisplayName: The Burning Rod Minion Proj

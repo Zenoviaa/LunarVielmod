@@ -909,18 +909,18 @@ Reloading: {
 }
 
 BellBlessing: {
-	DisplayName: Bell Blessing
+	DisplayName: Spirit Song
 	Description: You and what army?
 }
 
 BellSummoning: {
-	DisplayName: Bell Summoning
+	DisplayName: Spirit Play
 	Description: You're summoning your followers!
 }
 
 BellExhaust: {
-	DisplayName: Bell Exhaust
-	Description: You're too exhausted to use your bell again!
+	DisplayName: Musicially Exhausted...
+	Description: You're too exhausted to use your harp again!
 }
 
 SpectralMinion: {

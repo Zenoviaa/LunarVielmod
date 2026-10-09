@@ -5439,8 +5439,7 @@ VehementRhapsody: {
 	DisplayName: Vehement Rhapsody
 	Tooltip:
 		'''
-		Summons a, not sure what you call this, but it aggressively homes into enemies!
-		It's musically challenged... Adding more summons makes this summon do more damage!
+		Summons a Vehement Guard that aggressively flies into enemies, bouncing and arcing off them!
 		'''
 }
 

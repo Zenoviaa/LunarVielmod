@@ -1,6 +1,7 @@
 ﻿using Stellamod.Core.Astar;
 using Stellamod.Core.SwingSystem;
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using Terraria;
 
@@ -15,6 +16,29 @@ public struct SteinUppercutParameters
     public float swingRadians;
     public float rotation;
     public float ySize;
+}
+
+public struct Targeter
+{
+    public Vector2 targetOldPos;
+    public int targetNpc;
+    public NPC Target
+    {
+        get
+        {
+            if (targetNpc == -1)
+                return Main.npc[0];
+            return Main.npc[targetNpc];
+        }
+    }
+    public void NetSend(BinaryWriter writer)
+    {
+        writer.Write(targetNpc);
+    }
+    public void NetReceive(BinaryReader reader)
+    {
+        targetNpc = reader.ReadInt32();
+    }
 }
 
 /// <summary>
@@ -52,6 +76,72 @@ public static class MoonUtils
         var targetVelocity = (target - center) * 0.05f;
         velocity = Vector2.Lerp(velocity, targetVelocity, 0.1f);
     }
+
+    public static void SearchForNewTarget(Vector2 centerSearchPos, Vector2 myPosition, ref int targetNpc)
+    {
+        targetNpc = -1;
+        var closestEnemy = MoonUtils.TargetClosestEnemy(centerSearchPos, 512);
+        if (closestEnemy == null)
+            return;
+        if (!Collision.CanHitLine(myPosition, 1, 1, closestEnemy.position, 1, 1))
+            return;
+
+        targetNpc = closestEnemy.whoAmI;
+    }
+
+    public static void AIWalk_FloatingChaseRhapsody(Pathfinder pathfinder, Projectile entity, Vector2 destination, float runSpeed,ref Vector2 targetOldPos)
+    {
+        if (Vector2.DistanceSquared(targetOldPos, destination) > REPATH_DISTANCE || Main.GameUpdateCount % 30 == 0)
+        {
+            targetOldPos = destination;
+            //    var startPost = TileUtilities.FallToSolidTileOrPlatform(entity.Center);
+            pathfinder.NewPath(destination, entity.Center, 75);
+        }
+
+        if (pathfinder.currentNode != Vector2.Zero)
+        {
+            MoonUtils.AIWalk_FloatingChaseRhapsody(pathfinder, entity, destination, runSpeed);
+        }
+        else if (pathfinder.path != null && pathfinder.path.Count > 0)
+        {
+            pathfinder.Pop();
+        }
+    }
+
+    public static void AIWalk_FloatingChaseRhapsody(Pathfinder pathfinder, Projectile entity, Vector2 destination, float runSpeed)
+    {
+        var target = pathfinder.currentNode;
+        if (Collision.CanHitLine(entity.position, 1, 1, destination, 1, 1))
+        {
+            target = destination;
+        }
+
+        //We can make the assumption that whatever node we're moving too is VERY close to our actor
+        //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
+        //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
+        var targetRectangle = DrawUtilities.CenterRectangle(pathfinder.currentNode, 16, 16);
+        var nextRectangle = DrawUtilities.CenterRectangle(pathfinder.nextNode, 16, 16);
+        var myRectangle = DrawUtilities.CenterRectangle(entity.Center, 32, 32);
+
+        //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
+
+        float distanceToCurrentNode = Vector2.Distance(entity.Center, pathfinder.currentNode);
+        float distanceToNextNode = Vector2.Distance(entity.Center, pathfinder.nextNode);
+
+        if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode ||
+            myRectangle.Intersects(nextRectangle) || myRectangle.Contains(targetRectangle))
+        {
+
+            pathfinder.Pop();
+        }
+
+        var diff = (target - entity.Center);
+        var targetVelocity = diff.Resize(runSpeed);
+        var accel = ExtraMath.Osc(0.05f, 0.1f, speed: 0, offset: entity.identity);
+        entity.velocity = Vector2.Lerp(entity.velocity, targetVelocity, accel);
+    }
+
+
     public static void AIWalk_IvynStabber(Pathfinder pathfinder, Projectile entity, Vector2 destination, bool isGrounded, float runSpeed, float maxJumpSpeed, ref Vector2 targetOldPos)
     {
         if (Vector2.DistanceSquared( targetOldPos, destination) > REPATH_DISTANCE || Main.GameUpdateCount % 30 ==0)

@@ -1,10 +1,13 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
+using Stellamod.Common;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
+using Stellamod.Core;
+using Stellamod.Core.Astar;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
@@ -12,6 +15,8 @@ using Stellamod.Items;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -25,15 +30,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
     public class VehementRhapsody : ModItem
     {
-
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Irradiated Creeper Staff");
-            // Tooltip.SetDefault("Summons an Irradiated Creeper to fight with you");
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-        }
-
         public override void SetDefaults()
         {
             Item.DefaultToBellMinion(ModContent.ProjectileType<VehementMinionProj>());
@@ -44,47 +40,63 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<Cinderscrap>());
+            this.RegisterBrew(
+                mold: ModContent.ItemType<BlankStaff>(), 
+                material: ModContent.ItemType<Cinderscrap>());
         }
     }
 
     public class VehementMinionProj : AbstractBellSummon
     {
+        enum AIState
+        {
+            Idle,
+            GoHome,
+            ChaseTarget,
+            AttackTarget
+        }
+
+        float _globalTimer;
+        Targeter _targeter;
+        Pathfinder _pathfinder;
+        float alphaCounter = 0;
         private ref float Timer => ref Projectile.ai[0];
         private ref float SpeedTimer => ref Projectile.ai[1];
         private ref float HitCount => ref Projectile.ai[2];
+        AIState _state;
+        float RunSpeed => 15;
+        float HomeRange => 164 * 164;
+        float SqrDistanceHome => 1024 * 1024;
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write((byte)_state);
+            _targeter.NetSend(writer);
+            writer.Write(_globalTimer);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _state = (AIState)reader.ReadByte();
+            _targeter.NetReceive(reader);
+            _globalTimer = reader.ReadSingle();
+        }
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Irradiated Creeper");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-            // Sets the amount of frames this minion has on its spritesheet
-            Main.projFrames[Projectile.type] = 1;
-            // This is necessary for right-click targeting
-            ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-            // These below are needed for a minion
-            // Denotes that this projectile is a pet or minion
-            Main.projPet[Projectile.type] = true;
-            // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-            ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-            // Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
-            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+            Projectile.SetTrailCacheLength(30);
+            Projectile.StaticDefaultToMinionProjectile();
         }
 
         public sealed override void SetDefaults()
         {
-            Projectile.width = 30;
-            Projectile.height = 30;
-            Projectile.tileCollide = false; // Makes the minion go through tiles freely
-                                            // These below are needed for a minion weapon
-            Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)// Declares this as a minion (has many effects)
-            Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage) // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-            Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-            Projectile.timeLeft = 1500;
-            Projectile.minion = true;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 15;
+            _pathfinder = new();
+            Projectile.DefaultToMinionProjectile();
+            Projectile.tileCollide = false;
+            Projectile.WidthAndHeight = 24;
+            Projectile.LocalPiercingImmunityTime = 20;
+            Projectile.tileCollide = false;
+            Projectile.friendly = true;
+            Projectile.light = 0.67f;
         }
 
         // Here you can decide if your minion breaks things like grass or pots
@@ -96,9 +108,15 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
         {
-            return true;
+            return _state == AIState.AttackTarget;
         }
-        private float alphaCounter = 0;
+
+
+        public override int GetAggro()
+        {
+            return -90;
+        }
+
         public override void AI()
         {
             base.AI();
@@ -111,10 +129,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             else
             {
                 Projectile.extraUpdates = 0;
-            }
-            if (Timer % 16 == 0)
-            {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Goldenrod, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
 
             if (Main.rand.NextBool(12))
@@ -129,34 +143,125 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(1, 1), spawnParams);
                 dp.dampening = 0.1f;
             }
-
-            Player player = Main.player[Projectile.owner];
-            NPC target = ProjectileHelper.FindNearestEnemyThroughWalls(Projectile.Center, 1024);
-            if (target != null)
+            var dstHome = Vector2.DistanceSquared(Owner.Center, Projectile.Center);
+            if(dstHome > SqrDistanceHome)
             {
-                float progress = MathHelper.Clamp(Timer / 35f, 0f, 1f);
-                float d = MathHelper.Lerp(3f, 45, progress);
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, target.Center, d);
-                if (Projectile.velocity.Length() < 15)
-                {
-                    Projectile.velocity *= 1.5f;
-                }
+                var posToGoTo = Owner.Center + new Vector2(0, -64);
+                var targetVelocity = posToGoTo - Projectile.Center;
+                Projectile.velocity = targetVelocity * 0.1f;
+                return;
+            }
 
-                if (Projectile.velocity == Vector2.Zero)
-                {
-                    Projectile.velocity.Y -= 1;
-                }
-            }
-            else
+            switch (_state)
             {
-                SummonHelper.CalculateIdleValues(Owner, Projectile, Owner.Center, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-                SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+                case AIState.GoHome:
+                    AI_GoHome();
+                    break;
+                case AIState.ChaseTarget:
+                    AI_ChaseTarget();
+                    break;
+                case AIState.AttackTarget:
+                    AI_AttackTarget();
+                    break;
             }
+  
             Projectile.rotation += Projectile.velocity.Length() * 0.05f;
 
             // Some visuals here
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
         }
+
+        void SwitchState(AIState state)
+        {
+            _globalTimer = 0;
+            Timer = 0;
+            _state = state;
+        }
+
+    
+        void AI_Idle()
+        {
+            _globalTimer++;
+            Timer++;
+
+            if (Timer >= 30)
+                MoonUtils.SearchForNewTarget(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+
+            var xOfffset = MathHelper.Lerp(-64, 64, ExtraMath.Osc(0f, 1f, speed: 0, Projectile.minionPos * 2));
+            xOfffset += MathHelper.Lerp(-32f, 32f, MathF.Sin(_globalTimer * 0.025f) * 0.5f + 0.5f);
+            var targetPos = Owner.Center + new Vector2(0, -48) + new Vector2(xOfffset, 0);
+            MoonUtils.AI_FloatAbove(Projectile.Center, ref Projectile.velocity, targetPos);
+   
+            var sqrDist = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
+            if (sqrDist > HomeRange)
+            {
+                SwitchState(AIState.GoHome);
+            }
+            if (_targeter.targetNpc != -1
+                && sqrDist < 64 * 64 && _globalTimer >= 30)
+            {
+                SwitchState(AIState.ChaseTarget);
+            }
+        }
+
+        void AI_GoHome()
+        {
+            _globalTimer++;
+            MoonUtils.SearchForNewTarget(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+            MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, Owner.Center, RunSpeed, ref _targeter.targetOldPos);
+
+            var sqrDist = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
+
+            if (_targeter.targetNpc != -1 
+                && sqrDist < 64 * 64 && _globalTimer >= 30)
+            {
+                SwitchState(AIState.ChaseTarget);
+            }
+            if (sqrDist < 64 * 64)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        void AI_ChaseTarget()
+        {
+            MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, _targeter.Target.Center, RunSpeed, ref _targeter.targetOldPos);
+            MoonUtils.SearchForNewTarget(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+            if (_targeter.targetNpc != -1 && 
+                Collision.CanHitLine(Projectile.position, 1,1 , _targeter.Target.position, 1, 1))
+            {
+                SwitchState(AIState.AttackTarget);
+            }
+        }
+
+        void AI_AttackTarget()
+        {
+
+            _globalTimer++;
+            if(_globalTimer < 35)
+            {
+                Projectile.velocity *= 0.92f;
+                return;
+            }
+            float progress = MathHelper.Clamp(Timer / 35f, 0f, 1f);
+            float d = MathHelper.Lerp(3f, 45, progress);
+            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, _targeter.Target.Center, d);
+            if (Projectile.velocity.Length() < 15)
+            {
+                Projectile.velocity *= 1.5f;
+            }
+
+            if (Projectile.velocity == Vector2.Zero)
+            {
+                Projectile.velocity.Y -= 1;
+            }
+            if(!_targeter.Target.active || _globalTimer >= 120)
+                SwitchState(AIState.GoHome);
+        }
+
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -171,6 +276,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 {
                     HitCount = 0;
                     SpeedTimer = 240;
+                    _globalTimer = 0;
                 }
             }
 
@@ -179,20 +285,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 ModContent.ProjectileType<VehementBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
             Projectile.velocity = -Projectile.velocity;
             int Sound = Main.rand.Next(1, 6);
-            SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/Rhap1");
-            if (Sound == 1)
-            {
-                mySound = new SoundStyle("Stellamod/Assets/Sounds/Rhap1");
-            }
-            if (Sound == 2)
-            {
-                mySound = new SoundStyle("Stellamod/Assets/Sounds/Rhap2");
-            }
-            if (Sound == 3)
-            {
-                mySound = new SoundStyle("Stellamod/Assets/Sounds/Rhap3");
-
-            }
+            SoundStyle mySound = AssetReferences.Assets.Sounds.Rhap.Asset with { PitchVariance = 1f };
             Timer = 1;
             mySound.Volume = 0.15f;
             mySound.PitchVariance = 0.3f;
@@ -201,13 +294,13 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width;
+            float baseWidth = Projectile.scale * Projectile.width * 1.5f;
             return MathHelper.SmoothStep(baseWidth, 0.5f, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Goldenrod, Color.LightGoldenrodYellow, completionRatio) * 0.7f;
+            return Color.Lerp(Color.DarkOrange, Color.LightGoldenrodYellow, completionRatio) * 0.7f;
         }
 
         private void DrawVehementTrail(GraphicsDevice graphicsDevice)
@@ -221,7 +314,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public override bool PreDraw(ref Color lightColor)
         {
-            PixelationManager.QueuePrimitivesDrawAction(DrawVehementTrail);
+            PixelationManager.QueuePrimitivesDrawAction(DrawVehementTrail, DrawLayer.BehindNPCsWithOutline);
             Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
             return false;
