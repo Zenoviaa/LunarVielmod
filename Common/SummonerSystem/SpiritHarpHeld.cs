@@ -10,9 +10,9 @@ namespace Stellamod.Common.SummonerSystem;
 public class SpiritHarpHeld : ModProjectile
 {
     SlotId _soundSlot;
-    private ref float Timer => ref Projectile.ai[0];
+    ref float Timer => ref Projectile.ai[0];
     ref float Dir => ref Projectile.ai[1];
-    private Player Owner => Main.player[Projectile.owner];
+    Player Owner => Main.player[Projectile.owner];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();

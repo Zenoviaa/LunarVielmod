@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Dusts;
+using Stellamod.Core;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
@@ -54,8 +55,7 @@ namespace Stellamod.Common.SummonerSystem
                     p.netUpdate = true;
                     Owner.AddBuff(ModContent.BuffType<BellBlessing>(), 25);
                 }
-                SoundStyle cast = new SoundStyle("Stellamod/Assets/Sounds/Aurora");
-                cast.PitchVariance = 0.2f;
+                var cast = AssetReferences.Assets.Sounds.SpiritSummon.Asset with { PitchVariance = 0.5f };
                 SoundEngine.PlaySound(cast, Projectile.position);
                 FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightBlue, Color.Black);
                 for (float f = 0; f < Main.rand.Next(3, 7); f++)
