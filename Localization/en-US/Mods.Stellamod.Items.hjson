@@ -7997,12 +7997,11 @@ MagicCauldron: {
 }
 
 WillOWisp: {
-	DisplayName: Will O' Wisp
+	DisplayName: Song of Wisps
 	Tooltip:
 		'''
-		Summons a cute lil' ghostly flame that follows behind you and burns enemies!
+		Summons several cute lil' ghostly flames that follows behind you and burns enemies!
 		The flames line up behind each other
-		Consumes half a minion slot
 		'''
 }
 
