@@ -47,6 +47,11 @@ public static class MoonUtils
     }
 
     #region PathfindingAI
+    public static void AI_FloatAbove( Vector2 center, ref Vector2 velocity, Vector2 target)
+    {
+        var targetVelocity = (target - center) * 0.05f;
+        velocity = Vector2.Lerp(velocity, targetVelocity, 0.1f);
+    }
     public static void AIWalk_IvynStabber(Pathfinder pathfinder, Projectile entity, Vector2 destination, bool isGrounded, float runSpeed, float maxJumpSpeed, ref Vector2 targetOldPos)
     {
         if (Vector2.DistanceSquared( targetOldPos, destination) > REPATH_DISTANCE || Main.GameUpdateCount % 30 ==0)

@@ -1,13 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
-
+using Stellamod.Core;
 using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trails;
+using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -36,28 +40,20 @@ public class ManaWandMinionProj : AbstractBellSummon
     private ref float Heart => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
-        // DisplayName.SetDefault("Spragald");
-        // Sets the amount of frames this minion has on its spritesheet
-        Main.projFrames[Projectile.type] = 8;
-        // This is necessary for right-click targeting
-        ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-        ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-        ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+        Main.projFrames[Type] = 8;
+        Projectile.StaticDefaultToMinionProjectile();
     }
 
-    public sealed override void SetDefaults()
+    public override void SetDefaults()
     {
-        Projectile.width = 16;
-        Projectile.height = 16;
-        Projectile.tileCollide = false; // Makes the minion go through tiles freely
-        Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-        Projectile.minion = true; // Declares this as a minion (has many effects)
-        Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-        Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-        Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-        Projectile.usesLocalNPCImmunity = true;
-        Projectile.localNPCHitCooldown = 5;
-        Projectile.scale = 1f;
+        base.SetDefaults();
+        Projectile.DefaultToMinionProjectile();
+        Projectile.WidthAndHeight = 8;
+        Projectile.width = 12;
+        Projectile.LocalPiercingImmunityTime = 20;
+        Projectile.tileCollide = false;
+        Projectile.friendly = false;
+        Projectile.light = 0.67f;
     }
 
     // Here you can decide if your minion breaks things like grass or pots
@@ -77,7 +73,7 @@ public class ManaWandMinionProj : AbstractBellSummon
         Texture2D closingCircle = ModContent.Request<Texture2D>(TextureRegistry.ThinCircle).Value;
         Vector2 drawPosition = Projectile.Center - Main.screenPosition;
 
-        Color drawColor = Color.Blue;
+        Color drawColor = Color.SkyBlue;
         drawColor.A = 0;
         float drawScale = MathHelper.Lerp(1f, 0f, Heart / 1260f);
         spriteBatch.Draw(closingCircle, drawPosition, null, drawColor, Projectile.rotation, closingCircle.Size() / 2f, drawScale * 0.5f, SpriteEffects.None, 0);
@@ -87,12 +83,21 @@ public class ManaWandMinionProj : AbstractBellSummon
     public override void AI()
     {
         base.AI();
-        SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-        SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
+        var xOfffset = MathHelper.Lerp(-64, 64, ExtraMath.Osc(0f, 1f, speed: 0, Projectile.minionPos * 2));
+        xOfffset += MathHelper.Lerp(-32f, 32f, MathF.Sin(Heart * 0.025f) * 0.5f + 0.5f);
+        var targetPos = Owner.Center + new Vector2(0, -48) + new Vector2(xOfffset, 0);
+        MoonUtils.AI_FloatAbove(Projectile.Center, ref Projectile.velocity, targetPos);
         Visuals();
         Heart++;
         if (Heart == 1260)
         {
+            var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center + new Vector2(0, -12), TriColorPalette.Moonly, new Vector2(5, 15f));
+            factory.particleCount = 16;
+            ParticleUtils.CreateSwirlingDustCircle(factory);
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.Blue, Color.DarkBlue, Color.Black, duration: 22f, baseSize: 0.16f);
+            fx.Scale *= 1.5f;
+            var enchant = AssetReferences.Assets.Sounds.PrimeMagicCast.Asset with { PitchVariance = 0.7f, Pitch = -0.5f };
+            SoundEngine.PlaySound(enchant, Projectile.position);
             if (Main.myPlayer == Projectile.owner)
             {
                 int itemIndex = Item.NewItem(Projectile.GetSource_FromThis(), Projectile.Center, new Vector2(10, 10), ItemID.Star, 1);
