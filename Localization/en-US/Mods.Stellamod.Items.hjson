@@ -3144,12 +3144,12 @@ MoonMothStaff: {
 }
 
 SolMothStaff: {
-	DisplayName: Song of Sol Moths
+	DisplayName: Sol Moth wand
 	Tooltip: Summons a moth that quickly rams into enemies
 }
 
 SolMoth: {
-	DisplayName: Sol Moth
+	DisplayName: Song of Sol Moths
 	Tooltip: Summons a moth that quickly warps to its targets!
 }
 

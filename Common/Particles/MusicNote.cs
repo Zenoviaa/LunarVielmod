@@ -1,5 +1,6 @@
 ﻿using Stellamod.Core;
 using Stellamod.Core.Pixelation;
+using System;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
@@ -51,6 +52,7 @@ public class MusicNote : ParticleUpdater<MusicNote.Data>
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
             particle.velocity *= 0.96f;
+            particle.velocity.X += MathF.Sin(particle.timeLeft * 0.01f) * 0.03f;
             particle.timeLeft--;
         }
     }
@@ -70,6 +72,11 @@ public class MusicNote : ParticleUpdater<MusicNote.Data>
         }
     }
 
+    public override void OnSpawn(ref Data particle, in int index)
+    {
+        base.OnSpawn(ref particle, index);
+        particle.frame = (byte)Main.rand.Next(3);
+    }
     public override void Draw(SpriteBatch spriteBatch, ref Data particle)
     {
         float fade = MathHelper.Clamp(particle.timeLeft / 120f, 0f, 1f);

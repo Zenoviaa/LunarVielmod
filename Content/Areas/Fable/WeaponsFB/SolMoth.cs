@@ -105,6 +105,7 @@ public class SolMothMinionProj : AbstractBellSummon,
         var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.DarkOrange * 0.5f, Color.Gold * 0.5f, ExtraMath.Osc(0f, 1f, speed: 3));
         glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.3f;
         sb.Draw(glowDrawer);
     }
 
