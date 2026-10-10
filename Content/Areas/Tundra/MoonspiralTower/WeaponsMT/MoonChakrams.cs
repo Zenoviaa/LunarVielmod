@@ -100,7 +100,6 @@ public class MoonChakramsSlash : BaseSwingProjectileV2
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
-        Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
         if (!_hit)
         {
             FXUtil.ShakeCamera(target.Center, 1024, 4);

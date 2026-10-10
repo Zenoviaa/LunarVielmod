@@ -5,7 +5,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -41,7 +40,7 @@ public class HypnotizingChakramsSlash : BaseSwingProjectileV2
         base.DefineCombo();
         trailOffsetOverride = 1;
         ComboBuilder comboBuilder = new ComboBuilder();
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
             comboBuilder.AddChakramSpin2(duration: 18, xSwingRadius: 64, ySwingRadius: 64, hitCount: 3, swingDegrees: 435);
         }
@@ -141,7 +140,6 @@ public class HypnotizingChakramsSlash : BaseSwingProjectileV2
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
-        Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
         if (!_hit)
         {
             FXUtil.ShakeCamera(target.Center, 1024, 4);

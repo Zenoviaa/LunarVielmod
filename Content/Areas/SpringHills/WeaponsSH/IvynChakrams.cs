@@ -208,7 +208,6 @@ public class IvynChakramsStaminaSlash : BaseSwingProjectileV2
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
-        Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
         if (!_hit)
         {
             for (var i = 0; i < 1; i++)
@@ -297,7 +296,6 @@ public class IvynChakramsSlash : BaseSwingProjectileV2
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
-        Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
         if (!_hit)
         {
             for (var i = 0; i < 1; i++)

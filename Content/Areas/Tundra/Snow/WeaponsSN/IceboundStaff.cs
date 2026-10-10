@@ -2,19 +2,25 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core;
+using Stellamod.Core.Astar;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
 {
@@ -39,11 +45,22 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
 
 
 
-    public class IceboundMinionProj : AbstractBellSummon
+    public class IceboundMinionProj : AbstractBellSummon,
+        IDrawToRenderTarget
     {
+        enum AIState : byte
+        {
+            Idle,
+            GoHome,
+            Chase,
+            Attack
+        }
+        Targeter _targeter;
+        Pathfinder _pathfinder;
         private ref float Timer => ref Projectile.ai[0];
         private ref float IsLeader => ref Projectile.ai[1];
         private ref float CooldownTimer => ref Projectile.ai[2];
+        AIState _state;
         private Projectile Leader
         {
             get
@@ -60,7 +77,9 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
                 return Projectile;
             }
         }
-
+        float HomeSqrDist => 200 * 200;
+        float HomeRange => 128 * 128;
+        float RunSpeed => 8;
         public bool ThereIsNoLeader()
         {
             foreach (var proj in Main.ActiveProjectiles)
@@ -75,47 +94,35 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             return true;
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write((byte)_state);
+            _targeter.NetSend(writer);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _state = (AIState)reader.ReadByte();
+            _targeter.NetReceive(reader);
+        }
+
         public override void SetStaticDefaults()
         {
-
-            // DisplayName.SetDefault("Jelly Minion");
-            // Sets the amount of frames this minion has on its spritesheet
-            // This is necessary for right-click targeting
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
-            // These below are needed for a minion
-            // Denotes that this projectile is a pet or minion
             Main.projFrames[Projectile.type] = 4;
-            // This is necessary for right-click targeting
-            ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-            // These below are needed for a minion
-            // Denotes that this projectile is a pet or minion
-            Main.projPet[Projectile.type] = true;
-            // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-            ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-            // Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
-            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+            Projectile.SetTrailCacheLength(16);
+            Projectile.StaticDefaultToMinionProjectile();
         }
 
         public override void SetDefaults()
         {
-            Projectile.width = 46;
-            Projectile.height = 26;
-            // Makes the minion go through tiles freely
+            base.SetDefaults();
+            _pathfinder = new();
+            Projectile.width = Projectile.height = 16;
             Projectile.tileCollide = false;
-
-            // These below are needed for a minion weapon
-            // Only controls if it deals damage to enemies on contact (more on that later)
-            Projectile.friendly = true;
-            // Only determines the damage type
-            Projectile.minion = true;
-            // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
+            Projectile.DefaultToMinionProjectile();
+            Projectile.LocalPiercingImmunityTime = 30;
             Projectile.minionSlots = 0.5f;
-            // Needed so the minion doesn't despawn on collision with enemies or tiles
-            Projectile.penetrate = -1;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 30;
         }
 
         // Here you can decide if your minion breaks things like grass or pots
@@ -127,7 +134,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
         {
-            return true;
+            return _state == AIState.Attack;
         }
 
         public void DrawTrail(Vector2[] oldPos)
@@ -147,12 +154,10 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             return MathHelper.SmoothStep(12, 0, completionRatio);
         }
 
-        public override bool PreDraw(ref Color lightColor)
+        void DrawPixelatedTrail(GraphicsDevice gDevice)
         {
-            DrawTrail(Projectile.oldPos);
-            return base.PreDraw(ref lightColor);
-        }
 
+        }
         private void AI_MoveToward(Vector2 targetCenter, float speed = 8, float accel = 16)
         {
             //chase target
@@ -199,70 +204,111 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             }
         }
 
+        void SwitchState(AIState state)
+        {
+            Timer = 0;
+            _state = state;
+            Projectile.netUpdate = true;
+        }
+
+        void AI_Idle()
+        {
+            Timer++;
+            var targetPoint = MoonUtils.CalculateHoverAbovePoint(Owner.Center, Timer, Projectile.minionPos);
+            MoonUtils.AI_FloatAbove(Projectile.Center, ref Projectile.velocity, targetPoint);
+            MoonUtils.SearchForNewTargetByLineOfSight(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+            if(_targeter.HasValidTarget && Timer >= 30)
+            {
+                SwitchState(AIState.Chase);
+            }
+
+            var sqrDistHome = Vector2.DistanceSquared(Owner.Center, Projectile.Center);
+            if(sqrDistHome > HomeSqrDist)
+            {
+                SwitchState(AIState.GoHome);
+            }
+        }
+        void AI_Chase()
+        {
+            Timer++;
+            MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, _targeter.Target.Center, RunSpeed, ref _targeter.targetOldPos);
+            MoonUtils.SearchForNewTargetByLineOfSight(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+            if (_targeter.targetNpc != -1 &&
+                Collision.CanHitLine(Projectile.position, 1, 1, _targeter.Target.position, 1, 1))
+            {
+                SwitchState(AIState.Attack);
+            }
+            if (!_targeter.Target.active)
+                SwitchState(AIState.GoHome);
+        }
+
+        void AI_Attack()
+        {
+            Timer++;
+            bool isLeader = Leader.whoAmI == Projectile.whoAmI;
+            if (isLeader)
+            {
+                if (CooldownTimer <= 0)
+                    AI_MoveToward(_targeter.Target.Center, 8, 1);
+            }
+            else
+            {
+                Vector2 targetCenter = Leader.Center;
+                float distanceToLeader = Vector2.Distance(Projectile.Center, targetCenter);
+                if (distanceToLeader > 64)
+                {
+                    if (CooldownTimer <= 0)
+                        AI_MoveToward(targetCenter, 16, 1);
+                }
+            }
+
+            if(Timer >= 140)
+            {
+                SwitchState(AIState.GoHome);
+            }
+        }
+
+        void AI_GoHome()
+        {
+            Timer++;
+            var targetPoint = MoonUtils.CalculateHoverAbovePoint(Owner.Center, Timer, Projectile.minionPos);
+            MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, targetPoint, RunSpeed, ref _targeter.targetOldPos);
+            var sqrDst = Vector2.DistanceSquared(Projectile.Center, targetPoint);
+            if (sqrDst <= HomeRange)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+
         public override void AI()
         {
             base.AI();
-            Timer++;
+
+            switch (_state)
+            {
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+                case AIState.GoHome:
+                    AI_GoHome();
+                    break;
+                case AIState.Chase:
+                    AI_Chase();
+                    break;
+                case AIState.Attack:
+                    AI_Attack();
+                    break;
+            }
             if (this.OwnedByLocalClient())
             {
                 if (Timer == 1 && ThereIsNoLeader())
                 {
                     IsLeader = 1;
-
                 }
-
             }
-            Player player = Main.player[Projectile.owner];
             Projectile.spriteDirection = Projectile.direction;
             CooldownTimer--;
-            bool isLeader = Leader.whoAmI == Projectile.whoAmI;
-            if (isLeader)
-            {
-                SummonHelper.SearchForTargets(player, Projectile,
-                    out bool foundTarget,
-                    out float distanceFromTarget,
-                    out Vector2 targetCenter);
-                if (foundTarget)
-                {
-                    if(CooldownTimer <= 0)
-                        AI_MoveToward(targetCenter, 12, 1);
-                }
-                else
-                {
-                    Vector2 idlePosition = player.Center + new Vector2(0, -48);
-                    SummonHelper.CalculateIdleValuesWithOverlap(player, Projectile,
-                        out Vector2 vectorToIdlePosition,
-                        out float distanceToIdlePosition);
-                    SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
-                }
-            }
-            else
-            {
-                SummonHelper.SearchForTargets(player, Leader,
-                    out bool foundTarget,
-                    out float distanceFromTarget,
-                    out Vector2 foundTargetCenter);
-                if (!foundTarget)
-                {
-                    SummonHelper.CalculateIdleValues(player, Projectile,
-                        Leader.Center,
-
-                           out Vector2 vectorToIdlePosition,
-                           out float distanceToIdlePosition);
-                    SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
-                }
-                else
-                {
-                    Vector2 targetCenter = Leader.Center;
-                    float distanceToLeader = Vector2.Distance(Projectile.Center, targetCenter);
-                    if (distanceToLeader > 64)
-                    {
-                        if (CooldownTimer <= 0)
-                            AI_MoveToward(targetCenter, 16, 1);
-                    }
-                }
-            }
-
             Visuals();
         }
 
@@ -275,7 +321,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             Projectile.netUpdate = true;
             if (Main.rand.NextBool(16))
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
+                SoundEngine.PlaySound(AssetReferences.Assets.Sounds.WinterStorm.Asset with { PitchVariance = 0.75f, Volume = 0.4f }, Projectile.position);
                 Vector2 velocity = Main.rand.NextVector2Circular(2, 2);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                     ModContent.ProjectileType<WinterboundArrowFlake>(), Projectile.damage / 2, 1, Projectile.owner);
@@ -293,6 +339,9 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
         }
 
-
+        public void DrawToRenderTargets()
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrail);
+        }
     }
 }
