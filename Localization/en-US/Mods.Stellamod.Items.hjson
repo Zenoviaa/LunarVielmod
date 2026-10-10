@@ -5437,10 +5437,7 @@ MoltenScrap: {
 
 VehementRhapsody: {
 	DisplayName: Song of Rhapsody
-	Tooltip:
-		'''
-		Summons a Vehement Guard that aggressively flies into enemies, bouncing and arcing off them!
-		'''
+	Tooltip: Summons a Vehement Guard that aggressively flies into enemies, bouncing and arcing off them!
 }
 
 VeilScriptureI: {

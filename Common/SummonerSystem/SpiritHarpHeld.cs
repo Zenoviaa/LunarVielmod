@@ -54,7 +54,7 @@ public class SpiritHarpHeld : ModProjectile
                 scale = new Vector2(Main.rand.NextFloat(0.5f, 1f))
             });
         }
-        if(Timer % 8 == 0)
+        if(Timer % 16 == 0)
         {
             var pos = Projectile.Center;
             pos.X += Main.rand.Next(-64, 64);
@@ -65,7 +65,7 @@ public class SpiritHarpHeld : ModProjectile
                 position = pos,
                 velocity = vel,
                 color = Color.Orange,
-                timeLeft = 120
+                timeLeft = 80
             });
         }
 

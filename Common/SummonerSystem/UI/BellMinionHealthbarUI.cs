@@ -63,11 +63,9 @@ namespace Stellamod.Common.SummonerSystem.UI
                     topLeft + offset - new Vector2(16, 24), Color.White, 0, Vector2.Zero, Vector2.One);
 
 
-                Texture2D minionIcon = TextureAssets.Projectile[bellSummon.Type].Value;
+                var minionFraming = bellSummon.GetIcon();
                 Vector2 scale = new Vector2(1f, 0.3f);
-
-                Rectangle frame = bellSummon.Projectile.Frame();
-                spriteBatch.Draw(minionIcon, topLeft + offset - new Vector2(frame.Width, 0), frame, Color.White, 0, frame.Size() / 2f, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(minionFraming.texture, topLeft + offset - new Vector2(minionFraming.frame.Width, 0), minionFraming.frame, Color.White, 0, minionFraming.frame.Size() / 2f, 1, SpriteEffects.None, 0);
                 for (int r = 0; r < repeats; r++)
                 {
                     Vector2 xOffset = Vector2.UnitX * r * _healthBarTextureAsset.Width();

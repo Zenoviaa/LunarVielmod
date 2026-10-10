@@ -1,11 +1,15 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
+using Stellamod.Core;
+using Stellamod.Core.Astar;
 using Stellamod.Core.Bases;
-using Stellamod.Helpers;
+using Stellamod.Core.Pixelation;
 using Stellamod.Items;
+using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -26,189 +30,232 @@ public class SolMoth : ModItem
     public override void AddRecipes()
     {
         base.AddRecipes();
-        this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(),
+        this.RegisterBrew(
+            mold: ModContent.ItemType<BlankRune>(),
             material: ModContent.ItemType<AlcadizScrap>());
     }
 }
 
 
 
-public class SolMothMinionProj : AbstractBellSummon
+public class SolMothMinionProj : AbstractBellSummon,
+    IDrawToRenderTarget
 {
-    private ref float Timer => ref Projectile.ai[0];
-    private ref float TimerOffset => ref Projectile.ai[1];
+    enum AIState : byte
+    {
+        Idle,
+        Chase,
+        Attack,
+        GoHome
+    }
 
-    public float HuntrianColorX;
-    public float HuntrianColorZ;
-    public float HuntrianColorY;
-    public float HuntrianColorOfset;
+    Targeter _targeter;
+    Pathfinder _pathfinder;
+    ref float Timer => ref Projectile.ai[0];
+    ref float TimerOffset => ref Projectile.ai[1];
+    AIState State
+    {
+        get => (AIState)Projectile.ai[2];
+        set => Projectile.ai[2] = (float)value;
+    }
+
+    float HomeSqrDistance => 252 * 252;
+    float RunSpeed => 6;
     public override void SetStaticDefaults()
     {
-        // DisplayName.SetDefault("Jelly Minion");
-        // Sets the amount of frames this minion has on its spritesheet
         Main.projFrames[Projectile.type] = 4;
-        // This is necessary for right-click targeting
-        ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+        Projectile.StaticDefaultToMinionProjectile();
+    }
 
-        // These below are needed for a minion
-        // Denotes that this projectile is a pet or minion
-        Main.projPet[Projectile.type] = true;
-        // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-        ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-        // Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
-        ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        _targeter.NetSend(writer);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _targeter.NetReceive(reader);
     }
 
     public sealed override void SetDefaults()
     {
-        Projectile.width = 40;
-        Projectile.height = 40;
-        // Makes the minion go through tiles freely
+        base.SetDefaults();
+        _pathfinder = new();
+        Projectile.DefaultToMinionProjectile();
+        Projectile.width = 32;
+        Projectile.height = 32;
         Projectile.tileCollide = false;
-
-        // These below are needed for a minion weapon
-        // Only controls if it deals damage to enemies on contact (more on that later)
-        Projectile.friendly = true;
-        // Only determines the damage type
-        Projectile.minion = true;
-        // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-        Projectile.minionSlots = 1f;
-        // Needed so the minion doesn't despawn on collision with enemies or tiles
-        Projectile.penetrate = -1;
-        Projectile.usesLocalNPCImmunity = true;
-        Projectile.localNPCHitCooldown = 20;
-        HuntrianColorOfset = Main.rand.NextFloat(-1f, 1f);
-
+        Projectile.localNPCHitCooldown = 30;
+        Projectile.light = 0.6f;
     }
 
-
-    // Here you can decide if your minion breaks things like grass or pots
     public override bool? CanCutTiles()
     {
         return false;
     }
 
-    // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
     public override bool MinionContactDamage()
     {
-        return true;
+        return State == AIState.Attack;
+    }
+    
+    void DrawGlow(SpriteBatch sb, Vector2 sp)
+    {
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        glowDrawer.color = Color.Lerp(Color.DarkOrange * 0.5f, Color.Gold * 0.5f, ExtraMath.Osc(0f, 1f, speed: 3));
+        glowDrawer.color.A = 0;
+        sb.Draw(glowDrawer);
     }
 
-    public override void PostDraw(Color lightColor)
+    void SwitchState(AIState state)
     {
-        Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-        Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(HuntrianColorX * 1), (int)(HuntrianColorY * 1), (int)(HuntrianColorZ * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-        Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(HuntrianColorX * 1), (int)(HuntrianColorY * 1), (int)(HuntrianColorZ * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-        Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(HuntrianColorX * 1), (int)(HuntrianColorY * 1), (int)(HuntrianColorZ * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-        Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(HuntrianColorX * 1), (int)(HuntrianColorY * 1), (int)(HuntrianColorZ * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-        Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(HuntrianColorX * 1), (int)(HuntrianColorY * 1), (int)(HuntrianColorZ * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
-        Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.0f * Main.essScale);
+        Timer = 0;
+        State = state;
+        Projectile.netUpdate = true;
+    }
+
+    void AI_Attack()
+    {
+        if(!_targeter.HasValidTarget)
+        {
+            SwitchState(AIState.GoHome);
+            return;
+        }
+        Timer++;
+        if (Timer == 1)
+        {
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon");
+            soundStyle.PitchVariance = 0.15f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
+            for (int i = 0; i < 5; i++)
+            {
+                Dust.NewDustPerfect(_targeter.Target.Center, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 5))
+                    .RotatedByRandom(19.0), 0, Color.White, 1f).noGravity = true;
+            }
+        }
+
+        if (Timer < 10)
+        {
+            Projectile.velocity *= 0.92f;
+        }
+
+        if (Timer == 10)
+        {
+            if (Main.myPlayer == Projectile.owner)
+            {
+                TimerOffset = Main.rand.Next(0, 30);
+                Projectile.netUpdate = true;
+            }
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2");
+            soundStyle.PitchVariance = 0.15f;
+            soundStyle.Volume = 0.5f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
+            Dust.QuickDustLine(Projectile.Center, _targeter.Target.Center, 50, Color.Goldenrod);
+
+            var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, _targeter.Target.Center, TriColorPalette.Fiery, new Vector2(5, 15f));
+            factory.particleCount = 8;
+            ParticleUtils.CreateSwirlingDustCircle(factory);
+
+            FXUtil.GlowCircleBoom(_targeter.Target.Center, Color.Yellow, Color.OrangeRed, Color.DarkRed, duration: 18, baseSize: 0.17f);
+
+            Projectile.velocity = (_targeter.Target.Center - Projectile.Center).Resize(15);
+            Projectile.Center = _targeter.Target.Center;
+        }
+        else if (Timer < 30)
+        {
+            Projectile.velocity *= 0.98f;
+        }
+        else
+        {
+            Projectile.velocity = Projectile.velocity.RotatedBy(0.05f * MathF.Sign(Projectile.velocity.X));
+            Projectile.velocity *= 0.98f;
+        }
+
+        if (Timer >= 60 + TimerOffset)
+        {
+            Timer = 0;
+        }
+    }
+
+    void AI_GoHome()
+    {
+        Timer++;
+        MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, Owner.Center + new Vector2(0, -16), RunSpeed, ref _targeter.targetOldPos);
+        var sqrDist = Vector2.DistanceSquared(Owner.Center, Projectile.Center);
+        if(sqrDist < HomeSqrDistance * 0.9f)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+
+    void AI_Chase()
+    {
+        Timer++;
+        if(Collision.CanHitLine(Projectile.position, 1, 1, _targeter.Target.position, 1, 1))
+        {
+            SwitchState(AIState.Attack);
+            return;
+        }
+        MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, _targeter.Target.Center, RunSpeed, ref _targeter.targetOldPos);
+        MoonUtils.SearchForNewTargetByLineOfSight(Owner.Center, Projectile.Center, ref _targeter.targetNpc);
+        if (!_targeter.HasValidTarget)
+        {
+            SwitchState(AIState.GoHome);
+        }
+    }
+
+    void AI_Idle()
+    {
+        Timer++;
+        if (Timer >= 30)
+            MoonUtils.SearchForNewTargetByDistance(Owner.Center, ref _targeter.targetNpc);
+
+        var targetPoint = MoonUtils.CalculateHoverAbovePoint(Owner.Center, Timer, Projectile.minionPos);
+        MoonUtils.AI_FloatAbove(Projectile.Center, ref Projectile.velocity, targetPoint);
+
+        Timer++;
+        if (Timer >= 90 && _targeter.HasValidTarget)
+        {
+            SwitchState(AIState.Chase);
+        }
+
+        var sqrDistToOwner = Vector2.DistanceSquared(Owner.Center, Projectile.Center);
+        if (sqrDistToOwner > HomeSqrDistance)
+        {
+            SwitchState(AIState.GoHome);
+        }
     }
 
     public override void AI()
     {
         base.AI();
-        SummonHelper.SearchForTargets(Owner, Projectile,
-            out bool foundTarget,
-            out float distanceFromTarget,
-            out Vector2 targetCenter);
-
-        if (foundTarget)
+        switch (State)
         {
-            Timer++;
-            if (Timer == 1)
-            {
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon");
-                soundStyle.PitchVariance = 0.15f;
-                SoundEngine.PlaySound(soundStyle, Projectile.position);
-                for (int i = 0; i < 5; i++)
-                {
-                    Dust.NewDustPerfect(targetCenter, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 5))
-                        .RotatedByRandom(19.0), 0, Color.White, 1f).noGravity = true;
-                }
-            }
-
-            if (Timer < 10)
-            {
-                Projectile.velocity *= 0.92f;
-            }
-
-            if (Timer == 10)
-            {
-                if (Main.myPlayer == Projectile.owner)
-                {
-                    TimerOffset = Main.rand.Next(0, 30);
-                    Projectile.netUpdate = true;
-                }
-
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2");
-                soundStyle.PitchVariance = 0.15f;
-                SoundEngine.PlaySound(soundStyle, Projectile.position);
-                Dust.QuickDustLine(Projectile.Center, targetCenter, 50, Color.Goldenrod);
-                for (int i = 0; i < 2; i++)
-                {
-                    Dust.NewDustPerfect(targetCenter, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5))
-                        .RotatedByRandom(19.0), 0, Color.LightGoldenrodYellow, 1f).noGravity = true;
-                }
-
-                for (int i = 0; i < 2; i++)
-                {
-                    Dust.NewDustPerfect(targetCenter, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5))
-                        .RotatedByRandom(19.0), 0, Color.LightGoldenrodYellow, 1f).noGravity = true;
-                }
-
-                Projectile.Center = targetCenter;
-            }
-            else if (Timer < 30)
-            {
-                Projectile.velocity *= 0.98f;
-            }
-            else
-            {
-                SummonHelper.CalculateIdleValues(Owner, Projectile,
-                       out Vector2 vectorToIdlePosition,
-                       out float distanceToIdlePosition);
-                SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
-            }
-
-            if (Timer >= 60 + TimerOffset)
-            {
-                Timer = 0;
-            }
-        }
-        else
-        {
-            SummonHelper.CalculateIdleValues(Owner, Projectile,
-                        out Vector2 vectorToIdlePosition,
-                        out float distanceToIdlePosition);
-            SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
+            case AIState.Idle:
+                AI_Idle();
+                break;
+            case AIState.Chase:
+                AI_Chase();
+                break;
+            case AIState.Attack:
+                AI_Attack();
+                break;
+            case AIState.GoHome:
+                AI_GoHome();
+                break;
         }
 
-        Visuals();
-    }
-
-    private void Visuals()
-    {
-        HuntrianColorZ = VectorHelper.Osc(15f, 60, 3, HuntrianColorOfset);
-        HuntrianColorY = VectorHelper.Osc(45f, 60, 3, HuntrianColorOfset);
-        HuntrianColorX = VectorHelper.Osc(85f, 15, 3, HuntrianColorOfset);
         // So it will lean slightly towards the direction it's moving
         Projectile.rotation = Projectile.velocity.X * 0.05f;
-
-        // This is a simple "loop through all frames from top to bottom" animation
-        int frameSpeed = 8;
-        Projectile.frameCounter++;
-        if (Projectile.frameCounter >= frameSpeed)
-        {
-            Projectile.frameCounter = 0;
-            Projectile.frame++;
-            if (Projectile.frame >= Main.projFrames[Projectile.type])
-            {
-                Projectile.frame = 0;
-            }
-        }
-
+        DrawHelper.AnimateTopToBottom(Projectile, 8);
         // Some visuals here
-        Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
+        Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1f * Main.essScale);
+    }
+
+    public void DrawToRenderTargets()
+    {
+        PixelationManager.QueueSpritebatchDrawAction(DrawGlow);
     }
 }

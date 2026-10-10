@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.ArmorRework;
+﻿using ReLogic.Content;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Visual.Particles;
@@ -16,6 +17,21 @@ public abstract class AbstractBellSummon : ModProjectile,
     IDrawOutlines,
     ITargetable
 {
+    Asset<Texture2D> _headIconTextureAsset;
+    bool _hasHeadAsset;
+    bool _initialized;
+    bool HasHeadAsset
+    {
+        get
+        {
+            if (!_initialized)
+            {
+                _hasHeadAsset = ModContent.HasAsset(HeadIconAssetPath);
+                _initialized = true;
+            }
+            return _hasHeadAsset;
+        }
+    }
     private float _damageBoostTimer;
     private bool _spawnedMinionNPC;
     private int _npcWhoAmI = -1;
@@ -26,10 +42,16 @@ public abstract class AbstractBellSummon : ModProjectile,
     public float lifetime;
     public bool isGuardian;
 
+    string HeadIconAssetPath => $"{base.Texture}_Head";
     public int RemainingHealth => GetAttachedNPC().life;
     public int MaxHealth => GetAttachedNPC().lifeMax;
     public float HealthPct => (float)RemainingHealth / (float)MaxHealth;
     public static event Action<Projectile> OnKillMinion;
+    public override void Load()
+    {
+        base.Load();
+  
+    }
     public virtual int GetAggro()
     {
         int aggro = -50;
@@ -274,4 +296,23 @@ public abstract class AbstractBellSummon : ModProjectile,
         spriteBatch.Draw(texture, drawPos - Vector2.UnitY * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
         spriteBatch.Draw(texture, drawPos + Vector2.UnitY * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
     }
+
+    /// <summary>
+    /// Returns the icon drawn for this bell minion
+    /// </summary>
+    /// <returns></returns>
+    public virtual (Texture2D texture, Rectangle frame) GetIcon()
+    {
+
+        if(HasHeadAsset && _headIconTextureAsset == null)
+        {
+            _headIconTextureAsset = ModContent.Request<Texture2D>(HeadIconAssetPath);
+        }
+        if(_headIconTextureAsset != null)
+        {
+            return (_headIconTextureAsset.Value , new Rectangle(0, 0, _headIconTextureAsset.Value.Width, _headIconTextureAsset.Value.Height));
+        }
+        return (TextureAssets.Projectile[Type].Value, TextureAssets.Projectile[Type].Value.GetFrame(Projectile.frame, Main.projFrames[Type]));
+    }
 }
+
