@@ -654,7 +654,7 @@ public partial class VeilGen
                     if (wfFall != -1)
                     {
 
-                        FancyWaterfalls.PlaceWaterfall(tilePoint + new Point(0, -wfFall), wfFall);
+                        FancyWaterfalls.PlaceWaterfall(tilePoint + new Point(0, -wfFall));
                     }
                 }
             }

@@ -56,8 +56,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     
     float4 mixedColor = finalColor * 0.5 + newColor * 0.5;
 
-
-    return mixedColor * 0.5;
+    float fadeOut = lerp(1.0, 0.0, saturate((coords.y - 0.95) / 0.05));
+    return mixedColor * 0.5 * fadeOut;
 }
 
 technique Technique1

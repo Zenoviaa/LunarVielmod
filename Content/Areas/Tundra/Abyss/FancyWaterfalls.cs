@@ -9,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss;
 
-public readonly record struct WaterfallPoint(Point TilePoint, int FallHeight)
+public readonly record struct WaterfallPoint(Point TilePoint)
 {
 
 }
@@ -106,10 +106,9 @@ public class FancyWaterfalls : ModSystem
         base.LoadWorldData(tag);
         FancyWaterfallPoints.Clear();
         Point[] points = tag.Get<Point[]>("waterfallPoints");
-        int[] heights = tag.Get<int[]>("waterfallHeights");
-        for(int i = 0; i < heights.Length; i++)
+        for(int i = 0; i < points.Length; i++)
         {
-            FancyWaterfallPoints.Add(new WaterfallPoint(points[i], heights[i]));
+            FancyWaterfallPoints.Add(new WaterfallPoint(points[i]));
         }
     }
 
@@ -117,15 +116,12 @@ public class FancyWaterfalls : ModSystem
     {
         base.SaveWorldData(tag);
         Point[] points = new Point[FancyWaterfallPoints.Count];
-        int[] heights = new int[FancyWaterfallPoints.Count];
         for(int i = 0; i < FancyWaterfallPoints.Count; i++)
         {
             points[i] = FancyWaterfallPoints[i].TilePoint;
-            heights[i] = FancyWaterfallPoints[i].FallHeight;
         }
 
         tag["waterfallPoints"] = points;
-        tag["waterfallHeights"] = heights;
     }
     public static void RequestWaterfallData()
     {
@@ -160,7 +156,6 @@ public class FancyWaterfalls : ModSystem
         {
             packet.Write((ushort)p.TilePoint.X);
             packet.Write((ushort)p.TilePoint.Y);
-            packet.Write((byte)p.FallHeight);
         }
         packet.Send(-1);
     }
@@ -200,8 +195,7 @@ public class FancyWaterfalls : ModSystem
         {
             ushort xPos = reader.ReadUInt16();
             ushort yPos = reader.ReadUInt16();
-            byte fallHeight = reader.ReadByte();
-            var waterfall = new WaterfallPoint(new Point(xPos, yPos), fallHeight);
+            var waterfall = new WaterfallPoint(new Point(xPos, yPos));
             FancyWaterfallPoints.Add(waterfall);
             points.Add(waterfall);
         }
@@ -216,9 +210,8 @@ public class FancyWaterfalls : ModSystem
     public static void PlaceFallingWaterfall(in Point tilePoint)
     {
         Point current = tilePoint;
-        int bottomPoint = TileUtilities.FallToSolidOrWaterTile(tilePoint.X, tilePoint.Y);
-        int fallHeight = bottomPoint - tilePoint.Y;
-        PlaceWaterfall(current, fallHeight);
+
+        PlaceWaterfall(current);
     }
 
     public static void KillWaterfall( Point tilePoint)
@@ -226,5 +219,5 @@ public class FancyWaterfalls : ModSystem
         FancyWaterfallPoints.RemoveAll(x => x.TilePoint == tilePoint);
     }
 
-    public static void PlaceWaterfall(in Point tilePoint, in int fallHeight) => FancyWaterfallPoints.Add(new(tilePoint, fallHeight));
+    public static void PlaceWaterfall(in Point tilePoint) => FancyWaterfallPoints.Add(new(tilePoint));
 }

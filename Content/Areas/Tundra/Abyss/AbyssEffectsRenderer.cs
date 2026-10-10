@@ -260,7 +260,10 @@ public class AbyssEffectsRenderer : ModSystem
             if (!tileRect.Contains(waterfall.TilePoint))
                 continue;
 
-            Point bottom = waterfall.TilePoint + new Point(0, waterfall.FallHeight);
+            int bottomPoint = TileUtilities.FallToSolidOrWaterTile(waterfall.TilePoint.X, waterfall.TilePoint.Y + 2);
+            int fallHeight = bottomPoint - waterfall.TilePoint.Y;
+
+            Point bottom = waterfall.TilePoint + new Point(0, fallHeight + 1);
             Vector2 topWorld = waterfall.TilePoint.ToWorldCoordinates();
             Vector2 bottomWorld = bottom.ToWorldCoordinates();
             Rectangle rect = new Rectangle((int)topWorld.X, (int)topWorld.Y, 16, (int)(bottomWorld.Y - topWorld.Y));
@@ -422,7 +425,6 @@ public class AbyssEffectsRenderer : ModSystem
             
             //Render to waterfall render target
             using var handle = RT.Context(RenderTargets.ScreenTarget);
-
             //A target is needed to properly blend the waterfalls together
             using(RT.Clear(handle, Color.Transparent))
             {
