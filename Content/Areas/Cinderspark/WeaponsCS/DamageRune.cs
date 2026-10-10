@@ -7,6 +7,7 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,11 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.SetDefaults();
             Item.DefaultToRune(ModContent.ProjectileType<DamageRuneShaper>());
         }
+        public override bool CanShoot(Player player)
+        {
+            return base.CanShoot(player) && player.Stamina >= 4;
+        }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
@@ -32,7 +38,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
     }
     public class DamageRuneShaper : AbstractRuneProjectile
     {
-
+        bool _consumed;
         public override bool MatchShapeCheck(Vector2[] shapePoints)
         {
             if (shapePoints.Length <= 2)
@@ -87,8 +93,12 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void ApplyMagic(AbstractBellSummon minion)
         {
             minion.DamageBuff();
+            if (!_consumed)
+            {
+                Owner.UseStamina(4);
+                _consumed = true;
+            }
         }
-
         public override bool PreDraw(ref Color lightColor)
         {
             PixelationManager.QueueSpritebatchDrawAction(DrawPointer);
