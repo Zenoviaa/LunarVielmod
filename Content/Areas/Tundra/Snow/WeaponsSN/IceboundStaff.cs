@@ -94,6 +94,11 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             return true;
         }
 
+        public override int GetAggro()
+        {
+            return -90;
+        }
+
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
