@@ -12,6 +12,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Common.SummonerSystem.UI
 {
@@ -51,40 +52,60 @@ namespace Stellamod.Common.SummonerSystem.UI
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
             float yOffsetPer = 48;
             int repeats = 48;
-            for(int i = 0; i < _minions.Count; i++)
+            var maxBarRect = new Rectangle(0, 0, 48 * 2, _healthBarTextureAsset.Value.Height / 2);
+            var maxBarWhiteRect = new Rectangle(0, _healthBarTextureAsset.Value.Height / 2, 48 * 2, _healthBarTextureAsset.Value.Height / 2);
+
+            Vector2 GetOffset(in int i)
             {
-                AbstractBellSummon bellSummon = _minions[i];
-                NPC minion = bellSummon.GetAttachedNPC();
-                float healthPercent = (float)minion.life / (float)minion.lifeMax;
-                Vector2 offset = i * yOffsetPer * -Vector2.UnitY;
-                Color healthColor = Color.Lerp(Color.Red, Color.ForestGreen, healthPercent);
-
-                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, bellSummon.DisplayName.Value,
-                    topLeft + offset - new Vector2(16, 24), Color.White, 0, Vector2.Zero, Vector2.One);
-
-
-                var minionFraming = bellSummon.GetIcon();
-                Vector2 scale = new Vector2(1f, 0.3f);
-                spriteBatch.Draw(minionFraming.texture, topLeft + offset - new Vector2(minionFraming.frame.Width, 0), minionFraming.frame, Color.White, 0, minionFraming.frame.Size() / 2f, 1, SpriteEffects.None, 0);
-                for (int r = 0; r < repeats; r++)
+                return i * yOffsetPer * -Vector2.UnitY;
+            }
+            using (spriteBatch.Ctx(spriteBatch.Parameters with { samplerState = SamplerState.AnisotropicWrap }))
+            {
+                //Draw Display Names
+                for (int i = 0; i < _minions.Count; i++)
                 {
-                    Vector2 xOffset = Vector2.UnitX * r * _healthBarTextureAsset.Width();
-                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset + xOffset - new Vector2(0, 2), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset + xOffset - new Vector2(0, -2), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset + xOffset - new Vector2(2, 0), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset + xOffset - new Vector2(-2, 0), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                    var bellSummon = _minions[i];
+                    var offset = GetOffset(i);
+                    ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, bellSummon.DisplayName.Value,
+                        topLeft + offset - new Vector2(2, 24), Color.White, 0, Vector2.Zero, Vector2.One);
                 }
-                for (int r = 0; r < repeats; r++)
+
+                //Draw Bars
+                for (int i = 0; i < _minions.Count; i++)
                 {
-                    Vector2 xOffset = Vector2.UnitX * r * _healthBarTextureAsset.Width();
-                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset + xOffset, null, Color.Black, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                    var bellSummon = _minions[i];
+                    var minion = bellSummon.GetAttachedNPC();
+                    var healthPercent = (float)minion.life / (float)minion.lifeMax;
+                    var offset = GetOffset(i);
+                    var rect = maxBarRect;
+
+                    var backgroundRect = maxBarWhiteRect;
+                    backgroundRect.Width += 4;
+
+                    var shrunkenBackgroundRect = backgroundRect;
+                    shrunkenBackgroundRect.Width = (int)((float)backgroundRect.Width * healthPercent);
+
+                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset + new Vector2(-2, 0), backgroundRect, Color.DarkGray, 0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
+                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset + new Vector2(-2, 0), shrunkenBackgroundRect, Color.White, 0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
+                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset , rect, Color.Black, 0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
+
+                    var healthColor = Color.Lerp(Color.Red, Color.White, healthPercent);
+                    var shrunkenRect = rect;
+                    shrunkenRect.Width = (int)((float)rect.Width * healthPercent);
+                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset, shrunkenRect, healthColor, 0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
                 }
-                for (int r =0;r < repeats * healthPercent; r++)
+
+                for (int i = 0; i < _minions.Count; i++)
                 {
-                    Vector2 xOffset = Vector2.UnitX * r * _healthBarTextureAsset.Width();
-                    spriteBatch.Draw(_healthBarTextureAsset.Value, topLeft + offset + xOffset, null, healthColor, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                    var bellSummon = _minions[i];
+                    var minion = bellSummon.GetAttachedNPC();
+                    var healthPercent = (float)minion.life / (float)minion.lifeMax;
+                    var offset = GetOffset(i);
+                    var minionFraming = bellSummon.GetIcon();
+                    spriteBatch.Draw(minionFraming.texture, topLeft + offset - new Vector2(16, 0), minionFraming.frame, Color.White, 0, minionFraming.frame.Size() / 2f, 1, SpriteEffects.None, 0);       
                 }
-            }    
+            }
         }
+
     }
 }
