@@ -2,6 +2,7 @@
 using Stellamod.Common.Particles;
 using Stellamod.Core;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -85,7 +86,7 @@ public class SpiritHarpHeld : ModProjectile
 
         if (this.OwnedByLocalClient())
         {
-            Dir = (Main.MouseWorld.X < Projectile.Center.X) ? -1 : 1;
+            MoonUtils.SetMouseFacingDirection(Owner.Center, 2, ref Dir);
             Projectile.netUpdate = true;
         }
 
@@ -111,6 +112,7 @@ public class SpiritHarpHeld : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         var drawer = Projectile.Drawer;
+        drawer.worldPosition.Y += Owner.gfxOffY;
         Main.spriteBatch.Draw(drawer);
         return false;
     }

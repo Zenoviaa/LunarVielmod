@@ -128,6 +128,15 @@ public static class MoonUtils
 
         targetNpc = closestEnemy.whoAmI;
     }
+    public static void SetMouseFacingDirection(Vector2 center, float range, ref float direction)
+    {
+        var diffX = Main.MouseWorld.X - center.X;
+        var distX = MathF.Abs(diffX);
+        if(distX >= range)
+        {
+            direction = (Main.MouseWorld.X < center.X) ? -1 : 1;
+        }
+    }
     public static Vector2 CalculateHoverAbovePoint(Vector2 center, float timer, float minionPos, float hoverRange = 32)
     {
 

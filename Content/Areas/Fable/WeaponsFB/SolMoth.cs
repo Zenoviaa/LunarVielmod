@@ -23,7 +23,7 @@ public class SolMoth : ModItem
     {
         base.SetDefaults();
         Item.DefaultToBellMinion(ModContent.ProjectileType<SolMothMinionProj>());
-        Item.damage = 9;
+        Item.damage = 17;
         Item.knockBack = 3f;
     }
 
@@ -60,7 +60,7 @@ public class SolMothMinionProj : AbstractBellSummon,
     }
 
     float HomeSqrDistance => 252 * 252;
-    float RunSpeed => 6;
+    float RunSpeed => 12;
     public override void SetStaticDefaults()
     {
         Main.projFrames[Projectile.type] = 4;
@@ -86,7 +86,7 @@ public class SolMothMinionProj : AbstractBellSummon,
         Projectile.width = 32;
         Projectile.height = 32;
         Projectile.tileCollide = false;
-        Projectile.localNPCHitCooldown = 30;
+        Projectile.LocalPiercingImmunityTime = 20;
         Projectile.light = 0.6f;
     }
 
@@ -177,6 +177,7 @@ public class SolMothMinionProj : AbstractBellSummon,
         if (Timer >= 60 + TimerOffset)
         {
             Timer = 0;
+            SwitchState(AIState.GoHome);
         }
     }
 

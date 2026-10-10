@@ -36,23 +36,6 @@ public class SummoningCircle : ModProjectile
     {
         base.AI();
         Timer++;
-        if (Timer % 16 == 0)
-        {
-            Vector2 position = Owner.Center;
-            position.X += Main.rand.NextFloat(-100, 100);
-            Vector2 velocity = -Vector2.UnitY * Main.rand.NextFloat(1f, 3f);
-            DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
-            {
-                outerColor = Color.White,
-                gravity = 0,
-                scaleRange = new Vector2(0.2f, 0.5f)
-
-            };
-
-            var dp = DustParticle.Spawn(position, velocity, spawnParams);
-            dp.parent = Owner;
-            dp.fast = true;
-        }
         if (Owner.HasBuff<BellSummoning>())
             Projectile.timeLeft = 30;
         Projectile.Center = Owner.Bottom;
