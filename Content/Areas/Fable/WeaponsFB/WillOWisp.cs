@@ -40,6 +40,22 @@ public class WillOWispMinionProj : AbstractBellSummon,
 {
     private float _scale;
     private Vector2[] _oldPlayerPos;
+    Vector2[] OldPlayerPos
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = new Vector2[128];
+                for (int i = 0; i < field.Length; i++)
+                {
+                    field[i] = Owner.Center;
+                }
+            }
+        
+            return field;
+        }
+    }
     private ref float Timer => ref Projectile.ai[0];
     ref float CloneCount => ref Projectile.ai[1];
 
@@ -63,8 +79,8 @@ public class WillOWispMinionProj : AbstractBellSummon,
     {
         base.SetDefaults();
         Projectile.DefaultToMinionProjectile();
-        Projectile.width = 12;
-        Projectile.height = 12;
+        Projectile.width = 36;
+        Projectile.height = 36;
         Projectile.light = 0.278f;
         Projectile.tileCollide = false;
         Projectile.StaticPiercingImmunityTime = 20;
@@ -92,22 +108,8 @@ public class WillOWispMinionProj : AbstractBellSummon,
     {
         base.AI();
 
-        if(CloneCount > 0 && this.OwnedByLocalClient())
-        {
-            var firer = ProjFirer.Copy(Projectile);
-            firer.ai1 = -1;
-            firer.New();
-            CloneCount--;
-        }
+
         Timer++;
-        if (Timer == 1)
-        {
-            _oldPlayerPos = new Vector2[32];
-            for (int i = 0; i < _oldPlayerPos.Length; i++)
-            {
-                _oldPlayerPos[i] = Owner.Center;
-            }
-        }
 
         if (Timer % 12 == 0)
         {
@@ -128,23 +130,19 @@ public class WillOWispMinionProj : AbstractBellSummon,
         }
 
         Vector2 nextPos = Owner.Center;
-        float distanceToCurrent = Vector2.Distance(nextPos, _oldPlayerPos[0]);
-        if (distanceToCurrent > 64)
+        for (int i = OldPlayerPos.Length - 1; i > 0; i--)
         {
-            for (int i = _oldPlayerPos.Length - 1; i > 0; i--)
-            {
-                _oldPlayerPos[i] = _oldPlayerPos[i - 1];
-            }
-            if (_oldPlayerPos.Length > 0)
-                _oldPlayerPos[0] = nextPos;
+            OldPlayerPos[i] = OldPlayerPos[i - 1];
         }
+        if (OldPlayerPos.Length > 0)
+            OldPlayerPos[0] = nextPos;
 
         //Get the index of this minion
-        int minionIndex = (int)Projectile.minionPos;
+        int minionIndex = (int)Projectile.minionPos * 8;
         Vector2 targetPos;
-        if (minionIndex < _oldPlayerPos.Length)
+        if (minionIndex < OldPlayerPos.Length)
         {
-            targetPos = _oldPlayerPos[minionIndex];
+            targetPos = OldPlayerPos[minionIndex];
         }
         else
         {

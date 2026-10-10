@@ -20,7 +20,33 @@ namespace Stellamod.Common.WeaponUpgrade
         {
             base.ModifyWeaponDamage(item, player, ref damage);
             float damageModifier = weaponLevel * 0.15f;
-            damage += damageModifier;
+
+
+            var flatIncrease = new StatModifier(damage.Additive, damage.Multiplicative, damage.Flat, damage.Base);
+            flatIncrease.Flat += 2 * weaponLevel;
+
+            var flatIncreasedDamage = (float)item.damage;
+            flatIncreasedDamage = flatIncrease.ApplyTo(flatIncreasedDamage);
+
+
+            var pctIncrease = new StatModifier(damage.Additive, damage.Multiplicative, damage.Flat, damage.Base);
+            pctIncrease += damageModifier;
+
+            var pctIncreasedDamage = (float)item.damage;
+            pctIncreasedDamage = pctIncrease.ApplyTo(pctIncreasedDamage);
+
+
+            if(flatIncreasedDamage > pctIncreasedDamage)
+            {
+                damage.Flat += 2 * weaponLevel;
+            }
+            else
+            {
+                damage += damageModifier;
+            }
+          
+
+
         }
 
         public override void NetSend(Item item, BinaryWriter writer)

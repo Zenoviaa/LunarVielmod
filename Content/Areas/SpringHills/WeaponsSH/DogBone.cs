@@ -654,6 +654,7 @@ public class Cupcake : AbstractBellSummon
         drawer.scale *= _squishScale;
         var offsetY = -18;
         drawer.worldPosition.Y += offsetY;
+        drawer.worldPosition.Y += Projectile.gfxOffY;
         foreach(OldPosition oldPos in Projectile.IterateOldPosBackwards())
         {
             var drawer2 = drawer;

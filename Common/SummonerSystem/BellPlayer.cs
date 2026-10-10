@@ -210,9 +210,17 @@ namespace Stellamod.Common.SummonerSystem
                     float health = gItem.health;
                     ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
                     health *= 1.0f + statsPlayer.minionSummonHealth;
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), startpos, Vector2.Zero,
-                        ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
-                        ai1: minionItem.shoot, ai2: health);
+
+
+                    var proj = ModContent.GetModProjectile(minionItem.shoot).Projectile;
+                    var copies = 1f / proj.minionSlots;
+                    for(var j = 0; j < copies; j++)
+                    {
+                        Projectile.NewProjectile(Player.GetSource_FromThis(), startpos, Vector2.Zero,
+                            ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
+                            ai1: minionItem.shoot, ai2: health);
+                    }
+
                 }
 
             }

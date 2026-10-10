@@ -33,8 +33,8 @@ namespace Stellamod.Common.SummonerSystem.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            healthBarUI.Left.Set(0, 0.1f);
-            healthBarUI.Top.Set(-100, 1f);
+            healthBarUI.Left.Set(0, 0.03f);
+            healthBarUI.Top.Set(-32, 1f);
         }
     }
 
