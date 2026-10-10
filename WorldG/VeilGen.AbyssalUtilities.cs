@@ -558,32 +558,7 @@ public partial class VeilGen
 
         TileID.Sets.CanBeClearedDuringGeneration[abyssTile] = false;
         TileID.Sets.CanBeClearedDuringOreRunner[abyssTile] = false;
-        FancyWaterfalls.FancyWaterfallPoints.Clear();
-        //Generate Waterfalls Here
-  
-        foreach (Point tilePoint in rect.Points)
-        {
-   
-            Tile tile = Main.tile[tilePoint];
-            Tile tileAbove = Main.tile[tilePoint + new Point(0, -1)];
-            if (tile.LiquidAmount > 0 && !tileAbove.HasTile && tileAbove.LiquidAmount <= 0)
-            {
-                int w = 4;
-                int h = 4;
-                Rectangle countRect = new Rectangle(tilePoint.X - w / 2, tilePoint.Y, w, h);
-                countRect = TileUtilities.Clamp(countRect);
-                float pct = VeilGen.CountLiquidsPercent(countRect);
-                if (pct > 0.35f)
-                {
-                    int wfFall = ScanUpforWaterfall(tilePoint.X, tilePoint.Y);
-                    if(wfFall != -1)
-                    {
-                    
-                        FancyWaterfalls.PlaceWaterfall(tilePoint + new Point(0, -wfFall), wfFall);
-                    }
-                }
-            }
-        }
+
         /*
         if (!WorldGen.SkipFramingBecauseOfGen)
         {
@@ -637,6 +612,54 @@ public partial class VeilGen
         VeilGen.PlaceAbysmTemple(AbyssCenterTile + new Point(0, 256));
     }
 
+    public static void PlaceAbysmWaterfalls()
+    {
+        AbyssEffectsRenderer.rebuildWaterfalls = true;
+        int left = SavedGenerationParameters.SnowLeft;
+        int right = SavedGenerationParameters.SnowRight;
+        int top = SavedGenerationParameters.SnowTop;
+        int bottom = SavedGenerationParameters.DarkspaceTop;
+
+        //Calculate center of the abyss
+        Point AbyssCenter = new Point();
+        AbyssCenter.X = left + right;
+        AbyssCenter.X /= 2;
+        AbyssCenter.Y = (int)(SavedGenerationParameters.RockLayerHigh + Main.maxTilesY * 0.15);
+        AbyssCenter.Y -= 20;
+
+        int abyssHigh = AbyssCenter.Y - 500;
+
+        int abyssLow = bottom;
+
+        Rectangle rect = new Rectangle(left, abyssHigh, right - left, abyssLow - abyssHigh);
+
+        FancyWaterfalls.FancyWaterfallPoints.Clear();
+        //Generate Waterfalls Here
+
+        foreach (Point tilePoint in rect.Points)
+        {
+
+            Tile tile = Main.tile[tilePoint];
+            Tile tileAbove = Main.tile[tilePoint + new Point(0, -1)];
+            if (tile.LiquidAmount > 0 && !tileAbove.HasTile && tileAbove.LiquidAmount <= 0)
+            {
+                int w = 4;
+                int h = 4;
+                Rectangle countRect = new Rectangle(tilePoint.X - w / 2, tilePoint.Y, w, h);
+                countRect = TileUtilities.Clamp(countRect);
+                float pct = VeilGen.CountLiquidsPercent(countRect);
+                if (pct > 0.35f)
+                {
+                    int wfFall = ScanUpforWaterfall(tilePoint.X, tilePoint.Y);
+                    if (wfFall != -1)
+                    {
+
+                        FancyWaterfalls.PlaceWaterfall(tilePoint + new Point(0, -wfFall), wfFall);
+                    }
+                }
+            }
+        }
+    }
     public static Point FindSurfaceOfWater(Point tilePoint, int maxSteps)
     {     
         Tile tile = Main.tile[tilePoint];

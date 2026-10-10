@@ -402,6 +402,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Abysm", WorldGenAbysm));
         passWriter.NextPass(new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
         passWriter.NextPass(new PassLegacy("World Gen Royal Starr", WorldGenWariorStarrHouse));
+        passWriter.NextPass(new PassLegacy("World Gen Abysm Waterfalls", WorldGenAbysmWaterfalls));
         passWriter.NextPass(new PassLegacy("Grow Kelp In Abyss", (GenerationProgress progress, GameConfiguration configuration) =>
         {
             progress.Message = "Kelping";
@@ -6268,6 +6269,12 @@ public partial class StellaWorld : ModSystem
 
     }
     #endregion
+    private void WorldGenAbysmWaterfalls(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Shifting Shadows deep in the Ice";
+        //Save the snow attributes
+        VeilGen.PlaceAbysmWaterfalls();
+    }
 
     private void WorldGenAbysm(GenerationProgress progress, GameConfiguration configuration)
     {
@@ -6885,6 +6892,7 @@ public partial class StellaWorld : ModSystem
         writer.Write(SavedGenerationParameters.RockLayerHigh);
         writer.Write(SavedGenerationParameters.AbyssTempleRectangle);
         writer.Write(SavedGenerationParameters.StarrHouseRectangle);
+        writer.Write(DarkspaceStart);
     }
     public override void NetReceive(BinaryReader reader)
     {
@@ -6906,6 +6914,7 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.RockLayerHigh = reader.ReadDouble();
         SavedGenerationParameters.AbyssTempleRectangle = reader.ReadRectangle();
         SavedGenerationParameters.StarrHouseRectangle = reader.ReadRectangle();
+        DarkspaceStart = reader.ReadInt32();
     }
 
     public override void SaveWorldData(TagCompound tag)
