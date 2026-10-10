@@ -2,15 +2,18 @@
 using Stellamod.Assets;
 using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.GooberDialogue;
+using Stellamod.Content.Areas.Shop.AccShop;
 using Stellamod.Content.Areas.Tundra.Abyss.AccAB;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.AccMT;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.WeaponsMT;
 using Stellamod.Content.Dialogue;
+using Stellamod.Content.Vanity.RedFeatherHat;
 using Stellamod.Content.Vanity.VerliaHat;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Particles;
 using Stellamod.Core.TriggersSystem.Triggers;
+using Stellamod.Items.Insources;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -26,6 +29,7 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 public class VerliaIdle : VeilTownNPC,
          INPCSpawnCondition
 {
+    const string ShopName = "VerliaShop";
     private Asset<Texture2D> _wingTextureAsset;
     private Asset<Texture2D> _wingOutlineTextureAsset;
     private Asset<Texture2D> _wingTextureAsset2;
@@ -69,6 +73,15 @@ public class VerliaIdle : VeilTownNPC,
         button = LangText.Chat(this, "Button");
     }
 
+    public override void OnChatButtonClicked(bool firstButton, ref string shop)
+    {
+        if (!firstButton)
+        {
+            shop = "Shop";
+        }
+    }
+    
+
 
     public override void FindFrame(int frameHeight)
     {
@@ -82,13 +95,6 @@ public class VerliaIdle : VeilTownNPC,
     {
         return false;
     }
-    public override List<string> SetNPCNameList()
-    {
-        return new List<string>() {
-                "Verlia of the Moon",
-            };
-    }
-
 
     public override void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
     {
@@ -177,6 +183,7 @@ public class VerliaIdle : VeilTownNPC,
         }
         Lighting.AddLight(NPC.position, TorchID.White);
     }
+    /*
     public override void AddShops()
     {
         var npcShop = new NPCShop(Type, "Shop")
@@ -190,7 +197,93 @@ public class VerliaIdle : VeilTownNPC,
             .AddShopItem<VerliaHatMoon>(2);
 
         npcShop.Register();
+
     }
+    */ 
+    /*
+    void AddListShop()
+    {
+        var npcShop = new NPCShop(Type, "Shop")
+.Add(new Item(ModContent.ItemType<DesertMap>())
+{
+    shopCustomPrice = 20,
+    shopSpecialCurrency = Stellamod.MedalCurrencyID
+})
+.Add(new Item(ModContent.ItemType<GreenCarpet>())
+{
+    shopCustomPrice = 20,
+    shopSpecialCurrency = Stellamod.MedalCurrencyID
+})
+.Add(new Item(ModContent.ItemType<WindingInsource>())
+{
+    shopCustomPrice = 20,
+    shopSpecialCurrency = Stellamod.MedalCurrencyID
+})
+.Add(new Item(ModContent.ItemType<PaperPaws>())
+{
+    shopCustomPrice = 20,
+    shopSpecialCurrency = Stellamod.MedalCurrencyID
+})
+.Add(new Item(ModContent.ItemType<TravelersBackpack>())
+{
+    shopCustomPrice = 20,
+    shopSpecialCurrency = Stellamod.MedalCurrencyID
+})
+.Add(new Item(ModContent.ItemType<RedFeatherHat>())
+{
+    shopCustomPrice = 2,
+    shopSpecialCurrency = Stellamod.MedalCurrencyID
+});
+        npcShop.Register();
+    }*/
+    public override void AddShops()
+    {
+
+
+        var npcShop = new NPCShop(Type, "Shop")
+        .Add(new Item(ModContent.ItemType<DeepswordArtifact>())
+        {
+            shopCustomPrice = 40,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        })
+        .Add(new Item(ModContent.ItemType<ThrowingMoonArtifact>())
+        {
+            shopCustomPrice = 40,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        })
+        .Add(new Item(ModContent.ItemType<Vixyl>())
+        {
+            shopCustomPrice = 40,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        })
+        .Add(new Item(ModContent.ItemType<Moonblaster>())
+        {
+            shopCustomPrice = 40,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        })
+        .Add(new Item(ModContent.ItemType<MoonFlight>())
+        {
+            shopCustomPrice = 40,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        })
+        .Add(new Item(ModContent.ItemType<Moonheart>())
+        {
+            shopCustomPrice = 40,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        })
+        .Add(new Item(ModContent.ItemType<VerliaHat>())
+        {
+            shopCustomPrice = 2,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        })
+        .Add(new Item(ModContent.ItemType<VerliaHatMoon>())
+        {
+            shopCustomPrice = 2,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        }); 
+        npcShop.Register();
+    }
+    
 
     public bool CanSpawn()
     {

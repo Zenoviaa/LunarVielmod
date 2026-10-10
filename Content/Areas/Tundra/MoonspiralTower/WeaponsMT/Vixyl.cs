@@ -133,6 +133,7 @@ public class Vixyl : BaseSwingItemV2
         staminaProjectileShoot = ModContent.ProjectileType<VixylParryingBlade>();
         meleeWeaponType = MeleeWeaponType.Sword;
         staminaCost = 1;
+        Item.rare = ModContent.RarityType<ShopRarity>();
     }
 
 

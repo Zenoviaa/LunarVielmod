@@ -60,6 +60,7 @@ public class VerliaHat : ModItem
     {
         base.SetDefaults();
         Item.vanity = true;
+        Item.rare = ModContent.RarityType<ShopRarity>();
     }
 
 }
@@ -75,5 +76,6 @@ public class VerliaHatMoon : ModItem
     {
         base.SetDefaults();
         Item.vanity = true;
+        Item.rare = ModContent.RarityType<ShopRarity>();
     }
 }

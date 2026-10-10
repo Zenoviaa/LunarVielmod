@@ -39,6 +39,9 @@ public class ListTowny : VeilTownNPC
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0.5f;
         NPC.dontTakeDamageFromHostiles = true;
+        NPC.value = Item.buyPrice(silver: 50);
+        
+        NPC.BossBar = Main.BigBossProgressBar.NeverValid;
         SpawnAtPoint = true;
         HasTownDialogue = true;
         breathe = true;
@@ -108,11 +111,6 @@ public class ListTowny : VeilTownNPC
             shopCustomPrice = 20,
             shopSpecialCurrency = Stellamod.MedalCurrencyID
         })
-        .Add(new Item(ItemID.SandBoots)
-        {
-            shopCustomPrice = 20,
-            shopSpecialCurrency = Stellamod.MedalCurrencyID
-        })
         .Add(new Item(ModContent.ItemType<GreenCarpet>())
         {
             shopCustomPrice = 20,
@@ -137,7 +135,7 @@ public class ListTowny : VeilTownNPC
         {
             shopCustomPrice = 2,
             shopSpecialCurrency = Stellamod.MedalCurrencyID
-        }); ;
+        }); 
         npcShop.Register(); // Name of this shop t
     }
 }

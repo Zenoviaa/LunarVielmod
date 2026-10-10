@@ -486,7 +486,7 @@ public class MoonFlight : ModItem
         Item.width = 22;
         Item.height = 20;
         Item.value = 10000;
-        Item.rare = ItemRarityID.Green;
+        Item.rare = ModContent.RarityType<ShopRarity>();
         Item.accessory = true;
     }
 

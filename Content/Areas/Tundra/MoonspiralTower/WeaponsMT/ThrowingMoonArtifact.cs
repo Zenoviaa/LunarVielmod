@@ -345,6 +345,7 @@ public class ThrowingMoonArtifact : ModItem
         Item.autoReuse = false;
         Item.noUseGraphic = true;
         Item.noMelee = true;
+        Item.rare = ModContent.RarityType<ShopRarity>();
     }
 
     public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

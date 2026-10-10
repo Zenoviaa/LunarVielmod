@@ -347,7 +347,8 @@ public class Moonblaster : BaseGun
         Item.shootSpeed = 7;
         Item.noMelee = true;
         muzzleOrigin = new Vector2(52, 12);
-        
+        Item.rare = ModContent.RarityType<ShopRarity>();
+
     }
     public override void ModifyMuzzleFlashColors(ref Color hottestColor, ref Color coldestColor)
     {
