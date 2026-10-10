@@ -51,14 +51,13 @@ namespace Stellamod.Common.SummonerSystem.UI
 
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
             float yOffsetPer = 48;
-            int repeats = 48;
             var maxBarRect = new Rectangle(0, 0, 48 * 2, _healthBarTextureAsset.Value.Height / 2);
             var maxBarWhiteRect = new Rectangle(0, _healthBarTextureAsset.Value.Height / 2, 48 * 2, _healthBarTextureAsset.Value.Height / 2);
-
             Vector2 GetOffset(in int i)
             {
                 return i * yOffsetPer * -Vector2.UnitY;
             }
+
             using (spriteBatch.Ctx(spriteBatch.Parameters with { samplerState = SamplerState.AnisotropicWrap }))
             {
                 //Draw Display Names

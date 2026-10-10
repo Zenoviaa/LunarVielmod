@@ -109,7 +109,7 @@ public class ArncharMinionProj : AbstractBellSummon
     void AI_Idle()
     {
         if (IdleTimer >= 30)
-            MoonUtils.SearchForNewTargetByDistance(Owner.Center, ref _targeter.targetNpc);
+            MoonUtils.SearchForNewTargetByDistance(Owner.Center, ref _targeter.targetNpc, 384);
 
         var targetPoint = MoonUtils.CalculateHoverAbovePoint(Owner.Center, IdleTimer, Projectile.minionPos);
         MoonUtils.AI_FloatAbove(Projectile.Center, ref Projectile.velocity, targetPoint);

@@ -119,7 +119,15 @@ public static class MoonUtils
 
         targetNpc = closestEnemy.whoAmI;
     }
+    public static void SearchForNewTargetByDistance(Vector2 centerSearchPos, ref int targetNpc, float distance)
+    {
+        targetNpc = -1;
+        var closestEnemy = MoonUtils.TargetClosestEnemy(centerSearchPos, distance);
+        if (closestEnemy == null)
+            return;
 
+        targetNpc = closestEnemy.whoAmI;
+    }
     public static Vector2 CalculateHoverAbovePoint(Vector2 center, float timer, float minionPos, float hoverRange = 32)
     {
 
