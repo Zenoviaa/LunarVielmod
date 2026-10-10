@@ -10276,7 +10276,11 @@ HealthRune: {
 
 DamageRune: {
 	DisplayName: Damage Rune
-	Tooltip: Draw a circle to boost the damage of your minions by 15%!
+	Tooltip
+		'''
+		 Draw a circle to boost the damage of your minions by 15%!
+		 Uses 4 stamina
+		'''
 }
 
 ForwardRune: {
