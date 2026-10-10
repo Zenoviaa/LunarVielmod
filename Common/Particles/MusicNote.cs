@@ -86,6 +86,7 @@ public class MusicNote : ParticleUpdater<MusicNote.Data>
         drawer.color = particle.color * fade;
         drawer.sourceRect = framing.frame;
         drawer.CenterOrigin();
+        drawer.scale *= fade;
         spriteBatch.Draw(drawer);
     }
 
@@ -97,6 +98,7 @@ public class MusicNote : ParticleUpdater<MusicNote.Data>
         glowDrawer.color = particle.color * 0.4f * fade;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.14f;
+        glowDrawer.scale *= fade;
         spriteBatch.Draw(glowDrawer);
     }
 }

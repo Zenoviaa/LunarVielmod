@@ -48,8 +48,8 @@ public class SpiritHarpHeld : ModProjectile
             {
                 position = pos,
                 velocity = vel,
-                innerColor = Color.White.ToVector4(),
-                outerColor = Color.SkyBlue.ToVector4(),
+                innerColor = Color.Orange.ToVector4(),
+                outerColor = Color.DarkRed.ToVector4(),
                 timeLeft = Main.rand.Next(60, 120),
                 scale = new Vector2(Main.rand.NextFloat(0.5f, 1f))
             });
@@ -78,8 +78,9 @@ public class SpiritHarpHeld : ModProjectile
             sp.fast = true;
             sp.gravity = 0;
             sp.dampening = 0.05f;
-            sp.innerColor = Color.White;
-            sp.outerColor = Color.Blue;
+            sp.innerColor = Color.Orange;
+            sp.outerColor = Color.DarkRed;
+            sp.Scale *= 0.5f;
         }
 
         if (this.OwnedByLocalClient())
@@ -96,7 +97,7 @@ public class SpiritHarpHeld : ModProjectile
             reuslt.Volume = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine((float)Projectile.timeLeft / 30f));
         }
 
-        Projectile.Center = Owner.MountedCenter + new Vector2(Dir * 22, 0);
+        Projectile.Center = Owner.MountedCenter + new Vector2(Dir * 22, ExtraMath.Osc(-5, 5, speed: 1));
         Owner.heldProj = Projectile.whoAmI;
         var rot = (Projectile.Center - Owner.Center).ToRotation();
         rot -= MathHelper.PiOver2;
