@@ -22,7 +22,7 @@ public class WillOWisp : ModItem
     {
         base.SetDefaults();
         Item.DefaultToBellMinion(ModContent.ProjectileType<WillOWispMinionProj>());
-        Item.damage = 12;
+        Item.damage = 6;
         Item.knockBack = 3;
     }
 

@@ -2,7 +2,6 @@ using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Dusts;
 using Stellamod.Core;
 using Stellamod.Core.Astar;
 using Stellamod.Core.Bases;
@@ -23,7 +22,7 @@ public class SolMoth : ModItem
     {
         base.SetDefaults();
         Item.DefaultToBellMinion(ModContent.ProjectileType<SolMothMinionProj>());
-        Item.damage = 17;
+        Item.damage = 27;
         Item.knockBack = 3f;
     }
 
@@ -99,7 +98,7 @@ public class SolMothMinionProj : AbstractBellSummon,
     {
         return State == AIState.Attack;
     }
-    
+
     void DrawGlow(SpriteBatch sb, Vector2 sp)
     {
         var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
@@ -118,7 +117,7 @@ public class SolMothMinionProj : AbstractBellSummon,
 
     void AI_Attack()
     {
-        if(!_targeter.HasValidTarget)
+        if (!_targeter.HasValidTarget)
         {
             SwitchState(AIState.GoHome);
             return;
@@ -186,7 +185,7 @@ public class SolMothMinionProj : AbstractBellSummon,
         Timer++;
         MoonUtils.AIWalk_FloatingChaseRhapsody(_pathfinder, Projectile, Owner.Center + new Vector2(0, -16), RunSpeed, ref _targeter.targetOldPos);
         var sqrDist = Vector2.DistanceSquared(Owner.Center, Projectile.Center);
-        if(sqrDist < HomeSqrDistance * 0.9f)
+        if (sqrDist < HomeSqrDistance * 0.9f)
         {
             SwitchState(AIState.Idle);
         }
@@ -195,7 +194,7 @@ public class SolMothMinionProj : AbstractBellSummon,
     void AI_Chase()
     {
         Timer++;
-        if(Collision.CanHitLine(Projectile.position, 1, 1, _targeter.Target.position, 1, 1))
+        if (Collision.CanHitLine(Projectile.position, 1, 1, _targeter.Target.position, 1, 1))
         {
             SwitchState(AIState.Attack);
             return;

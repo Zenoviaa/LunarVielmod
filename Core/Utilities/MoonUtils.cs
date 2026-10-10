@@ -331,7 +331,37 @@ public static class MoonUtils
         }
         return closest;
     }
+    public static NPC TargetClosestEnemyLeveled(Vector2 currentPosition, float searchRange)
+    {
+        NPC closest = null;
+        var closestDistance = 9999999F;
+        var sqrSearchDist = searchRange * searchRange;
+        foreach (var npc in Main.ActiveNPCs)
+        {
+            if (npc.friendly)
+                continue;
+            if (!npc.CanBeChasedBy())
+            {
+                continue;
+            }
 
+            var sqrDist = Vector2.DistanceSquared(currentPosition, npc.Center);
+            if (sqrDist > sqrSearchDist)
+                continue;
+
+            var verticalSqrDist = MathF.Abs(npc.Center.Y - currentPosition.Y);
+            if (verticalSqrDist > 64)
+                continue;
+
+
+            if (sqrDist < closestDistance)
+            {
+                closest = npc;
+                closestDistance = sqrDist;
+            }
+        }
+        return closest;
+    }
     public static void JumpTowards(ref Vector2 velocity, Vector2 currentPosition, Vector2 targetPosition, Vector2 jumpSpeed)
     {
         var dirToTarget = (targetPosition - currentPosition).SafeNormalize(Vector2.Zero);

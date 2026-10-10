@@ -79,8 +79,8 @@ public class ArncharMinionProj : AbstractBellSummon
         _pathfinder = new();
         Projectile.DefaultToMinionProjectile();
         Projectile.tileCollide = false;
-        Projectile.WidthAndHeight = 24;
-        Projectile.tileCollide = true;
+        Projectile.WidthAndHeight = 8;
+        Projectile.tileCollide = false;
         Projectile.friendly = false;
         Projectile.light = 0.67f;
     }
@@ -229,13 +229,10 @@ public class ArncharMinionProj : AbstractBellSummon
             var posToGoTo = Owner.Center + new Vector2(0, -64);
             var targetVelocity = posToGoTo - Projectile.Center;
             Projectile.velocity = targetVelocity * 0.1f;
-            Projectile.tileCollide = false;
+      
             return;
         }
-        else
-        {
-            Projectile.tileCollide = true;
-        }
+
 
         switch (State)
         {

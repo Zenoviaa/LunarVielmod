@@ -14,20 +14,15 @@ namespace Stellamod.Core.TitleSystem
 {
     public class TitleCardUI : UIPanel
     {
+        float _flashInAlpha;
+        float _timer;
+        float _duration;
+        string _titleText;
         private UIPanel _panel;
-        private UIText _text;
         public TitleCardUI()
         {
             _panel = new UIPanel();
-            _text = new UIText("Wave 1", large: true);
         }
-
-
-        private float _flashInAlpha;
-        private float _timer;
-        private float _duration;
-        public const int width = 480;
-        public const int height = 155;
 
         public int RelativeLeft => Main.screenWidth / 2;
         public int RelativeTop => 0 + 32;
@@ -53,13 +48,6 @@ namespace Stellamod.Core.TitleSystem
             _panel.BackgroundColor = Color.Transparent;
             _panel.BorderColor = Color.Transparent;
             Append(_panel);
-
-            _text.Width.Pixels = Width.Pixels;
-            _text.Left.Pixels = -120;
-            _text.Height.Pixels = Height.Pixels;
-            _text.HAlign = 0.5f;
-            _text.Top.Pixels = 0;
-            Append(_text);
         }
 
         public override void Update(GameTime gameTime)
@@ -76,22 +64,16 @@ namespace Stellamod.Core.TitleSystem
             
             float easedProgress = EasingFunction.QuadraticBump(progress);
             float pixels = MathHelper.Lerp(32, 64, easedProgress);
-            _text.Top.Pixels = pixels;
-            _text.TextColor = Color.Lerp(Color.Transparent, Color.White, easedProgress);
         }
 
         public void ShowWave(string text, float duration = 5)
         {
-            _text.SetText(text);
+            _titleText = text;
             _timer = 0;
             _duration = duration;
         }
 
 
-        private void DrawGlowText(SpriteBatch spriteBatch)
-        {
-
-        }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
@@ -109,6 +91,8 @@ namespace Stellamod.Core.TitleSystem
             drawPos.Y += 82;
             Vector2 drawScale = Vector2.One;
 
+            var textDrawOrigin = FontAssets.DeathText.Value.MeasureString(_titleText) * 0.5f;
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.DeathText.Value, _titleText, drawPos, Color.White * easedProgress, 0, textDrawOrigin, drawScale);
             //Fix the position
             drawPos.X -= texture.Width / 2f;
             spriteBatch.End();

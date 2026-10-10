@@ -39,7 +39,7 @@ namespace Stellamod.Content.Armors.Jackler
                     glowColor: Color.DarkRed,
                     outerGlowColor: Color.Black, duration: 25, baseSize: 0.28f);
 
-                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode with { MaxInstances = 1}, Projectile.position);
                 for (float f = 0; f < 4; f++)
                 {
                     Particle<DustParticle>.Spawn(Projectile.Center,

@@ -4,11 +4,13 @@ using Stellamod.Common.Animations;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.SummonerSystem;
+using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Core;
 using Stellamod.Core.Astar;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -22,8 +24,8 @@ public class DogBone : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.DefaultToBellMinion(ModContent.ProjectileType<Cupcake>(), isGuardian: true, health: 100);
-        Item.damage = 16;
+        Item.DefaultToBellMinion(ModContent.ProjectileType<Cupcake>(), isGuardian: true, health: 60);
+        Item.damage = 10;
         Item.knockBack = 3f;
     }
 }
@@ -90,7 +92,7 @@ public class Cupcake : AbstractBellSummon
             return 7;
         }
     }
-    float MaxJumpSpeed => 13;
+    float MaxJumpSpeed => State == AIState.GoHome ? 13 : 5;
     float JumpRange => 232 * 232;
     float FarRange => 354 * 354;
 
@@ -284,10 +286,8 @@ public class Cupcake : AbstractBellSummon
                     }
 
                     _attacking = true;
-                    var posToMoveTo = Vector2.Lerp(_startDashPos, _endDashPos, EasingFunction.OutCirc(Timer / JumpTime));
-                    var targetVelocity = _endDashPos - _startDashPos;
-                    targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
-                    targetVelocity.Y *= 0.12f;
+                    var targetVelocity = _endDashPos.X < _startDashPos.X ? -Vector2.UnitX : Vector2.UnitX;
+                    targetVelocity.Y = -0.12f;
                     Projectile.velocity = targetVelocity * 12;
                     this.AseAnimator.PlayAnimation(ANIM_DASH, AnimationParams.Default);
 
@@ -376,7 +376,7 @@ public class Cupcake : AbstractBellSummon
         Projectile.rotation = Utils.AngleLerp(Projectile.rotation, 0, 0.1f);
       
         var sqrDistToOwner = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
-        var maxAwayDistance = 32 * 32;
+        var maxAwayDistance = 128 * 128;
         if (sqrDistToOwner > maxAwayDistance)
         {
             SwitchState(AIState.GoHome);
@@ -407,9 +407,13 @@ public class Cupcake : AbstractBellSummon
         {
             PlayAirbornAnimation();
         }
-        else
+        else if(MathF.Abs(Projectile.velocity.X) > 1f)
         {
             this.AseAnimator.PlayAnimation(ANIM_WALK, AnimationParams.Default);
+        }
+        else
+        {
+            this.AseAnimator.PlayAnimation(ANIM_IDLE, AnimationParams.Default);
         }
     }
     void HandleRunningAnimation()
@@ -429,10 +433,25 @@ public class Cupcake : AbstractBellSummon
         MoonUtils.AIWalk_IvynStabber(_pathfinder, Projectile, destination, IsGrounded(), RunSpeed, MaxJumpSpeed, ref _targetOldPos);
         Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
     }
+    void RegularWalkTo(Vector2 destination)
+    {
+        var xDir = 0;
+        var wolfRect = DrawUtilities.CenterRectangle(Projectile.Center, 48, 20);
+        if(wolfRect.Left > destination.X)
+        {
+            xDir = -1;
+        }
+        if(wolfRect.Right < destination.X)
+        {
+            xDir = 1;
+        }
+        var walkVelocity = new Vector2(xDir * RunSpeed, Projectile.velocity.Y);
+        Projectile.velocity = Vector2.Lerp(Projectile.velocity, walkVelocity, 0.2f);
+    }
     void SearchForNewTarget()
     {
         _targetNpc = -1;
-        var closestEnemy = MoonUtils.TargetClosestEnemy(Owner.Center, 512);
+        var closestEnemy = MoonUtils.TargetClosestEnemyLeveled(Owner.Center, 512);
         if (closestEnemy == null)
             return;
         if (!Collision.CanHitLine(Projectile.position, 1, 1, closestEnemy.position, 1, 1))
@@ -441,6 +460,18 @@ public class Cupcake : AbstractBellSummon
         _targetNpc = closestEnemy.whoAmI;
     }
 
+    bool IsTargetPositionStillValid()
+    {
+        var verticalSqrDist = MathF.Abs(Projectile.Center.Y - Target.Center.Y);
+        if (verticalSqrDist > 64)
+            return false;
+        return true;
+    }
+
+    bool IsInLineOfSight(Vector2 position)
+    {
+        return Collision.CanHitLine(Projectile.Center, 1, 1, position, 1, 1);
+    }
     void ChaseTargetIfOneFound()
     {
         SearchForNewTarget();
@@ -460,12 +491,16 @@ public class Cupcake : AbstractBellSummon
         Projectile.rotation *= 0.8f;
         var poAroundPlayer = Owner.Center;
         poAroundPlayer.X += ExtraMath.Osc(-24, 24, speed: 0, Projectile.minionPos);
-        PathfindWalkTo(poAroundPlayer);
-        if (IsGrounded())
+        if (IsInLineOfSight(poAroundPlayer))
         {
-
- 
+            RegularWalkTo(poAroundPlayer);
         }
+        else
+        {
+            PathfindWalkTo(poAroundPlayer);
+        }
+
+
         var distSqr = Vector2.DistanceSquared(Projectile.Center, poAroundPlayer);
         if (distSqr < 32 * 32)
         {
@@ -495,12 +530,25 @@ public class Cupcake : AbstractBellSummon
         }
         if (IsGrounded())
         {
-            PathfindWalkTo(Target.Center);
+            if (IsInLineOfSight(Target.Center))
+            {
+                RegularWalkTo(Target.Center);
+            }
+            else
+            {
+                PathfindWalkTo(Target.Center);
+            }
 
         }
+
+
         Projectile.rotation *= 0.8f;
         HandleRunningAnimation();
 
+        if (!IsTargetPositionStillValid())
+        {
+            SwitchState(AIState.GoHome);
+        }
 
         if (_longAttack)
         {
@@ -565,7 +613,9 @@ public class Cupcake : AbstractBellSummon
                     var posToMoveTo = Vector2.Lerp(_startDashPos, _endDashPos, EasingFunction.OutCirc(Timer / JumpTime));
                     var targetVelocity = _endDashPos - _startDashPos;
                     targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
-                    targetVelocity.Y *= 0.12f;
+
+                    targetVelocity.X = MathF.Sign(targetVelocity.X);
+           
                     Projectile.velocity = targetVelocity * 20;
                     this.AseAnimator.PlayAnimation(ANIM_DASH, AnimationParams.Default);
 
@@ -603,10 +653,11 @@ public class Cupcake : AbstractBellSummon
         {
             modifiers.FinalDamage *= 1.5f;
         }
-        if(State == AIState.Rushdown)
+        else
         {
             modifiers.FinalDamage *= 0.5f;
         }
+
     }
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
@@ -628,6 +679,10 @@ public class Cupcake : AbstractBellSummon
 
         var firer = ProjFirer.From<GuardBite>(Projectile);
         firer.position = target.Center;
+        if(State == AIState.Rushdown)
+        {
+            firer.damage = (int)((float)firer.damage * 0.5f);
+        }
         firer.New();
     }
     private Color DashTrailColorFunction(float completionRatio)
