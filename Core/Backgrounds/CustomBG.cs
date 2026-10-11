@@ -158,10 +158,11 @@ public static class BackgroundHelper
         backgroundShader.Effect.CurrentTechnique = backgroundShader.Effect.Techniques["SpriteDrawing"];
         spriteBatch.Begin(SpriteSortMode.Deferred,
             BlendState.AlphaBlend,
-            SamplerState.PointClamp,
+            SamplerState.PointWrap,
             DepthStencilState.None,
             RasterizerState.CullNone,
-            backgroundShader.Effect);
+            backgroundShader.Effect,
+            Main.GameViewMatrix.TransformationMatrix);
 
         Color baseColor = draw.baseColor;
         //  baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
@@ -175,7 +176,7 @@ public static class BackgroundHelper
             drawer.scale = Vector2.One * 2;
             drawer.color = drawColor;
             drawer.VerticalFrame(i, numBackgrounds);
-            drawer.dstRect = drawRect;
+            drawer.sourceRect = drawRect;
             spriteBatch.Draw(drawer);
         }
 
