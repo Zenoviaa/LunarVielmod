@@ -8934,7 +8934,7 @@ WondrousShieldInsource: {
 }
 
 StrengthInsource: {
-	Tooltip: Increases your damage by 25% for as long as you don't get hit!
+	Tooltip: Increases your damage by 10% for 10 seconds!
 	DisplayName: Strength Insource
 }
 

@@ -700,7 +700,7 @@ MushyBuff: {
 
 RibbonWrapped: {
 	DisplayName: Ribbon Wrapped
-	Description: Mods.Stellamod.Buffs.RibbonWrapped.Description
+	Description: Wrap me up nicely~
 }
 
 StarSuper: {
@@ -788,11 +788,6 @@ GothivianFlames: {
 	Description: Your soul is burning away...
 }
 
-HolyAnxiety: {
-	DisplayName: Holy Anxiety
-	Description: Mods.Stellamod.Buffs.HolyAnxiety.Description
-}
-
 WillOWispMinionBuff: {
 	DisplayName: Will of the Wisps!
 	Description: You are being followed by little flames...
@@ -823,11 +818,6 @@ OreKingdomScorpionMountBuff: {
 	Description: Mods.Stellamod.Buffs.OreKingdomScorpionMountBuff.Description
 }
 
-CannotUseStaminaPotion: {
-	Description: Mods.Stellamod.Buffs.CannotUseStaminaPotion.Description
-	DisplayName: Cannot Use Stamina Potion
-}
-
 VampiricFlames: {
 	DisplayName: Vampiric Flames
 	Description: Your life is being stolen away...
@@ -849,33 +839,33 @@ StringMinionBuff: {
 }
 
 WoodyInsourceBuff: {
-	Description: Mods.Stellamod.Buffs.WoodyInsourceBuff.Description
-	DisplayName: Woody Insource Buff
+	Description: I've got a friend in me
+	DisplayName: Woody
 }
 
 WondrousShieldInsourceBuff: {
-	Description: Mods.Stellamod.Buffs.WondrousShieldInsourceBuff.Description
-	DisplayName: Wondrous Shield Insource Buff
+	Description: You feel protected...
+	DisplayName: Wondrous Shield
 }
 
 BerserkingInsourceBuff: {
-	DisplayName: Berserking Insource Buff
-	Description: Mods.Stellamod.Buffs.BerserkingInsourceBuff.Description
+	DisplayName: Berserk!
+	Description: Attack really fast!
 }
 
 ManaRegeneratingInsourceBuff: {
-	DisplayName: Mana Regenerating Insource Buff
-	Description: Mods.Stellamod.Buffs.ManaRegeneratingInsourceBuff.Description
+	DisplayName: Manaful!
+	Description: You are regenerating your mana... very quickly!
 }
 
 StrengthInsourceBuff: {
-	DisplayName: Strength Insource Buff
-	Description: Mods.Stellamod.Buffs.StrengthInsourceBuff.Description
+	DisplayName: Strength!
+	Description: I am STRONG
 }
 
 LittlemothBuff: {
-	DisplayName: Littlemoth Buff
-	Description: Mods.Stellamod.Buffs.LittlemothBuff.Description
+	DisplayName: Littlemoth
+	Description: Look at the little moth :3
 }
 
 TranceBuff: {
@@ -934,18 +924,18 @@ BurnedWings: {
 }
 
 GreenCarpetMountBuff: {
-	DisplayName: Green Carpet Mount Buff
-	Description: Mods.Stellamod.Buffs.GreenCarpetMountBuff.Description
+	DisplayName: Magic Green Carpet
+	Description: Woa... flying carpet...
 }
 
 WindingInsourceBuff: {
-	DisplayName: Winding Insource Buff
-	Description: Mods.Stellamod.Buffs.WindingInsourceBuff.Description
+	DisplayName: Winding Insource
+	Description: Right back at ya!
 }
 
 TetheredBuff: {
-	DisplayName: Tethered Buff
-	Description: Mods.Stellamod.Buffs.TetheredBuff.Description
+	DisplayName: Tethered
+	Description: Help mee!!!
 }
 
 BlackStars: {
@@ -965,12 +955,12 @@ HoldingMyLantern: {
 
 HoldingMyFlashlight: {
 	DisplayName: Holding My Flashlight
-	Description: Mods.Stellamod.Buffs.HoldingMyFlashlight.Description
+	Description: You have a Little flashlight
 }
 
 BarbequeSauced: {
 	DisplayName: Barbeque Sauced
-	Description: Mods.Stellamod.Buffs.BarbequeSauced.Description
+	Description: Saucy
 }
 
 CinderFlame: {
@@ -1014,8 +1004,8 @@ CinderediatingLantern: {
 }
 
 MortBuff: {
-	DisplayName: Mort Buff
-	Description: Mods.Stellamod.Buffs.MortBuff.Description
+	DisplayName: Mort
+	Description: A mothly friend
 }
 
 HuntrianVenom: {
@@ -1025,7 +1015,7 @@ HuntrianVenom: {
 
 BlancBuff: {
 	DisplayName: Blanc
-	Description: Mods.Stellamod.Buffs.BlancBuff.Description
+	Description: Decreased bow charge time by 20%!
 }
 
 CabBuff: {
@@ -1075,7 +1065,7 @@ ZinBuff: {
 
 Speaking: {
 	DisplayName: Speaking
-	Description: Mods.Stellamod.Buffs.Speaking.Description
+	Description: Who might you be?
 }
 
 Charm: {
