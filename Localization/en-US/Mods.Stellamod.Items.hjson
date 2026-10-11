@@ -12295,3 +12295,8 @@ BombThrower: {
 	DisplayName: Bomb Thrower
 	Tooltip: Hold and release to charge a little bomb or a BIG bomb and chuck it for massive damage!
 }
+
+CheckpointBell: {
+	DisplayName: Checkpoint Bell
+	Tooltip: ""
+}

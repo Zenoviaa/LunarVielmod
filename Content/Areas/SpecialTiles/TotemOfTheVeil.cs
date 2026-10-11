@@ -29,6 +29,13 @@ public class NoGravestonesGlobalProjectile : GlobalProjectile
         return base.PreAI(projectile);
     }
 }
+public static class TotemOfTheVeilPlayerExtensions
+{
+    extension(Player p)
+    {
+        public void SetBellRespawnPoint(Point respawnPoint) => p.GetModPlayer<TotemOfTheVeilRespawnPlayer>().SetRespawnPoint(respawnPoint);
+    }
+}
 
 public class TotemOfTheVeilRespawnPlayer : ModPlayer
 {
@@ -59,6 +66,12 @@ public class TotemOfTheVeilRespawnPlayer : ModPlayer
         return totemInterp;
     }
 
+    public void SetRespawnPoint(Point point)
+    {
+        deactivated = Point.Zero;
+        respawnPoint = point.ToWorldCoordinates();
+        oldRespawnPoint = respawnPoint;
+    }
     public void Toggle(Point point)
     {
         if (!IsTotemActive(point))
