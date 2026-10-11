@@ -297,7 +297,12 @@ public class TileOverlayDataDataComparerByType : IComparer<TileOverlayDrawData>
         int compareType = x.Data.overlayType.CompareTo(y.Data.overlayType);
         if (compareType == 0)
         {
-            return y.Y.CompareTo(x.Y);
+            var compareY = y.Y.CompareTo(x.Y);
+            if(compareY == 0)
+            {
+                return y.X.CompareTo(x.X);
+            }
+            return compareY;
         }
         return compareType;
     }
