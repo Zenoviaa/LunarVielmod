@@ -67,7 +67,12 @@ public class ROCKSPIKE : ModNPC,
         foreach(var player in Main.ActivePlayers)
         {
             if (player.HasBuff<Stunlocked>())
+            {
+                DeathEffect();
                 NPC.Kill();
+                return;
+            }
+      
         }
 
 
@@ -147,40 +152,44 @@ public class ROCKSPIKE : ModNPC,
     {
         base.OnHitPlayer(target, info);
     }
+    void DeathEffect()
+    {
+        FXUtil.ShakeCamera(NPC.position, 128, 4);
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2 position = NPC.Center + Main.rand.NextVector2Circular(48, 48);
+            Vector2 velocity = Main.rand.NextVector2Circular(5, 5);
+            Gore.NewGore(NPC.GetSource_FromThis(), position, velocity, ModContent.GoreType<IceRockGore>());
+        }
+
+        for (int f = 0; f < 2; f++)
+        {
+            Vector2 spawnPosition = NPC.Center;
+            spawnPosition.X += Main.rand.NextFloat(-64, 64);
+            spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+            Vector2 spawnVelocity = Main.rand.NextVector2Circular(2, 2);
+
+            float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+            Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
+        }
+
+        for (int i = 0; i < 16; i++)
+        {
+            Vector2 spawnPosition = NPC.Center;
+            spawnPosition.X += Main.rand.NextFloat(-64, 64);
+            spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+            Vector2 spawnVelocity = Main.rand.NextVector2Circular(8, 8);
+            Dust.NewDustPerfect(spawnPosition, DustID.Stone, spawnVelocity);
+        }
+    }
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
         if(NPC.life <= 0 && Main.netMode != NetmodeID.Server)
         {
-            FXUtil.ShakeCamera(NPC.position, 128, 4);
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 position = NPC.Center + Main.rand.NextVector2Circular(48, 48);
-                Vector2 velocity = Main.rand.NextVector2Circular(5, 5);
-                Gore.NewGore(NPC.GetSource_FromThis(), position, velocity, ModContent.GoreType<IceRockGore>());
-            }
-
-            for (int f = 0; f < 2; f++)
-            {
-                Vector2 spawnPosition = NPC.Center;
-                spawnPosition.X += Main.rand.NextFloat(-64, 64);
-                spawnPosition.Y += Main.rand.NextFloat(-64, 64);
-
-                Vector2 spawnVelocity = Main.rand.NextVector2Circular(2, 2);
-
-                float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-                Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
-            }
-
-            for (int i = 0; i < 16; i++)
-            {
-                Vector2 spawnPosition = NPC.Center;
-                spawnPosition.X += Main.rand.NextFloat(-64, 64);
-                spawnPosition.Y += Main.rand.NextFloat(-64, 64);
-
-                Vector2 spawnVelocity = Main.rand.NextVector2Circular(8, 8);
-                Dust.NewDustPerfect(spawnPosition, DustID.Stone, spawnVelocity);
-            }
+            DeathEffect();
         }
     }
     public override void OnKill()
