@@ -12,6 +12,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 
 namespace Stellamod.Content.Areas.SpecialTiles;
@@ -183,6 +184,16 @@ public class BellPhone : ModNPC
             godrayRenderer.AddGodrayParticle(centerPos + Main.rand.NextVector2Circular(64, 64));
         }
 
+
+        if (IsActive())
+        {
+            PulseTime+=0.05f;
+        }
+        else
+        {
+            PulseTime-=0.05f;
+        }
+        PulseTime = MathHelper.Clamp(PulseTime, 0f, 1f);
         if (Main.rand.NextBool(64))
         {
             var sp = SparkleParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(72, 72), Vector2.Zero);
@@ -211,6 +222,7 @@ public class BellPhone : ModNPC
         NPC.life = NPC.lifeMax;
         float distanceSquared = Vector2.DistanceSquared(NPC.Center, MyTarget.Center);
         NPC.dontTakeDamage = distanceSquared > TRIGGER_RANGE;
+        Lighting.AddLight(NPC.Center, TorchID.Torch);
         switch (State)
         {
             case AIState.Sway:
@@ -287,6 +299,14 @@ public class BellPhone : ModNPC
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        var blackCircle = AssetReferences.Assets.GlowMasks.WhiteCircle.Asset;
+        var blackDrawer = SpritebatchDrawer.FromTextureAsset(blackCircle, NPC.Center);
+        blackDrawer.color = Color.Black;
+        blackDrawer.scale *= 1f;
+        spriteBatch.Draw(blackDrawer);
+//DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 0.4f, Color.DarkOrange * 0.24f * ExtraMath.Osc(0.8f, 1f, speed: 2));
+    //    DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 1.5f, Color.DarkOrange * 0.24f * ExtraMath.Osc(0.8f, 1f, speed: 2));
+
         NPC.spriteDirection = 1;
         Vector2 drawOrigin = new Vector2(45, 32);
         Vector2 drawOffset = new Vector2(36, 0);
@@ -305,15 +325,26 @@ public class BellPhone : ModNPC
         bellDrawer.worldPosition += drawOffset;
         spriteBatch.Draw(bellDrawer);
 
+        var outlineDrawer = bellDrawer;
+        outlineDrawer.color = Color.Gold * ExtraMath.Osc(0.5f, 1f, speed: 6);
+        outlineDrawer.VerticalFrame(2, Main.npcFrameCount[Type]);
+        spriteBatch.Draw(outlineDrawer);
 
+        if (IsActive())
+        {
+            SpritebatchDrawer beamDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, NPC.Bottom);
+            beamDrawer.color = Color.Goldenrod * ExtraMath.Osc(0.5f, 1f, speed: 3) * PulseTime;
+            beamDrawer.color.A = 0;
+            beamDrawer.BottomCenterOrigin();
+            spriteBatch.Draw(beamDrawer);
+        }
+        /*
         bellDrawer.color *= 0.3f;
         bellDrawer.drawOrigin = drawOrigin;
         bellDrawer.VerticalFrame(2, Main.npcFrameCount[Type]);
         bellDrawer.scale *= ExtraMath.Osc(1.2f, 1.4f);
         spriteBatch.Draw(bellDrawer);
-
-        DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 0.4f, Color.DarkOrange * 0.124f * ExtraMath.Osc(0.8f, 1f, speed: 2));
-        DrawUtilities.DrawBasicGlow(spriteBatch, NPC.Center, 1.5f, Color.DarkOrange * 0.124f * ExtraMath.Osc(0.8f, 1f, speed: 2));
+        */
 
         //Godrays here
         Asset<Texture2D> godrayTexture = AssetManager.GlowMask.SimpleGlowCircle;
