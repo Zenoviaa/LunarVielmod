@@ -116,11 +116,10 @@ public partial class VeilGen
             for (int y = abyssHigh; y < abyssLow; y++)
             {
                 Tile tile = Main.tile[x, y];
+                tile.ClearTile();
                 tile.TileFrameX = -1;
                 tile.TileFrameY = -1;
-                tile.HasTile = true;
                 tile.TileType = abyssTile;
-                tile.IsHalfBlock = false;
             }
         }
         //var genRand = WorldGen.genRand;
@@ -448,7 +447,8 @@ public partial class VeilGen
                 VeilGen.CreateAbyssConnectionCave(referencePoint, pointsICanConnectTo[fastRandom.Next(0, min)]);
             }
         }
-           List<Vector2> FindAnyPointsICanConnectTo(Vector2 referencePoint, float connectRadius = 150)
+          
+        List<Vector2> FindAnyPointsICanConnectTo(Vector2 referencePoint, float connectRadius = 150)
         {
             float maxConnectionRadiusSquared = connectRadius * connectRadius;
             List<Vector2> otherPoints = new List<Vector2>(16);
@@ -515,7 +515,6 @@ public partial class VeilGen
 
         //No need to settle liquids anymore, water just places in the correct spot
         VeilGen.SettleLiquids();
-        VeilGen.CreateHalfBlocksOnEdges(rect);
         VeilGen.CreateHalfBlocksOnEdges(rect);
         VeilGen.DecorateSurfaceEdgesWithMultiTile(rect, denom: 8, groundTiles, multiTileFlowers);
         VeilGen.DecorateSurfaceEdgesWithZTile(new()
