@@ -18,7 +18,7 @@ public enum ZRenderLayer : byte
 {
     BehindWalls,
     InFrontOfWalls,
-    Midground,
+    OverPlayer,
     Foreground,
 }
 
@@ -139,13 +139,6 @@ public class ZTileSerializer : TagSerializer<ZTileSaveData, TagCompound>
 
     public override TagCompound Serialize(ZTileSaveData value)
     {
-        /*
-         *     public ushort type;
-                public Rotation rotation;
-                public bool flipX;
-                public float scale;
-                public ushort frameNumber;
-         */
         return new TagCompound
         {
             ["x"] = value.x,
@@ -705,7 +698,7 @@ public class ZTileMap : ModSystem
 
     private void DrawInFrontOfPlayer()
     {
-        var data = GetZTileDatas(ZRenderLayer.Midground);
+        var data = GetZTileDatas(ZRenderLayer.OverPlayer);
         if (data.Count <= 0 && !IsHoldingDecorationBuilder)
             return;
 
