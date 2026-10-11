@@ -3,13 +3,18 @@ using Terraria;
 
 namespace Stellamod.Core.Rendering.RTs;
 
+file static class RTSizeHelper
+{
+    public static int ScreenWidth => Main.graphics.PreferredBackBufferWidth;
+    public static int ScreenHeight => Main.graphics.PreferredBackBufferHeight;
+}
 public record struct RenderTargetParameters(int Width, int Height, bool MipMap, SurfaceFormat SurfaceFormat, DepthFormat DepthFormat, RenderTargetUsage Usage)
 {
     public static RenderTargetParameters DefaultScreenTarget
     {
         get
         {
-            return new RenderTargetParameters(Main.screenTarget.Width, Main.screenTarget.Height, false, SurfaceFormat.Color, DepthFormat.None, RenderTargetUsage.PlatformContents);
+            return new RenderTargetParameters(RTSizeHelper.ScreenWidth, RTSizeHelper.ScreenHeight, false, SurfaceFormat.Color, DepthFormat.None, RenderTargetUsage.PlatformContents);
         }
     }
 
@@ -26,8 +31,8 @@ public static RenderTargetParameters FromRenderTarget(RenderTarget2D target)
         {
             return DefaultScreenTarget with
             {
-                Width = Main.screenWidth / downSamples,
-                Height = Main.screenHeight / downSamples
+                Width = RTSizeHelper.ScreenWidth / downSamples,
+                Height = RTSizeHelper.ScreenHeight / downSamples
             };
         };
        return func;
