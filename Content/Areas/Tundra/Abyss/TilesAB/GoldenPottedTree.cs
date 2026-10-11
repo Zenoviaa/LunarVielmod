@@ -506,7 +506,7 @@ file static class GoldenLeafTreeUtility
             {
                 GodrayRenderer godrayRenderer = ModContent.GetInstance<GodrayRenderer>();
                 Vector2 centerPos = worldCoordinates;
-                centerPos.Y -= 196;
+                centerPos.Y += 64;
                 godrayRenderer.AddGodrayParticle(centerPos + Main.rand.NextVector2Circular(256, 64));
             }
 
