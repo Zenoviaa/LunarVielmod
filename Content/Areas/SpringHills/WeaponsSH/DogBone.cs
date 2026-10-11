@@ -27,6 +27,7 @@ public class DogBone : ModItem
         Item.DefaultToBellMinion(ModContent.ProjectileType<Cupcake>(), isGuardian: true, health: 60);
         Item.damage = 10;
         Item.knockBack = 3f;
+        Item.rare = ModContent.RarityType<ShopRarity>();
     }
 }
 

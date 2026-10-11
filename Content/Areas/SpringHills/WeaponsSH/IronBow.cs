@@ -1,6 +1,7 @@
 ﻿using Stellamod.Core.Bases;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
@@ -11,6 +12,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         {
             base.SetDefaults();
             Item.damage = 2;
+            Item.rare = ModContent.RarityType<ShopRarity>();
         }
 
         public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)

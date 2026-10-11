@@ -32,7 +32,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = Item.buyPrice(silver: 1);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ModContent.RarityType<ShopRarity>();
             Item.shootSpeed = 10;
             Item.shoot = ModContent.ProjectileType<WarriorsSwordSlash>();
             Item.autoReuse = true;

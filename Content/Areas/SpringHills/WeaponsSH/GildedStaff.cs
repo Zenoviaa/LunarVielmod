@@ -31,7 +31,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             Item.knockBack = 2f;
             Item.DamageType = DamageClass.Magic;
             Item.value = Item.sellPrice(silver: 10);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ModContent.RarityType<ShopRarity>();
 
             Item.shoot = ModContent.ProjectileType<GildedStaffHold>();
             Item.shootSpeed = 8f;
