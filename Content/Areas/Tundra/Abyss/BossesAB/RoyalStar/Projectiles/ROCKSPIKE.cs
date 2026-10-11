@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.Gores;
+using Stellamod.Content.Buffs;
 using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
@@ -63,7 +64,11 @@ public class ROCKSPIKE : ModNPC,
     public override void AI()
     {
         base.AI();
-
+        foreach(var player in Main.ActivePlayers)
+        {
+            if (player.HasBuff<Stunlocked>())
+                NPC.Kill();
+        }
 
 
         Timer++;

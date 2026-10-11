@@ -559,7 +559,7 @@ public class GoldenLeafTree : ZTile
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         Vector2 worldCoordinates = new Point(drawParams.tilePosition.x, drawParams.tilePosition.y).ToWorldCoordinates();
-        Lighting.AddLight(worldCoordinates + new Vector2(0, -16), TorchID.Torch);
+        Lighting.AddLight(worldCoordinates + new Vector2(0, -16), new Vector3(0.75f));
 
         Rectangle srcRect = _tileTextureAsset.Value.GetFrame(drawParams.tileData.frameNumber, 6);
         Vector2 drawOrigin = new Vector2(srcRect.Width / 2f, srcRect.Height);
