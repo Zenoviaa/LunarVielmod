@@ -6,6 +6,7 @@ namespace Stellamod.Core.Rendering.RTs;
 
 public class RenderTargetPool
 {
+    int _recreate;
     public RenderTargetPool(Func<RenderTargetParameters> targetFactory)
     {
         TargetFactory = targetFactory;
@@ -41,38 +42,41 @@ public class RenderTargetPool
         });
     }
 
-    /// <summary>
-    /// Call this function at the end of a frame
-    /// </summary>
-    public void FlushAndResizeTargets()
+    public void ReleaseTargets()
     {
-        //Check if all 
         if (TargetPool.Count <= 0)
             return;
         RenderTargetParameters parameters = TargetFactory();
-        if(!parameters.Matches(TargetPool.Peek()))
+        if (!parameters.Matches(TargetPool.Peek()))
         {
-            int numToRecreate = TargetPool.Count;
+            _recreate = TargetPool.Count;
             //Dispose and resize all
             while (TargetPool.Count > 0)
             {
                 var target = TargetPool.Dequeue();
-                target.Dispose();
+                target?.Dispose();
             }
 
-            for (int i = 0; i < numToRecreate; i++)
-            {
-                var Parameters = TargetFactory();
-                var target = new RenderTarget2D(Main.graphics.GraphicsDevice,
-                     Parameters.Width,
-                     Parameters.Height,
-                     Parameters.MipMap,
-                     Parameters.SurfaceFormat,
-                     Parameters.DepthFormat, 0,
-                     Parameters.Usage);
-                TargetPool.Enqueue(target);
-            }
         }
+    }
+    /// <summary>
+    /// Call this function at the end of a frame
+    /// </summary>
+    public void CreateTargets()
+    {
+        for (int i = 0; i < _recreate; i++)
+        {
+            var Parameters = TargetFactory();
+            var target = new RenderTarget2D(Main.graphics.GraphicsDevice,
+                 Parameters.Width,
+                 Parameters.Height,
+                 Parameters.MipMap,
+                 Parameters.SurfaceFormat,
+                 Parameters.DepthFormat, 0,
+                 Parameters.Usage);
+            TargetPool.Enqueue(target);
+        }
+        _recreate = 0;
     }
 
     public RenderTargetHandle Request()

@@ -97,7 +97,7 @@ public class RenderTargets : ModSystem
         LazyRenderTarget persistentTarget = new LazyRenderTarget(factory);
         Main.QueueMainThreadAction(() =>
         {
-            persistentTarget.FlushAndResize();
+            persistentTarget.CreateTarget();
         });
         PersistentTargets.Add(persistentTarget);
         return persistentTarget;
@@ -112,35 +112,48 @@ public class RenderTargets : ModSystem
             pool.OnLoad();
         }
         On_Main.Draw += Draw;
-
-        On_Main.InitTargets_int_int += ResizeTargets;
+        Main.OnRenderTargetsInitialized += InitializeTargets;
+        Main.OnRenderTargetsReleased += ReleaseTargets;
         Main.QueueMainThreadAction(() =>
         {
             FailsafeTarget = new RenderTarget2D(Main.graphics.graphicsDevice, 1, 1);
         });
     }
 
-
-    private void ResizeTargets(On_Main.orig_InitTargets_int_int orig, Main self, int width, int height)
+    private void ReleaseTargets()
     {
-        orig(self, width, height);
         if (Main.dedServ)
             return;
 
         foreach (var targetPool in TargetPools)
         {
-            targetPool.FlushAndResizeTargets();
+            targetPool.ReleaseTargets();
         }
 
-        foreach(var persistentTarget in PersistentTargets)
+        foreach (var persistentTarget in PersistentTargets)
         {
-            persistentTarget.FlushAndResize();
+            persistentTarget.ReleaseTarget();
+        }
+    }
+
+    private void InitializeTargets(int width, int height)
+    {
+        foreach (var targetPool in TargetPools)
+        {
+            targetPool.CreateTargets();
+        }
+
+        foreach (var persistentTarget in PersistentTargets)
+        {
+            persistentTarget.CreateTarget();
         }
     }
 
     public override void Unload()
     {
         base.Unload();
+        Main.OnRenderTargetsInitialized -= InitializeTargets;
+        Main.OnRenderTargetsReleased -= ReleaseTargets;
         foreach (var pool in TargetPools)
         {
             pool.OnUnload();

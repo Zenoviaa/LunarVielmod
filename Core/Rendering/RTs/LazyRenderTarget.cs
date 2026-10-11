@@ -8,6 +8,7 @@ namespace Stellamod.Core.Rendering.RTs;
 /// </summary>
 public class LazyRenderTarget
 {
+    bool _needsTargets=true;
     private RenderTarget2D _targetBackingField;
     public LazyRenderTarget(Func<RenderTargetParameters> targetFactory)
     {
@@ -26,20 +27,25 @@ public class LazyRenderTarget
 
     public int Width => Target.Width;
     public int Height => Target.Height;
-    public void FlushAndResize()
+    public void ReleaseTarget()
     {
-        RenderTargetParameters parameters = TargetFactory();
-        if (_targetBackingField == null || !parameters.Matches(Target))
-        {
-            _targetBackingField?.Dispose();
-            var Parameters = TargetFactory();
-            _targetBackingField = new RenderTarget2D(Main.graphics.GraphicsDevice,
-                 Parameters.Width,
-                 Parameters.Height,
-                 Parameters.MipMap,
-                 Parameters.SurfaceFormat,
-                 Parameters.DepthFormat, 0,
-                 Parameters.Usage);
-        }
+        _targetBackingField?.Dispose();
+        _targetBackingField = null;
+        _needsTargets = true;
+    }
+
+    public void CreateTarget()
+    {
+        if (!_needsTargets)
+            return;
+        _needsTargets = false;
+        var Parameters = TargetFactory();
+        _targetBackingField = new RenderTarget2D(Main.graphics.GraphicsDevice,
+             Parameters.Width,
+             Parameters.Height,
+             Parameters.MipMap,
+             Parameters.SurfaceFormat,
+             Parameters.DepthFormat, 0,
+             Parameters.Usage);
     }
 }
