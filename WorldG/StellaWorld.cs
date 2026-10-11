@@ -6341,7 +6341,6 @@ public partial class StellaWorld : ModSystem
 
 
     Point pointL;
-    Point pointLil;
 
     #region Royal Capital
 

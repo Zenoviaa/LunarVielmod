@@ -298,8 +298,6 @@ public class MoonWaterSystem : ModSystem
     private Rectangle _drawLocation;
     private Texture2D _perlinNoise;
     private Texture2D _waterNoise1;
-    private bool _allowDraw;
-
     //This will give us a cool pixelation effect
     public int DownSamples => 2;
     public Vector2 Tiling => new Vector2(1.5f, 1.5f) * 0.75f;
@@ -332,9 +330,6 @@ public class MoonWaterSystem : ModSystem
     }
     private void StopDrawWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
     {
-        if (!_allowDraw)
-            return;
-
         orig(self, isBackground);
     }
 
@@ -417,7 +412,6 @@ public class MoonWaterSystem : ModSystem
             return;
         if (!LightingHelper.CanRenderPostProcessingEffects)
         {
-            _allowDraw = true;
             return;
         }
 
@@ -431,10 +425,7 @@ public class MoonWaterSystem : ModSystem
 
             spriteBatch.End();
             CopyScreenTargetToSwap();
-
-            _allowDraw = true;
             CopyWaterTarget();
-            //    _allowDraw = false;
             CopySwapToScreenTarget();
             Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
             if (_pixelWater.affectsLava)
