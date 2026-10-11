@@ -76,7 +76,8 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
             _trySummonSaw = false;
             if (Player.whoAmI == Main.myPlayer)
             {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, -Vector2.UnitY * 15, ModContent.ProjectileType<SearingSaw>(), 20, 1, Player.whoAmI);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, -Vector2.UnitY * 15, 
+                    ModContent.ProjectileType<SearingSaw>(), Player.HeldItem.damage, 1, Player.whoAmI);
             }
         }
     }

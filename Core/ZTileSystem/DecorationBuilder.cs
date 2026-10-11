@@ -22,7 +22,6 @@ public class DecorationBuilder : ModItem
         Item.useAnimation = 2;
         Item.useTime = 2;
         Item.useStyle = ItemUseStyleID.Swing;
-        Item.UseSound = SoundID.Bird;
         Item.autoReuse = false;
     }
 
