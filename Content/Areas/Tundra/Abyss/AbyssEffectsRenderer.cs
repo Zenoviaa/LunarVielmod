@@ -2,6 +2,7 @@
 using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Content.Biomes;
 using Stellamod.Core;
+using Stellamod.Core.Backgrounds;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Rendering.RTs;
@@ -53,7 +54,44 @@ public class AbyssEffectsRenderer : ModSystem
         On_Main.DoDraw_WallsAndBlacks += RenderAroundWalls;
         On_Main.DrawInfernoRings += DrawOverWater;
         On_OverlayManager.Draw += DrawPostProcessingPasses;
+        CustomBGManager.OnPostDrawCustomBG += DrawFogOverBackground;
     }
+    public override void Unload()
+    {
+        base.Unload();
+        CustomBGManager.OnPostDrawCustomBG -= DrawFogOverBackground;
+    }
+    private void DrawFogOverBackground(OverlayManager manager, SpriteBatch batch, RenderLayers layers, bool arg4)
+    {
+        if (!BiomeWaterfallsAvailable())
+            return;
+        var noiseSprite = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
+        var ditherSprite = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset.Value;
+        var pass = AssetReferences.Effects.Abyss.AbyssFog.CreateBlackPass();
+        HlslSampler sampler = new HlslSampler();
+        sampler.Sampler = SamplerState.PointWrap;
+        sampler.Texture = noiseSprite;
+        pass.Parameters.spriteSampler = sampler;
+
+        HlslSampler ditherSampler = new HlslSampler();
+        ditherSampler.Sampler = SamplerState.PointWrap;
+        ditherSampler.Texture = ditherSprite;
+        pass.Parameters.ditherSampler = ditherSampler;
+
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.4f;
+        pass.Parameters.ditherTexelSize = ditherSprite.GetTexelSize();
+        pass.Parameters.spriteSize = noiseSprite.Size();
+        pass.Parameters.screenOffset = DrawUtilities.CalculateScreenOffset(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight)) * 0.3f;
+        pass.Apply();
+        using(batch.Ctx(batch.Parameters with { effect = pass.Shader }))
+        {
+            Color fogColor = Color.Lerp(Color.White, Color.Blue, 0.3f);
+            batch.Draw(noiseSprite, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), fogColor * 0.36f);
+        }
+
+    //    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+    }
+
 
     private void WaterfallAmbience(On_Main.orig_Ambience orig)
     {
@@ -380,41 +418,13 @@ public class AbyssEffectsRenderer : ModSystem
         orig(self, spriteBatch, layer, beginSpriteBatch);
     }
 
+    void RenderFog()
+    {
+
+    }
     private void RenderAroundWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
     {
-        if (BiomeWaterfallsAvailable())
-        {
-            var noiseSprite = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
-            var ditherSprite = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset.Value;
-            var pass = AssetReferences.Effects.Abyss.AbyssFog.CreateBlackPass();
-            HlslSampler sampler = new HlslSampler();
-            sampler.Sampler = SamplerState.PointWrap;
-            sampler.Texture = noiseSprite;
-            pass.Parameters.spriteSampler = sampler;
 
-            HlslSampler ditherSampler = new HlslSampler();
-            ditherSampler.Sampler = SamplerState.PointWrap;
-            ditherSampler.Texture = ditherSprite;
-            pass.Parameters.ditherSampler = ditherSampler;
-
-            pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.4f;
-            pass.Parameters.ditherTexelSize = ditherSprite.GetTexelSize();
-            pass.Parameters.spriteSize = noiseSprite.Size();
-            pass.Parameters.screenOffset = DrawUtilities.CalculateScreenOffset(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight)) * 0.3f;
-            pass.Apply();
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, pass.Shader, Main.GameViewMatrix.TransformationMatrix);
-
-
-            Color fogColor = Color.Lerp(Color.White, Color.Blue, 0.3f);
-
-            spriteBatch.Draw(noiseSprite, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), fogColor * 0.36f);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-        }
         orig(self);
         //     Main.NewText(AbyssWaterfallPoints.Count);
         if (AbyssWaterfallPoints.Count > 0)

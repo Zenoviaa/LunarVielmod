@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -40,6 +41,7 @@ public class CustomBGManager : ModSystem
         Backgrounds = ModContent.GetContent<CustomBG>().ToList();
     }
 
+    public static event Action<OverlayManager, SpriteBatch, RenderLayers, bool> OnPostDrawCustomBG;
     public override void Unload()
     {
         base.Unload();
@@ -56,12 +58,14 @@ public class CustomBGManager : ModSystem
     {
         if (layer == RenderLayers.Background)
         {
-
             DrawLoop();
             darkenBGColor = null;
         }
         orig(self, spriteBatch, layer, beginSpriteBatch);
-
+        if (layer == RenderLayers.Background)
+        {
+            OnPostDrawCustomBG?.Invoke(self, spriteBatch, layer, beginSpriteBatch);
+        }
     }
 
     private void DrawLoop()
