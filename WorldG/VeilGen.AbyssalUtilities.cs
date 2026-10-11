@@ -634,9 +634,12 @@ public partial class VeilGen
 
         FancyWaterfalls.FancyWaterfallPoints.Clear();
         //Generate Waterfalls Here
-
+        var genRand = WorldGen.genRand;
         foreach (Point tilePoint in rect.Points)
         {
+
+            if (tilePoint.X % 2 != 0)
+                continue;
 
             Tile tile = Main.tile[tilePoint];
             Tile tileAbove = Main.tile[tilePoint + new Point(0, -1)];
@@ -650,9 +653,8 @@ public partial class VeilGen
                 if (pct > 0.35f)
                 {
                     int wfFall = ScanUpforWaterfall(tilePoint.X, tilePoint.Y);
-                    if (wfFall != -1)
+                    if (wfFall != -1 && !genRand.NextBool(8))
                     {
-
                         FancyWaterfalls.PlaceWaterfall(tilePoint + new Point(0, -wfFall));
                     }
                 }
