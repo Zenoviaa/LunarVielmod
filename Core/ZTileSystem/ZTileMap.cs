@@ -207,9 +207,17 @@ public class ZTileMap : ModSystem
         }
         On_Main.DoDraw_WallsAndBlacks += RenderOverWalls;
         On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
-        On_Main.DrawDust += RenderForeground;
+
+        On_Main.DrawInfernoRings += RenderOverWater;
         RekSilhouetteSystem.OnPrepareSilhouettes += PrepareSilhouettes;
     }
+
+    private void RenderOverWater(On_Main.orig_DrawInfernoRings orig, Main self)
+    {
+        orig(self);
+        DrawForeground();
+    }
+
     public override void Unload()
     {
         base.Unload();
@@ -619,12 +627,7 @@ public class ZTileMap : ModSystem
         DrawInFrontOfPlayer();
     }
 
-    private void RenderForeground(On_Main.orig_DrawDust orig, Main self)
-    {
-        orig(self);
-        DrawForeground();
-        OnRenderForeground?.Invoke();
-    }
+
 
     public bool IsHoldingDecorationBuilder => Main.LocalPlayer.HeldItem.type == ModContent.ItemType<DecorationBuilder>();
     public override void PostDrawTiles()
@@ -722,11 +725,7 @@ public class ZTileMap : ModSystem
         if (data.Count <= 0)
             return;
         SpriteBatch spriteBatch = Main.spriteBatch;
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
         RenderLayer(spriteBatch, data);
-
-        spriteBatch.End();
     }
 
     private Point GetCameraChunk()

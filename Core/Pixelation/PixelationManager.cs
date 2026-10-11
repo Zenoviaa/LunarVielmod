@@ -371,8 +371,19 @@ public class PixelationManager : ModSystem
         On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
         On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
         On_Main.DrawInfernoRings += RenderOverWater;
+        On_Main.DrawDust += RenderOverDust;
         //On_Main.DrawCachedProjs += RenderLater;
-        ZTileMap.OnRenderForeground += RenderLater;
+     //   ZTileMap.OnRenderForeground += RenderLater;
+    }
+
+    private void RenderOverDust(On_Main.orig_DrawDust orig, Main self)
+    {
+        orig(self);
+        if (!Main.gameMenu)
+        {
+            _overPlayersPixelTarget.DrawToScreen();
+        }
+
     }
 
     private void RenderOverWater(On_Main.orig_DrawInfernoRings orig, Main self)
@@ -443,7 +454,6 @@ public class PixelationManager : ModSystem
     public override void Unload()
     {
         base.Unload();
-        ZTileMap.OnRenderForeground -= RenderLater;
         _overNPCsPixelTarget = null;
         _overNPCsPixelTargetWithOutline = null;
         _behindNPCsPixelTargetWithOutline = null;
