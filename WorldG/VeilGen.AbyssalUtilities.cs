@@ -268,7 +268,7 @@ public partial class VeilGen
                 }
             }
         }
-        Main.NewText(_placedAbyssFlowers.Count);
+
         Dictionary<int, List<Vector2>> caveConnectPoints = new Dictionary<int, List<Vector2>>();
         bool CreateAbyssCavernCave(int index, Vector2 originPoint, Vector2 velocity, Rectangle scanArea)
         {
