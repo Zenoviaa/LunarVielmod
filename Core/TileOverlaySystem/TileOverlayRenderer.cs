@@ -210,6 +210,37 @@ public class TileOverlaySelector : ModSystem
         }
     }
 }
+public class TileOverlayStructureSerializer : TagSerializer<TileOverlayStructureSaveData, TagCompound>
+{
+    public override TileOverlayStructureSaveData Deserialize(TagCompound tag)
+    {
+        TileOverlayStructureSaveData deserializedData = new TileOverlayStructureSaveData();
+        deserializedData.x = tag.Get<int>("x");
+        deserializedData.y = tag.Get<int>("y");
+        deserializedData.overlayType = TileOverlayUtility.NameToType(tag.Get<string>("overlayType"));
+        deserializedData.overlayFrame = tag.Get<byte>("overlayFrame");
+        return deserializedData;
+    }
+
+    public override TagCompound Serialize(TileOverlayStructureSaveData value)
+    {
+        return new TagCompound
+        {
+            ["x"] = value.x,
+            ["y"] = value.y,
+            ["overlayType"] = TileOverlayUtility.TypeToName(value.overlayType),
+            ["overlayFrame"] = value.overlayFrame,
+        };
+    }
+}
+public struct TileOverlayStructureSaveData
+{
+    public int x;
+    public int y;
+    public byte overlayType;
+    public byte overlayFrame;
+}
+
 public class TileOverlaySerializer : TagSerializer<TileOverlaySaveData, TagCompound>
 {
     public override TileOverlaySaveData Deserialize(TagCompound tag)
@@ -352,7 +383,6 @@ public class TileOverlayRenderer : ModSystem
     public override void SaveWorldData(TagCompound tag)
     {
         base.SaveWorldData(tag);
-        int i = 0;
         List<TileOverlaySaveData> overlays = new();
         foreach (var kvp in TileOverlayUtility.PlacedTileOverlays)
         {
@@ -365,6 +395,7 @@ public class TileOverlayRenderer : ModSystem
 
         tag["tData"] = overlays;
     }
+
 
     public override void LoadWorldData(TagCompound tag)
     {
@@ -455,10 +486,5 @@ public class TileOverlayRenderer : ModSystem
             }
             spriteBatch.End();
         }
-    }
-
-    private void DrawPixelatedTileOverlays(SpriteBatch sb, Vector2 screenPos)
-    {
-
     }
 }

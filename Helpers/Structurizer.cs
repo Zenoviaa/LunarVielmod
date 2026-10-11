@@ -530,6 +530,7 @@ namespace Stellamod.Helpers
             TileEntityStructurizer.ReadStruct(Path, BottomLeft);
             ZTileStructurizer.ReadStruct(Path, BottomLeft);
             DungeonGenerationHelper.ReadStruct(Path, BottomLeft);
+            ExtraDataStructurizer.ReadStruct(Path, BottomLeft);
             return indices;
 
         }

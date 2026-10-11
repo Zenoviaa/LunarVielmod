@@ -75,6 +75,7 @@ namespace Stellamod.Helpers
                     Structurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
                     TriggerStructurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
                     ZTileStructurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
+                    ExtraDataStructurizer.ReadSavedStruct(Structurizer.SelectedStructure, bottomLeft);
                 }
 
             }

@@ -77,18 +77,22 @@ namespace Stellamod.Core.StructureSelector
         }
         public void CloseSaveUI()
         {
-            saveUIState.ui.Textbox.Unfocus();
             _saveUserInterface.SetState(null);
+            saveUIState.ui.Textbox.Unfocus();
+
         }
         public void OpenUI()
         {
             selectorUIState.ui.Refresh();
             _userInterface.SetState(selectorUIState);
+      
+   
         }
         public void CloseUI()
         {
-            saveUIState.ui.Textbox.Unfocus();
             _userInterface.SetState(null);
+            saveUIState.ui.Textbox.Unfocus();
+      
         }
 
 
