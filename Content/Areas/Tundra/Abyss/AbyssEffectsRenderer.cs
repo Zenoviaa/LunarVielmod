@@ -211,38 +211,6 @@ public class AbyssEffectsRenderer : ModSystem
 
     private void ResetSpecialPoints(On_Main.orig_RenderTiles orig, Main self)
     {
-
-        /*
-        ref bool justEnteredAbyss = ref Main.LocalPlayer.GetModPlayer<BiomePlayer>().justEnteredAbyss;
-        //This should be the generate waterfalls pass
-        if (justEnteredAbyss)
-        {
-            AllWaterfalls.Clear();
-            justEnteredAbyss = false;
-            // var watch = Stopwatch.StartNew();
-            Rectangle abRect = VeilGen.AbyssRectangle;
-            for(int x = abRect.Left; x <= abRect.Right; x++)
-            {
-                for(int y = abRect.Top; y <= abRect.Bottom; y++)
-                {
-                    Tile tile = Main.tile[x, y];
-                    Tile tileAbove = Main.tile[x, y - 1];
-                    if (tile.LiquidAmount > 0 && !tileAbove.HasTile && tileAbove.LiquidAmount <= 0)
-                    {
-                        int w = 4;
-                        int h = 4;
-                        Rectangle rect = new Rectangle(x - w / 2, y, w, h);
-                        rect = TileUtilities.Clamp(rect);
-                        float pct = VeilGen.CountLiquidsPercent(rect);
-                        if (pct > 0.35f)
-                        {
-                            ScanUpforWaterfall(x, y);
-                        }
-                    }
-                }
-            }
-        }*/
-
         orig(self);
 
         if (BellFlowerSystem.WhisperingAlpha < 0.01f)

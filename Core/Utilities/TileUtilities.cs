@@ -1,6 +1,7 @@
 ﻿using Stellamod.WorldG;
 using System;
 using Terraria;
+using Terraria.ID;
 
 namespace Stellamod.Core.Utilities;
 
@@ -202,6 +203,23 @@ public static class TileUtilities
             Tile tile = Main.tile[x, y];
             if (tile.LiquidAmount > 0 || (tile.HasTile && Main.tileSolid[tile.TileType]))
                 return y;
+            y++;
+        }
+        return y;
+    }
+    public static int FallForWaterfallTile(int x, int y, int maxSteps = 255)
+    {
+        Point start = new Point(x, y);
+        Point current = start;
+        for (int i = 0; i < maxSteps; i++)
+        {
+            Tile tile = Main.tile[x, y];
+            if (!TileID.Sets.IgnoredByWaterfalls[tile.type])
+            {
+                if (tile.LiquidAmount > 0 || (tile.HasTile && Main.tileSolid[tile.TileType]))
+                    return y;
+            }
+
             y++;
         }
         return y;

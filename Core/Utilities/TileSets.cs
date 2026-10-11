@@ -30,6 +30,8 @@ public class TileSets : ModSystem
     /// Tiles that can render the cool grass
     /// </summary>
     public static int[] MarshyGrass;
+
+    public static bool[] IgnoredByWaterfalls;
     public override void ResizeArrays()
     {
         base.ResizeArrays();
@@ -38,6 +40,7 @@ public class TileSets : ModSystem
         BarrierFog = TileID.Sets.Factory.CreateIntSet();
         CantSpawnEnemies = TileID.Sets.Factory.CreateBoolSet();
         MarshyGrass = TileID.Sets.Factory.CreateIntSet(-1);
+        IgnoredByWaterfalls = TileID.Sets.Factory.CreateBoolSet();
     }
 }
 
@@ -48,5 +51,6 @@ public static class TileSetsExtensions
         public static int[] BarrierFog => TileSets.BarrierFog;
         public static bool[] CantSpawnEnemies => TileSets.CantSpawnEnemies;
         public static int[] MarshyGrass => TileSets.MarshyGrass;
+        public static bool[] IgnoredByWaterfalls => TileSets.IgnoredByWaterfalls;
     }
 }

@@ -24,7 +24,7 @@ public class WaterfallMaker : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.rare = ItemRarityID.White;
+        Item.rare = ModContent.RarityType<ShopRarity>();
         Item.useTime = 2;
         Item.useAnimation = 2;
         Item.useStyle = ItemUseStyleID.Swing;

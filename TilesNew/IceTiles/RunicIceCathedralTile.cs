@@ -19,6 +19,7 @@ namespace Stellamod.TilesNew.IceTiles
             Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
+            TileID.Sets.IgnoredByWaterfalls[Type] = true;
             RegisterItemDrop(ItemType<RunicIceBlock>());
             AddMapEntry(new Color(90, 90, 90));
             MineResist = 3f;
