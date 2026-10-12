@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 
 namespace Stellamod.Common.ConsoleMenu;
+
 public class ClassCommand : ConsoleCommand
 {
     public override string GetCommandName()

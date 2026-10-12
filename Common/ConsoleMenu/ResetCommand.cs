@@ -1,8 +1,11 @@
 ﻿using Stellamod.Common.ArmorShop;
 using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.QuestSystem;
+using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.WaypointSystem;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Core.PlayerLevelingSystem;
 using Stellamod.Items;
 using Terraria;
@@ -28,7 +31,9 @@ public class ResetCommand : ConsoleCommand
             "cauldron",
             "armor",
             "waypoints",
-            "flags"
+            "flags",
+            "wand",
+            "insource"
         };
 
         return arguments0;
@@ -41,6 +46,13 @@ public class ResetCommand : ConsoleCommand
         Player player = Main.LocalPlayer;
         switch (args[1])
         {
+            case "wand":
+                player.GetModPlayer<AdvancedMagicPlayer>().ResetProgress();
+                return true;
+            case "insource":
+                player.GetModPlayer<FlaskPlayer>().ResetProgress();
+                player.GetModPlayer<BellPlayer>().ResetProgress();
+                return true;
             case "level":
 
                 player.GetModPlayer<LevelingPlayer>().ResetStats();
