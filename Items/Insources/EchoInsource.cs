@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.ClassReworkSystem;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
@@ -23,7 +24,8 @@ namespace Stellamod.Items.Insources
             Player player = flaskPlayer.Player;
             if (player.whoAmI == Main.myPlayer)
             {
-                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<EchoBoom>(), 300, 1, player.whoAmI);
+                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, 
+                    ModContent.ProjectileType<EchoBoom>(), player.GetModPlayer<ClassReworkPlayer>().ScalingWeaponDamage() * 2, 1, player.whoAmI);
             }
         }
 

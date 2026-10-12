@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -38,14 +39,17 @@ namespace Stellamod.Content.Armors.Huntrian
             npc.lifeRegen -= 25;
             if (Main.rand.NextBool(6))
             {
-                SmokeParticle sp = Particle<SmokeParticle>.Spawn(npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), -Vector2.UnitY, Color.DarkGreen, Main.rand.NextFloat(0.9f, 1.5f));
-                sp.initialColor = Color.Lerp(Color.DarkGreen, Color.DarkSeaGreen, Main.rand.NextFloat(0f, 1f)) * 0.4f;
-                sp.expand = true;
+                var pos = npc.Center + Main.rand.NextVector2Circular(32, 32);
+                Particles.RoughSmoke.Spawn(new()
+                {
+                    position = pos,
+                    timeLeft = 52,
+                    color = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(0f, 1f), Color.OrangeRed, Color.DarkGreen, Color.Green, Color.Red, Color.DarkOrange, Color.DarkGreen),
+                    scale = Main.rand.NextFloat(0.8f, 1f),
+                    rotation = Main.rand.NextFloat(6f)
+                });
             }
-            if (Main.rand.NextBool(6))
-            {
-                LegacyParticle.NewParticle<EmberParticle>(npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), -Vector2.UnitY.RotatedByRandom(1.5f), Color.DarkGreen, Main.rand.NextFloat(0.9f, 1.5f));
-            }
+
         }
     }
     public class HuntrianAura : ModProjectile

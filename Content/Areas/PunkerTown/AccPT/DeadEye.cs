@@ -3,6 +3,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -91,14 +92,14 @@ public class DeadEye : AbstractDashItem
         _timer++;
         if (_timer == 1)
         {
-            player.velocity *= 4;
+            player.velocity.X = MathF.Sign(player.velocity.X) * 36;
             var dashSound = AssetRegistry.Sounds.SteamPunking.DescendingDash2 with { PitchVariance = 0.5f };
             SoundEngine.PlaySound(dashSound, player.position);
             if (Main.myPlayer == player.whoAmI)
             {
                 ProjFirer proj = ProjFirer.From<DeadEyeProj>(player);
                 var bonus = player.GetTotalDamage(DamageClass.Generic);
-                float damage = player.HeldItem.damage;
+                float damage = player.HeldItem.damage * 3;
                 float newDamage = bonus.ApplyTo(damage);
                 proj.damage = (int)newDamage;
                 proj.New();

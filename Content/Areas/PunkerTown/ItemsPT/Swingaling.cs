@@ -28,7 +28,7 @@ public class Swingaling : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 72;
+        Item.damage = 96;
         Item.shoot = ModContent.ProjectileType<SwingalingSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<SwingalingCharge>();
         meleeWeaponType = MeleeWeaponType.Sword;

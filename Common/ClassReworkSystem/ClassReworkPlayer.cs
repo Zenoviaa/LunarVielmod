@@ -225,6 +225,11 @@ public class ClassReworkPlayer : ModPlayer
         }
     }
 
+    public int ScalingWeaponDamage()
+    {
+        return Player.HeldItem.damage;
+    }
+
     public override void SaveData(TagCompound tag)
     {
         base.SaveData(tag);

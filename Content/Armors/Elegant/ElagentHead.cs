@@ -22,16 +22,6 @@ namespace Stellamod.Content.Armors.Elegant
         public override void Update(Player player, ref int buffIndex)
         {
             base.Update(player, ref buffIndex);
-            if (Main.rand.NextBool(3))
-            {
-                SmokeParticle sp = Particle<SmokeParticle>.Spawn(player.position + new Vector2(Main.rand.Next(0, player.width), Main.rand.Next(0, player.height)), -Vector2.UnitY, Color.OrangeRed, Main.rand.NextFloat(0.9f, 1.5f));
-                sp.initialColor = Color.Lerp(Color.OrangeRed, Color.RosyBrown, Main.rand.NextFloat(0f, 1f)) * 0.4f;
-                sp.expand = true;
-            }
-            if (Main.rand.NextBool(3))
-            {
-                LegacyParticle.NewParticle<EmberParticle>(player.position + new Vector2(Main.rand.Next(0, player.width), Main.rand.Next(0, player.height)), -Vector2.UnitY.RotatedByRandom(1.5f), Color.OrangeRed, Main.rand.NextFloat(0.9f, 1.5f));
-            }
         }
     }
     public class ElegantPlayer : ModPlayer
@@ -61,6 +51,7 @@ namespace Stellamod.Content.Armors.Elegant
             base.PostUpdateEquips();
             if (Player.HasBuff<Elegant>())
             {
+                Player.SetImmuneTimeForAllTypes(2);
                 alphaTimer += 0.05f;
             }
             else
@@ -74,7 +65,7 @@ namespace Stellamod.Content.Armors.Elegant
             ElegantPlayer elegant = player.GetModPlayer<ElegantPlayer>();
             if (!elegant.hasSetBonus)
                 return;
-            player.SetImmuneTimeForAllTypes(180);
+
             player.AddBuff(ModContent.BuffType<Elegant>(), 180);
             SoundStyle drinkSound = new SoundStyle("Stellamod/Assets/Sounds/HolyCast1");
             SoundEngine.PlaySound(drinkSound, player.position);

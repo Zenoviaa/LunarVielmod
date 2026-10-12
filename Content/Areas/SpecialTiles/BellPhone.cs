@@ -258,7 +258,7 @@ public class BellPhone : ModNPC
         Timer++;
         if (Timer == 1)
         {
-            var sound = AssetReferences.Assets.Sounds.Abyss.BellFlowerHit.Asset with { PitchVariance = 0.3f };
+            var sound = AssetReferences.Assets.Sounds.Checkpointbell.Asset with { PitchVariance = 0.3f };
             SoundEngine.PlaySound(sound);
         }
 

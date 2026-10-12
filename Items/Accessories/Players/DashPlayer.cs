@@ -310,17 +310,19 @@ namespace Stellamod.Items.Accessories.Players
                             newVelocity.X = dashDirection * dashVelocity;
                             break;
                         }
+
                     default:
                         return; // not moving fast enough, so don't start our dash
                 }
 
 
-                Player.SetImmuneTimeForAllTypes(DashDuration + ExtraImmunityFramesBonus);
+                Player.SetImmuneTimeForAllTypes(44 + ExtraImmunityFramesBonus);
                 foreach(var dashItem in DashItems)
                 {
                     dashItem.BeginDash(Player);
                 }
-              //  DashItem?.BeginDash(Player);
+              
+
                 OnDash?.Invoke(Player);
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<DashProjectile>(), 0, 0, Player.whoAmI);
@@ -331,6 +333,7 @@ namespace Stellamod.Items.Accessories.Players
                         ModContent.ProjectileType<MoonramDashProjectile>(),
                         1, 1, Player.whoAmI);
                 }
+
                 DashDelay = DashCooldown;
                 DashTimer = DashDuration;
                 Player.velocity = newVelocity;
@@ -339,8 +342,8 @@ namespace Stellamod.Items.Accessories.Players
             if (Player.HasBuff<Stunlocked>())
             {
                 DashCount = 0;
-          
             }
+
             if (DashDelay > 0)
             {
                 DashDelay--;
@@ -367,9 +370,9 @@ namespace Stellamod.Items.Accessories.Players
                 {
                     dashItem.UpdateDash(Player);
                 }
+
                 if (DashTimer == 0)
                 {
-                    Player.immune = false;
                     _isImmune = false;
                     foreach (var dashItem in DashItems)
                     {

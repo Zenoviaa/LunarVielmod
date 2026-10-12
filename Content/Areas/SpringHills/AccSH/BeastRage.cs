@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.XixianFlaskSystem;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -58,14 +59,21 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
             player.GetModPlayer<DashPlayer>().DashRegenerationBonus += 0.5f;
             if (Main.rand.NextBool(3))
             {
-                SmokeParticle sp = Particle<SmokeParticle>.Spawn(player.position + new Vector2(Main.rand.Next(0, player.width), Main.rand.Next(0, player.height)), -Vector2.UnitY, Color.OrangeRed, Main.rand.NextFloat(0.9f, 1.5f));
-                sp.initialColor = Color.Lerp(Color.OrangeRed, Color.RosyBrown, Main.rand.NextFloat(0f, 1f)) * 0.4f;
-                sp.expand = true;
+                var vel = Main.rand.NextVector2Circular(4, 4);
+                var pos = player.Center;
+                var scaleRange = new Vector2(0.5f, 1.5f);
+                pos += Main.rand.NextVector2Circular(16, 16);
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = pos,
+                    velocity = vel,
+                    innerColor = Color.OrangeRed.ToVector4(),
+                    outerColor =  Color.DarkRed.ToVector4(),
+                    scale = new Vector2(Main.rand.NextFloat(scaleRange.X, scaleRange.Y)),
+                    timeLeft = Main.rand.Next(30, 55)
+                });
             }
-            if (Main.rand.NextBool(3))
-            {
-                LegacyParticle.NewParticle<EmberParticle>(player.position + new Vector2(Main.rand.Next(0, player.width), Main.rand.Next(0, player.height)), -Vector2.UnitY.RotatedByRandom(1.5f), Color.OrangeRed, Main.rand.NextFloat(0.9f, 1.5f));
-            }
+
         }
     }
     public class BeastRage : ModItem
