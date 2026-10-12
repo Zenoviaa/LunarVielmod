@@ -31,6 +31,7 @@ namespace Stellamod
             rect.Location += new Point(-paddingX / 2, -paddingY / 2);
             return rect;
         }
+
         /// <summary>
         /// Linearly moves between points based on a distance traveled variable.
         /// </summary>

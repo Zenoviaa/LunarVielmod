@@ -1,15 +1,12 @@
-﻿using Microsoft.Xna.Framework.Input;
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Content.Dusts;
-using Stellamod.Core.Camera;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Projectiles.Swords;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -47,7 +44,7 @@ namespace Stellamod
         public int DucanBCooldown = 0;
         public bool Daedstruck;
         public int DaedstruckBCooldown = 1;
- 
+
         //----------------------------------------- Pikmin stuff
 
         public int OnionDamage = 0;
@@ -328,7 +325,7 @@ namespace Stellamod
             DetonationRune = false;
             CorsageRune = false;
             StealthRune = false;
-          
+
             RadiantBomb = false;
             GIBomb = false;
 
@@ -395,7 +392,7 @@ namespace Stellamod
         {
 
 
-     
+
             if (Aurorean >= 0.5f)
             {
                 AuroreanBool = true;
