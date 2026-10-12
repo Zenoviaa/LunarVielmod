@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 public class GrassySlingshot : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.GrassySlingshot.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -49,6 +50,7 @@ public class GrassySlingshot : ModItem
 
 public class SlingshotBall : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.SlingshotBall.KEY;
     ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
@@ -128,6 +130,7 @@ public class SlingshotBall : ModProjectile
 }
 public class GrassySlingshotHeld : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.GrassySlingshotHeld.KEY;
     Player Owner => Main.player[Projectile.owner];
     ref float Timer => ref Projectile.ai[0];
     ref float KillMe => ref Projectile.ai[1];

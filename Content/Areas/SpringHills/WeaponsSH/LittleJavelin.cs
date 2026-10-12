@@ -15,6 +15,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
     public class LittleJavelin : ModItem
     {
+        public override string Texture => AssetReferences.Assets.Textures.Item.LittleJavelin.KEY;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -31,6 +32,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
     public class LittleJavelinThrow : ModProjectile
     {
+        public override string Texture => AssetReferences.Assets.Textures.Projectile.LittleJavelinThrow.KEY;
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {

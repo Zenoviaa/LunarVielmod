@@ -15,6 +15,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class FlaskuserBlade : BaseSwingItemV2
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.FlaskuserBlade.KEY;
     public override void SetDefaults2()
     {
         base.SetDefaults2();
@@ -202,6 +203,7 @@ public class FlaskuserBladeSlash : BaseSwingProjectileV2
 
 public class LittleFlask : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.LittleFlask.KEY;
     Player Owner => Main.player[Projectile.owner];
     ref float Timer => ref Projectile.ai[0];
     public override void SetDefaults()

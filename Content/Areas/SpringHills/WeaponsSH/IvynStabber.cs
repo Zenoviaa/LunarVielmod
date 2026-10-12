@@ -1,15 +1,11 @@
-﻿using Microsoft.Xna.Framework.Input;
-using Stellamod.Common;
+﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
-using Stellamod.Common.Shaders;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Core;
 using Stellamod.Core.Astar;
 using Stellamod.Core.Bases;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Items;
-using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -20,6 +16,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class SongofIvyn : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.SongofIvyn.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -77,7 +74,7 @@ public class IvynStabber : AbstractBellSummon
     float MaxJumpSpeed => 7;
     float RunSpeed => 4 * ExtraMath.Osc(0.8F, 1F, speed: 0, Projectile.minionPos) + _extraSpeed;
     float JumpTime => 23;
-  
+
     public override string Texture => TextureRegistry.EmptyTexture;
 
 
@@ -164,7 +161,7 @@ public class IvynStabber : AbstractBellSummon
                 break;
             case AIState.JumpToTarget:
                 AI_JumpToTarget();
-      
+
                 break;
             case AIState.FlyHome:
                 AI_FlyHome();
@@ -181,7 +178,7 @@ public class IvynStabber : AbstractBellSummon
     void ChaseTargetIfOneFound()
     {
         SearchForNewTarget();
-        if(_targetNpc != -1)
+        if (_targetNpc != -1)
         {
             SwitchState(AIState.FindTarget);
         }
@@ -195,7 +192,7 @@ public class IvynStabber : AbstractBellSummon
         if (Timer >= 30)
             ChaseTargetIfOneFound();
         var sqrDist = Vector2.DistanceSquared(Projectile.Center, Owner.Center);
-        if(sqrDist > 64 * 64)
+        if (sqrDist > 64 * 64)
         {
             SwitchState(AIState.GoHome);
         }
@@ -238,10 +235,10 @@ public class IvynStabber : AbstractBellSummon
         poAroundPlayer.X += ExtraMath.Osc(-24, 24, speed: 0, Projectile.minionPos);
         PathfindWalkTo(poAroundPlayer);
         HandleWalkingAnimation();
-        if(Timer >= 30)
+        if (Timer >= 30)
             ChaseTargetIfOneFound();
         var distSqr = Vector2.DistanceSquared(Projectile.Center, poAroundPlayer);
-        if(distSqr < 32 * 32)
+        if (distSqr < 32 * 32)
         {
             SwitchState(AIState.Idle);
         }
@@ -255,7 +252,7 @@ public class IvynStabber : AbstractBellSummon
         PathfindWalkTo(Target.Center);
         HandleWalkingAnimation();
         var distSqr = Vector2.DistanceSquared(Projectile.Center, Target.Center);
-        if(distSqr <= JUMP_RANGE && Timer >= 20)
+        if (distSqr <= JUMP_RANGE && Timer >= 20)
         {
             SwitchState(AIState.JumpToTarget);
         }
@@ -264,7 +261,7 @@ public class IvynStabber : AbstractBellSummon
     void AI_JumpToTarget()
     {
         Timer++;
-        if(AttackCycle == 0 && IsGrounded())
+        if (AttackCycle == 0 && IsGrounded())
         {
             Projectile.velocity = MoonUtils.VelocityTo(Projectile, Target, 9);
             AttackCycle++;
@@ -306,7 +303,7 @@ public class IvynStabber : AbstractBellSummon
         drawer.worldPosition.Y -= 12;
         spriteBatch.Draw(drawer);
     }
-    
+
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);

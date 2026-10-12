@@ -15,6 +15,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
     public class WoodenSaber : BaseSwingItemV2
     {
+        public override string Texture => AssetReferences.Assets.Textures.Item.WoodenSaber.KEY;
         public override void SetDefaults2()
         {
             base.SetDefaults2();

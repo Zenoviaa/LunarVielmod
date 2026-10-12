@@ -7,7 +7,6 @@ using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,12 +14,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class FlyingLeavesTome : AbstractMagicTome
 {
-    public override void SetStaticDefaults()
-    {
-        // DisplayName.SetDefault("Void's Grasp");
-        CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-    }
-
+    public override string Texture => AssetReferences.Assets.Textures.Item.FlyingLeavesTome.KEY;
     public override void SetDefaults2()
     {
         base.SetDefaults2();
@@ -61,6 +55,7 @@ public class FlyingLeavesTome : AbstractMagicTome
 
 public class FlyingLeaf : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.FlyingLeaf.KEY;
     private Asset<Texture2D> _outlineTextureAsset;
     private Asset<Texture2D> _whiteTextureAsset;
     private ref float Timer => ref Projectile.ai[0];

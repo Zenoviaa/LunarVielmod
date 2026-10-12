@@ -19,6 +19,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class PerfectionStaff : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.PerfectionStaff.KEY;
     private int _dir;
     public override void SetDefaults()
     {
@@ -72,6 +73,7 @@ public class PerfectionStaff : ModItem
 
 public class PerfectionProj : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.PerfectionProj.KEY;
     private NPC _target;
     private Vector2 _endPoint;
     private Vector2 _controlPoint1;

@@ -17,7 +17,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
     // https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod
     public class WarriorsGrace : BaseSwingItemV2
     {
-        // The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.Stellamod.hjson' file.
+        public override string Texture => AssetReferences.Assets.Textures.Item.WarriorsGrace.KEY;
         public override void SetDefaults2()
         {
             base.SetDefaults2();

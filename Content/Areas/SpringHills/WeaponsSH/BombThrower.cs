@@ -18,6 +18,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class BombThrower : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.BombThrower.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -275,6 +276,7 @@ public class ThrowingBombBigBoom : ThrowingBombBoom
 
 public class ThrowingBombBoom : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.ThrowingBombBoom.KEY;
     protected ref float Timer => ref Projectile.ai[0];
 
     public override void SetDefaults()
@@ -329,6 +331,7 @@ public class ThrowingBombBoom : ModProjectile
 }
 public class ThrowingBomb : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.ThrowingBomb.KEY;
     bool _resized;
     float Gravity => 0.3f;
     ref float DetonationTime => ref Projectile.ai[0];
@@ -449,6 +452,7 @@ public class ThrowingBomb : ModProjectile
 
 public class ThrowingBigBomb : ThrowingBomb
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.ThrowingBigBomb.KEY;
     public override Vector2 StringOffset => new Vector2(-16, -40);
     public override void OnKill(int timeLeft)
     {

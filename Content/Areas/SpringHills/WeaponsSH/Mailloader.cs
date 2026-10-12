@@ -16,6 +16,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 public class Mailloader : BaseGun
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.Mailloader.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -79,6 +80,7 @@ public class Mailloader : BaseGun
 
 public class Letterbomb : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.Letterbomb.KEY;
     private ref float Timer => ref Projectile.ai[0];
     private bool Bounced
     {
@@ -328,6 +330,7 @@ public class Mailboom : ModProjectile
 }
 public class Mailbomb : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.Mailbomb.KEY;
     private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {

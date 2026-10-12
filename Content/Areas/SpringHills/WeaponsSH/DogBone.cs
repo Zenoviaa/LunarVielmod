@@ -21,6 +21,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class DogBone : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.DogBone.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -759,6 +760,7 @@ public class Cupcake : AbstractBellSummon
 
 public class GuardBite : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.GuardBite.KEY;
     ref float Timer => ref Projectile.ai[0];
     float Time => 15;
     public override void SetStaticDefaults()

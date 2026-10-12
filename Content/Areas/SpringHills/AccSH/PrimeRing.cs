@@ -1,7 +1,5 @@
 ﻿using Stellamod.Items.Accessories.Players;
 using Terraria;
-using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.AccSH;
@@ -16,6 +14,6 @@ public class PrimeRing : ModItem
 
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
+        player.MaxStamina += 1;
     }
 }

@@ -22,6 +22,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class ButterflyArtifact : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.ButterflyArtifact.KEY;
     private int _dir;
     public override void SetDefaults()
     {
@@ -96,6 +97,7 @@ public class ButterflyArtifact : ModItem
 
 public class MagicalButterfly : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.MagicalButterfly.KEY;
     private Vector2 _initialVelocity;
     private Asset<Texture2D> _outlineTextureAsset;
     private Asset<Texture2D> _whiteTextureAsset;

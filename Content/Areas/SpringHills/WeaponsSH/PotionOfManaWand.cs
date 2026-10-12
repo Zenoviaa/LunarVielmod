@@ -19,6 +19,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class PotionOfManaWand : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.PotionOfManaWand.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -37,6 +38,7 @@ public class PotionOfManaWand : ModItem
 
 public class ManaWandMinionProj : AbstractBellSummon
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.ManaWandMinionProj.KEY;
     private ref float Heart => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {

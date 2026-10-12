@@ -15,6 +15,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class JewelsBow : BaseCrossbowItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.JewelsBow.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -40,6 +41,7 @@ public class JewelsBow : BaseCrossbowItem
 
 public class JewelShot : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.JewelShot.KEY;
     private Player Owner => Main.player[Projectile.owner];
     private ref float Timer => ref Projectile.ai[0];
     private ref float BounceCount => ref Projectile.ai[1];

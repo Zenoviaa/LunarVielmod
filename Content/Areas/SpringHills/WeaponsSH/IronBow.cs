@@ -8,6 +8,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
     public class IronBow : BaseCrossbowItem
     {
+        public override string Texture => AssetReferences.Assets.Textures.Item.IronBow.KEY;
         public override void SetDefaults()
         {
             base.SetDefaults();

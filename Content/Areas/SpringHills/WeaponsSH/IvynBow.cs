@@ -1,18 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Common;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
+
 public class IvynBow : BaseCrossbowItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.IvynBow.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -42,6 +41,7 @@ public class IvynBow : BaseCrossbowItem
 
 public class LeafShot : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.LeafShot.KEY;
     private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
@@ -56,10 +56,8 @@ public class LeafShot : ModProjectile
         base.SetDefaults();
         Projectile.width = 8;
         Projectile.height = 8;
-        Projectile.penetrate = -1;
         Projectile.friendly = true;
-        Projectile.usesLocalNPCImmunity = true;
-        Projectile.localNPCHitCooldown = 20;
+        Projectile.LocalPiercingImmunityTime = 20;
         Projectile.tileCollide = true;
         Projectile.ignoreWater = true;
     }
@@ -93,7 +91,7 @@ public class LeafShot : ModProjectile
         for (int t = 0; t < trailLength; t++)
         {
             float l = trailLength;
-            float interpolant = (float)t / l;
+            float interpolant = t / l;
             Vector2 oldPos = Projectile.oldPos[t];
             oldPos -= Main.screenPosition;
             oldPos += Projectile.Size / 2f;

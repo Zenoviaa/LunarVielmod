@@ -15,7 +15,8 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class Jiisword : BaseSwingItemV2
 {
-    // The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.Stellamod.hjson' file.
+
+    public override string Texture => AssetReferences.Assets.Textures.Item.Jiisword.KEY;
     public override void SetDefaults2()
     {
         base.SetDefaults2();
@@ -189,7 +190,7 @@ public class JiiswordStaminaSlash : BaseSwingProjectileV2
 
 public class JiiswordBomb : ScarletProjectile
 {
-
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.JiiswordBomb.KEY;
     private ref float Timer => ref Projectile.ai[0];
     public override void SetDefaults()
     {

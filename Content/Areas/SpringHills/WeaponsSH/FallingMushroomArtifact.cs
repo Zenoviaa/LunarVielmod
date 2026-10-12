@@ -6,7 +6,6 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using System;
@@ -20,6 +19,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
 public class FallingMushroomArtifact : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.FallingMushroomArtifact.KEY;
     private int _dir;
     public override void SetDefaults()
     {
@@ -152,6 +152,7 @@ public class FallingMushroomCloud : ModProjectile
 }
 public class FallingMushroom : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.FallingMushroom.KEY;
     private Asset<Texture2D> _outlineTextureAsset;
     private enum AIState
     {

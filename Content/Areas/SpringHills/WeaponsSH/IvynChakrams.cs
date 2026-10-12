@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 public class IvynChakrams : BaseSwingItemV2
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.IvynChakrams.KEY;
     public override void SetDefaults2()
     {
         base.SetDefaults2();
@@ -35,6 +36,7 @@ public class IvynChakrams : BaseSwingItemV2
 
 public class IvynSpike : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.IvynSpike.KEY;
     float Gravity => 0.35f;
     ref float Timer => ref Projectile.ai[0];
     bool IsGrounded

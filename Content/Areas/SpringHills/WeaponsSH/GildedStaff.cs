@@ -15,6 +15,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
     public class GildedStaff : ModItem
     {
+        public override string Texture => AssetReferences.Assets.Textures.Item.GildedStaff.KEY;
         public override void SetDefaults()
         {
             Item.DefaultToArtifact();
@@ -63,7 +64,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
         private ref float Timer => ref Projectile.ai[1];
         private ref float ChargeProgress => ref Projectile.ai[2];
-        public override string Texture => this.PathHere() + "/GildedStaff";
+        public override string Texture => AssetReferences.Assets.Textures.Item.GildedStaff.KEY;
         private Player Owner => Main.player[Projectile.owner];
         private Vector2 EndPoint => Projectile.Center + Projectile.velocity * 64;
         public override void SetDefaults()

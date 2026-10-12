@@ -3,11 +3,6 @@ using Stellamod.Common.Particles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -15,8 +10,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 
-public class IvynslicingNecronomicon :ModItem
+public class IvynslicingNecronomicon : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.IvynslicingNecronomicon.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -34,6 +30,7 @@ public class IvynslicingNecronomicon :ModItem
 
 public class Ivynslicer : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.Ivynslicer.KEY;
     ref float Timer => ref Projectile.ai[0];
     ref float DeathTimer => ref Projectile.ai[1];
     ref float Speed => ref Projectile.ai[2];
@@ -58,7 +55,7 @@ public class Ivynslicer : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1 && this.OwnedByLocalClient())
+        if (Timer == 1 && this.OwnedByLocalClient())
         {
             Projectile.velocity.X *= 0.05f;
             Projectile.velocity.Y = -15 * Main.rand.NextFloat(0.6f, 1f);
@@ -67,22 +64,22 @@ public class Ivynslicer : ModProjectile
         }
 
         Projectile.rotation += Projectile.velocity.Length() * 0.04f;
-        if(Timer == 15)
+        if (Timer == 15)
         {
             var useSound = SoundID.Item43 with { PitchVariance = 0.4f, Volume = 0.1f };
             SoundEngine.PlaySound(useSound, Projectile.position);
         }
 
-        if(Timer >= 15)
+        if (Timer >= 15)
         {
             var npc = MoonUtils.TargetClosestEnemy(Projectile.Center, 1024);
-            if(npc != null)
+            if (npc != null)
             {
                 var vel = (npc.Center - Projectile.Center);
                 vel = vel.SafeNormalize(Vector2.Zero);
                 vel *= Speed;
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, vel, 0.045f);
-                if(Speed < 30)
+                if (Speed < 30)
                     Speed += 0.65f;
             }
         }
@@ -94,7 +91,7 @@ public class Ivynslicer : ModProjectile
             var vel = Main.rand.NextVector2Circular(2, 2);
             Dust.NewDustPerfect(pos, DustID.Dirt, vel, Scale: Main.rand.NextFloat(0.75f, 0.95f));
         }
-      
+
         if (DeathTimer > 0)
             DeathTimer++;
         if (DeathTimer >= 30)
@@ -125,7 +122,7 @@ public class Ivynslicer : ModProjectile
     {
         base.OnHitNPC(target, hit, damageDone);
         DeathTimer++;
-        for(var i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
         {
             var vel = (Projectile.Center - target.Center);
             vel = vel.SafeNormalize(Vector2.Zero);

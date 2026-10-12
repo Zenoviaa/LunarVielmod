@@ -5,26 +5,26 @@ using Stellamod.Items;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
+namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
+
+public class MushyCard : BaseIgniterCard
 {
-    public class MushyCard : BaseIgniterCard
+    public override string Texture => AssetReferences.Assets.Textures.Item.MushyCard.KEY;
+    public override void SetDefaults()
     {
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            Item.damage = 6;
-        }
+        base.SetDefaults();
+        Item.damage = 6;
+    }
 
-        public override int GetPowderSlotCount()
-        {
-            return 1;
-        }
+    public override int GetPowderSlotCount()
+    {
+        return 1;
+    }
 
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankCard>(),
-                material: ModContent.ItemType<Mushroom>());
-        }
+    public override void AddRecipes()
+    {
+        base.AddRecipes();
+        this.RegisterBrew(mold: ModContent.ItemType<BlankCard>(),
+            material: ModContent.ItemType<Mushroom>());
     }
 }
