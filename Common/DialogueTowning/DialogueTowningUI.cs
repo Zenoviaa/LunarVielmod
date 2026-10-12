@@ -177,7 +177,7 @@ public class DialogueTowningUI : UIPanel
         spriteBatch.EndOut(out var oldParameters);
         var box = DialogueTownRenderer.RenderSpeechWindow(TalkingParameters with
         {
-            size = new Vector2(1600, 252)
+            size = new Vector2(1800, 252+64)
         });
 
         spriteBatch.Begin(oldParameters);
@@ -186,8 +186,11 @@ public class DialogueTowningUI : UIPanel
         drawer.worldPosition -= new Vector2(64);
         drawer.worldPosition += DrawPos;
         drawer.worldPosition += Offset;
+        drawer.worldPosition.X += 32;
+        drawer.worldPosition += new Vector2(32);
         drawer.color = Color.White;
         drawer.color *= Alpha;
+
         spriteBatch.Draw(drawer);
     }
 

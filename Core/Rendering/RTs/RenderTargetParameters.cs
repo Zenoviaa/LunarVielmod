@@ -25,6 +25,18 @@ public static RenderTargetParameters FromRenderTarget(RenderTarget2D target)
     {
         return new RenderTargetParameters(target.Width, target.Height, target.LevelCount != 0, target.Format, target.DepthStencilFormat, target.RenderTargetUsage);
     }
+    public static Func<RenderTargetParameters> SizeFunc(int width, int height)
+    {
+        var func = () =>
+        {
+            return DefaultScreenTarget with
+            {
+                Width = width,
+                Height = height
+            };
+        };
+        return func;
+    }
     public static Func<RenderTargetParameters> DownsizedFunc(int downSamples)
     {
         var func = () =>

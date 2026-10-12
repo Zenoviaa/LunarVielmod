@@ -11,6 +11,14 @@ namespace Stellamod.Core.Rendering.RTs;
 public class RenderTargets : ModSystem
 {
     public static int TargetCounts;
+    static int DialogueBoxWidth => 1800 + 64;
+    static int DialogueBoxHeight => 252 + 64;
+    public static readonly RenderTargetPool DialogueBoxTarget = new RenderTargetPool(RenderTargetParameters.SizeFunc(DialogueBoxWidth, DialogueBoxHeight));
+    public static readonly RenderTargetPool HalfDialogueBoxTarget = new RenderTargetPool(RenderTargetParameters.SizeFunc(DialogueBoxWidth / 2, DialogueBoxHeight / 2));
+    public static readonly RenderTargetPool QuarterDialogueBoxTarget = new RenderTargetPool(RenderTargetParameters.SizeFunc(DialogueBoxWidth / 4, DialogueBoxHeight / 4));
+
+
+
     /// <summary>
     /// A render target that matches the screen size
     /// </summary>
@@ -79,7 +87,10 @@ public class RenderTargets : ModSystem
         EigthScreenTarget,
         WaterTarget,
         HalfWaterTargets,
-        SpeechBubbleTarget
+        SpeechBubbleTarget,
+        DialogueBoxTarget,
+        HalfDialogueBoxTarget,
+        QuarterDialogueBoxTarget
     };
 
     /// <summary>

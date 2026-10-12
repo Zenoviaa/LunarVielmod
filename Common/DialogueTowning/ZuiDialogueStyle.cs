@@ -34,30 +34,30 @@ public struct ZuiDialogueStyle : IBoxStyle
     {
 
     }
-    private void DrawV1(RenderTargetHandle output, SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad)
+    private void DrawV1(RenderTargetHandle output, SpriteBatch spriteBatch, Rectangle boxRect)
     {
         Color outlineColor = new Color(179, 45, 11);
         outlineColor = Color.Lerp(outlineColor, Color.Black, 0.3f);
 
-        using var target1 = RT.Context(RenderTargets.ScreenTarget);
-        using var target2 = RT.Context(RenderTargets.ScreenTarget);
-        using var pixelTarget = RT.Context(RenderTargets.QuarterScreenTarget);
+        using var target1 = RT.Context(RenderTargets.DialogueBoxTarget);
+        using var target2 = RT.Context(RenderTargets.DialogueBoxTarget);
+        using var pixelTarget = RT.Context(RenderTargets.QuarterDialogueBoxTarget);
         //Here we can assume we're already drawing to the box render target
         //so let's just do whatever we awnt
         //gonna draw a big glow ball to test
-        var topLeft = quad.vertices[0].Position.XY();
-        var topRight = quad.vertices[1].Position.XY();
-        var bottomRight = quad.vertices[3].Position.XY();
+        var topLeft = boxRect.TopLeft();
+        var topRight = boxRect.TopRight();
+        var bottomRight = boxRect.BottomRight();
         var rect = ExtraMath.CreateRectangle(topLeft, bottomRight);
 
-        rect.Width += 242;
-        rect.Height += 48;
-        rect.Y += 2;
-        rect = rect.CenterPad(-4);
+        //rect.Width += 242;
+       // rect.Height += 48;
+       // rect.Y += 2;
+    //    rect = rect.CenterPad(-4);
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.JaggedWaves.Asset, quad.vertices[1].Position.XY());
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.JaggedWaves.Asset, topRight);
         drawer.worldPosition = topRight;
-        drawer.worldPosition.X += 242;
+       // drawer.worldPosition.X += 242;
         drawer.worldPosition += new Vector2(-1, 1).SafeNormalize(Vector2.Zero) * 96;
         drawer.worldPosition += Main.screenPosition;
         drawer.VerticalFrame(0, 2);
@@ -258,9 +258,9 @@ public struct ZuiDialogueStyle : IBoxStyle
         }
     }
 
-    public void Render(RenderTargetHandle output, SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad)
+    public void Render(RenderTargetHandle output, SpriteBatch spriteBatch, Rectangle rectangle)
     {
-        DrawV1(output, spriteBatch, quad);
+        DrawV1(output, spriteBatch, rectangle);
     }
 
     public void RenderMini(RenderTargetHandle output, SpriteBatch spriteBatch, Quad<VertexPositionColorTexture> quad)
