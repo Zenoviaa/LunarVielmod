@@ -9,6 +9,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
 {
     public class Stump : ModProjectile
     {
+        public override string Texture => AssetReferences.Assets.Textures.Projectile.Stump.KEY;
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -52,6 +53,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
 
     public class HikersBackpack : ModItem
     {
+        public override string Texture => AssetReferences.Assets.Textures.Item.HikersBackpack.KEY;
         public override void SetDefaults()
         {
             Item.width = 24;

@@ -4,34 +4,18 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.SpringHills.AccSH
+namespace Stellamod.Content.Areas.SpringHills.AccSH;
+
+public class PrimeRing : ModItem
 {
-    public class PrimeRing : ModItem
+    public override string Texture => AssetReferences.Assets.Textures.Item.PrimeRing.KEY;
+    public override void SetDefaults()
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Book of Wooden Illusion");
-            /* Tooltip.SetDefault("Increased Regeneration!" +
-				"\n +3% damage" +
-				"\n Increases crit strike change by 5% "); */
+        Item.DefaultToAccessory();
+    }
 
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
-
-        public override void SetDefaults()
-        {
-            Item.width = 24;
-            Item.height = 28;
-            Item.value = Item.sellPrice(silver: 25);
-            Item.rare = ItemRarityID.LightPurple;
-            Item.accessory = true;
-
-
-        }
-
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
-            player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
-        }
+    public override void UpdateAccessory(Player player, bool hideVisual)
+    {
+        player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
     }
 }

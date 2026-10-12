@@ -6,6 +6,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH;
 
 public class HeartPendant : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.HeartPendant.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();

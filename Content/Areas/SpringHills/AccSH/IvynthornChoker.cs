@@ -13,6 +13,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
 {
     public class IvynthornChoker : ModItem
     {
+        public override string Texture => AssetReferences.Assets.Textures.Item.IvynthornChoker.KEY;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -93,6 +94,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
 
     public class IvynthornChokerVine : ModProjectile
     {
+        public override string Texture => AssetReferences.Assets.Textures.Projectile.IvynthornChokerVine.KEY;
         private int LifeTime => 45;
         private ref float Timer => ref Projectile.ai[0];
         private ref float State => ref Projectile.ai[1];

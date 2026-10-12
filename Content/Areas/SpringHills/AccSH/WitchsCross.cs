@@ -25,6 +25,7 @@ public class WitchsCrossPlayer : ModPlayer
 
 public class WitchsCross : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.WitchsCross.KEY;
     public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
     {
         if (Main.rand.NextBool(32) && !Main.gameInactive)

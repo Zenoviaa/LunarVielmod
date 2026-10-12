@@ -12,12 +12,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH;
 
 public class IvythornShuriken : ModItem
 {
-    public override void SetStaticDefaults()
-    {
-        // DisplayName.SetDefault("Assassin's Shuriken");
-        CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-    }
-
+    public override string Texture => AssetReferences.Assets.Textures.Item.IvythornShuriken.KEY;
     public override void SetDefaults()
     {
         Item.DefaultToAccessory();
@@ -92,6 +87,7 @@ public class IvythornShurikenPlayer : ModPlayer
 }
 public class IvythornShurikenProj : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.IvythornShurikenProj.KEY;
     private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {

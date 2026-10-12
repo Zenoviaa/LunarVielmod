@@ -21,6 +21,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
 {
     public class IvynShield : ModItem
     {
+        public override string Texture => AssetReferences.Assets.Textures.Item.IvynShield.KEY;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -43,6 +44,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
 
     public class IvynShieldHeld : AbstractShieldProjectile
     {
+        public override string Texture => AssetReferences.Assets.Textures.Projectile.IvynShieldHeld.KEY;
         public override void OnBlockMovement(NPC npc)
         {
             base.OnBlockMovement(npc);
@@ -61,7 +63,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
     public class IvynVinesWrap : ModProjectile
     {
         private int Lifetime => 25;
-        public override string Texture => ModContent.GetInstance<IvynthornChokerVine>().Texture;
+        public override string Texture => AssetReferences.Assets.Textures.Projectile.IvynthornChokerVine.KEY;
         private NPC Parent => Main.npc[(int)Projectile.ai[0]];
         private ref float Timer => ref Projectile.ai[1];
         private ref float State => ref Projectile.ai[2];
@@ -158,6 +160,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
     }
     public class IvynVines : ModBuff
     {
+        public override string Texture => AssetReferences.Assets.Textures.Buffs.IvynVines.KEY;
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;

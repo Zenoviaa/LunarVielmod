@@ -9,6 +9,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH;
 
 public class WoodlandTalisman : AbstractDashItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.WoodlandTalisman.KEY;
     private float _timer;
     public override void BeginDash(Player player)
     {

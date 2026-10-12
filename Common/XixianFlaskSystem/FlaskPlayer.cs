@@ -86,6 +86,8 @@ namespace Stellamod.Common.XixianFlaskSystem
         }
         public void GrantAllProgress()
         {
+            unlockedFlask = true;
+            openedFlask = true;
             _unlockedInsources.Clear();
             IEnumerable<ModItem> insources = ModContent.GetContent<InsourceItem>();
             foreach (var insource in insources)

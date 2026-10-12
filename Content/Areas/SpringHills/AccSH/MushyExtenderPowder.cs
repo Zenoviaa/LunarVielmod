@@ -14,6 +14,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH;
 
 public class MushyExtenderPowder : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.MushyExtenderPowder.KEY;
     public override void SetDefaults()
     {
         Item.DefaultToAccessory();

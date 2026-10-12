@@ -24,7 +24,7 @@ public class LeafGliderDrawLayer : PlayerDrawLayer
         if (holdingOutTimer <= 0)
             return;
 
-        Asset<Texture2D> wingsTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/LeafGlider_Hold");
+        Asset<Texture2D> wingsTextureAsset = AssetReferences.Assets.Textures.Item.LeafGlider_Hold.Asset;
         float ease = EasingFunction.InOutSine(holdingOutTimer / 30f);
         Color wingColor = Color.White;
         float rotation = ExtraMath.Osc(-0.05f, 0.05f);
@@ -96,6 +96,7 @@ public class LeafGliderPlayer : ModPlayer
 
 public class LeafGlider : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Item.LeafGlider.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();

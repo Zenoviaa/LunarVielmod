@@ -7,7 +7,8 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH;
 
 public class StoneGolett : ModItem
 {
-    // Names and descriptions of all ExamplePetX classes are defined using .hjson files in the Localization folder
+
+    public override string Texture => AssetReferences.Assets.Textures.Item.StoneGolett.KEY;
     public override void SetDefaults()
     {
         Item.CloneDefaults(ItemID.ZephyrFish); // Copy the Defaults of the Zephyr Fish Item.
@@ -27,6 +28,7 @@ public class StoneGolett : ModItem
 }
 public class StoneGolettPet : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.StoneGolettPet.KEY;
     public override void SetStaticDefaults()
     {
         Main.projFrames[Type] = 1;
@@ -73,6 +75,7 @@ public class StoneGolettPet : ModProjectile
 }
 public class StoneGolettPetBuff : ModBuff
 {
+    public override string Texture => AssetReferences.Assets.Textures.Buffs.StoneGolettPetBuff.KEY;
     public override void SetStaticDefaults()
     {
         Main.buffNoTimeDisplay[Type] = true;
