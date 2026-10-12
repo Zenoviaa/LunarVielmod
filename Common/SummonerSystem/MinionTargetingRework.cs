@@ -80,22 +80,12 @@ namespace Stellamod.Common.SummonerSystem
 
             if (NPC.HasBuff<RuneHealing>())
             {
-                float healingTime = 30f;
-                float totalHealingAMount = NPC.lifeMax * 0.5f;
-                float amountToHealPerTick = totalHealingAMount / healingTime;
-                Lifetime += amountToHealPerTick;
-                _totalAmountHealed += amountToHealPerTick;
-                if (_totalAmountHealed >= 100)
-                {
-                    NPC.HealEffect(100);
-                    _totalAmountHealed -= 100;
-                }
+                var healAmount = NPC.lifeMax * 0.5f;
+                Lifetime += healAmount;
+                NPC.HealEffect((int)healAmount);
+                NPC.DelBuff(NPC.FindBuffIndex(ModContent.BuffType<RuneHealing>()));
             }
-            else if (_totalAmountHealed > 0)
-            {
-                NPC.HealEffect((int)_totalAmountHealed);
-                _totalAmountHealed = 0;
-            }
+
 
             if (NPC.HasBuff<SpectralMinion>())
                 KillMyselfTimer = 0;

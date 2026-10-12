@@ -1,13 +1,18 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 
 using Stellamod.Core.Bases;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using System;
+using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -35,255 +40,155 @@ public class MushroomStave : ModItem
     }
 }
 
-public class MushroomStaveMinionProj : AbstractBellSummon
+public class MushroomStaveMinionProj : AbstractBellSummon,
+    IDrawToRenderTarget
 {
+    Targeter _targeter;
+   enum AIState : byte
+    {
+        Idle,
+        SporeRelease
+    }
+    ref float Timer => ref Projectile.ai[0];
+    AIState State
+    {
+        get => (AIState)Projectile.ai[1];
+        set => Projectile.ai[1] = (float)value;
+    }
+    ref float GlobalTimer => ref Projectile.ai[2];
     public override string Texture => AssetReferences.Assets.Textures.Projectile.MushroomStaveMinionProj.KEY;
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        _targeter.NetSend(writer);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _targeter.NetReceive(reader);
+    }
     public override void SetStaticDefaults()
     {
-        // DisplayName.SetDefault("Jelly Minion");
-        // Sets the amount of frames this minion has on its spritesheet
-
-        // This is necessary for right-click targeting
-        ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-        ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-        ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        // These below are needed for a minion
-        // Denotes that this projectile is a pet or minion
-        Main.projPet[Projectile.type] = true;
-        // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-        ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-        // Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
-        ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+        Projectile.StaticDefaultToMinionProjectile();
+        Main.projFrames[Type] = 5;
     }
 
-    public sealed override void SetDefaults()
+    public override void SetDefaults()
     {
-        Projectile.width = 18;
-        Projectile.height = 28;
-        // Makes the minion go through tiles freely
+        Projectile.DefaultToMinionProjectile();
         Projectile.tileCollide = false;
-
-        // These below are needed for a minion weapon
-        // Only controls if it deals damage to enemies on contact (more on that later)
-        Projectile.friendly = true;
-        // Only determines the damage type
-        Projectile.minion = true;
-        // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-        Projectile.minionSlots = 1f;
-        // Needed so the minion doesn't despawn on collision with enemies or tiles
-        Projectile.penetrate = -1;
+        Projectile.light = 0.28f;
     }
 
-    // Here you can decide if your minion breaks things like grass or pots
-    public override bool? CanCutTiles()
-    {
-        return false;
-    }
-
-    // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-    public override bool MinionContactDamage()
-    {
-        return true;
-    }
-    public override void DrawSpectral(SpriteBatch spriteBatch)
-    {
-        Main.spriteBatch.End();
-        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-        for (int k = 0; k < Projectile.oldPos.Length; k++)
-        {
-            Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-            Color color = Projectile.GetAlpha(Color.Lerp(new Color(255, 136, 247), new Color(54, 64, 195), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
-            Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
-        }
-        Main.spriteBatch.End();
-        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        base.DrawSpectral(spriteBatch);
-    }
 
     public override void AI()
     {
         base.AI();
-        Player player = Main.player[Projectile.owner];
-        #region General behavior
-        Vector2 idlePosition = player.Center;
-        idlePosition.Y -= 1f; // Go up 48 coordinates (three tiles from the center of the player)
-
-        // If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-        // The index is projectile.minionPos
-        float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -player.direction;
-
-        // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-        // Teleport to player if distance is too big
-        Vector2 vectorToIdlePosition = idlePosition - Projectile.Center;
-        float distanceToIdlePosition = vectorToIdlePosition.Length();
-        if (Main.myPlayer == player.whoAmI && distanceToIdlePosition > 1000f)
+        //Hover above your head, while an enemy is nearby, charge up and release spores
+        switch (State)
         {
-            // Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-            // and then set netUpdate to true
-            Projectile.position = idlePosition;
-            Projectile.velocity *= 0.20f;
-            Projectile.netUpdate = true;
+            case AIState.Idle:
+                AI_Idle();
+                break;
+            case AIState.SporeRelease:
+                AI_SporeRelease();
+                break;
         }
-
-        // If your minion is flying, you want to do this independently of any conditions
-        float overlapVelocity = 0.04f;
-        for (int i = 0; i < Main.maxProjectiles; i++)
-        {
-            // Fix overlap with other minions
-            Projectile other = Main.projectile[i];
-            if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
-            {
-                if (Projectile.position.X < other.position.X) Projectile.velocity.X -= overlapVelocity;
-                else Projectile.velocity.X += overlapVelocity;
-
-                if (Projectile.position.Y < other.position.Y) Projectile.velocity.Y -= overlapVelocity;
-                else Projectile.velocity.Y += overlapVelocity;
-            }
-        }
-        #endregion
-
-        #region Find target
-        // Starting search distance
-        float distanceFromTarget = 900f;
-        Vector2 targetCenter = Projectile.position;
-        bool foundTarget = false;
-
-        // This code is required if your minion weapon has the targeting feature
-        if (player.HasMinionAttackTargetNPC)
-        {
-            NPC npc = Main.npc[player.MinionAttackTargetNPC];
-            float between = Vector2.Distance(npc.Center, Projectile.Center);
-            // Reasonable distance away so it doesn't target across multiple screens
-            if (between < 2000f)
-            {
-                distanceFromTarget = between;
-                targetCenter = npc.Center;
-                foundTarget = true;
-            }
-        }
-        if (!foundTarget)
-        {
-            // This code is required either way, used for finding a target
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC npc = Main.npc[i];
-                if (npc.CanBeChasedBy())
-                {
-                    float between = Vector2.Distance(npc.Center, Projectile.Center);
-                    bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-                    bool inRange = between < distanceFromTarget;
-                    bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-                    // Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-                    // The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-                    bool closeThroughWall = between < 100f;
-                    if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall))
-                    {
-                        distanceFromTarget = between;
-                        targetCenter = npc.Center;
-                        foundTarget = true;
-                    }
-                }
-            }
-        }
-
-        // friendly needs to be set to true so the minion can deal contact damage
-        // friendly needs to be set to false so it doesn't damage things like target dummies while idling
-        // Both things depend on if it has a target or not, so it's just one assignment here
-        // You don't need this assignment if your minion is shooting things instead of dealing contact damage
-        Projectile.friendly = foundTarget;
-        #endregion
-
-        #region Movement
-
-        // Default movement parameters (here for attacking)
-        float speed = 11f;
-        float inertia = 20f;
-        Vector2 targetCenterUP;
-        if (foundTarget)
-        {
-
-            targetCenterUP.Y = targetCenter.Y - 100;
-            targetCenterUP.X = targetCenter.X;
-            Vector2 Fdirection = targetCenterUP - Projectile.Center;
-            Fdirection.Normalize();
-            Projectile.ai[1]++;
-
-            if (Projectile.ai[1] >= 20)
-            {
-                var EntitySource = Projectile.GetSource_Death();
-                if (this.OwnedByLocalClient())
-                {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0,
-                        ModContent.ProjectileType<MushroomStaveMinionProg>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0);
-                }
-
-                Projectile.ai[1] = 0;
-            }
-
-            // Minion has a target: attack (here, fly towards the enemy)
-            if (distanceFromTarget > 100f)
-            {
-
-                Fdirection.Normalize();
-                Fdirection *= speed;
-                Projectile.velocity = (Projectile.velocity * (inertia - 1) + Fdirection) / inertia;
-            }
-        }
-        else
-        {
-            // Minion doesn't have a target: return to player and idle
-            if (distanceToIdlePosition > 600f)
-            {
-                // Speed up the minion if it's away from the player
-                speed = 30f;
-                inertia = 60f;
-            }
-            else
-            {
-                // Slow down the minion if closer to the player
-                speed = 4f;
-                inertia = 80f;
-            }
-            if (distanceToIdlePosition > 20f)
-            {
-                // The immediate range around the player (when it passively floats about)
-
-                // This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
-                vectorToIdlePosition.Normalize();
-                vectorToIdlePosition *= speed;
-                Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-            }
-            else if (Projectile.velocity == Vector2.Zero)
-            {
-                // If there is a case where it's not moving at all, give it a little "poke"
-                Projectile.velocity.X = -0.15f;
-                Projectile.velocity.Y = -0.05f;
-            }
-        }
-        #endregion
-
-        #region Animation and visuals
-        // So it will lean slightly towards the direction it's moving
         Projectile.rotation = Projectile.velocity.X * 0.05f;
+    }
+    
+    void SwitchState(AIState state)
+    {
+        Timer = 0;
+        State = state;
+    }
 
-        // This is a simple "loop through all frames from top to bottom" animation
-        int frameSpeed = 5;
-        Projectile.frameCounter++;
-        if (Projectile.frameCounter >= frameSpeed)
+    void AI_Idle()
+    {
+        GlobalTimer++;
+        var xOfffset = MathHelper.Lerp(-64, 64, ExtraMath.Osc(0f, 1f, speed: 0, Projectile.minionPos * 2));
+        xOfffset += MathHelper.Lerp(-32f, 32f, MathF.Sin(GlobalTimer * 0.025f) * 0.5f + 0.5f);
+        var targetPos = Owner.Center + new Vector2(0, -48) + new Vector2(xOfffset, 0);
+        MoonUtils.AI_FloatAbove(Projectile.Center, ref Projectile.velocity, targetPos);
+        MoonUtils.SearchForNewTargetByDistance(Projectile.Center, ref _targeter.targetNpc);
+        if (_targeter.HasValidTarget)
         {
-            Projectile.frameCounter = 0;
-            Projectile.frame++;
-            if (Projectile.frame >= Main.projFrames[Projectile.type])
+            Timer++;
+            if(Timer >= 30)
             {
-                Projectile.frame = 0;
+                SwitchState(AIState.SporeRelease);
             }
         }
+    }
+    void AI_SporeRelease()
+    {
+        Timer++;
+        Projectile.velocity *= 0.96f;
+        if(Timer == 20)
+        {
+            Projectile.frame =1;
+        }
+   
+        if(Timer == 40)
+        {
+            Projectile.frame = 2;
+        }
+        if(Timer == 60)
+        {
+            if (this.OwnedByLocalClient())
+            {
+                for (var i = 0; i < 3; i++)
+                {
+                    var firer = ProjFirer.From<MushroomStaveMinionProg>(Projectile);
+                    firer.velocity.X = Main.rand.NextFloat(-5f, 5f);
+                    firer.velocity.Y = Main.rand.NextFloat(-15f, -10f);
+                    firer.New();
+                }
+            }
 
-        // Some visuals here
-        Lighting.AddLight(Projectile.Center, Color.Pink.ToVector3() * 0.28f);
-        #endregion
+            var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center + new Vector2(0, -2), TriColorPalette.Fiery, new Vector2(5, 15f));
+            factory.particleCount *= 2;
+            ParticleUtils.CreateSwirlingDustCircle(factory);
+            for (var i = 0; i < 4; i++)
+            {
+                var pos = Projectile.Center + Main.rand.NextVector2Circular(48, 48);
+                Particles.RoughSmoke.Spawn(new()
+                {
+                    position = pos,
+                    timeLeft = 25,
+                    color = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(0f, 1f), Color.OrangeRed, Color.DarkRed, Color.Gold, Color.Red, Color.DarkOrange, Color.DarkGoldenrod),
+                    scale = Main.rand.NextFloat(0.8f, 1f),
+                    rotation = Main.rand.NextFloat(6f)
+                });
+            }
+
+            SoundStyle gasSound = new SoundStyle("Stellamod/Assets/Sounds/ExplosionGaseous");
+            gasSound.PitchVariance = 0.3f;
+            gasSound.Volume = 0.5f;
+            gasSound.Pitch = 0.75f;
+            SoundEngine.PlaySound(gasSound, Projectile.position);
+        }
+        if(Timer == 60)
+        {
+            Projectile.frame = 3;
+        }
+        if (Timer == 67)
+        {
+            Projectile.frame = 4;
+        }
+        if (Timer == 74)
+        {
+            Projectile.frame = 0;
+        }
+        if (Timer >= 100)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+
+    public void DrawToRenderTargets()
+    {
+
     }
 }
 
@@ -292,28 +197,27 @@ public class MushroomStaveMinionProg : ModProjectile
     public override string Texture => AssetReferences.Assets.Textures.Projectile.MushroomStaveMinionProg.KEY;
     public float VELXStart;
     private ref float VEL => ref Projectile.ai[0];
+    ref float Timer => ref Projectile.ai[2];
     public override void SetStaticDefaults()
     {
-        ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-        ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        Main.projFrames[Projectile.type] = 4;
+        Projectile.SetTrailCacheLength(8);
+        Main.projFrames[Projectile.type] = 1;
     }
 
     public override void SetDefaults()
     {
-        Projectile.width = 10;
-        Projectile.height = 10;
+        Projectile.width = Projectile.height = 10;
         Projectile.friendly = true;
-        Projectile.hostile = false;
-        Projectile.penetrate = 10;
-        Projectile.timeLeft = 900;
+        Projectile.light = 0.3f;
+        Projectile.LocalPiercingImmunityTime = 30;
+        Projectile.penetrate = 1;
+        Projectile.timeLeft = 200;
         Projectile.tileCollide = true;
-        Projectile.aiStyle = -1;
     }
 
     public override void OnKill(int timeLeft)
     {
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 16; i++)
         {
             int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkTorch, 0f, -2f, 0, default, 1.5f);
             Main.dust[num].noGravity = true;
@@ -327,36 +231,43 @@ public class MushroomStaveMinionProg : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        Main.spriteBatch.End();
-        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
         for (int k = 0; k < Projectile.oldPos.Length; k++)
         {
             Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
             Color color = Projectile.GetAlpha(Color.Lerp(new Color(255, 136, 247), new Color(54, 64, 195), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+            color *= 0.25f;
+            color.A = 0;
             Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
         }
-        Main.spriteBatch.End();
-        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        return true;
+        var drawer = Projectile.Drawer;
+        Main.spriteBatch.Draw(drawer);
+        return false;
     }
 
     public override void AI()
     {
+
+        Timer++;
         Projectile.rotation = Projectile.velocity.X * 0.1f;
         Projectile.ai[1] += 1f;
 
         Projectile.velocity.X += VEL;
-        Projectile.velocity.Y += 0.01f;
+        Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, 1.2f, 0.03f);
         if (Projectile.ai[1] >= 60)
         {
             if (Main.myPlayer == Projectile.owner)
             {
                 VEL = Main.rand.NextFloat(-0.06f, 0.06f);
                 Projectile.ai[1] = 0;
-
                 Projectile.netUpdate = true;
             }
+        }
+
+        var nearest = MoonUtils.TargetClosestEnemy(Projectile.Center, 1024);
+        if(nearest != null && Timer >= 30)
+        {
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, (nearest.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 7, 0.035f);
         }
     }
 }

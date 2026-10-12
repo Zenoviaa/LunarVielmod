@@ -61,8 +61,8 @@ IrradiatedCreeper2.DisplayName: Irradiated Creeper2
 Ivyaken.DisplayName: Ivyaken
 JacksonPollockMinion.DisplayName: Jackson Pollock Minion
 JellyMinion.DisplayName: Jelly Minion
-MushroomStaveMinion.DisplayName: Mushroom Stave Minion
-MushroomStaveMinionProg.DisplayName: Mushroom Stave Minion Prog
+MushroomStaveMinion.DisplayName: Magic Mushroom
+MushroomStaveMinionProg.DisplayName: MMagic Mushroom Spore
 PotOfGreedMinion.DisplayName: Pot Of Greed Minion
 SolMothMinion.DisplayName: Sol Moth Minion
 SwarmerMinion.DisplayName: Swarmer Minion
@@ -1214,7 +1214,7 @@ PegasusMinionStarProj.DisplayName: Pegasus Minion Star Proj
 PegasusMinionProj.DisplayName: Pegasus Minion Proj
 PegasusMinionLightningProj.DisplayName: Pegasus Minion Lightning Proj
 PegasusMinionFrostBombProj.DisplayName: Pegasus Minion Frost Bomb Proj
-MushroomStaveMinionProj.DisplayName: Mushroom Stave Minion Proj
+MushroomStaveMinionProj.DisplayName: Magic Mushroom
 ManaWandMinionProj.DisplayName: Living Mana Potion
 LifeWandMinionProj.DisplayName: Living Life Potion
 JellyMinionProj.DisplayName: Jelly Minion Proj
