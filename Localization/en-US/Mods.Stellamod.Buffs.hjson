@@ -1099,7 +1099,7 @@ RagingBeast: {
 }
 
 BeastInsourceBuff: {
-	DisplayName: Beast Insource Buff
+	DisplayName: Beastly!
 	Description: I'm a lil' angry, +10% damage until you get hit!
 }
 

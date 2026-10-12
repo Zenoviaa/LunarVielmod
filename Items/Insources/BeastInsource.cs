@@ -1,8 +1,12 @@
 ﻿using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
+
 
 namespace Stellamod.Items.Insources;
 public class BeastInsourcePlayer : ModPlayer
@@ -47,6 +51,12 @@ public class BeastInsourceBuff : ModBuff
         player.GetDamage(DamageClass.Generic) += 0.1f * berserkPlayer.stacks;
         if (berserkPlayer.stacks <= 0)
             player.DelBuff(buffIndex);
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, int buffIndex, BuffDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, buffIndex, drawParams);
+        BeastInsourcePlayer berserkPlayer = Main.LocalPlayer.GetModPlayer<BeastInsourcePlayer>();
+        UIUtils.DrawBuffStacksOverlay(spriteBatch, buffIndex, drawParams, berserkPlayer.stacks);
     }
 }
 
