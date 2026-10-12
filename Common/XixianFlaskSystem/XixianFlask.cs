@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Stellamod.Content;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -63,12 +64,13 @@ namespace Stellamod.Common.XixianFlaskSystem
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.useTime = 17;
             Item.useAnimation = 17;
             Item.maxStack = 1;
             Item.useStyle = ItemUseStyleID.DrinkLong;
             Item.value = Item.buyPrice(0, 3, 3, 40);
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ModContent.RarityType<ShopRarity>();
             Item.consumable = false;
             Item.potion = true;
             Item.UseSound = SoundID.Item2;

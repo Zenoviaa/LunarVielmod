@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System.Collections.Generic;
@@ -14,6 +15,10 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
     [Autoload(Side = ModSide.Client)]
     public class XixianFlaskUISystem : BaseUISystem
     {
+        bool _isOpen;
+        float _elaspedOpenTime;
+        float OpenTime => 0.5f;
+        float OpenLerp => EasingFunction.InOutSine(_elaspedOpenTime / OpenTime);
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
         private UserInterface _hudUserInterface;
@@ -45,11 +50,31 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
                 OpenHudUI();
             }
 
+            if (_isOpen)
+            {
+                _elaspedOpenTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                _elaspedOpenTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if(_userInterface?.CurrentState == null && _elaspedOpenTime > 0)
+            {
+                TakeSlot();
+                _userInterface.SetState(xixianFlaskUIState);
+            } else if(_userInterface?.CurrentState != null && _elaspedOpenTime <= 0)
+            {
+                ClearSlot();
+                _userInterface.SetState(null);
+            }
+            _elaspedOpenTime = MathHelper.Clamp(_elaspedOpenTime, 0f, OpenTime);
             _lastUpdateUiGameTime = gameTime;
             if (_userInterface?.CurrentState != null)
             {
                 _userInterface.Update(gameTime);
             }
+
+
             if (_hudUserInterface?.CurrentState != null)
             {
                 _hudUserInterface.Update(gameTime);
@@ -89,29 +114,17 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
         public void OpenUI()
         {
             //Set State
-            TakeSlot();
-            _userInterface.SetState(xixianFlaskUIState);
+            _isOpen = true;
         }
 
         public void CloseUI()
         {
-            ClearSlot();
-            _userInterface.SetState(null);
+            _isOpen = false;
         }
 
         public override void PreSaveAndQuit()
         {
-            //Calls Deactivate and drops the item
-            if (_userInterface.CurrentState != null)
-            {
-                CloseUI();
-                _userInterface.SetState(null);
-            }
-            if (_hudUserInterface.CurrentState != null)
-            {
-                CloseHudUI();
-                _hudUserInterface.SetState(null);
-            }
+
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -123,15 +136,46 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
                     "Stellamod: Xixian Flask UI",
                     delegate
                     {
+
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
-                            _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                            if(_elaspedOpenTime < OpenTime)
+                            {
+                                var sb = Main.spriteBatch;
+                                sb.EndOut(out var oldParameters);
+                                using var target = RT.Context(RenderTargets.ScreenTarget);
+                                using(RT.Clear(target, Color.Transparent))
+                                {
+                                    using (sb.Ctx(oldParameters))
+                                    {
+                                        _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                                    }
+                                }
 
+                                using(sb.Ctx(oldParameters with { matrix = Matrix.identity }))
+                                {
+                                    sb.Draw(target, 
+                                        Vector2.Lerp(new Vector2(0, -80), Vector2.Zero, EasingFunction.OutSine(OpenLerp)), 
+                                        null,
+                                        Color.Lerp(Color.Transparent, Color.White, OpenLerp),
+                                        0,
+                                        Vector2.Zero,
+                                        1f,
+                                        SpriteEffects.None,
+                                        0);
+                                }
+                                sb.Begin(oldParameters);
+                            
+                            }
+                            else
+                            {
+                                _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                            }
                         }
+
                         if (_lastUpdateUiGameTime != null && _hudUserInterface?.CurrentState != null)
                         {
                             _hudUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
-
                         }
 
                         return true;

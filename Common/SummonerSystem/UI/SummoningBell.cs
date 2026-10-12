@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.RarityRendering;
+using Stellamod.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -70,6 +71,7 @@ public class SummoningBell : ModItem
     public override void SetDefaults()
     {
         Item.maxStack = 1;
+        Item.rare = ModContent.RarityType<ShopRarity>();
     }
 
     public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
