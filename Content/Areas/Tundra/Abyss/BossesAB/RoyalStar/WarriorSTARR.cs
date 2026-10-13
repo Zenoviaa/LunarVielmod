@@ -75,7 +75,6 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private float _afterImageAlpha;
     private bool _afterImages;
     private bool _fakeOut;
-    private bool _eyeFlash;
     private bool _jumpingTrail;
     private bool _grabbing;
     private int _grabbedPlayer;

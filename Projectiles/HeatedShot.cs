@@ -1,12 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Core.Utilities;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Trails;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -30,7 +22,7 @@ namespace Stellamod.Projectiles
             Projectile.penetrate = -1;
             Projectile.scale = 1f;
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
@@ -81,7 +73,7 @@ namespace Stellamod.Projectiles
 
         }
 
-     
+
         public override bool PreDraw(ref Color lightColor)
         {
 

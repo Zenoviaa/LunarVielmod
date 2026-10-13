@@ -50,7 +50,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     public class BlackSeaPlatformManager
     {
         private float _timer;
-        private float _oscTimer;
         private UnifiedRandom _random;
         private readonly BlackSeaPlatform[] _platforms;
         private readonly BlackSeaPlatform[] _platformsByZLayer;

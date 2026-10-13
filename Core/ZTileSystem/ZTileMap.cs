@@ -177,8 +177,6 @@ public class ZTileMap : ModSystem
     private List<ActiveZTileData>[] _zTileActiveDrawingInstances;
 
     public const int Chunk_Size = 64;
-
-    public static event Action OnRenderForeground;
     public bool Find(ushort type, out ZTilePosition tilePosition)
     {
         foreach(var instance in _zTileInstances)

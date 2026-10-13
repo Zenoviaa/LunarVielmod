@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -21,7 +19,7 @@ namespace Stellamod.Projectiles.Swords
         {
             Projectile.width = 60;
             Projectile.height = 60;
-            Projectile.aiStyle = 3;
+            Projectile.aiStyle = ProjAIStyleID.Boomerang;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 600;

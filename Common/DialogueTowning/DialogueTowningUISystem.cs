@@ -115,7 +115,6 @@ namespace Stellamod.Common.DialogueTowning
 
         public void ChatWith(Quest quest)
         {
-            SpeechBoxTalkingParameters parameters = new();
             string text = string.Empty;
             string portrait = "FenixPortrait";
             float timeBetweenTexts = 0.05f;

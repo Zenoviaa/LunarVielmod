@@ -359,7 +359,6 @@ public class PixelationManager : ModSystem
     public int Priority => 10;
     public static event Action OnBehindGrass;
     public static event Action OnInFrontGrass;
-    public static event Action OnPreRender;
     public override void Load()
     {
         base.Load();

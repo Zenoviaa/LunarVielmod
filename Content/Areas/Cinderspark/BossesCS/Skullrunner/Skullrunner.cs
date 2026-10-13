@@ -75,7 +75,6 @@ public class Skullrunner : ScarletBoss
     private float _trailInterpolant;
     private bool _oscScale;
     private bool _grabbedTarget;
-    private bool _freezeFrame;
     private bool _showNamePlate;
     private int _frame;
     private Vector2 _scale = Vector2.One;
@@ -226,8 +225,7 @@ public class Skullrunner : ScarletBoss
     public override void FindFrame(int frameHeight)
     {
         base.FindFrame(frameHeight);
-        if (!_freezeFrame)
-            NPC.frameCounter += 0.25f;
+        NPC.frameCounter += 0.25f;
         if (NPC.frameCounter >= 1f)
         {
             _frame++;

@@ -39,7 +39,6 @@ public class WillOWispMinionProj : AbstractBellSummon,
     IDrawToRenderTarget
 {
     private float _scale;
-    private Vector2[] _oldPlayerPos;
     Vector2[] OldPlayerPos
     {
         get

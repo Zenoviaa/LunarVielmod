@@ -20,9 +20,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         private ref float Timer => ref Projectile.ai[0];
         private NPC Owner => Main.npc[(int)Projectile.ai[1]];
         private ref float ExtraWidth => ref Projectile.ai[2];
-        private float Blend = 0.05f;
         private float DrawMode = 0;
-        private Vector2 ScrollSpeed = new Vector2(0.0001f, 0.0001f);
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 128;

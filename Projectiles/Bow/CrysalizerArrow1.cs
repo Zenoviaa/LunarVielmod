@@ -1,14 +1,6 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Content.Dusts;
-using Stellamod.Helpers;
-using Stellamod.Trails;
+﻿using Stellamod.Content.Dusts;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -30,7 +22,7 @@ namespace Stellamod.Projectiles.Bow
             Projectile.height = 8;
 
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;

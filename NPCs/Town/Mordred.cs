@@ -1,20 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.DialogueTowning;
+﻿using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.GooberDialogue;
-using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
-using Stellamod.Core;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town;
 
@@ -32,7 +23,7 @@ public class Mordred : VeilTownNPC
         NPC.friendly = true; // NPC Will not attack player
         NPC.width = 74;
         NPC.height = 89;
-        NPC.aiStyle = 0;
+        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
         NPC.damage = 90;
         NPC.defense = 42;
         NPC.lifeMax = 200;
@@ -74,7 +65,7 @@ public class Mordred : VeilTownNPC
         npcShop.AddShopItem<IronBow>(5);
         npcShop.AddShopItem<GildedStaff>(5);
         npcShop.AddShopItem<DogBone>(5);
-        npcShop.Register();	
+        npcShop.Register();
     }
 
 }

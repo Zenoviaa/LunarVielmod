@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,7 +18,7 @@ namespace Stellamod.NPCs.Underground
         {
             NPC.width = 34;
             NPC.height = 40;
-            NPC.aiStyle = 3;
+            NPC.aiStyle = NPCAIStyleID.Fighter;
             NPC.damage = 34;
             NPC.defense = 8;
             NPC.lifeMax = 140;
@@ -29,7 +26,7 @@ namespace Stellamod.NPCs.Underground
             NPC.DeathSound = SoundID.DD2_SkeletonDeath;
             NPC.value = 563f;
             NPC.knockBackResist = .45f;
-            NPC.aiStyle = 3;
+            NPC.aiStyle = NPCAIStyleID.Fighter;
             AIType = NPCID.SnowFlinx;
         }
 

@@ -1,9 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Helpers;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -26,7 +21,7 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.height = 225;
             Projectile.penetrate = -1;
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.timeLeft = 255;
             AIType = ProjectileID.Bullet;
             Projectile.scale = 0.1f;

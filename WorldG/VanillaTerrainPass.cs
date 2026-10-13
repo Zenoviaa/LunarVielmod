@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.WorldBuilding;
 
@@ -115,7 +116,7 @@ namespace Stellamod.WorldG
                 FillColumn(i, worldSurface, rockLayer);
             }
 
-          //  WorldFile
+            //  WorldFile
             Main.worldSurface = (int)(worldSurfaceHigh + 25.0);
             Main.rockLayer = rockLayerHigh;
             double num12 = (int)((Main.rockLayer - Main.worldSurface) / 6.0) * 6;
@@ -163,7 +164,7 @@ namespace Stellamod.WorldG
                 {
                     Tile tile = Main.tile[x, j];
                     tile.HasTile = true;
-                    tile.TileType = 0;
+                    tile.TileType = TileID.Dirt;
                     tile.TileFrameX = -1;
                     tile.TileFrameY = -1;
                 }
@@ -171,7 +172,7 @@ namespace Stellamod.WorldG
                 {
                     Tile tile = Main.tile[x, j];
                     tile.HasTile = true;
-                    tile.TileType = 1;
+                    tile.TileType = TileID.Stone;
                     tile.TileFrameX = -1;
                     tile.TileFrameY = -1;
                 }
@@ -190,11 +191,11 @@ namespace Stellamod.WorldG
 
             for (int j = (int)worldSurface; j < Main.maxTilesY; j++)
             {
-                if (Main.tile[x, j].TileType != 1 || !Main.tile[x, j].HasTile)
+                if (Main.tile[x, j].TileType != TileID.Stone || !Main.tile[x, j].HasTile)
                 {
                     Tile tile = Main.tile[x, j];
                     tile.HasTile = true;
-                    tile.TileType = 0;
+                    tile.TileType = TileID.Dirt;
                     tile.TileFrameX = -1;
                     tile.TileFrameY = -1;
                 }

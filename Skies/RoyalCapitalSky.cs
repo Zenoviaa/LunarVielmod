@@ -7,10 +7,6 @@ namespace Stellamod.Skies;
 
 public class RoyalCapitalSky : CustomSky
 {
-    private float _strength;
-    public float Strength { get => _strength; }
-    public float Fogginess { get; set; }
-
     public override void Activate(Vector2 position, params object[] args)
     {
 
@@ -21,8 +17,7 @@ public class RoyalCapitalSky : CustomSky
 
     }
 
-    public override bool IsActive() =>
-        _strength > 0.001f && !Main.gameMenu;
+    public override bool IsActive() =>!Main.gameMenu;
 
     public override void Reset()
     {

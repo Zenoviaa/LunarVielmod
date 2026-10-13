@@ -117,24 +117,6 @@ public class Astar
             weight += 10000;
         if (tile.LiquidAmount > 0)
             weight += 100;
-        bool NextToGroundTile()
-        {
-            for (var i = -1; i <= 1; i++)
-            {
-                for (var j = -1; j <= 1; j++)
-                {
-                    if (i == 0 && j == 0)
-                        continue;
-
-                    var newX = x + i;
-                    var newY = y + j;
-                    Tile gt = Main.tile[newX, newY];
-                    if (WorldGen.SolidOrSlopedTile(newX, newY))
-                        return true;
-                }
-            }
-            return false;
-        }
 
         bool IsGrounded()
         {

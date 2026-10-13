@@ -1,8 +1,6 @@
-﻿using Stellamod.Content.Areas.Collosseum.WeaponsCL;
-using Stellamod.Content.Areas.Shop.ItemsShop;
+﻿using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Placeable;
@@ -122,7 +120,7 @@ namespace Stellamod.NPCs.Town
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 18;
             NPC.height = 40;
-            NPC.aiStyle = 7;
+            NPC.aiStyle = NPCAIStyleID.Passive;
             NPC.damage = 10;
             NPC.defense = 15;
             NPC.lifeMax = 250;
@@ -300,7 +298,7 @@ namespace Stellamod.NPCs.Town
                 .Add(new Item(ModContent.ItemType<GintzlMetal>()) { shopCustomPrice = Item.buyPrice(silver: 3) })
                 .Add(new Item(ModContent.ItemType<GintzlSpear>()) { shopCustomPrice = Item.buyPrice(copper: 10) })
                 .Add(new Item(ModContent.ItemType<BroochesTableI>()) { shopCustomPrice = Item.buyPrice(gold: 1) })
-         
+
                 .Add(new Item(ItemID.HermesBoots) { shopCustomPrice = Item.buyPrice(gold: 4) })
                 .Add(new Item(ItemID.CloudinaBottle) { shopCustomPrice = Item.buyPrice(gold: 1) })
                 .Add(new Item(ItemID.Chest) { shopCustomPrice = Item.buyPrice(gold: 5) })

@@ -45,7 +45,6 @@ namespace Stellamod.Core.LunarLightingSystem
         private PointLights _pointLights;
         private ShadowMap _shadowMap;
         private Color _backLightColor;
-        private bool _isLoaded;
         private LazyRenderTargetProvider _lightsRT = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
         private List<ILightEmitter> _emitters;
         private List<IBackLightModifier> _backLightModifiers;

@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.Projectiles;
+﻿using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -24,7 +21,7 @@ namespace Stellamod.NPCs.Underground
         {
             NPC.width = 42;
             NPC.height = 48;
-            NPC.aiStyle = 3;
+            NPC.aiStyle = NPCAIStyleID.Fighter;
             NPC.damage = 40;
             NPC.defense = 12;
             NPC.lifeMax = 170;
@@ -32,7 +29,7 @@ namespace Stellamod.NPCs.Underground
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.value = 563f;
             NPC.knockBackResist = .45f;
-            NPC.aiStyle = 3;
+            NPC.aiStyle = NPCAIStyleID.Fighter;
             AIType = NPCID.SnowFlinx;
         }
 

@@ -16,7 +16,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles;
 public class ConjureBallExplosion : ModProjectile
 {
     private float _lightningPower;
-    private float _lightningTime;
     private bool _calculatedStrikePoints;
     public override string Texture => TextureRegistry.EmptyTexture;
     private ref float Timer => ref Projectile.ai[0];
@@ -142,7 +141,7 @@ public class ConjureBallExplosion : ModProjectile
             return false;
         SpriteBatch spriteBatch = Main.spriteBatch;
         LightningShader lightningShader = LightningShader.Instance;
-        lightningShader.Time = _lightningTime;
+        lightningShader.Time = 0;
         lightningShader.Power = _lightningPower;
         TrailDrawer.Draw(spriteBatch, BeamPoints, BeamRot, LightningColorFunction, LightningWidthFunction, lightningShader);
         TrailDrawer.Draw(spriteBatch, BeamPoints, BeamRot, LightningColorFunction, LightningWidthFunction, lightningShader);

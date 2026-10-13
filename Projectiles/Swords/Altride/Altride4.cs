@@ -1,8 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Dusts;
-using Stellamod.Helpers;
+﻿using Stellamod.Content.Dusts;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -34,7 +30,7 @@ namespace Stellamod.Projectiles.Swords.Altride
             Projectile.height = 40;
 
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             AIType = ProjectileID.Bullet;
             Projectile.scale = 0.5f;
             Projectile.DamageType = DamageClass.Melee;

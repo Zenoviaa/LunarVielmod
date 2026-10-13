@@ -42,7 +42,6 @@ public class MainMenuFallingLeavesParticleSystem
     private float _godraySpawnTimer;
     private readonly int[] _indexBuffer;
     private readonly Asset<Texture2D> _leavesTextureAsset;
-    private int _drawSkip;
     private float _darken;
     private bool _drawBack;
 

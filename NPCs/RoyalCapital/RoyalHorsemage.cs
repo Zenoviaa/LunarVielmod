@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Items.Harvesting;
@@ -52,7 +50,7 @@ namespace Stellamod.NPCs.RoyalCapital
             NPC.DeathSound = SoundID.NPCDeath6;
             NPC.value = 560f;
             NPC.knockBackResist = .45f;
-            NPC.aiStyle = 26;
+            NPC.aiStyle = NPCAIStyleID.Unicorn;
             AIType = NPCID.Unicorn;
             NPC.noTileCollide = false;
             NPC.noGravity = false;

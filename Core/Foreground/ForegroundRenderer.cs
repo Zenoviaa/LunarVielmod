@@ -219,7 +219,7 @@ namespace Stellamod.Core.Foreground
 
         private void DrawForegroundXY(SpriteBatch spriteBatch, ForegroundLayer layer)
         {
-            float scale = 4;
+
             //Main.NewText(layer.fade);
             Texture2D foregroundTexture = ModContent.Request<Texture2D>(layer.Texture).Value;
             Vector2 drawOrigin = Vector2.Zero;

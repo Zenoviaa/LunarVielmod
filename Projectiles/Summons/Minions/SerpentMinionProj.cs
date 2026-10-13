@@ -39,8 +39,6 @@ public class SerpentMinionProj : ModProjectile
 {
     private float SegmentStretch = 0.66f;
     private float ChargeTrailOpacity;
-    private bool DrawChargeTrail;
-
     //Segments
     private SerpentSegment Head => Segments[0];
     private SerpentSegment[] Segments;
@@ -440,19 +438,9 @@ public class SerpentMinionProj : ModProjectile
 
     public Color ColorFunctionCharge(float completionRatio)
     {
-        if (!DrawChargeTrail)
-        {
-            ChargeTrailOpacity -= 0.05f;
-            if (ChargeTrailOpacity <= 0)
-                ChargeTrailOpacity = 0;
-        }
-        else
-        {
-            ChargeTrailOpacity += 0.05f;
-            if (ChargeTrailOpacity >= 1)
-                ChargeTrailOpacity = 1;
-        }
-
+        ChargeTrailOpacity += 0.05f;
+        if (ChargeTrailOpacity >= 1)
+            ChargeTrailOpacity = 1;
         return Color.Lerp(Color.Orange, Color.Orange, (1f - completionRatio)) * ChargeTrailOpacity;
     }
 

@@ -1,17 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.DialogueTowning;
+﻿using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.GooberDialogue;
-using Stellamod.Content.Areas.Shop.AccShop;
 using Stellamod.Content.Dialogue;
 using Stellamod.Content.Vanity.AcademyOutfit;
-using Stellamod.Core;
-using Stellamod.Helpers;
-using Stellamod.Items.Insources;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -36,7 +29,7 @@ public class Rysa : VeilTownNPC
         NPC.friendly = true;
         NPC.width = 38;
         NPC.height = 50;
-        NPC.aiStyle = 0;
+        NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
         NPC.damage = 90;
         NPC.defense = 42;
         NPC.lifeMax = 200;
@@ -93,7 +86,7 @@ public class Rysa : VeilTownNPC
     {
         base.Talk();
         OpenTalkOptions(
-            ModContent.GetInstance<RysaGotAnythingDialogue>(), 
+            ModContent.GetInstance<RysaGotAnythingDialogue>(),
             ModContent.GetInstance<RysaLivingDialogue>());
     }
 

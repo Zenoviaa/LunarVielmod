@@ -115,7 +115,6 @@ namespace Stellamod.Core.TriggersSystem
     }
     public class TriggerEraser : ModItem
     {
-        private int _triggerToPlace;
 
         public override void SetDefaults()
         {

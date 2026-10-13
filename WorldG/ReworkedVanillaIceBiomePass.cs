@@ -25,15 +25,15 @@ namespace Stellamod.WorldG
             int num979 = 10;
             for (int tileY = 0; tileY <= bottom - 140; tileY++)
             {
-                progress.Set((double)tileY / (double)(bottom - 140));
-              /*  num977 += genRand.Next(-4, 4);
-                num978 += genRand.Next(-3, 5);
-                if (num980 > 0)
-                {
-                    num977 = (num977 + GenVars.snowMinX[num980 - 1]) / 2;
-                    num978 = (num978 + GenVars.snowMaxX[num980 - 1]) / 2;
-                }
-                */
+                progress.Set(tileY / (double)(bottom - 140));
+                /*  num977 += genRand.Next(-4, 4);
+                  num978 += genRand.Next(-3, 5);
+                  if (num980 > 0)
+                  {
+                      num977 = (num977 + GenVars.snowMinX[num980 - 1]) / 2;
+                      num978 = (num978 + GenVars.snowMaxX[num980 - 1]) / 2;
+                  }
+                  */
 
                 GenVars.snowMinX[tileY] = left;
                 GenVars.snowMaxX[tileY] = right;
@@ -53,7 +53,7 @@ namespace Stellamod.WorldG
                             case TileID.Sand:
                                 Main.tile[tileX, tileY].TileType = TileID.SnowBlock;
                                 break;
-                            case 1:
+                            case TileID.Stone:
                                 Main.tile[tileX, tileY].TileType = TileID.IceBlock;
                                 break;
                         }
@@ -87,7 +87,7 @@ namespace Stellamod.WorldG
                                 case TileID.Sand:
                                     Main.tile[tileX, num982].TileType = TileID.SnowBlock;
                                     break;
-                                case 1:
+                                case TileID.Stone:
                                     Main.tile[tileX, num982].TileType = TileID.IceBlock;
                                     break;
                             }

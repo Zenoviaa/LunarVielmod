@@ -1,4 +1,3 @@
-using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -33,7 +32,7 @@ namespace Stellamod.Projectiles.Magic
             float step = 1 / distance;
             for (float w = 0; w < distance; w += 4)
             {
-                Dust.NewDustPerfect(Vector2.Lerp(from, to, w * step), 226, Vector2.Zero).noGravity = true;
+                Dust.NewDustPerfect(Vector2.Lerp(from, to, w * step), DustID.Electric, Vector2.Zero).noGravity = true;
             }
         }
 

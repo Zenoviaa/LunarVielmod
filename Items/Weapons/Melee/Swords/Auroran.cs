@@ -157,7 +157,6 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
     public class AuroranStaminaSlash : BaseSwingProjectileV2
     {
-        float ProjTimer;
         public bool Hit;
         public bool AuroraProj1;
         public bool AuroraProj2;

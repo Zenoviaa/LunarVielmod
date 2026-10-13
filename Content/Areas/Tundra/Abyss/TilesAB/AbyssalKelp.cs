@@ -119,7 +119,6 @@ public class AbyssalKelp : ModTile,
 
     public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
     {
-        short x = 0;
         short y = 0;
 
         bool up = Framing.GetTileSafely(i, j - 1).TileType == Type|| Framing.GetTileSafely(i, j - 1).TileType == Type;

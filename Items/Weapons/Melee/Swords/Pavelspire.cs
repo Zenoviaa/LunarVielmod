@@ -274,8 +274,6 @@ namespace Stellamod.Items.Weapons.Melee.Swords
     public class SpireStaminaSlash : BaseSwingProjectile
     {
         public override string Texture => this.PathHere() + "/Pavelspire";
-
-        float ProjTimer;
         public bool Hit;
 
         public override void SetStaticDefaults()

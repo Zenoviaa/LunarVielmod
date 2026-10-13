@@ -181,9 +181,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             _resetTimers = reader.ReadBoolean();
             Jumpin = reader.ReadInt32();
         }
-
-        bool axed = false;
-        bool p2 = false;
         public override void HitEffect(NPC.HitInfo hit)
         {
             for (int k = 0; k < 20; k++)
@@ -400,14 +397,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
         //Custom function so that I don't have to copy and paste the same thing in FindFrame
         int bee = 220;
         private Vector2 originalHitbox;
-        //int Timer2 = 0;
-        float timert = 0;
         public float Spawner = 0;
-
         public bool Elect = false;
         public override void AI()
         {
-            p2 = NPC.life < NPC.lifeMax * 0.5f;
+
             bee--;
             //Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
             NPC.damage = 0;

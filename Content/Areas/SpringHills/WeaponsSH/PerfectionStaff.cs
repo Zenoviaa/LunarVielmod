@@ -20,7 +20,6 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH;
 public class PerfectionStaff : ModItem
 {
     public override string Texture => AssetReferences.Assets.Textures.Item.PerfectionStaff.KEY;
-    private int _dir;
     public override void SetDefaults()
     {
         Item.DefaultToArtifact();
@@ -58,7 +57,7 @@ public class PerfectionStaff : ModItem
         }
         var p = Projectile.NewProjectileDirect(source, player.Center, velocity,
             ModContent.ProjectileType<StaffWaveHold>(), damage, knockback, player.whoAmI,
-            ai2: _dir);
+            ai2: 0);
         //(p.ModProjectile as StaffWaveHold).MagicCircleStyle = 1;
          return false;
     }

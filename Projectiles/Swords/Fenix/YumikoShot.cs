@@ -1,11 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Core.Utilities;
-using Stellamod.Trails;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -29,7 +23,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
             Projectile.penetrate = -1;
             Projectile.scale = 1f;
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Melee;
             Projectile.tileCollide = false;

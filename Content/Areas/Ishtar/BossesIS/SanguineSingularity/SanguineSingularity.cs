@@ -50,8 +50,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 public class HeadlessSingularity : ModNPC
 
 {
-    private float _incresionDiskFrameBottom;
-    private float _incresionDiskFrameTop;
     private NPC Parent => Main.npc[(int)NPC.ai[0]];
     private ref float MaxDamage => ref NPC.ai[1];
     private ref float NoiseTimer => ref NPC.ai[2];
@@ -219,7 +217,7 @@ public class HeadlessSingularity : ModNPC
     private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         //Draw Incresion Disk
-        Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameBottom, columns: 5, frameWidth: 400, frameHeight: 200);
+        Rectangle incresionDiskRect = DrawHelper.FrameGrid(0, columns: 5, frameWidth: 400, frameHeight: 200);
         Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(
             ModContent.GetInstance<SanguineSingularity>().Texture + "_Disk").Value;
 
@@ -259,7 +257,7 @@ public class HeadlessSingularity : ModNPC
     private void DrawIncresionDiskTop(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         //Draw Incresion Disk
-        Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameTop, columns: 4, frameWidth: 480, frameHeight: 200);
+        Rectangle incresionDiskRect = DrawHelper.FrameGrid(0, columns: 4, frameWidth: 480, frameHeight: 200);
         Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(
             ModContent.GetInstance<SanguineSingularity>().Texture + "_Top").Value;
 

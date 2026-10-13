@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Terraria;
 using Terraria.Audio;
@@ -86,7 +84,7 @@ namespace Stellamod.Projectiles
             }
             for (int i = 0; i < 15; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, 205, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
+                Dust.NewDustPerfect(base.Projectile.Center, DustID.VenomStaff, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
             }
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

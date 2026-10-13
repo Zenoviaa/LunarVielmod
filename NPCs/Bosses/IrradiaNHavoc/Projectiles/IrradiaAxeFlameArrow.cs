@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Trails;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -36,7 +30,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             Projectile.width = 9;
             Projectile.height = 17;
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.hostile = true;
             Projectile.tileCollide = false;

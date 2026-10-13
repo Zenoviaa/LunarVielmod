@@ -1,5 +1,6 @@
 ﻿using Stellamod.Content.Dusts;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Paint
@@ -16,7 +17,7 @@ namespace Stellamod.Projectiles.Paint
         {
             Projectile.width = 10;
             Projectile.height = 10;
-            Projectile.aiStyle = 14;
+            Projectile.aiStyle = ProjAIStyleID.GroundProjectile;
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Generic;
             Projectile.penetrate = 10;

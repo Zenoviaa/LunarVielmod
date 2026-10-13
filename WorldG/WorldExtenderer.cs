@@ -8,7 +8,6 @@ using Terraria.Map;
 using Terraria.ModLoader;
 
 namespace Stellamod.WorldG;
-
 public class WorldExtenderer : ModSystem
 {
     //Original 8400x 2400y
@@ -71,6 +70,7 @@ public class WorldExtenderer : ModSystem
     }
     private void ResizeMapTarget()
     {
+#nullable enable
         if (8400 < Main.maxTilesX || 2400 < Main.maxTilesY)
         {
             int chunkX = (Main.maxTilesX - 1) / Main.sectionWidth + 1;
@@ -84,7 +84,7 @@ public class WorldExtenderer : ModSystem
                 BindingFlags.NonPublic | BindingFlags.Instance, new[] { typeof(ushort), typeof(ushort) })!;
             Main.tile = (Tilemap)constructorInfo.Invoke(new object?[] { (ushort)newSizeX, (ushort)newSizeY });
         }
-
+#nullable disable
         int newWidth = Main.maxTilesX / Main.textureMaxWidth + 2;
         int newHeight = Main.maxTilesY / Main.textureMaxHeight + 2;
         if (newWidth > Main.mapTargetX || newHeight > Main.mapTargetY)

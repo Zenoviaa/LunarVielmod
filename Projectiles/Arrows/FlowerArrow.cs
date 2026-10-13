@@ -16,7 +16,6 @@ namespace Stellamod.Projectiles.Arrows
     }
     public class FlowerArrow : ModProjectile
     {
-        private int _particleTimer;
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;

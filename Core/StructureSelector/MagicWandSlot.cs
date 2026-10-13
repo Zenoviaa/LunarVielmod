@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -11,7 +9,6 @@ namespace Stellamod.Core.StructureSelector
     public class MagicWandSlot : UIElement
     {
         private readonly int _context;
-        private readonly int _index;
         private readonly float _scale;
         public Item Item;
         public MagicWandSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)

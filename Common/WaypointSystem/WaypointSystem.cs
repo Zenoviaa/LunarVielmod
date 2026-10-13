@@ -97,6 +97,11 @@ public class OrganDragon : ModNPC
         {
             _frontLegTextureAssets[i] = ModContent.Request<Texture2D>(Texture + "_FrontLeg_" + i);
         }
+        _backLegTextureAssets = new Asset<Texture2D>[2];
+        for (int i = 0; i < _backLegTextureAssets.Length; i++)
+        {
+            _backLegTextureAssets[i] = ModContent.Request<Texture2D>(Texture + "_BackLeg_" + i);
+        }
         _wingTextureAssets = new Asset<Texture2D>[1];
         for (int i = 0; i < _wingTextureAssets.Length; i++)
         {

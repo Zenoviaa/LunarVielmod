@@ -11,7 +11,6 @@ namespace Stellamod.Visual.Explosions
 {
     public class BasicStaminaExplosion : BaseExplosionProjectile
     {
-        int trailMode;
         int rStart = 4;
         int rEnd = 128;
         public override void SetDefaults()

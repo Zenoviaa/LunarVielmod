@@ -115,13 +115,8 @@ namespace Stellamod.Items.Accessories
             return Color.White;
         }
 
-        int counter = 1;
-        float alphaCounter = 1;
         public override bool PreDraw(ref Color lightColor)
         {
-
-
-            // just return false if you want only trail locked on player
             return true;
         }
 

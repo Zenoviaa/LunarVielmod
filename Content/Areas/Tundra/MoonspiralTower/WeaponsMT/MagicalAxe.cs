@@ -231,8 +231,6 @@ public class MagicalAxeSlamSwing : ModProjectile
         Projectile.Center = Owner.Center + _swingOffset;
         Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
-        var nearGround = false;
-
         if (!_swingSound && ease >= 0.4f)
         {
             SoundStyle hammerSlash1 = SoundRegistry.HeavySwordSlash1;
@@ -334,7 +332,6 @@ public class MagicalAxeSlamSwing : ModProjectile
 public class MagicalAxeGravityHold : ModProjectile
 {
     float GravityRadius => 512;
-    bool _slammed;
     Vector2 _swingOffset;
     Player Owner => Main.player[Projectile.owner];
     ref float Timer => ref Projectile.ai[0];
@@ -819,7 +816,6 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
 {
     private float _hitCount;
     bool _hit;
-    bool _slammed;
     public override void DefineCombo()
     {
         base.DefineCombo();

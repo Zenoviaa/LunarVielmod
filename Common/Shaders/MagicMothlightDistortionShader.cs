@@ -1,22 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Terraria;
 using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Common.Shaders
 {
-    public class MagicMothlightDistortionShaderArmorShaderData : ArmorShaderData
+    public class MagicMothlightDistortionShaderArmorShaderData(Asset<Effect> shader, string passName) : ArmorShaderData(shader, passName)
     {
-        public MagicMothlightDistortionShaderArmorShaderData(Ref<Effect> shader, string passName)
-        : base(shader, passName)
-        {
-        }
-        public MagicMothlightDistortionShaderArmorShaderData(Asset<Effect> shader, string passName)
-            : base(shader, passName)
-        {
-        }
-
         public override void Apply()
         {
             MagicMothlightDistortionShader shader = MagicMothlightDistortionShader.Instance;

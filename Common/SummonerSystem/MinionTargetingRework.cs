@@ -25,7 +25,6 @@ namespace Stellamod.Common.SummonerSystem
 
     public class DummyNPC : ModNPC
     {
-        private float _totalAmountHealed;
         private ref float KillMyselfTimer => ref NPC.ai[0];
         private ref float Lifetime => ref NPC.ai[1];
         private int Owner =>  (int)NPC.ai[2];

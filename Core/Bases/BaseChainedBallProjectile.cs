@@ -1,9 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
-using Stellamod.Common.Shaders.MagicTrails;
-using Stellamod.Helpers;
-using Stellamod.Trails;
+﻿using Stellamod.Common.Shaders;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -16,7 +11,6 @@ namespace Stellamod.Core.Bases
     public abstract class BaseChainedBallProjectile : ModProjectile
     {
         private Vector2[] _slashPos;
-        private Vector2[] _chainPos;
         private bool _playedSwingSound;
         private bool _playedBounceSound;
         private float _swingXRadius;
@@ -130,12 +124,12 @@ namespace Stellamod.Core.Bases
                     AI_Dragging();
                     break;
                 case AIState.Sling:
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         StartSling();
                     }
 
-                    if(zeroVelocity)
+                    if (zeroVelocity)
                         Projectile.velocity = Vector2.Zero;
                     Projectile.tileCollide = false;
                     AI_Sling();
@@ -209,7 +203,7 @@ namespace Stellamod.Core.Bases
             Projectile.rotation += Projectile.velocity.X * 0.02f;
             if (Main.myPlayer == Projectile.owner && Main.mouseLeft)
             {
-            
+
                 SwitchState(AIState.Sling);
             }
         }
@@ -232,7 +226,7 @@ namespace Stellamod.Core.Bases
             Timer++;
             if (Timer == 1)
             {
-            
+
                 _playedSwingSound = false;
                 _playedBounceSound = false;
                 _swingXRadius = MathHelper.Min(Vector2.Distance(Main.MouseWorld, Owner.Center), swingXRadius);
@@ -240,7 +234,7 @@ namespace Stellamod.Core.Bases
                 if (Projectile.owner == Main.myPlayer && Timer == 1)
                 {
                     Projectile.velocity = (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero);
-                    Projectile.netUpdate=true;
+                    Projectile.netUpdate = true;
                 }
                 Projectile.ResetLocalNPCHitImmunity();
             }
@@ -354,7 +348,7 @@ namespace Stellamod.Core.Bases
                 Projectile.velocity.X = -oldVelocity.X;
             if (Projectile.velocity.Y != oldVelocity.Y)
                 Projectile.velocity.Y = -oldVelocity.Y * 0.7f;
-        
+
             if (!_playedBounceSound && BounceSound != null)
             {
                 SoundEngine.PlaySound(BounceSound, Projectile.position);
@@ -483,7 +477,7 @@ namespace Stellamod.Core.Bases
         {
             base.OnHitNPC(target, hit, damageDone);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, 0, 0,
-                ModContent.ProjectileType<BaseHitEffect>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+                ModContent.ProjectileType<BaseHitEffect>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)

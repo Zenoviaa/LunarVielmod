@@ -176,14 +176,14 @@ namespace Stellamod.Helpers
                 StructureSelection selection = ModContent.GetInstance<StructureSelection>();
                 if (player.altFunctionUse == 2)
                 {
-                  //  selection.Erase();
+                    //  selection.Erase();
                 }
                 else
                 {
                     selection.Copy();
                 }
-          
-          
+
+
             }
 
             //selection.SpawnSelection = true;
@@ -203,14 +203,14 @@ namespace Stellamod.Helpers
                 {
                     Structurizer.FlipStructure = !Structurizer.FlipStructure;
                     Main.NewText($"FLIP: {Structurizer.FlipStructure}");
-                //    selection.Erase();
+                    //    selection.Erase();
                 }
                 else
                 {
                     selection.Paste();
                 }
-          
-            
+
+
             }
 
             //selection.SpawnSelection = true;
@@ -424,7 +424,7 @@ namespace Stellamod.Helpers
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             bottomLeftPoint.Draw(spriteBatch);
             topRightPoint.Draw(spriteBatch);
-            if(Main.LocalPlayer.HeldItem.type == ModContent.ItemType<PasteWand>())
+            if (Main.LocalPlayer.HeldItem.type == ModContent.ItemType<PasteWand>())
             {
                 int width, height;
                 width = copySelection.width;
@@ -436,7 +436,7 @@ namespace Stellamod.Helpers
 
                 Vector2 topLeft = tilePoint.ToWorldCoordinates();
                 topLeft.Y -= height * 16;
-                Rectangle pasteRectangle = new Rectangle((int)topLeft.X-(int)Main.screenPosition.X, (int)topLeft.Y-(int)Main.screenPosition.Y, width*16, height*16);
+                Rectangle pasteRectangle = new Rectangle((int)topLeft.X - (int)Main.screenPosition.X, (int)topLeft.Y - (int)Main.screenPosition.Y, width * 16, height * 16);
                 pasteRectangle.Y += 8;
                 pasteRectangle.X -= 8;
                 spriteBatch.Draw(TextureAssets.BlackTile.Value, pasteRectangle, null, Color.Red * ExtraMath.Osc(0.5f, 1f, speed: 6));
@@ -500,7 +500,7 @@ namespace Stellamod.Helpers
             ZTileMap ztileMap = ModContent.GetInstance<ZTileMap>();
             for (int x = BottomLeft.X; x < TopRight.X; x++)
             {
-                for(int y = TopRight.Y; y < BottomLeft.Y; y++)
+                for (int y = TopRight.Y; y < BottomLeft.Y; y++)
                 {
                     Main.tile[x, y].ClearEverything();
                     ztileMap.KillAnyTile(new Point(x, y));
@@ -581,8 +581,8 @@ namespace Stellamod.Helpers
                     if (tile.TileType == targetTileType)
                     {
                         WorldGen.KillTile(x, y, noItem: true);
-                        if (tile.WallType != 0)
-                            tile.WallType = 0;
+                        if (tile.WallType != WallID.None)
+                            tile.WallType = WallID.None;
 
                         WorldGen.PlaceWall(x, y, newWallType);
                     }
@@ -599,7 +599,7 @@ namespace Stellamod.Helpers
                     Tile tile = Main.tile[x, y];
                     if (tile.WallType == targetWallType)
                     {
-                        tile.WallType = 0;
+                        tile.WallType = WallID.None;
                         WorldGen.PlaceTile(x, y, newTileType);
                         // ModTile modTile = ModContent.GetModTile(newTileType);
                         // modTile.PlaceInWorld(x, y, new Item());

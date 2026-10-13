@@ -145,9 +145,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private int AttackSide;
         private int BreathingTimer;
         private bool DoAttack;
-        private bool IsCharging;
+
         private Vector2 AttackPos;
-        private Vector2 ChargeDirection;
         private Vector2 LaserAttackPos;
 
         private void FinishResetTimers()
@@ -257,9 +256,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            //Return false for no Contact Damage
-            if (State == ActionState.Star_Storm)
-                return IsCharging;
             return false;
         }
 

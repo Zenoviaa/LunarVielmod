@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Stellamod.Helpers;
+﻿using Stellamod.Buffs;
 using Stellamod.Projectiles.GunHolster;
 using Stellamod.UI.GunHolsterSystem;
 using System.Collections.Generic;
@@ -93,7 +90,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 if (_leftHand == null)
                 {
                     _leftHand = new Item();
-                    _leftHand.SetDefaults(0);
+                    _leftHand.SetDefaults(ItemID.None);
                 }
 
                 return _leftHand;
@@ -111,7 +108,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 if (_rightHand == null)
                 {
                     _rightHand = new Item();
-                    _rightHand.SetDefaults(0);
+                    _rightHand.SetDefaults(ItemID.None);
                 }
 
                 return _rightHand;

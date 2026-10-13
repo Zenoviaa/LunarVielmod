@@ -1,11 +1,6 @@
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -40,7 +35,7 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
             NPC.buffImmune[BuffID.Venom] = true;
             NPC.alpha = 60;
             NPC.knockBackResist = .95f;
-            NPC.aiStyle = 1;
+            NPC.aiStyle = NPCAIStyleID.Slime;
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
         }

@@ -35,16 +35,13 @@ namespace Stellamod.Projectiles.Swords
         }
 
         int counter = 9;
-        float alphaCounter = 9;
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
 
-
         public override bool PreDraw(ref Color lightColor)
         {
-
             return false;
         }
 
@@ -55,12 +52,6 @@ namespace Stellamod.Projectiles.Swords
             if (counter >= 1440)
             {
                 counter = -1440;
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                //float x = Projectile.Center.X - Projectile.velocity.X / 10f * i;
-                //float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * i;
             }
         }
 

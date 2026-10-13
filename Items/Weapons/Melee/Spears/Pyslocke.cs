@@ -435,7 +435,6 @@ namespace Stellamod.Items.Weapons.Melee.Spears
                 hitstopTimer = 4 * ExtraUpdateMult;
             }
         }
-        private bool _thrust;
         private bool _spawnedExplosion;
         public float thrustSpeed = 3;
         public override void AI()

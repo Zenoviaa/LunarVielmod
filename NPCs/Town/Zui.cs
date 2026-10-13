@@ -1,29 +1,19 @@
 ﻿using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.GooberDialogue;
 using Stellamod.Common.QuestSystem;
-using Stellamod.Content.Ammo;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Tundra.Snow.AccsSN;
-using Stellamod.Content.Currencies;
 using Stellamod.Content.Dialogue;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Content.Vanity.Witchen;
-using Stellamod.Core;
-using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Vanity.Nyxia;
 using Stellamod.Items.Armors.Vanity.Solarian;
-using Stellamod.Items.Quest.Zui;
-using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.Zui;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -60,7 +50,7 @@ namespace Stellamod.NPCs.Town
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 54;
             NPC.height = 130;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
             NPC.damage = 90;
             NPC.defense = 42;
             NPC.lifeMax = 2000;

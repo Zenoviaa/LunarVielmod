@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
-using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
@@ -16,7 +13,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
     public class MegaConjureBallLightning : ModProjectile
     {
         private float _scale;
-        private float _width;
         private Vector2[] _lightningZaps;
         private ref float Timer => ref Projectile.ai[0];
         private ref float Charge => ref Projectile.ai[1];
@@ -35,7 +31,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            _width = 1;
             _lightningZaps = new Vector2[7];
             Projectile.width = 128;
             Projectile.height = 128;
@@ -64,7 +59,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
             Lightning.Draw(spriteBatch, _lightningZaps, null);
 
             Vector2 scale = Vector2.One * drawScale * 0.4f;
-   
+
             var shader = TeslaOrbShader.Instance;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);

@@ -195,23 +195,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
         public override bool PreDraw(ref Color lightColor)
         {
             return false;
-            Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
-            Vector2 drawOrigin = new Vector2(lineTexture.Width / 2, 0);
-            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
-            Color drawColor = Color.Red;
-            drawColor.A = 0;
-            drawColor *= 0.5f;
-            drawColor *= Timer / 60f;
-
-            float widthMult = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / 10f);
-            drawColor *= widthMult;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-            Vector2 scale = Vector2.One;
-            scale.Y = 2;
-            scale *= EasingFunction.QuadraticBump(Timer / 60f);
-            spriteBatch.Draw(lineTexture, drawCenter, null, drawColor, Projectile.rotation - MathHelper.ToRadians(90), drawOrigin, scale, SpriteEffects.None, 0);
-            return false;
         }
     }
 }

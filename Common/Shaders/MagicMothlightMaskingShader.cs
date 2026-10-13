@@ -9,10 +9,6 @@ namespace Stellamod.Common.Shaders
 {
     public class MagicMothlightMaskingArmorShaderData : ArmorShaderData
     {
-        public MagicMothlightMaskingArmorShaderData(Ref<Effect> shader, string passName)
-        : base(shader, passName)
-        {
-        }
         public MagicMothlightMaskingArmorShaderData(Asset<Effect> shader, string passName)
             : base(shader, passName)
         {

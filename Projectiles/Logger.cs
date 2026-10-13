@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,7 +16,7 @@ namespace Stellamod.Projectiles
         {
             Projectile.width = 30;
             Projectile.height = 30;
-            Projectile.aiStyle = 3;
+            Projectile.aiStyle = ProjAIStyleID.Boomerang;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Summon;
             Projectile.penetrate = 2;

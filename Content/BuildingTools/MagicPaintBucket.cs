@@ -184,7 +184,6 @@ public class UndoBucket : ModItem
 [Autoload(Side = ModSide.Client)]
 public class MagicPaintBucketPreview : ModSystem
 {
-    private HashSet<Point> _visited;
     public override void PostDrawTiles()
     {
         base.PostDrawTiles();

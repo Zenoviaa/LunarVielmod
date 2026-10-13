@@ -29,8 +29,8 @@ public abstract class Material<T, U, V> : AbstractMaterial
     where U : BaseShader, new()
     where V : Material<T, U, V>, new()
 {
-    private static V? _instance;
-    private readonly List<T> _vertices = new List<T>(capacity: 100);
+    private static V _instance;
+    private readonly List<T> _vertices = new(capacity: 100);
     public Material()
     {
 
@@ -52,7 +52,7 @@ public abstract class Material<T, U, V> : AbstractMaterial
     {
         var shader = ShaderContent.GetInstance<U>();
         SetShaderParameters(shader);
-        T[] vertices = _vertices.ToArray();
+        T[] vertices = [.. _vertices];
 
         //TODO: setup index buffer before any draws happen and only update if there's not enough indices?
         //That way we don't have to prepare indices again

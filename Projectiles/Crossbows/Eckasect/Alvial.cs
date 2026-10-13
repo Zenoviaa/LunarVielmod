@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,7 +21,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
             Projectile.height = 140;
             Projectile.penetrate = -1;
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.timeLeft = 68;
             AIType = ProjectileID.Bullet;
             Projectile.scale = 1f;

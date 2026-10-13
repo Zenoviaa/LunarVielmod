@@ -359,7 +359,7 @@ public class SkeweredAxeSlash : BaseSwingProjectileV2
         SoundStyle smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;
         smashSound.PitchVariance = 0.2f;
         SoundEngine.PlaySound(smashSound, Projectile.position);
-
+        _hit = true;
         base.OnHitNPC(target, hit, damageDone);
 
     }

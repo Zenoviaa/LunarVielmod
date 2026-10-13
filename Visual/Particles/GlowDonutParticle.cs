@@ -10,13 +10,7 @@ namespace Stellamod.Visual.Particles
 {
     public class GlowDonutParticle : LegacyParticle
     {
-        private float _direction;
         private Vector2 _stretchScale;
-        private bool _fast;
-        public int FrameWidth = 128;
-        public int FrameHeight = 128;
-        public int MaxFrameCount = 1;
-
         public Color innerColor;
         public Color outerColor;
         public Color fadeToColor;
@@ -33,7 +27,6 @@ namespace Stellamod.Visual.Particles
             _stretchScale = new Vector2(1f, 0.2f);
             Rotation = Main.rand.NextFloat(0f, 3.14f);
             distortOut = true;
-            _direction = Main.rand.NextFloat(-1, 2);
 
             Frame = new Rectangle(0, 0, 128, 128);
             Scale = Main.rand.NextFloat(0.8f, 1) * 2;

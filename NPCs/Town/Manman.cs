@@ -1,12 +1,9 @@
 ﻿using Stellamod.Common.ArmorShop.UI;
 using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.GooberDialogue;
-using Stellamod.Core;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -31,7 +28,7 @@ namespace Stellamod.NPCs.Town
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 74;
             NPC.height = 94;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
             NPC.damage = 90;
             NPC.defense = 42;
             NPC.lifeMax = 200;

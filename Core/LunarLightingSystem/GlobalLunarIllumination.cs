@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Biomes;
+﻿using Stellamod.Content.Biomes;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
@@ -28,14 +28,14 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 GlobalLum = 0.5f;
             }
-        
 
-            if(Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneDrakonic || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder)
+
+            if (Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneDrakonic || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder)
             {
                 GlobalLum = 0.65f;
             }
             GlobalLightStrength = MathHelper.Lerp(GlobalLightStrength, GlobalLum, 0.1f);
-  
+
         }
     }
 
@@ -48,13 +48,13 @@ namespace Stellamod.Core.LunarLightingSystem
             if (!config.BeamingLights)
                 return;
 
-          
+
             Tile tile = Main.tile[i, j];
             if (tile.HasTile)
                 return;
-            if (tile.WallType > 0)
+            if (tile.WallType > WallID.None)
                 return;
-   
+
 
             float lightStrength = GlobalLumSystem.GlobalLightStrength;
             if (lightStrength > 0)
@@ -63,7 +63,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 g = MathHelper.Clamp(g + lightStrength, 0, 1);
                 b = MathHelper.Clamp(b + lightStrength, 0, 1);
             }
-        
+
 
         }
     }

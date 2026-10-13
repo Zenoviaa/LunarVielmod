@@ -13,7 +13,7 @@ namespace Stellamod.Visual.Explosions
 {
     public class SimpleOrangeExplosion : BaseExplosionProjectile
     {
-        int trailMode;
+
         int rStart = 4;
         int rEnd = 100;
 
@@ -58,7 +58,6 @@ namespace Stellamod.Visual.Explosions
             }
         }
 
-        private int DrawMode;
         private bool SpawnDustCircle;
 
 

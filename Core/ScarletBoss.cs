@@ -98,8 +98,6 @@ public class ScarletBossGlobalNPC : GlobalNPC
 public abstract class ScarletBoss : ModNPC
 {
     private Vector2 _arenaCenter;
-    private float _bossHealthbarDelay;
-
     private bool _startTimer;
     private bool _hasShownNamePlate;
     public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)

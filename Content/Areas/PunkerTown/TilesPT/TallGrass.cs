@@ -1,16 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.Grass;
-using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
-using Terraria;
+﻿using Stellamod.Core.Grass;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 {
     public class TallGrass : GrassProfile
     {
-        private UnifiedRandom _random;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -35,7 +29,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
             if (h % 2 == 0)
                 return ModContent.GetInstance<TallerGrass>();
-       
+
             return base.GetVariantProfile(i, j);
         }
     }

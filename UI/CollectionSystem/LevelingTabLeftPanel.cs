@@ -75,7 +75,6 @@ public class LevelTabStatsPanel : UIPanel
     private void DrawStatAmounts(SpriteBatch spriteBatch)
     {
         float yOffset = 220;
-        float xOffset = 20;
         float offsetDist = 28;
         for (int i = 0; i < LevelingPlayer.stats.Length; i++)
         {

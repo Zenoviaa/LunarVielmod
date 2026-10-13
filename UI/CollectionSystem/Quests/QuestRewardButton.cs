@@ -13,8 +13,6 @@ namespace Stellamod.UI.CollectionSystem.Quests
     public class QuestRewardButton : UIPanel
     {
         private UIText _text;
-        
-        private readonly float _scale = 1f;
         public QuestRewardButton()
         {
             float scale = 1f;

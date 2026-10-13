@@ -11,10 +11,6 @@ namespace Stellamod.Content.Washes;
 public class WashShaderData : ArmorShaderData
 {
     public Vector3[] colors;
-    public WashShaderData(Ref<Effect> shader, string passName)
-        : base(shader, passName)
-    {
-    }
     public WashShaderData(Asset<Effect> shader, string passName)
         : base(shader, passName)
     {

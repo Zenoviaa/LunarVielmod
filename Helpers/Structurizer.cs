@@ -36,6 +36,7 @@ namespace Stellamod.Helpers
                 return ReadRectangle(stream);
             } catch(KeyNotFoundException ex)
             {
+                Mod.Logger.Error(ex);
                 return Rectangle.Empty;
             }
 
@@ -62,6 +63,7 @@ namespace Stellamod.Helpers
             }
             catch (KeyNotFoundException ex)
             {
+                Mod.Logger.Error(ex);
                 return Rectangle.Empty;
             }
         }
@@ -774,7 +776,6 @@ namespace Stellamod.Helpers
             string FromMod = reader.ReadString();
             FromMod = Mod.Name;
             string Name = reader.ReadString();
-            Mod m = null;
             if (Mod.TryFind<ModTile>(Name, out ModTile modTile))
             {
                 return modTile.Type;

@@ -214,17 +214,7 @@ public class DeadTree : ModTile
 
     private void DrawBranches(int i, int j, SpriteBatch spriteBatch)
     {
-        Vector2 pos2 = (new Vector2(i + 1, j) + VeilGen.TileAdj) * 16;
-        Color color2 = Lighting.GetColor(i, j);
-        _random.SetSeed(i + j);
-        SpriteEffects flip = 0;
-        if (_random.NextBool(2))
-        {
-            flip = SpriteEffects.FlipHorizontally;
-        }
 
-        bool drawBranch = _random.NextBool(4);
-        Vector2 branchoffset = new Vector2(-2, 0);
     }
 
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)

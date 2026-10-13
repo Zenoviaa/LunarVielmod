@@ -7,7 +7,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Movements
     public class OutwardMovement : BaseMovement
     {
         NPC target;
-        int afterImgCancelDrawCount = 0;
         int TimerSpeed = 0;
 
         Vector2 endPoint;
@@ -16,7 +15,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Movements
         Vector2 initialPos;
         Vector2 wantedEndPoint;
         bool initialization = false;
-        float AoERadiusSquared = 36000;//it's squared for less expensive calculations
         public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
         float t = 0;
 
@@ -83,7 +81,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Movements
             endPoint = endPoint.MoveTowards(wantedEndPoint, 16);
             if (t > 1)
             {
-                afterImgCancelDrawCount++;
+
             }
             else if (target != null)
             {

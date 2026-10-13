@@ -127,13 +127,14 @@ namespace Stellamod.WorldG
         {
             int num731 = 50;
             progress.Message = Lang.gen[22].Value;
-            bool floridaStyle = false;
             bool floridaStyle2 = false;
             var genRand = WorldGen.genRand;
             if (genRand.Next(4) == 0)
             {
                 if (genRand.Next(2) == 0)
-                    floridaStyle = true;
+                {
+
+                }
                 else
                     floridaStyle2 = true;
             }
@@ -259,7 +260,7 @@ namespace Stellamod.WorldG
                                 WorldGen.PlaceTile(num746, num748, TileID.Sand);
                             }
 
-                            Main.tile[num746, num748].WallType = 0;
+                            Main.tile[num746, num748].WallType = WallID.None;
                         }
                     }
                 }

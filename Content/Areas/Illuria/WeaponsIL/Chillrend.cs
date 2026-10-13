@@ -48,7 +48,6 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         private BlackFireShader _blackFireShader;
         private NPCSucker _npcSucker;
         private bool _hit;
-      private FireTrailRenderer _fireTrailRenderer;
         public override void DefineCombo()
         {
             base.DefineCombo();

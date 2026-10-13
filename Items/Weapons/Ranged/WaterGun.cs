@@ -1,18 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.CommonMaterials;
-using Stellamod.Helpers;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Dusts;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Content.Dusts;
 namespace Stellamod.Items.Weapons.Ranged
 {
     public class WaterGun : ClassSwapItem
     {
-        private int _index;
         private int _comboCounter;
         public override DamageClass AlternateClass => DamageClass.Magic;
         public override void SetClassSwappedDefaults()

@@ -1,6 +1,4 @@
-﻿using Stellamod.Buffs;
-using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Mage;
+﻿using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Thrown;
 using System.Collections.Generic;
 using Terraria;
@@ -103,7 +101,7 @@ namespace Stellamod.NPCs.Town
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 18;
             NPC.height = 40;
-            NPC.aiStyle = 7;
+            NPC.aiStyle = NPCAIStyleID.Passive;
             NPC.damage = 90;
             NPC.defense = 420;
             NPC.lifeMax = 5000;

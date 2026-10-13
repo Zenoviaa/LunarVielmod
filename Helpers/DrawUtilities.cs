@@ -1,14 +1,9 @@
 ﻿using ReLogic.Content;
-using Stellamod.Common.Shaders;
-using Stellamod.Core;
 using Stellamod.Core.ZTileSystem;
 using System;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 
 namespace Stellamod.Helpers;
@@ -99,7 +94,7 @@ public static class DrawUtilities
     public static short[] PrepareIndicesForDrawingWrappedAround(int length)
     {
         int connectIndex = 0;
-         short[] indicesSpan = new short[length * 6 ];
+        short[] indicesSpan = new short[length * 6];
         int vertexCount = length * 4;
         for (int i = 0; i < indicesSpan.Length; i += 6)
         {
@@ -194,7 +189,7 @@ public static class DrawUtilities
     public static VertexPositionColorTexture[] PrepareSimpleTrailing(
         Vector2[] oldPos,
         Func<float, Color> colorFunc,
-        Func<float, float> widthFunc, 
+        Func<float, float> widthFunc,
         Vector2? offset = null)
     {
 
@@ -228,7 +223,7 @@ public static class DrawUtilities
             return new VertexPositionColorTexture[4];
 
 
-//        Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+        //        Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
         return TrailVertexHelper.FillVertexArray(oldPos, colorFunc, widthFunc, trailOffset);
     }
     public static VertexPositionColorTexture[] PreparedWrappedTrailing(
@@ -246,7 +241,7 @@ public static class DrawUtilities
 
         if (oldPos.Length <= 2)
             return new VertexPositionColorTexture[4];
-              
+
 
         //        Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
         return TrailVertexHelper.FillVertexArrayWrapped(oldPos, colorFunc, widthFunc, trailOffset);
@@ -265,7 +260,7 @@ public static class DrawUtilities
         float xPosition = Main.rand.Next(-(int)(Main.screenWidth * 0.52f), (int)(Main.screenWidth * 0.52f));
         float yPosition = Main.rand.NextFloat(-Main.screenHeight * 0.52f, 0);
         Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
-        return pos; 
+        return pos;
     }
 
     public static Vector2 CalculateScreenOffset(Rectangle drawLocation, float scale = 1f)
@@ -296,7 +291,7 @@ public static class DrawUtilities
                     continue;
 
                 prevAddedPoint = cur;
-     
+
                 prunedPoints.Add(cur);
             }
 
@@ -330,7 +325,7 @@ public static class DrawUtilities
             }
 
         }
-        if(prunedPoints.Count > 0)
+        if (prunedPoints.Count > 0)
             prunedPoints.Add(prunedPoints[0]);
         return prunedPoints.ToArray();
 
@@ -345,7 +340,7 @@ public static class DrawUtilities
     {
         int currentIndex = (int)MathF.Floor(lerpValue * colors.Length) % colors.Length;
         int nextIndex = (currentIndex + 1) % colors.Length;
-        float stepSize = 1f / (float)colors.Length;
+        float stepSize = 1f / colors.Length;
 
         Color currentColor = colors[currentIndex];
         Color nextColor = colors[nextIndex];
@@ -373,12 +368,8 @@ public static class DrawUtilities
 
     public static void IncreaseHueBy(ref Color color, float value)
     {
-        float h, s, v;
-
         Vector3 hsv = RgbToHsv(color.R, color.G, color.B);
         hsv.X += value;
-
-        float r, g, b;
 
         Vector3 rgb = HsvToRgb(hsv);
 
@@ -398,18 +389,18 @@ public static class DrawUtilities
         float min, max, delta;
         min = Math.Min(Math.Min(r, g), b);
         max = Math.Max(Math.Max(r, g), b);
-        hsv.Z = max;         
+        hsv.Z = max;
         delta = max - min;
         if (max != 0)
         {
-            hsv.Y = delta / max;     
+            hsv.Y = delta / max;
 
             if (r == max)
-                hsv.X = (g - b) / delta;      
+                hsv.X = (g - b) / delta;
             else if (g == max)
-                hsv.X = 2 + (b - r) / delta; 
+                hsv.X = 2 + (b - r) / delta;
             else
-                hsv.X = 4 + (r - g) / delta;   
+                hsv.X = 4 + (r - g) / delta;
             hsv.X *= 60;
             if (hsv.X < 0)
                 hsv.X += 360;
@@ -440,10 +431,10 @@ public static class DrawUtilities
             r = g = b = v;
             return new Vector3(r, g, b);
         }
-        h /= 60;          
+        h /= 60;
 
         i = (int)h;
-        f = h - i;     
+        f = h - i;
         p = v * (1 - s);
         q = v * (1 - s * f);
         t = v * (1 - s * (1 - f));
@@ -474,7 +465,7 @@ public static class DrawUtilities
                 g = p;
                 b = v;
                 break;
-            default:    
+            default:
                 r = v;
                 g = p;
                 b = q;
@@ -486,10 +477,10 @@ public static class DrawUtilities
     public static Vector2[] InterpolateBetweenPoints(Vector2 start, Vector2 end, float numPoints)
     {
         Vector2[] points = new Vector2[(int)numPoints];
-        for(int i = 0; i < points.Length; i++)
+        for (int i = 0; i < points.Length; i++)
         {
             ref Vector2 p = ref points[i];
-            p = Vector2.Lerp(start, end, (float)i / (float)points.Length);
+            p = Vector2.Lerp(start, end, i / (float)points.Length);
         }
         return points;
     }
@@ -498,7 +489,7 @@ public static class DrawUtilities
         for (int i = 0; i < points.Length; i++)
         {
             ref Vector2 p = ref points[i];
-            p = Vector2.Lerp(start, end, (float)i / (float)points.Length);
+            p = Vector2.Lerp(start, end, i / (float)points.Length);
         }
     }
     public static void DrawSpriteAfterImage(SpriteBatch spriteBatch, Projectile projectile, Color startColor, Color endColor, float alpha)
@@ -515,7 +506,7 @@ public static class DrawUtilities
             Vector2 pos = oldPos[i] + o;
             spriteDrawer.rotation = oldRot[i];
             spriteDrawer.worldPosition = pos;
-            float ratio = (float)i / (float)oldPos.Length;
+            float ratio = i / (float)oldPos.Length;
             spriteDrawer.color = Color.Lerp(startColor, endColor, ratio) * alpha;
             spriteBatch.Draw(spriteDrawer);
         }
@@ -530,7 +521,8 @@ public static class DrawUtilities
             ref Vector2 particle = ref particles[i];
             particle = oldPos[i];
             particle = DrawUtilities.WorldToScreenCoordinates(particle, worldRectangle);
-        };
+        }
+        ;
         return (particles);
     }
 
@@ -612,15 +604,15 @@ public static class DrawUtilities
     public static Vector2 WorldToScreenCoordinates(Vector2 worldPos)
     {
         Vector2 screenPos = new Vector2();
-        screenPos.X = (worldPos.X - Main.screenPosition.X) / (float)Main.screenWidth;
-        screenPos.Y = (worldPos.Y - Main.screenPosition.Y) / (float)Main.screenHeight;
+        screenPos.X = (worldPos.X - Main.screenPosition.X) / Main.screenWidth;
+        screenPos.Y = (worldPos.Y - Main.screenPosition.Y) / Main.screenHeight;
         return screenPos;
     }
     public static Vector2 WorldToScreenCoordinates(Vector2 worldPos, Rectangle worldDrawRect)
     {
         Vector2 screenPos = new Vector2();
-        screenPos.X = (worldPos.X - worldDrawRect.X) / (float)worldDrawRect.Width;
-        screenPos.Y = (worldPos.Y - worldDrawRect.Y) / (float)worldDrawRect.Height;
+        screenPos.X = (worldPos.X - worldDrawRect.X) / worldDrawRect.Width;
+        screenPos.Y = (worldPos.Y - worldDrawRect.Y) / worldDrawRect.Height;
         return screenPos;
     }
     public static void DrawScreenRectangle(this SpriteBatch sb, Color? overrideColor = null)
@@ -684,7 +676,7 @@ public static class SpriteBatchExtensions
     {
         parameters = spriteBatch.Parameters;
         spriteBatch.End();
-   
+
     }
 
     extension(SpriteBatch spriteBatch)
@@ -726,7 +718,7 @@ public static class SB
             starter.sortMode = SpriteSortMode.Deferred;
             starter.depthStencilState = DepthStencilState.None;
             starter.effect = null!;
-            starter.matrix =Matrix.identity;
+            starter.matrix = Matrix.identity;
             starter.rasterizerState = Main.Rasterizer;
             return starter;
         }
@@ -812,7 +804,7 @@ public static class SpritebatchDrawExtensions
         public SpritebatchDrawer Drawer => SpritebatchDrawer.FromProjectile(projectile);
     }
 }
-
+#nullable enable
 public struct SpritebatchContext : IDisposable
 {
     private SpritebatchParams? _oldParameters;
@@ -915,7 +907,7 @@ public struct SpritebatchStarter :
         EndAndTryResume(_spriteBatch!);
     }
 }
-
+#nullable disable
 /// <summary>  
 /// Helper struct for using the spritebatch to draw things
 /// </summary>

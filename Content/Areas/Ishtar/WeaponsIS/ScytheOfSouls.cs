@@ -32,7 +32,6 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
 
     public class ScytheOfSoulsSlash : BaseSwingProjectileV2
     {
-        private bool _playedSound;
         public override void DefineCombo()
         {
             base.DefineCombo();
@@ -330,7 +329,6 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
             }
         }
 
-        Vector2 DrawOffset;
         float alphaCounter = 7;
         public override bool PreDraw(ref Color lightColor)
         {
@@ -341,10 +339,10 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
 
 
             Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;
-            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Vector2.Zero - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Vector2.Zero - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Vector2.Zero - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Vector2.Zero - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(05f * alphaCounter), (int)(65f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
 
 
             Main.instance.LoadProjectile(Projectile.type);

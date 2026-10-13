@@ -52,7 +52,7 @@ public class MiniPistol : BaseGun
     {
         Item.ArmorPenetration = 15;
         float rot = velocity.ToRotation();
-        float spread = 0.4f;
+  
         muzzleOrigin = new Vector2(68, 9);
         Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
         Item.useTime = (int)MathHelper.Lerp(4, 32, MathHelper.Clamp((float)(remainingAmmo - 75) / 25, 0f, 1f));

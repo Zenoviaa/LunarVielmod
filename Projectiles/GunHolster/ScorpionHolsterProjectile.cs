@@ -43,8 +43,6 @@ namespace Stellamod.Projectiles.GunHolster
         private float ExecTime => MiniGun.AttackSpeed / Owner.GetTotalAttackSpeed(Projectile.DamageType);
         private float HideTime => MiniGun.AttackSpeed / Owner.GetTotalAttackSpeed(Projectile.DamageType) / 2;
         private Player Owner => Main.player[Projectile.owner];
-
-        private float ShootTimer;
         private float Timer
         {
             get => Projectile.ai[0];

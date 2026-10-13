@@ -22,10 +22,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         List<Vector2[]> LightningPos;
         bool[] NodesThatDied;
 
-        int FrameTick;
-        int FrameCounter;
-
-
         public override void SetDefaults()
         {
             Projectile.width = 16;

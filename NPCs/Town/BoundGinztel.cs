@@ -1,17 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.TriggersSystem.Triggers;
-using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Core.TriggersSystem.Triggers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
@@ -31,7 +23,7 @@ namespace Stellamod.NPCs.Town
             NPC.dontTakeDamage = true;
             NPC.width = 32;
             NPC.height = 48;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
             NPC.damage = 0;
             NPC.defense = 25;
             NPC.DeathSound = new SoundStyle($"Stellamod/Assets/Sounds/ItemHarvested");  // The sound the NPC will make when it dies.

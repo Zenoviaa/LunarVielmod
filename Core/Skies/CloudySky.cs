@@ -10,11 +10,8 @@ namespace Stellamod.Core.Skies
     {
         private Vector2 _parallax;
         private Vector2 _lastCameraPos;
-        private float _strength;
-        private float _windSpeed;
 
-        public float Strength { get => _strength; }
-        public float Fogginess { get; set; }
+        private float _windSpeed;
 
         public override void Activate(Vector2 position, params object[] args)
         {
@@ -26,8 +23,7 @@ namespace Stellamod.Core.Skies
 
         }
 
-        public override bool IsActive() =>
-            _strength > 0.001f && !Main.gameMenu;
+        public override bool IsActive() => !Main.gameMenu;
 
         public override void Reset()
         {

@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets.Biomes;
+﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Projectiles;
 using Terraria;
@@ -30,7 +29,7 @@ namespace Stellamod.NPCs.RoyalCapital
             NPC.noTileCollide = true;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.aiStyle = 10;
+            NPC.aiStyle = NPCAIStyleID.CursedSkull;
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

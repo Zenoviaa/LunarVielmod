@@ -33,7 +33,6 @@ namespace Stellamod.Projectiles.Steins
             Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
         }
 
-        private static float _orbitingOffset;
         public override bool? CanCutTiles()
         {
             return false;
@@ -90,7 +89,7 @@ namespace Stellamod.Projectiles.Steins
             float degreesBetweenFirefly = 360 / (float)minionCount;
             float degrees = degreesBetweenFirefly * minionIndex;
             float circleDistance = 96f;
-            Vector2 circlePosition = owner.Center + new Vector2(circleDistance, 0).RotatedBy(MathHelper.ToRadians(degrees + _orbitingOffset));
+            Vector2 circlePosition = owner.Center + new Vector2(circleDistance, 0).RotatedBy(MathHelper.ToRadians(degrees));
             return circlePosition;
         }
 

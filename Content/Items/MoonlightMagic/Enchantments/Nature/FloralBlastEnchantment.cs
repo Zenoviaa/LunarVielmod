@@ -37,7 +37,6 @@ public class FloralBlastEnchantment : BaseEnchantment
 
 public class FloralBlastEnchantmentExplosion : BaseExplosionProjectile
 {
-    int trailMode;
     int rStart = 4;
     public override void SetStaticDefaults()
     {
@@ -68,21 +67,7 @@ public class FloralBlastEnchantmentExplosion : BaseExplosionProjectile
     protected override Color ColorFunction(float p)
     {
         //Main color of the beam
-        Color c;
-        switch (trailMode)
-        {
-            default:
-            case 0:
-                c = Color.Lerp(Color.White, new Color(147, 252, 121) * 0.5f, p);
-                break;
-            case 1:
-                c = Color.Lerp(Color.White, new Color(147, 252, 121) * 0f, p);
-                break;
-            case 2:
-                c = Color.White;
-                c.A = 0;
-                break;
-        }
+        Color c = Color.Lerp(Color.White, new Color(147, 252, 121) * 0.5f, p);
 
         return c;
     }

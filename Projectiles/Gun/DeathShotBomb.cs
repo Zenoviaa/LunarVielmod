@@ -37,7 +37,6 @@ namespace Stellamod.Projectiles.Gun
         }
 
         private Vector2 ProjectilePos;
-        private Vector2 alphaPos;
         public override void AI()
         {
             var EntitySource = Projectile.GetSource_FromThis();

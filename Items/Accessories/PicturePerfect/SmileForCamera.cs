@@ -61,10 +61,6 @@ namespace Stellamod.Items.Accessories.PicturePerfect
             Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
             Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
         }
-
-        private float _attackCounter;
-
-
         public override void AI()
         {
             Player owner = Main.player[Projectile.owner];

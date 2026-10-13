@@ -8,7 +8,6 @@ namespace Stellamod.Projectiles.Swords.Altride
     public class MooningProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
-        bool Moved;
         Vector2 StartVelocity;
         public override void SetStaticDefaults()
         {

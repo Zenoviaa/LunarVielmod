@@ -15,17 +15,6 @@ namespace Stellamod.Items.Accessories
         public override bool CanEquipAccessory(Player player, int slot, bool modded)
         {
             return true;
-            Item itemToSwapWith = player.armor[slot];
-            if (itemToSwapWith.IsAir)
-                return true;
-            if (itemToSwapWith.ModItem is AbstractDashItem)
-                return true;
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-            if (dashPlayer.DashAugmentEquipped)
-            {
-                return false;
-            }
-            return true;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

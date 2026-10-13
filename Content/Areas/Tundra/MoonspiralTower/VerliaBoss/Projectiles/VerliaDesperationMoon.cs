@@ -25,7 +25,6 @@ public class VerliaDesperationMoon : ModProjectile
     private ref float ShootFlash => ref Projectile.ai[2];
     private NPC Parent => Main.npc[parentIndex];
     private float _growthCount;
-    private float _shootFlash;
     private float _scale;
     private float _flashAlpha;
     private float _magicCircleAlpha;

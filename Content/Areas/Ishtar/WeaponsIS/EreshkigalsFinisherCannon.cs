@@ -1,4 +1,5 @@
-﻿using ReLogic.Content;
+﻿
+using ReLogic.Content;
 using ReLogic.Utilities;
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
@@ -831,6 +832,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
     private void AI_Shoot()
     {
         Hold();
+#nullable enable
         _shootTimer++;
         if (_shootTimer == 1)
         {
@@ -839,6 +841,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
                 result.Stop();
             }
         }
+#nullable disable
         if (_shootTimer == 1)
             _recoil = 1;
         if (this.OwnedByLocalClient())

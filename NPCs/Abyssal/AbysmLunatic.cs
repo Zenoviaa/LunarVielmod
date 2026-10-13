@@ -45,7 +45,7 @@ namespace Stellamod.NPCs.Abyssal
             NPC.buffImmune[BuffID.ShadowFlame] = true;
             NPC.alpha = 60;
             NPC.knockBackResist = .75f;
-            NPC.aiStyle = 14;
+            NPC.aiStyle = NPCAIStyleID.Bat;
             NPC.alpha = 0;
             NPC.noGravity = true;
         }

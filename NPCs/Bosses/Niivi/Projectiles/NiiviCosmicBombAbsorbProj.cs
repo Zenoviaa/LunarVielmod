@@ -27,7 +27,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
         }
 
-        private int DrawMode;
         private bool SpawnDustCircle;
 
         //Trailing
@@ -119,29 +118,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             float endExplosionScale = 0f;
             float easedProgess = Easing.OutCirc(Progress);
             float scale = MathHelper.Lerp(startExplosionScale, endExplosionScale, easedProgess);
-            switch (DrawMode)
-            {
-                default:
-                case 0:
-                    return Projectile.scale * scale * width * Easing.SpikeInOutCirc(Progress);
-                case 1:
-                    return Projectile.scale * width * 2.2f * Easing.SpikeInOutCirc(Progress);
-
-            }
+            return Projectile.scale * scale * width * Easing.SpikeInOutCirc(Progress);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            switch (DrawMode)
-            {
-                default:
-                case 0:
-                    //Front Trail
-                    return Color.Transparent;
-                case 1:
-                    //Back Trail
-                    return Color.Transparent;
-            }
+            return Color.Transparent;
         }
     }
 }

@@ -7,7 +7,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Movements
     {
         float distance = 8;
         int rotationalSpeed = 4;
-        float t = 0;
         bool initialized = false;
         Vector2 initialSpeed = Vector2.Zero;
         int TimerSpeed = 0;

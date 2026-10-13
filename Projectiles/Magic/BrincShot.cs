@@ -35,7 +35,6 @@ namespace Stellamod.Projectiles.Magic
             Projectile.tileCollide = true;
         }
 
-        private bool Moved;
         private float alphaCounter = 0;
         public override void AI()
         {

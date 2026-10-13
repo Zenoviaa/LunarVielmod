@@ -25,7 +25,6 @@ public class ZTileBrowserWindow : UIPanel
 {
     private UIScrollbar _scrollbar;
     private ZTileBrowserMenu _inventoryMenu;
-    private ItemBrowserTabMenu _tabMenu;
     private UIInputTextField _textBox;
     static ZTileBrowserWindow()
     {
@@ -84,11 +83,6 @@ public class ZTileBrowserWindow : UIPanel
         {
             SoundEngine.PlaySound(SoundID.MenuClose);
         }
-    }
-
-    public void ResetCategories()
-    {
-        _tabMenu.SetCategory(null);
     }
 
     private void SetPos()

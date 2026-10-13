@@ -2,8 +2,6 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -17,7 +15,6 @@ public class GoldenScarab : ModProjectile,
     IDrawToRenderTarget
 {
     private Asset<Texture2D> _goldenAuraTextureAsset;
-    private float _hitCount;
     private enum AIState
     {
         Summon,
@@ -54,7 +51,7 @@ public class GoldenScarab : ModProjectile,
     {
         base.AI();
 
-        Projectile.scale = EasingFunction.InOutSine((float)Projectile.timeLeft / 60f);
+        Projectile.scale = EasingFunction.InOutSine(Projectile.timeLeft / 60f);
         Main.projFrames[Type] = 8;
         switch (State)
         {
@@ -74,7 +71,7 @@ public class GoldenScarab : ModProjectile,
     private void AI_Summon()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundStyle summonSound = new SoundStyle("Stellamod/Assets/Sounds/HeatFeather") with { PitchVariance = 0.4f };
             SoundEngine.PlaySound(summonSound, Projectile.position);
@@ -82,7 +79,7 @@ public class GoldenScarab : ModProjectile,
         Projectile.velocity.X *= 0.9f;
         Projectile.velocity.Y = MathHelper.Lerp(-5f, 0f, EasingFunction.InOutExpo(Timer / 30f));
         Projectile.rotation = 0;
-        if(Timer >= 30)
+        if (Timer >= 30)
         {
             SwitchState(AIState.Chase);
         }
@@ -93,7 +90,7 @@ public class GoldenScarab : ModProjectile,
         Timer++;
 
         NPC nearest = NPCHelper.FindClosestNPC(Projectile.Center, 1024);
-        if(nearest != null)
+        if (nearest != null)
         {
             float targetRotation = (Projectile.velocity.ToRotation() + MathHelper.PiOver2);
             Projectile.rotation = Utils.AngleLerp(Projectile.rotation, targetRotation, 0.1f);
@@ -114,7 +111,7 @@ public class GoldenScarab : ModProjectile,
             dp.outerColor = Color.Goldenrod;
         }
 
-        if(nearest == null)
+        if (nearest == null)
         {
             Projectile.velocity.X *= 0.9f;
             float targetY = MathF.Sin(Timer * 0.05f) * 0.2f;
@@ -126,7 +123,7 @@ public class GoldenScarab : ModProjectile,
         {
             Vector2 velToTarget = (nearest.Center - Projectile.Center);
             velToTarget = velToTarget.SafeNormalize(Vector2.Zero) * 25;
-            Projectile.velocity = Projectile.velocity.MoveTowards(velToTarget,MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 30f)));
+            Projectile.velocity = Projectile.velocity.MoveTowards(velToTarget, MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 30f)));
         }
     }
     private void BoomEffect()
@@ -146,7 +143,7 @@ public class GoldenScarab : ModProjectile,
     private void AI_Bounce()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             BoomEffect();
         }
@@ -172,14 +169,14 @@ public class GoldenScarab : ModProjectile,
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
-        if(State != AIState.Bounce)
+        if (State != AIState.Bounce)
         {
             Projectile.velocity *= -2;
             SwitchState(AIState.Bounce);
         }
-        
+
         SoundStyle hitSound = AssetRegistry.Sounds.Magic.HolyCast1 with { PitchVariance = 0.6f };
-       SoundStyle hitSound2 = AssetRegistry.Sounds.Magic.HolyCast2 with { PitchVariance = 0.6f };
+        SoundStyle hitSound2 = AssetRegistry.Sounds.Magic.HolyCast2 with { PitchVariance = 0.6f };
         switch (Main.rand.Next(2))
         {
             default:
@@ -200,7 +197,7 @@ public class GoldenScarab : ModProjectile,
         auraDrawer.scale *= 0.8f;
         for (float f = 0; f < MathHelper.TwoPi; f += 0.4f)
         {
-            Vector2 offset = (f+Main.GlobalTimeWrappedHourly).ToRotationVector2() * ExtraMath.Osc(3f, 5f);
+            Vector2 offset = (f + Main.GlobalTimeWrappedHourly).ToRotationVector2() * ExtraMath.Osc(3f, 5f);
             auraDrawer.worldPosition = Projectile.Center + offset;
             auraDrawer.color = Color.Goldenrod * ExtraMath.Osc(0.2f, 0.5f, speed: 3) * Projectile.scale * 0.12f;
             auraDrawer.color.A = 0;
@@ -209,13 +206,13 @@ public class GoldenScarab : ModProjectile,
         }
 
         SpritebatchDrawer afDrawer = SpritebatchDrawer.FromProjectile(Projectile);
-        for(int k = 0; k < Projectile.oldPos.Length; k++)
+        for (int k = 0; k < Projectile.oldPos.Length; k++)
         {
             afDrawer.worldPosition = Projectile.oldPos[k] + Projectile.Size * 0.5f;
             afDrawer.rotation = Projectile.oldRot[k];
-            afDrawer.color = Color.White * 0.02f * MathHelper.Lerp(1f, 0f, (float)k / (float)Projectile.oldPos.Length);
+            afDrawer.color = Color.White * 0.02f * MathHelper.Lerp(1f, 0f, k / (float)Projectile.oldPos.Length);
             afDrawer.color.A = 0;
-         
+
             Main.spriteBatch.Draw(afDrawer);
         }
 

@@ -101,10 +101,6 @@ public class STARNADO : ModProjectile,
     private Color GetTrailColor(float completionRatio)
     {
         return Color.White;
-        Color trailColor = Color.Lerp(Color.Gold, Color.DarkOrange, EasingFunction.QuadraticBump(completionRatio));
-        float alpha = EasingFunction.QuadraticBump(completionRatio);
-        trailColor *= alpha;
-        return trailColor;
     }
     private float GetTrailWidth(float completionRatio)
     {
