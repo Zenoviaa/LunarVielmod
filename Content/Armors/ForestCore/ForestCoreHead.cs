@@ -173,7 +173,7 @@ public class ForestCoreDrawLayer : PlayerDrawLayer
     {
         var position = drawInfo.Center - Main.screenPosition;
         position = new Vector2((int)position.X, (int)position.Y);
-        position.Y += 8;
+        position.Y += 12;
 
         var texAsset = AssetReferences.Content.Armors.ForestCore.ForestTail.Asset;
         Rectangle bodyFrame = drawInfo.drawPlayer.legFrame;
@@ -182,9 +182,9 @@ public class ForestCoreDrawLayer : PlayerDrawLayer
       //  position.X -= 6;
         float rotation = yOsc * MathHelper.ToRadians(5) + ExtraMath.Osc(-0.05f, 0.05f) - 0.06f;
         SpriteEffects spriteEffects = drawInfo.drawPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        var origin = new Vector2(44, 22);
+        var origin = new Vector2(30, 15);
         if (drawInfo.drawPlayer.direction == -1)
-            origin.X = 40 - origin.X;
+            origin.X = 30 - origin.X;
 
         var drawData = new DrawData(
             texAsset.Value,
