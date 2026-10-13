@@ -182,9 +182,9 @@ public class ForestCoreDrawLayer : PlayerDrawLayer
       //  position.X -= 6;
         float rotation = yOsc * MathHelper.ToRadians(5) + ExtraMath.Osc(-0.05f, 0.05f) - 0.06f;
         SpriteEffects spriteEffects = drawInfo.drawPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        var origin = new Vector2(39, 22);
+        var origin = new Vector2(44, 22);
         if (drawInfo.drawPlayer.direction == -1)
-            origin.X = 40 - 35;
+            origin.X = 40 - origin.X;
 
         var drawData = new DrawData(
             texAsset.Value,
