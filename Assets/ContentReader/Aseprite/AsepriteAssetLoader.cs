@@ -32,7 +32,7 @@ internal class AsepriteAssetLoader : ModSystem
             if (NPCSets.UseAseprite[i])
             {
                 ModNPC modNpc = ModContent.GetModNPC(i);
-                string texture = $"{modNpc.GetType().Namespace}.{modNpc.Name}".Replace('.', '/');
+                string texture = $"Stellamod/Assets/Textures/NPC/{modNpc.Name}";
                 AsepriteAssets.Npc[i] = ModContent.Request<AseSprite>(texture);
             }
         }
