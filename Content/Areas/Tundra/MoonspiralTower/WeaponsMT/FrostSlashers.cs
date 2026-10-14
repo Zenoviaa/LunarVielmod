@@ -239,7 +239,7 @@ public class FrostSlashersBoom : ModProjectile
         if (Timer == 1)
         {
             var parendineHitSound = AssetRegistry.Sounds.Melee.Parendine;
-            parendineHitSound.Volume = 0.3f;
+            parendineHitSound.Volume = 1f;
             parendineHitSound.PitchVariance = 0.2f;
             SoundEngine.PlaySound(parendineHitSound, Projectile.Center);
 

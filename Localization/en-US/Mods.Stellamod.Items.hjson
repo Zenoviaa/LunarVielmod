@@ -12302,7 +12302,7 @@ CheckpointBell: {
 }
 
 FrostSlashers: {
-	BasicSlash: "Roll forward and spin your knives around you, then unleash a flurry of quick strikes!"
+	BasicSlash: Roll forward and spin your knives around you, then unleash a flurry of quick strikes!
 	StaminaSlash: Throws 3 frosty knives, if all three connect, it explodes into a powerful ice explosion!
 	DisplayName: Frost Slashers
 	Tooltip: ""
