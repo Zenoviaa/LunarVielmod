@@ -1,11 +1,25 @@
-﻿using Terraria.DataStructures;
+﻿using Stellamod.Common.StaminaSystem;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.IO;
+using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
 namespace Stellamod.Core.Utilities;
 
 public static class UIUtils
 {
+    public static string GetStaminaIconString(in int staminaCost)
+    {
+        var s = "";
+        var type = ModContent.ItemType<StaminaBerry>();
+        for (int p = 0; p < staminaCost; p++)
+        {
+            s += $"[i:{type}]";
+        }
+        return s;
+    }
+
     public static void DrawBuffStacksOverlay(SpriteBatch spriteBatch, int buffIndex, BuffDrawParams drawParams, int stacks)
     {
         ChatManager.DrawColorCodedStringWithShadow(

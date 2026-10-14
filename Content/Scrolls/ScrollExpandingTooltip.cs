@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Tooltips;
+﻿using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -8,6 +9,7 @@ namespace Stellamod.Content.Scrolls;
 
 public class ScrollExpandingTooltip : AbstractExpandingTooltip
 {
+    public override ExpandableTooltipPriority Priority => ExpandableTooltipPriority.VeryLate;
     public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
     {
         if (item.TryGetGlobalItem<ScrollGlobalItem>(out var scroll) is false)
@@ -23,12 +25,12 @@ public class ScrollExpandingTooltip : AbstractExpandingTooltip
         line.OverrideColor = Color.GreenYellow;
         lines.Add(line);
 
-        line = new TooltipLine(Mod, "ScrollStaminaSlash", LangText.Item(ScrollAbilities.scrollsToContentTemplates[scroll.scroll].ModItem, "Tooltip"));
-        lines.Add(line);
 
-        line = new TooltipLine(Mod, "ScrollStaminaCost", LangText.Common("StaminaCost",
-            ScrollAbilities.GetStaminaCost(scroll.scroll)));
-        line.OverrideColor = Color.Goldenrod;
+        var staminaAttack = LangText.Item(ScrollAbilities.scrollsToContentTemplates[scroll.scroll].ModItem, "Tooltip");
+
+        var staminaCost = ScrollAbilities.GetStaminaCost(scroll.scroll);
+        var staminaEffect = $"{UIUtils.GetStaminaIconString(staminaCost)}{staminaAttack}";
+        line = new TooltipLine(Mod, "ScrollStaminaSlash", staminaEffect);
         lines.Add(line);
     }
 }

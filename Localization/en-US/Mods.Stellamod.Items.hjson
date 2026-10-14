@@ -12307,3 +12307,8 @@ FrostSlashers: {
 	DisplayName: Frost Slashers
 	Tooltip: ""
 }
+
+StaminaBerry: {
+	DisplayName: Stamina Berry
+	Tooltip: ""
+}

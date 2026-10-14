@@ -6,6 +6,7 @@ using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using Stellamod.UI.CollectionSystem;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,20 +17,30 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
+using Terraria.WorldBuilding;
 using TerrariaHooks;
 
 namespace Stellamod.Core.Tooltips
 {
+    public enum ExpandableTooltipPriority : byte
+    {
+        VeryEarly,
+        Early,
+        Late,
+        VeryLate
+    }
     /// <summary>
     /// Implement this interface to add an expandable tooltip to an item!
     /// </summary>
     public interface IExpandableTooltip
     {
+        public virtual ExpandableTooltipPriority Priority => ExpandableTooltipPriority.VeryEarly;
         void ModifyExpandableTooltips(Item item, List<TooltipLine> lines);
     }
 
     public abstract class AbstractExpandingTooltip : GlobalItem, IExpandableTooltip
     {
+        public virtual ExpandableTooltipPriority Priority => ExpandableTooltipPriority.VeryEarly;
         public abstract void ModifyExpandableTooltips(Item item, List<TooltipLine> lines);
     }
 
@@ -74,9 +85,10 @@ namespace Stellamod.Core.Tooltips
                 return;
 
             ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
-            for (int i = 0; i < renderer.ExpandableTooltips.Length; i++)
+            var tooltips = renderer.ExpandableTooltips;
+            for (int i = 0; i < tooltips.Length; i++)
             {
-                IExpandableTooltip expandableTooltip = renderer.ExpandableTooltips[i];
+                IExpandableTooltip expandableTooltip = tooltips[i];
                 expandableTooltip.ModifyExpandableTooltips(item, _expandableLines);
             }
             if (item.headSlot == -1 && item.bodySlot == -1 && item.legSlot == -1)
@@ -179,6 +191,7 @@ namespace Stellamod.Core.Tooltips
             {
                 modifiers.Add(item);
             }
+            modifiers.Sort((x, y) => x.Priority.CompareTo(y.Priority));
             ExpandableTooltips = modifiers.ToArray();
         }
 

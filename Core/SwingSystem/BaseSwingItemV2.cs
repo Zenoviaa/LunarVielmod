@@ -42,24 +42,15 @@ namespace Stellamod.Core.SwingSystem
                 line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + swingItem.meleeWeaponType.ToString()));
                 line.OverrideColor = Color.GreenYellow;
                 lines.Add(line);
-
-
             }
+
             if (item.ModItem is IStaminaAttack staminaAttack)
             {
                 line = new TooltipLine(Mod, "BasicSlash", staminaAttack.BasicEffectLocalizedText);
                 lines.Add(line);
 
-                line = new TooltipLine(Mod, "StaminaSlash", staminaAttack.StaminaEffectLocalizedText);
-                if (noStamina)
-                {
-                    line.OverrideColor = noStaminaColor;
-                }
-                lines.Add(line);
-
-                line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost",
-                    staminaAttack.StaminaCost.ToString()));
-                line.OverrideColor = Color.Goldenrod;
+                var staminaEffect = $"{UIUtils.GetStaminaIconString(staminaAttack.StaminaCost)}{staminaAttack.StaminaEffectLocalizedText}";
+                line = new TooltipLine(Mod, "StaminaSlash", staminaEffect);
                 if (noStamina)
                 {
                     line.OverrideColor = noStaminaColor;
