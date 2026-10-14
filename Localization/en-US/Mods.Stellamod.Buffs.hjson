@@ -1260,15 +1260,15 @@ WinterBornSlippery: {
 
 MagicalPull: {
 	DisplayName: Magical Pull
-	Description: Mods.Stellamod.Buffs.MagicalPull.Description
+	Description: Get back down here!
 }
 
 MarkedforIceI: {
 	DisplayName: Markedfor Ice I
-	Description: Mods.Stellamod.Buffs.MarkedforIceI.Description
+	Description: It's getting chilly...
 }
 
 MarkedforIceII: {
-	DisplayName: Markedfor Ice I I
-	Description: Mods.Stellamod.Buffs.MarkedforIceII.Description
+	DisplayName: Markedfor Ice II
+	Description: It's getting REALLY chilly...
 }
