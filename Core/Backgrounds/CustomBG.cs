@@ -168,7 +168,8 @@ public static class BackgroundHelper
         //  baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
         Color drawColor = baseColor * alpha;
 
-        Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        //view size scales with zoom scaling, by factoring this in the texture will always wrap much more than whatever your adapter is
+        Rectangle drawRect = new Rectangle(0, 0, (int)Main.ViewSize.X, (int)Main.ViewSize.Y);
         for (int i = numBackgrounds; i >= 0; i--)
         {
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
