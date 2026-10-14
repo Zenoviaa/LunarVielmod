@@ -39,7 +39,7 @@ namespace Stellamod.Items.Insources
     {
         public override int GetAddedTime()
         {
-            return 60 * 20;
+            return 60 * 30;
         }
 
         public override void UseInsource(FlaskPlayer flaskPlayer)
