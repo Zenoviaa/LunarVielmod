@@ -13,7 +13,7 @@ public class KindCompass : ModItem
         base.SetDefaults();
         Item.width = 16;
         Item.height = 16;
-        Item.rare = ItemRarityID.Green;
+        Item.rare = ModContent.RarityType<ShopRarity>();
         Item.accessory = true;
     }
 

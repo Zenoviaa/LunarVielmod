@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -139,25 +140,22 @@ namespace Stellamod.Content.Armors.Alcalite
                 DrawHelper.DrawAdditiveAfterImage(Projectile, StarColor, Color.Transparent, ref lightColor);
             }
 
-            return true;
+            var drawer = Projectile.Drawer;
+            Main.spriteBatch.Draw(drawer);
+            return false;
         }
 
         public override void PostDraw(Color lightColor)
         {
-            string glowTexture = "Stellamod/Projectiles/Magic/IlluriaStarProjWhite";
-            Texture2D whiteTexture = ModContent.Request<Texture2D>(glowTexture).Value;
-
-            Vector2 textureSize = new Vector2(18, 18);
-            Vector2 drawOrigin = textureSize / 2;
-
+            var glowDrawer = Projectile.Drawer;
             //Lerping
             float whiteTime = (Lifetime / 2);
             float progress = WhiteTimer / whiteTime;
             Color drawColor = Color.Lerp(Color.White, Color.Transparent, progress);
-            Vector2 drawPosition = Projectile.position - Main.screenPosition + drawOrigin;
-
-
-            Main.spriteBatch.Draw(whiteTexture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+            drawColor.A = 0;
+            glowDrawer.color = drawColor;
+            Main.spriteBatch.Draw(glowDrawer);
+            Main.spriteBatch.Draw(glowDrawer);
         }
 
         public override void OnKill(int timeLeft)
@@ -171,7 +169,10 @@ namespace Stellamod.Content.Armors.Alcalite
                 DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
                 spawnParams.outerColor = StarColor;
                 spawnParams.scaleRange *= 0.5f;
-                DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
+                var dp = DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
+                dp.dampening = 0.05f;
+                dp.fast = true;
+                dp.innerColor = Color.Lerp(Color.White, StarColor, 0.5f);
             }
         }
     }

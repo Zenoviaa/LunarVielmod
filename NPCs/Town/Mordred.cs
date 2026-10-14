@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.GooberDialogue;
+using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,8 @@ public class Mordred : VeilTownNPC
         npcShop.AddShopItem<IronBow>(5);
         npcShop.AddShopItem<GildedStaff>(5);
         npcShop.AddShopItem<DogBone>(5);
+        npcShop.AddShopItem<PrimeRing>(5);
+        npcShop.AddShopItem<KindCompass>(5);
         npcShop.Register();
     }
 

@@ -10,6 +10,7 @@ public class PrimeRing : ModItem
     public override void SetDefaults()
     {
         Item.DefaultToAccessory();
+        Item.rare = ModContent.RarityType<ShopRarity>();
     }
 
     public override void UpdateAccessory(Player player, bool hideVisual)
