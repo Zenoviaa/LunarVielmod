@@ -1264,11 +1264,11 @@ MagicalPull: {
 }
 
 MarkedforIceI: {
-	DisplayName: Markedfor Ice I
+	DisplayName: Marked for Ice I
 	Description: It's getting chilly...
 }
 
 MarkedforIceII: {
-	DisplayName: Markedfor Ice II
+	DisplayName: Marked for Ice II
 	Description: It's getting REALLY chilly...
 }
