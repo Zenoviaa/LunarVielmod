@@ -1,6 +1,6 @@
 SpringTabletXixianFlask: {
 	Title: The Xixian Flask
-	Message: At the top of your screen you have a flask that acts as a [c/FFA500:reusable healing potion!] You can customize the effects of the flask by putting in i[c/FFA500:nsources, and then use it with the assigned keybind.] Try opening your inventory and taking a look!
+	Message: At the top of your screen you have a flask that acts as a [c/FFA500:reusable healing potion!] You can customize the effects of the flask by putting in [c/FFA500:insources, and then use it with the assigned keybind.] Try opening your inventory and taking a look!
 }
 
 SpringTabletDash: {

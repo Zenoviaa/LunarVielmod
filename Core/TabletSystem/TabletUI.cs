@@ -1,13 +1,10 @@
 ﻿using ReLogic.Content;
-using Stellamod.Common.UI;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
@@ -17,16 +14,12 @@ public class TabletUI : UIPanel
 {
     public int RelativeLeft => Main.screenWidth / 2 - (int)Width.Pixels / 2;
     public int RelativeTop => Main.screenHeight / 2 - (int)Height.Pixels / 2;
-
-    public Asset<Texture2D> TabletCardTexture;
     public Asset<Texture2D> InnerTexture;
     public UIText Title;
-    public CommonBackButton backButton;
     public Color TabletColor;
     public string helpText;
     public TabletUI() : base()
     {
-        TabletCardTexture = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/TabletCard");
         Title = new UIText("This is placeholder text", large: true);
     }
 
@@ -41,14 +34,11 @@ public class TabletUI : UIPanel
         BackgroundColor = Color.Transparent;
         BorderColor = Color.Transparent;
         Title.HAlign = 0.5f;
-        Title.Top.Pixels = 16;
+        Title.Top.Pixels = 18;
         Title.TextColor = TabletColor;
         Append(Title);
 
-        backButton = new CommonBackButton(ModContent.GetInstance<TabletUISystem>().CloseUI);
-        backButton.asXButton = true;
-        backButton.Left.Pixels = Width.Pixels - 48;
-        Append(backButton);
+
     }
 
 
@@ -75,6 +65,7 @@ public class TabletUI : UIPanel
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
+        var TabletCardTexture = AssetReferences.Assets.Textures.UI.TabletCard.Asset;
         //  base.DrawSelf(spriteBatch);
         CalculatedStyle dimensions = GetDimensions();
         Point point = new Point((int)dimensions.X, (int)dimensions.Y);
@@ -89,6 +80,6 @@ public class TabletUI : UIPanel
         spriteBatch.Draw(TabletCardTexture.Value, drawRectangle, null, backingColor);
         Vector2 textPosition = drawRectangle.BottomLeft();
         ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, helpText,
-               textPosition + new Vector2(24, -120) * 1f, Color.White, 0f, Vector2.Zero, Vector2.One, Width.Pixels - 54, 1f);
+               textPosition + new Vector2(32, -130) * 1f, Color.White, 0f, Vector2.Zero, Vector2.One, Width.Pixels - 80, 1f);
     }
 }

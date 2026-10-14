@@ -1,13 +1,9 @@
 ﻿using ReLogic.Content;
-using Stellamod.Common.UI;
 using Stellamod.Core.Rendering.RTs;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -192,9 +188,9 @@ public class TabletUISystem : BaseUISystem
                         SpriteBatch spriteBatch = Main.spriteBatch;
                         spriteBatch.EndOut(out var parameters);
                         using var uiTarget = RT.Context(RenderTargets.ScreenTarget);
-                        using(RT.Clear(uiTarget, Color.Transparent))
+                        using (RT.Clear(uiTarget, Color.Transparent))
                         {
-                            using(new SpritebatchContext(spriteBatch, parameters))
+                            using (new SpritebatchContext(spriteBatch, parameters))
                             {
                                 _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                             }
@@ -202,7 +198,7 @@ public class TabletUISystem : BaseUISystem
 
                         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
 
-                        Vector2 offset = Vector2.Lerp(-Vector2.UnitX * 100, Vector2.Zero, EasingFunction.OutSine(_alpha));
+                        Vector2 offset = Vector2.Lerp(-Vector2.UnitY * 100, Vector2.Zero, EasingFunction.OutSine(_alpha));
                         Color color = Color.Lerp(Color.Transparent, Color.White, _alpha);
                         spriteBatch.Draw(uiTarget, offset, color);
 
