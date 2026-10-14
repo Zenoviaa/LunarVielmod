@@ -52,6 +52,7 @@ namespace Stellamod.Core.Bases
             }
         }
 
+       
         public ComboBuilder AddChakramSpin(float duration = 30, float xSwingRadius = 64, float ySwingRadius = 64, float swingDegrees = 480, int hitCount = 2)
         {
             _swings.Add(new OvalSwing
@@ -284,6 +285,30 @@ namespace Stellamod.Core.Bases
     }
     public static class SwingV2Helper
     {
+        public static SoundStyle LightSlashSound()
+        {
+            SoundStyle slashSound = new SoundStyle();
+            var rand = Main.rand.Next(4);
+            switch (rand)
+            {
+                default:
+                case 0:
+                    slashSound = AssetReferences.Assets.Sounds.Melee.SlashQuick1.Asset;
+                    break;
+                case 1:
+                    slashSound = AssetReferences.Assets.Sounds.Melee.SlashQuick2.Asset;
+                    break;
+                case 2:
+                    slashSound = AssetReferences.Assets.Sounds.Melee.SlashQuick3.Asset;
+                    break;
+                case 3:
+                    slashSound = AssetReferences.Assets.Sounds.Melee.SlashQuick4.Asset;
+                    break;
+            }
+            slashSound = slashSound with { PitchVariance = 0.6f, Volume = 0.4f };
+            return slashSound;
+        }
+
         public static void AddHammerSwingStyle(ISwingProjectile swings)
         {
 

@@ -1262,3 +1262,13 @@ MagicalPull: {
 	DisplayName: Magical Pull
 	Description: Mods.Stellamod.Buffs.MagicalPull.Description
 }
+
+MarkedforIceI: {
+	DisplayName: Markedfor Ice I
+	Description: Mods.Stellamod.Buffs.MarkedforIceI.Description
+}
+
+MarkedforIceII: {
+	DisplayName: Markedfor Ice I I
+	Description: Mods.Stellamod.Buffs.MarkedforIceII.Description
+}
