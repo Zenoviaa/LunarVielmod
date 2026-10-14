@@ -1,4 +1,4 @@
-﻿using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Common.StaminaSystem;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -16,7 +16,7 @@ namespace Stellamod.Content.Areas.Shop.AccShop
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             base.UpdateAccessory(player, hideVisual);
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             dashPlayer.ExtraImmunityFramesBonus += 3;
         }
     }

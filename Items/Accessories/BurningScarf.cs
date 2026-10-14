@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Accessories.Players;
+using Stellamod.Common.StaminaSystem;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -65,7 +65,7 @@ namespace Stellamod.Items.Accessories
             base.UpdateAccessory(player, hideVisual);
 
             //Just gonna make your dash go a lil' farther
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             dashPlayer.DashVelocity += 3;
         }
     }

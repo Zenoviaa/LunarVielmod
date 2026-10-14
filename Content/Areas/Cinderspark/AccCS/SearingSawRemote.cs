@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -54,12 +54,12 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
         public override void Load()
         {
             base.Load();
-            DashPlayer.OnUseStamina += TriggerSaw;
+            StaminaNDashPlayer.OnUseStamina += TriggerSaw;
         }
         public override void Unload()
         {
             base.Unload();
-            DashPlayer.OnUseStamina -= TriggerSaw;
+            StaminaNDashPlayer.OnUseStamina -= TriggerSaw;
         }
         private void TriggerSaw(Player player, int staminaUsed)
         {

@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
@@ -11,7 +12,6 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
 using System;
@@ -363,7 +363,7 @@ public class TheIrradiaspearP : ModProjectile,
 
     public override void AI()
     {
-        Owner.GetModPlayer<DashPlayer>().noRecharge = true;
+        Owner.GetModPlayer<StaminaNDashPlayer>().noRecharge = true;
         FlashTimer -= 0.02f;
         if (FlashTimer <= 0)
             FlashTimer = 0;

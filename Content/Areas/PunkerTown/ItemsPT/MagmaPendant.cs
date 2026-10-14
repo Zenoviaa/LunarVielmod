@@ -1,5 +1,5 @@
-﻿using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
-using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,6 +17,6 @@ public class MagmaPendant : ModItem
     {
         base.UpdateAccessory(player, hideVisual);
         player.GetModPlayer<GothiviaPlayer>().maxStacks++;
-        player.GetModPlayer<DashPlayer>().doubleStaminaCost = true;
+        player.GetModPlayer<StaminaNDashPlayer>().doubleStaminaCost = true;
     }
 }

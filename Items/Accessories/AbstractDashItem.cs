@@ -1,4 +1,4 @@
-﻿using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Common.StaminaSystem;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -22,7 +22,7 @@ namespace Stellamod.Items.Accessories
 
             //This class should be inherited to prevent multiple dash augments from being equipped, 
             //These things are gonna be powerful so
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             dashPlayer.DashAugmentEquipped = true;
             dashPlayer.DashItems.Add(this);
         }

@@ -5,10 +5,7 @@ using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Core.Utilities;
-using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Projectiles.IgniterExplosions.Stein;
 using Stellamod.Projectiles.Steins;
@@ -111,7 +108,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
                     _end = _start + Projectile.velocity.SafeNormalize(Vector2.Zero) * 128;
                     Projectile.netUpdate = true;
                 }
-                for(int i = 0; i < 2; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     var sp = SparkleParticle.Spawn(Owner.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 32, Scale: 0.66f);
                     sp.Velocity = sp.Velocity.RotatedByRandom(MathHelper.ToRadians(8));
@@ -149,7 +146,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         {
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float ratio = (float)(i + 1) / (float)Projectile.oldPos.Length;
+                float ratio = (i + 1) / (float)Projectile.oldPos.Length;
                 SpritebatchDrawer fadeDrawer = SpritebatchDrawer.FromProjectile(Projectile);
                 fadeDrawer.worldPosition = Projectile.oldPos[i] + Projectile.Size * 0.5f;
                 fadeDrawer.color = Color.Lerp(Color.White, Color.Transparent, ratio) * 0.3f;
@@ -218,7 +215,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
                 }
             }
 
-            if(Timer == 8)
+            if (Timer == 8)
             {
                 for (int i = 0; i < 64; i++)
                 {
@@ -243,7 +240,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
                 }
             }
 
-            if(Timer < 25)
+            if (Timer < 25)
             {
 
                 player.itemTime = 2;
@@ -305,43 +302,43 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
                 switch (Main.rand.Next(7))
                 {
                     case 0:
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(),
                             (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
                         break;
                     case 1:
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                         break;
                     case 2:
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                         break;
                     case 3:
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                         break;
                     case 4:
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                         break;
                     case 5:
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(),
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                         break;
 
                     case 6:
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), 
-                            (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(), 
-                            (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(),
+                            Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(),
+                            Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
                         break;
 
 
@@ -361,7 +358,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
                 switch (Main.rand.Next(3))
                 {
                     case 0:
-                        target.SimpleStrikeNPC(Projectile.damage , 1, crit: false, Projectile.knockBack);
+                        target.SimpleStrikeNPC(Projectile.damage, 1, crit: false, Projectile.knockBack);
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Freidhit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
 
@@ -411,7 +408,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         }
         public float WidthFunction(float completionRatio)
         {
-            return 124 * MathHelper.SmoothStep(1f, 0f, Timer / (float)SwingTime);
+            return 124 * MathHelper.SmoothStep(1f, 0f, Timer / SwingTime);
         }
         public float WidthFunction2(float completionRatio)
         {
@@ -432,7 +429,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             Vector2[] array = new Vector2[64];
             for (int i = 0; i < array.Length; i++)
             {
-                float ratio = (float)i / (float)array.Length;
+                float ratio = i / (float)array.Length;
                 ref Vector2 point = ref array[i];
                 point = Vector2.Lerp(_originalPosition, Projectile.Center, ratio);
             }
@@ -451,7 +448,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             Vector2[] array = new Vector2[64];
             for (int i = 0; i < array.Length; i++)
             {
-                float ratio = (float)i / (float)array.Length;
+                float ratio = i / (float)array.Length;
                 ref Vector2 point = ref array[i];
                 point = Vector2.Lerp(_originalPosition, Projectile.Center, ratio);
             }

@@ -1,9 +1,9 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.Areas.Illuria.WeaponsIL;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -95,12 +95,12 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
         public override void Load()
         {
             base.Load();
-            DashPlayer.OnDash += On_Dash;
+            StaminaNDashPlayer.OnDash += On_Dash;
         }
         public override void Unload()
         {
             base.Unload();
-            DashPlayer.OnDash -= On_Dash;
+            StaminaNDashPlayer.OnDash -= On_Dash;
         }
 
         private void On_Dash(Player player)
@@ -118,7 +118,7 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
                 return;
             if (!hasIllikenSetBonus)
                 return;
-            DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = Player.GetModPlayer<StaminaNDashPlayer>();
             Player.AddBuff(ModContent.BuffType<IllikenIceFury>(), 60);
             Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<IllikenIceBlast>(), 50, 1, Player.whoAmI);
 

@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.CommonMaterials;
@@ -9,7 +10,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -447,7 +447,7 @@ public class MoonramPlayer : ModPlayer
         base.PostUpdateMiscEffects();
         if (!hasMoonramShield)
             return;
-        DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
+        StaminaNDashPlayer dashPlayer = Player.GetModPlayer<StaminaNDashPlayer>();
         dashPlayer.DashVelocity += 7;
         dashPlayer.DashDuration += 6;
         if (Player.whoAmI != Main.myPlayer)
@@ -469,7 +469,7 @@ public class MoonramPlayer : ModPlayer
 
     public void Ram(NPC npc)
     {
-        DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
+        StaminaNDashPlayer dashPlayer = Player.GetModPlayer<StaminaNDashPlayer>();
 
         Rectangle playerRectangle = Player.getRect();
         Rectangle npcRectangle = npc.getRect();

@@ -1,5 +1,5 @@
-﻿using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -35,7 +35,7 @@ namespace Stellamod.Items.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             base.UpdateAccessory(player, hideVisual);
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             dashPlayer.DashVelocity += 15;
             dashPlayer.extraStaminaCost++;
             dashPlayer.ExtraImmunityFramesBonus += 1;

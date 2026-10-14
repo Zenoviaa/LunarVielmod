@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Accessories.Players;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
@@ -76,7 +76,7 @@ namespace Stellamod.Content.Areas.Shop.AccShop
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             base.UpdateAccessory(player, hideVisual);
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             dashPlayer.ExtraImmunityFramesBonus += 3;
         }
     }

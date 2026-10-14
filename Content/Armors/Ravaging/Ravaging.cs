@@ -1,6 +1,6 @@
 ﻿using Stellamod.Common.ArmorRework;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.Gores;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -125,7 +125,7 @@ namespace Stellamod.Content.Armors.Ravaging
             base.PostUpdateMiscEffects();
             if (!hasRavagingSetBonus)
                 return;
-            DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = Player.GetModPlayer<StaminaNDashPlayer>();
             dashPlayer.DashVelocity += 7;
             dashPlayer.DashDuration += 6;
             if (Player.whoAmI != Main.myPlayer)

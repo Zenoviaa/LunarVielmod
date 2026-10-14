@@ -1,8 +1,8 @@
 ﻿using Stellamod.Common.GunSystem;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.Scrolls;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Tooltips;
-using Stellamod.Items.Accessories.Players;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -163,7 +163,7 @@ namespace Stellamod.Core.SwingSystem
             var proj = ModContent.GetModProjectile(type);
             if (proj is BaseSwingProjectileV2)
             {
-                DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+                StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
                 SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
                 int combo = comboPlayer.StaminaComboCounter;
                 int dir = comboPlayer.ComboDirection;
@@ -188,6 +188,16 @@ namespace Stellamod.Core.SwingSystem
         {
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
         }
+        public override bool CanUseItem(Player player)
+        {
+            StaminaNDashPlayer comboPlayer = player.GetModPlayer<StaminaNDashPlayer>();
+            if (player.altFunctionUse == 2 && !comboPlayer.CanConsume(staminaCost))
+            {
+                return false;
+            }
+
+            return base.CanUseItem(player);
+        }
         public override bool AltFunctionUse(Player player)
         {
             return true;
@@ -195,14 +205,14 @@ namespace Stellamod.Core.SwingSystem
 
         public sealed override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
             if (player.altFunctionUse == 2)
             {
                 if (dashPlayer.CanConsume(staminaCost))
                 {
                     dashPlayer.Consume(staminaCost);
-                    player.GetModPlayer<DashPlayer>().StaminaEffects(player);
+                    player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
                     ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
                 }
 

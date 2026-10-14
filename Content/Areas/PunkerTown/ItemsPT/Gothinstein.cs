@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Particles;
 using Stellamod.Common.RarityRendering;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Content.Dusts;
@@ -10,7 +11,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Effects.GothinFlames;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Projectiles.IgniterExplosions.Stein;
 using Stellamod.Projectiles.Steins;
@@ -708,7 +708,7 @@ public class GothFist : ModProjectile
         if (!Bounced)
         {
             PixelPrimitiveCircleFactory.CreateGothInwardBoom(target.Center);
-            player.GetModPlayer<DashPlayer>().DashCount += 3;
+            player.GetModPlayer<StaminaNDashPlayer>().DashCount += 3;
             player.velocity = Projectile.DirectionTo(oldMouseWorld) * -17f;
             Bounced = true;
 

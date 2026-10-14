@@ -1,7 +1,7 @@
-﻿using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Players;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,7 @@ public class BackstepTalisman : AbstractDashItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         base.UpdateAccessory(player, hideVisual);
-        DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+        StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
         dashPlayer.extraStaminaCost -= 1;
         dashPlayer.DashDuration -= 30;
         dashPlayer.noRoll = true;

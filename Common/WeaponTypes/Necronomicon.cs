@@ -4,12 +4,12 @@ using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -262,7 +262,7 @@ namespace Stellamod.Common.WeaponTypes
             if (isNecronomicon)
             {
             
-                DashPlayer comboPlayer = player.GetModPlayer<DashPlayer>();
+                StaminaNDashPlayer comboPlayer = player.GetModPlayer<StaminaNDashPlayer>();
   
                 if (comboPlayer.DashCount >= necronomiconStaminaCost && player.ownedProjectileCounts[ModContent.ProjectileType<NecronomiconHold>()] == 0)
                     return true;
@@ -276,9 +276,9 @@ namespace Stellamod.Common.WeaponTypes
             
             if (isNecronomicon)
             {
-                player.GetModPlayer<DashPlayer>().Consume(necronomiconStaminaCost);
+                player.GetModPlayer<StaminaNDashPlayer>().Consume(necronomiconStaminaCost);
                         Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<NecronomiconHold>(), damage, knockback, player.whoAmI);
-                player.GetModPlayer<DashPlayer>().StaminaEffects(player);
+                player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
                 return false;
             }
             return base.Shoot(item, player, source, position, velocity, type, damage, knockback);

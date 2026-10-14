@@ -1,7 +1,7 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Core.Particles;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -127,7 +127,7 @@ public class DeadEye : AbstractDashItem
         p2.fadeToColor = Color.DarkRed;
         p2.Scale *= 0.45f;
 
-        if (_timer >= player.GetModPlayer<DashPlayer>().DashDuration / 2)
+        if (_timer >= player.GetModPlayer<StaminaNDashPlayer>().DashDuration / 2)
         {
             player.velocity *= 0.86f;
         }
@@ -137,7 +137,7 @@ public class DeadEye : AbstractDashItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         base.UpdateAccessory(player, hideVisual);
-        DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+        StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
         dashPlayer.DashDuration /= 4;
     }
 }

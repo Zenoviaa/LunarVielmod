@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.Players;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Explosions;
 using System.Collections.Generic;
 using Terraria;
@@ -68,10 +68,10 @@ namespace Stellamod.Core.Bases
         public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             ComboPlayer comboPlayer = player.GetModPlayer<ComboPlayer>();
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             comboPlayer.ComboWaitTime = comboWaitTime;
             dashPlayer.Consume(Special_Move_Cost);
-            player.GetModPlayer<DashPlayer>().StaminaEffects(player);
+            player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
             int combo = comboPlayer.StaminaComboCounter;
             if (combo >= maxStaminaCombo)
                 combo = 0;
@@ -97,7 +97,7 @@ namespace Stellamod.Core.Bases
         {
             ModifySwing(ref meleeWeaponType, ref comboWaitTime, ref maxCombo, ref maxStaminaCombo, ref staminaProjectileShoot);
             ComboPlayer comboPlayer = player.GetModPlayer<ComboPlayer>();
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             if (player.altFunctionUse == 2 && dashPlayer.CanConsume(Special_Move_Cost))
             {
                 ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);

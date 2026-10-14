@@ -1,6 +1,6 @@
-﻿using Stellamod.Common.XixianFlaskSystem;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Accessories.Players;
 
 namespace Stellamod.Items.Insources;
 
@@ -13,7 +13,7 @@ public class StaminaInsource : InsourceItem
     public override void UseInsource(FlaskPlayer flaskPlayer)
     {
         base.UseInsource(flaskPlayer);
-        flaskPlayer.Player.GetModPlayer<DashPlayer>().DashCount++;
+        flaskPlayer.Player.GetModPlayer<StaminaNDashPlayer>().DashCount++;
     }
 
     public override void AddRecipes()

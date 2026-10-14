@@ -1,6 +1,6 @@
-﻿using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -49,12 +49,12 @@ public class IvythornShurikenPlayer : ModPlayer
     public override void Load()
     {
         base.Load();
-        DashPlayer.OnStaminaEffects += TriggerSaw;
+        StaminaNDashPlayer.OnStaminaEffects += TriggerSaw;
     }
     public override void Unload()
     {
         base.Unload();
-        DashPlayer.OnStaminaEffects -= TriggerSaw;
+        StaminaNDashPlayer.OnStaminaEffects -= TriggerSaw;
     }
     private void TriggerSaw(Player player)
     {

@@ -1,6 +1,6 @@
-﻿using Stellamod.Core.Tooltips;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -68,11 +68,11 @@ public class ManaSphereGlobalItem : GlobalItem
             Projectile point = possibleSpawnPoints[Main.rand.Next(0, possibleSpawnPoints.Count)];
             Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), heldProj, 1, 1, player.whoAmI);
             point.Kill();
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             if (player.altFunctionUse == 2 && dashPlayer.CanConsume(staminaCost))
             {
                 dashPlayer.Consume(staminaCost);
-                player.GetModPlayer<DashPlayer>().StaminaEffects(player);
+                player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
                 type = staminaProj;
             }
 

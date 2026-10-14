@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -76,17 +76,27 @@ public abstract class BaseCrossbowItem : ModItem,
         return true;
     }
 
+    public override bool CanUseItem(Player player)
+    {
+        StaminaNDashPlayer comboPlayer = player.GetModPlayer<StaminaNDashPlayer>();
+        if (player.altFunctionUse == 2 && !comboPlayer.CanConsume(staminaCost))
+        {
+            return false;
+        }
+
+        return base.CanUseItem(player);
+    }
     public override bool? UseItem(Player player)
     {
         CrossbowPlayer crossbowPlayer = player.GetModPlayer<CrossbowPlayer>();
         if (player.altFunctionUse == 2)
         {
-            DashPlayer comboPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer comboPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             if (comboPlayer.CanConsume(staminaCost))
             {
                 crossbowPlayer.usingStamina = true; 
                 crossbowPlayer.takeAim = true;
-                player.GetModPlayer<DashPlayer>().StaminaEffects(player);
+                player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
                 return true;
             } else
             {
@@ -102,7 +112,7 @@ public abstract class BaseCrossbowItem : ModItem,
 
     public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
-        DashPlayer comboPlayer = player.GetModPlayer<DashPlayer>();
+        StaminaNDashPlayer comboPlayer = player.GetModPlayer<StaminaNDashPlayer>();
         comboPlayer.Consume(staminaCost);
       
         Projectile.NewProjectile(source, position, velocity, type, damage, knockback,

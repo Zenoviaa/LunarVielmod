@@ -2,6 +2,7 @@
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.ShockCircleSystem;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
@@ -9,7 +10,6 @@ using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Trailing;
 using System.Collections.Generic;
 using Terraria;
@@ -334,7 +334,7 @@ public class CurlistineStaminaSwing : BaseSwingProjectileV2
     public override void AI()
     {
         base.AI();
-        Owner.GetModPlayer<DashPlayer>().noRecharge = true;
+        Owner.GetModPlayer<StaminaNDashPlayer>().noRecharge = true;
         growScale = MathHelper.Lerp(0f, 0.1f, EasingFunction.QuadraticBump(Interpolant));
         outlineColor = Color.Lerp(Color.White, Color.Transparent, ExtraMath.Osc(0f, 1f, speed: 12));
         if(Timer == 1)

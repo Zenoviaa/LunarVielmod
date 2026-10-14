@@ -1,4 +1,4 @@
-﻿using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Common.StaminaSystem;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -15,7 +15,7 @@ public class HeartPendant : ModItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         base.UpdateAccessory(player, hideVisual);
-        player.GetModPlayer<DashPlayer>().DashRegenerationBonus += 0.1f;
-        player.GetModPlayer<DashPlayer>().MaxDashCount++;
+        player.GetModPlayer<StaminaNDashPlayer>().DashRegenerationBonus += 0.1f;
+        player.GetModPlayer<StaminaNDashPlayer>().MaxDashCount++;
     }
 }

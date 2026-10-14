@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
@@ -8,7 +9,6 @@ using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
 using System;
@@ -520,7 +520,7 @@ public class SwingalingCharge : ModProjectile
     public override void AI()
     {
         base.AI();
-        Owner.GetModPlayer<DashPlayer>().noRecharge = true;
+        Owner.GetModPlayer<StaminaNDashPlayer>().noRecharge = true;
         switch (State)
         {
             case 0:

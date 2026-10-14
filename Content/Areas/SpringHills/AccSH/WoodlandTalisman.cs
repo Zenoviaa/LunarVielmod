@@ -1,6 +1,6 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -38,7 +38,7 @@ public class WoodlandTalisman : AbstractDashItem
         }
 
         player.velocity.Y -= 0.8f;
-        if(_timer >= player.GetModPlayer<DashPlayer>().DashDuration / 2)
+        if(_timer >= player.GetModPlayer<StaminaNDashPlayer>().DashDuration / 2)
         {
             player.velocity.Y *= 0.96f;
         }
@@ -47,7 +47,7 @@ public class WoodlandTalisman : AbstractDashItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         base.UpdateAccessory(player, hideVisual);
-        DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+        StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
         dashPlayer.ExtraImmunityFramesBonus += 5;
         dashPlayer.DashCooldown += 30;
         player.jumpSpeedBoost += 0.05f;

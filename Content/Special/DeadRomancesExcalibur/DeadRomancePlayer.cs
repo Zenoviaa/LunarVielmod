@@ -1,4 +1,4 @@
-﻿using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Common.StaminaSystem;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -208,7 +208,7 @@ public class DeadRomancePlayer : ModPlayer
         hitParry = true;
         parryTimer = 0;
         parryStacks++;
-        Player.GetModPlayer<DashPlayer>().DashCount += 2;
+        Player.GetModPlayer<StaminaNDashPlayer>().DashCount += 2;
         Player.SetImmuneTimeForAllTypes(60);
         if (Player.whoAmI != Main.myPlayer)
         {

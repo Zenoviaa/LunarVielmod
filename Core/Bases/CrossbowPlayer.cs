@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Content;
-using Stellamod.Items.Accessories.Players;
+using Stellamod.Common.StaminaSystem;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -60,7 +60,7 @@ namespace Stellamod.Core.Bases
                 bool fireStaminaShot = usingStamina;
                 if (fireStaminaShot)
                 {
-                    DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
+                    StaminaNDashPlayer dashPlayer = Player.GetModPlayer<StaminaNDashPlayer>();
                     if (dashPlayer.CanConsume(crossbowItem.staminaCost))
                     {
                         dashPlayer.Consume(crossbowItem.staminaCost);

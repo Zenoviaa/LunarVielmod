@@ -2,11 +2,11 @@
 using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
@@ -344,13 +344,13 @@ public class ScrollGlobalItem : GlobalItem
     {
         if (scroll != ScrollAbility._None)
         {
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
             if (player.altFunctionUse == 2)
             {
                 if (dashPlayer.CanConsume(StaminaCost))
                 {
                     dashPlayer.Consume(StaminaCost);
-                    player.GetModPlayer<DashPlayer>().StaminaEffects(player);
+                    player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
                 }
                 else
                 {

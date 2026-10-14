@@ -3,6 +3,7 @@ using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.GooberDialogue;
 using Stellamod.Common.Players;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Common.WaypointSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
@@ -15,7 +16,6 @@ using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.TileOverlaySystem;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Town;
 using System;
@@ -177,7 +177,7 @@ namespace Stellamod
                     {
 
                         byte playernumber = reader.ReadByte();
-                        DashPlayer dashPlayer = Main.player[playernumber].GetModPlayer<DashPlayer>();
+                        StaminaNDashPlayer dashPlayer = Main.player[playernumber].GetModPlayer<StaminaNDashPlayer>();
                         dashPlayer.ReceivePlayerSync(reader);
 
                         if (Main.netMode == NetmodeID.Server)

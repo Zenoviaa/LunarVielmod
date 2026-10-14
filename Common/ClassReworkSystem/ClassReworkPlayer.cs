@@ -1,6 +1,6 @@
-﻿using Stellamod.Common.XixianFlaskSystem;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Core.ClassSelect;
-using Stellamod.Items.Accessories.Players;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -73,7 +73,7 @@ public class ClassReworkPlayer : ModPlayer
          */
 
 
-        DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
+        StaminaNDashPlayer dashPlayer = Player.GetModPlayer<StaminaNDashPlayer>();
         dashPlayer.DashVelocity += 3;
         dashPlayer.DashDuration += 1;
         dashPlayer.MaxDashCount += 1;
@@ -123,7 +123,7 @@ public class ClassReworkPlayer : ModPlayer
          * You get better dodging options, as well as using Runes, Chakrams and Orbs to empower your friends and attack your foes to keep them alive. 
          * +1 Summon, +1 Stamina +2 Insource Slots
          */
-        Player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
+        Player.GetModPlayer<StaminaNDashPlayer>().MaxDashCount += 1;
         FlaskPlayer flaskPlayer = Player.GetModPlayer<FlaskPlayer>();
         flaskPlayer.maxInsourceCount += 1;
         damageClass = DamageClass.Summon;

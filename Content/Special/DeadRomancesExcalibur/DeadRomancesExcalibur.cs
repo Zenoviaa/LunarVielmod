@@ -1,8 +1,8 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.DataStructures;
@@ -65,7 +65,7 @@ public class DeadRomancesExcalibur : BaseSwingItemV2
         {
             type = ModContent.ProjectileType<DeadRomancesExcaliburParrySlash>();
             damage *= 3;
-            player.GetModPlayer<DashPlayer>().DashCount += 2;
+            player.GetModPlayer<StaminaNDashPlayer>().DashCount += 2;
         }
 
         base.ShootSwingStamina(player, source, position, velocity, type, damage, knockback);

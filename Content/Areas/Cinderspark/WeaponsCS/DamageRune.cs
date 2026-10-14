@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.CommonMaterials;
@@ -7,7 +8,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;

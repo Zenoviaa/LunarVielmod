@@ -1,6 +1,6 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Common.XixianFlaskSystem;
-using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -49,7 +49,7 @@ public class RagingBeast : ModBuff
         base.Update(player, ref buffIndex);
         player.GetAttackSpeed(DamageClass.Generic) += 0.2f;
         player.GetDamage(DamageClass.Generic) += 0.2f;
-        player.GetModPlayer<DashPlayer>().DashRegenerationBonus += 0.5f;
+        player.GetModPlayer<StaminaNDashPlayer>().DashRegenerationBonus += 0.5f;
         if (Main.rand.NextBool(3))
         {
             var vel = Main.rand.NextVector2Circular(4, 4);

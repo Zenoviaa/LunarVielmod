@@ -1,5 +1,5 @@
-﻿using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,7 +19,7 @@ public class WaterproofHeadphones : ModItem
 
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
-        player.GetModPlayer<DashPlayer>().dashRestoreChance += 25;
+        player.GetModPlayer<StaminaNDashPlayer>().dashRestoreChance += 25;
     }
 
     public override void AddRecipes()

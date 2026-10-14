@@ -1,6 +1,6 @@
-﻿using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ public class SuperbootsPlayer : ModPlayer
 
         if (MathF.Abs(Player.velocity.X) + 0.5f >= Player.accRunSpeed)
         {
-            Player.GetModPlayer<DashPlayer>().DashRegenerationBonus += 0.5f;
+            Player.GetModPlayer<StaminaNDashPlayer>().DashRegenerationBonus += 0.5f;
             Player.lifeRegen *= 2;
             if (Main.GameUpdateCount % 8 == 0)
             {

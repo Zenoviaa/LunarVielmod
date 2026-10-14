@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
@@ -8,7 +9,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Projectiles.IgniterExplosions.Stein;
@@ -260,7 +260,7 @@ public class HultFist : ModProjectile
         if (!Bounced)
         {
 
-            player.GetModPlayer<DashPlayer>().DashCount += 3;
+            player.GetModPlayer<StaminaNDashPlayer>().DashCount += 3;
             player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
             Bounced = true;
 

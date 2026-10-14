@@ -1,6 +1,6 @@
-﻿using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Common.StaminaSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
-using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -23,7 +23,7 @@ public class IvynNecklace : ModItem
     public override void UpdateAccessory(Player player, bool hideVisual)
     {
         base.UpdateAccessory(player, hideVisual);
-        DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+        StaminaNDashPlayer dashPlayer = player.GetModPlayer<StaminaNDashPlayer>();
         dashPlayer.MaxDashCount += 1;
     }
 

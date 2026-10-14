@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.IgnitersNPowders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -192,7 +192,7 @@ namespace Stellamod.Common.ArmorReforge
                     player.aggro = (int)(player.aggro * 0.95f);
                     break;
                 case AccessoryReforgeType.Flashing:
-                    player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
+                    player.GetModPlayer<StaminaNDashPlayer>().MaxDashCount += 1;
                     break;
                 case AccessoryReforgeType.Powding:
                     player.GetModPlayer<IgniterPlayer>().extenderBonus += 0.1f;
@@ -400,7 +400,7 @@ namespace Stellamod.Common.ArmorReforge
                     player.GetDamage(DamageClass.Generic) -= 0.05f;
                     break;
                 case ArmorReforgeType.Shaded:
-                    player.GetModPlayer<DashPlayer>().DashVelocity *= 1.2f;
+                    player.GetModPlayer<StaminaNDashPlayer>().DashVelocity *= 1.2f;
                     player.GetDamage(DamageClass.Generic) -= 0.05f;
                     player.GetCritChance(DamageClass.Generic) -= 5f;
                     break;
@@ -441,11 +441,11 @@ namespace Stellamod.Common.ArmorReforge
                     break;
                 case ArmorReforgeType.Gilded:
                     player.GetDamage(DamageClass.Generic) -= 0.1f;
-                    player.GetModPlayer<DashPlayer>().DashVelocityBonus += 0.25f;
+                    player.GetModPlayer<StaminaNDashPlayer>().DashVelocityBonus += 0.25f;
                     break;
                 case ArmorReforgeType.Speeditrous:
                     player.statLifeMax2 -= 10;
-                    player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
+                    player.GetModPlayer<StaminaNDashPlayer>().MaxDashCount += 1;
                     break;
                 case ArmorReforgeType.Scripted:
                     player.statManaMax2 -= 30;
