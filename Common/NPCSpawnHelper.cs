@@ -36,7 +36,7 @@ public class SpawnSets : ModSystem
         AbyssWaterEnemy = new List<int>();
         AbyssCritter = new List<int>();
         AbyssTempleEnemy = new List<int>();
-   
+        UndergroundEnemy = new();
         base.SetupContent();
 
     }
@@ -47,6 +47,7 @@ public class SpawnSets : ModSystem
         ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
         TryNotToSpawnOnWater = NPCID.Sets.Factory.CreateBoolSet();
     }
+    public static List<int> UndergroundEnemy;
     public static List<int> SpringEnemy;
     public static List<int> HarmonicEnemy;
     public static List<int> MarshEnemy;
@@ -72,6 +73,10 @@ public static class NPCSpawnExtensions
     public static void PreferLand(this ModNPC npc)
     {
         NPCID.Sets.TryNotToSpawnOnWater[npc.Type] = true;
+    }
+    public static void AddToUnderground(this ModNPC npc)
+    {
+        SpawnSets.UndergroundEnemy.Add(npc.Type);
     }
 
 
