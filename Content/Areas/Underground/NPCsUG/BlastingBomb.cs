@@ -4,6 +4,7 @@ using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -99,6 +100,7 @@ public class BlastingBomb : ModNPC,
     }
 
     ref float BeepTime => ref NPC.ai[2];
+    ref float ThrowDirection => ref NPC.ai[3];
     float ExplosionDist => 196 * 196;
     int Damage_Boom => 30;
     float BlowTime => 60;
@@ -186,6 +188,14 @@ public class BlastingBomb : ModNPC,
     void AI_Idle()
     {
         Timer++;
+        if(ThrowDirection > 5)
+        {
+            var rot = (ThrowDirection - 10f);
+            var vel = rot.ToRotationVector2() * 10;
+            NPC.velocity = vel;
+            SwitchState(AIState.Ticking);
+        }
+
         NPC.TargetClosest();
 
         HandleRotation();
