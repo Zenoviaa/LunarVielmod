@@ -406,16 +406,20 @@ public class IvythornSlime : ModNPC,
         base.HitEffect(hit);
         if (Main.netMode == NetmodeID.Server)
             return;
-        //Create gores
-        for(var i = 0; i < Main.rand.Next(5, 8); i++)
+        if(NPC.life <= 0)
         {
-            var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
-            var vel = (pos - NPC.Center).Resize(Main.rand.NextFloat(8, 12));
-            vel.Y -= 4;
-            var gore = Mod.Find<ModGore>($"{Name}_Gore_{i}").Type;
-            Gore.NewGorePerfect(pos, vel, gore);
+            //Create gores
+            for (var i = 0; i < Main.rand.Next(5, 8); i++)
+            {
+                var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
+                var vel = (pos - NPC.Center).Resize(Main.rand.NextFloat(8, 12));
+                vel.Y -= 4;
+                var gore = Mod.Find<ModGore>($"{Name}_Gore_{i}").Type;
+                Gore.NewGorePerfect(pos, vel, gore);
+            }
+            CreateMagicalBurst();
         }
-        CreateMagicalBurst();
+
     }
 
 
