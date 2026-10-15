@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Pixelation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Underground.NPCsUG;
 
-public class BlastingManiac : ModNPC
+public class BlastingManiac : ModNPC,
+    IDrawToRenderTarget
 {
     enum AIState : byte
     {
@@ -113,7 +115,6 @@ public class BlastingManiac : ModNPC
         }
     }
 
-    
     void AI_Walk()
     {
         Timer++;
@@ -199,5 +200,22 @@ public class BlastingManiac : ModNPC
             this.MakeGore("_Gore_Arm", NPC.position + new Vector2(-5, 0), NPC.velocity + new Vector2(-5));
             this.MakeGore("_Gore_Butt", NPC.position + new Vector2(-8, -2), NPC.velocity + new Vector2(-3, 0));
         }
+    }
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        NPC.DrawAnimator(spriteBatch, drawColor);
+        return false;
+    }
+
+    public void DrawToRenderTargets()
+    {
+        if (!_outliner.VisibleEnough)
+            return;
+        void DrawOutline(SpriteBatch sb)
+        {
+            NPC.DrawAnimator(sb, _outliner.outlineColor);
+        }
+        OutlineRenderer.Queue(DrawOutline);
     }
 }

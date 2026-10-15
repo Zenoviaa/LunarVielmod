@@ -11,6 +11,7 @@ public static class NPCUtilities
     {
         public int MakeGore(string subPath, Vector2 position, Vector2 velocity, float scale = 1f)
         {
+            //TODO: remove the find call and cache the modgore types
             var path = $"{modNpc.Name}{subPath}";
             return Gore.NewGore(position, velocity, modNpc.Mod.Find<ModGore>(path).Type, scale);
         }
