@@ -195,13 +195,9 @@ public class BlastingManiac : ModNPC
             return;
         if(NPC.life <= 0)
         {
-            var headGore = Mod.Find<ModGore>($"{Name}_Gore_Top").Type;
-            var armGore = Mod.Find<ModGore>($"{Name}_Gore_Arm").Type;
-            var buttGore = Mod.Find<ModGore>($"{Name}_Gore_Butt").Type;
-
-            Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore);
-            Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(-5, 0), NPC.velocity + new Vector2(-5, -5), armGore);
-            Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(-8, -2), NPC.velocity + new Vector2(-3, 0), buttGore);
+            this.MakeGore("_Gore_Head", NPC.position, NPC.velocity);
+            this.MakeGore("_Gore_Arm", NPC.position + new Vector2(-5, 0), NPC.velocity + new Vector2(-5));
+            this.MakeGore("_Gore_Butt", NPC.position + new Vector2(-8, -2), NPC.velocity + new Vector2(-3, 0));
         }
     }
 }

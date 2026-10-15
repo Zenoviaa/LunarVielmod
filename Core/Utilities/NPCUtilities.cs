@@ -7,8 +7,18 @@ namespace Stellamod.Core.Utilities;
 
 public static class NPCUtilities
 {
+    extension(ModNPC modNpc)
+    {
+        public int MakeGore(string subPath, Vector2 position, Vector2 velocity, float scale = 1f)
+        {
+            var path = $"{modNpc.Name}{subPath}";
+            return Gore.NewGore(position, velocity, modNpc.Mod.Find<ModGore>(path).Type, scale);
+        }
+    }
     extension(NPC npc)
     {
+
+
 
         public Player PlayerImTargeting => Main.player[npc.target];
         /// <summary>
