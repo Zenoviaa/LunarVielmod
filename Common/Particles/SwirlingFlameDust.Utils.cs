@@ -8,6 +8,10 @@ public static partial class ParticleUtils
 {
     public record struct ParticleFactory(Vector2 start, Vector2 end, TriColorPalette palette, Vector2 scaleRange, Vector2 speedRange, int particleCount)
     {
+        public static ParticleFactory FromSmallBurst(Vector2 start, TriColorPalette palette, Vector2 speedRange)
+        {
+            return new ParticleFactory(start, start + new Vector2(0, -1), palette, new Vector2(0.5f, 1.2f), speedRange, 12);
+        }
         public static ParticleFactory FromSmallBurst(Vector2 start, Vector2 end, TriColorPalette palette, Vector2 speedRange)
         {
             return new ParticleFactory(start, end, palette, new Vector2(0.5f, 1.2f), speedRange, 12);

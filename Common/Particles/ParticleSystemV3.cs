@@ -59,6 +59,7 @@ public sealed class Particles : ModSystem
     public static readonly RoughSmoke RoughSmoke = new();
     public static readonly MusicNote MusicNote = new();
     public static readonly IceShard IceShard = new();
+    public static readonly GlowingDust GlowDust = new();
     public override void Load()
     {
         base.Load();
@@ -99,7 +100,8 @@ public sealed class Particles : ModSystem
             SplatDust,
             RoughSmoke,
             MusicNote,
-            IceShard
+            IceShard,
+            GlowDust
 
         };
 

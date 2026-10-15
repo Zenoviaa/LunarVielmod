@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Assets.ContentReader.Aseprite;
 
+
 public static class AnimationExtensions
 {
     public static readonly AseAnimator DummyAnimator = new();
@@ -22,6 +23,77 @@ public static class AnimationExtensions
                     return animator.Animator;
                 return DummyAnimator;
             }
+        }
+    }
+
+    extension(NPC npc)
+    {
+        /// <summary>
+        /// Draw Origin for rotation and scaling
+        /// </summary>
+        public Vector2 DrawOrigin
+        {
+            get
+            {
+                if (!npc.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animatorNPC))
+                    return Vector2.One;
+                if (animatorNPC.Animator.drawEffects.DrawOrigin == null)
+                    return Vector2.One;
+                return animatorNPC.Animator.drawEffects.DrawOrigin.Value;
+            }
+            set
+            {
+                if (!npc.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animatorNPC))
+                    return;
+                animatorNPC.Animator.drawEffects.DrawOrigin = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Scales the X and Y axises independently
+        /// </summary>
+        public Vector2 VectorScale
+        {
+            get
+            {
+                if (!npc.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animatorNPC))
+                    return Vector2.One;
+                if (animatorNPC.Animator.drawEffects.Scale == null)
+                    return Vector2.One;
+                return animatorNPC.Animator.drawEffects.Scale.Value;
+            }
+            set
+            {
+                if (!npc.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animatorNPC))
+                    return;
+                animatorNPC.Animator.drawEffects.Scale = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Plays an animation that will not loop
+        /// </summary>
+        /// <param name="name"></param>
+        public void PlayAnimationOneShot(string name) => npc.PlayAnimation(name, AnimationParams.NoLooping);
+        
+        /// <summary>
+        /// Plays an animation that will loop
+        /// </summary>
+        /// <param name="name"></param>
+        public void PlayAnimationLooped(string name) => npc.PlayAnimation(name, AnimationParams.Default);
+        
+        /// <summary>
+        /// Plays an animation with the specified parameters
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="animationParams"></param>
+        public void PlayAnimation(string name, AnimationParams animationParams)
+        {
+            if (!npc.TryGetGlobalNPC<AnimatorGlobalNPC>(out var animatorNPC))
+                return;
+            animatorNPC.Animator.PlayAnimation(name, animationParams);
         }
     }
 
@@ -84,10 +156,13 @@ public static class AnimationExtensions
         drawer.worldPosition += offset;
         return drawer;
     }
-    public static SpritebatchDrawer GetAnimatorDrawInfo(this NPC npc, Color drawColor)
+
+    public static SpritebatchDrawer GetAnimatorDrawInfo(this NPC npc, Color drawColor, Vector2? position = null)
     {
         var Animator = npc.GetAnimator();
-        SpritebatchDrawer drawer = Animator.GetSprite(npc.Center);
+        if (position == null)
+            position = npc.Center;
+        SpritebatchDrawer drawer = Animator.GetSprite(position.Value);
         drawer.spriteEffects = npc.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         drawer.spriteEffects |= Animator.spriteEffects;
         drawer.rotation = npc.rotation;
@@ -171,6 +246,7 @@ public class AnimatorGlobalNPC : GlobalNPC
 
 
     public AseAnimator Animator;
+
     public override void FindFrame(NPC npc, int frameHeight)
     {
         base.FindFrame(npc, frameHeight);
@@ -224,12 +300,10 @@ public class AseAnimator
 
     public Asset<AseSprite> Sprite;
     public AseTags playingTag;
-    public string currentAnimation;
     public bool isLooping;
     public DrawEffects drawEffects;
     public SpriteEffects spriteEffects;
     public Vector2 centerDrawOrigin;
-
     public Vector2? DrawOrigin
     {
         set => drawEffects.DrawOrigin = value;
@@ -241,7 +315,7 @@ public class AseAnimator
         Sprite = sprite;
         centerDrawOrigin = new Vector2(sprite.Value.FrameWidth * 0.5f, sprite.Value.FrameHeight * 0.5f);
     }
-    public SpritebatchDrawer GetSprite() => GetSprite(Vector2.Zero);
+
     public SpritebatchDrawer GetSprite(Vector2 worldPosition)
     {
         var sprite = Sprite.Value.GetSprite(_frameIndex, worldPosition);

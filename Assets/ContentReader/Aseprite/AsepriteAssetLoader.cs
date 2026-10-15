@@ -68,7 +68,7 @@ internal class AsepriteAssetLoader : ModSystem
             }
             AsepriteAssets.Npc = null;
         }
-        if (AsepriteAssets.Npc != null)
+        if (AsepriteAssets.Projectile != null)
         {
             for (int i = 0; i < AsepriteAssets.Projectile.Length; i++)
             {

@@ -209,7 +209,7 @@ Common: {
 		'''
 	StyleSword: Sword Attack Style
 	BasicSlash: "{0}"
-	StaminaSlash: "Special Attack: {0}"
+	StaminaSlash: Special Attack: {0}
 	WeaponTypeStein: Stein Weapon Type
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type

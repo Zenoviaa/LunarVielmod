@@ -10,6 +10,7 @@ public struct Outliner
         warning = false;
         attacking = false;
     }
+    public bool VisibleEnough => outlineColor.A > 3;
     public void Update()
     {
         Color targetOutlineColor = Color.Transparent;

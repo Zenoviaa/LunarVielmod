@@ -9,6 +9,8 @@ public static class NPCUtilities
 {
     extension(NPC npc)
     {
+
+        public Player PlayerImTargeting => Main.player[npc.target];
         /// <summary>
         /// Returns the normalized direction to the player target
         /// </summary>
