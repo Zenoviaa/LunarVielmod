@@ -35,11 +35,13 @@ namespace Stellamod.Core.Tooltips
     public interface IExpandableTooltip
     {
         public virtual ExpandableTooltipPriority Priority => ExpandableTooltipPriority.VeryEarly;
+        public virtual string? GetShiftHelpTooltip(Item item) => null;
         void ModifyExpandableTooltips(Item item, List<TooltipLine> lines);
     }
 
     public abstract class AbstractExpandingTooltip : GlobalItem, IExpandableTooltip
     {
+        public virtual string? GetShiftHelpTooltip(Item item) => null;
         public virtual ExpandableTooltipPriority Priority => ExpandableTooltipPriority.VeryEarly;
         public abstract void ModifyExpandableTooltips(Item item, List<TooltipLine> lines);
     }
@@ -110,6 +112,19 @@ namespace Stellamod.Core.Tooltips
             }
         }
 
+        public string? GetShiftTooltip(Item item)
+        {
+            ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
+            var tooltips = renderer.ExpandableTooltips;
+            foreach(var t in tooltips)
+            {
+                var helpTooltip = t.GetShiftHelpTooltip(item);
+                if (helpTooltip != null)
+                    return helpTooltip;
+            }
+            return null;
+        }
+
         public List<TooltipLine> GetExpandableLines()
         {
             return _expandableLines;
@@ -151,9 +166,24 @@ namespace Stellamod.Core.Tooltips
             var lines = lineSystem.GetExpandableLines();
             if (lines.Count > 0)
             {
-                TooltipLine helpLine = new TooltipLine(Mod, "ExpandHelp", LangText.Common("ExpandableTooltipHelp", "Left Shift"));
-                helpLine.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.7f);
-                tooltips.Add(helpLine);
+                var index = tooltips.Count - 1;
+                if (index <= 0)
+                    index = 0;
+                var shiftTooltip = lineSystem.GetShiftTooltip(item);
+                if(shiftTooltip == null)
+                {
+                    TooltipLine helpLine = new TooltipLine(Mod, "ExpandHelp", LangText.Common("ExpandableTooltipHelp", "Left Shift"));
+                    helpLine.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.75f);
+                    tooltips.Insert(index++, helpLine);
+                }
+                else
+                {
+                    var shiftString = ExpandableLineSystem.renderExtraInfo ? "MoreInfoHideShift" : "MoreInfoPressShift";
+                    TooltipLine helpLine = new TooltipLine(Mod, "ExpandHelp", LangText.Common(shiftString, shiftTooltip, "Left Shift"));
+                    helpLine.OverrideColor = new Color(239, 163, 80);
+                    tooltips.Insert(index++, helpLine);
+                }
+ 
                 if (ExpandableLineSystem.renderExtraInfo)
                 {
 

@@ -13,10 +13,7 @@ public static class UIUtils
     {
         var s = "";
         var type = ModContent.ItemType<StaminaBerry>();
-        for (int p = 0; p < staminaCost; p++)
-        {
-            s += $"[i:{type}]";
-        }
+        s += $"{staminaCost}[i:{type}]";
         return s;
     }
 

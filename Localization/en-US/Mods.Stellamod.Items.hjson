@@ -1,4 +1,7 @@
 Common: {
+	SpecialAttack: Special Attack
+	MoreInfoPressShift: "{0} [c/414141:({1} for more)]"
+	MoreInfoHideShift: "{0} [c/414141:({1} to hide)]"
 	Whisperer: The Whispers have stopped...
 	CompletedCrafts: You have {0} completed materials, +{1} damage!
 	BellFlower: Bell Flower
@@ -206,7 +209,7 @@ Common: {
 		'''
 	StyleSword: Sword Attack Style
 	BasicSlash: "{0}"
-	StaminaSlash: Special: {0}
+	StaminaSlash: "Special Attack: {0}"
 	WeaponTypeStein: Stein Weapon Type
 	WeaponTypeSword: Sword Weapon Type
 	WeaponTypeKnives: Knives Weapon Type

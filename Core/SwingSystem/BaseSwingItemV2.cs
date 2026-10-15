@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Core.AssetReferences.Assets.NoiseTextures;
 
 namespace Stellamod.Core.SwingSystem
 {
@@ -19,6 +20,32 @@ namespace Stellamod.Core.SwingSystem
     }
     public class StaminaAttackExpandableTooltip : AbstractExpandingTooltip
     {
+        public override string? GetShiftHelpTooltip(Item item)
+        {
+            if (item.ModItem == null)
+                return null;
+            bool noStamina = false;
+            if (item.TryGetGlobalItem<ScrollGlobalItem>(out var g))
+            {
+                if (g.scroll != ScrollAbility._None)
+
+                {
+                    noStamina = true;
+                }
+            }
+
+            if (noStamina)
+                return null;
+
+            if (item.ModItem is IStaminaAttack staminaAttack)
+            {
+                var expandingString = $"{UIUtils.GetStaminaIconString(staminaAttack.StaminaCost)}{LangText.Common("SpecialAttack")}";
+                return expandingString;
+            }
+
+            return null;
+        }
+
         public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
         {
             if (item.ModItem == null)
@@ -36,6 +63,7 @@ namespace Stellamod.Core.SwingSystem
             }
 
             Color noStaminaColor = new Color(50, 50, 50);
+
             TooltipLine line;
             if (item.ModItem is BaseSwingItemV2 swingItem)
             {
@@ -49,13 +77,15 @@ namespace Stellamod.Core.SwingSystem
                 line = new TooltipLine(Mod, "BasicSlash", staminaAttack.BasicEffectLocalizedText);
                 lines.Add(line);
 
-                var staminaEffect = $"{UIUtils.GetStaminaIconString(staminaAttack.StaminaCost)}{staminaAttack.StaminaEffectLocalizedText}";
-                line = new TooltipLine(Mod, "StaminaSlash", staminaEffect);
-                if (noStamina)
+
+                if (!noStamina)
                 {
-                    line.OverrideColor = noStaminaColor;
+                    var staminaEffect = $"{UIUtils.GetStaminaIconString(staminaAttack.StaminaCost)}{staminaAttack.StaminaEffectLocalizedText}";
+                    line = new TooltipLine(Mod, "StaminaSlash", staminaEffect);
+                    line.OverrideColor = new Color(239, 163, 80);
+                    lines.Add(line);
                 }
-                lines.Add(line);
+           
             }
 
             if (item.ModItem is BaseGun gun)
