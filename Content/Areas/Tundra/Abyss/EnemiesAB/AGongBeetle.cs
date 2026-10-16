@@ -63,7 +63,7 @@ public abstract class AGongBeetleGong : ModProjectile,
             Projectile.Kill();
         Projectile.rotation = 0;
         _squishScale = new Vector2(1.3f, 0.6f);
-        FXUtil.ShakeCamera(Projectile.Center, 1024, 4);
+
         for (var i = 0; i < 4; i++)
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
@@ -148,6 +148,7 @@ public class GongBeetleSmall : AGongBeetle
     {
         base.AI();
         NPC.DrawOrigin = new Vector2(25, 38);
+        isPassive = true;
     }
     protected override void DropGong()
     {
@@ -180,6 +181,7 @@ public class GongBeetleBig : AGongBeetle
     {
         base.AI();
         NPC.DrawOrigin = new Vector2(35, 70);
+
     }
 
     protected override void DropGong()
@@ -212,6 +214,8 @@ public abstract class AGongBeetle : ModNPC,
     }
 
     bool _warn;
+    float _jumpHeight;
+    float _jumpTime;
     Vector2 _startJumpPos;
     Vector2 _endJumpPos;
 
@@ -227,6 +231,7 @@ public abstract class AGongBeetle : ModNPC,
         get => NPC.ai[2] == 0;
         set => NPC.ai[2] = value ? 0 : 1;
     }
+    public bool isPassive;
     public override string Texture => TextureRegistry.EmptyTexture;
     const string ANIM_IDLE = "Idle";
     const string ANIM_JUMPREADY = "JumpReady";
@@ -236,8 +241,8 @@ public abstract class AGongBeetle : ModNPC,
     const string ANIM_JUMPREADYNOBELL = "JumpReadyNoBell";
     const string ANIM_JUMPNOBELL = "JumpNoBell";
     const string ANIM_JUMPLANDNOBELL = "JumpLandNoBell";
-    protected virtual float JumpHeight => 164;
-    protected virtual float IdleTime => 90;
+    protected virtual float JumpHeight => 128;
+    protected virtual float IdleTime => 30;
     protected virtual float JumpTime => 45;
     protected virtual float JumpToPlayerRange => 196 * 196;
     protected virtual float JumpReadyTime => 45;
@@ -281,6 +286,8 @@ public abstract class AGongBeetle : ModNPC,
         writer.WriteVector2(_startJumpPos);
         writer.WriteVector2(_endJumpPos);
         writer.Write(_warn);
+        writer.Write(_jumpHeight);
+        writer.Write(_jumpTime);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -288,7 +295,10 @@ public abstract class AGongBeetle : ModNPC,
         _startJumpPos = reader.ReadVector2();
         _endJumpPos = reader.ReadVector2();
         _warn = reader.ReadBoolean();
+        _jumpHeight = reader.ReadSingle();
+        _jumpTime = reader.ReadSingle();
     }
+
 
     public override void SetStaticDefaults()
     {
@@ -347,7 +357,7 @@ public abstract class AGongBeetle : ModNPC,
         if(_warn)
             _outliner.warning = true;
         Timer++;
-        NPC.VectorScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), EasingFunction.InOutSine(Timer / JumpReadyTime));
+        //NPC.VectorScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), EasingFunction.InOutSine(Timer / JumpReadyTime));
         PlayJumpReadyAnim();
         if (Timer >= JumpReadyTime)
         {
@@ -364,6 +374,9 @@ public abstract class AGongBeetle : ModNPC,
         PlayIdleAnim();
         if (Timer >= IdleTime)
         {
+            var ratio = Main.rand.NextFloat(0.75f, 1f);
+            _jumpHeight = JumpHeight * ratio;
+            _jumpTime = JumpTime * ratio;
             var sqrDistToPlayer = Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
             if (sqrDistToPlayer < JumpToPlayerRange && HasGong)
             {
@@ -372,7 +385,8 @@ public abstract class AGongBeetle : ModNPC,
                 _endJumpPos = TileUtilities.FallToSolidTile(_endJumpPos);
                 _endJumpPos.Y -= NPC.height / 2;
                 _endJumpPos.Y -= 16;
-                _warn = true;
+                if(!isPassive)
+                    _warn = true;
             }
             else
             {
@@ -382,7 +396,7 @@ public abstract class AGongBeetle : ModNPC,
                 {
                     _endJumpPos = _startJumpPos;
                     var dir = Main.rand.NextBool(2) ? -1 : 1;
-                    _endJumpPos += new Vector2(dir * Main.rand.NextFloat(64, 128), 0);
+                    _endJumpPos += new Vector2(dir * Main.rand.NextFloat(98, 256), 0);
                     _endJumpPos.Y -= 100;
                     _endJumpPos = TileUtilities.FallToSolidTile(_endJumpPos);
                     _endJumpPos.Y -= NPC.height / 2;
@@ -390,6 +404,7 @@ public abstract class AGongBeetle : ModNPC,
                     NPC.netUpdate = true;
                 }
             }
+            NPC.netUpdate = true;
             SwitchState(AIState.JumpReady);
         }
     }
@@ -400,13 +415,13 @@ public abstract class AGongBeetle : ModNPC,
         if (Timer == 1)
         {
             var fac = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Bottom, TriColorPalette.Fiery, new Vector2(5, 15f));
-            fac.particleCount /= 3;
+            fac.particleCount /= 4;
 
             ParticleUtils.CreateSwirlingDustCircle(fac);
         }
 
         NPC.velocity.X *= 0.96f;
-        NPC.VectorScale = Vector2.Lerp(new Vector2(1.2f, 0.7f), Vector2.One, EasingFunction.InSine(Timer / LandTime));
+   //     NPC.VectorScale = Vector2.Lerp(new Vector2(1.2f, 0.7f), Vector2.One, EasingFunction.InSine(Timer / LandTime));
         NPC.rotation = 0;
         PlayJumpLandAnim();
         if (Timer >= LandTime)
@@ -419,15 +434,15 @@ public abstract class AGongBeetle : ModNPC,
     void AI_Jump()
     {
         Timer++;
-        MoonUtils.AIJump_IvythornSlime(NPC, _startJumpPos, _endJumpPos, JumpHeight, Timer / JumpTime);
+        MoonUtils.AIJump_IvythornSlime(NPC, _startJumpPos, _endJumpPos, _jumpHeight, Timer / _jumpTime);
         PlayJumpAnim();
         var xDist = MathF.Abs(NPC.PlayerImTargeting.Center.X - NPC.Center.X);
-        if(Timer >= JumpTime * 0.5f && HasGong && xDist < DropGongXDist)
+        if(Timer >= _jumpTime * 0.5f && HasGong && xDist < DropGongXDist && !isPassive)
         {
             DropGong();
             HasGong = false;
         }
-        if (Timer >= JumpTime)
+        if (Timer >= _jumpTime)
         {
             SwitchState(AIState.Land);
         }

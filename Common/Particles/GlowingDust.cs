@@ -60,7 +60,7 @@ public class GlowingDust : ParticleUpdater<GlowingDust.Data>
         drawer.CenterOrigin();
         drawer.color = particle.color;
         drawer.color *= outAlpha;
-     
+
         drawer.scale *= particle.scale;
         spriteBatch.Draw(drawer);
     }

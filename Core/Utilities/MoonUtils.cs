@@ -156,7 +156,7 @@ public static class MoonUtils
         NPC.velocity = Vector2.Zero;
         NPC.VectorScale = Vector2.Lerp(new Vector2(0.8f, 1.2f), Vector2.One, EasingFunction.InSine(ratio));
 
-        var range = 0.25f * MathHelper.Lerp(1f, 0f, EasingFunction.InSine(ratio));
+        var range = 0.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InSine(ratio));
         var dir = (_endJumpPos.X < _startJumpPos.X) ? 1 : -1;
         range *= dir;
         NPC.rotation = ExtraMath.Osc(-range, range, speed: 0, offset: ratio * 3);

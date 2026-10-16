@@ -98,12 +98,14 @@ public class IvythornSlime : ModNPC,
 
     float IdleTime => 60;
     float AttackDist => 196 * 196;
-    float HopReadyTime => 30;
+    float HopReadyTime => 90;
     float HopDistance => 16 * 7;
-    float HopHeight => 154;
+    float MaxHopDistance => 16 * 12;
+    float HopHeight => 111;
     float HopTime => 45;
     float SlamTime => 30;
-    int Damage_Spike => 15;
+
+    int Damage_Spike => 10;
 
     ref float Timer => ref NPC.ai[0];
     AIState State
@@ -158,7 +160,7 @@ public class IvythornSlime : ModNPC,
         NPC.defense = 3;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
-        NPC.knockBackResist = 0.65f;
+        NPC.knockBackResist = 0.15f;
         NPC.noGravity = false;
     }
 
@@ -212,7 +214,7 @@ public class IvythornSlime : ModNPC,
     void AI_Idle()
     {
         Timer++;
-        NPC.velocity.X *= 0.96f;
+        NPC.velocity.X *= 0.9f;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.03f);
         NPC.VectorScale = Vector2.Lerp(NPC.VectorScale, Vector2.One, 0.12f);
         NPC.PlayAnimationLooped(ANIM_IDLE);
@@ -233,8 +235,10 @@ public class IvythornSlime : ModNPC,
     void AI_HopReady()
     {
         Timer++;
+        NPC.velocity.X *= 0.9f;
         NPC.VectorScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), EasingFunction.InOutSine(Timer / HopReadyTime));
         NPC.PlayAnimationLooped(ANIM_IDLE);
+        
         if (Timer >= HopReadyTime)
         {
             SwitchState(AIState.Hop);
@@ -251,11 +255,6 @@ public class IvythornSlime : ModNPC,
         NPC.Center = linear;
         NPC.velocity = Vector2.Zero;
         NPC.VectorScale = Vector2.Lerp(new Vector2(0.8f, 1.2f), Vector2.One, EasingFunction.InSine(ratio));
-
-        var range = 0.25f * MathHelper.Lerp(1f, 0f, EasingFunction.InSine(ratio));
-        var dir = (_hopEnd.X < _hopStart.X) ? 1 : -1;
-        range *= dir;
-        NPC.rotation = ExtraMath.Osc(-range, range, speed: 0, offset: ratio * 3);
     }
 
     void AI_Hop()
@@ -278,6 +277,7 @@ public class IvythornSlime : ModNPC,
                 NPC.netUpdate = true;
             }
         }
+        NPC.velocity.X *= 0.9f;
         HopMovement(Timer / HopTime);
         NPC.PlayAnimationLooped(ANIM_JUMP);
         if (Timer >= HopTime)
@@ -289,8 +289,8 @@ public class IvythornSlime : ModNPC,
     void AI_Land()
     {
         Timer++;
-        NPC.velocity.X *= 0.96f;
-        NPC.VectorScale = Vector2.Lerp(new Vector2(1.2f, 0.7f), Vector2.One, EasingFunction.InSine(Timer / SlamTime));
+        NPC.velocity.X *= 0.9f;
+     //   NPC.VectorScale = Vector2.Lerp(new Vector2(1.2f, 0.7f), Vector2.One, EasingFunction.InSine(Timer / SlamTime));
         NPC.rotation = 0;
         NPC.PlayAnimationOneShot(ANIM_SLAM);
         if (Timer >= SlamTime)
@@ -301,10 +301,11 @@ public class IvythornSlime : ModNPC,
 
     void AI_EvilHopReady()
     {
+        NPC.velocity.X *= 0.9f;
         _outliner.warning = true;
         Timer++;
-        NPC.VectorScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), EasingFunction.InOutSine(Timer / HopReadyTime));
-        NPC.PlayAnimationLooped(ANIM_IDLE);
+     //   NPC.VectorScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), EasingFunction.InOutSine(Timer / HopReadyTime));
+        NPC.PlayAnimationLooped("IdleFast");
         if (Timer >= HopReadyTime)
         {
             SwitchState(AIState.EvilHop);
@@ -326,7 +327,14 @@ public class IvythornSlime : ModNPC,
                 }
 
                 _hopStart = NPC.Bottom;
-                _hopEnd = NPC.PlayerImTargeting.Top + new Vector2(0, -252);
+                var targetPos = NPC.PlayerImTargeting.Top;
+                var dir = (targetPos - _hopStart);
+                if(dir.Length() >= MaxHopDistance)
+                {
+                    dir = dir.Resize(MaxHopDistance);
+                    targetPos = _hopStart + dir;
+                }
+                _hopEnd = targetPos + new Vector2(0, -252);
                 _hopEnd = TileUtilities.FallToSolidTileOrPlatform(_hopEnd);
                 _hopEnd.Y -= NPC.height;
                 _hopEnd.Y += 4;
@@ -334,6 +342,7 @@ public class IvythornSlime : ModNPC,
             }
 
         }
+        NPC.velocity.X *= 0.9f;
         HopMovement(Timer / HopTime);
         NPC.PlayAnimationLooped(ANIM_JUMP);
         if (Timer >= HopTime)

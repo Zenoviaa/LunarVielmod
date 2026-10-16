@@ -15,6 +15,16 @@ namespace Stellamod.Content.Areas.Underground.NPCsUG;
 public class BlehFlySpit : ModProjectile,
     IDrawToRenderTarget
 {
+    Vector2 VectorScale
+    {
+        get
+        {
+            Vector2 v = Vector2.One;
+          v.Y *= Projectile.velocity.Length() / 25f;
+          v.X *= MathHelper.Lerp(0.5f, 1f, Projectile.velocity.Length() / 25f);
+            return v;
+        }
+    }
     ref float Timer => ref Projectile.ai[0];
     public override string Texture => AssetReferences.Assets.Textures.Projectile.BlehFlySpit.KEY;
     public override void SetStaticDefaults()
@@ -42,7 +52,7 @@ public class BlehFlySpit : ModProjectile,
         {
             var sound = AssetReferences.Assets.Sounds.TentacleBubbleOut.Asset with { PitchVariance = 0.5f, Pitch = 0.5f, Volume = 0.6f };
             SoundEngine.PlaySound(sound, Projectile.position);
-            for (var i = 0; i < 7; i++)
+            for (var i = 0; i < 2; i++)
             {
                 var pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(32, 32);
@@ -58,7 +68,7 @@ public class BlehFlySpit : ModProjectile,
             }
         }
 
-        if (Timer % 8 == 0)
+        if (Timer % 16 == 0)
         {
             Particles.BackCloud.Spawn(new()
             {
@@ -95,6 +105,7 @@ public class BlehFlySpit : ModProjectile,
 
 
         Projectile.velocity.Y += 0.3F;
+        Projectile.rotation = Projectile.velocity.ToRotation();
         if(Timer >= 15)
         {
             Projectile.tileCollide = true;
@@ -105,9 +116,15 @@ public class BlehFlySpit : ModProjectile,
     public override bool PreDraw(ref Color lightColor)
     {
         DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.LightGreen, Color.Transparent, 0.15f);
-        var d = Projectile.Drawer;
-        Main.spriteBatch.Draw(d);
+        var drawer = Projectile.Drawer;
+        drawer.scale *= VectorScale;
+
+        //     Main.spriteBatch.Draw(drawer);
+        drawer.color *= 0.4f;
+        drawer.color.A = 0;
+        Main.spriteBatch.Draw(drawer);
         var whiteDrawer = Projectile.Drawer;
+        whiteDrawer.scale *= VectorScale;
         whiteDrawer.color = Color.White;
         whiteDrawer.color.A = 0;
         whiteDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 60f));
@@ -118,15 +135,18 @@ public class BlehFlySpit : ModProjectile,
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Foresty, new Vector2(5, 15f));
-        ParticleUtils.CreateSwirlingDustCircle(fac);
+        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center + Projectile.velocity, TriColorPalette.Foresty, new Vector2(5, 15f));
+        fac.particleCount /= 4;
+        ParticleUtils.CreateSwirlingDustBurst(fac);
     }
 
     public void DrawToRenderTargets()
     {
         void DrawOutline(SpriteBatch sb)
         {
-            sb.Draw(Projectile.Drawer with { color = Color.Red });
+            var drawer = Projectile.Drawer with { color = Color.Red };
+            drawer.scale *= VectorScale;
+            sb.Draw(drawer);
         }
         OutlineRenderer.Queue(DrawOutline);
     }
@@ -142,7 +162,9 @@ public class BlehFly : ModNPC,
         Move,
         ChaseTarget,
         SpitReady,
-        Spit
+        Spit,
+        Sit,
+        SitDown,
     }
     Outliner _outliner;
     Vector2 _oldPlayerPos;
@@ -162,6 +184,7 @@ public class BlehFly : ModNPC,
     const string ANIM_SIT = "Sit";
     float IdleTime => 129;
     float HomeRadius => 196;
+    float AlertDistance => 454 * 454;
     float ChaseDistance => 384 * 384;
     float AttackDistance => 100 * 100;
     float MoveTime => 90;
@@ -206,7 +229,7 @@ public class BlehFly : ModNPC,
         _pathfinder = new();
         NPC.damage = 10;
         NPC.width = 80;
-        NPC.height = 40;
+        NPC.height = 25;
         NPC.lifeMax = 50;
         NPC.defense = 7;
         NPC.HitSound = SoundID.NPCHit1;
@@ -242,6 +265,12 @@ public class BlehFly : ModNPC,
             case AIState.SpitReady:
                 AI_SpitReady();
                 break;
+            case AIState.Sit:
+                AI_Sit();
+                break;
+            case AIState.SitDown:
+                AI_SitDown();
+                break;
         }
         _outliner.Update();
         NPC.DrawOrigin = new Vector2(45, 38);
@@ -260,6 +289,35 @@ public class BlehFly : ModNPC,
         AttackCycle = 0;
     }
 
+    void AI_SitDown()
+    {
+        NPC.TargetClosest(faceTarget: false);
+        Timer++;
+        NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, 3f, 0.03f);
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.05f);
+
+        NPC.PlayAnimationLooped(ANIM_FLY);
+        var sqrDistToTarget = Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
+        if (MoonUtils.IsGrounded(NPC))
+        {
+            SwitchState(AIState.Sit);
+        }
+    }
+
+    void AI_Sit()
+    {
+        NPC.TargetClosest(faceTarget: false);
+        Timer++;
+        NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, 3f, 0.03f);
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.05f);
+
+        NPC.PlayAnimationLooped(ANIM_SIT);
+        var sqrDistToTarget = Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
+        if (sqrDistToTarget < AlertDistance)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
     void AI_Idle()
     {
         NPC.TargetClosest(faceTarget: false);
@@ -275,6 +333,10 @@ public class BlehFly : ModNPC,
             if (sqrDistToTarget < ChaseDistance)
             {
                 SwitchState(AIState.ChaseTarget);
+            }
+            if (sqrDistToTarget > AlertDistance)
+            {
+                SwitchState(AIState.SitDown);
             }
         }
    
@@ -343,19 +405,42 @@ public class BlehFly : ModNPC,
             var spitSound = AssetReferences.Assets.Sounds.DMHeart_Shot.Asset with { PitchVariance = 0.5f, Pitch = -0.5f };
             SoundEngine.PlaySound(spitSound, NPC.position);
         }
+        if(Timer % 1 == 0 && Timer > 30)
+        {
 
+        }
+        if(Timer == 35)
+        {
+            for(var i = 0; i < 32; i++)
+            {
+                var velocity = (NPC.PlayerImTargeting.Center - NPC.Center).Resize(15);
+                velocity.Y -= 4;
+                velocity = velocity.RotatedByRandom(0.5f);
+                velocity *= Main.rand.NextFloat(0.6f, 1f);
+                Particles.ToxicBubbleDust.Spawn(new()
+                {
+                    position = NPC.Center,
+                    velocity = velocity,
+                    scale = Main.rand.NextFloat(0.5f, 1f),
+                    timeLeft = Main.rand.Next(25, 70),
+                    color = Color.White with { A = 0 }
+                });
+            }
+        }
         if (Timer == 35 && MultiplayerHelper.IsHost)
         {
-            for (var i = 0; i < 3; i++)
+            for(var i = 0; i < 16; i++)
             {
                 var firer = ProjFirer.From<BlehFlySpit>(NPC);
                 firer.damage = Damage_Spit;
+
                 firer.velocity = (NPC.PlayerImTargeting.Center - NPC.Center).Resize(15);
                 firer.velocity.Y -= 4;
                 firer.velocity = firer.velocity.RotatedByRandom(0.5f);
-                firer.velocity *= Main.rand.NextFloat(0.6f, 1f);
+                firer.velocity *= Main.rand.NextFloat(0.4f, 1f);
                 firer.New();
             }
+
 
         }
 

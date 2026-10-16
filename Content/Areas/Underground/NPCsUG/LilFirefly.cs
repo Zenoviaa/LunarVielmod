@@ -13,7 +13,7 @@ public class LilFirefly : ModNPC
     Vector2 _posToMoveTo;
     ref float Timer => ref NPC.ai[0];
     const string ANIM_FLY = "Fly";
-    float HomeRange => 64;
+    float HomeRange => 32;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -64,7 +64,7 @@ public class LilFirefly : ModNPC
         }
 
         _posToMoveTo.Y -= 0.4f;
-        var targetVelocity = (_posToMoveTo - NPC.Center) * 0.2f;
+        var targetVelocity = (_posToMoveTo - NPC.Center) * 0.1f;
         NPC.velocity = targetVelocity;
         NPC.PlayAnimationLooped(ANIM_FLY);
         if (MultiplayerHelper.IsHost && Timer % 32 == 0)
@@ -79,9 +79,10 @@ public class LilFirefly : ModNPC
                 velocity = Main.rand.NextVector2Circular(8, 8) * Main.rand.NextFloat(0.5f, 1f) * 0.2f,
                 timeLeft = Main.rand.Next(45, 120),
                 scale = Main.rand.NextFloat(0.25f, 0.5f),
-                color = Color.LightGoldenrodYellow
+                color = Color.DarkOrange with { A = 0 } * 0.5f
             });
         }
+        Lighting.AddLight(NPC.position, new Vector3(0.8f));
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -115,7 +116,7 @@ public class LilFirefly : ModNPC
                 velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.2f,
                 timeLeft = Main.rand.Next(45, 120),
                 scale = Main.rand.NextFloat(0.25f, 0.5f),
-                color = Color.LightGoldenrodYellow
+                color = Color.DarkOrange with { A = 0 }
             });
         }
     }
