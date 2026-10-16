@@ -19,6 +19,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     float2 fogCoords = coords;
     fogCoords *= float2(0.3, 1.0) ;
     fogCoords += screenOffset;
+    fogCoords = frac(fogCoords);
     float2 offsetCoords = frac(fogCoords + float2(time * -0.05, 0.0));
     float2 offsetCoords2 = frac(fogCoords + float2(time * 0.03, time * 0.01 + 0.3));
     

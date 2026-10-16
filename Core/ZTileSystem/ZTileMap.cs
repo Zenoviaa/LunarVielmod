@@ -176,6 +176,7 @@ public class ZTileMap : ModSystem
     private static List<ActiveZTileData> _zTileInstancesOrdered = new List<ActiveZTileData>();
     private List<ActiveZTileData>[] _zTileActiveDrawingInstances;
 
+    public static event Action AfterWalls;
     public const int Chunk_Size = 64;
     public bool Find(ushort type, out ZTilePosition tilePosition)
     {

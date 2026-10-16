@@ -62,6 +62,7 @@ public sealed class Particles : ModSystem
     public static readonly GlowingDust GlowDust = new();
     public static readonly BackCloud BackCloud = new();
     public static readonly ToxicBubbleDust ToxicBubbleDust = new();
+    public static readonly RocketFire RocketFire = new();
     public override void Load()
     {
         base.Load();
@@ -105,7 +106,8 @@ public sealed class Particles : ModSystem
             IceShard,
             GlowDust,
             BackCloud,
-            ToxicBubbleDust
+            ToxicBubbleDust,
+            RocketFire
 
         };
 

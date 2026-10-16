@@ -249,8 +249,8 @@ namespace Stellamod.Core.Godrays
             int startIndex = index * 4;
             GodrayParticle godrayParticle = _particles[index];
             float bump = EasingFunction.QuadraticBump(godrayParticle.time / godrayTime);
-            Color innerColor = Color.Lerp(Color.Black, godrayParticle.innerColor, bump);
-            Color outerColor = Color.Lerp(Color.Black, godrayParticle.outerColor, bump);
+            Color innerColor = Color.Lerp(Color.Black, godrayParticle.innerColor, bump) * 1.5f;
+            Color outerColor = Color.Lerp(Color.Black, godrayParticle.outerColor, bump) * 1.5f;
             innerColor *= intensity;
             outerColor *= intensity;
             innerColor *= LightingHelper.DayLightEase;

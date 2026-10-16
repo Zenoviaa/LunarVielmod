@@ -98,6 +98,7 @@ public class MegaDrill : ModNPC,
         NPC.noGravity = true;
         NPC.noTileCollide = true;
         NPC.hide = true;
+        NPC.npcSlots = 2;
     }
     public override void DrawBehind(int index)
     {
@@ -161,6 +162,26 @@ public class MegaDrill : ModNPC,
             });
         }
 
+        if(Main.netMode != NetmodeID.Server)
+        {
+            var dist = Vector2.Distance(NPC.Center, Main.LocalPlayer.Center);
+            var l = dist / 256f;
+            l = MathHelper.Clamp(l, 0f, 1f);
+            l = 1f - l;
+            var maxShake = 1.5f;
+            var shake = l * maxShake;
+            if(ShakeScreenPosition.Shake < shake)
+            {
+                ShakeScreenPosition.Shake = shake;
+            }
+        }
+        if (!_solidLastFrame)
+        {
+            if(Timer % 7 == 0)
+            {
+                MakeRocketFireFX();
+            }
+        }
         _outliner.Update();
         var tilePos = NPC.Center.ToTileCoordinates();
         var tile = Main.tile[tilePos];
@@ -168,6 +189,22 @@ public class MegaDrill : ModNPC,
         NPC.rotation = _drillDirection.ToRotation() + MathHelper.PiOver2;
     }
     
+    void MakeRocketFireFX()
+    {
+        var rootPos = NPC.Center + -NPC.velocity.SafeNormalize(Vector2.Zero) * 64;
+        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with { innerColor = Color.Yellow.ToVector4(), outerColor = Color.OrangeRed.ToVector4(), 
+            position = rootPos + Main.rand.NextVector2Circular(36, 36), velocity = -NPC.velocity });
+        var colo = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(), Color.Gold, Color.DarkOrange);
+        Particles.RocketFire.Spawn(new()
+        {
+            position = rootPos,
+            velocity = -NPC.velocity.SafeNormalize(Vector2.Zero) * 8,
+            color = colo,
+            timeLeft = 24,
+            scale = 0.6f
+        });
+
+    }
     void SwitchState(AIState state)
     {
         Timer = 0;
@@ -189,6 +226,10 @@ public class MegaDrill : ModNPC,
     void AI_Teleport()
     {
         Timer++;
+        if(Timer < 90 && _crashPoint == default(Vector2))
+        {
+            Timer = 89;
+        }
 
      
         NPC.velocity = Vector2.Lerp(NPC.velocity, _drillDirection * DrillSpeed, MathHelper.Lerp(0f, 0.01f, Timer / 60f));
@@ -242,6 +283,7 @@ public class MegaDrill : ModNPC,
 
         if (!_outpoint)
         {
+            MakeTelegraphSmokeFX();
             NPC.velocity = Vector2.Lerp(NPC.velocity, _drillDirection * DrillSpeed, 0.2f);
             var diff2 = (_crashOutpoint - NPC.Center);
             if (MathF.Sign(diff2.Y) != MathF.Sign(_drillDirection.Y))
@@ -299,13 +341,40 @@ public class MegaDrill : ModNPC,
         fac.scaleRange *= 0.5f;
         ParticleUtils.CreateSwirlingDustBurst2(fac);
     }
+
+    void MakeTelegraphSmokeFX()
+    {
+        var dir = _crashPoint - _crashOutpoint;
+        dir = dir.SafeNormalize(Vector2.Zero);
+        var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
+        Particles.BackCloud.Spawn(new()
+        {
+            position = _crashOutpoint + Main.rand.NextVector2Circular(48, 48),
+            velocity = dir * Main.rand.NextFloat(10, 20f),
+            color = Color.DarkGray,
+            timeLeft = Main.rand.Next(60, 120),
+            scale = Main.rand.NextFloat(0.5f, 1f)
+        });
+    }
+
     void ImpactFX()
     {
+        FXUtil.ShakeCamera(NPC.Center, 1024, 4);
         var pos = NPC.Center + _drillDirection * 48;
         var impactSound = AssetReferences.Assets.Sounds.Irradieagle_Wave.Asset with { PitchVariance = 0.5f, Pitch = -0.5f };
         SoundEngine.PlaySound(impactSound, NPC.position);
         var fac = ParticleUtils.ParticleFactory.FromSmallBurst(pos, pos - _drillDirection * 4, TriColorPalette.Fiery, new Vector2(5, 15f));
         ParticleUtils.CreateSwirlingDustBurst(fac);
+        for(var i= 0; i < 8; i++)
+        {
+            var impactVelocity = -_drillDirection * 6;
+            impactVelocity = impactVelocity.RotatedByRandom(2.5f);
+            impactVelocity *= Main.rand.NextFloat(0.5f, 4);
+            var fx = FXUtil.GlowStretch(pos, impactVelocity);
+            fx.OuterGlowColor = Color.DarkOrange;
+            fx.InnerColor = Color.Gold;
+            fx.GlowColor = Color.Yellow;
+        }
     }
 
     void AI_Slam()

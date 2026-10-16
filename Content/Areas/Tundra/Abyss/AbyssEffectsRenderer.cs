@@ -52,10 +52,69 @@ public class AbyssEffectsRenderer : ModSystem
         On_Main.RenderWalls += ResetSpecialPoints;
 
         On_Main.DoDraw_WallsAndBlacks += RenderAroundWalls;
+        On_Main.DoDraw_DrawNPCsBehindTiles += RenderFogInFrontOfWalls;
         On_Main.DrawInfernoRings += DrawOverWater;
         On_OverlayManager.Draw += DrawPostProcessingPasses;
         CustomBGManager.OnPostDrawCustomBG += DrawFogOverBackground;
     }
+
+    private void RenderFogInFrontOfWalls(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
+    {
+        orig(self);
+        if (Main.LocalPlayer.ZoneAbyss)
+        {
+            {
+                var spriteBatch = Main.spriteBatch;
+                //Render fog in front of walls
+                var noiseSprite = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
+                var ditherSprite = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset.Value;
+                var pass = AssetReferences.Effects.Abyss.AbyssFog.CreateBlackPass();
+                HlslSampler sampler = new HlslSampler();
+                sampler.Sampler = SamplerState.PointWrap;
+                sampler.Texture = noiseSprite;
+                pass.Parameters.spriteSampler = sampler;
+
+                HlslSampler ditherSampler = new HlslSampler();
+                ditherSampler.Sampler = SamplerState.PointWrap;
+                ditherSampler.Texture = ditherSprite;
+                pass.Parameters.ditherSampler = ditherSampler;
+
+                pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.4f;
+                pass.Parameters.ditherTexelSize = ditherSprite.GetTexelSize();
+                pass.Parameters.spriteSize = noiseSprite.Size();
+
+                Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+                Vector2 screenoffset = Main.screenPosition * texelSize;
+                screenoffset *= (1f / 2f);
+                screenoffset.Y *= 2f;
+
+
+                pass.Parameters.screenOffset = screenoffset + new Vector2(Main.GlobalTimeWrappedHourly * -0.01f, 0);
+                pass.Apply();
+
+
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointWrap,
+                    DepthStencilState.Default,
+                    Main.Rasterizer,
+                    pass.Shader,
+                    Main.GameViewMatrix.TransformationMatrix);
+
+
+                Color fogColor = Color.Lerp(Color.White, Color.Blue, 0.36f);
+
+                float alpha = 0.35f;
+
+
+                spriteBatch.Draw(noiseSprite, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), fogColor * alpha);
+
+                spriteBatch.End();
+            }
+        }
+    }
+
     public override void Unload()
     {
         base.Unload();
@@ -348,6 +407,7 @@ public class AbyssEffectsRenderer : ModSystem
                 pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.4f;
                 pass.Parameters.ditherTexelSize = ditherSprite.GetTexelSize();
                 pass.Parameters.spriteSize = noiseSprite.Size();
+      
                 pass.Parameters.screenOffset = DrawUtilities.CalculateScreenOffset(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight)) * 0.9f + new Vector2(Main.GlobalTimeWrappedHourly * -0.02f, 0);
                 pass.Apply();
 
@@ -394,6 +454,7 @@ public class AbyssEffectsRenderer : ModSystem
     {
 
         orig(self);
+     
         //     Main.NewText(AbyssWaterfallPoints.Count);
         if (AbyssWaterfallPoints.Count > 0)
         {
@@ -409,17 +470,21 @@ public class AbyssEffectsRenderer : ModSystem
                 PrepareWaterfallTargetContent();
             }
 
-            //Render waterfall render target to screen
-            var pass = AssetReferences.Effects.Abyss.WaterfallOutline.CreatePixelPass();
-            pass.Parameters.texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
-            pass.Apply();
-            using (new SpritebatchContext(spriteBatch, oldParameters with 
-            { 
-                effect = pass.Shader, 
-                matrix = Matrix.identity
-            }))
+
+
             {
-                spriteBatch.Draw(handle, sceneWaterfallPos - Main.screenPosition, Color.White);
+                //Render waterfall render target to screen
+                var pass = AssetReferences.Effects.Abyss.WaterfallOutline.CreatePixelPass();
+                pass.Parameters.texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+                pass.Apply();
+                using (new SpritebatchContext(spriteBatch, oldParameters with
+                {
+                    effect = pass.Shader,
+                    matrix = Matrix.identity
+                }))
+                {
+                    spriteBatch.Draw(handle, sceneWaterfallPos - Main.screenPosition, Color.White);
+                }
             }
 
             //resume sprite batch
