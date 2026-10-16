@@ -145,6 +145,52 @@ public static class MoonUtils
         var targetPos = center + new Vector2(0, -48) + new Vector2(xOfffset, 0);
         return targetPos;
     }
+    public static void AIWalk_FlyChase(Pathfinder pathfinder, NPC entity, Vector2 destination, float runSpeed)
+    {
+        var target = pathfinder.currentNode;
+        if (Collision.CanHitLine(entity.position, 1, 1, destination, 1, 1))
+        {
+            target = destination;
+        }
+
+        //We can make the assumption that whatever node we're moving too is VERY close to our actor
+        //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
+        //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
+        var targetRectangle = DrawUtilities.CenterRectangle(pathfinder.currentNode, 16, 16);
+        var nextRectangle = DrawUtilities.CenterRectangle(pathfinder.nextNode, 16, 16);
+        var myRectangle = DrawUtilities.CenterRectangle(entity.Center, 32, 32);
+
+        //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
+
+        float distanceToCurrentNode = Vector2.Distance(entity.Center, pathfinder.currentNode);
+        float distanceToNextNode = Vector2.Distance(entity.Center, pathfinder.nextNode);
+
+        if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode ||
+            myRectangle.Intersects(nextRectangle) || myRectangle.Contains(targetRectangle))
+        {
+
+            pathfinder.Pop();
+        }
+
+        var diff = (target - entity.Center);
+        var targetVelocity = diff.Resize(runSpeed);
+        var accel = ExtraMath.Osc(0.05f, 0.1f, speed: 0, offset: entity.whoAmI);
+        entity.velocity = Vector2.Lerp(entity.velocity, targetVelocity, accel);
+    }
+
+    public static void CreateNewPathIfTooFar(Pathfinder pathfinder, Vector2 currentPosition, Vector2 destination, ref Vector2 targetOldPos)
+    {
+        if (Vector2.DistanceSquared(targetOldPos, destination) > REPATH_DISTANCE || Main.GameUpdateCount % 30 == 0)
+        {
+            targetOldPos = destination;
+            pathfinder.NewPath(destination, currentPosition, 75);
+        }
+
+        if (pathfinder.currentNode == Vector2.Zero && pathfinder.path != null && pathfinder.path.Count > 0)
+        {
+            pathfinder.Pop();
+        }
+    }
 
     public static void AIWalk_FloatingChaseRhapsody(Pathfinder pathfinder, Projectile entity, Vector2 destination, float runSpeed,ref Vector2 targetOldPos)
     {

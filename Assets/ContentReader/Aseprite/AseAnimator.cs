@@ -29,6 +29,21 @@ public static class AnimationExtensions
     extension(NPC npc)
     {
         /// <summary>
+        /// Queues an outline draw if the outliner is visible enough, drawing with the animator
+        /// </summary>
+        /// <param name="outliner"></param>
+        public void DrawOutlineByAnimator(Outliner outliner)
+        {
+            if (!outliner.VisibleEnough)
+                return;
+            void DrawOutline(SpriteBatch sb)
+            {
+                npc.DrawAnimator(sb, outliner.outlineColor);
+            }
+            OutlineRenderer.Queue(DrawOutline);
+        }
+
+        /// <summary>
         /// Draw Origin for rotation and scaling
         /// </summary>
         public Vector2 DrawOrigin
