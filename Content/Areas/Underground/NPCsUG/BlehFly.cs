@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Core.Astar;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
 using System;
 using System.IO;
@@ -84,6 +85,7 @@ public class BlehFly : ModNPC,
         set => NPC.ai[1] = (float)value;
     }
     ref float AttackCycle => ref NPC.ai[2];
+    public override string Texture => TextureRegistry.EmptyTexture;
     const string ANIM_FLY = "Fly";
     const string ANIM_FASTFLY = "FastFly";
     const string ANIM_SPIT = "Spit";
@@ -120,6 +122,7 @@ public class BlehFly : ModNPC,
     {
         base.SetStaticDefaults();
         NPCID.Sets.TrailCacheLength[Type] = 8;
+        NPCID.Sets.UsesAseprite[Type] = true;
         this.AddToUnderground();
     }
 
