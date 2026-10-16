@@ -12,6 +12,49 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Jungle.NPCsJN;
 
+public class DungeonSkeletonBone : ModProjectile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Projectile.DungeonSkeletonBone.KEY;
+    ref float Timer => ref Projectile.ai[0];
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        Projectile.SetTrailCacheLength(16);
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 16;
+        Projectile.height = 16;
+        Projectile.hostile = true;
+        Projectile.timeLeft = 120;
+        Projectile.light = 0.4f;
+        Projectile.tileCollide = false;
+    }
+    public override void AI()
+    {
+    
+        base.AI();
+        Timer++;
+        if(Timer >= 15)
+        {
+            Projectile.tileCollide = true;
+        }
+        Projectile.velocity.Y += 0.3f;
+        Projectile.rotation += MathF.Sign(Projectile.velocity.X) * Projectile.velocity.Length() * 0.05f;
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        Main.spriteBatch.Draw(Projectile.Drawer);
+        return false;
+        //return base.PreDraw(ref lightColor);
+    }
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+    }
+}
 public class DungeonSkeleton : ModNPC,
     IDrawToRenderTarget
 {
@@ -43,6 +86,7 @@ public class DungeonSkeleton : ModNPC,
         NPCID.Sets.UsesAseprite[Type] = true;
         this.AddToMarsh();
     }
+
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
