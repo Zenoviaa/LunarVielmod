@@ -264,7 +264,7 @@ public class BlehFly : ModNPC,
     {
         NPC.TargetClosest(faceTarget: false);
         Timer++;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, MathF.Sin(Timer * 0.03f) * 1), 0.1f);
+        NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, MathF.Sin(Timer * 0.03f + NPC.whoAmI) * 1), 0.1f);
         NPC.rotation = Utils.AngleLerp(NPC.rotation, ExtraMath.Osc(-0.05f, 0.05f, 2f, NPC.whoAmI), 0.05f);
 
         NPC.PlayAnimationLooped(ANIM_FLY);

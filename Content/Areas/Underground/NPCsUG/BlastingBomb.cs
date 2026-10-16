@@ -19,10 +19,11 @@ public class BlastingBombBoom : ModProjectile
     {
         base.SetDefaults();
         Projectile.tileCollide = false;
-        Projectile.WidthAndHeight = 128;
+        Projectile.WidthAndHeight = 384;
         Projectile.hostile = true;
         Projectile.timeLeft = 30;
         Projectile.ignoreWater = true;
+        Projectile.penetrate = -1;
         Projectile.light = 0.8f;
     }
     public override void AI()
@@ -37,30 +38,33 @@ public class BlastingBombBoom : ModProjectile
             SoundEngine.PlaySound(sound, Projectile.position);
 
             var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Fiery, new Vector2(5, 15f));
+            fac.particleCount *= 4;
             ParticleUtils.CreateSwirlingDustCircle(fac);
-
-            foreach(PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 32))
+            
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.Gold, Color.DarkOrange, Color.Black, duration: 25, baseSize: 0.24f);
+            fx.Scale *= 2.7f;
+            foreach(PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 40))
             {
                 Particles.GlowDust.Spawn(new()
                 {
                     position = posVel.position,
-                    velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),
-                    color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat()),
+                    velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 1f) * 0.3f,
+                    color = Color.Lerp(Color.Yellow, Color.OrangeRed, Main.rand.NextFloat()),
                     timeLeft = Main.rand.Next(45, 120),
                     scale = Main.rand.NextFloat(0.15f, 0.25f)
                 });
             }
 
             var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
-            foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 32))
+            foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 48))
             {
                 Particles.BackCloud.Spawn(new()
                 {
                     position = posVel.position,
-                    velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),
+                    velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
                     color = color,
                     timeLeft = Main.rand.Next(60, 120),
-                    scale = Main.rand.NextFloat(0.5f, 1f)
+                    scale = Main.rand.NextFloat(0.5f, 2f)
                 });
             }
         }
@@ -71,7 +75,14 @@ public class BlastingBombBoom : ModProjectile
         drawer.scale = Vector2.Lerp(new Vector2(0.2f), Vector2.One, EasingFunction.OutCirc(Timer / ExplodeTime));
         drawer.color = Color.DarkRed;
         drawer.color.A = 0;
+        drawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InQuad(Timer / ExplodeTime));
         Main.spriteBatch.Draw(drawer);
+
+        var flashDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.JumbledGlowCircle.Asset, Projectile.Center);
+        flashDrawer.color = Color.Lerp(Color.OrangeRed, Color.Transparent, EasingFunction.OutExpo(Timer / ExplodeTime));
+        flashDrawer.color.A = 0;
+        flashDrawer.scale *= 2;
+        Main.spriteBatch.Draw(flashDrawer);
         return false;
     }
     public override void OnKill(int timeLeft)
@@ -171,7 +182,7 @@ public class BlastingBomb : ModNPC,
     {
         if (MoonUtils.IsGrounded(NPC))
         {
-            NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.06f);
         }
         else
         {
@@ -192,6 +203,7 @@ public class BlastingBomb : ModNPC,
         {
             var rot = (ThrowDirection - 10f);
             var vel = rot.ToRotationVector2() * 10;
+            vel.Y -= 4;
             NPC.velocity = vel;
             SwitchState(AIState.Ticking);
         }
@@ -215,7 +227,9 @@ public class BlastingBomb : ModNPC,
             PlayBeepSound();
             BeepTime = 7;
         }
-        _aboutToBlowColor = Color.Lerp(Color.Transparent, Color.Yellow, EasingFunction.InOutSine(Timer / BlowTime));
+        HandleRotation();
+
+        _aboutToBlowColor = Color.Lerp(Color.Transparent, Color.OrangeRed, EasingFunction.InOutSine(Timer / BlowTime));
         NPC.velocity.X *= 0.96f;
         if (Timer >= BlowTime)
         {
@@ -253,10 +267,10 @@ public class BlastingBomb : ModNPC,
         if(_aboutToBlowColor.A > 3)
         {
             var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.JumbledGlowCircle.Asset, NPC.Center);
-            drawer.color = _aboutToBlowColor;
+            drawer.color = _aboutToBlowColor * ExtraMath.Osc(0.5f, 1f, speed: 32);
             drawer.color.A = 0;
-            drawer.scale = Vector2.Lerp(new Vector2(0.2f), new Vector2(0.6f), ((float)_aboutToBlowColor.A) / 255f);
-            drawer.rotation = Main.GlobalTimeWrappedHourly;
+            drawer.scale = Vector2.Lerp(new Vector2(0.2f), new Vector2(0.4f), ((float)_aboutToBlowColor.A) / 255f);
+
             spriteBatch.Draw(drawer);
         }
         return false;

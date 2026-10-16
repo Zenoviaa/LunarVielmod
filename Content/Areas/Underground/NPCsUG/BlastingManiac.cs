@@ -101,7 +101,7 @@ public class BlastingManiac : ModNPC,
     void AI_Idle()
     {
         Timer++;
-        NPC.TargetClosest();
+        NPC.TargetClosest(faceTarget: false);
         NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
         NPC.velocity.X *= 0.92f;
         NPC.PlayAnimationLooped(ANIM_IDLE);
@@ -169,7 +169,12 @@ public class BlastingManiac : ModNPC,
         if(Timer == 1)
         {
             NPC.velocity.X = NPC.direction * 4;
-            NPC.velocity.Y = -6;
+            NPC.velocity.Y = -5;
+ 
+        }
+
+        if(Timer == 15)
+        {
             if (MultiplayerHelper.IsHost)
             {
                 var x = (int)NPC.Center.X;
@@ -179,7 +184,6 @@ public class BlastingManiac : ModNPC,
                 NPC.NewNPC(NPC.GetSource_FromThis(), x, y, type, ai3: 10f + throwDir);
             }
         }
-
         _outliner.attacking = true;
         NPC.velocity.X *= 0.9f;
         NPC.PlayAnimationOneShot(ANIM_THROW);
@@ -197,8 +201,8 @@ public class BlastingManiac : ModNPC,
         if(NPC.life <= 0)
         {
             this.MakeGore("_Gore_Head", NPC.position, NPC.velocity);
-            this.MakeGore("_Gore_Arm", NPC.position + new Vector2(-5, 0), NPC.velocity + new Vector2(-5));
-            this.MakeGore("_Gore_Butt", NPC.position + new Vector2(-8, -2), NPC.velocity + new Vector2(-3, 0));
+            this.MakeGore("_Gore_Arm", NPC.position + new Vector2(-5, 0), NPC.velocity + new Vector2(-2));
+            this.MakeGore("_Gore_Butt", NPC.position + new Vector2(-8, -2), NPC.velocity + new Vector2(-1, 0));
         }
     }
 
