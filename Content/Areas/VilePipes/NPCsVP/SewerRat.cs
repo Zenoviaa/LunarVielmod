@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
 using System.IO;
 using Terraria;
@@ -53,6 +54,7 @@ public class SewerRat : ModNPC,
         base.SetStaticDefaults();
         NPCID.Sets.TrailCacheLength[Type] = 16;
         NPCID.Sets.TrailingMode[Type] = 0;
+        NPCID.Sets.UsesAseprite[Type] = true;
         this.AddToVilePipes();
     }
     public override void SetDefaults()

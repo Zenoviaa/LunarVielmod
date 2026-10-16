@@ -1,15 +1,10 @@
 ﻿using Stellamod.Common;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-
 namespace Stellamod.Content.Areas.SpringHills.NPCsSH;
 
 public class IvynSpearman : ModNPC,
@@ -53,6 +48,7 @@ public class IvynSpearman : ModNPC,
         base.SetStaticDefaults();
         NPCID.Sets.TrailCacheLength[Type] = 16;
         NPCID.Sets.TrailingMode[Type] = 0;
+        NPCID.Sets.UsesAseprite[Type] = true;
         this.AddToSpringHills();
     }
     public override void SetDefaults()
