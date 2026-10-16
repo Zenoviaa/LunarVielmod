@@ -36,7 +36,7 @@ public class ToxicBubbleDust : ParticleUpdater<ToxicBubbleDust.Data>
             if (WorldGen.SolidOrSlopedTile(tile))
             {
                 particle.timeLeft = -5;
-                for (var j = 0; j < 3; j++)
+                for (var j = 0; j < 2; j++)
                 {
                     var pos = particle.position;
                     pos += Main.rand.NextVector2Circular(32, 32);
@@ -44,9 +44,9 @@ public class ToxicBubbleDust : ParticleUpdater<ToxicBubbleDust.Data>
                     Particles.GlowDust.Spawn(new()
                     {
                         position = pos,
-                        velocity = vel,
+                        velocity = vel * 0.5f,
                         timeLeft = Main.rand.Next(45, 180),
-                        color = particle.color,
+                        color = Color.LightGreen,
                         scale = Main.rand.NextFloat(0.5f, 1f) * 0.25f
                     });
                 }

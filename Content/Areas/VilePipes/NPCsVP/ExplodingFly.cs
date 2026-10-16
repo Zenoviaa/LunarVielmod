@@ -15,14 +15,14 @@ namespace Stellamod.Content.Areas.VilePipes.NPCsVP;
 public class ExplodingFlyBoom : ModProjectile
 {
     ref float Timer => ref Projectile.ai[0];
-    float ExplodeTime => 60;
+    float ExplodeTime => 35;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetDefaults()
     {
         base.SetDefaults();
         Projectile.tileCollide = false;
         Projectile.light = 0.78f;
-        Projectile.WidthAndHeight = 164;
+        Projectile.WidthAndHeight = 300;
         Projectile.timeLeft = (int)ExplodeTime;
         Projectile.hostile = true;
     }
@@ -42,7 +42,7 @@ public class ExplodingFlyBoom : ModProjectile
             ParticleUtils.CreateSwirlingDustCircle(fac);
 
             var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.LightGreen, Color.DarkGreen, Color.Black, duration: 25, baseSize: 0.18f);
-            fx.Scale *= 2.5f;
+            fx.Scale *= 3f;
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 48))
             {
                 Particles.GlowDust.Spawn(new()
@@ -63,6 +63,17 @@ public class ExplodingFlyBoom : ModProjectile
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
                     color = color,
+                    timeLeft = Main.rand.Next(60, 120),
+                    scale = Main.rand.NextFloat(0.5f, 1f)
+                });
+            }
+            foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 32))
+            {
+                Particles.ToxicBubbleDust.Spawn(new()
+                {
+                    position = posVel.position,
+                    velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 1f) * 0.15f,
+                    color = Color.White with { A = 0 },
                     timeLeft = Main.rand.Next(60, 120),
                     scale = Main.rand.NextFloat(0.5f, 1f)
                 });
@@ -107,11 +118,11 @@ public class ExplodingFly : ModNPC,
     float ExplodeTime => 36;
     float IdleTime => 90;
     float HomeRadius => 128;
-    int Damage_Explode => 30;
+    int Damage_Explode => 45;
     float MoveTime => 90;
-    float ChaseDistance => 128 * 128;
+    float ChaseDistance => 144 * 144;
     float ChaseSpeed => 5;
-    float AttackDistance => 48 * 48;
+    float AttackDistance => 70 * 70;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -195,7 +206,12 @@ public class ExplodingFly : ModNPC,
     void AI_Explode()
     {
         _outliner.warning = true;
-        NPC.velocity *= 0.88f;
+        MoonUtils.CreateNewPathIfTooFar(_pathfinder,
+            currentPosition: NPC.Center,
+            destination: NPC.PlayerImTargeting.Center, ref _oldPlayerPos);
+
+        MoonUtils.AIWalk_FlyChase(_pathfinder, NPC, NPC.PlayerImTargeting.Center, ChaseSpeed * 0.5f);
+
         Timer++;
         NPC.PlayAnimationOneShot(ANIM_EXPLODING);
         if (Timer % 2 == 0)
@@ -211,7 +227,8 @@ public class ExplodingFly : ModNPC,
                 timeLeft = Main.rand.Next(45, 130)
             });
         }
-
+        FaceVelocity();
+        NPC.spriteDirection = NPC.direction;
         if (Timer >= ExplodeTime)
         {
             Explode();
@@ -321,10 +338,7 @@ public class ExplodingFly : ModNPC,
         if (Main.netMode == NetmodeID.Server)
             return;
 
-        if(NPC.life <= 0)
-        {
-            DeathGores();
-        }
+        Explode();
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
