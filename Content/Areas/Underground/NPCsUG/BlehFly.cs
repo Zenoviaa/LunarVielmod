@@ -53,7 +53,7 @@ public class BlehFlySpit : ModProjectile,
                     velocity = vel,
                     timeLeft = Main.rand.Next(45, 180),
                     color = Color.Lerp(Color.DarkGreen, Color.LightGreen, Main.rand.NextFloat()),
-                    scale = Main.rand.NextFloat(0.5f, 1f)
+                    scale = Main.rand.NextFloat(0.5f, 1f) * 0.25f
                 });
             }
         }
@@ -64,7 +64,7 @@ public class BlehFlySpit : ModProjectile,
             {
                 position = Projectile.Center,
                 velocity = Main.rand.NextVector2Circular(2, 2) * 0.3f,
-                color = Color.DarkGreen * 0.6f,
+                color = Color.DarkGreen,
                 scale = Main.rand.NextFloat(0.85f, 1f),
                 rotation = Main.rand.NextFloat() * 12f,
                 timeLeft = Main.rand.Next(45, 130)
@@ -78,9 +78,27 @@ public class BlehFlySpit : ModProjectile,
             Dust.NewDustPerfect(pos, DustID.ToxicBubble, vel, Scale: 0.6f);
         }
 
+        if (Main.rand.NextBool(12))
+        {
+            var pos = Projectile.Center;
+            pos += Main.rand.NextVector2Circular(32, 32);
+            var vel = Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f);
+            Particles.GlowDust.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                timeLeft = Main.rand.Next(45, 180),
+                color = Color.Lerp(Color.Lerp(Color.DarkGreen, Color.White, 0.5f), Color.LightGreen, Main.rand.NextFloat()),
+                scale = Main.rand.NextFloat(0.5f, 1f) * 0.25f
+            });
+        }
+
 
         Projectile.velocity.Y += 0.3F;
-        Projectile.rotation = Projectile.velocity.ToRotation();
+        if(Timer >= 15)
+        {
+            Projectile.tileCollide = true;
+        }
         DrawHelper.AnimateTopToBottom(Projectile, 5);
     }
 
@@ -253,7 +271,13 @@ public class BlehFly : ModNPC,
         if (Timer >= IdleTime)
         {
             SwitchState(AIState.Move);
+            var sqrDistToTarget = Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
+            if (sqrDistToTarget < ChaseDistance)
+            {
+                SwitchState(AIState.ChaseTarget);
+            }
         }
+   
     }
 
     void AI_Move()
