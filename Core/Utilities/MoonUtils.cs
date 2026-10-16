@@ -162,6 +162,58 @@ public static class MoonUtils
         NPC.rotation = ExtraMath.Osc(-range, range, speed: 0, offset: ratio * 3);
     }
 
+    public static void AIWalk_SusBush(Pathfinder pathfinder, NPC entity, Vector2 destination, bool isGrounded, float runSpeed, float maxJumpSpeed)
+    {
+        var target = pathfinder.currentNode;
+        if (Collision.CanHitLine(entity.position, 1, 1, destination, 1, 1))
+        {
+            target = destination;
+        }
+        //We can make the assumption that whatever node we're moving too is VERY close to our actor
+        //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
+        //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
+        var targetRectangle = DrawUtilities.CenterRectangle(pathfinder.currentNode, 16, 16);
+        var nextRectangle = DrawUtilities.CenterRectangle(pathfinder.nextNode, 16, 16);
+        var myRectangle = DrawUtilities.CenterRectangle(entity.Center, 32, 32);
+
+        //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
+
+        float distanceToCurrentNode = Vector2.Distance(entity.Center, pathfinder.currentNode);
+        float distanceToNextNode = Vector2.Distance(entity.Center, pathfinder.nextNode);
+
+        if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode ||
+            myRectangle.Intersects(nextRectangle) || myRectangle.Contains(targetRectangle))
+        {
+
+            pathfinder.Pop();
+        }
+
+        //Since this is a grounded entity, we can't just directly move towards the point we wish to reach
+        //First we'll try to reach the target destination on the X axis, and once the X axis has been satisfied, we'll try to reach it on the y Axis
+        //If the y axis is above, then we'll jump
+        var diffX = (target.X - entity.Center.X);
+        var distX = MathF.Abs(diffX);
+        if (distX <= myRectangle.Width)
+        {
+
+            var diffY = (target.Y - entity.Center.Y);
+
+            var distY = MathF.Abs(diffY);
+
+            if (diffY < 0 && distY > myRectangle.Height && isGrounded)
+            {
+
+                var maxSpeed = MathF.Min(maxJumpSpeed, distY / 8);
+                entity.velocity.Y = -maxSpeed;
+            }
+        }
+
+        var dirX = MathF.Sign(diffX);
+        var targetXVelocity = dirX * runSpeed;
+        var accel = ExtraMath.Osc(0.05f, 0.1f, speed: 0, offset: entity.whoAmI);
+        entity.velocity.X = MathHelper.Lerp(entity.velocity.X, targetXVelocity, accel);
+        Collision.StepUp(ref entity.position, ref entity.velocity, entity.width, entity.height, ref entity.stepSpeed, ref entity.gfxOffY);
+    }
     public static void AIWalk_FlyChase(Pathfinder pathfinder, NPC entity, Vector2 destination, float runSpeed)
     {
         var target = pathfinder.currentNode;
