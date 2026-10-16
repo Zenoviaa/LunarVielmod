@@ -413,13 +413,14 @@ public class IvythornSlime : ModNPC,
             for (var i = 0; i < Main.rand.Next(5, 8); i++)
             {
                 var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
-                var vel = (pos - NPC.Center).Resize(Main.rand.NextFloat(8, 12));
+                var vel = (pos - NPC.Center).Resize(Main.rand.NextFloat(1, 4));
                 vel.Y -= 4;
-                var gore = Mod.Find<ModGore>($"{Name}_Gore_{i}").Type;
+                var gore = Mod.Find<ModGore>($"{Name}_Gore_{Main.rand.Next(4)}").Type;
                 Gore.NewGorePerfect(pos, vel, gore);
             }
             CreateMagicalBurst();
         }
+        //
 
     }
 
