@@ -9,7 +9,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static ReLogic.Peripherals.RGB.Corsair.CorsairDeviceGroup;
 
 namespace Stellamod.Content.Areas.VilePipes.NPCsVP;
 
@@ -22,7 +21,7 @@ public class ExplodingFlyBoom : ModProjectile
     {
         base.SetDefaults();
         Projectile.tileCollide = false;
-        Projectile.light =0.78f;
+        Projectile.light = 0.78f;
         Projectile.WidthAndHeight = 164;
         Projectile.timeLeft = (int)ExplodeTime;
         Projectile.hostile = true;
@@ -32,7 +31,7 @@ public class ExplodingFlyBoom : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
 
@@ -66,7 +65,7 @@ public class ExplodingFlyBoom : ModProjectile
                     scale = Main.rand.NextFloat(0.5f, 1f)
                 });
             }
-        } 
+        }
     }
     public override bool PreDraw(ref Color lightColor)
     {
@@ -196,7 +195,7 @@ public class ExplodingFly : ModNPC,
         NPC.velocity *= 0.88f;
         Timer++;
         NPC.PlayAnimationLooped(ANIM_EXPLODING);
-        if(Timer % 4 == 0)
+        if (Timer % 4 == 0)
         {
             var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = (pos - NPC.Center).Resize(Main.rand.NextFloat(10f, 15f));
@@ -272,7 +271,7 @@ public class ExplodingFly : ModNPC,
         }
     }
 
- 
+
     void AI_ChaseTarget()
     {
         Timer++;
