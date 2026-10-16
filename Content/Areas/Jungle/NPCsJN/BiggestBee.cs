@@ -149,6 +149,7 @@ public class BiggestBee : ModNPC,
     float ShootTime => 60;
     int Damage_Sting => 34;
     float AttackDistance => 512 * 512;
+    public override string Texture => TextureRegistry.EmptyTexture;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
