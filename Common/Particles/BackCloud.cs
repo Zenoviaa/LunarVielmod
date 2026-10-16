@@ -57,7 +57,7 @@ public class BackCloud : ParticleUpdater<BackCloud.Data>
         using (RT.Clear(maskTarget, Color.Transparent))
         {
 
-            using (spriteBatch.Ctx(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity, blendState = BlendState.Additive }))
+            using (spriteBatch.Ctx(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity, blendState = BlendState.AlphaBlend }))
             {
                 for (var i = 0; i < _length; i++)
                 {

@@ -6,6 +6,7 @@ using Stellamod.Core.Pixelation;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,7 +20,8 @@ public class BlehFlySpit : ModProjectile,
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Projectile.SetTrailCacheLength(12);
+        Projectile.SetTrailCacheLength(8);
+        Main.projFrames[Type] = 5;
     }
 
     public override void SetDefaults()
@@ -36,20 +38,70 @@ public class BlehFlySpit : ModProjectile,
     {
         base.AI();
         Timer++;
+        if (Timer == 1)
+        {
+            var sound = AssetReferences.Assets.Sounds.TentacleBubbleOut.Asset with { PitchVariance = 0.5f, Pitch = 0.5f, Volume = 0.6f };
+            SoundEngine.PlaySound(sound, Projectile.position);
+            for (var i = 0; i < 7; i++)
+            {
+                var pos = Projectile.Center;
+                pos += Main.rand.NextVector2Circular(32, 32);
+                var vel = Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f);
+                Particles.GlowDust.Spawn(new()
+                {
+                    position = pos,
+                    velocity = vel,
+                    timeLeft = Main.rand.Next(45, 180),
+                    color = Color.Lerp(Color.DarkGreen, Color.LightGreen, Main.rand.NextFloat()),
+                    scale = Main.rand.NextFloat(0.5f, 1f)
+                });
+            }
+        }
+
+        if (Timer % 8 == 0)
+        {
+            Particles.BackCloud.Spawn(new()
+            {
+                position = Projectile.Center,
+                velocity = Main.rand.NextVector2Circular(2, 2) * 0.3f,
+                color = Color.DarkGreen * 0.6f,
+                scale = Main.rand.NextFloat(0.85f, 1f),
+                rotation = Main.rand.NextFloat() * 12f,
+                timeLeft = Main.rand.Next(45, 130)
+            });
+        }
+
+        if (Main.rand.NextBool(7))
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            var vel = Main.rand.NextVector2Circular(1, 1);
+            Dust.NewDustPerfect(pos, DustID.ToxicBubble, vel, Scale: 0.6f);
+        }
+
+
         Projectile.velocity.Y += 0.3F;
         Projectile.rotation = Projectile.velocity.ToRotation();
+        DrawHelper.AnimateTopToBottom(Projectile, 5);
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
-        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.DarkGreen, Color.Transparent, 0.15f);
-        Main.spriteBatch.Draw(Projectile.Drawer);
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.LightGreen, Color.Transparent, 0.15f);
+        var d = Projectile.Drawer;
+        Main.spriteBatch.Draw(d);
+        var whiteDrawer = Projectile.Drawer;
+        whiteDrawer.color = Color.White;
+        whiteDrawer.color.A = 0;
+        whiteDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 60f));
+        Main.spriteBatch.Draw(whiteDrawer);
         return false;
     }
 
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Foresty, new Vector2(5, 15f));
+        ParticleUtils.CreateSwirlingDustCircle(fac);
     }
 
     public void DrawToRenderTargets()
@@ -93,9 +145,9 @@ public class BlehFly : ModNPC,
     float IdleTime => 129;
     float HomeRadius => 196;
     float ChaseDistance => 384 * 384;
-    float AttackDistance => 192 * 192;
+    float AttackDistance => 100 * 100;
     float MoveTime => 90;
-    float ChaseSpeed => 9;
+    float ChaseSpeed => 5;
     float SpitTime => 60;
     float SpitReadyTime => 60;
     int Damage_Spit => 25;
@@ -118,6 +170,10 @@ public class BlehFly : ModNPC,
         return false;
     }
 
+    public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
+    {
+        return base.ModifyCollisionData(victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
+    }
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -171,10 +227,14 @@ public class BlehFly : ModNPC,
         }
         _outliner.Update();
         NPC.DrawOrigin = new Vector2(45, 38);
-        NPC.spriteDirection = NPC.direction;
+
     }
 
-    void FaceVelocity() => NPC.direction = NPC.velocity.X < 0 ? -1 : 1;
+    void FaceVelocity()
+    {
+        NPC.direction = NPC.velocity.X < 0 ? -1 : 1;
+        NPC.spriteDirection = NPC.direction;
+    }
     void SwitchState(AIState state)
     {
         Timer = 0;
@@ -184,7 +244,7 @@ public class BlehFly : ModNPC,
 
     void AI_Idle()
     {
-        NPC.TargetClosest();
+        NPC.TargetClosest(faceTarget: false);
         Timer++;
         NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, MathF.Sin(Timer * 0.03f) * 1), 0.1f);
         NPC.rotation = Utils.AngleLerp(NPC.rotation, ExtraMath.Osc(-0.05f, 0.05f, 2f, NPC.whoAmI), 0.05f);
@@ -198,7 +258,7 @@ public class BlehFly : ModNPC,
 
     void AI_Move()
     {
-        NPC.TargetClosest();
+        NPC.TargetClosest(faceTarget: false);
         Timer++;
         if (Timer == 1 && MultiplayerHelper.IsHost)
         {
@@ -211,6 +271,7 @@ public class BlehFly : ModNPC,
         NPC.rotation = Utils.AngleLerp(NPC.rotation, ExtraMath.Osc(-0.05f, 0.05f, 2f, NPC.whoAmI), 0.05f);
         NPC.PlayAnimationLooped(ANIM_FLY);
         FaceVelocity();
+
         if (Timer >= MoveTime)
         {
             SwitchState(AIState.Idle);
@@ -226,8 +287,13 @@ public class BlehFly : ModNPC,
     void AI_ChaseTarget()
     {
         Timer++;
+        if (Timer == 1)
+        {
+            PlayBuzzSound();
+        }
+
         MoonUtils.CreateNewPathIfTooFar(_pathfinder,
-            currentPosition: NPC.Center, 
+            currentPosition: NPC.Center,
             destination: NPC.PlayerImTargeting.Center, ref _oldPlayerPos);
 
         MoonUtils.AIWalk_FlyChase(_pathfinder, NPC, NPC.PlayerImTargeting.Center, ChaseSpeed);
@@ -247,13 +313,26 @@ public class BlehFly : ModNPC,
         Timer++;
         NPC.velocity *= 0.92f;
         NPC.PlayAnimationOneShot(ANIM_SPIT);
-        if (Timer == 45 && MultiplayerHelper.IsHost)
+        NPC.SpriteFaceTarget();
+        if(Timer == 35)
         {
-            var firer = ProjFirer.From<BlehFlySpit>(NPC);
-            firer.damage = Damage_Spit;
-            firer.velocity = (NPC.PlayerImTargeting.Center - NPC.Center).Resize(15);
-            firer.velocity.Y -= 4;
-            firer.New();
+            var spitSound = AssetReferences.Assets.Sounds.DMHeart_Shot.Asset with { PitchVariance = 0.5f, Pitch = -0.5f };
+            SoundEngine.PlaySound(spitSound, NPC.position);
+        }
+
+        if (Timer == 35 && MultiplayerHelper.IsHost)
+        {
+            for (var i = 0; i < 3; i++)
+            {
+                var firer = ProjFirer.From<BlehFlySpit>(NPC);
+                firer.damage = Damage_Spit;
+                firer.velocity = (NPC.PlayerImTargeting.Center - NPC.Center).Resize(15);
+                firer.velocity.Y -= 4;
+                firer.velocity = firer.velocity.RotatedByRandom(0.5f);
+                firer.velocity *= Main.rand.NextFloat(0.6f, 1f);
+                firer.New();
+            }
+
         }
 
         if (Timer >= SpitTime)
@@ -262,14 +341,26 @@ public class BlehFly : ModNPC,
         }
     }
 
+    void PlayBuzzSound()
+    {
+        var buzzSound = AssetReferences.Assets.Sounds.BeeBuzz.Asset with { PitchVariance = 0.5f, Pitch = -0.5f };
+        SoundEngine.PlaySound(buzzSound, NPC.position);
+    }
+
     void AI_SpitReady()
     {
         _outliner.warning = true;
         Timer++;
+        if(Timer == 1)
+        {
+            PlayBuzzSound();
+        }
+
         NPC.velocity *= 0.92f;
         NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, MathF.Sin(Timer * 0.03f) * 1), 0.1f);
         NPC.rotation = Utils.AngleLerp(NPC.rotation, ExtraMath.Osc(-0.05f, 0.05f, 2f, NPC.whoAmI), 0.05f);
         NPC.PlayAnimationLooped(ANIM_FASTFLY);
+        NPC.SpriteFaceTarget();
         if (Timer >= SpitReadyTime)
         {
             SwitchState(AIState.Spit);
@@ -282,19 +373,24 @@ public class BlehFly : ModNPC,
         if (Main.netMode == NetmodeID.Server)
             return;
 
+        if (NPC.life > 0)
+            return;
+
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 16))
         {
             Particles.BackCloud.Spawn(new()
             {
                 position = posVel.position,
-                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),
-                color = Color.DarkGreen,
+                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
+                color = Color.DarkGreen * 0.6f,
+                scale = Main.rand.NextFloat(0.85f, 1f),
+                rotation = Main.rand.NextFloat() * 12f,
                 timeLeft = Main.rand.Next(45, 130)
             });
         }
-
-        this.MakeGore("_Gore_Butt", NPC.position, NPC.velocity + new Vector2(-5, 0));
-        this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(5, 0));
+        this.MakeGore("_Gore_Wings", NPC.position, NPC.velocity + new Vector2(0, -2));
+        this.MakeGore("_Gore_Butt", NPC.position, NPC.velocity + new Vector2(-2, 0));
+        this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(2, 0));
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
