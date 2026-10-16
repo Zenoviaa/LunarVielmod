@@ -145,6 +145,23 @@ public static class MoonUtils
         var targetPos = center + new Vector2(0, -48) + new Vector2(xOfffset, 0);
         return targetPos;
     }
+    public static void AIJump_IvythornSlime(NPC NPC, Vector2 _startJumpPos, Vector2 _endJumpPos, float jumpHeight, float ratio)
+    {
+        var linear = Vector2.Lerp(_startJumpPos, _endJumpPos, ratio);
+        var upQuick = MathHelper.Lerp(0, -jumpHeight, EasingFunction.OutExpo(ratio));
+        var downSlow = MathHelper.Lerp(-jumpHeight, 0, EasingFunction.InQuad(ratio));
+        var up = MathHelper.Lerp(upQuick, downSlow, ratio);
+        linear.Y += up;
+        NPC.Center = linear;
+        NPC.velocity = Vector2.Zero;
+        NPC.VectorScale = Vector2.Lerp(new Vector2(0.8f, 1.2f), Vector2.One, EasingFunction.InSine(ratio));
+
+        var range = 0.25f * MathHelper.Lerp(1f, 0f, EasingFunction.InSine(ratio));
+        var dir = (_endJumpPos.X < _startJumpPos.X) ? 1 : -1;
+        range *= dir;
+        NPC.rotation = ExtraMath.Osc(-range, range, speed: 0, offset: ratio * 3);
+    }
+
     public static void AIWalk_FlyChase(Pathfinder pathfinder, NPC entity, Vector2 destination, float runSpeed)
     {
         var target = pathfinder.currentNode;
