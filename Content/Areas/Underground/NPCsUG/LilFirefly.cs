@@ -13,7 +13,7 @@ public class LilFirefly : ModNPC
     Vector2 _posToMoveTo;
     ref float Timer => ref NPC.ai[0];
     const string ANIM_FLY = "Fly";
-    float HomeRange => 128;
+    float HomeRange => 64;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -63,18 +63,44 @@ public class LilFirefly : ModNPC
             NPC.netUpdate = true;
         }
 
+        _posToMoveTo.Y -= 0.4f;
         var targetVelocity = (_posToMoveTo - NPC.Center) * 0.2f;
         NPC.velocity = targetVelocity;
         NPC.PlayAnimationLooped(ANIM_FLY);
-        if (MultiplayerHelper.IsHost && Main.rand.NextBool(128))
+        if (MultiplayerHelper.IsHost && Timer % 32 == 0)
         {
             _posToMoveTo = _home + Main.rand.NextVector2Circular(HomeRange, HomeRange);
+        }
+        if(Timer % 16 == 0)
+        {
+            Particles.GlowDust.Spawn(new()
+            {
+                position = NPC.Center,
+                velocity = Main.rand.NextVector2Circular(8, 8) * Main.rand.NextFloat(0.5f, 1f) * 0.2f,
+                timeLeft = Main.rand.Next(45, 120),
+                scale = Main.rand.NextFloat(0.25f, 0.5f),
+                color = Color.LightGoldenrodYellow
+            });
         }
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        for(var i = NPC.oldPos.Length - 1; i >= 0; i--)
+        {
+            var color = Color.Lerp(Color.Gold, Color.Transparent, (float)i / (float)NPC.oldPos.Length) * 0.15f;
+            color.A = 0;
+            var info = NPC.GetAnimatorDrawInfo(color, NPC.oldPos[i] + NPC.Size * 0.5f);
+            spriteBatch.Draw(info);
+        }
         NPC.DrawAnimator(spriteBatch, drawColor);
+        var glow = AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset;
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(glow, NPC.Center);
+        glowDrawer.color = Color.Gold;
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.2f;
+        glowDrawer.color *= 0.2f;
+        spriteBatch.Draw(glowDrawer);
         return false;
     }
 
@@ -86,10 +112,10 @@ public class LilFirefly : ModNPC
             Particles.GlowDust.Spawn(new()
             {
                 position = posVel.position,
-                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),
+                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.2f,
                 timeLeft = Main.rand.Next(45, 120),
                 scale = Main.rand.NextFloat(0.25f, 0.5f),
-                color = Color.DarkOrange
+                color = Color.LightGoldenrodYellow
             });
         }
     }
@@ -102,6 +128,8 @@ public class LilFirefly : ModNPC
     {
         base.HitEffect(hit);
         if (Main.netMode == NetmodeID.Server)
+            return;
+        if (NPC.life > 0)
             return;
         DeathFX();
     }
