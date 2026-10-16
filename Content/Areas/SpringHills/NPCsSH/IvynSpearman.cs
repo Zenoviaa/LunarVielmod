@@ -35,7 +35,7 @@ public class IvynSpearman : ModNPC,
         set => NPC.ai[1] = (float)value;
     }
     ref float AttackCycle => ref NPC.ai[2];
-
+    public override string Texture => TextureRegistry.EmptyTexture;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
