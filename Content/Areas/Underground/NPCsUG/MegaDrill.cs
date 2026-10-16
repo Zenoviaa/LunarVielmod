@@ -35,6 +35,7 @@ public class MegaDrill : ModNPC,
     Outliner _outliner;
     const string ANIM_IDLE = "Idle";
     const string ANIM_DRILL = "Drill";
+    const string ANIM_DRILLFAST = "DrillFast";
     ref float Timer => ref NPC.ai[0];
     AIState State
     {
@@ -191,7 +192,7 @@ public class MegaDrill : ModNPC,
 
      
         NPC.velocity = Vector2.Lerp(NPC.velocity, _drillDirection * DrillSpeed, MathHelper.Lerp(0f, 0.01f, Timer / 60f));
-        NPC.PlayAnimationLooped("DrillFast");
+        NPC.PlayAnimationLooped(ANIM_DRILLFAST);
         if (Timer == 90 && MultiplayerHelper.IsHost)
         {
             _drillDirection = Main.rand.NextBool(2) ? -Vector2.UnitY : Vector2.UnitY;
@@ -199,20 +200,25 @@ public class MegaDrill : ModNPC,
 
         if (Timer == 90)
         {
-            Teleport(NPC.PlayerImTargeting.Center - _drillDirection * 768);
-            var centerPoint = NPC.PlayerImTargeting.Center;
-            _crashPoint = centerPoint;
-            var dir = (int)MathF.Sign(_drillDirection.Y);
-            _crashPoint = TileUtilities.FallToSolidTile(_crashPoint, dir);
-            _crashPoint -= _drillDirection * 64;
+            if (MultiplayerHelper.IsHost)
+            {
+                var pointToTeleportTo = NPC.PlayerImTargeting.Center;
+                pointToTeleportTo.X += Main.rand.Next(-384, 384);
+                Teleport(pointToTeleportTo - _drillDirection * 768);
+                var centerPoint = pointToTeleportTo;
+                _crashPoint = centerPoint;
+                var dir = (int)MathF.Sign(_drillDirection.Y);
+                _crashPoint = TileUtilities.FallToSolidTile(_crashPoint, dir);
+                _crashPoint -= _drillDirection * 64;
 
 
-            _crashOutpoint = centerPoint;
-            _crashOutpoint = TileUtilities.FallToSolidTile(_crashOutpoint, -dir);
-            _crashOutpoint -= _drillDirection * 80;
+                _crashOutpoint = centerPoint;
+                _crashOutpoint = TileUtilities.FallToSolidTile(_crashOutpoint, -dir);
+                _crashOutpoint -= _drillDirection * 80;
 
-            _outpoint = false;
-            NPC.netUpdate = true;
+                _outpoint = false;
+                NPC.netUpdate = true;
+            }
         }
 
         if (Timer % 5 == 0)
