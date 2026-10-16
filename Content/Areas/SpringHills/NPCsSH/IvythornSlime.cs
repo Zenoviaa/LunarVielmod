@@ -136,6 +136,7 @@ public class IvythornSlime : ModNPC,
     {
         base.SetStaticDefaults();
         NPCID.Sets.TrailCacheLength[Type] = 16;
+        NPCID.Sets.TrailingMode[Type] = 0;
         NPCID.Sets.UsesAseprite[Type] = true;
         this.AddToSpringHills();
     }

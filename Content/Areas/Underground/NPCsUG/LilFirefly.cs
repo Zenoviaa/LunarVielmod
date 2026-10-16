@@ -19,6 +19,8 @@ public class LilFirefly : ModNPC
     {
         base.SetStaticDefaults();
         NPCID.Sets.UsesAseprite[Type] = true;
+        NPCID.Sets.TrailingMode[Type] = 0;
+        NPCID.Sets.TrailCacheLength[Type] = 16;
     }
     public override void SendExtraAI(BinaryWriter writer)
     {

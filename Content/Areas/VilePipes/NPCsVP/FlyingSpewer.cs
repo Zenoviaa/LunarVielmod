@@ -114,6 +114,7 @@ public class FlyingSpewer : ModNPC,
         base.SetStaticDefaults();
         NPCID.Sets.UsesAseprite[Type] = true;
         NPCID.Sets.TrailCacheLength[Type] = 16;
+        NPCID.Sets.TrailingMode[Type] = 0;
         this.AddToVilePipes();
     }
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)

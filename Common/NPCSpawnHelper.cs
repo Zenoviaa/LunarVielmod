@@ -39,6 +39,7 @@ public class SpawnSets : ModSystem
         UndergroundEnemy = new();
         VilePipesEnemy = new();
         StarrTempleEnemy = new();
+        HiveKingdomEnemy = new();
         base.SetupContent();
 
     }
@@ -62,6 +63,7 @@ public class SpawnSets : ModSystem
     public static List<int> AbyssWaterEnemy;
     public static List<int> AbyssTempleEnemy;
     public static List<int> StarrTempleEnemy;
+    public static List<int> HiveKingdomEnemy;
     public static float[] ModifiedWeights;
     public static bool[] TryNotToSpawnOnWater;
 
@@ -96,6 +98,10 @@ public static class NPCSpawnExtensions
     public static void AddToSpringHills(this ModNPC npc)
     {
         SpawnSets.SpringEnemy.Add(npc.Type);
+    }
+    public static void AddToHiveKingdom(this ModNPC npc)
+    {
+        SpawnSets.HiveKingdomEnemy.Add(npc.Type);
     }
 
     public static void AddToMarsh(this ModNPC npc)

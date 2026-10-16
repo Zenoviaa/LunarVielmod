@@ -115,6 +115,7 @@ public class ExplodingFly : ModNPC,
         base.SetStaticDefaults();
         NPCID.Sets.UsesAseprite[Type] = true;
         NPCID.Sets.TrailCacheLength[Type] = 16;
+        NPCID.Sets.TrailingMode[Type] = 0;
         this.AddToVilePipes();
     }
     public override void SendExtraAI(BinaryWriter writer)
