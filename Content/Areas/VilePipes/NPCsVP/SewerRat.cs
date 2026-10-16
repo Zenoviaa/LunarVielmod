@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common;
 using Stellamod.Core.Pixelation;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -35,6 +36,18 @@ public class SewerRat : ModNPC,
     const string ANIM_JMPUP = "JumpUp";
     const string ANIM_LAND = "Land";
     const string ANIM_BITEUP = "BiteUp";
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+    }
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return base.CanHitPlayer(target, ref cooldownSlot);
+    }
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
