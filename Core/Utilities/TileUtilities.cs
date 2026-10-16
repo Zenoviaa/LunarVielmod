@@ -144,6 +144,11 @@ public static class TileUtilities
     {
         return FallToSolidTile(worldCoordinate.ToTileCoordinates()).ToWorldCoordinates();
     }
+    public static Vector2 FallToSolidTile(Vector2 worldCoordinate, int direction = 1)
+    {
+        var p = worldCoordinate.ToTileCoordinates();
+        return FallToSolidTile(p.X, p.Y, direction).ToWorldCoordinates();
+    }
     public static Vector2 FallToSolidTileOrPlatform(Vector2 worldCoordinate)
     {
         return FallToSolidTileOrPlatform(worldCoordinate.ToTileCoordinates()).ToWorldCoordinates();

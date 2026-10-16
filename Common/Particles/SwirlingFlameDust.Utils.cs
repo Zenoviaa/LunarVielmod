@@ -17,7 +17,27 @@ public static partial class ParticleUtils
             return new ParticleFactory(start, end, palette, new Vector2(0.5f, 1.2f), speedRange, 12);
         }
     }
-
+    public static void CreateSwirlingDustBurst2(ParticleFactory factory)
+    {
+        for (var i = 0; i < factory.particleCount; i++)
+        {
+            var vel = (factory.end - factory.start);
+            vel = vel.SafeNormalize(Vector2.Zero);
+            vel = vel.RotatedByRandom(2.3f);
+            vel *= Main.rand.NextFloat(factory.speedRange.X, factory.speedRange.Y);
+            var pos = factory.start;
+            pos += Main.rand.NextVector2Circular(16, 16);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = factory.palette.primaryColor.ToVector4(),
+                outerColor = factory.palette.secondaryColor.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(factory.scaleRange.X, factory.scaleRange.Y)),
+                timeLeft = Main.rand.Next(30, 55)
+            });
+        }
+    }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void CreateSwirlingDustBurst(ParticleFactory factory)
     {
