@@ -37,6 +37,7 @@ public class SpawnSets : ModSystem
         AbyssCritter = new List<int>();
         AbyssTempleEnemy = new List<int>();
         UndergroundEnemy = new();
+        VilePipesEnemy = new();
         base.SetupContent();
 
     }
@@ -47,6 +48,7 @@ public class SpawnSets : ModSystem
         ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
         TryNotToSpawnOnWater = NPCID.Sets.Factory.CreateBoolSet();
     }
+    public static List<int> VilePipesEnemy;
     public static List<int> UndergroundEnemy;
     public static List<int> SpringEnemy;
     public static List<int> HarmonicEnemy;
@@ -79,6 +81,10 @@ public static class NPCSpawnExtensions
         SpawnSets.UndergroundEnemy.Add(npc.Type);
     }
 
+    public static void AddToVilePipes(this ModNPC npc)
+    {
+        SpawnSets.VilePipesEnemy.Add(npc.Type);
+    }
 
     //Wrapper functions for this functionality just incase we want to change how this works
     public static void AddToSpringHills(this ModNPC npc)

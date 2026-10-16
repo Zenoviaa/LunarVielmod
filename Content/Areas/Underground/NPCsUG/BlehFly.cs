@@ -91,7 +91,7 @@ public class BlehFly : ModNPC,
     const string ANIM_SPIT = "Spit";
     const string ANIM_SIT = "Sit";
     float IdleTime => 129;
-    float HomeRadius => 196 * 196;
+    float HomeRadius => 196;
     float ChaseDistance => 384 * 384;
     float AttackDistance => 192 * 192;
     float MoveTime => 90;
