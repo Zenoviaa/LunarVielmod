@@ -353,6 +353,7 @@ public class PixelationManager : ModSystem
     private PixelTarget _overPlayersPixelTarget;
     private PixelTarget _behindTilesPixelTarget;
     private PixelTarget _behindTilesOutlinePixelTarget;
+    private PixelTarget _superBehindTilesPixelTarget;
     private PixelTarget _waterTarget;
 
     //This one needs to go last
@@ -370,8 +371,29 @@ public class PixelationManager : ModSystem
         On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
         On_Main.DrawInfernoRings += RenderOverWater;
         On_Main.DrawDust += RenderOverDust;
+        On_Main.DrawCachedNPCs += RenderBehindEverything;
         //On_Main.DrawCachedProjs += RenderLater;
      //   ZTileMap.OnRenderForeground += RenderLater;
+    }
+
+    private void RenderBehindEverything(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
+    {
+        if(npcCache == Main.instance.DrawCacheNPCsBehindNonSolidTiles && behindTiles)
+        {
+            if (_superBehindTilesPixelTarget.HasRenders)
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+
+                Main.tileBatch.End();
+                Main.spriteBatch.End();
+
+                _superBehindTilesPixelTarget.DrawToScreen();
+
+                Main.tileBatch.Begin();
+                Main.spriteBatch.Begin();
+            }
+        }
+        orig(self, npcCache, behindTiles);
     }
 
     private void RenderOverDust(On_Main.orig_DrawDust orig, Main self)
@@ -391,22 +413,6 @@ public class PixelationManager : ModSystem
         {
             _waterTarget.DrawToScreenNoRestart();
         }
-    }
-
-    private void RenderLater()
-    {
-        if (!Main.gameMenu)
-        {
-            _overPlayersPixelTarget.DrawToScreen();
-        }
-
-        //   throw new NotImplementedException();
-    }
-
-    private void RenderLater(On_Main.orig_DrawCachedProjs orig, Main self, List<int> projCache, bool startSpriteBatch)
-    {
-
-        orig(self, projCache, startSpriteBatch);
     }
 
     private void RenderToPixelRTs(On_FilterManager.orig_EndCapture orig,
@@ -448,6 +454,8 @@ public class PixelationManager : ModSystem
         _behindTilesOutlinePixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
 
         _waterTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+
+        _superBehindTilesPixelTarget = new PixelTarget(downSamples: 2, BlendState.Additive);
     }
     public override void Unload()
     {
@@ -462,10 +470,12 @@ public class PixelationManager : ModSystem
         _behindTilesPixelTarget = null;
         _behindTilesOutlinePixelTarget = null;
         _waterTarget = null;
+        _superBehindTilesPixelTarget = null;
     }
 
     private void RenderBehindTiles2(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)
     {
+
         if (_behindTilesPixelTarget.HasRenders)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -481,6 +491,7 @@ public class PixelationManager : ModSystem
 
     private void RenderBehindTiles(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
     {
+    
         _backGrassPixelTarget.DrawToScreen();
         orig(self);
     }
@@ -537,6 +548,8 @@ public class PixelationManager : ModSystem
                 return _behindTilesOutlinePixelTarget;
             case DrawLayer.OverWater:
                 return _waterTarget;
+            case DrawLayer.BehindTilesBehindNpcs:
+                return _superBehindTilesPixelTarget;
         }
     }
     public static void QueueSpritebatchDrawAction(PixelTarget.SpritebatchDrawAction drawAction, DrawLayer drawLayer = DrawLayer.OverNPCs)
@@ -578,5 +591,6 @@ public enum DrawLayer
     BehindTilesOutline,
 
     OverWater,
+    BehindTilesBehindNpcs,
     None
 }

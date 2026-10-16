@@ -26,7 +26,7 @@ public class FlyingSoilSystem : ModSystem
     public override void Load()
     {
         base.Load();
-        _soils = new Soil[100];
+        _soils = new Soil[252];
     }
 
     public override void PostUpdateDusts()

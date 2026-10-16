@@ -5,13 +5,15 @@ using Stellamod.Core.Pixelation;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Jungle.NPCsJN;
 
-public class BiggestBeeSting : ModProjectile
+public class BiggestBeeSting : ModProjectile,
+    IDrawToRenderTarget
 {
     int _frame;
     ref float Timer => ref Projectile.ai[0];
@@ -48,8 +50,9 @@ public class BiggestBeeSting : ModProjectile
 
     void MakePollenGlow()
     {
-        var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+        var pos = Projectile.Center + Main.rand.NextVector2Circular(15, 15);
         var vel = (pos - Projectile.Center).Resize(Main.rand.NextFloat(10f, 15f));
+        vel *= 0.65f;
         Particles.GlowDust.Spawn(new()
         {
             position = pos,
@@ -70,7 +73,11 @@ public class BiggestBeeSting : ModProjectile
     {
         base.AI();
         Timer++;
-
+        if(Timer == 1)
+        {
+            var stingSound = SoundID.Item17;
+            SoundEngine.PlaySound(stingSound, Projectile.position);
+        }
         Projectile.frame = _frame;
         if (Timer % 4 == 0)
         {
@@ -122,6 +129,15 @@ public class BiggestBeeSting : ModProjectile
         }
 
     }
+
+    public void DrawToRenderTargets()
+    {
+        void DrawOutline(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Projectile.Drawer with { color = Color.Red });
+        }
+        OutlineRenderer.Queue(DrawOutline);
+    }
 }
 
 public class BiggestBee : ModNPC,
@@ -141,11 +157,12 @@ public class BiggestBee : ModNPC,
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+    ref float ChangeDirTimer => ref NPC.ai[2];
     const string ANIM_FLY = "Fly";
     const string ANIM_SHOOTREADY = "Shootready";
     const string ANIM_SHOOT = "Shoot";
     float IdleTime => 120;
-    float ShootReadyTime => 60;
+    float ShootReadyTime => 47;
     float ShootTime => 60;
     int Damage_Sting => 34;
     float AttackDistance => 512 * 512;
@@ -176,7 +193,7 @@ public class BiggestBee : ModNPC,
         base.SetDefaults();
         NPC.width = 128;
         NPC.height = 96;
-        NPC.lifeMax = 150;
+        NPC.lifeMax = 200;
         NPC.defense = 3;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
@@ -217,20 +234,37 @@ public class BiggestBee : ModNPC,
         {
             if (MultiplayerHelper.IsHost)
             {
-                _movementDirection = Main.rand.NextVector2Circular(1, 1);
+                _movementDirection = Main.rand.NextVector2Circular(2, 2);
                 NPC.netUpdate = true;
             }
         }
 
         NPC.TargetClosest();
         NPC.velocity = Vector2.Lerp(NPC.velocity, _movementDirection, 0.1f);
-        NPC.velocity.Y += MathF.Sin(Timer * 0.03f) * 0.3f;
+        NPC.velocity.Y += MathF.Sin(Timer * 0.03f) * 0.1f;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
-        if (NPC.collideX)
-            _movementDirection.X *= -1;
-        
-        if (NPC.collideY)
-            _movementDirection.Y *= -1;
+        if(ChangeDirTimer <= 0)
+        {
+            if (NPC.collideX)
+
+            {
+                ChangeDirTimer = 30;
+                _movementDirection.X *= -1;
+            }
+     
+
+            if (NPC.collideY)
+            {
+                ChangeDirTimer = 30;
+                _movementDirection.Y *= -1;
+            }
+            
+        }
+        else
+        {
+            ChangeDirTimer--;
+        }
+
 
         NPC.direction = NPC.velocity.X < 0 ? -1 : 1;
         NPC.spriteDirection = NPC.direction;
@@ -244,22 +278,35 @@ public class BiggestBee : ModNPC,
 
         if (Timer % IdleTime == 0)
         {
-            if (MultiplayerHelper.IsHost)
-            {
-                _movementDirection = Main.rand.NextVector2Circular(1, 1);
-                NPC.netUpdate = true;
-            }
+            ForceNewDir();
         }
     }
 
 
+    void ForceNewDir()
+    {
+
+        if (MultiplayerHelper.IsHost)
+        {
+            _movementDirection = Main.rand.NextVector2Circular(2, 2);
+            NPC.netUpdate = true;
+        }
+    }
     void AI_StingReady()
     {
         _outliner.warning = true;
         Timer++;
+        if(Timer == 1)
+        {
+            var buzz = AssetReferences.Assets.Sounds.BeeBuzz.Asset with { PitchVariance = 0.5f, Pitch = -0.5f };
+            SoundEngine.PlaySound(buzz, NPC.position);
+        }
         NPC.SpriteFaceTarget();
         NPC.velocity *= 0.96f;
         NPC.PlayAnimationOneShot(ANIM_SHOOTREADY);
+
+        var targetRot = (NPC.PlayerImTargeting.Center - NPC.Center).ToRotation();
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRot, 0.15f);
         if (Timer >= ShootReadyTime)
         {
             SwitchState(AIState.Sting);
@@ -271,6 +318,12 @@ public class BiggestBee : ModNPC,
     {
         _outliner.attacking = true;
         Timer++;
+        if (Timer == 1)
+        {
+            var buzz = AssetReferences.Assets.Sounds.BeeBuzz.Asset with { PitchVariance = 0.5f, Pitch = -0.5f };
+            SoundEngine.PlaySound(buzz, NPC.position);
+        }
+
         if (Timer == 1 && MultiplayerHelper.IsHost)
         {
             var firer = ProjFirer.From<BiggestBeeSting>(NPC);
@@ -299,9 +352,13 @@ public class BiggestBee : ModNPC,
         base.HitEffect(hit);
         if (Main.netMode == NetmodeID.Server)
             return;
-        this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(0, -5));
-        this.MakeGore("_Gore_Body", NPC.position, NPC.velocity + new Vector2(-5, 0));
-        this.MakeGore("_Gore_Butt", NPC.position, NPC.velocity + new Vector2(0, 5));
+        if(NPC.life <= 0)
+        {
+            this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(0, -1));
+            this.MakeGore("_Gore_Body", NPC.position, NPC.velocity + new Vector2(-1, 0));
+            this.MakeGore("_Gore_Butt", NPC.position, NPC.velocity + new Vector2(0, 1));
+        }
+
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

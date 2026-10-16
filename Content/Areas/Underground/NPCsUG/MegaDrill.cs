@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,13 @@ public class MegaDrill : ModNPC,
     float TooFar => 1024 * 1024f;
     float StuckTime => 120;
     float DrillSpeed => 14;
+    Vector2 FireRenderPoint => NPC.Center - _drillDirection * 32;
+    float FireRenderDirection => NPC.rotation - MathHelper.PiOver2;
+    int _flameFrameIndex;
+    float _flameFrameTimer;
+    float _expansion;
+    float _targetExpansion;
+    float _alpha;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -94,7 +102,7 @@ public class MegaDrill : ModNPC,
         NPC.defense = 7;
         NPC.HitSound = SoundID.DD2_CrystalCartImpact;
         NPC.DeathSound = SoundID.DD2_CrystalCartImpact;
-        NPC.knockBackResist = 0.65f;
+        NPC.knockBackResist = 0f;
         NPC.noGravity = true;
         NPC.noTileCollide = true;
         NPC.hide = true;
@@ -130,7 +138,9 @@ public class MegaDrill : ModNPC,
         {
             SwitchState(AIState.Teleport);
         }
-        _contactDamage = false;
+        _alpha = MathHelper.Lerp(_alpha, 1f, 0.1f);
+        _targetExpansion = 1f;
+                _contactDamage = false;
         _outliner.SetDefaults();
         switch (State)
         {
@@ -147,8 +157,8 @@ public class MegaDrill : ModNPC,
                 AI_Teleport();
                 break;
         }
-
-            SoilFX();
+        _expansion = MathHelper.Lerp(_expansion, _targetExpansion, 0.08f);
+        SoilFX();
         if (Main.rand.NextBool(4))
         {
             Particles.BackCloud.Spawn(new()
@@ -194,6 +204,7 @@ public class MegaDrill : ModNPC,
         var rootPos = NPC.Center + -NPC.velocity.SafeNormalize(Vector2.Zero) * 64;
         Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with { innerColor = Color.Yellow.ToVector4(), outerColor = Color.OrangeRed.ToVector4(), 
             position = rootPos + Main.rand.NextVector2Circular(36, 36), velocity = -NPC.velocity });
+        /*
         var colo = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(), Color.Gold, Color.DarkOrange);
         Particles.RocketFire.Spawn(new()
         {
@@ -203,7 +214,7 @@ public class MegaDrill : ModNPC,
             timeLeft = 24,
             scale = 0.6f
         });
-
+        */
     }
     void SwitchState(AIState state)
     {
@@ -226,12 +237,16 @@ public class MegaDrill : ModNPC,
     void AI_Teleport()
     {
         Timer++;
+        if(Timer == 1)
+        {
+    
+        }
         if(Timer < 90 && _crashPoint == default(Vector2))
         {
             Timer = 89;
         }
-
-     
+        _targetExpansion = 1.4f;
+        _alpha = MathHelper.Lerp(1f, 0f, Timer / 90f);
         NPC.velocity = Vector2.Lerp(NPC.velocity, _drillDirection * DrillSpeed, MathHelper.Lerp(0f, 0.01f, Timer / 60f));
         NPC.PlayAnimationLooped(ANIM_DRILLFAST);
         if (Timer == 90 && MultiplayerHelper.IsHost)
@@ -255,7 +270,7 @@ public class MegaDrill : ModNPC,
 
                 _crashOutpoint = centerPoint;
                 _crashOutpoint = TileUtilities.FallToSolidTile(_crashOutpoint, -dir);
-                _crashOutpoint -= _drillDirection * 80;
+                _crashOutpoint -= _drillDirection * 64;
 
                 _outpoint = false;
                 NPC.netUpdate = true;
@@ -274,6 +289,11 @@ public class MegaDrill : ModNPC,
     {
 
         Timer++;
+        if(Timer == 1)
+        {
+            var dig = AssetReferences.Assets.Sounds.SteamPunking.Steamrollerheadingdown.Asset with { PitchVariance = 0.5f };
+            SoundEngine.PlaySound(dig, _crashOutpoint);
+        }
         NPC.TargetClosest();
         NPC.PlayAnimationLooped(ANIM_DRILL);
 
@@ -289,11 +309,12 @@ public class MegaDrill : ModNPC,
             if (MathF.Sign(diff2.Y) != MathF.Sign(_drillDirection.Y))
             {
                 _outpoint = true;
-                AttackCycle = 35;
+                AttackCycle = 60;
             }
         } 
         else if (AttackCycle > 0)
         {
+            MakeTelegraphSmokeFX();
             AttackCycle--;
             NPC.velocity = Vector2.Lerp(NPC.velocity, _drillDirection * DrillSpeed * 0.03f, 0.5f);
         }
@@ -355,6 +376,11 @@ public class MegaDrill : ModNPC,
             timeLeft = Main.rand.Next(60, 120),
             scale = Main.rand.NextFloat(0.5f, 1f)
         });
+        if (Main.rand.NextBool(7))
+        {
+            dir = dir.RotatedByRandom(0.03f);
+            FXUtil.MakeSoilParticle(_crashOutpoint + Main.rand.NextVector2Circular(48, 48), dir * 12);
+        }
     }
 
     void ImpactFX()
@@ -398,6 +424,16 @@ public class MegaDrill : ModNPC,
         NPC.VectorScale = Vector2.Lerp(new Vector2(1.2f, 0.9f), Vector2.One, EasingFunction.InOutSine(ratio));
         NPC.PlayAnimationLooped(ANIM_DRILL);
         NPC.velocity = Vector2.Lerp(NPC.velocity, _drillDirection * DrillSpeed * 0.04f, MathHelper.Lerp(0f, 0.05f, EasingFunction.InSine(Timer / SlamTime)));
+        if(Timer == 65)
+        {
+            var dig = AssetReferences.Assets.Sounds.SteamPunking.DrillSmallGuy.Asset with { PitchVariance = 0.5f };
+            SoundEngine.PlaySound(dig, NPC.position);
+        
+        }
+        if(Timer > 65)
+        {
+            _targetExpansion = 2.7f;
+        }
         if (Timer >= SlamTime)
         {
             SwitchState(AIState.Teleport);
@@ -412,37 +448,83 @@ public class MegaDrill : ModNPC,
         if (NPC.life > 0)
             return;
 
-        var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
-        foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 32))
-        {
-            Particles.BackCloud.Spawn(new()
-            {
-                position = posVel.position,
-                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),
-                color = color,
-                timeLeft = Main.rand.Next(60, 120),
-                scale = Main.rand.NextFloat(0.5f, 1f)
-            });
-        }
+        DeathFX();
 
+        this.MakeGore("_Gore_Left", NPC.position, NPC.velocity + new Vector2(-2, 0));
+        this.MakeGore("_Gore_Right", NPC.position, NPC.velocity + new Vector2(2, 0));
+        this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(0, -2));
+        this.MakeGore("_Gore_Bottom", NPC.position, NPC.velocity + new Vector2(0, 2));
+    }
+    void DeathFX()
+    {
+        FXUtil.ShakeCamera(NPC.Center, 1024, 16);
+
+        var sound = AssetReferences.Assets.Sounds.Explosions.ExplosionGeneric1.Asset with { PitchVariance = 0.6f };
+        SoundEngine.PlaySound(sound, NPC.position);
+
+        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, TriColorPalette.Fiery, new Vector2(5, 15f));
+        fac.particleCount *= 2;
+        ParticleUtils.CreateSwirlingDustCircle(fac);
+
+        var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.Gold, Color.DarkOrange, Color.Black, duration: 25, baseSize: 0.24f);
+        fx.Scale *= 1.5f;
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 16))
         {
             Particles.GlowDust.Spawn(new()
             {
                 position = posVel.position,
-                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),
-                color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat()),
+                velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 1f) * 0.3f,
+                color = Color.Lerp(Color.Yellow, Color.OrangeRed, Main.rand.NextFloat()),
                 timeLeft = Main.rand.Next(45, 120),
                 scale = Main.rand.NextFloat(0.15f, 0.25f)
             });
         }
 
-        this.MakeGore("_Gore_Left", NPC.position, NPC.velocity + new Vector2(-5, 0));
-        this.MakeGore("_Gore_Right", NPC.position, NPC.velocity + new Vector2(5, 0));
-        this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(0, -5));
-        this.MakeGore("_Gore_Bottom", NPC.position, NPC.velocity + new Vector2(0, 5));
+        var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
+        foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 16))
+        {
+            Particles.BackCloud.Spawn(new()
+            {
+                position = posVel.position,
+                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
+                color = color,
+                timeLeft = Main.rand.Next(60, 120),
+                scale = Main.rand.NextFloat(0.5f, 2f)
+            });
+        }
     }
 
+    void DrawFlame(SpriteBatch spriteBatch, Vector2 sp)
+    {
+        var pass = AssetReferences.Effects.Generic.RocketFire.CreatePixelPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.noiseSampler = new()
+        {
+            Sampler = SamplerState.PointWrap,
+            Texture = AssetReferences.Assets.NoiseTextures.Beamlight.Asset.Value
+        };
+        pass.Parameters.ditherSampler = new()
+        {
+            Sampler = SamplerState.PointWrap,
+            Texture = AssetReferences.Assets.Dithering.Dither8x8.Asset.Value
+        };
+        pass.Parameters.ditherTexelSize = AssetReferences.Assets.Dithering.Dither8x8.Asset.Value.GetTexelSize();
+        pass.Parameters.spriteSize = AssetReferences.Assets.GlowMasks.RocketFlame.Asset.Value.Size();
+        pass.Parameters.ColorSpectrumTexture = PaletteAssets.FromPaletteFile(PaletteAssets.FIRESTORM).Value.ColorAtlas;
+        pass.Apply();
+        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
+        {
+            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.RocketFlame.Asset, FireRenderPoint);
+            drawer.rotation = FireRenderDirection;
+            drawer.RightCenterOrigin();
+            drawer.color = Color.OrangeRed * _alpha ;
+            drawer.scale.Y = 1.35f;
+            drawer.scale *= _expansion;
+            drawer.scale.X *= _expansion * 0.85f;
+            drawer.scale.X *= 1.15f;
+            spriteBatch.Draw(drawer);
+        }
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         for(var i =0; i < NPC.oldPos.Length; i++)
@@ -452,12 +534,15 @@ public class MegaDrill : ModNPC,
             var color = Color.Lerp(Color.DarkOrange, Color.Transparent, ratio) * 0.3f;
             NPC.DrawAnimator(spriteBatch, color, pos);
         }
-        NPC.DrawAnimator(spriteBatch, drawColor);
+
+
+        NPC.DrawAnimator(spriteBatch, drawColor * _alpha);
         return false;
     }
 
     public void DrawToRenderTargets()
     {
         NPC.DrawOutlineByAnimator(_outliner);
+        PixelationManager.QueueSpritebatchDrawAction(DrawFlame, DrawLayer.BehindTilesBehindNpcs);
     }
 }
