@@ -9,7 +9,6 @@ public abstract class CustomBG : ModType
     public List<CustomBGLayer> Layers = new List<CustomBGLayer>();
     public Vector2 startParallaxPosition;
     public Vector2 CameraMovement => Main.Camera.Center - startParallaxPosition;
-    public int Priority;
     public float Alpha;
     public float DrawScale;
     public Vector2 DrawOffset;
@@ -20,7 +19,6 @@ public abstract class CustomBG : ModType
     public float ParallaxYFactor;
     public bool parallaxInBothWays;
     public Color DrawColor = Color.White;
-    public bool IgnorePaletteShader;
     public float LocalParallaxSpeed = 1f;
     public bool ignoreSkyColor;
     public override void Unload()

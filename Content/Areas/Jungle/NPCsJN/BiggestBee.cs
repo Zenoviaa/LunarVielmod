@@ -18,6 +18,7 @@ public class BiggestBeeSting : ModProjectile,
     int _frame;
     ref float Timer => ref Projectile.ai[0];
     ref float BounceCount => ref Projectile.ai[1];
+    ref float BounceScale => ref Projectile.ai[2];
     float MaxBounces => 4;
     public override string Texture => AssetReferences.Assets.Textures.Projectile.BiggestBeeStinger.KEY;
     public override void SendExtraAI(BinaryWriter writer)
@@ -48,18 +49,38 @@ public class BiggestBeeSting : ModProjectile,
         Projectile.light = 0.4f;
     }
 
+    void MakeAmberGlow()
+    {
+        var pos = Projectile.Center + Main.rand.NextVector2Circular(16, 16);
+        var vel = (pos - Projectile.Center).Resize(Main.rand.NextFloat(1, 2));
+        var d = Dust.NewDustPerfect(pos, DustID.Torch, vel, Scale: 1f);
+        d.noGravity = true;
+    }
+
     void MakePollenGlow()
     {
-        var pos = Projectile.Center + Main.rand.NextVector2Circular(15, 15);
-        var vel = (pos - Projectile.Center).Resize(Main.rand.NextFloat(10f, 15f));
-        vel *= 0.65f;
+        var pos = Projectile.Center + Main.rand.NextVector2Circular(16, 16);
+        var vel = (pos - Projectile.Center).Resize(Main.rand.NextFloat(1, 2));
+
         Particles.GlowDust.Spawn(new()
         {
             position = pos,
             velocity = vel,
             color = Color.Lerp(Color.Gold, Color.DarkOrange, Main.rand.NextFloat()),
-            scale = Main.rand.NextFloat(0.2f, 0.35f),
-            timeLeft = Main.rand.Next(45, 130)
+            scale = Main.rand.NextFloat(0.1f, 0.15f),
+            timeLeft = Main.rand.Next(45, 80)
+        });
+    }
+
+    void MakePollenCloud()
+    {
+        Particles.BackCloud.Spawn(new()
+        {
+            position = Projectile.Center,
+            velocity = Main.rand.NextVector2Circular(1, 1),
+            color = Color.DarkOrange,
+            timeLeft = Main.rand.Next(15, 25),
+            scale = Main.rand.NextFloat(0.2f, .4f)
         });
     }
 
@@ -82,21 +103,47 @@ public class BiggestBeeSting : ModProjectile,
         if (Timer % 4 == 0)
         {
             MakePollenGlow();
+            MakeAmberGlow();
+        }
+        if(Timer % 4 == 0)
+        {
+            MakePollenCloud();
         }
         Projectile.rotation = Projectile.velocity.ToRotation();
+        BounceScale = MathHelper.Lerp(BounceScale, 0f, 0.03f);
     }
 
+    void PlayBounceEffect()
+    {
+        BounceScale = 1f;
+        foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 16, 8))
+        {
+            Particles.GlowDust.Spawn(new()
+            {
+                position = posVel.position,
+                velocity = posVel.velocity * Main.rand.NextFloat(0.2f, 0.4f),
+                color = Color.Lerp(Color.Gold, Color.DarkOrange, Main.rand.NextFloat()),
+                scale = Main.rand.NextFloat(0.1f, 0.25f),
+                timeLeft = Main.rand.Next(25, 128)
+            });
+        }
+
+        var sound = AssetReferences.Assets.Sounds.Abyss.Smallbounce.Asset with { PitchVariance = 0.5f, Pitch = -0.5f, Volume = 0.5f };
+        SoundEngine.PlaySound(sound, Projectile.position);
+    }
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
         if (Projectile.velocity.X != oldVelocity.X)
         {
             Projectile.velocity.X = -oldVelocity.X;
+            PlayBounceEffect();
             BounceCount++;
         }
          
         if (Projectile.velocity.Y != oldVelocity.Y)
         {
             Projectile.velocity.Y = -oldVelocity.Y;
+            PlayBounceEffect();
             BounceCount++;
         }
      
@@ -109,14 +156,37 @@ public class BiggestBeeSting : ModProjectile,
 
     public override bool PreDraw(ref Color lightColor)
     {
-        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.DarkOrange, Color.Transparent, 0.3f);
-        Main.spriteBatch.Draw(Projectile.Drawer);
+        Projectile.scale = 1f + MathHelper.Lerp(0f, 0.3f, EasingFunction.OutSine(BounceScale));
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.Gold, Color.Transparent, 0.3f);
+        var drawer = Projectile.Drawer;
+        drawer.scale *= Vector2.Lerp(Vector2.One, new Vector2(0.8f, 1.2f), EasingFunction.OutSine(BounceScale));
+        Main.spriteBatch.Draw(drawer);
         return false;
     }
+
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-
+        for(var i = 0; i < 8; i++)
+        {
+            var pos = Projectile.Center;
+            var vel = Main.rand.NextVector2Circular(1, 1);
+            var off = Main.rand.NextVector2Circular(128, 128);
+            pos += off;
+            var d = Dust.NewDustPerfect(pos, DustID.GemAmber, vel, Scale: Main.rand.NextFloat(0.3f, 1f));
+            d.noGravity = true;
+        }
+        foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 16, 16))
+        {
+            Particles.GlowDust.Spawn(new()
+            {
+                position = posVel.position,
+                velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 0.3f),
+                color = Color.Lerp(Color.Gold, Color.DarkOrange, Main.rand.NextFloat()),
+                scale = Main.rand.NextFloat(0.2f, 0.35f),
+                timeLeft = Main.rand.Next(25, 128)
+            });
+        }
         foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 32, 16))
         {
             Particles.BackCloud.Spawn(new()
@@ -216,6 +286,10 @@ public class BiggestBee : ModNPC,
                 AI_Sting();
                 break;
         }
+        if (Main.rand.NextBool(8))
+        {
+            MakePollenSmoke();
+        }
         _outliner.Update();
         NPC.DrawOrigin = new Vector2(74, 61);
 
@@ -227,6 +301,17 @@ public class BiggestBee : ModNPC,
         State = state;
     }
 
+    void MakePollenSmoke()
+    {
+        Particles.BackCloud.Spawn(new()
+        {
+            position = NPC.Center,
+            velocity = Main.rand.NextVector2Circular(1, 1),
+            color = Color.DarkOrange,
+            timeLeft = Main.rand.Next(35, 55),
+            scale = Main.rand.NextFloat(0.3f, .4f)
+        });
+    }
     void AI_Idle()
     {
         Timer++;
@@ -306,6 +391,8 @@ public class BiggestBee : ModNPC,
         NPC.PlayAnimationOneShot(ANIM_SHOOTREADY);
 
         var targetRot = (NPC.PlayerImTargeting.Center - NPC.Center).ToRotation();
+        if (NPC.spriteDirection == -1)
+            targetRot -= MathHelper.Pi;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRot, 0.15f);
         if (Timer >= ShootReadyTime)
         {

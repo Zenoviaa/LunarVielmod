@@ -47,7 +47,7 @@ public class GlowingDust : ParticleUpdater<GlowingDust.Data>
             return;
         if (_length <= 0)
             return;
-        PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.OverPlayers);
+PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.OverPlayers);
     }
 
     public override void Draw(SpriteBatch spriteBatch, ref Data particle)
