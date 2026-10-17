@@ -56,6 +56,11 @@ public class LunarVeilClientConfig : ModConfig
     [DefaultValue(false)]
     public bool FocusMode;
 
+    [DefaultValue(0)]
+    [Range(0, 100)]
+    [Slider]
+    public int blurSamples;
+
 
     [DefaultValue(true)]
     public bool DramaticEffects;

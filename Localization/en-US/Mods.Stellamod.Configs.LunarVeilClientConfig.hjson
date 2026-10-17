@@ -244,3 +244,8 @@ Overhaul: {
 	Label: Overhaul
 	Tooltip: ""
 }
+
+blurSamples: {
+	Label: Background Blur Samples
+	Tooltip: Applies Blur to Lunar Veil backgrounds
+}
