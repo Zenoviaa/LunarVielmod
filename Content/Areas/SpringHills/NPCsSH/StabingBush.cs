@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -47,13 +48,15 @@ public class StabingBush : ModNPC,
     const string ANIM_OPENMOUTH = "Openmouth";
     const string ANIM_CLOSEMOUTH = "Closemouth";
     const string ANIM_CHASING = "Chasing";
+    const string ANIM_WALKIN = "Walkin";
     float IdleTime => 24;
     float ChaseSpeed => 5;
     float MaxJumpSpeed => 8;
     float AttackDistance => 128 * 128;
     float OpenMouthTime => 45;
-    float BiteTime => 45;
+    float BiteTime => 60;
     float HideTime => 30;
+    float AggroDistance => 384 * 384;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -80,11 +83,12 @@ public class StabingBush : ModNPC,
     public override void SetDefaults()
     {
         base.SetDefaults();
-        NPC.damage = 10;
+        _pathfinder = new();
+        NPC.damage = 36;
         NPC.width = 58;
-        NPC.height = 66;
-        NPC.lifeMax = 25;
-        NPC.defense = 3;
+        NPC.height = 54;
+        NPC.lifeMax = 78;
+        NPC.defense = 8;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0.65f;
@@ -134,9 +138,18 @@ public class StabingBush : ModNPC,
         NPC.direction = (NPC.velocity.X < 0) ? -1 : 1;
     }
 
+    bool IsLookingAtMe()
+    {
+        if (NPC.life < NPC.lifeMax * 0.5f)
+            return false;
+        var target = NPC.PlayerImTargeting;
+        var targetDir = target.direction;
+        var dirToMe = (NPC.Center.X < target.Center.X) ? 1 : -1;
+        return dirToMe == -targetDir;
+    }
     void AI_Idle()
     {
-        NPC.TargetClosest();
+        NPC.TargetClosest(false);
         Timer++;
         if(Timer == 1)
         {
@@ -149,7 +162,8 @@ public class StabingBush : ModNPC,
         }
         NPC.velocity.X *= 0.88f;
         NPC.PlayAnimationLooped(ANIM_INVISIBLE);
-        if(Timer >= IdleTime && NPC.direction != -NPC.PlayerImTargeting.direction) 
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+        if (Timer >= IdleTime && !IsLookingAtMe() && Vector2.DistanceSquared(NPC.PlayerImTargeting.Center, NPC.Center) < AggroDistance) 
         {
             SwitchState(AIState.Chase);
         }
@@ -157,7 +171,7 @@ public class StabingBush : ModNPC,
     
     void AI_Chase()
     {
-        FaceVelocity();
+  
         Timer++;
         MoonUtils.CreateNewPathIfTooFar(_pathfinder,
                 currentPosition: NPC.Center,
@@ -165,9 +179,11 @@ public class StabingBush : ModNPC,
 
         MoonUtils.AIWalk_SusBush
             (_pathfinder, NPC, NPC.PlayerImTargeting.Center, _isGrounded, ChaseSpeed, MaxJumpSpeed);
-        NPC.PlayAnimationLooped(ANIM_WALKING);
+        FaceVelocity();
+        NPC.PlayAnimationLooped(ANIM_WALKIN);
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
         var sqrDistPlayer = Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
-        if(NPC.direction == -NPC.PlayerImTargeting.direction)
+        if(IsLookingAtMe())
         {
             SwitchState(AIState.Idle);
         }
@@ -187,7 +203,12 @@ public class StabingBush : ModNPC,
         _outliner.warning = true;
         NPC.PlayAnimationOneShot(ANIM_OPENMOUTH);
         NPC.velocity *= 0.88f;
-        if(Timer >= OpenMouthTime)
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+        if (IsLookingAtMe())
+        {
+            SwitchState(AIState.Idle);
+        }
+        if (Timer >= OpenMouthTime)
         {
             SwitchState(AIState.Bite);
         }
@@ -198,18 +219,42 @@ public class StabingBush : ModNPC,
         _useAF = true;
      
         Timer++;
-        if(Timer < 15)
+        if(Timer == 1)
+        {
+            var sound = AssetReferences.Assets.Sounds.NaturalHit.Asset with { PitchVariance = 0.6f };
+            SoundEngine.PlaySound(sound, NPC.position);
+        }
+        if (Timer < 15)
         {
             NPC.velocity = Vector2.Lerp(NPC.velocity, -_dashDirection * 2, 0.1f);
+     
         }
-
-        if(Timer == 15)
+        else if (Timer < 25)
+        {
+            NPC.velocity *= 0.96f;
+        }
+        else if(Timer == 35)
         {
             NPC.velocity = _dashDirection * 15;
+            var sound = AssetReferences.Assets.Sounds.NaturalCast.Asset with { PitchVariance = 0.6f };
+            SoundEngine.PlaySound(sound, NPC.position);
         }
 
-        if(Timer > 15)
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.025f, 0.1f);
+        if (Timer > 35)
         {
+            if(Timer % 2 == 0)
+            {
+                Particles.IvynLeaf.Spawn(new()
+                {
+                    position = NPC.Center + Main.rand.NextVector2Circular(32, 32),
+                    velocity = Main.rand.NextVector2Circular(3, 3),
+                    timeLeft = Main.rand.Next(45, 180),
+                    scale = Main.rand.NextFloat(0.5f, 1.2f),
+                    rotation = Main.rand.NextFloat() * 6.28f,
+                });
+            }
+            _contactDamage = true;
             _outliner.attacking = true;
             NPC.velocity *= 0.96f;
         }
@@ -217,8 +262,9 @@ public class StabingBush : ModNPC,
         {
             _outliner.warning = true;
         }
+        NPC.spriteDirection = _dashDirection.X < 0 ? -1 : 1;
         NPC.PlayAnimationOneShot(ANIM_CHASING);
-   
+        Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
         if(Timer >= BiteTime)
         {
             SwitchState(AIState.Hide);
@@ -247,7 +293,7 @@ public class StabingBush : ModNPC,
             Particles.IvynLeaf.Spawn(new()
             {
                 position = posVel.position,
-                velocity = posVel.velocity * Main.rand.NextFloat(0.4f, 1f),
+                velocity = posVel.velocity * Main.rand.NextFloat(0.4f, 1f) * 0.3f,
                 timeLeft = Main.rand.Next(45, 180),
                 scale = Main.rand.NextFloat(0.5f, 1.2f),
                 rotation = Main.rand.NextFloat() * 6.28f,
@@ -257,12 +303,26 @@ public class StabingBush : ModNPC,
         if (NPC.life > 0)
             return;
 
+        var suond = AssetReferences.Assets.Sounds.NaturalHit.Asset with { PitchVariance = 0.5f };
+        SoundEngine.PlaySound(suond, NPC.position);
+        foreach(PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 48))
+        {
+            Particles.SwirlingFlameDust.Spawn(new()
+            {
+                position = posVel.position,
+                velocity = posVel.velocity * Main.rand.NextFloat(0.4f, 1f) * 0.3f,
+                innerColor = Color.LightGreen.ToVector4(),
+                outerColor = Color.DarkGreen.ToVector4(),
+                scale = Main.rand.NextFloat(0.5f, 1.2f) * Vector2.One,
+                timeLeft = Main.rand.Next(45, 120),
+            });
+        }
         foreach(PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 48))
         {
             Particles.IvynLeaf.Spawn(new()
             {
                 position = posVel.position,
-                velocity = posVel.velocity * Main.rand.NextFloat(0.4f, 1f),
+                velocity = posVel.velocity * Main.rand.NextFloat(0.4f, 1f) * 0.3f,
                 timeLeft = Main.rand.Next(45, 180),
                 scale = Main.rand.NextFloat(0.5f, 1.2f),
                 rotation = Main.rand.NextFloat() * 6.28f,

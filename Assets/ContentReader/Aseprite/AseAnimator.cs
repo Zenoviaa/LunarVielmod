@@ -209,6 +209,7 @@ public static class AnimationExtensions
         //Offset it even with the draw origin so the sprite is still in the center of the hitbox
         Vector2 offset = drawer.drawOrigin - Animator.centerDrawOrigin;
         drawer.worldPosition += offset;
+        drawer.worldPosition.Y += npc.gfxOffY;
         spriteBatch.Draw(drawer);
     }
 

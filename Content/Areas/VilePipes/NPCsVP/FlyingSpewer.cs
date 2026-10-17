@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Core.Astar;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
@@ -92,7 +93,7 @@ public class FlyingSpewer : ModNPC,
     float ChaseSpeed => 8;
     float MoveTime => 100;
     float BlitzReadyTime => 60;
-    float BlitzTime => 60;
+    float BlitzTime => 120;
     int Damage_SpewBullet => 35;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SendExtraAI(BinaryWriter writer)
@@ -169,8 +170,24 @@ public class FlyingSpewer : ModNPC,
                 break;
         }
         _outliner.Update();
+
+        if (Main.rand.NextBool(6))
+        {
+            Particles.BackCloud.Spawn(new()
+            {
+                position = NPC.Center,
+                velocity = Main.rand.NextVector2Circular(2, 2) * 0.3f,
+                color = Color.DarkGray,
+                scale = Main.rand.NextFloat(0.85f, 1f),
+                rotation = Main.rand.NextFloat() * 12f,
+                timeLeft = Main.rand.Next(45, 130)
+            });
+        }
+
+
         NPC.PlayAnimationLooped(ANIM_IDLE);
         NPC.DrawOrigin = new Vector2(42, 47);
+        Lighting.AddLight(NPC.Center, new Vector3(0.8f));
     }
 
     void AI_Idle()
@@ -183,13 +200,14 @@ public class FlyingSpewer : ModNPC,
         if(Timer >= IdleTime)
         {
             SwitchState(AIState.Move);
+            var sqrDistToPlayer = Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
+            if (sqrDistToPlayer < ChaseRange)
+            {
+                SwitchState(AIState.Chase);
+            }
         }
 
-        var sqrDistToPlayer = Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
-        if(sqrDistToPlayer < ChaseRange)
-        {
-            SwitchState(AIState.Chase);
-        }
+   
     }
 
     void AI_Move()
@@ -229,7 +247,7 @@ public class FlyingSpewer : ModNPC,
             destination: NPC.PlayerImTargeting.Center, ref _oldPlayerPos);
 
         MoonUtils.AIWalk_FlyChase(_pathfinder, NPC, NPC.PlayerImTargeting.Center, ChaseSpeed);
-        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.1f);
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.025f, 0.1f);
 
         var sqrDistToTarget = Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
         if (sqrDistToTarget < AttackDistance)
@@ -241,12 +259,14 @@ public class FlyingSpewer : ModNPC,
     void AI_BlitzReady()
     {
         _outliner.warning = true;
+
         Timer++;
         NPC.velocity *= 0.88f;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
+        
         if (Timer >= BlitzReadyTime)
         {
-            SwitchState(AIState.Idle);
+            SwitchState(AIState.Blitz);
         }
     }
 
@@ -254,8 +274,9 @@ public class FlyingSpewer : ModNPC,
     {
         _outliner.attacking = true;
         Timer++;
-        if(Timer % 4 == 0)
+        if(Timer % 10 == 0)
         {
+            _fireVelocity = (NPC.PlayerImTargeting.Center - NPC.Center).Resize(14);
             if (MultiplayerHelper.IsHost)
             {
                 var firer = ProjFirer.From<FlyingSpewerBullet>(NPC);
@@ -266,7 +287,7 @@ public class FlyingSpewer : ModNPC,
             NPC.velocity = -_fireVelocity.SafeNormalize(Vector2.Zero) * 1.5f;
         }
         NPC.velocity *= 0.88f;
-        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.025f, 0.01f);
         if(Timer >= BlitzTime)
         {
             SwitchState(AIState.Idle);
