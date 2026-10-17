@@ -176,7 +176,7 @@ public class ZTileMap : ModSystem
     private static List<ActiveZTileData> _zTileInstancesOrdered = new List<ActiveZTileData>();
     private List<ActiveZTileData>[] _zTileActiveDrawingInstances;
 
-    public static event Action AfterWalls;
+    
     public const int Chunk_Size = 64;
     public bool Find(ushort type, out ZTilePosition tilePosition)
     {
@@ -331,11 +331,12 @@ public class ZTileMap : ModSystem
 
             //Get the z tile
             ZTile tile = zTileLoader.GetTile(tileData.type);
+            var lightColor = Lighting.GetColor(tilePosition.x, tilePosition.y);
             ZTileDrawParams drawParams = new ZTileDrawParams
             {
                 tilePosition = tilePosition,
                 tileData = tileData,
-                lightColor = Lighting.GetColor(tilePosition.x, tilePosition.y)
+                lightColor =lightColor
             };
 
             if (tile.interactable)
@@ -813,33 +814,6 @@ public class ZTileMap : ModSystem
         Refresh();
     }
 
-    /*
-
-    public void SyncPlaceTile(int toWho, int fromWho, ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
-    {
-        int clientToIgnore = Main.LocalPlayer.whoAmI;
-        Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.PlaceDecoration,
-            (byte)renderLayer,
-            (ushort)tilePosition.x,
-            (ushort)tilePosition.y,
-            (ushort)tilePosition.z,
-            tileData.scale,
-            tileData.flipX,
-            tileData.frameNumber,
-            (byte)tileData.rotation,
-            tileData.type,
-            tileData.value).Send(toWho, fromWho);
-    }
-    public void SyncBreakTile(int toWho, int fromWho, Point tilePosition)
-    {
-        int clientToIgnore = Main.LocalPlayer.whoAmI;
-        Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakDecoration,
-            (ushort)tilePosition.X,
-            (ushort)tilePosition.Y).Send(toWho, fromWho);
-    }
-
-    */
-
     public static void Add(ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
     {
         _zTileInstances.Add(new ActiveZTileData(tilePosition, tileData, renderLayer));
@@ -851,7 +825,5 @@ public class ZTileMap : ModSystem
         _zTileInstances.Clear();
         Refresh();
     }
-
-
 }
 

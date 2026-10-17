@@ -78,6 +78,26 @@ namespace Stellamod.Common.Shaders
 
     public class TrailDrawer
     {
+        public static Matrix Workd
+        {
+            get
+            {
+                Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+                Matrix world = Matrix.CreateTranslation(-screenPosition);
+                return world;
+            }
+        }
+        public static Matrix TileWorldViewPoint
+        {
+            get
+            {
+                Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+                Matrix world = Matrix.CreateTranslation(-screenPosition);
+                Matrix view = Matrix.Identity;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+                return world * view * projection;
+            }
+        }
         public static Matrix UnscaledWorldViewPoint
         {
             get
@@ -87,6 +107,17 @@ namespace Stellamod.Common.Shaders
                 Matrix view = Matrix.Identity;
                 Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
                 return world * view * projection;
+            }
+        }
+        public static Matrix UnscaledWorldViewPointOffscreenRange
+        {
+            get
+            {
+                Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+                Matrix world = Matrix.CreateTranslation(-screenPosition);
+                Matrix view = Matrix.Identity;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+                return world * view * projection * Matrix.CreateTranslation(new Vector3(Main.offScreenRange, Main.offScreenRange, 0));
             }
         }
         public static Matrix WorldViewPoint2

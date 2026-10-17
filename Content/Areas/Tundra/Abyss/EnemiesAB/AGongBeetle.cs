@@ -162,6 +162,8 @@ public class GongBeetleSmall : AGongBeetle
         base.HitEffect(hit);
         if (Main.netMode == NetmodeID.Server)
             return;
+        if (NPC.life > 0)
+            return;
         this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(0, -2));
         this.MakeGore("_Gore_Left", NPC.position, NPC.velocity + new Vector2(-2, 0));
         this.MakeGore("_Gore_Right", NPC.position, NPC.velocity + new Vector2(2, 0));
@@ -196,6 +198,8 @@ public class GongBeetleBig : AGongBeetle
     {
         base.HitEffect(hit);
         if (Main.netMode == NetmodeID.Server)
+            return;
+        if (NPC.life > 0)
             return;
         this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(0, -2));
         this.MakeGore("_Gore_Left", NPC.position, NPC.velocity + new Vector2(-2, 0));

@@ -11,7 +11,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar;
-
 public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
 {
     private enum AIState

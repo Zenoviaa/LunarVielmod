@@ -75,7 +75,7 @@ public class ThrowingMoon : ModProjectile
             if(_growthCount < 2)
             {
                 if (Timer % 2 == 0)
-                    Owner.CheckMana(1, true);
+                    Owner.CheckMana(2, true);
             }
    
 
@@ -336,7 +336,7 @@ public class ThrowingMoonArtifact : ModItem
         base.SetDefaults();
         Item.DefaultToArtifact();
         Item.shoot = ModContent.ProjectileType<ThrowingMoon>();
-        Item.mana = 50;
+        Item.mana = 75;
         Item.damage = 200;
         Item.knockBack = 1;
         Item.useTime = Item.useAnimation = 60;

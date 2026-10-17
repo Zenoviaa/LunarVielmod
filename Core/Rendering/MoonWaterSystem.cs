@@ -16,6 +16,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.GameContent.Liquid;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Rendering;
@@ -259,6 +260,7 @@ public class MoonWaterSystem : ModSystem
     {
         return new Point(Main.waterTarget.Width, Main.waterTarget.Height);
     }
+    private static readonly WaterSurfaceLightMap _waterSurfaceLightMap = new();
     private readonly HashSet<Point> _edgeWaterPoints = new();
     private LazyRenderTargetProvider _reflectionRT = new(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
     private LazyRenderTargetProvider _waterTextureRT = new(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
@@ -311,11 +313,6 @@ public class MoonWaterSystem : ModSystem
         On_Main.DrawWaters += StopDrawWater;
     }
 
-    private void DrawWaterMaskT(On_LiquidEdgeRenderer.orig_DrawTileMask orig, SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
-    {
-        orig(spriteBatch, tileTarget, tileTargetOffset);
-        DrawWaterMask?.Invoke(spriteBatch);
-    }
 
     public override void Unload()
     {
@@ -635,11 +632,33 @@ public class MoonWaterSystem : ModSystem
             return;
 
         //var sw = Stopwatch.StartNew();
-        if (Main.GameUpdateCount % 8 == 0)
-            CalculateHeightsToDraw();
-        RenderIntoHeightMapTarget();
-        RenderIntoWaterTextureTarget();
 
+
+        //V1 Gradientizing
+        void V1HeightGradient()
+        {
+            if (Main.GameUpdateCount % 8 == 0)
+            {
+                CalculateHeightsToDraw();
+            }
+            RenderIntoHeightMapTarget();
+        }
+
+        void V2HeightGradient()
+        {
+            if (Main.GameUpdateCount % 30 == 0)
+            {
+                _waterSurfaceLightMap.ReCalculate(TileUtilities.CameraTileRectangle(384), 256);
+            }
+            RenderIntoHeightMapTargetV2();
+        }
+
+        //V2 Gradientizing
+        if(Main.LocalPlayer.ZoneAbyss)
+            V2HeightGradient();
+        else
+            V1HeightGradient();
+        RenderIntoWaterTextureTarget();
     }
 
 
@@ -1037,6 +1056,45 @@ public class MoonWaterSystem : ModSystem
             }
         }
     }
+    private void RenderIntoHeightMapTargetV2()
+    {
+        //For soem reason we need to apply the tile offset afterwards and can't just do it on the original draw??
+        //I'm so confused ngl
+        //I'll look again at this later since it feels like an unnecessary render target use, wait,
+        //Make we could just translate it after it projects?
+
+
+        GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+        using var mask = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(mask, Color.Transparent))
+        {
+            var waterlightPass = AssetReferences.Effects.Generic.WaterLight.CreatePixelPass();
+            waterlightPass.Parameters.transformMatrix = TrailDrawer.UnscaledWorldViewPoint;
+            waterlightPass.Apply();
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            graphicsDevice.SamplerStates[0] = SamplerState.AnisotropicClamp;
+            graphicsDevice.BlendState = CustomBlendStates.Max;
+            graphicsDevice.DepthStencilState = DepthStencilState.None;
+            _waterSurfaceLightMap.Draw(graphicsDevice);
+        }
+
+        RenderTargetBinding[] binding = new RenderTargetBinding[]
+        {
+            new RenderTargetBinding(_waterHeightMapRT),
+            new RenderTargetBinding(_waterLightMapRT)
+        };
+        graphicsDevice.SetRenderTargets(binding);
+        graphicsDevice.Clear(Color.Transparent);
+
+
+        var sb = Main.spriteBatch;
+        sb.Begin();
+        sb.Draw(mask, new Vector2(Main.offScreenRange), Color.White);
+        sb.End();
+
+        graphicsDevice.SetRenderTarget(null);
+    }
+
     private void RenderIntoHeightMapTarget()
     {
         var _waterEffect = ModContent.Request<Effect>("Stellamod/Effects/MoonWaters").Value;
