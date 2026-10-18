@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Terraria;
 
+
 namespace Stellamod.Core.Utilities;
 
 public struct SteinUppercutParameters
@@ -49,6 +50,48 @@ public static class MoonUtils
 {
     const float SUMMON_SEARCH_DISTANCE = 512;
     const float REPATH_DISTANCE = 32 * 32;
+
+    public static Player TargetPlayerBySight(Vector2 currentPosition, Vector2 sightDirection, float sightRadians)
+    {
+        var radiansPct = MathF.Abs(sightRadians) / MathHelper.TwoPi;
+        var currentDP = -5F;
+        Player result = null;
+        foreach(var player in Main.ActivePlayers)
+        {
+            var directionToPlayer = (player.Center - currentPosition).SafeNormalize(Vector2.Zero);
+            var dp = Vector2.Dot(sightDirection, directionToPlayer);
+            if(dp > currentDP)
+            {
+                result = player;
+                currentDP = dp;
+            }
+        }
+
+        if (result == null)
+            return null;
+        var directionToClosestPlayerInSight = (result.Center - currentPosition).SafeNormalize(Vector2.Zero);
+        var closestDP = Vector2.Dot(sightDirection, directionToClosestPlayerInSight);
+        if(closestDP > (1f - radiansPct))
+        {
+            return result;
+        }
+        return null;
+    }
+    /// <summary>
+    /// Returns whether a target is in sight
+    /// </summary>
+    /// <param name="sightDirection">The direction you're currently facing</param>
+    /// <param name="targetDirection">The direction you wish to be facing</param>
+    /// <param name="sightRadians">How many radians you're able to see</param>
+    /// <returns></returns>
+    public static bool IsInSight(Vector2 sightDirection, Vector2 targetDirection, float sightRadians)
+    {
+        var dp = Vector2.Dot(sightDirection, targetDirection);
+        var radiansPct = MathF.Abs(sightRadians) / MathHelper.TwoPi;
+        return dp < radiansPct;
+    }
+
+
     public static Vector2 RayCast(Vector2 startPosition, Vector2 velocity, float maxBeamLength, int numSamplePoints = 3)
     {
         // By default, the hitscan interpolation starts at the Projectile's center.
