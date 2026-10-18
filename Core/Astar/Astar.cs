@@ -1,21 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 
 namespace Stellamod.Core.Astar;
 
 public class Pathfinder
 {
+    private SearchJob _oldSearchJob;
     public Pathfinder()
     {
         path = new();
     }
     public Stack<Vector2> path { get; private set; }
+
+    public Vector2 targetOldPos;
     public Vector2 currentNode;
     public Vector2 nextNode;
+    public void NetSend(BinaryWriter writer)
+    {
+        writer.Write(_oldSearchJob.start.X);
+        writer.Write(_oldSearchJob.start.Y);
+        writer.Write(_oldSearchJob.end.X);
+        writer.Write(_oldSearchJob.end.Y);
+        writer.Write(_oldSearchJob.range);
+    }
+
+    public void NetReceive(BinaryReader reader)
+    {
+        SearchJob searchJob = new();
+        searchJob.start.X = reader.ReadInt32();
+        searchJob.start.Y = reader.ReadInt32();
+        searchJob.end.X = reader.ReadInt32();
+        searchJob.end.Y = reader.ReadInt32();
+        searchJob.range = reader.ReadInt32();
+        NewPath(searchJob);
+    }
+
     public void NewPath(Vector2 startWorld, Vector2 endWorld, int tileSearchRange = 15, int airPadding = 0) => NewPath(new SearchJob(startWorld, endWorld, tileSearchRange, airPadding));
     public void NewPath(SearchJob searchJob)
     {
+        _oldSearchJob = searchJob;
         var result = Astar.Search(searchJob);
       
         path.Clear();

@@ -2,11 +2,63 @@
 using System;
 using Terraria;
 using Terraria.GameContent.UI;
+using Terraria.ID;
 
 namespace Stellamod.Helpers
 {
     public static class PlayerHelper
     {
+        public static long DropCoins(Player player)
+        {
+            //Edited from vanilla's source code
+            var inventory = player.inventory;
+            var itemSource_Death = player.GetItemSource_Death();
+            long num = 0L;
+            for (int i = 0; i < 59; i++)
+            {
+                if (inventory[i].IsACoin)
+                {
+                    int itemToSpawn = Item.NewItem(itemSource_Death, (int)player.position.X, (int)player.position.Y, player.width, player.height, player.inventory[i].type);
+                    int amountToDrop = inventory[i].stack / 2;
+                    amountToDrop = inventory[i].stack - amountToDrop;
+                    inventory[i].stack -= amountToDrop;
+                    if (inventory[i].type == ItemID.CopperCoin)
+                    {
+                        num += amountToDrop;
+                    }
+                    if (inventory[i].type == ItemID.SilverCoin)
+                    {
+                        num += (long)amountToDrop * 100L;
+                    }
+                    if (inventory[i].type == ItemID.GoldCoin)
+                    {
+                        num += (long)amountToDrop * 10000L;
+                    }
+                    if (inventory[i].type == ItemID.PlatinumCoin)
+                    {
+                        num += (long)amountToDrop * 1000000L;
+                    }
+                    if (inventory[i].stack <= 0)
+                    {
+                        inventory[i] = new Item();
+                    }
+                    Main.item[itemToSpawn].stack = amountToDrop;
+                    Main.item[itemToSpawn].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
+                    Main.item[itemToSpawn].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+                    Main.item[itemToSpawn].noGrabDelay = 100;
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemToSpawn);
+                    }
+                    if (i == 58)
+                    {
+                        Main.mouseItem = inventory[i].Clone();
+                    }
+                }
+            }
+            return num;
+        }
+
         public static long CountCurrencyInAllBanks(Player player, int currencyID)
         {
             CustomCurrencyManager.TryGetCurrencySystem(currencyID, out CustomCurrencySystem system);

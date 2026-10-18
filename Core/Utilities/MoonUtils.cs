@@ -289,7 +289,20 @@ public static class MoonUtils
         var accel = ExtraMath.Osc(0.05f, 0.1f, speed: 0, offset: entity.whoAmI);
         entity.velocity = Vector2.Lerp(entity.velocity, targetVelocity, accel);
     }
+    public static void CreateNewPathIfTooFar(Pathfinder pathfinder, Vector2 currentPosition, Vector2 destination)
+    {
+        ref var targetOldPos = ref pathfinder.targetOldPos;
+        if (Vector2.DistanceSquared(targetOldPos, destination) > REPATH_DISTANCE || Main.GameUpdateCount % 30 == 0)
+        {
+            targetOldPos = destination;
+            pathfinder.NewPath(destination, currentPosition, 75);
+        }
 
+        if (pathfinder.currentNode == Vector2.Zero && pathfinder.path != null && pathfinder.path.Count > 0)
+        {
+            pathfinder.Pop();
+        }
+    }
     public static void CreateNewPathIfTooFar(Pathfinder pathfinder, Vector2 currentPosition, Vector2 destination, ref Vector2 targetOldPos)
     {
         if (Vector2.DistanceSquared(targetOldPos, destination) > REPATH_DISTANCE || Main.GameUpdateCount % 30 == 0)

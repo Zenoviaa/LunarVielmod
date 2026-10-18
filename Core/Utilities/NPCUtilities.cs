@@ -18,8 +18,26 @@ public static class NPCUtilities
     }
     extension(NPC npc)
     {
+        /// <summary>
+        /// Wraps around Collision.StepUp and fills it with npc values
+        /// </summary>
+        public void QuickStepUp()
+        {
+            Collision.StepUp(ref npc.position, ref npc.velocity, npc.width, npc.height, ref npc.stepSpeed, ref npc.gfxOffY);
+        }
 
-
+        /// <summary>
+        /// Wraps around Collision.StepDown and fills it with npc values
+        /// </summary>
+        public void QuickStepDown()
+        {
+            Collision.StepDown(ref npc.position, ref npc.velocity, npc.width, npc.height, ref npc.stepSpeed, ref npc.gfxOffY);
+        }
+        public void SetTrailCacheLength(int trailLength, int trailingMode = 0)
+        {
+            NPCID.Sets.TrailCacheLength[npc.type] = trailLength;
+            NPCID.Sets.TrailingMode[npc.type] = trailingMode;
+        }
 
         public Player PlayerImTargeting => Main.player[npc.target];
         /// <summary>
