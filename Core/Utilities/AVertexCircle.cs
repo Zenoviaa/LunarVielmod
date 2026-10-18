@@ -2,6 +2,10 @@
 using Terraria;
 
 namespace Stellamod.Core.Utilities;
+
+
+
+
 public class VertexCircle
 {
     public VertexCircle(int sides, ref int connectIndex)
@@ -82,6 +86,10 @@ public class VertexCircle
             vertex.Position = new Vector3(pos, 0);
             vertex.TextureCoordinate = Vector2.Zero;
         }
+    }
+    public void SetStrength(float strength)
+    {
+        Vertices[0].Color = Color.White * strength;
     }
     public void Draw(GraphicsDevice graphicsDevice)
     {

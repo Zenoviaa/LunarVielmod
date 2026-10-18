@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -89,9 +90,9 @@ public class FlyingSpewer : ModNPC,
     float IdleTime => 90;
     float ChaseRange => 512 * 512;
     float AttackDistance => 256 * 256;
-    float HomeRange => 256;
-    float ChaseSpeed => 8;
-    float MoveTime => 100;
+    float HomeRange => 384;
+    float ChaseSpeed => 6;
+    float MoveTime => 180;
     float BlitzReadyTime => 60;
     float BlitzTime => 120;
     int Damage_SpewBullet => 35;
@@ -217,14 +218,15 @@ public class FlyingSpewer : ModNPC,
         {
             if (MultiplayerHelper.IsHost)
             {
+                _home = NPC.Center;
                 _posToMoveTo = _home + Main.rand.NextVector2Circular(HomeRange, HomeRange);
                 NPC.netUpdate = true;
             }
         }
 
-        var targetVelocity = (_posToMoveTo - NPC.Center).Resize(2);
-        NPC.velocity = NPC.velocity.MoveTowards(targetVelocity, 0.25f);
-        NPC.velocity.Y += MathF.Sin(Timer * 0.03f) * 0.03f;
+        var targetVelocity = (_posToMoveTo - NPC.Center).Resize(0.5f);
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
+     //   NPC.velocity.Y += MathF.Sin(Timer * 0.03f) * 0.03f;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05f, 0.2f);
         if (Timer >= MoveTime)
         {
@@ -305,6 +307,60 @@ public class FlyingSpewer : ModNPC,
     {
         NPC.DrawAnimator(spriteBatch, drawColor);
         return false;
+    }
+    void DeathFX()
+    {
+        FXUtil.ShakeCamera(NPC.Center, 1024, 16);
+
+        var sound = AssetReferences.Assets.Sounds.Explosions.ExplosionGeneric1.Asset with { PitchVariance = 0.6f };
+        SoundEngine.PlaySound(sound, NPC.position);
+
+        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, TriColorPalette.Fiery, new Vector2(5, 15f));
+        fac.particleCount *= 2;
+        ParticleUtils.CreateSwirlingDustCircle(fac);
+
+        var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.Gold, Color.DarkOrange, Color.Black, duration: 25, baseSize: 0.24f);
+        fx.Scale *= 1.5f;
+        foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 16))
+        {
+            Particles.GlowDust.Spawn(new()
+            {
+                position = posVel.position,
+                velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 1f) * 0.3f,
+                color = Color.Lerp(Color.Yellow, Color.OrangeRed, Main.rand.NextFloat()),
+                timeLeft = Main.rand.Next(45, 120),
+                scale = Main.rand.NextFloat(0.15f, 0.25f)
+            });
+        }
+
+        var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
+        foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 16))
+        {
+            Particles.BackCloud.Spawn(new()
+            {
+                position = posVel.position,
+                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
+                color = color,
+                timeLeft = Main.rand.Next(60, 120),
+                scale = Main.rand.NextFloat(0.5f, 2f)
+            });
+        }
+    }
+
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        if (NPC.life > 0)
+            return;
+
+        DeathFX();
+        
+        this.MakeGore("_Gore_Left", NPC.position, NPC.velocity + new Vector2(0, -1));
+        this.MakeGore("_Gore_Right", NPC.position, NPC.velocity + new Vector2(-1, 0));
+        this.MakeGore("_Gore_Butt_Left", NPC.position, NPC.velocity + new Vector2(1, 0));
+        this.MakeGore("_Gore_Butt_Right", NPC.position, NPC.velocity + new Vector2(1, 1));
     }
 
     public override void ModifyNPCLoot(NPCLoot npcLoot)

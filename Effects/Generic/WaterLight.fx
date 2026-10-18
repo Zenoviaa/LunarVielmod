@@ -36,6 +36,7 @@ HeightPixelShaderOutput PixelShaderFunction(VertexShaderOutput input) : SV_Targe
     float2 coords = input.TextureCoordinates;
     float d = coords.x + coords.y;
     d /= 2.0;
+    d += (1.0 - input.TextureCoordinates.z);
     HeightPixelShaderOutput o;
     o.Height = float4(d, d, d, d) * input.Color;
     o.Light = o.Height;
