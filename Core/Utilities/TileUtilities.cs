@@ -1,6 +1,8 @@
 ﻿using Stellamod.WorldG;
 using System;
+using System.Runtime.CompilerServices;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace Stellamod.Core.Utilities;
@@ -243,6 +245,7 @@ public static class TileUtilities
         return y;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Rectangle Clamp(Rectangle rectangle)
     {
         rectangle.X = (int)MathHelper.Clamp(rectangle.X, 0, Main.maxTilesX - 1);
@@ -300,12 +303,6 @@ public static class TileUtilities
         return (topLeftTile, bottomRightTile);
     }
 
-    public static Rectangle CameraTileRectangle(float fluff)
-    {
-        var points = CameraTileBounds(fluff);
-        Rectangle rect = new Rectangle(points.topLeft.X, points.topLeft.Y, points.bottomRight.X - points.topLeft.X, points.bottomRight.Y - points.topLeft.Y);
-        return rect;
-    }
     public static (Point topLeft, Point bottomRight) CameraTileBounds(float fluff, int inside)
     {
         Vector2 cameraCenterWorld = Main.Camera.Center;
@@ -322,6 +319,28 @@ public static class TileUtilities
         bottomRightTile = Clamp(bottomRightTile, inside);
         return (topLeftTile, bottomRightTile);
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Rectangle CameraTileRectangle(float fluff)
+    {
+        var points = CameraTileBounds(fluff);
+        Rectangle rect = new Rectangle(points.topLeft.X, points.topLeft.Y, points.bottomRight.X - points.topLeft.X, points.bottomRight.Y - points.topLeft.Y);
+        return rect;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Rectangle CenterTileRectangle(Point16 tilePoint, int width, int height)
+    {
+        int leftX = tilePoint.X - width / 2;
+        int topY = tilePoint.Y - height / 2;
+        int rightX = tilePoint.X + width / 2;
+        int bottomY = tilePoint.Y + height / 2;
+
+        Rectangle rect = new Rectangle(leftX, topY, rightX - leftX, bottomY - topY);
+        rect = TileUtilities.Clamp(rect);
+        return rect;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Rectangle CenterTileRectangle(Point tilePoint, int width, int height)
     {
         int leftX = tilePoint.X - width / 2;

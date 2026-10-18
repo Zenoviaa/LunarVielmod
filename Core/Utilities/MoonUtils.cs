@@ -58,6 +58,9 @@ public static class MoonUtils
         Player result = null;
         foreach(var player in Main.ActivePlayers)
         {
+            if (player.immune)
+                continue;
+
             var directionToPlayer = (player.Center - currentPosition).SafeNormalize(Vector2.Zero);
             var dp = Vector2.Dot(sightDirection, directionToPlayer);
             if(dp > currentDP)

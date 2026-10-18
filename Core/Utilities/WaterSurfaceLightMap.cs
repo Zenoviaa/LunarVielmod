@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ReLogic.Threading;
+using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 
 namespace Stellamod.Core.Utilities;
 
@@ -44,9 +46,19 @@ public struct WaterSurfaceLightData
 }
 public class WaterSurfacePointLightMap
 {
-    float LightRadius => 212;
+    const float LIGHT_RADIUS = 212;
+    const float MAX_STEPS = LIGHT_RADIUS / 16;
+    const float STEP_SIZE = 16;
+    const int RECT_SIZE = (int)(LIGHT_RADIUS / 16);
     WaterSurfaceState[,] _waterSurfacePoints;
     ulong[] _bitMask;
+
+    //wait a minute, i don't even need a queue 
+    //I could apply bitmasks here too
+    //instead of having a pool of free indices/vertices, i could have to ulong masks of free vertex indices and free light indices
+    //but this current version is very fast already 0.03ms-0.1ms average in release mode for me
+    //So I don't think we need to worry
+    //the list could also be another bitmask... these could all be bit masks
     Queue<Point> _waterSurfaceLightVertexPool;
     List<Point> _activeSurfactLightVertexPoints;
     WaterSurfaceLightData[] _activeWaterSurfaceLights;
@@ -54,6 +66,7 @@ public class WaterSurfacePointLightMap
     int[] _indices;
     readonly Vector2[] _offsets;
     int _width;
+    
     (int chunkIndex, byte bitIndex) GetBitMaskIndices(int tileX, int tileY)
     {
         var rawIndex = (tileX + tileY * _width);
@@ -100,7 +113,11 @@ public class WaterSurfacePointLightMap
         _waterSurfacePoints = new WaterSurfaceState[width, height];
         _activeSurfactLightVertexPoints = new ();
         _activeWaterSurfaceLights = new WaterSurfaceLightData[lightCount];
-        //calculate the buffer
+
+
+
+
+        //This could be better but it's neglible
         var vertices = new List<SurfaceLightVertex>();
         var indices = new List<int>();
 
@@ -129,12 +146,10 @@ public class WaterSurfacePointLightMap
     }
     public readonly int VertexCountPerLight;
 
-    public void ApplyWaterSurfacePoints(IEnumerable<Vector3> points)
+    public void ApplyWaterSurfacePoints(in Vector3[] points, in int length)
     {
         var cameraTileRect = TileUtilities.CameraTileRectangle(384);
         var centerTile = Main.Camera.Center.ToTileCoordinates();
-
-
         var toRemove = new List<Point>();
         for (var i = 0; i < _activeSurfactLightVertexPoints.Count; i++)
         {
@@ -152,35 +167,19 @@ public class WaterSurfacePointLightMap
         }
         foreach (var t in toRemove)
             _activeSurfactLightVertexPoints.Remove(t);
-        /*
-    using(new TickTimer())
-    {
-
-        Main.NewText(cameraTileRect.Width * cameraTileRect.Height);
-        for (var x = cameraTileRect.Left; x < cameraTileRect.Right; x++)
-        {
-            for (var y = cameraTileRect.Top; y < cameraTileRect.Bottom; y++)
-            {
-                var tile = Main.tile[x, y];
-                var indices = GetBitMaskIndices(x, y);
-                bool isActive = (tile.HasTile && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]);
-               SetBitMask(indices.chunkIndex, indices.bitIndex, isActive);
-                //_tileMask[x, y] = isActive ? (byte)1 : (byte)0;
-            }
-        }
-    }*/
-        var size = (int)(LightRadius / 16F);
 
         //Remove every active water surface light that's off screen
         //For each point, check if the light is initialized, if it's not, we get what from the pool and calculate vertices
-        foreach (var point in points)
+
+        for (var t = 0; t < length; t++)
         {
+            var point = points[t];
             var centerPosition = point.XY();
             var tp = centerPosition.ToTileCoordinates();
             //A light has been placed here already don't put another one
             if (_waterSurfacePoints[tp.X, tp.Y] == WaterSurfaceState.ACTIVE)
                 continue;
-       
+
             //Move the vertices
             if (_waterSurfaceLightVertexPool.Count <= 0)
                 break;
@@ -190,41 +189,43 @@ public class WaterSurfacePointLightMap
             var lightIndex = lightDataIndex.X;
             _vertices[startIndex] = new(new Vector3(centerPosition, 0), Color.White * point.Z, Vector3.One);
 
-            var rect = TileUtilities.CenterTileRectangle(centerPosition.ToTileCoordinates(), size, size);
+            //Repeating the same action multiple times is a lot faster than doing it on the fly
+            //This also makes it so we don't repeat any work, as some tiles may have their mask calculated multiple times
+            var rect = TileUtilities.CenterTileRectangle(centerPosition.ToTileCoordinates(), RECT_SIZE, RECT_SIZE);
             SetTileSolidMask(rect);
+
             for (var i = 1; i < VertexCountPerLight; i++)
             {
                 ref var vertex = ref _vertices[startIndex + i];
                 var offset = _offsets[i];
                 var pos = centerPosition;
-                var stepSize = 16f;
-                var maxSteps = LightRadius / stepSize;
+
                 var traveledDistance = 0F;
-                for (var j = 0; j < maxSteps; j++)
+                for (var j = 0; j < MAX_STEPS; j++)
                 {
-                    pos += offset * stepSize;
-                    traveledDistance += stepSize;
+                    pos += offset * STEP_SIZE;
+                    traveledDistance += STEP_SIZE;
                     var tileCoords = pos.ToTileCoordinates();
                     var indices = GetBitMaskIndices(tileCoords.X, tileCoords.Y);
                     if (GetBitMask(indices.chunkIndex, indices.bitIndex))
                         break;
                 }
                 vertex.Position = new Vector3(pos, 0);
-                var dist = traveledDistance / LightRadius;
+                var dist = traveledDistance / LIGHT_RADIUS;
 
                 //Z coordinate in this case is how far this vertex is from the center point
                 //We'll use the number so the gradient is always the same no matter where it is
                 vertex.TextureCoordinate = new Vector3(0, 0, dist);
                 vertex.Color = (Color.White * point.Z).ToVector4();
             }
-
+            
             //Set the surface light active
             ref var surfaceLightData = ref _activeWaterSurfaceLights[lightIndex];
             surfaceLightData.TileX = tp.X;
             surfaceLightData.TileY = tp.Y;
             surfaceLightData.VertexStartIndex = startIndex;
             _waterSurfacePoints[tp.X, tp.Y] = WaterSurfaceState.ACTIVE;
-        }    
+        }
     }
 
     public void Draw(GraphicsDevice graphicsDevice)
@@ -234,10 +235,14 @@ public class WaterSurfacePointLightMap
 }
 public static class WaterSurfaceScanner
 {
-    public static IEnumerable<Vector3> Scan(Rectangle area)
+    //Here I want this to be as fast as possible
+    //So we're going to avoid making heap allocations and instead use a precalculated buffer
+    public static void Scan(Rectangle area, 
+        ref Vector3[] surfaceLiquidPointsBuffer,
+        ref int length)
     {
-
-        var waterSurfacePoints = new List<Point>();
+        length = 0;
+        Span<Point16> waterSurfacePoints = stackalloc Point16[252];
         for (int x = area.Left; x < area.Right; x++)
         {
             for (int y = area.Top; y < area.Bottom; y++)
@@ -256,15 +261,18 @@ public static class WaterSurfaceScanner
                 if (tileAbove.LiquidAmount <= 0
                     && !WorldGen.SolidOrSlopedTile(tileAbove))
                 {
-                    waterSurfacePoints.Add(new Point(x, y - 1));
+                    waterSurfacePoints[length++] = new Point16(x, y - 1);
                 }
+
+                if (length >= 252)
+                    goto UpdateSurfaceLiquidPointsBuffer;
             }
         }
 
-        var worldPoints = new List<Vector3>();
-
-        foreach (var tp in waterSurfacePoints)
+        UpdateSurfaceLiquidPointsBuffer:
+        for(var i = 0; i < length; i++)
         {
+            var tp = waterSurfacePoints[i];
             var airCount = 0F;
             var rect = TileUtilities.CenterTileRectangle(tp, 4, 4);
             for (var x = rect.Left; x < rect.Right; x++)
@@ -281,10 +289,8 @@ public static class WaterSurfaceScanner
 
             var size = (float)(rect.Width * rect.Height);
             size *= 0.5f;
-            worldPoints.Add(new Vector3(tp.ToWorldCoordinates(), airCount / size));
+            surfaceLiquidPointsBuffer[i] = new Vector3(tp.ToWorldCoordinates(), airCount / size);
         }
-
-        return worldPoints;
     }
 }
 

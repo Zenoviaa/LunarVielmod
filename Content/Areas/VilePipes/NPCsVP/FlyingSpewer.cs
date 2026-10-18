@@ -446,23 +446,6 @@ public class FlyingSpewer : ModNPC,
             SwitchState(AIState.Siren);
         }
     }
-
-
-    void PuffSmokeFX()
-    {
-        var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
-        foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 8))
-        {
-            Particles.BackCloud.Spawn(new()
-            {
-                position = posVel.position,
-                velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
-                color = color,
-                timeLeft = Main.rand.Next(60, 120),
-                scale = Main.rand.NextFloat(0.5f, 2f)
-            });
-        }
-    }
     void MadSightLine()
     {
         _sightLineColor = Color.Red;
@@ -615,6 +598,7 @@ public class FlyingSpewer : ModNPC,
 
         var pass = AssetReferences.Effects.Generic.SightLine.CreatePrimitivesPass();
         pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 2;
         pass.Apply();
         graphicsDevice.BlendState = BlendState.AlphaBlend;
         graphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;

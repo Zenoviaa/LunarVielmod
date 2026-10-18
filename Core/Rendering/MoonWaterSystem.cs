@@ -260,6 +260,8 @@ public class MoonWaterSystem : ModSystem
     {
         return new Point(Main.waterTarget.Width, Main.waterTarget.Height);
     }
+    private Vector3[] _surfaceLiquidPointsBuffer = new Vector3[252];
+    private int _surfaceLiquidPointsLength;
     private WaterSurfacePointLightMap _waterSurfacePointLightMap;
     private readonly HashSet<Point> _edgeWaterPoints = new();
     private LazyRenderTargetProvider _reflectionRT = new(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
@@ -490,13 +492,6 @@ public class MoonWaterSystem : ModSystem
     }
 
 
-
-    private void DrawEdgeMapToScreen()
-    {
-
-    }
-
-
     private void CalculateEdgePoints()
     {
         _edgeWaterPoints.Clear();
@@ -530,14 +525,13 @@ public class MoonWaterSystem : ModSystem
             }
         }
     }
+
     private void RenderIntoEdgeShadeMap()
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_waterEdgeShadingRT);
         graphicsDevice.Clear(Color.Transparent);
-
-
         if (Main.GameUpdateCount % 30 == 0)
         {
             CalculateEdgePoints();
@@ -557,21 +551,6 @@ public class MoonWaterSystem : ModSystem
             spriteBatch.Draw(glowDrawer);
         }
         spriteBatch.End();
-
-        //Was trying a raymarching approach
-        //Drawing these glow balls seems to work just as well for cheaper lmao
-        /*
-        HlslSampler sampler = new HlslSampler();
-        sampler.Sampler = SamplerState.PointClamp;
-        sampler.Texture = Main.instance.tileTarget;
-
-        var waterDistancePass = AssetReferences.Effects.Generic.WaterDistanceTile.CreatePixelPass();
-        waterDistancePass.Parameters.texelSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height);
-        waterDistancePass.Apply();
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, waterDistancePass.Shader);
-        spriteBatch.Draw(Main.instance.tileTarget, Vector2.Zero, Color.White);
-        spriteBatch.End();*/
         graphicsDevice.SetRenderTarget(null);
     }
 
@@ -620,7 +599,7 @@ public class MoonWaterSystem : ModSystem
         _waterNoise1 = LoadTexture("WaterNoise1");
         _perlinNoise = LoadTexture("PerlinNoise");
     }
-    IEnumerable<Vector3> _scannedSurfacePoints;
+
 
     private void RenderHook(On_Main.orig_CheckMonoliths orig)
     {
@@ -639,11 +618,6 @@ public class MoonWaterSystem : ModSystem
         if (!Lighting.UsingNewLighting)
             return;
 
-        //var sw = Stopwatch.StartNew();
-        if(Main.mouseMiddle && Main.mouseMiddleRelease)
-        {
-            _waterSurfacePointLightMap = new(252, 8, Main.maxTilesX, Main.maxTilesY);
-        }
 
         //V1 Gradientizing
         void V1HeightGradient()
@@ -662,9 +636,8 @@ public class MoonWaterSystem : ModSystem
             //_waterSurfacePointLightMap = new();
             if (Main.GameUpdateCount % 15 == 0)
             {
-                _scannedSurfacePoints = WaterSurfaceScanner.Scan(TileUtilities.CameraTileRectangle(384));
-                _waterSurfacePointLightMap.ApplyWaterSurfacePoints(_scannedSurfacePoints);
-
+                WaterSurfaceScanner.Scan(TileUtilities.CameraTileRectangle(384), ref _surfaceLiquidPointsBuffer, ref _surfaceLiquidPointsLength);
+                _waterSurfacePointLightMap.ApplyWaterSurfacePoints(_surfaceLiquidPointsBuffer, _surfaceLiquidPointsLength);
             }
 
             RenderIntoHeightMapTargetV2();
@@ -1040,50 +1013,13 @@ public class MoonWaterSystem : ModSystem
             }
         }
     }
-    private void CalculateHeightsToDraw2()
-    {
-        TileDrawing tilesRenderer = Main.instance.TilesRenderer;
-        Vector2 unscaledPosition = Main.Camera.UnscaledPosition;
-        Vector2 vector = new Vector2(Main.offScreenRange, Main.offScreenRange);
-        WaterHelpers.GetScreenDrawArea(tilesRenderer, unscaledPosition, vector, out int firstTileX, out int lastTileX, out int firstTileY, out int lastTileY);
-        int maxGradientHeight = _pixelWater.maxHeight;
-        _gradientRects.Clear();
-        for (int i = firstTileY; i < lastTileY + 4; i++)
-        {
-            for (int j = firstTileX - 2; j < lastTileX + 2; j++)
-            {
-                Tile tile = Main.tile[j, i];
-                Tile firstAboveTile = Main.tile[j, i - 1];
-                if (tile == null)
-                    continue;
 
-
-                //If the tile has water, and the tile above has no water or is solid, then it's a surface tile
-                if (tile.LiquidAmount > 0 && (firstAboveTile.LiquidAmount <= 0))
-                {
-                    //In this case, we go downward until we hit no water
-                    int k = i;
-                    Tile currentTile = Main.tile[j, k];
-                    while (currentTile.LiquidAmount > 0)
-                    {
-                        k--;
-                        currentTile = Main.tile[j, k];
-                    }
-                    Vector2 pos = new Point(j, i).ToWorldCoordinates(0, 0);
-                    Rectangle rect = new Rectangle((int)pos.X, (int)pos.Y, 16, (k - i) * 16);
-                    _gradientRects.Add(rect);
-                }
-            }
-        }
-    }
     private void RenderIntoHeightMapTargetV2()
     {
         //For soem reason we need to apply the tile offset afterwards and can't just do it on the original draw??
         //I'm so confused ngl
         //I'll look again at this later since it feels like an unnecessary render target use, wait,
         //Make we could just translate it after it projects?
-
-
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
         using var mask = RT.Context(RenderTargets.ScreenTarget);
         using(RT.Clear(mask, Color.Transparent))
