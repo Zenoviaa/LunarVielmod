@@ -640,14 +640,18 @@ public class MoonWaterSystem : ModSystem
             return;
 
         //var sw = Stopwatch.StartNew();
-
+        if(Main.mouseMiddle && Main.mouseMiddleRelease)
+        {
+            _waterSurfacePointLightMap = new(252, 8, Main.maxTilesX, Main.maxTilesY);
+        }
 
         //V1 Gradientizing
         void V1HeightGradient()
         {
-            if (Main.GameUpdateCount % 8 == 0)
+            if (Main.GameUpdateCount % 15 == 0)
             {
                 CalculateHeightsToDraw();
+
             }
             RenderIntoHeightMapTarget();
         }
@@ -660,7 +664,9 @@ public class MoonWaterSystem : ModSystem
             {
                 _scannedSurfacePoints = WaterSurfaceScanner.Scan(TileUtilities.CameraTileRectangle(384));
                 _waterSurfacePointLightMap.ApplyWaterSurfacePoints(_scannedSurfacePoints);
+
             }
+
             RenderIntoHeightMapTargetV2();
         }
 

@@ -220,6 +220,7 @@ public class FlyingSpewer : ModNPC,
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
+        _pathfinder.NetSend(writer);
         writer.WriteVector2(_fireVelocity);
         writer.WriteVector2(_patrolDirection);
         writer.Write(_changeDirTimer);
@@ -227,6 +228,7 @@ public class FlyingSpewer : ModNPC,
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
+        _pathfinder.NetReceive(reader);
         _fireVelocity = reader.ReadVector2();
         _patrolDirection = reader.ReadVector2();
         _changeDirTimer = reader.ReadSingle();

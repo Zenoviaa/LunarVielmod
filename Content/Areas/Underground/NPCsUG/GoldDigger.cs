@@ -54,7 +54,7 @@ public class GoldDigger : ModNPC,
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
-        writer.WriteVector2(_pathfinder.targetOldPos);
+        _pathfinder.NetSend(writer);
         writer.WriteVector2(_dashDirection);
         writer.Write(_patrolTime);
         writer.Write(_walkDirection);
@@ -62,8 +62,7 @@ public class GoldDigger : ModNPC,
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
-        var targetOldPos = reader.ReadVector2();
-        _pathfinder.NewPath(targetOldPos, NPC.Center, 75);
+        _pathfinder.NetReceive(reader);
         _dashDirection = reader.ReadVector2();
         _patrolTime = reader.ReadSingle();
         _walkDirection = reader.ReadSingle();
