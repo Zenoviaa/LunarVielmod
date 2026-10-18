@@ -49,20 +49,20 @@ public partial class LunarLightingRenderer
         switch (config.ShadowQuality)
         {
             case ShadowQuality.Ultra_Low:
-                resolution = 16;
+                resolution = 8;
                 break;
             default:
             case ShadowQuality.Low:
-                resolution = 32;
+                resolution = 16;
                 break;
             case ShadowQuality.Medium:
-                resolution = 64;
+                resolution = 32;
                 break;
             case ShadowQuality.High:
-                resolution = 128;
+                resolution = 64;
                 break;
             case ShadowQuality.Very_High:
-                resolution = 256;
+                resolution = 128;
                 break;
         }
         if (_shadowMap.Resolution != resolution)
@@ -79,9 +79,8 @@ public partial class LunarLightingRenderer
 
             _pointLights.Clear();
             _pointLights.GatherLights();
-            // w.Stop();
-            //  Main.NewText($"{w.ElapsedTicks} t");
 
+            //TODO: optimization similar to water surface thing
             FastParallel.For(0, _pointLights.UsedLightCount, delegate (int start, int end, object context)
             {
                 for (int j = start; j < end; j++)
@@ -90,7 +89,7 @@ public partial class LunarLightingRenderer
 
                     //For now all lights will have the same radius
                     //I think we need a custom vertex structure to have difference radiuses
-                    _shadowMap.RayMarch(j, light.position, light.diameter);
+                    _shadowMap.RayMarch(j, light.position, light.diameter / 2);
                 }
             });
 

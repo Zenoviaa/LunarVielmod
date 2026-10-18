@@ -47,6 +47,7 @@ public class VeliozaRobeDrawLayer : PlayerDrawLayer
         Rectangle bodyFrame = drawInfo.drawPlayer.bodyFrame;
         float yOsc = MathF.Sin(bodyFrame.Y) * 0.5f + 0.5f;
         position.Y += yOsc * 2;
+        position.Y += drawInfo.drawPlayer.gfxOffY;
         float rotation = yOsc * MathHelper.ToRadians(5);
         SpriteEffects spriteEffects = drawInfo.drawPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         var drawData = new DrawData(
@@ -93,17 +94,25 @@ public class VeliozaHatDrawLayer : PlayerDrawLayer
 
         var position = drawInfo.Center - Main.screenPosition;
         position = new Vector2((int)position.X, (int)position.Y);
-        position.Y -= 16;
+        
+        Player drawPlayer = drawInfo.drawPlayer;
+        var drawPosition = new Vector2(
+            (int)(drawInfo.Position.X - Main.screenPosition.X - drawPlayer.bodyFrame.Width / 2 + drawPlayer.width / 2),
+            (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawPlayer.height - drawPlayer.bodyFrame.Height + 4f)
+        ) + drawPlayer.headPosition + drawInfo.headVect + Main.OffsetsPlayerHeadgear[drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height] * drawPlayer.gravDir;
 
+        drawPosition.Y -= 11;
         Rectangle bodyFrame = drawInfo.drawPlayer.bodyFrame;
         float yOsc = MathF.Sin(bodyFrame.Y) * 0.5f + 0.5f;
-        position.Y += yOsc * 2;
+        drawPosition.Y += yOsc * 2;
+
+
         float rotation = yOsc * MathHelper.ToRadians(5);
         SpriteEffects spriteEffects = drawInfo.drawPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
         var drawData = new DrawData(
             _hatTextureAsset.Value,
-            position,
+            drawPosition,
             null,
             drawInfo.colorArmorHead,
             rotation,

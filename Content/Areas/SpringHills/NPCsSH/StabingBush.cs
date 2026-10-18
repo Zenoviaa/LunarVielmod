@@ -84,10 +84,10 @@ public class StabingBush : ModNPC,
     {
         base.SetDefaults();
         _pathfinder = new();
-        NPC.damage = 36;
+        NPC.damage = 45;
         NPC.width = 58;
         NPC.height = 54;
-        NPC.lifeMax = 78;
+        NPC.lifeMax = 220;
         NPC.defense = 8;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;

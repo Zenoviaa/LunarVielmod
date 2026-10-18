@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Core.Pixelation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,15 @@ public struct HatDrawParameters
 }
 public static class CostumeUtilities
 {
+    public static Vector2 GetHatDrawPosition(ref PlayerDrawSet drawInfo)
+    {
+        var drawPlayer = drawInfo.drawPlayer;
+            var drawPosition = new Vector2(
+            (int)(drawInfo.Position.X - Main.screenPosition.X - drawPlayer.bodyFrame.Width / 2 + drawPlayer.width / 2),
+            (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawPlayer.height - drawPlayer.bodyFrame.Height + 4f)
+        ) + drawPlayer.headPosition + drawInfo.headVect + Main.OffsetsPlayerHeadgear[drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height] * drawPlayer.gravDir;
+        return drawPosition;
+    }
     public static DrawData GetHatDrawData(ref PlayerDrawSet drawInfo, Asset<Texture2D> hatTextureAsset, in HatDrawParameters parameters)
     {
         var position = drawInfo.Center - Main.screenPosition;

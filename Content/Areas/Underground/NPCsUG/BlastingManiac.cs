@@ -59,7 +59,7 @@ public class BlastingManiac : ModNPC,
         NPC.damage = 10;
         NPC.width = 80;
         NPC.height = 40;
-        NPC.lifeMax = 50;
+        NPC.lifeMax = 140;
         NPC.defense = 7;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;

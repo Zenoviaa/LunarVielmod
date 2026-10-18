@@ -19,7 +19,7 @@ public class BiggestBeeSting : ModProjectile,
     ref float Timer => ref Projectile.ai[0];
     ref float BounceCount => ref Projectile.ai[1];
     ref float BounceScale => ref Projectile.ai[2];
-    float MaxBounces => 4;
+    float MaxBounces => 9;
     public override string Texture => AssetReferences.Assets.Textures.Projectile.BiggestBeeStinger.KEY;
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -45,7 +45,7 @@ public class BiggestBeeSting : ModProjectile,
         Projectile.width = 24;
         Projectile.height = 24;
         Projectile.hostile = true;
-        Projectile.timeLeft = 360;
+        Projectile.timeLeft = 900;
         Projectile.light = 0.4f;
     }
 
@@ -234,7 +234,7 @@ public class BiggestBee : ModNPC,
     float IdleTime => 120;
     float ShootReadyTime => 47;
     float ShootTime => 60;
-    int Damage_Sting => 34;
+    int Damage_Sting => 46;
     float AttackDistance => 512 * 512;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SendExtraAI(BinaryWriter writer)
@@ -263,10 +263,11 @@ public class BiggestBee : ModNPC,
         base.SetDefaults();
         NPC.width = 128;
         NPC.height = 96;
-        NPC.lifeMax = 200;
+        NPC.lifeMax = 8200;
         NPC.defense = 3;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
+        NPC.knockBackResist = 0.25f;
         NPC.noGravity = true;
     }
 

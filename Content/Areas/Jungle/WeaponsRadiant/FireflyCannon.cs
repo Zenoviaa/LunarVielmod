@@ -21,7 +21,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 216;
+            Item.damage = 160;
             Item.width = 94;
             Item.height = 36;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -32,7 +32,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             Item.autoReuse = false;
             Item.DamageType = DamageClass.Ranged;
             Item.shoot = ModContent.ProjectileType<FireflyBomb>();
-            Item.shootSpeed = 30;
+            Item.shootSpeed = 24;
             Item.UseSound = SoundID.Pixie;
             Item.useAnimation = 70;
             Item.useTime = 70;
