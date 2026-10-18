@@ -12,7 +12,10 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     //Then we can mix it with our own lighting calculation
     float luminance = max(color.r, color.g);
     luminance = max(luminance, color.b);
-    return float4(luminance, luminance, luminance, 1.0) * threshold;
+    
+    float4 finalColor =  float4(luminance, luminance, luminance, 1.0) * threshold;
+
+    return finalColor;
 }
 
 

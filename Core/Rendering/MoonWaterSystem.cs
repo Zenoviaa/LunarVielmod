@@ -260,7 +260,7 @@ public class MoonWaterSystem : ModSystem
     {
         return new Point(Main.waterTarget.Width, Main.waterTarget.Height);
     }
-    private static readonly WaterSurfaceLightMap _waterSurfaceLightMap = new();
+    private WaterSurfacePointLightMap _waterSurfacePointLightMap;
     private readonly HashSet<Point> _edgeWaterPoints = new();
     private LazyRenderTargetProvider _reflectionRT = new(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
     private LazyRenderTargetProvider _waterTextureRT = new(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 2));
@@ -307,6 +307,7 @@ public class MoonWaterSystem : ModSystem
     public static event Action<SpriteBatch> DrawWaterMask;
     public override void Load()
     {
+
         On_Main.CheckMonoliths += RenderHook;
         On_Main.DrawDust += CopyScreenTarget;
         On_OverlayManager.Draw += ApplyWaterShader;
@@ -325,6 +326,12 @@ public class MoonWaterSystem : ModSystem
         _heightsToDraw.Clear();
         _gradientRects.Clear();
     }
+    public override void ClearWorld()
+    {
+        base.ClearWorld();
+        _waterSurfacePointLightMap = new(252, 8, Main.maxTilesX, Main.maxTilesY);
+    }
+
     private void StopDrawWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
     {
         orig(self, isBackground);
@@ -613,6 +620,7 @@ public class MoonWaterSystem : ModSystem
         _waterNoise1 = LoadTexture("WaterNoise1");
         _perlinNoise = LoadTexture("PerlinNoise");
     }
+    IEnumerable<Vector3> _scannedSurfacePoints;
 
     private void RenderHook(On_Main.orig_CheckMonoliths orig)
     {
@@ -644,11 +652,14 @@ public class MoonWaterSystem : ModSystem
             RenderIntoHeightMapTarget();
         }
 
+
         void V2HeightGradient()
         {
-            if (Main.GameUpdateCount % 30 == 0)
+            //_waterSurfacePointLightMap = new();
+            if (Main.GameUpdateCount % 15 == 0)
             {
-                _waterSurfaceLightMap.ReCalculate(TileUtilities.CameraTileRectangle(384), 256);
+                _scannedSurfacePoints = WaterSurfaceScanner.Scan(TileUtilities.CameraTileRectangle(384));
+                _waterSurfacePointLightMap.ApplyWaterSurfacePoints(_scannedSurfacePoints);
             }
             RenderIntoHeightMapTargetV2();
         }
@@ -794,6 +805,8 @@ public class MoonWaterSystem : ModSystem
         spriteBatch.End();
     }
 
+    #region Legacy Water Code
+
     private void DrawWaterGradient(SpriteBatch spriteBatch)
     {
         //gradient gonna have to be added later
@@ -874,6 +887,7 @@ public class MoonWaterSystem : ModSystem
         spriteBatch.Draw(_perlinNoise, _drawLocation, null, Color.White);
         spriteBatch.End();
     }
+    #endregion
 
 
     private void DrawReflection(SpriteBatch spriteBatch)
@@ -1075,7 +1089,7 @@ public class MoonWaterSystem : ModSystem
             graphicsDevice.SamplerStates[0] = SamplerState.AnisotropicClamp;
             graphicsDevice.BlendState = CustomBlendStates.Max;
             graphicsDevice.DepthStencilState = DepthStencilState.None;
-            _waterSurfaceLightMap.Draw(graphicsDevice);
+            _waterSurfacePointLightMap.Draw(graphicsDevice);
         }
 
         RenderTargetBinding[] binding = new RenderTargetBinding[]

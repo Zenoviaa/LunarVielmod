@@ -1,10 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 
 namespace Stellamod.Core.Utilities;
 
 
-
+public struct TickTimer : IDisposable
+{
+    public TickTimer()
+    {
+        watch = Stopwatch.StartNew();
+    }
+    public Stopwatch watch;
+    public void Dispose()
+    {
+        watch.Stop();
+        Main.NewText($"{watch.ElapsedTicks} ticks");
+    //    throw new NotImplementedException();
+    }
+}
 
 public class VertexCircle
 {

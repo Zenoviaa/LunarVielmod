@@ -2,6 +2,7 @@
 using Stellamod.Core.Pixelation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -78,11 +79,13 @@ public struct SurfaceLightVertex : IVertexType
     }
 }
 
-
+//TODO: constructor that takes in an offsets array, this would be faster than recalculating it everytime
+//TODO: constructor that doesn't need an indices array, we only need vertices
 public class SurfaceLightCircle
 {
     public SurfaceLightCircle(int sides)
     {
+
         //each side needs 3 vertices
         Vertices = new SurfaceLightVertex[1 + sides * 2];
         Offsets = new Vector2[Vertices.Length];
@@ -108,24 +111,27 @@ public class SurfaceLightCircle
         indiceList.Add(0);
         indiceList.Add(1);
         Indices = indiceList.ToArray();
+
     }
     public readonly Vector2[] Offsets;
     public readonly SurfaceLightVertex[] Vertices;
     public readonly int[] Indices;
     public void PrepareVertices(Vector2 centerPosition, float radius)
     {
+
         Vertices[0] = new(new Vector3(centerPosition, 0), Color.White, Vector3.One);
         for (var i = 1; i < Vertices.Length; i++)
         {
             ref var vertex = ref Vertices[i];
             var offset = Offsets[i];
             var pos = centerPosition;
-            var maxSteps = radius / 8f;
+            var stepSize = 16f;
+            var maxSteps = radius / stepSize;
             var traveledDistance = 0F;
             for (var j = 0; j < maxSteps; j++)
             {
-                pos += offset * 8;
-                traveledDistance += 8;
+                pos += offset * stepSize;
+                traveledDistance += stepSize;
                 if (WorldGen.SolidOrSlopedTile(Main.tile[pos.ToTileCoordinates()]))
                     break;
             }

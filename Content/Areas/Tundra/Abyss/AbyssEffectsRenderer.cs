@@ -325,7 +325,7 @@ public class AbyssEffectsRenderer : ModSystem
             if (!tileRect.Contains(waterfall.TilePoint))
                 continue;
 
-            int bottomPoint = TileUtilities.FallToSolidOrWaterTile(waterfall.TilePoint.X, waterfall.TilePoint.Y + 2);
+            int bottomPoint = TileUtilities.FallForWaterfallTile(waterfall.TilePoint.X, waterfall.TilePoint.Y + 2);
             int fallHeight = bottomPoint - waterfall.TilePoint.Y;
 
             Point bottom = waterfall.TilePoint + new Point(0, fallHeight + 1);
