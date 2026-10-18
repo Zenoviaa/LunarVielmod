@@ -302,8 +302,8 @@ public class FlyingSpewer : ModNPC,
             {
                 position = NPC.Center,
                 velocity = Main.rand.NextVector2Circular(2, 2) * 0.3f,
-                color = Color.DarkGray,
-                scale = Main.rand.NextFloat(0.85f, 1f),
+                color = Color.DarkGray * 0.5f,
+                scale = Main.rand.NextFloat(0.85f, 1f) * 0.45f,
                 rotation = Main.rand.NextFloat() * 12f,
                 timeLeft = Main.rand.Next(45, 130)
             });
