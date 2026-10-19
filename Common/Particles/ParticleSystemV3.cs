@@ -64,6 +64,7 @@ public sealed class Particles : ModSystem
     public static readonly ToxicBubbleDust ToxicBubbleDust = new();
     public static readonly RocketFire RocketFire = new();
     public static readonly FlyingZ FlyingZee = new();
+    public static readonly StabTriangle StabTriangle = new();
     public override void Load()
     {
         base.Load();
@@ -109,7 +110,8 @@ public sealed class Particles : ModSystem
             BackCloud,
             ToxicBubbleDust,
             RocketFire,
-            FlyingZee
+            FlyingZee,
+            StabTriangle
 
         };
 

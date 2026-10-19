@@ -38,11 +38,13 @@ public class IvynSpearman : ModNPC,
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+    ref float Dir => ref NPC.ai[2];
 
     float IdleTime => 45;
     float PatrolTime => 80;
     float SqrAttackRange => 100 * 100;
     float SqrChaseDistance => 256 * 256;
+    float SqrStopRange => 444 * 444;
     float RunSpeed => 4;
     float MaxJumpSpeed => 6;
     float SlamTime => 75;
@@ -156,9 +158,14 @@ public class IvynSpearman : ModNPC,
     void AI_Patrol()
     {
         Timer++;
-        if (MultiplayerHelper.IsHost && Main.rand.NextBool(128))
+        if(Dir == 0)
         {
-            NPC.direction = Main.rand.NextBool(2) ? -1 : 1;
+            Dir = 1;
+            NPC.netUpdate = true;
+        }
+        if (MultiplayerHelper.IsHost && Main.rand.NextBool(5) && Timer == 1)
+        {
+            Dir = Main.rand.NextBool(2) ? -1 : 1;
             NPC.netUpdate = true;
         }
 
@@ -176,7 +183,7 @@ public class IvynSpearman : ModNPC,
             NPC.PlayAnimationLooped(ANIM_RUN);
         }
 
-        NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.direction * 2, 0.1f);
+        NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, Dir * 2, 0.1f);
         var player = NPC.PlayerImTargeting;
         var diffX = MathF.Abs(NPC.Center.X - player.Center.X);
         if (SqrDistanceToPlayer < SqrChaseDistance)
@@ -197,12 +204,17 @@ public class IvynSpearman : ModNPC,
         NPC.StraightenRotationSlowly();
         NPC.FaceDirectionsToVelocity();
         NPC.PlayAnimationLooped(ANIM_RUN);
+        NPC.QuickStepUp();
 
         var targetingPlayer = NPC.PlayerImTargeting;
         var sqrDistanceToPlayer = Vector2.DistanceSquared(NPC.Center, targetingPlayer.Center);
         if (sqrDistanceToPlayer < SqrAttackRange)
         {
             SwitchState(AIState.JumpFall);
+        }
+        if(sqrDistanceToPlayer > SqrStopRange)
+        {
+            SwitchState(AIState.Idle);
         }
     }
 
@@ -228,9 +240,12 @@ public class IvynSpearman : ModNPC,
             SoundEngine.PlaySound(bellHit, NPC.position);
             NPC.velocity.Y = -17;
             NPC.velocity += _jumpDirection * 4;
-            var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
             var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
+            p2.fadeToColor = Color.Black;
+            p2.innerColor = Color.White;
+            p2.outerColor = Color.DarkGreen;
             p2.Scale *= 0.5f;
+
         }
 
         if (Timer >= 45)
@@ -282,16 +297,23 @@ public class IvynSpearman : ModNPC,
                 else
                     NPC.velocity.Y += 0.5f;
                 var dirToPlayer = (NPC.PlayerImTargeting.Center.X < NPC.Center.X) ? -1 : 1;
-                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, dirToPlayer * 6, 0.1f);
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, dirToPlayer * 7, 0.1f);
                 NPC.noGravity = true;
-                if (Timer % 8 == 0)
+                if (Timer % 4 == 0 && NPC.velocity.Y > 0)
                 {
-                    var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, -NPC.velocity * 0.5f);
-                    p2.Scale *= 0.5f;
+                    Particles.StabTriangle.Spawn(new()
+                    {
+                        position = NPC.Bottom + NPC.velocity * 3,
+                        velocity = -NPC.velocity * 0.5f,
+                        rotation = NPC.velocity.ToRotation(),
+                        timeLeft = 30,
+                        color = Color.LightGreen * 0.22f,
+                        scale = 0.5f
+                    });
                 }
             }
         }
-        if (Timer >= 40 && NPC.collideY)
+        if (Timer >= 40 && NPC.collideY && NPC.velocity.Y > 0)
         {
             SwitchState(AIState.Slam);
         }
@@ -333,7 +355,8 @@ public class IvynSpearman : ModNPC,
         Timer++;
         if(Timer == 1)
         {
-            NPC.velocity.Y = -9;
+            NPC.velocity.Y = -6;
+            NPC.velocity.X = -NPC.direction * 2;
         }
         NPC.PlayAnimationOneShot(ANIM_PULLOUT);
         if(Timer >= PulloutTime)

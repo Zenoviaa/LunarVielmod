@@ -2,10 +2,13 @@
 using Stellamod.Common.Particles;
 using Stellamod.Core.Astar;
 using Stellamod.Core.NPCHelpers;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Visual.Particles;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -84,13 +87,20 @@ public class DungeonSkeletonBone : ModProjectile,
 public class DungeonSkeleton : ModNPC,
     IDrawToRenderTarget
 {
+    int _boneBarrage;
+    float _targetAFAlpha;
+    float _afAlpha;
     enum AIState : byte
     {
         Idle,
         Chase,
+        ChaseFast,
         Patrol,
         Jump,
-        Throw
+        Throw,
+        ThrowReady,
+        JumpMelee,
+        Land,
     }
     bool _groundedLastFrame;
     float _squishTimer;
@@ -103,15 +113,21 @@ public class DungeonSkeleton : ModNPC,
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+    ref float AttackCycle => ref NPC.ai[2];
     float SqrDistToPlayer => Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
     float IdleTime => 35;
-    float RunSpeed => 6;
+    float RunSpeed => 4;
     float ThrowTime => 45;
+    float ThrowReadyTime => 25;
     float MaxJumpSpeed => 6;
     float SqrChaseDistance => 256 * 256;
-    float SqrThrowDistance => 144 * 144;
+    float SqrThrowDistance => 384 * 384;
+    float LandTime => 37;
+    float RunFastSpeed => 7;
+    float SqrJumpMeleeDistance => 144 * 144;
     int Damage_Bone => 20;
     const string ANIM_IDLE = "Idle";
+    const string ANIM_THROWREADY = "ThrowReady";
     const string ANIM_THROW = "Throw";
     const string ANIM_WALKING = "Walkin";
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -127,12 +143,14 @@ public class DungeonSkeleton : ModNPC,
     {
         base.SendExtraAI(writer);
         _pathfinder.NetSend(writer);
+        writer.Write(_boneBarrage);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         _pathfinder.NetReceive(reader);
+        _boneBarrage = reader.ReadInt32();
     }
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
@@ -145,7 +163,7 @@ public class DungeonSkeleton : ModNPC,
         _pathfinder = new();
         NPC.width = 24;
         NPC.height = 47;
-        NPC.lifeMax = 80;
+        NPC.lifeMax = 240;
         NPC.defense = 7;
         NPC.HitSound = SoundID.NPCHit12;
         NPC.DeathSound = SoundID.NPCDeath2;
@@ -157,6 +175,8 @@ public class DungeonSkeleton : ModNPC,
     {
         base.AI();
         _outliner.SetDefaults();
+        NPC.noGravity = false;
+        _targetAFAlpha = 0;
         switch (State)
         {
             case AIState.Idle:
@@ -168,14 +188,26 @@ public class DungeonSkeleton : ModNPC,
             case AIState.Chase:
                 AI_Chase();
                 break;
+            case AIState.ChaseFast:
+                AI_ChaseFast();
+                break;
+            case AIState.JumpMelee:
+                AI_JumpMelee();
+                break;
             case AIState.Throw:
                 AI_Throw();
                 break;
+            case AIState.ThrowReady:
+                AI_ThrowReady();
+                break;
+            case AIState.Land:
+                AI_Land();
+                break;
         }
-
+        _afAlpha = MathHelper.Lerp(_afAlpha, _targetAFAlpha, 0.1f);
         if (_squishTimer > 0)
         {
-            NPC.VectorScale = Vector2.Lerp(Vector2.One, new Vector2(1.1f, 0.9f), EasingFunction.InOutSine(_squishTimer / 25f));
+            NPC.VectorScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.8f), EasingFunction.InOutSine(_squishTimer / 25f));
             _squishTimer--;
         }
         var isGrounded = MoonUtils.IsGrounded(NPC);
@@ -217,10 +249,25 @@ public class DungeonSkeleton : ModNPC,
         NPC.StraightenRotationSlowly();
         NPC.spriteDirection = NPC.direction;
         NPC.PlayAnimationLooped(ANIM_WALKING);
+        NPC.QuickStepUp();
 
         if (SqrDistToPlayer < SqrChaseDistance)
         {
-            SwitchState(AIState.Chase);
+            if (MultiplayerHelper.IsHost)
+            {
+
+                if (AttackCycle % 3 != 0)
+                {
+                    SwitchState(AIState.Chase);
+                }
+                else
+                {
+                    SwitchState(AIState.ChaseFast);
+                }
+                AttackCycle++;
+                NPC.netUpdate = true;
+            }
+          
         }
     }
     void AI_Chase()
@@ -235,27 +282,143 @@ public class DungeonSkeleton : ModNPC,
         MoonUtils.AIWalk_SusBush(_pathfinder, NPC, NPC.PlayerImTargeting.Center, MoonUtils.IsGrounded(NPC), RunSpeed, MaxJumpSpeed);
         NPC.FaceDirectionsToVelocity();
         NPC.PlayAnimationLooped(ANIM_WALKING);
+        NPC.StraightenRotationSlowly();
         if (SqrDistToPlayer < SqrThrowDistance)
+        {
+            SwitchState(AIState.ThrowReady);
+        }
+    }
+
+    void AI_ChaseFast()
+    {
+        _targetAFAlpha = 1;
+        Timer++;
+        MoonUtils.CreateNewPathIfTooFar(_pathfinder, NPC.Center, NPC.PlayerImTargeting.Center);
+        MoonUtils.AIWalk_SusBush(_pathfinder, NPC, NPC.PlayerImTargeting.Center, MoonUtils.IsGrounded(NPC), RunFastSpeed, MaxJumpSpeed);
+        NPC.FaceDirectionsToVelocity();
+        NPC.PlayAnimationLooped(ANIM_WALKING);
+        NPC.GetAnimator().Update();
+        NPC.StraightenRotationSlowly();
+        if (SqrDistToPlayer < SqrJumpMeleeDistance && Timer > 30)
+        {
+            SwitchState(AIState.JumpMelee);
+        }
+    }
+
+    void AI_JumpMelee()
+    {
+        _targetAFAlpha = 1;
+        Timer++;
+        if(Timer == 1)
+        {
+            SoundStyle bellHit = AssetRegistry.Sounds.Magic.AutomationHit1;
+            bellHit.PitchVariance = 0.2f;
+            bellHit.Pitch = -0.5f;
+            SoundEngine.PlaySound(bellHit, NPC.position);
+
+
+            var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+            p2.Scale *= 0.5f;
+            p2.fadeToColor = Color.Black;
+            p2.innerColor = Color.White;
+            p2.outerColor = Color.DarkGray;
+
+            NPC.velocity.Y = -9;
+          
+            NPC.velocity.X += NPC.direction;
+        }
+        NPC.noGravity = true;
+        NPC.velocity.X *= 0.98f;
+        if(Timer < 30)
+        {
+            NPC.velocity.Y += 0.2f;
+        }
+        else
+        {
+            if (NPC.velocity.Y > 0)
+                NPC.velocity.Y *= 1.06f;
+            else
+                NPC.velocity.Y += 0.6f;
+        }
+
+        if (Main.rand.NextBool(3))
+        {
+            var pos = NPC.Center;
+            pos += Main.rand.NextVector2Circular(32, 32);
+            var d = Dust.NewDustPerfect(pos, DustID.GemDiamond, Main.rand.NextVector2Circular(1, 1), Scale: Main.rand.NextFloat(0.6f, 1.2f));
+            d.noGravity = true;
+        }
+        _boneBarrage = 2;
+        NPC.rotation = Utils.AngleLerp(0.25f, -0.1f, EasingFunction.InSine(Timer / 30f));
+        if(Timer >= 30 && MoonUtils.IsGrounded(NPC))
+        {
+            SwitchState(AIState.ThrowReady);
+        }
+    }
+
+    void AI_Land()
+    {
+        Timer++;
+        if(Timer == 1)
+        {
+            FXUtil.ShakeCamera(NPC.Center, 1024, 8);
+            var impact = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, TriColorPalette.Silver, new(5, 15));
+            impact.particleCount *= 2;
+            ParticleUtils.CreateSwirlingDustCircle(impact);
+            var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Silver, Color.Black, 25, 0.16f);
+            fx.Scale *= 1.5f;
+            for (var i= 0; i < 8; i++)
+            {
+                var firer = ProjFirer.From<DungeonSkeletonBone>(NPC);
+                firer.damage = Damage_Bone;
+                firer.position += Main.rand.NextVector2Circular(32, 32);
+                firer.velocity = Vector2.UnitX * NPC.direction;
+                firer.velocity = firer.velocity.RotatedBy(-NPC.direction * 0.5f);
+                firer.velocity *= 12;
+                firer.velocity *= Main.rand.NextFloat(0.75f, 1.2f);
+                firer.velocity = firer.velocity.RotatedByRandom(1.6f);
+                firer.New();
+            }
+        }
+        if(Timer >= LandTime)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+    void AI_ThrowReady()
+    {
+        Timer++;
+        _outliner.warning = true;
+        NPC.velocity.X *= 0.92f;
+        NPC.PlayAnimationOneShot(ANIM_THROWREADY);
+        NPC.SpriteFaceTarget();
+        var t = ThrowReadyTime;
+        if(_boneBarrage > 0)
+        {
+            t *= 0.5f;
+        }
+        if(Timer >= t)
         {
             SwitchState(AIState.Throw);
         }
     }
 
+
     void AI_Throw()
     {
         Timer++;
-
-        var throwFrame = 26;
-        if (Timer < throwFrame)
+        if (Timer == 1)
         {
-            _outliner.warning = true;
-        }
-        if (Timer == throwFrame)
-        {
+            var quickHit = AssetReferences.Assets.Sounds.QuickHit.Asset with { PitchVariance = 0.4f, Pitch = -0.4f };
+            SoundEngine.PlaySound(quickHit, NPC.position);
             if (MultiplayerHelper.IsHost)
             {
                 var firer = ProjFirer.From<DungeonSkeletonBone>(NPC);
-                firer.velocity = (NPC.PlayerImTargeting.Center - NPC.Center).Resize(12) * Main.rand.NextFloat(0.6f, 1f);
+                var xSpeed = MathF.Abs(NPC.PlayerImTargeting.Center.X - NPC.Center.X) / 64F;
+                firer.velocity.X = xSpeed * NPC.direction * Main.rand.NextFloat(0.7f, 1f);
+                if (_boneBarrage > 0)
+                    firer.velocity *= 1.2f;
+                firer.velocity.Y -= 10;
                 firer.damage = Damage_Bone;
                 firer.New();
             }
@@ -264,9 +427,21 @@ public class DungeonSkeleton : ModNPC,
         NPC.velocity.X *= 0.92f;
         NPC.PlayAnimationOneShot(ANIM_THROW);
         NPC.SpriteFaceTarget();
-        if (Timer >= ThrowTime)
+        var t = ThrowTime;
+        if (_boneBarrage > 0)
+            t *= 0.5f;
+        if (Timer >= t)
         {
-            SwitchState(AIState.Idle);
+            if(_boneBarrage > 0)
+            {
+                _boneBarrage--;
+                SwitchState(AIState.ThrowReady);
+            }
+            else
+            {
+                SwitchState(AIState.Idle);
+            }
+           
         }
     }
 
@@ -302,12 +477,18 @@ public class DungeonSkeleton : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        for (var i = 0; i < NPC.oldPos.Length; i++)
+        if (_afAlpha > 0.04f)
         {
-            var pos = NPC.oldPos[i] + NPC.Size * 0.5f;
-            var color = Color.Lerp(Color.Red, Color.Transparent, i / (float)NPC.oldPos.Length);
-            NPC.DrawAnimator(spriteBatch, color, pos);
+            for (var i = 0; i < NPC.oldPos.Length; i++)
+            {
+                var pos = NPC.oldPos[i] + NPC.Size * 0.5f;
+                var color = Color.Lerp(Color.White, Color.Transparent, (float)i / (float)NPC.oldPos.Length) * 0.16f;
+                color *= _afAlpha;
+                color.A = 0;
+                NPC.DrawAnimator(spriteBatch, color, pos);
+            }
         }
+
         NPC.DrawAnimator(spriteBatch, drawColor);
         return false;
     }

@@ -170,6 +170,13 @@ public class GoldDigger : ModNPC,
             {
                 if (item.IsACoin && item.noGrabDelay <= 0)
                 {
+                    var coinDropSound = AssetReferences.Assets.Sounds.CoinDrop.Asset with { PitchVariance = 0.4f, Pitch = 0.4f };
+                    SoundEngine.PlaySound(coinDropSound, NPC.position);
+
+                    var fac = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, item.Center, TriColorPalette.Fiery, new Vector2(5, 15));
+                    fac.particleCount /= 2;
+                    ParticleUtils.CreateSwirlingDustBurst(fac);
+
                     NPC.extraValue += (int)PlayerHelper.GetCoinValue(item);
                     item.active = false;
                     if(Main.netMode == NetmodeID.Server)

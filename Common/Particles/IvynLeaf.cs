@@ -2,7 +2,6 @@
 using Terraria;
 
 namespace Stellamod.Common.Particles;
-
 public class IvynLeaf : ParticleUpdater<IvynLeaf.Data>
 {
     public struct Data : IParticleData
