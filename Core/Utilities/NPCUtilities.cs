@@ -19,6 +19,18 @@ public static class NPCUtilities
     extension(NPC npc)
     {
         /// <summary>
+        /// Sets both the npc direction and npc sprite direction to -1 or 1 depending on the current velocity
+        /// </summary>
+        public void FaceDirectionsToVelocity()
+        {
+            npc.direction = npc.velocity.X < 0 ? -1 : 1;
+            npc.spriteDirection = npc.direction;
+        }
+        public void StraightenRotationSlowly(float lerpAmount = 0.1f)
+        {
+            npc.rotation = Utils.AngleLerp(npc.rotation, 0, lerpAmount);
+        }
+        /// <summary>
         /// Wraps around Collision.StepUp and fills it with npc values
         /// </summary>
         public void QuickStepUp()
