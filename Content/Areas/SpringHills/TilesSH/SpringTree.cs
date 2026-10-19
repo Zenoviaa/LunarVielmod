@@ -36,7 +36,7 @@ public class SpringTree : ModTree
         base.SetTreeFoliageSettings(i, j, tile, xoffset, ref treeFrame, floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
         topTextureFrameWidth = 142;
         topTextureFrameHeight = 114;
-        xoffset = 62;
+    
         floorY = 2;
     }
 }

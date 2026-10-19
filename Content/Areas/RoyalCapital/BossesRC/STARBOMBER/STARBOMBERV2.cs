@@ -699,7 +699,7 @@ public class STARBOMBERV2 : ScarletBoss,
                 AI_Death();
                 break;
         }
-
+        Lighting.AddLight(NPC.Center, TorchID.Torch);
         UpdateLegs();
         base.AI();
     }

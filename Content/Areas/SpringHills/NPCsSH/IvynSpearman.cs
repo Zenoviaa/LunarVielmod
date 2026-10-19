@@ -89,7 +89,7 @@ public class IvynSpearman : ModNPC,
         _pathfinder = new();
         NPC.damage = 32;
         NPC.width = 34;
-        NPC.height = 62;
+        NPC.height = 72;
         NPC.lifeMax = 35;
         NPC.defense = 6;
         NPC.HitSound = SoundID.NPCHit1;

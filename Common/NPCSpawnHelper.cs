@@ -153,7 +153,7 @@ public class NPCSpawnHelper : GlobalNPC
             if (spawnInfo.Water && NPCID.Sets.TryNotToSpawnOnWater[enemyType])
                 continue;
 
-            float totalWeight = 1f;
+            float totalWeight = 3f;
             float weight = totalWeight / (float)set.Count;
 
             //If we want to make an enemy rarer we'd do it here

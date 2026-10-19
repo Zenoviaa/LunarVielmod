@@ -5,6 +5,15 @@ using Terraria.ID;
 
 namespace Stellamod.Content.Areas.SpringHills.TilesSH;
 
+public class WitchOutpost : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
 public class WoodenZui : ZTile
 {
     public override void SetStaticDefaults()
