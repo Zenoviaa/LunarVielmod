@@ -18,6 +18,28 @@ public static class NPCUtilities
     }
     extension(NPC npc)
     {
+        public NPC ClosestFriend(int type, float sqrSightDistance)
+        {
+            NPC closestFriend = null;
+            var closestDistance = float.MaxValue;
+            foreach (var otherNPC in Main.ActiveNPCs)
+            {
+                if (otherNPC.whoAmI == npc.whoAmI)
+                    continue;
+                if (otherNPC.type != type)
+                    continue;
+                var distToFriend = Vector2.DistanceSquared(otherNPC.Center, npc.Center);
+                if (distToFriend > sqrSightDistance)
+                    continue;
+
+                if (distToFriend < closestDistance)
+                {
+                    closestDistance = distToFriend;
+                    closestFriend = npc;
+                }
+            }
+            return closestFriend;
+        }
         /// <summary>
         /// Sets both the npc direction and npc sprite direction to -1 or 1 depending on the current velocity
         /// </summary>

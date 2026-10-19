@@ -4,11 +4,7 @@ using Stellamod.Core.Astar;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -25,6 +21,7 @@ public class DungeonSkeletonBone : ModProjectile,
         base.SetStaticDefaults();
         Projectile.SetTrailCacheLength(16);
     }
+
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -35,11 +32,12 @@ public class DungeonSkeletonBone : ModProjectile,
         Projectile.light = 0.4f;
         Projectile.tileCollide = false;
     }
+
     public override void AI()
     {
         base.AI();
         Timer++;
-        if(Timer >= 15)
+        if (Timer >= 15)
         {
             Projectile.tileCollide = true;
         }
@@ -64,7 +62,7 @@ public class DungeonSkeletonBone : ModProjectile,
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        for(var i = 0; i < 24; i++)
+        for (var i = 0; i < 24; i++)
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(16, 16);
             var vel = Main.rand.NextVector2Circular(4, 4);
@@ -174,14 +172,14 @@ public class DungeonSkeleton : ModNPC,
                 AI_Throw();
                 break;
         }
-        
-        if(_squishTimer > 0)
+
+        if (_squishTimer > 0)
         {
             NPC.VectorScale = Vector2.Lerp(Vector2.One, new Vector2(1.1f, 0.9f), EasingFunction.InOutSine(_squishTimer / 25f));
             _squishTimer--;
         }
         var isGrounded = MoonUtils.IsGrounded(NPC);
-        if(!_groundedLastFrame && isGrounded)
+        if (!_groundedLastFrame && isGrounded)
         {
             _squishTimer = 25;
         }
@@ -189,7 +187,7 @@ public class DungeonSkeleton : ModNPC,
         _outliner.Update();
         NPC.DrawOrigin = new Vector2(23, 47);
     }
-    
+
     void AI_Idle()
     {
         Timer++;
@@ -198,7 +196,7 @@ public class DungeonSkeleton : ModNPC,
         NPC.StraightenRotationSlowly();
         NPC.spriteDirection = NPC.direction;
         NPC.velocity.X *= 0.92f;
-        if(Timer >= IdleTime)
+        if (Timer >= IdleTime)
         {
             SwitchState(AIState.Patrol);
         }
@@ -207,7 +205,7 @@ public class DungeonSkeleton : ModNPC,
     void AI_Patrol()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             if (MultiplayerHelper.IsHost)
             {
@@ -228,7 +226,7 @@ public class DungeonSkeleton : ModNPC,
     void AI_Chase()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
 
         }
@@ -237,7 +235,7 @@ public class DungeonSkeleton : ModNPC,
         MoonUtils.AIWalk_SusBush(_pathfinder, NPC, NPC.PlayerImTargeting.Center, MoonUtils.IsGrounded(NPC), RunSpeed, MaxJumpSpeed);
         NPC.FaceDirectionsToVelocity();
         NPC.PlayAnimationLooped(ANIM_WALKING);
-        if(SqrDistToPlayer < SqrThrowDistance)
+        if (SqrDistToPlayer < SqrThrowDistance)
         {
             SwitchState(AIState.Throw);
         }
@@ -248,11 +246,11 @@ public class DungeonSkeleton : ModNPC,
         Timer++;
 
         var throwFrame = 26;
-        if(Timer < throwFrame)
+        if (Timer < throwFrame)
         {
             _outliner.warning = true;
         }
-        if(Timer == throwFrame)
+        if (Timer == throwFrame)
         {
             if (MultiplayerHelper.IsHost)
             {
@@ -266,7 +264,7 @@ public class DungeonSkeleton : ModNPC,
         NPC.velocity.X *= 0.92f;
         NPC.PlayAnimationOneShot(ANIM_THROW);
         NPC.SpriteFaceTarget();
-        if(Timer >= ThrowTime)
+        if (Timer >= ThrowTime)
         {
             SwitchState(AIState.Idle);
         }
@@ -304,10 +302,10 @@ public class DungeonSkeleton : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        for(var i= 0; i < NPC.oldPos.Length; i++)
+        for (var i = 0; i < NPC.oldPos.Length; i++)
         {
             var pos = NPC.oldPos[i] + NPC.Size * 0.5f;
-            var color = Color.Lerp(Color.Red, Color.Transparent, (float)i / (float)NPC.oldPos.Length);
+            var color = Color.Lerp(Color.Red, Color.Transparent, i / (float)NPC.oldPos.Length);
             NPC.DrawAnimator(spriteBatch, color, pos);
         }
         NPC.DrawAnimator(spriteBatch, drawColor);
