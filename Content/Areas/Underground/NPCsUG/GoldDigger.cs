@@ -19,6 +19,8 @@ public class GoldDigger : ModNPC,
         Idle,
         Patrol,
         ChaseYou,
+        ChaseCoin,
+        FleeAway,
         SwipeYou
     }
 
@@ -38,9 +40,11 @@ public class GoldDigger : ModNPC,
     float _targetAfAlpha;
     float _afAlpha;
     float _patrolTime;
-    Vector2 PatrolTimeRange => new Vector2(120, 180);
+    Vector2 PatrolTimeRange => new Vector2(300, 360);
+    float CoinChaseRange => 1024 * 1024;
     float ChaseRange => 128 * 128;
     float AttackRange => 64 * 64;
+
     float RunSpeed => 6;
     float MaxJumpSpeed => 6;
     float DashPrepTime => 20;
@@ -71,6 +75,7 @@ public class GoldDigger : ModNPC,
     {
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
+        NPCID.Sets.CantTakeLunchMoney[Type] = true;
         NPC.SetTrailCacheLength(8);
     }
 
@@ -103,6 +108,7 @@ public class GoldDigger : ModNPC,
     public override void AI()
     {
         base.AI();
+
         _outliner.SetDefaults();
         _contactDamage = false;
         _targetAfAlpha = 0f;
@@ -114,6 +120,12 @@ public class GoldDigger : ModNPC,
             case AIState.ChaseYou:
                 AI_ChaseYou();
                 break;
+            case AIState.FleeAway:
+                AI_FleeAway();
+                break;
+            case AIState.ChaseCoin:
+                AI_ChaseCoin();
+                break;
             case AIState.Patrol:
                 AI_Patrol();
                 break;
@@ -121,11 +133,54 @@ public class GoldDigger : ModNPC,
                 AI_SwipeYou();
                 break;
         }
+        PickupNearbyCoins();
         _afAlpha = MathHelper.Lerp(_afAlpha, _targetAfAlpha, 0.1f);
         _outliner.Update();
         NPC.DrawOrigin = new Vector2(34, 32);
     }
 
+    Item GetNearestCoin()
+    {
+        Item nearest = null;
+        var dist = float.MaxValue;
+        foreach(var item in Main.ActiveItems)
+        {
+            if (!item.IsACoin || item.noGrabDelay > 0)
+                continue;
+            var distToItem = Vector2.DistanceSquared(NPC.Center, item.Center);
+            if (distToItem > CoinChaseRange)
+                continue;
+
+            if(distToItem < dist)
+            {
+                dist = distToItem;
+                nearest = item;
+            }
+        }
+        return nearest;
+    }
+
+    void PickupNearbyCoins()
+    {
+        var rect = NPC.getRect();
+        foreach(var item in Main.ActiveItems)
+        {
+            var itemRect = item.getRect();
+            if (rect.Intersects(itemRect))
+            {
+                if (item.IsACoin && item.noGrabDelay <= 0)
+                {
+                    NPC.extraValue += (int)PlayerHelper.GetCoinValue(item);
+                    item.active = false;
+                    if(Main.netMode == NetmodeID.Server)
+                    {
+                        NetMessage.SendData(MessageID.SyncItem, -1, -1, null, item.whoAmI);
+                    }
+                }
+         
+            }
+        }
+    }
     void AI_Idle()
     {
         Timer++;
@@ -165,11 +220,20 @@ public class GoldDigger : ModNPC,
             }
         }
 
+        var nearestCoin = GetNearestCoin();
+        if(nearestCoin != null)
+        {
+            SwitchState(AIState.ChaseCoin);
+        }
+
         var targetingPlayer = NPC.PlayerImTargeting;
         var sqrDistanceToPlayer = Vector2.DistanceSquared(NPC.Center, targetingPlayer.Center);
         if(sqrDistanceToPlayer < ChaseRange)
         {
-            SwitchState(AIState.ChaseYou);
+            if (NPC.extraValue <= 0)
+                SwitchState(AIState.ChaseYou);
+            else
+                SwitchState(AIState.FleeAway);
         }
 
         if(Timer >= _patrolTime)
@@ -178,12 +242,49 @@ public class GoldDigger : ModNPC,
         }
     }
 
+    void AI_FleeAway()
+    {
+        Timer++;
+
+        var targetingPlayer = NPC.PlayerImTargeting;
+        var sqrDistanceToPlayer = Vector2.DistanceSquared(NPC.Center, targetingPlayer.Center);
+        if (sqrDistanceToPlayer > ChaseRange)
+        {
+            SwitchState(AIState.Patrol);
+        }
+        else
+        {
+            var dirX = targetingPlayer.Center.X < NPC.Center.X ? 1 : -1;
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, dirX * RunSpeed, 0.2f);
+            NPC.QuickStepUp();
+        }
+
+        FaceVelocity();
+        NPC.PlayAnimationLooped(ANIM_RUN);
+
+    }
+    void AI_ChaseCoin()
+    {
+        Timer++;
+        var nearestCoin = GetNearestCoin();
+        if(nearestCoin == null)
+        {
+            SwitchState(AIState.Idle);
+            return;
+        }
+
+        MoonUtils.CreateNewPathIfTooFar(_pathfinder, NPC.Center, nearestCoin.Center);
+        MoonUtils.AIWalk_SusBush(_pathfinder, NPC, nearestCoin.Center, MoonUtils.IsGrounded(NPC), RunSpeed, MaxJumpSpeed);
+        FaceVelocity();
+        NPC.PlayAnimationLooped(ANIM_RUN);
+    }
     void AI_ChaseYou()
     {
         Timer++;
         MoonUtils.CreateNewPathIfTooFar(_pathfinder, NPC.Center, NPC.PlayerImTargeting.Center);
         MoonUtils.AIWalk_SusBush(_pathfinder, NPC, NPC.PlayerImTargeting.Center, MoonUtils.IsGrounded(NPC), RunSpeed, MaxJumpSpeed);
         FaceVelocity();
+        NPC.PlayAnimationLooped(ANIM_RUN);
 
         var targetingPlayer = NPC.PlayerImTargeting;
         var sqrDistanceToPlayer = Vector2.DistanceSquared(NPC.Center, targetingPlayer.Center);
@@ -233,7 +334,11 @@ public class GoldDigger : ModNPC,
 
         if(Timer > DashPrepTime + DashTime)
         {
-            SwitchState(AIState.Idle);
+            var nearestCoin = GetNearestCoin();
+            if (nearestCoin != null)
+                SwitchState(AIState.ChaseCoin);
+            else
+                SwitchState(AIState.Idle);
         }
     }
 
@@ -249,7 +354,7 @@ public class GoldDigger : ModNPC,
         base.OnHitPlayer(target, hurtInfo);
         var coinDropSound = AssetReferences.Assets.Sounds.CoinDrop.Asset with { PitchVariance = 0.4f };
         SoundEngine.PlaySound(coinDropSound, NPC.position);
-        PlayerHelper.DropCoins(target);
+        PlayerHelper.DropCoins(target, 4);
 
         var fac = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, target.Center, TriColorPalette.Fiery, new Vector2(5, 15));
         ParticleUtils.CreateSwirlingDustBurst(fac);

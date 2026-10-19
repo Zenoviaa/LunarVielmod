@@ -888,7 +888,7 @@ public class MoonWaterSystem : ModSystem
         _waterEffect.Parameters["time"].SetValue(_time * 2);
         _waterEffect.Parameters["distortion"].SetValue(0.005f);
         _waterEffect.Parameters["NoiseTexture"].SetValue(_pixelWater.CausticsTexture.Value);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
         spriteBatch.Draw(_reflectionRT, Vector2.Zero, null, Color.White * _pixelWater.reflectionAlpha, 0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
         spriteBatch.End();
     }
@@ -905,14 +905,14 @@ public class MoonWaterSystem : ModSystem
         graphicsDevice.SetRenderTarget(_waterTextureRTOutput);
         graphicsDevice.Clear(Color.DeepSkyBlue);
 
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
         spriteBatch.Draw(_waterTextureRTSwap, _drawLocation, null, Color.White * 1f);
         spriteBatch.End();
 
         if (!_pixelWater.noLighting)
         {
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
-            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
             spriteBatch.Draw(_waterLightMapRT, _drawLocation, null, Color.White * 1);
             spriteBatch.End();
         }
@@ -935,6 +935,8 @@ public class MoonWaterSystem : ModSystem
     private void RenderIntoWaterTextureTarget()
     {
         LoadAssets();
+
+
         _drawLocation = new Rectangle(0, 0, _waterTextureRTSwap.Width, _waterTextureRTSwap.Height);
         SpriteBatch spriteBatch = Main.spriteBatch;
 
@@ -1034,12 +1036,7 @@ public class MoonWaterSystem : ModSystem
             _waterSurfacePointLightMap.Draw(graphicsDevice);
         }
 
-        RenderTargetBinding[] binding = new RenderTargetBinding[]
-        {
-            new RenderTargetBinding(_waterHeightMapRT),
-            new RenderTargetBinding(_waterLightMapRT)
-        };
-        graphicsDevice.SetRenderTargets(binding);
+        graphicsDevice.SetRenderTarget(_waterHeightMapRT);
         graphicsDevice.Clear(Color.Transparent);
 
 
@@ -1049,6 +1046,8 @@ public class MoonWaterSystem : ModSystem
         sb.End();
 
         graphicsDevice.SetRenderTarget(null);
+
+
     }
 
     private void RenderIntoHeightMapTarget()

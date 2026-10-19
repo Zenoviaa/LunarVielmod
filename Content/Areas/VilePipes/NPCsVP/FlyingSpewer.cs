@@ -190,7 +190,7 @@ public class FlyingSpewer : ModNPC,
         Blitz
     }
     Vector2 SirenPosition => NPC.Center + new Vector2(0, -32);
-    Vector2 GunPosition => NPC.Center + new Vector2(0, 16);
+    Vector2 GunPosition => NPC.Center + new Vector2(0, 56);
     Vector2 _fireVelocity;
     Outliner _outliner;
 
@@ -449,7 +449,7 @@ public class FlyingSpewer : ModNPC,
     void MadSightLine()
     {
         _sightLineColor = Color.Red;
-        var newSightLineRot = Utils.AngleTowards(SightLineRot, (NPC.PlayerImTargeting.Center - NPC.Center).ToRotation(), 0.35f);
+        var newSightLineRot = Utils.AngleTowards(SightLineRot, (NPC.PlayerImTargeting.Center - GunPosition).ToRotation(), 0.35f);
         SightLineRot = Utils.AngleLerp(SightLineRot, newSightLineRot, 0.1f);
     }
     void AI_Chase()
@@ -504,7 +504,7 @@ public class FlyingSpewer : ModNPC,
                 var firer = ProjFirer.From<FlyingSpewerBullet>(NPC);
                 firer.damage = Damage_SpewBullet;
                 firer.velocity = SightLineRot.ToRotationVector2() * 16;
-                firer.position = GunPosition + SightLineRot.ToRotationVector2() * 76;
+                firer.position = GunPosition + SightLineRot.ToRotationVector2() * 58;
                 firer.New();
             }
             NPC.velocity = -_fireVelocity.SafeNormalize(Vector2.Zero) * 1.5f;
@@ -534,13 +534,28 @@ public class FlyingSpewer : ModNPC,
             color.A = 0;
             NPC.DrawAnimator(spriteBatch, color, pod);
         }
-        NPC.DrawAnimator(spriteBatch, drawColor);
+
+        var dist = Vector2.Distance(NPC.Center, GunPosition);
+        var chainTex = AssetReferences.Assets.Textures.NPC.FlyingSpewerChain.Asset;
+        var chainDrawer = SpritebatchDrawer.FromTextureAsset(chainTex, NPC.Center);
+        var chainLength = chainTex.Value.Width;
+        var chainSteps = dist / chainLength;
+        chainSteps *= 2;
+        for(var i = 0; i < chainSteps; i++)
+        {
+            var pos = Vector2.Lerp(NPC.Center, GunPosition, (float)i / (float)chainSteps * 1f);
+            chainDrawer.worldPosition = pos;
+            spriteBatch.Draw(chainDrawer);
+        }
+
         var gunDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.NPC.FlyingSpewerGun.Asset, GunPosition);
         gunDrawer.VerticalFrame(0, 2);
-        gunDrawer.LeftCenterOrigin();
+        gunDrawer.drawOrigin = new Vector2(28, 16);
         gunDrawer.rotation = SightLineRot;
 
         spriteBatch.Draw(gunDrawer);
+        NPC.DrawAnimator(spriteBatch, drawColor);
+
         return false;
     }
     void DeathFX()
@@ -592,13 +607,14 @@ public class FlyingSpewer : ModNPC,
         quad.Cone(GunPosition + SightLineRot.ToRotationVector2() * 16, 0, dist, SightDistance, SightLineRot);
         quad.vertices[1].Color = quad.vertices[3].Color = Color.Transparent;
         quad.vertices[0].Color = quad.vertices[2].Color = _useSightLineColor;
-        quad.vertices[0].TextureCoordinate = quad.vertices[2].TextureCoordinate = Vector2.One;
-        quad.vertices[1].TextureCoordinate = quad.vertices[3].TextureCoordinate = Vector2.Zero;
+     //   quad.vertices[0].TextureCoordinate = quad.vertices[2].TextureCoordinate = Vector2.One;
+     //   quad.vertices[1].TextureCoordinate = quad.vertices[3].TextureCoordinate = Vector2.Zero;
 
 
         var pass = AssetReferences.Effects.Generic.SightLine.CreatePrimitivesPass();
         pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 2;
+        pass.Parameters.time = -Main.GlobalTimeWrappedHourly * 2;
+        pass.Parameters.alpha = 1f - (AngerTimer / AngerTime);
         pass.Apply();
         graphicsDevice.BlendState = BlendState.AlphaBlend;
         graphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
@@ -632,7 +648,7 @@ public class FlyingSpewer : ModNPC,
         {
             var gunDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.NPC.FlyingSpewerGun.Asset, GunPosition);
             gunDrawer.VerticalFrame(0, 2);
-            gunDrawer.LeftCenterOrigin();
+            gunDrawer.drawOrigin = new Vector2(28, 16);
             gunDrawer.rotation = SightLineRot;
             gunDrawer.color = _outliner.outlineColor;
             sb.Draw(gunDrawer);

@@ -1,6 +1,7 @@
 #include "../Helpers/Math.fxh"
 matrix transformMatrix;
 float time;
+float alpha;
 struct VertexShaderInput
 {
     float4 Position : POSITION0;
@@ -30,7 +31,9 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float glow = QuadraticBump(input.TextureCoordinates.y);
     float4 glowColor = float4(glow, glow, glow, glow) * input.Color;
     float4 finalColor = input.Color + glowColor;
-    finalColor *= sin(input.TextureCoordinates.x * 6.56 + time);
+    float ring = sin(input.TextureCoordinates.x * 2.56 + time);
+    float ringM = lerp(1.0, ring, alpha);
+    finalColor *= ringM;
     return finalColor;
 
 }
