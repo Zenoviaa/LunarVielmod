@@ -200,7 +200,11 @@ namespace Stellamod.Common.GunSystem
         {
             if (remainingAmmo > 0)
             {
-                remainingAmmo--;
+                if(!player.IsAmmoFreeThisShot(Item, new Item(Item.ammo), Item.shoot))
+                {
+                    remainingAmmo--;
+                }
+              
                 return GunShot(player, source, position, velocity, type, damage, knockback);
             }
             else
