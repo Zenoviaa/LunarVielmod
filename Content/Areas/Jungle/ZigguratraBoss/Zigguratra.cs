@@ -210,7 +210,7 @@ public partial class Zigguratra : ScarletBoss
     {
         var state = AttackPattern.NextPattern();
         SwitchState(state);
-        SwitchState(AIState.Release_The_Bees);
+        SwitchState(AIState.Axe_Crash);
     }
 
     private void SwitchState(AIState state)

@@ -84,6 +84,7 @@ public class LightningSpikeySpark : ParticleUpdater<LightningSpikeySpark.Data>
                 drawer.color = particle.color;
                 drawer.color = Color.Lerp(drawer.color, Color.DarkOrange, 1f - fade);
                 drawer.color *= fade;
+                drawer.color *= 2;
                 drawer.color *= 0.6f;
                 drawer.sourceRect = frame;
                 drawer.rotation = particle.velocity.ToRotation();
