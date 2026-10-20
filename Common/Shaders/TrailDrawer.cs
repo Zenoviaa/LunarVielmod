@@ -131,6 +131,39 @@ namespace Stellamod.Common.Shaders
                 return world * view * projection;
             }
         }
+        public static Matrix WorldViewPointBigZPlanes
+        {
+            get
+            {
+                Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+                Matrix world = Matrix.CreateTranslation(-screenPosition);
+                Matrix view = Main.GameViewMatrix.TransformationMatrix;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1000, 1000);
+                return world * view * projection;
+            }
+        }
+        public static Matrix WorldViewPointCullFarAway
+        {
+            get
+            {
+                Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+                Matrix world = Matrix.CreateTranslation(-screenPosition);
+                Matrix view = Main.GameViewMatrix.TransformationMatrix;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1000);
+                return world * view * projection;
+            }
+        }
+        public static Matrix WorldViewPointCullClose
+        {
+            get
+            {
+                Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+                Matrix world = Matrix.CreateTranslation(-screenPosition);
+                Matrix view = Main.GameViewMatrix.TransformationMatrix;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1000, 1);
+                return world * view * projection;
+            }
+        }
         public static Matrix ViewProjection
         {
             get

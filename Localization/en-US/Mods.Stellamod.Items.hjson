@@ -12315,3 +12315,8 @@ StaminaBerry: {
 	DisplayName: Stamina Berry
 	Tooltip: ""
 }
+
+DebugWand: {
+	DisplayName: Debug Wand
+	Tooltip: ""
+}
