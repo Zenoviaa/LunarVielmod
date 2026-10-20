@@ -41,7 +41,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     float4 spriteColor = tex2D(spriteSampler, frac(coords + float2(time * 0.5, time * -3.5)));
     float4 finalColor = input.Color * spriteColor * coords.y / 8.0;
-    finalColor *= 0.8;
+    finalColor *= 1.8;
     finalColor *= input.Normal.r;
 
     //finalColor *= input.Normal.r;
