@@ -690,6 +690,7 @@ public class StormingTornadoV2 : ModProjectile
 
         UpdateBottomTornado();
         TornadoCircles.upwardVelocity = -7;
+        TornadoCircles.angularVelocity = 0.1f;
         TornadoCircles.Update(Timer);
 
         FastTornadoCircles.upwardVelocity = -6;
