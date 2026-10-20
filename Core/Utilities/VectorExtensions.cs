@@ -1,10 +1,21 @@
 ﻿using System.Runtime.CompilerServices;
 using Terraria;
+using static Terraria.NPC.NPCNameFakeLanguageCategoryPassthrough;
 
 namespace Stellamod.Core.Utilities;
 
 public static class VectorExtensions
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 SafeNormalize(this Vector3 vector3)
+    {
+        if (vector3 == Vector3.Zero)
+        {
+            return Vector3.Zero;
+        }
+
+        return Vector3.Normalize(vector3);
+    }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 FlipX(this Vector2 point, Vector2 origin)
     {

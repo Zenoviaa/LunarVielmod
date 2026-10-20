@@ -9,6 +9,218 @@ using Terraria.ModLoader;
 namespace Stellamod.Core.Utilities;
 
 
+public class TornadoStreakLinesParticles : ParticleUpdater<TornadoStreakLinesParticles.Data>
+{
+    public struct Data : IParticleData
+    {
+        public Vector3 position;
+        public Vector3 velocity;
+        public Vector3 oldTrackingPosition;
+        public int pointToTrack;
+        public bool stopMoving;
+        public float timeLeft;
+        public bool IsActive => timeLeft > 0;
+    }
+    public int TrailCacheLength => 32;
+    public Vector3[] OldPos;
+    public Vector3[] wrappedOffsets;
+    public Vector3 tornadoCenter;
+    public float timer;
+    public TornadoStreakLinesParticles() : base()
+    {
+        OldPos = new Vector3[TrailCacheLength * GetPoolSize()];
+    }
+
+    public override int GetPoolSize()
+    {
+        return 128;
+    }
+    public override void OnSpawn(ref Data particle, in int index)
+    {
+        base.OnSpawn(ref particle, index);
+        var trailIndex = index * TrailCacheLength;
+        var endTrailIndex = trailIndex + TrailCacheLength;
+        for(var i = trailIndex; i < endTrailIndex; i++)
+        {
+            OldPos[i] = particle.position;
+        }
+      
+    }
+
+    public void Simulate()
+    {
+        for (var i = 0; i < _length; i++)
+        {
+            ref var particle = ref _particles[i];
+            var trailIndex = i * TrailCacheLength;
+            var endTrailIndex = trailIndex + TrailCacheLength;
+            for (var j = endTrailIndex - 1; j > trailIndex; j--)
+            {
+                OldPos[j] = OldPos[j - 1];
+            }
+            OldPos[trailIndex] = particle.position;
+
+
+            ref var offset = ref wrappedOffsets[particle.pointToTrack];
+            if (!particle.stopMoving)
+            {
+                var targetCirclePos = tornadoCenter + new Vector3(offset.X * 3 , offset.Y, offset.Z);
+                var targetVelocity = (targetCirclePos - particle.position) * 0.25f;
+                var sqrDistToPoint = MathF.Abs(targetCirclePos.Y - particle.position.Y);
+                if (particle.oldTrackingPosition != Vector3.Zero)
+                {
+                    if (sqrDistToPoint > 64)
+                    {
+                        particle.stopMoving = true;
+                    }
+                    else
+                        particle.velocity = Vector3.Lerp(particle.velocity, targetVelocity, 0.2f);
+                }
+
+                particle.oldTrackingPosition = targetCirclePos;
+
+            }
+            else
+            {
+                particle.timeLeft-=2;
+                particle.velocity *= 0.98f;
+            }
+
+            particle.position += particle.velocity;
+            particle.timeLeft--;
+        }
+        for (int i = 0; i < _length; i++)
+        {
+            ref Data particleData = ref _particles[i];
+            if (!particleData.IsActive)
+            {
+                KillParticle2(i);
+                i--;
+            }
+        }
+    }
+    void KillParticle2(in int index)
+    {
+        //Swap with the last active particle and set the data to default
+        //Order does not matter for when they get updated, so we can do it like this :)
+        _particles[index] = _particles[_length - 1];
+
+        var startIndex = index * TrailCacheLength;
+        var endIndex = startIndex + TrailCacheLength;
+        var oldStartIndex = (_length - 1) * TrailCacheLength;
+        var offset = oldStartIndex - startIndex;
+
+        for(var i = startIndex; i < endIndex; i++)
+        {
+            OldPos[i] = OldPos[i + offset];
+        }
+
+
+        _particles[_length - 1] = default;
+
+        _length--;
+    }
+    protected override void UpdateParticles()
+    {
+        base.UpdateParticles();
+
+  
+    }
+    public void DrawStreaks(GraphicsDevice gDevice)
+    {
+        List<VertexPositionColor> vertices = new();
+        var quadCount = 0;
+        for(var i = 0; i < _length; i++)
+        {
+            ref var particle = ref _particles[i];
+            var trailIndex = i * TrailCacheLength;
+            var endTrailIndex = trailIndex + TrailCacheLength;
+ 
+            //prepare vertices
+            for(var j = trailIndex; j < endTrailIndex; j++)
+            {
+                var ratio = (float)(j - trailIndex) / (float)(TrailCacheLength - 1);
+                var color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(ratio));
+                color *= EasingFunction.InOutSine(particle.timeLeft / 90f);
+                color *= (120 - particle.timeLeft) / 60f;
+                color *= 0.7F;
+                var width = EasingFunction.QuadraticBump(ratio);
+                width *= 4 * (120 - particle.timeLeft) / 60f;
+                ref var position = ref OldPos[j];
+                if(j == trailIndex)
+                {
+                    ref var nextPosition = ref OldPos[j + 1];
+      
+
+                    var direction2 = (nextPosition.XY() - position.XY());
+                    var rot = direction2.ToRotation();
+                    var perp = (rot + MathHelper.PiOver2).ToRotationVector2();
+                    Vector3 perpendicularNormalized = new Vector3(perp, 0);
+
+
+                    VertexPositionColor topVertex = new VertexPositionColor(position - perpendicularNormalized * width, color);
+                    VertexPositionColor bottomVertex = new VertexPositionColor(position + perpendicularNormalized * width, color);
+                    vertices.Add(topVertex);
+                    vertices.Add(bottomVertex);
+
+                    /*
+                     * 
+                     * 
+                     * 0 1 3 0 2 3
+                     * tl tr br 
+                     * tl bl br
+                     * 0 2 3 0 1 3
+                var topLeftVertex = new VertexPositionColorTexture(topLeft, nextColor, topLeftCoord); 0 
+                var topRightVertex = new VertexPositionColorTexture(topRight, nextColor, topRightCoord); 1 
+                var bottomLeftVertex = new VertexPositionColorTexture(bottomLeft, color, bottomLeftCoord); 2 
+                var bottomRightVertex = new VertexPositionColorTexture(bottomRight, color, bottomRightCoord); 3
+                     */
+                    quadCount++;
+                }
+                else
+                {
+                    ref var prevPosition = ref OldPos[j - 1];
+                    var direction2 = (position.XY() - prevPosition.XY());
+                    var rot = direction2.ToRotation();
+                    var perp = (rot + MathHelper.PiOver2).ToRotationVector2();
+                    Vector3 perpendicularNormalized = new Vector3(perp, 0);
+                    VertexPositionColor topVertex = new VertexPositionColor(position - perpendicularNormalized * width, color);
+                    VertexPositionColor bottomVertex = new VertexPositionColor(position + perpendicularNormalized * width, color);
+                    vertices.Add(topVertex);
+                    vertices.Add(bottomVertex);
+                    //don't increase quad on the last vertices, as there is no enxt point
+                    if(j < endTrailIndex - 1)
+                        quadCount++;
+                }
+            }
+
+            //capp off 
+
+        }
+        if (quadCount <= 0)
+            return;
+
+
+        var vertArray = vertices.ToArray();
+        var indices = DrawUtilities.TexturedQuadIndices2(quadCount);
+        var pass = AssetReferences.Effects.Weather.TornadoStreak.CreatePrimitivesPass();
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPointBigZPlanes;
+        pass.Apply();
+        gDevice.RasterizerState = RasterizerState.CullNone;
+        gDevice.BlendState = BlendState.Additive;
+        gDevice.SamplerStates[0] = SamplerState.LinearWrap;
+        gDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, vertArray, 0, vertArray.Length, indices, 0, 
+            (indices.Length / 6) );
+    }
+    public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        //base.Draw(spriteBatch, screenPos);
+    }
+    public override void Draw(SpriteBatch spriteBatch, ref Data particle)
+    {
+        //throw new NotImplementedException();
+    }
+}
 public class TornadoDustParticles : ParticleUpdater<TornadoDustParticles.Data>
 {
     public struct Data : IParticleData
@@ -35,6 +247,7 @@ public class TornadoDustParticles : ParticleUpdater<TornadoDustParticles.Data>
     {
         base.OnSpawn(ref particle, index);
         particle.frame = (byte)Main.rand.Next(4);
+        particle.oldTrackingPosition = Vector2.Zero;
     }
 
     protected override void UpdateParticles()
@@ -49,13 +262,13 @@ public class TornadoDustParticles : ParticleUpdater<TornadoDustParticles.Data>
             ref var offset = ref wrappedOffsets[particle.pointToTrack];
             if (!particle.stopMoving)
             {
-                var targetCirclePos = tornadoCenter + new Vector2(offset.X * 2 * ExtraMath.Osc(0.5f, 2f, speed: 3, offset: i), offset.Y);
-                var targetVelocity = (targetCirclePos - particle.position) * 0.24f;
+                var targetCirclePos = tornadoCenter + new Vector2(offset.X * 2 * ExtraMath.Osc(1f, 2f, speed: 3, offset: i), offset.Y);
+                var targetVelocity = (targetCirclePos - particle.position) * 0.08f;
                 if (particle.oldTrackingPosition != Vector2.Zero)
                 {
           
-                    var sqrDistToPoint = Vector2.DistanceSquared(particle.position, particle.oldTrackingPosition);
-                    if (sqrDistToPoint > 128 * 128)
+                    var sqrDistToPoint = Vector2.DistanceSquared(targetCirclePos, particle.oldTrackingPosition);
+                    if (sqrDistToPoint > 300 * 300)
                     {
                         particle.stopMoving = true;
                     }
@@ -67,6 +280,7 @@ public class TornadoDustParticles : ParticleUpdater<TornadoDustParticles.Data>
             }
             else
             {
+                particle.timeLeft--;
                 particle.velocity *= 0.98f;
             }
 
@@ -199,6 +413,15 @@ public class StormingTornadoV2 : ModProjectile
             return field;
         }
     }
+    TornadoStreakLinesParticles StreakParticles
+    {
+        get
+        {
+            if (field == null)
+                field = new();
+            return field;
+        }
+    }
     TornadoSmokeParticles SmokeParticles
     {
         get
@@ -254,6 +477,8 @@ public class StormingTornadoV2 : ModProjectile
             return TornadoMatrixBase * TrailDrawer.WorldViewPointCullFarAway;
         }
     }
+    Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
+    Color DarkGoldenColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.5f);
     ref float Timer => ref Projectile.ai[0];
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetDefaults()
@@ -267,13 +492,15 @@ public class StormingTornadoV2 : ModProjectile
         return false;
     }
 
+
     public override void AI()
     {
         base.AI();
         Timer++;
-
+        StreakParticles.wrappedOffsets = TornadoCircles.WrappedOffsets;
         DustParticles.wrappedOffsets = TornadoCircles.WrappedOffsets;
         SmokeParticles.wrappedOffsets = TornadoCircles.WrappedOffsets;
+        TornadoCircles.upwardVelocity = -7;
         TornadoCircles.Update(Timer);
         //TornadoCircles.Update(Timer);
         if(Timer % 1 == 0)
@@ -291,7 +518,7 @@ public class StormingTornadoV2 : ModProjectile
         }
         if (Timer % 1 == 0)
         {
-            var pointToTrack = TornadoCircles.GetRandPointToTrack();
+            var pointToTrack = Main.rand.Next(0, TornadoCircles.WrappedOffsets.Length);
             ref var offset = ref TornadoCircles.WrappedOffsets[pointToTrack];
             var targetCirclePos = DustParticles.tornadoCenter + new Vector2(offset.X, offset.Y) + Main.rand.NextVector2Circular(48, 48);
 
@@ -302,11 +529,93 @@ public class StormingTornadoV2 : ModProjectile
                 timeLeft = 120,
             });
         }
+        if (Timer % 2 == 0)
+        {
+            var pointToTrack = TornadoCircles.GetRandPointToTrack();
+            ref var offset = ref TornadoCircles.WrappedOffsets[pointToTrack];
+            var targetCirclePos = DustParticles.tornadoCenter + new Vector2(offset.X, offset.Y) + Main.rand.NextVector2Circular(48, 48);
+            var targetCirclePos3 = new Vector3(targetCirclePos + Main.rand.NextVector2CircularEdge(374, 32), 0);
+            StreakParticles.Spawn(new()
+            {
+                position = targetCirclePos3,
+                pointToTrack = pointToTrack,
+                timeLeft = 120,
+            });
+        }
+        if (Main.rand.NextBool(15))
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 512);
+            pos.Y -= 512;
+            var vel = -Vector2.UnitY;
+            vel *= 12 * Main.rand.NextFloat(1f, 1.6f);
+            vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+            var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+            color = Color.Lerp(color, Color.White, 0.6f);
+
+
+            Common.Particles.Particles.LightningSpark.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                color = color,
+                scale = Main.rand.NextFloat(0.7f, 1.5f) * 0.3f,
+                timeLeft = Main.rand.Next(30, 60)
+            });
+
+        }
+
+        if (Main.rand.NextBool(6))
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 512);
+            pos.Y -= 512;
+            var vel = -Vector2.UnitY;
+            vel *= 6;
+            vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+            var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+            color = Color.Lerp(color, Color.White, 0.6f);
+
+
+            Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                scale = Main.rand.NextFloat(0.4f, 0.8f),
+                color = color,
+                timeLeft = 50
+            });
+        }
+        if (Main.rand.NextBool(6))
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 512);
+            pos.Y -= 512;
+            var vel = -Vector2.UnitY;
+            vel *= 6;
+            vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+            var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+            color = Color.Lerp(color, Color.White, 0.6f);
+
+
+            Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                scale = Main.rand.NextFloat(0.4f, 0.8f),
+                color = color,
+                timeLeft = 50
+            });
+        }
+ 
         SmokeParticles.tornadoCenter = Projectile.Center;
         SmokeParticles.Update();
 
         DustParticles.tornadoCenter = Projectile.Center;
         DustParticles.Update();
+
+        StreakParticles.tornadoCenter = new Vector3(Projectile.Center.X, Projectile.Center.Y, 0);
+        StreakParticles.Simulate();
     }
 
     void DrawTornado()
@@ -352,7 +661,8 @@ public class StormingTornadoV2 : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated, DrawLayer.OverPlayers);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated, DrawLayer.OverNPCs);
+        PixelationManager.QueuePrimitivesDrawAction(StreakParticles.DrawStreaks, DrawLayer.OverPlayers);
         return false;
     }
 }
@@ -425,6 +735,7 @@ public class TornadoCircles
     public void Update(float timeStep)
     {
         var rotationRadians = timeStep * angularVelocity;
+        var perpMatrix = Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), 0.5f);
         for(var i = 0; i < WrappedOffsets.Length; i+= NumPointsPerBand)
         {
             var bandIndex = i / NumPointsPerBand;
@@ -444,6 +755,7 @@ public class TornadoCircles
                 var initialRadians = InitialRadians[radiansIndex];
                 wrappedOffset.X = MathF.Sin(initialRadians + rotationRadians) * myBandRadius;
                 wrappedOffset.Z = MathF.Cos(initialRadians + rotationRadians) * myBandRadius;
+                wrappedOffset = Vector3.Transform(wrappedOffset, perpMatrix);
             }
  
         }
