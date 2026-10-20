@@ -72,7 +72,7 @@ public class TornadoStreakLinesParticles : ParticleUpdater<TornadoStreakLinesPar
                 ref var offset = ref wrappedOffsets[particle.pointToTrack];
                 if (!particle.stopMoving)
                 {
-                    var targetCirclePos = tornadoCenter + new Vector3(offset.X * 4, offset.Y, offset.Z);
+                    var targetCirclePos = tornadoCenter + new Vector3(offset.X * 4, offset.Y + ExtraMath.Osc(-32, 32, 0, i), offset.Z);
                     var targetVelocity = (targetCirclePos - particle.position) * 0.5f;
                     var sqrDistToPoint = MathF.Abs(targetCirclePos.Y - particle.oldTrackingPosition.Y);
                     if (particle.oldTrackingPosition != Vector3.Zero)
@@ -742,10 +742,10 @@ public class StormingTornadoV2 : ModProjectile
                     timeLeft = 120,
                 });
             }
-            if (Main.rand.NextBool(24))
+            if (Main.rand.NextBool(7))
             {
-                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
-                pos.Y -= 512;
+                var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 127);
+
                 var vel = -Vector2.UnitY;
                 vel *= 3 * Main.rand.NextFloat(1f, 1.6f);
                 vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
@@ -759,16 +759,16 @@ public class StormingTornadoV2 : ModProjectile
                     position = pos,
                     velocity = vel,
                     color = color,
-                    scale = Main.rand.NextFloat(0.2f, 1.5f) * 0.3f,
-                    timeLeft = Main.rand.Next(5, 15)
+                    scale = Main.rand.NextFloat(0.7f, 1.5f) * 0.3f,
+                    timeLeft = Main.rand.Next(25, 45)
                 });
 
             }
 
-            if (Main.rand.NextBool(6))
+            if (Main.rand.NextBool(1))
             {
-                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
-                pos.Y -= 512;
+                var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 127);
+     
                 var vel = -Vector2.UnitY;
                 vel *= 2;
                 vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
@@ -788,8 +788,8 @@ public class StormingTornadoV2 : ModProjectile
             }
             if (Main.rand.NextBool(6))
             {
-                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
-                pos.Y -= 512;
+                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 128);
+
                 var vel = -Vector2.UnitY;
                 vel *= 6;
                 vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
