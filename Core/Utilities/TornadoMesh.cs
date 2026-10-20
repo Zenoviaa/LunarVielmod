@@ -222,7 +222,7 @@ public class TornadoStreakLinesParticles : ParticleUpdater<TornadoStreakLinesPar
 
 
         var pass = AssetReferences.Effects.Weather.TornadoStreak.CreatePrimitivesPass();
-        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPointBigZPlanes;
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPointCullFarAway;
         pass.Apply();
         gDevice.RasterizerState = RasterizerState.CullNone;
         gDevice.BlendState = BlendState.AlphaBlend;
@@ -399,7 +399,7 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
             ref var particle = ref _particles[i];
             drawer.worldPosition = particle.position;
             drawer.rotation = Main.GlobalTimeWrappedHourly + i;
-            drawer.color = Color.Lerp(Color.Transparent, Color.DarkGray * 0.15f, EasingFunction.QuadraticBump((float)particle.timeLeft / 120f));
+            drawer.color = Color.Lerp(Color.Transparent, Color.Lerp(Color.White, Color.Black, 0.6f) * 0.15f, EasingFunction.QuadraticBump((float)particle.timeLeft / 120f));
             drawer.color *= alpha;
 
             drawer.scale = Vector2.One * 2.5f * scale;
@@ -537,7 +537,10 @@ public class StormingTornadoV2 : ModProjectile
     {
         get
         {
-            return BandRotationMatrix * PerspectiveMatrix * Matrix.CreateTranslation(Projectile.Center.X, Projectile.Center.Y, 0);
+            var lifeTimer = EasingFunction.InOutSine(Timer / 90f);
+            lifeTimer *= EasingFunction.InOutSine((float)Projectile.timeLeft / 90f);
+            var scale = MathHelper.Lerp(3f, 1f, lifeTimer);
+            return Matrix.CreateScale(scale, 1f, scale) * BandRotationMatrix * PerspectiveMatrix * Matrix.CreateTranslation(TornadoCenter.X, TornadoCenter.Y, 0);
         }
     }
 
@@ -545,7 +548,7 @@ public class StormingTornadoV2 : ModProjectile
     {
         get
         {
-            return TornadoMatrixBase * TrailDrawer.WorldViewPointCullClose;
+            return TornadoMatrixBase;
         }
     }
 
@@ -554,21 +557,21 @@ public class StormingTornadoV2 : ModProjectile
     {
         get
         {
-            return Matrix.CreateScale(TornadoBigScale, 1f, TornadoBigScale) * TornadoMatrixBase * TrailDrawer.WorldViewPointCullClose;
+            return Matrix.CreateScale(TornadoBigScale, 1f, TornadoBigScale) * TornadoMatrixBase;
         }
     }
     Matrix TornadoCullFarMatrix
     {
         get
         {
-            return TornadoMatrixBase * TrailDrawer.WorldViewPointCullFarAway;
+            return TornadoMatrixBase;
         }
     }
     Matrix TornadoCullFarBigMatrix
     {
         get
         {
-            return Matrix.CreateScale(TornadoBigScale, 1f, TornadoBigScale) * TornadoMatrixBase * TrailDrawer.WorldViewPointCullFarAway;
+            return Matrix.CreateScale(TornadoBigScale, 1f, TornadoBigScale) * TornadoMatrixBase;
         }
     }
     Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
@@ -579,16 +582,16 @@ public class StormingTornadoV2 : ModProjectile
     {
         base.SetDefaults();
         Projectile.tileCollide = false;
-
+        Projectile.timeLeft = 600;
     }
     public override bool ShouldUpdatePosition()
     {
-        return false;
+        return true;
     }
 
     void UpdateBottomTornado()
     {
-        BottomTornadoCircles.perspectiveMatrix = Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), 5.2f);
+        BottomTornadoCircles.perspectiveMatrix = Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), 1.3f);
 
         BottomTornadoCircles.upwardVelocity = -7;
         BottomTornadoCircles.Update(Timer);
@@ -597,50 +600,81 @@ public class StormingTornadoV2 : ModProjectile
         BottomDustParticles.wrappedOffsets = BottomTornadoCircles.WrappedOffsets;
         BottomStreakParticles.wrappedOffsets = BottomTornadoCircles.WrappedOffsets;
 
+        if(Projectile.timeLeft > 120)
         {
-            var pointToTrack = BottomTornadoCircles.GetRandPointToTrack();
-            ref var offset = ref BottomTornadoCircles.WrappedOffsets[pointToTrack];
-            var targetCirclePos = BottomSmokeParticles.tornadoCenter + new Vector2(offset.X, offset.Y);
-
-            BottomSmokeParticles.Spawn(new()
             {
-                position = targetCirclePos + Main.rand.NextVector2Circular(128, 32),
-                pointToTrack = pointToTrack,
-                timeLeft = 120,
-            });
-        }
-
-        {
-            for (var i = 0; i < 1; i++)
-            {
-                var pointToTrack = Main.rand.Next(0, BottomTornadoCircles.WrappedOffsets.Length);
+                var pointToTrack = BottomTornadoCircles.GetRandPointToTrack();
                 ref var offset = ref BottomTornadoCircles.WrappedOffsets[pointToTrack];
-                var targetCirclePos = BottomDustParticles.tornadoCenter + new Vector2(offset.X, offset.Y) + Main.rand.NextVector2Circular(48, 48);
+                var targetCirclePos = BottomSmokeParticles.tornadoCenter + new Vector2(offset.X, offset.Y);
 
-                BottomDustParticles.Spawn(new()
+                BottomSmokeParticles.Spawn(new()
                 {
-                    position = targetCirclePos,
+                    position = targetCirclePos + Main.rand.NextVector2Circular(128, 32),
                     pointToTrack = pointToTrack,
                     timeLeft = 120,
                 });
             }
 
+            {
+                for (var i = 0; i < 1; i++)
+                {
+                    var pointToTrack = Main.rand.Next(0, BottomTornadoCircles.WrappedOffsets.Length);
+                    ref var offset = ref BottomTornadoCircles.WrappedOffsets[pointToTrack];
+                    var targetCirclePos = BottomDustParticles.tornadoCenter + new Vector2(offset.X, offset.Y) + Main.rand.NextVector2Circular(48, 48);
+
+                    BottomDustParticles.Spawn(new()
+                    {
+                        position = targetCirclePos,
+                        pointToTrack = pointToTrack,
+                        timeLeft = 120,
+                    });
+                }
+
+            }
         }
 
-        BottomSmokeParticles.tornadoCenter = Projectile.Center;
+
+        BottomSmokeParticles.tornadoCenter = TornadoCenter;
         BottomSmokeParticles.Update();
 
-        BottomDustParticles.tornadoCenter = Projectile.Center;
+        BottomDustParticles.tornadoCenter = TornadoCenter;
         BottomDustParticles.Update();
 
-        BottomStreakParticles.tornadoCenter = new Vector3(Projectile.Center.X, Projectile.Center.Y, 0);
+        BottomStreakParticles.tornadoCenter = new Vector3(TornadoCenter.X, TornadoCenter.Y, 0);
         BottomStreakParticles.Simulate();
     }
-
+    Vector2 TornadoTarget => Main.player[Projectile.owner].Center;
+    Vector2 TornadoCenter => Projectile.Center + new Vector2(0, 64);
+    Vector3[] CalculateBandWarpOffsets()
+    {
+        Vector3[] centerOffsets = new Vector3[8];
+        for (var i = 0; i < centerOffsets.Length; i++)
+        {
+            var mwOffset = TornadoTarget - Projectile.Center;
+            mwOffset = mwOffset.SafeNormalize(Vector2.Zero) * Vector2.Distance(Projectile.Center, TornadoTarget) / 2f;
+            var mwOffset3 = new Vector3(mwOffset.X, mwOffset.Y, 0);
+            var ratio = (1f - ((float)i / (float)centerOffsets.Length));
+            ratio = MathHelper.Lerp(ratio, 0.5f, 1f);
+            centerOffsets[i] = Vector3.Lerp(Vector3.Zero, mwOffset3, ratio * 0.9f);
+        }
+        return centerOffsets;
+    }
     public override void AI()
     {
         base.AI();
         Timer++;
+
+        var owner = Main.player[Projectile.owner];
+        if (owner.controlRight && owner.releaseRight)
+            Projectile.Kill();
+        var dist = Vector2.Distance(Projectile.Center, TornadoTarget);
+        var alpha = dist / 384f;
+        alpha = MathHelper.Clamp(alpha, 0f, 1f);
+        alpha = 1f - alpha;
+        ShakeScreenPosition.Shake = alpha * 3;
+        Projectile.velocity = Vector2.Lerp(Projectile.velocity, (TornadoTarget - Projectile.Center).SafeNormalize(Vector2.Zero) * 6, 0.1f);
+        Vector3[] warpOffsets = CalculateBandWarpOffsets();
+        TornadoCircles.ApplyWarp(warpOffsets);
         TornadoCircles.perspectiveMatrix = FastTornadoCircles.perspectiveMatrix = Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), 0.4f);
 
         StreakParticles.wrappedOffsets = FastTornadoCircles.WrappedOffsets;
@@ -658,126 +692,131 @@ public class StormingTornadoV2 : ModProjectile
         TornadoCircles.upwardVelocity = -7;
         TornadoCircles.Update(Timer);
 
-        FastTornadoCircles.upwardVelocity = -12;
+        FastTornadoCircles.upwardVelocity = -6;
+        FastTornadoCircles.angularVelocity = 0.15f;
         FastTornadoCircles.Update(Timer);
-        //TornadoCircles.Update(Timer);
-        if (Timer % 1 == 0)
+        if(Projectile.timeLeft > 120)
         {
-            var pointToTrack = TornadoCircles.GetRandPointToTrack();
-            ref var offset = ref TornadoCircles.WrappedOffsets[pointToTrack];
-            var targetCirclePos = SmokeParticles.tornadoCenter + new Vector2(offset.X, offset.Y);
-
-            SmokeParticles.Spawn(new()
+            //TornadoCircles.Update(Timer);
+            if (Timer % 1 == 0)
             {
-                position = targetCirclePos +Main.rand.NextVector2Circular(128, 32),
-                pointToTrack = pointToTrack,
-                timeLeft = 120,
-            });
-        }
-        if (Timer % 1 == 0)
-        {
-            for(var i = 0; i < 2; i++)
-            {
-                var pointToTrack = Main.rand.Next(0, TornadoCircles.WrappedOffsets.Length);
+                var pointToTrack = TornadoCircles.GetRandPointToTrack();
                 ref var offset = ref TornadoCircles.WrappedOffsets[pointToTrack];
-                var targetCirclePos = DustParticles.tornadoCenter + new Vector2(offset.X, offset.Y) + Main.rand.NextVector2Circular(48, 48);
+                var targetCirclePos = SmokeParticles.tornadoCenter + new Vector2(offset.X, offset.Y);
 
-                DustParticles.Spawn(new()
+                SmokeParticles.Spawn(new()
                 {
-                    position = targetCirclePos,
+                    position = targetCirclePos + Main.rand.NextVector2Circular(128, 32),
                     pointToTrack = pointToTrack,
                     timeLeft = 120,
                 });
             }
+            if (Timer % 1 == 0)
+            {
+                for (var i = 0; i < 2; i++)
+                {
+                    var pointToTrack = Main.rand.Next(0, TornadoCircles.WrappedOffsets.Length);
+                    ref var offset = ref TornadoCircles.WrappedOffsets[pointToTrack];
+                    var targetCirclePos = DustParticles.tornadoCenter + new Vector2(offset.X, offset.Y) + Main.rand.NextVector2Circular(48, 48);
+
+                    DustParticles.Spawn(new()
+                    {
+                        position = targetCirclePos,
+                        pointToTrack = pointToTrack,
+                        timeLeft = 120,
+                    });
+                }
+
+            }
+            if (Timer % 2 == 0)
+            {
+                var pointToTrack = FastTornadoCircles.GetRandPointToTrack();
+                ref var offset = ref FastTornadoCircles.WrappedOffsets[pointToTrack];
+                var targetCirclePos = DustParticles.tornadoCenter + new Vector2(offset.X, offset.Y) + Main.rand.NextVector2Circular(48, 48);
+                var targetCirclePos3 = new Vector3(targetCirclePos + Main.rand.NextVector2CircularEdge(32, 32), 0);
+
+                StreakParticles.Spawn(new()
+                {
+                    position = targetCirclePos3,
+                    pointToTrack = pointToTrack,
+                    timeLeft = 120,
+                });
+            }
+            if (Main.rand.NextBool(24))
+            {
+                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
+                pos.Y -= 512;
+                var vel = -Vector2.UnitY;
+                vel *= 3 * Main.rand.NextFloat(1f, 1.6f);
+                vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+                var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+                color = Color.Lerp(color, Color.White, 0.6f);
+
+
+                Common.Particles.Particles.LightningSpark.Spawn(new()
+                {
+                    position = pos,
+                    velocity = vel,
+                    color = color,
+                    scale = Main.rand.NextFloat(0.2f, 1.5f) * 0.3f,
+                    timeLeft = Main.rand.Next(5, 15)
+                });
+
+            }
+
+            if (Main.rand.NextBool(6))
+            {
+                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
+                pos.Y -= 512;
+                var vel = -Vector2.UnitY;
+                vel *= 2;
+                vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+                var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+                color = Color.Lerp(color, Color.White, 0.6f);
+
+
+                Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
+                {
+                    position = pos,
+                    velocity = vel,
+                    scale = Main.rand.NextFloat(0.4f, 0.8f),
+                    color = color,
+                    timeLeft = 25
+                });
+            }
+            if (Main.rand.NextBool(6))
+            {
+                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
+                pos.Y -= 512;
+                var vel = -Vector2.UnitY;
+                vel *= 6;
+                vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+                var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+                color = Color.Lerp(color, Color.White, 0.6f);
+
+
+                Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
+                {
+                    position = pos,
+                    velocity = vel,
+                    scale = Main.rand.NextFloat(0.4f, 0.8f),
+                    color = color,
+                    timeLeft = 50
+                });
+            }
+        }
         
-        }
-        if (Timer % 2 == 0)
-        {
-            var pointToTrack = FastTornadoCircles.GetRandPointToTrack();
-            ref var offset = ref FastTornadoCircles.WrappedOffsets[pointToTrack];
-            var targetCirclePos = DustParticles.tornadoCenter + new Vector2(offset.X, offset.Y) + Main.rand.NextVector2Circular(48, 48);
-            var targetCirclePos3 = new Vector3(targetCirclePos + Main.rand.NextVector2CircularEdge(32, 32), 0);
-
-            StreakParticles.Spawn(new()
-            {
-                position = targetCirclePos3,
-                pointToTrack = pointToTrack,
-                timeLeft = 120,
-            });
-        }
-        if (Main.rand.NextBool(24))
-        {
-            var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 512);
-            pos.Y -= 512;
-            var vel = -Vector2.UnitY;
-            vel *= 3 * Main.rand.NextFloat(1f, 1.6f);
-            vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
-
-            var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
-            color = Color.Lerp(color, Color.White, 0.6f);
-
-
-            Common.Particles.Particles.LightningSpark.Spawn(new()
-            {
-                position = pos,
-                velocity = vel,
-                color = color,
-                scale = Main.rand.NextFloat(0.2f, 1.5f) * 0.3f,
-                timeLeft = Main.rand.Next(5, 15)
-            });
-
-        }
-
-        if (Main.rand.NextBool(6))
-        {
-            var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 512);
-            pos.Y -= 512;
-            var vel = -Vector2.UnitY;
-            vel *= 2;
-            vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
-
-            var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
-            color = Color.Lerp(color, Color.White, 0.6f);
-
-
-            Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
-            {
-                position = pos,
-                velocity = vel,
-                scale = Main.rand.NextFloat(0.4f, 0.8f),
-                color = color,
-                timeLeft = 25
-            });
-        }
-        if (Main.rand.NextBool(6))
-        {
-            var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 512);
-            pos.Y -= 512;
-            var vel = -Vector2.UnitY;
-            vel *= 6;
-            vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
-
-            var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
-            color = Color.Lerp(color, Color.White, 0.6f);
-
-
-            Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
-            {
-                position = pos,
-                velocity = vel,
-                scale = Main.rand.NextFloat(0.4f, 0.8f),
-                color = color,
-                timeLeft = 50
-            });
-        }
  
-        SmokeParticles.tornadoCenter = Projectile.Center;
+        SmokeParticles.tornadoCenter = TornadoCenter;
         SmokeParticles.Update();
 
-        DustParticles.tornadoCenter = Projectile.Center;
+        DustParticles.tornadoCenter = TornadoCenter;
         DustParticles.Update();
 
-        StreakParticles.tornadoCenter = new Vector3(Projectile.Center.X, Projectile.Center.Y, 0);
+        StreakParticles.tornadoCenter = new Vector3(TornadoCenter.X, TornadoCenter.Y, 0);
         StreakParticles.Simulate();
     }
 
@@ -793,6 +832,14 @@ public class StormingTornadoV2 : ModProjectile
 
         var pass = AssetReferences.Effects.Weather.ThunderingTornado.CreatePrimitivesPass();
         var ditherTexture = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
+
+        var warpOffsets = CalculateBandWarpOffsets();
+        pass.Parameters.warps = warpOffsets;
+        pass.Parameters.wvpMatrix = TrailDrawer.WorldViewPointCullClose;
+
+        var lifeTimer = EasingFunction.InOutSine(Timer / 90f);
+        lifeTimer *= EasingFunction.InOutSine((float)Projectile.timeLeft / 90f);
+        pass.Parameters.lifeTimer = lifeTimer;
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.transformMatrix = TornadoCullCloseBigMatrix;
         pass.Parameters.rotationMatrix = BandRotationMatrix;
@@ -825,6 +872,7 @@ public class StormingTornadoV2 : ModProjectile
         CylinderMesh.Draw(gDevice);
 
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.wvpMatrix = TrailDrawer.WorldViewPointCullFarAway;
         pass.Parameters.transformMatrix = TornadoCullFarMatrix;
         pass.Parameters.rotationMatrix = BandRotationMatrix;
         pass.Parameters.tintColor = Color.White.ToVector4();
@@ -875,8 +923,8 @@ public class TornadoCircles
             var ratio = (float)i / (float)InitialRadians.Length;
             InitialRadians[i] = ratio * MathHelper.TwoPi;
         }
-
         RootOffsets = new Vector3[numBands * numPointsPerBand];
+        BandWarps = new Vector3[numBands * numPointsPerBand];
         for(var i =0; i < RootOffsets.Length; i+=numPointsPerBand)
         {
             for(var j = 0; j < numPointsPerBand; j++)
@@ -899,6 +947,7 @@ public class TornadoCircles
 
     public readonly Vector3[] RootOffsets;
     public readonly Vector3[] WrappedOffsets;
+    public readonly Vector3[] BandWarps;
     public readonly float[] InitialRadians;
     public readonly int[] RandPointBuffer;
     public readonly int NumPointsPerBand;
@@ -933,11 +982,29 @@ public class TornadoCircles
         return RandPointBuffer[Main.rand.Next(0, length)];
 
     }
+
+    public void ApplyWarp(Vector3[] warpOffsets)
+    {
+        for (var i = 0; i < BandWarps.Length; i += NumPointsPerBand)
+        {
+            var bandIndex = i / NumPointsPerBand;
+
+            for (var j = 0; j < NumPointsPerBand; j++)
+            {
+                var radiansIndex = j;
+                var offsetIndex = i + j;
+                BandWarps[offsetIndex] = warpOffsets[bandIndex];
+            }
+        }
+    }
+
+    
     public void Update(float timeStep)
     {
         var rotationRadians = timeStep * angularVelocity;
 
         var startOffset = upwardVelocity * 160;
+
         for(var i = 0; i < WrappedOffsets.Length; i+= NumPointsPerBand)
         {
             var bandIndex = i / NumPointsPerBand;
@@ -957,6 +1024,7 @@ public class TornadoCircles
                 wrappedOffset.X = MathF.Sin(initialRadians + rotationRadians) * myBandRadius;
                 wrappedOffset.Z = MathF.Cos(initialRadians + rotationRadians) * myBandRadius;
                 wrappedOffset = Vector3.Transform(wrappedOffset, perspectiveMatrix);
+                wrappedOffset += BandWarps[bandIndex];
             }
         }
     }

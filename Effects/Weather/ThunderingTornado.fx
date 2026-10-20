@@ -1,13 +1,18 @@
 
 matrix transformMatrix;
+matrix wvpMatrix;
 matrix rotationMatrix;
+
 sampler spriteSampler : register(s0);
 sampler ditherSampler : register(s1);
-float time;
+
+float3 warps[8];
 float4 tintColor;
-float dir;
 float2 spriteSize;
 float2 ditherTexelSize;
+float dir;
+float time;
+float lifeTimer;
 
 struct VertexShaderInput
 {
@@ -29,17 +34,23 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 {
     VertexShaderOutput output;
     float4 position = input.Position;
-    
+    int index = position.y / 256.0;
+    if(index > 8.0)
+        index = 7.0;
 
+    float alpha = lifeTimer - saturate(position.y / 128.0);
     float4 rotationPosition = mul(position, rotationMatrix);
     float fade = (dir * rotationPosition.z) / 64.0F;
     float osc = sin(position.y * 64.0 + time * 6.0) * 0.5 + 0.5;
     osc = lerp(0.3, 1.0, osc);
     position.xz *= lerp(0.85, 1.0, sin(position.y * 5.0 + time * 7.0) * 0.5 + 0.5);
     position.xz -= lerp(0.0, 32.0, sin(position.y + time * 6.0) * 0.5 + 0.5);
-    
+
     output.Position = mul(position, transformMatrix);
-    output.Color = input.Color * fade * osc;
+    output.Position.xyz += warps[index];
+    output.Position = mul(output.Position, wvpMatrix);
+
+    output.Color = input.Color * fade * osc * alpha;
     output.TextureCoordinates = input.TextureCoordinates;
     return output;
 }
