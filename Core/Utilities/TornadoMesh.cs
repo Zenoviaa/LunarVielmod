@@ -1,4 +1,6 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.Pixelation;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -11,6 +13,7 @@ public class TornadoDustParticles : ParticleUpdater<TornadoDustParticles.Data>
 {
     public struct Data : IParticleData
     {
+        public Vector2 oldTrackingPosition;
         public Vector2 position;
         public Vector2 velocity;
         public int pointToTrack;
@@ -46,15 +49,21 @@ public class TornadoDustParticles : ParticleUpdater<TornadoDustParticles.Data>
             ref var offset = ref wrappedOffsets[particle.pointToTrack];
             if (!particle.stopMoving)
             {
-                var targetCirclePos = tornadoCenter + new Vector2(offset.X * 2, offset.Y);
-                var targetVelocity = (targetCirclePos - particle.position) * 0.04f;
-                var sqrDistToPoint = Vector2.DistanceSquared(particle.position, targetCirclePos);
-                if (sqrDistToPoint > 128 * 128)
+                var targetCirclePos = tornadoCenter + new Vector2(offset.X * 2 * ExtraMath.Osc(0.5f, 2f, speed: 3, offset: i), offset.Y);
+                var targetVelocity = (targetCirclePos - particle.position) * 0.24f;
+                if (particle.oldTrackingPosition != Vector2.Zero)
                 {
-                    particle.stopMoving = true;
+          
+                    var sqrDistToPoint = Vector2.DistanceSquared(particle.position, particle.oldTrackingPosition);
+                    if (sqrDistToPoint > 128 * 128)
+                    {
+                        particle.stopMoving = true;
+                    }
+                    else
+                        particle.velocity = targetVelocity;
                 }
-                else
-                    particle.velocity = targetVelocity;
+     
+                particle.oldTrackingPosition = targetCirclePos;
             }
             else
             {
@@ -91,6 +100,7 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
 {
     public struct Data : IParticleData
     {
+        public Vector2 oldTrackingPosition;
         public Vector2 position;
         public Vector2 velocity;
         public int pointToTrack;
@@ -102,6 +112,7 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
     public Vector3[] wrappedOffsets;
     public Vector2 tornadoCenter;
     public float timer;
+    public float alpha;
     public override int GetPoolSize()
     {
         return 384;
@@ -119,15 +130,21 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
             ref var offset = ref wrappedOffsets[particle.pointToTrack];
             if (!particle.stopMoving)
             {
-                var targetCirclePos = tornadoCenter + new Vector2(offset.X, offset.Y);
+                var targetCirclePos = tornadoCenter + new Vector2(offset.X * 2 * ExtraMath.Osc(0.5f, 1f, speed: 3, offset: i), offset.Y);
                 var targetVelocity = (targetCirclePos - particle.position) * 0.3f;
                 var sqrDistToPoint = Vector2.DistanceSquared(particle.position, targetCirclePos);
-                if (sqrDistToPoint > 128 * 128)
+                if (particle.oldTrackingPosition != Vector2.Zero)
                 {
-                    particle.stopMoving = true;
-                } 
-                else
-                    particle.velocity = targetVelocity;
+                    if (sqrDistToPoint > 128 * 128)
+                    {
+                        particle.stopMoving = true;
+                    }
+                    else
+                        particle.velocity = targetVelocity;
+                }
+
+                particle.oldTrackingPosition = targetCirclePos;
+       
             }
             else
             {
@@ -146,6 +163,7 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
             drawer.worldPosition = particle.position;
             drawer.rotation = Main.GlobalTimeWrappedHourly + i;
             drawer.color = Color.Lerp(Color.Transparent, Color.White * 0.15f, EasingFunction.QuadraticBump(particle.timeLeft / 120f));
+            drawer.color *= alpha;
             drawer.scale = Vector2.One * 1.5f;
             spriteBatch.Draw(drawer);
         }
@@ -159,6 +177,17 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
 }
 public class StormingTornadoV2 : ModProjectile
 {
+    TornadoMesh CylinderMesh
+    {
+        get
+        {
+            if(field == null)
+            {
+                field = new(height: 1024, radius: 127, heightPerBand: 256, sidesPerBand: 16, Color.White);
+            }
+            return field;
+        }
+    }
     TornadoCircles TornadoCircles
     {
         get
@@ -188,7 +217,43 @@ public class StormingTornadoV2 : ModProjectile
             return field;
         }
     }
+    Matrix BandRotationMatrix
+    {
+        get
+        {
+            return Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), Main.GlobalTimeWrappedHourly);
+        }
+    }
+    Matrix PerspectiveMatrix
+    {
+        get
+        {
+            return Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), 0.3f);
 
+        }
+    }
+    Matrix TornadoMatrixBase
+    {
+        get
+        {
+            return BandRotationMatrix * PerspectiveMatrix * Matrix.CreateTranslation(Projectile.Center.X, Projectile.Center.Y, 0);
+        }
+    }
+
+    Matrix TornadoCullCloseMatrix
+    {
+        get
+        {
+            return TornadoMatrixBase * TrailDrawer.WorldViewPointCullClose;
+        }
+    }
+    Matrix TornadoCullFarMatrix
+    {
+        get
+        {
+            return TornadoMatrixBase * TrailDrawer.WorldViewPointCullFarAway;
+        }
+    }
     ref float Timer => ref Projectile.ai[0];
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetDefaults()
@@ -206,15 +271,10 @@ public class StormingTornadoV2 : ModProjectile
     {
         base.AI();
         Timer++;
+
         DustParticles.wrappedOffsets = TornadoCircles.WrappedOffsets;
         SmokeParticles.wrappedOffsets = TornadoCircles.WrappedOffsets;
         TornadoCircles.Update(Timer);
-
-        if (Timer == 1)
-        {
-            var firer = ProjFirer.From<StormingTornado>(Projectile);
-            firer.New();
-        }
         //TornadoCircles.Update(Timer);
         if(Timer % 1 == 0)
         {
@@ -224,7 +284,7 @@ public class StormingTornadoV2 : ModProjectile
 
             SmokeParticles.Spawn(new()
             {
-                position = targetCirclePos,
+                position = targetCirclePos +Main.rand.NextVector2Circular(128, 32),
                 pointToTrack = pointToTrack,
                 timeLeft = 120,
             });
@@ -248,10 +308,51 @@ public class StormingTornadoV2 : ModProjectile
         DustParticles.tornadoCenter = Projectile.Center;
         DustParticles.Update();
     }
+
+    void DrawTornado()
+    {
+        var spriteBatch = Main.spriteBatch;
+        spriteBatch.EndOut(out var oldParameters);
+
+        var gDevice = spriteBatch.GraphicsDevice;
+        gDevice.RasterizerState = RasterizerState.CullNone;
+        gDevice.BlendState = BlendState.AlphaBlend;
+        gDevice.SamplerStates[0] = SamplerState.LinearWrap;
+
+        var pass = AssetReferences.Effects.Weather.ThunderingTornado.CreatePrimitivesPass();
+       
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.transformMatrix = TornadoCullCloseMatrix;
+        pass.Parameters.rotationMatrix = BandRotationMatrix;
+        pass.Parameters.tintColor = Color.Lerp(Color.White, Color.Black, 0.75f).ToVector4();
+        pass.Parameters.dir = 1f;
+        pass.Apply();
+        Main.graphics.GraphicsDevice.Textures[0] = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value;
+        CylinderMesh.Draw(gDevice);
+
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.transformMatrix = TornadoCullFarMatrix;
+        pass.Parameters.rotationMatrix = BandRotationMatrix;
+        pass.Parameters.tintColor = Color.White.ToVector4();
+        pass.Parameters.dir = -0.65F;
+        pass.Apply();
+        CylinderMesh.Draw(gDevice);
+        spriteBatch.Begin(oldParameters);
+    }
+
+    void DrawPixelated(SpriteBatch sb, Vector2 sp)
+    {
+        SmokeParticles.alpha = 0.45f;
+        SmokeParticles.Draw(Main.spriteBatch, Main.screenPosition);
+        DrawTornado();
+        DustParticles.Draw(Main.spriteBatch, Main.screenPosition);
+        SmokeParticles.alpha = 0.3f;
+        SmokeParticles.Draw(Main.spriteBatch, Main.screenPosition);
+    }
+
     public override bool PreDraw(ref Color lightColor)
     {
-        SmokeParticles.Draw(Main.spriteBatch, Main.screenPosition);
-        DustParticles.Draw(Main.spriteBatch, Main.screenPosition);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated, DrawLayer.OverPlayers);
         return false;
     }
 }
@@ -352,21 +453,22 @@ public class TornadoCircles
 /// Represents a cylindrical mesh, there is no top or bottom. For use with tornados!
 /// </summary>
 public class TornadoMesh
-{
-    public TornadoMesh(float height, float radius, float heightPerBand, int sidesPerBand)
+{ 
+    public TornadoMesh(float height, float radius, float heightPerBand, int sidesPerBand, Color tornadoColor)
     {
-        var vertices = new List<VertexPositionColorNormalTexture>();
+        var vertices = new List<VertexPositionColorTexture>();
         //Calculate the number of bands
         var numberOfBands = height / heightPerBand;
         var yHeight = 0F;
         var halfQuadSize = new Vector2(radius / sidesPerBand, heightPerBand / 2f);
 
         var matricies = new Matrix[sidesPerBand];
+
         for (var v = 0; v < sidesPerBand; v++)
         {
             var ratio = v / (float)(sidesPerBand - 1);
             var radians = ratio * MathHelper.TwoPi;
-            matricies[v] = Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), radians);
+            matricies[v] = Matrix.CreateFromAxisAngle(new Vector3(0, 1f, 0), radians);
         }
 
         //So what we need to do 
@@ -395,7 +497,7 @@ public class TornadoMesh
 
                 ref var transformationMatrix = ref matricies[v];
                 bandPoint = Vector3.Transform(bandPoint, transformationMatrix);
-
+           
                 ref var texCoord = ref texCoords[n][v];
                 texCoord = new Vector2(xScale, yScale);
                 xScale += xTexScale;
@@ -427,16 +529,16 @@ public class TornadoMesh
                 var topLeftCoord = texCoords[n + 1][leftIndex];
                 var topRightCoord = texCoords[n + 1][rightIndex];
 
-                var primaryColor = Color.Lerp(Color.White, Color.White, v / (float)sidesPerBand);
-                var color = Color.Lerp(primaryColor, Color.Transparent, n / (float)numberOfBands);
-                var nextColor = Color.Lerp(primaryColor, Color.Transparent, (n + 1) / (float)numberOfBands);
+
+                var color = Color.Lerp(tornadoColor, Color.Transparent, n / (float)numberOfBands);
+                var nextColor = Color.Lerp(tornadoColor, Color.Transparent, (n + 1) / (float)numberOfBands);
                 var normal = new Vector3(0, 0, -1);
 
 
-                var topLeftVertex = new VertexPositionColorNormalTexture(topLeft, nextColor, topLeftCoord, normal);
-                var topRightVertex = new VertexPositionColorNormalTexture(topRight, nextColor, topRightCoord, normal);
-                var bottomLeftVertex = new VertexPositionColorNormalTexture(bottomLeft, color, bottomLeftCoord, normal);
-                var bottomRightVertex = new VertexPositionColorNormalTexture(bottomRight, color, bottomRightCoord, normal);
+                var topLeftVertex = new VertexPositionColorTexture(topLeft, nextColor, topLeftCoord);
+                var topRightVertex = new VertexPositionColorTexture(topRight, nextColor, topRightCoord);
+                var bottomLeftVertex = new VertexPositionColorTexture(bottomLeft, color, bottomLeftCoord);
+                var bottomRightVertex = new VertexPositionColorTexture(bottomRight, color, bottomRightCoord);
 
                 vertices.Add(topLeftVertex);
                 vertices.Add(topRightVertex);
@@ -447,84 +549,12 @@ public class TornadoMesh
             }
         }
 
-        /*
-        for (var n = 0; n < numberOfBands; n++)
-        {
-            for(var v = 0; v < sidesPerBand; v++)
-            {
-                var ratio = (float)n / (float)numberOfBands;
-                var bandRadius = radius * ratio;
-                var topLeft = new Vector3(-halfQuadSize.X, -halfQuadSize.Y - yHeight, -bandRadius * 2);
-                var topRight = new Vector3(halfQuadSize.X, -halfQuadSize.Y - yHeight, -bandRadius * 2);
-                var bottomLeft = new Vector3(-halfQuadSize.X, halfQuadSize.Y - yHeight, -bandRadius * 2);
-                var bottomRight = new Vector3(halfQuadSize.X, halfQuadSize.Y - yHeight, -bandRadius * 2);
-
-                ref var transformationMatrix = ref matricies[v];
-                topLeft = Vector3.Transform(topLeft, transformationMatrix);
-                topRight = Vector3.Transform(topRight, transformationMatrix);
-                bottomLeft = Vector3.Transform(bottomLeft, transformationMatrix);
-                bottomRight = Vector3.Transform(bottomRight, transformationMatrix);
-
-                var topLeftVertex = new VertexPositionColorTexture(topLeft, Color.White, new Vector2(0, 0));
-                var topRightVertex = new VertexPositionColorTexture(topRight, Color.White, new Vector2(1, 0));
-                var bottomLeftVertex = new VertexPositionColorTexture(bottomLeft, Color.White, new Vector2(0, 1));
-                var bottomRightVertex = new VertexPositionColorTexture(bottomRight, Color.White, new Vector2(1, 1));
-
-                vertices.Add(topLeftVertex);
-                vertices.Add(topRightVertex);
-                vertices.Add(bottomLeftVertex);
-                vertices.Add(bottomRightVertex);
-            }
-
-   
-        }*/
-
         Vertices = vertices.ToArray();
         Indices = DrawUtilities.TexturedQuadIndices(primitiveCount);
     }
-    public readonly VertexPositionColorNormalTexture[] Vertices;
+  
+    public readonly VertexPositionColorTexture[] Vertices;
     public readonly int[] Indices;
-    public void SetFades(float radians, float dir)
-    {
-        var matrix = Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), radians);
-
-
-        for (var h = 0; h < Vertices.Length; h++)
-        {
-            ref var normal = ref Vertices[h].Normal;
-            var position = Vertices[h].Position;
-            position = Vector3.Transform(position, matrix);
-            var fade = (dir * position.Z) / 64F;
-            //fade = MathF.Pow(fade, 0.5F);
-            // fade = 1f - fade;
-            normal.X = fade;
-
-        }
-    }
-    public void SetFades(float radians)
-    {
-        var matrix = Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), radians);
-
-
-        for (var h = 0; h < Vertices.Length; h++)
-        {
-            ref var normal = ref Vertices[h].Normal;
-            var position = Vertices[h].Position;
-            position = Vector3.Transform(position, matrix);
-            var fade = -position.Z / 64F;
-            //fade = MathF.Pow(fade, 0.5F);
-            // fade = 1f - fade;
-            normal.X = fade;
-
-        }
-    }
-    public void SetColor(Color c)
-    {
-        for (var h = 0; h < Vertices.Length; h++)
-        {
-            Vertices[h].Color = c;
-        }
-    }
     public void Draw(GraphicsDevice graphicsDevice)
     {
         graphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleList,

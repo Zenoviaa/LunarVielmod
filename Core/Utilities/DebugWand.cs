@@ -10,7 +10,7 @@ public class DebugWand : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.DefaultToStaff(ModContent.ProjectileType<StormingTornado>(), 1, 30, 1);
+        Item.DefaultToStaff(ModContent.ProjectileType<StormingTornadoV2>(), 1, 30, 1);
     }
 
     public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
