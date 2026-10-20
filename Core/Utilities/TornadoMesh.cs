@@ -105,8 +105,8 @@ public struct VertexPositionColorNormalTexture : IVertexType
 }
 public class StormingTornado : ModProjectile
 {
-    CylinderMesh _closeCylinderMesh;
-    CylinderMesh _cylinderMesh;
+    TornadoMesh _closeCylinderMesh;
+    TornadoMesh _cylinderMesh;
     TexturedQuad _quad;
     ref float Timer => ref Projectile.ai[0];
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -134,9 +134,9 @@ public class StormingTornado : ModProjectile
  
         var spriteBatch = Main.spriteBatch;
         spriteBatch.EndOut(out var oldParameters);
-        _cylinderMesh ??= new CylinderMesh(1024, radius: 128, heightPerBand: 256, sidesPerBand: 16);
+        _cylinderMesh ??= new TornadoMesh(1024, radius: 127, heightPerBand: 256, sidesPerBand: 16);
         _cylinderMesh.SetColor(Color.Lerp(Color.White, Color.Black, 0.75f));
-        _closeCylinderMesh ??= new CylinderMesh(1024, 128, 256, 16);
+        _closeCylinderMesh ??= new TornadoMesh(1024, 127, 256, 16);
         
         var gDevice = spriteBatch.GraphicsDevice;
         gDevice.RasterizerState = RasterizerState.CullNone;
@@ -184,9 +184,9 @@ public class DebugWand : ModItem
 /// <summary>
 /// Represents a cylindrical mesh, there is no top or bottom. For use with tornados!
 /// </summary>
-public class CylinderMesh
+public class TornadoMesh
 {
-    public CylinderMesh(float height, float radius, float heightPerBand, int sidesPerBand)
+    public TornadoMesh(float height, float radius, float heightPerBand, int sidesPerBand)
     {
         var vertices = new List<VertexPositionColorNormalTexture>();
         //Calculate the number of bands

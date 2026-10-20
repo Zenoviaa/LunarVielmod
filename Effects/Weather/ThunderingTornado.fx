@@ -25,7 +25,7 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 {
     VertexShaderOutput output;
     float4 position = input.Position;
-    position.xz *= lerp(0.75, 1.0, sin(position.y * 5.0 + time * 5.0) * 0.5 + 0.5);
+    position.xz *= lerp(0.85, 1.0, sin(position.y * 5.0 + time * 5.0) * 0.5 + 0.5);
     position.xz -= lerp(0.0, 32.0, sin(position.y + time * 4.0) * 0.5 + 0.5);
 //    position.x += lerp(32.0, 0.0, position.y / 128.0);
     output.Position = mul(position, transformMatrix);
@@ -41,7 +41,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     float4 spriteColor = tex2D(spriteSampler, frac(coords + float2(time * 0.5, time * -3.5)));
     float4 finalColor = input.Color * spriteColor * coords.y / 8.0;
-    finalColor *= 2.0;
+    finalColor *= 0.8;
     finalColor *= input.Normal.r;
 
     //finalColor *= input.Normal.r;
