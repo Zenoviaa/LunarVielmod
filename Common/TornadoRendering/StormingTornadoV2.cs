@@ -1,6 +1,8 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering.RTs;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -69,6 +71,8 @@ public class StormingTornadoV2 : ModProjectile
             return field;
         }
     }
+    TornadoFlashParticles FlashParticles => field ??= new();
+
     TornadoStreakLinesParticles StreakParticles
     {
         get
@@ -465,30 +469,46 @@ public class StormingTornadoV2 : ModProjectile
                     timeLeft = 25
                 });
             }
+
             if (Main.rand.NextBool(6))
             {
                 var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
-                pos.Y -= 256;
+                pos.Y -= 512;
                 var vel = -Vector2.UnitY;
                 vel *= 6;
                 vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
 
-                var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+                var color = Color.Lerp(Color.Gold, Color.DarkOrange, Main.rand.NextFloat(0.6f, 1f));
+                FlashParticles.Spawn(new()
+                {
+                    flashOffset = (pos - TornadoCenter  ),
+                    timeLeft = 25,
+                    color = color,
+                    scale = 1f
+                });
+
+                color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
                 color = Color.Lerp(color, Color.White, 0.6f);
 
 
-                Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
+                for(var i = 0; i < 3; i++)
                 {
-                    position = pos,
-                    velocity = vel,
-                    scale = Main.rand.NextFloat(0.4f, 0.8f),
-                    color = color,
-                    timeLeft = 50
-                });
+                    Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
+                    {
+                        position = pos + Main.rand.NextVector2Circular(97, 98),
+                        velocity = vel.RotatedByRandom(0.5f),
+                        scale = Main.rand.NextFloat(0.4f, 0.8f),
+                        color = color,
+                        timeLeft = 50
+                    });
+                }
+
             }
         }
-        
- 
+
+        FlashParticles.tornadoCenter = TornadoCenter;
+        FlashParticles.Update();
+
         SmokeParticles.tornadoCenter = TornadoCenter;
         SmokeParticles.Update();
 
@@ -499,74 +519,102 @@ public class StormingTornadoV2 : ModProjectile
         StreakParticles.Simulate();
     }
 
+
     void DrawTornado()
     {
         var spriteBatch = Main.spriteBatch;
         spriteBatch.EndOut(out var oldParameters);
 
-        var gDevice = spriteBatch.GraphicsDevice;
-        gDevice.RasterizerState = RasterizerState.CullNone;
-        gDevice.BlendState = BlendState.AlphaBlend;
-        gDevice.SamplerStates[0] = SamplerState.LinearWrap;
-
-        var pass = AssetReferences.Effects.Weather.ThunderingTornado.CreatePrimitivesPass();
-        var ditherTexture = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
-
-        var warpOffsets = CalculateBandWarpOffsets();
-        pass.Parameters.warps = warpOffsets;
-        pass.Parameters.wvpMatrix = TrailDrawer.WorldViewPointCullClose;
-
-        var lifeTimer = EasingFunction.InOutSine(Timer / 90f);
-        lifeTimer *= EasingFunction.InOutSine((float)Projectile.timeLeft / 90f);
-        pass.Parameters.lifeTimer = lifeTimer;
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
-        pass.Parameters.transformMatrix = TornadoCullCloseBigMatrix;
-        pass.Parameters.rotationMatrix = BandRotationMatrix;
-        pass.Parameters.tintColor = Color.Lerp(Color.White, Color.Black, 0.75f).ToVector4() * 0.15f;
-        pass.Parameters.dir = 1f;
-        pass.Parameters.ditherTexelSize = ditherTexture.GetTexelSize();
-        pass.Parameters.spriteSize = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value.Size() / new Vector2(16, 8);
-        pass.Parameters.ditherSampler = new()
+        //First we draw the tornado to a render target
+        using var tornadoRT = RT.Context(RenderTargets.ScreenTarget);
+        using var flashRT = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(flashRT, Color.Transparent))
         {
-            Texture = ditherTexture.Value,
-            Sampler = SamplerState.PointWrap
-        };
-        pass.Apply();
-        Main.graphics.GraphicsDevice.Textures[0] = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value;
-        BigCylinderMesh.Draw(gDevice);
-
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
-        pass.Parameters.transformMatrix = TornadoCullCloseMatrix;
-        pass.Parameters.rotationMatrix = BandRotationMatrix;
-        pass.Parameters.tintColor = Color.Lerp(Color.White, Color.Black, 0.75f).ToVector4();
-        pass.Parameters.dir = 1f;
-        pass.Parameters.ditherTexelSize = ditherTexture.GetTexelSize();
-        pass.Parameters.spriteSize = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value.Size() / new Vector2(16, 8);
-        pass.Parameters.ditherSampler = new()
+            //Now we draw the flash particles over top
+            FlashParticles.Draw(Main.spriteBatch, Main.screenPosition);
+        }
+        using(RT.Clear(tornadoRT, Color.Transparent))
         {
-            Texture = ditherTexture.Value,
-            Sampler = SamplerState.PointWrap
-        };
-        pass.Apply();
-        CylinderMesh.Draw(gDevice);
+            var gDevice = spriteBatch.GraphicsDevice;
+            gDevice.RasterizerState = RasterizerState.CullNone;
+            gDevice.BlendState = BlendState.AlphaBlend;
+            gDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
-        pass.Parameters.wvpMatrix = TrailDrawer.WorldViewPointCullFarAway;
-        pass.Parameters.transformMatrix = TornadoCullFarMatrix;
-        pass.Parameters.rotationMatrix = BandRotationMatrix;
-        pass.Parameters.tintColor = Color.White.ToVector4();
-        pass.Parameters.dir = -0.65F;
-        pass.Apply();
-        CylinderMesh.Draw(gDevice);
+            var pass = AssetReferences.Effects.Weather.ThunderingTornado.CreatePrimitivesPass();
+            var ditherTexture = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
 
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
-        pass.Parameters.transformMatrix = TornadoCullFarBigMatrix;
-        pass.Parameters.rotationMatrix = BandRotationMatrix;
-        pass.Parameters.tintColor = Color.White.ToVector4() * 0.39f;
-        pass.Parameters.dir = -0.65F;
-        pass.Apply();
-        BigCylinderMesh.Draw(gDevice);
+            var warpOffsets = CalculateBandWarpOffsets();
+            pass.Parameters.warps = warpOffsets;
+            pass.Parameters.wvpMatrix = TrailDrawer.WorldViewPointCullClose;
 
+            var lifeTimer = EasingFunction.InOutSine(Timer / 90f);
+            lifeTimer *= EasingFunction.InOutSine((float)Projectile.timeLeft / 90f);
+            pass.Parameters.lifeTimer = lifeTimer;
+            pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+            pass.Parameters.transformMatrix = TornadoCullCloseBigMatrix;
+            pass.Parameters.rotationMatrix = BandRotationMatrix;
+            pass.Parameters.tintColor = Color.Lerp(Color.White, Color.Black, 0.75f).ToVector4() * 0.15f;
+            pass.Parameters.dir = 1f;
+            pass.Parameters.ditherTexelSize = ditherTexture.GetTexelSize();
+            pass.Parameters.spriteSize = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value.Size() / new Vector2(16, 8);
+            pass.Parameters.ditherSampler = new()
+            {
+                Texture = ditherTexture.Value,
+                Sampler = SamplerState.PointWrap
+            };
+            pass.Apply();
+            Main.graphics.GraphicsDevice.Textures[0] = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value;
+            BigCylinderMesh.Draw(gDevice);
+
+            pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+            pass.Parameters.transformMatrix = TornadoCullCloseMatrix;
+            pass.Parameters.rotationMatrix = BandRotationMatrix;
+            pass.Parameters.tintColor = Color.Lerp(Color.White, Color.Black, 0.75f).ToVector4();
+            pass.Parameters.dir = 1f;
+            pass.Parameters.ditherTexelSize = ditherTexture.GetTexelSize();
+            pass.Parameters.spriteSize = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value.Size() / new Vector2(16, 8);
+            pass.Parameters.ditherSampler = new()
+            {
+                Texture = ditherTexture.Value,
+                Sampler = SamplerState.PointWrap
+            };
+            pass.Apply();
+            CylinderMesh.Draw(gDevice);
+
+            pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+            pass.Parameters.wvpMatrix = TrailDrawer.WorldViewPointCullFarAway;
+            pass.Parameters.transformMatrix = TornadoCullFarMatrix;
+            pass.Parameters.rotationMatrix = BandRotationMatrix;
+            pass.Parameters.tintColor = Color.White.ToVector4();
+            pass.Parameters.dir = -0.65F;
+            pass.Apply();
+            CylinderMesh.Draw(gDevice);
+
+            pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+            pass.Parameters.transformMatrix = TornadoCullFarBigMatrix;
+            pass.Parameters.rotationMatrix = BandRotationMatrix;
+            pass.Parameters.tintColor = Color.White.ToVector4() * 0.39f;
+            pass.Parameters.dir = -0.65F;
+            pass.Apply();
+            BigCylinderMesh.Draw(gDevice);
+
+        }
+
+
+
+        spriteBatch.Begin(oldParameters);
+        spriteBatch.Draw(tornadoRT, Vector2.Zero, Color.White);
+        spriteBatch.End();
+
+        MaskCombineShader maskCombine = MaskCombineShader.Instance;
+        maskCombine.MixTexture = flashRT;
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+           maskCombine.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+
+
+        spriteBatch.Draw(tornadoRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+        spriteBatch.End();
         spriteBatch.Begin(oldParameters);
     }
 
