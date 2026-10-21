@@ -147,7 +147,17 @@ public class HighWizardPlayer : ModPlayer
     public override void UpdateEquips()
     {
         base.UpdateEquips();
+
     }
+    public override void PostUpdateEquips()
+    {
+        base.PostUpdateEquips();
+        if (hasSetBonus)
+        {
+            Lighting.AddLight(Player.position, new Vector3(0.6f));
+        }
+    }
+
 }
 
 
