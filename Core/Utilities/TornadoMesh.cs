@@ -330,16 +330,20 @@ public class TornadoDustParticles : ParticleUpdater<TornadoDustParticles.Data>
 
     }
 }
-
 public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
 {
     public struct Data : IParticleData
     {
+        public Data()
+        {
+            scale = 1f;
+        }
         public Vector2 oldTrackingPosition;
         public Vector2 position;
         public Vector2 velocity;
         public int pointToTrack;
         public float timeLeft;
+        public float scale;
         public bool stopMoving;
         public bool IsActive => timeLeft > 0;
     }
@@ -367,11 +371,11 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
             if (!particle.stopMoving)
             {
                 var targetCirclePos = tornadoCenter + new Vector2(offset.X * 2 * ExtraMath.Osc(0.5f, 1f, speed: 3, offset: i), offset.Y);
-                var targetVelocity = (targetCirclePos - particle.position) * 0.3f;
-                var sqrDistToPoint = Vector2.DistanceSquared(particle.position, targetCirclePos);
+                var targetVelocity = (targetCirclePos - particle.position) * 0.03f;
+                var sqrDistToPoint = Vector2.DistanceSquared(particle.oldTrackingPosition, targetCirclePos);
                 if (particle.oldTrackingPosition != Vector2.Zero)
                 {
-                    if (sqrDistToPoint > 128 * 128)
+                    if (sqrDistToPoint > 256 * 256)
                     {
                         particle.stopMoving = true;
                     }
@@ -402,7 +406,7 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
             drawer.color = Color.Lerp(Color.Transparent, Color.Lerp(Color.White, Color.Black, 0.6f) * 0.15f, EasingFunction.QuadraticBump((float)particle.timeLeft / 120f));
             drawer.color *= alpha;
 
-            drawer.scale = Vector2.One * 2.5f * scale;
+            drawer.scale = Vector2.One * 2.5f * scale * particle.scale;
             spriteBatch.Draw(drawer);
         }
    
@@ -416,13 +420,24 @@ public class TornadoSmokeParticles : ParticleUpdater<TornadoSmokeParticles.Data>
 }
 public class StormingTornadoV2 : ModProjectile
 {
+    TornadoMesh BigCylinderMesh
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = new(height: 1024, radius: 180, heightPerBand: 256, sidesPerBand: 32, Color.White, (float f) => MathHelper.Lerp(1f, 1.5f, f));
+            }
+            return field;
+        }
+    }
     TornadoMesh CylinderMesh
     {
         get
         {
             if(field == null)
             {
-                field = new(height: 1024, radius: 212, heightPerBand: 256, sidesPerBand: 32, Color.White);
+                field = new(height: 1024, radius: 180, heightPerBand: 256, sidesPerBand: 32, Color.White, (float f) => 1f);
             }
             return field;
         }
@@ -518,6 +533,7 @@ public class StormingTornadoV2 : ModProjectile
             return field;
         }
     }
+
     Matrix BandRotationMatrix
     {
         get
@@ -589,6 +605,26 @@ public class StormingTornadoV2 : ModProjectile
         return true;
     }
 
+
+    Vector2 TornadoTarget => Main.player[Projectile.owner].Center;
+    Vector2 TornadoCenter => Projectile.Center + new Vector2(0, 64);
+    Vector3[] CalculateBandWarpOffsets()
+    {
+        Vector3[] centerOffsets = new Vector3[8];
+        for (var i = 0; i < centerOffsets.Length; i++)
+        {
+            var mwOffset = TornadoTarget - Projectile.Center;
+            mwOffset = mwOffset.SafeNormalize(Vector2.Zero) * Vector2.Distance(Projectile.Center, TornadoTarget) / 2f;
+            var mwOffset3 = new Vector3(mwOffset.X, mwOffset.Y, 0);
+            var ratio = (1f - ((float)i / (float)centerOffsets.Length));
+            ratio = MathHelper.Lerp(ratio, 0.5f, 1f);
+            centerOffsets[i] = Vector3.Lerp(Vector3.Zero, mwOffset3, ratio * 0.9f);
+            centerOffsets[i].X += ExtraMath.Osc(-16, 16, speed: 6);
+            centerOffsets[i].X += ExtraMath.Osc(-32, 32, speed: 6, offset: i);
+
+        }
+        return centerOffsets;
+    }
     void UpdateBottomTornado()
     {
         BottomTornadoCircles.perspectiveMatrix = Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), 1.3f);
@@ -600,7 +636,7 @@ public class StormingTornadoV2 : ModProjectile
         BottomDustParticles.wrappedOffsets = BottomTornadoCircles.WrappedOffsets;
         BottomStreakParticles.wrappedOffsets = BottomTornadoCircles.WrappedOffsets;
 
-        if(Projectile.timeLeft > 120)
+        if (Projectile.timeLeft > 120)
         {
             {
                 var pointToTrack = BottomTornadoCircles.GetRandPointToTrack();
@@ -613,6 +649,26 @@ public class StormingTornadoV2 : ModProjectile
                     pointToTrack = pointToTrack,
                     timeLeft = 120,
                 });
+            }
+
+
+            {
+
+                if (Main.rand.NextBool(6))
+                {
+                    var pointToTrack = BottomTornadoCircles.GetRandPointToTrack();
+                    ref var offset = ref BottomTornadoCircles.WrappedOffsets[pointToTrack];
+                    var targetCirclePos = BottomSmokeParticles.tornadoCenter + new Vector2(offset.X, offset.Y);
+
+                    BottomSmokeParticles.Spawn(new()
+                    {
+                        position = targetCirclePos + Main.rand.NextVector2Circular(128, 32),
+                        pointToTrack = pointToTrack,
+                        scale = 1.5f,
+                        timeLeft = 120,
+                    });
+                }
+
             }
 
             {
@@ -633,7 +689,7 @@ public class StormingTornadoV2 : ModProjectile
             }
         }
 
-
+        BottomTornadoCircles.ApplyWarp(CalculateBandWarpOffsets());
         BottomSmokeParticles.tornadoCenter = TornadoCenter;
         BottomSmokeParticles.Update();
 
@@ -643,30 +699,28 @@ public class StormingTornadoV2 : ModProjectile
         BottomStreakParticles.tornadoCenter = new Vector3(TornadoCenter.X, TornadoCenter.Y, 0);
         BottomStreakParticles.Simulate();
     }
-    Vector2 TornadoTarget => Main.player[Projectile.owner].Center;
-    Vector2 TornadoCenter => Projectile.Center + new Vector2(0, 64);
-    Vector3[] CalculateBandWarpOffsets()
+
+    void SimulateGroundParticles()
     {
-        Vector3[] centerOffsets = new Vector3[8];
-        for (var i = 0; i < centerOffsets.Length; i++)
-        {
-            var mwOffset = TornadoTarget - Projectile.Center;
-            mwOffset = mwOffset.SafeNormalize(Vector2.Zero) * Vector2.Distance(Projectile.Center, TornadoTarget) / 2f;
-            var mwOffset3 = new Vector3(mwOffset.X, mwOffset.Y, 0);
-            var ratio = (1f - ((float)i / (float)centerOffsets.Length));
-            ratio = MathHelper.Lerp(ratio, 0.5f, 1f);
-            centerOffsets[i] = Vector3.Lerp(Vector3.Zero, mwOffset3, ratio * 0.9f);
-        }
-        return centerOffsets;
+        var ground = TileUtilities.FallToSolidTileOrPlatformOrWater(Projectile.Center);
+        var dist = Vector2.DistanceSquared(ground, Projectile.Center);
+        if (dist > 100 * 100)
+            return;
+
+
+        //Simulate ground particles at the ground position
+        //First let's dust spam slightly
+        var groundTile = ground.ToTileCoordinates();
+        Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
+        int d = WorldGen.KillTile_MakeTileDust(groundTile.X, groundTile.Y, Framing.GetTileSafely(groundTile));
+        Dust dust = Main.dust[d];
+        dust.velocity = spawnVelocity;
+        dust.noLightEmittence = true;
     }
     public override void AI()
     {
         base.AI();
         Timer++;
-
-        var owner = Main.player[Projectile.owner];
-        if (owner.controlRight && owner.releaseRight)
-            Projectile.Kill();
         var dist = Vector2.Distance(Projectile.Center, TornadoTarget);
         var alpha = dist / 384f;
         alpha = MathHelper.Clamp(alpha, 0f, 1f);
@@ -675,6 +729,10 @@ public class StormingTornadoV2 : ModProjectile
         Projectile.velocity = Vector2.Lerp(Projectile.velocity, (TornadoTarget - Projectile.Center).SafeNormalize(Vector2.Zero) * 6, 0.1f);
         Vector3[] warpOffsets = CalculateBandWarpOffsets();
         TornadoCircles.ApplyWarp(warpOffsets);
+        Vector3[] warpOffsets2 = CalculateBandWarpOffsets();
+        for (var i = 0; i < warpOffsets2.Length; i++)
+            warpOffsets2[i].X *= 0.5f;
+        FastTornadoCircles.ApplyWarp(warpOffsets2);
         TornadoCircles.perspectiveMatrix = FastTornadoCircles.perspectiveMatrix = Matrix.CreateFromAxisAngle(new Vector3(1, 0, 0), 0.4f);
 
         StreakParticles.wrappedOffsets = FastTornadoCircles.WrappedOffsets;
@@ -689,6 +747,7 @@ public class StormingTornadoV2 : ModProjectile
 
 
         UpdateBottomTornado();
+        SimulateGroundParticles();
         TornadoCircles.upwardVelocity = -7;
         TornadoCircles.angularVelocity = 0.1f;
         TornadoCircles.Update(Timer);
@@ -855,7 +914,7 @@ public class StormingTornadoV2 : ModProjectile
         };
         pass.Apply();
         Main.graphics.GraphicsDevice.Textures[0] = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value;
-        CylinderMesh.Draw(gDevice);
+        BigCylinderMesh.Draw(gDevice);
 
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.transformMatrix = TornadoCullCloseMatrix;
@@ -887,7 +946,8 @@ public class StormingTornadoV2 : ModProjectile
         pass.Parameters.tintColor = Color.White.ToVector4() * 0.5f;
         pass.Parameters.dir = -0.65F;
         pass.Apply();
-        CylinderMesh.Draw(gDevice);
+        BigCylinderMesh.Draw(gDevice);
+
         spriteBatch.Begin(oldParameters);
     }
 
@@ -1035,7 +1095,7 @@ public class TornadoCircles
 /// </summary>
 public class TornadoMesh
 { 
-    public TornadoMesh(float height, float radius, float heightPerBand, int sidesPerBand, Color tornadoColor)
+    public TornadoMesh(float height, float radius, float heightPerBand, int sidesPerBand, Color tornadoColor, Func<float, float> sizeMultiplierFunc)
     {
         var vertices = new List<VertexPositionColorTexture>();
         //Calculate the number of bands
@@ -1072,7 +1132,8 @@ public class TornadoMesh
             for (var v = 0; v < sidesPerBand; v++)
             {
                 var ratio = n / (float)numberOfBands;
-                var bandRadius = radius * ratio + 8f;
+                var bandRadius = radius * ratio;
+                bandRadius *= sizeMultiplierFunc(ratio);
                 ref var bandPoint = ref bandPoints[n][v];
                 bandPoint = new Vector3(0, -yHeight, -bandRadius * 2);
 

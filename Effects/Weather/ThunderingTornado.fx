@@ -34,7 +34,7 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 {
     VertexShaderOutput output;
     float4 position = input.Position;
-    int index = position.y / 256.0;
+    int index = abs(position.y / 256.0);
     if(index > 8.0)
         index = 7.0;
 
@@ -73,7 +73,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     coords = floor(coords * 16.0) / 16.0;
 
     float4 spriteColor = tex2D(spriteSampler, frac(coords + float2(time * 0.5, time * -2.5)));
-    float4 finalColor = color * spriteColor * coords.y / 8.0;
+    float4 finalColor = color * spriteColor;
     finalColor *= 2.4;
     finalColor -= Dither(input.TextureCoordinates.xy) * 0.1;
     finalColor = floor(finalColor * 8.0) / 8.0;
