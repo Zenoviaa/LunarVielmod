@@ -151,7 +151,7 @@ public class FabledWitchsBroomMount : ModMount
             });
         }
 
-        var floor = TileUtilities.FallToSolidTileOrPlatform(player.Center);
+        var floor = TileUtilities.FallToSolidTileOrPlatformOrWater(player.Center);
         var diffY = MathF.Abs(floor.Y - player.position.Y);
         if (diffY > 128)
         {
