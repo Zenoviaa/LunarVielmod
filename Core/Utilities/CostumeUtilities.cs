@@ -23,6 +23,15 @@ public struct HatDrawParameters
 }
 public static class CostumeUtilities
 {
+    public static Vector2 GetArmorDrawPosition(ref PlayerDrawSet drawInfo)
+    {
+        var drawPlayer = drawInfo.drawPlayer;
+        var drawPosition = new Vector2(
+        (int)(drawInfo.Position.X - Main.screenPosition.X - drawPlayer.bodyFrame.Width / 2 + drawPlayer.width / 2),
+        (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawPlayer.height - drawPlayer.bodyFrame.Height + 4f)
+    ) + drawPlayer.bodyPosition + drawInfo.bodyVect;
+        return drawPosition;
+    }
     public static Vector2 GetHatDrawPosition(ref PlayerDrawSet drawInfo)
     {
         var drawPlayer = drawInfo.drawPlayer;

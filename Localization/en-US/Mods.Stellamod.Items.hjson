@@ -12320,3 +12320,18 @@ DebugWand: {
 	DisplayName: Debug Wand
 	Tooltip: ""
 }
+
+HighWizardHat: {
+	DisplayName: High Wizard Hat
+	Tooltip: ""
+}
+
+HighWizardLegs: {
+	DisplayName: High Wizard Legs
+	Tooltip: ""
+}
+
+HighWizardRobe: {
+	DisplayName: High Wizard Robe
+	Tooltip: ""
+}
