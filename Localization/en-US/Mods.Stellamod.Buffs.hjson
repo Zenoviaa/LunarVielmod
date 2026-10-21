@@ -1272,3 +1272,8 @@ MarkedforIceII: {
 	DisplayName: Marked for Ice II
 	Description: It's getting REALLY chilly...
 }
+
+FabledWitchsBroomBuff: {
+	DisplayName: Fabled Witchs Broom Buff
+	Description: Mods.Stellamod.Buffs.FabledWitchsBroomBuff.Description
+}

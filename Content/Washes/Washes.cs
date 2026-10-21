@@ -62,6 +62,7 @@ public abstract class AbstractWash : ModItem
             shaderData // Be sure to update the effect path and pass name here.
         );
     }
+    
 
     public override void SetDefaults()
     {

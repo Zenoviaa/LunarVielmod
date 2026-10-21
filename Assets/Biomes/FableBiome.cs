@@ -33,7 +33,7 @@ namespace Stellamod.Assets.Biomes
                 //Normal music
                 if (Main.dayTime)
                 {
-                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/OggFabledWilds");
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/GetSpookyYaWitch");
                 }
                 else
                 {
