@@ -12337,6 +12337,6 @@ HighWizardRobe: {
 }
 
 FabledWitchsBroom: {
-	DisplayName: Fabled Witchs Broom
-	Tooltip: ""
+	DisplayName: Fabled Witch's Broom
+	Tooltip: "'Just like a real witch!'"
 }

@@ -1274,6 +1274,6 @@ MarkedforIceII: {
 }
 
 FabledWitchsBroomBuff: {
-	DisplayName: Fabled Witchs Broom Buff
-	Description: Mods.Stellamod.Buffs.FabledWitchsBroomBuff.Description
+	DisplayName: Fabled Witch's Broom
+	Description: Hoverin' around on mah broom
 }
