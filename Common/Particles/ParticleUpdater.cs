@@ -129,6 +129,6 @@ public abstract class ParticleUpdater<ParticleStructType> :
         }
     }
 
-    public abstract void Draw(SpriteBatch spriteBatch, ref ParticleStructType particle);
+    public virtual void Draw(SpriteBatch spriteBatch, ref ParticleStructType particle) { }
 
 }

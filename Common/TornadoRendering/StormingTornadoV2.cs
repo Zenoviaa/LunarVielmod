@@ -1,6 +1,8 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.TornadoRendering;
@@ -13,7 +15,12 @@ public class StormingTornadoV2 : ModProjectile
         {
             if (field == null)
             {
-                field = new(height: 1024, radius: 180, heightPerBand: 256, sidesPerBand: 32, Color.White, (float f) => MathHelper.Lerp(1f, 1.5f, f));
+                field = new(height: 1024, radius: 180, heightPerBand: 256, sidesPerBand: 32, Color.White, (float f) =>
+                {
+                    if (f <= 0f)
+                        return 64;
+                    return 1;
+                });
             }
             return field;
         }
@@ -195,13 +202,14 @@ public class StormingTornadoV2 : ModProjectile
 
     Vector2 TornadoTarget => Main.player[Projectile.owner].Center;
     Vector2 TornadoCenter => Projectile.Center + new Vector2(0, 64);
+    Vector2 TornadoBottom => Projectile.Center + new Vector2(0, 64) + CalculateBandWarpOffsets()[0].XY();
     Vector3[] CalculateBandWarpOffsets()
     {
         Vector3[] centerOffsets = new Vector3[8];
         for (var i = 0; i < centerOffsets.Length; i++)
         {
             var mwOffset = TornadoTarget - Projectile.Center;
-            mwOffset = mwOffset.SafeNormalize(Vector2.Zero) * Vector2.Distance(Projectile.Center, TornadoTarget) / 2f;
+            mwOffset = mwOffset.SafeNormalize(Vector2.Zero) * Vector2.Distance(Projectile.Center, TornadoTarget) * 0f;
             var mwOffset3 = new Vector3(mwOffset.X, mwOffset.Y, 0);
             var ratio = (1f - ((float)i / (float)centerOffsets.Length));
             ratio = MathHelper.Lerp(ratio, 0.5f, 1f);
@@ -289,11 +297,16 @@ public class StormingTornadoV2 : ModProjectile
 
     void SimulateGroundParticles()
     {
-        var ground = TileUtilities.FallToSolidTileOrPlatformOrWater(Projectile.Center);
-        var dist = Vector2.DistanceSquared(ground, Projectile.Center);
-        if (dist > 100 * 100)
+        if (Main.netMode == NetmodeID.Server)
             return;
 
+        var ground = TileUtilities.FallToSolidTileOrPlatformOrWater(TornadoBottom);
+        var dist = Vector2.DistanceSquared(ground, TornadoBottom);
+        if (dist > 232 * 232)
+            return;
+
+        if (Projectile.timeLeft <= 120)
+            return;
 
         //Simulate ground particles at the ground position
         //First let's dust spam slightly
@@ -304,8 +317,23 @@ public class StormingTornadoV2 : ModProjectile
         dust.velocity = spawnVelocity;
         dust.noLightEmittence = true;
         dust.position.X += Main.rand.Next(-32, 32);
-    
-    
+
+        ground.Y -= Main.rand.Next(32, 64);
+        TornadoDestructionRenderer.DestructionMaskParticleSystem.Spawn(new()
+        {
+            position = ground + Main.rand.NextVector2Circular(32, 8),
+            upPosition = ground + Main.rand.NextVector2Circular(32, 32) + new Vector2(0,-16),
+            scale = Vector2.One * new Vector2(Main.rand.NextFloat(0.6f, 1f), Main.rand.NextFloat(1f, 5f)),
+            rotation = Main.rand.NextFloat(-0.5f, 0.5f),
+            color = Color.White * Main.rand.NextFloat(0.2f, 1f),
+            timeLeft = 129
+        });
+
+        if (Main.rand.NextBool(12))
+        {
+            FXUtil.MakeSoilParticle(ground, spawnVelocity.RotatedByRandom(0.75f));
+        }
+      //  Particles.Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = ground + Main.rand.NextVector2Circular(32, 32), timeLeft = 200, color = Color.DarkOrange });
     }
 
     public override void AI()
@@ -395,8 +423,8 @@ public class StormingTornadoV2 : ModProjectile
             }
             if (Main.rand.NextBool(7))
             {
-                var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 127);
-
+                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
+                pos.Y -= 256;
                 var vel = -Vector2.UnitY;
                 vel *= 3 * Main.rand.NextFloat(1f, 1.6f);
                 vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
@@ -418,8 +446,8 @@ public class StormingTornadoV2 : ModProjectile
 
             if (Main.rand.NextBool(1))
             {
-                var pos = Projectile.Center + Main.rand.NextVector2Circular(275, 127);
-     
+                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
+                pos.Y -= 256;
                 var vel = -Vector2.UnitY;
                 vel *= 2;
                 vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
@@ -439,8 +467,8 @@ public class StormingTornadoV2 : ModProjectile
             }
             if (Main.rand.NextBool(6))
             {
-                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 128);
-
+                var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
+                pos.Y -= 256;
                 var vel = -Vector2.UnitY;
                 vel *= 6;
                 vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
@@ -534,7 +562,7 @@ public class StormingTornadoV2 : ModProjectile
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.transformMatrix = TornadoCullFarBigMatrix;
         pass.Parameters.rotationMatrix = BandRotationMatrix;
-        pass.Parameters.tintColor = Color.White.ToVector4() * 0.5f;
+        pass.Parameters.tintColor = Color.White.ToVector4() * 0.39f;
         pass.Parameters.dir = -0.65F;
         pass.Apply();
         BigCylinderMesh.Draw(gDevice);
