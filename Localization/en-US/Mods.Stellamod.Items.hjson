@@ -12343,5 +12343,5 @@ FabledWitchsBroom: {
 
 WitchCarvedStoneItem: {
 	DisplayName: Witch Carved Stone
-	Tooltip: "An intricately carved out stone..."
+	Tooltip: An intricately carved out stone...
 }

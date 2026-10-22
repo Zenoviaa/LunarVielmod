@@ -19,7 +19,7 @@ public class LazyRenderTarget
     {
         get
         {
-            if (_targetBackingField == null)
+            if (_targetBackingField == null || _targetBackingField.IsDisposed || _targetBackingField.IsContentLost)
                 return RenderTargets.FailsafeTarget;
             return _targetBackingField;
         }
