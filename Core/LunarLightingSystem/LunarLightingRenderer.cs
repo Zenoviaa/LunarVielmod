@@ -228,6 +228,11 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateTime()
         {
             base.PostUpdateTime();
+
+        }
+
+        void UpdateLightColors()
+        {
             AmbientLight = Color.White.ToVector3();
             BackLightColor = Color.Black;
             if (Main.LocalPlayer.ZoneUnderworldHeight)
@@ -268,6 +273,12 @@ namespace Stellamod.Core.LunarLightingSystem
                 sunShadowAlpha = MathHelper.Lerp(sunShadowAlpha, 1f, 0.1f);
 
             }
+        }
+
+        public override void PostDrawTiles()
+        {
+            base.PostDrawTiles();
+            UpdateLightColors();
         }
 
         public void AddBackLight(IBackLightModifier backLightModifier)

@@ -66,6 +66,7 @@ public class ForceNighttimeInMoonspiralTower : ModSystem
         var unwrappedTimeToScrollTo = _scrollingTicks;
         var newUnwrappedTime = MathHelper.Lerp((float)unwrappedTime, (float)unwrappedTimeToScrollTo, EasingFunction.InOutSine(_lerpValue));
         var timeOfDay = UnwrappedTimeToTimeOfDay(newUnwrappedTime);
+
         Main.time = timeOfDay.time;
         Main.dayTime = timeOfDay.isDaytime;
 
