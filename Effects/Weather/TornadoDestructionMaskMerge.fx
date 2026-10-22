@@ -17,8 +17,10 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     //this tells how far to move down
     float maskColor = tex2D(spriteSampler, coords).a;
+
     float offsetCoords =  texelSize.y * 22.0 * maskColor;
     float4 spriteColor = tex2D(tileSampler, coords + offsetCoords);
+
     return spriteColor;
     //return input.Color;
 }

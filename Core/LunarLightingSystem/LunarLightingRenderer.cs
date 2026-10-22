@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Rendering.RTs;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Terraria;
@@ -66,8 +67,54 @@ namespace Stellamod.Core.LunarLightingSystem
 
             On_FilterManager.EndCapture += ApplyLighting;
             On_Main.CheckMonoliths += RenderToLightMaps;
+            On_Main.RenderTiles += ApplySSAO;
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
             On_Main.DoDraw_Tiles_Solid += ApplySSAO;
+        }
+
+        private void ApplySSAO(On_Main.orig_RenderTiles orig, Main self)
+        {
+            orig(self);
+            if (!LightingHelper.CanRenderPostProcessingEffects)
+                return;
+            if (ModContent.GetInstance<DomainExpansionManager>().noRender)
+                return;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+
+            //The back water target isn't used until later
+            //So we can use it for RT swapping
+           
+            using(RT.Clear(Main.instance.backWaterTarget, Color.Transparent))
+            {
+                var ssaoPass = AssetReferences.Effects.Lighting.SSAO.CreateBlackPass();
+                ssaoPass.Parameters.stepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
+                ssaoPass.Parameters.offsets = Offsets;
+                ssaoPass.Apply();
+
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                   ssaoPass.Shader);
+                spriteBatch.Draw(Main.instance.tileTarget, Vector2.Zero, Color.White);
+                spriteBatch.End();
+            }
+
+            using(RT.Clear(Main.instance.tileTarget, Color.Transparent))
+            {
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    null);
+                spriteBatch.Draw(Main.instance.backWaterTarget, Vector2.Zero, Color.White);
+                spriteBatch.End();
+            }
+
         }
 
         private void ApplySSAO(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
@@ -78,27 +125,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void ApplySSAO()
         {
-            if (!LightingHelper.CanRenderPostProcessingEffects)
-                return;
-            if (ModContent.GetInstance<DomainExpansionManager>().noRender)
-                return;
-
-            SSAOShader ssaoShader = ShaderContent.GetInstance<SSAOShader>();
-            ssaoShader.StepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
 
 
-            ssaoShader.Offsets = Offsets;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
-                SamplerState.AnisotropicClamp,
-                DepthStencilState.None,
-                RasterizerState.CullNone,
-                ssaoShader.Effect,
-                Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(Main.instance.tileTarget, Main.sceneTilePos - Main.screenPosition, Color.White);
-            spriteBatch.End();
         }
 
         private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)

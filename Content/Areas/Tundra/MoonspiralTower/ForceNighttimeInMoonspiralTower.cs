@@ -81,7 +81,7 @@ public class ForceNighttimeInMoonspiralTower : ModSystem
     }
     private void PutTimeChangeBack(On_Main.orig_DrawInfernoRings orig, Main self)
     {
-
+        //We don't want to break UI that can change the time, so put it back after the in-game world renders
         orig(self);
         Main.time = _realTime;
         Main.dayTime = _realDayTime;

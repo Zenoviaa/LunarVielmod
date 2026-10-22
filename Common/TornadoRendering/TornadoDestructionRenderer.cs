@@ -116,6 +116,9 @@ public class TornadoDestructionRenderer : ModSystem
         orig();
         if (Main.gameMenu)
             return;
-        PixelationManager.QueueSpritebatchDrawAction(DestructionMaskParticleSystem.Draw, DrawLayer.OverPlayers);
+        if (DestructionMaskParticleSystem.Length <= 0)
+            return;
+
+        PixelationManager.QueueSpritebatchDrawAction(DestructionMaskParticleSystem.Draw, DrawLayer.OverWater);
     }
 }

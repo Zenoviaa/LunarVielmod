@@ -66,12 +66,22 @@ float GetOcclusionFactorV3(float2 coords)
     return alpha * 0.5;
 }
 
+float3 Blend(float3 color, float3 backColor, float amount)
+{
+    float r = (color.r * amount + backColor.r * (1.0 - amount));
+    float g = (color.g * amount + backColor.g * (1.0 - amount));
+    float b = (color.b * amount + backColor.b * (1.0 - amount));
+    return float3(r, g, b);
+}
+
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
     //Naive SSAO approach, curious how this looks
     //We'll input the tile render target and draw an overlay over the screen
     float occlusion = GetOcclusionFactorV3(coords);
-    return float4(0.0, 0.0, 0.0, occlusion) * sampleColor;
+    float4 tileColor = tex2D(heightMapSampler, coords);
+    tileColor.rgb = Blend(float3(0.0, 0.0, 0.0), tileColor.rgb, occlusion);
+    return tileColor;
 }
 
 technique Technique1

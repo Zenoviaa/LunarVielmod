@@ -110,6 +110,7 @@ public abstract class ParticleUpdater<ParticleStructType> :
         return ref _particles[index];
     }
 
+    public int Length => _length;
     public void KillParticle(in int index)
     {
         //Swap with the last active particle and set the data to default
