@@ -77,6 +77,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     finalColor *= 2.4;
     finalColor -= Dither(input.TextureCoordinates.xy) * 0.1;
     finalColor = floor(finalColor * 8.0) / 8.0;
+    finalColor *= lerp(1.0, 2.0, 1.0 - saturate(input.TextureCoordinates.y / 4.0));
     return finalColor;
 }
 

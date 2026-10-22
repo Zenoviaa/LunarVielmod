@@ -4,6 +4,7 @@ using Stellamod.Content.Areas.Jungle.ZigguratraBoss.Projectiles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering.RTs;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.BackupIO;
@@ -21,7 +22,7 @@ public class StormingTornadoV2 : ModProjectile
                 field = new(height: 1024, radius: 180, heightPerBand: 256, sidesPerBand: 32, Color.White, (float f) =>
                 {
                     if (f <= 0f)
-                        return 64;
+                        return 32;
                     return 1;
                 });
             }
@@ -345,16 +346,20 @@ public class StormingTornadoV2 : ModProjectile
         }
 
         
-        Particles.Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        for(var i = 0; i < 3; i++)
         {
-            position = ground + new Vector2(0, 24),
-            velocity = -Vector2.UnitY.RotatedByRandom(1.2f) * Main.rand.NextFloat(5, 25),
-            innerColor = Color.White.ToVector4() * 0.64f,
-            outerColor = Color.White.ToVector4() * 0.64f,
-            scale = new Vector2(Main.rand.NextFloat(0.4f, 1.6F)),
-            velocityPerTickMult = 0.85f,
-            timeLeft=15
-        });
+            Particles.Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = ground + new Vector2(0, 24) + new Vector2(Main.rand.NextFloat(-32, 32), 0),
+                velocity = -Vector2.UnitY.RotatedByRandom(1.2f) * Main.rand.NextFloat(5, 25),
+                innerColor = Color.White.ToVector4() * 0.64f,
+                outerColor = Color.White.ToVector4() * 0.64f,
+                scale = new Vector2(Main.rand.NextFloat(0.4f, 1f)),
+                velocityPerTickMult = 0.93f,
+                timeLeft = 30
+            });
+        }
+
         //  Particles.Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = ground + Main.rand.NextVector2Circular(32, 32), timeLeft = 200, color = Color.DarkOrange });
     }
 
@@ -521,8 +526,17 @@ public class StormingTornadoV2 : ModProjectile
                         timeLeft = 50
                     });
                 }
+
                 if (Main.rand.NextBool(4))
                 {
+                    var zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain1.Asset with { PitchVariance = 1 };
+                    if (Main.rand.NextBool(2))
+                        zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain2.Asset with { PitchVariance = 1 };
+                    if (Main.rand.NextBool(2))
+                        zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain3.Asset with { PitchVariance = 1 };
+                    zapSound.Volume = 0.5f;
+                    SoundEngine.PlaySound(zapSound, Projectile.position);
+
                     FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkOrange, Color.DarkBlue, 20, baseSize: 0.18f);
                     var fx2 = FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkOrange, Color.DarkBlue, 20, baseSize: 0.18f);
                     fx2.VectorScale *= 8;
@@ -632,7 +646,7 @@ public class StormingTornadoV2 : ModProjectile
             pass.Parameters.time = Main.GlobalTimeWrappedHourly;
             pass.Parameters.transformMatrix = TornadoCullFarBigMatrix;
             pass.Parameters.rotationMatrix = BandRotationMatrix;
-            pass.Parameters.tintColor = FrontColor.ToVector4() * 0.39f;
+            pass.Parameters.tintColor = FrontColor.ToVector4() * 0.5f;
             pass.Parameters.dir = -0.65F;
             pass.Apply();
             BigCylinderMesh.Draw(gDevice);
@@ -666,9 +680,9 @@ public class StormingTornadoV2 : ModProjectile
         DrawTornado();
         DustParticles.Draw(Main.spriteBatch, Main.screenPosition);
         BottomDustParticles.Draw(Main.spriteBatch, Main.screenPosition);
-        SmokeParticles.alpha = 0.145f;
+        SmokeParticles.alpha = 0.145f * 0.5f;
         SmokeParticles.Draw(Main.spriteBatch, Main.screenPosition);
-        BottomSmokeParticles.alpha = 0.145f;
+        BottomSmokeParticles.alpha = 0.145f * 0.5f;
         BottomSmokeParticles.Draw(Main.spriteBatch, Main.screenPosition);
         LightningBoltParticles.Draw(Main.spriteBatch, Main.screenPosition);
     }
