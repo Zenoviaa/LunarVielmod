@@ -169,6 +169,7 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 RenderToLightsRT();
             }
+            UpdateLightColors();
 
 
             orig();
@@ -278,7 +279,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
-            UpdateLightColors();
+ 
         }
 
         public void AddBackLight(IBackLightModifier backLightModifier)
