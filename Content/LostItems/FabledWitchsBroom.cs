@@ -139,6 +139,10 @@ public class FabledWitchsBroomMount : ModMount
         MountData.runningFrameStart = 0;
         MountData.inAirFrameCount = 4;
         MountData.inAirFrameDelay = (int)MathHelper.Lerp(15, 4, MathF.Abs(player.velocity.X) / 8f);
+        if(MathF.Abs(player.velocity.X) < 2)
+        {
+            MountData.inAirFrameDelay = 999999;
+        }
         MountData.inAirFrameStart = 0;
         if (Main.rand.NextBool(4))
         {
@@ -175,8 +179,10 @@ public class FabledWitchsBroomMount : ModMount
             position.Y += 8;
             Rectangle? srcRect = null;
             float drawRotation = rotation + ExtraMath.Osc(-0.1f, 0.1f, speed: 2);
+            drawRotation += MathHelper.Lerp(0, ExtraMath.Osc(-0.4f, 0, speed: 8), MathF.Abs(drawPlayer.velocity.X) / 8f);
             var origin = new Vector2(7, 0);
             var lanterns = AssetReferences.Assets.Textures.Item.FabledWitchsBroomMount_Lanterns.Asset;
+            var lanternPos = position;
             playerDrawData.Add(new DrawData(lanterns.Value, position, srcRect, drawColor, drawRotation, origin, drawScale, spriteEffects, 0));
 
             var glowingColor = Color.Lerp(Color.Transparent, Color.White, ExtraMath.Osc(0.5f, 1f, speed: 2)) * 0.5f;
@@ -186,7 +192,9 @@ public class FabledWitchsBroomMount : ModMount
             var glowBall = AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset;
             glowingColor = Color.Lerp(Color.Transparent, Color.DarkGoldenrod, ExtraMath.Osc(0.5f, 1f, speed: 2)) * 1f;
             glowingColor.A = 0;
-            position.Y += 8;
+            position.X += 2;
+            position.Y += 24;
+            position = position.RotatedBy(drawRotation, lanternPos);
             playerDrawData.Add(new DrawData(glowBall.Value, position, srcRect, glowingColor, drawRotation, glowBall.Size() * 0.5f, drawScale * 0.15f, spriteEffects, 0));
 
             /*

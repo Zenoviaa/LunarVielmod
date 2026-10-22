@@ -372,7 +372,7 @@ public class StormingTornadoV2 : ModProjectile
         alpha = MathHelper.Clamp(alpha, 0f, 1f);
         alpha = 1f - alpha;
         ShakeScreenPosition.Shake = alpha * 3;
-        Projectile.velocity = Vector2.Lerp(Projectile.velocity, (TornadoTarget - Projectile.Center).SafeNormalize(Vector2.Zero) * 6, 0.1f);
+        Projectile.velocity = Vector2.Lerp(Projectile.velocity, (TornadoTarget - Projectile.Center).SafeNormalize(Vector2.Zero) * 4, 0.1f);
         Vector3[] warpOffsets = CalculateBandWarpOffsets();
         TornadoCircles.ApplyWarp(warpOffsets);
         Vector3[] warpOffsets2 = CalculateBandWarpOffsets();
