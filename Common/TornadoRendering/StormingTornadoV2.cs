@@ -347,7 +347,7 @@ public class StormingTornadoV2 : ModProjectile
         
         Particles.Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
         {
-            position = ground + new Vector2(0, 64),
+            position = ground + new Vector2(0, 24),
             velocity = -Vector2.UnitY.RotatedByRandom(1.2f) * Main.rand.NextFloat(5, 25),
             innerColor = Color.White.ToVector4() * 0.64f,
             outerColor = Color.White.ToVector4() * 0.64f,
