@@ -169,7 +169,8 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 RenderToLightsRT();
             }
-            UpdateLightColors();
+            if(!Main.gameMenu)
+                UpdateLightColors();
 
 
             orig();
