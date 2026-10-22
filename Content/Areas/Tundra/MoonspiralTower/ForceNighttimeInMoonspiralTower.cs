@@ -7,6 +7,8 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower;
 [Autoload(Side = ModSide.Client)]
 public class ForceNighttimeInMoonspiralTower : ModSystem
 {
+    double _realTime;
+    bool _realDayTime;
     float _lerpTimer;
     float _lerpValue;
     float _scrollingTicks;
@@ -16,7 +18,10 @@ public class ForceNighttimeInMoonspiralTower : ModSystem
     {
         base.Load();
         On_Main.DoDraw += FakeTimeChange;
+        On_Main.DrawInfernoRings += PutTimeChangeBack;
     }
+
+
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
@@ -60,9 +65,9 @@ public class ForceNighttimeInMoonspiralTower : ModSystem
     }
     private void FakeTimeChange(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
     {
-        double realTime = Main.time;
+        _realTime = Main.time;
         double unwrappedTime = GetUnwrappedTime();
-        bool realDaytime = Main.dayTime;
+        _realDayTime = Main.dayTime;
         var unwrappedTimeToScrollTo = _scrollingTicks;
         var newUnwrappedTime = MathHelper.Lerp((float)unwrappedTime, (float)unwrappedTimeToScrollTo, EasingFunction.InOutSine(_lerpValue));
         var timeOfDay = UnwrappedTimeToTimeOfDay(newUnwrappedTime);
@@ -72,7 +77,13 @@ public class ForceNighttimeInMoonspiralTower : ModSystem
 
         orig(self, gameTime);
 
-        Main.time = realTime;
-        Main.dayTime = realDaytime;
+
+    }
+    private void PutTimeChangeBack(On_Main.orig_DrawInfernoRings orig, Main self)
+    {
+
+        orig(self);
+        Main.time = _realTime;
+        Main.dayTime = _realDayTime;
     }
 }

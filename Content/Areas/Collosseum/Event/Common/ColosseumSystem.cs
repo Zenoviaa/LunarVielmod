@@ -17,7 +17,7 @@ public class ColosseumGlobalTile : GlobalTile
         var tile = Main.tile[i, j];
         if (Main.tileSolid[tile.type])
             return;
-        drawData.finalColor = Color.Lerp(Color.White, Color.Black, ColosseumWallColorEdit.Factor * 0.55f);
+        drawData.finalColor = Color.Lerp(drawData.finalColor, Color.Black, ColosseumWallColorEdit.Factor * 0.55f);
     }
 }
 
