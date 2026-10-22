@@ -57,7 +57,7 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
                 particle.position += particle.velocity;
 
                 particle.rotation = particle.velocity.ToRotation();
-                particle.scale *= 0.97f;
+                particle.scale *= 0.93f;
                 particle.color *= 0.99f;
 
                 float stretchInterp = particle.velocity.LengthSquared() / 25f;

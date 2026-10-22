@@ -6,6 +6,7 @@ using Stellamod.Core.Rendering.RTs;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Stellamod.Common.TornadoRendering;
 
@@ -72,6 +73,7 @@ public class StormingTornadoV2 : ModProjectile
         }
     }
     TornadoFlashParticles FlashParticles => field ??= new();
+    TornadoLightningBoltParticles LightningBoltParticles => field ??= new();
 
     TornadoStreakLinesParticles StreakParticles
     {
@@ -188,8 +190,12 @@ public class StormingTornadoV2 : ModProjectile
             return Matrix.CreateScale(TornadoBigScale, 1f, TornadoBigScale) * TornadoMatrixBase;
         }
     }
+    Color FlashColor => Color.LightGoldenrodYellow with { A = 0 };
     Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
     Color DarkGoldenColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.5f);
+    Color BackColor => Color.Lerp(Color.Lerp(Color.White, Color.Black, 0.75f), FlashColor, _glowStrikeAlpha * 0.3f);
+    Color FrontColor => Color.Lerp(Color.White, FlashColor, _glowStrikeAlpha * 0.3f);
+    float _glowStrikeAlpha;
     ref float Timer => ref Projectile.ai[0];
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetDefaults()
@@ -337,7 +343,19 @@ public class StormingTornadoV2 : ModProjectile
         {
             FXUtil.MakeSoilParticle(ground, spawnVelocity.RotatedByRandom(0.75f));
         }
-      //  Particles.Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = ground + Main.rand.NextVector2Circular(32, 32), timeLeft = 200, color = Color.DarkOrange });
+
+        
+        Particles.Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        {
+            position = ground + new Vector2(0, 64),
+            velocity = -Vector2.UnitY.RotatedByRandom(1.2f) * Main.rand.NextFloat(5, 25),
+            innerColor = Color.White.ToVector4() * 0.64f,
+            outerColor = Color.White.ToVector4() * 0.64f,
+            scale = new Vector2(Main.rand.NextFloat(0.4f, 1.6F)),
+            velocityPerTickMult = 0.85f,
+            timeLeft=15
+        });
+        //  Particles.Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = ground + Main.rand.NextVector2Circular(32, 32), timeLeft = 200, color = Color.DarkOrange });
     }
 
     public override void AI()
@@ -380,6 +398,7 @@ public class StormingTornadoV2 : ModProjectile
         FastTornadoCircles.Update(Timer);
         if(Projectile.timeLeft > 120)
         {
+            LightningBoltParticles.Update();
             //TornadoCircles.Update(Timer);
             if (Timer % 1 == 0)
             {
@@ -470,7 +489,7 @@ public class StormingTornadoV2 : ModProjectile
                 });
             }
 
-            if (Main.rand.NextBool(6))
+            if (Main.rand.NextBool(4))
             {
                 var pos = TornadoCenter + Main.rand.NextVector2Circular(275, 512);
                 pos.Y -= 512;
@@ -502,10 +521,28 @@ public class StormingTornadoV2 : ModProjectile
                         timeLeft = 50
                     });
                 }
-
+                if (Main.rand.NextBool(4))
+                {
+                    FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkOrange, Color.DarkBlue, 20, baseSize: 0.18f);
+                    var fx2 = FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkOrange, Color.DarkBlue, 20, baseSize: 0.18f);
+                    fx2.VectorScale *= 8;
+                    fx2.GlowColor *= 0.2f;
+                    fx2.InnerColor *= 0.2f;
+                    fx2.OuterGlowColor *= 0.2f;
+                    LightningBoltParticles.Spawn(new()
+                    {
+                        position = pos,
+                        velocity = vel,
+                        timeLeft = 90,
+                        power = 1,
+                        rotation = vel.ToRotation()
+                    });
+                    _glowStrikeAlpha = 1f;
+                }
+            
             }
         }
-
+        _glowStrikeAlpha = MathHelper.Lerp(_glowStrikeAlpha, 0f, 0.03f);
         FlashParticles.tornadoCenter = TornadoCenter;
         FlashParticles.Update();
 
@@ -517,6 +554,8 @@ public class StormingTornadoV2 : ModProjectile
 
         StreakParticles.tornadoCenter = new Vector3(TornadoCenter.X, TornadoCenter.Y, 0);
         StreakParticles.Simulate();
+
+        LightningBoltParticles.Update();
     }
 
 
@@ -553,7 +592,7 @@ public class StormingTornadoV2 : ModProjectile
             pass.Parameters.time = Main.GlobalTimeWrappedHourly;
             pass.Parameters.transformMatrix = TornadoCullCloseBigMatrix;
             pass.Parameters.rotationMatrix = BandRotationMatrix;
-            pass.Parameters.tintColor = Color.Lerp(Color.White, Color.Black, 0.75f).ToVector4() * 0.15f;
+            pass.Parameters.tintColor = BackColor.ToVector4() * 0.15f;
             pass.Parameters.dir = 1f;
             pass.Parameters.ditherTexelSize = ditherTexture.GetTexelSize();
             pass.Parameters.spriteSize = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value.Size() / new Vector2(16, 8);
@@ -569,7 +608,7 @@ public class StormingTornadoV2 : ModProjectile
             pass.Parameters.time = Main.GlobalTimeWrappedHourly;
             pass.Parameters.transformMatrix = TornadoCullCloseMatrix;
             pass.Parameters.rotationMatrix = BandRotationMatrix;
-            pass.Parameters.tintColor = Color.Lerp(Color.White, Color.Black, 0.75f).ToVector4();
+            pass.Parameters.tintColor = BackColor.ToVector4();
             pass.Parameters.dir = 1f;
             pass.Parameters.ditherTexelSize = ditherTexture.GetTexelSize();
             pass.Parameters.spriteSize = AssetReferences.Assets.Noise.TornadoNoise.Asset.Value.Size() / new Vector2(16, 8);
@@ -585,7 +624,7 @@ public class StormingTornadoV2 : ModProjectile
             pass.Parameters.wvpMatrix = TrailDrawer.WorldViewPointCullFarAway;
             pass.Parameters.transformMatrix = TornadoCullFarMatrix;
             pass.Parameters.rotationMatrix = BandRotationMatrix;
-            pass.Parameters.tintColor = Color.White.ToVector4();
+            pass.Parameters.tintColor = FrontColor.ToVector4();
             pass.Parameters.dir = -0.65F;
             pass.Apply();
             CylinderMesh.Draw(gDevice);
@@ -593,7 +632,7 @@ public class StormingTornadoV2 : ModProjectile
             pass.Parameters.time = Main.GlobalTimeWrappedHourly;
             pass.Parameters.transformMatrix = TornadoCullFarBigMatrix;
             pass.Parameters.rotationMatrix = BandRotationMatrix;
-            pass.Parameters.tintColor = Color.White.ToVector4() * 0.39f;
+            pass.Parameters.tintColor = FrontColor.ToVector4() * 0.39f;
             pass.Parameters.dir = -0.65F;
             pass.Apply();
             BigCylinderMesh.Draw(gDevice);
@@ -631,6 +670,7 @@ public class StormingTornadoV2 : ModProjectile
         SmokeParticles.Draw(Main.spriteBatch, Main.screenPosition);
         BottomSmokeParticles.alpha = 0.145f;
         BottomSmokeParticles.Draw(Main.spriteBatch, Main.screenPosition);
+        LightningBoltParticles.Draw(Main.spriteBatch, Main.screenPosition);
     }
 
     public override bool PreDraw(ref Color lightColor)
