@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.ZTileSystem;
+﻿using Stellamod.Common.DevTools;
+using Stellamod.Core.ZTileSystem;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -16,6 +17,8 @@ public class TheMagicHandPlayer : ModPlayer
     {
         base.ResetEffects();
         hasMagicHand = false;
+        if (DevTools.placeAnywhere)
+            hasMagicHand = true;
     }
 }
 

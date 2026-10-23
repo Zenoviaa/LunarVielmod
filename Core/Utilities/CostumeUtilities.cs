@@ -43,10 +43,9 @@ public static class CostumeUtilities
     }
     public static DrawData GetHatDrawData(ref PlayerDrawSet drawInfo, Asset<Texture2D> hatTextureAsset, in HatDrawParameters parameters)
     {
-        var position = drawInfo.Center - Main.screenPosition;
-        position = new Vector2((int)position.X, (int)position.Y);
+        var position = GetHatDrawPosition(ref drawInfo);
         position += parameters.hatOffset;
-
+        position.Y += 7;
         Rectangle bodyFrame = drawInfo.drawPlayer.bodyFrame;
         float yOsc = MathF.Sin(bodyFrame.Y) * 0.5f + 0.5f;
         position.Y += yOsc * parameters.wiggleSpeed;

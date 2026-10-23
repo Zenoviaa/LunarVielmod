@@ -421,7 +421,7 @@ public class FastFlightPlayer : ModPlayer
         drawPosition.X -= Player.direction * 12;
         drawPosition.Y += ExtraMath.Osc(0f, -6);
         Texture2D zuiTexyt = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        spriteBatch.Draw(glowMaskWingsTextureAsset.Value, drawPosition, frame, glowColor * 0.5f, 0, frame.Size() / 2f, drawScale * 1.2f, SpriteEffects.None, 0);
+        spriteBatch.Draw(glowMaskWingsTextureAsset.Value, drawPosition, frame, glowColor * 0.5f, 0, frame.Size() / 2f, drawScale * 1.2f , SpriteEffects.None, 0);
         //  spriteBatch.Draw(wingsTexture, drawPosition, frame, glowColor * 0.7f, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
 
         Color wingColor = glowColor * 0.7f;

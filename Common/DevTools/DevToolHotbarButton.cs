@@ -2,12 +2,56 @@
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace Stellamod.Common.DevTools;
 
+public class DevToolFlagButton : UIPanel
+{
+    public DevToolFlagButton(string localizationKey, Func<bool> getter, Action toggler)
+    {
+        LocalizationKey = localizationKey;
+        Getter = getter;
+        Toggler = toggler;
+    }
+    public readonly string LocalizationKey;
+    public readonly Func<bool> Getter;
+    public readonly Action Toggler;
+    public override void OnInitialize()
+    {
+        base.OnInitialize();
+        Width.Pixels = 168;
+        Height.Pixels = 32;
+        OnLeftClick += Toggle;
+    }
+
+    private void Toggle(UIMouseEvent evt, UIElement listeningElement)
+    {
+        Toggler();
+    }
+
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+        base.DrawSelf(spriteBatch);
+        this.QuickMouseInteraction();
+        var rect = GetDimensions().ToRectangle();
+        var topLeft = rect.TopLeft();
+        ChatManager.DrawColorCodedStringWithShadow(
+            spriteBatch,
+            FontAssets.MouseText.Value,
+            Language.GetTextValue(LocalizationKey),
+            topLeft + new Vector2(8),
+            Getter() ? Color.Yellow : Color.White,
+            0,
+            Vector2.Zero,
+            Vector2.One);
+    }
+}
 public class DevToolHotbarButton : UIPanel
 {
     public DevToolHotbarButton(

@@ -13,7 +13,10 @@ public static class DevTools
     public static FreeCamera freeCamera;
     public static bool infiniteMana;
     public static bool showTimeSlider;
+    public static bool showFlagPanel;
     public static Vector2 freeCameraPosition;
+    public static bool placeAnywhere;
+    public static bool superPlacement;
     public static void UpdateFreeCameraPosition()
     {
         if (DevTools.freeCamera == FreeCamera.Freeze)

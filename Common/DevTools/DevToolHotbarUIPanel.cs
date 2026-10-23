@@ -58,6 +58,28 @@ public class DevToolHotbarUIPanel : UIPanel
                 DevTools.infiniteReach = !DevTools.infiniteReach;
             }));
 
+        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.MagicHandIcon.Asset,
+            () =>
+            {
+                var frame = DevTools.placeAnywhere ? 1 : 0;
+                return (frame, 2);
+            },
+            () =>
+            {
+                DevTools.placeAnywhere = !DevTools.placeAnywhere;
+            }));
+
+        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.SuperPlacementIcon.Asset,
+            () =>
+            {
+                var frame = DevTools.superPlacement ? 1 : 0;
+                return (frame, 2);
+            },
+            () =>
+            {
+                DevTools.superPlacement = !DevTools.superPlacement;
+            }));
+
         Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.ItemIcon.Asset,
             () =>
             {
@@ -160,6 +182,17 @@ public class DevToolHotbarUIPanel : UIPanel
                 TileUtilities.UpdateMap(new Rectangle(0, 0, Main.maxTilesX, Main.maxTilesY), 255);
             }));
 
+        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.FlagsIcon.Asset,
+            () =>
+            {
+                var frame = DevTools.showFlagPanel ? 1 : 0;
+                return (frame, 2);
+            },
+            () =>
+            {
+                DevTools.showFlagPanel = !DevTools.showFlagPanel;
+            }));
+
         foreach (var btn in Buttons)
         {
             Append(btn);
@@ -169,15 +202,15 @@ public class DevToolHotbarUIPanel : UIPanel
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        Left.Pixels = Main.screenWidth - Width.Pixels - 432;
-        Top.Pixels = 8;
+        Left.Pixels = Main.screenWidth / 2 - Width.Pixels / 2;
+        Top.Pixels = Main.screenHeight - 128;
         var i = 0;
         foreach (var btn in Buttons)
         {
             btn.Left.Pixels = i * 40 + 16;
             i++;
         }
-        Width.Pixels = 432;
+        Width.Pixels = Buttons.Count * 40 + 18;
         Height.Pixels = 64;
     }
     protected override void DrawSelf(SpriteBatch spriteBatch)

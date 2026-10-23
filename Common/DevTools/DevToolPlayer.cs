@@ -1,6 +1,8 @@
 ﻿using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
+
 
 namespace Stellamod.Common.DevTools;
 public class DevToolPlayer : ModPlayer
@@ -33,8 +35,20 @@ public class DevToolPlayer : ModPlayer
         }
         if (DevTools.infiniteReach)
             Player.controlSmart = false;
+        if (DevTools.superPlacement)
+        {
+            Item selected = Player.inventory[Player.selectedItem];
+            if (selected.channel)
+            {
+                return;
+            }
+            if (selected.createTile >= TileID.Dirt || selected.createWall >= 0 || selected.pick > 0 || selected.axe > 0 || selected.hammer > 0)
+            {
+                Player.itemTime = 0;
+            }
+        }
     }
-
+   
     public override void PreUpdateMovement()
     {
         base.PreUpdateMovement();

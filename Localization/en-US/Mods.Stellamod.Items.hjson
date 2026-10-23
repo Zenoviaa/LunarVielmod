@@ -1,4 +1,5 @@
 Common: {
+	SlimeRain: Slime Rain
 	SpecialAttack: Special Attack
 	MoreInfoPressShift: "{0} [c/414141:({1} for more)]"
 	MoreInfoHideShift: "{0} [c/414141:({1} to hide)]"
