@@ -67,7 +67,7 @@ public class RoyalCapitalSky : CustomSky
         BackgroundDrawParameters draw = DrawUtilities.CalculateScaledBackgroundDraw(texture.Value.Size());
         spriteBatch.Draw(texture.Value,
            draw.DrawOffset,
-            draw.SourceRectangle, Color.White * 0.3f, 0, drawOrigin, 8, SpriteEffects.None, 0);
+            draw.SourceRectangle, Main.ColorOfTheSkies * 1f, 0, drawOrigin, 8, SpriteEffects.None, 0);
 
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer,

@@ -2,7 +2,7 @@ sampler spriteSampler : register(s0);
 sampler noiseSampler : register(s1);
 float uTime;
 
-float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
+float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tcolor : COLOR0) : COLOR0
 {
     // Normalized pixel coordinates (from 0 to 1)
     //Calculate Distortion
@@ -29,7 +29,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
         col = lerp(col, targetCol, 0.25);
     }
     float4 fragColor = float4(col, 1.0);
-    return fragColor;
+    return fragColor * tcolor;
 }
 
 technique SpriteDrawing
