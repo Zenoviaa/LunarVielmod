@@ -163,7 +163,7 @@ namespace Stellamod.Core.TriggersSystem.Triggers
 
             Point point = new Point(_npcTrigger.position.X, _npcTrigger.position.Y);
             if (!string.IsNullOrEmpty(_npcTrigger.bossToSpawn))
-                BossToSpawn = ModContent.Find<ModNPC>(_npcTrigger.bossToSpawn);
+                BossToSpawn = ModContent.Find<ModNPC>(_npcTrigger.bossToSpawn).NPC;
             SpawnPoint.Point = _npcTrigger.spawnOffset + point;
         }
 
@@ -201,7 +201,7 @@ namespace Stellamod.Core.TriggersSystem.Triggers
 
 
         //Fields to Edit
-        public ModNPC BossToSpawn;
+        public NPC BossToSpawn;
         public DraggablePointField SpawnPoint;
         public DraggablePointButton SpawnOffsetButton;
         public NPCSelectButton SelectNPCButton;
@@ -212,7 +212,7 @@ namespace Stellamod.Core.TriggersSystem.Triggers
             if (BossToSpawn == null)
                 return;
             Point point = new Point(_npcTrigger.position.X, _npcTrigger.position.Y);
-            _npcTrigger.bossToSpawn = Stellamod.Instance.Name + "/" + BossToSpawn.Name;
+            _npcTrigger.bossToSpawn = Stellamod.Instance.Name + "/" + BossToSpawn.ModNPC.Name;
             _npcTrigger.spawnOffset = SpawnPoint.Point - point;
         }
 
@@ -224,8 +224,8 @@ namespace Stellamod.Core.TriggersSystem.Triggers
             Vector2 spawnPoint = SpawnPoint.Point.ToWorldCoordinates() - Main.screenPosition;
             if (BossToSpawn != null)
             {
-                Texture2D texture = ModContent.Request<Texture2D>(BossToSpawn.Texture).Value;
-                int frameCount = Main.npcFrameCount[BossToSpawn.Type];
+                Texture2D texture = ModContent.Request<Texture2D>(BossToSpawn.ModNPC.Texture).Value;
+                int frameCount = Main.npcFrameCount[BossToSpawn.ModNPC.Type];
                 int frameHeight = texture.Height / frameCount;
                 Rectangle rectangle = new Rectangle(0, 0, texture.Width, frameHeight);
                 spriteBatch.Draw(texture,

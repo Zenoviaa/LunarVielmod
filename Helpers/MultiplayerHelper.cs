@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.ClassReworkSystem;
+using Stellamod.Common.DevTools;
 using Stellamod.Common.DialogueTowning;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.GooberDialogue;
@@ -67,6 +68,19 @@ namespace Stellamod
             byte player;
             switch (id)
             {
+                case MessageType.ClearItems:
+                    WorldDevTools.HandleClearItemsPacket(reader);
+                    break;
+                case MessageType.SetTime:
+                    WorldDevTools.HandleTimeSyncPacket(reader);
+                    break;
+                case MessageType.SetDisableNPCSpawns:
+                    WorldDevTools.HandleDisableNPCSpawnsPacket(reader);
+                    break;
+                case MessageType.SetFrozenTime:
+                    
+                    WorldDevTools.HandleFreezeTimePacket(reader);
+                    break;
                 case MessageType.CutsceneSync:
                     CutsceneHandler.ReceiveCutsceneSync(reader, whoAmI);
                     break;

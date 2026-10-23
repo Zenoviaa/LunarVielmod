@@ -12,9 +12,9 @@ namespace Stellamod.Core.TriggersSystem
 {
     public class NPCSelectButton : UIPanel
     {
-        private readonly Action<ModNPC> _changeFunc;
+        private readonly Action<NPC> _changeFunc;
        
-        public NPCSelectButton(string pointName, Action<ModNPC> changeFunc)
+        public NPCSelectButton(string pointName, Action<NPC> changeFunc)
         {
             _changeFunc = changeFunc;
             Width.Pixels = 256;
@@ -58,7 +58,7 @@ namespace Stellamod.Core.TriggersSystem
             popupUISystem.OpenUI(viewer);
             SoundEngine.PlaySound(SoundID.MenuTick);
         }
-        private void OnSelectNPC(ModNPC npc)
+        private void OnSelectNPC(NPC npc)
         {
             EditorPopupSystem popupUISystem = ModContent.GetInstance<EditorPopupSystem>();
             popupUISystem.CloseUI();

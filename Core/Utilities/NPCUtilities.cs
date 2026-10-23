@@ -124,7 +124,26 @@ public static class NPCUtilities
                 ModContent.NPCType<T>(), x, y);
         }
     }
+    public static void SpawnNPCFromClient(Vector2 position, int npcType) 
+    {
+        int x = (int)position.X;
+        int y = (int)position.Y;
+        if (Main.netMode != NetmodeID.MultiplayerClient)
+        {
+            IEntitySource source = new EntitySource_Misc("BossSpawn");
+            NPC npc = NPC.NewNPCDirect(source, x, y,
+               npcType);
+            npc.netUpdate = true;
+        }
+        else
+        {
+            if (Main.netMode == NetmodeID.SinglePlayer)
+                return;
 
+            MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+                npcType, x, y);
+        }
+    }
     /// <summary>
     /// Receives a request to change an NPC's ai slots from a client
     /// </summary>

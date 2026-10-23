@@ -15,7 +15,6 @@ public class ItemBrowserSystem : BaseUISystem
 
     //Here's how it'll work
     //Since the player's inventory is on the left we'll naturally right align it but you can drag the window anywhere
-    bool _pressed;
     private UserInterface _userInterface;
     private GameTime _lastUpdateUiGameTime;
     public ItemBrowserUIState browserUIState;
@@ -28,7 +27,6 @@ public class ItemBrowserSystem : BaseUISystem
         browserUIState.Activate();
     }
 
-
     public void OpenUI()
     {
         //Create a new editing context
@@ -40,9 +38,9 @@ public class ItemBrowserSystem : BaseUISystem
 
     public void CloseUI()
     {
-
         _userInterface.SetState(null);
     }
+
     public void ToggleUI()
     {
         if (_userInterface.CurrentState == null)
@@ -51,18 +49,10 @@ public class ItemBrowserSystem : BaseUISystem
             CloseUI();
     }
 
+    public bool IsOpen() => _userInterface.CurrentState != null;
     public override void UpdateUI(GameTime gameTime)
     {
-        
-        if (InputHelper.KeyDown(Keys.F1))
-        {
-            _pressed = true;
-        }
-        else if (_pressed && InputHelper.KeyUp(Keys.F1))
-        {
-            ToggleUI();
-            _pressed = false;
-        }
+       
         _lastUpdateUiGameTime = gameTime;
         if (_userInterface?.CurrentState != null)
         {

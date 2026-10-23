@@ -183,7 +183,7 @@ namespace Stellamod.Core.TriggersSystem.Triggers
 
             Point point = new Point(_bossSpawnTrigger.position.X, _bossSpawnTrigger.position.Y);
             if (!string.IsNullOrEmpty(_bossSpawnTrigger.bossToSpawn))
-                BossToSpawn = ModContent.Find<ModNPC>(_bossSpawnTrigger.bossToSpawn);
+                BossToSpawn = ModContent.Find<ModNPC>(_bossSpawnTrigger.bossToSpawn).NPC;
             SpawnPoint.Point = _bossSpawnTrigger.spawnOffset + point;
             TopLeft.Point = _bossSpawnTrigger.topLeftOffset + point;
             BottomRight.Point = _bossSpawnTrigger.bottomRightOffset + point;
@@ -234,7 +234,7 @@ namespace Stellamod.Core.TriggersSystem.Triggers
         public DraggablePointField SpawnPoint;
         public DraggablePointField TopLeft;
         public DraggablePointField BottomRight;
-        public ModNPC BossToSpawn;
+        public NPC BossToSpawn;
 
         public DraggablePointButton SpawnOffsetButton;
         public DraggablePointButton TopLeftButton;
@@ -247,7 +247,7 @@ namespace Stellamod.Core.TriggersSystem.Triggers
             if (BossToSpawn == null)
                 return;
             Point point = new Point(_bossSpawnTrigger.position.X, _bossSpawnTrigger.position.Y);
-            _bossSpawnTrigger.bossToSpawn = Stellamod.Instance.Name + "/" + BossToSpawn.Name;
+            _bossSpawnTrigger.bossToSpawn = Stellamod.Instance.Name + "/" + BossToSpawn.ModNPC.Name;
             _bossSpawnTrigger.spawnOffset = SpawnPoint.Point - point;
             _bossSpawnTrigger.topLeftOffset = TopLeft.Point - point;
             _bossSpawnTrigger.bottomRightOffset = BottomRight.Point - point;
@@ -268,8 +268,8 @@ namespace Stellamod.Core.TriggersSystem.Triggers
 
             if (BossToSpawn != null)
             {
-                Texture2D texture = ModContent.Request<Texture2D>(BossToSpawn.Texture).Value;
-                int frameCount = Main.npcFrameCount[BossToSpawn.Type];
+                Texture2D texture = ModContent.Request<Texture2D>(BossToSpawn.ModNPC.Texture).Value;
+                int frameCount = Main.npcFrameCount[BossToSpawn.ModNPC.Type];
                 int frameHeight = texture.Height / frameCount;
                 Rectangle rectangle = new Rectangle(0, 0, texture.Width, frameHeight);
                 spriteBatch.Draw(texture,

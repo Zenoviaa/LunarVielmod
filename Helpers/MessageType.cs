@@ -50,6 +50,11 @@
 
         GameFlagClear,
         GameFlagReset,
+
+        SetDisableNPCSpawns,
+        SetFrozenTime,
+        SetTime,
+        ClearItems
     }
 
     public enum DialogueType : byte

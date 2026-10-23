@@ -12345,3 +12345,8 @@ WitchCarvedStoneItem: {
 	DisplayName: Witch Carved Stone
 	Tooltip: An intricately carved out stone...
 }
+
+NPCSpawner: {
+	DisplayName: NPC Spawner
+	Tooltip: ""
+}

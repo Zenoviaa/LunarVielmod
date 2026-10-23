@@ -9,6 +9,53 @@ namespace Stellamod.Core.LunarLightingSystem;
 
 public partial class LunarLightingRenderer
 {
+    static Color[] SunColors
+    {
+        get
+        {
+            field ??= new Color[]
+            {
+                    new Color(8, 79, 126).Towards(Color.White, 0.5f),
+                  Color.SkyBlue,
+
+                    new Color(255, 173, 63),
+                       new Color(255, 173, 63),
+                                new Color(255, 173, 63),
+                                         new Color(255, 173, 63),
+                                            new Color(255, 173, 63),
+
+
+
+                    Color.White,
+                   Color.White,
+                        Color.White,
+                             Color.White,
+                                  Color.White,
+                    Color.White,
+                   Color.White,
+                        Color.White,
+                             Color.White,
+                                  Color.White,
+
+                    new Color(255, 173, 63),
+                   new Color(255, 173, 63),
+                            new Color(255, 173, 63),
+                                     new Color(255, 173, 63),
+                                        new Color(255, 173, 63),
+                     Color.SkyBlue,
+                    new Color(8, 79, 126).Towards(Color.White, 0.5f),
+            };
+            return field;
+        }
+    }
+    public static Color GetSunColor(float interpolant)
+    {
+        if (interpolant >= 1f)
+            return SunColors[0];
+        Color interpolatedColor = DrawUtilities.InterpolateColorArray(interpolant, SunColors);
+        return interpolatedColor;
+    }
+
     public Color GetSunColor()
     {
         Color[] sunColors = new Color[]
