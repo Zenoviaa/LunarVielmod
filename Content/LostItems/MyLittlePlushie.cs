@@ -1,4 +1,5 @@
 ﻿using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -71,9 +72,39 @@ namespace Stellamod.Content.LostItems
             MyLittlePlushiePlayer plushiePlayer = drawPlayer.GetModPlayer<MyLittlePlushiePlayer>();
             if (plushiePlayer.hasLittlePlushie)
             {
-                scale *= 0.5f;
+                var sb = Main.spriteBatch;
+                sb.EndOut(out var oldParameters);
+                using var screenTarget = RT.Context(RenderTargets.ScreenTarget);
+                using(RT.Clear(screenTarget, Color.Transparent))
+                {
+                    scale *= 0.5f;
+                    sb.Begin(oldParameters);
+                    orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
+                    sb.End();
+                }
+
+
+                var pixelattePass = AssetReferences.Effects.CrystalShaders.Pixelate.CreatePixelPass();
+                pixelattePass.Parameters.width = screenTarget.Width / 2;
+                pixelattePass.Parameters.height = screenTarget.Height / 2;
+                pixelattePass.Apply();
+                var spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    Main.Rasterizer,
+                    pixelattePass.Shader);
+                spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.End();
+                sb.Begin(oldParameters);
             }
-            orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
+            else
+            {
+                orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
+            }
+
         }
     }
 

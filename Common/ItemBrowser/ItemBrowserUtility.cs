@@ -1,7 +1,14 @@
-﻿using Stellamod.Common.XixianFlaskSystem;
+﻿using Stellamod.Common.GunSystem;
+using Stellamod.Common.IgnitersNPowders;
+using Stellamod.Common.SummonerSystem;
+using Stellamod.Common.WeaponTypes;
+using Stellamod.Common.WeaponTypes.CombatTools;
+using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Items;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -62,6 +69,7 @@ namespace Stellamod.Common.ItemBrowser
             for (int i = 0; i < numMeleeWeaponTypes; i++)
             {
                 MeleeWeaponType weaponType = (MeleeWeaponType)i;
+          
                 Category meleeSubCategory = new Category(weaponType.ToString(), (x) =>
                 {
                     BaseSwingItemV2 baseSwingItemV2 = x.ModItem as BaseSwingItemV2;
@@ -71,6 +79,39 @@ namespace Stellamod.Common.ItemBrowser
                 });
                 subMelee[i] = meleeSubCategory;
             }
+
+            Category[] subRange =
+            [
+                new Category("Gun", (x) => x.ModItem is not null and BaseGun),
+                new Category("Bow", (x) => x.ModItem is not null and BaseCrossbowItem),
+                new Category("Meteor Hammer", (x) => x.ModItem is not null and BaseChainedBallItem),
+                new Category("Gun Holster", (x) => x.ModItem is not null and MiniGun),
+                new Category("Combat Tool", (x) => x.TryGetGlobalItem<CombatTool>(out var ct) && ct.isCombatTool),
+                new Category("Igniter Cards", (x) => x.ModItem is not null and BaseIgniterCard),
+                new Category("Igniter Powders", (x) => x.ModItem is not null and BasePowder)
+            ];
+
+
+            Category[] subMage = 
+            [
+                new Category("Wand", (x) => x.ModItem is not null and AbstractMagicWand),
+                new Category("Mana Sphere", (x) => x.TryGetGlobalItem<ManaSphereGlobalItem>(out var ms) && ms.isManaSphere),
+                new Category("Tome", (x) => x.ModItem is not null and BaseMagicTomeItem),
+                new Category("Artifact", (x) => x.TryGetGlobalItem<ArtifactGlobalItem>(out var ag) && ag.isMagicArtifact)
+            ];
+
+
+            Category[] subSummon =
+            [
+                new Category("Rune", (x) => x.ModItem is not null and BaseRune),
+                new Category("Chakram", (x) => x.ModItem is not null and BaseSwingItemV2 sb && sb.meleeWeaponType == MeleeWeaponType.Chakrams),
+                new Category("Guardian", (x) => x.TryGetGlobalItem<BellMinionGlobalItem>(out var bm) && bm.isGuardian),
+                new Category("Necronomicon", (x) => x.TryGetGlobalItem<Necronomicon>(out var nc) && nc.isNecronomicon),
+                new Category("Minion", (x) => x.TryGetGlobalItem<BellMinionGlobalItem>(out var bm) && bm.isBellMinion)
+            ];
+
+         
+
             Category melee = new Category("Melee", (x) =>
             {
                 return x.DamageType == DamageClass.Melee;
@@ -80,15 +121,15 @@ namespace Stellamod.Common.ItemBrowser
             Category ranged = new Category("Ranged", (x) =>
             {
                 return x.DamageType == DamageClass.Ranged;
-            });
+            }, subRange);
             Category mage = new Category("Mage", (x) =>
             {
                 return x.DamageType == DamageClass.Magic;
-            });
+            }, subMage);
             Category summon = new Category("Summon", (x) =>
             {
                 return x.DamageType == DamageClass.Summon;
-            });
+            }, subSummon);
             Category whip = new Category("Whips", (x) =>
             {
                 return x.DamageType == DamageClass.SummonMeleeSpeed;

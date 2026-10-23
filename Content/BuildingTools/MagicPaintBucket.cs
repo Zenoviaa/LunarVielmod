@@ -198,6 +198,7 @@ public class MagicTilePlacer : ModSystem
     {
         base.Load();
         On_Player.FigureOutWhatToPlace += AllowAnythingToPlace;
+
     }
 
     public override void Unload()
