@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.Graphics.Capture;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
@@ -49,8 +50,14 @@ namespace Stellamod.Assets.Biomes
         }
 
 
-        public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneAlcadzia = true;
-        public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneAlcadzia = false;
+        public override void OnEnter(Player player)
+        {
+            player.GetModPlayer<MyPlayer>().ZoneAlcadzia = true;
+        }
+        public override void OnLeave(Player player)
+        {
+            player.GetModPlayer<MyPlayer>().ZoneAlcadzia = false;
+        }
         // Calculate when the biome is active.
 
 

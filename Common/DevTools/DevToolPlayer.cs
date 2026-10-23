@@ -132,7 +132,7 @@ public class DevToolHotbarButton : UIPanel
             drawer.color = Color.Lerp(drawer.color, Color.Black, 0.5f);
         drawer.VerticalFrame(framing.frame, framing.frameCount);
         drawer.CenterOrigin();
-
+       
         drawer.worldPosition = rect.Center() + Main.screenPosition;
         spriteBatch.Draw(drawer);
     }

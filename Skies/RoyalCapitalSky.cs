@@ -7,17 +7,18 @@ namespace Stellamod.Skies;
 
 public class RoyalCapitalSky : CustomSky
 {
+    bool _isActive;
     public override void Activate(Vector2 position, params object[] args)
     {
-
+        _isActive = true;
     }
 
     public override void Deactivate(params object[] args)
     {
-
+        _isActive = false;
     }
 
-    public override bool IsActive() =>!Main.gameMenu;
+    public override bool IsActive() =>!Main.gameMenu && _isActive;
 
     public override void Reset()
     {
@@ -66,7 +67,7 @@ public class RoyalCapitalSky : CustomSky
         BackgroundDrawParameters draw = DrawUtilities.CalculateScaledBackgroundDraw(texture.Value.Size());
         spriteBatch.Draw(texture.Value,
            draw.DrawOffset,
-            draw.SourceRectangle, Color.White * 0.3f, 0, drawOrigin, 4, SpriteEffects.None, 0);
+            draw.SourceRectangle, Color.White * 0.3f, 0, drawOrigin, 8, SpriteEffects.None, 0);
 
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer,

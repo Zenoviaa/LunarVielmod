@@ -15,7 +15,7 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower
 {
     public class MoonspiralTowerBiome : BaseUrdveilBiome
     {
-        public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
+        public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
         public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
         // Select Music

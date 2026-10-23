@@ -79,12 +79,13 @@ namespace Stellamod.Core.LunarLightingSystem
                 return;
             if (ModContent.GetInstance<DomainExpansionManager>().noRender)
                 return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             //The back water target isn't used until later
             //So we can use it for RT swapping
-           
-            using(RT.Clear(Main.instance.backWaterTarget, Color.Transparent))
+           using var tileTarget = RT.Context(RenderTargets.TileTarget);
+            using(RT.Clear(tileTarget, Color.Transparent))
             {
                 var ssaoPass = AssetReferences.Effects.Lighting.SSAO.CreateBlackPass();
                 ssaoPass.Parameters.stepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
@@ -107,11 +108,11 @@ namespace Stellamod.Core.LunarLightingSystem
                 spriteBatch.Begin(
                     SpriteSortMode.Deferred,
                     BlendState.AlphaBlend,
-                    SamplerState.AnisotropicClamp,
+                    SamplerState.LinearClamp,
                     DepthStencilState.None,
                     RasterizerState.CullNone,
                     null);
-                spriteBatch.Draw(Main.instance.backWaterTarget, Vector2.Zero, Color.White);
+                spriteBatch.Draw(tileTarget, Vector2.Zero, Color.White);
                 spriteBatch.End();
             }
 

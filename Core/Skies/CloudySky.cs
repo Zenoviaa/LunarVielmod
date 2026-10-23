@@ -8,6 +8,7 @@ namespace Stellamod.Core.Skies
 {
     public class CloudySky : CustomSky
     {
+        bool _isActive;
         private Vector2 _parallax;
         private Vector2 _lastCameraPos;
 
@@ -15,15 +16,15 @@ namespace Stellamod.Core.Skies
 
         public override void Activate(Vector2 position, params object[] args)
         {
-
+            _isActive = true;
         }
 
         public override void Deactivate(params object[] args)
         {
-
+            _isActive = false;
         }
 
-        public override bool IsActive() => !Main.gameMenu;
+        public override bool IsActive() => !Main.gameMenu && _isActive;
 
         public override void Reset()
         {
