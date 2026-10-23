@@ -20,7 +20,6 @@ namespace Stellamod.Common.ItemBrowser
     /// </summary>
     public class ItemBrowserWindow : UIPanel
     {
-        private UIImage _backgroundSquare;
         private UIScrollbar _scrollbar;
         private UIScrollbar _sortingScrollbar;
         private XButton _xButton;
@@ -28,19 +27,8 @@ namespace Stellamod.Common.ItemBrowser
         private ItemBrowserTabMenu _tabMenu;
         private UIInputTextField _textBox;
         private ItemBrowserModFilterButton _modFilterButton;
-        private readonly Asset<Texture2D> BackgroundSquareTexture;
         public ItemBrowserWindow() : base()
         {
-            string texturePath = typeof(ItemBrowserWindow).DirectoryHere() + "/ItemBrowserMenu";
-            BackgroundSquareTexture = ModContent.Request<Texture2D>(texturePath);
-            _backgroundSquare = new UIImage(BackgroundSquareTexture)
-            {
-                HAlign = 0f,
-                VAlign = 0f,
-                AllowResizingDimensions = true,
-                ScaleToFit = true,
-            };
-
             _scrollbar = new FancyScrollbar();
             _sortingScrollbar = new FancyScrollbar();
             _xButton = new XButton(Close);
@@ -62,13 +50,9 @@ namespace Stellamod.Common.ItemBrowser
             Height.Pixels = 704;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
+            BackgroundColor = Color.Black * 0.5f;
 
-
-            Append(_backgroundSquare);
-
-
+            BorderColor = new Color(135, 97, 65) * 0.2f;
             _inventoryMenu.HAlign = 0.5f;
             _inventoryMenu.VAlign = 0.5f;
             Append(_inventoryMenu);
@@ -76,6 +60,8 @@ namespace Stellamod.Common.ItemBrowser
             _tabMenu.HAlign = 0.5f;
             _tabMenu.VAlign = 1f;
             Append(_tabMenu);
+
+            _xButton.HAlign = 1f;
             Append(_xButton);
 
             //Scrollbar
@@ -127,20 +113,27 @@ namespace Stellamod.Common.ItemBrowser
             Left.Pixels = _pos.X;
             Top.Pixels = _pos.Y;
 
-            _backgroundSquare.Width = Width;
-            _backgroundSquare.Height = Height;
-
-            _inventoryMenu.HAlign = 0.5f;
-            _inventoryMenu.VAlign = 0.25f;
-
-            _tabMenu.VAlign = 0.8f;
+            _xButton.HAlign = 1f;
+            _tabMenu.HAlign = 0f;
+            _tabMenu.VAlign = 0f;
+            _tabMenu.Width.Pixels = 196;
+            _tabMenu.Height.Pixels = 512;
+            _inventoryMenu.HAlign = 0.9f;
+            _inventoryMenu.VAlign = 1f;
+            _inventoryMenu.Height.Pixels = 629;
+            _inventoryMenu.Width.Pixels = 420;
+            _textBox.HAlign = 0.73f;
+            _textBox.VAlign = 0.0f;
+  
+            Width.Pixels = 666;
+            Height.Pixels = 364;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            _modFilterButton.Left.Pixels = 64;
-            _modFilterButton.Top.Pixels = 128;
+            _modFilterButton.Left.Pixels = 232;
+            _modFilterButton.Top.Pixels = 0;
             //Constantly lock the UI in the position regardless of resolution changes
             _inventoryMenu.SetSearchFilter(SearchFilter);
             SetPos();
@@ -158,6 +151,7 @@ namespace Stellamod.Common.ItemBrowser
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
+            this.QuickMouseInteraction();
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             Vector2 ratioPos = new Vector2(config.EnchantmentMenuX, config.EnchantmentMenuY);
             if (ratioPos.X < 0f || ratioPos.X > 100f)

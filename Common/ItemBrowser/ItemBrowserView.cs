@@ -70,7 +70,6 @@ namespace Stellamod.Common.ItemBrowser
                 Main.mouseItem = HoveringItem.Clone();
                 Main.mouseItem.stack = HoveringItem.maxStack;
             }
-            //
         }
 
         private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
@@ -83,8 +82,6 @@ namespace Stellamod.Common.ItemBrowser
             {
                 Main.mouseItem = HoveringItem.Clone();
             }
-
-            //
         }
 
         private bool NeedsUpdateCollection()
@@ -128,9 +125,13 @@ namespace Stellamod.Common.ItemBrowser
             }
 
             Vector2 topLeft = rectangle.TopLeft();
+            topLeft += new Vector2(24);
+     
             float availableWidth = GetInnerDimensions().Width;
-            float listPadding = 10;
-            Rectangle outerDimensions = new Rectangle(0, 0, 32, 32);
+            float listPadding = 12;
+
+            var size = 32;
+            Rectangle outerDimensions = new Rectangle(0, 0, size, size);
             Point mousePoint = Main.MouseScreen.ToPoint();
             string filter = string.Empty;
             if (!string.IsNullOrEmpty(SearchFilter))
@@ -143,7 +144,7 @@ namespace Stellamod.Common.ItemBrowser
             //Instead of using left and top variables
             //So let's do that
 
-
+            ElementsPerRow = 8;
             //We only want to draw the items that are actually in view
             //So we should calculate a starting inde
 
@@ -156,6 +157,8 @@ namespace Stellamod.Common.ItemBrowser
             }
             Item[] itemArr = SearchFilterItems;
             int elementsPerRow = ElementsPerRow;
+          
+
             float elementWidth = outerDimensions.Width;
             float viewWidth = availableWidth;
             float elementHeight = outerDimensions.Height;
@@ -163,11 +166,10 @@ namespace Stellamod.Common.ItemBrowser
             //Calculate the maximum height of the grid
             int itemRows = (itemArr.Length / elementsPerRow);
             float maximumHeight = itemRows * (elementHeight + listPadding);
-            Height.Pixels = maximumHeight + 32;
-
+            Height.Pixels = maximumHeight + 128;
 
             Texture2D slotTexture = SlotTextureAsset.Value;
-            Color drawColor = Color.Lerp(Color.White, Color.Black, 0.75f);
+            Color drawColor = Color.Lerp(Color.White, Color.Black, 0.5f);
             float drawScale = 1.2f;
             Vector2 drawOrigin = slotTexture.Size() / 2;
 
@@ -177,14 +179,21 @@ namespace Stellamod.Common.ItemBrowser
             //Caculate a starting and ending index for which items to draw
             int numRowsDownward = (int)(ViewPosition / (elementHeight + listPadding));
             int startIndex = numRowsDownward * elementsPerRow;
-            int endIndex = startIndex + elementsPerRow * 6;
+            int endIndex = startIndex + elementsPerRow * 12;
 
+            startIndex -= 16;
+            if (startIndex <= 0)
+                startIndex = 0;
 
+    
             //Now we're only loading the items that are in view! Yippee! Optimization!
             for (int i = startIndex; i < endIndex && i < itemArr.Length; i++)
             {
                 Item item = itemArr[i];
-
+                //Asynchronous load if it's not loaded to avoid lag spikes
+                //Draw functions will force immediate load otherwise
+                if (TextureAssets.Item[item.type].State == AssetState.NotLoaded)
+                    Main.Assets.Request<Texture2D>(TextureAssets.Item[item.type].Name, AssetRequestMode.AsyncLoad);
                 //Remmeber 9 elements per row
                 //We can use the modulus operator to get this to keep looping, since all elements are the same size
                 float leftOffset = i % elementsPerRow * (elementWidth + listPadding);
@@ -197,8 +206,8 @@ namespace Stellamod.Common.ItemBrowser
                 Vector2 centerPos = tl + new Vector2(16);
 
                 Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
-                spriteBatch.Draw(slotTexture, iconCenterPos, null, drawColor, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
-                ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale, 32, Color.White);
+                spriteBatch.Draw(slotTexture, iconCenterPos, null, drawColor, 0f, drawOrigin, _scale * 1.5F, SpriteEffects.None, 0f);
+                ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale * 0.9f, size, Color.White);
                 if (HoveringItem.stack > 1)
                 {
                     ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, item.stack.ToString(),
@@ -206,7 +215,7 @@ namespace Stellamod.Common.ItemBrowser
                 }
 
                 //Check if hovering for tooltip
-                Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, 32, 32);
+                Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, (int)size, (int)size);
                 if (hoverRectangle.Contains(mousePoint))
                 {
                     HoveringItem = item;

@@ -104,6 +104,10 @@ namespace Stellamod.Common.ItemBrowser
             }, melee, ranged, mage, summon, whip, sentries);
 
             //Armors
+            Category vanities = new Category("Vanity", (x) =>
+            {
+                return x.vanity;
+            });
             Category legs = new Category("Legs", (x) =>
             {
                 return x.legSlot != -1;
@@ -192,6 +196,7 @@ namespace Stellamod.Common.ItemBrowser
                     {
                         weapons,
                         armors,
+                        vanities,
                         accessories,
                         mounts,
                         pets,

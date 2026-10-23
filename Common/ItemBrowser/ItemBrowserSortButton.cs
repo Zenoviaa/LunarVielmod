@@ -63,10 +63,13 @@ namespace Stellamod.Common.ItemBrowser
             else
             {
 
-                _displayText.TextColor = Color.Lerp(Color.White, Color.Black, 0.6f);
+                _displayText.TextColor = Color.White;
             }
-           
-            if(IsMouseHovering && !Main.LocalPlayer.mouseInterface)
+            Width.Pixels = 256;
+            Height.Pixels = 48;
+            _displayText.SetText(_displayName, 1f, false);
+            _displayText.DynamicallyScaleDownToWidth = false ;
+            if (IsMouseHovering && !Main.LocalPlayer.mouseInterface)
             {
                 Main.LocalPlayer.mouseInterface = true;
             }

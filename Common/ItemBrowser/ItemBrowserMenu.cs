@@ -11,7 +11,6 @@ namespace Stellamod.Common.ItemBrowser
     /// </summary>
     public class ItemBrowserMenu : UIPanel
     {
-        private InventoryBackground _inventoryBackground;
         private UIGrid _grid;
         private UIPanel _panel;
         private UIScrollbar _scrollbar;
@@ -19,21 +18,19 @@ namespace Stellamod.Common.ItemBrowser
         private ItemBrowserView _view;
         public ItemBrowserMenu(UIScrollbar scrollbar)
         {
-            _inventoryBackground = new InventoryBackground();
             _panel = new UIPanel();
             _grid = new UIGrid();
             _scrollbar = scrollbar;
             _uiList = new UIList();
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
         }
 
         public override void OnInitialize()
         {
             base.OnInitialize();
             Width.Pixels = 428;
-            Height.Pixels = 236;
-            Append(_inventoryBackground);
+            Height.Pixels = 712;
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
 
             _panel.Width.Pixels = Width.Pixels;
             _panel.Height.Pixels = Height.Pixels;
@@ -50,15 +47,13 @@ namespace Stellamod.Common.ItemBrowser
             _panel.Append(_grid);
 
 
-
             _uiList.Width.Pixels = Width.Pixels;
             _uiList.Height.Pixels = Height.Pixels;
             _uiList.Add(_panel);
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
-
-
         }
+
         private Category _lastCategory;
         private string _lastSearchFilter;
         public bool modFilter;
@@ -104,8 +99,9 @@ namespace Stellamod.Common.ItemBrowser
         {
             base.Update(gameTime);
 
-
-            _panel.Height.Pixels = _view.Height.Pixels + 32;
+            Height.Pixels = 282;
+            Top.Pixels = 16;
+            _panel.Height.Pixels = _view.Height.Pixels;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
 
@@ -118,7 +114,6 @@ namespace Stellamod.Common.ItemBrowser
                 _view.ViewPosition = scrollRatio;
             }
 
-
             //Hacky way to get invisible scrollbar when there's no need for it
             if (_panel.Height.Pixels < Height.Pixels)
             {
@@ -126,9 +121,10 @@ namespace Stellamod.Common.ItemBrowser
             }
             else
             {
-                _scrollbar.Top.Set(0, 0.2f);
+                _scrollbar.Top.Set(0, 0f);
+                _scrollbar.Top.Pixels += 48;
             }
-            _scrollbar.Left.Set(0, 0.83f);
+            _scrollbar.Left.Set(0, 0.97f);
 
             _grid.ListPadding = 16;
         }
