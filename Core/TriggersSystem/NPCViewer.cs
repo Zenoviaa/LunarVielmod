@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Common.BossBannerSystem;
+using Stellamod.Common.DevTools;
 using Stellamod.Common.ItemBrowser;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.StructureSelector;
@@ -182,7 +183,7 @@ public class NPCBrowserView : UIPanel
             var scale = 1f;
             //Check if hovering for tooltip
             Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, (int)128, (int)size);
-            if (hoverRectangle.Contains(mousePoint))
+            if (hoverRectangle.Contains(mousePoint) || DevTools.spawnNPCType == item.type)
             {
                 scale = 1.2f;
                 HoveringItem = item;

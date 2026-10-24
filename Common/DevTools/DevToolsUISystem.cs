@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Stellamod.Core.TriggersSystem;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameInput;
@@ -13,6 +14,8 @@ namespace Stellamod.Common.DevTools;
 public class DevToolsUISystem : ModSystem
 {
     bool _pressed;
+    bool _rightDown;
+    bool _rightPressed;
     private UserInterface _userInterface;
     private UserInterface _npcUserInterface;
     private GameTime _lastUpdateUiGameTime;
@@ -39,6 +42,10 @@ public class DevToolsUISystem : ModSystem
     {
         _npcUserInterface.SetState(null);
     }
+    public bool IsNPCMenuOpen()
+    {
+        return _npcUserInterface.CurrentState != null;
+    }
     public void OpenUI()
     {
         //Create a new editing context
@@ -61,7 +68,7 @@ public class DevToolsUISystem : ModSystem
 
     public override void UpdateUI(GameTime gameTime)
     {
-    
+
         DevTools.UpdateFreeCameraPosition();
         if (InputHelper.KeyDown(Keys.F1))
         {
@@ -106,10 +113,19 @@ public class DevToolsUISystem : ModSystem
         }
     }
 
-    public void PostDrawFullScreenMap(ref string mouseText)
+    public override void PostDrawFullscreenMap(ref string mouseText)
     {
+        base.PostDrawFullscreenMap(ref mouseText);
 
-        if (Main.mouseRight && Main.mouseRightRelease)
+        _rightPressed = false;
+        var state = Mouse.GetState();
+        if (_rightDown && state.RightButton == ButtonState.Pressed)
+        {
+            _rightPressed = true;
+
+        }
+        _rightDown = state.RightButton == ButtonState.Pressed;
+        if (_rightPressed)
         {
             PlayerInput.SetZoom_Unscaled();
             int mapWidth = Main.maxTilesX * 16;
@@ -146,4 +162,9 @@ public class DevToolsUISystem : ModSystem
             PlayerInput.SetZoom_UI();
         }
     }
+    public void PostDrawFullScreenMap(ref string mouseText)
+    {
+    }
+
+
 }

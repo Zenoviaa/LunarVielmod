@@ -20,6 +20,36 @@ public class DevToolHotbarUIPanel : UIPanel
         Height.Pixels = 64;
         BackgroundColor = Color.Transparent;
         BorderColor = Color.Transparent;
+
+
+        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.ItemIcon.Asset,
+            () =>
+            {
+                var itemBrowser = ModContent.GetInstance<ItemBrowserSystem>();
+                var frame = itemBrowser.IsOpen() ? 1 : 0;
+                return (frame, 2);
+            },
+            () =>
+            {
+                var itemBrowser = ModContent.GetInstance<ItemBrowserSystem>();
+                itemBrowser.ToggleUI();
+            }));
+
+        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.NPCIcon.Asset,
+    () =>
+    {
+        var itemBrowser = ModContent.GetInstance<DevToolsUISystem>();
+        var frame = itemBrowser.IsNPCMenuOpen() ? 1 : 0;
+        return (frame, 2);
+    },
+    () =>
+    {
+        var itemBrowser = ModContent.GetInstance<DevToolsUISystem>();
+        itemBrowser.ToggleNPCMenuUI();
+    }));
+
+
+
         Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.GodmodeIcon.Asset,
             () =>
             {
@@ -79,20 +109,6 @@ public class DevToolHotbarUIPanel : UIPanel
             {
                 DevTools.superPlacement = !DevTools.superPlacement;
             }));
-
-        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.ItemIcon.Asset,
-            () =>
-            {
-                var itemBrowser = ModContent.GetInstance<ItemBrowserSystem>();
-                var frame = itemBrowser.IsOpen() ? 1 : 0;
-                return (frame, 2);
-            },
-            () =>
-            {
-                var itemBrowser = ModContent.GetInstance<ItemBrowserSystem>();
-                itemBrowser.ToggleUI();
-            }));
-
 
 
         Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.CameraIcon.Asset,
