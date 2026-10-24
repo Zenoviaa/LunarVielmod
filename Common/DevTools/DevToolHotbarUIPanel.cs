@@ -65,18 +65,21 @@ public class DevToolHotbarUIPanel : UIPanel
                 }
                 DevTools.godMode = (GodMode)godmode;
             }));
-
-        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.WingIcon.Asset,
+        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.CameraIcon.Asset,
             () =>
             {
-                var frame = DevTools.infiniteFlight ? 1 : 0;
-                return (frame, 2);
+                return ((int)DevTools.freeCamera, 3);
             },
             () =>
             {
-                DevTools.infiniteFlight = !DevTools.infiniteFlight;
+                var godmode = (int)DevTools.freeCamera;
+                godmode++;
+                if (godmode >= 3)
+                {
+                    godmode = 0;
+                }
+                DevTools.freeCamera = (FreeCamera)godmode;
             }));
-
         Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.ReachIcon.Asset,
             () =>
             {
@@ -111,21 +114,7 @@ public class DevToolHotbarUIPanel : UIPanel
             }));
 
 
-        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.CameraIcon.Asset,
-            () =>
-            {
-                return ((int)DevTools.freeCamera, 3);
-            },
-            () =>
-            {
-                var godmode = (int)DevTools.freeCamera;
-                godmode++;
-                if (godmode >= 3)
-                {
-                    godmode = 0;
-                }
-                DevTools.freeCamera = (FreeCamera)godmode;
-            }));
+
         Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.SpawnsIcon.Asset,
             () =>
             {
@@ -198,6 +187,17 @@ public class DevToolHotbarUIPanel : UIPanel
                 TileUtilities.UpdateMap(new Rectangle(0, 0, Main.maxTilesX, Main.maxTilesY), 255);
             }));
 
+        Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.WingIcon.Asset,
+            () =>
+            {
+                var frame = DevTools.infiniteFlight ? 1 : 0;
+                return (frame, 2);
+            },
+            () =>
+            {
+                DevTools.infiniteFlight = !DevTools.infiniteFlight;
+            }));
+
         Buttons.Add(new(AssetReferences.Assets.Textures.UI.DevTools.FlagsIcon.Asset,
             () =>
             {
@@ -219,7 +219,7 @@ public class DevToolHotbarUIPanel : UIPanel
     {
         base.Update(gameTime);
         Left.Pixels = Main.screenWidth / 2 - Width.Pixels / 2;
-        Top.Pixels = Main.screenHeight - 128;
+        Top.Pixels = Main.screenHeight - 164;
         var i = 0;
         foreach (var btn in Buttons)
         {

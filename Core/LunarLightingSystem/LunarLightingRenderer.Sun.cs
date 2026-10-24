@@ -7,9 +7,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem;
 
+
 public partial class LunarLightingRenderer
 {
-    static Color[] SunColors
+  
+    public static Color[] DefaultSunColors
     {
         get
         {
@@ -34,15 +36,15 @@ public partial class LunarLightingRenderer
                     Color.White,
                    Color.White,
                         Color.White,
-                             Color.White,
-                                  Color.White,
+                    Color.White,
+                    Color.White,
 
                     new Color(255, 173, 63),
-                   new Color(255, 173, 63),
-                            new Color(255, 173, 63),
-                                     new Color(255, 173, 63),
-                                        new Color(255, 173, 63),
-                     Color.SkyBlue,
+                    new Color(255, 173, 63),
+                    new Color(255, 173, 63),
+                    new Color(255, 173, 63),
+                    new Color(255, 173, 63),
+                    Color.SkyBlue,
                     new Color(8, 79, 126).Towards(Color.White, 0.5f),
             };
             return field;
@@ -51,48 +53,16 @@ public partial class LunarLightingRenderer
     public static Color GetSunColor(float interpolant)
     {
         if (interpolant >= 1f)
-            return SunColors[0];
-        Color interpolatedColor = DrawUtilities.InterpolateColorArray(interpolant, SunColors);
+            return DefaultSunColors[0];
+        Color interpolatedColor = DrawUtilities.InterpolateColorArray(interpolant, DefaultSunColors);
         return interpolatedColor;
     }
 
+    public static float DayProgress => Main.dayTime ? (float)Main.time / (float)Main.dayLength : (float)Main.time / (float)Main.nightLength;
     public Color GetSunColor()
     {
-        Color[] sunColors = new Color[]
-        {
-                new Color(8, 79, 126).Towards(Color.White, 0.5f),
-              Color.SkyBlue,
-
-                new Color(255, 173, 63),
-                   new Color(255, 173, 63),
-                            new Color(255, 173, 63),
-                                     new Color(255, 173, 63),
-                                        new Color(255, 173, 63),
-
-
-
-                Color.White,
-               Color.White,
-                    Color.White,
-                         Color.White,
-                              Color.White,
-                Color.White,
-               Color.White,
-                    Color.White,
-                         Color.White,
-                              Color.White,
-
-                new Color(255, 173, 63),
-               new Color(255, 173, 63),
-                        new Color(255, 173, 63),
-                                 new Color(255, 173, 63),
-                                    new Color(255, 173, 63),
-                 Color.SkyBlue,
-                new Color(8, 79, 126).Towards(Color.White, 0.5f),
-        };
-
-        float dayProgress = Main.dayTime ? (float)Main.time / (float)Main.dayLength : (float)Main.time / (float)Main.nightLength;
-        Color interpolatedColor = DrawUtilities.InterpolateColorArray(dayProgress, sunColors);
+        var sunColors = DefaultSunColors;
+        var interpolatedColor = DrawUtilities.InterpolateColorArray(DayProgress, sunColors);
         if (!Main.dayTime)
             interpolatedColor = sunColors[0];
         if (Main.LocalPlayer.ZoneRockLayerHeight && !Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMistyDungeonAnywhere)

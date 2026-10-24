@@ -33,11 +33,6 @@ namespace Stellamod.NPCs.Morrow
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.InModBiome<CathedralBiome>())
-            {
-                return 0.1f;
-            }
-
             return SpawnCondition.Cavern.Chance * 0f;
         }
 

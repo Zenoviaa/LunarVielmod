@@ -10,322 +10,357 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
-namespace Stellamod.Core.LunarLightingSystem
+namespace Stellamod.Core.LunarLightingSystem;
+
+public interface ISunColor
+{
+    void ModifySunColor(ref SkySettings targetSunColor, float sunInterpolant);
+}
+public struct SkySettings
+{
+    public Color TargetColorOfTheSkies;
+    public Color TargetTintSunColor;
+}
+
+[Autoload(Side = ModSide.Client)]
+public partial class LunarLightingRenderer : ModSystem,
+    IPostProcessingPass
 {
 
-    [Autoload(Side = ModSide.Client)]
-    public partial class LunarLightingRenderer : ModSystem,
-        IPostProcessingPass
+    private Vector2[] _offsets;
+    private Vector2[] Offsets
+    {
+        get
+        {
+            if (_offsets == null)
+            {
+                List<Vector2> offsets = new List<Vector2>(16);
+                UnifiedRandom random = new UnifiedRandom(1337);
+                for (int i = 0; i < 16; i++)
+                {
+                    offsets.Add(random.NextVector2Circular(16, 16));
+                }
+                _offsets = offsets.ToArray();
+            }
+            return _offsets;
+        }
+    }
+    //We're using 255 lights because that's how many values are in the alpha channel in color
+    //We're using the alpha channel to mask which shadows it checks for in the shadow map
+    //We could make a custom vertex structure if we need to have more
+    public const int MAX_POINT_LIGHTS = 255;
+    public const float POINT_LIGHT_DIAMETER = 800;
+    public int PostProcessPriority => 15;
+
+    private PointLights _pointLights;
+    private ShadowMap _shadowMap;
+    private Color _backLightColor;
+    private LazyRenderTargetProvider _lightsRT = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
+    private List<ILightEmitter> _emitters;
+    private List<IBackLightModifier> _backLightModifiers;
+    private readonly static List<ISunColor> _sunColorModifiers = new();
+    public Color SmoothedBackLightColor;
+    public Color BackLightColor;
+    public Color SunColor;
+    public Vector3 AmbientLight;
+    public bool leviathanDarken;
+
+    public float sunShadowAlpha;
+    public bool IsLightingEnabled => ModContent.GetInstance<LunarVeilClientConfig>().BeamingLights;
+    public override void Load()
+    {
+        _pointLights = new PointLights(MAX_POINT_LIGHTS);
+        _shadowMap = new ShadowMap(MAX_POINT_LIGHTS, 64);
+        _backLightModifiers = new List<IBackLightModifier>();
+        _emitters = new List<ILightEmitter>();
+ 
+        On_FilterManager.EndCapture += ApplyLighting;
+        On_Main.CheckMonoliths += RenderToLightMaps;
+        On_Main.RenderTiles += ApplySSAO;
+        On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
+        On_Main.DoDraw_Tiles_Solid += ApplySSAO;
+    }
+
+    private void ApplySSAO(On_Main.orig_RenderTiles orig, Main self)
+    {
+        orig(self);
+        if (!LightingHelper.CanRenderPostProcessingEffects)
+            return;
+        if (ModContent.GetInstance<DomainExpansionManager>().noRender)
+            return;
+
+        SpriteBatch spriteBatch = Main.spriteBatch;
+
+        //The back water target isn't used until later
+        //So we can use it for RT swapping
+       using var tileTarget = RT.Context(RenderTargets.TileTarget);
+        using(RT.Clear(tileTarget, Color.Transparent))
+        {
+            var ssaoPass = AssetReferences.Effects.Lighting.SSAO.CreateBlackPass();
+            ssaoPass.Parameters.stepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
+            ssaoPass.Parameters.offsets = Offsets;
+            ssaoPass.Apply();
+
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.AnisotropicClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+               ssaoPass.Shader);
+            spriteBatch.Draw(Main.instance.tileTarget, Vector2.Zero, Color.White);
+            spriteBatch.End();
+        }
+
+        using(RT.Clear(Main.instance.tileTarget, Color.Transparent))
+        {
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.LinearClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                null);
+            spriteBatch.Draw(tileTarget, Vector2.Zero, Color.White);
+            spriteBatch.End();
+        }
+
+    }
+
+    private void ApplySSAO(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
+    {
+        orig(self);
+        ApplySSAO();
+    }
+
+    private void ApplySSAO()
     {
 
-        private Vector2[] _offsets;
-        private Vector2[] Offsets
+
+    }
+
+    private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
+    {
+        if (!Main.gameMenu && IsLightingEnabled && LightingHelper.CanRenderPostProcessingEffects)
         {
-            get
-            {
-                if (_offsets == null)
-                {
-                    List<Vector2> offsets = new List<Vector2>(16);
-                    UnifiedRandom random = new UnifiedRandom(1337);
-                    for (int i = 0; i < 16; i++)
-                    {
-                        offsets.Add(random.NextVector2Circular(16, 16));
-                    }
-                    _offsets = offsets.ToArray();
-                }
-                return _offsets;
-            }
-        }
-        //We're using 255 lights because that's how many values are in the alpha channel in color
-        //We're using the alpha channel to mask which shadows it checks for in the shadow map
-        //We could make a custom vertex structure if we need to have more
-        public const int MAX_POINT_LIGHTS = 255;
-        public const float POINT_LIGHT_DIAMETER = 800;
-        public int PostProcessPriority => 15;
+            var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
+            // glowMaskBloomShader.Threshold = 0.5f;
+            glowMaskBloomShader.Threshold = 1F;
 
-        private PointLights _pointLights;
-        private ShadowMap _shadowMap;
-        private Color _backLightColor;
-        private LazyRenderTargetProvider _lightsRT = new LazyRenderTargetProvider(RenderTargetParameters.DefaultScreenTargetCreationFunc);
-        private List<ILightEmitter> _emitters;
-        private List<IBackLightModifier> _backLightModifiers;
 
-        public Color SmoothedBackLightColor;
-        public Color BackLightColor;
-        public Color SunColor;
-        public Vector3 AmbientLight;
-        public bool leviathanDarken;
+            //First we're going to draw the screen target to the lights RT while calculating which colors are bright so we don't kill glow masks and whatnot
+            GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch sb = Main.spriteBatch;
+            gDevice.SetRenderTarget(_lightsRT);
+            sb.Begin(SpriteSortMode.Deferred, CustomBlendStates.Brightest, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                glowMaskBloomShader.Effect);
+            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+            sb.End();
 
-        public float sunShadowAlpha;
-        public bool IsLightingEnabled => ModContent.GetInstance<LunarVeilClientConfig>().BeamingLights;
-        public override void Load()
-        {
-            _pointLights = new PointLights(MAX_POINT_LIGHTS);
-            _shadowMap = new ShadowMap(MAX_POINT_LIGHTS, 64);
-            _backLightModifiers = new List<IBackLightModifier>();
-            _emitters = new List<ILightEmitter>();
 
-            On_FilterManager.EndCapture += ApplyLighting;
-            On_Main.CheckMonoliths += RenderToLightMaps;
-            On_Main.RenderTiles += ApplySSAO;
-            On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
-            On_Main.DoDraw_Tiles_Solid += ApplySSAO;
-        }
+            //Take the screen target again and multiple the final light RT over it, to apply the lighting
+            gDevice.SetRenderTarget(Main.screenTargetSwap);
+            gDevice.Clear(Color.White);
 
-        private void ApplySSAO(On_Main.orig_RenderTiles orig, Main self)
-        {
-            orig(self);
-            if (!LightingHelper.CanRenderPostProcessingEffects)
-                return;
-            if (ModContent.GetInstance<DomainExpansionManager>().noRender)
-                return;
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                null);
+            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+            sb.End();
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
+            sb.Begin(SpriteSortMode.Deferred, blendState: CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+            sb.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            sb.End();
 
-            //The back water target isn't used until later
-            //So we can use it for RT swapping
-           using var tileTarget = RT.Context(RenderTargets.TileTarget);
-            using(RT.Clear(tileTarget, Color.Transparent))
-            {
-                var ssaoPass = AssetReferences.Effects.Lighting.SSAO.CreateBlackPass();
-                ssaoPass.Parameters.stepSize = Vector2.One / new Vector2(Main.instance.tileTarget.Width, Main.instance.tileTarget.Height) * 16;
-                ssaoPass.Parameters.offsets = Offsets;
-                ssaoPass.Apply();
+            //Put it back and let the rest of post processing take over
+            gDevice.SetRenderTarget(Main.screenTarget);
+            gDevice.Clear(Color.Transparent);
 
-                spriteBatch.Begin(
-                    SpriteSortMode.Deferred,
-                    BlendState.AlphaBlend,
-                    SamplerState.AnisotropicClamp,
-                    DepthStencilState.None,
-                    RasterizerState.CullNone,
-                   ssaoPass.Shader);
-                spriteBatch.Draw(Main.instance.tileTarget, Vector2.Zero, Color.White);
-                spriteBatch.End();
-            }
-
-            using(RT.Clear(Main.instance.tileTarget, Color.Transparent))
-            {
-                spriteBatch.Begin(
-                    SpriteSortMode.Deferred,
-                    BlendState.AlphaBlend,
-                    SamplerState.LinearClamp,
-                    DepthStencilState.None,
-                    RasterizerState.CullNone,
-                    null);
-                spriteBatch.Draw(tileTarget, Vector2.Zero, Color.White);
-                spriteBatch.End();
-            }
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+            sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+            sb.End();
 
         }
+        orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
+    }
 
-        private void ApplySSAO(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
+
+    public override void Unload()
+    {
+        base.Unload();
+        On_FilterManager.EndCapture -= ApplyLighting;
+        On_Main.CheckMonoliths -= RenderToLightMaps;
+        On_Main.DrawCachedNPCs -= DrawShadowsBehindTiles;
+    }
+
+    private static bool IsActive
+    {
+        get
         {
-            orig(self);
-            ApplySSAO();
+            DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
+            return !domainExpansionManager.inSpace;
+        }
+    }
+
+    private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
+    {
+        if (LightingHelper.CanRenderPostProcessingEffects)
+        {
+            RenderToLightsRT();
+        }
+        if(!Main.gameMenu)
+            UpdateLightColors();
+
+
+        orig();
+    }
+
+    private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
+    {
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        if (behindTiles && DrawSunShadows2() && IsActive && LightingHelper.CanRenderPostProcessingEffects)
+        {
+            spriteBatch.EndOut(out var oldParameters);
+            using var tileBlurRT = RT.Context(RenderTargets.ScreenTarget);
+            using var sunShadowRT = RT.Context(RenderTargets.ScreenTarget);
+            RenderShadows(tileBlurRT, sunShadowRT);
+            spriteBatch.Begin(oldParameters);
+            spriteBatch.Draw(sunShadowRT, Vector2.Zero, Color.White);
         }
 
-        private void ApplySSAO()
+        orig(self, npcCache, behindTiles);
+    }
+
+    public override void OnModLoad()
+    {
+        base.OnModLoad();
+        PostProcessingRenderer.AddPass(this);
+    }
+
+    public override void ClearWorld()
+    {
+        base.ClearWorld();
+        ClearLightingData();
+    }
+
+    private void ClearLightingData()
+    {
+        _emitters.Clear();
+        _backLightModifiers.Clear();
+        _sunColorModifiers.Clear();
+    }
+
+    public override void PostUpdateWorld()
+    {
+        base.PostUpdateWorld();
+    }
+
+    private static bool DrawSunShadows2()
+    {
+        var config = ModContent.GetInstance<LunarVeilClientConfig>();
+        return config.SunShadows2;
+    }
+
+    public override void PreUpdateNPCs()
+    {
+        base.PreUpdateNPCs();
+        leviathanDarken = false;
+    }
+
+    public override void PostUpdateTime()
+    {
+        base.PostUpdateTime();
+
+    }
+
+    void UpdateLightColors()
+    {
+        AmbientLight = Color.White.ToVector3();
+        BackLightColor = Color.Black;
+        if (Main.LocalPlayer.ZoneUnderworldHeight)
         {
-
-
+            BackLightColor = Color.White * 0.8f;
         }
-
-        private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
+        if ((Main.LocalPlayer.ZoneSnow ||
+            Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower)
+            && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
         {
-            if (!Main.gameMenu && IsLightingEnabled && LightingHelper.CanRenderPostProcessingEffects)
-            {
-                var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
-                // glowMaskBloomShader.Threshold = 0.5f;
-                glowMaskBloomShader.Threshold = 1F;
-
-
-                //First we're going to draw the screen target to the lights RT while calculating which colors are bright so we don't kill glow masks and whatnot
-                GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-                SpriteBatch sb = Main.spriteBatch;
-                gDevice.SetRenderTarget(_lightsRT);
-                sb.Begin(SpriteSortMode.Deferred, CustomBlendStates.Brightest, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                    glowMaskBloomShader.Effect);
-                sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-                sb.End();
-
-
-                //Take the screen target again and multiple the final light RT over it, to apply the lighting
-                gDevice.SetRenderTarget(Main.screenTargetSwap);
-                gDevice.Clear(Color.White);
-
-                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                    null);
-                sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-                sb.End();
-
-                sb.Begin(SpriteSortMode.Deferred, blendState: CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                sb.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-                sb.End();
-
-                //Put it back and let the rest of post processing take over
-                gDevice.SetRenderTarget(Main.screenTarget);
-                gDevice.Clear(Color.Transparent);
-
-                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                sb.End();
-
-            }
-            orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
+            Color color1 = Color.Lerp(Color.LightGreen, Color.LightPink, ExtraMath.Osc(0f, 1f, speed: 0.4f));
+            Color color2 = Color.Lerp(Color.Cyan, color1, ExtraMath.Osc(0f, 1f, offset: 1, speed: 0.4f));
+            Color finalColor = Color.Lerp(Color.White, color2, ExtraMath.Osc(0f, 1f, offset: 2, speed: 0.4f) * 0.5f);
+            BackLightColor = finalColor * 0.8f;
         }
 
 
-        public override void Unload()
+        BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
+        MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+
+
+        foreach (var backLightModifier in _backLightModifiers)
         {
-            base.Unload();
-            On_FilterManager.EndCapture -= ApplyLighting;
-            On_Main.CheckMonoliths -= RenderToLightMaps;
-            On_Main.DrawCachedNPCs -= DrawShadowsBehindTiles;
+            backLightModifier.ModifyBackLight(ref BackLightColor);
         }
 
-        private static bool IsActive
+        _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
+        SmoothedBackLightColor = _backLightColor;
+
+        var sunColor = GetSunColor();
+        SkySettings skySettings = new();
+        skySettings.TargetTintSunColor = sunColor;
+        foreach (var sunColorModifier in _sunColorModifiers)
         {
-            get
-            {
-                DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
-                return !domainExpansionManager.inSpace;
-            }
+            sunColorModifier.ModifySunColor(ref skySettings, DayProgress);
+     
         }
-
-        private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
-        {
-            if (LightingHelper.CanRenderPostProcessingEffects)
-            {
-                RenderToLightsRT();
-            }
-            if(!Main.gameMenu)
-                UpdateLightColors();
-
-
-            orig();
-        }
-
-        private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            if (behindTiles && DrawSunShadows2() && IsActive && LightingHelper.CanRenderPostProcessingEffects)
-            {
-                spriteBatch.EndOut(out var oldParameters);
-                using var tileBlurRT = RT.Context(RenderTargets.ScreenTarget);
-                using var sunShadowRT = RT.Context(RenderTargets.ScreenTarget);
-                RenderShadows(tileBlurRT, sunShadowRT);
-                spriteBatch.Begin(oldParameters);
-                spriteBatch.Draw(sunShadowRT, Vector2.Zero, Color.White);
-            }
-
-            orig(self, npcCache, behindTiles);
-        }
-
-        public override void OnModLoad()
-        {
-            base.OnModLoad();
-            PostProcessingRenderer.AddPass(this);
-        }
-
-        public override void ClearWorld()
-        {
-            base.ClearWorld();
-            ClearLightingData();
-        }
-
-        private void ClearLightingData()
-        {
-            _emitters.Clear();
-            _backLightModifiers.Clear();
-        }
-
-        public override void PostUpdateWorld()
-        {
-            base.PostUpdateWorld();
-        }
-
-        private static bool DrawSunShadows2()
-        {
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            return config.SunShadows2;
-        }
-
-        public override void PreUpdateNPCs()
-        {
-            base.PreUpdateNPCs();
-            leviathanDarken = false;
-        }
-
-        public override void PostUpdateTime()
-        {
-            base.PostUpdateTime();
-
-        }
-
-        void UpdateLightColors()
-        {
-            AmbientLight = Color.White.ToVector3();
-            BackLightColor = Color.Black;
-            if (Main.LocalPlayer.ZoneUnderworldHeight)
-            {
-                BackLightColor = Color.White * 0.8f;
-            }
-            if ((Main.LocalPlayer.ZoneSnow ||
-                Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower)
-                && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
-            {
-                Color color1 = Color.Lerp(Color.LightGreen, Color.LightPink, ExtraMath.Osc(0f, 1f, speed: 0.4f));
-                Color color2 = Color.Lerp(Color.Cyan, color1, ExtraMath.Osc(0f, 1f, offset: 1, speed: 0.4f));
-                Color finalColor = Color.Lerp(Color.White, color2, ExtraMath.Osc(0f, 1f, offset: 2, speed: 0.4f) * 0.5f);
-                BackLightColor = finalColor * 0.8f;
-            }
-
-
-            BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
-            MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
-
-
-            foreach (var backLightModifier in _backLightModifiers)
-            {
-                backLightModifier.ModifyBackLight(ref BackLightColor);
-            }
-
-            _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
-            SmoothedBackLightColor = _backLightColor;
-            SunColor = Color.Lerp(SunColor, GetSunColor(), 0.1f);
-
-            bool nosunShadows = Main.LocalPlayer.ZoneRockLayerHeight || Main.LocalPlayer.ZoneUnderworldHeight;
-            if (nosunShadows)
-            {
-                sunShadowAlpha = MathHelper.Lerp(sunShadowAlpha, 0f, 0.1f);
-            }
-            else
-            {
-                sunShadowAlpha = MathHelper.Lerp(sunShadowAlpha, 1f, 0.1f);
-
-            }
-        }
-
-        public override void PostDrawTiles()
-        {
-            base.PostDrawTiles();
  
-        }
+        SunColor = Color.Lerp(SunColor, skySettings.TargetTintSunColor, 0.1f);
 
-        public void AddBackLight(IBackLightModifier backLightModifier)
+        bool nosunShadows = Main.LocalPlayer.ZoneRockLayerHeight || Main.LocalPlayer.ZoneUnderworldHeight;
+        if (nosunShadows)
         {
-            _backLightModifiers.Add(backLightModifier);
+            sunShadowAlpha = MathHelper.Lerp(sunShadowAlpha, 0f, 0.1f);
         }
-
-        public void RemoveBackLight(IBackLightModifier backLightModifier)
+        else
         {
-            _backLightModifiers.Remove(backLightModifier);
+            sunShadowAlpha = MathHelper.Lerp(sunShadowAlpha, 1f, 0.1f);
+
         }
-
-
-        public void RenderToScreen()
+    }
+    public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
+    {
+        base.ModifySunLightColor(ref tileColor, ref backgroundColor);
+        var sunColor = GetSunColor();
+        SkySettings skySettings = new();
+        skySettings.TargetTintSunColor = sunColor;
+        skySettings.TargetColorOfTheSkies = backgroundColor;
+        foreach (var sunColorModifier in _sunColorModifiers)
         {
- 
+            sunColorModifier.ModifySunColor(ref skySettings, DayProgress);
+
         }
+        backgroundColor = skySettings.TargetColorOfTheSkies;
+    }
+
+    public override void PostDrawTiles()
+    {
+        base.PostDrawTiles();
+
+    }
+
+    public static void AddSunColor(ISunColor sunColor) => _sunColorModifiers.Add(sunColor);
+    public static void RemoveSunColor(ISunColor sunColor) => _sunColorModifiers.Remove(sunColor);
+    public void AddBackLight(IBackLightModifier backLightModifier)
+    {
+        _backLightModifiers.Add(backLightModifier);
+    }
+
+    public void RemoveBackLight(IBackLightModifier backLightModifier)
+    {
+        _backLightModifiers.Remove(backLightModifier);
+    }
+
+
+    public void RenderToScreen()
+    {
+
     }
 }

@@ -175,25 +175,52 @@ public class CustomBGManager : ModSystem
         }
         float drawScale = 2 * bg.DrawScale * bgLayer.DrawScale;
 
-        if (bg.SnapParallaxY != 0)
+        if(bg.DrawScreenPositionYStart != 0)
+        {
+            drawPosition.Y -= bg.DrawScreenPositionYStart * 512;
+
+            var diffParallaxY = bg.ParallaxReferenceY - Main.Camera.Center.Y;
+
+            var dist = MathF.Abs(diffParallaxY);
+
+            var factor = EasingFunction.InOutSine(dist / 512F);
+            var diffDrawY = diffParallaxY * factor;
+            if (diffDrawY > 0)
+                diffDrawY *= 1f;
+            else
+                diffDrawY *= 0;
+
+            var snappingParallaxY = (float)(diffDrawY * bgLayer.SnapParallaxYFactor);
+            var newY = snappingParallaxY;
+          //  newY -= (float)bgLayer.Texture.Height() * drawScale;
+            //newY += bgLayer.DrawOffset.Y;
+
+            //Main.NewText(newY);
+            drawPosition.Y += newY;
+        }
+        else if (bg.SnapParallaxY != 0)
         {
             var diffParallaxY = bg.ParallaxReferenceY - Main.Camera.Center.Y;
             var drawY = bg.SnapParallaxY - Main.screenPosition.Y;
             var dist = MathF.Abs(diffParallaxY);
-            var factor = EasingFunction.InOutSine(dist / 1024F);
+            var factor = EasingFunction.InOutSine(dist / 256);
             var diffDrawY = diffParallaxY;
-            if (diffDrawY < 0)
-                diffDrawY = 0;
-     
+    
+            if (diffDrawY > 0)
+                diffDrawY *= -2f;
+
             var snappingParallaxY = (int)(diffDrawY * bgLayer.SnapParallaxYFactor);
-            drawPosition.Y = drawY + snappingParallaxY * factor;
-            drawPosition.Y -= bgLayer.Texture.Height() * drawScale ;
+            var newY = drawY + snappingParallaxY;
+            newY -= bgLayer.Texture.Height() * drawScale;
+            newY += bgLayer.DrawOffset.Y;
+
+            drawPosition.Y = newY;
         }
         drawPosition.Y += bg.ParallaxYOffset;
 
 
        // Dust.NewDustPerfect(new Vector2(Main.LocalPlayer.Center.X, bg.SnapParallaxY), DustID.GemDiamond, Vector2.Zero, Scale: 3);
-        //Dust.NewDustPerfect(new Vector2(Main.LocalPlayer.Center.X, bg.ParallaxReferenceY), DustID.RedTorch, Vector2.Zero, Scale: 3);
+  //      Dust.NewDustPerfect(new Vector2(Main.LocalPlayer.Center.X, bg.ParallaxReferenceY), DustID.RedTorch, Vector2.Zero, Scale: 3);
 
         if (bgLayer.Shader != null)
         {

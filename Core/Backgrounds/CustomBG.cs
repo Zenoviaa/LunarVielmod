@@ -23,6 +23,8 @@ public abstract class CustomBG : ModType
     public bool ignoreSkyColor;
     public float SnapParallaxY;
     public float ParallaxReferenceY;
+
+    public float DrawScreenPositionYStart;
     public override void Unload()
     {
         base.Unload();

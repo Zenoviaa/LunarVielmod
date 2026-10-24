@@ -56,6 +56,7 @@ public class DevToolsUISystem : ModSystem
     public void CloseUI()
     {
         _userInterface.SetState(null);
+        _npcUserInterface.SetState(null);
     }
 
     public void ToggleUI()

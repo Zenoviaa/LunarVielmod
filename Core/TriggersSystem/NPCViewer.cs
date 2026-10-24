@@ -46,10 +46,12 @@ public class NPCBrowserView : UIPanel
 
         //Setup mouse interactions
         OnLeftClick += SpawnItem;
+        OnRightClick += SpawnItemInstantly;
         OnClick = onClick;
         Width.Set(32, 0f);
         Height.Set(32, 0f);
     }
+
 
     public Action<NPC> OnClick;
     public NPC[] Items;
@@ -67,6 +69,14 @@ public class NPCBrowserView : UIPanel
             return;
      
         OnClick(HoveringItem);
+        SoundEngine.PlaySound(SoundID.MenuTick);
+    }
+    private void SpawnItemInstantly(UIMouseEvent evt, UIElement listeningElement)
+    {
+        if (HoveringItem == null)
+            return;
+
+        NPCUtilities.SpawnNPCFromClient(Main.LocalPlayer.Center + new Vector2(Main.LocalPlayer.direction * 64, 0), HoveringItem.type);
         SoundEngine.PlaySound(SoundID.MenuTick);
     }
 
