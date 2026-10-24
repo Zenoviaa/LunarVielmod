@@ -14,6 +14,7 @@ namespace Stellamod.Core.Backgrounds
             BlendState = BlendState.AlphaBlend;
         }
         public Asset<Texture2D> Texture;
+        public Rectangle? SourceRct;
         public float Parallax;
         public Vector2 DrawOffset;
         public float DrawScale;

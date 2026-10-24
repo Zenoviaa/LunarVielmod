@@ -6,6 +6,7 @@ using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Assets.ContentReader.Pal;
 using Stellamod.Assets.Videos;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Fable;
 using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.TheFalling;
 using Stellamod.Content.Areas.WorldsEnd;
@@ -101,6 +102,9 @@ namespace Stellamod
 
                 SkyManager.Instance["Stellamod:WorldsEndSky"] = new WorldsEndSky();
                 SkyManager.Instance["Stellamod:WorldsEndSky"].Load();
+
+                SkyManager.Instance["LunarVeil:FableSky"] = new FableSky();
+                SkyManager.Instance["LunarVeil:FableSky"].Load();
 
 
                 SkyManager.Instance["Stellamod:AegislavSky"] = new AegislavSky();

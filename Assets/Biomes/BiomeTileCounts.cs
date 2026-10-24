@@ -162,7 +162,6 @@ namespace Stellamod
             WorldsEndCount = tileCounts[ModContent.TileType<WhiteGrass>()];
             MarshCount = tileCounts[ModContent.TileType<RainforestGrass>()];
             MorrowCount = tileCounts[ModContent.TileType<OvermorrowdirtTile>()];
-            //   CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];
             MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
             SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
             AbyssCount = tileCounts[ModContent.TileType<AbyssalDirt>()];
@@ -186,7 +185,6 @@ namespace Stellamod
             AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
             MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];
             ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
-            //         MothlightCount = tileCounts[ModContent.TileType<MothlightBrick>()];
             DarkspaceCount = tileCounts[TileID.Granite];
             DesertTownCount = tileCounts[TileID.SmoothSandstone];
         }
