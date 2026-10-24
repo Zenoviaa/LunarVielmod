@@ -178,7 +178,7 @@ namespace Stellamod.Core.PaletteShadingSystem
 
     }
 
-    public class FablePaletteEffect : PaletteEffect
+    public class WitchsFablePaletteEffect : PaletteEffect
     {
         public override PalettePriority Priority => PalettePriority.Medium;
         public override PaletteType PaletteType => PaletteType.LunarShader;

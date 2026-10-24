@@ -2,6 +2,7 @@
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.Areas.Collosseum.TilesCL;
+using Stellamod.Content.Areas.Fable.TilesFB;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
@@ -3668,10 +3669,11 @@ public partial class StellaWorld : ModSystem
         fableFalloffEnd.Y += 10;
 
         width = fableFalloffEnd.X - fableFalloffStart.X;
-        for (int x = fableFalloffStart.X; x < fableFalloffEnd.X; x++)
+        var startX = fableFalloffStart.X;
+        startX -= 90;
+        for (int x = startX; x < fableFalloffEnd.X - 16; x++)
         {
-            float ratio = (x - fableFalloffStart.X) / width;
-            int startY = (int)MathHelper.SmoothStep(fableFalloffStart.Y, fableFalloffEnd.Y, ratio);
+            int startY = fableFalloffStart.Y;
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
@@ -3692,7 +3694,7 @@ public partial class StellaWorld : ModSystem
             structurePath = StructureAssets.Fable,
             tileBlend = Structurizer.DefaultTileBlend
         });*/
-        Point caveOrigin = FableLocation + new Point(350, -170);
+        Point caveOrigin = FableLocation + new Point(352, -183);
  
         //Placing a falling off slope at the end of the structure
         Rectangle fableRect = Structurizer.ReadRectangle(StructureAssets.Fable);
@@ -3713,13 +3715,31 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-               VeilGen.QuickPlaceTile(tilePlace.X, y, TileID.Dirt);
+     //          VeilGen.QuickPlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("FableSurface");
+        var tiletoPlace = (ushort)ModContent.TileType<WitchCarvedStone>();
 
+        void SetTile(int tileX, int tileY, Color c)
+        {
+            var tile = Main.tile[tileX, tileY];
+            if(c.R > 200 && c.G < 10 && c.B < 10)
+            {
+                tile.ClearEverything();
+            }
+            else if(c.R > 200 && c.G > 200 && c.B < 10)
+            {
+                tile.ClearEverything();
+                VeilGen.QuickPlaceTile(tileX, tileY, tiletoPlace);
+            }
+            else
+            {
+
+            }
+        }
         Rectangle bounds = prefab.GetBounds(caveOrigin.X, caveOrigin.Y, PrefabPlacementType.FromTopRight);
-        prefab.PasteErase(caveOrigin, PrefabPlacementType.FromTopRight);
+        prefab.PasteErase(caveOrigin, PrefabPlacementType.FromTopRight, SetTile);
 
         FableFarEdgeLocation = fableFalloffEnd;
     }

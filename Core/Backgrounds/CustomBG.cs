@@ -21,6 +21,8 @@ public abstract class CustomBG : ModType
     public Color DrawColor = Color.White;
     public float LocalParallaxSpeed = 1f;
     public bool ignoreSkyColor;
+    public float SnapParallaxY;
+    public float ParallaxReferenceY;
     public override void Unload()
     {
         base.Unload();

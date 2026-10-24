@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Backgrounds;
@@ -172,9 +173,27 @@ public class CustomBGManager : ModSystem
                 drawPosition.Y = minY;
             drawPosition.Y -= 800;
         }
-
-        drawPosition.Y += bg.ParallaxYOffset;
         float drawScale = 2 * bg.DrawScale * bgLayer.DrawScale;
+
+        if (bg.SnapParallaxY != 0)
+        {
+            var diffParallaxY = bg.ParallaxReferenceY - Main.Camera.Center.Y;
+            var drawY = bg.SnapParallaxY - Main.screenPosition.Y;
+            var dist = MathF.Abs(diffParallaxY);
+            var factor = EasingFunction.InOutSine(dist / 1024F);
+            var diffDrawY = diffParallaxY;
+            if (diffDrawY < 0)
+                diffDrawY = 0;
+     
+            var snappingParallaxY = (int)(diffDrawY * bgLayer.SnapParallaxYFactor);
+            drawPosition.Y = drawY + snappingParallaxY * factor;
+            drawPosition.Y -= bgLayer.Texture.Height() * drawScale ;
+        }
+        drawPosition.Y += bg.ParallaxYOffset;
+
+
+       // Dust.NewDustPerfect(new Vector2(Main.LocalPlayer.Center.X, bg.SnapParallaxY), DustID.GemDiamond, Vector2.Zero, Scale: 3);
+        //Dust.NewDustPerfect(new Vector2(Main.LocalPlayer.Center.X, bg.ParallaxReferenceY), DustID.RedTorch, Vector2.Zero, Scale: 3);
 
         if (bgLayer.Shader != null)
         {

@@ -146,11 +146,88 @@ public static class BackgroundHelper
         public int yParallaxStartHeight;
         public Vector2 ParallaxSpeed;
     }
+    public static void DrawSurfaceWrappingBackgroundClampHeight(SpriteBatch spriteBatch, SurfaceWrappingBackground draw, int y)
+    {
+        LunarBackgroundShader backgroundShader = LunarBackgroundShader.Instance;
+        Color fadeToColor = Color.White;
+        fadeToColor.A = 0;
+        backgroundShader.FadeToColor = fadeToColor;
+        backgroundShader.Time = Main.GlobalTimeWrappedHourly * -1 * 0.1f;
+        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+
+        //Prepare sampler states
+        gDevice.Textures[1] = draw.Mid.Value;
+        gDevice.SamplerStates[1] = SamplerState.PointClamp;
+
+        gDevice.Textures[2] = draw.Far.Value;
+        gDevice.SamplerStates[2] = SamplerState.PointClamp;
+
+        gDevice.Textures[3] = draw.Underground.Value;
+        gDevice.SamplerStates[3] = SamplerState.PointClamp;
+
+
+        Vector2 closeParallax = new Vector2();
+        closeParallax.X = Main.screenPosition.X * draw.ParallaxSpeed.X * 0.0002f;
+
+ 
+        int worldSurfaceY = draw.yParallaxStartHeight;
+     
+        worldSurfaceY -= 0;
+        int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
+   
+     
+        closeParallax.Y = -diffY * 0.0001f;
+
+        closeParallax.Y += 0.2f;
+
+        Vector2 midParallax = new Vector2();
+        midParallax.X = Main.screenPosition.X * draw.ParallaxSpeed.X * 0.0002f * 0.5f;
+        midParallax.Y = closeParallax.Y;
+
+        Vector2 farParallax = new Vector2();
+        farParallax.X = Main.screenPosition.X * draw.ParallaxSpeed.X * 0.0002f * 0.25f + 0.25f;
+        farParallax.Y = closeParallax.Y;
+        farParallax.X += 0.35f;
+        //Set up parallax
+        Vector2[] parallax = new Vector2[3];
+        parallax[0] = farParallax;
+        parallax[1] = midParallax;
+        parallax[2] = closeParallax;
+        backgroundShader.Parallax = parallax;
+        backgroundShader.DustTexture = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
+
+        spriteBatch.Begin(SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.LinearWrap,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            backgroundShader.Effect);
+
+        Color baseColor = Color.White;
+        baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
+        Color drawColor = baseColor * draw.Alpha;
+        Vector2 drawScale = Vector2.One * 1.5f;
+        Vector2 yLock = new Vector2(0, diffY);
+        Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        spriteBatch.Draw(
+            draw.Close.Value,
+            yLock,
+            drawRect,
+            drawColor,
+            0f,
+            default,
+            scale: drawScale,
+            SpriteEffects.None,
+            0f
+        );
+
+        spriteBatch.End();
+    }
     public static void DrawSurfaceWrappingBackground(SpriteBatch spriteBatch, SurfaceWrappingBackground draw)
     {
         LunarBackgroundShader backgroundShader = LunarBackgroundShader.Instance;
         Color fadeToColor = Color.White;
-        fadeToColor.A = 25;
+        fadeToColor.A = 0;
         backgroundShader.FadeToColor = fadeToColor;
         backgroundShader.Time = Main.GlobalTimeWrappedHourly * -1 * 0.1f;
         GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
