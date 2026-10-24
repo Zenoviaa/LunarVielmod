@@ -172,6 +172,7 @@ namespace Stellamod.Core.Bases
                 SpinThrowDistance = 0,
                 SpinDegrees = 1,
                 AlwaysShowTrail = true,
+                soundPlayPoint = 0.5f,
                 Easing = EasingFunction.InOutExpo7,
                 Sound = LightSpin,
                 HitCount = 2
@@ -1171,11 +1172,9 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 64,
                 YSwingRadius = 48,
                 SwingDegrees = 135,
-                Easing = (float lerpValue) => EasingFunction.OutBounce(lerpValue),
+                Easing = (float lerpValue) => EasingFunction.InOutExpo(lerpValue),
                 Sound = spearSlash2,
             });
-
-
         }
         public static void AddSwordSwingStyle(ISwingProjectile swings)
         {

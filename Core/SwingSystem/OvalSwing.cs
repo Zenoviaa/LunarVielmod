@@ -21,8 +21,10 @@ public class OvalSwing : ISwing
         TrailOffset = 1.3f;
         HitCount = 1;
         ThrowTrailOffset = -48;
+        soundPlayPoint = 0.35f;
     }
 
+    public float soundPlayPoint;
     public const float TRAIL_START_OFFSET = 0.2f;
     public float Duration { get; set; }
     public int HitCount { get; set; }
@@ -150,7 +152,7 @@ public class OvalSwing : ISwing
     {
         //Calculate easing
         float easedInterpolant = Easing(time);
-        if (!_hasPlayedSound && easedInterpolant >= 0.35f && Sound != null)
+        if (!_hasPlayedSound && easedInterpolant >= soundPlayPoint && Sound != null)
         {
             SoundEngine.PlaySound(Sound, position);
             _hasPlayedSound = true;

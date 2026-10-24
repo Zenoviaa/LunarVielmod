@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.Areas.Dungeon;
+using Stellamod.Content.Areas.Fable;
 using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.WorldsEnd;
 using Stellamod.Content.Biomes;

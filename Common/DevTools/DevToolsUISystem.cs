@@ -70,11 +70,11 @@ public class DevToolsUISystem : ModSystem
     {
 
         DevTools.UpdateFreeCameraPosition();
-        if (InputHelper.KeyDown(Keys.F1))
+        if (InputHelper.KeyDown(Keys.OemOpenBrackets))
         {
             _pressed = true;
         }
-        else if (_pressed && InputHelper.KeyUp(Keys.F1))
+        else if (_pressed && InputHelper.KeyUp(Keys.OemOpenBrackets))
         {
             ToggleUI();
             _pressed = false;

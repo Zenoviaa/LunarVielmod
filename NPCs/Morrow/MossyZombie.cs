@@ -1,4 +1,4 @@
-﻿using Stellamod.Assets.Biomes;
+﻿using Stellamod.Content.Areas.Fable;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;

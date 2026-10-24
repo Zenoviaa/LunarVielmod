@@ -1,5 +1,5 @@
-﻿using Stellamod.Assets.Biomes;
-using Stellamod.Common.Particles;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Fable;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.Foreground;
@@ -15,6 +15,17 @@ public static class BiomeExtensions
 {
     extension(Player player)
     {
+        public bool ZoneWitchesFable
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneFable;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneFable = value;
+            }
+        }
         public bool ZoneHarmonicCoralways
         {
             get

@@ -130,7 +130,7 @@ public class SwordSwing : ISwing
         var swordEasing = GetOffset(time, targetRotation);
         float easedInterpolant = swordEasing.EasedInterpolant;
         swingProjectile.EasedInterpolant = easedInterpolant;
-        if (!_playedSound && easedInterpolant >= 0.35f && sound != null)
+        if (!_playedSound && easedInterpolant >= 0.5f && sound != null)
         {
             var soundInstance = sound.Value;
             if (!swingProjectile.isAfterImageProjectile)

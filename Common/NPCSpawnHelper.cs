@@ -1,5 +1,5 @@
-﻿using Stellamod.Assets.Biomes;
-using Stellamod.Content.Areas.Dungeon;
+﻿using Stellamod.Content.Areas.Dungeon;
+using Stellamod.Content.Areas.Fable;
 using Stellamod.Content.Areas.PunkerTown;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;

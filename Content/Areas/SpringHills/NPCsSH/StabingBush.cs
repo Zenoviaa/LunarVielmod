@@ -204,6 +204,8 @@ public class StabingBush : ModNPC,
         NPC.PlayAnimationOneShot(ANIM_OPENMOUTH);
         NPC.velocity *= 0.88f;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+        NPC.spriteDirection = _dashDirection.X < 0 ? -1 : 1;
+        NPC.direction = NPC.spriteDirection;
         if (IsLookingAtMe())
         {
             SwitchState(AIState.Idle);
@@ -263,6 +265,7 @@ public class StabingBush : ModNPC,
             _outliner.warning = true;
         }
         NPC.spriteDirection = _dashDirection.X < 0 ? -1 : 1;
+        NPC.direction = NPC.spriteDirection;
         NPC.PlayAnimationOneShot(ANIM_CHASING);
         Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
         if(Timer >= BiteTime)

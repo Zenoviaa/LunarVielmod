@@ -55,9 +55,9 @@ public class FlaskuserBladeSlash : BaseSwingProjectileV2
         swingSound1.PitchVariance = 0.25f;
         swingSound1.Volume = 0.25f;
 
-        SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.NormalSwordSlash2;
+        SoundStyle swingSound2 = AssetReferences.Assets.Sounds.Melee.SwordSwing5.Asset;
         swingSound2.PitchVariance = 0.25f;
-
+        swingSound2.Volume = 0.5f;
         SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.SwordSpin1;
         swingSound3.PitchVariance = 0.5f;
         swingSound3.Volume = 0.5f;
@@ -91,7 +91,7 @@ public class FlaskuserBladeSlash : BaseSwingProjectileV2
                 swingRadians = 2,
                 xRange = 96
             },
-            sound = s2,
+            sound = s1,
         });
 
         Add(new SwordSwing
@@ -103,7 +103,7 @@ public class FlaskuserBladeSlash : BaseSwingProjectileV2
                 swingRadians = 0.68f,
                 xRange = 96
             },
-            sound = s1,
+            sound = s2,
         });
 
         Add(new SwordSwing
@@ -125,7 +125,7 @@ public class FlaskuserBladeSlash : BaseSwingProjectileV2
             {
                 thrustDistance = 64,
             },
-            sound = s1,
+            sound = null,
         });
     }
 

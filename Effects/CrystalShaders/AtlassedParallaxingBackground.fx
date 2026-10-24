@@ -75,6 +75,28 @@ float4 HeatDistortionFunction(float4 sampleColor : COLOR0, float2 coords : TEXCO
     return spriteColor * sampleColor;
 }
 
+float4 SurfacePixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
+{
+    
+    float yTiling = 1.0 / tiling.y;
+    int parallaxIndex = coords.y / yTiling;
+    
+    //Since frac takes the number after decimal point we need to convert the coords to 0-1 to wrap it and then set it back
+    //It would not work otherwise
+    float2 parallaxingCoords = coords;
+    parallaxingCoords *= tiling;
+    parallaxingCoords += parallax[parallaxIndex];
+    if(parallaxingCoords.y < 0.0)
+        return float4(0.0, 0.0, 0.0, 0.0);
+    parallaxingCoords = frac(parallaxingCoords);
+    parallaxingCoords /= tiling;
+    
+    float2 finalCoords = offsets[parallaxIndex] + parallaxingCoords;
+    float4 spriteColor = tex2D(uImage0, finalCoords);
+    spriteColor.rgb = lerp(spriteColor.rgb, fadeToColor.rgb, finalCoords.y * fadeToColor.a);
+    return spriteColor * sampleColor;
+}
+
 technique SpriteDrawing
 {
     pass PixelPass
@@ -88,5 +110,13 @@ technique HeatDrawing
     pass HeatPass
     {
         PixelShader = compile ps_3_0 HeatDistortionFunction();
+    }
+};
+
+technique SurfaceDrawing
+{
+    pass SurfacePass
+    {
+        PixelShader = compile ps_3_0 SurfacePixelShaderFunction();
     }
 };

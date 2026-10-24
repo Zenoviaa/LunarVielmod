@@ -1,7 +1,9 @@
-﻿using ReLogic.Content;
+﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
+using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using System.Diagnostics;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Core.Backgrounds;
 
@@ -130,6 +132,144 @@ public static class BackgroundHelper
                 }
             }
 
+        }
+
+        spriteBatch.End();
+    }
+    public struct SurfaceWrappingBackground
+    {
+        public float Alpha;
+        public Asset<Texture2D> Mid;
+        public Asset<Texture2D> Close;
+        public Asset<Texture2D> Far;
+        public Asset<Texture2D> Underground;
+        public int yParallaxStartHeight;
+        public Vector2 ParallaxSpeed;
+    }
+    public static void DrawSurfaceWrappingBackground(SpriteBatch spriteBatch, SurfaceWrappingBackground draw)
+    {
+        LunarBackgroundShader backgroundShader = LunarBackgroundShader.Instance;
+        Color fadeToColor = Color.White;
+        fadeToColor.A = 25;
+        backgroundShader.FadeToColor = fadeToColor;
+        backgroundShader.Time = Main.GlobalTimeWrappedHourly * -1 * 0.1f;
+        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+
+        //Prepare sampler states
+        gDevice.Textures[1] = draw.Mid.Value;
+        gDevice.SamplerStates[1] = SamplerState.PointClamp;
+
+        gDevice.Textures[2] = draw.Far.Value;
+        gDevice.SamplerStates[2] = SamplerState.PointClamp;
+
+        gDevice.Textures[3] = draw.Underground.Value;
+        gDevice.SamplerStates[3] = SamplerState.PointClamp;
+
+
+        Vector2 closeParallax = new Vector2();
+        closeParallax.X = Main.screenPosition.X * draw.ParallaxSpeed.X * 0.0002f;
+
+
+
+        int worldSurfaceY = draw.yParallaxStartHeight;
+        worldSurfaceY -= 0;
+        int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
+        closeParallax.Y = -diffY * 0.0001f;
+        closeParallax.Y += 0.2f;
+
+        Vector2 midParallax = new Vector2();
+        midParallax.X = Main.screenPosition.X * draw.ParallaxSpeed.X * 0.0002f * 0.5f;
+        midParallax.Y = closeParallax.Y;
+
+        Vector2 farParallax = new Vector2();
+        farParallax.X = Main.screenPosition.X * draw.ParallaxSpeed.X * 0.0002f * 0.25f + 0.25f;
+        farParallax.Y = closeParallax.Y;
+        farParallax.X += 0.35f;
+        //Set up parallax
+        Vector2[] parallax = new Vector2[3];
+        parallax[0] = farParallax;
+        parallax[1] = midParallax;
+        parallax[2] = closeParallax;
+        backgroundShader.Parallax = parallax;
+        backgroundShader.DustTexture = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
+
+        spriteBatch.Begin(SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.LinearWrap,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            backgroundShader.Effect);
+
+        Color baseColor = Color.White;
+        baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
+        Color drawColor = baseColor * draw.Alpha;
+        Vector2 drawScale = Vector2.One * 1.5f;
+
+        Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        spriteBatch.Draw(
+            draw.Close.Value,
+            Vector2.Zero,
+            drawRect,
+            drawColor,
+            0f,
+            default,
+            scale: drawScale,
+            SpriteEffects.None,
+            0f
+        );
+
+        spriteBatch.End();
+    }
+    public static void DrawSurfaceAtlassedBackground(SpriteBatch spriteBatch, AtlassedBackgroundDraw draw)
+    {
+        Vector2[] parallax = new Vector2[10];
+        Vector2[] offsets = new Vector2[10];
+
+        int numBackgrounds = draw.numBackgrounds;
+        Color fadeToColor = draw.fadeToColor;
+        Vector2 cameraMovement = draw.cameraMovement;
+        float alpha = draw.alpha;
+
+        var bg = GaussianBlurHelper.ApplyBlurIfNecessary(draw.bg.Value);
+
+        for (int i = 0; i < numBackgrounds; i++)
+        {
+            offsets[i] = Vector2.Lerp(new Vector2(0f, 0), new Vector2(0f, 1f), i / (float)numBackgrounds);
+            parallax[i] = Vector2.Lerp(draw.parallax, Vector2.Zero, i / (float)numBackgrounds) * (cameraMovement) * 0.01f;
+            parallax[i] += draw.parallaxOffset;
+        }
+
+        AtlassedParallaxingBackgroundShader backgroundShader = AtlassedParallaxingBackgroundShader.Instance;
+        backgroundShader.Parallax = parallax;
+        backgroundShader.Offsets = offsets;
+        backgroundShader.Tiling = new Vector2(1f, numBackgrounds);
+        backgroundShader.FadeToColor = fadeToColor;
+        backgroundShader.Effect.CurrentTechnique = backgroundShader.Effect.Techniques["SurfaceDrawing"];
+
+
+        spriteBatch.Begin(SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointWrap,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            backgroundShader.Effect,
+            Main.GameViewMatrix.TransformationMatrix);
+
+        Color baseColor = draw.baseColor;
+        //  baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
+        Color drawColor = baseColor * alpha;
+
+        //view size scales with zoom scaling, by factoring this in the texture will always wrap much more than whatever your adapter is
+        Rectangle drawRect = new Rectangle(0, 0, (int)Main.ViewSize.X, (int)Main.ViewSize.Y);
+        for (int i = numBackgrounds - 1; i >= 0; i--)
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+            drawer.drawOrigin = Vector2.Zero;
+            drawer.scale = Vector2.One * 2;
+            drawer.color = drawColor;
+            drawer.VerticalFrame(i, numBackgrounds);
+ //           drawer.sourceRect = drawRect;
+            spriteBatch.Draw(drawer);
         }
 
         spriteBatch.End();

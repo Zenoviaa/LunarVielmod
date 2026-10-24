@@ -174,6 +174,11 @@ public class IvythornSlime : ModNPC,
     public override void AI()
     {
         base.AI();
+        if(_hopDirection == 0 && MultiplayerHelper.IsHost)
+        {
+            _hopDirection = Main.rand.NextBool(2) ? -1 : 1;
+            NPC.netUpdate = true;
+        }
         _outliner.SetDefaults();
         _contactDamage = false;
         switch (State)

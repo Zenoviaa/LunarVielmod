@@ -1,4 +1,5 @@
 ﻿
+using Stellamod.Content.Areas.Fable.TilesFB;
 using Stellamod.Content.Areas.Ishtar.TilesIS;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
@@ -147,6 +148,8 @@ namespace Stellamod
 
         public int HeatedDepthsCount;
         public static bool InHeatedDepths => ModContent.GetInstance<BiomeTileCounts>().HeatedDepthsCount >= 50;
+
+
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             CrimsonBridewellCount = tileCounts[ModContent.TileType<BridewellTile>()];
@@ -169,7 +172,7 @@ namespace Stellamod
             NaxtrinCount = tileCounts[ModContent.TileType<NoxianBlock>()];
             RoyalCapitalCount = tileCounts[ModContent.TileType<AlcazBlock>()];
             VeriCount = tileCounts[ModContent.TileType<VeriplantDirt>()];
-            FableCount = tileCounts[ModContent.TileType<GovheilTile>()];
+            FableCount = tileCounts[ModContent.TileType<WitchCarvedStone>()];
             SeaCount = tileCounts[ModContent.TileType<SeavathanBrick>()];
             XixCount = tileCounts[ModContent.TileType<HuntiacTile>()];
             EveroseCount = tileCounts[ModContent.TileType<VeriplantGrass>()];

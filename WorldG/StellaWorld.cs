@@ -143,14 +143,6 @@ public partial class StellaWorld : ModSystem
         tasks.Find(x => x.Name.Equals(passName)).Disable();
     }
 
-    private void DisableAllGenTasks(List<GenPass> tasks)
-    {
-        foreach (GenPass task in tasks)
-        {
-            task.Disable();
-        }
-    }
-
     private void ForceCrimson(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Nothing Lol";
@@ -3693,13 +3685,15 @@ public partial class StellaWorld : ModSystem
     public void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Daedus is Reading Books...";
+        /*
         Structurizer.PlaceAndProtect(new StructurePlacementParams
         {
             tile = FableLocation,
             structurePath = StructureAssets.Fable,
             tileBlend = Structurizer.DefaultTileBlend
-        });
-
+        });*/
+        Point caveOrigin = FableLocation + new Point(350, -170);
+ 
         //Placing a falling off slope at the end of the structure
         Rectangle fableRect = Structurizer.ReadRectangle(StructureAssets.Fable);
         Point fableFalloffStart = FableLocation + new Point(fableRect.Width, 0);
@@ -3719,9 +3713,13 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                VeilGen.QuickPlaceTile(tilePlace.X, y, TileID.Dirt);
+               VeilGen.QuickPlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("FableSurface");
+
+        Rectangle bounds = prefab.GetBounds(caveOrigin.X, caveOrigin.Y, PrefabPlacementType.FromTopRight);
+        prefab.PasteErase(caveOrigin, PrefabPlacementType.FromTopRight);
 
         FableFarEdgeLocation = fableFalloffEnd;
     }

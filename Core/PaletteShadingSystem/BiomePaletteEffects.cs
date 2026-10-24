@@ -184,7 +184,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-        
+     
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneFable)
                 return true;
