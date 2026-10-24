@@ -60,6 +60,19 @@ namespace Stellamod.Common.ItemBrowser
         public int ElementsPerRow;
         private void SpawnItemMaxStack(UIMouseEvent evt, UIElement listeningElement)
         {
+            if (InputHelper.KeyDown(Keys.LeftShift))
+            {
+                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), HoveringItem.type);
+            }
+            else
+            {
+                Main.mouseItem = HoveringItem.Clone();
+            }
+
+        }
+
+        private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
+        {
 
             if (InputHelper.KeyDown(Keys.LeftShift))
             {
@@ -69,18 +82,6 @@ namespace Stellamod.Common.ItemBrowser
             {
                 Main.mouseItem = HoveringItem.Clone();
                 Main.mouseItem.stack = HoveringItem.maxStack;
-            }
-        }
-
-        private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
-        {
-            if (InputHelper.KeyDown(Keys.LeftShift))
-            {
-                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), HoveringItem.type);
-            }
-            else
-            {
-                Main.mouseItem = HoveringItem.Clone();
             }
         }
 

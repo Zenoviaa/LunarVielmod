@@ -63,6 +63,9 @@ public class NPCBrowserView : UIPanel
     public bool BossFilter;
     private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
     {
+        if (HoveringItem == null)
+            return;
+     
         OnClick(HoveringItem);
         SoundEngine.PlaySound(SoundID.MenuTick);
     }
@@ -183,10 +186,16 @@ public class NPCBrowserView : UIPanel
             var scale = 1f;
             //Check if hovering for tooltip
             Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, (int)128, (int)size);
-            if (hoverRectangle.Contains(mousePoint) || DevTools.spawnNPCType == item.type)
+            if (hoverRectangle.Contains(mousePoint))
             {
                 scale = 1.2f;
                 HoveringItem = item;
+                color = Color.Yellow;
+            }
+
+            if(DevTools.spawnNPCType == item.type)
+            {
+                scale = 1.2f;
                 color = Color.Yellow;
             }
 
@@ -209,6 +218,7 @@ public class NPCViewerUIState : UIState
     public FancyScrollbar scrollbar;
 
     public NPCBossButton bossButton;
+    public NPCModButton modButton;
     public NPCViewerUIState(Action<NPC> onSelect) : base()
     {
         _onSelect = onSelect;
@@ -231,6 +241,9 @@ public class NPCViewerUIState : UIState
 
         bossButton = new(ui);
         Append(bossButton);
+
+        modButton = new(ui);
+        Append(modButton);
     }
     public override void Update(GameTime gameTime)
     {
@@ -242,6 +255,12 @@ public class NPCViewerUIState : UIState
         bossButton.Top.Pixels = Main.screenHeight / 2 - bossButton.Height.Pixels / 2 - 236;
         bossButton.Width.Pixels = 64;
         bossButton.Height.Pixels=32;
+
+        modButton.Left.Pixels = bossButton.Left.Pixels - 64;
+        modButton.Top.Pixels = bossButton.Top.Pixels;
+        modButton.Width.Pixels = bossButton.Width.Pixels;
+        modButton.Height.Pixels = bossButton.Height.Pixels;
+
         scrollbar.Left.Pixels = Main.screenWidth / 2 + ui.Width.Pixels / 2 - 36;
         scrollbar.Top.Pixels += 262;
         scrollbar.Height.Pixels = 380;
@@ -250,6 +269,44 @@ public class NPCViewerUIState : UIState
     }
 }
 
+public class NPCModButton : UIPanel
+{
+    public NPCModButton(NPCViewer viewer)
+    {
+        Viewer = viewer;
+    }
+    public readonly NPCViewer Viewer;
+    public override void OnInitialize()
+    {
+        base.OnInitialize();
+        Width.Pixels = 48;
+        Height.Pixels = 24;
+        OnLeftClick += ClickBoss;
+    }
+
+    private void ClickBoss(UIMouseEvent evt, UIElement listeningElement)
+    {
+        Viewer.ToggleMod();
+        SoundEngine.PlaySound(SoundID.MenuTick);
+    }
+
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+        base.DrawSelf(spriteBatch);
+        this.QuickMouseInteraction();
+        var rect = GetDimensions().ToRectangle();
+        var topLeft = rect.TopLeft();
+        ChatManager.DrawColorCodedStringWithShadow(
+            spriteBatch,
+            FontAssets.MouseText.Value, "Mod",
+            topLeft + new Vector2(8),
+            Viewer.onlyShowMod ? Color.Yellow : Color.White,
+            0,
+            Vector2.Zero,
+            Vector2.One);
+
+    }
+}
 public class NPCBossButton : UIPanel
 {
     public NPCBossButton(NPCViewer viewer)
@@ -316,6 +373,12 @@ public class NPCViewer : UIPanel
     public string FilterText;
     public bool onlyShowBosses;
     public bool onlyShowMod;
+    public void ToggleMod()
+    {
+        onlyShowMod = !onlyShowMod;
+        _view.ModFilter = onlyShowMod;
+        _view.ForceRefresh();
+    }
     public void ToggleBosses()
     {
         onlyShowBosses = !onlyShowBosses;
@@ -414,7 +477,8 @@ public class NPCViewer : UIPanel
 
         if (_view != null)
         {
-            _view.ModFilter = onlyShowBosses;
+            _view.ModFilter = onlyShowMod;
+            _view.BossFilter = onlyShowBosses;
             _view.ViewPosition = scrollRatio;
         }
 
