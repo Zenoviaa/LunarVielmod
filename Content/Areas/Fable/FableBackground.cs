@@ -1,11 +1,110 @@
-﻿using Stellamod.Content.Biomes;
+﻿using ReLogic.Content;
+using Stellamod.Common.BackgroundRendering;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Backgrounds;
 using Stellamod.Core.Effects;
+using System;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Stellamod.Content.Areas.Fable;
 
+public class FableBackgroundReal : ABackground
+{
+    float CalculateReferenceY()
+    {
+        var surfaceWorld = (float)Main.worldSurface;
+        surfaceWorld *= 16;
+        var SnapParallaxY = surfaceWorld - 2430;
+        var ParallaxReferenceY = SnapParallaxY - 384;
+        return ParallaxReferenceY;
+    }
+
+    float CalculateYParallaxOffset(float screenYStart, float parallaxYFactor, float referenceY)
+    {
+        float y = -screenYStart * 512;
+        var diffParallaxY = referenceY - Main.Camera.Center.Y;
+        var dist = MathF.Abs(diffParallaxY);
+        var factor = EasingFunction.InOutSine(dist / 666F);
+        var diffDrawY = diffParallaxY * factor;
+        if (diffDrawY > 0)
+            diffDrawY *= 1f;
+        else
+            diffDrawY *= 0;
+
+        var snappingParallaxY = (float)(diffDrawY * parallaxYFactor);
+        var newY = snappingParallaxY;
+        y += newY;
+        return y;
+    }
+
+    float Offset => 20;
+    void DrawBackgroundLayer(SpriteBatch spriteBatch, in BackgroundDrawing draw, Asset<Texture2D> background, int frame, int frameCount, float scale, float parallaxX, float parallaxY)
+    {
+        var drawPosition = Main.screenPosition;
+        var xLoops = draw.CalculateXLoops(background.Width());
+        var offset = CalculateYParallaxOffset(0.7f, parallaxY, CalculateReferenceY());
+
+        for (var x = -1; x < xLoops; x++)
+        {
+            var drawer = SpritebatchDrawer.FromTextureAsset(background, drawPosition);
+            drawer.drawOrigin = Vector2.Zero;
+            drawer.scale *= scale;
+            drawer.worldPosition += new Vector2((-draw.cameraMovement.X * parallaxX - drawer.Width * 1.25F) % (drawer.Width * scale), 0);
+            drawer.worldPosition.X += drawer.Width * scale * x;
+            drawer.worldPosition.Y += offset;
+            drawer.worldPosition.Y += Offset;
+            drawer.color = draw.lightColor * draw.opacity;
+            drawer.VerticalFrame(frame, frameCount);
+            Main.spriteBatch.Draw(drawer);
+        }
+    }
+    void DrawBackgroundLayer(SpriteBatch spriteBatch, in BackgroundDrawing draw, Asset<Texture2D> background, int frame, int frameCount, float scale, float parallaxX, float parallaxY, Vector2 drawOffset)
+    {
+        var drawPosition = Main.screenPosition;
+        var xLoops = draw.CalculateXLoops(background.Width());
+        var offset = CalculateYParallaxOffset(0.7f, parallaxY, CalculateReferenceY());
+
+        for (var x = -1; x < xLoops; x++)
+        {
+            var drawer = SpritebatchDrawer.FromTextureAsset(background, drawPosition);
+            drawer.drawOrigin = Vector2.Zero;
+            drawer.scale *= scale;
+            drawer.worldPosition += new Vector2(-draw.cameraMovement.X * parallaxX % (drawer.Width * scale), 0);
+            drawer.worldPosition.X += drawer.Width * scale * x;
+            drawer.worldPosition.Y += offset;
+            drawer.worldPosition.Y += Offset;
+            drawer.worldPosition += drawOffset;
+            drawer.color = draw.lightColor * draw.opacity;
+            drawer.VerticalFrame(frame, frameCount);
+            Main.spriteBatch.Draw(drawer);
+        }
+    }
+
+    public override void Draw(SpriteBatch spriteBatch, in BackgroundDrawing draw)
+    {
+        DrawBackgroundLayer(spriteBatch, draw, AssetReferences.Assets.Textures.Backgrounds.Fable.Asset, 3, 4, scale: 2, parallaxX: 0.1f, parallaxY: 0.1f, drawOffset: new Vector2(0, 533 * 2));
+        DrawBackgroundLayer(spriteBatch, draw, AssetReferences.Assets.Textures.Backgrounds.Fable.Asset, 2, 4, scale: 2, parallaxX: 0.06f, parallaxY: 0.1f);
+
+        DrawBackgroundLayer(spriteBatch, draw, AssetReferences.Assets.Textures.Backgrounds.Fable.Asset, 3, 4, scale: 2, parallaxX: 0.1f, parallaxY: 0.165f, drawOffset: new Vector2(0, 533 * 2));
+        DrawBackgroundLayer(spriteBatch, draw, AssetReferences.Assets.Textures.Backgrounds.Fable.Asset, 1, 4, scale: 2, parallaxX: 0.09f, parallaxY: 0.165f);
+        FableParticles.MiniWitch.Draw(spriteBatch, Main.screenPosition);
+        FableParticles.MiniLantern.Draw(spriteBatch, Main.screenPosition);
+
+        DrawBackgroundLayer(spriteBatch, draw, AssetReferences.Assets.Textures.Backgrounds.Fable.Asset, 0, 4, scale: 2, parallaxX: 0.12f, parallaxY: 0.25f);
+        DrawBackgroundLayer(spriteBatch, draw, AssetReferences.Assets.Textures.Backgrounds.Fable.Asset, 3, 4, scale: 2, parallaxX: 0.1f, parallaxY: 0.25f, drawOffset: new Vector2(0, 533*2));
+        FableParticles.Witch.Draw(spriteBatch, Main.screenPosition);
+        FableParticles.Lantern.Draw(spriteBatch, Main.screenPosition);
+        FableParticles.BigLantern.Draw(spriteBatch, Main.screenPosition);
+    }
+
+    public override bool IsActive()
+    {
+      // return false;
+        return Main.LocalPlayer.ZoneWitchesFable;
+    }
+}
 public class FableBackground : CustomBG
 {
     public CustomBGLayer bleedLayer;
@@ -76,6 +175,7 @@ public class FableBackground : CustomBG
 
     public override bool IsActive()
     {
+        return false;
         return Main.LocalPlayer.ZoneWitchesFable;
     }
 }

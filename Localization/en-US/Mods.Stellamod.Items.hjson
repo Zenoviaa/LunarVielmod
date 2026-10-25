@@ -12353,6 +12353,6 @@ NPCSpawner: {
 }
 
 FableGrassItem: {
-	DisplayName: Fable Grass Item
+	DisplayName: Fable Grass
 	Tooltip: ""
 }

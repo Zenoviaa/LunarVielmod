@@ -21,38 +21,91 @@ public class FableBiomePlayer : ModPlayer
         if (!Main.hasFocus)
             return;
 
-        if (!Main.dayTime && Main.rand.NextBool(16))
+        if (!Main.dayTime)
         {
-            var pos = Vector2.Zero;
-            pos.Y += Main.screenHeight;
-            pos.X += Main.rand.Next(0, Main.screenWidth);
-            var vel = new Vector2(2, 0);
-            vel *= Main.rand.NextFloat(0.5f, 2f);
-            if (Main.rand.NextBool(2))
+            if (Main.rand.NextBool(16))
             {
-                pos.X += Main.screenWidth;
-                vel.X *= -1;
+                var pos = Vector2.Zero;
+                pos.Y += Main.screenHeight;
+                pos.X += Main.rand.Next(0, Main.screenWidth);
+                var vel = new Vector2(2, 0);
+                vel *= Main.rand.NextFloat(0.5f, 2f);
+                if (Main.rand.NextBool(2))
+                {
+                    pos.X += Main.screenWidth;
+                    vel.X *= -1;
+                }
+
+                FableParticles.Lantern.Spawn(new()
+                {
+                    timeLeft = 1600,
+                    color = Color.White,
+                    position = pos,
+                    velocity = vel,
+                    scale = Main.rand.NextFloat(0.4f, 1f)
+                });
             }
 
-            FableParticles.Lantern.Spawn(new()
+            if (Main.rand.NextBool(16))
             {
-                timeLeft = 800,
-                color = Color.White,
-                position = pos,
-                velocity = vel,
-                scale = Main.rand.NextFloat(0.4f, 1f)
-            });
-            return;
-        }
-        if (!Main.dayTime)
-            return;
+                var pos = Vector2.Zero;
+                pos.Y += Main.screenHeight;
+                pos.X += Main.rand.Next(0, Main.screenWidth);
+                var vel = new Vector2(2, 0);
+                vel *= Main.rand.NextFloat(0.5f, 2f);
+                if (Main.rand.NextBool(2))
+                {
+                    pos.X += Main.screenWidth;
+                    vel.X *= -1;
+                }
 
+                FableParticles.MiniLantern.Spawn(new()
+                {
+                    timeLeft = 1600,
+                    color = Color.White,
+                    position = pos,
+                    velocity = vel,
+                    scale = Main.rand.NextFloat(0.4f, 1f) * 0.5F
+                });
+            }
+
+            if (Main.rand.NextBool(128))
+            {
+                var pos = Vector2.Zero;
+                pos.Y += Main.screenHeight;
+                pos.X += Main.rand.Next(0, Main.screenWidth);
+                var vel = new Vector2(2, 0);
+                vel *= Main.rand.NextFloat(0.5f, 2f);
+                if (Main.rand.NextBool(2))
+                {
+                    pos.X += Main.screenWidth;
+                    vel.X *= -1;
+                }
+
+                FableParticles.BigLantern.Spawn(new()
+                {
+                    timeLeft = 1600,
+                    color = Color.White,
+                    position = pos,
+                    velocity = vel,
+                    scale = Main.rand.NextFloat(0.4f, 1f)
+                });
+            }
+        }
+
+        var divMain = 128;
+        var divSmall = 64;
+        if (!Main.dayTime)
+        {
+            divMain *= 3;
+            divSmall *= 3;
+        }
         //Spawn particles
-        if (Main.rand.NextBool(64))
+        if (Main.rand.NextBool(divMain))
         {
             var pos = Vector2.Zero;
             pos.Y += Main.rand.Next(0, Main.screenHeight);
-            var vel = new Vector2(2, 0);
+            var vel = new Vector2(4, 0);
             vel *= Main.rand.NextFloat(0.5f, 2f);
             if(Main.rand.NextBool(2))
             {
@@ -70,11 +123,11 @@ public class FableBiomePlayer : ModPlayer
             });
         }
 
-        if (Main.rand.NextBool(32))
+        if (Main.rand.NextBool(divSmall))
         {
             var pos = Vector2.Zero;
-            pos.Y += Main.rand.Next(0, Main.screenHeight);
-            var vel = new Vector2(1, 0);
+            pos.Y += Main.rand.Next(0, Main.screenHeight / 2);
+            var vel = new Vector2(2, 0);
             vel *= Main.rand.NextFloat(0.5f, 2f);
             if (Main.rand.NextBool(2))
             {

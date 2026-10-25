@@ -15,6 +15,9 @@ public class FableParticles : ModSystem
     public static readonly FlyingWitchMiniParticles MiniWitch = new();
     public static readonly FlyingWitchParticles Witch = new();
     public static readonly FlyingLanterns Lantern = new();
+    public static readonly FlyingLanterns MiniLantern = new();
+    public static readonly FlyingLanternsBig BigLantern = new();
+    public static readonly NyoomSparkle NyoomSparkle = new();
     public override void Load()
     {
         base.Load();
@@ -25,6 +28,9 @@ public class FableParticles : ModSystem
         MiniWitch.Load(Mod);
         Witch.Load(Mod);
         Lantern.Load(Mod);
+        MiniLantern.Load(Mod);
+        BigLantern.Load(Mod);
+        NyoomSparkle.Load(Mod);
     }
     public override void OnModLoad()
     {
@@ -46,12 +52,13 @@ public class FableParticles : ModSystem
         MiniWitch.Update();
         Witch.Update();
         Lantern.Update();
+        MiniLantern.Update();
+        BigLantern.Update();
+        NyoomSparkle.Update();
     }
     private void DrawWitchParticles(OverlayManager manager, SpriteBatch batch, RenderLayers layers, bool arg4)
     {
-        MiniWitch.Draw(batch, Main.screenPosition);
-        Witch.Draw(batch, Main.screenPosition);
-        Lantern.Draw(batch, Main.screenPosition);
+
     }
 }
 public class FlyingWitchMiniParticles : ParticleUpdater<FlyingWitchMiniParticles.Data>
@@ -87,7 +94,7 @@ public class FlyingWitchMiniParticles : ParticleUpdater<FlyingWitchMiniParticles
             var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
-            drawer.color = particle.color * inAlpha * outAlpha;
+            drawer.color = particle.color * inAlpha * outAlpha * 0.75F;
             drawer.spriteEffects = particle.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
 
@@ -121,7 +128,6 @@ public class FlyingWitchMiniParticles : ParticleUpdater<FlyingWitchMiniParticles
         return 128;
     }
 }
-
 public class FlyingWitchParticles : ParticleUpdater<FlyingWitchParticles.Data>
 {
     public struct Data : IParticleData
@@ -176,6 +182,15 @@ public class FlyingWitchParticles : ParticleUpdater<FlyingWitchParticles.Data>
             particle.position += diff * -0.7f * particle.scale;
             particle.velocity.Y = MathF.Sin(particle.timeLeft * 0.03f) * 0.3f;
             particle.timeLeft--;
+            if (Main.rand.NextBool(16))
+            {
+                FableParticles.NyoomSparkle.Spawn(new()
+                {
+                    position = particle.position,
+                    timeLeft = 60,
+                    scale = particle.scale
+                });
+            }
         }
     }
 
@@ -206,7 +221,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
 
     public override ParticleFrameData FrameData => base.FrameData with
     {
-        FrameCount = 3,
+        FrameCount = 4,
         Texture = AssetReferences.Assets.Textures.Fable.Ambient.FloatingFableLantern.KEY
     };
 
@@ -221,7 +236,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
             ref var particle = ref _particles[i];
 
             var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
-            var inAlpha = EasingFunction.InOutSine((800F - particle.timeLeft) / 30f);
+            var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
             var framing = GetParticleFrame(particle.frame);
             var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
             drawer.sourceRect = framing.frame;
@@ -241,7 +256,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
                 ref var particle = ref _particles[i];
 
                 var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
-                var inAlpha = EasingFunction.InOutSine((800F - particle.timeLeft) / 30f);
+                var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
 
                 var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position + Main.screenPosition);
                 drawer.CenterOrigin();
@@ -276,11 +291,148 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
     public override void OnSpawn(ref Data particle, in int index)
     {
         base.OnSpawn(ref particle, index);
-        particle.frame = (byte)Main.rand.Next(3);
+        particle.frame = (byte)Main.rand.Next(4);
     }
 
     public override int GetPoolSize()
     {
         return 256;
+    }
+}
+public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
+{
+    public struct Data : IParticleData
+    {
+        public Color color;
+        public Vector2 position;
+        public Vector2 velocity;
+        public float rotation;
+        public float scale;
+        public float timeLeft;
+        public bool IsActive => timeLeft > 0;
+    }
+
+    public override ParticleFrameData FrameData => base.FrameData with
+    {
+        FrameCount = 1,
+        Texture = AssetReferences.Assets.Textures.Fable.Ambient.FloatingFableLanternBig.KEY
+    };
+
+
+
+    public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        if (_length <= 0)
+            return;
+        for (var i = 0; i < _length; i++)
+        {
+            ref var particle = ref _particles[i];
+
+            var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
+            var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
+            var framing = GetParticleFrame(0);
+            var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
+            drawer.sourceRect = framing.frame;
+            drawer.CenterOrigin();
+            drawer.color = particle.color * inAlpha * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i);
+
+
+            drawer.rotation = particle.rotation;
+            spriteBatch.Draw(drawer);
+        }
+
+
+        using (spriteBatch.Ctx(spriteBatch.Parameters with { blendState = CustomBlendStates.Max }))
+        {
+            for (var i = 0; i < _length; i++)
+            {
+                ref var particle = ref _particles[i];
+
+                var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
+                var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
+
+                var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position + Main.screenPosition);
+                drawer.CenterOrigin();
+                drawer.color = Color.DarkOrange * inAlpha * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i) * 0.3f;
+                drawer.color.A = 0;
+                drawer.rotation = particle.rotation;
+                drawer.worldPosition.Y += 8;
+                drawer.scale *= 0.7f;
+                spriteBatch.Draw(drawer);
+            }
+        }
+
+    }
+    protected override void UpdateParticles()
+    {
+        base.UpdateParticles();
+
+        var diff = (Main.screenPosition - Main.screenLastPosition);
+        for (int i = 0; i < _length; i++)
+        {
+            ref var particle = ref _particles[i];
+            particle.position += particle.velocity;
+            particle.position += diff * -0.6f * particle.scale;
+            particle.velocity.Y = MathHelper.Lerp(particle.velocity.Y, -1f, 0.1f);
+            particle.velocity.X = MathF.Sin(particle.timeLeft * 0.03f) * 0.03f;
+            particle.velocity.X += 0.35f;
+            particle.rotation = ExtraMath.Osc(-0.05f, 0.05f, speed: 2, offset: i);
+            particle.timeLeft--;
+        }
+    }
+
+    public override int GetPoolSize()
+    {
+        return 256;
+    }
+}
+
+public class NyoomSparkle : ParticleUpdater<NyoomSparkle.Data>
+{
+    public struct Data : IParticleData
+    {
+        public Color color;
+        public Vector2 position;
+        public float scale;
+        public float timeLeft;
+        public bool IsActive => timeLeft > 0;
+    }
+    public override ParticleFrameData FrameData => base.FrameData with
+    {
+        FrameCount = 1,
+        Texture = AssetReferences.Assets.Textures.Particle.LilSparkle.KEY
+    };
+    public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        if (_length <= 0)
+            return;
+        for (var i = 0; i < _length; i++)
+        {
+            ref var particle = ref _particles[i];
+
+            var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
+            var framing = GetParticleFrame(0);
+            var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
+            drawer.sourceRect = framing.frame;
+            drawer.CenterOrigin();
+            drawer.color = particle.color * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i);
+            spriteBatch.Draw(drawer);
+        }
+    }
+    protected override void UpdateParticles()
+    {
+        base.UpdateParticles();
+        var diff = (Main.screenPosition - Main.screenLastPosition);
+        for (int i = 0; i < _length; i++)
+        {
+            ref var particle = ref _particles[i];
+            particle.position += diff * -0.7f * particle.scale;
+            particle.timeLeft--;
+        }
+    }
+
+    public override int GetPoolSize()
+    {
+        return 512;
     }
 }

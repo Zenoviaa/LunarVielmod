@@ -178,6 +178,7 @@ public class CustomBGManager : ModSystem
 
         if(bg.DrawScreenPositionYStart != 0)
         {
+
             drawPosition.Y -= bg.DrawScreenPositionYStart * 512;
 
             var diffParallaxY = bg.ParallaxReferenceY - Main.Camera.Center.Y;
@@ -201,6 +202,7 @@ public class CustomBGManager : ModSystem
         }
         else if (bg.SnapParallaxY != 0)
         {
+         
             var diffParallaxY = bg.ParallaxReferenceY - Main.Camera.Center.Y;
             var drawY = bg.SnapParallaxY - Main.screenPosition.Y;
             var dist = MathF.Abs(diffParallaxY);
