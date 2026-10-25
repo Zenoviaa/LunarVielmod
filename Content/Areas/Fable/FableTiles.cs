@@ -176,43 +176,86 @@ public class TallPumpkin : ALitPumpkinTile
 {
     public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.TallPumpkin.KEY;
 }
-
-
+public class FableSpikes : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableSpikes.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class FableMushroom : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableMushroom.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 3;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawData, drawParams);
+    }
+}
+public class FableMushroomSpotted : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableMushroomSpotted.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 3;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class FableRuins : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableRuins.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 2;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class FableLog : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableLog.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class FableMiniBooks : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableMiniBooks.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 6;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
 #region Potion Decorations
 
-public class BluePotion : ZTile
+
+public class FablePotion : ZTile
 {
-    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.BluePotion.KEY;
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FablePotion.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        frameCount = 5;
-        drawOrigin = TileDrawOrigin.BottomUp;
-    }
-}
-public class GreenPotion : ZTile
-{
-    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.GreenPotion.KEY;
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        frameCount = 5;
-        drawOrigin = TileDrawOrigin.BottomUp;
-    }
-}
-public class RedPotion : ZTile
-{
-    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.RedPotion.KEY;
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        frameCount = 5;
+        frameCount = 15;
         drawOrigin = TileDrawOrigin.BottomUp;
     }
 }
 public class PotionBundle : ZTile
 {
-    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.RedPotion.KEY;
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.PotionBundle.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
