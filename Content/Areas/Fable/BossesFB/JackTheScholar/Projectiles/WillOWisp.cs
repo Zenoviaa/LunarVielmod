@@ -36,7 +36,7 @@ public class WillOWisp : ModProjectile,
         Projectile.width = 8;
         Projectile.height = 8;
         Projectile.hostile = true;
-        Projectile.light = 0.278f;
+        Projectile.light = 0.5f;
         Projectile.timeLeft = 180;
     }
 
@@ -104,6 +104,7 @@ public class WillOWisp : ModProjectile,
         DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.Red, Color.Transparent, alpha: 0.12f);
         SpritebatchDrawer flameDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         flameDrawer.scale *= Scale;
+        flameDrawer.color = Color.White * ExtraMath.Osc(0.7f, 1f, speed: 3, Projectile.identity);
         Main.spriteBatch.Draw(flameDrawer);
 
         SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
@@ -114,7 +115,7 @@ public class WillOWisp : ModProjectile,
         Main.spriteBatch.Draw(glintDrawer);
 
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-        glowDrawer.color = Color.Red * 0.2f * ExtraMath.Osc(0.8f, 1f, speed: 12);
+        glowDrawer.color = Color.Red * 0.4f * ExtraMath.Osc(0.8f, 1f, speed: 12);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.25f;
         Main.spriteBatch.Draw(glowDrawer);

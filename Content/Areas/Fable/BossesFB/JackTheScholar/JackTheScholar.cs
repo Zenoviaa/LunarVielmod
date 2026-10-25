@@ -84,7 +84,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
         {
             base.SetDefaults();
             NPC.width = 30;
-            NPC.height = 75;
+            NPC.height = 85;
             NPC.damage = 32;
             NPC.defense = 2;
             NPC.lifeMax = 1500;

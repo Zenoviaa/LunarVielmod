@@ -24,7 +24,7 @@ public class FableBiomePlayer : ModPlayer
 
         if (!Main.dayTime)
         {
-            if (Main.rand.NextBool(16))
+            if (Main.rand.NextBool(32))
             {
                 var pos = Vector2.Zero;
                 pos.Y += Main.screenHeight;
@@ -47,7 +47,7 @@ public class FableBiomePlayer : ModPlayer
                 });
             }
 
-            if (Main.rand.NextBool(16))
+            if (Main.rand.NextBool(32))
             {
                 var pos = Vector2.Zero;
                 pos.Y += Main.screenHeight;
@@ -70,7 +70,7 @@ public class FableBiomePlayer : ModPlayer
                 });
             }
 
-            if (Main.rand.NextBool(200))
+            if (Main.rand.NextBool(100))
             {
                 var pos = Vector2.Zero;
                 pos.Y += Main.screenHeight;

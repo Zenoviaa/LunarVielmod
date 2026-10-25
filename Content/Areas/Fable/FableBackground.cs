@@ -97,7 +97,31 @@ public class FableBackgroundReal : ABackground
         FableParticles.NyoomSparkle.Draw(spriteBatch, Main.screenPosition);
         FableParticles.Witch.Draw(spriteBatch, Main.screenPosition);
         FableParticles.Lantern.Draw(spriteBatch, Main.screenPosition);
-    //    FableParticles.BigLantern.Draw(spriteBatch, Main.screenPosition);
+
+        var noiseSprite = AssetReferences.Assets.NoiseTextures.Clouds.Asset.Value;
+        var ditherSprite = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset.Value;
+        var pass = AssetReferences.Effects.Abyss.AbyssFog.CreateBlackPass();
+        HlslSampler sampler = new HlslSampler();
+        sampler.Sampler = SamplerState.PointWrap;
+        sampler.Texture = noiseSprite;
+        pass.Parameters.spriteSampler = sampler;
+
+        HlslSampler ditherSampler = new HlslSampler();
+        ditherSampler.Sampler = SamplerState.PointWrap;
+        ditherSampler.Texture = ditherSprite;
+        pass.Parameters.ditherSampler = ditherSampler;
+
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 0.4f;
+        pass.Parameters.ditherTexelSize = ditherSprite.GetTexelSize();
+        pass.Parameters.spriteSize = noiseSprite.Size();
+        pass.Parameters.screenOffset = DrawUtilities.CalculateScreenOffset(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight)) * 0.3f;
+        pass.Apply();
+        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
+        {
+            Color fogColor = Color.Lerp(Color.White, Color.Blue, 0.3f);
+            spriteBatch.Draw(noiseSprite, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), fogColor * 0.36f);
+        }
+        //    FableParticles.BigLantern.Draw(spriteBatch, Main.screenPosition);
     }
 
     public override bool IsActive()

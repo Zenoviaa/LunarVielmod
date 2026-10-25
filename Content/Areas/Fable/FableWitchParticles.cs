@@ -182,12 +182,13 @@ public class FlyingWitchParticles : ParticleUpdater<FlyingWitchParticles.Data>
             particle.position += diff * -0.7f * particle.scale;
             particle.velocity.Y = MathF.Sin(particle.timeLeft * 0.03f) * 0.3f;
             particle.timeLeft--;
-            if (particle.timeLeft % 16 == 0)
+            if (particle.timeLeft % 8 == 0)
             {
+                var dir = particle.velocity.X < 0 ? 1 : -1;
                 FableParticles.NyoomSparkle.Spawn(new()
                 {
-                    position = particle.position + new Vector2(0, 16),
-                    timeLeft = 60,
+                    position = particle.position + new Vector2(dir * 20, 20),
+                    timeLeft = 30,
                     scale = particle.scale,
                     color = Color.White
                 });
@@ -222,7 +223,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
 
     public override ParticleFrameData FrameData => base.FrameData with
     {
-        FrameCount = 3,
+        FrameCount = 2,
         Texture = AssetReferences.Assets.Textures.Fable.Ambient.FloatingFableLantern.KEY
     };
 
@@ -292,7 +293,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
     public override void OnSpawn(ref Data particle, in int index)
     {
         base.OnSpawn(ref particle, index);
-        particle.frame = (byte)Main.rand.Next(3);
+        particle.frame = (byte)Main.rand.Next(2);
     }
 
     public override int GetPoolSize()
@@ -316,7 +317,7 @@ public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
 
     public override ParticleFrameData FrameData => base.FrameData with
     {
-        FrameCount = 2,
+        FrameCount = 3,
         Texture = AssetReferences.Assets.Textures.Fable.Ambient.FloatingFableLanternBig.KEY
     };
 
@@ -329,7 +330,7 @@ public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
     public override void OnSpawn(ref FlyingLanterns.Data particle, in int index)
     {
         base.OnSpawn(ref particle, index);
-        particle.frame = (byte)Main.rand.Next(2);
+        particle.frame = (byte)Main.rand.Next(3);
     }
 
     private void DrawFrontLanterns(On_Main.orig_DrawDust orig, Main self)
@@ -381,6 +382,8 @@ public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
                 drawer.color.A = 0;
                 drawer.rotation = particle.rotation;
                 drawer.worldPosition.Y += 8;
+                if(particle.frame == 1 || particle.frame == 2)
+                    drawer.worldPosition.Y += 12;
                 drawer.scale *= 0.7f;
                 spriteBatch.Draw(drawer);
             }
