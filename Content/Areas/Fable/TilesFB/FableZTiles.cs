@@ -13,6 +13,7 @@ namespace Stellamod.Content.Areas.Fable.TilesFB;
 
 public class FableBackBrick : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBackBrick.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -23,6 +24,7 @@ public class FableBackBrick : ZTile
 
 public class FableBackBrickBig : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBackBrickBig.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -33,6 +35,7 @@ public class FableBackBrickBig : ZTile
 
 public class FableBox : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBox.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -42,6 +45,7 @@ public class FableBox : ZTile
 }
 public class FableWall : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableWall.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -51,6 +55,7 @@ public class FableWall : ZTile
 }
 public class FableSkinnyWall : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableSkinnyWall.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -60,6 +65,7 @@ public class FableSkinnyWall : ZTile
 }
 public class SkullSpike : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.SkullSpike.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -96,6 +102,7 @@ file static class FableLanternHelper
 }
 public class FableLanternTiny : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableLanternTiny.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -116,6 +123,7 @@ public class FableLanternTiny : ZTile
 
 public class FableLanternSmall : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableLanternSmall.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -135,6 +143,7 @@ public class FableLanternSmall : ZTile
 }
 public class FableLanternBig : ZTile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableLanternBig.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();

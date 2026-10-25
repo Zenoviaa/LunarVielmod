@@ -183,7 +183,7 @@ public class CustomBGManager : ModSystem
 
             var dist = MathF.Abs(diffParallaxY);
 
-            var factor = EasingFunction.InOutSine(dist / 512F);
+            var factor = EasingFunction.InOutSine(dist / 666F);
             var diffDrawY = diffParallaxY * factor;
             if (diffDrawY > 0)
                 diffDrawY *= 1f;

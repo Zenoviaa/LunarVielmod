@@ -1,0 +1,284 @@
+﻿using ReLogic.Content;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.ZTileSystem;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ID;
+
+namespace Stellamod.Content.Areas.Fable;
+
+
+public abstract class ALitPumpkinTile : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 2;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+    public override void Update(int i, int j)
+    {
+        base.Update(i, j);
+    }
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+        return base.PreDraw(spriteBatch, drawPosition, screenPos, drawParams);
+    }
+    public override void ModifyDraw(ref ZTileDrawData drawData)
+    {
+        base.ModifyDraw(ref drawData);
+    }
+}
+
+public class FunnyPumpkin : ALitPumpkinTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FunnyPumpkin.KEY;
+}
+
+public class WidePumpkin : ALitPumpkinTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.WidePumpkin.KEY;
+}
+
+public class RoundPumpkin : ALitPumpkinTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.RoundPumpkin.KEY;
+}
+
+public class TallPumpkin : ALitPumpkinTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.TallPumpkin.KEY;
+}
+
+
+#region Potion Decorations
+
+public class BluePotion : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.BluePotion.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 5;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class GreenPotion : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.GreenPotion.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 5;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class RedPotion : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.RedPotion.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 5;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class PotionBundle : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.RedPotion.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 9;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+#endregion
+public class FableBookcase : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBookcase.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 8;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+
+public class FableBackBrick : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBackBrick.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 2;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+
+public class FableBackBrickBig : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBackBrickBig.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+
+public class FableBox : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBox.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class FableWall : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableWall.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class FableBrickWall : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBrickWall.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 3;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class FableWindowWithCurtain : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableWindowWithCurtain.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class FableSkinnyWall : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableSkinnyWall.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+public class SkullSpike : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.SkullSpike.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 2;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
+
+#region Lanterns
+file static class FableLanternHelper
+{
+
+    public static void Glow(SpriteBatch spriteBatch, Asset<Texture2D> textureAsset,
+        ZTileDrawData drawData,
+        ZTileDrawParams drawParams,
+        float strength = 1f)
+    {
+        var drawer = SpritebatchDrawer.FromZTileDraw(textureAsset, drawData);
+        var inc = MathHelper.Lerp(6, 0, strength);
+        drawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, 6 + inc) * 0.3f;
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
+
+        void DrawGlow(SpriteBatch sb, Vector2 sp)
+        {
+            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
+            glowDrawer.color = Color.Gold * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.5f, 1f, strength);
+            glowDrawer.color.A = 0;
+            glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
+            spriteBatch.Draw(glowDrawer);
+        }
+        PixelationManager.QueueSpritebatchDrawAction(DrawGlow, DrawLayer.OverPlayers);
+
+    }
+}
+public class FableLanternTiny : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableLanternTiny.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+    public override void Update(int i, int j)
+    {
+        base.Update(i, j);
+        Lighting.AddLight(i, j, TorchID.Torch, 0.5f);
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawData, drawParams);
+        FableLanternHelper.Glow(spriteBatch, _tileTextureAsset, drawData, drawParams, 0.2f);
+    }
+}
+
+public class FableLanternSmall : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableLanternSmall.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+    public override void Update(int i, int j)
+    {
+        base.Update(i, j);
+        Lighting.AddLight(i, j, TorchID.Torch, 0.5f);
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawData, drawParams);
+        FableLanternHelper.Glow(spriteBatch, _tileTextureAsset, drawData, drawParams, 0.4f);
+    }
+}
+public class FableLanternBig : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableLanternBig.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+    public override void Update(int i, int j)
+    {
+        base.Update(i, j);
+        Lighting.AddLight(i, j, TorchID.Torch, 0.65f);
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawData, drawParams);
+        FableLanternHelper.Glow(spriteBatch, _tileTextureAsset, drawData, drawParams, 0.6f);
+    }
+}
+
+#endregion
