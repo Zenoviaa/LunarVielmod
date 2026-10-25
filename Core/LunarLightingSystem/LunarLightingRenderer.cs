@@ -78,7 +78,21 @@ public partial class LunarLightingRenderer : ModSystem,
         On_Main.CheckMonoliths += RenderToLightMaps;
         On_Main.RenderTiles += ApplySSAO;
         On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
-        On_Main.DoDraw_Tiles_Solid += ApplySSAO;
+
+        Main.QueueMainThreadAction(() =>
+        {
+            _instancedSunShadows = new();
+            _instancedSunShadows.Load();
+        });
+    }
+    public override void Unload()
+    {
+        base.Unload();
+        Main.QueueMainThreadAction(() =>
+        {
+            _instancedSunShadows?.Unload();
+            _instancedSunShadows = null;
+        });
     }
 
     private void ApplySSAO(On_Main.orig_RenderTiles orig, Main self)
@@ -127,17 +141,6 @@ public partial class LunarLightingRenderer : ModSystem,
 
     }
 
-    private void ApplySSAO(On_Main.orig_DoDraw_Tiles_Solid orig, Main self)
-    {
-        orig(self);
-        ApplySSAO();
-    }
-
-    private void ApplySSAO()
-    {
-
-
-    }
 
     private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
     {
@@ -184,13 +187,6 @@ public partial class LunarLightingRenderer : ModSystem,
     }
 
 
-    public override void Unload()
-    {
-        base.Unload();
-        On_FilterManager.EndCapture -= ApplyLighting;
-        On_Main.CheckMonoliths -= RenderToLightMaps;
-        On_Main.DrawCachedNPCs -= DrawShadowsBehindTiles;
-    }
 
     private static bool IsActive
     {

@@ -44,6 +44,31 @@ public class GPUInstanceBuffer<InstanceData> : IDisposable
     public VertexBufferBinding[] bindings;
     public InstanceData[] instances;
 
+    public void SetIndices(ushort[] indices)
+    {
+        _indexBuffer.SetData(indices);
+    }
+    public void SetVertices(float halfWidth,float halfHeight, float rotation)
+    {
+        var vertices = new VertexPositionTexture[4];
+
+        vertices[0] = new VertexPositionTexture(new Vector3(-halfWidth, 0, 0), new Vector2(0, 0));
+        vertices[1] = new VertexPositionTexture(new Vector3(halfWidth, 0, 0), new Vector2(1, 0));
+        vertices[2] = new VertexPositionTexture(new Vector3(-halfWidth, halfHeight * 2, 0), new Vector2(0, 1));
+        vertices[3] = new VertexPositionTexture(new Vector3(halfWidth, halfHeight * 2, 0), new Vector2(1, 1));
+
+        for(var i = 0; i < vertices.Length; i++)
+        {
+            ref var vert = ref vertices[i];
+            var xy = vert.Position.XY();
+            var center = new Vector2(0, 0);
+            xy = xy.RotatedBy(rotation, center);
+            vert.Position.X = xy.X;
+            vert.Position.Y = xy.Y;
+        }
+        _vertexBuffer.SetData<VertexPositionTexture>(vertices);
+
+    }
     public void Dispose()
     {
         _vertexBuffer?.Dispose();
