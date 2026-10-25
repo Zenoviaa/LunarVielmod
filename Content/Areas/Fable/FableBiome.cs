@@ -249,12 +249,14 @@ public class FableBiome : BaseUrdveilBiome,
         var endColor = new Color(97, 93, 110);
         var endTintSunColor = new Color(135, 206, 235);
         FableSunColors[0] = endColor;
+
         if (!Main.dayTime)
             skySettings.TargetTintSunColor = FableSunColors[0];
         else
             skySettings.TargetTintSunColor = DrawUtilities.InterpolateColorArray(sunInterpolant, FableSunColors);
 
         var endDayColorNightColor = DrawUtilities.InterpolateColorArray(0.96f, FableSunColors);
+
 
         if (!Main.dayTime)
         {
@@ -263,7 +265,9 @@ public class FableBiome : BaseUrdveilBiome,
         }
         else
         {
-            skySettings.TargetColorOfTheSkies = Color.Lerp(skySettings.TargetColorOfTheSkies, skySettings.TargetTintSunColor, 0.25f);
+
+            skySettings.TargetColorOfTheSkies = Color.Lerp(skySettings.TargetColorOfTheSkies,
+                Color.Lerp(endTintSunColor, skySettings.TargetTintSunColor, EasingFunction.InOutSine(sunInterpolant / 0.4f)), 0.25f);
         }
 
     }

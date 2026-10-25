@@ -303,17 +303,6 @@ public partial class LunarLightingRenderer : ModSystem,
         _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
         SmoothedBackLightColor = _backLightColor;
 
-        var sunColor = GetSunColor();
-        SkySettings skySettings = new();
-        skySettings.TargetTintSunColor = sunColor;
-        foreach (var sunColorModifier in _sunColorModifiers)
-        {
-            sunColorModifier.ModifySunColor(ref skySettings, DayProgress);
-     
-        }
- 
-        SunColor = Color.Lerp(SunColor, skySettings.TargetTintSunColor, 0.1f);
-
         bool nosunShadows = Main.LocalPlayer.ZoneRockLayerHeight || Main.LocalPlayer.ZoneUnderworldHeight;
         if (nosunShadows)
         {
@@ -338,6 +327,8 @@ public partial class LunarLightingRenderer : ModSystem,
 
         }
         backgroundColor = skySettings.TargetColorOfTheSkies;
+        SunColor = Color.Lerp(SunColor, skySettings.TargetTintSunColor, 0.1f);
+
     }
 
     public override void PostDrawTiles()
