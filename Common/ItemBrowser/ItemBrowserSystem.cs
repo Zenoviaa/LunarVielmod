@@ -31,6 +31,7 @@ public class ItemBrowserSystem : BaseUISystem
     {
         //Create a new editing context
         //Set the state of the interface.
+        Main.playerInventory = true;
         browserUIState.browser.ResetCategories();
         browserUIState.browser.AddElements();
         _userInterface.SetState(browserUIState);
@@ -52,7 +53,11 @@ public class ItemBrowserSystem : BaseUISystem
     public bool IsOpen() => _userInterface.CurrentState != null;
     public override void UpdateUI(GameTime gameTime)
     {
-       
+
+        if (!Main.playerInventory && _userInterface.CurrentState != null)
+        {
+            _userInterface.SetState(null);
+        }
         _lastUpdateUiGameTime = gameTime;
         if (_userInterface?.CurrentState != null)
         {

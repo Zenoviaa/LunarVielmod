@@ -246,14 +246,16 @@ public class FableBiome : BaseUrdveilBiome,
 
     public void ModifySunColor(ref SkySettings skySettings, float sunInterpolant)
     {
+        var endColor = new Color(97, 93, 110);
+        var endTintSunColor = new Color(135, 206, 235);
+        FableSunColors[0] = endColor;
         if (!Main.dayTime)
             skySettings.TargetTintSunColor = FableSunColors[0];
         else
             skySettings.TargetTintSunColor = DrawUtilities.InterpolateColorArray(sunInterpolant, FableSunColors);
 
         var endDayColorNightColor = DrawUtilities.InterpolateColorArray(0.96f, FableSunColors);
-        var endColor = new Color(97, 93, 110);
-        var endTintSunColor = new Color(135, 206, 235);
+
         if (!Main.dayTime)
         {
             skySettings.TargetColorOfTheSkies = endColor;

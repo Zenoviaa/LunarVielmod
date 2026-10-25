@@ -44,11 +44,8 @@ public class FogTileRenderer : ModSystem
             Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
             SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
             fogDrawer.color = Color.White;
-            float a = ExtraMath.Osc(0f, 1f, speed: 0, offset: fogTilePoint.X * fogTilePoint.Y);
-            fogDrawer.color *= a;
             fogDrawer.scale *= 0.6f;
-            a += 0.1f;
-            
+
             spriteBatch.Draw(fogDrawer);
         }
         spriteBatch.End();

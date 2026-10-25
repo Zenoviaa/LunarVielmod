@@ -240,8 +240,17 @@ public class FableMiniBooks : ZTile
         drawOrigin = TileDrawOrigin.BottomUp;
     }
 }
+public class TinyPumpkin : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.TinyPumpkin.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
 #region Potion Decorations
-
 
 public class FablePotion : ZTile
 {
