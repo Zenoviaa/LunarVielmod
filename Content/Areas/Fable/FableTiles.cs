@@ -141,6 +141,22 @@ public class PotionRack : ZTile
         drawOrigin = TileDrawOrigin.BottomUp;
     }
 }
+
+public class FableCandle : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableCandle.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        drawOrigin = TileDrawOrigin.BottomUp;
+        frameCount = 3;
+    }
+
+    public override void Update(int i, int j)
+    {
+        base.Update(i, j);
+    }
+}
 public class FunnyPumpkin : ALitPumpkinTile
 {
     public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FunnyPumpkin.KEY;
