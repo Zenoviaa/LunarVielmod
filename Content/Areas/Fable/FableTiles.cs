@@ -3,6 +3,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ZTileSystem;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -222,6 +223,13 @@ public abstract class ALitPumpkinTile : ZTile
         }
       
         return false;
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawData, drawParams);
+        if (Main.dayTime)
+            return;
+        FableLanternHelper.Glow(spriteBatch, _tileTextureAsset, drawData, drawParams, Vector2.Zero, 0.4f);
     }
     public override void ModifyDraw(ref ZTileDrawData drawData)
     {
@@ -519,17 +527,13 @@ file static class FableLanternHelper
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
 
-        void DrawGlow(SpriteBatch sb, Vector2 sp)
-        {
-            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition + drawOffset);
-            glowDrawer.color = Color.DarkOrange * 0.14f * ExtraMath.Osc(0.85f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.85f, 1f, strength);
-            glowDrawer.color.A = 0;
-            glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
-            spriteBatch.Draw(glowDrawer);
-        }
-        PixelationManager.QueueSpritebatchDrawAction(DrawGlow, DrawLayer.OverPlayers);
-
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition + drawOffset);
+        glowDrawer.color = Color.DarkOrange * 0.14f * ExtraMath.Osc(0.85f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.85f, 1f, strength);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
+        spriteBatch.Draw(glowDrawer);
     }
+
 }
 public class FableLanternTiny : ZTile
 {
