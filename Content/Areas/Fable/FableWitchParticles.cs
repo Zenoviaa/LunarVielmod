@@ -182,13 +182,14 @@ public class FlyingWitchParticles : ParticleUpdater<FlyingWitchParticles.Data>
             particle.position += diff * -0.7f * particle.scale;
             particle.velocity.Y = MathF.Sin(particle.timeLeft * 0.03f) * 0.3f;
             particle.timeLeft--;
-            if (Main.rand.NextBool(16))
+            if (particle.timeLeft % 16 == 0)
             {
                 FableParticles.NyoomSparkle.Spawn(new()
                 {
-                    position = particle.position,
+                    position = particle.position + new Vector2(0, 16),
                     timeLeft = 60,
-                    scale = particle.scale
+                    scale = particle.scale,
+                    color = Color.White
                 });
             }
         }
@@ -221,7 +222,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
 
     public override ParticleFrameData FrameData => base.FrameData with
     {
-        FrameCount = 4,
+        FrameCount = 3,
         Texture = AssetReferences.Assets.Textures.Fable.Ambient.FloatingFableLantern.KEY
     };
 
@@ -291,7 +292,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
     public override void OnSpawn(ref Data particle, in int index)
     {
         base.OnSpawn(ref particle, index);
-        particle.frame = (byte)Main.rand.Next(4);
+        particle.frame = (byte)Main.rand.Next(3);
     }
 
     public override int GetPoolSize()
@@ -309,16 +310,39 @@ public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
         public float rotation;
         public float scale;
         public float timeLeft;
+        public byte frame;
         public bool IsActive => timeLeft > 0;
     }
 
     public override ParticleFrameData FrameData => base.FrameData with
     {
-        FrameCount = 1,
+        FrameCount = 2,
         Texture = AssetReferences.Assets.Textures.Fable.Ambient.FloatingFableLanternBig.KEY
     };
 
+    public override void LoadSafe()
+    {
+        base.LoadSafe();
+        On_Main.DrawDust += DrawFrontLanterns;
+    }
 
+    public override void OnSpawn(ref FlyingLanterns.Data particle, in int index)
+    {
+        base.OnSpawn(ref particle, index);
+        particle.frame = (byte)Main.rand.Next(2);
+    }
+
+    private void DrawFrontLanterns(On_Main.orig_DrawDust orig, Main self)
+    {
+        orig(self);
+        if (_length <= 0)
+            return;
+        using (Main.spriteBatch.Ctx(SpritebatchParams.InWorldAndZoomed()))
+        {
+            Draw(Main.spriteBatch, Main.screenPosition);
+        }
+
+    }
 
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
@@ -330,7 +354,7 @@ public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
 
             var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
             var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
-            var framing = GetParticleFrame(0);
+            var framing = GetParticleFrame(particle.frame);
             var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
@@ -372,7 +396,7 @@ public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
         {
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
-            particle.position += diff * -0.6f * particle.scale;
+            particle.position += diff * -0.6f * particle.scale * 3;
             particle.velocity.Y = MathHelper.Lerp(particle.velocity.Y, -1f, 0.1f);
             particle.velocity.X = MathF.Sin(particle.timeLeft * 0.03f) * 0.03f;
             particle.velocity.X += 0.35f;
@@ -416,6 +440,7 @@ public class NyoomSparkle : ParticleUpdater<NyoomSparkle.Data>
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
             drawer.color = particle.color * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i);
+            drawer.scale *= outAlpha;
             spriteBatch.Draw(drawer);
         }
     }

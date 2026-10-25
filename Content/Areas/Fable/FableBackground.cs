@@ -94,9 +94,10 @@ public class FableBackgroundReal : ABackground
 
         DrawBackgroundLayer(spriteBatch, draw, AssetReferences.Assets.Textures.Backgrounds.Fable.Asset, 0, 4, scale: 2, parallaxX: 0.12f, parallaxY: 0.25f);
         DrawBackgroundLayer(spriteBatch, draw, AssetReferences.Assets.Textures.Backgrounds.Fable.Asset, 3, 4, scale: 2, parallaxX: 0.1f, parallaxY: 0.25f, drawOffset: new Vector2(0, 533*2));
+        FableParticles.NyoomSparkle.Draw(spriteBatch, Main.screenPosition);
         FableParticles.Witch.Draw(spriteBatch, Main.screenPosition);
         FableParticles.Lantern.Draw(spriteBatch, Main.screenPosition);
-        FableParticles.BigLantern.Draw(spriteBatch, Main.screenPosition);
+    //    FableParticles.BigLantern.Draw(spriteBatch, Main.screenPosition);
     }
 
     public override bool IsActive()

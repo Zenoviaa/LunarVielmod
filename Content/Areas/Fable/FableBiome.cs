@@ -13,6 +13,7 @@ namespace Stellamod.Content.Areas.Fable;
 
 public class FableBiomePlayer : ModPlayer
 {
+    int RandomX => Main.rand.Next(-512, Main.screenWidth + 512);
     public override void PostUpdateMiscEffects()
     {
         base.PostUpdateMiscEffects();
@@ -27,7 +28,7 @@ public class FableBiomePlayer : ModPlayer
             {
                 var pos = Vector2.Zero;
                 pos.Y += Main.screenHeight;
-                pos.X += Main.rand.Next(0, Main.screenWidth);
+                pos.X += RandomX;
                 var vel = new Vector2(2, 0);
                 vel *= Main.rand.NextFloat(0.5f, 2f);
                 if (Main.rand.NextBool(2))
@@ -50,7 +51,7 @@ public class FableBiomePlayer : ModPlayer
             {
                 var pos = Vector2.Zero;
                 pos.Y += Main.screenHeight;
-                pos.X += Main.rand.Next(0, Main.screenWidth);
+                pos.X += RandomX;
                 var vel = new Vector2(2, 0);
                 vel *= Main.rand.NextFloat(0.5f, 2f);
                 if (Main.rand.NextBool(2))
@@ -69,11 +70,11 @@ public class FableBiomePlayer : ModPlayer
                 });
             }
 
-            if (Main.rand.NextBool(128))
+            if (Main.rand.NextBool(200))
             {
                 var pos = Vector2.Zero;
                 pos.Y += Main.screenHeight;
-                pos.X += Main.rand.Next(0, Main.screenWidth);
+                pos.X += RandomX;
                 var vel = new Vector2(2, 0);
                 vel *= Main.rand.NextFloat(0.5f, 2f);
                 if (Main.rand.NextBool(2))
@@ -88,7 +89,7 @@ public class FableBiomePlayer : ModPlayer
                     color = Color.White,
                     position = pos,
                     velocity = vel,
-                    scale = Main.rand.NextFloat(0.4f, 1f)
+                    scale = Main.rand.NextFloat(0.6f, 1f)
                 });
             }
         }
