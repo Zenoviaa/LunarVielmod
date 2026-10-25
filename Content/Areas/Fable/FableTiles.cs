@@ -15,7 +15,7 @@ public abstract class AHangingLantern : ZTile
         base.SetStaticDefaults();
         drawOrigin = TileDrawOrigin.TopDown;
         windSwayMagnitude = 0.2f;
-        windSwaySpeed = 0.1f;
+        windSwaySpeed = 0.03f;
         windSwayOffset = 0.1f;
     }
     public override void Update(int i, int j)
@@ -32,7 +32,51 @@ public abstract class AHangingLantern : ZTile
 #region Hanging Lanterns
 file static class FableHangingLanternHelper
 {
+    public static void Glow(SpriteBatch spriteBatch, Asset<Texture2D> textureAsset,
+    ZTileDrawData drawData,
+    ZTileDrawParams drawParams,
+    float strength = 1f)
+    {
+        var drawer = SpritebatchDrawer.FromZTileDraw(textureAsset, drawData);
+        var inc = MathHelper.Lerp(6, 0, strength);
+        drawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, 6 + inc) * 0.3f;
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
 
+        void DrawGlow(SpriteBatch sb, Vector2 sp)
+        {
+            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
+            glowDrawer.color = Color.Gold * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.5f, 1f, strength);
+            glowDrawer.color.A = 0;
+            glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
+            spriteBatch.Draw(glowDrawer);
+        }
+        PixelationManager.QueueSpritebatchDrawAction(DrawGlow, DrawLayer.OverPlayers);
+
+    }
+    public static void Glow(SpriteBatch spriteBatch, Asset<Texture2D> textureAsset,
+        ZTileDrawData drawData,
+        ZTileDrawParams drawParams,
+        Vector2 drawOffset,
+        float strength = 1f)
+    {
+        var drawer = SpritebatchDrawer.FromZTileDraw(textureAsset, drawData);
+        var inc = MathHelper.Lerp(6, 0, strength);
+        drawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, 6 + inc) * 0.3f;
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
+
+        void DrawGlow(SpriteBatch sb, Vector2 sp)
+        {
+            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition + drawOffset);
+            glowDrawer.color = Color.Gold * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.5f, 1f, strength);
+            glowDrawer.color.A = 0;
+            glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
+            spriteBatch.Draw(glowDrawer);
+        }
+        PixelationManager.QueueSpritebatchDrawAction(DrawGlow, DrawLayer.OverPlayers);
+
+    }
 }
 
 public class FableHangingLanternTiny : AHangingLantern
@@ -47,6 +91,18 @@ public class FableHangingLanternTiny : AHangingLantern
     {
         base.Update(i, j);
     }
+    public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawData, drawParams);
+        Rectangle srcRect = _tileTextureAsset.Value.GetFrame(drawParams.tileData.frameNumber, 2);
+        Vector2 drawOrigin = new Vector2(srcRect.Width / 2f, srcRect.Height);
+        Vector2 offset = new Vector2(0, srcRect.Height / 2);
+
+        Vector2 worldCoordinates = new Point(drawParams.tilePosition.x, drawParams.tilePosition.y).ToWorldCoordinates();
+
+        Lighting.AddLight(worldCoordinates, new Vector3(0.25f));
+        FableLanternHelper.Glow(spriteBatch, _tileTextureAsset, drawData, drawParams, new Vector2(0, 10), 0.2f);
+    }
 }
 public class FableHangingLanternSmall : AHangingLantern
 {
@@ -56,6 +112,18 @@ public class FableHangingLanternSmall : AHangingLantern
     {
         base.Update(i, j);
     }
+    public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawData, drawParams);
+        Rectangle srcRect = _tileTextureAsset.Value.GetFrame(drawParams.tileData.frameNumber, 2);
+        Vector2 drawOrigin = new Vector2(srcRect.Width / 2f, srcRect.Height);
+        Vector2 offset = new Vector2(0, srcRect.Height / 2);
+      
+        Vector2 worldCoordinates = new Point(drawParams.tilePosition.x, drawParams.tilePosition.y).ToWorldCoordinates();
+
+        Lighting.AddLight(worldCoordinates, new Vector3(0.5f));
+        FableLanternHelper.Glow(spriteBatch, _tileTextureAsset, drawData, drawParams, new Vector2(0, 20), 0.4f);
+    }
 }
 public class FableHangingLanternBig : AHangingLantern
 {
@@ -63,6 +131,19 @@ public class FableHangingLanternBig : AHangingLantern
     public override void Update(int i, int j)
     {
         base.Update(i, j);
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawData, drawParams);
+
+        Rectangle srcRect = _tileTextureAsset.Value.GetFrame(drawParams.tileData.frameNumber, 2);
+        Vector2 drawOrigin = new Vector2(srcRect.Width / 2f, srcRect.Height);
+        Vector2 offset = new Vector2(0, srcRect.Height / 2);
+     //   spriteBatch.Draw(_tileTextureAsset.Value, drawData.drawPosition + offset, srcRect, drawParams.lightColor, GetRotation(drawParams), drawOrigin, 1, SpriteEffects.None, 0);
+        Vector2 worldCoordinates = new Point(drawParams.tilePosition.x, drawParams.tilePosition.y).ToWorldCoordinates();
+
+        Lighting.AddLight(worldCoordinates, new Vector3(0.75f));
+        FableLanternHelper.Glow(spriteBatch, _tileTextureAsset, drawData, drawParams, new Vector2(0, 32), 0.6f);
     }
 }
 #endregion
@@ -125,7 +206,22 @@ public abstract class ALitPumpkinTile : ZTile
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
-        return base.PreDraw(spriteBatch, drawPosition, screenPos, drawParams);
+        Vector2 worldCoordinates = new Point(drawParams.tilePosition.x, drawParams.tilePosition.y).ToWorldCoordinates();
+
+        Rectangle srcRect = _tileTextureAsset.Value.GetFrame(drawParams.tileData.frameNumber, 2);
+        Vector2 drawOrigin = new Vector2(srcRect.Width / 2f, srcRect.Height);
+        Vector2 offset = new Vector2(0, srcRect.Height / 2);
+        spriteBatch.Draw(_tileTextureAsset.Value, drawPosition + offset, srcRect, drawParams.lightColor, GetRotation(drawParams), drawOrigin, 1, SpriteEffects.None, 0);
+
+        if (!Main.dayTime)
+        {
+            Lighting.AddLight(worldCoordinates + new Vector2(0, -16), new Vector3(0.75f));
+
+            srcRect = _tileTextureAsset.Value.GetFrame(drawParams.tileData.frameNumber + 1, 2);
+            spriteBatch.Draw(_tileTextureAsset.Value, drawPosition + offset, srcRect, drawParams.lightColor, GetRotation(drawParams), drawOrigin, 1, SpriteEffects.None, 0);
+        }
+      
+        return false;
     }
     public override void ModifyDraw(ref ZTileDrawData drawData)
     {
@@ -404,6 +500,29 @@ file static class FableLanternHelper
         {
             var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
             glowDrawer.color = Color.Gold * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.5f, 1f, strength);
+            glowDrawer.color.A = 0;
+            glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
+            spriteBatch.Draw(glowDrawer);
+        }
+        PixelationManager.QueueSpritebatchDrawAction(DrawGlow, DrawLayer.OverPlayers);
+
+    }
+    public static void Glow(SpriteBatch spriteBatch, Asset<Texture2D> textureAsset,
+        ZTileDrawData drawData,
+        ZTileDrawParams drawParams,
+        Vector2 drawOffset,
+        float strength = 1f)
+    {
+        var drawer = SpritebatchDrawer.FromZTileDraw(textureAsset, drawData);
+        var inc = MathHelper.Lerp(6, 0, strength);
+        drawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, 6 + inc) * 0.3f;
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
+
+        void DrawGlow(SpriteBatch sb, Vector2 sp)
+        {
+            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition + drawOffset);
+            glowDrawer.color = Color.DarkOrange * 0.14f * ExtraMath.Osc(0.85f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.85f, 1f, strength);
             glowDrawer.color.A = 0;
             glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
             spriteBatch.Draw(glowDrawer);

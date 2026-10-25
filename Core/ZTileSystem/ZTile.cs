@@ -107,6 +107,28 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         return (float)Math.Sin(Main.GameUpdateCount * speed + offset) * magnitude;
     }
 
+    public float GetRotation(ZTileDrawParams drawParams)
+    {
+        float drawRotation;
+        switch (drawParams.tileData.rotation)
+        {
+            default:
+            case Rotation.Degrees_0:
+                drawRotation = 0;
+                break;
+            case Rotation.Degrees_90:
+                drawRotation = MathHelper.PiOver2;
+                break;
+            case Rotation.Degrees_180:
+                drawRotation = MathHelper.Pi;
+                break;
+            case Rotation.Degrees_270:
+                drawRotation = MathHelper.Pi + MathHelper.PiOver2;
+                break;
+        }
+        return drawRotation;
+
+    }
     public void DrawSilhouette(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         _tileTextureAsset ??= ModContent.Request<Texture2D>(Texture);
