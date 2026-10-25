@@ -53,10 +53,12 @@ public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
             ref RagingFlameDustData particle = ref _particles[i];
             particle.position += particle.velocity;
             particle.velocity.Y -= 0.1f;
-            particle.velocity.X = MathF.Sin(particle.timeleft * 0.2f + Main.GlobalTimeWrappedHourly * 8) * 0.5f;
-
-//float lerpValue = Utils.GetLerpValue(0, 70, particle.timeleft, clamped: true);
-         //   particle.velocity.Y += MathHelper.Lerp(0.3f, 0f, lerpValue);
+            if(particle.style != 2)
+                particle.velocity.X = MathF.Sin(particle.timeleft * 0.2f + Main.GlobalTimeWrappedHourly * 8) * 0.5f;
+            else
+                particle.velocity.X = MathF.Sin(particle.timeleft * 0.2f + Main.GlobalTimeWrappedHourly * 8 + i * 3) * 0.5f;
+            //float lerpValue = Utils.GetLerpValue(0, 70, particle.timeleft, clamped: true);
+            //   particle.velocity.Y += MathHelper.Lerp(0.3f, 0f, lerpValue);
             particle.timeleft--;
         }
     }
@@ -143,6 +145,39 @@ public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
                     spriteBatch.Draw(drawer);
                 }
                     
+                break;
+            case 2:
+                {
+                    particleColor = DrawUtilities.InterpolateColorArray(EasingFunction.InSine(lerpValue),
+                        Color.Black,
+                        Color.DarkOrange,
+                        Color.Black,
+                        Color.DarkOrange,
+                        Color.DarkOrange,
+                        Color.Lerp(Color.Orange, Color.White, 0.5f));
+
+                    (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frameIndex);
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                    drawer.sourceRect = frame;
+                    drawer.CenterOrigin();
+                    drawer.rotation = particle.timeleft * 0.01f;
+                    drawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.Lerp(Vector2.Zero, new Vector2(1.1f), EasingFunction.QuadraticBump(lerpValue)), lerpValue);
+                    drawer.scale *= 0.7f;
+                    drawer.color = particleColor;
+                    drawer.color.A = 0;
+                    spriteBatch.Draw(drawer);
+
+                    drawer.scale *= 4f;
+                    drawer.color.R = 0;
+                    drawer.color.B = 125;
+                    drawer.color.G = 0;
+                    drawer.color *= 0.05f;
+                    spriteBatch.Draw(drawer);
+
+                    drawer.scale *= 2;
+                    drawer.color *= 0.25f;
+                    spriteBatch.Draw(drawer);
+                }
                 break;
         }
      

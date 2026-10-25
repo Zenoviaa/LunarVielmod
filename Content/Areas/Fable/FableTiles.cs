@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ZTileSystem;
@@ -259,6 +260,14 @@ public class FableCandle : ZTile
     public override void Update(int i, int j)
     {
         base.Update(i, j);
+        if (!Main.rand.NextBool(8))
+            return;
+        Vector2 pos = new Point(i, j).ToWorldCoordinates();
+        pos.Y -= 12;
+        pos.X += 6;
+        Particles.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = pos, timeleft = 70, style = 2 });
+        Lighting.AddLight(pos , new Vector3(1f, 0.3f, 0.3f));
+
     }
 }
 public class FunnyPumpkin : ALitPumpkinTile
