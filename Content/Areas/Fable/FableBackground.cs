@@ -39,6 +39,7 @@ public class FableBackground : CustomBG
         closeLayer.DrawOffset = Vector2.Zero;
         AddLayer(closeLayer);
 
+
         bleedLayer = new CustomBGLayer();
         bleedLayer.Texture = AssetReferences.Assets.Textures.Backgrounds.FableUnder.Asset;
         bleedLayer.Parallax = startParallax;
@@ -56,7 +57,6 @@ public class FableBackground : CustomBG
         farLayer.Parallax = 0.06f;
         midLayer.Parallax = 0.09f;
         closeLayer.Parallax = 0.12f;
-        bleedLayer.Parallax = closeLayer.Parallax;
 
         var p = (float)Main.worldSurface;
         p *= 16;

@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Particles.Electric;
+using Stellamod.Content.Areas.Fable;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -65,6 +66,7 @@ public sealed class Particles : ModSystem
     public static readonly RocketFire RocketFire = new();
     public static readonly FlyingZ FlyingZee = new();
     public static readonly StabTriangle StabTriangle = new();
+
     public override void Load()
     {
         base.Load();
@@ -111,7 +113,8 @@ public sealed class Particles : ModSystem
             ToxicBubbleDust,
             RocketFire,
             FlyingZee,
-            StabTriangle
+            StabTriangle,
+
 
         };
 

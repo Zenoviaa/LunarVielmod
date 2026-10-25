@@ -39,7 +39,7 @@ public static class Vector2Extensions
 {
     extension(Vector2)
     {
-        public static Span<Vector2> CardinalOffsets => new Vector2[4]
+        public static ReadOnlySpan<Vector2> CardinalOffsets => new Vector2[4]
         {
             new Vector2(-1, 0),
             new Vector2(1, 0),
@@ -47,7 +47,7 @@ public static class Vector2Extensions
             new Vector2(0, 1)
         };
 
-        public static Span<Vector2> OctagonalOffsets => new Vector2[8]
+        public static ReadOnlySpan<Vector2> OctagonalOffsets => new Vector2[8]
         {
             new Vector2(-1, 0),
             new Vector2(1, 0),

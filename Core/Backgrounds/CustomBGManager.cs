@@ -65,6 +65,7 @@ public class CustomBGManager : ModSystem
         orig(self, spriteBatch, layer, beginSpriteBatch);
         if (layer == RenderLayers.Background)
         {
+
             OnPostDrawCustomBG?.Invoke(self, spriteBatch, layer, beginSpriteBatch);
         }
     }

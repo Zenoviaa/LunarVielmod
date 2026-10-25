@@ -34,6 +34,6 @@ public class WitchCarvedStone : ModTile
         MineResist = 2f;
         MinPick = 225;
         RegisterItemDrop(ModContent.ItemType<WitchCarvedStoneItem>());
-        AddMapEntry(new Color(200, 40, 40));
+        AddMapEntry(new Color(139, 108, 74));
     }
 }

@@ -12351,3 +12351,8 @@ NPCSpawner: {
 	DisplayName: NPC Spawner
 	Tooltip: ""
 }
+
+FableGrassItem: {
+	DisplayName: Fable Grass Item
+	Tooltip: ""
+}
