@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
@@ -20,6 +21,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB;
 
 public class SuperStaff : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.SuperStaff.KEY;
     public override void SetDefaults()
     {
         Item.DefaultToArtifact();
@@ -50,6 +52,7 @@ public class SuperStaff : ModItem
 
 public class SuperStaffConjureLightning : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.SuperStaffConjureLightning.KEY;
     private float _scale;
     private float _width;
     private Vector2[] _lightningZaps;
@@ -254,6 +257,7 @@ public class SuperStaffConjureLightning : ModProjectile
 }
 public class SuperStaffHold : ModProjectile
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.SuperStaffHold.KEY;
     private Asset<Texture2D> _whiteTextureAsset;
     private Asset<Texture2D> _outlineTextureAsset;
     private enum ActionState
@@ -271,6 +275,7 @@ public class SuperStaffHold : ModProjectile
     }
 
     private ref float HeldRotation => ref Projectile.ai[1];
+    Player Owner => Main.player[Projectile.owner];
 
     float ChargeTimer;
     float FireTimer;
@@ -309,7 +314,7 @@ public class SuperStaffHold : ModProjectile
     {
         float progress = timer / maxTimer;
         float minParticleSpawnSpeed = 20;
-        float maxParticleSpawnSpeed = 6;
+        float maxParticleSpawnSpeed = 3;
         int particleSpawnSpeed = (int)MathHelper.Lerp(minParticleSpawnSpeed, maxParticleSpawnSpeed, progress);
         if (timer % particleSpawnSpeed == 0)
         {
@@ -320,6 +325,8 @@ public class SuperStaffHold : ModProjectile
                 var d = DustParticle.Spawn(pos, vel, DustParticleSpawnParams.Default);
                 d.noTileCollide = true;
                 d.Scale *= 0.25f;
+                d.innerColor = Color.Yellow;
+                d.outerColor = Color.DarkOrange;
                 // var d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), vel, newColor: Color.LightGoldenrodYellow, Scale: 0.35f);
                 d.gravity = 0;
             }
@@ -386,6 +393,18 @@ public class SuperStaffHold : ModProjectile
         // player.channel indicates whether the player is still holding down the mouse button to use the item.
         bool stillInUse = player.channel && manaIsAvailable && !player.noItems && !player.CCed;
 
+        if(ChargeTimer < Max_Charge_Time && ChargeTimer % 6 == 0)
+        {
+            var pos = Owner.Center + Main.rand.NextVector2Circular(36, 36);
+            var vel = Main.rand.NextVector2Circular(1, 1);
+            Particles.LightningSpikeySpark.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                timeLeft = 30,
+                color = Color.DarkOrange
+            });
+        }
 
         ChargeVisuals(ChargeTimer, Max_Charge_Time);
         ChargeTimer = MathHelper.Clamp(ChargeTimer, 0, Max_Charge_Time);
