@@ -28,7 +28,6 @@ public class CheckpointBell : ModItem
     {
         // With all the setup above, placeStyle will be either 0 or 1 for the 2 ExampleTrap instances we've loaded.
         Item.DefaultToPlaceableTile(ModContent.TileType<CheckpointBellTile>());
-        Item.mech = true; // lets you see wires while holding.
     }
 }
 public class CheckpointBellTileEntity : ModTileEntity
