@@ -322,6 +322,16 @@ public class FableMushroom : ZTile
         spriteBatch.Draw(glowDrawer);
     }
 }
+public class FableBookshelf : ZTile
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableBookshelf.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 3;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+}
 public class FableMushroomSpotted : ZTile
 {
     public override string Texture => AssetReferences.Assets.Textures.Fable.Tiles.FableMushroomSpotted.KEY;
