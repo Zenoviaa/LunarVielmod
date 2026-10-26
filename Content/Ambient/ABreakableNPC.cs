@@ -28,6 +28,7 @@ public abstract class ABreakableNPC : ModNPC
         NPC.height = 32;
         NPC.damage = 1;
         NPC.knockBackResist = 0;
+        NPC.npcSlots = 0;
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -38,7 +39,7 @@ public abstract class ABreakableNPC : ModNPC
     public override void AI()
     {
         base.AI();
-        NPCSets.Heavy[Type] = true;
+
         if (_wiggle > 0)
             _wiggle--;
         NPC.spriteDirection = 1;

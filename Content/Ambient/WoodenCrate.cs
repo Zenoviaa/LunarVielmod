@@ -60,7 +60,7 @@ public class WoodenCrate : ABreakableNPC
             }
 
             //Spawn Gores
-            for (var i = 0; i < 16; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
                 var vel = (pos - NPC.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(3f, 7);
@@ -73,7 +73,7 @@ public class WoodenCrate : ABreakableNPC
                 });
             }
 
-            foreach(PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 8))
+            foreach(PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 4))
             {
                 Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {

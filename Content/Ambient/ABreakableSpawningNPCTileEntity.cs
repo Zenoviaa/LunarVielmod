@@ -11,6 +11,8 @@ public abstract class ABreakableSpawningNPCTileEntity<ModNPCType, ModTileType> :
 {
     int _activeNpc = -1;
     float TestDistance => 1024 * 1024;
+    float TooCloseDistance => 1024 * 1024;
+    float TooFarDistance => 2000 * 2000;
     public override void Update()
     {
         base.Update();
@@ -32,9 +34,12 @@ public abstract class ABreakableSpawningNPCTileEntity<ModNPCType, ModTileType> :
             return;
 
         var sqrDistToPlayer = Vector2.DistanceSquared(worldCoordinates, nearestPlayer.Center);
-        if (sqrDistToPlayer > TestDistance)
-            return;
-        _activeNpc = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)worldCoordinates.X, (int)worldCoordinates.Y, ModContent.NPCType<ModNPCType>());
+        if (sqrDistToPlayer < TooFarDistance && sqrDistToPlayer > TooCloseDistance)
+        {
+            _activeNpc = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)worldCoordinates.X, (int)worldCoordinates.Y, ModContent.NPCType<ModNPCType>());
+        }
+         
+       
     }
 
     public override void OnNetPlace()
