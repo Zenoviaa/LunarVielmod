@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Melee.Swords;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;

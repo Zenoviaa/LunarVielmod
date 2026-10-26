@@ -309,21 +309,16 @@ public class MoonWaterSystem : ModSystem
     public static event Action<SpriteBatch> DrawWaterMask;
     public override void Load()
     {
-
         On_Main.CheckMonoliths += RenderHook;
         On_Main.DrawDust += CopyScreenTarget;
         On_OverlayManager.Draw += ApplyWaterShader;
-        On_Main.DrawWaters += StopDrawWater;
     }
 
 
     public override void Unload()
     {
         base.Unload();
-        On_Main.CheckMonoliths -= RenderHook;
-        On_Main.DrawDust -= CopyScreenTarget;
-        On_OverlayManager.Draw -= ApplyWaterShader;
-        On_Main.DrawWaters -= StopDrawWater;
+
         _pixelWaterStyles = null;
         _heightsToDraw.Clear();
         _gradientRects.Clear();
@@ -332,11 +327,6 @@ public class MoonWaterSystem : ModSystem
     {
         base.ClearWorld();
         _waterSurfacePointLightMap = new(252, 8, Main.maxTilesX, Main.maxTilesY);
-    }
-
-    private void StopDrawWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
-    {
-        orig(self, isBackground);
     }
 
 

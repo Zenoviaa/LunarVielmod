@@ -3135,11 +3135,9 @@ CyroBolt: {
 
 LightSpand: {
 	DisplayName: Light Spand
-	Tooltip: Burning lights of Gothivia's Light
-	BasicSlash: No special effect
-	StaminaSlash: Throws out a barrage of exploding sparks!
-	BasicEffectLocalizedText: No Effect
-	StaminaEffectLocalizedText: No Effect
+	Tooltip: "Shooting stars..."
+	BasicSlash: Spins arounds and throws out stars! The finishing move will create a constellation between each of them!
+	StaminaSlash: Throws out several stars before quickly creating a constellation
 }
 
 MoonMothStaff: {

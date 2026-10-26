@@ -1,5 +1,4 @@
-﻿using ReLogic.Threading;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -66,7 +65,7 @@ public class WaterSurfacePointLightMap
     int[] _indices;
     readonly Vector2[] _offsets;
     int _width;
-    
+
     (int chunkIndex, byte bitIndex) GetBitMaskIndices(int tileX, int tileY)
     {
         var rawIndex = (tileX + tileY * _width);
@@ -111,7 +110,7 @@ public class WaterSurfacePointLightMap
         var bitMaskSize = (width * height) / 64;
         _bitMask = new ulong[bitMaskSize];
         _waterSurfacePoints = new WaterSurfaceState[width, height];
-        _activeSurfactLightVertexPoints = new ();
+        _activeSurfactLightVertexPoints = new();
         _activeWaterSurfaceLights = new WaterSurfaceLightData[lightCount];
 
 
@@ -130,7 +129,7 @@ public class WaterSurfacePointLightMap
         }
         _waterSurfaceLightVertexPool = new();
         var offset = 0;
-        for(var i = 0; i < lightCount; i++)
+        for (var i = 0; i < lightCount; i++)
         {
             var light = new SurfaceLightCircle(sideCount);
             _waterSurfaceLightVertexPool.Enqueue(new Point(i, i * light.Vertices.Length));
@@ -216,9 +215,9 @@ public class WaterSurfacePointLightMap
                 //Z coordinate in this case is how far this vertex is from the center point
                 //We'll use the number so the gradient is always the same no matter where it is
                 vertex.TextureCoordinate = new Vector3(0, 0, dist);
-                vertex.Color = (Color.White * point.Z).ToVector4();
+                vertex.Color = new Vector4(point.Z);
             }
-            
+
             //Set the surface light active
             ref var surfaceLightData = ref _activeWaterSurfaceLights[lightIndex];
             surfaceLightData.TileX = tp.X;
@@ -237,7 +236,7 @@ public static class WaterSurfaceScanner
 {
     //Here I want this to be as fast as possible
     //So we're going to avoid making heap allocations and instead use a precalculated buffer
-    public static void Scan(Rectangle area, 
+    public static void Scan(Rectangle area,
         ref Vector3[] surfaceLiquidPointsBuffer,
         ref int length)
     {
@@ -256,7 +255,7 @@ public static class WaterSurfaceScanner
 
                 if (tile.HasTile)
                     continue;
-        
+
                 var tileAbove = Main.tile[x, y - 1];
                 if (tileAbove.LiquidAmount <= 0
                     && !WorldGen.SolidOrSlopedTile(tileAbove))
@@ -270,7 +269,7 @@ public static class WaterSurfaceScanner
         }
 
         UpdateSurfaceLiquidPointsBuffer:
-        for(var i = 0; i < length; i++)
+        for (var i = 0; i < length; i++)
         {
             var tp = waterSurfacePoints[i];
             var airCount = 0F;
@@ -329,12 +328,12 @@ public class WaterSurfaceLightMap
         {
             var airCount = 0F;
             var rect = TileUtilities.CenterTileRectangle(tp, 8, 8);
-            for(var x = rect.Left; x < rect.Right; x++)
+            for (var x = rect.Left; x < rect.Right; x++)
             {
-                for(var y = rect.Top; y < rect.Bottom; y++)
+                for (var y = rect.Top; y < rect.Bottom; y++)
                 {
                     var t = Main.tile[x, y];
-                    if(!t.HasTile && t.LiquidAmount <= 0)
+                    if (!t.HasTile && t.LiquidAmount <= 0)
                     {
                         airCount++;
                     }
