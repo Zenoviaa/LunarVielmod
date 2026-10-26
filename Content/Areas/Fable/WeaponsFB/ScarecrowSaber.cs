@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -17,11 +18,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
     public class ScarecrowSaber : BaseSwingItemV2
     {
-        public override void SetStaticDefaults()
-        {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
-
+        public override string Texture => AssetReferences.Assets.Textures.Fable.Items.ScarecrowSaber.KEY;
         public override void SetDefaults2()
         {
             base.SetDefaults2();
@@ -59,9 +56,69 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void DefineCombo()
         {
             base.DefineCombo();
-            SwingV2Helper.AddSpearSwingStyle(this);
-            Trailer = TrailPresets.LightSpand;
+            SoundStyle spearSlash1 = SoundRegistry.SpearSlash1;
+            SoundStyle spearSlash2 = SoundRegistry.SpearSlash2;
+            SoundStyle nSpin = SoundRegistry.NSwordSpin1;
+            spearSlash1.PitchVariance = 0.25f;
+            spearSlash2.PitchVariance = 0.25f;
+            nSpin.PitchVariance = 0.2f;
+
+
+            var quickSpin = AssetReferences.Assets.Sounds.Melee.SlashQuickSpin1.Asset with { PitchVariance = 0.5f };
+            Add(new OvalSwing
+            {
+                Duration = 37,
+                SwingDegrees = 360 * 2,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                HitCount = 8,
+                Easing = (float lerpValue) => EasingFunction.InOutSine(lerpValue / 0.3f) * lerpValue,
+                Sound = quickSpin
+            });
+
+            Add(new OvalSwing
+            {
+                Duration = 37,
+                SwingDegrees = 360 * 2,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                HitCount = 8,
+                Easing = (float lerpValue) => EasingFunction.InOutSine(lerpValue / 0.3f) * lerpValue,
+                Sound = quickSpin
+            });
+
+            Add(new OvalSwing
+            {
+                Duration = 60,
+                SwingDegrees = 360 * 4,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                HitCount = 8,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = nSpin
+            });
+
+            SlashTrailBuilder slashTrailBuilder = new SlashTrailBuilder();
+            SlashTrailer slashTrailer = slashTrailBuilder.Instantiate();
+            slashTrailer.invert = ComboIndex % 2 != 0;
+            Trailer = slashTrailer;
+
+            useBloom = true;
+            bloom.innerBloomColor = Color.Gold;
+            bloom.outerBloomColor = Color.DarkOrange;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
             useAfterImage = true;
+        }
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(4, 32, ratio) * 1.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+
+        private Color GetBloomColor(float ratio)
+        {
+            Color blue = Color.Lerp(Color.Lerp(Color.White, Color.DarkOrange, 0.5f), Color.DarkGoldenrod, ExtraMath.Osc(0f, 1f, speed: 4));
+            return Color.Lerp(blue * 0.9f, Color.Black, ratio);
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -151,7 +208,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
             if (DashRotation)
             {
-                Player.fullRotation += Player.velocity.Length() * 0.015f * DashDirection;
+                Player.fullRotation += Player.velocity.Length() * 0.025f * DashDirection;
                 Player.fullRotationOrigin = Player.Size / 2;
             }
 
@@ -203,8 +260,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         private ref float DeathTimer => ref Projectile.ai[2];
         private Player Owner => Main.player[Projectile.owner];
         public float holdOffset = 30;
-
-        public override string Texture => TextureRegistry.EmptyTexture;
+        public override string Texture => AssetReferences.Assets.Textures.Fable.Items.ScarecrowSaber.KEY;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -277,7 +333,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             scarecrowSaberPlayer.DashDirection = dir;
 
             //LMAOOOO
-            _swingRot += Owner.velocity.Length() * 0.015f * dir;
+            _swingRot += Owner.velocity.Length() * 0.025f * dir;
             if (_recoiled)
             {
                 DeathTimer++;
@@ -342,7 +398,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 target.AddBuff(BuffID.OnFire, 120);
 
                 //If you hit at the start of the dash, you have a damage multiplier
-                modifiers.FinalDamage *= 12;
+                modifiers.FinalDamage *= 6;
             }
         }
 
