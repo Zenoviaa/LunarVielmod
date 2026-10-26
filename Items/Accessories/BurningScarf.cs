@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.ClassReworkSystem;
 using Stellamod.Common.StaminaSystem;
 using Terraria;
 using Terraria.Audio;
@@ -51,7 +52,7 @@ namespace Stellamod.Items.Accessories
                 }
 
                 //Make Flame
-                int damage = Item.damage;
+                int damage = player.GetModPlayer<ClassReworkPlayer>().ScalingWeaponDamage() / 2;
                 float knockback = Item.knockBack;
                 Vector2 velocity = -player.velocity.SafeNormalize(Vector2.Zero) * 8;
                 velocity -= new Vector2(0, 0.013f);

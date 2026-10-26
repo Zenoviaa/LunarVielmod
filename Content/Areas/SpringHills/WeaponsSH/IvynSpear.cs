@@ -38,7 +38,42 @@ public class IvynSpearSlash : BaseSwingProjectileV2
         SlashTrailer slashTrailer = TrailPresets.CreateIvynSlashTrail();
         slashTrailer.TrailWidthFunction = GetTrailWidth;
         Trailer = slashTrailer;
-        SwingV2Helper.AddSpearSwingStyle(this);
+        SoundStyle spearSlash1 = SoundRegistry.SpearSlash1;
+        SoundStyle spearSlash2 = SoundRegistry.SpearSlash2;
+        SoundStyle nSpin = SoundRegistry.NSwordSpin1;
+        spearSlash1.PitchVariance = 0.25f;
+        spearSlash2.PitchVariance = 0.25f;
+        nSpin.PitchVariance = 0.2f;
+
+        Add(new ThrustSwing
+        {
+            Duration = 60,
+            ThrowDistance = 120,
+            Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
+            ThrustSpeed = 0.5f,
+            Sound = spearSlash2
+        });
+
+
+        Add(new ThrustSwing
+        {
+            Duration = 15,
+            ThrowDistance = 60,
+            Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
+            ThrustSpeed = 0.5f,
+            Sound = spearSlash2
+        });
+
+
+        Add(new ThrustSwing
+        {
+            Duration = 15,
+            ThrowDistance = 60,
+            Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
+            ThrustSpeed = 0.5f,
+            Sound = spearSlash2
+        });
+
         useAfterImage = true;
     }
 

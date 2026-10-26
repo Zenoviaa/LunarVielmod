@@ -33,15 +33,17 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             Item.useAnimation = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.UseSound = SoundID.NPCHit11;
+            muzzleOrigin = new Vector2(69, 20);
         }
 
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-16, -2);
+            return new Vector2(7, -2);
         }
 
         public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+
             type = ModContent.ProjectileType<IceCubeMakerProj>();
             float rot = velocity.ToRotation();
             float spread = 0.4f;

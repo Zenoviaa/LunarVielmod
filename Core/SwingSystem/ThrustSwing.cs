@@ -20,8 +20,10 @@ namespace Stellamod.Core.SwingSystem
             Easing = EasingFunction.InOutExpo;
             TrailOffset = 1.5f;
             DrawTrail = true;
+            ThrustSpeed = 1f;
         }
         public const float TRAIL_START_OFFSET = 0.2f;
+        public float ThrustSpeed { get; set; }
         public float Duration { get; set; }
         public int HitCount { get; set; }
         public float ThrowDistance { get; set; }
@@ -91,11 +93,11 @@ namespace Stellamod.Core.SwingSystem
 
                     };
                     
-                    var dp = DustParticle.Spawn(position + Main.rand.NextVector2Circular(16, 16) + ThrustParticleOffset * velocity.SafeNormalize(Vector2.Zero), velocity * Main.rand.NextFloat(0.5f, 1f) * 4, spawnparams);
+                    var dp = DustParticle.Spawn(position + Main.rand.NextVector2Circular(16, 16) + ThrustParticleOffset * velocity.SafeNormalize(Vector2.Zero), velocity * Main.rand.NextFloat(0.5f, 1f) * 4 * ThrustSpeed, spawnparams);
                     dp.dampening = 0.1f;
                 }
 
-                ThrustParticle thrustParticle = ThrustParticle.Spawn(position , velocity * 2, Color.White * 0.6f, Scale: 1f);
+                ThrustParticle thrustParticle = ThrustParticle.Spawn(position , velocity * 2 * ThrustSpeed, Color.White * 0.6f, Scale: 1f);
                 thrustParticle.bloomColor = Color.LightSkyBlue;
                 if(swingProjectile.swordBeamLength > 0)
                 {
