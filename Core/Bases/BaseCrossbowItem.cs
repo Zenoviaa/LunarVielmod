@@ -90,17 +90,37 @@ public abstract class BaseCrossbowItem : ModItem,
         CrossbowPlayer crossbowPlayer = player.GetModPlayer<CrossbowPlayer>();
         if (player.altFunctionUse == 2)
         {
-            StaminaNDashPlayer comboPlayer = player.GetModPlayer<StaminaNDashPlayer>();
-            if (comboPlayer.CanConsume(staminaCost))
+            if(staminaProjectileShoot != 0)
             {
-                crossbowPlayer.usingStamina = true; 
-                crossbowPlayer.takeAim = true;
-                player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
-                return true;
-            } else
-            {
-                return false;
+                StaminaNDashPlayer comboPlayer = player.GetModPlayer<StaminaNDashPlayer>();
+                if (comboPlayer.CanConsume(staminaCost))
+                {
+                    Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero),
+                        staminaProjectileShoot, player.GetWeaponDamage(Item), player.GetWeaponKnockback(Item), player.whoAmI);
+                    player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
+            else
+            {
+                StaminaNDashPlayer comboPlayer = player.GetModPlayer<StaminaNDashPlayer>();
+                if (comboPlayer.CanConsume(staminaCost))
+                {
+                    crossbowPlayer.usingStamina = true;
+                    crossbowPlayer.takeAim = true;
+                    player.GetModPlayer<StaminaNDashPlayer>().StaminaEffects(player);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+   
         }
         else
         {

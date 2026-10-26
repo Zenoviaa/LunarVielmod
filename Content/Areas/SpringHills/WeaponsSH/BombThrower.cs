@@ -48,7 +48,6 @@ public class BombThrowerHeld : ModProjectile
     float LittleChargeTime => 60;
     float BigChargeTIme => 100;
     float ChargeScale => AttackCycle == 0 ? EasingFunction.InOutSine(Timer / LittleChargeTime) : 1f;
-    float BigChargeScale => AttackCycle == 1 ? EasingFunction.InOutSine(Timer / BigChargeTIme) : 0f;
     float AggregateScale =>MathHelper.Lerp(0.5f, 1f, ChargeScale);
     Vector2 HoldPosition => Owner.MountedCenter + new Vector2(0, -48);
     int ThrowingDamage
