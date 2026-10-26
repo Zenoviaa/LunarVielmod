@@ -1,43 +1,105 @@
-﻿using Stellamod.Assets;
-using Stellamod.Common.Shaders;
-using Stellamod.Common.Shaders.MagicTrails;
+﻿using Stellamod.Common;
+using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
-using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace Stellamod.Content.Areas.Fable.WeaponsFB
+namespace Stellamod.Content.Areas.Fable.WeaponsFB;
+
+
+public class GalvinieNote : ModProjectile
 {
-    public class Galvinie : BaseCrossbowItem
+    float Time => 120;
+    float Scale => EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine(Projectile.timeLeft / 30f);
+    ref float Timer => ref Projectile.ai[0];
+    ref float Frame => ref Projectile.ai[1];
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.GalvinieNote.KEY;
+
+    public override void OnSpawn(IEntitySource source)
     {
-        private int _fireSound;
-        public override void SetDefaults()
+        base.OnSpawn(source);
+        Frame = Main.rand.Next(2);
+    }
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        Projectile.SetTrailCacheLength(12);
+        Main.projFrames[Type] = 2;
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.WidthAndHeight = 16;
+        Projectile.friendly = true;
+        Projectile.LocalPiercingImmunityTime = 30;
+        Projectile.light = 0.4f;
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = (int)Time;
+
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if (Main.rand.NextBool(8))
         {
-            base.SetDefaults();
-            Item.damage = 14;
-            Item.knockBack = 4;
-            Item.rare = ItemRarityID.Green;
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            var vel = Main.rand.NextVector2Circular(1, 1);
+            Dust.NewDustPerfect(pos, ModContent.DustType<GlyphDust>(), vel, Scale: 0.5f, newColor: Color.DarkOrange);
         }
 
-        public override void ShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
+        Projectile.frame = (int)Frame;
+        Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, 0f, 0.03f);
+        Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.X, -0.04f, 0.03f);
+        Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.velocity.X * 0.05f, 0.03f);
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.DarkOrange, Color.Transparent, 0.3f);
+        var drawer = Projectile.Drawer;
+        drawer.scale = new Vector2(Scale);
+        Main.spriteBatch.Draw(drawer);
+        return false;
+    }
+}
+
+public class Galvinie : BaseCrossbowItem
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.Galvinie.KEY;
+    private int _fireSound;
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Item.damage = 14;
+        Item.knockBack = 4;
+        Item.useTime = Item.useAnimation = 45;
+        Item.rare = ItemRarityID.Green;
+    }
+
+    public override void ShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
+    {
+        Vector2 fireVelocity = shootParams.velocity * shootParams.speed;
+        fireVelocity *= 3;
+        fireVelocity *= shootParams.chargeStrength;
+
+        if (shootParams.projToShoot == ProjectileID.WoodenArrowFriendly)
         {
-            //   base.ShootBow(player, source, shootParams);
-            Vector2 fireVelocity = shootParams.velocity * shootParams.speed;
-            fireVelocity *= 3;
-            fireVelocity *= shootParams.chargeStrength;
+            shootParams.projToShoot = ModContent.ProjectileType<GalvinieNote>();
 
-            if (shootParams.projToShoot == ProjectileID.WoodenArrowFriendly)
-                shootParams.projToShoot = ModContent.ProjectileType<GalvinieArrow1>();
+            for (var i = 0; i < 4; i++)
+            {
+                float bowDamage = shootParams.damage * shootParams.chargeStrength;
+                Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.5f, 1f),
+                    shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
+            }
 
-            float bowDamage = shootParams.damage * shootParams.chargeStrength;
-            Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity,
-                shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
-            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
             _fireSound++;
             if (_fireSound >= 3)
             {
@@ -54,108 +116,50 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowSong3"), player.position);
             }
         }
-
-        public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
+        else
         {
-            base.StaminaShootBow(player, source, shootParams);
-            CrossbowPlayer crossbowPlayer = player.GetModPlayer<CrossbowPlayer>();
-            crossbowPlayer.BurstShot(3, 5, shootParams.velocity, shootParams.chargeStrength);
+            for (var i = 0; i < 4; i++)
+            {
+                float bowDamage = shootParams.damage * shootParams.chargeStrength;
+                Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.5f, 1f),
+                    shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
+                crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
+            }
         }
     }
 
-
-
-
-
-    public class GalvinieArrow1 : ModProjectile
+    public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
     {
-        public override void SetStaticDefaults()
+        base.StaminaShootBow(player, source, shootParams);
+        shootParams.projToShoot = ModContent.ProjectileType<GalvinieNote>();
+        Vector2 fireVelocity = shootParams.velocity * shootParams.speed;
+        fireVelocity *= 3;
+        fireVelocity *= shootParams.chargeStrength;
+        for (var i = 0; i < 15; i++)
         {
-            // DisplayName.SetDefault("Archarilite Arrow");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        }
-        public override void SetDefaults()
-        {
-            Projectile.width = 17;
-            Projectile.height = 17;
-            Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = ProjAIStyleID.Arrow;
-            AIType = ProjectileID.Bullet;
-            Projectile.DamageType = DamageClass.Ranged;
-            Projectile.friendly = true;
-            Projectile.extraUpdates = 1;
+            float bowDamage = shootParams.damage * shootParams.chargeStrength;
+            Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity.RotatedByRandom(1.5F) * Main.rand.NextFloat(0.5f, 1f),
+                shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
         }
 
-        public override void AI()
+        _fireSound++;
+        if (_fireSound >= 3)
         {
-            Projectile.ai[1]++;
-            Projectile.velocity *= 1.02f;
-            Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
+            _fireSound = 0;
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowSong"), player.position);
+
         }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        if (_fireSound == 2)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
-                ModContent.ProjectileType<AlcadizBombExplosion>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowSong2"), player.position);
         }
-
-        public override void OnKill(int timeLeft)
+        if (_fireSound == 1)
         {
-            for (int i = 0; i < 5; i++)
-            {
-                Dust.NewDustPerfect(Projectile.Center, DustID.YellowTorch, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default, 1f).noGravity = false;
-            }
-
-            for (int i = 0; i < 15; i++)
-            {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowStarDust, 0f, -2f, 0, default, 1.5f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                {
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
-                }
-            }
-        }
-
-        private Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Goldenrod, Color.Red, completionRatio);
-        }
-
-        private float WidthFunction(float completionRatio)
-        {
-            float w = 10;
-            float ew = w / 10;
-            float width = w;
-
-            float p = completionRatio / 0.5f;
-            float ep = EasingFunction.OutCirc(p);
-            float circleWidth = MathHelper.Lerp(0, w, ep);
-            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
-            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.GlowTrail;
-            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.5f;
-            shader.Repeats = 1f;
-            //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
-            return false;
-        }
-
-        public override void PostDraw(Color lightColor)
-        {
-
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowSong3"), player.position);
         }
     }
 }
+
+
+
+
