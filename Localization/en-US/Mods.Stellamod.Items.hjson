@@ -12356,3 +12356,33 @@ FableGrassItem: {
 	DisplayName: Fable Grass
 	Tooltip: ""
 }
+
+CeramicPotBigTileItem: {
+	DisplayName: Ceramic Pot Big Tile Item
+	Tooltip: ""
+}
+
+CeramicPotTileItem: {
+	DisplayName: Ceramic Pot Tile Item
+	Tooltip: ""
+}
+
+FancyCeramicPotBigTileItem: {
+	DisplayName: Fancy Ceramic Pot Big Tile Item
+	Tooltip: ""
+}
+
+FancyCeramicPotTileItem: {
+	DisplayName: Fancy Ceramic Pot Tile Item
+	Tooltip: ""
+}
+
+WoodenCrateBigTileItem: {
+	DisplayName: Wooden Crate Big Tile Item
+	Tooltip: ""
+}
+
+WoodenCrateTileItem: {
+	DisplayName: Wooden Crate Tile Item
+	Tooltip: ""
+}

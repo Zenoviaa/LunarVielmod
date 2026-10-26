@@ -34,7 +34,7 @@ public abstract class ABreakableSpawningNPCTileEntity<ModNPCType, ModTileType> :
         var sqrDistToPlayer = Vector2.DistanceSquared(worldCoordinates, nearestPlayer.Center);
         if (sqrDistToPlayer > TestDistance)
             return;
-        _activeNpc = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)worldCoordinates.X, (int)worldCoordinates.Y, ModContent.NPCType<BellPhone>());
+        _activeNpc = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)worldCoordinates.X, (int)worldCoordinates.Y, ModContent.NPCType<ModNPCType>());
     }
 
     public override void OnNetPlace()

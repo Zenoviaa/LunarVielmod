@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stellamod.Core.NPCHelpers;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,6 +16,7 @@ public abstract class ABreakableNPC : ModNPC
         base.SetStaticDefaults();
         NPCID.Sets.ImmuneToAllBuffs[Type] = true;
         NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
+        NPCSets.Heavy[Type] = true;
     }
 
     public override void SetDefaults()
@@ -36,8 +38,10 @@ public abstract class ABreakableNPC : ModNPC
     public override void AI()
     {
         base.AI();
-        if(_wiggle > 0)
+        NPCSets.Heavy[Type] = true;
+        if (_wiggle > 0)
             _wiggle--;
+        NPC.spriteDirection = 1;
         NPC.rotation = MathHelper.Lerp(-WiggleRange, WiggleRange, MathF.Sin(_wiggle * 0.3f) * 0.5f + 0.5f) * _wiggle / WiggleTime;
     }
     public override void HitEffect(NPC.HitInfo hit)

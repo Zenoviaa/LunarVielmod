@@ -41,10 +41,11 @@ public class CeramicPot : ABreakableNPC
         {
             SoundEngine.PlaySound(SoundID.Shatter with { PitchVariance = 0.6f }, NPC.position);
             //Spawn Gores
-            for (var i = 0; i < 4; i++)
+            for (var i = 0; i < 16; i++)
             {
                 var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
                 var vel = (pos - NPC.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(3f, 7);
+                vel.Y -= 5;
                 Particles.CeramicPot.Spawn(new()
                 {
                     position = pos,

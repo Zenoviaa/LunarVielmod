@@ -12,6 +12,8 @@ public abstract class GoreParticleUpdater : ParticleUpdater<GoreParticleUpdater.
         public Vector2 velocity;
         public byte frame;
         public float timeLeft;
+        public float scale;
+        public float rotation;
         public bool IsActive => timeLeft > 0;
     }
 
@@ -29,7 +31,8 @@ public abstract class GoreParticleUpdater : ParticleUpdater<GoreParticleUpdater.
     public override void OnSpawn(ref Data particle, in int index)
     {
         base.OnSpawn(ref particle, index);
-        particle.frame = (byte)Main.rand.Next(4);
+        particle.rotation = Main.rand.NextFloat(6.28f);
+        particle.scale = Main.rand.NextFloat(0.3f, 1f);
     }
 
     protected override void UpdateParticles()
@@ -39,8 +42,8 @@ public abstract class GoreParticleUpdater : ParticleUpdater<GoreParticleUpdater.
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
             particle.velocity.X *= 0.96f;
-            particle.velocity.Y += 0.5f;
-            particle.velocity = Collision.TileCollision(particle.position, particle.velocity, 4, 4);
+            particle.velocity.Y += 0.25f;
+            particle.velocity = Collision.TileCollision(particle.position, particle.velocity, 6, 6);
             particle.timeLeft--;
         }
     }
@@ -59,7 +62,12 @@ public abstract class GoreParticleUpdater : ParticleUpdater<GoreParticleUpdater.
             ref var particle = ref _particles[i];
             var framign = GetParticleFrame(particle.frame);
             var drawer = SpritebatchDrawer.FromTextureAsset(framign.texture, particle.position);
-            drawer.rotation = particle.velocity.ToRotation();
+            drawer.rotation = particle.velocity.ToRotation() + particle.rotation;
+            drawer.sourceRect = framign.frame;
+            drawer.CenterOrigin();
+            var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 24f);
+            drawer.color *= outAlpha;
+            drawer.scale *= particle.scale;
             spriteBatch.Draw(drawer);
         }
     }

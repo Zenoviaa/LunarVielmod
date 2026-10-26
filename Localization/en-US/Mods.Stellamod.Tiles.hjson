@@ -211,3 +211,9 @@ TowerofIlluriaRelic.MapEntry: Towerof Illuria Relic
 BunnyStormRelic.MapEntry: Bunny Storm Relic
 AbyssalKelp.MapEntry: Abyssal Kelp
 CheckpointBellTile.MapEntry: Checkpoint Bell Tile
+CeramicPotBigTile.MapEntry: Ceramic Pot Big Tile
+CeramicPotTile.MapEntry: Ceramic Pot Tile
+FancyCeramicPotBigTile.MapEntry: Fancy Ceramic Pot Big Tile
+FancyCeramicPotTile.MapEntry: Fancy Ceramic Pot Tile
+WoodenCrateBigTile.MapEntry: Wooden Crate Big Tile
+WoodenCrateTile.MapEntry: Wooden Crate Tile
