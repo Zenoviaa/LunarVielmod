@@ -1,0 +1,100 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
+using Stellamod.Common.IgnitersNPowders;
+using Terraria;
+using Terraria.GameInput;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.UI;
+
+namespace Stellamod.Common.PowderSystem;
+
+public class PowderSlot : UIElement
+{
+    private readonly BaseIgniterCard _card;
+    private readonly int _context;
+    private readonly int _index;
+    private readonly float _scale;
+
+    public Item Item;
+    public PowderSlot(BaseIgniterCard card, int index, int context = ItemSlot.Context.BankItem, float scale = 1f)
+    {
+        _context = context;
+        _scale = scale;
+        _card = card;
+        _index = index;
+      
+        Width.Set(50, 0f);
+        Height.Set(54, 0f);
+
+        Item = new Item();
+        Item.SetDefaults(ItemID.None);
+        Item = _card.Powders[_index].Clone();
+    }
+
+
+    /// <summary>
+    /// Returns true if this item can be placed into the slot (either empty or a pet item)
+    /// </summary>
+    public bool Valid(Item item)
+    {
+        if (item.ModItem is BasePowder powder)
+        {
+            return true;
+        }
+
+        if (item.IsAir)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void HandleMouseItem()
+    {
+        if (Valid(Main.mouseItem))
+        {
+            //Handles all the click and hover actions based on the context
+            ItemSlot.Handle(ref Item, _context);
+            if(Main.mouseLeft && Main.mouseLeftRelease)
+            {
+                _card.Powders[_index] = Item.Clone();
+                _card.Item.NetStateChanged();
+
+            }
+
+        }
+    }
+
+
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+        float oldScale = Main.inventoryScale;
+        Main.inventoryScale = _scale;
+        Rectangle rectangle = GetDimensions().ToRectangle();
+        bool contains = ContainsPoint(Main.MouseScreen);
+
+        if (contains && !PlayerInput.IgnoreMouseInterface)
+        {
+            Main.LocalPlayer.mouseInterface = true;
+            HandleMouseItem();
+        }
+
+        //Draw Backing
+        Color color2 = Main.inventoryBack;
+        Vector2 pos = rectangle.TopLeft();
+
+
+
+        Texture2D backingTexture = AssetReferences.Assets.Textures.UI.Powder.PowderSlot.Asset.Value;
+        int offset = (int)(backingTexture.Size().Y / 2);
+        Vector2 centerPos = pos + rectangle.Size() / 2f;
+        spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
+
+       
+        ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
+
+        Main.inventoryScale = oldScale;
+    }
+}

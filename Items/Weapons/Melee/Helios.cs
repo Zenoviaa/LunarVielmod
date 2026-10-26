@@ -1,8 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Projectiles.Slashers.Helios;
+﻿using Stellamod.Projectiles.Slashers.Helios;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -79,11 +75,7 @@ namespace Stellamod.Items.Weapons.Melee
             int dir = AttackCounter;
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LightSpandProg>(), damage * 1, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity * 0.5f, ModContent.ProjectileType<LightSpandProg>(), damage * 1, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity * 1.2f, ModContent.ProjectileType<LightSpandProg>(), damage * 2, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity * 0.7f, ModContent.ProjectileType<LightSpandProg>(), damage * 3, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity * 0.2f, ModContent.ProjectileType<LightSpandProg>(), damage * 2, knockback, player.whoAmI, 1, dir);
+
             Projectile.NewProjectile(source, position, velocity * 1f, ModContent.ProjectileType<HeliosP>(), damage * 1, knockback, player.whoAmI, 1, dir);
 
             return false;

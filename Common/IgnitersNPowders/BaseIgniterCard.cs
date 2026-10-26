@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.PowderSystem;
+using Stellamod.Common.PowderSystem;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
