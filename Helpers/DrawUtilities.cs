@@ -963,7 +963,9 @@ public struct SpritebatchDrawer
     public Vector2 drawOrigin;
     public SpriteEffects spriteEffects;
     public Vector2 scale;
+    public int Height => sourceRect.HasValue ? sourceRect.Value.Height : texture.Height;
     public int Width => sourceRect.HasValue ? sourceRect.Value.Width : texture.Width;
+    public Vector2 Size => new Vector2(Width, Height);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Apply(Projectile projectile, OldPosition oldPosition)

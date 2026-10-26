@@ -1,217 +1,138 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-namespace Stellamod.Content.Areas.Fable.WeaponsFB
+namespace Stellamod.Content.Areas.Fable.WeaponsFB;
+
+public class StarFlowerMana : ModBuff
 {
-    public class StarFlowerStaff : ModItem
+    public override string Texture => AssetReferences.Assets.Textures.Buffs.StarFlowerMana.KEY;
+    public override void Update(Player player, ref int buffIndex)
     {
-        public override void SetStaticDefaults()
+        base.Update(player, ref buffIndex);
+        if (Main.rand.NextBool(4))
         {
-            // DisplayName.SetDefault("Sun Blast Staff");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            Vector2 pos = player.position;
+            pos.X += Main.rand.Next(0, player.width);
+            pos.Y += Main.rand.Next(0, player.height);
+            Vector2 vel = Main.rand.NextVector2Circular(8, 8);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = Color.White.ToVector4(),
+                outerColor = Color.Yellow.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.4f, 0.8f))
+            });
         }
-
-        public override void SetDefaults()
-        {
-            Item.staff[Item.type] = true;
-            Item.damage = 50;
-            Item.width = 50;
-            Item.height = 50;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.noMelee = true;
-            Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.shootSpeed = 35;
-            Item.autoReuse = true;
-
-            Item.DamageType = DamageClass.Magic;
-            Item.shoot = ModContent.ProjectileType<StarFlowerSeed>();
-            Item.shootSpeed = 15f;
-            Item.mana = 60;
-            Item.useAnimation = 50;
-            Item.useTime = 50;
-            Item.consumeAmmoOnLastShotOnly = true;
-        }
-
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(),
-                material: ModContent.ItemType<AlcadizScrap>());
-        }
-
-        public override Vector2? HoldoutOffset()
-        {
-            return new Vector2(-5f, 0f);
-        }
+        player.manaRegenBonus += 4;
+    }
+}
+public class StarFlowerStaff : ModItem
+{
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Item.DefaultToArtifact();
+        Item.damage = 24;
+        Item.mana = 125;
+        Item.useStyle = ItemUseStyleID.Guitar;
+        Item.useTime = Item.useAnimation = 24;
+        Item.UseSound = null;
+        Item.shoot = ModContent.ProjectileType<StarFlowerAura>();
+    }
+    public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+    {
+        base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+        position = Main.MouseWorld;
+        velocity = Vector2.Zero;
     }
 
-    public class StarFlowerSeed : ModProjectile
+    public override void AddRecipes()
     {
-        private ref float Timer => ref Projectile.ai[0];
-        private ref float AttackTimer => ref Projectile.ai[1];
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
-            Projectile.timeLeft = 180;
-            Projectile.friendly = false;
-        }
-
-        public override void AI()
-        {
-            base.AI();
-            Timer++;
-            if (Timer == 1)
-            {
-                SoundStyle riseSound = new SoundStyle("Stellamod/Assets/Sounds/StarFlower1");
-                riseSound.PitchVariance = 0.2f;
-                SoundEngine.PlaySound(riseSound, Projectile.position);
-            }
-            if (Timer % 10 == 0)
-            {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), Vector2.Zero, Scale: Main.rand.NextFloat(0.5f, 2f), newColor: Color.Yellow);
-            }
-            Projectile.velocity *= 0.94f;
-            Projectile.rotation += Projectile.velocity.Length() * 0.1f + 0.1f;
-            if (Projectile.velocity.Length() <= 1f)
-            {
-                AttackTimer++;
-                if (AttackTimer == 1)
-                {
-                    SoundStyle riseSound = new SoundStyle("Stellamod/Assets/Sounds/StarFlower2");
-                    riseSound.PitchVariance = 0.2f;
-                    SoundEngine.PlaySound(riseSound, Projectile.position);
-                }
-                if (AttackTimer >= 60)
-                {
-                    Projectile.Kill();
-                }
-            }
-        }
-
-
-        public override void PostDraw(Color lightColor)
-        {
-            base.PostDraw(lightColor);
-            float lerp = AttackTimer / 60f;
-            float interpolant = EasingFunction.InOutSine(lerp);
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Color color = Color.Yellow;
-            color.A = 0;
-            color *= lerp;
-            for (float f = 0; f < 3; f++)
-                Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, color, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-        }
-        public override void OnKill(int timeLeft)
-        {
-            base.OnKill(timeLeft);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<StarFlowerBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-        }
+        base.AddRecipes();
+        this.RegisterBrew<AlcadizScrap, BlankStaff>();
     }
+}
 
-    public class StarFlowerBoom : ModProjectile
+
+public class StarFlowerAura : ModProjectile
+{
+    float Scale => EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+    float Time => 300;
+    ref float Timer => ref Projectile.ai[0];
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.StarFlowerAuraMask.KEY;
+    public override void SetDefaults()
     {
-        private ref float Timer => ref Projectile.ai[0];
-        public override void SetDefaults()
+        base.SetDefaults();
+        Projectile.WidthAndHeight = 128;
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = (int)Time;
+        Projectile.ignoreWater = true;
+        Projectile.light = 0.6f;
+    }
+    public override bool ShouldUpdatePosition()
+    {
+        return false;
+    }
+    private float EnchantDistanceSquared => 252 * 252;
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if (Timer % 8 == 0)
         {
-            base.SetDefaults();
-            Projectile.width = 144;
-            Projectile.height = 144;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.friendly = true;
-            Projectile.timeLeft = 30;
+            Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(256, 256);
+            var sp = SparkleParticle.Spawn(pos, Main.rand.NextVector2Circular(2, 2));
+            sp.dampening = 0.15f;
+            sp.gravity = 0;
+            sp.innerColor = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(0f, 1f), Color.DarkBlue, Color.SkyBlue, Color.White);
+            sp.outerColor = Color.Lerp(sp.innerColor, Color.Black, 0.5f);
+            sp.Scale = Main.rand.NextFloat(0.45f, 0.8f) * 0.5f;
         }
 
-        public override void AI()
+        foreach (var player in Main.ActivePlayers)
         {
-            base.AI();
-            Timer++;
-            if (Timer == 1)
+            float sqrtDistance = Vector2.DistanceSquared(player.Center, Projectile.Center);
+            if (sqrtDistance <= EnchantDistanceSquared)
             {
-                var p = FXUtil.GlowCircleBoom(Projectile.Center, Color.Orange, Color.Red, Color.Black);
-                p.Scale *= 2;
-                FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Orange);
-                for (float f = 0; f < 32; f++)
-                {
-                    Vector2 vel = Main.rand.NextVector2Circular(16, 16);
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), vel, Scale: Main.rand.NextFloat(0.5f, 2f), newColor: Color.Yellow);
-                }
-                SoundStyle starFlowerBoomSound = new SoundStyle("Stellamod/Assets/Sounds/StarFlower3");
-                starFlowerBoomSound.PitchVariance = 0.2f;
-                SoundEngine.PlaySound(starFlowerBoomSound, Projectile.position);
-            }
-
-            if (Timer % 10 == 0)
-            {
-                Vector2 o = Main.rand.NextVector2Circular(64, 64);
-                for (float i = 0; i < 4; i++)
-                {
-                    float progress = i / 4f;
-                    float rot = progress * MathHelper.ToRadians(360);
-
-                    Vector2 offset = rot.ToRotationVector2() * 24;
-                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center + o,
-                        innerColor: Color.White,
-                        glowColor: Color.Yellow,
-                        outerGlowColor: Color.Black,
-                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
-                        duration: Main.rand.NextFloat(5, 10));
-                    particle.Rotation = rot + MathHelper.ToRadians(45);
-                    particle.Scale *= 0.5f;
-                }
-
-                for (float f = 0; f < 4; f++)
-                {
-                    Vector2 vel = Main.rand.NextVector2Circular(16, 16);
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), vel, Scale: Main.rand.NextFloat(0.5f, 2f), newColor: Color.Yellow);
-                }
+                player.AddBuff(ModContent.BuffType<StarFlowerMana>(), 120);
             }
         }
 
-        public override bool PreDraw(ref Color lightColor)
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        var pass = AssetReferences.Effects.Fable.FableStarAura.CreatePixelPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        var stars = AssetReferences.Assets.NoiseTextures.Stars.Asset.Value;
+        pass.Parameters.starSampler = new()
         {
-            GlowCircleShader shader = GlowCircleShader.Instance;
-            shader.Speed = 5;
-            shader.BasePower = 0.5f;
-            shader.InnerColor = Color.Lerp(Color.White, Color.Black, Timer / 30f);
-            shader.GlowColor = Color.Lerp(Color.Yellow, Color.Black, Timer / 30f);
-            shader.OuterGlowColor = Color.Lerp(Color.Blue, Color.Black, Timer / 30f);
-            shader.Pixelation = 0.0015f;
-            shader.Apply();
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            Vector2 scale = new Vector2(2f, 1f);
-            spriteBatch.Restart(effect: shader.Effect, blendState: BlendState.Additive);
-            for (float f = 0; f < 4f; f++)
-            {
-                float interpolant = f / 4f;
-                float rot = interpolant * MathHelper.TwoPi;
-                rot += MathHelper.PiOver4;
-                Vector2 drawPos = Projectile.Center - Main.screenPosition;
-                drawPos += rot.ToRotationVector2() * 32;
-                spriteBatch.Draw(texture, drawPos, null, Color.White, rot, drawOrigin, scale, SpriteEffects.None, 0);
-                //  spriteBatch.Draw(texture, drawPos, null, Color.White, rot, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
-            }
-            spriteBatch.RestartDefaults();
-            return false;
+            Texture = stars,
+            Sampler = SamplerState.PointWrap
+        };
+
+        pass.Parameters.spriteSize = Projectile.Drawer.Size;
+        pass.Parameters.noiseTexelSize = stars.GetTexelSize();
+        pass.Apply();
+
+        using(Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with { effect = pass.Shader }))
+        {
+            Main.spriteBatch.Draw(Projectile.Drawer with { scale = new Vector2(Scale) });
         }
+
+        return false;
     }
 }
