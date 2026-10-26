@@ -1,127 +1,178 @@
 ﻿using Stellamod.Assets;
-using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
+using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Core.Pixelation;
-using Stellamod.Helpers;
+using Stellamod.Content.Dusts;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Particles;
 using Stellamod.Items;
-using Stellamod.Projectiles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.Fable.WeaponsFB
-{
-    public class BurningFlask : ModItem
-    {
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            Item.width = 24;
-            Item.height = 24;
-            Item.damage = 9;
-            Item.DamageType = DamageClass.Ranged;
-            Item.noUseGraphic = true;
-            Item.height = 40;
-            Item.useTime = 70;
-            Item.useAnimation = 70;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.knockBack = 6;
-            Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
-            Item.UseSound = SoundID.DD2_GhastlyGlaivePierce;
-            Item.autoReuse = true;
-            Item.shoot = ModContent.ProjectileType<HornetLob>();
-            Item.shootSpeed = 13f;
-        }
+namespace Stellamod.Content.Areas.Fable.WeaponsFB;
 
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            this.RegisterBrew(
-                mold: ModContent.ItemType<BlankJuggler>(), 
-                material: ModContent.ItemType<AlcadizScrap>());
-        }
+public class BurningFlask : ModItem
+{
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.BurningFlask.KEY;
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Item.DefaultToCombatTool(0, 0, ammoCount: 3);
+        Item.shoot = ModContent.ProjectileType<BurningFlaskThrow>();
     }
 
-    public class HornetLob : ModProjectile
+    public override void AddRecipes()
     {
-        public override void SetStaticDefaults()
+        base.AddRecipes();
+        this.RegisterBrew(
+            mold: ModContent.ItemType<BlankJuggler>(),
+            material: ModContent.ItemType<AlcadizScrap>());
+    }
+}
+
+
+public class BurningFlaskOil : ModProjectile
+{
+    ref float Timer => ref Projectile.ai[0];
+    public override string Texture => TextureRegistry.EmptyTexture;
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 32;
+        Projectile.height = 32;
+        Projectile.timeLeft = 300;
+        Projectile.friendly = true;
+
+        Projectile.StaticPiercingImmunityTime = 30;
+    }
+    public override bool OnTileCollide(Vector2 oldVelocity)
+    {
+        return false;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if (Main.rand.NextBool(3))
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 16;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+            Vector2 pos = Projectile.Bottom;
+            pos.X += Main.rand.NextFloat(-Projectile.width / 2, Projectile.width / 2);
+            pos.Y += Main.rand.NextFloat(-3f, 3f);
+            Particles.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = pos, timeleft = 70, style = 2 });
+        }
+        Projectile.velocity.X *= 0.98f;
+        Projectile.velocity.Y += 0.25f;
+    }
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        target.AddBuff(BuffID.OnFire3, 120);
+    }
+}
+
+public class BurningFlaskThrow : ModProjectile
+{
+    private ref float Timer => ref Projectile.ai[0];
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.BurningFlaskThrow.KEY;
+    public override void SetStaticDefaults()
+    {
+        Projectile.SetTrailCacheLength(12);
+    }
+
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 24;
+        Projectile.height = 24;
+        Projectile.friendly = true;
+        Projectile.timeLeft = 180;
+        Projectile.light = 0.5f;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if (Timer == 1)
+        {
+            SoundStyle useSound = SoundID.DD2_GhastlyGlaivePierce;
+            useSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(useSound, Projectile.position);
         }
 
-        public override void SetDefaults()
+
+        Projectile.velocity.Y += 0.3f;
+        Projectile.rotation += Projectile.velocity.X * 0.015f;
+    }
+
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        CreateImpactEffects();
+    }
+
+    public override bool OnTileCollide(Vector2 oldVelocity)
+    {
+        CreateImpactEffects();
+        return true;
+    }
+    private void CreateImpactEffects()
+    {
+        for (int i = 0; i < 6; i++)
         {
-            Projectile.width = 20;
-            Projectile.height = 20;
-            Projectile.aiStyle = ProjAIStyleID.ThrownProjectile;
-            Projectile.friendly = true;
-            Projectile.hostile = false;
-            Projectile.tileCollide = true;
+            Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 0.5f).noGravity = true;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 150, Color.DarkGray, 0.5f).noGravity = true;
         }
 
-        public override void AI()
+        int numDust = 8;
+        for (int n = 0; n < numDust; n++)
         {
-            Vector3 RGB = new(1.00f, 0.37f, 0.30f);
-
-            // The multiplication here wasn't doing anything
-            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+            var sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(64, 64), -Vector2.UnitY, Scale: Main.rand.NextFloat(1f, 2f));
+            sp.initialColor = Color.Brown;
         }
 
-        public float WidthFunction(float completionRatio)
+        for (int n = 0; n < numDust; n++)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 0.5f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+            var dp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(64, 64), -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.5f, 25), Scale: Main.rand.NextFloat(1f, 2f));
         }
 
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.DimGray, Color.Transparent, completionRatio);
-        }
+        ShakeScreenPosition.Shake = 3;
+        SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"), Projectile.position);
+    }
 
-        private void DrawFlamingTrail(GraphicsDevice graphicsDevice)
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+        if (this.OwnedByLocalClient())
         {
-            BlackFireShader blackFireShader = BlackFireShader.Instance;
-            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, blackFireShader, Projectile.Size * 0.5f);
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            PixelationManager.QueuePrimitivesDrawAction(DrawFlamingTrail);
-            DrawHelper.DrawDimLight(Projectile, 70, 30, 10, Color.OrangeRed, lightColor, 2);
-            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.OrangeRed, Color.Transparent, ref lightColor);
-            return base.PreDraw(ref lightColor);
-        }
-
-
-        public override void OnKill(int timeLeft)
-        {
-            base.OnKill(timeLeft);
-            float numDust = 5;
-            for (float n = 0; n < numDust; n++)
+            for(var i= 0; i < 4; i++)
             {
-                Vector2 inverseVelocity = -Projectile.oldVelocity;
-                inverseVelocity = inverseVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f);
-                var dp = DustParticle.Spawn(Projectile.Center, inverseVelocity);
-                dp.dampening = 0.1f;
-                dp.Scale *= 0.5f;
-                dp.innerColor = Color.OrangeRed;
-                dp.outerColor = Color.DarkRed;
-            }FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.OrangeRed, Color.DarkRed);
-
-            if (this.OwnedByLocalClient())
-            {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<HornetKaboom>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+                var velocity = -Vector2.UnitY;
+                velocity = velocity.RotatedByRandom(1.5f);
+                velocity *= Main.rand.NextFloat(10, 15);
+                var pos = Projectile.Center;
+                var firer = ProjFirer.From<BurningFlaskOil>(Projectile);
+                firer.position = pos;
+                firer.velocity = velocity;
+                firer.New();
             }
-
-            SoundStyle flameUp = AssetManager.GetSound("flameup");
-            flameUp.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(flameUp, Projectile.position);
         }
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.Red, Color.Transparent, 0.24f);
+        var drawer = Projectile.Drawer;
+        Main.spriteBatch.Draw(drawer);
+        return false;
     }
 }
