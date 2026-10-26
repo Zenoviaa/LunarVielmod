@@ -91,6 +91,8 @@ public partial class VeilGen
         int top = SavedGenerationParameters.SnowTop;
         int bottom = SavedGenerationParameters.DarkspaceTop;
 
+        Main.NewText($"{left} {right} {top} {bottom}");
+
         //Calculate center of the abyss
         Point AbyssCenter = new Point();
         AbyssCenter.X = left + right;
@@ -120,6 +122,7 @@ public partial class VeilGen
                 tile.TileFrameX = -1;
                 tile.TileFrameY = -1;
                 tile.TileType = abyssTile;
+                tile.HasTile = true;
             }
         }
         //var genRand = WorldGen.genRand;

@@ -15,6 +15,9 @@ namespace Stellamod.Core.LunarLightingSystem
                 {
                     if (TileID.Sets.Torch[i] || TileID.Sets.Torch[j])
                         continue;
+                    if (TileID.Sets.NoMerge[i] || TileID.Sets.NoMerge[j])
+                        continue;
+
                     Main.tileMerge[i][j] = true;
                     Main.tileMerge[j][i] = true;
                 }

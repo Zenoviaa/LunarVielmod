@@ -22,7 +22,7 @@ public abstract class ABreakableNPC : ModNPC
     public override void SetDefaults()
     {
         base.SetDefaults();
-        NPC.lifeMax = 5;
+        NPC.lifeMax = 3;
         NPC.defense = 99999;
         NPC.width = 64;
         NPC.height = 32;

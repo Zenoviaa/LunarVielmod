@@ -1,4 +1,5 @@
-﻿using ReLogic.Content;
+﻿using Humanizer;
+using ReLogic.Content;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
@@ -311,6 +312,14 @@ public class FableMushroom : ZTile
     public override void PostDraw(SpriteBatch spriteBatch, in ZTileDrawData drawData, in ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawData, drawParams);
+        if (drawParams.tileData.frameNumber != 0)
+            return;
+        Lighting.AddLight(drawParams.tilePosition.x, drawParams.tilePosition.y, TorchID.Torch, 0.65f);
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
+        glowDrawer.color = Color.Pink * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6) * MathHelper.Lerp(0.5f, 1f, 0.6f);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= ExtraMath.Osc(0.8f, 1f);
+        spriteBatch.Draw(glowDrawer);
     }
 }
 public class FableMushroomSpotted : ZTile

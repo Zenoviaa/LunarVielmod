@@ -32,6 +32,8 @@ public class TileSets : ModSystem
     public static int[] MarshyGrass;
 
     public static bool[] IgnoredByWaterfalls;
+
+    public static bool[] NoMerge;
     public override void ResizeArrays()
     {
         base.ResizeArrays();
@@ -41,6 +43,7 @@ public class TileSets : ModSystem
         CantSpawnEnemies = TileID.Sets.Factory.CreateBoolSet();
         MarshyGrass = TileID.Sets.Factory.CreateIntSet(-1);
         IgnoredByWaterfalls = TileID.Sets.Factory.CreateBoolSet();
+        NoMerge = TileID.Sets.Factory.CreateBoolSet();
     }
 }
 
@@ -52,5 +55,6 @@ public static class TileSetsExtensions
         public static bool[] CantSpawnEnemies => TileSets.CantSpawnEnemies;
         public static int[] MarshyGrass => TileSets.MarshyGrass;
         public static bool[] IgnoredByWaterfalls => TileSets.IgnoredByWaterfalls;
+        public static bool[] NoMerge => TileSets.NoMerge;
     }
 }

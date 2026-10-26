@@ -7,8 +7,6 @@ using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
-using Stellamod.Content.Areas.Tundra.Abyss.WeaponsAB;
-using Stellamod.Content.Areas.Tundra.Snow.TilesSN;
 using Stellamod.Content.Areas.Underground.TilesUG;
 using Stellamod.Content.Areas.WaterSide.TilesWS;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
@@ -49,37 +47,6 @@ using Terraria.WorldBuilding;
 
 namespace Stellamod.WorldG;
 
-public class PassWriter
-{
-    private int _insertionIndex;
-    public PassWriter(List<GenPass> tasks)
-    {
-        this.Tasks = tasks;
-    }
-    public readonly List<GenPass> Tasks;
-
-    public void SetInsertionIndex(int index)
-    {
-        _insertionIndex = index;
-    }
-    public void SetInsertionIndex(string passName) => SetInsertionIndex(Tasks.FindIndex(genpass => genpass.Name.Equals(passName)));
-    public void NextPass(GenPass genPass)
-    {
-        _insertionIndex++;
-        Tasks.Insert(_insertionIndex, genPass);
-
-    }
-    public void DisablePass(string passName)
-    {
-        Tasks[Tasks.FindIndex(genpass => genpass.Name.Equals(passName))].Disable();
-
-    }
-    public void ReplacePass(GenPass genPass)
-    {
-        Tasks[_insertionIndex] = genPass;
-    }
-}
-
 public static class SavedGenerationParameters
 {
     public static int SnowLeft;
@@ -113,7 +80,7 @@ public partial class StellaWorld : ModSystem
     public Point CoralwaysLocation { get; private set; }
     public Point SnowClumpOriginPoint { get; private set; }
     public Point GothiviaSpawnOffset => new Point(246, -99);
- 
+
     public int CindersparkStart { get; private set; }
     public int CindersparkEnd { get; private set; }
     public int DarkspaceStart { get; private set; }
@@ -2008,16 +1975,16 @@ public partial class StellaWorld : ModSystem
         int left = padding;
         int width = 64;
         ushort graniteType = TileID.Granite;
-        for(int y = DarkspaceStart; y < DarkspaceEnd; y++)  
+        for (int y = DarkspaceStart; y < DarkspaceEnd; y++)
         {
             int localY = y - DarkspaceStart;
             int steps = DarkspaceEnd - DarkspaceStart;
-            float ratio = (float)localY / (float)steps;
+            float ratio = localY / (float)steps;
             float xOffset = MathHelper.Lerp(0, 54, EasingFunction.QuadraticBump(ratio));
-  
-            for(int x = 0; x < width; x++)
+
+            for (int x = 0; x < width; x++)
             {
-                Point darkspacePointRight = new Point(right + (int)xOffset + x - width , y);
+                Point darkspacePointRight = new Point(right + (int)xOffset + x - width, y);
                 Tile darkspaceTile = Main.tile[darkspacePointRight];
                 darkspaceTile.HasTile = true;
                 darkspaceTile.TileType = graniteType;
@@ -2522,7 +2489,7 @@ public partial class StellaWorld : ModSystem
         VeilGen.GenerateFallingIceCavern(cavePosition, caveVelocity, pullDirection, caveStrength, caveWidth, caveSteps);
     }
 
- 
+
 
     private void WorldGen_EvilCircle(Point evilPoint)
     {
@@ -3695,7 +3662,7 @@ public partial class StellaWorld : ModSystem
             tileBlend = Structurizer.DefaultTileBlend
         });*/
         Point caveOrigin = FableLocation + new Point(352, -183);
- 
+
         //Placing a falling off slope at the end of the structure
         Rectangle fableRect = Structurizer.ReadRectangle(StructureAssets.Fable);
         Point fableFalloffStart = FableLocation + new Point(fableRect.Width, 0);
@@ -3715,7 +3682,7 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-     //          VeilGen.QuickPlaceTile(tilePlace.X, y, TileID.Dirt);
+                //          VeilGen.QuickPlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("FableSurface");
@@ -3724,11 +3691,11 @@ public partial class StellaWorld : ModSystem
         void SetTile(int tileX, int tileY, Color c)
         {
             var tile = Main.tile[tileX, tileY];
-            if(c.R > 200 && c.G < 10 && c.B < 10)
+            if (c.R > 200 && c.G < 10 && c.B < 10)
             {
                 tile.ClearEverything();
             }
-            else if(c.R > 200 && c.G > 200 && c.B < 10)
+            else if (c.R > 200 && c.G > 200 && c.B < 10)
             {
                 tile.ClearEverything();
                 VeilGen.QuickPlaceTile(tileX, tileY, tiletoPlace);
@@ -4218,7 +4185,7 @@ public partial class StellaWorld : ModSystem
                     tile.WallType = WallID.None;
             }
 
-            foreach(Point tilePoint in stoneGolemCaveRectangle.Points)
+            foreach (Point tilePoint in stoneGolemCaveRectangle.Points)
             {
                 WorldGen.SquareWallFrame(tilePoint.X, tilePoint.Y);
             }
@@ -5894,7 +5861,7 @@ public partial class StellaWorld : ModSystem
         Point starrHousePoint = VeilGen.AbyssCenterTile;
         starrHousePoint.X += 300;
         starrHousePoint.Y += 100;
-   
+
         //TODO: after building the structure replace it with that.
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("STARRHouse");
         Rectangle rect = new Rectangle(starrHousePoint.X, starrHousePoint.Y, prefab.Width, prefab.Height);
@@ -6230,216 +6197,6 @@ public partial class StellaWorld : ModSystem
     #endregion
 
 
-    #region Ice Biome
-    private void WorldGenCathedral(GenerationProgress progress, GameConfiguration configuration)
-    {
-
-        // 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-        progress.Message = "Verlia Ark";
-
-        bool placed = false;
-        int attempts = 0;
-        while (!placed && attempts++ < 100000)
-        {
-            // Select a place in the first 6th of the world, avoiding the oceans
-            int towerX = WorldGen.genRand.Next(0, Main.maxTilesX - 200); // from 50 since there's a unaccessible area at the world's borders
-                                                                         // 50% of choosing the last 6th of the world
-                                                                         // Choose which side of the world to be on randomly
-            ///if (WorldGen.genRand.NextBool())
-            ///{
-            ///	towerX = Main.maxTilesX - towerX;
-            ///}
-
-            //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-            int towerY = (int)Main.worldSurface - 200;
-
-            // We go down until we hit a solid tile or go under the world's surface
-            while (!WorldGen.SolidTile(towerX, towerY) && towerY <= Main.worldSurface)
-            {
-                towerY++;
-            }
-
-            // If we went under the world's surface, try again
-            if (towerY > Main.worldSurface)
-            {
-                continue;
-            }
-            Tile tile = Main.tile[towerX, towerY];
-            // If the type of the tile we are placing the tower on doesn't match what we want, try again
-            if (!(tile.TileType == TileID.IceBlock
-                || tile.TileType == TileID.SnowBlock))
-            {
-                continue;
-            }
-
-
-            for (int da = 0; da < 1; da++)
-            {
-                Point Loc = new Point(towerX, towerY - 50);
-
-                // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-                StructureMap structures = GenVars.structures;
-                StructureLoader.ProtectStructure(Loc, "Struct/Ice/VerliasCathedral");
-                int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VerliasCathedral");
-                placed = true;
-
-            }
-        }
-
-
-    }
-
-
-
-
-    private void WorldGenVeldris(GenerationProgress progress, GameConfiguration configuration)
-    {
-
-        // 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-        progress.Message = "Veldris Building his house";
-
-        bool placed = false;
-        int attempts = 0;
-        while (!placed && attempts++ < 100000)
-        {
-            // Select a place in the first 6th of the world, avoiding the oceans
-            int towerX = WorldGen.genRand.Next(0, Main.maxTilesX - 200); // from 50 since there's a unaccessible area at the world's borders
-                                                                         // 50% of choosing the last 6th of the world
-                                                                         // Choose which side of the world to be on randomly
-            ///if (WorldGen.genRand.NextBool())
-            ///{
-            ///	towerX = Main.maxTilesX - towerX;
-            ///}
-
-            //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-            int towerY = (int)Main.worldSurface - 200;
-
-            // We go down until we hit a solid tile or go under the world's surface
-            while (!WorldGen.SolidTile(towerX, towerY) && towerY <= Main.worldSurface)
-            {
-                towerY++;
-            }
-
-            // If we went under the world's surface, try again
-            if (towerY > Main.worldSurface)
-            {
-                continue;
-            }
-            Tile tile = Main.tile[towerX, towerY];
-            // If the type of the tile we are placing the tower on doesn't match what we want, try again
-            if (!(tile.TileType == TileID.IceBlock
-                || tile.TileType == TileID.SnowBlock))
-            {
-                continue;
-            }
-
-
-            for (int da = 0; da < 1; da++)
-            {
-                Point Loc = new Point(towerX, towerY + 14);
-
-
-
-
-
-                // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-                StructureMap structures = GenVars.structures;
-                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Ice/VeldrisHouse"))
-                    continue;
-                int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VeldrisHouse");
-                Chest c = Main.chest[ChestIndexs[0]];
-
-                foreach (int chestIndex in ChestIndexs)
-                {
-                    var chest = Main.chest[chestIndex];
-                    // etc
-
-                    // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                    var itemsToAdd = new List<(int type, int stack)>();
-
-                    // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-                    int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-                        Tuple.Create(ModContent.ItemType<FrostSwing>(), 0.5)
-
-                    // Choose no item with a high weight of 7.
-                    );
-                    if (specialItem != ItemID.None)
-                    {
-                        itemsToAdd.Add((specialItem, 1));
-                    }
-                    // Using a switch statement and a random choice to add sets of items.
-                    switch (Main.rand.Next(6))
-                    {
-                        case 0:
-                            itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
-                            break;
-                        case 1:
-                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                            itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-                            itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
-                            break;
-
-                        case 2:
-                            itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-                            break;
-                        case 3:
-                            //  itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
-                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                            itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-                            itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
-
-                            break;
-                        case 4:
-                            itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
-                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-                            break;
-
-                        case 5:
-                            itemsToAdd.Add((ItemID.FuneralHat, Main.rand.Next(1, 1)));
-                            itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-                            break;
-
-
-                    }
-
-                    // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                    int chestItemIndex = 0;
-                    foreach (var itemToAdd in itemsToAdd)
-                    {
-                        Item item = new Item();
-                        item.SetDefaults(itemToAdd.type);
-                        item.stack = itemToAdd.stack;
-                        chest.item[chestItemIndex] = item;
-                        chestItemIndex++;
-                        if (chestItemIndex >= 40)
-                            break; // Make sure not to exceed the capacity of the chest
-                    }
-                }
-
-
-                placed = true;
-
-            }
-        }
-
-    }
-
-
-
-    #endregion
-
-
-
 
 
 
@@ -6458,6 +6215,7 @@ public partial class StellaWorld : ModSystem
         writer.Write(SavedGenerationParameters.SnowRight);
         writer.Write(SavedGenerationParameters.SnowTop);
         writer.Write(SavedGenerationParameters.SnowBottom);
+        writer.Write(SavedGenerationParameters.DarkspaceTop);
         writer.Write(SavedGenerationParameters.RockLayerHigh);
         writer.Write(SavedGenerationParameters.AbyssTempleRectangle);
         writer.Write(SavedGenerationParameters.StarrHouseRectangle);
@@ -6480,6 +6238,7 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.SnowRight = reader.ReadInt32();
         SavedGenerationParameters.SnowTop = reader.ReadInt32();
         SavedGenerationParameters.SnowBottom = reader.ReadInt32();
+        SavedGenerationParameters.DarkspaceTop = reader.ReadInt32();
         SavedGenerationParameters.RockLayerHigh = reader.ReadDouble();
         SavedGenerationParameters.AbyssTempleRectangle = reader.ReadRectangle();
         SavedGenerationParameters.StarrHouseRectangle = reader.ReadRectangle();
@@ -6504,6 +6263,7 @@ public partial class StellaWorld : ModSystem
         tag["RockLayerHigh"] = SavedGenerationParameters.RockLayerHigh;
         tag["AbyssTemple"] = SavedGenerationParameters.AbyssTempleRectangle;
         tag["StarrHouse"] = SavedGenerationParameters.StarrHouseRectangle;
+        tag["DarkspaceTop"] = SavedGenerationParameters.DarkspaceTop;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -6524,5 +6284,6 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.RockLayerHigh = tag.Get<double>("RockLayerHigh");
         SavedGenerationParameters.AbyssTempleRectangle = tag.Get<Rectangle>("AbyssTemple");
         SavedGenerationParameters.StarrHouseRectangle = tag.Get<Rectangle>("StarrHouse");
+        SavedGenerationParameters.DarkspaceTop = tag.Get<int>("DarkspaceTop");
     }
 }

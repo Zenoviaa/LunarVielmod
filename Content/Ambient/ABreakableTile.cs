@@ -17,6 +17,7 @@ public abstract class ABreakableTile<TileEntityType> : ModTile
         Main.tileBlockLight[Type] = false;
         LocalizedText name = CreateMapEntryName();
 
+        TileID.Sets.NoMerge[Type] = true;
         TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
         TileObjectData.newTile.Height = 1;
         TileObjectData.newTile.Width = 1;

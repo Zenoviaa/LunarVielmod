@@ -12358,7 +12358,7 @@ FableGrassItem: {
 }
 
 CeramicPotBigTileItem: {
-	DisplayName: Big Ceramic Pot 
+	DisplayName: Big Ceramic Pot
 	Tooltip: ""
 }
 
@@ -12368,7 +12368,7 @@ CeramicPotTileItem: {
 }
 
 FancyCeramicPotBigTileItem: {
-	DisplayName: Big Fancy Ceramic Pot 
+	DisplayName: Big Fancy Ceramic Pot
 	Tooltip: ""
 }
 
@@ -12378,7 +12378,7 @@ FancyCeramicPotTileItem: {
 }
 
 WoodenCrateBigTileItem: {
-	DisplayName: Big Wooden Crate 
+	DisplayName: Big Wooden Crate
 	Tooltip: ""
 }
 
