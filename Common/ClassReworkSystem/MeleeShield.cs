@@ -98,6 +98,7 @@ namespace Stellamod.Common.ClassReworkSystem
         {
             Texture2D texture = TextureAssets.Projectile[Type].Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            drawPos.Y += Owner.gfxOffY;
             float outlineOffset = 2;
             Vector2 left = Vector2.UnitX * -outlineOffset;
             Vector2 right = Vector2.UnitX * outlineOffset;

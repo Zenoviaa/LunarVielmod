@@ -47,15 +47,15 @@ public class WorldDevTools : ModSystem
             item.active = false;
         }
     }
-    public static void SetTimeNoSync(double time, bool isNight)
+    public static void SetTimeNoSync(double time, bool dayTime)
     {
         Main.time = time;
-        Main.dayTime = !isNight;
+        Main.dayTime = dayTime;
     }
-    public static void SetTime(double time, bool isNight)
+    public static void SetTime(double time, bool dayTime)
     {
         Main.time = time;
-        Main.dayTime = !isNight;
+        Main.dayTime = dayTime;
         if (Main.netMode == NetmodeID.MultiplayerClient)
         {
             SendTimeSyncPacket();
@@ -105,7 +105,7 @@ public class WorldDevTools : ModSystem
         var time = reader.ReadDouble();
         var isNight = reader.ReadBoolean();
         Main.time = time;
-        Main.dayTime = !isNight;
+        Main.dayTime = isNight;
         if (Main.netMode == NetmodeID.Server)
         {
             SendTimeSyncPacket();

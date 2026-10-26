@@ -82,14 +82,14 @@ public class DevToolTimeSliderUIPanel : UIPanel
                 ratio = (Main.MouseScreen.X - topLeft.X) / halfWidth;
                 ratio = MathHelper.Clamp(ratio, 0f, 1f);
                 _timeToSetTo = ratio * Main.dayLength;
-                _dayToSetTo = false;
+                _dayToSetTo = true;
             }
             if(xPos > midPoint.X)
             {
                 ratio = (Main.MouseScreen.X - midPoint.X) / halfWidth;
                 ratio = MathHelper.Clamp(ratio, 0f, 1f);
                 _timeToSetTo = ratio * Main.nightLength;
-                _dayToSetTo = true;
+                _dayToSetTo = false;
 
             }
 
