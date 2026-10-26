@@ -19,6 +19,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB;
 
 public class FirebirdScythe : BaseSwingItemV2
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.FirebirdScythe.KEY;
     public override void SetDefaults2()
     {
         base.SetDefaults2();
@@ -252,7 +253,49 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
     public override void DefineCombo()
     {
         base.DefineCombo();
-        SwingV2Helper.AddScytheSwingStyle(this);
+        SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.ScytheWindSlash1;
+        swingSound1.PitchVariance = 0.25f;
+
+        SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.ScytheWindSlash2;
+        swingSound2.PitchVariance = 0.25f;
+
+        SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.ScytheBigSlash;
+        swingSound3.PitchVariance = 0.5f;
+
+        //Pair 1
+        Add(new OvalSwing
+        {
+            Duration = 22,
+            XSwingRadius = 50,
+            YSwingRadius = 24,
+            SwingDegrees = 360,
+            Easing = EasingFunction.InOutExpo,
+            Sound = swingSound1,
+        });
+
+        Add(new OvalSwing
+        {
+            Duration = 22,
+            XSwingRadius = 50,
+            YSwingRadius = 24,
+            SwingDegrees = 360,
+            Easing = EasingFunction.InOutExpo,
+            Sound = swingSound2
+        });
+
+        //Throw
+        Add(new OvalSwing
+        {
+            Duration = 36,
+            XSwingRadius = 72,
+            YSwingRadius = 72,
+            SwingDegrees = 540,
+            ThrowRadius = 64,
+            Easing = EasingFunction.InOutExpo7,
+            Sound = swingSound3,
+            HitCount = 3,
+        });
+
         useAfterImage = true;
     }
 
