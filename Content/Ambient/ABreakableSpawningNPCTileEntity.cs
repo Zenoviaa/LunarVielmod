@@ -11,6 +11,7 @@ public abstract class ABreakableSpawningNPCTileEntity<ModNPCType, ModTileType> :
 {
     int _activeNpc = -1;
     float TestDistance => 1024 * 1024;
+    bool _canSpawn=true;
     float TooCloseDistance => 1024 * 1024;
     float TooFarDistance => 2000 * 2000;
     public override void Update()
@@ -25,17 +26,23 @@ public abstract class ABreakableSpawningNPCTileEntity<ModNPCType, ModTileType> :
             return;
         }
 
-        if (Main.GameUpdateCount % 60 != 0)
+        if (Main.GameUpdateCount % 30 != 0)
             return;
-
+ 
         var worldCoordinates = Position.ToWorldCoordinates();
         var nearestPlayer = PlayerHelper.FindClosestPlayer(worldCoordinates, 999999);
         if (nearestPlayer == null)
             return;
-
         var sqrDistToPlayer = Vector2.DistanceSquared(worldCoordinates, nearestPlayer.Center);
-        if (sqrDistToPlayer < TooFarDistance && sqrDistToPlayer > TooCloseDistance)
+        if (!_canSpawn)
         {
+            _canSpawn = sqrDistToPlayer > TooFarDistance;
+        }
+
+
+        if (sqrDistToPlayer <= TooCloseDistance && _canSpawn)
+        {
+            _canSpawn = false;
             _activeNpc = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)worldCoordinates.X, (int)worldCoordinates.Y, ModContent.NPCType<ModNPCType>());
         }
          
