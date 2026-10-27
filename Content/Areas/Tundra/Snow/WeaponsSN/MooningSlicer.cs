@@ -58,21 +58,21 @@ public class MooningSlicerSlash : BaseSwingProjectileV2
         SoundStyle s2 = swingSound2;
         Add(new OvalSwing
         {
-            Duration = 30,
+            Duration = 24,
             XSwingRadius = 44,
             YSwingRadius = 24,
             SwingDegrees = 270,
-            Easing = EasingFunction.InOutExpo,
+            Easing = EasingFunction.OutExpo,
             Sound = s1,
         });
 
         Add(new OvalSwing
         {
-            Duration = 30,
+            Duration = 24,
             XSwingRadius = 44,
             YSwingRadius = 24,
             SwingDegrees = 270,
-            Easing = EasingFunction.InOutExpo,
+            Easing = EasingFunction.OutExpo,
             Sound = s2
         });
 
@@ -82,6 +82,7 @@ public class MooningSlicerSlash : BaseSwingProjectileV2
         slashTrailer.invert = ComboIndex % 2 != 0;
         Trailer = slashTrailer;
 
+        trailOffsetOverride = 1.75f;
         useBloom = true;
         bloom.innerBloomColor = Color.White;
         bloom.outerBloomColor = Color.SkyBlue;
@@ -97,23 +98,25 @@ public class MooningSlicerSlash : BaseSwingProjectileV2
 
     private Color GetBloomColor(float ratio)
     {
-        Color blue = Color.Lerp(Color.Lerp(Color.White, Color.SkyBlue, 0.5f), Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 4));
-        return Color.Lerp(blue * 0.9f, Color.Black, ratio);
+        Color blue = Color.Lerp(Color.Lerp(Color.White, Color.SkyBlue, 0.5f), Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 4));
+        return blue;
     }
 
     public override void AI()
     {
         base.AI();
-        if(_hit && Interpolant >= 0.65f)
+        if(_hit && Interpolant >= 0.5f)
         {
-            if(Timer % 35 == 0)
+            if(Timer % 45 == 0)
             {
                 if (this.OwnedByLocalClient())
                 {
                     var firer = ProjFirer.From<FallingMoonKnife>(Projectile);
-                    firer.position = _hitPoint + new Vector2(0, -100);
-                    firer.position.X += Main.rand.NextFloat(-40f, 40f);
+                    firer.damage /= 2;
+                    firer.position = _hitPoint + new Vector2(0, -252);
+                    firer.position.X += Main.rand.NextFloat(-200, 200);
                     firer.velocity = Vector2.UnitY * 4;
+                    firer.velocity = (_hitPoint - firer.position).Resize(4);
                     firer.New();
                 }
             }
@@ -123,8 +126,15 @@ public class MooningSlicerSlash : BaseSwingProjectileV2
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
-        _hit = true;
-        _hitPoint = target.Center;
+        if (!_hit)
+        {
+            _hit = true;
+            _hitPoint = target.Center;
+
+            var hitSound = AssetReferences.Assets.Sounds.IceyWind.Asset with { PitchVariance = 0.5f, Volume = 0.6f };
+            SoundEngine.PlaySound(hitSound, _hitPoint);
+        }
+
     }
     
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -159,6 +169,29 @@ public class MooningSlicerStaminaSlash : BaseSwingProjectileV2
             Easing = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
             Sound = swingSound1
         });
+
+        SlashTrailBuilder slashTrailBuilder = new SlashTrailBuilder();
+        SlashTrailer slashTrailer = slashTrailBuilder.Instantiate();
+        slashTrailer.invert = ComboIndex % 2 != 0;
+        Trailer = slashTrailer;
+
+    
+        useBloom = true;
+        bloom.innerBloomColor = Color.White;
+        bloom.outerBloomColor = Color.SkyBlue;
+        bloom.bloomWidthFunction = GetBloomWidth;
+        bloom.bloomColorFunction = GetBloomColor;
+        useAfterImage = true;
+    }
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(4, 32, ratio) * 1.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Interpolant));
+    }
+
+    private Color GetBloomColor(float ratio)
+    {
+        Color blue = Color.Lerp(Color.Lerp(Color.White, Color.SkyBlue, 0.5f), Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 4));
+        return blue;
     }
 
     public override void AI()
@@ -220,6 +253,7 @@ public class MooningSlicerStaminaSlash : BaseSwingProjectileV2
 public class FallingMoonKnife : ModProjectile
 {
     ref float Timer => ref Projectile.ai[0];
+    float InScale => EasingFunction.InOutSine(Timer / 30f);
     public override string Texture => AssetReferences.Assets.Textures.Ice.Items.MooningSlicerKnife.KEY;
     public override void SetStaticDefaults()
     {
@@ -243,7 +277,7 @@ public class FallingMoonKnife : ModProjectile
         base.AI();
         Timer++;
         if(Projectile.velocity.Length() < 14f)
-            Projectile.velocity *= 1.01f;
+            Projectile.velocity *= 1.05f;
         if (Timer >= 30)
             Projectile.tileCollide = true;
         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
@@ -251,8 +285,13 @@ public class FallingMoonKnife : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.SkyBlue, Color.Transparent, 0.24f);
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.SkyBlue, Color.Transparent, 0.24f * InScale);
         var drawer = Projectile.Drawer;
+        drawer.color *= InScale;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 12, Projectile.identity * 4) * InScale;
+        drawer.color.A = 0;
         Main.spriteBatch.Draw(drawer);
         return false;
     }

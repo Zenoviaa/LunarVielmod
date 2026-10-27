@@ -4133,10 +4133,8 @@ AltrideSlicer: {
 MooningSlicer: {
 	Tooltip: Celestia would be proud
 	DisplayName: Mooning Slicer
-	BasicSlash: No special effect
+	BasicSlash: After hitting an enemy, a barrage of icey knives rain from above!
 	StaminaSlash: Summons a barrage of frozen magical swords!
-	BasicEffectLocalizedText: No Effect
-	StaminaEffectLocalizedText: No Effect
 }
 
 EverneanSlicer: {

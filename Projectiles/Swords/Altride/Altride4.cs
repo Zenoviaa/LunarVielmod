@@ -78,21 +78,17 @@ namespace Stellamod.Projectiles.Swords.Altride
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4") with { Volume = 0.5f }, Projectile.position);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer5"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer5") with { Volume = 0.5f }, Projectile.position);
             }
 
             for (int i = 0; i < 2; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(0.2f, 1f), 0, Color.Teal, 1f).noGravity = true;
             }
-
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
-            FXUtil.ShakeCamera(Projectile.Center, 1024, 0.5f);
 
             for (float i = 0; i < 2f; i++)
             {
