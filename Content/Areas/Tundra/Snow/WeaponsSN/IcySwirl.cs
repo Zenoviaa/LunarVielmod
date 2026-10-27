@@ -160,7 +160,6 @@ public class IcySwirlStaminaSlash : BaseSwingProjectileV2
         base.OnHitNPC(target, hit, damageDone);
         if (!_hit)
         {
-            FXUtil.ShakeCamera(target.Center, 1024, 4);
             Vector2 position = target.Center;
             Vector2 lvelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4;
             for (float f = 0; f < 4; f++)
@@ -274,7 +273,6 @@ public class IcySwirlSlash : BaseSwingProjectileV2
         base.OnHitNPC(target, hit, damageDone);
         if (!_hit)
         {
-            FXUtil.ShakeCamera(target.Center, 1024, 4);
             Vector2 position = target.Center;
             Vector2 lvelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4;
             for (float f = 0; f < 4; f++)

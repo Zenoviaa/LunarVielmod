@@ -104,19 +104,39 @@ public class FrostBringerSlash : BaseSwingProjectileV2
         });
         Add(new OvalSwing
         {
-            Duration = 20,
+            Duration = 15,
             XSwingRadius = 80,
             YSwingRadius = 48,
             SwingDegrees = 200,
             Easing = EasingFunction.InOutExpo,
             Sound = s2
         });
+        Add(new OvalSwing
+        {
+            Duration = 15,
+            XSwingRadius = 80,
+            YSwingRadius = 48,
+            SwingDegrees = 200,
+            Easing = EasingFunction.InOutExpo,
+            Sound = s1
+        });
 
+        Add(new OvalSwing
+        {
+            Duration = 64,
+            XSwingRadius = 64,
+            YSwingRadius = 64,
+            SwingDegrees = 700,
+            Easing = EasingFunction.OutExpo,
+            Sound = s1
+        });
         SlashTrailBuilder slashTrailBuilder = new SlashTrailBuilder();
         SlashTrailer slashTrailer = slashTrailBuilder.Instantiate();
         slashTrailer.invert = ComboIndex % 2 != 0;
         Trailer = slashTrailer;
 
+        outlineColor = Color.SkyBlue;
+        additive = true;
         useBloom = true;
         bloom.innerBloomColor = Color.White;
         bloom.outerBloomColor = Color.SkyBlue;
@@ -127,23 +147,25 @@ public class FrostBringerSlash : BaseSwingProjectileV2
 
     private float GetBloomWidth(float ratio)
     {
-        return MathHelper.SmoothStep(4, 32, ratio) * 1.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Interpolant));
+        return MathHelper.SmoothStep(4, 36, ratio) * 1.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Interpolant));
     }
 
     private Color GetBloomColor(float ratio)
     {
-        Color blue = Color.Lerp(Color.Lerp(Color.White, Color.SkyBlue, 0.5f), Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 4));
-        return Color.Lerp(blue * 0.9f, Color.Black, ratio);
+        Color blue = Color.Lerp(Color.Lerp(Color.White, Color.Violet, 1f), Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 4));
+        return blue;
     }
 
     public override void AI()
     {
         base.AI();
-        if (IsFinishingSwing() && Timer == 1)
+        if (IsFinishingSwing() && Interpolant > 0.5f)
         {
             if (this.OwnedByLocalClient())
             {
                 var firer = ProjFirer.From<FrostBringerStaminaSlash>(Projectile);
+                firer.position = Owner.Center;
+                firer.velocity = (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero) * 7;
                 firer.New();
             }
             Projectile.Kill();
@@ -155,14 +177,13 @@ public class FrostBringerSlash : BaseSwingProjectileV2
         base.OnHitNPC(target, hit, damageDone);
         if (!_hit)
         {
-            FXUtil.ShakeCamera(target.Center, 1024, 4);
+      
             Vector2 position = target.Center;
             Vector2 lvelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4;
-            for (float f = 0; f < 4; f++)
+            for (float f = 0; f < 3; f++)
             {
                 Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.White,
                     outerColor: Color.LightBlue,

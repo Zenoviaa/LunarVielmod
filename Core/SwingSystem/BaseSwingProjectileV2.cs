@@ -515,14 +515,14 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         //Calculate the trailing
         swing.CalculateTrailingPoints(this);
         swing.CalculateAfterImagePoints(this);
-        Matrix translationMatrix = Matrix.CreateTranslation(new Vector3(Owner.Center.X, Owner.Center.Y, 0));
+        //  Matrix translationMatrix = Matrix.CreateTranslation(new Vector3(Owner.Center.X, Owner.Center.Y, 0));
         //Now we transform the points
         //Calculating points locally and then translating it is a bit simpler.
 
         for (int t = 0; t < swingTrailCache.Length; t++)
         {
             ref Vector2 point = ref swingTrailCache[t];
-            point = Vector2.Transform(point, translationMatrix);
+            point = point + Owner.Center;
         }
 
         Vector2 normal = Projectile.velocity.SafeNormalize(Vector2.Zero);
@@ -530,7 +530,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         for (int t = 0; t < bigSwingTrailCache.Length; t++)
         {
             ref Vector2 point = ref bigSwingTrailCache[t];
-            point = Vector2.Transform(point, translationMatrix);
+            point = point + Owner.Center;
             point += bigO;
         }
     }
@@ -882,11 +882,6 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
     public virtual void DrawSwordSprite(ref Color lightColor)
     {
-        if (Keyboard.GetState().IsKeyDown(Keys.I))
-            DebugDrawHitboxCheck();
-        if (Keyboard.GetState().IsKeyDown(Keys.U))
-            DebugDrawHitboxCheck2();
-
         Texture2D texture = GetTexture();
         int frameHeight = texture.Height / Main.projFrames[Projectile.type];
         int startY = frameHeight * Projectile.frame;

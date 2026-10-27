@@ -275,11 +275,12 @@ public class OvalSwing : ISwing
         ref Vector2[] trailCache = ref swingProjectile.swingTrailCache;
         ref Vector2[] bigTrailCache = ref swingProjectile.bigSwingTrailCache;
         Vector2 velocity = swingProjectile.Projectile.velocity;
+        /*
         if (!AlwaysShowTrail)
         {
             if (time - swingProjectile.trailVisibilityOffset < 0)
                 return;
-        }
+        }*/
         //Set Offset, now we can take this and offset it more in the projectile
         float trailOffset = TrailOffset;
         if (swingProjectile.trailOffsetOverride.HasValue)
