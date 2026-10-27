@@ -199,6 +199,10 @@ public class IceCubeMakerProj : ModProjectile
         var drawer = Projectile.Drawer;
         drawer.scale *= Scale;
         Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White * MathHelper.Lerp(0f, 1f, BounceTimer / 20f);
+        drawer.color.A = 0;
+        Main.spriteBatch.Draw(drawer);
         return false;
     }
 
