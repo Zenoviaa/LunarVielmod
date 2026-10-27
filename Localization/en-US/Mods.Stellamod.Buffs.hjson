@@ -1277,3 +1277,8 @@ FabledWitchsBroomBuff: {
 	DisplayName: Fabled Witch's Broom
 	Description: Hoverin' around on mah broom
 }
+
+StarFlowerMana: {
+	DisplayName: Star Flower Mana
+	Description: Mods.Stellamod.Buffs.StarFlowerMana.Description
+}

@@ -212,6 +212,7 @@ public class BurningScarfFlame : ModProjectile
         drawer.color = new Color(85, 45, 15);
         drawer.color.A = 0;
         drawer.scale *= VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI);
+        drawer.scale *= 0.25f;
         Main.spriteBatch.Draw(drawer);
 
         //  Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.3f * Main.essScale);

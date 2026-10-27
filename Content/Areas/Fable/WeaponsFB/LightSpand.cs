@@ -4,16 +4,19 @@ using Stellamod.Common.Particles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Trailing;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 using static Stellamod.Core.LocalizationReferences.Mods.Stellamod.Projectiles;
 
 namespace Stellamod.Content.Areas.Fable.WeaponsFB;
@@ -24,6 +27,7 @@ public class LightSpand : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
+        Item.damage = 9;
         Item.shoot = ModContent.ProjectileType<LightSpandSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<LightSpandStaminaSlash>();
         meleeWeaponType = MeleeWeaponType.Sword;
@@ -38,6 +42,14 @@ public class LightSpand : BaseSwingItemV2
 
 public class LightSpandConstellation : ModProjectile
 {
+    UnifiedRandom Random
+    {
+        get
+        {
+            field ??= new();
+            return field;
+        }
+    }
     Projectile[] ConstellationProjectiles
     {
         get
@@ -60,6 +72,8 @@ public class LightSpandConstellation : ModProjectile
         get
         {
             field = GetPointsToConnectTo();
+            Random.SetSeed((int)Seed);
+            Random.Shuffle(field);
             return field;
         }
     }
@@ -71,10 +85,13 @@ public class LightSpandConstellation : ModProjectile
         {
             points.Add(proj.Center);
         }
+        points.Add(Main.player[Projectile.owner].Center);
         return points.ToArray();
     }
     ref float Timer => ref Projectile.ai[0];
-    float Easing => EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+    ref float TimeToUse => ref Projectile.ai[1];
+    ref float Seed => ref Projectile.ai[2];
+    float Easing => EasingFunction.InOutSine(Timer / (TimeToUse * 0.25f)) * EasingFunction.InOutSine((float)Projectile.timeLeft / (TimeToUse * 0.25f));
     public override string Texture => AssetReferences.Assets.Textures.Fable.Items.LightSpandStarLine.KEY;
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
@@ -89,7 +106,7 @@ public class LightSpandConstellation : ModProjectile
         Projectile.tileCollide = false;
         Projectile.ignoreWater = true;
         Projectile.timeLeft = 120;
-        Projectile.LocalPiercingImmunityTime = 30;
+        Projectile.LocalPiercingImmunityTime = 15;
         Projectile.friendly = true;
     }
     public override bool ShouldUpdatePosition()
@@ -99,15 +116,27 @@ public class LightSpandConstellation : ModProjectile
     public override void AI()
     {
         base.AI();
+        if(this.OwnedByLocalClient() && Seed == 0)
+        {
+            Seed = Main.rand.Next(0, 2140);
+        }
+        if(Projectile.timeLeft > (int)TimeToUse)
+        {
+            Projectile.timeLeft = (int)TimeToUse;
+        }
         Timer++;
         if(Timer == 1)
         {
-            var summonSound = AssetReferences.Assets.Sounds.STARR.StarSummon.Asset with { PitchVariance = 0.5f };
+            var summonSound = AssetReferences.Assets.Sounds.STARR.StarSummon.Asset with { PitchVariance = 0.5f, Volume = 0.125f };
             SoundEngine.PlaySound(summonSound, Projectile.position);
         }
         foreach(var constellationProj in ConstellationProjectiles)
         {
-            constellationProj.ai[1] = 1;
+            constellationProj.ai[1] = 5;
+        }
+        if(Timer >= TimeToUse)
+        {
+            Projectile.Kill();
         }
     }
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -115,13 +144,13 @@ public class LightSpandConstellation : ModProjectile
         base.OnHitNPC(target, hit, damageDone);
     }
 
-    public override bool PreDraw(ref Color lightColor)
+    void DrawPixelated(SpriteBatch sb, Vector2 sp)
     {
         var pass = AssetReferences.Effects.Fable.FableConstellation.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Apply();
         var spriteBatch = Main.spriteBatch;
-        using(spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
+        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
         {
             for (var i = 1; i < ConstellationPoints.Length; i++)
             {
@@ -129,30 +158,43 @@ public class LightSpandConstellation : ModProjectile
                 ref var current = ref ConstellationPoints[i];
                 var rotation = (current - last).ToRotation();
                 var drawer = Projectile.Drawer;
-                drawer.color = Color.White * Easing;
+                drawer.color = Color.Gold * Easing;
                 drawer.color.A = 0;
                 drawer.worldPosition = last;
-
-                var scale = Vector2.Distance(last, current);
+                drawer.rotation = rotation;
+                drawer.LeftCenterOrigin();
+                var scale = Vector2.Distance(last, current) / (float)drawer.Width;
                 drawer.scale.X = scale;
-                drawer.scale.Y = 0.6f;
-                drawer.scale *= Easing;
-                Main.spriteBatch.Draw(drawer);
+                drawer.scale.Y = 0.72f;
+                drawer.scale.Y *= Easing;
+
+
+                spriteBatch.Draw(drawer);
+
+                drawer.color = Color.White * Easing;
+                drawer.color.A = 0;
+                drawer.scale.Y *= 0.5f;
+                spriteBatch.Draw(drawer);
             }
         }
 
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
 
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated);
         return false;
     //    return base.PreDraw(ref lightColor);
     }
 }
 public class LightSpandStar : ModProjectile
 {
+    float _glowing;
     ref float Timer => ref Projectile.ai[0];
     ref float Glow => ref Projectile.ai[1];
     ref float GlowTimer => ref Projectile.ai[2];
     float GlowTime => 30;
-    float GlowAlpha => EasingFunction.InOutSine(GlowTimer / GlowTime);
+    float GlowAlpha => EasingFunction.InOutSine(_glowing / GlowTime);
     public override string Texture => AssetReferences.Assets.Textures.Fable.Items.LightSpandStar.KEY;
     public override void SetStaticDefaults()
     {
@@ -185,48 +227,80 @@ public class LightSpandStar : ModProjectile
         }
         if(Glow > 0)
         {
-            GlowTimer++;
-            GlowTimer = MathHelper.Clamp(GlowTimer, 0, GlowTime);
+            _glowing++;
+            Glow--;
+          if(Glow <= 0)
+            {
+                Projectile.Kill();
+            }
         }
-        Projectile.velocity *= 0.96f;
+
+        Projectile.velocity *= 0.92f;
+        Projectile.velocity = Projectile.velocity.RotatedBy(0.02f);
         Projectile.rotation += Projectile.velocity.X * 0.05f;
      
     }
 
-    public override bool PreDraw(ref Color lightColor)
+    void DrawPixelated(SpriteBatch sb, Vector2 sp)
     {
         var drawer = Projectile.Drawer;
         drawer.rotation += Main.GlobalTimeWrappedHourly;
-        Main.spriteBatch.Draw(drawer);
+        drawer.scale *= 0.4f;
+        sb.Draw(drawer);
 
         drawer.scale *= 1.1f;
-        drawer.color = Color.Gold;
+        drawer.color = Color.Lerp(Color.White, Color.Gold, 0.3f);
         drawer.color *= 0.5f;
-        Main.spriteBatch.Draw(drawer);
+        sb.Draw(drawer);
 
 
         var drawer3 = Projectile.Drawer;
         drawer3.color = Color.Lerp(Color.Transparent, Color.White, ExtraMath.Osc(0.5f, 1f, speed: 16) * GlowAlpha);
         drawer3.rotation += Main.GlobalTimeWrappedHourly;
-        Main.spriteBatch.Draw(drawer3);
+        sb.Draw(drawer3);
+
+        var drawer4 = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        drawer4.color = Color.Gold * 0.16f;
+        drawer4.color.A = 0;
+        drawer4.scale *= 0.15f;
+        sb.Draw(drawer4);
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated);
         return false;
     }
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        if(GlowTimer < 1)
+        {
+            foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 8, 8))
+            {
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = posVel.position,
+                    velocity = posVel.velocity * 0.4F,
+                    innerColor = Color.White.ToVector4(),
+                    outerColor = Color.Yellow.ToVector4(),
+                    scale = new Vector2(Main.rand.NextFloat(0.4f, 0.8f))
+                });
+            }
+            return;
+        }
         foreach(PositionVelocity posVel in new CircleOrientation(Projectile.Center, 16, 8))
         {
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = posVel.position,
-                velocity = posVel.velocity,
-                innerColor = Color.Yellow.ToVector4(),
-                outerColor = Color.DarkOrange.ToVector4(),
+                velocity = posVel.velocity * 0.66F,
+                innerColor = Color.White.ToVector4(),
+                outerColor = Color.Yellow.ToVector4(),
                 scale = new Vector2(Main.rand.NextFloat(0.4f, 0.8f))
             });
         }
 
-        var starDeath = AssetReferences.Assets.Sounds.Starrer.Asset with { PitchVariance = 0.6F };
+        var starDeath = AssetReferences.Assets.Sounds.Starrer.Asset with { PitchVariance = 0.6F, Volume = 0.3f };
         SoundEngine.PlaySound(starDeath, Projectile.position);
     }
 }
@@ -243,7 +317,7 @@ public class LightSpandSlash : BaseSwingProjectileV2
         SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.NormalSwordSlash2;
         swingSound2.PitchVariance = 0.25f;
 
-        SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.SwordSpin1;
+        SoundStyle swingSound3 = AssetReferences.Assets.Sounds.Melee.SlashQuickSpin1.Asset;
         swingSound3.PitchVariance = 0.5f;
         swingSound3.Volume = 0.5f;
 
@@ -254,7 +328,7 @@ public class LightSpandSlash : BaseSwingProjectileV2
 
         Add(new OvalSwing
         {
-            Duration = 10,
+            Duration = 15,
             XSwingRadius = 96,
             YSwingRadius = 48,
             SwingDegrees = 320,
@@ -264,9 +338,28 @@ public class LightSpandSlash : BaseSwingProjectileV2
 
         Add(new OvalSwing
         {
-            Duration = 10,
-            XSwingRadius = 96,
-            YSwingRadius = 48,
+            Duration = 15,
+            XSwingRadius = 92,
+            YSwingRadius = 42,
+            SwingDegrees = 320,
+            Easing = EasingFunction.InOutExpo,
+            Sound = s2
+        });
+        Add(new OvalSwing
+        {
+            Duration = 15,
+            XSwingRadius = 108,
+            YSwingRadius = 40,
+            SwingDegrees = 320,
+            Easing = EasingFunction.InOutExpo,
+            Sound = s1
+        });
+
+        Add(new OvalSwing
+        {
+            Duration = 15,
+            XSwingRadius = 94,
+            YSwingRadius = 36,
             SwingDegrees = 320,
             Easing = EasingFunction.InOutExpo,
             Sound = s2
@@ -275,28 +368,19 @@ public class LightSpandSlash : BaseSwingProjectileV2
 
         Add(new OvalSwing
         {
-            Duration = 24,
+            Duration = 35,
             XSwingRadius = 64,
             YSwingRadius = 64,
-            SwingDegrees = 370,
+            SwingDegrees = 480,
             Easing = EasingFunction.InOutExpo,
-            Sound = swingSound3,
+            Sound = swingSound3
         });
 
 
-        Add(new OvalSwing
-        {
-            Duration = 24,
-            XSwingRadius = 64,
-            YSwingRadius = 64,
-            SwingDegrees = 370,
-            Easing = EasingFunction.InOutExpo,
-            Sound = swingSound3,
-        });
 
         Add(new SwordSwing
         {
-            baseSwingTime = 28,
+            baseSwingTime = 60,
             swordMovementFunction = new Swings.HoldUpSwing
             {
                 thrustDistance = 64,
@@ -304,17 +388,18 @@ public class LightSpandSlash : BaseSwingProjectileV2
             sound = null,
         });
 
+
         SlashTrailBuilder slashTrailBuilder = new SlashTrailBuilder();
         SlashTrailer slashTrailer = slashTrailBuilder.Instantiate();
         slashTrailer.invert = ComboIndex % 2 != 0;
         Trailer = slashTrailer;
-
+        outlineColor = Color.Yellow;
         useBloom = true;
         bloom.innerBloomColor = Color.Gold;
         bloom.outerBloomColor = Color.DarkOrange;
         bloom.bloomWidthFunction = GetBloomWidth;
         bloom.bloomColorFunction = GetBloomColor;
-        useAfterImage = true;
+        additive = true;
     }
 
     private float GetBloomWidth(float ratio)
@@ -331,32 +416,39 @@ public class LightSpandSlash : BaseSwingProjectileV2
     public override void AI()
     {
         base.AI();
+        outlineColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Transparent, ExtraMath.Osc(0f, 0.5f, speed: 32));
+   
         //Every a swing, a tiny star expands outward from you and expands slightly
         //and sits there
         //Once you finally do the finishing move, you hold the sword up and connect a line between all of them which hits multiple times for a bit and destroys the stars
+        if (this.OwnedByLocalClient() && ComboIndex == 4)
+        {
+            if( Interpolant > 0.4f && !_projSpawned)
+            {
+                foreach(PositionVelocity posVel in new CircleOrientation(Owner.Center, 64, 8))
+                {
+                    var firer = ProjFirer.From<LightSpandStar>(Projectile);
+        
+                    firer.velocity = posVel.velocity.SafeNormalize(Vector2.Zero) * 32;
+                    firer.position = Owner.Center;
+                    firer.New();
+                }
+         
+                _projSpawned = true;
+            }
+
+        }
+
         if(IsFinishingSwing())
         {
-            if (Interpolant > 0.3f && !_projSpawned)
+            Projectile.velocity = -Vector2.UnitY;
+            if (this.OwnedByLocalClient() && !_projSpawned && Interpolant > 0.3f)
             {
                 var firer = ProjFirer.From<LightSpandConstellation>(Projectile);
-                firer.velocity = Main.rand.NextVector2Circular(4, 4);
+                firer.ai1 = 60;
                 firer.New();
                 _projSpawned = true;
             }
-        }
-        else
-        {
-            if (this.OwnedByLocalClient())
-            {
-                if (Interpolant > 0.3f && !_projSpawned)
-                {
-                    var firer = ProjFirer.From<LightSpandStar>(Projectile);
-                    firer.velocity = Main.rand.NextVector2Circular(4, 4);
-                    firer.New();
-                    _projSpawned = true;
-                }
-            }
-
         }
     }
 
@@ -391,17 +483,18 @@ public class LightSpandStaminaSlash : BaseSwingProjectileV2
 
         Add(new OvalSwing
         {
-            Duration = 68,
-            XSwingRadius = 160 / 1.5f,
-            YSwingRadius = 80 / 1.5f,
-            SwingDegrees = 270,
-            Easing = (lerpValue) => Easing.InOutExpo(lerpValue, 10),
-            Sound = swingSound1,
+            Duration = 35,
+            XSwingRadius = 64,
+            YSwingRadius = 64,
+            SwingDegrees = 235,
+            Easing = EasingFunction.InOutExpo,
+            Sound = swingSound1
         });
+
 
         Add(new SwordSwing
         {
-            baseSwingTime = 28,
+            baseSwingTime = 120,
             swordMovementFunction = new Swings.HoldUpSwing
             {
                 thrustDistance = 64,
@@ -413,13 +506,13 @@ public class LightSpandStaminaSlash : BaseSwingProjectileV2
         SlashTrailer slashTrailer = slashTrailBuilder.Instantiate();
         slashTrailer.invert = ComboIndex % 2 != 0;
         Trailer = slashTrailer;
-
+        outlineColor = Color.Yellow;
         useBloom = true;
         bloom.innerBloomColor = Color.Gold;
         bloom.outerBloomColor = Color.DarkOrange;
         bloom.bloomWidthFunction = GetBloomWidth;
         bloom.bloomColorFunction = GetBloomColor;
-        useAfterImage = true;
+
     }
     private float GetBloomWidth(float ratio)
     {
@@ -435,38 +528,35 @@ public class LightSpandStaminaSlash : BaseSwingProjectileV2
     public override void AI()
     {
         base.AI();
-        if(ComboIndex == 0)
+        if(ComboIndex == 0 && !_firedProj && this.OwnedByLocalClient() && Interpolant > 0.3f)
         {
-            _projTimer++;
-            if (_projTimer % 25 == 0 && Main.myPlayer == Projectile.owner)
+            for(var i = 0; i < 14; i++)
             {
                 var firer = ProjFirer.From<LightSpandStar>(Projectile);
                 firer.position = Owner.Center;
-                firer.velocity = Main.rand.NextVector2Circular(7, 7);
+                firer.velocity = Projectile.velocity.RotatedByRandom(1.5f).Resize(Main.rand.NextFloat(6f, 45F)).RotatedBy(-0.05f * MathF.Sign(Projectile.velocity.X));
                 firer.New();
             }
-        } else if (IsFinishingSwing())
+            _firedProj = true;
+        }
+        if (IsFinishingSwing())
         {
-            if(this.OwnedByLocalClient() && !_firedProj && Interpolant > 0.3f)
+            Projectile.velocity = -Vector2.UnitY;
+            if (this.OwnedByLocalClient() && !_firedProj && Interpolant > 0.3f)
             {
                 var firer = ProjFirer.From<LightSpandConstellation>(Projectile);
+                firer.ai1 = 120;
                 firer.New();
                 _firedProj = true;
             }
         }
+
     }
 
 
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
     {
         base.ModifyHitNPC(target, ref modifiers);
-        SoundStyle spearHit = SoundRegistry.CrystalHit1;
-        spearHit.PitchVariance = 0.5f;
-        SoundEngine.PlaySound(spearHit, Projectile.position);
-
-        SoundStyle spearHit2 = SoundRegistry.NSwordHit1;
-        spearHit2.PitchVariance = 0.2f;
-        SoundEngine.PlaySound(spearHit2, Projectile.position);
 
         modifiers.FinalDamage *= 3;
         modifiers.Knockback *= 4;
@@ -479,7 +569,7 @@ public class LightSpandStaminaSlash : BaseSwingProjectileV2
         int combo = ComboIndex + 1;
         int dir = comboPlayer.ComboDirection;
 
-        if (ComboIndex < ComboCount && this.OwnedByLocalClient())
+        if (combo < ComboCount && this.OwnedByLocalClient())
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Main.MouseWorld - Owner.Center, Projectile.type, Projectile.damage, Projectile.knockBack,
                         Projectile.owner, ai2: combo, ai1: dir);

@@ -3135,8 +3135,8 @@ CyroBolt: {
 
 LightSpand: {
 	DisplayName: Light Spand
-	Tooltip: "Shooting stars..."
-	BasicSlash: Spins arounds and throws out stars! The finishing move will create a constellation between each of them!
+	Tooltip: Shooting stars...
+	BasicSlash: Throws out stars and then creates a constellation between them!
 	StaminaSlash: Throws out several stars before quickly creating a constellation
 }
 
@@ -12382,5 +12382,12 @@ WoodenCrateBigTileItem: {
 
 WoodenCrateTileItem: {
 	DisplayName: Wooden Crate
+	Tooltip: ""
+}
+
+IceFissureHammer: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Ice Fissure Hammer
 	Tooltip: ""
 }

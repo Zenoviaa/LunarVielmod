@@ -42,6 +42,7 @@ public class StarFlowerMana : ModBuff
 }
 public class StarFlowerStaff : ModItem
 {
+    public override string Texture => AssetReferences.Assets.Textures.Fable.Items.StarFlowerStaff.KEY;
     public override void SetDefaults()
     {
         base.SetDefaults();

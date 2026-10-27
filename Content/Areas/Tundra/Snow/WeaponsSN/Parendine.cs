@@ -16,6 +16,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
 {
     public class Parendine : ModItem
     {
+        public override string Texture => AssetReferences.Assets.Textures.Ice.Items.Parendine.KEY;
         public override void SetDefaults()
         {
             Item.DefaultToSafunai();
@@ -43,7 +44,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
 
     public class ParendineProj : BaseSafunaiProjectile
     {
-
+        public override string Texture => AssetReferences.Assets.Textures.Ice.Items.ParendineProj.KEY;
         public SlashEffect SlashEffect { get; set; }
         public override void OnInitialize()
         {
