@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
@@ -18,6 +19,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+
 namespace Stellamod.Content.Areas.Fable.WeaponsFB;
 
 public class StarFlowerMana : ModBuff
@@ -42,8 +44,26 @@ public class StarFlowerMana : ModBuff
                 scale = new Vector2(Main.rand.NextFloat(0.4f, 0.8f))
             });
         }
-        if(Main.GameUpdateCount % 3 == 0)
-            player.statMana += 1;
+
+    }
+}
+public class StarFlowerPlayer : ModPlayer
+{
+    int mana;
+    public override void PostUpdateEquips()
+    {
+        base.PostUpdateEquips();
+        if (Main.GameUpdateCount % 3 == 0 && Player.HasBuff<StarFlowerMana>() && Player.GetModPlayer<StaminaNDashPlayer>().CanConsume(1))
+        {
+            Player.statMana += 1;
+            mana++;
+            if(mana >= 40)
+            {
+                mana = 0;
+                var staminaNDashPlayer = Player.GetModPlayer<StaminaNDashPlayer>();
+                staminaNDashPlayer.Consume(1);
+            }
+        }
     }
 }
 public class StarFlowerStaff : ModItem
@@ -203,7 +223,7 @@ public class StarFlowerAura : ModProjectile
         }
 
         var star = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.FivePointedStar.Asset, Projectile.Center);
-        star.color = Color.DarkOrange * 0.25f;
+        star.color = Color.DarkOrange * 0.65f;
         star.color.A = 0;
         star.rotation = Main.GlobalTimeWrappedHourly;
         star.scale = new Vector2(Scale);// * MathHelper.Lerp(4f, 1f, EasingFunction.InOutSine(Timer / 12f));

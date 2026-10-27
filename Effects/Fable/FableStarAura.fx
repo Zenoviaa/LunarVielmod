@@ -24,7 +24,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     b = pow(b, 16.0);
     b *= 32.0;
     starColor += b;
-
+    starColor.a = 0.0;
 
     return starColor * mask * tintColor;
 }
