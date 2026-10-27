@@ -66,7 +66,8 @@ namespace Stellamod.Common.ItemBrowser
             }
             else
             {
-                Main.mouseItem = HoveringItem.Clone();
+                var item = new Item(HoveringItem.type);
+                Main.mouseItem = item;
             }
 
         }
@@ -80,8 +81,9 @@ namespace Stellamod.Common.ItemBrowser
             }
             else
             {
-                Main.mouseItem = HoveringItem.Clone();
-                Main.mouseItem.stack = HoveringItem.maxStack;
+                var item = new Item(HoveringItem.type);
+                Main.mouseItem = item;
+                Main.mouseItem.stack = item.maxStack;
             }
         }
 

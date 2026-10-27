@@ -22,7 +22,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 10;
+            Item.damage = 7;
             Item.shoot = ModContent.ProjectileType<ScarecrowSaberBasicSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<ScarecrowSaberSlash>();
             meleeWeaponType = MeleeWeaponType.Spear;
@@ -64,7 +64,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             nSpin.PitchVariance = 0.2f;
 
 
-            var quickSpin = AssetReferences.Assets.Sounds.Melee.SlashQuickSpin1.Asset with { PitchVariance = 0.5f };
+            var quickSpin = AssetReferences.Assets.Sounds.Melee.LightSwordSpin1.Asset with { PitchVariance = 0.5f };
             Add(new OvalSwing
             {
                 Duration = 37,
@@ -93,7 +93,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 SwingDegrees = 360 * 4,
                 XSwingRadius = 64,
                 YSwingRadius = 64,
-                HitCount = 8,
+                HitCount = 16,
                 Easing = (float lerpValue) => lerpValue,
                 Sound = nSpin
             });
@@ -117,7 +117,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
         private Color GetBloomColor(float ratio)
         {
-            Color blue = Color.Lerp(Color.Lerp(Color.White, Color.DarkOrange, 0.5f), Color.DarkGoldenrod, ExtraMath.Osc(0f, 1f, speed: 4));
+            Color blue = Color.Lerp(Color.Lerp(Color.Yellow, Color.DarkOrange, 0.5f), Color.DarkGoldenrod, ExtraMath.Osc(0f, 1f, speed: 4));
             return Color.Lerp(blue * 0.9f, Color.Black, ratio);
         }
 
@@ -193,6 +193,18 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             FixRotationTimer = reader.ReadSingle();
             FixRotationDuration = reader.ReadSingle();
             Player.velocity = reader.ReadVector2();
+        }
+
+        public override void SetControls()
+        {
+            base.SetControls();
+            if(SlowdownTimer > 0)
+            {
+                Player.controlLeft = false;
+                Player.controlRight = false;
+                Player.controlUp = false;
+                Player.controlDown = false;
+            }
         }
 
         public override void PreUpdateMovement()
@@ -442,6 +454,8 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 spriteBatch.Draw(spinTexture, drawPos - Main.screenPosition, null, afterImageColor, drawRotation, spinTexture.Size() / 2f, drawScale, SpriteEffects.None, 0);
             }
 
+            var drawer = Projectile.Drawer;
+            Main.spriteBatch.Draw(drawer);
             return false;
         }
 
