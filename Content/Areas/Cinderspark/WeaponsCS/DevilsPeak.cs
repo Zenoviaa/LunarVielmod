@@ -48,14 +48,19 @@ public class FireTrailRenderer
     public FireTrailRenderer()
     {
         Shader = new BlackFireShader();
-        Shader.SetDefaults();
-        Shader.InnerEmitColor = Color.Yellow * 0.2f;
-        Shader.OuterEmiteColor = Color.Red;
+        SetDefaults();
 
-        SlashTrailer = new SlashTrailer();
+             SlashTrailer = new SlashTrailer();
         SlashTrailer.Shader = Shader;
         SlashTrailer.TrailWidthFunction = GetTrailWidth;
         SlashTrailer.TrailColorFunction = GetTrailColor;
+    }
+
+    public void SetDefaults()
+    {
+        Shader.SetDefaults();
+        Shader.InnerEmitColor = Color.Yellow * 0.2f;
+        Shader.OuterEmiteColor = Color.Red;
     }
 
     public readonly BlackFireShader Shader;

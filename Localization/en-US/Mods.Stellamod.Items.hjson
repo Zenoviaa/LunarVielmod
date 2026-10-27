@@ -1627,10 +1627,10 @@ AlcadizScrap: {
 }
 
 BurningAngel: {
-	DisplayName: Burning Angel
+	DisplayName: Burning Bubble Axe
 	Tooltip: Made from heavy fabled metal!
-	BasicSlash: ""
-	StaminaSlash: Throws a controllable axe!
+	BasicSlash: "With each hit, it sends out numerous burning bubbles that pop!"
+	StaminaSlash: Spin the axe around and send out a swarm of burning bubbles!
 	BasicEffectLocalizedText: No Effect
 	StaminaEffectLocalizedText: No Effect
 }
