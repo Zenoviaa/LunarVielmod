@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
@@ -46,6 +47,13 @@ public class CryalIceSpike : ModProjectile
         Frame = Main.rand.Next(4);
     }
 
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center + Projectile.velocity, TriColorPalette.Icey, new Vector2(5, 15f));
+        ParticleUtils.CreateSwirlingDustCircle(fac);
+    }
+
     public override void AI()
     {
         base.AI();
@@ -57,6 +65,18 @@ public class CryalIceSpike : ModProjectile
             var d = Dust.NewDustPerfect(pos, DustID.Ice, vel, Scale: Main.rand.NextFloat(0.4f, 1f));
             d.noGravity = true;
         }
+        if (Main.rand.NextBool(8))
+        {
+            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                innerColor = Color.White.ToVector4(),
+                outerColor = Color.Cyan.ToVector4(),
+                position = Projectile.Center,
+                velocity = Main.rand.NextVector2Circular(2, 2),
+                timeLeft = 60,
+                scale = new Vector2(Main.rand.NextFloat(0.3f, 0.7f))
+            });
+        }
         Projectile.frame = (int)Frame;
         Projectile.velocity.Y += 0.2f;
         Projectile.velocity.X *= 0.99f;
@@ -67,6 +87,9 @@ public class CryalIceSpike : ModProjectile
     {
         DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.Cyan, Color.Transparent, 0.2f);
         var drawer = Projectile.Drawer;
+        Main.spriteBatch.Draw(drawer);
+        drawer.color = Color.Lerp(Color.Transparent, Color.White, ExtraMath.Osc(0f, 1f, speed: 12, offset: Projectile.identity * 4));
+        drawer.color.A = 0;
         Main.spriteBatch.Draw(drawer);
         return false;
     }
@@ -100,7 +123,7 @@ public class Cryal : BaseCrossbowItem
         for(var i = 0; i < 3; i++)
         {
             var firer = ProjFirer.From<CryalIceSpike>(player);
-            firer.velocity = fireVelocity.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.6f, 1f);
+            firer.velocity = fireVelocity.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.6f, 1f) * 2;
             firer.damage /= 3;
             firer.New();
         }
@@ -128,8 +151,7 @@ public class IcingIc : ScarletProjectile
     private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
-        ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
-        ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+        Projectile.SetTrailCacheLength(16);
     }
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
@@ -172,20 +194,20 @@ public class IcingIc : ScarletProjectile
    
     public override void PostDraw(Color lightColor)
     {
-        Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-        for (int i = 0; i < 3; i++)
-        {
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null,
-                new Color((int)(5f * 1), (int)(45f * 1), (int)(85f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-        }
+
     }
 
     public override void OnKill(int timeLeft)
     {
-        for (int i = 0; i < 3; i++)
+        if (this.OwnedByLocalClient())
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitY.RotatedByRandom(0.5f) * 7, ProjectileID.FrostDaggerfish, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            for (int i = 0; i < 3; i++)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, 
+                    -Vector2.UnitY.RotatedByRandom(0.5f) * 7, ProjectileID.FrostDaggerfish, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
         }
+      
         SoundStyle parendineHitSound = AssetRegistry.Sounds.Melee.Parendine;
         parendineHitSound.PitchVariance = 0.2f;
         SoundEngine.PlaySound(parendineHitSound, Projectile.Center);
@@ -210,20 +232,8 @@ public class IcingIc : ScarletProjectile
              glowColor: Color.LightBlue,
              outerGlowColor: Color.Blue, duration: 25, baseSize: 0.12f);
         boom.Scale *= 2;
-        for (float i = 0; i < 4; i++)
-        {
-            float progress = i / 4f;
-            float rot = progress * MathHelper.ToRadians(360);
-            rot += Main.rand.NextFloat(-0.5f, 0.5f);
-            Vector2 offset = rot.ToRotationVector2() * 24;
-            var particle = FXUtil.GlowCircleLongBoom(Projectile.Center,
-                innerColor: Color.White,
-                glowColor: Color.LightBlue,
-                outerGlowColor: Color.DarkBlue,
-                baseSize: Main.rand.NextFloat(0.1f, 0.2f),
-                duration: Main.rand.NextFloat(15, 25));
-            particle.Rotation = rot + MathHelper.ToRadians(45);
-        }
+        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Icey, new Vector2(5, 15f));
+        ParticleUtils.CreateSwirlingDustCircle(fac);
     }
     public float WidthFunction(float completionRatio)
     {
@@ -266,6 +276,7 @@ public class IcingIc : ScarletProjectile
             Timer * 0.005f, texture.Size() / 2f,
             MathHelper.Lerp(0.2f, 1, EasingFunction.InExpo(Timer / 120f)), SpriteEffects.None, 0);
 
+        DrawUtilities.DrawBasicGlow(Main.spriteBatch, Projectile.Center, 0.3f, Color.Cyan);
         return false;
     }
 
