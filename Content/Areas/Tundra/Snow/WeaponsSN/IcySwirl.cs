@@ -89,12 +89,25 @@ public class IcySwirlStaminaSlash : BaseSwingProjectileV2
         comboBuilder.AddSpinningSwordSlash(duration: 60, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 2000, hitCount: 4);
 
 
+        useBloom = true;
+        bloom.innerBloomColor = Color.Cyan;
+        bloom.outerBloomColor = Color.DarkBlue;
+        bloom.bloomWidthFunction = GetBloomWidth;
+        bloom.bloomColorFunction = GetBloomColor;
+
         comboBuilder.AddToProjectile(this);
     }
-
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(8, 32, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+    }
+    private Color GetBloomColor(float ratio)
+    {
+        return Color.Lerp(Color.Cyan * 0.5f, Color.Transparent, EasingFunction.InExpo(ratio));
+    }
     public float WidthFunction(float completionRatio)
     {
-        return EasingFunction.QuadraticBump(completionRatio) * 32;
+        return EasingFunction.QuadraticBump(completionRatio) * 24;
     }
 
     public Color ColorFunction(float completionRatio)
@@ -106,15 +119,15 @@ public class IcySwirlStaminaSlash : BaseSwingProjectileV2
     {
         base.RenderSwingTrail(ref lightColor, points);
         var shader = RichLaserShader.Instance;
-        shader.LaserColor = Color.White * 0.3f;
-        shader.InnerColor = Color.Lerp(Color.Cyan, Color.Blue, 0.75f) * 0.3f;
-        shader.OuterColor = Color.Cyan * 0.3f;
+        shader.LaserColor = Color.White * 0.5f;
+        shader.InnerColor = Color.Lerp(Color.Cyan, Color.Blue, 0.75f) * 0.5f;
+        shader.OuterColor = Color.Cyan * 0.5f;
         TrailDrawer.Draw(Main.spriteBatch, points, ColorFunction, WidthFunction, shader);
     }
     public override void AI()
     {
         base.AI();
-        glowColor = Color.Lerp(Color.Transparent, Color.LightCyan * 0.5f, EasingFunction.QuadraticBump(Interpolant));
+
         growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
 
         if (Timer % 16 == 0 && Interpolant >= 0.3f)
@@ -196,27 +209,43 @@ public class IcySwirlSlash : BaseSwingProjectileV2
             .AddSpinningSwordSlash(duration: 30, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 720, hitCount: 2)
             .AddSwordSlash3(duration: 38, swingDegress: 720, hitCount: 3);
         comboBuilder.AddToProjectile(this);
+
+        useBloom = true;
+        bloom.innerBloomColor = Color.Cyan;
+        bloom.outerBloomColor = Color.DarkBlue;
+        bloom.bloomWidthFunction = GetBloomWidth;
+        bloom.bloomColorFunction = GetBloomColor;
+
         useAfterImage = true;
+    }
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(8, 32, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+    }
+    private Color GetBloomColor(float ratio)
+    {
+        return Color.Lerp(Color.Cyan * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
     }
 
     public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
     {
         base.RenderSwingTrail(ref lightColor, points);
         var shader = RichLaserShader.Instance;
-        shader.LaserColor = Color.White * 0.5f;
-        shader.InnerColor = Color.Lerp(Color.Cyan, Color.Blue, 0.75f) * 0.5f;
-        shader.OuterColor = Color.Cyan * 0.5f;
+   
+        shader.LaserColor = Color.White * 0.75f;
+        shader.InnerColor = Color.Lerp(Color.Cyan, Color.Blue, 0.75f) * 0.75f;
+        shader.OuterColor = Color.Cyan * 0.75f;
         TrailDrawer.Draw(Main.spriteBatch, points, ColorFunction, WidthFunction, shader);
     }
 
     public float WidthFunction(float completionRatio)
     {
-        return EasingFunction.QuadraticBump(completionRatio) * 24;
+        return EasingFunction.QuadraticBump(completionRatio) * 16;
     }
 
     public Color ColorFunction(float completionRatio)
     {
-        return Color.Lerp(Color.White, Color.Green, completionRatio) * completionRatio;
+        return Color.Lerp(Color.White, Color.Cyan, completionRatio) * completionRatio;
     }
 
     public override void AI()
@@ -229,12 +258,14 @@ public class IcySwirlSlash : BaseSwingProjectileV2
         {
             DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(1, 1), Color.White, Main.rand.NextFloat(0.3f, 0.8f));
             dp.outerColor = Color.Cyan;
+            dp.gravity = 0;
         }
         if (Timer % 32 == 0 && Interpolant >= 0.3f)
         {
             SwirlParticle dp = Particle<SwirlParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(1, 1), Color.White, Main.rand.NextFloat(0.3f, 0.5f));
             dp.innerColor = Color.Lerp(Color.White, Color.Cyan, Main.rand.NextFloat(0f, 1f));
             dp.outerColor = Color.Lerp(Color.White, Color.Cyan, Main.rand.NextFloat(0f, 1f));
+            dp.gravity = 0;
         }
     }
 
