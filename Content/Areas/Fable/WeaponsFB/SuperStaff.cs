@@ -280,6 +280,7 @@ public class SuperStaffHold : ModProjectile
     float ChargeTimer;
     float FireTimer;
 
+    Vector2 ChargeCenter => Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 54;
     public override void SetDefaults()
     {
         Projectile.width = 1;
@@ -320,8 +321,8 @@ public class SuperStaffHold : ModProjectile
         {
             for (int i = 0; i < 2; i++)
             {
-                Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(128, 128);
-                Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 4;
+                Vector2 pos = ChargeCenter + Main.rand.NextVector2CircularEdge(128, 128);
+                Vector2 vel = (ChargeCenter - pos).SafeNormalize(Vector2.Zero) * 4;
                 var d = DustParticle.Spawn(pos, vel, DustParticleSpawnParams.Default);
                 d.noTileCollide = true;
                 d.Scale *= 0.25f;
@@ -395,14 +396,15 @@ public class SuperStaffHold : ModProjectile
 
         if(ChargeTimer < Max_Charge_Time && ChargeTimer % 6 == 0)
         {
-            var pos = Owner.Center + Main.rand.NextVector2Circular(36, 36);
+            var pos = ChargeCenter + Main.rand.NextVector2Circular(36, 36);
             var vel = Main.rand.NextVector2Circular(1, 1);
             Particles.LightningSpikeySpark.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
                 timeLeft = 30,
-                color = Color.DarkOrange
+                color = Color.Yellow,
+                scale = 0.5f
             });
         }
 
