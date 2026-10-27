@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
 using Terraria;
@@ -17,6 +18,7 @@ public class GalvinieNote : ModProjectile
     float Scale => EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine(Projectile.timeLeft / 30f);
     ref float Timer => ref Projectile.ai[0];
     ref float Frame => ref Projectile.ai[1];
+    ref float Timer2 => ref Projectile.ai[0];
     public override string Texture => AssetReferences.Assets.Textures.Fable.Items.GalvinieNote.KEY;
 
     public override void OnSpawn(IEntitySource source)
@@ -47,25 +49,37 @@ public class GalvinieNote : ModProjectile
     {
         base.AI();
         Timer++;
-        if (Main.rand.NextBool(8))
+        Timer2++;
+        if (Timer2 == 2)
+        {
+            var impact = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Fiery, new(5, 45));
+            ParticleUtils.CreateSwirlingDustCircle(impact);
+
+        }
+        if (Main.rand.NextBool(16))
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(1, 1);
-            Dust.NewDustPerfect(pos, ModContent.DustType<GlyphDust>(), vel, Scale: 0.5f, newColor: Color.DarkOrange);
+            Dust.NewDustPerfect(pos, ModContent.DustType<GlyphDust>(), vel, Scale: 0.25f, newColor: Color.DarkOrange);
         }
 
         Projectile.frame = (int)Frame;
-        Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, 0f, 0.03f);
-        Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.X, -0.04f, 0.03f);
+        Projectile.extraUpdates = 1;
+        Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, 0f, 0.02f);
+        Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, -0.04f, 0.02f);
         Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.velocity.X * 0.05f, 0.03f);
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
-        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.DarkOrange, Color.Transparent, 0.3f);
+        Projectile.scale = Scale * ExtraMath.Osc(0.6f, 1f, speed: 6, Projectile.identity);
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.DarkOrange, Color.Transparent, 0.15f);
         var drawer = Projectile.Drawer;
-        drawer.scale = new Vector2(Scale);
+  
+        drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 6, Projectile.identity);
+        drawer.color.A = 0;
         Main.spriteBatch.Draw(drawer);
+        DrawUtilities.DrawBasicGlow(Main.spriteBatch, Projectile.Center, 0.3f, Color.Gold * 0.05f);
         return false;
     }
 }
@@ -77,7 +91,7 @@ public class Galvinie : BaseCrossbowItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.damage = 14;
+        Item.damage = 6;
         Item.knockBack = 4;
         Item.useTime = Item.useAnimation = 45;
         Item.rare = ItemRarityID.Green;
@@ -96,7 +110,7 @@ public class Galvinie : BaseCrossbowItem
             for (var i = 0; i < 4; i++)
             {
                 float bowDamage = shootParams.damage * shootParams.chargeStrength;
-                Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.5f, 1f),
+                Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position + Main.rand.NextVector2Circular(32, 32), fireVelocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.25f, 1.6f),
                     shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
             }
 
