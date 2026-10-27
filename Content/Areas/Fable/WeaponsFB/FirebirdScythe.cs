@@ -3,6 +3,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -173,10 +174,26 @@ public class FirebirdScytheSpinningSlash : BaseSwingProjectileV2
             Easing = (float lerpValue) => lerpValue,
             Sound = nSpin
         });
+        trailOffsetOverride = 1.75f;
+
+        useBloom = true;
+        bloom.innerBloomColor = Color.OrangeRed;
+        bloom.outerBloomColor = Color.Red;
+        bloom.bloomWidthFunction = GetBloomWidth;
+        bloom.bloomColorFunction = GetBloomColor;
+
 
         useAfterImage = true;
     }
 
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(8, 35, ratio) * 1.25f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+    }
+    private Color GetBloomColor(float ratio)
+    {
+        return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
+    }
     private float GetTrailWidth(float completionRatio)
     {
         return MathHelper.Lerp(0, 64, completionRatio) * EasingFunction.QuadraticBump(Interpolant) * MathF.Sin(completionRatio * 8);
@@ -218,7 +235,7 @@ public class FirebirdScytheSpinningSlash : BaseSwingProjectileV2
             p.VectorScale *= 0.4f;
         }
 
-        glowColor = Color.Lerp(Color.Transparent, Color.Red * 1f, Interpolant);
+        outlineColor = Color.Yellow;
         growScale = MathHelper.Lerp(0f, 0.7f, Interpolant);
     }
 
@@ -239,10 +256,10 @@ public class FirebirdScytheSpinningSlash : BaseSwingProjectileV2
         SpriteBatch spriteBatch = Main.spriteBatch;
         Vector2 drawCenter = owner.Center - Main.screenPosition;
         Color glowColor = Color.Red;
-        glowColor *= ExtraMath.Osc(0.5f, 1f);
+        glowColor *= ExtraMath.Osc(0.5f, 1f, speed: 16);
         glowColor *= MathHelper.SmoothStep(0f, 1f, Interpolant);
         glowColor.A = 0;
-        spriteBatch.Draw(glowTexture, drawCenter, null, glowColor, 0, drawOrigin, Projectile.scale * 0.3f, SpriteEffects.None, 0);
+        spriteBatch.Draw(glowTexture, drawCenter, null, glowColor, 0, drawOrigin, Projectile.scale * 0.5f, SpriteEffects.None, 0);
         return base.PreDraw(ref lightColor);
     }
 }
@@ -265,7 +282,7 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
         //Pair 1
         Add(new OvalSwing
         {
-            Duration = 22,
+            Duration = 27,
             XSwingRadius = 50,
             YSwingRadius = 24,
             SwingDegrees = 360,
@@ -275,7 +292,7 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
 
         Add(new OvalSwing
         {
-            Duration = 22,
+            Duration = 27,
             XSwingRadius = 50,
             YSwingRadius = 24,
             SwingDegrees = 360,
@@ -287,8 +304,8 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
         Add(new OvalSwing
         {
             Duration = 36,
-            XSwingRadius = 72,
-            YSwingRadius = 72,
+            XSwingRadius = 64,
+            YSwingRadius = 64,
             SwingDegrees = 540,
             ThrowRadius = 64,
             Easing = EasingFunction.InOutExpo7,
@@ -296,25 +313,49 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
             HitCount = 3,
         });
 
+
+        useBloom = true;
+        bloom.innerBloomColor = Color.OrangeRed;
+        bloom.outerBloomColor = Color.Red;
+        bloom.bloomWidthFunction = GetBloomWidth;
+        bloom.bloomColorFunction = GetBloomColor;
+
+        additive = true;
+        trailOffsetOverride = 1.75f;
+
         useAfterImage = true;
     }
 
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(8, 35, ratio) * 1.25f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+    }
+    private Color GetBloomColor(float ratio)
+    {
+        return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
+    }
 
     private float GetTrailWidth(float completionRatio)
     {
-        return MathHelper.Lerp(0, 64, completionRatio) * EasingFunction.QuadraticBump(Interpolant) * (MathF.Sin(completionRatio * 16) * 0.5f + 0.5f);
+        return MathHelper.Lerp(0, 36, completionRatio) * EasingFunction.QuadraticBump(Interpolant);
     }
 
     private Color GetTrailColor(float p)
     {
-        Color trailColor = Color.Lerp(Color.White, Color.LightBlue, p);
+        Color trailColor = Color.Lerp(Color.Red, Color.White, p);
         return trailColor;
     }
 
     public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
     {
         base.RenderSwingTrail(ref lightColor, points);
-        RichLaserShader laserShader = RichLaserShader.Instance;
+        void DrawTrail(GraphicsDevice gDevice)
+        {
+
+        }
+        //PixelationManager.QueuePrimitivesDrawAction(DrawTrail);
+        var laserShader = FixedRichLaserShader.Instance;
+     //   laserShader.LaserTexture = AssetReferences.Assets.LaserTextures.TexturedLaser.Asset;
         laserShader.LaserColor = Color.Goldenrod;
         laserShader.InnerColor = Color.Red;
         laserShader.OuterColor = Color.DarkRed;
@@ -324,7 +365,7 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
     public override void AI()
     {
         base.AI();
-        glowColor = Color.Lerp(Color.Transparent, Color.Red * 0.5f, EasingFunction.QuadraticBump(Interpolant));
+        outlineColor = Color.Lerp(Color.Transparent, Color.Yellow, EasingFunction.QuadraticBump(Interpolant));
         growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
         if (Timer % 16 == 0 && Interpolant >= 0.3f)
         {
@@ -343,14 +384,13 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
         base.OnHitNPC(target, hit, damageDone);
         if (!_hit)
         {
-            FXUtil.ShakeCamera(target.Center, 1024, 4);
             Vector2 position = target.Center;
             Vector2 lvelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4;
             for (float f = 0; f < 4; f++)
             {
                 Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+      
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.Yellow,
                     outerColor: Color.Orange,
@@ -367,12 +407,6 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
             SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadianceCast1;
             fireSound.PitchVariance = 0.2f;
             SoundEngine.PlaySound(fireSound, Projectile.position);
-            for (float f = 0; f < 8; f++)
-            {
-                Vector2 vel = Main.rand.NextVector2Circular(4, 4);
-                LegacyParticle.NewParticle<EmberParticle>(Owner.Center, vel);
-            }
-
         }
 
         target.AddBuff(BuffID.OnFire, 120);
