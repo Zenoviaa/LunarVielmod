@@ -7,6 +7,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Trailers;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
@@ -28,7 +29,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 22;
+            Item.damage = 14;
             Item.shoot = ModContent.ProjectileType<PharaohsBladeSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<PharaohsBladeStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;
@@ -117,6 +118,8 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             {
                 if (npc.friendly)
                     continue;
+                if (NPCSets.Heavy[npc.type])
+                    continue;
 
                 float distanceToTarget = Vector2.Distance(Projectile.Center, npc.Center);
                 if(distanceToTarget <= 128)
@@ -187,7 +190,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                 }
             }
             Projectile.extraUpdates = 1;
-            Projectile.velocity.X *= 0.97f;
+            Projectile.velocity.X *= 0.92f;
             Projectile.velocity.Y += 0.5f;
          
         }
@@ -237,7 +240,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             }
 
 
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedNado);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedNado, DrawLayer.OverNPCsAdditive);
             return false;
         }
         private void DrawPixelatedNado(GraphicsDevice graphicsDevice)
@@ -288,7 +291,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             outScale = EasingFunction.InOutSine(outScale);
 
             float scale = inScale * outScale;
-            return Color.Lerp(Color.Transparent, Color.Tan, EasingFunction.QuadraticBump(completionRatio)) * 0.5f * scale;
+            return Color.Lerp(Color.Transparent, Color.Tan, EasingFunction.QuadraticBump(completionRatio)) * 0.75f * scale;
 
         }
     }
@@ -317,7 +320,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             if (!_shotProjectile)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Projectile.velocity,
-                    ModContent.ProjectileType<DustStorm>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<DustStorm>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
                 SoundStyle fireSound = AssetRegistry.Sounds.Magic.WindCast2;
                 fireSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(fireSound, target.position);

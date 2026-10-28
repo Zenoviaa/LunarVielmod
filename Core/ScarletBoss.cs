@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.HealthbarSystem;
 using Stellamod.Content.Areas.SpecialTiles.EffectTiles;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
 using System;
@@ -123,7 +124,7 @@ public abstract class ScarletBoss : ModNPC
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
- 
+        NPCSets.Heavy[Type] = true;
     }
 
     public override void SetDefaults()
@@ -179,7 +180,7 @@ public abstract class ScarletBoss : ModNPC
             NPC.netUpdate = true;
         }
 
-
+        NPCSets.Heavy[Type] = true;
         BarrierBlockSystem.BossArenaCenter = _arenaCenter;
         if (Main.netMode == NetmodeID.Server)
             return;

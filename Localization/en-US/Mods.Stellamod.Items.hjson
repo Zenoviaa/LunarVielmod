@@ -12404,5 +12404,5 @@ DecoratedShield: {
 
 ShieldBuckle: {
 	DisplayName: Shield Buckle
-	Tooltip: "Your shield is held out while rolling, allowing you to push enemies with you!"
+	Tooltip: Your shield is held out while rolling, allowing you to push enemies with you!
 }
