@@ -1,9 +1,12 @@
-﻿using Stellamod.Core.Astar;
+﻿using Stellamod.Common;
+using Stellamod.Common.MeteorHammerSystem;
+using Stellamod.Core.Astar;
 using Stellamod.Core.SwingSystem;
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Terraria;
+using Terraria.WorldBuilding;
 
 
 namespace Stellamod.Core.Utilities;
@@ -50,6 +53,185 @@ public static class MoonUtils
 {
     const float SUMMON_SEARCH_DISTANCE = 512;
     const float REPATH_DISTANCE = 32 * 32;
+    public static Vector2 MeteorHammer_SimulateChainn( Chain chain, Player owner)
+    {
+        Vector2 root = owner.Center;
+        Vector2 effector = chain.points[chain.points.Length - 1];
+        chain.pinned[0] = true;
+        chain.points[0] = root;
+
+        int subdivisions = 16;
+        for (int j = 0; j < subdivisions; j++)
+        {
+            for (int i = 1; i < chain.points.Length; i++)
+            {
+                Vector2 gravity = Vector2.UnitY * 0.5f;
+                Point point = chain.points[i].ToTileCoordinates();
+                Tile tile = Main.tile[point];
+                if (Main.tileSolid[tile.TileType] && tile.HasTile)
+                {
+                    chain.points[i] -= gravity;
+                }
+                else
+                {
+                    chain.points[i] += gravity;
+                }
+            }
+            chain.ResolveRootToBack();
+        }
+
+        return effector;
+    }
+    public static Vector2 MeteorHammer_SimulateChainnLockToBall(Chain chain, Player owner)
+    {
+        Vector2 root = owner.Center;
+        Vector2 effector = chain.points[chain.points.Length - 1];
+        chain.pinned[0] = true;
+        chain.points[0] = root;
+
+
+        int subdivisions = 16;
+        for (int j = 0; j < subdivisions; j++)
+        {
+            for (int i = 1; i < chain.points.Length; i++)
+            {
+                Vector2 gravity = Vector2.UnitY * 0.5f;
+                Point point = chain.points[i].ToTileCoordinates();
+                Tile tile = Main.tile[point];
+                if (Main.tileSolid[tile.TileType] && tile.HasTile)
+                {
+                    chain.points[i] -= gravity;
+                }
+                else
+                {
+                    chain.points[i] += gravity;
+                }
+            }
+            chain.ResolveRootToBack();
+        }
+
+        return effector;
+    }
+    public static Vector2 MeteorHammer_SimulateChain(ref Chain chain, Player owner)
+    {
+        Vector2 root = owner.Center;
+        Vector2 effector = chain.points[chain.points.Length - 1];
+        chain.pinned[0] = true;
+        chain.points[0] = root;
+
+        int subdivisions = 16;
+        for (int j = 0; j < subdivisions; j++)
+        {
+            for (int i = 1; i < chain.points.Length; i++)
+            {
+                Vector2 gravity = Vector2.UnitY * 0.5f;
+                Point point = chain.points[i].ToTileCoordinates();
+                Tile tile = Main.tile[point];
+                if (Main.tileSolid[tile.TileType] && tile.HasTile)
+                {
+                    chain.points[i] -= gravity;
+                }
+                else
+                {
+                    chain.points[i] += gravity;
+                }
+            }
+            chain.ResolveRootToBack();
+        }
+
+        return effector;
+    }
+
+    public static void MeteorHammer_ChainDragging(Projectile projectile, Chain chain)
+    {
+        Vector2 effector = MeteorHammer_SimulateChain(ref chain, projectile.PlayerOwner);
+        Vector2 targetVelocity = effector - projectile.Center;
+        projectile.velocity = projectile.velocity.MoveTowards(targetVelocity, 1);
+        projectile.rotation += projectile.velocity.X * 0.02f;
+    }
+    public static void MeteorHammer_KillIfNotHoldingBall(Projectile projectile)
+    {
+        var owner = projectile.PlayerOwner;
+        if (owner.HeldItem.type != projectile.HammerHeldItemType)
+        {
+
+        }
+        else
+            projectile.timeLeft = 120;
+    }
+
+    public static bool MeteorHammer_TipperDamageMechanic(Projectile Projectile, NPC target, ref NPC.HitModifiers modifiers, float damageMultiplier)
+    {
+        if (Vector2.Distance(Projectile.Center, target.Center) <= 64)
+        {
+            //Double damage modifier
+            modifiers.FinalDamage *= damageMultiplier;
+            return true;
+        }
+        else
+        {
+            //Weak ahh hit
+            modifiers.FinalDamage *= 0.5f;
+            return false;
+        }
+    }
+
+    public static void MeteorHammer_PrepareSwing(Projectile projectile, float maxXSwingRadius, ref float xRadius)
+    {
+        xRadius = MathHelper.Min(Vector2.Distance(Main.MouseWorld, Main.player[projectile.owner].Center), maxXSwingRadius);
+        if (projectile.owner == Main.myPlayer)
+        {
+            projectile.velocity = (Main.MouseWorld - Main.player[projectile.owner].Center).SafeNormalize(Vector2.Zero);
+            projectile.netUpdate = true;
+        }
+        projectile.ResetLocalNPCHitImmunity();
+    }
+
+    /// <summary>
+    /// Drags the meteor hammer along the ground behind you
+    /// </summary>
+    /// <param name="projectile"></param>
+    /// <param name="owner"></param>
+    /// <param name="dragDistance"></param>
+    public static void MeteorHammer_Drag(Projectile projectile, Player owner, float dragDistance)
+    {
+        Vector2 posToCheckFrom = projectile.Center;
+        projectile.tileCollide = Collision.CanHitLine(posToCheckFrom, 1, 1, owner.position, 1, 1);
+        float distanceToOwner = Vector2.Distance(projectile.Center, owner.Center);
+        if (distanceToOwner > dragDistance)
+        {
+            //Get yanked to the player
+            Vector2 targetWorld = owner.Center;
+            Vector2 diffToPosition = targetWorld - projectile.Center;
+            projectile.velocity = Vector2.Lerp(projectile.velocity, diffToPosition, 0.002f);
+
+            //This should create very smooth movement of the tome
+            float targetRotation = diffToPosition.ToRotation();
+            float velocityRotationOffset = projectile.velocity.Length() * 0.004f;
+            projectile.rotation += velocityRotationOffset;
+        }
+        else
+        {
+            //Slow down when you're close enough
+            projectile.velocity.X *= 0.99f;
+            projectile.velocity.Y += 2.5f;
+        }
+  
+        projectile.rotation += projectile.velocity.X * 0.02f;
+    }
+    public static void OrientHandForLikeMeteorHammer(Projectile projectile, Player owner)
+    {
+        float rotation = (projectile.Center - owner.Center).ToRotation();
+        projectile.direction = projectile.velocity.X > 0 ? 1 : -1;
+        owner.ChangeDir(projectile.direction);
+        projectile.spriteDirection = owner.direction;
+
+        owner.itemRotation = rotation * owner.direction;
+        owner.itemTime = 2;
+        owner.itemAnimation = 2;
+        // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
+        owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, rotation - MathHelper.ToRadians(135));// set arm position (90 degree offset since arm starts lowered)
+    }
 
     /// <summary>
     /// Orients the hand for a projectile that is being held like a sword.

@@ -121,6 +121,7 @@ public static class StaminaPlayerExtensions
 {
     extension(Player p)
     {
+        public StaminaNDashPlayer StaminaPlayer => p.GetModPlayer<StaminaNDashPlayer>();
         public int Stamina
         {
             get => p.GetModPlayer<StaminaNDashPlayer>().DashCount;

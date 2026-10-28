@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.GunSystem;
 using Stellamod.Common.MeleeSwingSystem;
+using Stellamod.Common.MeteorHammerSystem;
 using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.Scrolls;
 using Stellamod.Core.Bases;
@@ -87,9 +88,8 @@ namespace Stellamod.Core.SwingSystem
                     lines.Add(line);
                 }
            
-            }
-
-            if (item.TryGetGlobalItem<CoolSwingGlobalItem>(out var cs) && cs.isMeleeSwingItem)
+            } 
+            else if (item.TryGetGlobalItem<CoolSwingGlobalItem>(out var cs) && cs.isMeleeSwingItem)
             {
                 line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + cs.meleeWeaponType.ToString()));
                 line.OverrideColor = Color.GreenYellow;
@@ -102,6 +102,25 @@ namespace Stellamod.Core.SwingSystem
                 if (!noStamina)
                 {
                     var staminaEffect = $"{UIUtils.GetStaminaIconString(cs.meleeSwingStaminaCost)}{LangText.Common("StaminaSlash", LangText.Item(item.ModItem, "StaminaSlash"))}";
+                    line = new TooltipLine(Mod, "StaminaSlash", staminaEffect);
+                    line.OverrideColor = new Color(239, 163, 80);
+                    lines.Add(line);
+                }
+
+            }
+            else if (item.IsMeteorHammer)
+            {
+                line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponTypeMeteor"));
+                line.OverrideColor = Color.GreenYellow;
+                lines.Add(line);
+
+                line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(item.ModItem, "BasicSlash")));
+                lines.Add(line);
+
+
+                if (!noStamina)
+                {
+                    var staminaEffect = $"{UIUtils.GetStaminaIconString(item.MeteorHammerStaminaCost)}{LangText.Common("StaminaSlash", LangText.Item(item.ModItem, "StaminaSlash"))}";
                     line = new TooltipLine(Mod, "StaminaSlash", staminaEffect);
                     line.OverrideColor = new Color(239, 163, 80);
                     lines.Add(line);

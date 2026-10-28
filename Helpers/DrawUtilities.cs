@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.ZTileSystem;
 using System;
 using System.Collections.Generic;
@@ -70,6 +71,101 @@ public static class DrawUtilities
 
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
+
+    public static void FillSwingTrailPoints(ref Vector2[] arr, Func<float, Vector2> pointFunction, float startingRatio, float distBack)
+    {
+        for(var i = 0; i < arr.Length; i++)
+        {
+            var ratio = startingRatio + distBack * i;
+            ref var point = ref arr[i];
+            point = pointFunction(ratio);
+        }
+    }
+
+    public static void DrawCoolSlashEffectTrail(
+        Vector2[] points, 
+        Color topColor, 
+        Color bottomColor,
+        Func<float, float> getTrailWidth, 
+        Func<float, Color> getTrailColor)
+    {
+        var pass = AssetReferences.Effects.Generic.CoolSlashTrail.CreatePrimitivesPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+        pass.Parameters.spriteSampler = new()
+        {
+            Texture = AssetReferences.Assets.LaserTextures.CoolSlashEffect.Asset.Value,
+            Sampler = SamplerState.AnisotropicWrap
+        };
+        pass.Parameters.noiseSampler = new()
+        {
+            Texture = AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset.Value,
+            Sampler = SamplerState.AnisotropicWrap
+        };
+        pass.Parameters.topColor = topColor.ToVector4();
+        pass.Parameters.bottomColor = bottomColor.ToVector4();
+        pass.Apply();
+        var gDevice = Main.graphics.GraphicsDevice;
+        TrailDrawer.Draw(points, getTrailColor, getTrailWidth, pass.Shader);
+    }
+    public static Vector2[] GetBezierApproximation(Vector2[] controlPoints, int outputSegmentCount)
+    {
+        Vector2[] points = new Vector2[outputSegmentCount + 1];
+        for (int i = 0; i <= outputSegmentCount; i++)
+        {
+            float t = (float)i / outputSegmentCount;
+            points[i] = GetBezierPoint(t, controlPoints, 0, controlPoints.Length);
+        }
+        return points;
+    }
+
+    public static Vector2 GetBezierPoint(float t, Vector2[] controlPoints, int index, int count)
+    {
+        if (count == 1)
+            return controlPoints[index];
+        var P0 = GetBezierPoint(t, controlPoints, index, count - 1);
+        var P1 = GetBezierPoint(t, controlPoints, index + 1, count - 1);
+        return new Vector2((1 - t) * P0.X + t * P1.X, (1 - t) * P0.Y + t * P1.Y);
+    }
+    public static Vector2[] CalculateMeteorHammerChainPositions(Vector2 start, Vector2 end, float height)
+    {
+        Vector2 ownerPos = start;
+        List<Vector2> controlPoints = new List<Vector2>();
+        controlPoints.Add(start);
+
+        Vector2 controlPoint1 = Vector2.Lerp(start, end, 0.25f);
+     //   controlPoint1.Y += MathHelper.Lerp(64, 0, Easing.SpikeInOutBounce(unEasedLerpValue));
+        controlPoints.Add(controlPoint1);
+        controlPoints.Add(end);
+
+        int numPoints = (int)(Vector2.Distance(start, end) / height);
+        numPoints *= 2;
+        Vector2[] chainPositions = GetBezierApproximation(controlPoints.ToArray(), numPoints);
+        return chainPositions;
+    }
+
+
+    public static void DrawChain(SpriteBatch spriteBatch, ref Vector2[] chainPositions, SpritebatchDrawer drawer)
+    {
+        var hSquared = (float)(drawer.Height * drawer.Height);
+        for (int i = 1; i < chainPositions.Length; i++)
+        {
+            Vector2 position = chainPositions[i];
+
+            float rotation = (chainPositions[i] - chainPositions[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+            float yScale = Vector2.DistanceSquared(chainPositions[i], chainPositions[i - 1]) / hSquared; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+            Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+            Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+                                                                                                   //   Vector2 origin = new Vector2(chainTexture.Width / 2, chainTexture.Height); //Draw from center bottom of texture
+            drawer.worldPosition = position;
+            drawer.color = chainLightColor;
+            drawer.rotation = rotation;
+            //drawer.scale = scale;
+            spriteBatch.Draw(drawer);
+            //spriteBatch.Draw(chainTexture, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+        }
+    }
 
     /// <summary>
     /// Draws an after image trail that is additively drawn, using the A = 0 method.

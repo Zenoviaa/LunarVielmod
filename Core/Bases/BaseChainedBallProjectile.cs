@@ -516,5 +516,6 @@ namespace Stellamod.Core.Bases
             var P1 = GetBezierPoint(t, controlPoints, index + 1, count - 1);
             return new Vector2((1 - t) * P0.X + t * P1.X, (1 - t) * P0.Y + t * P1.Y);
         }
+
     }
 }
