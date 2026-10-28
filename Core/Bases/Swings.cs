@@ -10,6 +10,49 @@ namespace Stellamod.Core.Bases;
 public static class Swings
 {
 
+    public struct OvalMotionSwing : ISwordMovement
+    {
+        public float xRadius;
+        public float yRadius;
+        public float arcRadians;
+        public required Func<float, float> easingFunction;
+        public SwordMovement CalculateSwordMovement(in SwingInput input)
+        {
+            //       throw new NotImplementedException();
+
+            float range = arcRadians;
+            float startRads = -range / 2;
+            float endRads = range / 2;
+
+            startRads *= input.dir;
+            endRads *= input.dir;
+
+            var easing = easingFunction(input.uneasedLerpValue);
+            float rads = MathHelper.Lerp(startRads, endRads, easing);
+            rads += MathHelper.PiOver2;
+
+            // rads += targetRotation;
+
+
+            var offset = new Vector2();
+            offset.X = xRadius * MathF.Sin(rads);
+            offset.Y = yRadius * MathF.Cos(rads);
+
+            return new SwordMovement(offset, easing, easing > 0.2f);
+        }
+    }
+    public struct ChargeBackSwing : ISwordMovement
+    {
+        public float arcBackRadians;
+        public float holdDistance;
+        public SwordMovement CalculateSwordMovement(in SwingInput input)
+        {
+            var start = -Vector2.UnitY * holdDistance;
+            var end = start.RotatedBy(-arcBackRadians * EasingFunction.InOutBack(input.uneasedLerpValue) * input.dir);
+            return new(end, input.uneasedLerpValue, false);
+        }
+    }
+
     /// <summary>
     /// Thrusts and holds the sword up, this will not deal any damage.
     /// </summary>

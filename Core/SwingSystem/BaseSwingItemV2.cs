@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.GunSystem;
+using Stellamod.Common.MeleeSwingSystem;
 using Stellamod.Common.StaminaSystem;
 using Stellamod.Content.Scrolls;
 using Stellamod.Core.Bases;
@@ -88,6 +89,25 @@ namespace Stellamod.Core.SwingSystem
            
             }
 
+            if (item.TryGetGlobalItem<CoolSwingGlobalItem>(out var cs) && cs.isMeleeSwingItem)
+            {
+                line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + cs.meleeWeaponType.ToString()));
+                line.OverrideColor = Color.GreenYellow;
+                lines.Add(line);
+
+                line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(item.ModItem, "BasicSlash")));
+                lines.Add(line);
+
+
+                if (!noStamina)
+                {
+                    var staminaEffect = $"{UIUtils.GetStaminaIconString(cs.meleeSwingStaminaCost)}{LangText.Common("StaminaSlash", LangText.Item(item.ModItem, "StaminaSlash"))}";
+                    line = new TooltipLine(Mod, "StaminaSlash", staminaEffect);
+                    line.OverrideColor = new Color(239, 163, 80);
+                    lines.Add(line);
+                }
+
+            }
             if (item.ModItem is BaseGun gun)
             {
                 line = new TooltipLine(Mod, "Gun", Helpers.LangText.Common("WeaponTypeGun"))
@@ -166,7 +186,7 @@ namespace Stellamod.Core.SwingSystem
             int dir = comboPlayer.ComboDirection;
             Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
                 player.whoAmI, ai1: dir, ai2: combo);
-            if (p.ModProjectile is BaseSwingProjectileV2 swingV2)
+            if (p.ModProjectile is BaseSwingProjectileV2 swingV2 || p.IsCoolSwing)
             {
                 comboPlayer.IncreaseCombo();
             }

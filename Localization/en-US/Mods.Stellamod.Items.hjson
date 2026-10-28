@@ -12384,8 +12384,8 @@ WoodenCrateTileItem: {
 }
 
 IceFissureHammer: {
-	BasicSlash: ""
-	StaminaSlash: No Effect
+	BasicSlash: Hold and release to charge a powerful icey hammer that erupts into a giant ice spike!
+	StaminaSlash: Does a long motion that erupts into a row of ice spikes!
 	DisplayName: Ice Fissure Hammer
-	Tooltip: ""
+	Tooltip: Breakin' the Ice
 }

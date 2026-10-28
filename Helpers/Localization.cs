@@ -82,6 +82,10 @@ namespace Stellamod.Helpers
         {
             return Language.GetTextValue($"Mods.Stellamod.NPCs.{npc.Name}." + Path, arg0);
         }
+        public static string Item(string itemname, string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.Items.{itemname}." + Path);
+        }
         public static string Item(ModItem item, string Path)
         {
             return Language.GetTextValue($"Mods.Stellamod.Items.{item.Name}." + Path);
