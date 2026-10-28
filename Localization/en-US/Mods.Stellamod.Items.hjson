@@ -12389,3 +12389,10 @@ IceFissureHammer: {
 	DisplayName: Ice Fissure Hammer
 	Tooltip: Breakin' the Ice
 }
+
+OrbShooterBow: {
+	BasicSlash: Shoots orb arrows which travel really fast and resist gravity!
+	StaminaSlash: Shoots a bouncing orb, hit it to make it bigger... eventually it'll explode for damage proportional to how many times it's been hit!
+	DisplayName: Orb Shooter Bow
+	Tooltip: Orbies
+}

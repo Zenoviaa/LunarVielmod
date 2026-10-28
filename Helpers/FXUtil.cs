@@ -14,6 +14,15 @@ namespace Stellamod.Helpers;
 
 public static class FXUtil
 {
+    public static GlowDonutParticle GlowDonut(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor, Color fadeToColor, float scale = 1f)
+    {
+        var gp = LegacyParticle.NewParticle<GlowDonutParticle>(position, velocity);
+        gp.innerColor = innerColor;
+        gp.outerColor = outerColor;
+        gp.fadeToColor = fadeToColor;
+        gp.Scale = scale;
+        return gp;
+    }
     public static DustParticle GlowDust(Vector2 position, Vector2 velocity, DustParticleSpawnParams? spawnParams = null)
     {
         return DustParticle.Spawn(position, velocity, spawnParams);
