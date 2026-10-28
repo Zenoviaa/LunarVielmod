@@ -309,10 +309,10 @@ public class OrbArrow : ModProjectile
 
     public override void SetDefaults()
     {
-        Projectile.width = 16;
-        Projectile.height = 16;
+        Projectile.width = 8;
+        Projectile.height = 8;
         Projectile.friendly = true;
-        Projectile.aiStyle = ProjAIStyleID.Arrow;
+    //    Projectile.aiStyle = ProjAIStyleID.Arrow;
     }
 
     public override void AI()
@@ -331,8 +331,8 @@ public class OrbArrow : ModProjectile
             FXUtil.GlowDonut(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero), Color.LightSkyBlue, Color.DarkBlue, Color.Black, 0.4f);
         }
         Projectile.extraUpdates = 3;
-        Projectile.velocity.Y -= 0.05f;
-        Projectile.velocity *= 1.01f;
+        Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+
     }
 
     public override bool PreDraw(ref Color lightColor)
