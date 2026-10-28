@@ -12406,3 +12406,8 @@ ShieldBuckle: {
 	DisplayName: Shield Buckle
 	Tooltip: Your shield is held out while rolling, allowing you to push enemies with you!
 }
+
+EmeraldLightArtifact: {
+	DisplayName: Emerald Light Artifact
+	Tooltip: Hold and cast some type of... Emerald Splash?
+}

@@ -51,6 +51,25 @@ public static class MoonUtils
     const float SUMMON_SEARCH_DISTANCE = 512;
     const float REPATH_DISTANCE = 32 * 32;
 
+    /// <summary>
+    /// Orients the hand for a projectile that is being held like a sword.
+    /// </summary>
+    /// <param name="projectile"></param>
+    /// <param name="owner"></param>
+    public static void OrientHandForLikeSword(Projectile projectile, Player owner)
+    {
+        float rotation = projectile.rotation;
+        projectile.direction = projectile.velocity.X > 0 ? 1 : -1;
+        owner.ChangeDir(projectile.direction);
+        projectile.spriteDirection = owner.direction;
+
+        owner.itemRotation = rotation * owner.direction;
+        owner.itemTime = 2;
+        owner.itemAnimation = 2;
+        // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
+        owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.rotation - MathHelper.ToRadians(135));// set arm position (90 degree offset since arm starts lowered)
+    }
+
     public static Player TargetPlayerBySight(Vector2 currentPosition, Vector2 sightDirection, float sightRadians)
     {
         var radiansPct = MathF.Abs(sightRadians) / MathHelper.TwoPi;
