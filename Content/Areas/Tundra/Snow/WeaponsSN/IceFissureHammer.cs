@@ -24,7 +24,7 @@ public class IceFissureHammer : ModItem
         Item.DefaultToCoolSwingItem<
             IceFissureHammerSlash,
             IceFissureHammerStaminaSlash>(MeleeWeaponType.Hammer);
-        Item.damage = 10;
+        Item.damage = 6;
         Item.StaminaDamageMultiplier=1.5f;
     }
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -47,6 +47,7 @@ public class IceFissureSpikeSpawner : ModProjectile
     ref float Timer => ref Projectile.ai[0];
     ref float AttackIndex => ref Projectile.ai[1];
     ref float StaminaPowered => ref Projectile.ai[2];
+    bool IsNormalSwing => StaminaPowered == 1;
     public float strength;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
@@ -59,14 +60,22 @@ public class IceFissureSpikeSpawner : ModProjectile
         Projectile.width = 16;
         Projectile.height = 16;
         Projectile.timeLeft = 25;
+        Projectile.extraUpdates = 1;
     }
     public override void AI()
     {
         base.AI();
         Timer++;
 
-
-        if (Timer >= 7)
+        if(StaminaPowered == 1)
+        {
+            Projectile.velocity *= 0.96f;
+        }
+        Projectile.velocity.Y = 0;
+        var d2 = 7F;
+        d2 /= 2F;
+        d2 *= MathHelper.Lerp(1f, 2f, 1f - strength);
+        if (Timer >= d2)
         {
             if (AttackIndex == 0)
             {
@@ -81,27 +90,43 @@ public class IceFissureSpikeSpawner : ModProjectile
             Timer = 0;
             var vel = Projectile.velocity.Resize(AttackIndex * 64);
             var spawnPos = Projectile.Center + new Vector2(0, -64);
-            spawnPos = TileUtilities.FallToSolidTile(spawnPos);
+            spawnPos = TileUtilities.FallToSolidTileOrPlatform(spawnPos);
 
-            var firer = ProjFirer.From<IceFissureSpike>(Projectile);
-            if (StaminaPowered == 1)
+            var firer = ProjFirer.From<IceFissureSpikeBig>(Projectile);
+            if (IsNormalSwing)
             {
                 firer = ProjFirer.From<IceFissureSpikeBig>(Projectile);
             }
+            else
+            {
+                if(Projectile.timeLeft <= 3)
+                {
+                    firer = ProjFirer.From<IceFissureSpikeBigBig>(Projectile);
+                } 
+                else if (Projectile.timeLeft < 12)
+                {
+                    firer = ProjFirer.From<IceFissureSpike>(Projectile);
+                }
+                else
+                {
+                    firer = ProjFirer.From<IceFissureSpikeBig>(Projectile);
+                }
+            }
              
             firer.position = spawnPos;
+            firer.velocity = Projectile.velocity;
             var d = firer.NewDirect();
             if(d is IceFissureSpikeBig big)
             {
-                big.strength = strength;
+                big.strength = strength + (1f - ((float)Projectile.timeLeft / 25f));
+            }
+            if (d is IceFissureSpikeBigBig big2)
+            {
+                big2.strength = strength * 0.75f;
             }
             AttackIndex++;
-            if (StaminaPowered == 1)
-            {
-                Projectile.Kill();
-            }
         }
-        Projectile.velocity.Y += 1;
+
     }
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
@@ -249,7 +274,7 @@ public class IceFissureSpikeBig : ModProjectile
     float InTime => 12;
     ref float Timer => ref Projectile.ai[0];
     public float strength;
-    public override string Texture => AssetReferences.Assets.Textures.Ice.Items.IceFissureSpikeBig.KEY;
+    public override string Texture => AssetReferences.Assets.Textures.Ice.Items.IceFissureSpikeSmall.KEY;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -262,10 +287,11 @@ public class IceFissureSpikeBig : ModProjectile
         Projectile.friendly = true;
         Projectile.tileCollide = false;
         Projectile.width = 100;
-        Projectile.height = 384;
+        Projectile.height = 64;
         Projectile.light = 0.5f;
         Projectile.ignoreWater = true;
         Projectile.timeLeft = (int)Time;
+    
     }
 
     public override void AI()
@@ -274,9 +300,9 @@ public class IceFissureSpikeBig : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-            if (this.OwnedByLocalClient())
+            if (this.OwnedByLocalClient() && Main.rand.NextBool(3))
             {
-                for (float f = 0; f < 4f; f++)
+                for (float f = 0; f < 1f; f++)
                 {
                     Vector2 upVelocity = -Vector2.UnitY;
                     upVelocity *= Main.rand.NextFloat(7, 15);
@@ -285,7 +311,7 @@ public class IceFissureSpikeBig : ModProjectile
                         ModContent.ProjectileType<IceCrashCubeShard>(), (int)(Projectile.damage * 0.3f), Projectile.knockBack, Projectile.owner);
                 }
             }
-            for (var i = 0; i < 64; i++)
+            for (var i = 0; i < 8; i++)
             {
                 var pos = Projectile.Center;
                 pos.X += Main.rand.NextFloat(-32, 32f);
@@ -293,7 +319,7 @@ public class IceFissureSpikeBig : ModProjectile
                 Dust.NewDustPerfect(pos, DustID.IceTorch, vel, Scale: 1.5f);
             }
             var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center - new Vector2(0, 5), TriColorPalette.Icey, new Vector2(5, 15));
-            fac.particleCount *= 3;
+            fac.particleCount *= 1;
             ParticleUtils.CreateSwirlingDustBurst(fac);
 
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
@@ -314,9 +340,11 @@ public class IceFissureSpikeBig : ModProjectile
     {
         var sb = Main.spriteBatch;
         var drawer = Projectile.Drawer;
+        drawer.texture = AssetReferences.Assets.Textures.Ice.Items.IceFissureSpikeSmall.Asset.Value;
         drawer.BottomCenterOrigin();
         drawer.scale = Scale * strength;
         drawer.scale.X *= 0.75f;
+        drawer.spriteEffects = Projectile.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         sb.Draw(drawer);
         return false;
     }
@@ -325,10 +353,113 @@ public class IceFissureSpikeBig : ModProjectile
         base.OnKill(timeLeft);
         var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Icey, new Vector2(12, 30));
         fac.scaleRange *= 0.35f;
-        fac.particleCount *= 2;
+        fac.particleCount *= 1;
         ParticleUtils.CreateSwirlingDustBurst(fac);
 
-        var sound = AssetReferences.Assets.Sounds.Illuria.IceImpact.Asset with { PitchVariance = 0.5f, Volume = 0.35f };
+        var sound = AssetReferences.Assets.Sounds.Illuria.IceImpact.Asset with { PitchVariance = 0.5f, Volume = 0.15f };
+        SoundEngine.PlaySound(sound, Projectile.position);
+    }
+}
+public class IceFissureSpikeBigBig : ModProjectile
+{
+    Vector2 Scale
+    {
+        get
+        {
+            var lerpOne = Vector2.Lerp(Vector2.Zero, new Vector2(1f), EasingFunction.OutExpo(Timer / InTime));
+            var lerpTow = Vector2.Lerp(Vector2.One, new Vector2(0.75f, 0.75f), EasingFunction.InOutSine(Timer / Time));
+            var lerpThree = Vector2.Lerp(lerpOne, lerpTow, Timer / Time);
+            return lerpThree;
+        }
+    }
+    float Time => 54;
+    float InTime => 12;
+    ref float Timer => ref Projectile.ai[0];
+    public float strength;
+    public override string Texture => AssetReferences.Assets.Textures.Ice.Items.IceFissureSpikeBig.KEY;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.LocalHitOnce = true;
+        Projectile.friendly = true;
+        Projectile.tileCollide = false;
+        Projectile.width = 100;
+        Projectile.height = 256;
+        Projectile.light = 0.5f;
+        Projectile.ignoreWater = true;
+        Projectile.timeLeft = (int)Time;
+
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if (Timer == 1)
+        {
+            if (this.OwnedByLocalClient() && Main.rand.NextBool(3))
+            {
+                for (float f = 0; f < 1f; f++)
+                {
+                    Vector2 upVelocity = -Vector2.UnitY;
+                    upVelocity *= Main.rand.NextFloat(7, 15);
+                    upVelocity = upVelocity.RotatedByRandom(MathHelper.ToRadians(75));
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, upVelocity,
+                        ModContent.ProjectileType<IceCrashCubeShard>(), (int)(Projectile.damage * 0.3f), Projectile.knockBack, Projectile.owner);
+                }
+            }
+            for (var i = 0; i < 8; i++)
+            {
+                var pos = Projectile.Center;
+                pos.X += Main.rand.NextFloat(-32, 32f);
+                var vel = -Vector2.UnitY * Main.rand.NextFloat(5, 15f);
+                Dust.NewDustPerfect(pos, DustID.IceTorch, vel, Scale: 1.5f);
+            }
+            var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center - new Vector2(0, 5), TriColorPalette.Icey, new Vector2(5, 15));
+            fac.particleCount *= 1;
+            ParticleUtils.CreateSwirlingDustBurst(fac);
+
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+
+            var rsound = AssetReferences.Assets.Sounds.Melee.HammerSmash.Asset with { PitchVariance = 0.5f };
+            SoundEngine.PlaySound(rsound, Projectile.position);
+        }
+    }
+
+    public override bool ShouldUpdatePosition()
+    {
+        return false;
+        //    return base.ShouldUpdatePosition();
+    }
+
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+
+        var sb = Main.spriteBatch;
+        var drawer = Projectile.Drawer;
+        drawer.texture = AssetReferences.Assets.Textures.Ice.Items.IceFissureSpikeBig.Asset.Value;
+        drawer.BottomCenterOrigin();
+        drawer.scale = Scale * strength;
+        drawer.scale.X *= 0.75f;
+        drawer.spriteEffects = Projectile.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        sb.Draw(drawer);
+        return false;
+    }
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Icey, new Vector2(12, 30));
+        fac.scaleRange *= 0.35f;
+        fac.particleCount *= 1;
+        ParticleUtils.CreateSwirlingDustBurst(fac);
+
+        var sound = AssetReferences.Assets.Sounds.Illuria.IceImpact.Asset with { PitchVariance = 0.5f, Volume = 0.15f };
         SoundEngine.PlaySound(sound, Projectile.position);
     }
 }
@@ -340,6 +471,7 @@ public class IceFissureHammerStaminaSlash : IceFissureHammerSlash
 
 public class IceFissureHammerSlash : ModProjectile
 {
+    bool _isGrounded;
     public virtual bool StaminaPowered => false;
     float _deathTimer;
     float _chargeTimer;
@@ -363,7 +495,7 @@ public class IceFissureHammerSlash : ModProjectile
                         holdDistance = 64
                     },
                     fixRot = true,
-                    swingTime = 97
+                    swingTime = StaminaPowered ? 110 : 97
                 });
                 field.Add(new()
                 {
@@ -493,6 +625,20 @@ public class IceFissureHammerSlash : ModProjectile
             _chargeTimer--;
         }
 
+
+        var playerPoint = Projectile.PlayerOwner.Top;
+        var tileplayerPoint = TileUtilities.FallToSolidTileOrPlatform(playerPoint);
+        var dist = Vector2.Distance(playerPoint, tileplayerPoint);
+        var t = Projectile.Bottom.ToTileCoordinates();
+
+        Tile tiile = Main.tile[t];
+        if (WorldGen.SolidTile(tiile) ||
+            WorldGen.SolidTile(Main.tile[Projectile.Top.ToTileCoordinates()]) ||
+            Main.tileSolidTop[tiile.type] || dist <= 64)
+        {
+            _isGrounded = true;
+        }
+
         if (Projectile.CoolSwingComboIndex == COME_DOWN_SWING && !_spawnwedProj)
         {
             var swinger = SwingHandler.GetSwinger(Projectile);
@@ -502,32 +648,22 @@ public class IceFissureHammerSlash : ModProjectile
             {
                 _chargeTimer = 45;
 
-                var grounded = false;
-                var playerPoint = Projectile.PlayerOwner.Center;
-                var tileplayerPoint = TileUtilities.FallToSolidTile(playerPoint);
-                var dist = Vector2.Distance(playerPoint, tileplayerPoint);
-                var t = Projectile.Bottom.ToTileCoordinates();
 
-                Tile tiile = Main.tile[t];
-                if (WorldGen.SolidTile(tiile) || WorldGen.SolidTile(Main.tile[Projectile.Top.ToTileCoordinates()]))
-                {
-                    grounded = true;
-                }
-
-                if (this.OwnedByLocalClient() && grounded)
+                if (this.OwnedByLocalClient() && _isGrounded)
                 {
                     //Create fissure
                     var firer = ProjFirer.From<IceFissureSpikeSpawner>(Projectile);
                     firer.ai0 = 35;
                     firer.ai2 = StaminaPowered ? 0 : 1;
-                    firer.position = TileUtilities.FallToSolidTile(firer.position + new Vector2(Projectile.PlayerOwner.direction * 24, -64));
+                    firer.position = TileUtilities.FallToSolidTileOrPlatform(firer.position + new Vector2(Projectile.PlayerOwner.direction * 24, -64));
                     firer.position.Y -= 32;
                     firer.velocity = Projectile.velocity.Resize(12);
                     var p = firer.NewDirect();
                   if(p is IceFissureSpikeSpawner spawner)
                     {
                         spawner.strength = strength;
-             
+                        if (StaminaPowered)
+                            spawner.strength = 1f;
                     }   
                 }
 

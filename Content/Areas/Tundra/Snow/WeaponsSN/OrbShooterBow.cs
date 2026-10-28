@@ -367,7 +367,7 @@ public class OrbShooterBow : BaseCrossbowItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.damage = 13;
+        Item.damage = 19;
         Item.rare = ItemRarityID.Green;
         Item.useAnimation = Item.useTime = 30;
         staminaCost = 1;

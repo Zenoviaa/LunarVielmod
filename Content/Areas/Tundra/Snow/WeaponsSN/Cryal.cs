@@ -100,7 +100,7 @@ public class Cryal : BaseCrossbowItem
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.damage = 6;
+        Item.damage = 10;
         Item.rare = ItemRarityID.Green;
         Item.useAnimation = Item.useTime = 30;
         staminaCost = 1;
@@ -124,7 +124,7 @@ public class Cryal : BaseCrossbowItem
         {
             var firer = ProjFirer.From<CryalIceSpike>(player);
             firer.velocity = fireVelocity.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.6f, 1f) * 2;
-            firer.damage /= 3;
+            firer.damage = (int)bowDamage;
             firer.New();
         }
     }

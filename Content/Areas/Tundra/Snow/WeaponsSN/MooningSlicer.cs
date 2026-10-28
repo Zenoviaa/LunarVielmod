@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Particles;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Bases;
@@ -116,7 +117,7 @@ public class MooningSlicerSlash : BaseSwingProjectileV2
                     firer.position = _hitPoint + new Vector2(0, -252);
                     firer.position.X += Main.rand.NextFloat(-200, 200);
                     firer.velocity = Vector2.UnitY * 4;
-                    firer.velocity = (_hitPoint - firer.position).Resize(4);
+                    firer.velocity = (_hitPoint - firer.position).Resize(8);
                     firer.New();
                 }
             }
@@ -131,8 +132,8 @@ public class MooningSlicerSlash : BaseSwingProjectileV2
             _hit = true;
             _hitPoint = target.Center;
 
-            var hitSound = AssetReferences.Assets.Sounds.IceyWind.Asset with { PitchVariance = 0.5f, Volume = 0.6f };
-            SoundEngine.PlaySound(hitSound, _hitPoint);
+            var sound = AssetReferences.Assets.Sounds.SunStalker_Sun_Shot.Asset with { PitchVariance = 0.6f, Pitch = 0.3f, Volume = 0.2f };
+            SoundEngine.PlaySound(sound, target.Center);
         }
 
     }
@@ -258,7 +259,7 @@ public class FallingMoonKnife : ModProjectile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Projectile.SetTrailCacheLength(8);
+        Projectile.SetTrailCacheLength(32);
     }
 
     public override void SetDefaults()
@@ -275,6 +276,7 @@ public class FallingMoonKnife : ModProjectile
     public override void AI()
     {
         base.AI();
+
         Timer++;
         if(Projectile.velocity.Length() < 14f)
             Projectile.velocity *= 1.05f;
@@ -282,10 +284,31 @@ public class FallingMoonKnife : ModProjectile
             Projectile.tileCollide = true;
         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
     }
-
+    public float GetTrailWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(17, 0, ratio);
+    }
+    public Color GetTrailColor(float ratio)
+    {
+        return DrawUtilities.InterpolateColorArray(ratio, Color.White, Color.White, Color.Gray, Color.SkyBlue, Color.White) * 1.4f * MathHelper.SmoothStep(1f, 0f, ratio);
+    }
     public override bool PreDraw(ref Color lightColor)
     {
-        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.SkyBlue, Color.Transparent, 0.24f * InScale);
+        var pass = AssetReferences.Effects.Abyss.SingularTrail.CreatePrimitivesPass();
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+        pass.Parameters.insideColor = Color.DarkBlue.ToVector3();
+        pass.Parameters.bloomColor = Color.White.ToVector3();
+        //  pass.Parameters.time = Main.GlobalTimeWrappedHourly * 
+
+        var hlsl = new HlslSampler();
+        hlsl.Sampler = SamplerState.LinearWrap;
+        hlsl.Texture = AssetReferences.Assets.LaserTextures.Beamlight.Asset.Value;
+        pass.Parameters.laserSampler = hlsl;
+        pass.Apply();
+
+        TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth, pass.Shader, Projectile.Size * 0.5F);
+
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.SkyBlue, Color.Transparent, 0.44f * InScale);
         var drawer = Projectile.Drawer;
         drawer.color *= InScale;
         Main.spriteBatch.Draw(drawer);
@@ -293,6 +316,7 @@ public class FallingMoonKnife : ModProjectile
         drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 12, Projectile.identity * 4) * InScale;
         drawer.color.A = 0;
         Main.spriteBatch.Draw(drawer);
+        DrawUtilities.DrawBasicGlow(Main.spriteBatch, Projectile.Center, 0.2f, Color.SkyBlue * 0.45f * ExtraMath.Osc(0.5f, 1f, speed: 16));
         return false;
     }
 
