@@ -1,5 +1,5 @@
 Common: {
-	WeaponTypeMeteor: "Meteor Hammer Weapon Type"
+	WeaponTypeMeteor: Meteor Hammer Weapon Type
 	SlimeRain: Slime Rain
 	SpecialAttack: Special Attack
 	MoreInfoPressShift: "{0} [c/414141:({1} for more)]"
@@ -12420,7 +12420,7 @@ EmeraldLightArtifact: {
 
 ThornedMeteorHammer: {
 	DisplayName: Thorned Meteor Hammer
-	Tooltip: "Thorny~"
-	BasicSlash: "Swings the meteor hammer a short distance from you, making an ovular motion"
-	StaminaSlash: "Spins around the meteor hammer like a helicopter and sends poisonous thorns everywhere!"
+	Tooltip: Thorny~
+	BasicSlash: Swings the meteor hammer a short distance from you, making an ovular motion
+	StaminaSlash: Spins around the meteor hammer like a helicopter and sends poisonous thorns everywhere!
 }
