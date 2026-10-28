@@ -111,6 +111,7 @@ public abstract class BaseHand : ModNPC,
             if (TrailAlpha <= 0)
                 TrailAlpha = 0f;
         }
+        Lighting.AddLight(NPC.Center, new Vector3(0.8f));
         bool shouldKill = !Parent.active || Parent.type != ModContent.NPCType<CommanderGintzia>();
         if (shouldKill && State != AIState.Despawn)
         {

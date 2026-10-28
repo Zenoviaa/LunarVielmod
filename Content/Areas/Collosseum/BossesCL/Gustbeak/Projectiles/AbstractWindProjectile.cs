@@ -37,6 +37,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
+            Projectile.light = 0.7f;
             Timer++;
             if(Timer == 1 && Projectile.velocity.Length() > 2)
             {

@@ -179,6 +179,7 @@ public abstract class ScarletBoss : ModNPC
             NPC.netUpdate = true;
         }
 
+
         BarrierBlockSystem.BossArenaCenter = _arenaCenter;
         if (Main.netMode == NetmodeID.Server)
             return;

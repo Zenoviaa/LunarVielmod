@@ -113,7 +113,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             {
                 NPC.TargetClosest();
             }
-
+            Lighting.AddLight(NPC.Center, new Vector3(0.8f));
             NPC.spriteDirection = NPC.direction;
             switch (State)
             {

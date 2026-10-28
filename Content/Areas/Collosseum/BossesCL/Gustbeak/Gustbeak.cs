@@ -450,7 +450,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 }
                 FlipValue = MathHelper.Clamp(FlipValue, -1f, 1f);
             }
-
+            Lighting.AddLight(NPC.Center, new Vector3(0.8f));
             if (Main.rand.NextBool(64))
             {
                 WindDebrisParticle wsp = WindDebrisParticle.SpawnInAlphaLayer(NPC.Center, Vector2.Zero, Color.White);
@@ -481,7 +481,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
-                if (!NPC.HasValidTarget)
+                if (!NPC.HasValidTarget && State != AIState.Despawn)
                 {
                     SwitchState(AIState.Despawn);
                 }

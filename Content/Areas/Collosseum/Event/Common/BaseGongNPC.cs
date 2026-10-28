@@ -108,7 +108,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         public override void AI()
         {
             base.AI();
-
+            Lighting.AddLight(NPC.Center, new Vector3(0.8f));
             switch (State)
             {
                 case AIState.Idle:

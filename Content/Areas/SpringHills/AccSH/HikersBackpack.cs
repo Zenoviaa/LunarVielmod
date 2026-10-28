@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Common;
+using Stellamod.Content.CommonMaterials;
 
 using Stellamod.Items;
 using Terraria;
@@ -18,6 +19,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Summon;
             Projectile.penetrate = 10;
+            Projectile.StaticPiercingImmunityTime = 24;
             Projectile.timeLeft = 600;
         }
     }

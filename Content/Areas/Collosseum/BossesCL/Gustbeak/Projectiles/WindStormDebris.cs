@@ -36,6 +36,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             Projectile.hostile = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
+            Projectile.light = 0.7f;
         }
 
         public override void AI()

@@ -269,7 +269,7 @@ public class CoolSwingHandler
 
     public int Count => Movements.Count;
     public float GetTime(Projectile comboIndex) => this[comboIndex.CoolSwingComboIndex].swingTime * (1f / comboIndex.PlayerOwner.GetTotalAttackSpeed(comboIndex.DamageType));
-    public float GetInterpolant(Projectile comboIndex) => comboIndex.CoolSwingTimer / this[comboIndex.CoolSwingComboIndex].swingTime;
+    public float GetInterpolant(Projectile comboIndex) => comboIndex.CoolSwingTimer /GetTime(comboIndex);
     public SwordMovement this[Projectile p]
     {
         get

@@ -225,7 +225,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 Main.windSpeedTarget = -200f * 0.01f;
             }
 
-
+            Lighting.AddLight(NPC.Center, new Vector3(0.8f));
             NPC.spriteDirection = NPC.direction;
             if (FollowCenter == Vector2.Zero)
                 FollowCenter = NPC.Center;

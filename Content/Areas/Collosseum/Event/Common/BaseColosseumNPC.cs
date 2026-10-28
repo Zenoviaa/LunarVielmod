@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         public sealed override void AI()
         {
             base.AI();
+            Lighting.AddLight(NPC.Center, new Vector3(0.8f));
             if (!IsColosseumActive())
             {
                 Despawning_AI();

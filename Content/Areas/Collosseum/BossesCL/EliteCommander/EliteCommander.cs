@@ -242,6 +242,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
                     SwitchState(AIState.Despawn);
                 }
             }
+            Lighting.AddLight(NPC.Center, new Vector3(0.8f));
 
             NPC.spriteDirection = NPC.direction;
             switch (State)
