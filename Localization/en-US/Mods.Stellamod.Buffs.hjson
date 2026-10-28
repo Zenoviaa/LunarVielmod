@@ -1282,3 +1282,8 @@ StarFlowerMana: {
 	DisplayName: Star Flower Power!
 	Description: You feel mana surging within you...
 }
+
+BarbedWireInsourceBuff: {
+	DisplayName: I'M THORNY!
+	Description: Don't touch me...
+}

@@ -5274,6 +5274,11 @@ StaminaInsource: {
 	DisplayName: Stamina Insource
 }
 
+BarbedWireInsource: {
+	Tooltip: When you take damage, your attacker takes a great amount of damage!
+	DisplayName: Barbed Wire Insource
+}
+
 StatInsource: {
 	Tooltip: Grants +8 to all of your shard attributes!
 	DisplayName: Stat Insource
