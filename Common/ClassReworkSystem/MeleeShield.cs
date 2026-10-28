@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.StaminaSystem;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Paint;
@@ -13,6 +14,7 @@ namespace Stellamod.Common.ClassReworkSystem
 {
     public class MeleeShield : ModProjectile
     {
+        public virtual bool CarryEnemies => false || Owner.GetModPlayer<StaminaNDashPlayer>().hasShieldBuckle;
         protected Player Owner => Main.player[Projectile.owner];
         protected ref float Timer => ref Projectile.ai[0];
         protected ref float HoldRotation => ref Projectile.ai[1];
@@ -39,6 +41,10 @@ namespace Stellamod.Common.ClassReworkSystem
             const float radius = 32;
 
             ClassReworkPlayer classReworkPlayer = Owner.GetModPlayer<ClassReworkPlayer>();
+            StaminaNDashPlayer dashPlayer = Owner.GetModPlayer<StaminaNDashPlayer>();
+            if (dashPlayer.IsDashing && !CarryEnemies)
+                return;
+
             if (Main.myPlayer == Projectile.owner)
             {
                 Vector2 holdVelocity = (Main.MouseWorld - Owner.Center);
@@ -96,6 +102,11 @@ namespace Stellamod.Common.ClassReworkSystem
 
         public override bool PreDraw(ref Color lightColor)
         {
+
+            StaminaNDashPlayer dashPlayer = Owner.GetModPlayer<StaminaNDashPlayer>();
+            if (dashPlayer.IsDashing && !CarryEnemies)
+                return false;
+
             Texture2D texture = TextureAssets.Projectile[Type].Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             drawPos.Y += Owner.gfxOffY;

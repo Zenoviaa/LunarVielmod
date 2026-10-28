@@ -138,6 +138,7 @@ public static class StaminaPlayerExtensions
 public class StaminaNDashPlayer : ModPlayer
 {
     private bool _isImmune;
+    public bool hasShieldBuckle;
     // These indicate what direction is what in the timer arrays used
     public const int DashDown = 0;
     public const int DashRight = 2;
@@ -201,6 +202,7 @@ public class StaminaNDashPlayer : ModPlayer
     public override void ResetEffects()
     {
         DashItems.Clear();
+        hasShieldBuckle = false;
         DashedThisFrame = false;
         ExtraImmunityFramesBonus = 0;
         DashRegenerationBonus = 0f;

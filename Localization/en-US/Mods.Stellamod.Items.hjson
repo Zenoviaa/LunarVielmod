@@ -12396,3 +12396,13 @@ OrbShooterBow: {
 	DisplayName: Orb Shooter Bow
 	Tooltip: Orbies
 }
+
+DecoratedShield: {
+	DisplayName: Decorated Shield
+	Tooltip: You have a 10% chance to not consume stamina when you use it
+}
+
+ShieldBuckle: {
+	DisplayName: Shield Buckle
+	Tooltip: "Your shield is held out while rolling, allowing you to push enemies with you!"
+}
