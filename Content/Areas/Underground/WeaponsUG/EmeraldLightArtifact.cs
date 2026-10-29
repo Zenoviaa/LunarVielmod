@@ -523,6 +523,10 @@ public class EmeraldLightBlast : ModProjectile
         var drawData = GetBlastTextureAsset();
         var drawer = SpritebatchDrawer.FromTextureAsset(drawData.asset, Projectile.Center);
         drawer.VerticalFrame(Projectile.frame, drawData.frameCount);
+        if(Style == 2)
+        {
+            drawer.GridFrame(Projectile.frame, 6, 6);
+        }
         drawer.LeftCenterOrigin();
         drawer.rotation = Projectile.rotation;
         drawer.color = Color.White;

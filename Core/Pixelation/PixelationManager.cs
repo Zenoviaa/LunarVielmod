@@ -4,6 +4,7 @@ using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.ZTileSystem;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -21,16 +22,16 @@ public class PixelTarget
 
     private int _renderCount = 0;
     private bool _mipMap;
-    private Queue<SpritebatchDrawAction> _spritebatchActionsQueue;
-    private Queue<PrimitivesDrawAction> _primitivesActionsQueue;
+    private readonly List<SpritebatchDrawAction> _spritebatchActionsQueue;
+    private readonly List<PrimitivesDrawAction> _primitivesActionsQueue;
     private float _downSamples;
     private BlendState _blendState;
     public PixelTarget(int downSamples = 2, BlendState blendState = null, bool mipMap = false)
     {
         _mipMap = mipMap;
         _downSamples = downSamples;
-        _spritebatchActionsQueue = new Queue<SpritebatchDrawAction>(100);
-        _primitivesActionsQueue = new Queue<PrimitivesDrawAction>(100);
+        _spritebatchActionsQueue = new(100);
+        _primitivesActionsQueue = new(100);
         _blendState = blendState == null ? BlendState.AlphaBlend : blendState;
     }
 
@@ -38,12 +39,34 @@ public class PixelTarget
     public bool HasRenders => (_spritebatchActionsQueue.Count + _primitivesActionsQueue.Count + _renderCount) > 0;
     public void QueueSpritebatchDrawAction(SpritebatchDrawAction action)
     {
-        _spritebatchActionsQueue.Enqueue(action);
+        _spritebatchActionsQueue.Add(action);
     }
 
     public void QueuePrimitiveDrawAction(PrimitivesDrawAction action)
     {
-        _primitivesActionsQueue.Enqueue(action);
+        _primitivesActionsQueue.Add(action);
+    }
+
+
+    void FlushPrimitiveDraws(GraphicsDevice graphicsDevice)
+    {
+        foreach (ref var drawAction in CollectionsMarshal.AsSpan(_primitivesActionsQueue))
+        {
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            drawAction(graphicsDevice);
+            _renderCount++;
+        }
+        _primitivesActionsQueue.Clear();
+    }
+
+    void FlushSpritebatchDraws(SpriteBatch spriteBatch, in Vector2 screenPosition)
+    {
+        foreach (ref var drawAction in CollectionsMarshal.AsSpan(_spritebatchActionsQueue))
+        {
+            drawAction(spriteBatch, Main.screenPosition);
+            _renderCount++;
+        }
+        _spritebatchActionsQueue.Clear();
     }
     private void PrepareContent(RenderTargetHandle screenTarget)
     {
@@ -54,14 +77,7 @@ public class PixelTarget
             //Primitives cannot draw within the spritebatch cause they modify the graphics state
             //Which would cause inconsistent results if they drew within the spritebatch
             //To get around this we just have them draw before
-            while (_primitivesActionsQueue.Count > 0)
-            {
-                graphicsDevice.RasterizerState = RasterizerState.CullNone;
-                PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
-                drawAction(graphicsDevice);
-                _renderCount++;
-            }
-
+            FlushPrimitiveDraws(graphicsDevice);
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
@@ -70,13 +86,7 @@ public class PixelTarget
                 Main.Rasterizer,
                 null,
                 Main.GameViewMatrix.TransformationMatrix);
-
-            while (_spritebatchActionsQueue.Count > 0)
-            {
-                SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
-                drawAction(spriteBatch, Main.screenPosition);
-                _renderCount++;
-            }
+            FlushSpritebatchDraws(spriteBatch, Main.screenPosition);
             spriteBatch.End();
         }
     }
@@ -90,14 +100,7 @@ public class PixelTarget
             //Primitives cannot draw within the spritebatch cause they modify the graphics state
             //Which would cause inconsistent results if they drew within the spritebatch
             //To get around this we just have them draw before
-            while (_primitivesActionsQueue.Count > 0)
-            {
-                graphicsDevice.RasterizerState = RasterizerState.CullNone;
-                PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
-                drawAction(graphicsDevice);
-                _renderCount++;
-            }
-
+            FlushPrimitiveDraws(graphicsDevice);
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
@@ -107,12 +110,7 @@ public class PixelTarget
                 null,
                 Main.GameViewMatrix.TransformationMatrix);
 
-            while (_spritebatchActionsQueue.Count > 0)
-            {
-                SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
-                drawAction(spriteBatch, Main.screenPosition);
-                _renderCount++;
-            }
+            FlushSpritebatchDraws(spriteBatch, Main.screenPosition);
             spriteBatch.End();
         }
 
@@ -123,47 +121,7 @@ public class PixelTarget
             spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, downScale, SpriteEffects.None, 0);
             spriteBatch.End();
         }
-
     }
-    /*
-    private void DrawToScreenRTPixelate()
-    {
-
-        RenderTargetHandle screenTarget = _mipMap ? RenderTargets.ScreenTargetMipMapped : RenderTargets.ScreenTarget;
-        RenderTargetHandle halfScreenTarget = RenderTargets.HalfScreenTarget;
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        PreparePixelatedContent(screenTarget, halfScreenTarget);
-        if (outlineColor.HasValue)
-        {
-            //Dunno why we weren't outlining with a shader before but here we go
-            var outlinePass = AssetReferences.Effects.Generic.Outliner.CreatePixelPass();
-            outlinePass.Parameters.texelSize = halfScreenTarget.Target.GetTexelSize();
-            outlinePass.Apply();
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                _blendState,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                Main.Rasterizer,
-                outlinePass.Shader);
-            spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, outlineColor.Value, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-            spriteBatch.End();
-        }
-        else
-        {
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                _blendState,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                Main.Rasterizer,
-                null);
-            spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-            spriteBatch.End();
-        }
-
-    }*/
-
     private void DrawToScreenShaderPixelate()
     {
         using var screenTarget = _mipMap ? RT.Context(RenderTargets.ScreenTargetMipMapped) : RT.Context(RenderTargets.ScreenTarget);

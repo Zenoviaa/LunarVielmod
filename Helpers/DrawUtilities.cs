@@ -1075,6 +1075,11 @@ public struct SpritebatchDrawer
     {
         xPosition = sourceRect.Value.Width - xPosition;
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void GridFrame(int frameIndex, int framesX, int framesY)
+    {
+        sourceRect = texture.GetFrame(frameIndex, framesX, framesY);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void VerticalFrame(int frameIndex, int frameCount)
