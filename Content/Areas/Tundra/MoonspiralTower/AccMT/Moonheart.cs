@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.AccMT;
 
+
 public class MoonheartLifeOverlay : ModResourceOverlay
 {
     private string RootPath => this.GetType().DirectoryHere();

@@ -17,6 +17,7 @@ public class BarbedWireInsourcePlayer : ModPlayer
         base.PostUpdateBuffs();
         if (!Player.HasBuff<BarbedWireInsourceBuff>())
             stacks = 0;
+        
     }
 
     public override void PostHurt(Player.HurtInfo info)
