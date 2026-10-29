@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Palettes;
@@ -132,6 +133,15 @@ public class DeepGreatBlade : ModProjectile
         if (State == SwingState.Charge)
             return false;
         return base.CanHitNPC(target);
+    }
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        var fx=  FXUtil.GlowCircleBoom(target.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 25);
+        fx.Scale *= 1.5f;
+
+        var fac = ParticleUtils.ParticleFactory.FromSmallBurst(target.Center, target.Center + Projectile.velocity, TriColorPalette.Moonly, new Vector2(5, 15));
+        ParticleUtils.CreateSwirlingDustBurst(fac);
     }
 
     public override void AI()

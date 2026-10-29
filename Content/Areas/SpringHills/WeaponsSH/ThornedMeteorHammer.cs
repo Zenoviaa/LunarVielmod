@@ -101,7 +101,8 @@ public class ThornedMeteorShard : ModProjectile
     {
         base.OnKill(timeLeft);
         var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, Projectile.Center + Projectile.velocity, TriColorPalette.Foresty, new Vector2(4, 15));
-        fac.particleCount /= 2;
+        fac.particleCount /= 3;
+        fac.scaleRange *= 0.5f;
         ParticleUtils.CreateSwirlingDustCircle(fac);
 
     }
@@ -260,10 +261,10 @@ public class ThornedMeteorHammerBall : ModProjectile
     }
     Vector2 GetSwingPoint(float ratio)
     {
-        var ovalOffset = MoonUtils.OvalProgressPoint(EasingFunction.InOutBack(ratio), SwingRadians, _xSwingRadius, YSwingRadius);
+        var ovalOffset = MoonUtils.OvalProgressPoint(EasingFunction.InOutExpo7(ratio), SwingRadians, _xSwingRadius, YSwingRadius);
         if(_swingDir <= 0)
         {
-            ovalOffset = MoonUtils.OvalProgressPoint(1F - EasingFunction.InOutBack(ratio), SwingRadians, _xSwingRadius, YSwingRadius);
+            ovalOffset = MoonUtils.OvalProgressPoint(1F - EasingFunction.InOutExpo7(ratio), SwingRadians, _xSwingRadius, YSwingRadius);
         }
         ovalOffset = ovalOffset.RotatedBy(Projectile.velocity.ToRotation());
         var ovalPoint = Projectile.PlayerOwner.Center + ovalOffset;
