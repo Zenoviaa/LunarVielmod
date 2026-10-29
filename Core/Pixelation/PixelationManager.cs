@@ -89,10 +89,13 @@ public class PixelTarget
             FlushSpritebatchDraws(spriteBatch, Main.screenPosition);
             spriteBatch.End();
         }
+
+
     }
 
     private void PreparePixelatedContent(RenderTargetHandle screenTarget, RenderTargetHandle halfScreenTarget)
     {
+  
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.graphicsDevice;
         using (RT.Clear(screenTarget, Color.Transparent))

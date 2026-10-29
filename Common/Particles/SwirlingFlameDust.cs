@@ -49,6 +49,29 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
         base.UpdateParticles();
         if (_length <= 0)
             return;
+        for (var i = 0; i < _length; i++)
+        {
+            ref BitDustParticleData particle = ref _particles[i];
+
+            particle.timeLeft--;
+            particle.position += particle.velocity;
+
+            float ratio = Utils.GetLerpValue(0, 120, particle.timeLeft);
+            ratio = 1f - ratio;
+
+            particle.velocity = particle.velocity.RotatedBy(0.25f * ratio * MathF.Sin(i * 8 + particle.timeLeft * 0.01f));
+            particle.velocity *= 0.92f;
+
+            particle.rotation = particle.velocity.ToRotation();
+            particle.scale *= 0.97f;
+            particle.color *= 0.99f;
+
+            float stretchInterp = particle.velocity.LengthSquared() / 25f;
+            particle.stretchScale.X = MathHelper.Lerp(1f, 1.5f, stretchInterp);
+            particle.stretchScale.Y = 1f;
+        }
+
+        /*
         FastParallel.For(0, _length, delegate (int start, int end, object context)
         {
             for (int i = start; i < end; i++)
@@ -74,7 +97,7 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
             }
         });
 
-
+        */
     }
 
 
@@ -86,6 +109,25 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
         float textureHeight = frameHeight * FrameData.FrameCount;
         float yTiling = frameHeight / textureHeight;
         var instances = _gpuInstancedBuffer.instances;
+
+        for (var i = 0; i < _length; i++)
+        {
+            ref BitDustParticleData particle = ref _particles[i];
+            ref BitDustInstanceData instance = ref instances[i];
+            Vector2 scale = particle.scale * particle.stretchScale;
+            instance.Transformation = new Vector4(scale.X, scale.Y, particle.position.X, particle.position.Y);
+            instance.Color = particle.color;
+            float yOffset = (particle.frameIndex * frameHeight) / textureHeight;
+
+            //ytiling and yoffset are static and should be moved out of here
+            //Then rotation becomes a separate variable
+            instance.TilingOffsetRotation = new Vector3(yTiling, yOffset, particle.rotation);
+        }
+
+        //The overhead from scheduling multiple threads to run on a small array actually causes this to be a perf loss
+        //Ideally it should check if the length is greater than a number and then decide to multi thread
+        //or have a dedicated thread for updating particles, idk
+        /*
         FastParallel.For(0, _length, delegate (int start, int end, object context)
         {
             for (int i = start; i < end; i++)
@@ -101,7 +143,7 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
                 //Then rotation becomes a separate variable
                 instance.TilingOffsetRotation = new Vector3(yTiling, yOffset, particle.rotation);
             }
-        });
+        });*/
 
 
         // watch.Stop();
@@ -112,6 +154,9 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
     private void DrawParticles(On_Main.orig_DrawDust orig, Main self)
     {
         orig(self);
+        if (_length <= 0)
+            return;
+
         PixelationManager.QueueSpritebatchDrawAction(Draw, PixelationDrawLayer);
     }
 
@@ -119,7 +164,6 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
     {
         if (_length <= 0)
             return;
-
         spriteBatch.EndOut(out var oldParameters);
         UpdateInstances();
         _gpuInstancedBuffer.PrepareForDrawing(spriteBatch.GraphicsDevice);
@@ -138,6 +182,8 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
 
 
         spriteBatch.Begin(oldParameters);
+  
+
     }
     public override void Draw(SpriteBatch spriteBatch, ref BitDustParticleData particle)
     {

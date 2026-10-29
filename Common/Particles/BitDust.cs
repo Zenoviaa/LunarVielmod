@@ -114,6 +114,9 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
     private void DrawParticles(On_Main.orig_DrawDust orig, Main self)
     {
         orig(self);
+        if (_length <= 0)
+            return;
+
         PixelationManager.QueueSpritebatchDrawAction(Draw, PixelationDrawLayer);
     }
 
