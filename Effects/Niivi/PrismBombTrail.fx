@@ -3,6 +3,7 @@ matrix transformMatrix;
 
 sampler spriteSampler : register(s0);
 sampler noiseSampler : register(s1);
+sampler gradientSampler : register(s2);
 float time;
 float distortionStrength;
 

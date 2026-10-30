@@ -2,7 +2,9 @@
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering.RTs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -729,7 +731,7 @@ public class NiiviPrismaticBomb : ModProjectile
     void DrawFace(SpriteBatch sb, Vector2 sp)
     {
         var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.HappySoul.Asset, Projectile.Center);
-        drawer.color = Color.White * _faceAlpha * 0.4f;
+        drawer.color = Color.White * _faceAlpha * 0.125f;
         drawer.worldPosition.Y += ExtraMath.Osc(0f, 32, speed: 2);
         drawer.rotation = ExtraMath.Osc(-0.05f, 0.05f, speed: 2);
         drawer.worldPosition += Projectile.rotation.ToRotationVector2() * 4;
@@ -766,7 +768,7 @@ public class PrismaticBombWave : ModProjectile
     float _travelDistance;
     float Time => 600;
     float WaveTravelSpeed => 32;
-    float WaveInteractDistanceSquared => 64 * 64;
+    float WaveInteractDistanceSquared => 128 * 128;
     float DistanceBetweenWaves => 64;
     public override string Texture => AssetReferences.Assets.Textures.Illuria.NPCs.PrismaticWave.KEY;
 
@@ -885,20 +887,48 @@ public class PrismaticBombWave : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
+        var ditherTex = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
         var pass = AssetReferences.Effects.Niivi.PrismWave.CreatePixelPass();
+        pass.Parameters.spriteSize = Projectile.Drawer.Size;
+        pass.Parameters.ditherTexelSize = ditherTex.GetTexelSize();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.ColorSpectrumTexture = PaletteAssets.FromPaletteFile("Prismatic").Value.ColorAtlas;
         pass.Apply();
-        using(Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with { effect = pass.Shader }))
+        var gDevice = Main.graphics.graphicsDevice;
+
+        gDevice.Textures[1] = AssetReferences.Assets.NoiseTextures.IceWaterCaustics.Asset.Value;
+        gDevice.SamplerStates[1] = SamplerState.LinearWrap;
+
+
+        gDevice.Textures[2] = AssetReferences.Assets.GlowMasks.PrismaticColorMap.Asset.Value;
+        gDevice.SamplerStates[2] = SamplerState.LinearClamp;
+
+
+        gDevice.Textures[3] = ditherTex.Value;
+        gDevice.SamplerStates[3] = SamplerState.LinearWrap;
+
+
+        using (Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with { effect = pass.Shader, blendState = BlendState.AlphaBlend }))
         {
-            for(var i = 0; i < Waves.Count; i++)
+            for (var i = 0; i < Waves.Count; i++)
             {
                 var wave = Waves[i];
                 var drawer = Projectile.Drawer;
                 drawer.BottomCenterOrigin();
                 drawer.worldPosition = wave.position;
-                drawer.color = Color.White * wave.time;
-                drawer.scale.Y *= MathHelper.Lerp(1f, 3f, EasingFunction.InOutSine(wave.time));
+                byte t = (byte)(wave.time * 255F);
+                byte o = (byte)(((float)i / (float)Waves.Count) * 255F);
+
+                drawer.color = Color.White;
+                drawer.color.R = o;
+                drawer.color.A = t;
+
+
+                drawer.scale.Y *= MathHelper.Lerp(0.5F, 2f, EasingFunction.InOutSine(wave.time));
+      
                 Main.spriteBatch.Draw(drawer);
+
+                //  Main.spriteBatch.Draw(drawer);
             }
         }
 

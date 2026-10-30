@@ -1,6 +1,7 @@
 #include "../Helpers/Math.fxh"
 sampler spriteSampler : register(s0);
 sampler noiseSampler : register(s2);
+sampler gradientSampler : register(s3);
 float4 outsideColor;
 float4 insideColor;
 float4 outlineColor;
