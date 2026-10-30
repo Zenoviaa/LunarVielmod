@@ -116,7 +116,7 @@ public abstract class ParticleUpdater<ParticleStructType> :
         //Swap with the last active particle and set the data to default
         //Order does not matter for when they get updated, so we can do it like this :)
         _particles[index] = _particles[_length - 1];
-        _particles[_length - 1] = default;
+//        _particles[_length - 1] = default;
         _length--;
     }
 

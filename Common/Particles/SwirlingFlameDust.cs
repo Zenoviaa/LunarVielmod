@@ -108,7 +108,7 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
         float frameHeight = drawData.frame.Height;
         float textureHeight = frameHeight * FrameData.FrameCount;
         float yTiling = frameHeight / textureHeight;
-        var instances = _gpuInstancedBuffer.instances;
+        ref var instances = ref _gpuInstancedBuffer.instances;
 
         for (var i = 0; i < _length; i++)
         {
@@ -117,38 +117,14 @@ public class SwirlingFlameDust : ParticleUpdater<BitDustParticleData>
             Vector2 scale = particle.scale * particle.stretchScale;
             instance.Transformation = new Vector4(scale.X, scale.Y, particle.position.X, particle.position.Y);
             instance.Color = particle.color;
+            instance.OuterColor = particle.outerColor;
+            instance.InnerColor = particle.innerColor;
             float yOffset = (particle.frameIndex * frameHeight) / textureHeight;
 
             //ytiling and yoffset are static and should be moved out of here
             //Then rotation becomes a separate variable
             instance.TilingOffsetRotation = new Vector3(yTiling, yOffset, particle.rotation);
         }
-
-        //The overhead from scheduling multiple threads to run on a small array actually causes this to be a perf loss
-        //Ideally it should check if the length is greater than a number and then decide to multi thread
-        //or have a dedicated thread for updating particles, idk
-        /*
-        FastParallel.For(0, _length, delegate (int start, int end, object context)
-        {
-            for (int i = start; i < end; i++)
-            {
-                ref BitDustParticleData particle = ref _particles[i];
-                ref BitDustInstanceData instance = ref instances[i];
-                Vector2 scale = particle.scale * particle.stretchScale;
-                instance.Transformation = new Vector4(scale.X, scale.Y, particle.position.X, particle.position.Y);
-                instance.Color = particle.color;
-                float yOffset = (particle.frameIndex * frameHeight) / textureHeight;
-
-                //ytiling and yoffset are static and should be moved out of here
-                //Then rotation becomes a separate variable
-                instance.TilingOffsetRotation = new Vector3(yTiling, yOffset, particle.rotation);
-            }
-        });*/
-
-
-        // watch.Stop();
-        //  elapsedString = $"~{(float)watch.ElapsedTicks / 10000f}ms ::: Particle Count: {_length}";
-
     }
 
     private void DrawParticles(On_Main.orig_DrawDust orig, Main self)

@@ -41,6 +41,12 @@ float CircleRatioFromCenter(in float2 coords)
     float s = saturate(d / 0.5);
     return s;
 }
+float CircleRatioFromCenter(in float2 coords, in float2 center)
+{
+    float d = length(coords - center);
+    float s = saturate(d / 0.5);
+    return s;
+}
 
 float QuadraticBump(float t)
 {

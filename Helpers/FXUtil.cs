@@ -40,6 +40,15 @@ public static class FXUtil
         Vector2 spawnVelocity = velocity;
         ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
     }
+    public static void ApplyPrismaticPull(Vector2 worldCenter, float strength)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        var eff = ModContent.GetInstance<PrismaticPullScreenEffect>();
+        eff.isActive = true;
+        eff.strength = strength;
+        eff.worldCenter = worldCenter;
+    }
 
     public static void ApplyContrastBrightness(float contrast, float brightness)
     {

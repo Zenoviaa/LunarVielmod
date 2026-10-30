@@ -32,13 +32,17 @@ public class ScreenEffectSystem : ModSystem
     private void ApplyScreenEffects(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
     {
 
+       
+        orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
         if (!Main.gameMenu)
         {
             var gDevice = Main.spriteBatch.graphicsDevice;
-            var src = Main.screenTarget;
-            var dst = Main.screenTargetSwap;
-            var finalSource = src;
+            var src = screenTarget1;
+            var dst = screenTarget2;
+
             var drewEffects = 0;
+            var srcIndex = 0;
+            var nextIndex = 1;
             for (var i = 0; i < _effects.Length; i++)
             {
                 var effect = _effects[i];
@@ -46,32 +50,33 @@ public class ScreenEffectSystem : ModSystem
                     continue;
 
                 drewEffects++;
-                gDevice.SetRenderTarget(dst);
+
+                var drawSource = srcIndex == 0 ? src : dst;
+                var drawTarget = nextIndex == 0 ? src : dst;
+
+                gDevice.SetRenderTarget(drawTarget);
                 gDevice.Clear(Color.Transparent);
-                effect.Apply(Main.spriteBatch, src, dst);
+                effect.Apply(Main.spriteBatch, drawSource, drawTarget);
 
-                //Switch
-                var temp = dst;
-                finalSource = dst;
-                dst = src;
-                src = temp;
-
+                srcIndex++;
+                nextIndex++;
+                srcIndex %= 2;
+                nextIndex %= 2;
             }
 
 
             if (drewEffects != 0)
             {
+                var lastSource = srcIndex == 0 ? src : dst;
                 var sb = Main.spriteBatch;
-                gDevice.SetRenderTarget(Main.screenTarget);
+                gDevice.SetRenderTarget(finalTexture);
                 gDevice.Clear(Color.Transparent);
                 sb.Begin();
-                sb.Draw(finalSource, Vector2.Zero, Color.White);
+                sb.Draw(lastSource, Vector2.Zero, Color.White);
                 sb.End();
             }
 
         }
-        orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
-
     }
 
     public override void PostAddRecipes()

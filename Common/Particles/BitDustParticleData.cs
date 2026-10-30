@@ -54,6 +54,8 @@ public struct BitDustFactory : IInstancedParticleCreator<BitDustParticleData, Bi
         particle.scale = scale;
         particle.timeLeft = timeLeft;
         particle.color = color;
+        particle.innerColor = innerColor;
+        particle.outerColor = outerColor;
         particle.stretchScale = Vector2.One;
         particle.rotation = 0;
         particle.frameIndex = Main.rand.Next(3);
@@ -78,6 +80,8 @@ public struct BitDustParticleData() : IParticleData
         velocityPerTickMult = 1
     };
 
+    public Vector4 outerColor;
+    public Vector4 innerColor;
     public Vector4 color;
     public Vector2 position;
     public Vector2 velocity;

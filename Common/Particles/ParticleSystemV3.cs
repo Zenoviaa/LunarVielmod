@@ -69,6 +69,7 @@ public sealed class Particles : ModSystem
     public static readonly StabTriangle StabTriangle = new();
     public static readonly WoodenCrateShard WoodenCrate = new();
     public static readonly CeramicPotShard CeramicPot = new();
+    public static readonly DiamondSparkle DiamondSparkle = new();
     public override void Load()
     {
         base.Load();
@@ -117,7 +118,8 @@ public sealed class Particles : ModSystem
             FlyingZee,
             StabTriangle,
             WoodenCrate,
-            CeramicPot
+            CeramicPot,
+            DiamondSparkle
 
         };
 

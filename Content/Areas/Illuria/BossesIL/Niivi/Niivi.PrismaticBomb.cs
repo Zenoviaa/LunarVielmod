@@ -49,7 +49,7 @@ public partial class Niivi
                         firer.ai2 = MyTarget.whoAmI;
                         firer.damage = PrismaticBomb_Damage;
                         firer.knockback = 1;
-                        firer.position += new Vector2(0, -100);
+                        firer.position += new Vector2(0, -252);
                         firer.New();
                     }
                     NPC.velocity = Vector2.Zero;

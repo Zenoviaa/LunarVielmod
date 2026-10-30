@@ -204,7 +204,11 @@ public class NiiviPrismaticBomb : ModProjectile
 
             //We now have the metaballs origined around 0,0
             //So we apply a scalar to them
-            var metaballOrigin = InitialMetaballPoints[i].RotatedBy(Main.GlobalTimeWrappedHourly) * scalar * MathHelper.Lerp(24F, 0.6f, _growthAlpha) * _metaballBursting;
+            var metaballOrigin = InitialMetaballPoints[i].RotatedBy(Main.GlobalTimeWrappedHourly)
+                * scalar 
+                * MathHelper.Lerp(24F, 0.6f, _growthAlpha) 
+                * _metaballBursting
+                * ExtraMath.Osc(0.5f, 1f, speed: 16);
 
             //This is the origin point for the metabll
             var metaballOffset = -Vector2.UnitY * MetaballRotDistanceOffset;
@@ -232,24 +236,23 @@ public class NiiviPrismaticBomb : ModProjectile
 
     void AmbientElectricParticles()
     {
-        if (Main.rand.NextBool(2))
-        {
-            var pos = Projectile.Center + Main.rand.NextVector2Circular(192, 192);
-            var vel = Main.rand.NextVector2Circular(1, 1);
-            Particles.LightningSpikeySpark.Spawn(new()
-            {
-                position = pos,
-                velocity = vel,
-                timeLeft = 24,
-                scale = Main.rand.NextFloat(0.4f, 1f),
-                color = Color.Lerp(Color.White, Main.DiscoColor, 0.15f)
-            });
-        }
 
     }
     void AmbientDashingParticles()
     {
-        for(var i =0;i < 2; i++)
+
+        if (Main.rand.NextBool(1))
+        {
+            Particles.DiamondSparkle.Spawn(new()
+            {
+                position = Projectile.Center + Main.rand.NextVector2Circular(300, 300),
+                velocity = Main.rand.NextVector2Circular(3, 3),
+                color = DrawUtilities.Prismatic,
+                timeLeft = 30
+            });
+        }
+
+        for (var i =0;i < 2; i++)
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(192, 192);
             var vel = Main.rand.NextVector2Circular(6, 6);
@@ -258,9 +261,9 @@ public class NiiviPrismaticBomb : ModProjectile
                 position = pos,
                 velocity = vel,
                 timeLeft = 60,
-                innerColor = Color.White.ToVector4(),
-                outerColor = Main.DiscoColor.ToVector4(),
-                scale = new Vector2(Main.rand.NextFloat(0.3f, 1f))
+                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.15f, 0.5F))
             });
         }
 
@@ -275,9 +278,9 @@ public class NiiviPrismaticBomb : ModProjectile
                 position = pos2,
                 velocity = vel2,
                 timeLeft = 60,
-                innerColor = Color.White.ToVector4(),
-                outerColor = Main.DiscoColor.ToVector4(),
-                scale = new Vector2(Main.rand.NextFloat(0.3f, 2f))
+                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.16f, 1f))
             });
         }
     }
@@ -295,44 +298,78 @@ public class NiiviPrismaticBomb : ModProjectile
             return Projectile.Center + Main.rand.NextVector2CircularEdge(edge, edge);
         }
 
-        if (Main.rand.NextBool(2))
+        if (Timer % 2 == 0)
         {
             var pos = GetStretchSpawnPoint();
             var vel = Projectile.Center - pos;
-            vel *= 0.05f;
+            vel *= 0.13f;
             var fx = FXUtil.GlowStretch(pos, vel);
-            fx.OuterGlowColor = Main.DiscoColor;
-            fx.InnerColor = Color.White;
-            fx.GlowColor = Color.DarkGray;
+            fx.OuterGlowColor = DrawUtilities.Prismatic;
+            fx.InnerColor = DrawUtilities.Prismatic;
+            fx.GlowColor = DrawUtilities.Prismatic;
+            fx.Scale *= 3 * Main.rand.NextFloat(1f, 2f);
         }
-
-        if (Main.rand.NextBool(2))
         {
+            for(var i = 0; i < 8; i++)
+            {
+                var upOffset = Vector2.UnitY * MathHelper.Lerp(1024, 0, Timer / ChargeTime);
+                upOffset = upOffset.RotatedBy((float)i / 8f * 6.28F);
+                upOffset = upOffset.RotatedBy(Timer / ChargeTime * 6.28F);
+                var pos = Projectile.Center + upOffset;
+                var vel = Vector2.Zero;
+
+                var color = Color.Red;
+                color.ScrollHue((float)i / 8F * 360F + Main.GlobalTimeWrappedHourly);
+
+                BitDustFactory fac = new();
+                fac.color = Color.White.ToVector4();
+                fac.position = pos;
+                fac.velocity = vel;
+                fac.innerColor = color.ToVector4();
+                fac.outerColor = color.ToVector4();
+                fac.timeLeft = 120;
+                fac.scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f)) * 3;
+                fac.timeLeft = 120;
+                fac.velocityPerTickMult = 1;
+                Particles.BitDust.Spawn(fac);
+
+                if (Main.rand.NextBool(4))
+                {
+                    Particles.DiamondSparkle.Spawn(new()
+                    {
+                        position = pos,
+                        velocity = vel,
+                        color = color,
+                        timeLeft = 30
+                    });
+                }
+            }
+        }
+            
+        { 
             var pos = GetStretchSpawnPoint();
             var vel = Projectile.Center - pos;
-            vel *= 0.05f;
+            vel *= 0.13f;
             Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
-                innerColor = Color.White.ToVector4(),
-                outerColor = Main.DiscoColor.ToVector4(),
+                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
                 scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f)),
                 timeLeft = Main.rand.Next(30, 60)
             });
         }
 
-        if (Main.rand.NextBool(8))
         {
-            var pos = GetStretchSpawnPoint();
-            var vel = Projectile.Center - pos;
-            vel *= 0.05f;
+            var pos = Projectile.Center;
+            var vel = Main.rand.NextVector2CircularEdge(25, 25);
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
-                innerColor = Color.White.ToVector4(),
-                outerColor = Main.DiscoColor.ToVector4(),
+                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
                 scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f)),
                 timeLeft = Main.rand.Next(30, 60)
             });
@@ -355,15 +392,29 @@ public class NiiviPrismaticBomb : ModProjectile
                 break;
         }
 
+        _flashAlpha = 1f;
         SoundEngine.PlaySound(sound);
-        PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.White, Color.White, 42, 512 * (1f + _growthCount / MaxGrowthCount));
-        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.White, 42, 256 * (_growthCount + 1));
+
+        PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 24, 777 * (1f + _growthCount / MaxGrowthCount));
+        PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 36, 666 * (1f + _growthCount / MaxGrowthCount));
+        PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 48, 512 * (1f + _growthCount / MaxGrowthCount));
+
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 64, 256 * (_growthCount + 1));
         FXUtil.CreateRipple(Projectile.Center);
 
         //Create a burst of particles
-        var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Icey, new Vector2(5, 65));
-        factory.particleCount *= 12;
-        ParticleUtils.CreateSwirlingDustCircle(factory);
+        for(var i = 0; i < 120; i++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = Projectile.Center,
+                velocity = Main.rand.NextVector2Circular(65, 65),
+                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
+                timeLeft = Main.rand.Next(60, 180),
+                scale = new Vector2(Main.rand.NextFloat(0.3f, 2f))
+            });
+        }
 
         _targetScale = MathHelper.Lerp(0.33f, 1f, _growthCount / MaxGrowthCount);
         _growthCount++;
@@ -395,6 +446,7 @@ public class NiiviPrismaticBomb : ModProjectile
 
     void AI_Charging()
     {
+
         Timer++;
         if(Timer == 1 && _growthCount == 0)
         {
@@ -407,12 +459,24 @@ public class NiiviPrismaticBomb : ModProjectile
             if (NeedsToGrowMore())
             {
                 Grow();
+                if (!NeedsToGrowMore())
+                {
+                    SwitchState(AIState.GetREADYLOL);
+                }
             }
             else
             {
                 SwitchState(AIState.GetREADYLOL);
             }
         }
+
+        float strengthPerLevel = 64;
+        float min = strengthPerLevel * _growthCount;
+        float max = min + strengthPerLevel;
+        float prisPullStrength = MathHelper.Lerp(min, max, Timer / ChargeTime);
+        FXUtil.ApplyPrismaticPull(Projectile.Center, -prisPullStrength);
+
+        ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 3f, (Timer / ChargeTime) * _growthCount);
         FocusOnMe();
         AmbientSuckingParticles();
 
@@ -426,6 +490,13 @@ public class NiiviPrismaticBomb : ModProjectile
         _faceAlpha = MathHelper.Lerp(0f, 1f, Timer / GetReadyTime);
         FocusOnMe();
         AmbientDashingParticles();
+
+
+        float strengthPerLevel = 64;
+        
+        float max = strengthPerLevel * _growthCount;
+        float prisPullStrength = MathHelper.Lerp(max, 0, EasingFunction.InOutExpo(Timer / GetReadyTime));
+        FXUtil.ApplyPrismaticPull(Projectile.Center, -max);
 
         //we need to also simulate particles, but that'll be in a different function
         Projectile.rotation += 0.05f;
@@ -448,10 +519,24 @@ public class NiiviPrismaticBomb : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            Projectile.velocity.Y = -8;
+            Projectile.velocity.Y = -9;
         }
-        if (Projectile.velocity.Y < 15)
+        if (Projectile.velocity.Y < 4)
             Projectile.velocity.Y += 0.15f;
+        else
+        {
+            Projectile.velocity.Y *= 1.05f;
+
+            if(Timer % 8 == 0)
+            {
+                var pris = DrawUtilities.Prismatic;
+                var outer = Color.Lerp(pris, Color.Transparent, 0.5f);
+                var fadeTo = Color.Lerp(outer, Color.Transparent, 0.5f);
+                FXUtil.GlowDonut(Projectile.Bottom, -Projectile.velocity.SafeNormalize(Vector2.Zero), pris, outer, fadeTo, 2f);
+            }
+
+        }
+
         _faceAlpha = 1f;
         FocusOnMe();
         AmbientDashingParticles();
@@ -470,13 +555,13 @@ public class NiiviPrismaticBomb : ModProjectile
         }
         _squishScale = new Vector2(1.3f, 0.6f);
         _flashAlpha = 1f;
-        SoundStyle sound = AssetReferences.Assets.Sounds.PrimGrow1.Asset with { PitchVariance = 1f };
+        SoundStyle sound = AssetReferences.Assets.Sounds.PrimGrow.Asset with { PitchVariance = 1f };
         SoundEngine.PlaySound(sound);
 
        // PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.White, Color.White, 42, 512 * (1f + _growthCount / MaxGrowthCount));
-        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.White, 42, 256 * (_growthCount + 1));
-        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.White, 42, 512 * (_growthCount + 1));
-        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.White, 42, 1024 * (_growthCount + 1));
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 256 * (_growthCount + 1));
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 512 * (_growthCount + 1));
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 1024 * (_growthCount + 1));
 
         FXUtil.CreateRipple(Projectile.Center);
         FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
@@ -517,7 +602,18 @@ public class NiiviPrismaticBomb : ModProjectile
         Projectile.rotation = Utils.AngleLerp(Projectile.rotation, rot, 0.1f);
         FocusOnMe();
         AmbientDashingParticles();
-        if(Timer >= BounceTime)
+
+        if (Timer % 8 == 0)
+        {
+            var pris = DrawUtilities.Prismatic;
+            var outer = Color.Lerp(pris, Color.Transparent, 0.5f);
+            var fadeTo = Color.Lerp(outer, Color.Transparent, 0.5f);
+            FXUtil.GlowDonut(Projectile.Bottom, -rot.ToRotationVector2(), pris, outer, fadeTo, 2f);
+        }
+
+
+
+        if (Timer >= BounceTime)
         {
             SwitchState(AIState.BOUNCEBOOM);
         }
@@ -544,7 +640,12 @@ public class NiiviPrismaticBomb : ModProjectile
             Projectile.netUpdate = true;
         }
         _faceAlpha = 0f;
-   
+
+        float strengthPerLevel = 64;
+        float max = strengthPerLevel * _growthCount;
+        FXUtil.ApplyPrismaticPull(Projectile.Center, max * EasingFunction.QuickOutSlowIn(Timer / 30F));
+
+
         _metaballBursting = MathHelper.Lerp(1f, 12F, EasingFunction.OutExpo(Timer / 30f));
         Projectile.rotation = 0;
         if(Timer >= 30)
@@ -713,7 +814,7 @@ public class NiiviPrismaticBomb : ModProjectile
         {
             var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset, Projectile.Center);
             drawer.color = Color.White * MathHelper.Lerp(0.3F, 1f, _growthAlpha); ;
-            drawer.scale = OrbScale * 1.1F;
+            drawer.scale = OrbScale * 1.3F;
             drawer.rotation = Projectile.rotation;
             sb.Draw(drawer);
         }
@@ -722,7 +823,7 @@ public class NiiviPrismaticBomb : ModProjectile
     void DrawPrismaticFlash(SpriteBatch sb, Vector2 sp)
     {
         var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star2.Asset, Projectile.Center);
-        starDrawer.color = Color.Lerp(Color.Lerp(Color.White, Main.DiscoColor, 0.4f), Color.White, ExtraMath.Osc(0f, 1f, speed: 16));
+        starDrawer.color = Color.Lerp(Color.Lerp(Color.White, Main.DiscoColor, 0.4f), DrawUtilities.Prismatic, ExtraMath.Osc(0f, 1f, speed: 16));
         starDrawer.color.A = 0;
         starDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, _flashAlpha) * 6;
         starDrawer.rotation = _flashAlpha * 4.6f;
@@ -780,7 +881,7 @@ public class PrismaticBombWave : ModProjectile
         var inverseWaveOrigin = Projectile.Bottom;
         inverseWaveOrigin.X -= _travelDistance;
 
-        var rect1 = new Rectangle(0, 0, 64, 384);
+        var rect1 = new Rectangle(0, 0, 128, 384);
         rect1.Location = waveOrigin.ToPoint(); ;
         rect1.Location += new Point(-32, -384);
 

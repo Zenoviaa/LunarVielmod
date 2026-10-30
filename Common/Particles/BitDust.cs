@@ -45,6 +45,26 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
         base.UpdateParticles();
         if (_length <= 0)
             return;
+
+        for (int i = 0; i < _length; i++)
+        {
+            ref BitDustParticleData particle = ref _particles[i];
+            particle.velocity.Y += 0.05f;
+            particle.velocity *= particle.velocityPerTickMult;
+
+            particle.timeLeft--;
+            particle.position += particle.velocity;
+
+            particle.rotation = particle.velocity.ToRotation();
+            particle.scale *= 0.93f;
+         //   particle.color *= 0.99f;
+
+            float stretchInterp = particle.velocity.LengthSquared() / 25f;
+            particle.stretchScale.X = MathHelper.Lerp(1f, 1.5f, stretchInterp);
+            particle.stretchScale.Y = 1f;
+        }
+
+        /*
         FastParallel.For(0, _length, delegate (int start, int end, object context)
         {
             for (int i = start; i < end; i++)
@@ -67,15 +87,9 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
                 //This gets expensive kinda quickly, so probably should just have a separate particle system that doesn't collide with tiles at all and one that does
                 //Trying to minimize branching as much as possible
                 //Perf tests were done without this tile collision check
-                /*
-     Vector2 collisionVelocity = Collision.TileCollision(particle.position, particle.velocity, 2, 2);
-     if (particle.velocity.X != collisionVelocity.X)
-         particle.velocity.X = -collisionVelocity.X * 0.7f;
-     if (particle.velocity.Y != collisionVelocity.Y)
-         particle.velocity.Y = -collisionVelocity.Y * 0.7f;*/
             }
         });
-
+        */
 
     }
 
@@ -88,6 +102,23 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
         float textureHeight = frameHeight * FrameData.FrameCount;
         float yTiling = frameHeight / textureHeight;
         var instances = _gpuInstancedBuffer.instances;
+        for (int i = 0; i < _length; i++)
+        {
+            ref BitDustParticleData particle = ref _particles[i];
+            ref BitDustInstanceData instance = ref instances[i];
+            Vector2 scale = particle.scale * particle.stretchScale;
+            instance.Transformation = new Vector4(scale.X, scale.Y, particle.position.X, particle.position.Y);
+            instance.Color = particle.color;
+            instance.OuterColor = particle.outerColor;
+            instance.InnerColor = particle.innerColor;
+            float yOffset = (particle.frameIndex * frameHeight) / textureHeight;
+
+            //ytiling and yoffset are static and should be moved out of here
+            //Then rotation becomes a separate variable
+            instance.TilingOffsetRotation = new Vector3(yTiling, yOffset, particle.rotation);
+        }
+
+        /*
         FastParallel.For(0, _length, delegate (int start, int end, object context)
         {
             for (int i = start; i < end; i++)
@@ -104,6 +135,7 @@ public class BitDust : ParticleUpdater<BitDustParticleData>
                 instance.TilingOffsetRotation = new Vector3(yTiling, yOffset, particle.rotation);
             }
         });
+        */
 
 
         // watch.Stop();

@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.ZTileSystem;
+using Stellamod.Gores;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -72,6 +73,15 @@ public static class DrawUtilities
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
 
+    public static Color Prismatic
+    {
+        get
+        {
+            Color red = Color.Red;
+            red.ScrollHue(Main.rand.NextFloat(0, 360f));
+            return red;
+        }
+    }
     public static void FillSwingTrailPoints(ref Vector2[] arr, Func<float, Vector2> pointFunction, float startingRatio, float distBack)
     {
         for(var i = 0; i < arr.Length; i++)
