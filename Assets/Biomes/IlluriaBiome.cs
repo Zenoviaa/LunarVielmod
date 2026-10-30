@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.NPCs.Bosses.Niivi;
-using Terraria;
+﻿using Terraria;
 using Terraria.Graphics.Capture;
 using Terraria.ModLoader;
 
@@ -37,7 +35,7 @@ namespace Stellamod.Assets.Biomes
         }
 
         // Calculate when the biome is active.
-        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InIlluria || NPC.AnyNPCs(ModContent.NPCType<Niivi>());
+        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InIlluria;
         public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneIlluria = true;
         public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneIlluria = false;
     }

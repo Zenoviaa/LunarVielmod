@@ -98,8 +98,7 @@ namespace Stellamod
                 Filters.Scene["Shockwave"].Load();
 
                 SkyManager.Instance["Stellamod:Starbloom"] = new StarbloomSky();
-                SkyManager.Instance["Stellamod:NiiviSky"] = new NiiviSky();
-
+     
                 SkyManager.Instance["Stellamod:WorldsEndSky"] = new WorldsEndSky();
                 SkyManager.Instance["Stellamod:WorldsEndSky"].Load();
 

@@ -913,4 +913,28 @@ public static class MoonUtils
         currentVelocity = currentVelocity.RotatedBy(targetRot * homingFactor);
         return currentVelocity;
     }
+
+    public static bool? CircularHitbox(Rectangle projHitbox, Rectangle targetHitbox, float hitboxRadius)
+    {
+        //Easiest way to check if a square collides with a circle is to check the distance to the corners
+        var topLeft = targetHitbox.TopLeft();
+        var topRight = targetHitbox.TopRight();
+        var bottomLeft = targetHitbox.BottomLeft();
+        var bottomRight = targetHitbox.BottomRight();
+
+        var circleCenter = projHitbox.Center.ToVector2();
+        var topLeftSqrDist = Vector2.DistanceSquared(circleCenter, topLeft);
+        var topRightSqrDist = Vector2.DistanceSquared(circleCenter, topRight);
+        var bottomLeftSqrDist = Vector2.DistanceSquared(circleCenter, bottomLeft);
+        var bottomRightSqrDist = Vector2.DistanceSquared(circleCenter, bottomRight);
+
+        var sqrHitboxRadius = hitboxRadius * hitboxRadius;
+        return 
+            topLeftSqrDist <= sqrHitboxRadius || 
+            topRightSqrDist <= sqrHitboxRadius || 
+            bottomLeftSqrDist <= sqrHitboxRadius || 
+            bottomRightSqrDist <= sqrHitboxRadius;
+
+        //throw new NotImplementedException();
+    }
 }
