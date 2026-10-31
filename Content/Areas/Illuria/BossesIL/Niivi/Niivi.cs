@@ -94,6 +94,8 @@ public partial class Niivi : ScarletBoss,
         PrismaticRay,
         Death,
     }
+    int _wingFrame;
+    float _wingFrameCounter;
     int BodyEndIndex => 5;
     float _arenaY;
     int SegmentCount => 16;
@@ -107,13 +109,16 @@ public partial class Niivi : ScarletBoss,
             field[1] = 26;
             field[2] = 26;
             field[3] = 26;
-            field[4] = 22;
-            field[5] = 22;
+            field[4] = 20;
+            field[5] = 20;
             return field;
         }
     }
     int ArmSegmentIndex => 2;
     int LegSegmentIndex => 7;
+    int WingSegmentIndex => 2;
+    Vector2 FrontWingDrawOrigin => new Vector2(229, 194);
+    Vector2 BackWingDrawOrigin => new Vector2(234, 207);
     float[] SegmentRotations => field ??= new float[SegmentCount];
     float[] SegmentBaseScales
     {
@@ -187,6 +192,7 @@ public partial class Niivi : ScarletBoss,
     float SpawnTime => 60;
     float DespawnTime => 60;
     float IdleTime => 120;
+    int WingFrameCount => 9;
     public override string Texture => AssetReferences.Assets.Textures.Illuria.NPCs.Niivi.KEY;
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -321,6 +327,13 @@ public partial class Niivi : ScarletBoss,
             ref var segment = ref segments[i];
             Lighting.AddLight(segment.position, new Vector3(1f));
         }
+        _wingFrameCounter++;
+        if(_wingFrameCounter >= 4)
+        {
+            _wingFrameCounter = 0;
+            _wingFrame++;
+            _wingFrame %= WingFrameCount;
+        }
         Segments = segments;
     }
 
@@ -365,12 +378,14 @@ public partial class Niivi : ScarletBoss,
         {
          //   SwitchState(AIState.PrismBomb);
         }
+        NPC.rotation = (MyTarget.Center - NPC.Center).ToRotation();
     }
     void DrawBody(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
         //Draw tail first, then all the way up to head
         ref var neckSegment = ref Segments[ArmSegmentIndex];
         ref var buttSegment = ref Segments[LegSegmentIndex];
+        ref var wingSegment = ref Segments[WingSegmentIndex];
 
         var backBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment.position);
         backBackArmDrawer.drawOrigin = SegmentOrigins[9];
@@ -378,6 +393,13 @@ public partial class Niivi : ScarletBoss,
         backBackArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
         backBackArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
         sb.Draw(backBackArmDrawer);
+
+        var bacWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingBack.Asset, wingSegment.position);
+        bacWingDrawer.drawOrigin = BackWingDrawOrigin;
+        bacWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
+        bacWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
+        bacWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
+        sb.Draw(bacWingDrawer);
 
         var frontBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment.position);
         frontBackArmDrawer.drawOrigin = SegmentOrigins[7];
@@ -406,6 +428,14 @@ public partial class Niivi : ScarletBoss,
             sb.Draw(drawer);
             SegmentRotations[i] = rotation;
         }
+
+        //Draw front wing
+        var frontWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingFront.Asset, wingSegment.position);
+        frontWingDrawer.drawOrigin = FrontWingDrawOrigin;
+        frontWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
+        frontWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
+        frontWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
+        sb.Draw(frontWingDrawer);
 
         //Draw frong arms
 
