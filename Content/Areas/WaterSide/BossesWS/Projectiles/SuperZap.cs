@@ -133,6 +133,9 @@ public class SuperZap : ModProjectile
             _widthMultiplier = Main.rand.NextFloat(0.5f, 1f);
             var fx = FXUtil.GlowCircleBoom(EndPoint, Color.White, Main.DiscoColor, Color.Blue);
             fx.Scale *= 2;
+
+            var fx2 = FXUtil.GlowCircleBoom(EndPoint, Color.White, Color.DarkGray, Color.Black);
+            fx2.Scale *= 1.3f;
         }
 
         float length = ProjectileHelper.PerformBeamHitscan(Projectile.Center, Projectile.velocity, Projectile.velocity.Length());
@@ -206,7 +209,7 @@ public class SuperZap : ModProjectile
             trailPoints.Add(trailPoint);
         }
         for (int i = 0; i < 4; i++)
-            trailPoints.Add(trailPoints[trailPoints.Count - 1]);
+            trailPoints.Add(EndPoint);
         //trailPoints.Add(trailPoints[trailPoints.Count - 1]);
 
         Vector2[] lightningPoints = trailPoints.ToArray();

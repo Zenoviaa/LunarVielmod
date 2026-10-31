@@ -610,6 +610,7 @@ public class LeviathanEel : ScarletBoss
             AttackCounter = 0;
             NPC.netUpdate = true;
         }
+    
     }
 
     private bool AboveTheSand()
@@ -2415,6 +2416,8 @@ public class LeviathanEel : ScarletBoss
 
     private void ChooseAttack()
     {
+
+
         if (MultiplayerHelper.IsHost)
         {
             if(NPC.life < NPC.lifeMax * 0.15f)
@@ -2443,6 +2446,7 @@ public class LeviathanEel : ScarletBoss
             }
             SwitchState(pattern);
         }
+       
     }
 
     private void FaceVelocity()

@@ -269,6 +269,7 @@ public static class DrawUtilities
         {
             pass.Apply();
         }
+        graphicsDevice.RasterizerState = RasterizerState.CullNone;
         graphicsDevice.DrawUserIndexedPrimitives<VertexType>(
           PrimitiveType.TriangleList, arr, 0, arr.Length, indices, 0, indices.Length / 3);
     }

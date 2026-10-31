@@ -1,5 +1,6 @@
 ﻿using Stellamod.Core.Rendering.RTs;
 using Stellamod.Core.Utilities;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Renderers;
@@ -49,15 +50,65 @@ namespace Stellamod.Common.Shaders
         {
             base.OnModLoad();
             On_Main.DrawNPCs += DrawOutlines;
-            On_Main.CheckMonoliths += DrawToPlayerOutlineRT;
+            On_Main.DrawPlayers_AfterProjectiles += DrawPlayerOutline;
         }
 
+        private void DrawPlayerOutline(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
+        {
+
+           
+            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+            if(clientConfig.OutlinePlayer || clientConfig.OutlineOtherPlayers)
+            {
+                var sb = Main.spriteBatch;
+                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+                using var outlineTarget = RT.Context(RenderTargets.ScreenTarget);
+                using var whiteTarget = RT.Context(RenderTargets.ScreenTarget);
+                using (RT.Clear(outlineTarget, Color.Transparent))
+                {
+                    sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null);
+
+                    if (clientConfig.OutlinePlayer)
+                    {
+                        DrawLocalPlayer(Main.LocalPlayer);
+                    }
+
+                    if (clientConfig.OutlineOtherPlayers)
+                    {
+                        foreach (var player in Main.ActivePlayers)
+                        {
+                            if (player.whoAmI == Main.myPlayer)
+                                continue;
+                            DrawLocalPlayer(player);
+                        }
+                    }
+
+                    sb.End();
+                }
+                using (RT.Clear(whiteTarget, Color.Transparent))
+                {
+                    var whiteShader = SpriteWhiteShader.Instance;
+                    sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
+                        RasterizerState.CullNone, whiteShader.Effect, Main.GameViewMatrix.TransformationMatrix);
+                    sb.Draw(outlineTarget, Vector2.Zero, Color.White);
+                    sb.End();
+                }
+
+                OutlineShader outlineShader = OutlineShader.Instance;
+                Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
+                outlineShader.TexelSize = texelSize;
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
+                    Main.Rasterizer, outlineShader.Effect);
+                sb.Draw(whiteTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                sb.End();
+            }
+
+            orig(self);
+        }
 
         public override void OnModUnload()
         {
             base.OnModUnload();
-            On_Main.DrawNPCs -= DrawOutlines;
-            On_Main.CheckMonoliths -= DrawToPlayerOutlineRT;
             _outlinesToDraw?.Clear();
             _lightColors?.Clear();
         }
@@ -66,15 +117,6 @@ namespace Stellamod.Common.Shaders
         {
             base.PreUpdateNPCs();
             canDrawNPCOutlines = true;
-        }
-
-        private void DrawToPlayerOutlineRT(On_Main.orig_CheckMonoliths orig)
-        {
-            if (OutlineAnyPlayers() && Main.netMode != NetmodeID.Server && !Main.gameMenu)
-            {
-                OutlineRenderer.Queue(DrawWhite);
-            }
-            orig();
         }
 
         private bool OutlineAnyPlayers()
@@ -86,38 +128,7 @@ namespace Stellamod.Common.Shaders
 
         private void DrawWhite(SpriteBatch sb)
         {
-            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            using var screenTarget = RT.Context(RenderTargets.ScreenTarget);
-            sb.EndOut(out var oldParameters);
-            using(RT.Clear(screenTarget, Color.Transparent))
-            {
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null);
-
-                if (clientConfig.OutlinePlayer)
-                {
-                    DrawLocalPlayer(Main.LocalPlayer);
-                }
-
-                if (clientConfig.OutlineOtherPlayers)
-                {
-                    foreach (var player in Main.ActivePlayers)
-                    {
-                        if (player.whoAmI == Main.myPlayer)
-                            continue;
-                        DrawLocalPlayer(player);
-                    }
-                }
-
-                spriteBatch.End();
-            }
-
-            sb.Begin(oldParameters with { matrix = Matrix.identity });
-            sb.Draw(screenTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            sb.End();
-
-            sb.Begin(oldParameters);
+           
         }
 
         private void DrawLocalPlayer(Player player)

@@ -20,6 +20,7 @@ public abstract class BasePixelPrimitiveRenderer : ModSystem
 
 public abstract class PixelPrimitiveRenderer<T> : BasePixelPrimitiveRenderer where T : BasePixelPrimitiveRenderer
 {
+    int _counter;
     //Not sure if a queue is the best structure to use here for storing the points
     //Maybe we can make a single buffer work?
     private Queue<Vector2[]> _primitiveDrawQueue;
@@ -41,9 +42,14 @@ public abstract class PixelPrimitiveRenderer<T> : BasePixelPrimitiveRenderer whe
     }
     private void QueueDraws()
     {
-        if (_primitiveDrawQueue.Count <= 0)
+        if(_primitiveDrawQueue.Count > 0)
+        {
+            _counter = 30;
+        }
+        _counter--;
+        if (_counter <= 0)
             return;
-
+      
        // Main.NewText("E");
         PixelationManager.QueuePrimitivesDrawAction(DrawPrimitives, DrawLayer.OverPlayers);
     }
@@ -59,7 +65,7 @@ public abstract class PixelPrimitiveRenderer<T> : BasePixelPrimitiveRenderer whe
 
     public void DrawPrimitives(GraphicsDevice graphicsDevice)
     {
-
+        _counter = 30;
         TrailDrawer.ClearPrimitives();
         //Main.NewText(_primitiveDrawQueue.Count);
         while (_primitiveDrawQueue.Count > 0)

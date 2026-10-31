@@ -30,6 +30,7 @@ namespace Stellamod.Core.Utilities
     [Autoload(Side = ModSide.Client)]
     public class TrailVertexHelper : ModSystem
     {
+        int _primitives;
         private int _index;
 
         private int[] _trailIndexBuffer;
@@ -54,6 +55,7 @@ namespace Stellamod.Core.Utilities
 
         public void Clear()
         {
+            _primitives = 0;
             _index = 0;
         }
 
@@ -136,6 +138,7 @@ namespace Stellamod.Core.Utilities
 
                 //Because of the if statement above, we can't calculate these at the end, so just do some simple math if the addition is successful
                 vertexCount += 4;
+                _primitives += 2;
                 primitiveCount += 2;
             }
 
@@ -385,9 +388,11 @@ namespace Stellamod.Core.Utilities
 
         public void DrawCachedPrimitives()
         {
+
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
-              PrimitiveType.TriangleList, _trailVertexBuffer, 0, _index, _trailIndexBuffer, 0, _index / 2);
+              PrimitiveType.TriangleList, _trailVertexBuffer, 0, _index, _trailIndexBuffer, 0, _primitives);
 
         }
     }
