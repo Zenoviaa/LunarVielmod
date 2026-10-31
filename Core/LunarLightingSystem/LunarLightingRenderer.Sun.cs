@@ -228,7 +228,7 @@ public partial class LunarLightingRenderer
             interpolatedColor = SmoothedBackLightColor;
         }
            
-        if (ModContent.GetInstance<DomainExpansionManager>().hoveringPlatform)
+        if (ModContent.GetInstance<DomainExpansionManager>().noLighting)
             interpolatedColor = Color.White;
         return interpolatedColor;
     }

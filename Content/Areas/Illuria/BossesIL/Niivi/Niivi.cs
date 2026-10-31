@@ -1,6 +1,8 @@
-﻿using Stellamod.Core.Pixelation;
+﻿using Stellamod.Core.InverseKinematics;
+using Stellamod.Core.Pixelation;
 using System;
 using System.Collections.Generic;
+
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,38 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
+public class LineRig
+{
+    public struct LineSegment
+    {
+        public Vector2 position;
+
+        //Remember 0 is right
+        public float angleBehind;
+        public float length;
+        public int frameIndex;
+    }
+
+    public LineRig(int numPoints)
+    {
+        segments = new LineSegment[numPoints];
+    }
+
+    public LineSegment[] segments;
+    public void Resolve(Vector2 rootPosition, float rootAngle)
+    {
+        //0 is the head
+        segments[0].position = rootPosition;
+        segments[0].angleBehind = rootAngle;
+
+        for(var i = 1; i < segments.Length; i++)
+        {
+            ref var prevSegment = ref segments[i - 1];
+            ref var curSegment = ref segments[i];
+            curSegment.position = (prevSegment.position - prevSegment.angleBehind.ToRotationVector2() * curSegment.length);
+        }
+    }
+}
 public partial class Niivi : ScarletBoss,
     IDrawToRenderTarget
 {
@@ -53,10 +87,91 @@ public partial class Niivi : ScarletBoss,
         Despawn,
         FlyAroundPlayer,
         PrismBomb,
+        FrostBreath,
+        StarBomb,
+        PrismaticRay,
+        Death,
     }
     int BodyEndIndex => 5;
     float _arenaY;
-    Chain LimpChain => field ??= new Chain(NPC.Center, 80, 16);
+    int SegmentCount => 16;
+    Vector2 _ikTarget;
+    float[] Sizes
+    {
+        get
+        {
+            field ??= new float[10];
+            field[0] = 88;
+            field[1] = 26;
+            field[2] = 26;
+            field[3] = 26;
+            field[4] = 22;
+            field[5] = 22;
+            return field;
+        }
+    }
+    float[] SegmentBaseScales
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = new float[SegmentCount];
+               for(var i = 0; i < SegmentCount; i++)
+                {
+                    ref var scale = ref field[i];
+                    scale = MathHelper.Lerp(1f, 1.15f, EasingFunction.QuadraticBump((float)i / (float)SegmentCount));
+                }
+            }
+            return field;
+        }
+    }
+    int[] SegmentFrameIndices
+    {
+        get
+        {
+            if(field == null)
+            {
+                field = new int[SegmentCount];
+                field[0] = 0;
+                for (var i = 1; i < 3; i++)
+                {
+                    field[i] = 1;
+                }
+                for (var i = 3; i < SegmentCount; i++)
+                {
+                    field[i] = Main.rand.Next(2, 4);
+                }
+                field[SegmentCount - 1] = 4;
+            }
+
+            return field;
+        }
+    }
+    FabrikSegment[] Segments
+    {
+        get
+        {
+            if(field == null)
+            {
+                field = new FabrikSegment[SegmentCount];
+                for (var i = 0; i < field.Length; i++)
+                {
+                    ref var segment = ref field[i];
+                    segment.position = new Vector2(i * 64, 0);
+                    segment.length = Sizes[SegmentFrameIndices[i]] * SegmentBaseScales[i];
+                }
+            }
+
+     
+            return field;
+        }
+        set
+        {
+            field = value;
+        }
+    }
+
     ref float Timer => ref NPC.ai[0];
     AIState State
     {
@@ -90,6 +205,7 @@ public partial class Niivi : ScarletBoss,
     {
         base.SetStaticDefaults();
         Main.npcFrameCount[NPC.type] = 1;
+        NPCID.Sets.MustAlwaysDraw[Type] = true;
         NPCID.Sets.TrailCacheLength[NPC.type] = 16;
         NPCID.Sets.TrailingMode[Type] = 3;
         NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
@@ -142,8 +258,8 @@ public partial class Niivi : ScarletBoss,
 
         DomainExpansionManager.UseDomain(new DomainParameters
         {
-            noWings = true,
-            inSpace = true,
+            noWings = false,
+            inSpace = false,
             hoveringPlatform = true,
             hoverPlatformY = _arenaY,
             noRender = false
@@ -181,12 +297,26 @@ public partial class Niivi : ScarletBoss,
     {
         base.PostAI();
         _outliner.Update();
-        LimpChain.points[0] = NPC.Center;
-        LimpChain.pinned[0] = true;
-        for (int i = 0; i < 32; i++)
+
+
+        //Test
+        _ikTarget = Main.MouseWorld;
+        var segments = Segments;
+        for(var i = 0; i < segments.Length; i++)
         {
-            LimpChain.ResolveBackToRoot();
+            ref var segment = ref segments[i];
+            segment.position = new Vector2(NPC.Center.X - i * 64, NPC.Center.Y);
+
         }
+   
+        FabrikSolver.Solve(ref segments, NPC.Center, _ikTarget, 32);
+
+        for(var i = 0; i < segments.Length; i++)
+        {
+            ref var segment = ref segments[i];
+            Lighting.AddLight(segment.position, new Vector3(1f));
+        }
+        Segments = segments;
     }
 
     void SwitchState(AIState state)
@@ -228,26 +358,34 @@ public partial class Niivi : ScarletBoss,
         NPC.velocity = vel;
         if(Timer >= IdleTime)
         {
-            SwitchState(AIState.PrismBomb);
+         //   SwitchState(AIState.PrismBomb);
         }
     }
     void DrawBody(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
         //Draw tail first, then all the way up to head
-        for(var i = BodyEndIndex; i >= 0; i--)
+        for(var i = Segments.Length - 1; i >= 0; i--)
         {
-            ref var point = ref LimpChain.points[i];
-
-            var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], point);
-            drawer.drawOrigin = SegmentOrigins[i];
+            ref var segment = ref Segments[i];
+            var rotation = NPC.rotation;
+            var ratio = (float)i / (float)Segments.Length;
             if(i > 0)
             {
-                ref var nextPoint = ref LimpChain.points[i - 1];
-                drawer.rotation = (nextPoint - point).ToRotation();
+                ref var nextSegment = ref Segments[i - 1];
+                rotation = (nextSegment.position - segment.position).ToRotation();
             }
-            drawer.VerticalFrame(i, 10);
+
+            var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], segment.position);
+            var frameIndex = SegmentFrameIndices[i];
+            drawer.drawOrigin = SegmentOrigins[frameIndex];
+            drawer.VerticalFrame(frameIndex, 10);
+            drawer.rotation = rotation;
+            drawer.scale = new Vector2(SegmentBaseScales[i]);
             sb.Draw(drawer);
         }
+        var d = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, NPC.Center);
+        d.color = Color.White;
+        sb.Draw(d);
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

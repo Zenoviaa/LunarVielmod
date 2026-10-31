@@ -60,6 +60,7 @@ namespace Stellamod.Core
         public bool inSpace;
         public bool noWings;
         public bool hoveringPlatform;
+        public bool noLighting;
         public float hoverPlatformY;
         public bool noProjTileCollide;
         public bool noRender;
