@@ -6,7 +6,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 public partial class Niivi
 {
     float PrismaticBomb_PrepTime => 100;
-    int PrismaticBomb_Damage => 55;
+    int PrismaticBomb_Damage => 78;
     float PrismaticBomb_AttackTime => 1280;
     void AI_PrismaticBomb()
     {

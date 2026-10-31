@@ -604,6 +604,7 @@ public class NiiviPrismaticBomb : ModProjectile
         SoundStyle sound = AssetReferences.Assets.Sounds.PrimGrow.Asset with { PitchVariance = 1f };
         SoundEngine.PlaySound(sound);
 
+
     }
 
     void AI_Bounce()
@@ -1205,7 +1206,7 @@ public class NiiviPrismaticBrick : ModProjectile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Projectile.SetTrailCacheLength(4);
+        Projectile.SetTrailCacheLength(8);
         ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2400;
     }
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -1226,8 +1227,7 @@ public class NiiviPrismaticBrick : ModProjectile
     public override void AI()
     {
         base.AI();
-        Timer++;
-        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2400;
+        Timer++; Projectile.SetTrailCacheLength(8);
         var rotateRadians = MathHelper.PiOver2 * MathF.Sign(Projectile.velocity.X);
         if(MathF.Abs(_incre) < MathF.Abs(rotateRadians))
         {
@@ -1238,6 +1238,17 @@ public class NiiviPrismaticBrick : ModProjectile
         {
             Projectile.Kill();
         }
+        var pos = Main.rand.NextVector2Circular(80, 80) + Projectile.Center;
+        var vel = Main.rand.NextVector2Circular(4, 4);
+        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        {
+            position = pos,
+            velocity = vel,
+            innerColor = DrawUtilities.Prismatic.ToVector4(),
+            outerColor = DrawUtilities.Prismatic.ToVector4(),
+            timeLeft = 60,
+            scale = new Vector2(Main.rand.NextFloat(0.5f, 1f))
+        });
         ShakeScreenPosition.Shake = MathHelper.Lerp(0, 8, EasingFunction.InQuad(Timer / 240F));
         CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.2f));
         var newPosition = _initialPosition.RotatedBy(_incre, Origin);
@@ -1255,13 +1266,12 @@ public class NiiviPrismaticBrick : ModProjectile
         drawer2.worldPosition = drawPosition;
         drawer2.color = Main.DiscoColor * 0.25f;
         drawer2.color.A = 0;
-        drawer2.scale *= 1.2f;
-        Main.spriteBatch.Draw(drawer2);
-
+    
         foreach(OldPosition oldPos in Projectile.IterateOldPosBackwards())
         {
             drawer2.worldPosition = oldPos.position + Projectile.Size * 0.5f;
-            drawer2.color = Main.DiscoColor * 0.25f * oldPos.progress;
+            drawer2.color = Color.Red * 0.2f * MathHelper.SmoothStep(1f, 0f, oldPos.progress);
+            drawer2.color.ScrollHue(255 * Main.GlobalTimeWrappedHourly + Projectile.identity * 36);
             drawer2.color.A = 0;
             Main.spriteBatch.Draw(drawer2);
         }
@@ -1269,14 +1279,22 @@ public class NiiviPrismaticBrick : ModProjectile
         var endPos = _initialPosition.RotatedBy(rotateRadians, Origin);
         drawer2.worldPosition = endPos;
         drawer2.rotation = 0;
-        drawer2.color = Main.DiscoColor * 0.25f * ExtraMath.Osc(0.5f, 1f, speed: 16, endPos.X * 0.1f);
+        drawer2.color = Color.Red * 0.5f * ExtraMath.Osc(0.5f, 1f, speed: 16, endPos.X * 0.1f);
+        drawer2.color.ScrollHue(255 * Main.GlobalTimeWrappedHourly + Projectile.identity * 36);
         drawer2.color.A = 0;
         Main.spriteBatch.Draw(drawer2);
 
         var drawer = Projectile.Drawer;
         drawer.worldPosition = drawPosition;
-        drawer.color = Color.White;
+        drawer.color = Color.Red * 1f * ExtraMath.Osc(0.5f, 1f, speed: 16, endPos.X * 0.1f);
+        drawer.color.ScrollHue(255 * Main.GlobalTimeWrappedHourly + Projectile.identity * 36);
         drawer.color.A = 0;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White * 1f * ExtraMath.Osc(0.5f, 1f, speed: 16, endPos.X * 0.1f);
+        //drawer.color.ScrollHue(255 * Main.GlobalTimeWrappedHourly + Projectile.identity * 36);
+        drawer.color.A = 0;
+        drawer.scale *= 0.92f;
         Main.spriteBatch.Draw(drawer);
         return false;
     }
@@ -1285,20 +1303,34 @@ public class NiiviPrismaticBrick : ModProjectile
         base.OnKill(timeLeft);
         var sound = AssetReferences.Assets.Sounds.Melee.HammerSmash1.Asset with { PitchVariance = 0.7f, MaxInstances = 0 };
         SoundEngine.PlaySound(sound, Projectile.position);
-
+        //FXUtil.GlowDonut(Projectile.Center, -Vector2.UnitY, Color.White, DrawUtilities.Prismatic, Color.Black);
         FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-        for(var i= 0; i < 24; i++)
+        var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, DrawUtilities.Prismatic, Color.Black, 25, baseSize: 0.18F);
+        fx.VectorScale.X *= 2;
+        for(var i = 0; i < 4; i++)
+        {
+            var pos = Projectile.Center + new Vector2(Main.rand.Next(-64, 64), -80 * i);
+            Particles.DiamondSparkle.Spawn(new()
+            {
+                position = pos,
+                velocity = -Vector2.UnitY * 6,
+                timeLeft = 30 + i * 3,
+                color = DrawUtilities.Prismatic
+            });
+        }
+        for(var i= 0; i < 40; i++)
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(128, 16);
-            var vel = -Vector2.UnitY * Main.rand.NextFloat(8, 16);
-            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            var vel = -Vector2.UnitY * Main.rand.NextFloat(8, 25);
+            vel = vel.RotatedByRandom(0.5f);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
-                innerColor = Color.White.ToVector4(),
-                outerColor = Main.DiscoColor.ToVector4(),
+                innerColor = Color.Lerp(DrawUtilities.Prismatic, Color.White, 0.5F).ToVector4() ,
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
                 timeLeft = Main.rand.Next(90, 300),
-                scale = new Vector2(Main.rand.NextFloat(1f, 3f))
+                scale = new Vector2(Main.rand.NextFloat(0.25f, 1.5F))
             });
         }
     }
