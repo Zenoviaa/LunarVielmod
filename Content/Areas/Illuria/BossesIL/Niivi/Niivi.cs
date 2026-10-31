@@ -1,5 +1,6 @@
 ﻿using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.ZTileSystem;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Animations;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -110,6 +112,9 @@ public partial class Niivi : ScarletBoss,
             return field;
         }
     }
+    int ArmSegmentIndex => 2;
+    int LegSegmentIndex => 7;
+    float[] SegmentRotations => field ??= new float[SegmentCount];
     float[] SegmentBaseScales
     {
         get
@@ -364,7 +369,24 @@ public partial class Niivi : ScarletBoss,
     void DrawBody(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
         //Draw tail first, then all the way up to head
-        for(var i = Segments.Length - 1; i >= 0; i--)
+        ref var neckSegment = ref Segments[ArmSegmentIndex];
+        ref var buttSegment = ref Segments[LegSegmentIndex];
+
+        var backBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment.position);
+        backBackArmDrawer.drawOrigin = SegmentOrigins[9];
+        backBackArmDrawer.VerticalFrame(9, 10);
+        backBackArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
+        backBackArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        sb.Draw(backBackArmDrawer);
+
+        var frontBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment.position);
+        frontBackArmDrawer.drawOrigin = SegmentOrigins[7];
+        frontBackArmDrawer.VerticalFrame(7, 10);
+        frontBackArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
+        frontBackArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        sb.Draw(frontBackArmDrawer);
+
+        for (var i = Segments.Length - 1; i >= 0; i--)
         {
             ref var segment = ref Segments[i];
             var rotation = NPC.rotation;
@@ -382,10 +404,24 @@ public partial class Niivi : ScarletBoss,
             drawer.rotation = rotation;
             drawer.scale = new Vector2(SegmentBaseScales[i]);
             sb.Draw(drawer);
+            SegmentRotations[i] = rotation;
         }
-        var d = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, NPC.Center);
-        d.color = Color.White;
-        sb.Draw(d);
+
+        //Draw frong arms
+
+        var backFrontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment.position);
+        backFrontArmDrawer.drawOrigin = SegmentOrigins[8];
+        backFrontArmDrawer.VerticalFrame(8, 10);
+        backFrontArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
+        backFrontArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        sb.Draw(backFrontArmDrawer);
+
+        var frontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment.position);
+        frontArmDrawer.drawOrigin = SegmentOrigins[6];
+        frontArmDrawer.VerticalFrame(6, 10);
+        frontArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
+        frontArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        sb.Draw(frontArmDrawer);
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
