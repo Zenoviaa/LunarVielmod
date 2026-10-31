@@ -597,12 +597,40 @@ public class NiiviPrismaticBomb : ModProjectile
         var lerp1 = MathHelper.Lerp(0, 1, EasingFunction.OutExpo(ratio));
         var lerp2 = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(ratio));
         var lerp3 = MathHelper.Lerp(lerp1, lerp2, ratio);
-        Projectile.velocity = Vector2.UnitX * lerp3 * 25;
+        Projectile.velocity = Vector2.UnitX * lerp3 * 25 + Vector2.Lerp(Vector2.Zero, Vector2.UnitX * 45, EasingFunction.InExpo(ratio));
         var rot = (Projectile.position - Projectile.oldPosition).ToRotation();
         Projectile.rotation = Utils.AngleLerp(Projectile.rotation, rot, 0.1f);
         FocusOnMe();
         AmbientDashingParticles();
 
+        if(ratio >= 0.5f)
+        {
+            for(var i = 0;i < 2; i++)
+            {
+                var dir = Projectile.rotation.ToRotationVector2();
+                var pos = Projectile.Center + dir * 256 + Main.rand.NextVector2Circular(64, 64);
+                var vel = -dir.RotatedBy(1.54F * (Main.rand.NextBool(2) ? -1 : 1)) * Main.rand.NextFloat(5, 15);
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = pos,
+                    velocity = vel,
+                    timeLeft = 30,
+                    innerColor = Color.White.ToVector4(),
+                    outerColor = DrawUtilities.Prismatic.ToVector4(),
+                    scale = new Vector2(1)
+                });
+            }
+            {
+                var dir = Projectile.rotation.ToRotationVector2();
+                var pos = Projectile.Center + dir * 256 + Main.rand.NextVector2Circular(64, 64);
+                var vel = -dir.RotatedBy(1.14F * (Main.rand.NextBool(2) ? -1 : 1)) * Main.rand.NextFloat(45, 65);
+                var fx = FXUtil.GlowStretch(pos, vel);
+                fx.OuterGlowColor = DrawUtilities.Prismatic;
+                fx.InnerColor = DrawUtilities.Prismatic;
+                fx.GlowColor = DrawUtilities.Prismatic;
+                fx.Scale *= 3 * Main.rand.NextFloat(1f, 2f);
+            }
+        }
         if (Timer % 8 == 0)
         {
             var pris = DrawUtilities.Prismatic;
@@ -751,12 +779,12 @@ public class NiiviPrismaticBomb : ModProjectile
 
     Color GetTrailColor(float ratio)
     {
-        return Color.Lerp(Color.White, Color.Transparent, ratio);
+        return Color.Lerp(Color.White, Main.DiscoColor, ratio);
     }
     
     float GetTrailWidth(float ratio)
     {
-        return MathHelper.SmoothStep(128, 32, ratio);
+        return MathHelper.SmoothStep(144, 128, EasingFunction.OutSine(ratio));
     }
 
     void DrawPrismaticTrail(GraphicsDevice graphicsDevice)
@@ -766,7 +794,7 @@ public class NiiviPrismaticBomb : ModProjectile
         pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
         pass.Parameters.distortionStrength = 0.05f;
         pass.Apply();
-        graphicsDevice.Textures[0] = AssetReferences.Assets.LaserTextures.Aura.Asset.Value;
+        graphicsDevice.Textures[0] = AssetReferences.Assets.LaserTextures.FlameTrail.Asset.Value;
         graphicsDevice.Textures[1] = AssetReferences.Assets.Textures.Noise.PerlinNoise.Asset.Value;
         graphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
         graphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
@@ -796,7 +824,7 @@ public class NiiviPrismaticBomb : ModProjectile
         var pass = AssetReferences.Effects.Niivi.PrismBomb.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.outsideColor = Main.DiscoColor.ToVector4();
-        pass.Parameters.insideColor = Color.White.ToVector4();
+        pass.Parameters.insideColor = Main.DiscoColor.ToVector4();
         pass.Parameters.metaballRadius = MathHelper.Lerp(0.05f, 1f, _growthAlpha);
         pass.Parameters.metaballStrength = 0.01f;
         pass.Parameters.metaballs = _metaballs;
@@ -832,7 +860,8 @@ public class NiiviPrismaticBomb : ModProjectile
     void DrawFace(SpriteBatch sb, Vector2 sp)
     {
         var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.HappySoul.Asset, Projectile.Center);
-        drawer.color = Color.White * _faceAlpha * 0.125f;
+        drawer.color = Color.White * _faceAlpha;
+        drawer.color.A = 0;
         drawer.worldPosition.Y += ExtraMath.Osc(0f, 32, speed: 2);
         drawer.rotation = ExtraMath.Osc(-0.05f, 0.05f, speed: 2);
         drawer.worldPosition += Projectile.rotation.ToRotationVector2() * 4;
@@ -841,6 +870,8 @@ public class NiiviPrismaticBomb : ModProjectile
             drawer.worldPosition.Y += ExtraMath.Osc(0, 64F, speed: 16);
         drawer.VerticalFrame(_frame, FrameCount);
         drawer.CenterOrigin();
+        sb.Draw(drawer);
+        sb.Draw(drawer);
         sb.Draw(drawer);
     }
 
@@ -868,9 +899,9 @@ public class PrismaticBombWave : ModProjectile
     ref float Timer => ref Projectile.ai[0];
     float _travelDistance;
     float Time => 600;
-    float WaveTravelSpeed => 32;
-    float WaveInteractDistanceSquared => 128 * 128;
-    float DistanceBetweenWaves => 64;
+    float WaveTravelSpeed => 24;
+    float WaveInteractDistanceSquared => 164 * 164;
+    float DistanceBetweenWaves => 48;
     public override string Texture => AssetReferences.Assets.Textures.Illuria.NPCs.PrismaticWave.KEY;
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -938,35 +969,36 @@ public class PrismaticBombWave : ModProjectile
         inverseWaveOrigin.X -= _travelDistance;
 
         //Make particles come up
-        for (var i = 0; i < 3; i++)
+        if (Main.rand.NextBool(4))
         {
-            var randPos = waveOrigin + Main.rand.NextVector2Circular(32, 32);
-            var randVelocity = -Vector2.UnitY * 64;
-            randVelocity = randVelocity.RotatedByRandom(0.25f);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            for (var i = 0; i < 1; i++)
             {
-                position = randPos,
-                velocity = randVelocity,
-                innerColor = Color.White.ToVector4(),
-                outerColor = Main.DiscoColor.ToVector4(),
-                timeLeft = Main.rand.Next(30, 60),
-                scale = new Vector2(Main.rand.NextFloat(0.3f, 1f))
-            });
+                var randPos = waveOrigin + Main.rand.NextVector2Circular(64, 64);
+                var randVelocity = -Vector2.UnitY * 16;
+                randVelocity = randVelocity.RotatedByRandom(0.25f);
+                Particles.DiamondSparkle.Spawn(new()
+                {
+                    color = DrawUtilities.Prismatic,
+                    position = randPos,
+                    velocity = randVelocity,
+                    timeLeft = Main.rand.Next(30, 80),
+                });
 
-        
-            randPos = inverseWaveOrigin + Main.rand.NextVector2Circular(32, 32);
-            randVelocity = -Vector2.UnitY * 64;
-            randVelocity = randVelocity.RotatedByRandom(0.25f);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
-            {
-                position = randPos,
-                velocity = randVelocity,
-                innerColor = Color.White.ToVector4(),
-                outerColor = Main.DiscoColor.ToVector4(),
-                timeLeft = Main.rand.Next(30, 60),
-                scale = new Vector2(Main.rand.NextFloat(0.3f, 1f))
-            });
+
+                randPos = inverseWaveOrigin + Main.rand.NextVector2Circular(64, 64);
+                randVelocity = -Vector2.UnitY * 16;
+                randVelocity = randVelocity.RotatedByRandom(0.25f);
+                Particles.DiamondSparkle.Spawn(new()
+                {
+                    color = DrawUtilities.Prismatic,
+                    position = randPos,
+                    velocity = randVelocity,
+                    timeLeft = Main.rand.Next(30, 80),
+                });
+
+            }
         }
+
 
         var numWaveDatas = 64;
         var halfWaveDatas = numWaveDatas / 2;
@@ -980,8 +1012,13 @@ public class PrismaticBombWave : ModProjectile
             var d = Vector2.DistanceSquared(wavePosition, waveOrigin);
             var d2 = Vector2.DistanceSquared(wavePosition, inverseWaveOrigin);
             var closest = MathF.Min(d, d2);
-            var influence = WaveInteractDistanceSquared / closest;
-            waveData.time = MathF.Sqrt(influence);
+            closest += 4;
+
+            var lerp = MathHelper.Clamp(closest / WaveInteractDistanceSquared, 0f, 1f);
+            lerp = 1f - lerp;
+
+
+            waveData.time = lerp;
             Waves.Add(waveData);
         }
     }
@@ -997,8 +1034,8 @@ public class PrismaticBombWave : ModProjectile
         pass.Apply();
         var gDevice = Main.graphics.graphicsDevice;
 
-        gDevice.Textures[1] = AssetReferences.Assets.NoiseTextures.IceWaterCaustics.Asset.Value;
-        gDevice.SamplerStates[1] = SamplerState.LinearWrap;
+        gDevice.Textures[1] = AssetReferences.Assets.NoiseTextures.Crystals.Asset.Value;
+        gDevice.SamplerStates[1] = SamplerState.AnisotropicWrap;
 
 
         gDevice.Textures[2] = AssetReferences.Assets.GlowMasks.PrismaticColorMap.Asset.Value;
@@ -1009,7 +1046,7 @@ public class PrismaticBombWave : ModProjectile
         gDevice.SamplerStates[3] = SamplerState.LinearWrap;
 
 
-        using (Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with { effect = pass.Shader, blendState = BlendState.AlphaBlend }))
+        using (Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with { effect = pass.Shader, blendState = BlendState.Additive, samplerState = SamplerState.AnisotropicWrap }))
         {
             for (var i = 0; i < Waves.Count; i++)
             {
@@ -1017,15 +1054,15 @@ public class PrismaticBombWave : ModProjectile
                 var drawer = Projectile.Drawer;
                 drawer.BottomCenterOrigin();
                 drawer.worldPosition = wave.position;
-                byte t = (byte)(wave.time * 255F);
+                byte t = (byte)(MathHelper.Lerp(0.09f, 0.45F, wave.time) * 255F);
                 byte o = (byte)(((float)i / (float)Waves.Count) * 255F);
 
                 drawer.color = Color.White;
                 drawer.color.R = o;
                 drawer.color.A = t;
 
-
-                drawer.scale.Y *= MathHelper.Lerp(0.5F, 2f, EasingFunction.InOutSine(wave.time));
+                drawer.scale.X *= 0.45F;
+                drawer.scale.Y *= MathHelper.Lerp(0.5F, 2f, EasingFunction.InOutSine(wave.time)) * EasingFunction.InOutSine(Timer / 60f);
       
                 Main.spriteBatch.Draw(drawer);
 

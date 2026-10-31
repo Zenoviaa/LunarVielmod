@@ -21,14 +21,12 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     float4 noiseColor = tex2D(spriteSampler, pc);
     
     float4 outColor = outsideColor;
-    outColor.r += sin(coords.x * 4.0 + time);
-    outColor.g += cos(coords.y * 4.0 + time);
-    outColor.b += sin(coords.x * 8.0 + time);
+    outColor.rgb = ApplyHue(outColor.rgb, time * 4.0 + coords.x * 4.0 + coords.y * 4.0);
     
     float4 glowingLerp = lerp(insideColor, outColor, noiseColor.a);
     glowingLerp *= smoothstep(1.0, 0.0, CircleRatioFromCenter(coords));
     glowingLerp *= 1.0 / ratioFromCenter;
-    glowingLerp += (1.0 - ratioFromCenter) * 2.0;
+   // glowingLerp += (1.0 - ratioFromCenter) * 2.0;
     glowingLerp += sin(ratioFromCenter * 64.0 + time * -12.0) * 0.15;
     glowingLerp = floor(glowingLerp * 8.0) / 8.0;
  

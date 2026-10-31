@@ -64,11 +64,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0,
     float4 rainbowColor3 = tex2D(gradientSampler, float2(frac(coords.x + time * 4.0 + offset), coords.y));
     color *= rainbowColor;
 
-  //  color += saturate(coords.y - 0.65) / 0.5 * color.a;
-    color *= tintColor.a;
-
-
-    float4 painterlyColor = tex2D(noiseSampler, coords * float2(5.0, 5.0) + float2(sin(coords.x * 2.0), time * 2.0));
+    float4 painterlyColor = tex2D(noiseSampler, coords * 0.02 * float2(5.0, 5.0) + float2(sin(coords.x * 2.0), time * 2.0) );
     float4 rainbowColor4 = tex2D(gradientSampler, float2(painterlyColor.r, coords.y));
    // painterlyColor = floor(painterlyColor * 8.0) / 8.0;
     painterlyColor = floor(painterlyColor * 8.0) / 8.0;
@@ -76,7 +72,16 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0,
  //   color += sin(coords.y * 4.0 + time * 32.0 + offset) * color.a * 0.2; //tex2D(gradientSampler, float2(coords.y, 0.0)) * color.a * 0.6;
     color += noiseSampleColor * 0.2 * color.a;
     color += ditherColor * 0.6 * color.a;
-    
+    color.rgb *= painterlyColor;
+    if (coords.x > 0.3 && coords.x < 0.6)
+    {
+
+        color.rgb *= lerp(1.0, 3.0, QuadraticBump((coords.x - 0.3) / 0.3));
+        color.rgb = ApplyHue(color.rgb, time * 8.0);
+
+    }
+     
+
     color.rgb = saturate(color.rgb);
     
     //The colors bug out if it ever reaches 1, so we need to just make it barely under
@@ -92,8 +97,15 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0,
   
   //  color = floor(color * 4.0) / 4.0;
     //color *= tintColor;
+    colorToMapTo.rgb = ApplyHue(colorToMapTo.rgb, offset + time * 12.0);
+    colorToMapTo *= 2.0;
 
-    colorToMapTo.a = 0.0;
+    if (colorToMapTo.a > 0.2 && colorToMapTo.a < 0.2)
+        colorToMapTo *= 4.0;
+    colorToMapTo *= sin(coords.y * 9.0 + offset + time * 16.0) * 0.5 + 0.5 + 1.0;
+    colorToMapTo *= tintColor.a;
+   // colorToMapTo.rgb += coords.y * 0.4 * colorToMapTo.r;
+    //colorToMapTo.a = 0.0;
     return colorToMapTo ;
     //return coords.y * tintColor;
 }

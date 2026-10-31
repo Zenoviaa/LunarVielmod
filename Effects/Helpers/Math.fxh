@@ -1,4 +1,11 @@
 
+//https://gist.github.com/mairod/a75e7b44f68110e1576d77419d608786
+float3 ApplyHue(float3 col, float hueAdjust)
+{
+    const float3 k = float3(0.57735, 0.57735, 0.57735);
+    half cosAngle = cos(hueAdjust);
+    return col * cosAngle + cross(k, col) * sin(hueAdjust) + k * dot(k, col) * (1.0 - cosAngle);
+}
 float2 PolarCoordinates(in float2 coords)
 {
     #define PI 3.14159

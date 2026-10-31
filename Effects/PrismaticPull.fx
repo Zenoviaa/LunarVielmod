@@ -5,13 +5,7 @@ float2 texelSize;
 float strength;
 float time;
 
-//https://gist.github.com/mairod/a75e7b44f68110e1576d77419d608786
-float3 ApplyHue(float3 col, float hueAdjust)
-{
-    const float3 k = float3(0.57735, 0.57735, 0.57735);
-    half cosAngle = cos(hueAdjust);
-    return col * cosAngle + cross(k, col) * sin(hueAdjust) + k * dot(k, col) * (1.0 - cosAngle);
-}
+
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
@@ -26,8 +20,15 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     float4 swirlPixelColor = tex2D(spriteSampler, swirlingCoords);
     float4 pixelColor = tex2D(spriteSampler, coords);
     float2 direction = (centerPoint - coords);
-    direction *= texelSize * strength;
-    float2 pullCoords = coords + direction;
+    float2 pullDirection = direction * texelSize * strength;
+    
+    
+    float2 distanceTo = distance(centerPoint, coords);
+    
+    if (length(distanceTo) < length(pullDirection))
+        pullDirection = distanceTo;
+    
+    float2 pullCoords = coords + pullDirection;
     float4 pullColor = tex2D(spriteSampler, pullCoords);
     float highest = max(pullColor.r, max(pullColor.g, pullColor.b));
     pullColor.rgb = highest;

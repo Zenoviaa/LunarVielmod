@@ -75,6 +75,9 @@ public class DiamondSparkle : ParticleUpdater<DiamondSparkle.Data>
         for(var i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];
+            if (particle.timeLeft > 45)
+                continue;
+
             drawer.worldPosition = particle.position;
             drawer.scale = new Vector2(MathHelper.Lerp(0f, 0.6f, EasingFunction.InOutSine(particle.timeLeft / 30f)));
             drawer.color = particle.color * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(particle.timeLeft / 30F)) ;
