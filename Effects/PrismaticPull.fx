@@ -36,8 +36,9 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     pullColor *= 4.0;
     pullColor.rgb = ApplyHue(pullColor.rgb, time * 4.0 + coords.x * 4.0 + coords.y * 4.0);
     float d = distance(coords, centerPoint);
-    float a = 0.35 / d;
+    float a =d / 0.35;
     float sAlpha = strength / 600.0;
+   
     return pixelColor + (pullColor * 0.35 * a + swirlPixelColor * 0.15 * a) * alpha;
 }
 

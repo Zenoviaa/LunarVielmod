@@ -63,13 +63,15 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0,
     float dist1 = abs(coords.x - centerPoint.x);
     float dist2 = abs(coords.x - centerPoint2.x);
     float dist3 = abs(coords.y - 0.95) + sin(coords.x * 8.0 + time * 12.0) * 0.05 - 0.1;
+    float dist4 = abs(coords.y - 0.95) - 0.05;
     float closestDist = min(dist1, dist2);
     float d = 0.03;
   //  d += sin(time * coords.x) * 0.01;
     d += noiseColor.r * 0.03;
     float div = d / closestDist;
     float div2 = d / dist3;
-    col *= (div + div2);
+    float div3 = d / dist4;
+    col *= (div + div2 + div3);
 
     //col *= smoothstep(0.0, 1.0, coords.y);
 

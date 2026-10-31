@@ -426,12 +426,12 @@ public class NiiviPrismaticBomb : ModProjectile
     void FocusOnMe()
     {
         //Halfway point between particles
-        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.25f));
+        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.5f));
     }
     void FocusOnMeHARDER()
     {
         //Halfway point between particles
-        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.5f));
+        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.75f));
     }
     public override bool ShouldUpdatePosition()
     {
@@ -596,6 +596,8 @@ public class NiiviPrismaticBomb : ModProjectile
         {
             var firer = ProjFirer.From<PrismaticBombWave>(Projectile);
             firer.position = Projectile.Bottom;
+            if (_die)
+                firer.ai1 = 1;
             firer.New();
         }
         _squishScale = new Vector2(1.3f, 0.6f);
@@ -707,6 +709,7 @@ public class NiiviPrismaticBomb : ModProjectile
         float strengthPerLevel = 64;
         float max = strengthPerLevel * _growthCount;
         FXUtil.ApplyPrismaticPull(Projectile.Center, max * EasingFunction.QuickOutSlowIn(Timer / 30F), 1f * EasingFunction.QuickOutSlowIn(Timer / 30F));
+
 
 
         _metaballBursting = MathHelper.Lerp(1f, 12F, EasingFunction.OutExpo(Timer / 30f));
@@ -882,9 +885,9 @@ public class NiiviPrismaticBomb : ModProjectile
     void DrawPrismaticFlash(SpriteBatch sb, Vector2 sp)
     {
         var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star2.Asset, Projectile.Center);
-        starDrawer.color = Color.Lerp(Color.Lerp(Color.White, Main.DiscoColor, 0.4f), DrawUtilities.Prismatic, ExtraMath.Osc(0f, 1f, speed: 16));
+        starDrawer.color = Color.White;
         starDrawer.color.A = 0;
-        starDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, _flashAlpha) * 6;
+        starDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, _flashAlpha) * 8;
         starDrawer.rotation = _flashAlpha * 4.6f;
         sb.Draw(starDrawer);
     }
@@ -912,7 +915,7 @@ public class NiiviPrismaticBomb : ModProjectile
         PixelationManager.QueuePrimitivesDrawAction(DrawPrismaticTrail, DrawLayer.OverNPCs);
         DrawPrismaticAura(Main.spriteBatch, Main.screenPosition);
         DrawPrismaticOrb(Main.spriteBatch, Main.screenPosition);
-        DrawPrismaticFlash(Main.spriteBatch, Main.screenPosition);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPrismaticFlash, DrawLayer.OverPlayers);
         DrawFace(Main.spriteBatch, Main.screenPosition);
         return false;
     }
@@ -928,6 +931,7 @@ public class PrismaticBombWave : ModProjectile
     }
     List<WaveData> Waves = new();
     ref float Timer => ref Projectile.ai[0];
+    ref float ShowBricks => ref Projectile.ai[1];
     float _travelDistance;
     float Time => 600;
     float WaveTravelSpeed => 22;
@@ -981,7 +985,7 @@ public class PrismaticBombWave : ModProjectile
         Timer++;
         if(Timer < 60)
         {
-            var contrast = MathHelper.Lerp(1.16f, 1f, EasingFunction.InSine(Timer / 60f));
+            var contrast = MathHelper.Lerp(1.56f, 1f, EasingFunction.InSine(Timer / 60f));
             var brightness = MathHelper.Lerp(-0.04f, 0f, EasingFunction.InSine(Timer / 60f));
             FXUtil.ApplyContrastBrightness(contrast, brightness);
 
@@ -1056,7 +1060,7 @@ public class PrismaticBombWave : ModProjectile
         }
 
 
-        var numWaveDatas = 64;
+        var numWaveDatas = 32;
         var halfWaveDatas = numWaveDatas / 2;
         for(var i = -halfWaveDatas; i < halfWaveDatas; i++)
         {
@@ -1079,6 +1083,28 @@ public class PrismaticBombWave : ModProjectile
         }
     }
 
+    void DrawBricks()
+    {
+        if (ShowBricks == 0)
+            return;
+
+        for (var i = 0; i < 32; i++)
+        {
+            var wave = Waves[i];
+            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.HappyBrick.Asset, wave.position);
+            //     drawer.BottomCenterOrigin();
+            drawer.worldPosition = Projectile.Bottom;
+            drawer.worldPosition.Y -= 196;
+            drawer.worldPosition.X += MathHelper.Lerp(-3155, 3155, (float)i / 32f);
+            drawer.color = Color.Red * MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / 60F));
+            drawer.color.ScrollHue(360 * (float)i / (float)Waves.Count + Main.GlobalTimeWrappedHourly * 4);
+            drawer.color.A = 0;
+
+            Main.spriteBatch.Draw(drawer);
+
+            //  Main.spriteBatch.Draw(drawer);
+        }
+    }
     void DrawWavesOld()
     {
         var ditherTex = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
@@ -1129,7 +1155,8 @@ public class PrismaticBombWave : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-    //    DrawWavesOld();
+        DrawBricks();
+        //    DrawWavesOld();
         var ditherTex = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
         var waveOrigin = Projectile.Center;
         waveOrigin.X += _travelDistance;
@@ -1166,7 +1193,7 @@ public class PrismaticBombWave : ModProjectile
             var drawer = Projectile.Drawer;
             drawer.BottomCenterOrigin();
             drawer.color = Color.White * MathHelper.Lerp(1f, 0f, EasingFunction.InQuad(Timer / 120F));
-            drawer.worldPosition = bottomOfWave + new Vector2(0, -164);
+            drawer.worldPosition = bottomOfWave + new Vector2(0, -76);
             drawer.scale.Y *= MathHelper.Lerp(0.1f, 1f, EasingFunction.OutExpo(Timer / 180F));
             drawer.scale.X *= MathHelper.Lerp(0.1f, 1f, EasingFunction.OutExpo(Timer / 30F));
   //          drawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / 120));
