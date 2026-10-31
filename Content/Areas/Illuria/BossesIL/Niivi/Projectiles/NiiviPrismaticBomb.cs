@@ -57,6 +57,8 @@ public class NiiviPrismaticBomb : ModProjectile
     }
     Vector2[] _metaballs = new Vector2[32];
     bool _die;
+    float _prisAlpha;
+
     float _metaballBursting;
     float _growthAlpha;
     float _flashAlpha;
@@ -140,7 +142,7 @@ public class NiiviPrismaticBomb : ModProjectile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Projectile.SetTrailCacheLength(64);
+        Projectile.SetTrailCacheLength(128);
     }
 
     public override void SetDefaults()
@@ -158,6 +160,7 @@ public class NiiviPrismaticBomb : ModProjectile
     public override void AI()
     {
         base.AI();
+  
         SimulateMetaballs();
         AmbientElectricParticles();
         _flashAlpha *= 0.98f;
@@ -271,7 +274,7 @@ public class NiiviPrismaticBomb : ModProjectile
 
         for (var i = 0; i < 2; i++)
         {
-            var pos2 = Projectile.Center + Main.rand.NextVector2Circular(192, 192);
+            var pos2 = Projectile.Center + Main.rand.NextVector2Circular(384, 384);
             var vel2 = -Projectile.velocity.RotatedBy(Projectile.rotation);
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
@@ -280,7 +283,7 @@ public class NiiviPrismaticBomb : ModProjectile
                 timeLeft = 60,
                 innerColor = DrawUtilities.Prismatic.ToVector4(),
                 outerColor = DrawUtilities.Prismatic.ToVector4(),
-                scale = new Vector2(Main.rand.NextFloat(0.16f, 1f))
+                scale = new Vector2(Main.rand.NextFloat(0.35f, 1f))
             });
         }
     }
@@ -436,6 +439,8 @@ public class NiiviPrismaticBomb : ModProjectile
             return false;
         if (State == AIState.BOUNCE)
             return false;
+        if (State == AIState.BOUNCEBOOM)
+            return false;
         return base.ShouldUpdatePosition();
     }
 
@@ -453,7 +458,16 @@ public class NiiviPrismaticBomb : ModProjectile
             var sound = AssetReferences.Assets.Sounds.PrimAm.Asset with { Volume = 0.3f };
             SoundEngine.PlaySound(sound);
         }
-        if(Timer >= ChargeTime)
+        if(_growthCount != 0)
+        {
+            var contrast = MathHelper.Lerp(1.16f, 1f, EasingFunction.InSine(Timer / 30F));
+            var brightness = MathHelper.Lerp(-0.04f, 0f, EasingFunction.InSine(Timer / 30F));
+            FXUtil.ApplyContrastBrightness(contrast, brightness);
+
+        }
+
+
+        if (Timer >= ChargeTime)
         {
             Timer = 0;
             if (NeedsToGrowMore())
@@ -474,7 +488,10 @@ public class NiiviPrismaticBomb : ModProjectile
         float min = strengthPerLevel * _growthCount;
         float max = min + strengthPerLevel;
         float prisPullStrength = MathHelper.Lerp(min, max, Timer / ChargeTime);
-        FXUtil.ApplyPrismaticPull(Projectile.Center, -prisPullStrength);
+        float alpha = MathHelper.Lerp(0f, 1f, Timer / ChargeTime);
+        if (_growthCount > 0)
+            alpha = 1f;
+        FXUtil.ApplyPrismaticPull(Projectile.Center, -prisPullStrength, alpha);
 
         ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 3f, (Timer / ChargeTime) * _growthCount);
         FocusOnMe();
@@ -496,7 +513,7 @@ public class NiiviPrismaticBomb : ModProjectile
         
         float max = strengthPerLevel * _growthCount;
         float prisPullStrength = MathHelper.Lerp(max, 0, EasingFunction.InOutExpo(Timer / GetReadyTime));
-        FXUtil.ApplyPrismaticPull(Projectile.Center, -max);
+        FXUtil.ApplyPrismaticPull(Projectile.Center, -max, MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / GetReadyTime)));
 
         //we need to also simulate particles, but that'll be in a different function
         Projectile.rotation += 0.05f;
@@ -545,6 +562,34 @@ public class NiiviPrismaticBomb : ModProjectile
         Projectile.rotation += 0.05f;
     }
 
+    void BounceBoomNoWave()
+    {
+
+        // PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.White, Color.White, 42, 512 * (1f + _growthCount / MaxGrowthCount));
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 256 * (_growthCount + 1));
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 512 * (_growthCount + 1));
+        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 1024 * (_growthCount + 1));
+
+        FXUtil.CreateRipple(Projectile.Center);
+        FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+        ShakeScreenPosition.Shake = 4;
+
+        //Create a burst of particles
+        for (var i = 0; i < 128; i++)
+        {
+            var pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
+            var vel = Main.rand.NextVector2Circular(128, 128);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                timeLeft = Main.rand.Next(60, 120),
+                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.4f, 1f))
+            });
+        }
+    }
     void BounceBoom()
     {
         if (this.OwnedByLocalClient())
@@ -555,22 +600,10 @@ public class NiiviPrismaticBomb : ModProjectile
         }
         _squishScale = new Vector2(1.3f, 0.6f);
         _flashAlpha = 1f;
+        BounceBoomNoWave();
         SoundStyle sound = AssetReferences.Assets.Sounds.PrimGrow.Asset with { PitchVariance = 1f };
         SoundEngine.PlaySound(sound);
 
-       // PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.White, Color.White, 42, 512 * (1f + _growthCount / MaxGrowthCount));
-        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 256 * (_growthCount + 1));
-        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 512 * (_growthCount + 1));
-        PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 42, 1024 * (_growthCount + 1));
-
-        FXUtil.CreateRipple(Projectile.Center);
-        FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-        ShakeScreenPosition.Shake = 4;
-
-        //Create a burst of particles
-        var factory = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Icey, new Vector2(5, 65));
-        factory.particleCount *= 4;
-        ParticleUtils.CreateSwirlingDustCircle(factory);
     }
 
     void AI_Bounce()
@@ -605,6 +638,7 @@ public class NiiviPrismaticBomb : ModProjectile
 
         if(ratio >= 0.5f)
         {
+            ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 3f, (ratio - 0.5f) / 0.5F);
             for(var i = 0;i < 2; i++)
             {
                 var dir = Projectile.rotation.ToRotationVector2();
@@ -671,7 +705,7 @@ public class NiiviPrismaticBomb : ModProjectile
 
         float strengthPerLevel = 64;
         float max = strengthPerLevel * _growthCount;
-        FXUtil.ApplyPrismaticPull(Projectile.Center, max * EasingFunction.QuickOutSlowIn(Timer / 30F));
+        FXUtil.ApplyPrismaticPull(Projectile.Center, max * EasingFunction.QuickOutSlowIn(Timer / 30F), 1f * EasingFunction.QuickOutSlowIn(Timer / 30F));
 
 
         _metaballBursting = MathHelper.Lerp(1f, 12F, EasingFunction.OutExpo(Timer / 30f));
@@ -680,7 +714,7 @@ public class NiiviPrismaticBomb : ModProjectile
         {
             if (_die)
             {
-        
+                BounceBoomNoWave();
                 Projectile.Kill();
             }
             else
@@ -756,11 +790,7 @@ public class NiiviPrismaticBomb : ModProjectile
         {
             _die = true;
             HappyBricks();
-            BounceBoom();
-            var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Icey, new Vector2(4, 45));
-            fac.particleCount *= 20;
-            ParticleUtils.CreateSwirlingDustCircle(fac);
-            Projectile.Kill();
+            SwitchState(AIState.BOUNCEBOOM);
         }
     }
 
@@ -899,7 +929,7 @@ public class PrismaticBombWave : ModProjectile
     ref float Timer => ref Projectile.ai[0];
     float _travelDistance;
     float Time => 600;
-    float WaveTravelSpeed => 24;
+    float WaveTravelSpeed => 22;
     float WaveInteractDistanceSquared => 164 * 164;
     float DistanceBetweenWaves => 48;
     public override string Texture => AssetReferences.Assets.Textures.Illuria.NPCs.PrismaticWave.KEY;
@@ -956,6 +986,8 @@ public class PrismaticBombWave : ModProjectile
 
         }
 
+        if (Timer >= 120)
+            Projectile.Kill();
         //So basically for this effect, we need to calculate mid points for where the waves are and set t
         Waves.Clear();
         _travelDistance += MathHelper.Lerp(
@@ -971,6 +1003,26 @@ public class PrismaticBombWave : ModProjectile
         //Make particles come up
         if (Main.rand.NextBool(4))
         {
+            void PillarFlame(Vector2 origin)
+            {
+
+
+                for (var j = 0; j < 4; j++)
+                {
+                    var t = origin;
+                    t.Y += Main.rand.NextFloat(-512, 5);
+                    Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                    {
+                        position = t,
+                        velocity = Vector2.Zero,
+                        innerColor = DrawUtilities.Prismatic.ToVector4(),
+                        outerColor = DrawUtilities.Prismatic.ToVector4(),
+                        timeLeft = Main.rand.Next(60, 120),
+                        scale = new Vector2(Main.rand.NextFloat(0.5f, 2f)),
+                    });
+                }
+
+            }
             for (var i = 0; i < 1; i++)
             {
                 var randPos = waveOrigin + Main.rand.NextVector2Circular(64, 64);
@@ -984,6 +1036,7 @@ public class PrismaticBombWave : ModProjectile
                     timeLeft = Main.rand.Next(30, 80),
                 });
 
+                PillarFlame(randPos);
 
                 randPos = inverseWaveOrigin + Main.rand.NextVector2Circular(64, 64);
                 randVelocity = -Vector2.UnitY * 16;
@@ -995,6 +1048,8 @@ public class PrismaticBombWave : ModProjectile
                     velocity = randVelocity,
                     timeLeft = Main.rand.Next(30, 80),
                 });
+
+                PillarFlame(randPos);
 
             }
         }
@@ -1023,7 +1078,7 @@ public class PrismaticBombWave : ModProjectile
         }
     }
 
-    public override bool PreDraw(ref Color lightColor)
+    void DrawWavesOld()
     {
         var ditherTex = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
         var pass = AssetReferences.Effects.Niivi.PrismWave.CreatePixelPass();
@@ -1061,15 +1116,61 @@ public class PrismaticBombWave : ModProjectile
                 drawer.color.R = o;
                 drawer.color.A = t;
 
-                drawer.scale.X *= 0.45F;
+                drawer.scale.X *= 0.03F;
                 drawer.scale.Y *= MathHelper.Lerp(0.5F, 2f, EasingFunction.InOutSine(wave.time)) * EasingFunction.InOutSine(Timer / 60f);
-      
+
                 Main.spriteBatch.Draw(drawer);
 
                 //  Main.spriteBatch.Draw(drawer);
             }
         }
+    }
 
+    public override bool PreDraw(ref Color lightColor)
+    {
+    //    DrawWavesOld();
+        var ditherTex = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
+        var waveOrigin = Projectile.Center;
+        waveOrigin.X += _travelDistance;
+
+        var inverseWaveOrigin = Projectile.Center;
+        inverseWaveOrigin.X -= _travelDistance;
+
+
+        var bottomOfWave = Projectile.Bottom;
+        var topLeft = bottomOfWave - Projectile.Drawer.Size * 0.5f;
+        var pass = AssetReferences.Effects.Niivi.PrismWaveV2.CreatePixelPass();
+        pass.Parameters.spriteSize = Projectile.Drawer.Size;
+        pass.Parameters.centerPoint = (waveOrigin - topLeft) / Projectile.Drawer.Size;
+        pass.Parameters.centerPoint2 = (inverseWaveOrigin - topLeft) / Projectile.Drawer.Size;
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.ColorSpectrumTexture = PaletteAssets.FromPaletteFile("Prismatic").Value.ColorAtlas;
+        pass.Parameters.ditherTexelSize = ditherTex.GetTexelSize();
+        pass.Apply();
+        var gDevice = Main.graphics.graphicsDevice;
+
+        gDevice.Textures[1] = AssetReferences.Assets.Noise.Swirl.Asset.Value;
+        gDevice.SamplerStates[1] = SamplerState.LinearWrap;
+
+        gDevice.Textures[3] = ditherTex.Value;
+        gDevice.SamplerStates[3] = SamplerState.LinearWrap;
+
+
+        using (Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with
+        { 
+            effect = pass.Shader, 
+            blendState = BlendState.Additive, 
+            samplerState = SamplerState.AnisotropicWrap }))
+        {
+            var drawer = Projectile.Drawer;
+            drawer.BottomCenterOrigin();
+            drawer.color = Color.White * MathHelper.Lerp(1f, 0f, EasingFunction.InQuad(Timer / 120F));
+            drawer.worldPosition = bottomOfWave + new Vector2(0, -164);
+            drawer.scale.Y *= MathHelper.Lerp(0.1f, 1f, EasingFunction.OutExpo(Timer / 180F));
+            drawer.scale.X *= MathHelper.Lerp(0.1f, 1f, EasingFunction.OutExpo(Timer / 30F));
+  //          drawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / 120));
+            Main.spriteBatch.Draw(drawer);
+        }
         return false;
     }
 }

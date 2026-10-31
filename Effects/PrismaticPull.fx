@@ -4,7 +4,7 @@ float2 centerPoint;
 float2 texelSize;
 float strength;
 float time;
-
+float alpha;
 
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
@@ -38,7 +38,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     float d = distance(coords, centerPoint);
     float a = 0.35 / d;
     float sAlpha = strength / 600.0;
-    return pixelColor + pullColor * 0.35 * a   + swirlPixelColor * 0.15 * a ;
+    return pixelColor + (pullColor * 0.35 * a + swirlPixelColor * 0.15 * a) * alpha;
 }
 
 technique SpriteDrawing
