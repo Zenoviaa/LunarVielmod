@@ -120,7 +120,7 @@ public partial class Niivi : ScarletBoss,
                for(var i = 0; i < SegmentCount; i++)
                 {
                     ref var scale = ref field[i];
-                    scale = MathHelper.Lerp(1f, 1.15f, EasingFunction.QuadraticBump((float)i / (float)SegmentCount));
+                    scale = MathHelper.Lerp(1f, 1.1f, EasingFunction.QuadraticBump((float)i / (float)SegmentCount));
                 }
             }
             return field;
@@ -140,9 +140,9 @@ public partial class Niivi : ScarletBoss,
                 }
                 for (var i = 3; i < SegmentCount; i++)
                 {
-                    field[i] = Main.rand.Next(2, 4);
+                    field[i] = (int)MathHelper.Lerp(2, 5, (float)i / (float)SegmentCount);
                 }
-                field[SegmentCount - 1] = 4;
+                field[SegmentCount - 1] = 5;
             }
 
             return field;
