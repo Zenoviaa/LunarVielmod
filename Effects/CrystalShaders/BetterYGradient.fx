@@ -5,7 +5,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
 {
     float3 gradientColor = lerp(startColor, endColor, coords.y);
     float4 finalColor = sampleColor;
-    finalColor *= (1.0 - coords.y);
+    finalColor *= pow(1.0 - coords.y, 3.0);
     finalColor.rgb *= gradientColor;
     return finalColor;
 }

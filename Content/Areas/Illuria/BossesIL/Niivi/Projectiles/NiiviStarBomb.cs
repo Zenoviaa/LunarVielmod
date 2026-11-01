@@ -1,7 +1,9 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Pixelation;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,7 +48,7 @@ public class NiiviSillyStarBombBoom : ModProjectile
             PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 24, 777);
             PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 64, 256);
 
-            var starBlast = AssetReferences.Assets.Sounds.NStarblast2.Asset with { Pitch = 0.7f, PitchVariance = 0.2f };
+            var starBlast = AssetReferences.Assets.Sounds.NStarblast2.Asset with { Pitch = 0.2f, PitchVariance = 0.2f };
             SoundEngine.PlaySound(starBlast, Projectile.Center);
             //Create a burst of particles
             for (var i = 0; i < 160; i++)
@@ -84,7 +86,8 @@ public class NiiviSillyStarMaker : ModProjectile
 {
     float _numAttacksDone = 0;
     ref float Timer => ref Projectile.ai[0];
-    ref float AttackCount => ref Projectile.ai[1]; 
+    ref float AttackCount => ref Projectile.ai[1];
+    ref float GlobalTimer => ref Projectile.ai[2];
     Player TargetPlayer
     {
         get
@@ -131,8 +134,10 @@ public class NiiviSillyStarMaker : ModProjectile
     public override void AI()
     {
         base.AI();
+        OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
         Timer++;
-        if(Timer >= 45)
+        GlobalTimer++;
+        if(Timer >= 74)
         {
             if (this.OwnedByLocalClient())
             {
@@ -140,7 +145,7 @@ public class NiiviSillyStarMaker : ModProjectile
                 var firer = ProjFirer.From<NiiviSillyStar>(Projectile);
                 firer.ai0 = rand;
                 firer.ai1 = TargetPlayer.whoAmI;
-                firer.position = TargetPlayer.Center + new Vector2(Main.rand.NextFloat(-666, 666), -1024);
+                firer.position = TargetPlayer.Center + new Vector2(Main.rand.NextFloat(-666, 666), -1000);
                 firer.New();
             }
             _numAttacksDone++;
@@ -160,23 +165,32 @@ public class NiiviSillyStarMaker : ModProjectile
         base.OnHitPlayer(target, info);
     }
 
+    void DrawGradient(SpriteBatch sb, Vector2 sp)
+    {
+        var startColor = Color.Red;
+        startColor.ScrollHue(Main.GlobalTimeWrappedHourly * 25);
+        startColor = Color.Lerp(startColor, Color.White, 0.5F);
+        var endColor = startColor;
+        endColor.ScrollHue(45);
+        var pass = AssetReferences.Effects.CrystalShaders.BetterYGradient.CreatePixelPass();
+        pass.Parameters.startColor = startColor.ToVector3();
+
+
+        pass.Parameters.endColor = endColor.ToVector3();
+        pass.Apply();
+        var fade = EasingFunction.InOutSine(GlobalTimer / 30f) * EasingFunction.InOutSine((float)Projectile.timeLeft / 30F);
+        using (sb.Ctx(sb.Parameters with { effect = pass.Shader, blendState = BlendState.Additive }))
+        {
+            sb.Draw(
+                AssetReferences.Assets.GlowMasks.VerticalGradient.Asset.Value,
+                new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
+                Color.White * fade * 0.7f);
+        }
+    }
     public override bool PreDraw(ref Color lightColor)
     {
-        var pass = AssetReferences.Effects.CrystalShaders.BetterYGradient.CreatePixelPass();
-        pass.Parameters.startColor = Main.DiscoColor.ToVector3();
-
-        var downColor = Main.DiscoColor;
-        downColor.ScrollHue(45);
-        pass.Parameters.endColor = downColor.ToVector3();
-        pass.Apply();
-        var fade = EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine((float)Projectile.timeLeft / 30F);
-        using(Main.spriteBatch.Ctx(Main.spriteBatch.Parameters with { effect = pass.Shader }))
-        {
-            Main.spriteBatch.Draw(
-                AssetReferences.Assets.GlowMasks.VerticalGradient.Asset.Value, 
-                new Rectangle((int)-Main.screenPosition.X, (int)-Main.screenPosition.Y, Main.screenWidth, Main.screenHeight), 
-                Color.White * fade);
-        }
+        PixelationManager.QueueSpritebatchDrawAction(DrawGradient, DrawLayer.BehindTiles);
+ 
 
         return false;
     }
@@ -188,6 +202,11 @@ public class NiiviSillyStarMaker : ModProjectile
 }
 public class NiiviSillyStar : ModProjectile
 {
+    float _dirX;
+    float _squishTimer;
+    bool _starWalker;
+    float _starWalkerFrameTimer;
+    int _starWalkerFrameIndex;
     bool _mad;
     float _deathTimer;
     Vector2 _startPosition;
@@ -203,12 +222,32 @@ public class NiiviSillyStar : ModProjectile
     {
         get => (StarType)Projectile.ai[0];
     }
-
+    Color GlowColor
+    {
+        get
+        {
+            switch (Style)
+            {
+                default:
+                case StarType.FallignStar:
+                    return Color.DarkOrange;
+                case StarType.RunningStar:
+                    return Color.DarkRed;
+                case StarType.SpiralStar:
+                    return Color.DarkGreen;
+            }
+        }
+    }
+    float SquishTime => 30F;
+    Vector2 Scale => Vector2.One  *Vector2.Lerp(Vector2.One, new Vector2(1.1f, 0.9f), EasingFunction.OutSine(_squishTimer / SquishTime));
     Player TargetPlayer => Main.player[(int)Projectile.ai[1]];
-    ref float Timer => ref Projectile.ai[0];
-    float SpiralTime => 100;
+    ref float Timer => ref Projectile.ai[2];
+    float StarWalkerFrameSpeed => 4f;
+    int StarWalkerFrameCount => 4;
+    float RunningStarDeathTime => 140F;
+    float SpiralTime => 190;
     float SpiralSize => 384;
-    float SpiralDashTime => 30F;
+    float SpiralDashTime => 90F;
     public override string Texture => AssetReferences.Assets.Textures.Illuria.NPCs.NiiviSillyStar.KEY;
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -217,6 +256,7 @@ public class NiiviSillyStar : ModProjectile
         writer.Write(_deathTimer);
         writer.WriteVector2(_startPosition);
         writer.WriteVector2(_endPosition);
+        writer.Write(_dirX);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -225,13 +265,14 @@ public class NiiviSillyStar : ModProjectile
         _deathTimer = reader.ReadSingle();
         _startPosition = reader.ReadVector2();
         _endPosition = reader.ReadVector2();
+        _dirX = reader.ReadSingle();
     }
 
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
         Main.projFrames[Type] = 9;
-        Projectile.SetTrailCacheLength(16);
+        Projectile.SetTrailCacheLength(8);
     }
 
     public override void SetDefaults()
@@ -240,8 +281,8 @@ public class NiiviSillyStar : ModProjectile
         Projectile.width = 32;
         Projectile.height = 32;
         Projectile.penetrate = -1;
-        Projectile.light = 0.6f;
-        Projectile.timeLeft = 600;
+        Projectile.light = 1f;
+        Projectile.timeLeft = 1200;
         Projectile.hostile = true;
     }
 
@@ -251,14 +292,17 @@ public class NiiviSillyStar : ModProjectile
         {
             if (!_hasCollided)
             {
+                _squishTimer = 30f;
                 Blast();
                 Projectile.velocity.Y = -7;
                 var dir = (TargetPlayer.Center.X < Projectile.Center.X) ? -1 : 1;
                 Projectile.velocity.X = dir;
+                _dirX = dir;
                 _hasCollided = true;
             }
             else
             {
+                Projectile.velocity.X = oldVelocity.X;
                 Projectile.velocity.Y = 0;
             }
         }
@@ -266,6 +310,71 @@ public class NiiviSillyStar : ModProjectile
         return false;
     }
 
+    void MakeDusts()
+    {
+        var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+        var vel = Main.rand.NextVector2Circular(1, 1);
+        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        {
+            position = pos,
+            velocity = vel,
+            innerColor = GlowColor.ToVector4(),
+            outerColor = Color.Lerp(GlowColor, Color.Black, 0.5F).ToVector4(),
+            timeLeft = 60,
+            scale = new Vector2(Main.rand.NextFloat(0.4f, 1f))
+        });
+
+        pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+        vel = Main.rand.NextVector2Circular(1, 1);
+        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        {
+            position = pos,
+            velocity = vel,
+            innerColor = DrawUtilities.Prismatic.ToVector4(),
+            outerColor = Color.Lerp(GlowColor, Color.Black, 0.5F).ToVector4(),
+            timeLeft = 60,
+            scale = new Vector2(Main.rand.NextFloat(0.4f, 1f))
+        });
+
+        if (Main.rand.NextBool(8))
+        {
+            pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            vel = Main.rand.NextVector2Circular(1, 1);
+            //    var sp = SparkleParticle.Spawn(pos, vel)
+            Particles.DiamondSparkle.Spawn(new()
+            {
+                position = pos,
+                color = GlowColor,
+                timeLeft = 24,
+            });
+        }
+        if (Main.rand.NextBool(32))
+        {
+            pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            vel = Main.rand.NextVector2Circular(1, 1);
+            var sp = SparkleParticle.Spawn(pos, vel);
+            sp.innerColor = Color.White;
+            sp.outerColor = GlowColor;
+            sp.gravity = 0;
+            //sp.flickering = true;
+            sp.Scale *= 0.4F;
+        
+        }
+
+        if (Main.rand.NextBool(4))
+        {
+            pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            vel = Main.rand.NextVector2Circular(1, 1);
+            Particles.FaintSmokeDust.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                timeleft = 14,
+                color = GlowColor,
+            });
+
+        }
+    }
     public override void AI()
     {
         base.AI();
@@ -287,22 +396,48 @@ public class NiiviSillyStar : ModProjectile
                 }
                 break;
         }
+
+        MakeDusts();
+        if(_squishTimer > 0)
+        {
+            _squishTimer--;
+        }
+
+    }
+
+    public override void PostAI()
+    {
+        base.PostAI();
+        if (_starWalker)
+        {
+            _starWalkerFrameTimer++;
+            if(_starWalkerFrameTimer >= StarWalkerFrameSpeed)
+            {
+                _starWalkerFrameTimer = 0;
+                _starWalkerFrameIndex++;
+                _starWalkerFrameIndex %= StarWalkerFrameCount;
+            }
+        }
     }
     
     void DeathFX()
     {
+        var currentPosition = Projectile.Center;
+        var starSingle = AssetReferences.Assets.Sounds.Starrer.Asset with { PitchVariance = 0.75f, Pitch = -0.8f };
+        SoundEngine.PlaySound(starSingle, Projectile.position);
 
-        var pos = Main.rand.NextVector2Circular(7, 7) + Projectile.Center;
+        var pos = Main.rand.NextVector2Circular(7, 7) + currentPosition;
         var color = DrawUtilities.Prismatic.ToVector4();
-        for (var i = 0; i < 3; i++)
+        for (var i = 0; i < 16; i++)
         {
-
-            Particles.DiamondSparkle.Spawn(new()
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
-                velocity = Main.rand.NextVector2Circular(15, 15),
+                velocity = Main.rand.NextVector2Circular(25, 25),
                 timeLeft = 60,
-                color= DrawUtilities.Prismatic
+                innerColor = Vector4.Lerp(color, Vector4.One, 0.65f),
+                outerColor = color,
+                scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f))
             });
         }
     }
@@ -312,17 +447,16 @@ public class NiiviSillyStar : ModProjectile
         var currentPosition = Projectile.Center;
         var starSingle = AssetReferences.Assets.Sounds.Starrer.Asset with { PitchVariance = 0.75f, Pitch = -0.4f };
         SoundEngine.PlaySound(starSingle, Projectile.position);
-        PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 5, 64);
+        PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 25, 64);
         
         var pos = Main.rand.NextVector2Circular(7, 7) + currentPosition;
         var color = DrawUtilities.Prismatic.ToVector4();
-        for (var i = 0; i < 3; i++)
+        for (var i = 0; i < 8; i++)
         {
-
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
-                velocity = Main.rand.NextVector2Circular(15, 15),
+                velocity = Main.rand.NextVector2Circular(25, 25),
                 timeLeft = 60,
                 innerColor = Vector4.Lerp(color, Vector4.One, 0.65f),
                 outerColor = color,
@@ -342,7 +476,6 @@ public class NiiviSillyStar : ModProjectile
         var color = DrawUtilities.Prismatic.ToVector4();
         for (var i = 0; i < 12; i++)
         {
-
             Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
@@ -364,6 +497,7 @@ public class NiiviSillyStar : ModProjectile
 
     void AI_FallingStar()
     {
+        Projectile.tileCollide = false;
         Timer++;
         if(Timer == 1)
         {
@@ -373,28 +507,27 @@ public class NiiviSillyStar : ModProjectile
         if(Timer == 100)
         {
             Flicker();
-            Projectile.velocity = Vector2.Zero;
+        
         }
         
-        if(Timer < 100 || Timer >= 145)
+
+        if(Timer > 100 && Timer < 120)
         {
-            Projectile.rotation += 0.04f * MathF.Sign(Projectile.velocity.X);
-            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPlayer.Center, 0.25f);
+            Projectile.velocity *= 0.97f;
         }
 
-        if(Timer == 145)
-        {
-            Blast();
-            Projectile.velocity = (TargetPlayer.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-        }
 
-        if(Timer >= 145)
+
+        if(Timer >= 100)
         {
             _mad = true;
-            Projectile.velocity *= 1.1f;
+            if(Projectile.velocity.Length() < 15)
+                Projectile.velocity *= 1.02f;
+            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPlayer.Center, 3F);
+            Projectile.rotation += MathF.Sign(Projectile.velocity.X) * 0.04f;
         }
 
-        if(Timer >= 190)
+        if(Timer >= 170)
         {
             Projectile.Kill();
         }
@@ -417,14 +550,20 @@ public class NiiviSillyStar : ModProjectile
         }
         else
         {
+            _starWalker = true;
             _mad = true;
+            Projectile.direction = (int)_dirX;
+            Projectile.spriteDirection = (int)_dirX;
+            Projectile.velocity.X = _dirX * MathHelper.Lerp(1f, 9F, _deathTimer / RunningStarDeathTime);
             Projectile.velocity.Y += 0.6f;
-            Projectile.rotation += 0.08f * MathF.Sign(Projectile.velocity.X);
+
+            Projectile.rotation = Utils.AngleLerp(Projectile.rotation, 0, 0.1f);
             _deathTimer++;
-            if (_deathTimer >= 140)
+            if (_deathTimer >= RunningStarDeathTime)
                 Projectile.Kill();
         }
     }
+
     void AI_SpiralStar()
     {
         Timer++;
@@ -434,13 +573,14 @@ public class NiiviSillyStar : ModProjectile
             var size = MathHelper.Lerp(1f, 0.6f, Timer / SpiralTime);
             size *= SpiralSize;
             var upOffset = -Vector2.UnitY * size;
-            upOffset = upOffset.RotatedBy(MathHelper.TwoPi * 2 * EasingFunction.InOutExpo(Timer / SpiralTime));
+            upOffset = upOffset.RotatedBy(MathHelper.TwoPi * EasingFunction.InOutExpo(Timer / SpiralTime));
             var upPos = TargetPlayer.Center + upOffset;
             Projectile.Center = upPos;
             Projectile.rotation += 0.04F;
         }
         else if (Timer == SpiralTime)
         {
+            Flicker();
             _startPosition = Projectile.Center;
             _endPosition = TargetPlayer.Center;
         }
@@ -459,7 +599,6 @@ public class NiiviSillyStar : ModProjectile
                 Projectile.Kill();
             }
         }
-
     }
 
     public override bool ShouldUpdatePosition()
@@ -472,34 +611,77 @@ public class NiiviSillyStar : ModProjectile
         base.OnHitPlayer(target, info);
     }
     
+    void PixelGlow(SpriteBatch sb, Vector2 sp)
+    {
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        glowDrawer.color = GlowColor * 0.6F;
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.24f;
+        sb.Draw(glowDrawer);
+    }
     public override bool PreDraw(ref Color lightColor)
     {
 
+
         var frame = (int)((int)Style * 3);
         var outlineFrame = frame + 2;
+        if (_mad)
+            frame++;
+        var drawer = Projectile.Drawer;
+        drawer.scale *= Scale;
+        drawer.VerticalFrame(frame, Main.projFrames[Type]);
+        drawer.CenterOrigin();
+        if (_starWalker)
+            drawer.worldPosition.Y -= 8;
+
+        var glowDrawer = drawer;
+        foreach(var offset in Vector2.CardinalOffsets)
+        {
+            var o = offset.RotatedBy(Main.GlobalTimeWrappedHourly * 5) * 8;
+            glowDrawer.worldPosition = Projectile.Center + o;
+            glowDrawer.scale = Vector2.One * ExtraMath.Osc(0.6f, 1f, speed: 2, offset: Projectile.identity);
+            glowDrawer.color = GlowColor * 0.4f;
+            glowDrawer.color.A = 0;
+            Main.spriteBatch.Draw(glowDrawer);
+
+        }
+
         var afDrawer = Projectile.Drawer;
         afDrawer.VerticalFrame(frame, Main.projFrames[Type]);
         afDrawer.CenterOrigin();
         foreach (OldPosition oldPos in Projectile.IterateOldPosBackwards())
         {
             afDrawer.worldPosition = oldPos.position + Projectile.Size * 0.5f;
-            afDrawer.color = Color.Lerp(Color.White, Color.Transparent, oldPos.progress);
+            afDrawer.color = Color.Lerp(Color.White, Color.Transparent, oldPos.progress) * 0.1f;
             afDrawer.color.A = 0;
             afDrawer.rotation = Projectile.oldRot[oldPos.index];
             Main.spriteBatch.Draw(afDrawer);
         }
-        var drawer = Projectile.Drawer;
-       
-        if (_mad)
-            frame++;
-        drawer.VerticalFrame(frame, Main.projFrames[Type]);
-        drawer.CenterOrigin();
+
+        if (_starWalker)
+        {
+            var walkerDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.StarWalker.Asset, Projectile.Center);
+            walkerDrawer.VerticalFrame(_starWalkerFrameIndex, StarWalkerFrameCount);
+            walkerDrawer.TopCenterOrigin();
+            walkerDrawer.scale *= Scale;
+            walkerDrawer.color = Color.Black;
+            walkerDrawer.spriteEffects = _dirX == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Main.spriteBatch.Draw(walkerDrawer);
+        }
+
+
         Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White * ExtraMath.Osc(0.02f, 0.2f, speed: 2, offset: Projectile.identity);
+        drawer.color.A = 0;
+        Main.spriteBatch.Draw(drawer);
+
 
         drawer.color = Color.Red;
         drawer.VerticalFrame(outlineFrame, Main.projFrames[Type]);
-        Main.spriteBatch.Draw(drawer);
+      //  Main.spriteBatch.Draw(drawer);
 
+        PixelationManager.QueueSpritebatchDrawAction(PixelGlow);
         return false;
     }
     
@@ -805,6 +987,7 @@ public class NiiviStarBomb : ModProjectile
             firer.New();
 
             var firer2 = ProjFirer.From<NiiviSillyStarMaker>(Projectile);
+            firer2.ai1 = 24;
             firer2.New();
         }
     }

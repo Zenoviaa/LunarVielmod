@@ -7,6 +7,7 @@ public partial class Niivi
 {
     float StarBomb_FlyDistance => 353 * ExtraMath.Osc(0.7f, 1f, speed: 6);
     float StarBomb_ChargeTime => 500;
+    float StarBomb_WaitTime => 480;
     int StarBomb_Damage => 55;
     float StarBombPrepTime => 60;
     void AI_StarBomb()
@@ -60,6 +61,15 @@ public partial class Niivi
                 }
                 break;
             case 1:
+                {
+                    if(Timer >= StarBomb_WaitTime)
+                    {
+                        Timer = 0;
+                        AttackCycle ++;
+                    }
+                }
+                break;
+            case 2:
                 {
                     SwitchState(AIState.Idle);
                 }
