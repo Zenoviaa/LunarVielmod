@@ -311,6 +311,7 @@ public partial class Niivi : ScarletBoss,
         _simpleChainRendering = false;
 
         NiiviRoamingHelper.LastKnownNiiviLocation = NPC.Center;
+        Lighting.AddLight(NPC.Center, new Vector3(0.8f));
         _outliner.SetDefaults();
         switch (State)
         {

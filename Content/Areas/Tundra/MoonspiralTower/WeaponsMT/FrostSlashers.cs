@@ -21,7 +21,7 @@ public class FrostSlashers : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 17;
+        Item.damage = 20;
         Item.shoot = ModContent.ProjectileType<FrostSlashersSwing>();
         staminaProjectileShoot = ModContent.ProjectileType<FrostSlashersStaminaThrow>();
         meleeWeaponType = MeleeWeaponType.Knives;
@@ -103,7 +103,7 @@ public class FrostSlashersSwing : BaseSwingProjectileV2
         if (ComboIndex == 0)
         {
             Owner.Spin(MathHelper.TwoPi * MathF.Sign(Projectile.velocity.X) / swingTime * 12, 2);
-            Owner.SetImmuneTimeForAllTypes(10);
+         //   Owner.SetImmuneTimeForAllTypes(10);
             if (Main.rand.NextBool(64))
             {
                 var pos = Owner.Center;

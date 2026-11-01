@@ -4,7 +4,6 @@ using Stellamod.Core.Rendering.RTs;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
-
 public class Sparklemist : ParticleUpdater<Sparklemist.Data>
 {
 

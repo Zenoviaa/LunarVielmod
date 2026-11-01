@@ -18,6 +18,7 @@ public partial class Niivi
         backBackArmDrawer.VerticalFrame(9, 10);
         backBackArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
         backBackArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        backBackArmDrawer.color = drawColor;
         sb.Draw(backBackArmDrawer);
 
         var bacWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingBack.Asset, wingSegment.position);
@@ -25,6 +26,7 @@ public partial class Niivi
         bacWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
         bacWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
         bacWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
+        bacWingDrawer.color = drawColor;
         sb.Draw(bacWingDrawer);
 
         var frontBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment.position);
@@ -32,6 +34,7 @@ public partial class Niivi
         frontBackArmDrawer.VerticalFrame(7, 10);
         frontBackArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
         frontBackArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        frontBackArmDrawer.color = drawColor;
         sb.Draw(frontBackArmDrawer);
 
         for (var i = Segments.Length - 1; i >= 0; i--)
@@ -51,6 +54,7 @@ public partial class Niivi
             drawer.VerticalFrame(frameIndex, 10);
             drawer.rotation = rotation;
             drawer.scale = new Vector2(SegmentBaseScales[i]);
+            drawer.color = drawColor;
             sb.Draw(drawer);
             SegmentRotations[i] = rotation;
         }
@@ -61,6 +65,7 @@ public partial class Niivi
         frontWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
         frontWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
         frontWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
+        frontWingDrawer.color = drawColor;
         sb.Draw(frontWingDrawer);
 
         //Draw frong arms
@@ -70,6 +75,7 @@ public partial class Niivi
         backFrontArmDrawer.VerticalFrame(8, 10);
         backFrontArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
         backFrontArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        backFrontArmDrawer.color = drawColor;
         sb.Draw(backFrontArmDrawer);
 
         var frontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment.position);
@@ -77,6 +83,7 @@ public partial class Niivi
         frontArmDrawer.VerticalFrame(6, 10);
         frontArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
         frontArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        frontArmDrawer.color = drawColor;
         sb.Draw(frontArmDrawer);
     }
     void DrawBody2(SpriteBatch sb, Vector2 screenPos, Color drawColor)
@@ -92,6 +99,7 @@ public partial class Niivi
         backBackArmDrawer.VerticalFrame(9, 10);
         backBackArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
         backBackArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        backBackArmDrawer.color = drawColor;
         sb.Draw(backBackArmDrawer);
 
         var bacWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingBack.Asset, wingSegment);
@@ -99,6 +107,7 @@ public partial class Niivi
         bacWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
         bacWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
         bacWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
+        bacWingDrawer.color = drawColor;
         sb.Draw(bacWingDrawer);
 
         var frontBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
@@ -106,6 +115,7 @@ public partial class Niivi
         frontBackArmDrawer.VerticalFrame(7, 10);
         frontBackArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
         frontBackArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        frontBackArmDrawer.color = drawColor;
         sb.Draw(frontBackArmDrawer);
 
         for (var i = Chain.points.Length - 1; i >= 0; i--)
@@ -125,6 +135,7 @@ public partial class Niivi
             drawer.VerticalFrame(frameIndex, 10);
             drawer.rotation = rotation;
             drawer.scale = new Vector2(SegmentBaseScales[i]);
+            drawer.color = drawColor;
             sb.Draw(drawer);
             SegmentRotations[i] = rotation;
         }
@@ -135,6 +146,7 @@ public partial class Niivi
         frontWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
         frontWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
         frontWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
+        frontWingDrawer.color = drawColor;
         sb.Draw(frontWingDrawer);
 
         //Draw frong arms
@@ -144,6 +156,7 @@ public partial class Niivi
         backFrontArmDrawer.VerticalFrame(8, 10);
         backFrontArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
         backFrontArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        backFrontArmDrawer.color = drawColor;
         sb.Draw(backFrontArmDrawer);
 
         var frontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
@@ -151,6 +164,7 @@ public partial class Niivi
         frontArmDrawer.VerticalFrame(6, 10);
         frontArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
         frontArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        frontArmDrawer.color = drawColor;
         sb.Draw(frontArmDrawer);
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

@@ -70,6 +70,7 @@ public sealed class Particles : ModSystem
     public static readonly WoodenCrateShard WoodenCrate = new();
     public static readonly CeramicPotShard CeramicPot = new();
     public static readonly DiamondSparkle DiamondSparkle = new();
+    public static readonly NiiviIceSpike IceSpike = new();
     public override void Load()
     {
         base.Load();
@@ -119,8 +120,8 @@ public sealed class Particles : ModSystem
             StabTriangle,
             WoodenCrate,
             CeramicPot,
-            DiamondSparkle
-
+            DiamondSparkle,
+            IceSpike
         };
 
         if (Main.netMode == NetmodeID.Server)
