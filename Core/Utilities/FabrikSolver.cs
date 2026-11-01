@@ -23,6 +23,19 @@ public static class FabrikSolver
         input.Normalize();
         return input;
     }
+    public static float RigLength( FabrikSegment[] segments)
+    {
+        //Sum the distance between all segments and and the distance between
+        //root and destination to see if the target is reachable
+
+        var distanceOfRig = 0F;
+        for (var i = 0; i < segments.Length; i++)
+        {
+            ref var inputSegment = ref segments[i];
+            distanceOfRig += inputSegment.length;
+        }
+        return distanceOfRig;
+    }
     public static Vector2 ClampTarget(ref FabrikSegment[] segments, Vector2 root, Vector2 destination)
     {
         //Sum the distance between all segments and and the distance between
