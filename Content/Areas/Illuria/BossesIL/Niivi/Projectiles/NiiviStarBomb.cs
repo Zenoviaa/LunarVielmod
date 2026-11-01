@@ -234,11 +234,11 @@ public class NiiviStarBomb : ModProjectile
     }
     Color GetTrailColorFaint(float ratio)
     {
-        return GetTrailColor(ratio) * 0.7F;
+        return GetTrailColor(ratio) * 0.4F;
     }
     float GetTrailWidth(float ratio)
     {
-        return MathHelper.SmoothStep(5, 0, ratio);
+        return MathHelper.SmoothStep(12, 0, ratio);
     }
     float GetTrailWidth2(float ratio)
     {
@@ -318,10 +318,17 @@ public class NiiviStarBomb : ModProjectile
 
     void DrawPixelated(SpriteBatch sb, Vector2 sp)
     {
+        var lerp = _sizeDown * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(_globalTimer / 60f));;
+        var glow = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        glow.color = Main.DiscoColor * 0.2f * lerp;
+        glow.color.A = 0;
+        glow.scale *= 2f;
+        Main.spriteBatch.Draw(glow);
+
         var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.FivePointedStar.Asset, InterpolatePentagonPattern(_globalTimer));
         drawer.color = Color.White;
         drawer.color.A = 0;
-        drawer.scale *= 0.15f;
+        drawer.scale *= 0.15f * lerp; 
         Main.spriteBatch.Draw(drawer);
     }
     public override bool PreDraw(ref Color lightColor)
