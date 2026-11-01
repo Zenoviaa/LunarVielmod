@@ -15,6 +15,7 @@ namespace Stellamod.Common.Shaders;
 public class AuroraEffectRenderer : ModSystem
 {
     private float _activeTimer;
+    public static float effectTimer;
     public override void Load()
     {
         base.Load();
@@ -91,6 +92,9 @@ public class AuroraEffectRenderer : ModSystem
         isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
         isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower;
         isActive |= Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAbyss;
+        isActive |= effectTimer > 0;
+        if (effectTimer > 0)
+            effectTimer--;
         //isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneEdgeoftheMoon;
         if (isActive)
         {

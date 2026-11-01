@@ -137,7 +137,7 @@ public class NiiviSillyStarMaker : ModProjectile
         OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
         Timer++;
         GlobalTimer++;
-        if(Timer >= 74)
+        if(Timer >= 89)
         {
             if (this.OwnedByLocalClient())
             {
@@ -187,10 +187,41 @@ public class NiiviSillyStarMaker : ModProjectile
                 Color.White * fade * 0.7f);
         }
     }
+    Color GetTrailColor(float ratio)
+    {
+        var color = Color.Red;
+        color.ScrollHue(Main.GlobalTimeWrappedHourly * 512 + ratio * 255);
+        var myColor = Color.Lerp(Color.White, color, ratio);
+        return Color.White;
+    }
+
+    float GetTrailWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(64, 0, ratio);
+    }
+    void DrawPixelatedTrails(GraphicsDevice gDevice)
+    {
+
+
+        var pass = AssetReferences.Effects.Niivi.StarBombTrail.CreatePrimitivesPass();
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.distortionStrength = 0.03f;
+        pass.Apply();
+        gDevice.Register(0, AssetReferences.Assets.LaserTextures.TexturedLaser.Asset.Value, SamplerState.LinearWrap);
+        gDevice.Register(1, AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value, SamplerState.LinearWrap);
+
+
+        TrailDrawer.ClearPrimitives();
+        TrailDrawer.PreparePrimitives(Projectile.oldPos, GetTrailColor, GetTrailWidth, Projectile.Size * 0.5f);
+        TrailDrawer.DrawCached(pass.Shader);
+
+    }
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueueSpritebatchDrawAction(DrawGradient, DrawLayer.BehindTiles);
- 
+       // PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrails, DrawLayer.OverNPCs);
+        AuroraEffectRenderer.effectTimer = 30;
 
         return false;
     }
@@ -202,6 +233,7 @@ public class NiiviSillyStarMaker : ModProjectile
 }
 public class NiiviSillyStar : ModProjectile
 {
+    bool _jumped;
     float _dirX;
     float _squishTimer;
     bool _starWalker;
@@ -211,6 +243,7 @@ public class NiiviSillyStar : ModProjectile
     float _deathTimer;
     Vector2 _startPosition;
     Vector2 _endPosition;
+    Vector2 _initialVelocity;
     bool _hasCollided;
     enum StarType : byte
     {
@@ -244,10 +277,10 @@ public class NiiviSillyStar : ModProjectile
     ref float Timer => ref Projectile.ai[2];
     float StarWalkerFrameSpeed => 4f;
     int StarWalkerFrameCount => 4;
-    float RunningStarDeathTime => 140F;
-    float SpiralTime => 190;
+    float RunningStarDeathTime => 240;
+    float SpiralTime => 110;
     float SpiralSize => 384;
-    float SpiralDashTime => 90F;
+    float SpiralDashTime => 110F;
     public override string Texture => AssetReferences.Assets.Textures.Illuria.NPCs.NiiviSillyStar.KEY;
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -257,6 +290,7 @@ public class NiiviSillyStar : ModProjectile
         writer.WriteVector2(_startPosition);
         writer.WriteVector2(_endPosition);
         writer.Write(_dirX);
+        writer.WriteVector2(_initialVelocity);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -266,13 +300,14 @@ public class NiiviSillyStar : ModProjectile
         _startPosition = reader.ReadVector2();
         _endPosition = reader.ReadVector2();
         _dirX = reader.ReadSingle();
+        _initialVelocity = reader.ReadVector2();
     }
 
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
         Main.projFrames[Type] = 9;
-        Projectile.SetTrailCacheLength(8);
+        Projectile.SetTrailCacheLength(16);
     }
 
     public override void SetDefaults()
@@ -303,7 +338,9 @@ public class NiiviSillyStar : ModProjectile
             else
             {
                 Projectile.velocity.X = oldVelocity.X;
-                Projectile.velocity.Y = 0;
+
+                if(_jumped)
+                    Projectile.velocity.Y = oldVelocity.Y;
             }
         }
 
@@ -396,6 +433,7 @@ public class NiiviSillyStar : ModProjectile
                 }
                 break;
         }
+
 
         MakeDusts();
         if(_squishTimer > 0)
@@ -501,8 +539,8 @@ public class NiiviSillyStar : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            Projectile.velocity.X = -4;
-            Projectile.velocity.Y = 8;
+            Projectile.velocity.X = -3;
+            Projectile.velocity.Y = 6;
         }
         if(Timer == 100)
         {
@@ -523,11 +561,11 @@ public class NiiviSillyStar : ModProjectile
             _mad = true;
             if(Projectile.velocity.Length() < 15)
                 Projectile.velocity *= 1.02f;
-            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPlayer.Center, 3F);
+            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPlayer.Center, MathHelper.Lerp(5f, 2f,(Timer - 100F)/70F));
             Projectile.rotation += MathF.Sign(Projectile.velocity.X) * 0.04f;
         }
 
-        if(Timer >= 170)
+        if(Timer >= 210)
         {
             Projectile.Kill();
         }
@@ -555,9 +593,31 @@ public class NiiviSillyStar : ModProjectile
             Projectile.direction = (int)_dirX;
             Projectile.spriteDirection = (int)_dirX;
             Projectile.velocity.X = _dirX * MathHelper.Lerp(1f, 9F, _deathTimer / RunningStarDeathTime);
-            Projectile.velocity.Y += 0.6f;
+    
 
-            Projectile.rotation = Utils.AngleLerp(Projectile.rotation, 0, 0.1f);
+            if (!_jumped)
+            {
+                Projectile.velocity.Y += 0.6f;
+                Projectile.rotation = Utils.AngleLerp(Projectile.rotation, 0, 0.1f);
+            }
+            else
+            {
+                Projectile.velocity.Y += 0.3f;
+                Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.velocity.X * 0.04f * ExtraMath.Osc(-1f, 1f, speed: 2), 0.1f);
+            }
+  
+            if(!_jumped 
+                && MathF.Abs(TargetPlayer.Center.X - Projectile.Center.X) < 100 
+                && _deathTimer >= 30 
+                && MathF.Abs(TargetPlayer.Center.Y - Projectile.Center.Y)  > 64)
+            {
+                _squishTimer = 30f;
+                Blast();
+                Projectile.velocity.Y = -12;
+                var dir = (TargetPlayer.Center.X < Projectile.Center.X) ? -1 : 1;
+                _jumped = true;
+            }
+
             _deathTimer++;
             if (_deathTimer >= RunningStarDeathTime)
                 Projectile.Kill();
@@ -566,16 +626,25 @@ public class NiiviSillyStar : ModProjectile
 
     void AI_SpiralStar()
     {
+        Projectile.tileCollide = false;
         Timer++;
-
-        if(Timer < SpiralTime)
+        if (Timer == 1)
         {
+            Projectile.velocity.X = 0;
+            Projectile.velocity.Y = 8;
+            _initialVelocity = Projectile.velocity;
+        }
+
+        if (Timer < SpiralTime)
+        {
+            Projectile.hostile = false;
             var size = MathHelper.Lerp(1f, 0.6f, Timer / SpiralTime);
             size *= SpiralSize;
             var upOffset = -Vector2.UnitY * size;
             upOffset = upOffset.RotatedBy(MathHelper.TwoPi * EasingFunction.InOutExpo(Timer / SpiralTime));
             var upPos = TargetPlayer.Center + upOffset;
-            Projectile.Center = upPos;
+            var targetVelocity = (upPos - Projectile.Center);
+            Projectile.velocity = Vector2.Lerp(_initialVelocity, targetVelocity, EasingFunction.InQuad(Timer / SpiralTime));
             Projectile.rotation += 0.04F;
         }
         else if (Timer == SpiralTime)
@@ -583,17 +652,22 @@ public class NiiviSillyStar : ModProjectile
             Flicker();
             _startPosition = Projectile.Center;
             _endPosition = TargetPlayer.Center;
+            Projectile.velocity.X *= 0.05f;
+            Projectile.velocity.Y = -5;
         }
         else
         {
+            Projectile.hostile = true;
             _mad = true;
             var t = Timer - SpiralTime;
-            var ratio = t / SpiralDashTime;
-            var ease = EasingFunction.InOutBack(ratio);
-            var posToMoveTo = Vector2.Lerp(_startPosition, _endPosition, ease);
-            Projectile.Center = posToMoveTo;
-            var dir = (_endPosition.X < _startPosition.X) ? -1 : 1;
-            Projectile.rotation += dir * 0.04f;
+            if(t == (int)(SpiralDashTime / 2))
+            {
+                Blast();
+            }
+            var direction = (_endPosition - _startPosition).SafeNormalize(Vector2.Zero);
+            Projectile.velocity += direction * MathHelper.Lerp(0f, 4f, EasingFunction.InExpo(t / SpiralDashTime));
+            Projectile.rotation += 0.15f * EasingFunction.OutExpo(t / SpiralDashTime);
+      
             if(t >= SpiralDashTime)
             {
                 Projectile.Kill();
@@ -610,7 +684,36 @@ public class NiiviSillyStar : ModProjectile
     {
         base.OnHitPlayer(target, info);
     }
-    
+    Color GetTrailColor(float ratio)
+    {
+        var color = Color.Red;
+        color.ScrollHue(Main.GlobalTimeWrappedHourly * 512 + ratio * 255);
+        var myColor = Color.Lerp(Color.White, color, ratio);
+        return Color.White;
+    }
+
+    float GetTrailWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(8, 0, ratio);
+    }
+    void DrawPixelatedTrails(GraphicsDevice gDevice)
+    {
+
+
+        var pass = AssetReferences.Effects.Niivi.StarBombTrail.CreatePrimitivesPass();
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.distortionStrength = 0.03f;
+        pass.Apply();
+        gDevice.Register(0, AssetReferences.Assets.LaserTextures.TexturedLaser.Asset.Value, SamplerState.LinearWrap);
+        gDevice.Register(1, AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value, SamplerState.LinearWrap);
+
+
+        TrailDrawer.ClearPrimitives();
+        TrailDrawer.PreparePrimitives(Projectile.oldPos, GetTrailColor, GetTrailWidth, Projectile.Size * 0.5f);
+        TrailDrawer.DrawCached(pass.Shader);
+
+    }
     void PixelGlow(SpriteBatch sb, Vector2 sp)
     {
         var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
@@ -622,7 +725,7 @@ public class NiiviSillyStar : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
 
-
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrails);
         var frame = (int)((int)Style * 3);
         var outlineFrame = frame + 2;
         if (_mad)
@@ -677,9 +780,9 @@ public class NiiviSillyStar : ModProjectile
         Main.spriteBatch.Draw(drawer);
 
 
-        drawer.color = Color.Red;
+        drawer.color =  Projectile.hostile ? Color.Red : Color.Yellow;
         drawer.VerticalFrame(outlineFrame, Main.projFrames[Type]);
-      //  Main.spriteBatch.Draw(drawer);
+       Main.spriteBatch.Draw(drawer);
 
         PixelationManager.QueueSpritebatchDrawAction(PixelGlow);
         return false;
@@ -688,7 +791,7 @@ public class NiiviSillyStar : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        DeathFX();
+        Blast();
     }
 }
 
