@@ -45,22 +45,29 @@ public class NiiviSillyStarBombBoom : ModProjectile
             var fx = FXUtil.GlowCircleBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, DrawUtilities.Prismatic);
             fx.Scale *= 2;
 
-            PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 24, 777);
-            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 64, 256);
 
             var starBlast = AssetReferences.Assets.Sounds.NStarblast2.Asset with { Pitch = 0.2f, PitchVariance = 0.2f };
             SoundEngine.PlaySound(starBlast, Projectile.Center);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.White, 128, 512 );
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.White, 128, 1024);
+   
+            FXUtil.CreateRipple(Projectile.Center);
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            ShakeScreenPosition.Shake = 4;
+
             //Create a burst of particles
-            for (var i = 0; i < 160; i++)
+            for (var i = 0; i < 64; i++)
             {
+                var pos = Projectile.Center + Main.rand.NextVector2Circular(128, 128);
+                var vel = Main.rand.NextVector2Circular(8, 8);
                 Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
-                    position = Projectile.Center,
-                    velocity = Main.rand.NextVector2Circular(65, 65),
+                    position = pos,
+                    velocity = vel,
+                    timeLeft = Main.rand.Next(60, 120),
                     innerColor = DrawUtilities.Prismatic.ToVector4(),
                     outerColor = DrawUtilities.Prismatic.ToVector4(),
-                    timeLeft = Main.rand.Next(60, 180),
-                    scale = new Vector2(Main.rand.NextFloat(0.3f, 2f))
+                    scale = new Vector2(Main.rand.NextFloat(0.4f, 1f))
                 });
             }
 
@@ -137,7 +144,7 @@ public class NiiviSillyStarMaker : ModProjectile
         OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
         Timer++;
         GlobalTimer++;
-        if(Timer >= 89)
+        if(Timer >= 64)
         {
             if (this.OwnedByLocalClient())
             {
@@ -618,7 +625,7 @@ public class NiiviSillyStar : ModProjectile
             if(!_jumped 
                 && MathF.Abs(TargetPlayer.Center.X - Projectile.Center.X) < 100 
                 && _deathTimer >= 30 
-                && MathF.Abs(TargetPlayer.Center.Y - Projectile.Center.Y)  > 64)
+                && MathF.Abs(TargetPlayer.Center.Y - Projectile.Center.Y)  > 32)
             {
                 _squishTimer = 30f;
                 Blast();
