@@ -596,7 +596,14 @@ public class NiiviSillyStar : ModProjectile
             Projectile.spriteDirection = (int)_dirX;
             Projectile.velocity.X = _dirX * MathHelper.Lerp(1f, 9F, _deathTimer / RunningStarDeathTime);
     
-
+            if(Timer % 6 == 0)
+            {
+                var sp = SmokeParticle.SpawnInAlphaLayer(Projectile.Bottom, Vector2.Zero);
+                sp.initialColor = Color.White;
+                sp.fadeToColor = Color.Black;
+                sp.fast = true;
+            }
+            //JUMPING STARS!!!!!!!
             if (!_jumped)
             {
                 Projectile.velocity.Y += 0.6f;

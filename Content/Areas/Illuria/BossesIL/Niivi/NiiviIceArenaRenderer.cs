@@ -86,7 +86,7 @@ public class NiiviIceArenaRenderer : ModSystem
         var startParamets2 = SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity, blendState = BlendState.Additive };
         sb.Begin(startParamets2);
         sb.Draw(rt, Vector2.Zero, Color.White);
-        sb.Draw(rt, Vector2.Zero, Color.White); 
+
         sb.End();
         sb.Begin(oldParameters);
 

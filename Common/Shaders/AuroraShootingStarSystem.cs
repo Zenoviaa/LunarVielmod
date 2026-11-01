@@ -154,7 +154,7 @@ public class AuroraShootingStarSystem : ModSystem
     {
         base.PostUpdateEverything();
         UpdateParticles();
-        if (Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
+        if ((Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight))
         {
             _activeTimer++;
         }

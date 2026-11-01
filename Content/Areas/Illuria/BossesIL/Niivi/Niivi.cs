@@ -384,7 +384,7 @@ public partial class Niivi : ScarletBoss,
         NPC.velocity = vel;
         if(Timer >= IdleTime)
         {
-            SwitchState(AIState.StarBomb);
+            SwitchState(AIState.PrismBomb);
         }
         NPC.rotation = (MyTarget.Center - NPC.Center).ToRotation();
     }

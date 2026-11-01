@@ -7,7 +7,7 @@ public partial class Niivi
 {
     float StarBomb_FlyDistance => 353 * ExtraMath.Osc(0.7f, 1f, speed: 6);
     float StarBomb_ChargeTime => 500;
-    float StarBomb_WaitTime => 480;
+    float StarBomb_WaitTime => 750;
     int StarBomb_Damage => 55;
     float StarBombPrepTime => 60;
     void AI_StarBomb()
