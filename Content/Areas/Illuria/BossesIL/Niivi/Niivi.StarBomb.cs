@@ -1,10 +1,12 @@
 ﻿using Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
+using Terraria;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
 public partial class Niivi
 {
-    float StarBomb_ChargeTime => 300;
+    float StarBomb_FlyDistance => 353 * ExtraMath.Osc(0.7f, 1f, speed: 6);
+    float StarBomb_ChargeTime => 500;
     int StarBomb_Damage => 55;
     float StarBombPrepTime => 60;
     void AI_StarBomb()
@@ -20,36 +22,36 @@ public partial class Niivi
                 {
                     if (Timer == 1)
                     {
-                        NPC.TargetClosest();
+                        _ikTarget = Segments[Segments.Length - 1].position;
                         StartPosition = NPC.Center;
-                        EndPosition = MyTarget.Center + new Vector2(0, -128);
-                        InitialVelocity = NPC.velocity;
-                    }
-
-                    var ratio = Timer / StarBombPrepTime;
-                    var posToMoveTo = Vector2.Lerp(StartPosition, EndPosition, ratio);
-                    NPC.Center = posToMoveTo;
-                    NPC.velocity = Vector2.Lerp(InitialVelocity, Vector2.Zero, ratio);
-                    if (Timer >= StarBombPrepTime)
-                    {
-                        Timer = 0;
-                        AttackCycle++;
-                    }
-                }
-                break;
-            case 1:
-                {
-                    if (Timer == 1)
-                    {
+                        EndPosition = NPC.Center + new Vector2(0, -128);
                         if (MultiplayerHelper.IsHost)
                         {
                             var firer = ProjFirer.From<NiiviStarBomb>(NPC);
                             firer.damage = StarBomb_Damage;
-                            firer.position = NPC.Center + new Vector2(0, -128);
-                            firer.ai2 = 30;
+                            firer.position = EndPosition;
+                            firer.ai2 = 24;
                             firer.New();
                         }
                     }
+
+                    Vector2 GetFlyPosition(Vector2 endPosition, float radians)
+                    {
+                        var posToFlyTo = endPosition + (-Vector2.UnitY * StarBomb_FlyDistance).RotatedBy(radians);
+                        return posToFlyTo;
+                    }
+
+                    float t = Timer * 0.04F;
+                    NPC.Center = Vector2.Lerp(StartPosition, GetFlyPosition(EndPosition,t), EasingFunction.InOutSine(Timer / 120F));
+             
+
+                    NPC.velocity = Vector2.Zero;
+                    NPC.rotation = (NPC.Center - EndPosition).ToRotation() + MathHelper.PiOver2;
+
+                    var newTarget = Vector2.Lerp(GetFlyPosition(EndPosition, t - 1.45F), EndPosition, 0.1F);
+         
+                    _ikTarget = Vector2.Lerp(_ikTarget, newTarget, 0.4f * EasingFunction.InOutSine(Timer / 120F));
+                    //_ikInitialDirection = -NPC.rotation.ToRotationVector2();
                     if (Timer >= StarBomb_ChargeTime)
                     {
                         Timer = 0;
@@ -57,7 +59,7 @@ public partial class Niivi
                     }
                 }
                 break;
-            case 2:
+            case 1:
                 {
                     SwitchState(AIState.Idle);
                 }

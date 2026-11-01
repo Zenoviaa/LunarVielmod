@@ -100,6 +100,7 @@ public partial class Niivi : ScarletBoss,
     float _arenaY;
     int SegmentCount => 16;
     Vector2 _ikTarget;
+    Vector2 _ikInitialDirection;
     float[] Sizes
     {
         get
@@ -307,6 +308,17 @@ public partial class Niivi : ScarletBoss,
     {
 
     }
+    void ResetSegments()
+    {
+        var segments = Segments;
+        for (var i = 0; i < segments.Length; i++)
+        {
+            ref var segment = ref segments[i];
+            segment.position = NPC.Center + _ikInitialDirection * 32;
+
+        }
+        Segments = segments;
+    }
     public override void PostAI()
     {
         base.PostAI();
@@ -314,16 +326,9 @@ public partial class Niivi : ScarletBoss,
 
 
         //Test
-        _ikTarget = Main.MouseWorld;
+    
         var segments = Segments;
-        for(var i = 0; i < segments.Length; i++)
-        {
-            ref var segment = ref segments[i];
-            segment.position = new Vector2(NPC.Center.X - i * 64, NPC.Center.Y);
-
-        }
-   
-        FabrikSolver.Solve(ref segments, NPC.Center, _ikTarget, 32);
+        FabrikSolver.Solve(ref segments, NPC.Center, _ikTarget, 4);
 
         for(var i = 0; i < segments.Length; i++)
         {

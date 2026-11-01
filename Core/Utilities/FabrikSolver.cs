@@ -23,7 +23,28 @@ public static class FabrikSolver
         input.Normalize();
         return input;
     }
+    public static Vector2 ClampTarget(ref FabrikSegment[] segments, Vector2 root, Vector2 destination)
+    {
+        //Sum the distance between all segments and and the distance between
+        //root and destination to see if the target is reachable
 
+        var distanceStartToEnd = Vector2.Distance(root, destination);
+        var distanceOfRig = 0F;
+        for (var i = 0; i < segments.Length; i++)
+        {
+            ref var inputSegment = ref segments[i];
+            distanceOfRig += inputSegment.length;
+        }
+
+        //forward iteration
+        var isReachable = distanceOfRig >= distanceStartToEnd;
+        if (!isReachable)
+        {
+            destination = root + (destination - root).Resize(distanceOfRig);
+        }
+
+        return destination;
+    }
     public static void Solve(ref FabrikSegment[] segments, Vector2 root, Vector2 destination, int iterations)
     {
         //Sum the distance between all segments and and the distance between
@@ -40,7 +61,9 @@ public static class FabrikSolver
         //forward iteration
         var isReachable = distanceOfRig >= distanceStartToEnd;
         if (!isReachable)
-            return;
+        {
+            destination = root + (destination - root).Resize(distanceOfRig);
+        }
 
         for (var j = 0; j < iterations; j++)
         {
