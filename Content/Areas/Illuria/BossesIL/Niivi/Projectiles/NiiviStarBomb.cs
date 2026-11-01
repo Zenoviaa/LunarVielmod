@@ -181,10 +181,12 @@ public class NiiviSillyStarMaker : ModProjectile
         var fade = EasingFunction.InOutSine(GlobalTimer / 30f) * EasingFunction.InOutSine((float)Projectile.timeLeft / 30F);
         using (sb.Ctx(sb.Parameters with { effect = pass.Shader, blendState = BlendState.Additive }))
         {
+            var c = Color.White * fade * 1f;
+            c.A = 0;
             sb.Draw(
                 AssetReferences.Assets.GlowMasks.VerticalGradient.Asset.Value,
                 new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
-                Color.White * fade * 0.7f);
+               c);
         }
     }
     Color GetTrailColor(float ratio)
@@ -219,7 +221,7 @@ public class NiiviSillyStarMaker : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        PixelationManager.QueueSpritebatchDrawAction(DrawGradient, DrawLayer.BehindTiles);
+        PixelationManager.QueueSpritebatchDrawAction(DrawGradient, DrawLayer.OverPlayers);
        // PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrails, DrawLayer.OverNPCs);
         AuroraEffectRenderer.effectTimer = 30;
 
@@ -691,14 +693,29 @@ public class NiiviSillyStar : ModProjectile
         var myColor = Color.Lerp(Color.White, color, ratio);
         return Color.White;
     }
+    Color GetTrailColor2(float ratio)
+    {
+        return Color.Lerp(Color.White, Color.Transparent, ratio);
+    }
 
     float GetTrailWidth(float ratio)
     {
-        return MathHelper.SmoothStep(8, 0, ratio);
+        return MathHelper.SmoothStep(14, 0, ratio);
+    }
+    float GetTrailWidth2(float ratio)
+    {
+        return MathHelper.SmoothStep(24, 0, ratio);
     }
     void DrawPixelatedTrails(GraphicsDevice gDevice)
     {
 
+        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
+        bloomTrailShader.InnerColor = Main.DiscoColor;
+        bloomTrailShader.OuterColor = Main.DiscoColor;
+
+        TrailDrawer.ClearPrimitives();
+        TrailDrawer.PreparePrimitives(Projectile.oldPos, GetTrailColor2, GetTrailWidth2, Projectile.Size * 0.5f);
+        TrailDrawer.DrawCached(bloomTrailShader);
 
         var pass = AssetReferences.Effects.Niivi.StarBombTrail.CreatePrimitivesPass();
         pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
@@ -1090,7 +1107,7 @@ public class NiiviStarBomb : ModProjectile
             firer.New();
 
             var firer2 = ProjFirer.From<NiiviSillyStarMaker>(Projectile);
-            firer2.ai1 = 24;
+            firer2.ai1 = 16;
             firer2.New();
         }
     }

@@ -57,6 +57,7 @@ public static class SavedGenerationParameters
     public static double RockLayerHigh;
     public static Rectangle AbyssTempleRectangle;
     public static Rectangle StarrHouseRectangle;
+    public static Point IlluriaTreeLocation;
 }
 
 public partial class StellaWorld : ModSystem
@@ -6024,6 +6025,7 @@ public partial class StellaWorld : ModSystem
         rectangle.Location = Loc;
         Structurizer.ProtectStructure(Loc, "Struct/Overworld/Illuria");
         int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Struct/Overworld/Illuria");
+        SavedGenerationParameters.IlluriaTreeLocation = Loc;
         foreach (int chestIndex in ChestIndexs)
         {
             var chest = Main.chest[chestIndex];
@@ -6220,6 +6222,9 @@ public partial class StellaWorld : ModSystem
         writer.Write(SavedGenerationParameters.AbyssTempleRectangle);
         writer.Write(SavedGenerationParameters.StarrHouseRectangle);
         writer.Write(DarkspaceStart);
+        writer.Write(SavedGenerationParameters.IlluriaTreeLocation.X);
+        writer.Write(SavedGenerationParameters.IlluriaTreeLocation.Y);
+
     }
     public override void NetReceive(BinaryReader reader)
     {
@@ -6243,6 +6248,8 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.AbyssTempleRectangle = reader.ReadRectangle();
         SavedGenerationParameters.StarrHouseRectangle = reader.ReadRectangle();
         DarkspaceStart = reader.ReadInt32();
+        SavedGenerationParameters.IlluriaTreeLocation.X = reader.ReadInt32();
+        SavedGenerationParameters.IlluriaTreeLocation.Y = reader.ReadInt32();
     }
 
     public override void SaveWorldData(TagCompound tag)
@@ -6264,6 +6271,7 @@ public partial class StellaWorld : ModSystem
         tag["AbyssTemple"] = SavedGenerationParameters.AbyssTempleRectangle;
         tag["StarrHouse"] = SavedGenerationParameters.StarrHouseRectangle;
         tag["DarkspaceTop"] = SavedGenerationParameters.DarkspaceTop;
+        tag["IlluriaTree"] = SavedGenerationParameters.IlluriaTreeLocation;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -6285,5 +6293,6 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.AbyssTempleRectangle = tag.Get<Rectangle>("AbyssTemple");
         SavedGenerationParameters.StarrHouseRectangle = tag.Get<Rectangle>("StarrHouse");
         SavedGenerationParameters.DarkspaceTop = tag.Get<int>("DarkspaceTop");
+        SavedGenerationParameters.IlluriaTreeLocation = tag.Get<Point>("IlluriaTree");
     }
 }

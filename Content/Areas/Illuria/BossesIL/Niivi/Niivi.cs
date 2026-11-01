@@ -270,11 +270,11 @@ public partial class Niivi : ScarletBoss,
 
         DomainExpansionManager.UseDomain(new DomainParameters
         {
-            noWings = false,
-            inSpace = false,
+            noWings = true,
+            inSpace = true,
             hoveringPlatform = true,
             hoverPlatformY = _arenaY,
-            noRender = false
+            noRender = true
         });
 
 
@@ -390,6 +390,7 @@ public partial class Niivi : ScarletBoss,
     }
     void DrawBody(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
+        NiiviIceArenaRenderer.effectTimer = 30;
         //Draw tail first, then all the way up to head
         ref var neckSegment = ref Segments[ArmSegmentIndex];
         ref var buttSegment = ref Segments[LegSegmentIndex];

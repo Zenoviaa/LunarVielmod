@@ -167,6 +167,10 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
             if (!fallSystem.inSpace)
                 return;
+            if (fallSystem.noWings)
+                return;
+
+
             if (drawInfo.shadow != 0f)
                 return;
             float alpha = EasingFunction.InOutSine(_wingTimer / 60f);
