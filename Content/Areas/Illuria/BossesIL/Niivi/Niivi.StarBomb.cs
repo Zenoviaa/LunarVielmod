@@ -39,6 +39,7 @@ public partial class Niivi
                         InitialVelocity = NPC.velocity;
                     }
 
+                    _outliner.warning = true;
                     Vector2 GetFlyPosition(Vector2 endPosition, float radians)
                     {
                         var posToFlyTo = endPosition + (-Vector2.UnitY * StarBomb_FlyDistance).RotatedBy(radians);
