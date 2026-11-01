@@ -248,6 +248,12 @@ namespace Stellamod.Common.Shaders
             ApplyPasses(shader.Effect);
             ModContent.GetInstance<TrailVertexHelper>().DrawCachedPrimitives();
         }
+        public static void DrawCached(Effect shader)
+        {
+         
+            ApplyPasses(shader);
+            ModContent.GetInstance<TrailVertexHelper>().DrawCachedPrimitives();
+        }
         public static void Draw(
            Vector2[] oldPos,
            Func<float, Color> colorFunc,

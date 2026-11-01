@@ -293,6 +293,9 @@ public partial class Niivi : ScarletBoss,
             case AIState.PrismBomb:
                 AI_PrismaticBomb();
                 break;
+            case AIState.StarBomb:
+                AI_StarBomb();
+                break;
         }
     }
     void TryLookAtTarget()
@@ -376,7 +379,7 @@ public partial class Niivi : ScarletBoss,
         NPC.velocity = vel;
         if(Timer >= IdleTime)
         {
-         //   SwitchState(AIState.PrismBomb);
+            SwitchState(AIState.StarBomb);
         }
         NPC.rotation = (MyTarget.Center - NPC.Center).ToRotation();
     }

@@ -11,6 +11,17 @@ using Terraria.GameContent;
 namespace Stellamod.Helpers;
 
 
+public static class GraphicsDeviceExtensions
+{
+    extension(GraphicsDevice gDevice)
+    {
+        public void Register(int index, Texture2D texture, SamplerState sampler)
+        {
+            gDevice.Textures[index] = texture;
+            gDevice.SamplerStates[index] = sampler;
+        }
+    }
+}
 public static class TextureExtensions
 {
     public static Vector2 GetTexelSize(this Asset<Texture2D> textureAsset) => GetTexelSize(textureAsset.Value);
