@@ -52,9 +52,11 @@ public class LineRig
 public partial class Niivi : ScarletBoss,
     IDrawToRenderTarget
 {
+    bool _simpleChainRendering;
     Vector2 _vec1;
     Vector2 _vec2;
     Vector2 _vec3;
+    Vector2 _teleportPosition;
     Outliner _outliner;
     Vector2[] SegmentOrigins = new Vector2[]
     {
@@ -159,6 +161,26 @@ public partial class Niivi : ScarletBoss,
             return field;
         }
     }
+    ChainWithLengths Chain
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = new ChainWithLengths(NPC.Center, 16, SegmentCount);
+                for (var i = 0; i < field.points.Length; i++)
+                {
+                    ref var position = ref field.points[i];
+                    ref var length = ref field.lengths[i];
+                    position = new Vector2(i * 64, 0);
+                    length = Sizes[SegmentFrameIndices[i]] * SegmentBaseScales[i];
+                }
+            }
+
+            return field;
+
+        }
+    }
     FabrikSegment[] Segments
     {
         get
@@ -201,6 +223,7 @@ public partial class Niivi : ScarletBoss,
         writer.WriteVector2(_vec1);
         writer.WriteVector2(_vec2);
         writer.WriteVector2(_vec3);
+        writer.WriteVector2(_teleportPosition);
         writer.Write(_arenaY);
     }
     
@@ -210,6 +233,7 @@ public partial class Niivi : ScarletBoss,
         _vec1 = reader.ReadVector2();
         _vec2 = reader.ReadVector2();
         _vec3 = reader.ReadVector2();
+        _teleportPosition = reader.ReadVector2();
         _arenaY = reader.ReadSingle();
     }
 
@@ -277,6 +301,14 @@ public partial class Niivi : ScarletBoss,
             noRender = true
         });
 
+        if(_teleportPosition != Vector2.Zero)
+        {
+            NPC.velocity = Vector2.Zero;
+            NPC.Center = _teleportPosition;
+            _teleportPosition = Vector2.Zero;
+        }
+
+        _simpleChainRendering = false;
 
         NiiviRoamingHelper.LastKnownNiiviLocation = NPC.Center;
         _outliner.SetDefaults();
@@ -290,6 +322,9 @@ public partial class Niivi : ScarletBoss,
                 break;
             case AIState.Idle:
                 AI_Idle();
+                break;
+            case AIState.FrostBreath:
+                AI_FrostBreath();
                 break;
             case AIState.PrismBomb:
                 AI_PrismaticBomb();
@@ -329,6 +364,13 @@ public partial class Niivi : ScarletBoss,
     
         var segments = Segments;
         FabrikSolver.Solve(ref segments, NPC.Center, _ikTarget, 4);
+
+        Chain.points[0] = NPC.Center;
+        Chain.pinned[0] = true;
+        for(var i = 0; i < 16; i++)
+        {
+            Chain.ResolveBackToRoot();
+        }
 
         for(var i = 0; i < segments.Length; i++)
         {
@@ -384,7 +426,7 @@ public partial class Niivi : ScarletBoss,
         NPC.velocity = vel;
         if(Timer >= IdleTime)
         {
-            SwitchState(AIState.StarBomb);
+            SwitchState(AIState.FrostBreath);
         }
         NPC.rotation = (MyTarget.Center - NPC.Center).ToRotation();
     }

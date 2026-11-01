@@ -1180,6 +1180,7 @@ ORANGELS.DisplayName: O R A N G E L S
 SupernovaBeamFinal.DisplayName: Supernova Beam Final
 SupernovaFinalExplosion.DisplayName: Supernova Final Explosion
 NiiviFrostBreathLaserProj.DisplayName: Frost Breath Laser
+NiiviFrostBreath.DisplayName: Niivi Frost Breath
 ExampleSilhouetteProjectile.DisplayName: Example Silhouette Projectile
 ExampleShaderOrbProjectile.DisplayName: Example Shader Orb Projectile
 GothinWingsProj.DisplayName: Gothin Wings
@@ -2200,3 +2201,4 @@ NiiviSillyStar.DisplayName: Niivi Silly Star
 NiiviStarBomb.DisplayName: Niivi Star Bomb
 NiiviSillyStarBombBoom.DisplayName: Niivi Silly Star Bomb Boom
 NiiviSillyStarMaker.DisplayName: Niivi Silly Star Maker
+NiiviPrisblastBreath.DisplayName: Niivi Prisblast Breath

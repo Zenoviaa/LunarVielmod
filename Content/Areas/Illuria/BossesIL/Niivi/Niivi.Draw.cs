@@ -79,10 +79,88 @@ public partial class Niivi
         frontArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
         sb.Draw(frontArmDrawer);
     }
+    void DrawBody2(SpriteBatch sb, Vector2 screenPos, Color drawColor)
+    {
+        NiiviIceArenaRenderer.effectTimer = 30;
+        //Draw tail first, then all the way up to head
+        ref var neckSegment = ref Chain.points[ArmSegmentIndex];
+        ref var buttSegment = ref Chain.points[LegSegmentIndex];
+        ref var wingSegment = ref Chain.points[WingSegmentIndex];
 
+        var backBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
+        backBackArmDrawer.drawOrigin = SegmentOrigins[9];
+        backBackArmDrawer.VerticalFrame(9, 10);
+        backBackArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
+        backBackArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        sb.Draw(backBackArmDrawer);
+
+        var bacWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingBack.Asset, wingSegment);
+        bacWingDrawer.drawOrigin = BackWingDrawOrigin;
+        bacWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
+        bacWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
+        bacWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
+        sb.Draw(bacWingDrawer);
+
+        var frontBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
+        frontBackArmDrawer.drawOrigin = SegmentOrigins[7];
+        frontBackArmDrawer.VerticalFrame(7, 10);
+        frontBackArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
+        frontBackArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        sb.Draw(frontBackArmDrawer);
+
+        for (var i = Chain.points.Length - 1; i >= 0; i--)
+        {
+            ref var segment = ref Chain.points[i];
+            var rotation = NPC.rotation;
+            var ratio = i / (float)Chain.points.Length;
+            if (i > 0)
+            {
+                ref var nextSegment = ref Chain.points[i - 1];
+                rotation = (nextSegment - segment).ToRotation();
+            }
+
+            var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], segment);
+            var frameIndex = SegmentFrameIndices[i];
+            drawer.drawOrigin = SegmentOrigins[frameIndex];
+            drawer.VerticalFrame(frameIndex, 10);
+            drawer.rotation = rotation;
+            drawer.scale = new Vector2(SegmentBaseScales[i]);
+            sb.Draw(drawer);
+            SegmentRotations[i] = rotation;
+        }
+
+        //Draw front wing
+        var frontWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingFront.Asset, wingSegment);
+        frontWingDrawer.drawOrigin = FrontWingDrawOrigin;
+        frontWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
+        frontWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
+        frontWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
+        sb.Draw(frontWingDrawer);
+
+        //Draw frong arms
+
+        var backFrontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
+        backFrontArmDrawer.drawOrigin = SegmentOrigins[8];
+        backFrontArmDrawer.VerticalFrame(8, 10);
+        backFrontArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
+        backFrontArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        sb.Draw(backFrontArmDrawer);
+
+        var frontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
+        frontArmDrawer.drawOrigin = SegmentOrigins[6];
+        frontArmDrawer.VerticalFrame(6, 10);
+        frontArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
+        frontArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        sb.Draw(frontArmDrawer);
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        DrawBody(spriteBatch, screenPos, drawColor);
+        if (_simpleChainRendering)
+        {
+            DrawBody2(spriteBatch, screenPos, drawColor);
+        } 
+        else
+            DrawBody(spriteBatch, screenPos, drawColor);
         return false;
     }
     public void DrawToRenderTargets()
@@ -91,7 +169,13 @@ public partial class Niivi
             return;
         void DrawOutlines(SpriteBatch sb)
         {
-            DrawBody(sb, Main.screenPosition, _outliner.outlineColor); 
+            if (_simpleChainRendering)
+            {
+                DrawBody2(sb, Main.screenPosition, _outliner.outlineColor);
+            }
+            else
+                DrawBody(sb, Main.screenPosition, _outliner.outlineColor);
+  
         }
         OutlineRenderer.Queue(DrawOutlines);
     }

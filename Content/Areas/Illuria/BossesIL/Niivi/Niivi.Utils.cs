@@ -9,6 +9,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
 public partial class Niivi
 {
+    void Teleport(Vector2 teleportToPos)
+    {
+        if (MultiplayerHelper.IsHost)
+        {
+            _teleportPosition = teleportToPos;
+            NPC.netUpdate = true;
+        }
+    }
+
     /// <summary>
     /// Makes the ik target just follow the head until it's within range
     /// </summary>
@@ -29,6 +38,17 @@ public partial class Niivi
             _ikTarget += dir;
             dist = Vector2.Distance(_ikTarget, NPC.Center);
         }
+    }
+
+    Vector2 ArcSwoop(float t, Vector2 origin, float down = 2000, float radius = 1500)
+    {
+        var left = origin + new Vector2(-radius, 0);
+        var right = origin + new Vector2(radius, 0);
+        var leftToRight = Vector2.Lerp(left, right, t);
+        var topToBottom = MathHelper.Lerp(0, down, MathF.Sin(t * 6.28F * 0.5f) * 0.5f + 0.5f);
+        topToBottom += MathHelper.Lerp(0, 64, MathF.Sin(t * 5 * 4f) * 0.5f + 0.5f);
+        var lerp = leftToRight + new Vector2(0, topToBottom);
+        return lerp;
     }
 
     //Ok

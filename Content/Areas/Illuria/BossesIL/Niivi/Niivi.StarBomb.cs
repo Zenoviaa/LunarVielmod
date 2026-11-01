@@ -73,7 +73,6 @@ public partial class Niivi
                         InitialVelocity = NPC.velocity;
                     }
 
-
                     var t = Timer / 240F;
                     t = EasingFunction.OutSine(t);
                     var posToMoveTo = ArcRightFallDownLeft(t, StartPosition);
