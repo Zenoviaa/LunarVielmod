@@ -93,6 +93,77 @@ public static class DrawUtilities
             return red;
         }
     }
+    public static short[] PrepareIndicesForDrawingAnchors(int length)
+    {
+        int connectIndex = 0;
+        var indicesSpan = new short[length * 6];
+        for (int i = 0; i < indicesSpan.Length; i += 6)
+        {
+            indicesSpan[i] = (short)(connectIndex + 0);
+            indicesSpan[i + 1] = (short)(connectIndex + 2);
+            indicesSpan[i + 2] = (short)(connectIndex + 1);
+            indicesSpan[i + 3] = (short)(connectIndex + 1);
+            indicesSpan[i + 4] = (short)(connectIndex + 2);
+            indicesSpan[i + 5] = (short)(connectIndex + 3);
+            connectIndex += 4;
+        }
+        return indicesSpan;
+    }
+
+    public static VertexPositionColorTexture[] FillVertexArray(int numPoints,
+        Func<float, Color> colorFunc,
+        Vector2 topLeftAnchor,
+        Vector2 topRightAnchor,
+        Vector2 bottomLeftAnchor, 
+        Vector2 bottomRightAnchor)
+    {
+        const float coord1 = 0;
+        const float coord2 = 1;
+
+        int numVertices = (numPoints - 1) * 4;
+        int index = 0;
+        //  VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[numVertices];
+        var vertices = new VertexPositionColorTexture[numVertices];
+        for (int i = 0; i < numPoints - 1; i++)
+        {
+
+            float uv = (float)i / (float)numPoints;
+            float uv2 = (float)(i + 1) / (float)numPoints;
+
+
+            Vector2 top1 = Vector2.Lerp(topLeftAnchor, bottomRightAnchor, uv);
+            Vector2 bottom1 = Vector2.Lerp(topRightAnchor, bottomLeftAnchor, uv);
+
+            Vector2 top2 = Vector2.Lerp(topLeftAnchor, bottomRightAnchor, uv2);
+            Vector2 bottom2 = Vector2.Lerp(topRightAnchor, bottomLeftAnchor, uv2);
+            Color col1 = colorFunc(uv);
+            Color col2 = colorFunc(uv2);
+
+            VertexPositionColorTexture topLeft = new VertexPositionColorTexture(new Vector3(top1, 0f), col1, new Vector2(uv, 0));
+            VertexPositionColorTexture bottomLeft = new VertexPositionColorTexture(new Vector3(bottom1, 0f), col1, new Vector2(uv, 1));
+
+            VertexPositionColorTexture topRight = new VertexPositionColorTexture(new Vector3(top2, 0f), col2, new Vector2(uv2, 0));
+            VertexPositionColorTexture bottomRight = new VertexPositionColorTexture(new Vector3(bottom2, 0f), col2, new Vector2(uv2, 1));
+
+            //0
+            vertices[index++] = topLeft;
+            //1
+            vertices[index++] = bottomLeft;
+
+            //2
+            vertices[index++] = topRight;
+
+    
+     
+            //3
+            vertices[index++] = bottomRight;
+
+
+        }
+
+        return vertices;
+    }
+
     public static void FillSwingTrailPoints(ref Vector2[] arr, Func<float, Vector2> pointFunction, float startingRatio, float distBack)
     {
         for(var i = 0; i < arr.Length; i++)

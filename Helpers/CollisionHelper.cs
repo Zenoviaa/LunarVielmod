@@ -2,13 +2,50 @@
 using Stellamod.Core.LunarLightingSystem;
 using System;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
     public static class CollisionHelper
     {
 
+        public static Vector2 SolidTileRayCast(Vector2 startPosition, Vector2 velocity, float maxBeamLength)
+        {
+            var domain = ModContent.GetInstance<DomainExpansionManager>();
+    
+            var hitPoint = startPosition;
+            var normalVelocity = velocity.SafeNormalize(Vector2.Zero);
+            var stepSize = 8;
+            var stepVelocity = normalVelocity * stepSize;
+            var maxSteps = maxBeamLength / stepSize;
 
+            if (domain.hoveringPlatform)
+            {
+                for (var s = 0; s < maxSteps; s++)
+                {
+                    if (hitPoint.Y >= domain.hoverPlatformY)
+                    {
+                        hitPoint.Y = domain.hoverPlatformY;
+                        return hitPoint;
+                    }
+                    hitPoint += stepVelocity;
+                }
+            }
+            else
+            {
+                for (var s = 0; s < maxSteps; s++)
+                {
+                    var tc = hitPoint.ToTileCoordinates();
+                    var tile = Main.tile[tc];
+                    if (tile.HasTile && Main.tileSolid[tile.type])
+                        return hitPoint;
+                    hitPoint += stepVelocity;
+
+                }
+            }
+
+            return hitPoint;
+        }
         public static Vector2 RayCast(Vector2 startPosition, Vector2 velocity, float maxBeamLength, int numSamplePoints = 3)
         {
             // By default, the hitscan interpolation starts at the Projectile's center.

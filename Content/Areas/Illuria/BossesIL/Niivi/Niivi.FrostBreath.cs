@@ -12,7 +12,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 public partial class Niivi
 {
     bool _didBreath;
-    float FrostBreath_SwoopTime => 240;
+    float FrostBreath_SwoopTime => 300;
     float FrostBreath_SwoopRadius => 1500;
     float FrostBreath_SwoopDepth => 1500;
     float FrostBreath_SwoopOffY => -1800;
@@ -45,13 +45,15 @@ public partial class Niivi
                     }
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
+                    var originPoint = StartPosition + new Vector2(0, FrostBreath_SwoopOffY);
+                    originPoint.X -= 400;
                     _simpleChainRendering = true;
-                    var posToMoveTo = ArcSwoop(ratio, StartPosition + new Vector2(0, FrostBreath_SwoopOffY), FrostBreath_SwoopDepth, FrostBreath_SwoopRadius);
+                    var posToMoveTo = ArcSwoop(ratio, originPoint, FrostBreath_SwoopDepth, FrostBreath_SwoopRadius);
                     var vel = (posToMoveTo - NPC.Center);
                     NPC.velocity = vel;
                     var targetRot = vel.ToRotation();
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRot, 0.01f);
-                    _ikTarget = ArcSwoop(ratio - 0.24f, StartPosition + new Vector2(0, FrostBreath_SwoopOffY), FrostBreath_SwoopDepth, FrostBreath_SwoopRadius);
+                    _ikTarget = ArcSwoop(ratio - 0.24f, originPoint, FrostBreath_SwoopDepth, FrostBreath_SwoopRadius);
                     _ikTarget.Y += ExtraMath.Osc(-32, 232);
                     _ikTarget.X += ExtraMath.Osc(0, 187);
                     if (Timer >= FrostBreath_SwoopTime)
