@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Stellamod.Common.Particles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -9,6 +11,67 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
 public partial class Niivi
 {
+    void AmbientSuckingParticles()
+    {
+        //The thing zemmie likes is when there's just a otn of these
+        //Let's mix the bit dust and with the stretch particles and a few swirly particles, that should make it look very dynamic.
+        var suckPosition = NPC.Center + NPC.rotation.ToRotationVector2() * 48;
+
+        //First stretch particles
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        Vector2 GetStretchSpawnPoint()
+        {
+            var edge = Main.rand.NextFloat(444, 666);
+            return suckPosition + Main.rand.NextVector2CircularEdge(edge, edge);
+        }
+
+
+        if(Timer % 15 == 0)
+        {
+            var fx = FXUtil.GlowCircleBoom(suckPosition, DrawUtilities.Prismatic, DrawUtilities.Prismatic, Color.Black, 30, 0.2F);
+            fx.Scale *= 1.5F;
+        }
+        if (Timer % 2 == 0)
+        {
+            var pos = GetStretchSpawnPoint();
+            var vel = suckPosition - pos;
+            vel *= 0.1f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.OuterGlowColor = DrawUtilities.Prismatic;
+            fx.InnerColor = DrawUtilities.Prismatic;
+            fx.GlowColor = DrawUtilities.Prismatic;
+            fx.Scale *= 3 * Main.rand.NextFloat(1f, 2f);
+        }
+
+        {
+            var pos = GetStretchSpawnPoint();
+            var vel = suckPosition - pos;
+            vel *= 0.1f;
+            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f)),
+                timeLeft = Main.rand.Next(30, 60)
+            });
+        }
+
+        {
+            var pos = suckPosition;
+            var vel = Main.rand.NextVector2CircularEdge(25, 25);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                outerColor = DrawUtilities.Prismatic.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f)),
+                timeLeft = Main.rand.Next(30, 60)
+            });
+        }
+    }
     void Teleport(Vector2 teleportToPos)
     {
         if (MultiplayerHelper.IsHost)

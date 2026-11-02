@@ -28,22 +28,53 @@ public class NiiviFlyingStar : ModProjectile
         Projectile.penetrate = -1;
         Projectile.hostile = true;
         Projectile.light = 0.7F;
+        Projectile.extraUpdates = 1;
+        Projectile.timeLeft = 360;
+    }
+
+    void Flicker()
+    {
+        var currentPosition = Projectile.Center;
+        var starSingle = AssetReferences.Assets.Sounds.Starrer.Asset with { PitchVariance = 0.75f, Pitch = -0.4f };
+        SoundEngine.PlaySound(starSingle, Projectile.position);
+        PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, DrawUtilities.Prismatic, DrawUtilities.Prismatic, 25, 64);
+
+        var pos = Main.rand.NextVector2Circular(7, 7) + currentPosition;
+        var color = DrawUtilities.Prismatic.ToVector4();
+        for (var i = 0; i < 8; i++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = Main.rand.NextVector2Circular(25, 25),
+                timeLeft = 60,
+                innerColor = Vector4.Lerp(color, Vector4.One, 0.65f),
+                outerColor = color,
+                scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f))
+            });
+        }
     }
 
     public override void AI()
     {
         base.AI();
         Timer++;
-        if(Timer < 60)
+        if(Timer < 100)
         {
             if (Projectile.velocity.Length() > 0.5f)
                 Projectile.velocity *= 0.98f;
-        } else if (Timer < 70)
+        } else if (Timer < 150)
         {
+            if(Timer == 101)
+            {
+                Projectile.velocity = Vector2.One;
+                Flicker();
+            }
+            Projectile.tileCollide = true;
             var player = PlayerHelper.FindClosestPlayer(Projectile.Center, 2048);
             if(player != null)
             {
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 3);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 4);
             }
 
             if (Projectile.velocity.Length() < 15)
@@ -51,6 +82,7 @@ public class NiiviFlyingStar : ModProjectile
         }
         else
         {
+            Projectile.extraUpdates = 2;
             if(Projectile.velocity.Length() < 15)
                 Projectile.velocity *= 1.01f;
         }
@@ -95,11 +127,17 @@ public class NiiviFlyingStar : ModProjectile
         DeathFX();
     }
 
+    void DrawPixelated(SpriteBatch sb, Vector2 sp)
+    {
+        Projectile.scale = 0.4f;
+        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.White, Color.Transparent, 0.14f);
+        var drawer = Projectile.Drawer;
+       sb.Draw(drawer);
+    }
     public override bool PreDraw(ref Color lightColor)
     {
-        DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, Projectile, Color.White, Color.Transparent, 0.3f);
-        var drawer = Projectile.Drawer;
-        Main.spriteBatch.Draw(drawer);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated);
+
         return false;
     }
 
@@ -170,9 +208,13 @@ public class NiiviFlyingStar : ModProjectile
 
 public class NiiviBlastBreath : ModProjectile
 {
+    Vector2 _leftStart;
+    Vector2 _rightStart;
+    Vector2 _leftImpactPoint;
+    Vector2 _rightImpactPoint;
     Vector2 _hitPoint;
     public override string Texture => ModType.NoTexture;
-    float Time => 120;
+    float Time => 45;
     ref float Timer => ref Projectile.ai[0];
     public override void SetDefaults()
     {
@@ -207,7 +249,25 @@ public class NiiviBlastBreath : ModProjectile
         if (Timer == 1)
         {
             _hitPoint = CollisionHelper.SolidTileRayCast(Projectile.Center, Projectile.velocity, Projectile.velocity.Length());
-            for(var i = 0; i < 128; i++)
+            _hitPoint += Projectile.velocity.SafeNormalize(Vector2.Zero) * 144;
+            PixelPrimitiveCircleFactory.CreateGenericBoom(_hitPoint, Color.White, Color.White, 65, 1024);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(_hitPoint, Color.White, Color.White, 45, 512);
+            var perpVel = Projectile.velocity.SafeNormalize(Vector2.Zero);
+            _leftStart = Projectile.Center - perpVel * 0.4f ;
+            _rightStart = Projectile.Center + perpVel * 0.4f ;
+
+
+            var leftVelocity = _leftStart - Projectile.Center;
+            leftVelocity = leftVelocity.SafeNormalize(Vector2.Zero);
+
+            var rightVelocity = _rightStart - Projectile.Center;
+            rightVelocity = rightVelocity.SafeNormalize(Vector2.Zero);
+
+            _leftImpactPoint = CollisionHelper.SolidTileRayCast(_leftStart, leftVelocity, 2400);
+            _rightImpactPoint = CollisionHelper.SolidTileRayCast(_rightStart, rightVelocity, 2400);
+
+
+            for (var i = 0; i < 128; i++)
             {
                 var pos = Vector2.Lerp(Projectile.Center, _hitPoint, Main.rand.NextFloat(0f, 1f));
                 Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
@@ -220,21 +280,26 @@ public class NiiviBlastBreath : ModProjectile
                     scale = new Vector2(Main.rand.NextFloat(0.24f, 0.5f)),
                 });
             }
-            for(var i = 0; i < 5; i++)
+            if (this.OwnedByLocalClient())
             {
-                var firer = ProjFirer.From<NiiviFlyingStar>(Projectile);
-                firer.damage /= 3;
-                firer.position = _hitPoint + Main.rand.NextVector2Circular(64, 64);
-                firer.velocity = -Vector2.UnitY * 12;
-                firer.velocity = firer.velocity.RotatedByRandom(1.5F);
-                firer.New();
+                for (var i = 0; i < 6; i++)
+                {
+                    var firer = ProjFirer.From<NiiviFlyingStar>(Projectile);
+                    firer.damage /= 3;
+                    firer.position = _hitPoint + Main.rand.NextVector2Circular(64, 64);
+                    firer.velocity = -Vector2.UnitY * 17;
+                    firer.velocity = firer.velocity.RotatedByRandom(1.5F);
+                    firer.New();
+                }
+
             }
 
             var fx = FXUtil.GlowCircleBoom(_hitPoint, Color.White, Color.SkyBlue, Color.DarkBlue);
-            fx.Scale *= 2f;
+            fx.Scale *= 4f;
 
-            var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Icey, new Vector2(5, 15));
-            ParticleUtils.CreateSwirlingDustBurst(fac);
+            var fac = ParticleUtils.ParticleFactory.FromSmallBurst(_hitPoint, TriColorPalette.Icey, new Vector2(5, 45));
+            fac.particleCount *= 8;
+            ParticleUtils.CreateSwirlingDustCircle(fac);
 
             ShakeScreenPosition.Shake = 4;
             FXUtil.ShakeCamera(_hitPoint, 1024, 16);
@@ -283,12 +348,13 @@ public class NiiviBlastBreath : ModProjectile
                 });
             }
         }
+        FXUtil.ApplyContrastBrightness(MathHelper.Lerp(1.1f, 1f, EasingFunction.InSine(Timer / Time)), 0f);
     }
 
 
     float GetTrailWidth(float ratio)
     {
-        return MathHelper.Lerp(48, 0, EasingFunction.OutSine(Timer / Time));
+        return MathHelper.Lerp(MathHelper.Lerp(0, 128, EasingFunction.OutQuad(ratio)), 0, EasingFunction.OutSine(Timer / Time));
     }
 
     float GetTrailWidth2(float ratio)
@@ -298,26 +364,27 @@ public class NiiviBlastBreath : ModProjectile
 
     Color GetTrailColor(float ratio)
     {
-        Color prismatic = Color.Red;
-        prismatic.ScrollHue(Timer * 24 + ratio * 255);
-        return prismatic;
+      
+        return Color.White;
     }
 
     Color GetTrailColor2(float ratio)
     {
         Color prismatic = Color.Red;
         prismatic.ScrollHue(Timer * 24 + ratio * 255);
-        return prismatic;
+        prismatic = Color.Lerp(prismatic, Color.White, 0.9F);
+        return prismatic * 0.4f;
     }
 
     void DrawPixelatedBeam(GraphicsDevice gDevice)
     {
+        var points = DrawUtilities.InterpolateBetweenPoints(Projectile.Center, _hitPoint, 128);
         BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
         bloomTrailShader.InnerColor = Main.DiscoColor;
         bloomTrailShader.OuterColor = Main.DiscoColor;
 
         TrailDrawer.ClearPrimitives();
-        TrailDrawer.PreparePrimitives(Projectile.oldPos, GetTrailColor2, GetTrailWidth2, Projectile.Size * 0.5f);
+        TrailDrawer.PreparePrimitives(points, GetTrailColor2, GetTrailWidth2);
         TrailDrawer.DrawCached(bloomTrailShader);
 
         var pass = AssetReferences.Effects.Niivi.PrismaticBreath.CreatePrimitivesPass();
@@ -330,7 +397,7 @@ public class NiiviBlastBreath : ModProjectile
 
 
         TrailDrawer.ClearPrimitives();
-        TrailDrawer.PreparePrimitives(Projectile.oldPos, GetTrailColor, GetTrailWidth, Projectile.Size * 0.5f);
+        TrailDrawer.PreparePrimitives(points, GetTrailColor, GetTrailWidth);
         TrailDrawer.DrawCached(pass.Shader);
     }
 
@@ -339,6 +406,7 @@ public class NiiviBlastBreath : ModProjectile
         if (Timer < 4)
         {
             var impactFrameDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.ImpactFrame.Asset, _hitPoint);
+            impactFrameDrawer.color = Color.Black;
             sb.Draw(impactFrameDrawer);
         }
     }

@@ -32,8 +32,8 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 float4 SampleNoiseColor(float2 coords)
 {
     float speed = 1.0;
-    float2 noiseCoords = coords * 2.0;
-    noiseCoords.y *= 0.125;
+    float2 noiseCoords = coords * 0.3;
+    noiseCoords.y *= 4.0;
 
     float t = time * speed;
     float2 scrollingCoords = noiseCoords + float2(-t, 0.0);
@@ -64,7 +64,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     finalColor += bloomColor2;
     finalColor += bloomColor;
 //    finalColor += (sin(time * 16.0) * 0.5 + 0.5) * finalColor.r;
-    finalColor *= noiseColor;
+    finalColor -= noiseColor;
  //   finalColor.rgb = ApplyHue(finalColor.rgb, time + scrollingCOords.x * 4.0);
     //finalColor *= sin(scrollingCOords.x * 4.0) * 0.5 + 0.5;
     finalColor *= 2.0;
