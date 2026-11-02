@@ -196,36 +196,8 @@ public class NiiviSillyStarMaker : ModProjectile
                c);
         }
     }
-    Color GetTrailColor(float ratio)
-    {
-        var color = Color.Red;
-        color.ScrollHue(Main.GlobalTimeWrappedHourly * 512 + ratio * 255);
-        var myColor = Color.Lerp(Color.White, color, ratio);
-        return Color.White;
-    }
-
-    float GetTrailWidth(float ratio)
-    {
-        return MathHelper.SmoothStep(64, 0, ratio);
-    }
-    void DrawPixelatedTrails(GraphicsDevice gDevice)
-    {
 
 
-        var pass = AssetReferences.Effects.Niivi.StarBombTrail.CreatePrimitivesPass();
-        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
-        pass.Parameters.distortionStrength = 0.03f;
-        pass.Apply();
-        gDevice.Register(0, AssetReferences.Assets.LaserTextures.TexturedLaser.Asset.Value, SamplerState.LinearWrap);
-        gDevice.Register(1, AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value, SamplerState.LinearWrap);
-
-
-        TrailDrawer.ClearPrimitives();
-        TrailDrawer.PreparePrimitives(Projectile.oldPos, GetTrailColor, GetTrailWidth, Projectile.Size * 0.5f);
-        TrailDrawer.DrawCached(pass.Shader);
-
-    }
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueueSpritebatchDrawAction(DrawGradient, DrawLayer.OverPlayers);
@@ -465,28 +437,6 @@ public class NiiviSillyStar : ModProjectile
                 _starWalkerFrameIndex++;
                 _starWalkerFrameIndex %= StarWalkerFrameCount;
             }
-        }
-    }
-    
-    void DeathFX()
-    {
-        var currentPosition = Projectile.Center;
-        var starSingle = AssetReferences.Assets.Sounds.Starrer.Asset with { PitchVariance = 0.75f, Pitch = -0.8f };
-        SoundEngine.PlaySound(starSingle, Projectile.position);
-
-        var pos = Main.rand.NextVector2Circular(7, 7) + currentPosition;
-        var color = DrawUtilities.Prismatic.ToVector4();
-        for (var i = 0; i < 16; i++)
-        {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
-            {
-                position = pos,
-                velocity = Main.rand.NextVector2Circular(25, 25),
-                timeLeft = 60,
-                innerColor = Vector4.Lerp(color, Vector4.One, 0.65f),
-                outerColor = color,
-                scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f))
-            });
         }
     }
 

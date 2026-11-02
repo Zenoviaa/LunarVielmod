@@ -8,6 +8,13 @@ namespace Stellamod.Helpers
 {
     public static class CollisionHelper
     {
+        public static bool LaserCollision(Rectangle projHitbox, Rectangle targetHitbox, Vector2 previousPosition, Vector2 position, float lineWidth)
+        {
+            float collisionPoint = 0;
+            if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, lineWidth, ref collisionPoint))
+                return true;
+            return false;
+        }
 
         public static Vector2 SolidTileRayCast(Vector2 startPosition, Vector2 velocity, float maxBeamLength)
         {
