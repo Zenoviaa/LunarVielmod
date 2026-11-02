@@ -56,7 +56,8 @@ public partial class Niivi : ScarletBoss,
     bool _isTrailing;
     bool _isArmorAura;
     bool _isBLACK;
-
+    bool _isPrismatic;
+    float _prismaticAlpha;
     float _afAlpha;
     float _trailingAlpha;
     float _armorAlpha;
@@ -264,7 +265,7 @@ public partial class Niivi : ScarletBoss,
     ref float AttackCount => ref NPC.ai[3];
     float SpawnTime => 60;
     float DespawnTime => 60;
-    float IdleTime => 120;
+
     int WingFrameCount => 9;
     public override string Texture => AssetReferences.Assets.Textures.Illuria.NPCs.Niivi.KEY;
     public override void SendExtraAI(BinaryWriter writer)
@@ -367,6 +368,7 @@ public partial class Niivi : ScarletBoss,
         _isArmorAura = false;
         _isTrailing = false;
         _isBLACK = false;
+        _isPrismatic = false;
         switch (State)
         {
             case AIState.Spawn:
@@ -399,6 +401,12 @@ public partial class Niivi : ScarletBoss,
         _armorAlpha = MathHelper.Lerp(_armorAlpha, _isArmorAura ? 1f : 0f, 0.1f);
         _trailingAlpha = MathHelper.Lerp(_trailingAlpha, _isTrailing ? 1f : 0f, 0.1f);
         _blackAlpha = MathHelper.Lerp(_blackAlpha, _isBLACK ? 1f : 0f, 0.1f);
+        _prismaticAlpha = MathHelper.Lerp(_prismaticAlpha, _isPrismatic ? 1f : 0f, 0.1f);
+    }
+
+    void ChooseAttack()
+    {
+        SwitchState(AIState.StarBomb);
     }
 
     void ResetSegments()
@@ -477,36 +485,7 @@ public partial class Niivi : ScarletBoss,
             NPC.active = false;
         }
     }
-    void AI_Idle()
-    {
-        ref Vector2 StartPosition = ref _vec1;
-        Timer++;
-        switch (AttackCycle)
-        {
-            case 0:
-                {
-
-                }
-                break;
-            case 1:
-                {
-
-                }
-                break;
-            case 2:
-                {
-
-                }
-                break;
-        }
-        var vel = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
-        NPC.velocity = vel;
-        if(Timer >= IdleTime)
-        {
-            SwitchState(AIState.BlastBreath);
-        }
-        NPC.rotation = (MyTarget.Center - NPC.Center).ToRotation();
-    }
+ 
 
     public override void HitEffect(NPC.HitInfo hit)
     {

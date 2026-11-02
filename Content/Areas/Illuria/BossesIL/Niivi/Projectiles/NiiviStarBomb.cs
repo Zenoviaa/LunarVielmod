@@ -932,7 +932,7 @@ public class NiiviStarBomb : ModProjectile
             });
         }
         AmbientSuckingParticles();
-
+        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.5F));
         for(var i = 0; i < 3; i++)
         {
             var pos = Main.rand.NextVector2Circular(7, 7) + currentPosition;

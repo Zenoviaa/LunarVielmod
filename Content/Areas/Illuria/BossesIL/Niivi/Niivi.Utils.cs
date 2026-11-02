@@ -102,7 +102,16 @@ public partial class Niivi
             dist = Vector2.Distance(_ikTarget, NPC.Center);
         }
     }
+    Vector2 ArcSwoopDLoop(float t, Vector2 origin, float rightD, float downD)
+    {
+        var left = origin;
+        var right = origin + new Vector2(rightD, 0);
+        right.Y += MathHelper.Lerp(0, downD, t * t);
+        //right.RotateAround(origin, t * MathHelper.TwoPi * 2);
+        var ltr = Vector2.Lerp(left, right, t);
+        return ltr;
 
+    }
     Vector2 ArcSwoop(float t, Vector2 origin, float down = 2000, float radius = 1500)
     {
         var left = origin + new Vector2(-radius, 0);

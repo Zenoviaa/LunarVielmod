@@ -32,13 +32,18 @@ public partial class Niivi
         {
             case 0:
                 {
+                    AI_IdleOut();
+                }
+                break;
+            case 1:
+                {
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
                         StartPosition = MyTarget.Center;
                         StartPosition.Y = _arenaY;
                         var sound = AssetReferences.Assets.Sounds.PrimCharge.Asset;
-                        SoundEngine.PlaySound(sound, NPC.position);
+                        SoundEngine.PlaySound(sound);
                         if (MultiplayerHelper.IsHost)
                         {
                             Side.X = Main.rand.NextBool(2) ? 1 : 1;
@@ -86,7 +91,7 @@ public partial class Niivi
                     }
                 }
                 break;
-            case 1:
+            case 2:
                 {
                     _outliner.attacking = true;
                     if (Timer == 1)
@@ -167,7 +172,7 @@ public partial class Niivi
                     }
                 }
                 break;
-            case 2:
+            case 3:
                 {
                     _isAfterImaging = true;
 
@@ -208,7 +213,7 @@ public partial class Niivi
                     }
                 }
                 break;
-            case 3:
+            case 4:
                 {
                     SwitchState(AIState.Idle);
                 }
