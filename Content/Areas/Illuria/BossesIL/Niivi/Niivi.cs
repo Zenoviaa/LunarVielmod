@@ -420,9 +420,9 @@ public partial class Niivi : ScarletBoss,
         else
         {
             SwitchState(RegularAttacks.NextPattern());
-
+            _pattern++;
         }
-        _pattern++;
+//        SwitchState(SpecialAttacks.NextPattern());
     }
 
     void ResetSegments()

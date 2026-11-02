@@ -1,5 +1,6 @@
 #include "../Helpers/Math.fxh"
 sampler spriteSampler : register(s0);
+sampler maskSampler : register(s1);
 sampler noiseSampler : register(s2);
 sampler gradientSampler : register(s3);
 float4 outsideColor;
@@ -29,14 +30,21 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     //we can assume the metaballs are already in texture spac
     float totalContribution = 0.0;
     float metaballRadiusSquared = metaballRadius * metaballRadius;
+    
+    /*
+    float4 maskColor = tex2D(maskSampler, coords);
+    return maskColor;*/
     for (int i = 0; i < 32; i++)
     {
         float2 mb = metaballs[i];
         float distSquared = DistanceSquared(coords, mb);
+      
         float influence = (metaballRadius / distSquared) * metaballStrength;
         influence += sin(time * 3.14 + coords.y * 8.0) * 0.025;
 
         float p = pow(influence, 1.4);
+      //  p *= maskColor.a;
+        
         totalContribution += p;
     }
 

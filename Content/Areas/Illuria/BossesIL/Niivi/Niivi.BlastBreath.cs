@@ -20,7 +20,7 @@ public partial class Niivi
     float BlastBreath_ShootTime => 60;
     float BlastBreath_SwoopOutTime => 140;
     float BlastBreath_ShootCount => 3;
-    int BlastBreath_Damage => 100;
+    int BlastBreath_Damage => 80;
 
     void AI_BlastBreath()
     {

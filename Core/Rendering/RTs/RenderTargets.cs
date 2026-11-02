@@ -43,6 +43,11 @@ public class RenderTargets : ModSystem
         return RenderTargetParameters.DefaultScreenTarget with { Width = 256, Height = 256 };
     });
 
+    public static readonly RenderTargetPool Target512x512 = new RenderTargetPool(() =>
+    {
+        return RenderTargetParameters.DefaultScreenTarget with { Width = 512, Height = 512 };
+    });
+
     /// <summary>
     /// A render target that matches half the screen size
     /// </summary>
@@ -90,7 +95,8 @@ public class RenderTargets : ModSystem
         SpeechBubbleTarget,
         DialogueBoxTarget,
         HalfDialogueBoxTarget,
-        QuarterDialogueBoxTarget
+        QuarterDialogueBoxTarget,
+        Target512x512
     };
 
     /// <summary>

@@ -87,6 +87,21 @@ public partial class Niivi
         frontArmDrawer.color = drawColor;
         sb.Draw(frontArmDrawer);
     }
+    public Vector2[] GetSegmentPoints()
+    {
+        if (_simpleChainRendering)
+            return Chain.points;
+        else
+        {
+            Vector2[] points = new Vector2[Segments.Length];
+            for(var i = 0; i < points.Length; i++)
+            {
+                ref var point = ref points[i];
+                point = Segments[i].position;
+            }
+            return points;
+        }
+    }
     void DrawBody2(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
         NiiviIceArenaRenderer.effectTimer = 30;
@@ -192,6 +207,15 @@ public partial class Niivi
         glowDrawer.color = starColor;
         glowDrawer.scale *= 0.5f;
         sb.Draw(glowDrawer);
+    }
+    public void DrawForMask(SpriteBatch spriteBatch)
+    {
+        if (_simpleChainRendering)
+        {
+            DrawBody2(spriteBatch, Main.screenPosition, Color.White);
+        }
+        else
+            DrawBody(spriteBatch, Main.screenPosition, Color.White);
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {

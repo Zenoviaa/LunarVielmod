@@ -17,6 +17,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
 
@@ -106,8 +107,12 @@ public class NiiviPrismaticBomb : ModProjectile
         get => (AIState)Projectile.ai[1];
         set => Projectile.ai[1] = (float)value;
     }
-    Player TargetPlayer => Main.player[(int)Projectile.ai[2]];
-
+    Player TargetPlayer => Parent.PlayerImTargeting;
+    NPC Parent
+    {
+        get => Main.npc[(int)Projectile.ai[2]];
+    }
+    UnifiedRandom Random => field ??= new();
     public override string Texture => ModType.NoTexture;
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -136,7 +141,7 @@ public class NiiviPrismaticBomb : ModProjectile
     {
         if (State == AIState.Charging)
             return false;
-        return MoonUtils.CircularHitbox(projHitbox, targetHitbox, HitboxRadius * 0.25F);
+        return MoonUtils.CircularHitbox(projHitbox, targetHitbox, HitboxRadius * 0.18F);
     }
 
     public override void SetStaticDefaults()
@@ -170,6 +175,8 @@ public class NiiviPrismaticBomb : ModProjectile
         _metaballBursting = MathHelper.Lerp(_metaballBursting, 1f, 0.1f);
         _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.06f);
         _frame = 0;
+        Parent.velocity = Vector2.Zero;
+        Parent.Center = Projectile.Center;
         switch (State)
         {
             case AIState.Charging:
@@ -199,28 +206,39 @@ public class NiiviPrismaticBomb : ModProjectile
     {
         var scalar = MetaballScalar;
 
+        if (Parent.ModNPC is not Niivi niivi)
+            return;
+
+        var points = niivi.GetSegmentPoints();
+        Random.SetSeed(1337);
+        var k = 0;
         //For this projectiles visual, we're going to use metaballs to get a blobby effect
         //First let's spawn initial offsets
         for(var i = 0; i < _metaballs.Length; i++)
         {
             ref var metaball = ref _metaballs[i];
+            var pointIndex = k;
+            k++;
+            k %= points.Length;
+            var centerPoint = niivi.NPC.Center;
+            centerPoint.X += Random.Next(-8, 8);
+            centerPoint.Y += Random.Next(-8, 8);
 
+
+            var initialPoint = (points[pointIndex] - centerPoint);
+            
             //We now have the metaballs origined around 0,0
             //So we apply a scalar to them
-            var metaballOrigin = InitialMetaballPoints[i].RotatedBy(Main.GlobalTimeWrappedHourly)
-                * scalar 
-                * MathHelper.Lerp(24F, 0.6f, _growthAlpha) 
-                * _metaballBursting
-                * ExtraMath.Osc(0.5f, 1f, speed: 16);
-
+            var metaballOrigin = initialPoint;
             //This is the origin point for the metabll
             var metaballOffset = -Vector2.UnitY * MetaballRotDistanceOffset;
             var speed = 2f;
             var rotatedOffset = metaballOffset.RotatedBy(Main.GlobalTimeWrappedHourly * MetaballRotSpeed * speed + i * 4);
             var metaballPosition = metaballOrigin + rotatedOffset;
+           /*
             metaballPosition += Projectile.velocity * MetaballVelocityInfluence;
             metaballPosition = Vector2.Lerp(metaballPosition, metaballOrigin, ExtraMath.Osc(0f, 1f, speed: 6, i * 4));
-               
+               */
             metaball = metaballPosition / MetaballDiv;
             metaball += new Vector2(0.5f);
             //This should give a bunch of points that are rotating clockwise around origin points, creating an interesting visual
@@ -498,7 +516,7 @@ public class NiiviPrismaticBomb : ModProjectile
         AmbientSuckingParticles();
 
         //we need to also simulate particles, but that'll be in a different function
-        Projectile.rotation += 0.05f;
+        Projectile.rotation = 0;
     }
     void AI_GetReady()
     {
@@ -516,7 +534,7 @@ public class NiiviPrismaticBomb : ModProjectile
         FXUtil.ApplyPrismaticPull(Projectile.Center, -max, MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / GetReadyTime)));
 
         //we need to also simulate particles, but that'll be in a different function
-        Projectile.rotation += 0.05f;
+        Projectile.rotation = 0;
         if (Timer >= GetReadyTime)
         {
             SwitchState(AIState.FALL);
@@ -555,7 +573,7 @@ public class NiiviPrismaticBomb : ModProjectile
         AmbientDashingParticles();
 
         //we need to also simulate particles, but that'll be in a different function
-        Projectile.rotation += 0.05f;
+        Projectile.rotation = 0;
         var y = ModContent.GetInstance<DomainExpansionManager>().hoverPlatformY;
         if(Projectile.Center.Y >= y)
         {
@@ -636,7 +654,7 @@ public class NiiviPrismaticBomb : ModProjectile
         var lerp3 = MathHelper.Lerp(lerp1, lerp2, ratio);
         Projectile.velocity = Vector2.UnitX * lerp3 * 25 + Vector2.Lerp(Vector2.Zero, Vector2.UnitX * 45, EasingFunction.InExpo(ratio));
         var rot = (Projectile.position - Projectile.oldPosition).ToRotation();
-        Projectile.rotation = Utils.AngleLerp(Projectile.rotation, rot, 0.1f);
+        Projectile.rotation = 0;
         FocusOnMe();
         AmbientDashingParticles();
 
@@ -786,7 +804,7 @@ public class NiiviPrismaticBomb : ModProjectile
         var lerp3 = MathHelper.Lerp(lerp1, lerp2, ratio);
         Projectile.velocity = Vector2.UnitX * lerp3 * 25;
         var rot = (Projectile.position - Projectile.oldPosition).ToRotation();
-        Projectile.rotation = Utils.AngleLerp(Projectile.rotation, rot, 0.1f);
+        Projectile.rotation = 0;
 
         FocusOnMeHARDER();
         AmbientDashingParticles();
@@ -856,11 +874,25 @@ public class NiiviPrismaticBomb : ModProjectile
 
     void DrawPrismaticOrb(SpriteBatch sb, Vector2 sp)
     {
+        if (Parent.ModNPC is not Niivi niivi)
+            return;
+
+        var gDevice = Main.graphics.GraphicsDevice;
+
+        sb.EndOut(out var oldParameters);
+        using var rt = RT.Context(RenderTargets.Target512x512);
+        using(RT.Clear(rt, Color.Transparent))
+        {
+            sb.Begin();
+            niivi.DrawForMask(sb);
+            sb.End();
+        }
+        sb.Begin(oldParameters);
         var pass = AssetReferences.Effects.Niivi.PrismBomb.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.outsideColor = Main.DiscoColor.ToVector4();
         pass.Parameters.insideColor = Main.DiscoColor.ToVector4();
-        pass.Parameters.metaballRadius = MathHelper.Lerp(0.05f, 1f, _growthAlpha);
+        pass.Parameters.metaballRadius = MathHelper.Lerp(0.05f, 0.2F, _growthAlpha);
         pass.Parameters.metaballStrength = 0.01f;
         pass.Parameters.metaballs = _metaballs;
         pass.Parameters.outlineColor = Main.DiscoColor.ToVector4();
@@ -871,6 +903,8 @@ public class NiiviPrismaticBomb : ModProjectile
         pass.Parameters.noiseTexelSize = ditherTex.GetTexelSize();
         pass.Apply();
 
+
+        Main.graphics.GraphicsDevice.Register(1, rt, SamplerState.PointClamp);
         Main.graphics.GraphicsDevice.Textures[2] = ditherTex.Value;
         Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.LinearWrap;
         using (sb.Ctx(sb.Parameters with { effect = pass.Shader }))
@@ -881,6 +915,8 @@ public class NiiviPrismaticBomb : ModProjectile
             drawer.rotation = Projectile.rotation;
             sb.Draw(drawer);
         }
+
+      //  niivi.DrawForMask(sb);
     }
 
     void DrawPrismaticFlash(SpriteBatch sb, Vector2 sp)

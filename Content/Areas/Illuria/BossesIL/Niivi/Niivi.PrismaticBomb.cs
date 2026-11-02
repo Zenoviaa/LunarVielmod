@@ -61,15 +61,17 @@ public partial class Niivi
                     if (Timer == 45 && MultiplayerHelper.IsHost)
                     {
                         var firer = ProjFirer.From<NiiviPrismaticBomb>(NPC);
-                        firer.ai2 = MyTarget.whoAmI;
+                        firer.ai2 = NPC.whoAmI;
                         firer.damage = PrismaticBomb_Damage;
                         firer.knockback = 1;
                         firer.New();
                     }
+                    _simpleChainRendering = true;
                     _isBLACK = true;
                     NPC.velocity *= 0.96F;
                     var targetRot = NPC.velocity.ToRotation();
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, Utils.AngleLerp(NPC.rotation, targetRot, 0.2f), 0.04f);
+                    LimpIKTarget();
                     //HoverInPlace();
                     if (Timer >= PrismaticBomb_AttackTime)
                     {

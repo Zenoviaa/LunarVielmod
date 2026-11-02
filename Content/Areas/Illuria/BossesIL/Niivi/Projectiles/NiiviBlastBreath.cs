@@ -234,7 +234,7 @@ public class NiiviBlastBreath : ModProjectile
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 64);
+        return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 32);
     }
 
     public override bool ShouldUpdatePosition()
