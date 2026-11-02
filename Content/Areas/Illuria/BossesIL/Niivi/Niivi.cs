@@ -55,11 +55,12 @@ public partial class Niivi : ScarletBoss,
     bool _isAfterImaging;
     bool _isTrailing;
     bool _isArmorAura;
+    bool _isBLACK;
 
     float _afAlpha;
     float _trailingAlpha;
     float _armorAlpha;
-
+    float _blackAlpha;
     bool _simpleChainRendering;
     Vector2 _vec1;
     Vector2 _vec2;
@@ -365,7 +366,7 @@ public partial class Niivi : ScarletBoss,
         _isAfterImaging = false;
         _isArmorAura = false;
         _isTrailing = false;
-
+        _isBLACK = false;
         switch (State)
         {
             case AIState.Spawn:
@@ -397,6 +398,7 @@ public partial class Niivi : ScarletBoss,
         _afAlpha = MathHelper.Lerp(_afAlpha, _isAfterImaging ? 1f : 0f, 0.1f);
         _armorAlpha = MathHelper.Lerp(_armorAlpha, _isArmorAura ? 1f : 0f, 0.1f);
         _trailingAlpha = MathHelper.Lerp(_trailingAlpha, _isTrailing ? 1f : 0f, 0.1f);
+        _blackAlpha = MathHelper.Lerp(_blackAlpha, _isBLACK ? 1f : 0f, 0.1f);
     }
 
     void ResetSegments()

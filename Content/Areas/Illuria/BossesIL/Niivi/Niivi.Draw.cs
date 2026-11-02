@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Core.Pixelation;
+using Terraria;
 using Terraria.GameContent;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
@@ -167,14 +168,41 @@ public partial class Niivi
         frontArmDrawer.color = drawColor;
         sb.Draw(frontArmDrawer);
     }
+    void DrawPixelatedStar(SpriteBatch sb, Vector2 sp)
+    {
+
+        var starColor = Color.Lerp(Color.Transparent, Main.DiscoColor * ExtraMath.Osc(0.5f, 1f, speed: 12), _blackAlpha);
+        starColor.A = 0;
+        var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star3.Asset, NPC.Center);
+        starDrawer.color = starColor;
+        starDrawer.scale *= 0.5f;
+
+        sb.Draw(starDrawer);
+        starColor = Color.Lerp(Color.Transparent, Color.White * ExtraMath.Osc(0.5f, 1f, speed: 12), _blackAlpha);
+        starColor.A = 0;
+        starDrawer.color = starColor;
+        starDrawer.scale *= 0.8f;
+
+        sb.Draw(starDrawer);
+
+        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+
+        starColor = Color.Lerp(Color.Transparent, Main.DiscoColor * ExtraMath.Osc(0.5f, 1f, speed: 12), _blackAlpha);
+        starColor.A = 0;
+        glowDrawer.color = starColor;
+        glowDrawer.scale *= 0.5f;
+        sb.Draw(glowDrawer);
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        drawColor = Color.Lerp(drawColor, Color.Black, _blackAlpha);
         if (_simpleChainRendering)
         {
             DrawBody2(spriteBatch, screenPos, drawColor);
         } 
         else
             DrawBody(spriteBatch, screenPos, drawColor);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedStar, DrawLayer.OverPlayers);
         return false;
     }
     public void DrawToRenderTargets()

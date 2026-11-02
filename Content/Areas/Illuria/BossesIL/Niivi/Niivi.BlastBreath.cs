@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
 using Stellamod.Core.Camera;
 using Terraria;
 using Terraria.Audio;
@@ -73,7 +74,7 @@ public partial class Niivi
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRot, 0.04f);
 
                     _isAfterImaging = true;
-
+                    _isBLACK = true;
                     _simpleChainRendering = true;
                     _ikTarget = ArcSwoopDown(ratio - 0.24f, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, BlastBreath_SwoopOutUpDistance);
                     _ikTarget.Y += ExtraMath.Osc(-32, 232);
@@ -95,7 +96,7 @@ public partial class Niivi
                         InitialVelocity = NPC.velocity;
                     
                     }
-
+                    _isBLACK = true;
                     var ratio = Timer / (BlastBreath_ShootTime);
                     ratio *= 0.18f;
 
@@ -120,7 +121,24 @@ public partial class Niivi
 
                     if(Timer == (int)(BlastBreath_ShootTime - 15))
                     {
-                        PixelPrimitiveCircleFactory.CreateGenericInBoom(NPC.Center, Color.White, Color.White, 15, 444);
+                        PixelPrimitiveCircleFactory.CreateGenericInBoom(NPC.Center, DrawUtilities.Prismatic, Color.White, 15, 444);
+                        var pos = NPC.Center;
+                        var dir = NPC.rotation.ToRotationVector2() * 2400;
+                        var endPos = CollisionHelper.SolidTileRayCast(pos, dir, 2400);
+                        for (var i =0; i < 64; i++)
+                        {
+                            
+                            var randPos = Vector2.Lerp(pos, endPos, Main.rand.NextFloat(0f, 1f));
+                            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                            {
+                                position = randPos,
+                                velocity = NPC.rotation.ToRotationVector2(),
+                                innerColor = DrawUtilities.Prismatic.ToVector4(),
+                                outerColor = DrawUtilities.Prismatic.ToVector4(),
+                                timeLeft = 30,
+                                scale = new Vector2(Main.rand.NextFloat(2f)),
+                            });
+                        }
                     }
 
                     if(Timer < BlastBreath_ShootTime)

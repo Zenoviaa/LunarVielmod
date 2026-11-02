@@ -29,7 +29,7 @@ public class NiiviFlyingStar : ModProjectile
         Projectile.hostile = true;
         Projectile.light = 0.7F;
         Projectile.extraUpdates = 1;
-        Projectile.timeLeft = 600;
+        Projectile.timeLeft = 1200;
     }
 
     void Flicker()
@@ -265,7 +265,20 @@ public class NiiviBlastBreath : ModProjectile
 
             _leftImpactPoint = CollisionHelper.SolidTileRayCast(_leftStart, leftVelocity, 2400);
             _rightImpactPoint = CollisionHelper.SolidTileRayCast(_rightStart, rightVelocity, 2400);
-
+            for (var i = 0; i < 80; i++)
+            {
+                var pos = Vector2.Lerp(Projectile.Center, _hitPoint, Main.rand.NextFloat(0f, 1f));
+                pos += Main.rand.NextVector2Circular(32, 32);
+                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                {
+                    position = pos,
+                    velocity = Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(1.5F) * 16,
+                    timeLeft = 60,
+                    innerColor = DrawUtilities.Prismatic.ToVector4(),
+                    outerColor = DrawUtilities.Prismatic.ToVector4(),
+                    scale = new Vector2(Main.rand.NextFloat(0.6f, 1f)),
+                });
+            }
 
             for (var i = 0; i < 128; i++)
             {
@@ -354,7 +367,7 @@ public class NiiviBlastBreath : ModProjectile
 
     float GetTrailWidth(float ratio)
     {
-        return MathHelper.Lerp(MathHelper.Lerp(0, 128, EasingFunction.OutQuad(ratio)), 0, EasingFunction.OutSine(Timer / Time));
+        return MathHelper.Lerp(MathHelper.Lerp(0, 96, EasingFunction.OutQuad(ratio)), 0, EasingFunction.OutSine(Timer / Time));
     }
 
     float GetTrailWidth2(float ratio)
@@ -409,6 +422,13 @@ public class NiiviBlastBreath : ModProjectile
             impactFrameDrawer.color = Color.Black;
             sb.Draw(impactFrameDrawer);
         }
+
+        var fourPointedStartDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star2.Asset, _hitPoint);
+        fourPointedStartDrawer.scale = Vector2.Lerp(Vector2.Zero, new Vector2(0.6F), Timer / Time);
+        fourPointedStartDrawer.rotation = Main.GlobalTimeWrappedHourly;
+        fourPointedStartDrawer.color = Color.Lerp(Color.White, Color.Transparent, EasingFunction.InSine(Timer / Time));
+        fourPointedStartDrawer.color.A = 0;
+        sb.Draw(fourPointedStartDrawer);
     }
 
     public override bool PreDraw(ref Color lightColor)
