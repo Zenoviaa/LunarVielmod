@@ -501,7 +501,7 @@ public partial class Niivi : ScarletBoss,
         NPC.velocity = vel;
         if(Timer >= IdleTime)
         {
-            SwitchState(AIState.FrostBreath);
+            SwitchState(AIState.BlastBreath);
         }
         NPC.rotation = (MyTarget.Center - NPC.Center).ToRotation();
     }
