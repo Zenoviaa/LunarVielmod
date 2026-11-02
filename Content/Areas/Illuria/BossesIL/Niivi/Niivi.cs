@@ -65,6 +65,12 @@ public partial class Niivi : ScarletBoss,
     float _blackAlpha;
     bool _simpleChainRendering;
     Vector2 _arenaCenter;
+
+
+    Vector2 _iceCrystalPosition;
+    Vector2 _starCrystalPosition;
+    Vector2 _lightningCrystalPosition;
+
     Vector2 _vec1;
     Vector2 _vec2;
     Vector2 _vec3;
@@ -109,7 +115,7 @@ public partial class Niivi : ScarletBoss,
         StarBomb,
         BlastBreath,
         PingPong,
-
+        AsrielLightning,
         PhaseTransition,
 
         //SPECIALS
@@ -278,6 +284,9 @@ public partial class Niivi : ScarletBoss,
         writer.WriteVector2(_vec3);
         writer.WriteVector2(_teleportPosition);
         writer.WriteVector2(_arenaCenter);
+        writer.WriteVector2(_iceCrystalPosition);
+        writer.WriteVector2(_lightningCrystalPosition);
+        writer.WriteVector2(_starCrystalPosition);
         writer.Write(_arenaY);
     }
     
@@ -289,6 +298,10 @@ public partial class Niivi : ScarletBoss,
         _vec3 = reader.ReadVector2();
         _teleportPosition = reader.ReadVector2();
         _arenaCenter = reader.ReadVector2();
+        _iceCrystalPosition = reader.ReadVector2();
+        _lightningCrystalPosition = reader.ReadVector2();
+        _starCrystalPosition = reader.ReadVector2();
+   
         _arenaY = reader.ReadSingle();
     }
 
@@ -376,6 +389,9 @@ public partial class Niivi : ScarletBoss,
         _isPrismatic = false;
         switch (State)
         {
+            case AIState.AsrielLightning:
+                AI_AsrielLightning();
+                break;
             case AIState.Spawn:
                 AI_Spawn();
                 break;

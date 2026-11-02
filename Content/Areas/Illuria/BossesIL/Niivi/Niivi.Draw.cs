@@ -6,6 +6,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
 public partial class Niivi
 {
+    public static int CrystalFrameCount => 9;
+    public static int IceCrystalFrame => 0;
+    public static int StarCrystalFrame => 1;
+    public static int LightningCrystalFrame => 2;
+    public static int CrystalWhiteFrameOffset => 3;
+    public static int CrystalOutlineFrameOffset => 6;
+
     void DrawBody(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
         NiiviIceArenaRenderer.effectTimer = 30;
