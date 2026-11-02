@@ -52,6 +52,7 @@ public class LineRig
 public partial class Niivi : ScarletBoss,
     IDrawToRenderTarget
 {
+    float _pattern;
     bool _isAfterImaging;
     bool _isTrailing;
     bool _isArmorAura;
@@ -63,6 +64,7 @@ public partial class Niivi : ScarletBoss,
     float _armorAlpha;
     float _blackAlpha;
     bool _simpleChainRendering;
+    Vector2 _arenaCenter;
     Vector2 _vec1;
     Vector2 _vec2;
     Vector2 _vec3;
@@ -234,7 +236,7 @@ public partial class Niivi : ScarletBoss,
                 field.AddPattern(AIState.FrostBreath, 1f);
                 field.AddPattern(AIState.StarBomb, 1f);
                 field.AddPattern(AIState.BlastBreath, 1f);
-                field.AddPattern(AIState.PingPong, 1f);
+              //  field.AddPattern(AIState.PingPong, 1f);
             }
             return field;
         }
@@ -247,8 +249,8 @@ public partial class Niivi : ScarletBoss,
             if (field == null)
             {
                 field = new();
-                field.AddPattern(AIState.SUPERPRISMATICRAY, 1f);
-                field.AddPattern(AIState.VoidSlash, 1f);
+            //    field.AddPattern(AIState.SUPERPRISMATICRAY, 1f);
+            //    field.AddPattern(AIState.VoidSlash, 1f);
                 field.AddPattern(AIState.PrismBomb, 1f);
             }
             return field;
@@ -275,6 +277,7 @@ public partial class Niivi : ScarletBoss,
         writer.WriteVector2(_vec2);
         writer.WriteVector2(_vec3);
         writer.WriteVector2(_teleportPosition);
+        writer.WriteVector2(_arenaCenter);
         writer.Write(_arenaY);
     }
     
@@ -285,6 +288,7 @@ public partial class Niivi : ScarletBoss,
         _vec2 = reader.ReadVector2();
         _vec3 = reader.ReadVector2();
         _teleportPosition = reader.ReadVector2();
+        _arenaCenter = reader.ReadVector2();
         _arenaY = reader.ReadSingle();
     }
 
@@ -338,6 +342,7 @@ public partial class Niivi : ScarletBoss,
 
         if (_arenaY == 0)
         {
+            _arenaCenter = NPC.Center;
             NPC.TargetClosest();
             _arenaY = MyTarget.Top.Y;
             NPC.netUpdate = true;
@@ -406,7 +411,18 @@ public partial class Niivi : ScarletBoss,
 
     void ChooseAttack()
     {
-        SwitchState(AIState.StarBomb);
+
+        if(_pattern >= 3)
+        {
+            _pattern = 0;
+            SwitchState(SpecialAttacks.NextPattern());
+        }
+        else
+        {
+            SwitchState(RegularAttacks.NextPattern());
+
+        }
+        _pattern++;
     }
 
     void ResetSegments()

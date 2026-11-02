@@ -151,7 +151,7 @@ public class NiiviPrismaticBomb : ModProjectile
         Projectile.WidthAndHeight = 64;
         Projectile.hostile = true;
         Projectile.timeLeft = 1800;
-        Projectile.tileCollide = true;
+        Projectile.tileCollide = false;
         Projectile.light = 1;
         Projectile.penetrate = -1;
         Projectile.ignoreWater = true;
@@ -525,10 +525,6 @@ public class NiiviPrismaticBomb : ModProjectile
 
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
-        if(State == AIState.FALL)
-        {
-            SwitchState(AIState.BOUNCEBOOM);
-        }
         return false;
     }
     void AI_Fall()
@@ -560,6 +556,11 @@ public class NiiviPrismaticBomb : ModProjectile
 
         //we need to also simulate particles, but that'll be in a different function
         Projectile.rotation += 0.05f;
+        var y = ModContent.GetInstance<DomainExpansionManager>().hoverPlatformY;
+        if(Projectile.Center.Y >= y)
+        {
+            SwitchState(AIState.BOUNCEBOOM);
+        }
     }
 
     void BounceBoomNoWave()

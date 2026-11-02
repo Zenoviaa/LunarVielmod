@@ -42,7 +42,7 @@ public partial class Niivi
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
-                        StartPosition = MyTarget.Center;
+                        StartPosition = _arenaCenter;
                         StartPosition.Y = _arenaY;
                         StartPosition.Y -= 256;
                         StartPosition.X -= Idle_SwoopInStartDistance * 1.2f;
