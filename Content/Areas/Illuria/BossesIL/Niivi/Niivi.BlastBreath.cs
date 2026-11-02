@@ -10,7 +10,7 @@ public partial class Niivi
     float BlastBreath_SwoopDepth => 1300;
 
     float BlastBreath_SwoopOutRightDistance => 1024;
-    float BlastBreath_SwoopOutUpDistance => -1024;
+    float BlastBreath_SwoopOutUpDistance => 1024;
 
 
     float BlastBreath_ShootTime => 60;
@@ -35,7 +35,7 @@ public partial class Niivi
                         if (MultiplayerHelper.IsHost)
                         {
                             Side.X = Main.rand.NextBool(2) ? -1 : 1;
-                            Teleport(StartPosition + new Vector2(-BlastBreath_SwoopOutRightDistance * Side.X, BlastBreath_SwoopOutUpDistance / 2));
+                            Teleport(StartPosition + new Vector2(-BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance / 2));
                             NPC.netUpdate = true;
                         }
                     }
@@ -47,7 +47,7 @@ public partial class Niivi
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
                     var originPoint = StartPosition;
-                    var posToMoveTo = ArcSwoopDown(ratio, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance);
+                    var posToMoveTo = ArcSwoopDown(ratio, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, BlastBreath_SwoopOutUpDistance);
                     var vel = (posToMoveTo - NPC.Center);
                     NPC.velocity = vel;
 
@@ -58,7 +58,7 @@ public partial class Niivi
                     _isAfterImaging = true;
 
                     _simpleChainRendering = true;
-                    _ikTarget = ArcSwoopDown(ratio - 0.24f, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance);
+                    _ikTarget = ArcSwoopDown(ratio - 0.24f, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, BlastBreath_SwoopOutUpDistance);
                     _ikTarget.Y += ExtraMath.Osc(-32, 232);
                     _ikTarget.X += ExtraMath.Osc(0, 187);
                     if (Timer >= BlastBreath_SwoopInTime)
@@ -110,14 +110,14 @@ public partial class Niivi
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
                     var originPoint = StartPosition;
 
-                    var posToMoveTo = ArcSwoopUp(ratio, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, BlastBreath_SwoopOutUpDistance);
+                    var posToMoveTo = ArcSwoopUp(ratio, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance);
                     var vel = (posToMoveTo - NPC.Center);
                     NPC.velocity = vel;
                     var targetRot = vel.ToRotation();
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRot, 0.01f);
 
                     _simpleChainRendering = true;
-                    _ikTarget = ArcSwoopUp(ratio - 0.24f, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, BlastBreath_SwoopOutUpDistance);
+                    _ikTarget = ArcSwoopUp(ratio - 0.24f, originPoint, BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance);
                     _ikTarget.Y += ExtraMath.Osc(-32, 232);
                     _ikTarget.X += ExtraMath.Osc(0, 187);
                     if (Timer >= BlastBreath_SwoopOutTime)
