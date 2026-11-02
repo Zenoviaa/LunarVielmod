@@ -6,12 +6,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
 public partial class Niivi
 {
+    Vector2 BlastBreath_SwoopInOffset => new Vector2(-128, -256);
+
     float BlastBreath_SwoopInTime => 150;
     float BlastBreath_SwoopDepth => 1300;
 
+
     float BlastBreath_SwoopOutRightDistance => 1024;
     float BlastBreath_SwoopOutUpDistance => 1024;
-
 
     float BlastBreath_ShootTime => 60;
     float BlastBreath_SwoopOutTime => 140;
@@ -35,14 +37,17 @@ public partial class Niivi
                         if (MultiplayerHelper.IsHost)
                         {
                             Side.X = Main.rand.NextBool(2) ? -1 : 1;
-                            Teleport(StartPosition + new Vector2(-BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance / 2));
+                            var offset = BlastBreath_SwoopInOffset;
+                            offset.X *= Side.X;
+                            Teleport(StartPosition 
+                                + new Vector2(-BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance) 
+                                + offset);
                             NPC.netUpdate = true;
                         }
                     }
 
                     _outliner.warning = true;
                     var ratio = Timer / BlastBreath_SwoopInTime;
-                    ratio *= 0.5f;
 
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
