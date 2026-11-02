@@ -17,6 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
+
 public class LineRig
 {
     public struct LineSegment
@@ -28,6 +29,7 @@ public class LineRig
         public float length;
         public int frameIndex;
     }
+
 
     public LineRig(int numPoints)
     {
@@ -52,12 +54,14 @@ public class LineRig
 public partial class Niivi : ScarletBoss,
     IDrawToRenderTarget
 {
+    bool _useFK;
     float _pattern;
     bool _isAfterImaging;
     bool _isTrailing;
     bool _isArmorAura;
     bool _isBLACK;
     bool _isPrismatic;
+    float _invisAlpha;
     float _prismaticAlpha;
     float _afAlpha;
     float _trailingAlpha;
@@ -76,6 +80,7 @@ public partial class Niivi : ScarletBoss,
     Vector2 _vec3;
     Vector2 _teleportPosition;
     Outliner _outliner;
+    Vector2[] SegmentPositions => field ??= new Vector2[SegmentCount];
     Vector2[] SegmentOrigins = new Vector2[]
     {
         //Head
@@ -185,6 +190,24 @@ public partial class Niivi : ScarletBoss,
                 field[SegmentCount - 1] = 5;
             }
 
+            return field;
+        }
+    }
+    LineRig ForwardKinematicsRig
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = new(SegmentCount);
+                for (var i = 0; i < field.segments.Length; i++)
+                {
+                    ref var segment = ref field.segments[i];
+                    segment.position = new Vector2(i * -16, 0);
+                    segment.angleBehind = 0;
+                    segment.length = Sizes[SegmentFrameIndices[i]] * SegmentBaseScales[i];
+                }
+            }
             return field;
         }
     }
@@ -387,6 +410,8 @@ public partial class Niivi : ScarletBoss,
         _isTrailing = false;
         _isBLACK = false;
         _isPrismatic = false;
+        _useFK = false;
+        _invisAlpha = MathHelper.Lerp(_invisAlpha, 1f, 0.03f);
         switch (State)
         {
             case AIState.AsrielLightning:
@@ -438,7 +463,8 @@ public partial class Niivi : ScarletBoss,
             SwitchState(RegularAttacks.NextPattern());
             _pattern++;
         }
-//        SwitchState(SpecialAttacks.NextPattern());
+        //        SwitchState(SpecialAttacks.NextPattern());
+        SwitchState(AIState.BlastBreath);
     }
 
     void ResetSegments()
@@ -473,6 +499,30 @@ public partial class Niivi : ScarletBoss,
         {
             ref var segment = ref segments[i];
             Lighting.AddLight(segment.position, new Vector3(1f));
+        }
+        if (_useFK)
+        {
+            ForwardKinematicsRig.Resolve(NPC.Center, 0);
+            for(var i = 0; i < SegmentPositions.Length; i++)
+            {
+                ref var pos = ref SegmentPositions[i];
+                pos = ForwardKinematicsRig.segments[i].position;
+            }
+        } else if (_simpleChainRendering)
+        {
+            for (var i = 0; i < SegmentPositions.Length; i++)
+            {
+                ref var pos = ref SegmentPositions[i];
+                pos = Chain.points[i];
+            }
+        }
+        else
+        {
+            for (var i = 0; i < SegmentPositions.Length; i++)
+            {
+                ref var pos = ref SegmentPositions[i];
+                pos = Segments[i].position;
+            }
         }
         _wingFrameCounter++;
         if(_wingFrameCounter >= 4)

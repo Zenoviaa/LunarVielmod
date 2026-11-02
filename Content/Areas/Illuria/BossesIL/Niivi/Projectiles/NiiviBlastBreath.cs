@@ -208,6 +208,8 @@ public class NiiviFlyingStar : ModProjectile
 
 public class NiiviBlastBreath : ModProjectile
 {
+    int _starBoomFrame2;
+    float _starBoomFrameTimer2;
     int _starBoomFrame;
     float _starBoomFrameTimer;
     int StarBoomFrameCount => 25;
@@ -255,6 +257,15 @@ public class NiiviBlastBreath : ModProjectile
             {
                 _starBoomFrameTimer = 0;
                 _starBoomFrame++;
+            }
+        }
+        if (_starBoomFrame2 < StarBoomFrameCount)
+        {
+            _starBoomFrameTimer2++;
+            if (_starBoomFrameTimer2 >= 1)
+            {
+                _starBoomFrameTimer2 = 0;
+                _starBoomFrame2++;
             }
         }
         if (Timer == 1)
@@ -323,7 +334,7 @@ public class NiiviBlastBreath : ModProjectile
             fac.particleCount *= 8;
             ParticleUtils.CreateSwirlingDustCircle(fac);
 
-            ShakeScreenPosition.Shake = 4;
+            ShakeScreenPosition.Shake = 7;
             FXUtil.ShakeCamera(_hitPoint, 1024, 16);
 
             var sound = AssetReferences.Assets.Sounds.NStarblast.Asset with { PitchVariance = 0.5f };
@@ -442,20 +453,28 @@ public class NiiviBlastBreath : ModProjectile
 
     void DrawStarsBoom(SpriteBatch sb, Vector2 sp)
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviStarsBoom.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviStarsBoom.Asset, _hitPoint);
         drawer.VerticalFrame(_starBoomFrame, StarBoomFrameCount);
         drawer.CenterOrigin();
-        drawer.color = Color.White;
+        drawer.color = Color.White * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
         drawer.color.A = 0;
-        drawer.scale *= 1.5F;
+        drawer.scale *= MathHelper.Lerp(3.5f, 5f, EasingFunction.OutSine(Timer / Time));
+        sb.Draw(drawer);
+
+        drawer.VerticalFrame(_starBoomFrame2, StarBoomFrameCount);
+        drawer.CenterOrigin();
+        drawer.color = Color.White * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
+        drawer.color.A = 0;
+        drawer.scale = Vector2.One * MathHelper.Lerp(4.5f, 8f, EasingFunction.OutSine(Timer / Time));
         sb.Draw(drawer);
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedBeam, DrawLayer.OverPlayers);
-        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedBeamImpact, DrawLayer.OverPlayers);
+
         PixelationManager.QueueSpritebatchDrawAction(DrawStarsBoom, DrawLayer.OverPlayers);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedBeamImpact, DrawLayer.OverPlayers);
         return false;
     }
 }

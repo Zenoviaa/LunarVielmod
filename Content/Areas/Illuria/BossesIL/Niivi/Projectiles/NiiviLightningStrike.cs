@@ -1,4 +1,6 @@
 ﻿using Stellamod.Common;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.Pixelation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,9 +128,79 @@ public class NiiviLightningStrike : ModProjectile
             Projectile.Kill();
         }
     }
-    
+    float GetTrailWidth(float ratio)
+    {
+        return MathHelper.Lerp(MathHelper.Lerp(0, 96, EasingFunction.OutQuad(ratio)), 0, EasingFunction.OutSine(Timer / StrikeTime));
+    }
+
+    float GetTrailWidth2(float ratio)
+    {
+        return GetTrailWidth(ratio) * 1.3f;
+    }
+
+    Color GetTrailColor(float ratio)
+    {
+
+        return Color.White;
+    }
+
+    Color GetTrailColor2(float ratio)
+    {
+        Color prismatic = Color.Red;
+        prismatic.ScrollHue(Timer * 24 + ratio * 255);
+        prismatic = Color.Lerp(prismatic, Color.White, 0.9F);
+        return prismatic * 0.4f;
+    }
+    void DrawPixelatedBeam(GraphicsDevice gDevice)
+    {
+
+        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
+        bloomTrailShader.InnerColor = Main.DiscoColor;
+        bloomTrailShader.OuterColor = Main.DiscoColor;
+
+        TrailDrawer.ClearPrimitives();
+        for (var i = 0; i < NumStrikes; i++)
+        {
+            if (_randIndex == i)
+                continue;
+            var ratio = (float)i / (float)NumStrikes;
+            var startPOsition = Vector2.Lerp(TopLeft, TopRight, ratio);
+            var endPosition = startPOsition + new Vector2(0, _bottomY);
+            var points = DrawUtilities.InterpolateBetweenPoints(startPOsition, endPosition, 16);
+            TrailDrawer.PreparePrimitives(points, GetTrailColor2, GetTrailWidth2);
+        }
+
+
+        TrailDrawer.DrawCached(bloomTrailShader);
+
+        var pass = AssetReferences.Effects.Niivi.PrismaticBreath.CreatePrimitivesPass();
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Parameters.distortionStrength = 0.03f;
+        pass.Apply();
+        gDevice.Register(0, AssetReferences.Assets.LaserTextures.Lightning2.Asset.Value, SamplerState.LinearWrap);
+        gDevice.Register(1, AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value, SamplerState.LinearWrap);
+
+
+        TrailDrawer.ClearPrimitives();
+        for (var i = 0; i < NumStrikes; i++)
+        {
+            if (_randIndex == i)
+                continue;
+            var ratio = (float)i / (float)NumStrikes;
+            var startPOsition = Vector2.Lerp(TopLeft, TopRight, ratio);
+            var endPosition = startPOsition + new Vector2(0, _bottomY);
+            var points = DrawUtilities.InterpolateBetweenPoints(startPOsition, endPosition, 16);
+            TrailDrawer.PreparePrimitives(points, GetTrailColor, GetTrailWidth);
+        }
+        TrailDrawer.DrawCached(pass.Shader);
+    }
+
+
     public override bool PreDraw(ref Color lightColor)
     {
+        if(State == AIState.Strike)
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedBeam);
         return false;
     }
 }
