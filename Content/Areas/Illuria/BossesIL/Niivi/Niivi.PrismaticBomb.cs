@@ -33,7 +33,7 @@ public partial class Niivi
                     posToMoveTo += velToGoTo;
                     NPC.velocity = Vector2.Zero;
                     NPC.Center = posToMoveTo;
-                    TryLookAtTarget();
+
                     if(Timer >= PrismaticBomb_PrepTime)
                     {
                         Timer = 0;
@@ -53,7 +53,7 @@ public partial class Niivi
                         firer.New();
                     }
                     NPC.velocity = Vector2.Zero;
-                    TryLookAtBomb();
+
                     if(Timer >= PrismaticBomb_AttackTime)
                     {
                         Timer = 0;

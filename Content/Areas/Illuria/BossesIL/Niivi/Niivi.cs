@@ -52,6 +52,14 @@ public class LineRig
 public partial class Niivi : ScarletBoss,
     IDrawToRenderTarget
 {
+    bool _isAfterImaging;
+    bool _isTrailing;
+    bool _isArmorAura;
+
+    float _afAlpha;
+    float _trailingAlpha;
+    float _armorAlpha;
+
     bool _simpleChainRendering;
     Vector2 _vec1;
     Vector2 _vec2;
@@ -90,15 +98,24 @@ public partial class Niivi : ScarletBoss,
         Idle,
         Despawn,
         FlyAroundPlayer,
-        PrismBomb,
+
+        //Phase 1
+        //Niivi gets attack variations in phase 2
         FrostBreath,
         StarBomb,
-        PrismaticRay,
+        BlastBreath,
+        PingPong,
+
+        PhaseTransition,
+
+        //SPECIALS
+        PrismBomb,
+        SUPERPRISMATICRAY,
+        VoidSlash,
         Death,
     }
     int _wingFrame;
     float _wingFrameCounter;
-    int BodyEndIndex => 5;
     float _arenaY;
     int SegmentCount => 16;
     Vector2 _ikTarget;
@@ -205,6 +222,37 @@ public partial class Niivi : ScarletBoss,
         }
     }
 
+    PatternManager<AIState> RegularAttacks
+    {
+        get
+        {
+            if(field == null)
+            {
+                field = new();
+                field.AddPattern(AIState.FrostBreath, 1f);
+                field.AddPattern(AIState.StarBomb, 1f);
+                field.AddPattern(AIState.BlastBreath, 1f);
+                field.AddPattern(AIState.PingPong, 1f);
+            }
+            return field;
+        }
+    }
+
+    PatternManager<AIState> SpecialAttacks
+    {
+        get
+        {
+            if (field == null)
+            {
+                field = new();
+                field.AddPattern(AIState.SUPERPRISMATICRAY, 1f);
+                field.AddPattern(AIState.VoidSlash, 1f);
+                field.AddPattern(AIState.PrismBomb, 1f);
+            }
+            return field;
+        }
+    }
+
     ref float Timer => ref NPC.ai[0];
     AIState State
     {
@@ -212,6 +260,7 @@ public partial class Niivi : ScarletBoss,
         set => NPC.ai[1] = (float)value;
     }
     ref float AttackCycle => ref NPC.ai[2];
+    ref float AttackCount => ref NPC.ai[3];
     float SpawnTime => 60;
     float DespawnTime => 60;
     float IdleTime => 120;
@@ -260,7 +309,7 @@ public partial class Niivi : ScarletBoss,
 
         //We have to upscale this boss cause he's really hard and you're not really supposed to be him lol
         NPC.damage = 1;
-        NPC.defense = 48;
+        NPC.defense = 54;
         NPC.lifeMax = 200_000;
 
         NPC.scale = 1f;
@@ -313,6 +362,10 @@ public partial class Niivi : ScarletBoss,
         NiiviRoamingHelper.LastKnownNiiviLocation = NPC.Center;
         Lighting.AddLight(NPC.Center, new Vector3(0.8f));
         _outliner.SetDefaults();
+        _isAfterImaging = false;
+        _isArmorAura = false;
+        _isTrailing = false;
+
         switch (State)
         {
             case AIState.Spawn:
@@ -333,17 +386,19 @@ public partial class Niivi : ScarletBoss,
             case AIState.StarBomb:
                 AI_StarBomb();
                 break;
+            case AIState.BlastBreath:
+                AI_BlastBreath();
+                break;
+            case AIState.PingPong:
+                AI_PingPong();
+                break;
         }
-    }
-    void TryLookAtTarget()
-    {
 
+        _afAlpha = MathHelper.Lerp(_afAlpha, _isAfterImaging ? 1f : 0f, 0.1f);
+        _armorAlpha = MathHelper.Lerp(_armorAlpha, _isArmorAura ? 1f : 0f, 0.1f);
+        _trailingAlpha = MathHelper.Lerp(_trailingAlpha, _isTrailing ? 1f : 0f, 0.1f);
     }
 
-    void TryLookAtBomb()
-    {
-
-    }
     void ResetSegments()
     {
         var segments = Segments;
@@ -351,7 +406,6 @@ public partial class Niivi : ScarletBoss,
         {
             ref var segment = ref segments[i];
             segment.position = NPC.Center + _ikInitialDirection * 32;
-
         }
         Segments = segments;
     }
@@ -394,6 +448,7 @@ public partial class Niivi : ScarletBoss,
         {
             Timer = 0;
             AttackCycle = 0;
+            AttackCount = 0;
             State = state;
             NPC.netUpdate = true;
         }
@@ -422,7 +477,26 @@ public partial class Niivi : ScarletBoss,
     }
     void AI_Idle()
     {
+        ref Vector2 StartPosition = ref _vec1;
         Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+
+                }
+                break;
+            case 1:
+                {
+
+                }
+                break;
+            case 2:
+                {
+
+                }
+                break;
+        }
         var vel = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8;
         NPC.velocity = vel;
         if(Timer >= IdleTime)
@@ -435,7 +509,13 @@ public partial class Niivi : ScarletBoss,
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
+        if(NPC.life <= 0)
+        {
+            if(State != AIState.Death)
+            {
+                SwitchState(AIState.Death);
+            }
+            NPC.life = 1;
+        }
     }
-
-
 }

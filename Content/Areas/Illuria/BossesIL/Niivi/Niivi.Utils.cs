@@ -50,7 +50,23 @@ public partial class Niivi
         var lerp = leftToRight + new Vector2(0, topToBottom);
         return lerp;
     }
+    Vector2 ArcSwoopUp(float t, Vector2 origin, float rightD, float upD)
+    {
+        var left = origin;
+        var right = origin + new Vector2(rightD, 0);
+        var leftToRight = Vector2.Lerp(left, right, t);
+        leftToRight.Y += MathHelper.Lerp(0, upD, t * t);
+        return leftToRight;
+    }
+    Vector2 ArcSwoopDown(float t, Vector2 origin, float rightD, float upD)
+    {
+        var left = origin;
+        var right = origin + new Vector2(rightD, 0);
+        var leftToRight = Vector2.Lerp(left, right, t);
+        leftToRight.Y += MathHelper.Lerp(0, upD, (t * t));
+        return leftToRight;
 
+    }
     //Ok
     //so the way we're gonna do this boss is by making TONS OF HECKING CURVES
     //Every motion will be preset just with calcualted points
