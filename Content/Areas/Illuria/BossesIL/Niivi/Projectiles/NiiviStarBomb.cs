@@ -521,7 +521,7 @@ public class NiiviSillyStar : ModProjectile
             _mad = true;
             if(Projectile.velocity.Length() < 15)
                 Projectile.velocity *= 1.02f;
-            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPlayer.Center, MathHelper.Lerp(5f, 2f,(Timer - 100F)/70F));
+            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPlayer.Center, MathHelper.Lerp(5f, 0.7F,(Timer - 100F)/70F));
             Projectile.rotation += MathF.Sign(Projectile.velocity.X) * 0.04f;
         }
 
