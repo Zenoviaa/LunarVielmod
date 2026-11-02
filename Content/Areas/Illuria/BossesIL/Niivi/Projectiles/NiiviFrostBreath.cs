@@ -26,7 +26,7 @@ public class NiiviFrostSpike : ModProjectile,
         get
         {
             float inScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / 60F));
-            float outScale = MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / 120F));
+            float outScale = MathHelper.Lerp(1f, 0.7f, EasingFunction.InSine(Timer / 900F));
             return inScale * outScale;
         }
     }
@@ -62,10 +62,10 @@ public class NiiviFrostSpike : ModProjectile,
     {
         base.SetDefaults();
         Projectile.light = 0.7F;
-        Projectile.width = 64;
-        Projectile.height = 256;
+        Projectile.width = 32;
+        Projectile.height = 128;
         Projectile.hostile = true;
-        Projectile.timeLeft = 120;
+        Projectile.timeLeft = 900;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
     }
@@ -78,7 +78,7 @@ public class NiiviFrostSpike : ModProjectile,
         {
             if (this.OwnedByLocalClient())
             {
-                var scale = Main.rand.NextFloat(0.7f, 1f);
+                var scale = Main.rand.NextFloat(0.9f, 1f);
                 _scale = new Vector2(scale);
                 _rot = Main.rand.NextFloat(-0.3f, 0.3f);
                 Projectile.netUpdate = true;
@@ -102,7 +102,7 @@ public class NiiviFrostSpike : ModProjectile,
         if(Projectile.frame < Main.projFrames[Type] - 1)
         {
             Projectile.frameCounter++;
-            if(Projectile.frameCounter >= 6)
+            if(Projectile.frameCounter >= 4)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
@@ -116,6 +116,22 @@ public class NiiviFrostSpike : ModProjectile,
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        for(var i = 0; i < 64; i++)
+        {
+            var pos = Projectile.Center;
+            pos += Main.rand.NextVector2Circular(32, 128);
+            var vel = -Vector2.UnitY * 6;
+            vel = vel.RotatedByRandom(1.5F);
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos,
+                velocity = vel,
+                innerColor = Color.White.ToVector4(),
+                outerColor = Color.SkyBlue.ToVector4(),
+                timeLeft = 60,
+                scale = new Vector2(Main.rand.NextFloat(0.4f, 1f)),
+            });
+        }
     }
     void DrawSpike(SpriteBatch sb, Color lightColor)
     {
@@ -167,6 +183,7 @@ public class NiiviFrostBreath : ModProjectile
         Projectile.penetrate = -1;
         Projectile.light = 0.6f;
         Projectile.timeLeft = 600;
+        Projectile.hostile = true;
     }
 
     public override bool ShouldUpdatePosition()
@@ -184,6 +201,10 @@ public class NiiviFrostBreath : ModProjectile
             return true;
         return false;
     }
+    public void CrackVFX(Vector2 position)
+    {
+        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 45, color = Color.White });
+    }
 
     public override void AI()
     {
@@ -195,6 +216,7 @@ public class NiiviFrostBreath : ModProjectile
             Projectile.Kill();
         }
 
+        //FXUtil.ApplyVignette(-0.3f, 2, 120);
         ShakeScreenPosition.Shake = 2;
         Vector2 parentLook = Parent.rotation.ToRotationVector2();
         Projectile.Center = Parent.Center + parentLook * new Vector2(54, 67);
@@ -241,7 +263,20 @@ public class NiiviFrostBreath : ModProjectile
                     var ratio = Main.rand.NextFloat(0.2f, 0.8f);
                     var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
                     var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
-
+                    pos2 += vel2 * 64;
+                    Particles.IceSpike.Spawn(new()
+                    {
+                        position = pos2 + vel2 * 46,
+                        rotation = Main.rand.NextFloat(-0.3f, 0.3f),
+                        timeLeft = 180,
+                        timediv = 180,
+                    });
+                }
+                {
+                    var ratio = Main.rand.NextFloat(0.2f, 0.8f);
+                    var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
+                    var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
+                    pos2 += vel2 * 64;
                     Particles.IceSpike.Spawn(new()
                     {
                         position = pos2 + vel2 * 46,
@@ -249,6 +284,9 @@ public class NiiviFrostBreath : ModProjectile
                         timeLeft = 60,
                         timediv = 60,
                     });
+                }
+                {
+
                 }
             }
         }
@@ -321,16 +359,17 @@ public class NiiviFrostBreath : ModProjectile
             }
         }
 
-        if (Main.rand.NextBool(15))
+        if(Timer % 5 == 0)
             MakeIceSpikeParticles();
 
-
-
         MakeImpactParticles();
-        if(this.OwnedByLocalClient() && Timer % 60 == 0)
+        if(this.OwnedByLocalClient() && Timer % 20 == 0)
         {
             var firer = ProjFirer.From<NiiviFrostSpike>(Projectile);
+            firer.damage /= 3;
             firer.position = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, 0.5f);
+            var vel = Vector2.Lerp(leftVelocity, rightVelocity, 0.5F);
+           // firer.position -= vel * 64;
             firer.velocity = -Vector2.UnitY;
             firer.New();
         }

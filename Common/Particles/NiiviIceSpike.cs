@@ -8,10 +8,12 @@ public class NiiviIceSpike : ParticleUpdater<NiiviIceSpike.Data>
     public struct Data : IParticleData
     {
         public Vector2 position;
+        public float scale;
         public float rotation;
         public float timediv;
         public float timeLeft;
         public float timer;
+        public SpriteEffects spriteEffects;
         public bool IsActive => timeLeft > 0;
     }
 
@@ -33,14 +35,15 @@ public class NiiviIceSpike : ParticleUpdater<NiiviIceSpike.Data>
     public override void OnSpawn(ref Data particle, in int index)
     {
         base.OnSpawn(ref particle, index);
-
+        particle.scale = Main.rand.NextFloat(0.95f, 1f);
+        particle.spriteEffects = Main.rand.NextBool(2) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
     }
     private void DrawParticles(On_Main.orig_DrawDust orig, Main self)
     {
         orig(self);
         if (_length <= 0)
             return;
-        PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.OverPlayers);
+        PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.OverNPCs);
     }
 
     protected override void UpdateParticles()
@@ -61,13 +64,17 @@ public class NiiviIceSpike : ParticleUpdater<NiiviIceSpike.Data>
             ref var particle = ref _particles[i];
             var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviImpactIceSpike.Asset, particle.position);
             drawer.rotation = particle.rotation;
+            drawer.color = Color.White * 0.4f;
+            drawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InSine(particle.timer / particle.timediv));
+            drawer.color.A = 0;
             var scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.OutExpo(particle.timer / particle.timediv));
-            var scale2 = Vector2.Lerp(Vector2.One, Vector2.Zero, EasingFunction.InExpo(particle.timer / particle.timediv));
-            var scale3 = Vector2.Lerp(scale, scale2, particle.timer / 60F);
+            var scale2 = Vector2.Lerp(Vector2.One, new Vector2(0.8f), particle.timer / particle.timediv);
+            var scale3 = Vector2.Lerp(scale, scale2, particle.timer / particle.timediv) * 0.95f;
             drawer.scale = scale3;
+            drawer.scale *= particle.scale;
+            drawer.spriteEffects = particle.spriteEffects;
             drawer.BottomCenterOrigin();
             spriteBatch.Draw(drawer);
-            particle.timeLeft--;
         }
     }
 

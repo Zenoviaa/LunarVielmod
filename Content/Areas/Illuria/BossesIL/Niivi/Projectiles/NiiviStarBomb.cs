@@ -229,8 +229,9 @@ public class NiiviSillyStarMaker : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueueSpritebatchDrawAction(DrawGradient, DrawLayer.OverPlayers);
-       // PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrails, DrawLayer.OverNPCs);
+        // PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrails, DrawLayer.OverNPCs);
         AuroraEffectRenderer.effectTimer = 30;
+        StarDancersRenderer.starsTimer = 30;
 
         return false;
     }

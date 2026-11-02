@@ -12,6 +12,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 public partial class Niivi
 {
     bool _didBreath;
+    int FrostBreath_Damage => 90;
     float FrostBreath_SwoopTime => 300;
     float FrostBreath_SwoopRadius => 1500;
     float FrostBreath_SwoopDepth => 1500;
@@ -39,6 +40,7 @@ public partial class Niivi
                     {
                         _didBreath = true;
                         var firer = ProjFirer.From<NiiviFrostBreath>(NPC);
+                        firer.damage = FrostBreath_Damage;
                         firer.ai1 = NPC.whoAmI;
                         firer.ai2 = FrostBreath_SwoopTime - 30;
                         firer.New();
