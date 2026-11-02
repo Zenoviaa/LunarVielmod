@@ -208,10 +208,12 @@ public class NiiviFlyingStar : ModProjectile
 
 public class NiiviBlastBreath : ModProjectile
 {
+    int _starBoomFrame;
+    float _starBoomFrameTimer;
+    int StarBoomFrameCount => 25;
+
     Vector2 _leftStart;
     Vector2 _rightStart;
-    Vector2 _leftImpactPoint;
-    Vector2 _rightImpactPoint;
     Vector2 _hitPoint;
     public override string Texture => ModType.NoTexture;
     float Time => 45;
@@ -246,6 +248,15 @@ public class NiiviBlastBreath : ModProjectile
     {
         base.AI();
         Timer++;
+        if(_starBoomFrame < StarBoomFrameCount)
+        {
+            _starBoomFrameTimer++;
+            if(_starBoomFrameTimer >= 2)
+            {
+                _starBoomFrameTimer = 0;
+                _starBoomFrame++;
+            }
+        }
         if (Timer == 1)
         {
             _hitPoint = CollisionHelper.SolidTileRayCast(Projectile.Center, Projectile.velocity, Projectile.velocity.Length());
@@ -263,8 +274,6 @@ public class NiiviBlastBreath : ModProjectile
             var rightVelocity = _rightStart - Projectile.Center;
             rightVelocity = rightVelocity.SafeNormalize(Vector2.Zero);
 
-            _leftImpactPoint = CollisionHelper.SolidTileRayCast(_leftStart, leftVelocity, 2400);
-            _rightImpactPoint = CollisionHelper.SolidTileRayCast(_rightStart, rightVelocity, 2400);
             for (var i = 0; i < 80; i++)
             {
                 var pos = Vector2.Lerp(Projectile.Center, _hitPoint, Main.rand.NextFloat(0f, 1f));
@@ -431,10 +440,22 @@ public class NiiviBlastBreath : ModProjectile
         sb.Draw(fourPointedStartDrawer);
     }
 
+    void DrawStarsBoom(SpriteBatch sb, Vector2 sp)
+    {
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviStarsBoom.Asset, Projectile.Center);
+        drawer.VerticalFrame(_starBoomFrame, StarBoomFrameCount);
+        drawer.CenterOrigin();
+        drawer.color = Color.White;
+        drawer.color.A = 0;
+        drawer.scale *= 1.5F;
+        sb.Draw(drawer);
+    }
+
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedBeam, DrawLayer.OverPlayers);
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedBeamImpact, DrawLayer.OverPlayers);
+        PixelationManager.QueueSpritebatchDrawAction(DrawStarsBoom, DrawLayer.OverPlayers);
         return false;
     }
 }
