@@ -71,6 +71,7 @@ public sealed class Particles : ModSystem
     public static readonly CeramicPotShard CeramicPot = new();
     public static readonly DiamondSparkle DiamondSparkle = new();
     public static readonly NiiviIceSpike IceSpike = new();
+    public static readonly NiiviIceCrack IceCrack = new();
     public override void Load()
     {
         base.Load();
@@ -121,7 +122,8 @@ public sealed class Particles : ModSystem
             WoodenCrate,
             CeramicPot,
             DiamondSparkle,
-            IceSpike
+            IceSpike,
+            IceCrack
         };
 
         if (Main.netMode == NetmodeID.Server)

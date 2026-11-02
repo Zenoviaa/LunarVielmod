@@ -286,7 +286,31 @@ public class NiiviFrostBreath : ModProjectile
                     });
                 }
                 {
+                    var ratio = Main.rand.NextFloat(0.2f, 0.8f);
+                    var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
+                    var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
+                    pos2 += vel2 * 64;
+                    Particles.IceCrack.Spawn(new()
+                    {
+                        position = pos2 + vel2 * 46,
+                        rotation = vel2.ToRotation() + Main.rand.NextFloat(-0.3f, 0.3f),
+                        timeLeft = 100,
+                        timediv = 100,
+                    });
+                }
 
+                {
+                    var ratio = Main.rand.NextFloat(0.2f, 0.8f);
+                    var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
+                    var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
+                    pos2 += vel2 * 64;
+                    Particles.IceCrack.Spawn(new()
+                    {
+                        position = pos2 + vel2 * 46,
+                        rotation = vel2.ToRotation() + Main.rand.NextFloat(-0.3f, 0.3f),
+                        timeLeft = 45,
+                        timediv = 45,
+                    });
                 }
             }
         }
