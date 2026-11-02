@@ -35,6 +35,7 @@ public partial class Niivi
                     {
                         NPC.TargetClosest();
                         StartPosition = MyTarget.Center;
+                        StartPosition.Y = _arenaY;
                         var sound = AssetReferences.Assets.Sounds.PrimCharge.Asset;
                         SoundEngine.PlaySound(sound, NPC.position);
                         if (MultiplayerHelper.IsHost)
@@ -42,9 +43,11 @@ public partial class Niivi
                             Side.X = Main.rand.NextBool(2) ? 1 : 1;
                             var offset = BlastBreath_SwoopInOffset;
                             offset.X *= Side.X;
-                            Teleport(StartPosition 
-                                + new Vector2(-BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance) 
-                                + offset);
+                            var spotToTeleportTo = StartPosition
+                                + new Vector2(-BlastBreath_SwoopOutRightDistance * Side.X, -BlastBreath_SwoopOutUpDistance)
+                                + offset;
+                          
+                            Teleport(spotToTeleportTo);
                             NPC.netUpdate = true;
                         }
                     }

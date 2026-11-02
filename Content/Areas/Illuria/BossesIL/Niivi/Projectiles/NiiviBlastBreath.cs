@@ -29,7 +29,7 @@ public class NiiviFlyingStar : ModProjectile
         Projectile.hostile = true;
         Projectile.light = 0.7F;
         Projectile.extraUpdates = 1;
-        Projectile.timeLeft = 360;
+        Projectile.timeLeft = 600;
     }
 
     void Flicker()
