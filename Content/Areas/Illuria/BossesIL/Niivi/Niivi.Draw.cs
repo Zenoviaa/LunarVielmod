@@ -23,8 +23,29 @@ public partial class Niivi
         }
     }
 
+    void DrawCrystalGlows(SpriteBatch sb, Vector2 sp)
+    {
+        void DrawGlow(Vector2 pos, Color color)
+        {
+            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, pos);
+            glowDrawer.color = color * ExtraMath.Osc(0.5f, 1f, speed: 3) * _invisAlpha * 0.6F;
+            glowDrawer.color.A = 0;
+            glowDrawer.scale *= 0.35f;
+            sb.Draw(glowDrawer);
+        }
+
+        DrawGlow(_iceCrystalPosition, Color.SkyBlue);
+
+        DrawGlow(_lightningCrystalPosition, Color.Gold);
+
+        DrawGlow(_starCrystalPosition, Color.DarkBlue);
+
+
+
+    }
     void DrawCrystals(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
+
         var iceDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _iceCrystalPosition);
         iceDrawer.color = drawColor;
         iceDrawer.VerticalFrame(IceCrystalFrame, CrystalFrameCount);
@@ -54,7 +75,6 @@ public partial class Niivi
             sb.Draw(lightningDrawer);
             sb.Draw(starDrawer);
         }
-
 
 
     }
@@ -192,6 +212,8 @@ public partial class Niivi
         DrawBody(spriteBatch, screenPos, drawColor);
 
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedStar, DrawLayer.OverPlayers);
+
+        PixelationManager.QueueSpritebatchDrawAction(DrawCrystalGlows, DrawLayer.OverNPCs);
         return false;
     }
     public void DrawToRenderTargets()

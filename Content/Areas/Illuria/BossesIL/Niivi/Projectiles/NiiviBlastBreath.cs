@@ -260,12 +260,23 @@ public class NiiviBlastBreath : ModProjectile
         {
             _hitPoint = CollisionHelper.SolidTileRayCast(Projectile.Center, Projectile.velocity, Projectile.velocity.Length());
             _hitPoint += Projectile.velocity.SafeNormalize(Vector2.Zero) * 144;
-            PixelPrimitiveCircleFactory.CreateGenericBoom(_hitPoint, Color.White, Color.White, 65, 1024);
-            PixelPrimitiveCircleFactory.CreateGenericBoom(_hitPoint, Color.White, Color.White, 45, 512);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(_hitPoint, DrawUtilities.Prismatic, Color.White, 65, 1024);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(_hitPoint, DrawUtilities.Prismatic, Color.White, 45, 512);
             var perpVel = Projectile.velocity.SafeNormalize(Vector2.Zero);
             _leftStart = Projectile.Center - perpVel * 0.4f ;
             _rightStart = Projectile.Center + perpVel * 0.4f ;
 
+            for(var i = 0; i < 16; i++)
+            {
+                var pos = _hitPoint + Main.rand.NextVector2Circular(256, 256);
+                var sp = SparkleParticle.Spawn(pos, Vector2.Zero, Color.White);
+                sp.innerColor = Color.White;
+                sp.outerColor = DrawUtilities.Prismatic;
+                sp.gravity = 0;
+                sp.Scale *= 1.65F;
+                sp.dampening = 0.06F;
+
+            }
 
             var leftVelocity = _leftStart - Projectile.Center;
             leftVelocity = leftVelocity.SafeNormalize(Vector2.Zero);
@@ -424,6 +435,8 @@ public class NiiviBlastBreath : ModProjectile
 
     void DrawPixelatedBeamImpact(SpriteBatch sb, Vector2 sp)
     {
+
+
         if (Timer < 4)
         {
             var impactFrameDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.ImpactFrame.Asset, _hitPoint);
@@ -431,12 +444,43 @@ public class NiiviBlastBreath : ModProjectile
             sb.Draw(impactFrameDrawer);
         }
 
+
+        float outRatio = Timer / 60f;
+        RadialShearShader shearShader = RadialShearShader.Instance;
+        shearShader.Time = outRatio * 1.4f;
+
+        shearShader.Time = MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(Timer / Time));
+        Main.spriteBatch.Restart(effect: shearShader.Effect);
+
+        SpritebatchDrawer crackDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Visual.Particles.BigCrackParticle.Asset, _hitPoint);
+        crackDrawer.color = Color.Lerp(Color.White, DrawUtilities.Prismatic, EasingFunction.InSine(Timer / Time));
+        crackDrawer.color.A = 0;
+        crackDrawer.scale = Vector2.One * 2f;
+        Main.spriteBatch.Draw(crackDrawer);
+
+
+        Main.spriteBatch.RestartDefaults();
+
+        var noiseDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Noise.PainterlyNoise.Asset, _hitPoint);
+        noiseDrawer.color = Color.White;
+        var pass = AssetReferences.Effects.Niivi.PrismBoom.CreatePixelPass();
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
+        pass.Apply();
+        using (sb.Ctx(sb.Parameters with { effect = pass.Shader, samplerState = SamplerState.LinearWrap, blendState = BlendState.Additive }))
+        {
+            noiseDrawer.scale *= MathHelper.Lerp(1f, 6f, EasingFunction.OutCirc(Timer / Time));
+            noiseDrawer.color = Color.Lerp(Color.White, Color.Transparent, EasingFunction.OutCirc(Timer / Time));
+            sb.Draw(noiseDrawer);
+        }
+
+
         var fourPointedStartDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star2.Asset, _hitPoint);
         fourPointedStartDrawer.scale = Vector2.Lerp(Vector2.Zero, new Vector2(0.6F), Timer / Time);
         fourPointedStartDrawer.rotation = Main.GlobalTimeWrappedHourly;
         fourPointedStartDrawer.color = Color.Lerp(Color.White, Color.Transparent, EasingFunction.InSine(Timer / Time));
         fourPointedStartDrawer.color.A = 0;
         sb.Draw(fourPointedStartDrawer);
+
     }
 
     void DrawStarsBoom(SpriteBatch sb, Vector2 sp)
