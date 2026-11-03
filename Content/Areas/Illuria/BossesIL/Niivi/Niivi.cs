@@ -489,7 +489,7 @@ public partial class Niivi : ScarletBoss,
             _pattern++;
         }
         //        SwitchState(SpecialAttacks.NextPattern());
-        SwitchState(AIState.AsrielLightning);
+        SwitchState(AIState.FrostBreath);
     }
 
     void ResetSegments()

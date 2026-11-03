@@ -87,7 +87,7 @@ public partial class Niivi
                     //    ResetSegments();
                     var vel = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero) * -5;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.03f );
-                    NPC.rotation = Utils.AngleLerp(NPC.rotation, (MyTarget.Center - NPC.Center).ToRotation(), 0.12f);
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, (MyTarget.Center - NPC.Center).ToRotation(), 0.42f);
                     _useFK = true;
                     if (Timer >= BlastBreath_ChargeTime)
                     {
@@ -117,7 +117,7 @@ public partial class Niivi
                     _useFK = true;
                     FK_ArcBody(-0.2f * ExtraMath.Osc(0.5f, 1.2f), 0.1f);
  
-                    if(Timer == (int)(BlastBreath_ShootTime - 15))
+                    if(Timer == 1)
                     {
                         var length = (MyTarget.Center - NPC.Center).Length();
                         var cpos = NPC.Center + NPC.rotation.ToRotationVector2() * length;
@@ -141,13 +141,6 @@ public partial class Niivi
                             });
                         }
                     }
-
-                    if(Timer < BlastBreath_ShootTime / 2f)
-                    {
-                        var targetRot = (MyTarget.Center - NPC.Center).ToRotation();
-                        NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRot, 0.7f);
-                    }
-
 
                     if (Timer >= BlastBreath_ShootTime)
                     {

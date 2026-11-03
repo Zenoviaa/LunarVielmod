@@ -481,6 +481,16 @@ public class NiiviBlastBreath : ModProjectile
         fourPointedStartDrawer.color.A = 0;
         sb.Draw(fourPointedStartDrawer);
 
+        var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star2.Asset, _hitPoint);
+        starDrawer.color = Color.White;
+        starDrawer.color.A = 0;
+        starDrawer.scale = Vector2.Lerp(Vector2.One, Vector2.Zero, EasingFunction.OutSine(Timer/Time)) * 5;
+        starDrawer.rotation = Main.GlobalTimeWrappedHourly * 2;
+        sb.Draw(starDrawer);
+    }
+    void DrawPrismaticFlash(SpriteBatch sb, Vector2 sp)
+    {
+
     }
 
     void DrawStarsBoom(SpriteBatch sb, Vector2 sp)
