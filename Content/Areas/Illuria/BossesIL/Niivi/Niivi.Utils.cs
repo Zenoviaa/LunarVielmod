@@ -11,6 +11,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
 public partial class Niivi
 {
+    float _crystalRotationRadians;
+    void RotateCrystals(Vector2 point, float distanceOffset)
+    {
+        var offset = -Vector2.UnitY.RotatedBy(_crystalRotationRadians) * distanceOffset;
+        _lightningCrystalPosition = point + offset;
+
+        offset = offset.RotatedBy(MathHelper.TwoPi / 3f);
+        _iceCrystalPosition = point + offset;
+
+        offset = offset.RotatedBy(MathHelper.TwoPi / 3f);
+        _starCrystalPosition = point + offset;
+
+    }
     void AmbientSuckingParticles()
     {
         //The thing zemmie likes is when there's just a otn of these

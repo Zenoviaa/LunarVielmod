@@ -23,6 +23,41 @@ public partial class Niivi
         }
     }
 
+    void DrawCrystals(SpriteBatch sb, Vector2 screenPos, Color drawColor)
+    {
+        var iceDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _iceCrystalPosition);
+        iceDrawer.color = drawColor;
+        iceDrawer.VerticalFrame(IceCrystalFrame, CrystalFrameCount);
+        iceDrawer.CenterOrigin();
+        sb.Draw(iceDrawer);
+
+        var lightningDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _lightningCrystalPosition);
+        lightningDrawer.color = drawColor;
+        lightningDrawer.VerticalFrame(LightningCrystalFrame, CrystalFrameCount);
+        lightningDrawer.CenterOrigin();
+        sb.Draw(lightningDrawer);
+
+        var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _starCrystalPosition);
+        starDrawer.color = drawColor;
+        starDrawer.VerticalFrame(StarCrystalFrame, CrystalFrameCount);
+        starDrawer.CenterOrigin();
+        sb.Draw(starDrawer);
+
+        if (_crystalCharge > 0.05f)
+        {
+            iceDrawer.color = lightningDrawer.color = starDrawer.color = Main.DiscoColor* _crystalCharge * ExtraMath.Osc(0.5f, 1f, speed: 16);
+            iceDrawer.VerticalFrame(IceCrystalFrame + CrystalWhiteFrameOffset, CrystalFrameCount);
+            lightningDrawer.VerticalFrame(LightningCrystalFrame + CrystalWhiteFrameOffset, CrystalFrameCount);
+            starDrawer.VerticalFrame(StarCrystalFrame + CrystalWhiteFrameOffset, CrystalFrameCount);
+
+            sb.Draw(iceDrawer);
+            sb.Draw(lightningDrawer);
+            sb.Draw(starDrawer);
+        }
+
+
+
+    }
     void DrawBody(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
         NiiviIceArenaRenderer.effectTimer = 30;
@@ -153,7 +188,9 @@ public partial class Niivi
     {
         drawColor = Color.Lerp(drawColor, Color.Black, _blackAlpha);
         drawColor *= _invisAlpha;
+        DrawCrystals(spriteBatch, screenPos, drawColor);
         DrawBody(spriteBatch, screenPos, drawColor);
+
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedStar, DrawLayer.OverPlayers);
         return false;
     }
@@ -164,6 +201,7 @@ public partial class Niivi
         void DrawOutlines(SpriteBatch sb)
         {
             DrawBody(sb, Main.screenPosition, _outliner.outlineColor);
+            DrawCrystals(sb, Main.screenPosition, _outliner.outlineColor);
         }
         OutlineRenderer.Queue(DrawOutlines);
     }

@@ -67,8 +67,10 @@ public partial class Niivi
                     _outliner.warning = true;
                     _isBLACK = true;
                     var ratio = Timer / (BlastBreath_ShootTime);
+                    _crystalCharge = ratio;
                     _easeInTimer++;
                     _radians += 0.0025F;
+                    _crystalRotationRadians += MathHelper.Lerp(0f, 0.1f, ratio);
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
                     if(AttackCount == 0)
                     {
@@ -83,8 +85,8 @@ public partial class Niivi
                     FK_ArcBody(-0.2f * ExtraMath.Osc(0.5f, 1.2f), 0.1f);
 
                     //    ResetSegments();
-                    var vel = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero) * -2;
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.1f );
+                    var vel = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero) * -5;
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.03f );
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, (MyTarget.Center - NPC.Center).ToRotation(), 0.12f);
                     _useFK = true;
                     if (Timer >= BlastBreath_ChargeTime)
@@ -104,12 +106,14 @@ public partial class Niivi
                         InitialVelocity = NPC.velocity;
                     
                     }
+                    _crystalRotationRadians += 0.1f;
                     _isBLACK = true;
 
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
                     var originPoint = StartPosition;
 
+                    _crystalCharge = 1f;
                     _useFK = true;
                     FK_ArcBody(-0.2f * ExtraMath.Osc(0.5f, 1.2f), 0.1f);
  
@@ -147,6 +151,7 @@ public partial class Niivi
 
                     if (Timer >= BlastBreath_ShootTime)
                     {
+                        NPC.velocity -= NPC.rotation.ToRotationVector2() * 17;
                         if (MultiplayerHelper.IsHost)
                         {
                             var firer = ProjFirer.From<NiiviBlastBreath>(NPC);
@@ -179,6 +184,10 @@ public partial class Niivi
                         StartPosition = NPC.Center;
                     }
 
+                    if(Timer < 20)
+                    {
+                        NPC.velocity *= 0.93f;
+                    }
                     var ratio = Timer / BlastBreath_SwoopOutTime;
                     NPC.velocity.X -= 0.03f;
                     NPC.velocity.Y -= 0.06f;

@@ -54,6 +54,8 @@ public class LineRig
 public partial class Niivi : ScarletBoss,
     IDrawToRenderTarget
 {
+
+    float _crystalCharge;
     bool _useFK;
     float _pattern;
     bool _isAfterImaging;
@@ -412,6 +414,8 @@ public partial class Niivi : ScarletBoss,
         _isPrismatic = false;
         _useFK = false;
         _invisAlpha = MathHelper.Lerp(_invisAlpha, 1f, 0.03f);
+        _crystalRotationRadians += 0.015f;
+        _crystalCharge = MathHelper.Lerp(_crystalCharge, 0f, 0.03f);
         switch (State)
         {
             case AIState.AsrielLightning:
@@ -442,7 +446,7 @@ public partial class Niivi : ScarletBoss,
                 AI_PingPong();
                 break;
         }
-
+        RotateCrystals(NPC.Center, 100);
         _afAlpha = MathHelper.Lerp(_afAlpha, _isAfterImaging ? 1f : 0f, 0.1f);
         _armorAlpha = MathHelper.Lerp(_armorAlpha, _isArmorAura ? 1f : 0f, 0.1f);
         _trailingAlpha = MathHelper.Lerp(_trailingAlpha, _isTrailing ? 1f : 0f, 0.1f);

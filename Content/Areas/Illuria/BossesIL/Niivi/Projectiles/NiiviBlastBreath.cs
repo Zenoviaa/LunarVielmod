@@ -321,7 +321,7 @@ public class NiiviBlastBreath : ModProjectile
                     firer.damage /= 3;
                     firer.position = _hitPoint + Main.rand.NextVector2Circular(64, 64);
                     firer.velocity = -Vector2.UnitY * 17;
-                    firer.velocity = firer.velocity.RotatedByRandom(1.5F);
+                    firer.velocity = firer.velocity.RotatedByRandom(0.8F);
                     firer.New();
                 }
 
@@ -345,11 +345,11 @@ public class NiiviBlastBreath : ModProjectile
             for (var i = 0; i < 7; i++)
             {
                 var pos2 = _hitPoint;
-                pos2.X += Main.rand.NextFloat(-100, 100);
+                pos2 += Main.rand.NextVector2Circular(32, 32);
                 Particles.IceSpike.Spawn(new()
                 {
                     position = pos2,
-                    rotation = Main.rand.NextFloat(-0.3f, 0.3f),
+                    rotation = (pos2 - _hitPoint).ToRotation(),
                     timeLeft = 60,
                     timediv = 60,
                 });
@@ -358,11 +358,11 @@ public class NiiviBlastBreath : ModProjectile
             for (var i = 0; i < 7; i++)
             {
                 var pos2 = _hitPoint;
-                pos2.X += Main.rand.NextFloat(-100, 100);
+                pos2 += Main.rand.NextVector2Circular(32, 32);
                 Particles.IceSpike.Spawn(new()
                 {
                     position = pos2,
-                    rotation = Main.rand.NextFloat(-0.3f, 0.3f),
+                    rotation = (pos2 - _hitPoint).ToRotation(),
                     timeLeft = 120,
                     timediv = 120,
                 });
