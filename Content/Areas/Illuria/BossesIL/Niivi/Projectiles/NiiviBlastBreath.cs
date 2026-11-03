@@ -155,19 +155,7 @@ public class NiiviFlyingStar : ModProjectile
             scale = new Vector2(Main.rand.NextFloat(0.4f, 1f))
         });
 
-        pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-        vel = Main.rand.NextVector2Circular(1, 1);
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
-        {
-            position = pos,
-            velocity = vel,
-            innerColor = DrawUtilities.Prismatic.ToVector4(),
-            outerColor = Color.Lerp(DrawUtilities.Prismatic, Color.Black, 0.5F).ToVector4(),
-            timeLeft = 60,
-            scale = new Vector2(Main.rand.NextFloat(0.4f, 1f))
-        });
-
-        if (Main.rand.NextBool(8))
+        if (Main.rand.NextBool(14))
         {
             pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             vel = Main.rand.NextVector2Circular(1, 1);
@@ -191,7 +179,7 @@ public class NiiviFlyingStar : ModProjectile
             sp.Scale *= 0.4F;
         }
 
-        if (Main.rand.NextBool(4))
+        if (Main.rand.NextBool(7))
         {
             pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             vel = Main.rand.NextVector2Circular(1, 1);

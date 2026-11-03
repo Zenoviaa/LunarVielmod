@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
@@ -27,7 +29,6 @@ public class NiiviLightningStrike : ModProjectile
     Vector2 Top => Projectile.Center + new Vector2(0, -StrikeHeight);
     Vector2 TopLeft => Top + new Vector2(-StrikeRadius, 0);
     Vector2 TopRight => Top + new Vector2(StrikeRadius, 0);
-    float _bottomY;
     float StrikeHeight => 768;
     float StrikeRadius => 1024;
     float StrikeTime => 30;
@@ -71,7 +72,7 @@ public class NiiviLightningStrike : ModProjectile
                 continue;
             var ratio = (float)i / (float)NumStrikes;
             var startPOsition = Vector2.Lerp(TopLeft, TopRight, ratio);
-            var endPosition = startPOsition + new Vector2(0, _bottomY);
+            var endPosition = startPOsition + new Vector2(0, StrikeHeight);
             if (CollisionHelper.LaserCollision(projHitbox, targetHitbox, startPOsition, endPosition, 32))
                 return true;
         }
@@ -102,15 +103,20 @@ public class NiiviLightningStrike : ModProjectile
     {
         if (this.OwnedByLocalClient())
         {
-            Projectile.netUpdate = true;
             Timer = 0;
             State = state;
+            Projectile.netUpdate = true;
         }
     }
     void AI_Telegraph()
     {
-
         Timer++;
+        if (Timer == 1)
+        {
+            var zap = AssetReferences.Assets.Sounds.StormDragon_LightingRain.Asset with { PitchVariance = 0.4f };
+            SoundEngine.PlaySound(zap);
+        }
+         
         _telegraphAlpha = Timer / TelegraphTime;
         if (Timer >= TelegraphTime)
         {
@@ -119,15 +125,47 @@ public class NiiviLightningStrike : ModProjectile
     }
 
     void AI_Strike()
-    {
-        
+    {     
         Timer++;
+        if(Timer == 1)
+        {
+            var zap = AssetReferences.Assets.Sounds.StormDragon_LightingZap.Asset with { PitchVariance = 0.4f };
+            SoundEngine.PlaySound(zap);
+
+            for (var i = 0; i < NumStrikes; i++)
+            {
+                if (_randIndex == i)
+                    continue;
+                var ratio = (float)i / (float)NumStrikes;
+                var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
+                var endPosition = startPosition + new Vector2(0, StrikeHeight);
+                var vel = (endPosition - startPosition).SafeNormalize(Vector2.Zero) * 4;
+
+                for (var j = 0; j < 32; j++)
+                {
+                    var pos = Vector2.Lerp(startPosition, endPosition, Main.rand.NextFloat(0f, 1f));
+                    pos += Main.rand.NextVector2Circular(32, 32);
+                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    {
+                        position = pos,
+                        velocity = vel.RotatedByRandom(1.5F) * 6,
+                        timeLeft = 60,
+                        innerColor = DrawUtilities.Prismatic.ToVector4(),
+                        outerColor = DrawUtilities.Prismatic.ToVector4(),
+                        scale = new Vector2(Main.rand.NextFloat(0.6f, 1f)),
+                    });
+                }
+
+            }
+
+        }
         _telegraphAlpha = MathHelper.Lerp(1f, 0f, Timer / StrikeTime);
         if (Timer >= StrikeTime)
         {
             Projectile.Kill();
         }
     }
+
     float GetTrailWidth(float ratio)
     {
         return MathHelper.Lerp(MathHelper.Lerp(0, 96, EasingFunction.OutQuad(ratio)), 0, EasingFunction.OutSine(Timer / StrikeTime));
@@ -140,7 +178,6 @@ public class NiiviLightningStrike : ModProjectile
 
     Color GetTrailColor(float ratio)
     {
-
         return Color.White;
     }
 
@@ -151,9 +188,30 @@ public class NiiviLightningStrike : ModProjectile
         prismatic = Color.Lerp(prismatic, Color.White, 0.9F);
         return prismatic * 0.4f;
     }
+
+    void DrawPixelatedTelegraph(SpriteBatch sb, Vector2 sp)
+    {
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Spotlight.Asset, Projectile.Center);
+        drawer.color = Color.White * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / TelegraphTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16);
+        drawer.color.A = 0;
+        drawer.scale.Y *= 0.6f;
+        drawer.LeftCenterOrigin();
+        drawer.scale.X = (float)drawer.Width / StrikeHeight;
+        for (var i = 0; i < NumStrikes; i++)
+        {
+            if (_randIndex == i)
+                continue;
+            var ratio = (float)i / (float)NumStrikes;
+            var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
+            var endPosition = startPosition + new Vector2(0, StrikeHeight);
+            drawer.worldPosition = startPosition;
+            drawer.rotation = Vector2.UnitY.ToRotation();   
+            sb.Draw(drawer);
+        }
+    }
+
     void DrawPixelatedBeam(GraphicsDevice gDevice)
     {
-
         BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
         bloomTrailShader.InnerColor = Main.DiscoColor;
         bloomTrailShader.OuterColor = Main.DiscoColor;
@@ -164,12 +222,11 @@ public class NiiviLightningStrike : ModProjectile
             if (_randIndex == i)
                 continue;
             var ratio = (float)i / (float)NumStrikes;
-            var startPOsition = Vector2.Lerp(TopLeft, TopRight, ratio);
-            var endPosition = startPOsition + new Vector2(0, _bottomY);
-            var points = DrawUtilities.InterpolateBetweenPoints(startPOsition, endPosition, 16);
+            var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
+            var endPosition = startPosition + new Vector2(0, StrikeHeight);
+            var points = DrawUtilities.InterpolateBetweenPoints(startPosition, endPosition, 16);
             TrailDrawer.PreparePrimitives(points, GetTrailColor2, GetTrailWidth2);
         }
-
 
         TrailDrawer.DrawCached(bloomTrailShader);
 
@@ -181,7 +238,6 @@ public class NiiviLightningStrike : ModProjectile
         gDevice.Register(0, AssetReferences.Assets.LaserTextures.Lightning2.Asset.Value, SamplerState.LinearWrap);
         gDevice.Register(1, AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value, SamplerState.LinearWrap);
 
-
         TrailDrawer.ClearPrimitives();
         for (var i = 0; i < NumStrikes; i++)
         {
@@ -189,16 +245,17 @@ public class NiiviLightningStrike : ModProjectile
                 continue;
             var ratio = (float)i / (float)NumStrikes;
             var startPOsition = Vector2.Lerp(TopLeft, TopRight, ratio);
-            var endPosition = startPOsition + new Vector2(0, _bottomY);
+            var endPosition = startPOsition + new Vector2(0, StrikeHeight);
             var points = DrawUtilities.InterpolateBetweenPoints(startPOsition, endPosition, 16);
             TrailDrawer.PreparePrimitives(points, GetTrailColor, GetTrailWidth);
         }
         TrailDrawer.DrawCached(pass.Shader);
     }
 
-
     public override bool PreDraw(ref Color lightColor)
     {
+        if(State == AIState.Telegraph)
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedTelegraph);
         if(State == AIState.Strike)
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedBeam);
         return false;
