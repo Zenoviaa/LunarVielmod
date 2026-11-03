@@ -30,7 +30,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     float2 noiseCoords2 = frac(coords  + float2(
     sin(coords.y * 4.0 + speed * -1.5) * 0.04 + 0.8 + speed * 0.5, speed * 0.15));
     
-    float pixelated = 128.0;
+    float2 pixelated = spriteSize * 0.5;
     coords = floor(coords * pixelated) / pixelated;
     noiseCoords1 = floor(noiseCoords1 * pixelated) / pixelated;
     noiseCoords2 = floor(noiseCoords2 * pixelated) / pixelated;

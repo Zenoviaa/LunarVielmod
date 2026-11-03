@@ -41,7 +41,7 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
     int TowardsLeft => 128;
     int TowardsBottom => 111;
     int BarOffsetTowardsLeft => 111;
-    int BarOffsetTowardsBottom => 90;
+    int BarOffsetTowardsBottom => 18;
     public override void PreDrawResources(PlayerStatsSnapshot snapshot)
     {
         base.PreDrawResources(snapshot);
@@ -65,16 +65,16 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
             spriteBatch.Draw(gradientDrawer);
 
             var barDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionBar.Asset, Main.screenPosition);
-            barDrawer.VerticalFrame(1, 4);
+            barDrawer.VerticalFrame(2, 3);
             barDrawer.color = Color.White;
             barDrawer.worldPosition.X += Main.screenWidth - TowardsLeft - BarOffsetTowardsLeft;
             barDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom;
             spriteBatch.Draw(barDrawer);
 
 
-            var steps = (_snapShot.LifeMax - 200) / 25;
+            var steps = (_snapShot.LifeMax - 200) / 20;
             var x = barDrawer.worldPosition.X;
-            barDrawer.VerticalFrame(3, 4);
+            barDrawer.VerticalFrame(2, 3);
             barDrawer.color = Color.White;
             for (var i = 0; i < steps - 1; i++)
             {
@@ -84,28 +84,22 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
 
 
             var barEdgeDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionBarEdge.Asset, Main.screenPosition);
-            barEdgeDrawer.VerticalFrame(1, 3);
+            barEdgeDrawer.VerticalFrame(2, 3);
             barEdgeDrawer.color = Color.White;
-            barEdgeDrawer.worldPosition.X = barDrawer.worldPosition.X - 32 - 4;
-            barEdgeDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom - 42;
+            barEdgeDrawer.worldPosition.X = barDrawer.worldPosition.X - 32 - 2;
+            barEdgeDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom ;
             spriteBatch.Draw(barEdgeDrawer);
         }
 
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionGuard.Asset, Main.screenPosition);
-        drawer.color = Color.White;
-        drawer.worldPosition.X += Main.screenWidth - TowardsLeft;
-        drawer.worldPosition.Y += TowardsBottom;
-        spriteBatch.Draw(drawer);
-
         var barDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionBar.Asset, Main.screenPosition);
         barDrawer.worldPosition.X += Main.screenWidth - TowardsLeft - BarOffsetTowardsLeft;
         barDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom;
-        barDrawer.VerticalFrame(2, 4);
+        barDrawer.VerticalFrame(1, 3);
         barDrawer.color = Color.White;
 
 
-        var steps = (_snapShot.LifeMax - 200) / 25;
+        var steps = (_snapShot.LifeMax - 200) / 20;
         var x = barDrawer.worldPosition.X;
         barDrawer.worldPosition.X = x;
         spriteBatch.Draw(barDrawer);
@@ -118,14 +112,22 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
 
         var barEdgeDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionBarEdge.Asset, Main.screenPosition);
         barEdgeDrawer.color = Color.White;
-        barEdgeDrawer.worldPosition.X = barDrawer.worldPosition.X - 32 - 4;
-        barEdgeDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom - 42;
-        barEdgeDrawer.VerticalFrame(2, 3);
+        barEdgeDrawer.worldPosition.X = barDrawer.worldPosition.X - 32 - 2;
+        barEdgeDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom;
+        barEdgeDrawer.VerticalFrame(1, 3);
         spriteBatch.Draw(barEdgeDrawer);
 
 
 
         DrawMask();
+
+
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionGuard.Asset, Main.screenPosition);
+        drawer.color = Color.White;
+        drawer.worldPosition.X += Main.screenWidth - TowardsLeft;
+        drawer.worldPosition.Y += TowardsBottom;
+        spriteBatch.Draw(drawer);
+
         using var liquidTarget = RT.Context(RenderTargets.ScreenTarget);
         spriteBatch.EndOut(out var oldParameters);
 
