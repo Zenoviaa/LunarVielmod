@@ -14,7 +14,7 @@ public record struct RenderTargetParameters(int Width, int Height, bool MipMap, 
     {
         get
         {
-            return new RenderTargetParameters(RTSizeHelper.ScreenWidth, RTSizeHelper.ScreenHeight, false, SurfaceFormat.Color, DepthFormat.None, RenderTargetUsage.PlatformContents);
+            return new RenderTargetParameters(RTSizeHelper.ScreenWidth, RTSizeHelper.ScreenHeight, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8, RenderTargetUsage.PlatformContents);
         }
     }
 

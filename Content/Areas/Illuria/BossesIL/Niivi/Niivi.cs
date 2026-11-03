@@ -398,7 +398,7 @@ public partial class Niivi : ScarletBoss,
     {
         base.AI();
         NPC.TargetClosest();
-
+     
         if (_arenaY == 0)
         {
             _arenaCenter = NPC.Center;
@@ -477,7 +477,7 @@ public partial class Niivi : ScarletBoss,
 
     void ChooseAttack()
     {
-
+        
         if(_pattern >= 3)
         {
             _pattern = 0;

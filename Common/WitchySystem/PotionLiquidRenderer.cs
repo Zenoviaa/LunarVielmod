@@ -219,14 +219,14 @@ public class PotionLiquidRenderer
 
         var d2 = drawer with { spriteEffects = SpriteEffects.FlipHorizontally };
         drawer.worldPosition.Y -= 16;
-        using (spriteBatch.Ctx(SpritebatchParams.UI with { effect = pass.Shader }))
+        using (spriteBatch.Ctx(SpritebatchParams.UI with { sortMode = SpriteSortMode.Deferred, effect = pass.Shader }))
         {
             spriteBatch.Draw(drawer);
         }
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.metaballs = metaballs;
         pass.Apply();
-        using (spriteBatch.Ctx(SpritebatchParams.UI with { effect = pass.Shader }))
+        using (spriteBatch.Ctx(SpritebatchParams.UI with { sortMode = SpriteSortMode.Deferred, effect = pass.Shader }))
         {
             spriteBatch.Draw(d2);
         }

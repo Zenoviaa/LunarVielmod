@@ -84,6 +84,37 @@ public static class DrawUtilities
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
 
+    public static DepthStencilState WriteToStencil
+    {
+        get
+        {
+            field = new DepthStencilState
+            {
+                StencilEnable = true,
+                StencilFunction = CompareFunction.Always,
+                StencilPass = StencilOperation.Replace,
+                ReferenceStencil = 0,
+                DepthBufferEnable = false,
+            };
+            return field;
+        }
+    }
+
+    public static DepthStencilState RenderOnlyInStencil
+    {
+        get
+        {
+            field = new DepthStencilState
+            {
+                StencilEnable = true,
+                StencilFunction = CompareFunction.LessEqual,
+                StencilPass = StencilOperation.Keep,
+                ReferenceStencil = 0,
+                DepthBufferEnable = false,
+            };
+            return field;
+        }
+    }
     public static Color Prismatic
     {
         get
