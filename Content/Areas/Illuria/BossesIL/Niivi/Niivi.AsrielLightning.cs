@@ -7,7 +7,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi
     public partial class Niivi
     {
         float AsrielLightning_OutTime => 60;
-        float AsrielLightning_StrikeTime => MathHelper.Lerp(90, 45, AttackCount / AsrielLightning_StrikeCount);
+        float AsrielLightning_StrikeTime => MathHelper.Lerp(130, 100, AttackCount / AsrielLightning_StrikeCount);
         float AsrielLightning_StrikeCount => 7;
         float AsrielLightning_SwoopOutTime => 60;
         int AsrielLightning_Damage => 67;
@@ -56,6 +56,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi
                                 var firer = ProjFirer.From<NiiviLightningStrike>(NPC);
                                 firer.damage = AsrielLightning_Damage;
                                 firer.position = MyTarget.Center;
+                                firer.ai2 = AsrielLightning_StrikeTime;
                                 firer.New();
                             }
                         }

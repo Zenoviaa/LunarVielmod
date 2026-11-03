@@ -61,7 +61,7 @@ public class NiiviLightningStrike : ModProjectile
     public override void OnSpawn(IEntitySource source)
     {
         base.OnSpawn(source);
-        _randIndex = Main.rand.Next(NumStrikes / 2 - 4, NumStrikes / 2 + 2);
+        _randIndex = Main.rand.Next(NumStrikes / 2 - 6, NumStrikes / 2 + 6);
     }
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -88,6 +88,8 @@ public class NiiviLightningStrike : ModProjectile
     public override void AI()
     {
         base.AI();
+        var pos = CollisionHelper.SolidTileRayCast(Projectile.Center, Vector2.UnitY, 2048);
+        Projectile.Center = pos;
         switch (State)
         {
             case AIState.Telegraph:
@@ -141,7 +143,7 @@ public class NiiviLightningStrike : ModProjectile
                 var endPosition = startPosition + new Vector2(0, StrikeHeight);
                 var vel = (endPosition - startPosition).SafeNormalize(Vector2.Zero) * 4;
 
-                for (var j = 0; j < 32; j++)
+                for (var j = 0; j < 24; j++)
                 {
                     var pos = Vector2.Lerp(startPosition, endPosition, Main.rand.NextFloat(0f, 1f));
                     pos += Main.rand.NextVector2Circular(32, 32);
@@ -152,7 +154,7 @@ public class NiiviLightningStrike : ModProjectile
                         timeLeft = 60,
                         innerColor = DrawUtilities.Prismatic.ToVector4(),
                         outerColor = DrawUtilities.Prismatic.ToVector4(),
-                        scale = new Vector2(Main.rand.NextFloat(0.6f, 1f)),
+                        scale = new Vector2(Main.rand.NextFloat(0.3f, 0.5F)),
                     });
                 }
 
@@ -191,21 +193,21 @@ public class NiiviLightningStrike : ModProjectile
 
     void DrawPixelatedTelegraph(SpriteBatch sb, Vector2 sp)
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Spotlight.Asset, Projectile.Center);
-        drawer.color = Color.White * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / TelegraphTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16);
+
+        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.BlastPillar.Asset, Projectile.Center);
+        drawer.color = Color.White * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / TelegraphTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16) * 8;
         drawer.color.A = 0;
-        drawer.scale.Y *= 0.6f;
-        drawer.LeftCenterOrigin();
-        drawer.scale.X = (float)drawer.Width / StrikeHeight;
+        drawer.scale.Y *= 2f;
+        drawer.BottomCenterOrigin();
+        drawer.scale.Y *= 0.5f;
         for (var i = 0; i < NumStrikes; i++)
         {
             if (_randIndex == i)
                 continue;
             var ratio = (float)i / (float)NumStrikes;
             var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
-            var endPosition = startPosition + new Vector2(0, StrikeHeight);
+            startPosition.Y = Projectile.Bottom.Y + 42;
             drawer.worldPosition = startPosition;
-            drawer.rotation = Vector2.UnitY.ToRotation();   
             sb.Draw(drawer);
         }
     }
@@ -223,7 +225,7 @@ public class NiiviLightningStrike : ModProjectile
                 continue;
             var ratio = (float)i / (float)NumStrikes;
             var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
-            var endPosition = startPosition + new Vector2(0, StrikeHeight);
+            var endPosition = startPosition + new Vector2(0, StrikeHeight + 128);
             var points = DrawUtilities.InterpolateBetweenPoints(startPosition, endPosition, 16);
             TrailDrawer.PreparePrimitives(points, GetTrailColor2, GetTrailWidth2);
         }
@@ -245,7 +247,7 @@ public class NiiviLightningStrike : ModProjectile
                 continue;
             var ratio = (float)i / (float)NumStrikes;
             var startPOsition = Vector2.Lerp(TopLeft, TopRight, ratio);
-            var endPosition = startPOsition + new Vector2(0, StrikeHeight);
+            var endPosition = startPOsition + new Vector2(0, StrikeHeight + 128);
             var points = DrawUtilities.InterpolateBetweenPoints(startPOsition, endPosition, 16);
             TrailDrawer.PreparePrimitives(points, GetTrailColor, GetTrailWidth);
         }
@@ -255,9 +257,17 @@ public class NiiviLightningStrike : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         if(State == AIState.Telegraph)
+        {
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedTelegraph);
+        }
+          
         if(State == AIState.Strike)
+        {
+
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedBeam);
+
+        }
+
         return false;
     }
 }
