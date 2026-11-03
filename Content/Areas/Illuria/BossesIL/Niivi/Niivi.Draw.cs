@@ -114,7 +114,7 @@ public partial class Niivi
 
         var backBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
         backBackArmDrawer.drawOrigin = SegmentOrigins[9];
-        backBackArmDrawer.VerticalFrame(10, 11);
+        backBackArmDrawer.VerticalFrame(10, 13);
         backBackArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
         backBackArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
         backBackArmDrawer.color = drawColor;
@@ -130,7 +130,7 @@ public partial class Niivi
 
         var frontBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
         frontBackArmDrawer.drawOrigin = SegmentOrigins[7];
-        frontBackArmDrawer.VerticalFrame(8, 11);
+        frontBackArmDrawer.VerticalFrame(8, 13);
         frontBackArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
         frontBackArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
         frontBackArmDrawer.color = drawColor;
@@ -154,7 +154,7 @@ public partial class Niivi
                 var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], segment);
                 var frameIndex = SegmentFrameIndices[i];
                 drawer.drawOrigin = SegmentOrigins[frameIndex];
-                drawer.VerticalFrame(frameIndex, 11);
+                drawer.VerticalFrame(frameIndex, 13);
                 drawer.rotation = rotation;
                 drawer.scale = new Vector2(SegmentBaseScales[i]);
                 drawer.color = drawColor;
@@ -184,7 +184,7 @@ public partial class Niivi
 
         var backFrontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
         backFrontArmDrawer.drawOrigin = SegmentOrigins[8];
-        backFrontArmDrawer.VerticalFrame(9, 11);
+        backFrontArmDrawer.VerticalFrame(9, 13);
         backFrontArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
         backFrontArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
         backFrontArmDrawer.color = drawColor;
@@ -192,7 +192,7 @@ public partial class Niivi
 
         var frontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
         frontArmDrawer.drawOrigin = SegmentOrigins[6];
-        frontArmDrawer.VerticalFrame(7, 11);
+        frontArmDrawer.VerticalFrame(7, 13);
         frontArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
         frontArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
         frontArmDrawer.color = drawColor;
