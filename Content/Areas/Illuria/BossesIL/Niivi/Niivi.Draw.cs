@@ -1,4 +1,5 @@
 ﻿using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering.RTs;
 using Terraria;
 using Terraria.GameContent;
 
@@ -78,9 +79,34 @@ public partial class Niivi
 
 
     }
+    void DrawHead(SpriteBatch sb, Vector2 screenPos, Color drawColor)
+    {
+        var i = 0;
+        ref var segment = ref SegmentPositions[i];
+        var rotation = NPC.rotation;
+        var ratio = i / (float)SegmentPositions.Length;
+        if (i > 0)
+        {
+            ref var nextSegment = ref SegmentPositions[i - 1];
+            rotation = (nextSegment - segment).ToRotation();
+        }
+
+        var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], segment);
+        var frameIndex = SegmentFrameIndices[i];
+        drawer.drawOrigin = SegmentOrigins[frameIndex];
+        drawer.VerticalFrame(frameIndex, 11);
+        drawer.rotation = rotation;
+        drawer.scale = new Vector2(SegmentBaseScales[i]);
+        drawer.color = drawColor;
+        sb.Draw(drawer);
+        SegmentRotations[i] = rotation;
+    }
     void DrawBody(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
+        using var bodyTarget = RT.Context(RenderTargets.ScreenTarget);
+
         NiiviIceArenaRenderer.effectTimer = 30;
+
         //Draw tail first, then all the way up to head
         ref var neckSegment = ref SegmentPositions[ArmSegmentIndex];
         ref var buttSegment = ref SegmentPositions[LegSegmentIndex];
@@ -88,7 +114,7 @@ public partial class Niivi
 
         var backBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
         backBackArmDrawer.drawOrigin = SegmentOrigins[9];
-        backBackArmDrawer.VerticalFrame(9, 10);
+        backBackArmDrawer.VerticalFrame(10, 11);
         backBackArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
         backBackArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
         backBackArmDrawer.color = drawColor;
@@ -104,33 +130,73 @@ public partial class Niivi
 
         var frontBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
         frontBackArmDrawer.drawOrigin = SegmentOrigins[7];
-        frontBackArmDrawer.VerticalFrame(7, 10);
+        frontBackArmDrawer.VerticalFrame(8, 11);
         frontBackArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
         frontBackArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
         frontBackArmDrawer.color = drawColor;
         sb.Draw(frontBackArmDrawer);
 
-        for (var i = SegmentPositions.Length - 1; i >= 0; i--)
+        void DrawRiggedSegments()
         {
-            ref var segment = ref SegmentPositions[i];
-            var rotation = NPC.rotation;
-            var ratio = i / (float)SegmentPositions.Length;
-            if (i > 0)
-            {
-                ref var nextSegment = ref SegmentPositions[i - 1];
-                rotation = (nextSegment - segment).ToRotation();
-            }
 
-            var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], segment);
-            var frameIndex = SegmentFrameIndices[i];
-            drawer.drawOrigin = SegmentOrigins[frameIndex];
-            drawer.VerticalFrame(frameIndex, 10);
-            drawer.rotation = rotation;
-            drawer.scale = new Vector2(SegmentBaseScales[i]);
-            drawer.color = drawColor;
-            sb.Draw(drawer);
-            SegmentRotations[i] = rotation;
+            for (var i = SegmentPositions.Length - 1; i >= 0; i--)
+            {
+
+                ref var segment = ref SegmentPositions[i];
+                var rotation = NPC.rotation;
+                var ratio = i / (float)SegmentPositions.Length;
+                if (i > 0)
+                {
+                    ref var nextSegment = ref SegmentPositions[i - 1];
+                    rotation = (nextSegment - segment).ToRotation();
+                }
+
+                var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], segment);
+                var frameIndex = SegmentFrameIndices[i];
+                drawer.drawOrigin = SegmentOrigins[frameIndex];
+                drawer.VerticalFrame(frameIndex, 11);
+                drawer.rotation = rotation;
+                drawer.scale = new Vector2(SegmentBaseScales[i]);
+                drawer.color = drawColor;
+                sb.Draw(drawer);
+                SegmentRotations[i] = rotation;
+            }
         }
+        if (_blend)
+        {
+            sb.EndOut(out var oldParameters);
+            using (RT.Clear(bodyTarget, Color.Transparent))
+            {
+                using (sb.Ctx(SpritebatchParams.InWorldAndZoomed() with { blendState = CustomBlendStates.Max, matrix = Matrix.Identity }))
+                {
+                    DrawRiggedSegments();
+                }
+            }
+            sb.Begin(oldParameters);
+            sb.Draw(bodyTarget, Vector2.Zero, Color.White);
+        }
+        else
+        {
+            DrawRiggedSegments();
+        }
+
+
+
+        var backFrontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
+        backFrontArmDrawer.drawOrigin = SegmentOrigins[8];
+        backFrontArmDrawer.VerticalFrame(9, 11);
+        backFrontArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
+        backFrontArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
+        backFrontArmDrawer.color = drawColor;
+        sb.Draw(backFrontArmDrawer);
+
+        var frontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
+        frontArmDrawer.drawOrigin = SegmentOrigins[6];
+        frontArmDrawer.VerticalFrame(7, 11);
+        frontArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
+        frontArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
+        frontArmDrawer.color = drawColor;
+        sb.Draw(frontArmDrawer);
 
         //Draw front wing
         var frontWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingFront.Asset, wingSegment);
@@ -140,24 +206,9 @@ public partial class Niivi
         frontWingDrawer.scale = new Vector2(SegmentBaseScales[WingSegmentIndex]);
         frontWingDrawer.color = drawColor;
         sb.Draw(frontWingDrawer);
-
+        DrawHead(sb, screenPos, drawColor);
         //Draw frong arms
 
-        var backFrontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
-        backFrontArmDrawer.drawOrigin = SegmentOrigins[8];
-        backFrontArmDrawer.VerticalFrame(8, 10);
-        backFrontArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
-        backFrontArmDrawer.scale = new Vector2(SegmentBaseScales[LegSegmentIndex]);
-        backFrontArmDrawer.color = drawColor;
-        sb.Draw(backFrontArmDrawer);
-
-        var frontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
-        frontArmDrawer.drawOrigin = SegmentOrigins[6];
-        frontArmDrawer.VerticalFrame(6, 10);
-        frontArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
-        frontArmDrawer.scale = new Vector2(SegmentBaseScales[ArmSegmentIndex]);
-        frontArmDrawer.color = drawColor;
-        sb.Draw(frontArmDrawer);
     }
     public Vector2[] GetSegmentPoints()
     {
@@ -209,7 +260,11 @@ public partial class Niivi
         drawColor = Color.Lerp(drawColor, Color.Black, _blackAlpha);
         drawColor *= _invisAlpha;
         DrawCrystals(spriteBatch, screenPos, drawColor);
+
+        _blend = true;
         DrawBody(spriteBatch, screenPos, drawColor);
+
+        _blend = false;
 
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedStar, DrawLayer.OverPlayers);
 

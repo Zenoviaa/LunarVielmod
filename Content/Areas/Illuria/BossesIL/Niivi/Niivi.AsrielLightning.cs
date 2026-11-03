@@ -60,7 +60,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi
                                 firer.New();
                             }
                         }
-                        if (Timer >= AsrielLightning_StrikeTime)
+                        if (Timer >= AsrielLightning_StrikeTime - 30)
                         {
                             Timer = 0;
                             AttackCount++;

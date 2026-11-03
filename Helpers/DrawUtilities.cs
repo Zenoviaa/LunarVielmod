@@ -710,7 +710,7 @@ public static class DrawUtilities
         for (int i = 0; i < points.Length; i++)
         {
             ref Vector2 p = ref points[i];
-            p = Vector2.Lerp(start, end, i / (float)points.Length);
+            p = Vector2.Lerp(start, end, i / (float)(points.Length-1));
         }
         return points;
     }

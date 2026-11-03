@@ -58,6 +58,7 @@ public partial class Niivi : ScarletBoss,
     float _crystalCharge;
     bool _useFK;
     float _pattern;
+    bool _blend;
     bool _isAfterImaging;
     bool _isTrailing;
     bool _isArmorAura;
@@ -86,27 +87,32 @@ public partial class Niivi : ScarletBoss,
     Vector2[] SegmentOrigins = new Vector2[]
     {
         //Head
-        new(76, 56),
+        new(110, 48),
         
         //neck
-        new(42, 60),
+        new(88, 58),
 
         //right after neck
-        new(42, 60),
+        new(88, 58),
 
-        new(48, 60),
+        new(88, 58),
 
-        new(52, 60),
+        new(88, 58),
 
-        new(52, 60),
+        new(94, 61),
 
-        new(61, 56),
+        new(96, 61),
             
-        new(58, 62),
+        new(109, 51),
 
-        new(58, 62),
+        new(98, 61),
 
-        new(57, 59),
+        new(98, 61),
+
+        new(97, 57),
+
+        new(88, 58),
+         new(88, 58),
     };
 
     enum AIState : byte
@@ -134,20 +140,23 @@ public partial class Niivi : ScarletBoss,
     int _wingFrame;
     float _wingFrameCounter;
     float _arenaY;
-    int SegmentCount => 16;
+    int SegmentCount => 12;
     Vector2 _ikTarget;
     Vector2 _ikInitialDirection;
     float[] Sizes
     {
         get
         {
-            field ??= new float[10];
+            field ??= new float[13];
             field[0] = 88;
             field[1] = 26;
             field[2] = 26;
             field[3] = 26;
-            field[4] = 20;
+            field[4] = 26;
             field[5] = 20;
+            field[6] = 20;
+            field[11] = 26;
+            field[12] = 26;
             return field;
         }
     }
@@ -167,7 +176,10 @@ public partial class Niivi : ScarletBoss,
                for(var i = 0; i < SegmentCount; i++)
                 {
                     ref var scale = ref field[i];
-                    scale = MathHelper.Lerp(1f, 1.1f, EasingFunction.QuadraticBump((float)i / (float)SegmentCount));
+
+                    scale = MathHelper.Lerp(0.8F, 1.1F, EasingFunction.QuadraticBump((float)i / (float)SegmentCount));
+                    if (i == 0)
+                        scale = 1f;
                 }
             }
             return field;
@@ -177,19 +189,28 @@ public partial class Niivi : ScarletBoss,
     {
         get
         {
+
             if(field == null)
             {
+                var v = 0;
                 field = new int[SegmentCount];
                 field[0] = 0;
                 for (var i = 1; i < 3; i++)
                 {
                     field[i] = 1;
                 }
-                for (var i = 3; i < SegmentCount; i++)
-                {
-                    field[i] = (int)MathHelper.Lerp(2, 5, (float)i / (float)SegmentCount);
-                }
-                field[SegmentCount - 1] = 5;
+                field[3] = 2;
+                field[4] = 11;
+                field[5] = 2;
+                field[6] = 11;
+                field[7] = 3;
+                field[8] = 4;
+                field[9] = 4;
+
+                field[10] = 12;
+        
+                field[11] = 5;
+                field[SegmentCount - 1] = 6;
             }
 
             return field;
