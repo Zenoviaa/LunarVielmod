@@ -63,8 +63,8 @@ public class GearGutter : BaseGun
     public override void SetMagazine(ref GunReloadParams fireParams)
     {
         base.SetMagazine(ref fireParams);
-        fireParams.maxAmmo = 6;
-        fireParams.reloadWindow = 90;
+        fireParams.maxAmmo = 2;
+        fireParams.reloadWindow = 140;
     }
 
     public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

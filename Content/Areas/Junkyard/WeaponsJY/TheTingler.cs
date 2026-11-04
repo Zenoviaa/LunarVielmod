@@ -20,7 +20,7 @@ public class TheTingler : BaseGun
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Item.damage = 22;
+        Item.damage = 15;
         Item.DamageType = DamageClass.Ranged;
         Item.width = 50;
         Item.height = 24;
