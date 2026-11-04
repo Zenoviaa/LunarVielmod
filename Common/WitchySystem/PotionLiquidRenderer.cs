@@ -9,15 +9,10 @@ public class PotionLiquidRenderer
     float BaseFrequency => 0.6f;
     float BaseSpeed => 2f;
     float Size => 528;
-    float IncrementDivisor => 18F;
-    float StartY => 232;
-
     public Vector2[] metaballs = new Vector2[32];
     public Vector2[] backMetaballs = new Vector2[32];
     public float waveAmplitude;
     public float waveFrequency;
-
-
     public Color BloodColor => Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().bloodColor;
     public Color DarkBloodColor => Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().darkBloodColor;
 
