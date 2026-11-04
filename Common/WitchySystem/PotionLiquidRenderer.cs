@@ -9,17 +9,33 @@ public class PotionLiquidRenderer
     float BaseFrequency => 0.6f;
     float BaseSpeed => 2f;
     float Size => 528;
-    public Vector2[] metaballs = new Vector2[32];
-    public Vector2[] backMetaballs = new Vector2[32];
+    public Vector2[] metaballs = new Vector2[40];
+    public Vector2[] backMetaballs = new Vector2[40];
     public float waveAmplitude;
     public float waveFrequency;
-    public Color BloodColor => Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().bloodColor;
-    public Color DarkBloodColor => Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().darkBloodColor;
+    public Color? OverrideBloodColor = null;
+    public Color? OverrideDarkBloodColor = null;
+    public Color BloodColor
+    {
+        get
+        {
+            if (OverrideBloodColor.HasValue)
+                return OverrideBloodColor.Value;
+            return Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().bloodColor;
+        }
+    }
+    public Color DarkBloodColor
+    {
+        get
+        {
+            if (OverrideDarkBloodColor.HasValue)
+                return OverrideDarkBloodColor.Value;
+            return Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().darkBloodColor;
+        }
+    }
 
     public void SimulateBackWithInitialPotions(Vector2[] referencePoints, Vector2 topLeft, Vector2 size)
     {
-        if (backMetaballs.Length != referencePoints.Length)
-            backMetaballs = new Vector2[referencePoints.Length];
         // Main.NewText(size);
         float t = Main.GlobalTimeWrappedHourly;
         for (var i = 0; i < referencePoints.Length && i < backMetaballs.Length; i++)
@@ -37,8 +53,6 @@ public class PotionLiquidRenderer
     }
     public void SimulateWithInitialPotions(Vector2[] referencePoints, Vector2 topLeft, Vector2 size)
     {
-        if (metaballs.Length != referencePoints.Length)
-            metaballs = new Vector2[referencePoints.Length];
         for (var i = 0; i < referencePoints.Length && i < metaballs.Length; i++)
         {
             ref var rp = ref referencePoints[i];
@@ -62,6 +76,10 @@ public class PotionLiquidRenderer
     {
         var noiseTex = AssetReferences.Assets.Textures.UI.Witchy.PotionLiquid.Asset;
         var ditherTex = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
+        if(!noiseTex.IsLoaded || !ditherTex.IsLoaded)
+        {
+            return;
+        }
         var manaColor = new Color(48, 64, 236);
 
         var drawer = SpritebatchDrawer.FromTextureAsset(noiseTex, pos + Main.screenPosition) with
@@ -74,7 +92,7 @@ public class PotionLiquidRenderer
         noMaskPass.Parameters.time = Main.GlobalTimeWrappedHourly + BackLiquidTimeOffset;
         noMaskPass.Parameters.outsideColor = Color.White.ToVector4();
         noMaskPass.Parameters.insideColor = Color.Lerp(DarkBloodColor, Color.Black, 0.25f).ToVector4();
-        noMaskPass.Parameters.metaballRadius = 0.15F;
+        noMaskPass.Parameters.metaballRadius = 0.19F;
         noMaskPass.Parameters.metaballStrength = 0.05f;
         noMaskPass.Parameters.metaballs = backMetaballs;
         noMaskPass.Parameters.outlineColor = Color.Lerp(BloodColor, Color.White, 0.3f).ToVector4();
@@ -104,7 +122,7 @@ public class PotionLiquidRenderer
         pass.Parameters.time = Main.GlobalTimeWrappedHourly + BackLiquidTimeOffset;
         pass.Parameters.outsideColor = Color.White.ToVector4();
         pass.Parameters.insideColor = Color.Lerp(DarkBloodColor, Color.Black, 0.25f).ToVector4();
-        pass.Parameters.metaballRadius = 0.15F;
+        pass.Parameters.metaballRadius = 0.19F;
         pass.Parameters.metaballStrength = 0.05f;
         pass.Parameters.metaballs = backMetaballs;
         pass.Parameters.outlineColor = Color.Lerp(BloodColor, Color.White, 0.3f).ToVector4();

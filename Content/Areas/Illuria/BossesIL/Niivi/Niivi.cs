@@ -488,7 +488,7 @@ public partial class Niivi : ScarletBoss,
             SwitchState(RegularAttacks.NextPattern());
             _pattern++;
         }
-        //        SwitchState(SpecialAttacks.NextPattern());
+        //        SwitchState(SpecialAttaa cks.NextPattern());
         SwitchState(AIState.AsrielLightning);
     }
 

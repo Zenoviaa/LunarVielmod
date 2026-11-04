@@ -31,6 +31,9 @@ Mods: {
 			}
 		}
 
-		ResourceDisplaySets.PotionHealthDisplaySet.DisplayName: Potion Health Display Set
+		ResourceDisplaySets: {
+			PotionHealthDisplaySet.DisplayName: Potion Health Display Set
+			WitchyPotion.DisplayName: Witchy Potion
+		}
 	}
 }

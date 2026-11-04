@@ -294,17 +294,34 @@ public class WitchyPotion : ModResourceDisplaySet
                 //Draw glow masks
 
                 var hueShift = AssetReferences.Effects.Generic.LiquidHealth.HueShift.CreatePixelPass();
-                hueShift.Parameters.hueShift = Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().hueShift;
-                hueShift.Apply();
-                using (spriteBatch.Ctx(oldParameters with
+                var hs = Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().hueShift;
+                if(hs != 0)
                 {
-                    effect = hueShift.Shader,
-                    sortMode = SpriteSortMode.Deferred,
-                    blendState = BlendState.AlphaBlend
-                }))
-                {
-                    DrawGlowMask();
+
+                    hueShift.Parameters.hueShift = hs;
+                    hueShift.Apply();
+                    using (spriteBatch.Ctx(oldParameters with
+                    {
+                        effect = hueShift.Shader,
+                        sortMode = SpriteSortMode.Deferred,
+                        blendState = BlendState.AlphaBlend
+                    }))
+                    {
+                        DrawGlowMask();
+                    }
                 }
+                else
+                {
+                    using (spriteBatch.Ctx(oldParameters with
+                    {
+                        sortMode = SpriteSortMode.Deferred,
+                        blendState = BlendState.AlphaBlend
+                    }))
+                    {
+                        DrawGlowMask();
+                    }
+                }
+
             }
 
 

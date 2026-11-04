@@ -72,7 +72,7 @@ public class NiiviLightningStrike : ModProjectile
     public override void OnSpawn(IEntitySource source)
     {
         base.OnSpawn(source);
-        _randIndex = Main.rand.Next(NumStrikes / 2 - 6, NumStrikes / 2 + 6);
+        _randIndex = Main.rand.Next(NumStrikes / 2 - 4, NumStrikes / 2 + 4);
     }
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -95,7 +95,7 @@ public class NiiviLightningStrike : ModProjectile
             var startPOsition = Vector2.Lerp(TopLeft, TopRight, ratio);
             var endPosition = startPOsition;
             endPosition.Y = Y;
-            if (CollisionHelper.LaserCollision(projHitbox, targetHitbox, startPOsition, endPosition, 32))
+            if (CollisionHelper.LaserCollision(projHitbox, targetHitbox, startPOsition, endPosition, 128))
                 return true;
         }
         return false;
