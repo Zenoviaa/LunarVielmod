@@ -11,12 +11,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
 public partial class Niivi
 {
+    float Idle_SwoopOutTime => 180;
     float IdleTime => 240;
-    float Idle_SwoopInTime => 140;
-    float Idle_SwoopOutTime => 240;
-    float Idle_SwoopInStartDistance => 1700;
-    float Idle_SwoopDownStartDistance => 70;
-
+    float Idle_HoverTowardSpeedUpDistance => 256 * 256;
+    float Idle_HoverAboveDistance => 256;
+    float Idle_HoverAwayDistance => 128;
+    float Idle_MaxChaseSpeed => 27;
+    float Idle_MinChaseSpeed => 6;
+    float Idle_HoverTowardSpeed => 1;
+    float Idle_Acceleration => 0.5F;
     void AI_IdleOut()
     {
         NPC.velocity.X += 0.05f;
@@ -35,58 +38,81 @@ public partial class Niivi
         Timer++;
 
         CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.02f));
+
+        //Alright, completely reworking her movement cause she should NOT be doing the Eel thing.
+        /*
+         * 1 - She checks the distance to the player,
+         * if you’re too far she’ll fly towards you, 
+         * how I’m thinking this will working is she’ll go into her like swooping state and sin over to you and then go back into arc hovering,
+         * so she needs to smoothly transition into her ik state so it flows nicely moving up and down
+         */
+        if (Timer % 30 == 0)
+        {
+            NPC.TargetClosest();
+        }
+
+        var positionAboutPlayToMoveTo = MyTarget.Center;
+        var inverseXDirection = (positionAboutPlayToMoveTo.X < NPC.Center.X) ? 1 : -1;
+        positionAboutPlayToMoveTo.Y -= Idle_HoverAboveDistance;
+        positionAboutPlayToMoveTo.X += inverseXDirection * Idle_HoverAwayDistance;
+        var sqrDistToTarget = Vector2.DistanceSquared(NPC.Center, positionAboutPlayToMoveTo);
         switch (AttackCycle)
         {
             case 0:
                 {
-                    if (Timer == 1)
-                    {
-                        NPC.TargetClosest();
-                        StartPosition = _arenaCenter;
-                        StartPosition.Y = _arenaY;
-                        StartPosition.Y -= 256;
-                        StartPosition.X -= Idle_SwoopInStartDistance * 1.2f;
-                        Teleport(StartPosition);
-                    }
-                    var ratio = Timer / Idle_SwoopInTime;
-                    ratio *= 0.8f;
-                    var originPoint = StartPosition;
-                    var posToMoveTo = ArcSwoopDown(ratio, originPoint, Idle_SwoopInStartDistance, Idle_SwoopDownStartDistance);
-                    var vel = (posToMoveTo - NPC.Center);
-                    NPC.velocity = vel;
+                    //Have niivi look at you while arcing, flying up and down
+                    var oscillatedPositionToMoveTo = positionAboutPlayToMoveTo;
+                    oscillatedPositionToMoveTo.Y += MathF.Sin(Timer * 0.04f) * 32;
+                    var velToTarget = (oscillatedPositionToMoveTo - NPC.Center).SafeNormalize(Vector2.Zero);
+                    var chaseVelocity = velToTarget * Idle_HoverTowardSpeed;
+                    NPC.velocity = NPC.velocity.MoveTowards(chaseVelocity, 0.2f);
 
-                    var targetRot = (MyTarget.Center - NPC.Center).ToRotation();
-                    NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRot, 0.04f);
-              
-                    _simpleChainRendering = true;
-                    _ikTarget = ArcSwoopDown(ratio - 0.24f, originPoint, Idle_SwoopInStartDistance, Idle_SwoopDownStartDistance);
-                    _ikTarget.Y += ExtraMath.Osc(-32, 232);
-                    _ikTarget.X += ExtraMath.Osc(0, 187);
-                    if (Timer >= Idle_SwoopInTime)
+                    var lookRotation = (MyTarget.Center - NPC.Center).ToRotation();
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, lookRotation, 0.1f);
+
+                    if (sqrDistToTarget > Idle_HoverTowardSpeedUpDistance)
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        AttackCycle = 1;
                     }
                 }
                 break;
             case 1:
                 {
+                    //She'll speedu p and move towards you
+                    var velToTarget = (positionAboutPlayToMoveTo - NPC.Center).SafeNormalize(Vector2.Zero);
+                    var flyingSpeed = sqrDistToTarget / 256F;
+                    flyingSpeed = MathHelper.Clamp(flyingSpeed, Idle_MinChaseSpeed, Idle_MaxChaseSpeed);
+                    var chaseVelocity = velToTarget * flyingSpeed;
+
+                    //While flying we want niivi to oscillate to the position
+                    var osc = MathF.Sin(Timer * 0.04f) * 0.6F;
+                    chaseVelocity = chaseVelocity.RotatedBy(osc);
+                    NPC.velocity = NPC.velocity.MoveTowards(chaseVelocity, Idle_Acceleration);
+
+                    var chaseRotation = NPC.velocity.ToRotation();
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, chaseRotation, 0.2f);
+
+
+                    //Easing between forms should not be handled in this logic, we'll do that elsewhere
+                    //The same goes for flipping
+                    
                     _simpleChainRendering = true;
-                    if (MathF.Abs(NPC.velocity.X) > 3)
-                        NPC.velocity *= 0.99F;
-                    NPC.velocity.X *= 0.999f;
-                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.05f), MathF.Sin(Timer * 0.1f) * 0.5f + 0.5f);
                     LimpIKTarget();
-                    var targetRot = (MyTarget.Center - NPC.Center).ToRotation();
-                    NPC.rotation = Utils.AngleLerp(NPC.rotation, Utils.AngleLerp(NPC.rotation, targetRot, 0.2f), 0.04f);
-                    if(Timer >= IdleTime)
+
+                    //Once close go back to hovering
+                    //We have padding here to prevent flickering
+                    if(sqrDistToTarget < (Idle_HoverTowardSpeedUpDistance - 144))
                     {
-                        ChooseAttack();
+                        AttackCycle = 0;
                     }
                 }
                 break;
         }
 
-    
+        //Once of the few idle states that has a bit more movement lol
+        if(Timer >= IdleTime)
+        {
+            ChooseAttack();
+        }
     }
 }
