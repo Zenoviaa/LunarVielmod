@@ -53,8 +53,6 @@ float4 LiquidColor(float2 coords, float4 tintColor)
         float distSquared = DistanceSquared(coords, mb);
         float influence = (metaballRadius / distSquared) * metaballStrength;
         influence += sin(time * 3.14 + coords.y * 8.0) * 0.025;
-     //   influence += cos(time * 3.14 + coords.x * 6.0) * 0.05;
-     
         float p = pow(influence, 1.4);
         totalContribution += p;
     }
