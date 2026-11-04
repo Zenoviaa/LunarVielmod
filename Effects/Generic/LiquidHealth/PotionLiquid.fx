@@ -1,4 +1,4 @@
-#include "LiquidBase.fx"
+#include "LiquidBase.fxh"
 
 technique Technique1
 {

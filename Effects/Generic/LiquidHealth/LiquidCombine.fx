@@ -1,5 +1,5 @@
 sampler maskSampler : register(s0);
-sampler mixSampler : register(s1);
+sampler mixSampler;
 
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0

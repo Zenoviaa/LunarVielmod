@@ -135,6 +135,11 @@ public class PotionLiquidRenderer
     public Vector2[] backMetaballs = new Vector2[32];
     public float waveAmplitude;
     public float waveFrequency;
+    public Color bloodColor;
+    public Color darkBloodColor;
+
+    public Color BloodColor => Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().bloodColor;
+    public Color DarkBloodColor => Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().darkBloodColor;
 
     void SimulateBack()
     {
@@ -229,28 +234,27 @@ public class PotionLiquidRenderer
         var ditherTex = AssetReferences.Assets.Dithering.Dither8x8DoubleScaled.Asset;
         var manaColor = new Color(48, 64, 236);
 
-        //idk why the above other sampler no work tbh
-        //but this does!
-        //might need hepler functions for this later.
-        Main.graphics.GraphicsDevice.Textures[2] = ditherTex.Value;
-        Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.LinearWrap;
-
         var drawer = SpritebatchDrawer.FromTextureAsset(noiseTex, pos + Main.screenPosition) with
         { 
             drawOrigin = Vector2.Zero,
-            color = Color.Lerp(Color.DarkRed, Color.Black, 0.3f) 
+            color = Color.Lerp(DarkBloodColor, Color.Black, 0.3f) 
         };
 
         var noMaskPass = AssetReferences.Effects.Generic.LiquidHealth.NoMaskPotionLiquid.CreateNoMaskPass();
         noMaskPass.Parameters.time = Main.GlobalTimeWrappedHourly + BackLiquidTimeOffset;
         noMaskPass.Parameters.outsideColor = Color.White.ToVector4();
-        noMaskPass.Parameters.insideColor = Color.Lerp(Color.DarkRed, Color.Black, 0.25f).ToVector4();
+        noMaskPass.Parameters.insideColor = Color.Lerp(DarkBloodColor, Color.Black, 0.25f).ToVector4();
         noMaskPass.Parameters.metaballRadius = 0.15F;
         noMaskPass.Parameters.metaballStrength = 0.05f;
         noMaskPass.Parameters.metaballs = backMetaballs;
-        noMaskPass.Parameters.outlineColor = Color.Lerp(Color.Red, Color.White, 0.3f).ToVector4();
+        noMaskPass.Parameters.outlineColor = Color.Lerp(BloodColor, Color.White, 0.3f).ToVector4();
         noMaskPass.Parameters.spriteSize = noiseTex.Size();
         noMaskPass.Parameters.noiseTexelSize = ditherTex.GetTexelSize();
+        noMaskPass.Parameters.noiseSampler = new()
+        {
+            Texture = ditherTex.Value,
+            Sampler = SamplerState.LinearWrap
+        };
         noMaskPass.Apply();
 
         var d2 = drawer with { spriteEffects = SpriteEffects.None };
@@ -269,16 +273,21 @@ public class PotionLiquidRenderer
         var pass = AssetReferences.Effects.Generic.LiquidHealth.PotionLiquid.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly + BackLiquidTimeOffset;
         pass.Parameters.outsideColor = Color.White.ToVector4();
-        pass.Parameters.insideColor = Color.Lerp(Color.DarkRed, Color.Black, 0.25f).ToVector4();
+        pass.Parameters.insideColor = Color.Lerp(DarkBloodColor, Color.Black, 0.25f).ToVector4();
         pass.Parameters.metaballRadius = 0.15F;
         pass.Parameters.metaballStrength = 0.05f;
         pass.Parameters.metaballs = backMetaballs;
-        pass.Parameters.outlineColor = Color.Lerp(Color.Red, Color.White, 0.3f).ToVector4();
+        pass.Parameters.outlineColor = Color.Lerp(BloodColor, Color.White, 0.3f).ToVector4();
 
         pass.Parameters.spriteSize = noiseTex.Size();
         pass.Parameters.noiseTexelSize = ditherTex.GetTexelSize();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Parameters.metaballs = metaballs;
+        pass.Parameters.noiseSampler = new()
+        {
+            Texture = ditherTex.Value,
+            Sampler = SamplerState.LinearWrap
+        };
         pass.Apply();
         startParameters.effect = pass.Shader;
         spriteBatch.Begin(startParameters);

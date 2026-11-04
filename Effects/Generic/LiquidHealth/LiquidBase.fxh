@@ -1,5 +1,5 @@
 sampler spriteSampler : register(s0);
-sampler noiseSampler : register(s2);
+sampler noiseSampler;
 float4 outsideColor;
 float4 insideColor;
 float4 outlineColor;

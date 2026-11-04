@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.WitchySystem;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
@@ -200,6 +201,10 @@ public class Moonheart : ModItem
     {
         base.UpdateAccessory(player, hideVisual);
         player.GetModPlayer<MoonheartPlayer>().hasMoonheart = true;
+        var bp = player.GetModPlayer<PotionHealthPlayer>();
+        bp.bloodColor = Color.SkyBlue;
+        bp.darkBloodColor = Color.DarkBlue;
+        bp.hueShift = 85;
         player.lifeRegen = 0;
         player.lifeRegenCount = 0;
     }

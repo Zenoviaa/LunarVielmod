@@ -17,6 +17,7 @@ public static class GraphicsDeviceExtensions
     {
         public void Register(int index, Texture2D texture, SamplerState sampler)
         {
+        
             gDevice.Textures[index] = texture;
             gDevice.SamplerStates[index] = sampler;
         }

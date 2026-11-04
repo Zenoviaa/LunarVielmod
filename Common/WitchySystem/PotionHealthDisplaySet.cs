@@ -40,11 +40,19 @@ public class OffsetMinimapWithDisplaySet : ModSystem
 
 public class PotionHealthPlayer : ModPlayer
 {
+    public Color bloodColor;
+    public Color darkBloodColor;
+    public Color outlineColor;
+    public float hueShift;
     public static float hurtTimer;
     public override void ResetEffects()
     {
         base.ResetEffects();
+        bloodColor = Color.Red;
+        darkBloodColor = Color.DarkRed;
+        hueShift = 0;
     }
+
     public override void PostUpdateMiscEffects()
     {
         base.PostUpdateMiscEffects();
@@ -146,7 +154,7 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
 
         if (Main.gameMenu)
             return;
-
+ 
 
         void DrawInner()
         {
@@ -354,8 +362,13 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
             using (RT.Clear(liquidTarget, Color.Transparent))
             {
                 //Draw glow masks
+                
+                var hueShift = AssetReferences.Effects.Generic.LiquidHealth.HueShift.CreatePixelPass();
+                hueShift.Parameters.hueShift = Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().hueShift;
+                hueShift.Apply();
                 using (spriteBatch.Ctx(oldParameters with
                 {
+                    effect = hueShift.Shader,
                     sortMode = SpriteSortMode.Deferred,
                     blendState = BlendState.AlphaBlend
                 }))
@@ -366,8 +379,12 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
 
 
             var liquidCombine = AssetReferences.Effects.Generic.LiquidHealth.LiquidCombine.CreatePixelPass();
+            liquidCombine.Parameters.mixSampler = new()
+            {
+                Texture = glowMaskOcclusionTarget,
+                Sampler = SamplerState.LinearClamp
+            };
             liquidCombine.Apply();
-            spriteBatch.GraphicsDevice.Register(1, glowMaskOcclusionTarget, SamplerState.LinearClamp);
             spriteBatch.Begin(oldParameters with { effect = liquidCombine.Shader, matrix = Matrix.Identity });
             spriteBatch.Draw(liquidTarget, Vector2.Zero, Color.White);
             spriteBatch.End();
@@ -396,17 +413,18 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
             var healthText = Main.LocalPlayer.statLife.ToString();
             var size = font.MeasureString(healthText);
             var origin = size * 0.5F;
+            var healthScale = 1.25f;
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, font,
-            healthText, ballCenter + new Vector2(0, 0), Color.White, 0, origin, Vector2.One);
+            healthText, ballCenter + new Vector2(0, 0), Color.White, 0, origin, Vector2.One * healthScale);
 
             var maxHealthText = "/" + Main.LocalPlayer.statLifeMax2.ToString();
             size = font.MeasureString(maxHealthText);
             origin = size * 0.5F;
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, font,
-                maxHealthText, ballCenter + new Vector2(0, 32), Color.DarkGray, 0, origin, Vector2.One * 0.5F);
+                maxHealthText, ballCenter + new Vector2(0, 32), Color.DarkGray, 0, origin, Vector2.One * 0.5F * healthScale);
         }
         float uIScale = Main.UIScale;
-        float downScale = uIScale - 0.2F;
+        float downScale = uIScale - 0.34F;
         spriteBatch.EndOut(out var oldParameters);
         Main.UIScale = downScale;
         PlayerInput.SetZoom_Scaled(1f / downScale);
