@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader;
-using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Stellamod.Common.WitchySystem;
 
@@ -22,62 +16,16 @@ public class PotionLiquidRenderer
     public Vector2[] backMetaballs = new Vector2[32];
     public float waveAmplitude;
     public float waveFrequency;
-    public Color bloodColor;
-    public Color darkBloodColor;
+
 
     public Color BloodColor => Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().bloodColor;
     public Color DarkBloodColor => Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().darkBloodColor;
-
-    void SimulateBack()
-    {
-       
-        var x = 0F;
-        var y = 0F;
-        y = StartY;
-        var increment = Size / IncrementDivisor;
-        float t = Main.GlobalTimeWrappedHourly;
-        for (var i = 0; i < backMetaballs.Length; i++)
-        {
-            var f = (float)i;
-            ref var metaball = ref backMetaballs[i];
-
-            metaball.X = (x / Size) + (MathF.Cos(BackLiquidTimeOffset + t * BaseSpeed + y * BaseFrequency * waveFrequency) * waveAmplitude);
-            metaball.Y = (y / Size) + (MathF.Sin(BackLiquidTimeOffset + t * BaseSpeed + x * BaseFrequency * waveFrequency) * waveAmplitude);
-            x += increment;
-            if (x >= Size)
-            {
-                x = 0;
-                y += increment;
-            }
-        }
-    }
-    void SimulateFront()
-    {
-        var x = 0F;
-        var y = 0F;
-        y = StartY;
-        var increment = Size / IncrementDivisor;
-        for (var i = 0; i < metaballs.Length; i++)
-        {
-            var f = (float)i;
-            ref var metaball = ref metaballs[i];
-
-            metaball.X = (x / Size) + (MathF.Cos(Main.GlobalTimeWrappedHourly * BaseSpeed + y * BaseFrequency * waveFrequency) * waveAmplitude);
-            metaball.Y = (y / Size) + (MathF.Sin(Main.GlobalTimeWrappedHourly * BaseSpeed + x * BaseFrequency * waveFrequency) * waveAmplitude);
-            x += increment;
-            if(x >= Size)
-            {
-                x = 0;
-                y += increment;
-            }
-        }
-    }
 
     public void SimulateBackWithInitialPotions(Vector2[] referencePoints, Vector2 topLeft, Vector2 size)
     {
         if (backMetaballs.Length != referencePoints.Length)
             backMetaballs = new Vector2[referencePoints.Length];
-       // Main.NewText(size);
+        // Main.NewText(size);
         float t = Main.GlobalTimeWrappedHourly;
         for (var i = 0; i < referencePoints.Length && i < backMetaballs.Length; i++)
         {
@@ -102,7 +50,7 @@ public class PotionLiquidRenderer
             var offset = (rp - topLeft);
 
             ref var metaball = ref metaballs[i];
-            var targetX = (offset.X / Size ) + (MathF.Cos(Main.GlobalTimeWrappedHourly * BaseSpeed + offset.Y * BaseFrequency * waveFrequency) * waveAmplitude);
+            var targetX = (offset.X / Size) + (MathF.Cos(Main.GlobalTimeWrappedHourly * BaseSpeed + offset.Y * BaseFrequency * waveFrequency) * waveAmplitude);
             var targetY = (offset.Y / Size) + (MathF.Sin(Main.GlobalTimeWrappedHourly * BaseSpeed + offset.X * BaseFrequency * waveFrequency) * waveAmplitude);
             metaball.X = MathHelper.Lerp(metaball.X, targetX, 0.1F);
             metaball.Y = MathHelper.Lerp(metaball.Y, targetY, 0.1F);
@@ -110,8 +58,8 @@ public class PotionLiquidRenderer
     }
     public void Simulate()
     {
-  //      SimulateBack();
-//SimulateFront();
+        //      SimulateBack();
+        //SimulateFront();
     }
 
 
@@ -122,9 +70,9 @@ public class PotionLiquidRenderer
         var manaColor = new Color(48, 64, 236);
 
         var drawer = SpritebatchDrawer.FromTextureAsset(noiseTex, pos + Main.screenPosition) with
-        { 
+        {
             drawOrigin = Vector2.Zero,
-            color = Color.Lerp(DarkBloodColor, Color.Black, 0.3f) 
+            color = Color.Lerp(DarkBloodColor, Color.Black, 0.3f)
         };
 
         var noMaskPass = AssetReferences.Effects.Generic.LiquidHealth.NoMaskPotionLiquid.CreateNoMaskPass();
