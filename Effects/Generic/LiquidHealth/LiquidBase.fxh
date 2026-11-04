@@ -3,12 +3,20 @@ sampler noiseSampler : register(s2);
 float4 outsideColor;
 float4 insideColor;
 float4 outlineColor;
-float2 metaballs[32];
+float2 metaballs[40];
 float2 spriteSize;
 float2 noiseTexelSize;
 float metaballRadius;
 float metaballStrength;
 float time;
+
+
+struct PSOutput
+{
+    float4 Liquid : SV_Target0;
+    float4 Mask : SV_Target1;
+};
+
 
 float DistanceSquared(float2 a, float2 b)
 {
@@ -16,18 +24,18 @@ float DistanceSquared(float2 a, float2 b)
     float num2 = a.y - b.y;
     return num * num + num2 * num2;
 }
-float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
+
+float4 LiquidColor(float2 coords, float4 tintColor)
 {
     float2 ditherCoords = coords * spriteSize * noiseTexelSize;
     float4 ditherColor = tex2D(noiseSampler, ditherCoords);
-  
     
     float speed = time;
     speed *= 0.4;
     float2 noiseCoords1 = frac(coords + float2(
     sin(coords.y * 4.0 + speed * 1.5) * 0.04, speed * -0.15 + 0.2));
     
-    float2 noiseCoords2 = frac(coords  + float2(
+    float2 noiseCoords2 = frac(coords + float2(
     sin(coords.y * 4.0 + speed * -1.5) * 0.04 + 0.8 + speed * 0.5, speed * 0.15));
     
     float2 pixelated = spriteSize * 0.5;
@@ -49,9 +57,6 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
      
         float p = pow(influence, 1.4);
         totalContribution += p;
-        
-        
-
     }
 
     float l = totalContribution / 4.0;
@@ -59,11 +64,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     
 
     float4 noiseColor = tex2D(spriteSampler, noiseCoords1);
-    
     float4 noiseColor2 = tex2D(spriteSampler, noiseCoords2);
-    
     float4 noiseColor4 = tex2D(spriteSampler, frac(float2(coords.y, coords.x * 0.3) + float2(speed * 0.5, 0.0)));
-    
     float4 noiseColor3 = noiseColor + noiseColor2;
    
     
@@ -76,17 +78,15 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     
     float glowingFactor = saturate(totalContribution / 3.0);
     float4 metaballColor = lerp(float4(0.0, 0.0, 0.0, 0.0), insideColor, l);
-    //metaballColor *= 2.0;
-  //  metaballColor = floor(metaballColor * 8.0) / 8.0;
-    if(metaballColor.a < 0.82)
+    if (metaballColor.a < 0.81)
         metaballColor *= 0.0;
+    
     metaballColor.rgb *= coords.y * metaballColor.a * 0.75;
     
     float4 oc = lerp(float4(1.0, 1.0, 1.0, 1.0), outlineColor, coords.y * 1.8);
     oc += sin(time + coords.x * 4.0) * 0.7;
     oc += cos(time + coords.y * 8.0) * 0.3;
     metaballColor += oc * invContribution * metaballColor.a * 5.0;
-    //metaballColor.gb -= invContribution * metaballColor.a * 7.0;
     metaballColor += (tintColor * glowingFactor * 1.0 * (1.0 - metaballColor.a)) * coords.y * 0.5;
     metaballColor += noiseColor3 * metaballColor.a * tintColor * 0.7;
    
@@ -102,20 +102,24 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     metaballColor += 0.0125 * metaballColor.a;
     metaballColor += noiseColor4 * metaballColor.a * tintColor * 0.5;
     metaballColor = floor(metaballColor * 8.0) / 8.0;
-  
-    //metaballColor = floor(metaballColor * 8.0) / 8.0;
-    //metaballColor.bg += pow(glowInvContribution, 0.1) * metaballColor.a * 0.4;
-    //metaballColor.rgb += (1.0 - coords.y + 0.05) * metaballColor.a;
-    //metaballColor.rgb -= sin(frac(time * 0.2 + coords.y * 0.2) * 3.14);
-    //float4  glossColor = pow(metaballColor, 4.0) / 4.0;
-    //metaballColor += glossColor * 256.0;
-    return metaballColor * 0.9;
+    return metaballColor;
 }
 
-technique Technique1
+PSOutput PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
 {
-    pass PixelPass
-    {
-        PixelShader = compile ps_3_0 PixelShaderFunction();
-    }
+    PSOutput output;
+    float4 metaballColor = LiquidColor(coords, tintColor);
+    output.Liquid = metaballColor * 0.9;
+    output.Mask = float4(metaballColor.r, metaballColor.r, metaballColor.r, metaballColor.r);
+    return output;
 }
+
+PSOutput NoMaskPixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
+{
+    PSOutput output;
+    float4 metaballColor = LiquidColor(coords, tintColor);
+    output.Liquid = metaballColor * 0.9;
+    output.Mask = 0.0;
+    return output;
+}
+

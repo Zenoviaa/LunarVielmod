@@ -19,4 +19,8 @@ public static class RT
     {
         return new RTUsage(new RenderTargetBinding[1] {rt}, clearColor);
     }
+    public static RTUsage Clear(RenderTargetBinding[]binding, Color? clearColor = null)
+    {
+        return new RTUsage(binding, clearColor);
+    }
 }
