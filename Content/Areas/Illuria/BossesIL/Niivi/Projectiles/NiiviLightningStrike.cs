@@ -10,6 +10,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
 
 public class NiiviLightningStrike : ModProjectile
 {
+    public struct MiniLightningStrikeData
+    {
+        public Vector2 randScale;
+        public int index;
+        public float randRotation;
+
+        public float randProgress;
+    }
+
     public struct LightningStrikeData
     {
         public float randWidth;
@@ -45,6 +54,25 @@ public class NiiviLightningStrike : ModProjectile
                     data.randWidth = Main.rand.NextFloat(0.6f, 1f);
                     data.randRotation = Main.rand.NextFloat(-0.05f, 0.05f);
                     data.randHue = Main.rand.NextFloat(0f, 1f);
+                }
+            }
+            return field;
+        }
+    }
+    MiniLightningStrikeData[] MiniStrikeData
+    {
+        get
+        {
+            if(field == null)
+            {
+                field = new MiniLightningStrikeData[NumStrikes];
+                for(var i = 0; i < NumStrikes; i++)
+                {
+                    ref var data = ref field[i];
+                    data.randProgress = Main.rand.NextFloat(0f, 1f);
+                    data.randScale = new Vector2(Main.rand.NextFloat(0.6f, 1f), Main.rand.NextFloat(0.8f, 1f)) * Main.rand.NextFloat(0.2f, 0.3f);
+                    data.randRotation = Main.rand.NextFloat(-0.2f, 0.2f);
+                    data.index = Main.rand.Next(NumStrikes);
                 }
             }
             return field;
@@ -353,7 +381,7 @@ public class NiiviLightningStrike : ModProjectile
 
     void DrawPixelatedStrike(SpriteBatch sb, Vector2 sp)
     {
-        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SingleLightningStrike.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SingleLightningStrike.Asset);
         drawer.LeftCenterOrigin();
 
         var halfTime = TelegraphTime * 0.5f;
@@ -362,6 +390,65 @@ public class NiiviLightningStrike : ModProjectile
         pass.Apply();
         using (sb.Ctx(sb.Parameters with { blendState = BlendState.Additive, effect = pass.Shader }))
         {
+            for(var i = 0; i < MiniStrikeData.Length; i++)
+            {
+                ref var miniStrikeData = ref MiniStrikeData[i];
+                if (miniStrikeData.index == _randIndex)
+                    continue;
+                ref var timer = ref StrikeTimers[miniStrikeData.index];
+                ref var state = ref StrikeStates[miniStrikeData.index];
+                if (state == AIState.Telegraph)
+                    continue;
+
+                var ratio = (float)miniStrikeData.index / (float)NumStrikes;
+                var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
+                var scrollingColor = Color.White;
+
+                ref var strikeData = ref StrikeData[miniStrikeData.index];
+
+                var hueOffset = ((float)i * 24F + timer + strikeData.randHue * 6F);
+                hueOffset /= 360F;
+                hueOffset %= 1.0F;
+
+                var osc = ExtraMath.Osc(0.92f, 1f, speed: 32);
+                var osc2 = ExtraMath.Osc(0.7f, 2f, speed: 6, offset: i);
+                var osc3 = osc * osc2;
+
+                var telegraphRatio = timer / halfTime;
+                var a = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(telegraphRatio)) * 2f;
+                var alpha = a * osc3 * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(timer / TelegraphTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16);
+                var strikeColor = new Color(1.0f, 1.0f, hueOffset, alpha);
+                drawer.color = strikeColor;
+                drawer.worldPosition = startPosition + new Vector2(16, 0);
+                drawer.worldPosition.Y += MathHelper.Lerp(0f, StrikeHeight, miniStrikeData.randProgress);
+
+                drawer.scale.X = StrikeHeight / drawer.Width;
+                drawer.scale.X *= strikeData.randWidth;
+
+                drawer.scale.X *= MathHelper.Lerp(1.06f, 1f, EasingFunction.OutExpo(timer / StrikeTime));
+                drawer.scale.Y = MathHelper.Lerp(2f, 1f, EasingFunction.OutSine(timer / StrikeTime));
+                drawer.scale *= miniStrikeData.randScale;
+
+                drawer.rotation = Vector2.UnitY.ToRotation();
+                drawer.rotation += strikeData.randRotation;
+                drawer.rotation += miniStrikeData.randRotation;
+
+                if (i % 2 == 0)
+                {
+                    drawer.spriteEffects = SpriteEffects.FlipVertically;
+                }
+                else
+                {
+                    drawer.spriteEffects = SpriteEffects.None;
+                }
+
+                var bloomDrawer = drawer;
+                bloomDrawer.scale.Y *= 1.5f;
+                bloomDrawer.color.A -= 50;
+                sb.Draw(bloomDrawer);
+                sb.Draw(drawer);
+            }
+
             for (var i = 0; i < NumStrikes; i++)
             {
                 if (_randIndex == i)
