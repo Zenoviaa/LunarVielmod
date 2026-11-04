@@ -144,7 +144,7 @@ public class NiiviSillyStarMaker : ModProjectile
         OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
         Timer++;
         GlobalTimer++;
-        if(Timer >= 64)
+        if(Timer >= 86)
         {
             if (this.OwnedByLocalClient())
             {
@@ -295,8 +295,8 @@ public class NiiviSillyStar : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 32;
-        Projectile.height = 32;
+        Projectile.width = 28;
+        Projectile.height = 28;
         Projectile.penetrate = -1;
         Projectile.light = 1f;
         Projectile.timeLeft = 1200;
@@ -521,7 +521,7 @@ public class NiiviSillyStar : ModProjectile
             _mad = true;
             if(Projectile.velocity.Length() < 15)
                 Projectile.velocity *= 1.02f;
-            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPlayer.Center, MathHelper.Lerp(5f, 0.7F,(Timer - 100F)/70F));
+            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, TargetPlayer.Center, MathHelper.Lerp(4f, 0.6F,(Timer - 100F)/70F));
             Projectile.rotation += MathF.Sign(Projectile.velocity.X) * 0.04f;
         }
 
