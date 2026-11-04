@@ -1,6 +1,5 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Rendering.RTs;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.ResourceSets;
@@ -9,67 +8,10 @@ using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
 namespace Stellamod.Common.WitchySystem;
-
-[Autoload(Side = ModSide.Client)]
-public class OffsetMinimapWithDisplaySet : ModSystem
-{
-    public override void Load()
-    {
-        base.Load();
-        On_Main.GetInfoAccIconPosition += GetOffsetPosition;
-        On_Main.UpdateMinimapAnchors += OffsetMinimapDown;
-    }
-
-    private void GetOffsetPosition(On_Main.orig_GetInfoAccIconPosition orig, int drawnCount, int StartX, out int X, out int Y)
-    {
-        orig(drawnCount, StartX, out X, out Y);
-
-        //throw new NotImplementedException();
-        Y += 160;
-    }
-
-    private void OffsetMinimapDown(On_Main.orig_UpdateMinimapAnchors orig)
-    {
-        orig();
-        //   Main.NewText("whoas");
-        //Main._minimapTopRightAnchorOffsetTowardsLeft += 190; 
-        //Main._minimapTopRightAnchorOffsetTowardsLeft = 52 + (int)(240f * Main.MapScale);
-        Main._minimapTopRightAnchorOffsetTowardsBottom += 160;
-    }
-}
-
-public class PotionHealthPlayer : ModPlayer
-{
-    public Color bloodColor;
-    public Color darkBloodColor;
-    public Color outlineColor;
-    public float hueShift;
-    public static float hurtTimer;
-    public override void ResetEffects()
-    {
-        base.ResetEffects();
-        bloodColor = Color.Red;
-        darkBloodColor = Color.DarkRed;
-        hueShift = 0;
-    }
-
-    public override void PostUpdateMiscEffects()
-    {
-        base.PostUpdateMiscEffects();
-        if (hurtTimer > 0)
-            hurtTimer--;
-    }
-    public override void PostHurt(Player.HurtInfo info)
-    {
-        base.PostHurt(info);
-        hurtTimer = 30;
-    }
-}
-public class PotionHealthDisplaySet : ModResourceDisplaySet
+public class WitchyPotion : ModResourceDisplaySet
 {
     PlayerStatsSnapshot _snapShot;
     PotionLiquidRenderer PotionLiquidRenderer => field ??= new();
-
     Vector2[] PointBuffer => field ??= new Vector2[64];
     Vector2 TopLeftLiquid => TopLeftBar + new Vector2(0, 0);
     Vector2 TopLeftBar
@@ -82,18 +24,6 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
             offset.X -= 16;
             offset.Y += TowardsBottom + BarOffsetTowardsBottom;
             offset.Y -= 100;
-            return offset;
-        }
-    }
-    Vector2 BottomRightBar
-    {
-        get
-        {
-            var offset = new Vector2();
-            offset.X += Main.screenWidth - 32;
-            offset.X -= 16;
-            offset.Y += TowardsBottom + BarOffsetTowardsBottom;
-            offset.Y += 64;
             return offset;
         }
     }
@@ -154,7 +84,7 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
 
         if (Main.gameMenu)
             return;
- 
+
 
         void DrawInner()
         {
@@ -343,26 +273,26 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
                 var white = SpriteWhiteShader.Instance;
 
 
-                using (spriteBatch.Ctx(oldParameters with {  sortMode = SpriteSortMode.Deferred, effect = white }))
+                using (spriteBatch.Ctx(oldParameters with { sortMode = SpriteSortMode.Deferred, effect = white }))
                 {
                     DrawMask();
                 }
-                using (spriteBatch.Ctx(oldParameters with {  blendState = CustomBlendStates.Multiply, matrix = Matrix.Identity }))
+                using (spriteBatch.Ctx(oldParameters with { blendState = CustomBlendStates.Multiply, matrix = Matrix.Identity }))
                 {
-                   spriteBatch.Draw(potionTarget, Vector2.Zero, Color.White);
+                    spriteBatch.Draw(potionTarget, Vector2.Zero, Color.White);
                 }
             }
 
 
 
-            spriteBatch.Begin(oldParameters with { matrix =Matrix.Identity });
+            spriteBatch.Begin(oldParameters with { matrix = Matrix.Identity });
             spriteBatch.Draw(liquidTarget, Vector2.Zero, Color.White);
             spriteBatch.End();
 
             using (RT.Clear(liquidTarget, Color.Transparent))
             {
                 //Draw glow masks
-                
+
                 var hueShift = AssetReferences.Effects.Generic.LiquidHealth.HueShift.CreatePixelPass();
                 hueShift.Parameters.hueShift = Main.LocalPlayer.GetModPlayer<PotionHealthPlayer>().hueShift;
                 hueShift.Apply();
@@ -390,7 +320,7 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
             spriteBatch.End();
 
 
-            if(PotionHealthPlayer.hurtTimer > 0)
+            if (PotionHealthPlayer.hurtTimer > 0)
             {
                 var white2 = SpriteWhiteShader.Instance;
                 spriteBatch.Begin(oldParameters with { effect = white2, matrix = Matrix.Identity });
@@ -429,7 +359,7 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
         Main.UIScale = downScale;
         PlayerInput.SetZoom_Scaled(1f / downScale);
         spriteBatch.Begin(oldParameters with { matrix = Main.UIScaleMatrix });
-        
+
         DrawInner();
 
         spriteBatch.End();
