@@ -1,16 +1,16 @@
 ﻿using Stellamod.Common.Particles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
 
 public partial class Niivi
 {
+    static Color LightGoldenColor => Color.Lerp(Color.Gold, Color.Black, 0.5f);
+    static Color DarkGoldenColor => Color.Lerp(Color.DarkGoldenrod, Color.Black, 0.5f);
+    Vector2 RandomPositionOnBody => SegmentPositions[Main.rand.Next(SegmentPositions.Length)];
     float _crystalRotationRadians;
     void RotateCrystals(Vector2 point, float distanceOffset)
     {
@@ -39,7 +39,7 @@ public partial class Niivi
         }
 
 
-        if(Timer % 15 == 0)
+        if (Timer % 15 == 0)
         {
             var fx = FXUtil.GlowCircleBoom(suckPosition, DrawUtilities.Prismatic, DrawUtilities.Prismatic, Color.Black, 30, 0.2F);
             fx.Scale *= 1.5F;
@@ -169,5 +169,72 @@ public partial class Niivi
         var lerp2 = Vector2.Lerp(bottomToTop, topToBottomLeft, t);
         var lerp3 = Vector2.Lerp(lerp1, lerp2, t);
         return lerp3;
+    }
+    
+    public static void PlayLightningSound(Vector2 position)
+    {
+
+        var zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain1.Asset with { PitchVariance = 1 };
+        if (Main.rand.NextBool(2))
+            zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain2.Asset with { PitchVariance = 1 };
+        if (Main.rand.NextBool(2))
+            zapSound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain3.Asset with { PitchVariance = 1 };
+        zapSound.Volume = 0.5f;
+        SoundEngine.PlaySound(zapSound, position);
+    }
+
+    public static void MakeRainbowLightningSpark(Vector2 centerPos)
+    {
+        var pos = centerPos + Main.rand.NextVector2Circular(32, 32);
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+        var lightPrismaticColor = DrawUtilities.Prismatic.Lighten(0.3f);
+        var darkPrismaticColor = lightPrismaticColor.Darken(0.5F);
+        var color = Color.Lerp(lightPrismaticColor, darkPrismaticColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.6f);
+        Particles.LightningBolt.Spawn(new()
+        {
+            position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
+            velocity = vel,
+            color = color,
+            timeLeft = 60
+        });
+
+        PlayLightningSound(centerPos);
+        var darkColor = Color.Lerp(color, Color.Black, 0.25f);
+        FXUtil.GlowCircleBoom(pos, lightPrismaticColor, darkPrismaticColor, Color.Black, 25, baseSize: 0.16f);
+        for (var f = 0; f < 16; f++)
+        {
+            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = pos + Main.rand.NextVector2Circular(32, 32),
+                velocity = Main.rand.NextVector2Circular(16, 16),
+                innerColor = color.ToVector4(),
+                outerColor = darkColor.ToVector4(),
+                scale = new Vector2(Main.rand.NextFloat(0.6f, 1.2f)),
+                timeLeft = 60
+            });
+        }
+    }
+
+    public static void CreateLightningSparks(Vector2 centerPos)
+    {
+        var pos = centerPos + Main.rand.NextVector2Circular(32, 32);
+        var vel = -Vector2.UnitY;
+        vel *= 6;
+        vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
+
+        var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
+        color = Color.Lerp(color, Color.White, 0.6f);
+        Particles.LightningSpark.Spawn(new()
+        {
+            position = pos,
+            velocity = vel,
+            color = color,
+            scale = Main.rand.NextFloat(0.7f, 1.5f) * 0.3f,
+            timeLeft = 60
+        });
     }
 }
