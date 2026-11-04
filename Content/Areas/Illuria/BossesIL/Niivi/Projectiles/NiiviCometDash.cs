@@ -62,11 +62,11 @@ public class NiiviCometDash : ModProjectile,
     {
         float GetTrailWidth(float ratio)
         {
-            return MathHelper.SmoothStep(256, 0, ratio);
+            return MathHelper.SmoothStep(256, 0, ratio)  * MathHelper.Lerp(1f, 0f, EasingFunction.InQuad(Timer / 120F));
         }
         Color GetTrailColor(float ratio)
         {
-            return Color.White;
+            return Color.Lerp(Color.White, Color.Transparent, ratio);
         }
 
         var pass = AssetReferences.Effects.Niivi.NiiviCometDash.CreatePrimitivesPass();
