@@ -67,12 +67,12 @@ public class SteamrollerBomb : ModProjectile
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         Main.spriteBatch.Draw(sbDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(_glowTextureAsset, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_glowTextureAsset, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.Black, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12, offset: Projectile.whoAmI));
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);
 
-        SpritebatchDrawer outlienDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
+        SpritebatchDrawer outlienDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineTextureAsset, Projectile.Center);
         outlienDrawer.color = Color.Red;
         outlienDrawer.color.A = 0;
         Main.spriteBatch.Draw(outlienDrawer);

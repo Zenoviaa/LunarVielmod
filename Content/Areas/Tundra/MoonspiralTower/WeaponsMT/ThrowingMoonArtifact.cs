@@ -198,7 +198,7 @@ public class ThrowingMoon : ModProjectile
         PrepareAssets();
         Vector2 scale = Vector2.One * _scale;
 
-        var circleSprite = SpritebatchDrawer.FromTextureAsset(_magicCircleTextureAsset, Projectile.Center);
+        var circleSprite = SpritebatchDrawer.FromTextureGetLightingColor(_magicCircleTextureAsset, Projectile.Center);
         circleSprite.color = Color.Lerp(Color.Black, Color.White, _flashAlpha + _shootFlash);// * ExtraMath.Osc(0.5f, 1f, speed: 6);
         circleSprite.color.A = 0;
         circleSprite.rotation = Main.GlobalTimeWrappedHourly;
@@ -207,7 +207,7 @@ public class ThrowingMoon : ModProjectile
 
         var moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
         moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.Blue, Color.White, _flashAlpha + _shootFlash) * 0.8f * ExtraMath.Osc(0.5f, 1f, speed: 6);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 1.8f;
@@ -216,7 +216,7 @@ public class ThrowingMoon : ModProjectile
 
 
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         glowDrawer.color = Color.White * 0.2f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.X *= 1.2f;
@@ -245,7 +245,7 @@ public class ThrowingMoon : ModProjectile
         sb.RestartDefaults();
 
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarRing, Projectile.Center);
         glowDrawer.color = Color.White * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
@@ -259,7 +259,7 @@ public class ThrowingMoon : ModProjectile
     {
         PrepareAssets();
         Vector2 scale = Vector2.One * _scale;
-        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
+        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_shadowMoonTextureAsset, Projectile.Center);
 
         Color flashColor = Color.White;
         Color darkColor = Color.Lerp(Color.Blue, Color.Black, 0.8f) * 0.5f;
@@ -267,7 +267,7 @@ public class ThrowingMoon : ModProjectile
         shadowDrawer.scale *= scale * 1.05f;
         Main.spriteBatch.Draw(shadowDrawer);
 
-        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
+        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineTextureAsset, Projectile.Center);
         outlineDrawer.color = Color.Red;
         outlineDrawer.scale *= scale;
 
@@ -276,7 +276,7 @@ public class ThrowingMoon : ModProjectile
         moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha + _shootFlash);
         Main.spriteBatch.Draw(moonSprite);
 
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.White * 0.36f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;

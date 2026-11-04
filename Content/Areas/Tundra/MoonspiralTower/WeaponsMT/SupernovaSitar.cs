@@ -175,21 +175,21 @@ public class MoonEnchantedShot : ModProjectile,
     public override bool PreDraw(ref Color lightColor)
     {
         float globalScale = 0.4f * _inScale * 0.4f;
-        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         flareDrawer.color = Color.Blue;
         flareDrawer.color.A = 0;
         flareDrawer.scale *= globalScale;
         flareDrawer.rotation = Main.GlobalTimeWrappedHourly;
         Main.spriteBatch.Draw(flareDrawer);
 
-        flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, Projectile.Center);
+        flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, Projectile.Center);
         flareDrawer.color = Color.LightSkyBlue;
         flareDrawer.color.A = 0;
         flareDrawer.scale *= globalScale * 0.8f;
         flareDrawer.rotation = -Main.GlobalTimeWrappedHourly;
         Main.spriteBatch.Draw(flareDrawer);
 
-        flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+        flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
         flareDrawer.color = Color.White;
         flareDrawer.color.A = 0;
         flareDrawer.scale *= globalScale;
@@ -296,14 +296,14 @@ public class MoonEnchantAura : ModProjectile
         using (new SpritebatchContext(Main.spriteBatch, Main.spriteBatch.Parameters with { effect = pass.Shader, samplerState = SamplerState.LinearWrap }))
         {
             float alpha = 0.3f;
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.WaterTrail.Asset, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.WaterTrail.Asset, Projectile.Center);
             drawer.color = Color.SkyBlue * Fade * alpha;
             drawer.rotation = Main.GlobalTimeWrappedHourly * 0.3f;
         //    drawer.color.A = 0;
             drawer.scale *= InScale * 2;
             Main.spriteBatch.Draw(drawer);
 
-            drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+            drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
             drawer.color = Color.DarkBlue * Fade  * alpha;
             drawer.color.A = 0;
 

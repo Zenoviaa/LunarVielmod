@@ -137,7 +137,7 @@ public class CariyaSpear : ModProjectile
             Vector2 positionOffset = _spearPositionOffsets[i];
             float rotationOffset = _spearRotationOffsets[i];
 
-            SpritebatchDrawer afDrawer = SpritebatchDrawer.FromTextureAsset(_mirageAsset, Projectile.Center);
+            SpritebatchDrawer afDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_mirageAsset, Projectile.Center);
             afDrawer.color.A = 0;
             DrawSpear(i, afDrawer);
         }

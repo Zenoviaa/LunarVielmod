@@ -238,7 +238,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyGlowParticle).Value;
             Vector2 centerPos = Projectile.Center;
             Vector2 ballDrawPosition = centerPos + Projectile.velocity * 64;
-            SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
+            SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
             glowballDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(Timer / 30f));
             glowballDrawer.scale *= 0.5f * MathHelper.Lerp(0.2f, 0.4f, Timer / 30f) * 0.2f;
             glowballDrawer.color.A = 0;
@@ -328,7 +328,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             Vector2 ballDrawPosition = centerPos;
             for(int i = 0; i < 4; i++)
             {
-                SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
+                SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
                 glowballDrawer.color = Color.Lerp(Color.Black, Color.White, Charge);
                 glowballDrawer.scale *= MathHelper.Lerp(0.2f, 0.5f, Charge) * 0.1f;
                 glowballDrawer.color.A = 0;

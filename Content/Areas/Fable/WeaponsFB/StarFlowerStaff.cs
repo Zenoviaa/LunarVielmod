@@ -222,7 +222,7 @@ public class StarFlowerAura : ModProjectile
             sb.Draw(Projectile.Drawer with { scale = new Vector2(Scale), color = Color.DarkOrange });
         }
 
-        var star = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.FivePointedStar.Asset, Projectile.Center);
+        var star = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.FivePointedStar.Asset, Projectile.Center);
         star.color = Color.DarkOrange * 0.65f;
         star.color.A = 0;
         star.rotation = Main.GlobalTimeWrappedHourly;

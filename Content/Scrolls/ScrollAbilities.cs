@@ -94,14 +94,14 @@ public class ScrollAbilities : ModSystem
                     if (IsEnchanting())
                     {
                         SpriteBatch spriteBatch = Main.spriteBatch;
-                        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Main.screenPosition + Main.MouseScreen);
+                        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarRing, Main.screenPosition + Main.MouseScreen);
                         glowDrawer.color = Main.DiscoColor * ExtraMath.Osc(0.6f, 1f, speed: 12);
                         glowDrawer.color.A = 0;
                         glowDrawer.scale *= 0.25f;
                         glowDrawer.rotation = Main.GlobalTimeWrappedHourly;
                         spriteBatch.Draw(glowDrawer);
 
-                        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, Main.screenPosition + Main.MouseScreen);
+                        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, Main.screenPosition + Main.MouseScreen);
                         glowDrawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, speed: 12);
                         glowDrawer.color.A = 0;
                         glowDrawer.scale *= 0.15f;

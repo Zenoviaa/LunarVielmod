@@ -123,7 +123,7 @@ public class STARPUNCH : ModProjectile
             SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = torchShader.Effect };
             using (new SpritebatchContext(Main.spriteBatch, Main.spriteBatch.Parameters with { effect = torchShader }))
             {
-                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(
                     AssetReferences.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles.VulcanEruption.Asset, Projectile.Center);
                 drawer.rotation = Projectile.velocity.ToRotation();
                 drawer.color = Color.Lerp(Color.White, Color.Gold, attackProgress);

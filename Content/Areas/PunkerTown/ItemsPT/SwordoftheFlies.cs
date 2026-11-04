@@ -560,7 +560,7 @@ public class FliesSuperBoom : ModProjectile
         shearShader.Time = outRatio * 1.4f;
 
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 2.6f, EasingFunction.OutExpo(outRatio));
         waveDrawer.color = Color.SkyBlue;
@@ -570,7 +570,7 @@ public class FliesSuperBoom : ModProjectile
         Main.spriteBatch.Restart(effect: shearShader.Effect);
         Main.spriteBatch.Draw(waveDrawer);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkBlue * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 2;
@@ -721,7 +721,7 @@ public class SwordoftheFliesSuperSword : BaseSwingProjectileV2
 
         Asset<Texture2D> bladeAsset = TextureRegistry.GlowSword_Sword;
         float scale = 1.2f * EasingFunction.QuadraticBump(Interpolant);
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(bladeAsset, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(bladeAsset, Projectile.Center);
         sbDrawer.BottomCenterOrigin();
         sbDrawer.rotation = Projectile.rotation + MathHelper.ToRadians(45);
         sbDrawer.color.A = 0;
@@ -734,7 +734,7 @@ public class SwordoftheFliesSuperSword : BaseSwingProjectileV2
         spriteBatch.RestartDefaults();
 
         Asset<Texture2D> glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, Projectile.Center);
         glowDrawer.color = Color.DarkBlue * ExtraMath.Osc(0.5f, 1f, speed: 2);
         glowDrawer.color.A = 0;
         glowDrawer.rotation = Projectile.rotation - MathHelper.ToRadians(45);

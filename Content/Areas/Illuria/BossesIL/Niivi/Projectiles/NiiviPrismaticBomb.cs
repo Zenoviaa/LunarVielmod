@@ -863,7 +863,7 @@ public class NiiviPrismaticBomb : ModProjectile
         pass.Apply();
         using (sb.Ctx(sb.Parameters with { effect = pass.Shader, samplerState = SamplerState.LinearWrap, blendState = BlendState.Additive}))
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(
                 AssetReferences.Assets.Noise.PainterlyNoise.Asset, Projectile.Center);
             drawer.color = Color.White * 0.2f * MathHelper.Lerp(0F, 1f, _growthAlpha); ;
             drawer.scale = OrbScale * 6 * MathHelper.Lerp(0F, 1f, _growthAlpha); ;
@@ -909,7 +909,7 @@ public class NiiviPrismaticBomb : ModProjectile
         Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.LinearWrap;
         using (sb.Ctx(sb.Parameters with { effect = pass.Shader }))
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset, Projectile.Center);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.PerlinNoise.Asset, Projectile.Center);
             drawer.color = Color.White * MathHelper.Lerp(0.3F, 1f, _growthAlpha); ;
             drawer.scale = OrbScale * 1.3F;
             drawer.rotation = Projectile.rotation;
@@ -921,7 +921,7 @@ public class NiiviPrismaticBomb : ModProjectile
 
     void DrawPrismaticFlash(SpriteBatch sb, Vector2 sp)
     {
-        var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star2.Asset, Projectile.Center);
+        var starDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.Star2.Asset, Projectile.Center);
         starDrawer.color = Color.White;
         starDrawer.color.A = 0;
         starDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, _flashAlpha) * 8;
@@ -930,7 +930,7 @@ public class NiiviPrismaticBomb : ModProjectile
     }
     void DrawFace(SpriteBatch sb, Vector2 sp)
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.HappySoul.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.HappySoul.Asset, Projectile.Center);
         drawer.color = Color.White * _faceAlpha;
         drawer.color.A = 0;
         drawer.worldPosition.Y += ExtraMath.Osc(0f, 32, speed: 2);
@@ -1128,7 +1128,7 @@ public class PrismaticBombWave : ModProjectile
         for (var i = 0; i < 32; i++)
         {
             var wave = Waves[i];
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.HappyBrick.Asset, wave.position);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.HappyBrick.Asset, wave.position);
             //     drawer.BottomCenterOrigin();
             drawer.worldPosition = Projectile.Bottom;
             drawer.worldPosition.Y -= 196;
@@ -1466,7 +1466,7 @@ public class NiiviPrismaticBombBoom : ModProjectile
 
     void DrawDarkness(SpriteBatch sb, Vector2 sp)
     {
-        var squareDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
+        var squareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
         squareDrawer.color = Color.Lerp(Color.Black * 0.3f, Color.Transparent, EasingFunction.OutSine(Timer / 30f));
         squareDrawer.drawOrigin = Vector2.Zero;
         squareDrawer.dstRect = new((int)-Main.screenPosition.X, (int)-Main.screenPosition.Y, Main.screenWidth * 2, Main.screenHeight * 2);
@@ -1474,7 +1474,7 @@ public class NiiviPrismaticBombBoom : ModProjectile
         sb.Draw(squareDrawer);
         if (Timer < 4)
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Impact.Asset, Projectile.Center);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.Impact.Asset, Projectile.Center);
             drawer.color = Color.White;
             sb.Draw(drawer);
         }

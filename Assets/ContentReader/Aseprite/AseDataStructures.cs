@@ -30,7 +30,7 @@ public class AseSprite
     public SpritebatchDrawer GetSprite(int frameIndex, Vector2 worldPosition)
     {
         Rectangle srcRect = GetSrcRect(frameIndex);
-        return SpritebatchDrawer.FromTextureAsset(sheet, worldPosition) with { sourceRect = srcRect, drawOrigin = srcRect.Size() * 0.5f  };
+        return SpritebatchDrawer.FromTextureGetLightingColor(sheet, worldPosition) with { sourceRect = srcRect, drawOrigin = srcRect.Size() * 0.5f  };
     }
 
     public Rectangle GetSrcRect(int frameIndex)

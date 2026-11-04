@@ -128,7 +128,7 @@ public class FallingMushroomCloud : ModProjectile
         RadialShearShader radialSheer = RadialShearShader.Instance;
         radialSheer.Time = EasingFunction.InExpo((Timer / 30f) * 1.4f);
         sb.Restart(effect: radialSheer.Effect);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         float ratio = Timer / 30f;
         float ease = EasingFunction.QuadraticBump(ratio);
         drawer.color = Color.Lerp(Color.Transparent, Color.OrangeRed, ease) * 0.6f;
@@ -278,7 +278,7 @@ public class FallingMushroom : ModProjectile
         sbDrawer.color = Color.Lerp(Color.White, Color.White * 0.1f, ExtraMath.Osc(0f, 1f, speed: 6, offset: Projectile.whoAmI));
         Main.spriteBatch.Draw(sbDrawer);
 
-        SpritebatchDrawer sporeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer sporeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         sporeDrawer.color = Color.OrangeRed * 0.3f;
         sporeDrawer.color.A = 0;
         sporeDrawer.scale = Vector2.One * 0.3f * ExtraMath.Osc(0.66f, 1f, speed: 2, offset: Projectile.whoAmI);

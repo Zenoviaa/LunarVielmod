@@ -148,14 +148,14 @@ public class IceCrashCubeShard : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkBlue * 0.35f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 0.25f;
         Main.spriteBatch.Draw(backGlowDrawwer);
 
 
-        SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+        SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
         glowDrawer2.color = Color.SkyBlue * 0.25f * ExtraMath.Osc(0.5f, 1f, speed: 3);
         glowDrawer2.color.A = 0;
         glowDrawer2.scale = Vector2.One * 0.2f;
@@ -315,7 +315,7 @@ public class IceCrashBoom : ModProjectile
         shearShader.Time = outRatio * 1.4f;
 
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio)) * 1.5f;
         waveDrawer.color = Color.SkyBlue;
@@ -325,7 +325,7 @@ public class IceCrashBoom : ModProjectile
         Main.spriteBatch.Restart(effect: shearShader.Effect);
         Main.spriteBatch.Draw(waveDrawer);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkBlue * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 2f;
@@ -492,7 +492,7 @@ public class IceCrashCube : ModProjectile
         Vector2 target = _initialPosition + _initialVelocity;
         Vector2 vel = target - Owner.Center;
         Vector2 auraPos = Owner.Center + vel.SafeNormalize(Vector2.Zero) * 48 * _inEasing;
-        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, auraPos);
+        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, auraPos);
         flareDrawer.color = Color.LightBlue * 0.2f * EasingFunction.QuadraticBump(Timer / 60f);
         flareDrawer.color.A = 0;
         flareDrawer.rotation = vel.ToRotation();
@@ -502,7 +502,7 @@ public class IceCrashCube : ModProjectile
 
         if(Explode == 1)
         {
-            SpritebatchDrawer cubeDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[ModContent.ItemType<IceCrashArtifact>()], auraPos);
+            SpritebatchDrawer cubeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Item[ModContent.ItemType<IceCrashArtifact>()], auraPos);
             cubeDrawer.rotation += Main.GlobalTimeWrappedHourly * 4f;
             cubeDrawer.color *= _inEasing;
             cubeDrawer.scale *= ExtraMath.Osc(0.85f, 1f, speed: 6);
@@ -510,21 +510,21 @@ public class IceCrashCube : ModProjectile
 
         }
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkBlue * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 0.8f;
         Main.spriteBatch.Draw(backGlowDrawwer);
 
 
-        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         spiralDrawer.color = Color.SkyBlue * 0.15f;
         spiralDrawer.color.A = 0;
         spiralDrawer.scale = Vector2.One * 0.8f * EasingFunction.OutExpo(Timer / 30f);
         spiralDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         Main.spriteBatch.Draw(spiralDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.9f;
         glowDrawer.color.A = 0;
         glowDrawer.scale = Vector2.Lerp(new Vector2(0.1f, 0.05f), new Vector2(0.05f, 0.1f), ExtraMath.Osc(0f, 1f, speed: 3));

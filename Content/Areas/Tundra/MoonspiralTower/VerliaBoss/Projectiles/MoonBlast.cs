@@ -206,7 +206,7 @@ public class MoonBlast : ModProjectile
     private void DrawPixelatedBlowtorch(SpriteBatch sb, Vector2 screenPos)
     {
         //Draw the glow
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MuzzleFlash, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.MuzzleFlash, Projectile.Center);
         sbDrawer.rotation = Projectile.velocity.ToRotation();
         sbDrawer.color = Color.Lerp(Color.White, Color.Blue, 0.3f);
         sbDrawer.color *= _glowAlpha;
@@ -215,7 +215,7 @@ public class MoonBlast : ModProjectile
         Main.spriteBatch.Draw(sbDrawer);
 
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.rotation = Projectile.velocity.ToRotation();
         //    glowDrawer.color *= _glowAlpha;
         glowDrawer.scale = Vector2.Lerp(Vector2.One * 0.5f, Vector2.One, _glowAlpha);
@@ -237,7 +237,7 @@ public class MoonBlast : ModProjectile
         glowDrawer.scale *= 1.05f;
         Main.spriteBatch.Draw(glowDrawer);
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.rotation = Projectile.velocity.ToRotation();
         //    glowDrawer.color *= _glowAlpha;
         glowDrawer.scale = Vector2.Lerp(Vector2.One * 0.5f, Vector2.One, _glowAlpha);

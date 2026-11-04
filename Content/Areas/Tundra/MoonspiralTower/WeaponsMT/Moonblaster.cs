@@ -239,14 +239,14 @@ public class VerliaMiniMoonFriendly : ModProjectile
 
         _scrollingMoonTextureAsset ??= AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaBouncingMoon_ScrollingMoon.Asset; //ModContent.Request<Texture2D>(ModContent.GetInstance<VerliaBouncingMoon>().Texture + "_ScrollingMoon");
         moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.3f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.7f;
         glowDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(glowDrawer);
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.2f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.X *= 1.2f;
@@ -272,14 +272,14 @@ public class VerliaMiniMoonFriendly : ModProjectile
         Main.spriteBatch.Draw(moonSprite);
         sb.RestartDefaults();
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarRing, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
         glowDrawer.scale *= _squishScale * _targetScale * 0.75f;
         Main.spriteBatch.Draw(glowDrawer);
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarEye, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarEye, Projectile.Center);
         glowDrawer.color = Color.Blue * 0.16f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 1f;
@@ -297,12 +297,12 @@ public class VerliaMiniMoonFriendly : ModProjectile
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMoon);
 
         _shadowTextureAsset ??= AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.VerliaBouncingMoon_Shadow.Asset;
-        var shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowTextureAsset, Projectile.Center);
+        var shadowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_shadowTextureAsset, Projectile.Center);
         shadowDrawer.color *= 0.45f;
         shadowDrawer.scale *= _squishScale * _targetScale * 0.5f;
         Main.spriteBatch.Draw(shadowDrawer);
 
-        var outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineMoonTextureAsset, Projectile.Center);
+        var outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineMoonTextureAsset, Projectile.Center);
         outlineDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.5f, 1f, speed: 12);
         outlineDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(outlineDrawer);

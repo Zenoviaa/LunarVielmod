@@ -67,7 +67,7 @@ public partial class PerfectSingularity :
 
         spriteBatch.RestartDefaults();
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         glowDrawer.color = Color.White * ExtraMath.Osc(0.9f, 1f, speed: 6) * EasingFunction.InExpo(IntensityInterpolant);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 3;

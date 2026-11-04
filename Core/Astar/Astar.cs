@@ -83,7 +83,7 @@ public class Pathfinder
 
         foreach (var pos in path)
         {
-            var drawer2 = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, pos);
+            var drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, pos);
             drawer2.color = color;
             spriteBatch.Draw(drawer2);
         }

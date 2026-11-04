@@ -1604,7 +1604,7 @@ public class KingJellyfish : ScarletBoss
 
     private void DrawTentaclesInner(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer tentacleDraewr = SpritebatchDrawer.FromTextureAsset(_smallChainTextureAsset, NPC.Center);
+        SpritebatchDrawer tentacleDraewr = SpritebatchDrawer.FromTextureGetLightingColor(_smallChainTextureAsset, NPC.Center);
         for (int j = 0; j < TentacleChains.Length; j++)
         {
             var chain = TentacleChains[j];
@@ -1632,7 +1632,7 @@ public class KingJellyfish : ScarletBoss
         float dir = 1f;
         void DrawCircle(float progress, Vector2 size, Color color)
         {
-            SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.GothinMagicCircle, NPC.Center);
+            SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.GothinMagicCircle, NPC.Center);
             magicCircleDrawer.color = Color.Lerp(Color.Black, color, progress) * 0.3f;
             magicCircleDrawer.color.A = 0;
             magicCircleDrawer.rotation = Main.GlobalTimeWrappedHourly * 0.4f * dir;
@@ -1668,7 +1668,7 @@ public class KingJellyfish : ScarletBoss
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedTentacle, DrawLayer.BehindNPCsWithOutline);
         OutlineRenderer.Queue(DrawWhite);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         glowDrawer.scale *= 0.5f;
         glowDrawer.color = Color.LightSkyBlue;
         glowDrawer.color *= 0.3f;
@@ -1684,7 +1684,7 @@ public class KingJellyfish : ScarletBoss
         headDrawer.color.A = 0;
         spriteBatch.Draw(headDrawer);
 
-        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureAsset(_glowTextureAsset, NPC.Center);
+        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_glowTextureAsset, NPC.Center);
         glowLineDrawer.color = Color.Lerp(Color.Black, Color.White, ExtraMath.Osc(0f, 1f));
         glowLineDrawer.color *= 0.5f;
         glowLineDrawer.color.A = 0;
@@ -1697,7 +1697,7 @@ public class KingJellyfish : ScarletBoss
         headDrawer.color = Color.Black * _electricAlpha;
         spriteBatch.Draw(headDrawer);
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         glowDrawer.scale *= 0.5f;
         glowDrawer.color = Color.LightSkyBlue * _electricAlpha * ExtraMath.Osc(0f, 1f, speed: 32);
      //   glowDrawer.color *= 0.3f;

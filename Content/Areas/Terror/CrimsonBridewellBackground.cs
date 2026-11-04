@@ -50,7 +50,7 @@ public class CrimsonBridewellBackground : CustomBG
             DepthStencilState.None,
             RasterizerState.CullNone,
             effect: null);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.GetInstance<AegisCloudsRenderer>().BackgroundTexture, Main.screenPosition);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.GetInstance<AegisCloudsRenderer>().BackgroundTexture, Main.screenPosition);
         drawer.drawOrigin = Vector2.Zero;
         drawer.color = Color.White * Alpha;
         spriteBatch.Draw(drawer);

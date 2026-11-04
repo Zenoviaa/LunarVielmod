@@ -111,7 +111,7 @@ public class AegislavDustRenderer : ModSystem
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null,
                 Main.GameViewMatrix.TransformationMatrix); ;
 
-            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(_maskTexture, Vector2.Zero);
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_maskTexture, Vector2.Zero);
             sbDrawer.color = Color.White;
             sbDrawer.color.A = 0;
             sbDrawer.scale *= 0.5f;

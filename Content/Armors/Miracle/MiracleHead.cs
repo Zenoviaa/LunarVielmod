@@ -112,7 +112,7 @@ public class ManaSpider : ModProjectile
         Main.spriteBatch.Draw(sbDrawer);
 
 
-        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
+        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineTextureAsset, Projectile.Center);
         outlineDrawer.sourceRect = sbDrawer.sourceRect;
         outlineDrawer.drawOrigin = sbDrawer.drawOrigin;
         outlineDrawer.color = Color.Red * alpha;
@@ -245,7 +245,7 @@ public class MiraclePlayer : ModPlayer
             radians += Main.GlobalTimeWrappedHourly;
             Vector2 offset = radians.ToRotationVector2();
             offset *= 64;
-            SpritebatchDrawer starDrawer = SpritebatchDrawer.FromTextureAsset(_blackStarTextureAsset, drawInfo.drawPlayer.Center);
+            SpritebatchDrawer starDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_blackStarTextureAsset, drawInfo.drawPlayer.Center);
             starDrawer.rotation = ExtraMath.Osc(-0.05f, 0.05f, speed: 1, offset: f);
             starDrawer.worldPosition += offset;
 

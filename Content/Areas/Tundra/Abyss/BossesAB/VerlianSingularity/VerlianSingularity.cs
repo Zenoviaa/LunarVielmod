@@ -1340,7 +1340,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                 circlePass.Apply();
                 using (new SpritebatchContext(spriteBatch, spriteBatch.Parameters with { effect = circlePass.Shader, matrix = Matrix.identity }))
                 {
-                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(
                         AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.VerlianAura.Asset, NPC.Center);
                     drawer.color = Color.Lerp(Main.DiscoColor, Color.White, 0.5f);
                     drawer.scale *= 2.9f;
@@ -1366,7 +1366,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
             pass.Apply();
             using(new SpritebatchContext(spriteBatch, oldParameters with { effect = pass.Shader }))
             {
-                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(
                     AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity.VerlianAura.Asset, NPC.Center);
                 drawer.color = Color.Lerp(Main.DiscoColor, Color.White, 0.5f);
                 drawer.scale *= 2.9f;

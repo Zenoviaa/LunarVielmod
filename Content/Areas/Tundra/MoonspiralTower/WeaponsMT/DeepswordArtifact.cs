@@ -436,7 +436,7 @@ public class DeepGreatBlade : ModProjectile
         }
 
         float scale = 1.5f * _growthScale;
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(bladeAsset, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(bladeAsset, Projectile.Center);
         sbDrawer.LeftCenterOrigin();
         sbDrawer.rotation = Projectile.rotation;
         sbDrawer.color.A = 0;
@@ -451,7 +451,7 @@ public class DeepGreatBlade : ModProjectile
         spriteBatch.RestartDefaults();
 
         Asset<Texture2D> glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, Projectile.Center);
         glowDrawer.color = Color.Blue * ExtraMath.Osc(0.5f, 1f, speed: 2);
         glowDrawer.color.A = 0;
         glowDrawer.rotation = Projectile.rotation;

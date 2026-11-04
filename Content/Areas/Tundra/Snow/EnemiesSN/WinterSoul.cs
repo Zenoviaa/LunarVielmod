@@ -286,7 +286,7 @@ public class WinterSoul : ModNPC
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
 
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
         glowDrawer.color = Color.SkyBlue * 0.2f * ExtraMath.Osc(0.7f, 1f, speed: 3, NPC.whoAmI);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.2f;

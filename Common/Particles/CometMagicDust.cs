@@ -83,7 +83,7 @@ public class CometMagicDust : ParticleUpdater<CometMagicDustData>
                 Vector2 stretchScale = new Vector2(particle.velocity.Length() * 0.15f, 0f);
 
                 (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frame);
-                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
                 drawer.sourceRect = frame;
                 drawer.CenterOrigin();
                 drawer.scale = Vector2.One * 0.6f * alpha * EasingFunction.QuadraticBump(particle.timeLeft / 40f);

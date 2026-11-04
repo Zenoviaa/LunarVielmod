@@ -103,7 +103,7 @@ public class SimpleSpikeball : ModProjectile
         ballDrawer.scale *= scale;
         Main.spriteBatch.Draw(ballDrawer);
 
-        SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
+        SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
         glintDrawer.color = Color.White * ExtraMath.Osc(0.8f, 1f, speed: 12, Projectile.identity);
         glintDrawer.color.A = 0;
         Main.spriteBatch.Draw(glintDrawer);

@@ -27,7 +27,7 @@ public class STARFLASH : ModProjectile
     }
     private void DrawStar()
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.FivePointedStar.Asset, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.FivePointedStar.Asset, Projectile.Center);
         drawer.scale = Vector2.One * Scale;
         drawer.color = Color.Lerp(Color.Gold, Color.Transparent, EasingFunction.OutExpo(Timer / 60f));
         drawer.color.A = 0;
@@ -45,7 +45,7 @@ public class STARFLASH : ModProjectile
         float _medalAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.OutSine(Timer / 60f));
         SpriteBatch spriteBatch = Main.spriteBatch;
         var starAsset = AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.WarriorStarMedal.Asset;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(starAsset, Projectile.Center);
         drawer.color = Color.DarkOrange * _medalAlpha * 0.4f;
         drawer.color.A = 0;
         drawer.scale = Vector2.One * Scale;

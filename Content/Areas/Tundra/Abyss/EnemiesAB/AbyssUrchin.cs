@@ -75,7 +75,7 @@ public class AbyssUrchin : ModNPC, IWaterSilhouette
     {
         base.PostDraw(spriteBatch, screenPos, drawColor);
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, NPC.Center);
         drawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f * Glow;
         drawer.color.A = 0;
         drawer.scale *= 0.5f;

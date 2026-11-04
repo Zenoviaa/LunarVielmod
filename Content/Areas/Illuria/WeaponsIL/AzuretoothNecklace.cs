@@ -351,7 +351,7 @@ public class AzuretoothNecklaceHold : ModProjectile
         azureHoldDraw.color *= Alpha;
         Main.spriteBatch.Draw(azureHoldDraw);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.6f, 1f, speed: 2) * Alpha * 0.4f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.26f;

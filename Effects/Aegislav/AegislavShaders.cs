@@ -182,7 +182,7 @@ public class AegisCloudsRenderer : ModSystem
             DepthStencilState.None,
             RasterizerState.CullNone,
             effect: null);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_cloudsRT, Main.screenPosition);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_cloudsRT, Main.screenPosition);
         drawer.drawOrigin = Vector2.Zero;
         drawer.color = Color.White;
         Main.spriteBatch.Draw(drawer);

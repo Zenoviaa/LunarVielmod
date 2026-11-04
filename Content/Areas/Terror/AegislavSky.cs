@@ -250,7 +250,7 @@ public class AegislavSky : CustomSky
             spriteBatch.Draw(value, position, null, color, rotation, origin, num5, SpriteEffects.None, 0f);
             spriteBatch.Draw(value, position, null, color2, rotation, origin, num5, SpriteEffects.None, 0f);
            
-            SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(
+            SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
                     AssetManager.GlowMask.SimpleGlowCircle, position);
             bloomDrawer.color = sunColor * 0.25f;
             bloomDrawer.color.A = 0;

@@ -60,7 +60,7 @@ public static class BackgroundHelper
         Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         for (int i = numBackgrounds; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(bg, Main.screenPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale = Vector2.One * 2;
             drawer.color = drawColor;
@@ -105,7 +105,7 @@ public static class BackgroundHelper
         Color drawColor = baseColor * alpha;
 
 
-        SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+        SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(bg, Main.screenPosition);
         drawer2.VerticalFrame(0, numBackgrounds);
         Rectangle frameSize = drawer2.sourceRect.Value;
 
@@ -117,7 +117,7 @@ public static class BackgroundHelper
 
         for (int i = numBackgrounds; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(bg, Main.screenPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale = Vector2.One;
             drawer.color = drawColor;
@@ -340,7 +340,7 @@ public static class BackgroundHelper
         Rectangle drawRect = new Rectangle(0, 0, (int)Main.ViewSize.X, (int)Main.ViewSize.Y);
         for (int i = numBackgrounds - 1; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(bg, Main.screenPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale = Vector2.One * 2;
             drawer.color = drawColor;
@@ -394,7 +394,7 @@ public static class BackgroundHelper
         Rectangle drawRect = new Rectangle(0, 0, (int)Main.ViewSize.X, (int)Main.ViewSize.Y);
         for (int i = numBackgrounds; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(bg, Main.screenPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale = Vector2.One * 2;
             drawer.color = drawColor;
@@ -445,7 +445,7 @@ public static class BackgroundHelper
         Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         for (int i = numBackgrounds; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bg, Main.screenPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(bg, Main.screenPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale = Vector2.One * 2;
             drawer.color = drawColor;

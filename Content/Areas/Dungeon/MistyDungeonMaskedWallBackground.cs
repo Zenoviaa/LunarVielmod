@@ -67,7 +67,7 @@ public class MistyDungeonMaskedWallBackground : MaskedWallBackground
         Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         for(int i = 3; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_mistyDungeonTextureAsset, Main.screenPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_mistyDungeonTextureAsset, Main.screenPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale = Vector2.One * 2;
             drawer.color = Color.White;

@@ -296,7 +296,7 @@ public class VulcanEruption : ModProjectile
     {
         base.PostDraw(lightColor);
         var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, Projectile.Center);
         glowDrawer.scale *= 0.48f;
         glowDrawer.color = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12)) * ExtraMath.Osc(0.5f, 0.75f, speed: 8) * _glowAlpha;
         glowDrawer.color.A = 0;

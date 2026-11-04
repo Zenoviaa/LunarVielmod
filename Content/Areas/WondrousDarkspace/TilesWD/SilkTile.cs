@@ -224,7 +224,7 @@ public class MiracleSilkTile : ModTile
 
 
         var trail = AssetManager.LaserTextures.SilkStrand;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(trail, center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(trail, center);
         drawer.rotation = rot;
         drawer.scale.X = Vector2.Distance(endWorld, startWorld) / (float)trail.Width();
         drawer.scale.Y *= 0.25f;
@@ -252,7 +252,7 @@ public class MiracleSilkTile : ModTile
 
 
         var trail = TrailRegistry.BeamTrail;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(trail, center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(trail, center);
         drawer.rotation = rot;
         drawer.scale.X = Vector2.Distance(endWorld, startWorld) / (float)trail.Width();
         drawer.scale.Y *= 0.1f;

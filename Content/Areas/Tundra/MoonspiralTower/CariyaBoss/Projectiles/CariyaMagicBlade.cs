@@ -145,7 +145,7 @@ public class CariyaMagicBlade : ModProjectile
     {
         if(Style == 1)
         {
-            SpritebatchDrawer bloomLineDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), Projectile.Center);
+            SpritebatchDrawer bloomLineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), Projectile.Center);
             bloomLineDrawer.rotation = _initialVelocity.ToRotation();
             bloomLineDrawer.LeftCenterOrigin();
             bloomLineDrawer.drawOrigin.X += 48;

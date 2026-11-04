@@ -307,7 +307,7 @@ public class ElectricChain : ModProjectile
     {
         _gradientTextureAsset ??= ModContent.Request<Texture2D>(ModContent.GetInstance<ZapShockwave>().Texture + "_Gradient");
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedLightning);
-        SpritebatchDrawer sb = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer sb = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         //Main.spriteBatch.Draw(sb);
         return false;
     }

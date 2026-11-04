@@ -30,7 +30,7 @@ public static class CommonDrawEffects
                 Vector2 pos = position + offse2t + velocity.SafeNormalize(Vector2.Zero) * between * i;
 
                 float scale = MathHelper.Lerp(1f, 0.2f, (float)i / 4f);
-                SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<StarBombLaserShockwave>()], pos);
+                SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<StarBombLaserShockwave>()], pos);
                 float yScale = MathHelper.Lerp(0.2f, 2.3f, EasingFunction.OutExpo(timer / time)) * scale * 0.7f;
                 circleDrawer.scale.Y *= yScale;
                 circleDrawer.scale *= 0.75f;

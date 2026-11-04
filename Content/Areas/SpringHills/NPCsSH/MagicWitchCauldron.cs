@@ -299,7 +299,7 @@ public class MagicWitchCauldron : VeilTownNPC
         Vector2 godrayScale = new Vector2(0.35f, 2f);
 
         float godrayOffset = 150;
-        SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromTextureAsset(godrayTexture, NPC.Center);
+        SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(godrayTexture, NPC.Center);
         sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1) * LightingHelper.DayLightEase;
         sbDrawer2.color.A = 0;
         sbDrawer2.rotation -= MathHelper.ToRadians(25);
@@ -334,7 +334,7 @@ public class MagicWitchCauldron : VeilTownNPC
             {
                 pos.Y += 64;
                 pos.X += ExtraMath.Osc(-16, 16, speed: 2, moldIndex);
-                SpritebatchDrawer moldDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[sbm.item], pos);
+                SpritebatchDrawer moldDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Item[sbm.item], pos);
                 Main.spriteBatch.Draw(moldDrawer);
                 moldIndex++;
                 continue;
@@ -373,14 +373,14 @@ public class MagicWitchCauldron : VeilTownNPC
             Color rarityColor = RarityLoader.GetRarity(modItem.Item.rare).RarityColor;
             Color glowingColor = Color.Lerp(Color.Lerp(Color.Black, rarityColor, 0.5f), rarityColor, glowProgress);
 
-            SpritebatchDrawer darknessDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), circleCenterPos);
+            SpritebatchDrawer darknessDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), circleCenterPos);
             darknessDrawer.color = Color.Black * alpha;
             darknessDrawer.rotation = 0;
             darknessDrawer.scale *= 1.6f;
             Main.spriteBatch.Draw(darknessDrawer);
 
 
-            SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MagicCircle, circleCenterPos);
+            SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.MagicCircle, circleCenterPos);
             magicCircleDrawer.color = glowingColor * 0.8f * alpha;
             magicCircleDrawer.color.A = 0;
             magicCircleDrawer.rotation = Main.GlobalTimeWrappedHourly * 0.5f;
@@ -400,7 +400,7 @@ public class MagicWitchCauldron : VeilTownNPC
             ItemSlot.DrawItemIcon(modItem.Item, 0, spriteBatch, drawPos - screenPos, 1f, 32, Color.White * alpha);
 
 
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
             glowDrawer.color = glowingColor * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 2, offset: index) * alpha;
             glowDrawer.color.A = 0;
             glowDrawer.scale *= 0.3f;

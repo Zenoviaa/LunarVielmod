@@ -312,14 +312,14 @@ public class IllurianBibleProj : ModProjectile,
     private void DrawStar(SpriteBatch sb, Vector2 sp)
     {
         float scale = MathHelper.Lerp(0.3f, 1f, EasingFunction.InOutSine(Timer / 45f));
-        SpritebatchDrawer starDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, Projectile.Center);
+        SpritebatchDrawer starDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, Projectile.Center);
         starDrawer.color = Color.Lerp(Color.Lerp(Color.White, Color.LightBlue, 0.5f), Color.LightBlue, ExtraMath.Osc(0f, 1f, speed: 12));
         starDrawer.color.A = 0;
         starDrawer.rotation = MathHelper.Lerp(MathHelper.Pi, 0, EasingFunction.InOutSine(Timer / 45));
         starDrawer.scale *= 0.125f * scale;
         sb.Draw(starDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.Blue, Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 12)) * 0.25f;
         glowDrawer.color.A = 0;
         glowDrawer.rotation = MathHelper.Lerp(MathHelper.Pi, 0, EasingFunction.InOutSine(Timer / 45));

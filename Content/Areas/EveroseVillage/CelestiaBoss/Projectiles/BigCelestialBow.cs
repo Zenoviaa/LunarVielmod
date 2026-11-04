@@ -308,20 +308,20 @@ public class BigCelestialBow : ModProjectile,
         Vector2 bowOffset = _bowOffset;
         float come = EasingFunction.InSine(_alphaTimer / 70f);
 
-        SpritebatchDrawer backGlowDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), Projectile.Center); ;
+        SpritebatchDrawer backGlowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), Projectile.Center); ;
         backGlowDrawer.scale *= pullScale * 2.5f;
         backGlowDrawer.color = Color.Black * 0.5f * alpha;
         backGlowDrawer.worldPosition += bowOffset;
         Main.spriteBatch.Draw(backGlowDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center); ;
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center); ;
         glowDrawer.scale *= pullScale * 0.5f;
         glowDrawer.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI)) * 0.2f * alpha;
         glowDrawer.color.A = 0;
         glowDrawer.worldPosition += bowOffset;
         Main.spriteBatch.Draw(glowDrawer);
 
-        SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center); ;
+        SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center); ;
         spiralVortexDrawer.scale *= pullScale * 0.5f;
         spiralVortexDrawer.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI)) * 0.1f * alpha;
         spiralVortexDrawer.color.A = 0;
@@ -371,7 +371,7 @@ public class BigCelestialBow : ModProjectile,
         float lineOut = Timer / 30f;
         lineOut = EasingFunction.InOutSine(lineOut);
         float lineOutAlpha = MathHelper.Lerp(1f, 0f, lineOut);
-        SpritebatchDrawer bloomlineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer bloomlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         bloomlineDrawer.color = Color.Teal * come * alpha * lineOutAlpha;
         bloomlineDrawer.color.A = 0;
 
@@ -387,7 +387,7 @@ public class BigCelestialBow : ModProjectile,
         bloomlineDrawer.worldPosition += bowOffset;
         Main.spriteBatch.Draw(bloomlineDrawer);
 
-        SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<CelestialArrow>()], Projectile.Center);
+        SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<CelestialArrow>()], Projectile.Center);
         arrowDrawer.rotation = Projectile.rotation;
         arrowDrawer.scale.Y *= 0.5f;
         arrowDrawer.scale.X *= MathHelper.Lerp(0.5f, 1f, come);
@@ -621,7 +621,7 @@ public class BigCelestialArrow : ModProjectile
 
         }
 
-        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
         flareDrawer.color = Color.Lerp(Color.Turquoise, Color.Black, EasingFunction.InSine(Timer / 30f)) * 0.6f;
         flareDrawer.scale = Vector2.Lerp(Vector2.One * 0.65f, Vector2.Zero, EasingFunction.InSine(Timer / 30f));
         flareDrawer.color.A = 0;
@@ -782,7 +782,7 @@ public class BigCelestialBoom : ModProjectile
         shearShader.Time = outRatio * 1.4f;
 
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio)) * 1.5f;
         waveDrawer.color = Color.Turquoise;
@@ -792,7 +792,7 @@ public class BigCelestialBoom : ModProjectile
         Main.spriteBatch.Restart(effect: shearShader.Effect);
         Main.spriteBatch.Draw(waveDrawer);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkTurquoise * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 2f;
@@ -809,7 +809,7 @@ public class BigCelestialBoom : ModProjectile
         shearShader.Time = MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(Timer / 120f));
         Main.spriteBatch.Restart(effect: shearShader.Effect);
 
-        SpritebatchDrawer crackDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Visual/Particles/BigCrackParticle"), Projectile.Center);
+        SpritebatchDrawer crackDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Visual/Particles/BigCrackParticle"), Projectile.Center);
         crackDrawer.color = Color.Lerp(Color.White, Color.Turquoise, EasingFunction.InExpo(Timer / 60f));
         crackDrawer.color.A = 0;
         crackDrawer.scale = Vector2.One * 2f;
@@ -826,7 +826,7 @@ public class BigCelestialBoom : ModProjectile
      
         SpriteBatch sb = Main.spriteBatch;
         sb.Restart(effect: shockwaevShader.Effect);
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, Projectile.Center);
         sbDrawer.BottomCenterOrigin();
         sbDrawer.scale.X *= MathHelper.Lerp(0f, 5f, EasingFunction.OutExpo(Timer / Time));
         sbDrawer.scale.Y += MathHelper.Lerp(8f, 0f, EasingFunction.InOutExpo(Timer / Time));
@@ -839,7 +839,7 @@ public class BigCelestialBoom : ModProjectile
         Main.spriteBatch.Draw(sbDrawer);
 
 
-        sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, Projectile.Center);
+        sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, Projectile.Center);
         sbDrawer.BottomCenterOrigin();
         sbDrawer.scale.X *= MathHelper.Lerp(0f, 3f, EasingFunction.OutExpo(Timer / Time));
         sbDrawer.scale.Y += MathHelper.Lerp(4f, 0f, EasingFunction.InOutExpo(Timer / Time));
@@ -854,7 +854,7 @@ public class BigCelestialBoom : ModProjectile
         sb.RestartDefaults();
 
 
-        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowLineDrawer.worldPosition.Y += height;
         glowLineDrawer.scale.X *= MathHelper.Lerp(1f, 4f, EasingFunction.OutExpo(Timer / Time));
         glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.2f;

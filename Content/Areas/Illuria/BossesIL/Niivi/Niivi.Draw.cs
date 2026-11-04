@@ -28,7 +28,7 @@ public partial class Niivi
     {
         void DrawGlow(Vector2 pos, Color color)
         {
-            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, pos);
+            var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, pos);
             glowDrawer.color = color * ExtraMath.Osc(0.5f, 1f, speed: 3) * _invisAlpha * 0.6F;
             glowDrawer.color.A = 0;
             glowDrawer.scale *= 0.35f;
@@ -47,19 +47,19 @@ public partial class Niivi
     void DrawCrystals(SpriteBatch sb, Vector2 screenPos, Color drawColor)
     {
 
-        var iceDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _iceCrystalPosition);
+        var iceDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _iceCrystalPosition);
         iceDrawer.color = drawColor;
         iceDrawer.VerticalFrame(IceCrystalFrame, CrystalFrameCount);
         iceDrawer.CenterOrigin();
         sb.Draw(iceDrawer);
 
-        var lightningDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _lightningCrystalPosition);
+        var lightningDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _lightningCrystalPosition);
         lightningDrawer.color = drawColor;
         lightningDrawer.VerticalFrame(LightningCrystalFrame, CrystalFrameCount);
         lightningDrawer.CenterOrigin();
         sb.Draw(lightningDrawer);
 
-        var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _starCrystalPosition);
+        var starDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviCrystal.Asset, _starCrystalPosition);
         starDrawer.color = drawColor;
         starDrawer.VerticalFrame(StarCrystalFrame, CrystalFrameCount);
         starDrawer.CenterOrigin();
@@ -91,7 +91,7 @@ public partial class Niivi
             rotation = (nextSegment - segment).ToRotation();
         }
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], segment);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], segment);
         var frameIndex = SegmentFrameIndices[i];
         drawer.drawOrigin = SegmentOrigins[frameIndex];
         drawer.VerticalFrame(frameIndex, 11);
@@ -112,7 +112,7 @@ public partial class Niivi
         ref var buttSegment = ref SegmentPositions[LegSegmentIndex];
         ref var wingSegment = ref SegmentPositions[WingSegmentIndex];
 
-        var backBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
+        var backBackArmDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], buttSegment);
         backBackArmDrawer.drawOrigin = SegmentOrigins[9];
         backBackArmDrawer.VerticalFrame(10, 13);
         backBackArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
@@ -120,7 +120,7 @@ public partial class Niivi
         backBackArmDrawer.color = drawColor;
         sb.Draw(backBackArmDrawer);
 
-        var bacWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingBack.Asset, wingSegment);
+        var bacWingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingBack.Asset, wingSegment);
         bacWingDrawer.drawOrigin = BackWingDrawOrigin;
         bacWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
         bacWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
@@ -128,7 +128,7 @@ public partial class Niivi
         bacWingDrawer.color = drawColor;
         sb.Draw(bacWingDrawer);
 
-        var frontBackArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
+        var frontBackArmDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], neckSegment);
         frontBackArmDrawer.drawOrigin = SegmentOrigins[7];
         frontBackArmDrawer.VerticalFrame(8, 13);
         frontBackArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
@@ -151,7 +151,7 @@ public partial class Niivi
                     rotation = (nextSegment - segment).ToRotation();
                 }
 
-                var drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], segment);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], segment);
                 var frameIndex = SegmentFrameIndices[i];
                 drawer.drawOrigin = SegmentOrigins[frameIndex];
                 drawer.VerticalFrame(frameIndex, 13);
@@ -182,7 +182,7 @@ public partial class Niivi
 
 
 
-        var backFrontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], buttSegment);
+        var backFrontArmDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], buttSegment);
         backFrontArmDrawer.drawOrigin = SegmentOrigins[8];
         backFrontArmDrawer.VerticalFrame(9, 13);
         backFrontArmDrawer.rotation = SegmentRotations[LegSegmentIndex];
@@ -190,7 +190,7 @@ public partial class Niivi
         backFrontArmDrawer.color = drawColor;
         sb.Draw(backFrontArmDrawer);
 
-        var frontArmDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Npc[Type], neckSegment);
+        var frontArmDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], neckSegment);
         frontArmDrawer.drawOrigin = SegmentOrigins[6];
         frontArmDrawer.VerticalFrame(7, 13);
         frontArmDrawer.rotation = SegmentRotations[ArmSegmentIndex];
@@ -199,7 +199,7 @@ public partial class Niivi
         sb.Draw(frontArmDrawer);
 
         //Draw front wing
-        var frontWingDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingFront.Asset, wingSegment);
+        var frontWingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviWingFront.Asset, wingSegment);
         frontWingDrawer.drawOrigin = FrontWingDrawOrigin;
         frontWingDrawer.VerticalFrame(_wingFrame, WingFrameCount);
         frontWingDrawer.rotation = SegmentRotations[WingSegmentIndex];
@@ -231,7 +231,7 @@ public partial class Niivi
 
         var starColor = Color.Lerp(Color.Transparent, Main.DiscoColor * ExtraMath.Osc(0.5f, 1f, speed: 12), _blackAlpha);
         starColor.A = 0;
-        var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star3.Asset, NPC.Center);
+        var starDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.Star3.Asset, NPC.Center);
         starDrawer.color = starColor;
         starDrawer.scale *= 0.5f;
 
@@ -243,7 +243,7 @@ public partial class Niivi
 
         sb.Draw(starDrawer);
 
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
 
         starColor = Color.Lerp(Color.Transparent, Main.DiscoColor * ExtraMath.Osc(0.5f, 1f, speed: 12), _blackAlpha);
         starColor.A = 0;

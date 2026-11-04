@@ -317,7 +317,7 @@ public class VerliaBouncingMoon : ModProjectile
         SpritebatchDrawer moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
         _scrollingMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_ScrollingMoon");
         moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.3f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.7f;
@@ -325,7 +325,7 @@ public class VerliaBouncingMoon : ModProjectile
         Main.spriteBatch.Draw(glowDrawer);
 
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.2f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.X *= 1.2f;
@@ -365,7 +365,7 @@ public class VerliaBouncingMoon : ModProjectile
 
         if (State == BounceState.Bounce_Out)
         {
-            glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MuzzleFlash, Projectile.Center);
+            glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.MuzzleFlash, Projectile.Center);
             glowDrawer.color = Color.Yellow * MathHelper.Lerp(0f, 1f, Timer / 120f) * 0.5f;
             glowDrawer.color.A = 0;
             glowDrawer.scale.Y *= 32f;
@@ -377,7 +377,7 @@ public class VerliaBouncingMoon : ModProjectile
         }
 
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarRing, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
@@ -427,7 +427,7 @@ public class VerliaBouncingMoon : ModProjectile
         _shadowMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Shadow");
 
         Vector2 scale = Vector2.One * Scale;
-        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
+        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_shadowMoonTextureAsset, Projectile.Center);
 
         Color flashColor = Color.White;
         Color darkColor = Color.Lerp(Color.Blue, Color.Black, 0.8f) * 0.5f;
@@ -435,7 +435,7 @@ public class VerliaBouncingMoon : ModProjectile
         shadowDrawer.scale *= scale * 1.05f;
         Main.spriteBatch.Draw(shadowDrawer);
 
-        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineMoonTextureAsset, Projectile.Center);
+        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineMoonTextureAsset, Projectile.Center);
         outlineDrawer.color = Color.Red;
         outlineDrawer.scale *= scale;
 
@@ -444,7 +444,7 @@ public class VerliaBouncingMoon : ModProjectile
         moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha);
         Main.spriteBatch.Draw(moonSprite);
 
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.White * 0.16f * MathHelper.Lerp(1f, 2f, _flashAlpha);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;

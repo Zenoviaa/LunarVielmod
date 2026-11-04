@@ -168,7 +168,7 @@ public class StarStormDust : ModProjectile,
         sparkleDrawer.worldPosition = pos;
         Main.spriteBatch.Draw(sparkleDrawer);
 
-        SpritebatchDrawer bloomLineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Spotlight, Projectile.Center);
+        SpritebatchDrawer bloomLineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.Spotlight, Projectile.Center);
         bloomLineDrawer.LeftCenterOrigin();
         bloomLineDrawer.color = DrawUtilities.InterpolateColorArray(ExtraMath.Osc(0f, 0.9f, speed: 16), Color.Purple, Color.LightBlue, Color.Pink, Color.LightSkyBlue); 
         bloomLineDrawer.color.A = 0;

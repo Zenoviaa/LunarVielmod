@@ -48,7 +48,7 @@ public class FableBackgroundReal : ABackground
 
         for (var x = -1; x < xLoops; x++)
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(background, drawPosition);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(background, drawPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale *= scale;
             drawer.worldPosition += new Vector2((-draw.cameraMovement.X * parallaxX - drawer.Width * 1.25F) % (drawer.Width * scale), 0);
@@ -68,7 +68,7 @@ public class FableBackgroundReal : ABackground
 
         for (var x = -1; x < xLoops; x++)
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(background, drawPosition);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(background, drawPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale *= scale;
             drawer.worldPosition += new Vector2(-draw.cameraMovement.X * parallaxX % (drawer.Width * scale), 0);

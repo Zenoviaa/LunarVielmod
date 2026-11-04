@@ -169,7 +169,7 @@ public class TulahalSlash : BaseSwingProjectileV2
         base.PostDrawSword(position, srcRect, drawColor, rotation, origin, drawScale, spriteEffect, layerDepth);
         if (IsFinishingSwing())
         {
-            SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Owner.Center);
+            SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Owner.Center);
             spiralVortexDrawer.rotation = Main.GlobalTimeWrappedHourly * 4;
             spiralVortexDrawer.color = Color.DarkViolet * 0.3f * EasingFunction.QuadraticBump(Interpolant);
             spiralVortexDrawer.color.A = 0;
@@ -194,7 +194,7 @@ public class TulahalSlash : BaseSwingProjectileV2
 
         Asset<Texture2D> bladeAsset = TextureRegistry.GlowSword_Sword;
         float scale = 1.2f * EasingFunction.QuadraticBump(Interpolant);
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(bladeAsset, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(bladeAsset, Projectile.Center);
         sbDrawer.BottomCenterOrigin();
         sbDrawer.rotation = Projectile.rotation + MathHelper.ToRadians(45);
         sbDrawer.color.A = 0;
@@ -207,7 +207,7 @@ public class TulahalSlash : BaseSwingProjectileV2
         spriteBatch.RestartDefaults();
 
         Asset<Texture2D> glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, Projectile.Center);
         glowDrawer.color = Color.DarkViolet * ExtraMath.Osc(0.5f, 1f, speed: 2);
         glowDrawer.color.A = 0;
         glowDrawer.rotation = Projectile.rotation - MathHelper.ToRadians(45);
@@ -632,7 +632,7 @@ public class TulahalThrow : ModProjectile
         for (float s = 0; s < steps; s++)
         {
             Vector2 pos = Vector2.Lerp(Projectile.Center, Owner.Center, s / steps);
-            SpritebatchDrawer chainDrawer = SpritebatchDrawer.FromTextureAsset(_chainTextureAsset, pos);
+            SpritebatchDrawer chainDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_chainTextureAsset, pos);
             Main.spriteBatch.Draw(chainDrawer);
         }
 

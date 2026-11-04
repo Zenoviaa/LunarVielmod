@@ -125,7 +125,7 @@ public class BouncingBall : ModProjectile
         ballDraer.scale = Vector2.One * Scale;
         Main.spriteBatch.Draw(ballDraer);
 
-        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
+        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineTextureAsset, Projectile.Center);
         outlineDrawer.color = Projectile.hostile ? Color.Red : Color.Yellow;
         outlineDrawer.scale = Vector2.One * Scale;
         outlineDrawer.rotation = ballDraer.rotation;
@@ -380,7 +380,7 @@ public class BouncingBallCore : ModProjectile
         SpritebatchDrawer ballCoreDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         if (Timer < 100f)
         {
-            ballCoreDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
+            ballCoreDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
             ballCoreDrawer.rotation = Projectile.rotation;
         }
         ballCoreDrawer.color = Color.Yellow;
@@ -396,7 +396,7 @@ public class BouncingBallCore : ModProjectile
         if (Timer < 100f)
         {
             OutlineRenderer.Queue(DrawWhites);
-            ballCoreDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
+            ballCoreDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
             ballCoreDrawer.rotation = Projectile.rotation;
         }
         ballCoreDrawer.scale = Vector2.One * EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine(Projectile.timeLeft / 30f);

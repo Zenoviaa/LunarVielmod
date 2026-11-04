@@ -175,7 +175,7 @@ public class FlaskuserBladeSlash : BaseSwingProjectileV2
         base.PostDrawSword(position, srcRect, drawColor, rotation, origin, drawScale, spriteEffect, layerDepth);
         if (ComboIndex == 4)
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.MagicCastSparkle.Asset, Projectile.Center);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.MagicCastSparkle.Asset, Projectile.Center);
             drawer.color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuickOutSlowIn(Interpolant));
             drawer.color *= ExtraMath.Osc(0.7f, 1f, speed: 6);
             drawer.color.A = 0;
@@ -322,7 +322,7 @@ public class FlaskuserBladeStaminaSlash : BaseSwingProjectileV2
     public override void PostDrawSword(Vector2 position, Rectangle srcRect, Color drawColor, float rotation, Vector2 origin, Vector2 drawScale, SpriteEffects spriteEffect, float layerDepth)
     {
         base.PostDrawSword(position, srcRect, drawColor, rotation, origin, drawScale, spriteEffect, layerDepth);
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.MagicCastSparkle.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.MagicCastSparkle.Asset, Projectile.Center);
         drawer.color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuickOutSlowIn(Interpolant));
         drawer.color *= ExtraMath.Osc(0.7f, 1f, speed: 6);
         drawer.scale = Vector2.Lerp(new Vector2(1.4f), Vector2.One, EasingFunction.OutCirc(Interpolant));

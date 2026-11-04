@@ -43,7 +43,7 @@ public class TornadoFlashParticles : ParticleUpdater<TornadoFlashParticles.Data>
             matrix = Matrix.Identity,
             blendState = CustomBlendStates.Max }))
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.JumbledGlowCircle.Asset, Vector2.Zero);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.JumbledGlowCircle.Asset, Vector2.Zero);
             for (var i = 0; i < _length; i++)
             {
                 ref var particle = ref _particles[i];

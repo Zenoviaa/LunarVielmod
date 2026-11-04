@@ -149,7 +149,7 @@ public class MoonFlightRenderer : ModSystem
     {
 
         float degrees = -MathHelper.Lerp(8, 15, ExtraMath.Osc(0f, 1f, speed: 3));
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, _renderPlayer.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, _renderPlayer.Center);
         glowDrawer.color = Color.DeepSkyBlue * 0.4f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.Y *= 0.66f;
@@ -163,7 +163,7 @@ public class MoonFlightRenderer : ModSystem
         glowDrawer.drawOrigin.X = glowDrawer.texture.Size().X - glowDrawer.drawOrigin.X;
         spriteBatch.Draw(glowDrawer);
 
-        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, GetDrawPosition());
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, GetDrawPosition());
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         // wingDrawer.drawOrigin.X = WingOffset;
@@ -202,7 +202,7 @@ public class MoonFlightRenderer : ModSystem
         SpritebatchDrawer wingDrawer;
 
         //Draw main wings
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, GetDrawPosition());
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, GetDrawPosition());
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         wingDrawer.worldPosition.Y -= HeightOffset;
@@ -223,7 +223,7 @@ public class MoonFlightRenderer : ModSystem
 
         wingShader.Tiling = Vector2.One * 16f;
         wingShader.ScrollingTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise2").Value;
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, GetDrawPosition());
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, GetDrawPosition());
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         wingDrawer.worldPosition.Y -= HeightOffset;
@@ -242,7 +242,7 @@ public class MoonFlightRenderer : ModSystem
 
 
         wingShader.BloomColorEnd = Color.White;
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingOutlineTextureAsset, GetDrawPosition());
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingOutlineTextureAsset, GetDrawPosition());
 
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;

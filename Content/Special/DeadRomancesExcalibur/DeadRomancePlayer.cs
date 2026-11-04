@@ -138,7 +138,7 @@ public class DeadRomancePlayer : ModPlayer
         if (Player.HasBuff<HeavenlyLove>())
         {
             var haloTexture = ModContent.GetInstance<HeavenlyLove>().SigilTextureAsset;
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(haloTexture, Player.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(haloTexture, Player.Center);
             drawer.worldPosition += Vector2.UnitY * -64;
             drawer.color = Color.Goldenrod;
             drawer.color.A = 0;
@@ -163,7 +163,7 @@ public class DeadRomancePlayer : ModPlayer
                 radians2 += Main.GlobalTimeWrappedHourly * 2f;
                 Vector2 offset = radians2.ToRotationVector2() * 8;
                 Texture2D texture = TextureAssets.Projectile[ModContent.ProjectileType<DeadRomanceHeavenlySmiteBlade>()].Value;
-                SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromTextureAsset(texture, drawCenter + offset);
+                SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, drawCenter + offset);
                 float rads = MathHelper.ToRadians(3);
                 float osc = ExtraMath.Osc(0f, 1f, offset: j);
                 swordDrawer.rotation = MathHelper.PiOver2 + MathHelper.Lerp(-rads, rads, osc);

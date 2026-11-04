@@ -42,7 +42,7 @@ public class FogTileRenderer : ModSystem
         foreach (Point fogTilePoint in FogTilePoints)
         {
             Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
-            SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
+            SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
             fogDrawer.color = Color.White;
             fogDrawer.scale *= 0.6f;
 

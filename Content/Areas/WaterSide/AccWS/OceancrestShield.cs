@@ -37,7 +37,7 @@ public class OceanShieldPlayer : ModPlayer
             return;
         if (_cooldown > 0)
             return;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.WaterSide.AccWS.WaterShield.Asset, drawInfo.drawPlayer.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.WaterSide.AccWS.WaterShield.Asset, drawInfo.drawPlayer.Center);
         drawer.scale *= ExtraMath.Osc(0.9f, 1f, speed: 3);
         drawer.color.A = 0;
         Main.spriteBatch.Draw(drawer);

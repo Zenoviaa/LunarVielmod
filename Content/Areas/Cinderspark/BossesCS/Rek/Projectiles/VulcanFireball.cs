@@ -246,7 +246,7 @@ public class BigVulcanFireball : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         drawer.color = Color.OrangeRed * 0.5f;
         drawer.color.A = 0;
         drawer.scale *= 0.6f * Scale;

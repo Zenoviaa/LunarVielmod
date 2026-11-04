@@ -169,7 +169,7 @@ public class LaserBeamBomb : ModProjectile,
     {
         DrawImpactGlow();
 
-        SpritebatchDrawer glowCircle = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowCircle = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowCircle.color = Color.White;
         glowCircle.color.A = 0;
         glowCircle.scale *= 0.24f * EasingInOut;
@@ -178,7 +178,7 @@ public class LaserBeamBomb : ModProjectile,
     }
     private void DrawImpactGlow()
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
         drawer.color = Color.OrangeRed * 0.2f;
         drawer.color.A = 0;
         drawer.scale *= 0.9f * EasingInOut;
@@ -212,7 +212,7 @@ public class LaserBeamBomb : ModProjectile,
         float y = MathHelper.Lerp(1.5f, 0.2f, Projectile.velocity.Length() / 80);
         using (new SpritebatchContext(spriteBatch, sbParams))
         {
-            SpritebatchDrawer impactDrawer = SpritebatchDrawer.FromTextureAsset(BeamTextureAsset, ImpactPoint);
+            SpritebatchDrawer impactDrawer = SpritebatchDrawer.FromTextureGetLightingColor(BeamTextureAsset, ImpactPoint);
             impactDrawer.color = Color.White;
         //    impactDrawer.worldPosition -= Projectile.velocity.SafeNormalize(Vector2.Zero) * 144;
             impactDrawer.scale *= 1.2f * EasingInOut * 0.5f;
@@ -320,14 +320,14 @@ public class LaserBeamBombBoom : ModProjectile
         float ease = EasingFunction.OutExpo(time);
         float ease2 = EasingFunction.InOutSine(time);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Red * 0.8f * ExtraMath.Osc(0.6f, 1f, speed: 6) * MathHelper.Lerp(1f, 0f, ease2);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 1.2f * MathHelper.Lerp(0f, 1f, ease);
         sb.Draw(glowDrawer);
         using (SpritebatchStarter.Begin(sb, @params))
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.FlameVortexNoise.Asset, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.FlameVortexNoise.Asset, Projectile.Center);
             drawer.scale = Vector2.One * MathHelper.Lerp(0.2f, 1.56f, ease);
             drawer.color = Color.Lerp(Color.Gold, Color.Transparent, ease2) * 2.0f;
             sb.Draw(drawer);
@@ -342,7 +342,7 @@ public class LaserBeamBombBoom : ModProjectile
             float ease = EasingFunction.InOutSine(sparkleRatio);
             Vector2 scale = Vector2.Lerp(new Vector2(0.5f), new Vector2(1.5f), ease) * 2;
             float rot = (-Projectile.velocity).ToRotation();
-            SpritebatchDrawer sparkleDrawer = SpritebatchDrawer.FromTextureAsset(AssetRegistry.GlowMasks.SimpleGlowCircle.Value, Projectile.Center);
+            SpritebatchDrawer sparkleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetRegistry.GlowMasks.SimpleGlowCircle.Value, Projectile.Center);
             sparkleDrawer.color = Color.OrangeRed * 0.9f * EasingFunction.QuadraticBump(sparkleRatio);
  
             sparkleDrawer.color.A = 0;

@@ -143,7 +143,7 @@ public class RoyalMagicBeam : ModProjectile,
             Vector2 pos = Projectile.Center + offse2t + Projectile.velocity.SafeNormalize(Vector2.Zero) * between * i;
             
             float scale = MathHelper.Lerp(1f, 0.2f, (float)i / 4f);
-            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<StarBombLaserShockwave>()], pos);
+            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<StarBombLaserShockwave>()], pos);
             float yScale = MathHelper.Lerp(0.2f, 2.3f, EasingFunction.OutExpo(Timer / time)) * scale * 0.7f;
             circleDrawer.scale.Y *= yScale;
             circleDrawer.scale *= 0.75f;
@@ -169,7 +169,7 @@ public class RoyalMagicBeam : ModProjectile,
         beamShader.Time = Main.GlobalTimeWrappedHourly * 4;
         sb.Restart(SpriteSortMode.Immediate, effect: beamShader.Effect);
         
-        SpritebatchDrawer beamDrawer = SpritebatchDrawer.FromTextureAsset(TrailRegistry.BeamTrail, Projectile.Center);
+        SpritebatchDrawer beamDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TrailRegistry.BeamTrail, Projectile.Center);
         beamDrawer.rotation = Projectile.velocity.ToRotation();
         beamDrawer.LeftCenterOrigin();
         beamDrawer.scale.X *= 3;

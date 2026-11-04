@@ -66,7 +66,7 @@ public class LightningImpact : ParticleUpdater<LightningImpact.Data>
                 (var texture, var frame) = GetParticleFrame(0);
                 ref var particle = ref _particles[i];
                 var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
-                var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
                 drawer.color = particle.color;
                 drawer.color.A = (byte)(fade * 255);
                 drawer.sourceRect = frame;

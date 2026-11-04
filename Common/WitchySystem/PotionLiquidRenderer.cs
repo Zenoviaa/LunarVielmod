@@ -82,7 +82,7 @@ public class PotionLiquidRenderer
         }
         var manaColor = new Color(48, 64, 236);
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(noiseTex, pos + Main.screenPosition) with
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(noiseTex, pos + Main.screenPosition) with
         {
             drawOrigin = Vector2.Zero,
             color = Color.Lerp(DarkBloodColor, Color.Black, 0.3f)

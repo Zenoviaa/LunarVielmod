@@ -99,28 +99,28 @@ public class FlyingSoilSystem : ModSystem
 
             Vector2 origin = Vector2.One * 8;
             Asset<Texture2D> texture = TextureAssets.Tile[soil.tileType];
-            SpritebatchDrawer topLeftDrawer = SpritebatchDrawer.FromTextureAsset(texture, topLeft);
+            SpritebatchDrawer topLeftDrawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, topLeft);
             topLeftDrawer.sourceRect = new Rectangle(0, 54, 16, 16);
             topLeftDrawer.rotation = soil.rotation;
             topLeftDrawer.drawOrigin = origin;
             topLeftDrawer.scale = scale;
             sb.Draw(topLeftDrawer);
 
-            SpritebatchDrawer topRightDrawer = SpritebatchDrawer.FromTextureAsset(texture, topRight);
+            SpritebatchDrawer topRightDrawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, topRight);
             topRightDrawer.sourceRect = new Rectangle(18, 54, 16, 16);
             topRightDrawer.rotation = soil.rotation;
             topRightDrawer.drawOrigin = origin;
             topRightDrawer.scale = scale;
             sb.Draw(topRightDrawer);
 
-            SpritebatchDrawer bottomLeftDrawer = SpritebatchDrawer.FromTextureAsset(texture, bottomLeft);
+            SpritebatchDrawer bottomLeftDrawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, bottomLeft);
             bottomLeftDrawer.sourceRect = new Rectangle(0, 72, 16, 16);
             bottomLeftDrawer.rotation = soil.rotation;
             bottomLeftDrawer.drawOrigin = origin;
             bottomLeftDrawer.scale = scale;
             sb.Draw(bottomLeftDrawer);
 
-            SpritebatchDrawer bottomRightDrawer = SpritebatchDrawer.FromTextureAsset(texture, bottomRight);
+            SpritebatchDrawer bottomRightDrawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, bottomRight);
             bottomRightDrawer.sourceRect = new Rectangle(18, 72, 16, 16);
             bottomRightDrawer.rotation = soil.rotation;
             bottomRightDrawer.drawOrigin = origin;

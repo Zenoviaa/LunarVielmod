@@ -241,7 +241,7 @@ public class SGBolt : ModProjectile
 
     public override void PostDraw(Color lightColor)
     {
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Purple;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.1f;

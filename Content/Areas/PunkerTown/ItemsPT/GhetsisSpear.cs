@@ -221,7 +221,7 @@ public class GhetsisSpearIncinerator : ModProjectile,
         float radius2 = MathHelper.Lerp(maxRadius, 0f, EasingFunction.InExpo(inverseTime));
         float radius = MathHelper.Lerp(radius1, radius2, inverseTime);
 
-        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         bloomDrawer.color = Color.DarkRed * 0.15f * MathHelper.Lerp(1f, 0f, Timer / LifeTime);
         bloomDrawer.color.A = 0;
         bloomDrawer.scale *= 0.6f * radius;

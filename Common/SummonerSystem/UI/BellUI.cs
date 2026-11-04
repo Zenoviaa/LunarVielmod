@@ -144,7 +144,7 @@ namespace Stellamod.Common.SummonerSystem.UI
 
             var summonTimeNotePosition = position;
             summonTimeNotePosition += new Vector2(142, 20);
-            var summonTimeNote = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.SummonerSystem.UI.SummoningNote.Asset, summonTimeNotePosition + Main.screenPosition + new Vector2(-44, -7));
+            var summonTimeNote = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Common.SummonerSystem.UI.SummoningNote.Asset, summonTimeNotePosition + Main.screenPosition + new Vector2(-44, -7));
             summonTimeNote.color = Color.White;
             summonTimeNote.drawOrigin = Vector2.Zero;
             spriteBatch.Draw(summonTimeNote);
@@ -166,7 +166,7 @@ namespace Stellamod.Common.SummonerSystem.UI
                     new Vector2(0.5f));
             }
 
-            var harpDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.SummonerSystem.UI.Harp.Asset, position + Main.screenPosition);
+            var harpDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Common.SummonerSystem.UI.Harp.Asset, position + Main.screenPosition);
             harpDrawer.color = Color.White;
             harpDrawer.worldPosition += new Vector2(120);
             spriteBatch.Draw(harpDrawer);

@@ -82,7 +82,7 @@ public class MusicNote : ParticleUpdater<MusicNote.Data>
         float fade = MathHelper.Clamp(particle.timeLeft / 120f, 0f, 1f);
         fade = EasingFunction.QuadraticBump(fade);
         var framing = GetParticleFrame(particle.frame);
-        var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position);
         drawer.color = particle.color * fade;
         drawer.sourceRect = framing.frame;
         drawer.CenterOrigin();
@@ -94,7 +94,7 @@ public class MusicNote : ParticleUpdater<MusicNote.Data>
     {
         float fade = MathHelper.Clamp(particle.timeLeft / 120f, 0f, 1f);
         fade = EasingFunction.QuadraticBump(fade);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position);
         glowDrawer.color = particle.color * 0.4f * fade;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.14f;

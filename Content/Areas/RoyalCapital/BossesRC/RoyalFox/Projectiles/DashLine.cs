@@ -106,7 +106,7 @@ public class DashLine : ModProjectile,
     private void DrawLine(SpriteBatch sb, Vector2 screenPos)
     {
         float alpha = EasingFunction.OutSine(Timer / 60) * MathHelper.Lerp(1f, 0f, DeathTimer / DeathTime);
-        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), Projectile.Center - Projectile.velocity * 3000);
+        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), Projectile.Center - Projectile.velocity * 3000);
         lineDrawer.color = Color.Lerp(Color.Black, Color.White, alpha);
         lineDrawer.color.A = 0;
         lineDrawer.rotation = Projectile.velocity.ToRotation();

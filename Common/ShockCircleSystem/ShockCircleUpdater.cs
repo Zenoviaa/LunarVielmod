@@ -56,7 +56,7 @@ public class ShockCircleUpdater : ModSystem
             foreach (var circle in _circles)
             {
                 var uneasedProgress = circle.timer / circle.data.time;
-                var drawer = SpritebatchDrawer.FromTextureAsset(circle.data.textureAsset, circle.data.position);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(circle.data.textureAsset, circle.data.position);
                 drawer.color = circle.data.GetColor(uneasedProgress);
 
                 float b = (circle.data.easing(uneasedProgress) * 255);

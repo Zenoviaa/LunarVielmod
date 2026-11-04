@@ -45,7 +45,7 @@ public partial class AegislavUndergroundBackground : CustomBG
             RasterizerState.CullNone,
             backgroundShader.Effect);
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_cloudTextureAsset, Main.screenPosition);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_cloudTextureAsset, Main.screenPosition);
         drawer.drawOrigin = Vector2.Zero;
 //        drawer.scale = Vector2.One * 2;
         drawer.color = Color.White;

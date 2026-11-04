@@ -330,12 +330,12 @@ public class TotemOfTheVeilTile : ModTile
         worldPos.X += 10;
         worldPos.Y += 16;
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(WingsTextureAsset.Value, worldPos);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(WingsTextureAsset.Value, worldPos);
         drawer.color = Lighting.GetColor(new Point(i, j));
         drawer.CenterOrigin();
         spriteBatch.Draw(drawer);
 
-        SpritebatchDrawer beamDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, worldPos + new Vector2(0, 64));
+        SpritebatchDrawer beamDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, worldPos + new Vector2(0, 64));
         beamDrawer.color = Color.Goldenrod * ExtraMath.Osc(0.5f, 1f, speed: 3) * Main.LocalPlayer.GetModPlayer<TotemOfTheVeilRespawnPlayer>().GetInterp(new Point(i, j));
         beamDrawer.color.A = 0;
         beamDrawer.BottomCenterOrigin();

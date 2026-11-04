@@ -356,7 +356,7 @@ public class ClassTooltip : UIElement
         for (int i = 0; i < startingItems.Length; i++)
         {
             Vector2 drawPosition = startingPosition + new Vector2(i * between, 0);
-            SpritebatchDrawer backDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), Main.screenPosition + drawPosition);
+            SpritebatchDrawer backDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), Main.screenPosition + drawPosition);
             backDrawer.color = Color.Black * 0.95f;
             spriteBatch.Draw(backDrawer);
         }

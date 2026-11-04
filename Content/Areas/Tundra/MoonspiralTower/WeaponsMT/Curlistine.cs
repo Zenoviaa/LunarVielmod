@@ -32,7 +32,7 @@ file static class CurlistineCommon
     {
         for (var i = 1; i < points.Length; i++)
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Tundra.MoonspiralTower.WeaponsMT.Curlistine_Chain.Asset, points[i]);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.Tundra.MoonspiralTower.WeaponsMT.Curlistine_Chain.Asset, points[i]);
             drawer.rotation = (points[i] - points[i-1]).ToRotation();
             drawer.color *= ExtraMath.Osc(0.15f, 0.45f, speed: 6, offset: i * 10);
             drawer.color.A = 0;
@@ -57,7 +57,7 @@ file static class CurlistineCommon
       
             var inbetween = Vector2.Lerp(ownerPos, projPos, i);
             inbetween = Vector2.Lerp(inbetween, pullPos, EasingFunction.QuadraticBump(i) * 0.7f);
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Tundra.MoonspiralTower.WeaponsMT.Curlistine_Chain.Asset, inbetween);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.Tundra.MoonspiralTower.WeaponsMT.Curlistine_Chain.Asset, inbetween);
             drawer.rotation = (Projectile.Center - inbetween).ToRotation();
             drawer.color *= ExtraMath.Osc(0.15f, 0.45f, speed: 6, offset: i * 10);
             drawer.color.A = 0;

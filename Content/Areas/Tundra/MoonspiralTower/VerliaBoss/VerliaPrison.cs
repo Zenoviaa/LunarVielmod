@@ -227,7 +227,7 @@ public class VerliaPrison : ModNPC,
         float ease = EasingFunction.InOutSine(ratio);
         Color color = Color.Lerp(Color.Blue * 0.5f, Color.Blue, ease);
         Vector2 scale = Vector2.Lerp(Vector2.Zero, Vector2.One, ease);
-        SpritebatchDrawer dw = SpritebatchDrawer.FromTextureAsset(glowBallAsset, NPC.Center);
+        SpritebatchDrawer dw = SpritebatchDrawer.FromTextureGetLightingColor(glowBallAsset, NPC.Center);
         dw.color = color;
         dw.color.A = 0;
         dw.scale = scale;
@@ -277,7 +277,7 @@ public class VerliaPrison : ModNPC,
         }
         NPC.spriteDirection = 1;
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.5f, 1f, speed: 3);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.65f;

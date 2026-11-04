@@ -142,7 +142,7 @@ public class VolcantStaminaSlash : BaseSwingProjectileV2
     public override void PostDrawSword(Vector2 position, Rectangle srcRect, Color drawColor, float rotation, Vector2 origin, Vector2 drawScale, SpriteEffects spriteEffect, float layerDepth)
     {
         base.PostDrawSword(position, srcRect, drawColor, rotation, origin, drawScale, spriteEffect, layerDepth);
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Cinderspark.WeaponsCS.Volcant_Sawblade.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.Cinderspark.WeaponsCS.Volcant_Sawblade.Asset, Projectile.Center);
         var alpha = MathHelper.Lerp(0f, 1f, _flashTimer / 10f);
         drawer.VerticalFrame(_frame, 4);
         drawer.LeftCenterOrigin();
@@ -648,7 +648,7 @@ public class VolcantThrow : ModProjectile
         DrawUtilities.DrawAdditiveFadingTrail(Projectile, Color.Red, Color.Transparent, 0.3f);
         Main.spriteBatch.Draw(drawer);
 
-        drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Cinderspark.WeaponsCS.Volcant_Sawblade.Asset, Projectile.Center);
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.Cinderspark.WeaponsCS.Volcant_Sawblade.Asset, Projectile.Center);
         var alpha = MathHelper.Lerp(0f, 1f, _flashTimer / 10f);
         drawer.VerticalFrame(_frame, 4);
         drawer.LeftCenterOrigin();
@@ -796,7 +796,7 @@ public class VolcantSlash : BaseSwingProjectileV2
     public override void PostDrawSword(Vector2 position, Rectangle srcRect, Color drawColor, float rotation, Vector2 origin, Vector2 drawScale, SpriteEffects spriteEffect, float layerDepth)
     {
         base.PostDrawSword(position, srcRect, drawColor, rotation, origin, drawScale, spriteEffect, layerDepth);
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Cinderspark.WeaponsCS.Volcant_Sawblade.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.Cinderspark.WeaponsCS.Volcant_Sawblade.Asset, Projectile.Center);
         var alpha = MathHelper.Lerp(0f, 1f, _flashTimer / 10f);
         drawer.VerticalFrame(_frame, 4);
         drawer.LeftCenterOrigin();

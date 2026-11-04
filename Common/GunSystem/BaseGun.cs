@@ -401,12 +401,12 @@ namespace Stellamod.Common.GunSystem
         public override bool PreDraw(ref Color lightColor)
         {
             var texAsset = TextureAssets.Item[Owner.HeldItem.type];
-            var drawer = SpritebatchDrawer.FromTextureAsset(texAsset, Projectile.Center);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texAsset, Projectile.Center);
             drawer.rotation = Projectile.rotation;
             Main.spriteBatch.Draw(drawer);
 
             var spin = AssetReferences.Assets.NoiseTextures.Spiin.Asset;
-            var drawer2 = SpritebatchDrawer.FromTextureAsset(spin, Projectile.Center);
+            var drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(spin, Projectile.Center);
             drawer2.color = Color.White * EasingFunction.QuickOutSlowIn(Timer / Time) * 0.6f;
             drawer2.color.A = 0;
             drawer2.rotation = Projectile.rotation * 2;

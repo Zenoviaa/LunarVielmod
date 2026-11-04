@@ -64,7 +64,7 @@ public class StarDancersRenderer : ModSystem
         var pass = AssetReferences.Effects.Niivi.StarDancerScroll.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Apply();
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviStarDancer.Asset, Main.screenPosition);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviStarDancer.Asset, Main.screenPosition);
         drawer.color = Color.White * EasingFunction.InOutSine(_timer / 60F) * 0.5F;
         drawer.VerticalFrame(_frameIndex, FrameCount);
         drawer.sourceRect = drawer.sourceRect.Value with { Width = Main.screenWidth };

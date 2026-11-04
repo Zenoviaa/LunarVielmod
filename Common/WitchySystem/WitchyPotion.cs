@@ -90,13 +90,13 @@ public class WitchyPotion : ModResourceDisplaySet
         {
             void DrawMask()
             {
-                var gradientDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionGuardBackingGradient.Asset, Main.screenPosition);
+                var gradientDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Witchy.PotionGuardBackingGradient.Asset, Main.screenPosition);
                 gradientDrawer.color = Color.White;
                 gradientDrawer.worldPosition.X += Main.screenWidth - TowardsLeft;
                 gradientDrawer.worldPosition.Y += TowardsBottom;
                 spriteBatch.Draw(gradientDrawer);
 
-                var barDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionBar.Asset, Main.screenPosition);
+                var barDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Witchy.PotionBar.Asset, Main.screenPosition);
                 barDrawer.VerticalFrame(2, 4);
                 barDrawer.color = Color.White;
                 barDrawer.worldPosition.X += Main.screenWidth - TowardsLeft - BarOffsetTowardsLeft;
@@ -115,7 +115,7 @@ public class WitchyPotion : ModResourceDisplaySet
                 }
 
 
-                var barEdgeDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionBarEdge.Asset, Main.screenPosition);
+                var barEdgeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Witchy.PotionBarEdge.Asset, Main.screenPosition);
                 barEdgeDrawer.VerticalFrame(2, 3);
                 barEdgeDrawer.color = Color.White;
                 barEdgeDrawer.worldPosition.X = barDrawer.worldPosition.X - 32 - 2;
@@ -126,7 +126,7 @@ public class WitchyPotion : ModResourceDisplaySet
             void DrawGlowMask()
             {
                 var tex = DitheredVersion ? AssetReferences.Assets.Textures.UI.Witchy.PotionGuardGlowMaskDithered.Asset : AssetReferences.Assets.Textures.UI.Witchy.PotionGuardGlowMask.Asset;
-                var barEdgeDrawer = SpritebatchDrawer.FromTextureAsset(tex, Main.screenPosition);
+                var barEdgeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(tex, Main.screenPosition);
                 barEdgeDrawer.sourceRect = PotionGlowMaskRect;
                 barEdgeDrawer.drawOrigin = Vector2.Zero;
                 barEdgeDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 2F);
@@ -151,7 +151,7 @@ public class WitchyPotion : ModResourceDisplaySet
             }
 
 
-            var barDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionBar.Asset, Main.screenPosition);
+            var barDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Witchy.PotionBar.Asset, Main.screenPosition);
             barDrawer.worldPosition.X += Main.screenWidth - TowardsLeft - BarOffsetTowardsLeft;
             barDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom + BarOffset2TowardsBottom;
             barDrawer.VerticalFrame(1, 4);
@@ -169,7 +169,7 @@ public class WitchyPotion : ModResourceDisplaySet
             }
 
 
-            var barEdgeDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionBarEdge.Asset, Main.screenPosition);
+            var barEdgeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Witchy.PotionBarEdge.Asset, Main.screenPosition);
             barEdgeDrawer.color = Color.White;
             barEdgeDrawer.worldPosition.X = barDrawer.worldPosition.X - 32 - 2;
             barEdgeDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom;
@@ -181,7 +181,7 @@ public class WitchyPotion : ModResourceDisplaySet
             DrawMask();
 
 
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Witchy.PotionGuard.Asset, Main.screenPosition);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Witchy.PotionGuard.Asset, Main.screenPosition);
             drawer.color = Color.White;
             drawer.worldPosition.X += Main.screenWidth - TowardsLeft;
             drawer.worldPosition.Y += TowardsBottom;

@@ -182,7 +182,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             waveShader.XStrength = 6;
             waveShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
             sb.Restart(effect: waveShader.Effect);
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(waveTexture, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(waveTexture, Projectile.Center);
             drawer.rotation = Projectile.rotation;
             drawer.BottomCenterOrigin();
             drawer.color = Color.OrangeRed * fade * ExtraMath.Osc(0.6f, 1f, speed: 32, offset: Projectile.whoAmI);
@@ -200,7 +200,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             sb.RestartDefaults();
 
             Asset<Texture2D> bloomLine = AssetManager.GlowMask.SimpleGlowCircle;
-            SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(bloomLine, Projectile.Center + new Vector2(0f, 12));
+            SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(bloomLine, Projectile.Center + new Vector2(0f, 12));
             //      drawer2.BottomCenterOrigin();
             drawer2.scale *= new Vector2(0.55f, 0.55f) * ExtraMath.Osc(0.8f, 1f, speed: 3) * inScale;
             drawer2.color = Color.Yellow * fade * 0.5f; ;
@@ -218,7 +218,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             drawer2.color.A = 0;
             sb.Draw(drawer2);
 
-            SpritebatchDrawer blastPillar = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, Projectile.Center + new Vector2(0f, 12));
+            SpritebatchDrawer blastPillar = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, Projectile.Center + new Vector2(0f, 12));
             blastPillar.BottomCenterOrigin();
             blastPillar.color = Color.Red * 0.5f * ExtraMath.Osc(0.6f, 1f, speed: 32, offset: Projectile.whoAmI) * fade;
             blastPillar.color.A = 0;

@@ -259,7 +259,7 @@ public class LightSpandStar : ModProjectile
         drawer3.rotation += Main.GlobalTimeWrappedHourly;
         sb.Draw(drawer3);
 
-        var drawer4 = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        var drawer4 = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         drawer4.color = Color.Gold * 0.16f;
         drawer4.color.A = 0;
         drawer4.scale *= 0.15f;

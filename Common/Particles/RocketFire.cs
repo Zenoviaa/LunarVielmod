@@ -64,7 +64,7 @@ public class RocketFire : ParticleUpdater<RocketFire.Data>
                     float interpolant = EasingFunction.QuadraticBump(lerpValue);
 
                     var framing = GetParticleFrame(0);
-                    var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position);
+                    var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position);
                     //  drawer.worldPosition += Main.screenPosition;
                     drawer.sourceRect = framing.frame;
                     drawer.CenterOrigin();

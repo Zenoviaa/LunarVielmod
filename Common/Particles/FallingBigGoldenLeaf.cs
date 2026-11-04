@@ -65,7 +65,7 @@ public class FallingBigGoldenLeaf : ParticleUpdater<FallingBigGoldenLeaf.Data>
         float inAlpha = EasingFunction.InOutSine((420 - particle.timeLeft) / 30f);
 
         (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frame);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
         drawer.color *= inAlpha * outAlpha;

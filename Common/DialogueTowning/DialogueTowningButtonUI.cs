@@ -97,7 +97,7 @@ namespace Stellamod.Common.DialogueTowning
 
             rect = rect.CenterPad((int)(16 * _realHoverAlpha));
             //Daraw the background for the button
-            var nameTagDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.NameTag.Asset, Vector2.Zero);
+            var nameTagDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.GooberPortraits.NameTag.Asset, Vector2.Zero);
 
             nameTagDrawer.worldPosition = Main.screenPosition + rect.Center();
             nameTagDrawer.worldPosition.Y += MathHelper.Lerp(16, 0, _spriteAlpha);

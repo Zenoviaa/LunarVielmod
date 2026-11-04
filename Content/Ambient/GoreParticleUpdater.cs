@@ -61,7 +61,7 @@ public abstract class GoreParticleUpdater : ParticleUpdater<GoreParticleUpdater.
         {
             ref var particle = ref _particles[i];
             var framign = GetParticleFrame(particle.frame);
-            var drawer = SpritebatchDrawer.FromTextureAsset(framign.texture, particle.position);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framign.texture, particle.position);
             drawer.rotation = particle.velocity.ToRotation() + particle.rotation;
             drawer.sourceRect = framign.frame;
             drawer.CenterOrigin();

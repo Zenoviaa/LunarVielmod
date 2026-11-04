@@ -48,7 +48,7 @@ file static class FableHangingLanternHelper
 
         void DrawGlow(SpriteBatch sb, Vector2 sp)
         {
-            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
+            var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
             glowDrawer.color = Color.Gold * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.5f, 1f, strength);
             glowDrawer.color.A = 0;
             glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
@@ -71,7 +71,7 @@ file static class FableHangingLanternHelper
 
         void DrawGlow(SpriteBatch sb, Vector2 sp)
         {
-            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition + drawOffset);
+            var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition + drawOffset);
             glowDrawer.color = Color.Gold * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.5f, 1f, strength);
             glowDrawer.color.A = 0;
             glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
@@ -315,7 +315,7 @@ public class FableMushroom : ZTile
         if (drawParams.tileData.frameNumber != 0)
             return;
         Lighting.AddLight(drawParams.tilePosition.x, drawParams.tilePosition.y, TorchID.Torch, 0.65f);
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
         glowDrawer.color = Color.Pink * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6) * MathHelper.Lerp(0.5f, 1f, 0.6f);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= ExtraMath.Osc(0.8f, 1f);
@@ -534,7 +534,7 @@ file static class FableLanternHelper
 
         void DrawGlow(SpriteBatch sb, Vector2 sp)
         {
-            var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
+            var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition);
             glowDrawer.color = Color.Gold * 0.14f * ExtraMath.Osc(0.5f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.5f, 1f, strength);
             glowDrawer.color.A = 0;
             glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);
@@ -555,7 +555,7 @@ file static class FableLanternHelper
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
 
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition + drawOffset);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, drawData.drawPosition + Main.screenPosition + drawOffset);
         glowDrawer.color = Color.DarkOrange * 0.14f * ExtraMath.Osc(0.85f, 1f, speed: 6 + inc) * MathHelper.Lerp(0.85f, 1f, strength);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= strength * ExtraMath.Osc(0.8f, 1f);

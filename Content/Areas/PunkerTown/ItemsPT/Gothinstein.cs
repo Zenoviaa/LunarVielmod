@@ -307,7 +307,7 @@ public class GothinsteinBarrage : ModProjectile
     private void DrawGlow()
     {
         Vector2 scale = new Vector2(0.6f, 0.5f);
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         drawer.color = Color.OrangeRed * 0.5f;
         drawer.color.A = 0;
         drawer.scale *= 0.6f * scale;
@@ -477,7 +477,7 @@ public class GothinsteinFlameWave : ModProjectile, IDrawToRenderTarget
             spriteBatch.Draw(bowDrawer);
         }
 
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Red * 0.45f * alpha;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
@@ -553,14 +553,14 @@ public class GothinsteinImpact : ModProjectile,
         float scale = 0.2f;
         sb.Restart(effect: boomShader.Effect);
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
         drawer.color = Color.White;
 
         drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 1.5f * scale;
         sb.Draw(drawer);
 
 
-        drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.FlamethrowerNoise, Projectile.Center);
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.FlamethrowerNoise, Projectile.Center);
         drawer.color = Color.White;
 
         drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 12 * scale;

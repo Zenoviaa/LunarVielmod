@@ -63,7 +63,7 @@ public class TornadoDestructionRenderer : ModSystem
                 pass.Apply();
                 using (spriteBatch.Ctx(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity, effect = pass.Shader, blendState = CustomBlendStates.Max }))
                 {
-                    var drawer = SpritebatchDrawer.FromTextureAsset(texAsset, Vector2.Zero);
+                    var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texAsset, Vector2.Zero);
                     for (var i = 0; i < _length; i++)
                     {
                         ref var particle = ref _particles[i];

@@ -354,7 +354,7 @@ namespace Stellamod.Tiles
                     && distanceToPlayer < 160 && Collision.CanHitLine(player.position, 1, 1, rectangle.Center.ToVector2(), 1, 1);
                 if (isMouseHovering)
                 {
-                    SpritebatchDrawer clickDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/Mouse"), drawPos - new Vector2(-8, 88));
+                    SpritebatchDrawer clickDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/Mouse"), drawPos - new Vector2(-8, 88));
                     int frame = 0;
                     if (ExtraMath.Osc(0f, 1f, speed: 6) > 0.5f)
                         frame = 2;

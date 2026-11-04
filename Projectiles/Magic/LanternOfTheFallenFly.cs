@@ -96,7 +96,7 @@ namespace Stellamod.Projectiles.Magic
         {
             SpritebatchDrawer flyDrawer = SpritebatchDrawer.FromProjectile(Projectile);
             Main.spriteBatch.Draw(flyDrawer);
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
             glowDrawer.color = Color.Aquamarine * 0.3f * ExtraMath.Osc(0.5f, 1f, speed: 18, Projectile.identity);
             glowDrawer.color.A = 0;
             glowDrawer.scale *= 0.1f;

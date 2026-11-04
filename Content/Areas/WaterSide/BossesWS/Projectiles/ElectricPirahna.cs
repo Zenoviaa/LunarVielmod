@@ -273,7 +273,7 @@ public class ElectricPirahna : ModProjectile
         ModContent.GetInstance<HarmonicFishRenderer>().QueueDraw(DrawFishy);
         if (_electrified)
         {
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             glowDrawer.color = Color.Lerp(Color.White * 0.5f, Color.White, ExtraMath.Osc(0f, 1f, speed: 16));
             glowDrawer.color.A = 0;
             glowDrawer.scale *= 0.5f;

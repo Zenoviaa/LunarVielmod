@@ -302,7 +302,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         }
         private void DrawHead(SpriteBatch spriteBatch, Vector2 sp)
         {
-            SpritebatchDrawer haedDrawer = SpritebatchDrawer.FromTextureAsset(
+            SpritebatchDrawer haedDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
                 AssetManager.GlowMask.StarFlare2, Projectile.Center);
             haedDrawer.color = Color.White * ExtraMath.Osc(0.65f, 0.9f, speed: 12, offset: Projectile.whoAmI);
             haedDrawer.color.A = 0;
@@ -310,7 +310,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             spriteBatch.Draw(haedDrawer);
 
 
-            haedDrawer = SpritebatchDrawer.FromTextureAsset(
+            haedDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
     AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             haedDrawer.color = Color.Blue * ExtraMath.Osc(0.65f, 0.9f, speed: 12, offset: Projectile.whoAmI) * 0.7f;
             haedDrawer.color.A = 0;

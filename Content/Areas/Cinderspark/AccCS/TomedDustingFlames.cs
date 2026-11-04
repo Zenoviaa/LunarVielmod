@@ -139,14 +139,14 @@ public class DustingFlameBoom : ModProjectile,
         float ease = EasingFunction.OutExpo(time);
         float ease2 = EasingFunction.InExpo(time);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Red * 0.4f * ExtraMath.Osc(0.6f, 1f, speed: 6) * MathHelper.Lerp(1f, 0f, ease2);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 1.2f * MathHelper.Lerp(0f, 1f, ease);
         sb.Draw(glowDrawer);
         using(SpritebatchStarter.Begin(sb, @params))
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.FlameVortexNoise.Asset, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.FlameVortexNoise.Asset, Projectile.Center);
             drawer.scale = Vector2.One * MathHelper.Lerp(0.2f, 1.56f, ease);
             drawer.color = Color.Lerp(Color.Gold, Color.Transparent, ease2);
             sb.Draw(drawer);

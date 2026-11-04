@@ -227,7 +227,7 @@ internal class BlastingBlossom : ModNPC, IWaterSilhouette
     {
         base.PostDraw(spriteBatch, screenPos, drawColor);
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center + Vector2.UnitX * NPC.direction * 18 );
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, NPC.Center + Vector2.UnitX * NPC.direction * 18 );
         drawer.color = Color.PaleTurquoise * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f ;
         drawer.color.A = 0;
         drawer.scale *= 0.5f;

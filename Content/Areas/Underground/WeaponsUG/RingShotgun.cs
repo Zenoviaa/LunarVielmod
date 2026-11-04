@@ -265,14 +265,14 @@ public class RingShotgunRing : ModProjectile
 
     private void DrawPixelatedFlash(SpriteBatch sb, Vector2 screenPos)
     {
-        SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
+        SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
         glintDrawer.color = Color.White;
         glintDrawer.color *= ExtraMath.Osc(0f, 1f, speed: 16);
         glintDrawer.color.A = 0;
         glintDrawer.scale *= 2;
         sb.Draw(glintDrawer);
 
-        SpritebatchDrawer afterImageDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
+        SpritebatchDrawer afterImageDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
         for (int i = 0; i < Projectile.oldPos.Length; i += 2)
         {
             float interp = (i + 1) / (float)Projectile.oldPos.Length;

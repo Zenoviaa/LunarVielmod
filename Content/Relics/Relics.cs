@@ -142,7 +142,7 @@ public class RelicSummon : ModProjectile
         float ease = EasingFunction.InOutSine(ratio);
         Color color = Color.Lerp(Color.Red * 0.5f, Color.Red, ease);
         Vector2 scale = Vector2.Lerp(Vector2.Zero, Vector2.One, ease);
-        SpritebatchDrawer dw = SpritebatchDrawer.FromTextureAsset(glowBallAsset, Projectile.Center);
+        SpritebatchDrawer dw = SpritebatchDrawer.FromTextureGetLightingColor(glowBallAsset, Projectile.Center);
         dw.color = color;
         dw.color.A = 0;
         dw.scale = scale;

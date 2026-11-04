@@ -188,7 +188,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             drawScale *= _draw.singularityScale;
             drawScale *= ExtraMath.Osc(0.9f, 1f, speed: 18f);
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, center);
             drawer.color = Color.DarkRed * 0.6f * _draw.alpha;
             drawer.color.A = 0;
             drawer.rotation = Main.GlobalTimeWrappedHourly * 16;

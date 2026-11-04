@@ -386,7 +386,7 @@ public class VerliaIdle : VeilTownNPC,
     {
 
         float degrees = -MathHelper.Lerp(8, 15, ExtraMath.Osc(0f, 1f, speed: 3));
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         glowDrawer.color = Color.DeepSkyBlue * 0.4f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.Y *= 0.66f;
@@ -405,7 +405,7 @@ public class VerliaIdle : VeilTownNPC,
         spriteBatch.Draw(glowDrawer);
 
 
-        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, NPC.Center);
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         // wingDrawer.drawOrigin.X = WingOffset;
@@ -452,7 +452,7 @@ public class VerliaIdle : VeilTownNPC,
         SpritebatchDrawer wingDrawer;
 
         //Draw main wings
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, NPC.Center);
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         wingDrawer.worldPosition.Y -= HeightOffset;
@@ -471,7 +471,7 @@ public class VerliaIdle : VeilTownNPC,
         spriteBatch.Restart(effect: wingShader.Effect, sortMode: SpriteSortMode.Immediate);
         wingShader.Tiling = Vector2.One * 16f;
         wingShader.ScrollingTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise2").Value;
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, NPC.Center);
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         wingDrawer.worldPosition.Y -= HeightOffset;
@@ -490,7 +490,7 @@ public class VerliaIdle : VeilTownNPC,
 
 
         wingShader.BloomColorEnd = Color.White;
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingOutlineTextureAsset, NPC.Center);
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingOutlineTextureAsset, NPC.Center);
 
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;

@@ -109,21 +109,21 @@ public class RedSunBoom : ModProjectile,
 
         sb.Restart(effect: boomShader.Effect);
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
         drawer.color = Color.White;
         drawer.color.A = 0;
         drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 1.5f;
         sb.Draw(drawer);
 
 
-        drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.FlamethrowerNoise, Projectile.Center);
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.FlamethrowerNoise, Projectile.Center);
         drawer.color = Color.White;
         drawer.color.A = 0;
         drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 12;
         sb.Draw(drawer);
         sb.RestartDefaults();
 
-        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center);
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, Projectile.Center);
         Color color = Color.Lerp(Color.Orange, Color.Aquamarine, t);
         circleDrawer.color = color * 0.75f * MathHelper.Lerp(1f, 0f, EasingFunction.OutExpo(t));
         circleDrawer.color.A = 0;
@@ -639,7 +639,7 @@ public class RedSun : ModProjectile,
         Asset<Texture2D> bloomLineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/BloomLine");
         void DrawLineInner(Vector2 direction)
         {
-            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(bloomLineTextureAsset, Projectile.Center);
+            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(bloomLineTextureAsset, Projectile.Center);
             lineDrawer.rotation = direction.ToRotation() - MathHelper.PiOver2 ;
             lineDrawer.color = Color.White * _telegraphAlpha * ExtraMath.Osc(0.4f, 1f, speed: 32);
             lineDrawer.color.A = 0;
@@ -651,7 +651,7 @@ public class RedSun : ModProjectile,
 
             spriteBatch.Draw(lineDrawer);
 
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             glowDrawer.worldPosition += direction.SafeNormalize(Vector2.Zero) * 196 * _targetScale;
             glowDrawer.color = Color.Lerp(Color.White, Color.White, ExtraMath.Osc(0f, 1f, speed: 24)) * _telegraphAlpha;
             glowDrawer.color.A = 0;
@@ -698,7 +698,7 @@ public class RedSun : ModProjectile,
 
     private void DrawBlowtorchInner(SpriteBatch spriteBatch, Vector2 sp, Vector2 direction, float progress)
     {
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.JumbledGlowCircle.Asset, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.JumbledGlowCircle.Asset, Projectile.Center);
         glowDrawer.Origin(0.1f, 0.5f);
         glowDrawer.scale.X *= MathHelper.Lerp(1f, 3.5f, EasingFunction.OutExpo(progress));
         glowDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.OutSine(progress));
@@ -723,7 +723,7 @@ public class RedSun : ModProjectile,
         float scale = _scale * 0.9f * _squishScale;
         Asset<Texture2D> sunTextureAsset = TextureAssets.Projectile[Type];
         Rectangle sunFrame = sunTextureAsset.Value.GetFrame(_sunAnimationFrame.frame, HorizontalFrameCount, VerticalFrameCount);
-        SpritebatchDrawer sunDrawer = SpritebatchDrawer.FromTextureAsset(sunTextureAsset, Projectile.Center);
+        SpritebatchDrawer sunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(sunTextureAsset, Projectile.Center);
         sunDrawer.color = Color.White * 0.75f;
         sunDrawer.color.A = 0;
         sunDrawer.scale *= scale;
@@ -740,7 +740,7 @@ public class RedSun : ModProjectile,
         redSunShader.BloomColor = Color.DarkRed;
         redSunShader.FlameNoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
         Main.spriteBatch.Restart(SpriteSortMode.Immediate, effect: redSunShader.Effect, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointWrap);
-        SpritebatchDrawer redSunDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/WaterTrail"), Projectile.Center);
+        SpritebatchDrawer redSunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/WaterTrail"), Projectile.Center);
         redSunDrawer.scale *= scale * 2;
         redSunDrawer.color = Color.White;
         redSunDrawer.color.A = 0;
@@ -749,13 +749,13 @@ public class RedSun : ModProjectile,
         Main.spriteBatch.RestartDefaults();
 
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.JumbledGlowCircle.Asset.Value, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.JumbledGlowCircle.Asset.Value, Projectile.Center);
         glowDrawer.color = Color.Red * 0.16f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= scale * 6;
         Main.spriteBatch.Draw(glowDrawer);
 
-        var glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+        var glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
         glowBall.color = Color.White * 0.92f;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _squishScale * MathHelper.Lerp(0, 2f, EasingFunction.InExpo((_flashTimer / 30f)));
@@ -764,7 +764,7 @@ public class RedSun : ModProjectile,
         if(_whiteTimer > 0)
         {
 
-            SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.JumbledGlowCircle.Asset.Value, Projectile.Center);
+            SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.JumbledGlowCircle.Asset.Value, Projectile.Center);
             glowDrawer2.color = Color.White * _whiteTimer * ExtraMath.Osc(0.7f, 1f, speed: 28);
             glowDrawer2.color.A = 0;
             glowDrawer2.scale *= scale * 2;

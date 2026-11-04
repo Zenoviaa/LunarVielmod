@@ -397,7 +397,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         {
             //Draw the texture
             Texture2D texture = AssetManager.GlowMask.SpiralVortex2.Value;
-            SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+            SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
             vortexDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.QuadraticBump(Timer / 60f)) * 0.2f;
             vortexDrawer.color.A = 0;
             vortexDrawer.rotation = Projectile.rotation;

@@ -133,7 +133,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
             waveShader.XStrength = 12;
             waveShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
             sb.Restart(effect: waveShader.Effect);
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(waveTexture, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(waveTexture, Projectile.Center);
             drawer.BottomCenterOrigin();
             drawer.color = Color.White * fade;
             drawer.color.A = 0;
@@ -149,7 +149,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
             sb.RestartDefaults();
 
             Asset<Texture2D> bloomLine = AssetManager.GlowMask.SimpleGlowCircle;
-            SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(bloomLine, Projectile.Center);
+            SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(bloomLine, Projectile.Center);
             //      drawer2.BottomCenterOrigin();
             drawer2.scale *= new Vector2(0.55f, 0.05f) * ExtraMath.Osc(0.8f, 1f, speed: 3) * inScale;
             drawer2.color = Color.White * fade; ;

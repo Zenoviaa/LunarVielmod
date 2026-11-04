@@ -131,7 +131,7 @@ public class BeastClawSlash : BaseSwingProjectileV2
     public override bool PreDraw(ref Color lightColor)
     {
         Texture2D texture = AssetManager.GlowMask.SpiralVortex2.Value;
-        SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         vortexDrawer.color = Color.SandyBrown;
         vortexDrawer.color *= 0.35f;
         vortexDrawer.color *= EasingFunction.QuadraticBump(Interpolant);
@@ -283,7 +283,7 @@ public class BeastClawStaminaSlash : BaseSwingProjectileV2
     public override bool PreDraw(ref Color lightColor)
     {
         Texture2D texture = AssetManager.GlowMask.SpiralVortex2.Value;
-        SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         vortexDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.QuadraticBump(Timer / 60f)) * 0.2f;
         vortexDrawer.color.A = 0;
         vortexDrawer.rotation = Projectile.rotation;

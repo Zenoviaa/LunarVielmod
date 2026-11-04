@@ -96,7 +96,7 @@ public class CommonBackButton : UIPanel
             if (axXBigButton)
                 textureAsset = _commonXBigTextureAsset;
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, Main.screenPosition + GetDimensions().ToRectangle().TopLeft());
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, Main.screenPosition + GetDimensions().ToRectangle().TopLeft());
             drawer.drawOrigin = Vector2.Zero;
             int frame = IsMouseHovering ? 1 : 0;
             drawer.VerticalFrame(frame, 2);

@@ -81,7 +81,7 @@ public class FallingSteamrollerPart : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.GradientPillar, _startPosition);
+        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.GradientPillar, _startPosition);
         lineDrawer.scale = new Vector2(0.025f, 6f);
         lineDrawer.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         lineDrawer.BottomCenterOrigin();

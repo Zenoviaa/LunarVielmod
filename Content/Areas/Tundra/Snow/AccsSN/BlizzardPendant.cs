@@ -57,7 +57,7 @@ public class BlizzardPendant : AbstractMeleeAddon
     {
         base.PreDrawEffects(projectile, ref lightColor);
         float a = EasingFunction.QuadraticBump(projectile.Interpolant);
-        SpritebatchDrawer backGlow = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, projectile.Projectile.Center);
+        SpritebatchDrawer backGlow = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, projectile.Projectile.Center);
         backGlow.color = Color.LightSkyBlue * ExtraMath.Osc(0.5f, 1f, speed: 6) * 0.5f * a;
         backGlow.color.A = 0;
         backGlow.scale *= 0.5f;
@@ -74,13 +74,13 @@ public class BlizzardPendant : AbstractMeleeAddon
         using (SpritebatchStarter.Begin(Main.spriteBatch, spritebatchParams))
         {
             Asset<Texture2D> blizzardNoise = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/StarNoise");
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(blizzardNoise, projectile.Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(blizzardNoise, projectile.Projectile.Center);
             drawer.color = Color.Lerp(Color.SkyBlue, Color.White, ExtraMath.Osc(0f, 1f, speed: 8)) * 0.4f * a;
             drawer.color.A = 0;
             Main.spriteBatch.Draw(drawer);
         }
 
-        SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, projectile.Projectile.Center);
+        SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, projectile.Projectile.Center);
         vortexDrawer.rotation = Main.GlobalTimeWrappedHourly * 4;
         vortexDrawer.color = Color.White * 0.2f * a;
         vortexDrawer.color.A = 0;
@@ -115,7 +115,7 @@ public class BlizzardFreezeGlobalNPC : GlobalNPC
             float maxTime = 60f;
             float interpolant = (float)timeLeft / maxTime;
             float ease = EasingFunction.InOutSine(interpolant);
-            SpritebatchDrawer crystalDrawer = SpritebatchDrawer.FromTextureAsset(crystalTexture, npc.Center);
+            SpritebatchDrawer crystalDrawer = SpritebatchDrawer.FromTextureGetLightingColor(crystalTexture, npc.Center);
             crystalDrawer.scale = Vector2.One;
             crystalDrawer.color = Color.Lerp(Color.White * 0.5f, Color.White, ease);
             spriteBatch.Draw(crystalDrawer);

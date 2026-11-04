@@ -191,7 +191,7 @@ public class BlackEyeLaserProj : ModProjectile
     private void DrawImpactPoints(SpriteBatch sb, Vector2 sp)
     {
         float s = EasingFunction.InOutSine(Projectile.timeLeft / 120f) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Time / 30f)) * 1.65f;
-        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, ImpactPoint);
+        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, ImpactPoint);
         flareDrawer.color = Color.Red;
         flareDrawer.color.A = 0;
         flareDrawer.scale *= 0.65f * ExtraMath.Osc(0.7f, 1f, speed: 12) * s;
@@ -202,7 +202,7 @@ public class BlackEyeLaserProj : ModProjectile
         flareDrawer.color.A = 0;
         sb.Draw(flareDrawer);
 
-        SpritebatchDrawer fireDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
+        SpritebatchDrawer fireDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
         fireDrawer.color = Color.Red;
         fireDrawer.color.A = 0;
         fireDrawer.scale *= s;
@@ -319,7 +319,7 @@ public class BlackEyeProj : ModProjectile
         eyeDrawer.color.A = 0;
         Main.spriteBatch.Draw(eyeDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Red * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 10);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.6f;

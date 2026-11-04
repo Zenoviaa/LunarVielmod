@@ -218,7 +218,7 @@ public class GothinTorch : ModProjectile,
             shearShader.Time = outRatio * 1.4f;
 
             Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-            SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+            SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
             waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
             waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio)) * 2;
             waveDrawer.color = Color.Red;
@@ -228,7 +228,7 @@ public class GothinTorch : ModProjectile,
             spriteBatch.Restart(effect: shearShader.Effect);
             spriteBatch.Draw(waveDrawer);
 
-            SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             backGlowDrawwer.color = Color.DarkRed;
             backGlowDrawwer.color.A = 0;
             backGlowDrawwer.scale = Vector2.One * 2f;
@@ -245,7 +245,7 @@ public class GothinTorch : ModProjectile,
 
         if(Variant == 1 || Variant == 4)
         {
-            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center);
+            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, Projectile.Center);
             Color color = Color.Lerp(Color.Orange, Color.Aquamarine, outRatio);
             circleDrawer.color = color * 0.75f * MathHelper.Lerp(1f, 0f, EasingFunction.OutExpo(outRatio));
             circleDrawer.color.A = 0;
@@ -262,7 +262,7 @@ public class GothinTorch : ModProjectile,
 
     private void DrawBlowtorchInner(SpriteBatch spriteBatch, Vector2 sp, Vector2 direction, float progress)
     {
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.Origin(0.1f, 0.5f);
         glowDrawer.scale.X *= MathHelper.Lerp(1.5f, 4.5f, EasingFunction.OutExpo(progress));
         glowDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.OutExpo(progress));

@@ -66,7 +66,7 @@ public class BackCloud : ParticleUpdater<BackCloud.Data>
                     float interpolant = EasingFunction.QuadraticBump(lerpValue);
 
                     var framing = GetParticleFrame(0);
-                    var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position);
+                    var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position);
                     
                     drawer.sourceRect = framing.frame;
                     drawer.CenterOrigin();

@@ -287,7 +287,7 @@ public class Mailboom : ModProjectile
         shearShader.Time = outRatio * 1.4f;
 
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.MuzzleFlash;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio)) * scale;
         waveDrawer.color = Color.Red;
@@ -302,7 +302,7 @@ public class Mailboom : ModProjectile
         waveDrawer.color *= MathHelper.SmoothStep(1f, 0f, outRatio);
         waveDrawer.color.A = 0;
         Main.spriteBatch.Draw(waveDrawer);
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkRed * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * scale;
@@ -384,7 +384,7 @@ public class Mailbomb : ModProjectile
         Main.spriteBatch.Draw(sbDrawer);
         Main.spriteBatch.RestartDefaults();
 
-        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         flareDrawer.color = Color.Gold * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
         flareDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * 0.5f, EasingFunction.InOutSine(Timer / 30f));
         flareDrawer.color.A = 0;

@@ -117,13 +117,13 @@ public class DevToolTimeSliderUIPanel : UIPanel
 
         BackgroundColor = Color.Transparent;
         BorderColor = Color.Transparent;
-        var drawer = SpritebatchDrawer.FromTextureAsset(_dayTexture, rect.TopLeft() + Main.screenPosition);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(_dayTexture, rect.TopLeft() + Main.screenPosition);
         drawer.color = Color.White;
         drawer.drawOrigin = Vector2.Zero;
 
         spriteBatch.Draw(drawer);
 
-        var drawer2 = SpritebatchDrawer.FromTextureAsset(_nightTexture, rect.TopLeft() + Main.screenPosition + new Vector2(_dayTexture.Width, 0));
+        var drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(_nightTexture, rect.TopLeft() + Main.screenPosition + new Vector2(_dayTexture.Width, 0));
         drawer2.color = Color.White;
         drawer2.drawOrigin = Vector2.Zero;
 
@@ -131,7 +131,7 @@ public class DevToolTimeSliderUIPanel : UIPanel
 
 
         var pointToPlaceAt = rect.TopLeft() + new Vector2(t * Width.Pixels * 0.5f + offset, 0);
-        var iconDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.UI.FancyScrollbarInner.Asset, pointToPlaceAt + Main.screenPosition);
+        var iconDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.UI.FancyScrollbarInner.Asset, pointToPlaceAt + Main.screenPosition);
         iconDrawer.drawOrigin = Vector2.Zero;
         iconDrawer.color = Color.White;
         spriteBatch.Draw(iconDrawer);

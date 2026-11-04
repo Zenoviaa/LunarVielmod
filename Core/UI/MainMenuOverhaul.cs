@@ -239,7 +239,7 @@ public class MainMenuFallingLeavesParticleSystem
                 continue;
             ref Vector2 position = ref _godrayParticles.positions[i];
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, position);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, position);
             //    drawer.worldPosition += new Vector2(Main.screenWidth, 0);
             drawer.worldPosition += new Vector2(80, -256);
             drawer.scale = new Vector2(0.25f * ExtraMath.Osc(0.5f, 1f, 0, offset: i), 2f) * 1.5f;
@@ -419,7 +419,7 @@ public class MainMenuOverhaul : ModSystem
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                 perfectMagicShader.Effect);
 
-            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(_cloudsTextureAsset, Main.screenPosition);
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_cloudsTextureAsset, Main.screenPosition);
             sbDrawer.drawOrigin = Vector2.Zero;
             sbDrawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             sbDrawer.color = Color.Lerp(Color.White, Color.Black, 0.9f);
@@ -488,7 +488,7 @@ public class MainMenuOverhaul : ModSystem
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, effect: ShaderContent.GetInstance<MenuFadeShader>().Effect);
             int width = spriteBatch.GraphicsDevice.Viewport.Bounds.Width;
             int height = spriteBatch.GraphicsDevice.Viewport.Bounds.Height;
-            SpritebatchDrawer ereshDrawer = SpritebatchDrawer.FromTextureAsset(_ereshkigalTextureAsset, Main.screenPosition);
+            SpritebatchDrawer ereshDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_ereshkigalTextureAsset, Main.screenPosition);
             ereshDrawer.scale = Vector2.One * 0.5f;
             //ereshDrawer.drawOrigin = Vector2.Zero;
             ereshDrawer.color = Color.Lerp(Color.White, Color.Black, 0.2f);

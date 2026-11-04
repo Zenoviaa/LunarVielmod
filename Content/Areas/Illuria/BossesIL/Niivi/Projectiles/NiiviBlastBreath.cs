@@ -439,7 +439,7 @@ public class NiiviBlastBreath : ModProjectile
 
         if (Timer < 4)
         {
-            var impactFrameDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.ImpactFrame.Asset, _hitPoint);
+            var impactFrameDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.ImpactFrame.Asset, _hitPoint);
             impactFrameDrawer.color = Color.Black;
             sb.Draw(impactFrameDrawer);
         }
@@ -452,7 +452,7 @@ public class NiiviBlastBreath : ModProjectile
         shearShader.Time = MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(Timer / Time));
         Main.spriteBatch.Restart(effect: shearShader.Effect);
 
-        SpritebatchDrawer crackDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Visual.Particles.BigCrackParticle.Asset, _hitPoint);
+        SpritebatchDrawer crackDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Visual.Particles.BigCrackParticle.Asset, _hitPoint);
         crackDrawer.color = Color.Lerp(Color.White, DrawUtilities.Prismatic, EasingFunction.InSine(Timer / Time));
         crackDrawer.color.A = 0;
         crackDrawer.scale = Vector2.One * 2f;
@@ -461,7 +461,7 @@ public class NiiviBlastBreath : ModProjectile
 
         Main.spriteBatch.RestartDefaults();
 
-        var noiseDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Noise.PainterlyNoise.Asset, _hitPoint);
+        var noiseDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Noise.PainterlyNoise.Asset, _hitPoint);
         noiseDrawer.color = Color.White;
         var pass = AssetReferences.Effects.Niivi.PrismBoom.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
@@ -474,14 +474,14 @@ public class NiiviBlastBreath : ModProjectile
         }
 
 
-        var fourPointedStartDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star2.Asset, _hitPoint);
+        var fourPointedStartDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.Star2.Asset, _hitPoint);
         fourPointedStartDrawer.scale = Vector2.Lerp(Vector2.Zero, new Vector2(0.6F), Timer / Time);
         fourPointedStartDrawer.rotation = Main.GlobalTimeWrappedHourly;
         fourPointedStartDrawer.color = Color.Lerp(Color.White, Color.Transparent, EasingFunction.InSine(Timer / Time));
         fourPointedStartDrawer.color.A = 0;
         sb.Draw(fourPointedStartDrawer);
 
-        var starDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.Star2.Asset, _hitPoint);
+        var starDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.Star2.Asset, _hitPoint);
         starDrawer.color = Color.White;
         starDrawer.color.A = 0;
         starDrawer.scale = Vector2.Lerp(Vector2.One, Vector2.Zero, EasingFunction.OutSine(Timer/Time)) * 5;
@@ -495,7 +495,7 @@ public class NiiviBlastBreath : ModProjectile
 
     void DrawStarsBoom(SpriteBatch sb, Vector2 sp)
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviStarsBoom.Asset, _hitPoint);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviStarsBoom.Asset, _hitPoint);
         drawer.VerticalFrame(_starBoomFrame, StarBoomFrameCount);
         drawer.CenterOrigin();
         drawer.color = Color.White * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));

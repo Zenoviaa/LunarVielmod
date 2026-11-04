@@ -131,7 +131,7 @@ public class LightSpasm : ModProjectile
         Vector2 glowScale = Vector2.One * 0.25f;
         float rotation = Main.GlobalTimeWrappedHourly * 4;
         float outScale = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f) * 0.25f;
-        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         bloomDrawer.color = Color.Goldenrod;
         bloomDrawer.color.A = 0;
         bloomDrawer.color *= 0.1f;
@@ -153,7 +153,7 @@ public class LightSpasm : ModProjectile
             spriteBatch.Draw(bloomDrawer);
         }
 
-        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
 
         Color spiralGlowColor = Color.Lerp(Color.White, Color.Goldenrod, 0.6f);
         spiralGlowColor.A = 0;

@@ -2408,7 +2408,7 @@ public class Verlia : ScarletBoss,
             return false;
 
         PixelationManager.QueuePrimitivesDrawAction(DrawTrail, DrawLayer.BehindNPCsWithOutline);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, NPC.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, NPC.Center);
         glowDrawer.scale *= 0.35f * _trailAlpha * ExtraMath.Osc(0.66f, 1f, speed: 2);
         glowDrawer.color = Color.LightSkyBlue * _trailAlpha;
         glowDrawer.color.A = 0;
@@ -2417,7 +2417,7 @@ public class Verlia : ScarletBoss,
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSpellCircle, DrawLayer.BehindNPCsWithOutline);
         if (_inwardAlpha > 0)
         {
-            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
             sbDrawer.color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(_inwardAlpha)) * 0.4f;
             sbDrawer.color.A = 0;
             sbDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, _inwardAlpha) * 3f;
@@ -2496,7 +2496,7 @@ public class Verlia : ScarletBoss,
     }
     private void DrawSpellCircle(SpriteBatch sb)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>(Texture + "_MagicCircle"), NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>(Texture + "_MagicCircle"), NPC.Center);
         drawer.color = Color.Lerp(Color.LightBlue, Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 4)) * _magicCircleAlpha;
         drawer.color.A = 0;
         drawer.rotation = Main.GlobalTimeWrappedHourly;
@@ -2508,7 +2508,7 @@ public class Verlia : ScarletBoss,
     {
 
         float degrees = -MathHelper.Lerp(8, 15, ExtraMath.Osc(0f, 1f, speed: 3));
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         glowDrawer.color = Color.DeepSkyBlue * 0.4f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.Y *= 0.66f;
@@ -2527,7 +2527,7 @@ public class Verlia : ScarletBoss,
         spriteBatch.Draw(glowDrawer);
 
 
-        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, NPC.Center);
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         // wingDrawer.drawOrigin.X = WingOffset;
@@ -2573,7 +2573,7 @@ public class Verlia : ScarletBoss,
         SpritebatchDrawer wingDrawer;
 
         //Draw main wings
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, NPC.Center);
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         wingDrawer.worldPosition.Y -= HeightOffset;
@@ -2592,7 +2592,7 @@ public class Verlia : ScarletBoss,
         spriteBatch.Restart(effect: wingShader.Effect, sortMode: SpriteSortMode.Immediate);
         wingShader.Tiling = Vector2.One * 16f;
         wingShader.ScrollingTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise2").Value;
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, NPC.Center);
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;
         wingDrawer.worldPosition.Y -= HeightOffset;
@@ -2611,7 +2611,7 @@ public class Verlia : ScarletBoss,
 
 
         wingShader.BloomColorEnd = Color.White;
-        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingOutlineTextureAsset, NPC.Center);
+        wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingOutlineTextureAsset, NPC.Center);
 
         wingDrawer.LeftCenterOrigin();
         wingDrawer.drawOrigin.X += WingOffset;

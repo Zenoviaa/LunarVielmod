@@ -227,7 +227,7 @@ public class BurningAngelBubble : ModProjectile
 
     void DrawFlame(SpriteBatch sb, Vector2 sp)
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.CandleFlame.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.CandleFlame.Asset, Projectile.Center);
         drawer.scale = new Vector2(Scale);
         drawer.scale *= MathHelper.Lerp(0.2f, 1f, InScale);
         drawer.scale.X *= MathHelper.Lerp(0.9f, 1f, ExtraMath.Osc(0f, 1f, speed: 10, Projectile.identity));//

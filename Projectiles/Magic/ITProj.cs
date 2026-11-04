@@ -191,7 +191,7 @@ public class ITProj : ModProjectile
     {
         Lighting.AddLight(Projectile.Center, Color.DarkSeaGreen.ToVector3() * 1.75f * Main.essScale);
         string glowTexture = Texture + "_White";
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>(glowTexture), Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>(glowTexture), Projectile.Center);
         //Lerping
         float progress = WhiteTimer;
         Color drawColor = Color.Lerp(Color.Transparent, Color.White, progress);

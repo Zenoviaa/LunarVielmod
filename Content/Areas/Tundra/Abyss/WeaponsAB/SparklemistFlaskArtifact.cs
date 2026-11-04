@@ -93,7 +93,7 @@ public class Sparklemist : ModProjectile
 
     private void DrawPixelatedSmog(SpriteBatch sb, Vector2 screenPos)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         float ratio = Timer / 120f;
         float ease = EasingFunction.QuadraticBump(ratio);
         drawer.color = Color.Lerp(Color.Transparent, _sparkleMistColor, ease) * 0.16f;

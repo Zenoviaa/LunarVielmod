@@ -142,7 +142,7 @@ public class GhastlyThrust : ModProjectile,
         if (_swordTextureAsset == null)
             return false;
      
-        SpritebatchDrawer phaseDrawer = SpritebatchDrawer.FromTextureAsset(_swordTextureAsset, Projectile.Center);
+        SpritebatchDrawer phaseDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_swordTextureAsset, Projectile.Center);
         DrawUtilities.DrawSpriteAfterImage(Main.spriteBatch, phaseDrawer, Projectile.oldPos, Projectile.oldRot, Color.White, Color.Transparent, 0.1f * Alpha, offset: Projectile.Size * 0.5f);
         phaseDrawer.rotation = Projectile.rotation;
         phaseDrawer.color = Color.White * ExtraMath.Osc(0.4f, 0.6f, speed: 64) * Alpha;

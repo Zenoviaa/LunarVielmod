@@ -324,7 +324,7 @@ public class VenaticiStar : ModProjectile
             spriteBatch.Draw(starShard);
         }
 
-        SpritebatchDrawer glowCircle = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        SpritebatchDrawer glowCircle = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         glowCircle.color = Color.White * _charge;
         glowCircle.color.A = 0;
         glowCircle.scale *= MathHelper.Lerp(0.5f, 1f, _charge) * 0.2f;

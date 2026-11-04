@@ -524,7 +524,7 @@ public class RoyalMagicRenderer : ModSystem
 
     private void DrawMaskParticles(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(_royalSmokeMaskTextureAsset, Vector2.Zero);
+        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_royalSmokeMaskTextureAsset, Vector2.Zero);
         for (int i = 0; i < _smearParticles.Length; i++)
         {
             ref float timeLeft = ref _smearParticles.timeleft[i];
@@ -592,7 +592,7 @@ public class RoyalMagicRenderer : ModSystem
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Brightest, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
 
-            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Vector2.Zero);
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, Vector2.Zero);
             for (int i = 0; i < _smearParticles.Length; i++)
             {
                 ref float timeLeft = ref _smearParticles.timeleft[i];
@@ -639,7 +639,7 @@ public class RoyalMagicRenderer : ModSystem
             //So, For this effect we want the swirls to be swiling around and scrolling around probably
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, swirlsShader.Effect);
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.Swirl, Vector2.Zero);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.Swirl, Vector2.Zero);
             drawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             drawer.drawOrigin = Vector2.Zero;
             drawer.color = Color.White;

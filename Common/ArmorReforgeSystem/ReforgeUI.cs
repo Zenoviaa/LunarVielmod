@@ -181,7 +181,7 @@ namespace Stellamod.Common.ArmorReforgeSystem
                 Main.UIScaleMatrix);
 
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_backgroundTextureAsset, Main.screenPosition + drawPos);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_backgroundTextureAsset, Main.screenPosition + drawPos);
             drawer.color = Color.White;
             drawer.drawOrigin = Vector2.Zero;
             Rectangle frame = _backgroundTextureAsset.Value.GetFrame(0, 2);

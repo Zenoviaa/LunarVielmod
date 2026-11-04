@@ -213,7 +213,7 @@ public class WinterBornSlime : ModNPC
     {
         Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
         Lighting.AddLight(NPC.Center, Color.LightSkyBlue.ToVector3() * 0.25f * Main.essScale);
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
         glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.9f, 1f, offset: NPC.whoAmI) * 0.2f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.3f;

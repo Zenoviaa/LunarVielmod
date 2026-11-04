@@ -103,7 +103,7 @@ public class RoyalStarBombBoom : ModProjectile,
 
         if (Timer < 3)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Impact, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.Impact, Projectile.Center);
             drawer.color = Color.White;
             drawer.color.A = 0;
             drawer.scale *= 1.5f;
@@ -117,7 +117,7 @@ public class RoyalStarBombBoom : ModProjectile,
         RoyalShockwaveCircleShader shockwaevShader = RoyalShockwaveCircleShader.Instance;
         shockwaevShader.Time = -Timer * 0.02f + 0.8f;
         sb.Restart(effect: shockwaevShader.Effect);
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         sbDrawer.CenterOrigin();
         sbDrawer.scale.X *= MathHelper.Lerp(0f, 3.8f, EasingFunction.OutExpo(Timer / Time));
         sbDrawer.scale.Y += MathHelper.Lerp(8f, 0f, EasingFunction.InOutExpo(Timer / Time));
@@ -143,7 +143,7 @@ public class RoyalStarBombBoom : ModProjectile,
 
         if (Timer < 3)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Impact, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.Impact, Projectile.Center);
             drawer.color = Color.White;
             drawer.color.A = 0;
             drawer.scale *= 1.5f;
@@ -414,14 +414,14 @@ public class RoyalStarBomb : ModProjectile,
 
     private void DrawStarBomb(SpriteBatch sb)
     {
-        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center + _bounceOffset);
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, Projectile.Center + _bounceOffset);
         Color color = Color.Lerp(Color.Blue, Color.Pink, _shockTimer / 30);
         circleDrawer.color = color * 0.75f * MathHelper.Lerp(1f, 0f, EasingFunction.Clamp(_shockTimer / 30));
         circleDrawer.color.A = 0;
         circleDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * 12, _shockTimer / 30f);
         Main.spriteBatch.Draw(circleDrawer);
 
-        SpritebatchDrawer glowBall2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
+        SpritebatchDrawer glowBall2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
         glowBall2.color = Color.White * 0.9f * ExtraMath.Osc(0.5f, 1f, speed: 6);
         glowBall2.color.A = 0;
         glowBall2.scale *= 2 * _scale;
@@ -446,14 +446,14 @@ public class RoyalStarBomb : ModProjectile,
 
         sb.RestartDefaults();
 
-        SpritebatchDrawer glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        SpritebatchDrawer glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
         glowBall.color = Color.Lerp(Color.Blue, Color.Magenta, ExtraMath.Osc(0f, 1f, speed: 3)) * 0.1f;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale;
         sb.Draw(glowBall);
 
 
-        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
         glowBall.color = Color.Blue * 0.75f * (_bounceOffset.Length() / 115f);
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale;
@@ -461,21 +461,21 @@ public class RoyalStarBomb : ModProjectile,
 
 
 
-        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
         glowBall.color = Color.White * 0.75f * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale;
         sb.Draw(glowBall);
 
 
-        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center + _bounceOffset);
+        glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarRing, Projectile.Center + _bounceOffset);
         glowBall.color = Color.Lerp(Color.Blue, Color.Magenta, ExtraMath.Osc(0f, 1f, speed: 3)) * 0.08f;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale * MathHelper.Lerp(0f, 2f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));
         sb.Draw(glowBall);
 
 
-        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
+        glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
         glowBall.color = Color.White * 0.92f;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale * MathHelper.Lerp(0, 6.4f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));

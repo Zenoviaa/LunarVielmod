@@ -245,7 +245,7 @@ internal class BlindWanderer : ModNPC,
     {
         base.PostDraw(spriteBatch, screenPos, drawColor);
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center +  Vector2.UnitX * NPC.direction * 18 * _lanternScale);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, NPC.Center +  Vector2.UnitX * NPC.direction * 18 * _lanternScale);
         drawer.color = Color.OrangeRed * ExtraMath.Osc(0.5f, 1f, speed: 3) * 0.2f * _lanternScale;
         drawer.color.A = 0;
         drawer.scale *= 0.5f * _lanternScale;

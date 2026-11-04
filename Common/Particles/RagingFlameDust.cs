@@ -97,7 +97,7 @@ public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
                         Color.Lerp(Color.Red, Color.White, 0.5f));
 
                     (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frameIndex);
-                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
                     drawer.sourceRect = frame;
                     drawer.CenterOrigin();
                     drawer.rotation = particle.timeleft * 0.01f;
@@ -129,7 +129,7 @@ public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
                         Color.Lerp(Color.Cyan, Color.White, 0.5f));
 
                     (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frameIndex);
-                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
                     drawer.sourceRect = frame;
                     drawer.CenterOrigin();
                     drawer.rotation = particle.timeleft * 0.01f;
@@ -162,7 +162,7 @@ public class RagingFlameDust : ParticleUpdater<RagingFlameDustData>
                         Color.Lerp(Color.Orange, Color.White, 0.5f));
 
                     (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frameIndex);
-                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
                     drawer.sourceRect = frame;
                     drawer.CenterOrigin();
                     drawer.rotation = particle.timeleft * 0.01f;

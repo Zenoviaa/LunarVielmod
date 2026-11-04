@@ -378,7 +378,7 @@ public class VacuumLightningBolt : ModProjectile,
 
 
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.JumbledGlowCircle.Asset, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.JumbledGlowCircle.Asset, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 16)) * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.125f * ExtraMath.Osc(0.85f, 1f, speed: 16) * outScale * inScale * oscScalePosterized;

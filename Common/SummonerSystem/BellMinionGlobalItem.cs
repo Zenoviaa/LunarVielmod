@@ -52,14 +52,14 @@ namespace Stellamod.Common.SummonerSystem
             {
                 if (isGuardian)
                 {
-                    var auraDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Main.screenPosition + position);
+                    var auraDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Main.screenPosition + position);
                     auraDrawer.color = Color.DarkOrange;
                     auraDrawer.color.A = 0;
                     auraDrawer.color *= ExtraMath.Osc(0.25f, 0.55f, speed: 2, item.type) * 1.5f;
                     auraDrawer.scale *= 0.18f;
                     spriteBatch.Draw(auraDrawer);
                 }
-                var scrollDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.SummonerSystem.SongScroll.Asset, Main.screenPosition + position);
+                var scrollDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Common.SummonerSystem.SongScroll.Asset, Main.screenPosition + position);
                 scrollDrawer.color = drawColor;
                 scrollDrawer.worldPosition += new Vector2(-8);
                 spriteBatch.Draw(scrollDrawer);
@@ -74,7 +74,7 @@ namespace Stellamod.Common.SummonerSystem
                 drawer.scale = Vector2.One * scale;
                 spriteBatch.Draw(drawer);
 
-                var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Main.screenPosition + position);
+                var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Main.screenPosition + position);
                 glowDrawer.color = Color.SkyBlue;
                 glowDrawer.color.A = 0;
                 glowDrawer.color *= ExtraMath.Osc(0.45f, 0.55f, speed: 2, item.type) * 0.4f;

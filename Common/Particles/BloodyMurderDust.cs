@@ -67,7 +67,7 @@ public class BloodyMurderDust : ParticleUpdater<RoarDustData>
         float interpolant = EasingFunction.QuadraticBump(lerpValue);
 
         (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
         drawer.color = Color.Lerp(Color.Transparent, particle.color, lerpValue);

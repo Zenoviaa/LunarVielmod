@@ -110,7 +110,7 @@ public class Kickboom : ModProjectile,
            rectangle,
             (Color)GetAlpha(lightColor)!, drawRotation, origin, drawScale, SpriteEffects.None, 0f);
         
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.White, Color.Black, EasingFunction.OutExpo(Timer / 40f));
         glowDrawer.color.A = 0;
         spriteBatch.Draw(glowDrawer);

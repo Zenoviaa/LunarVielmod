@@ -79,7 +79,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
                 (Color)GetAlpha(lightColor), 0f, origin, 2f, SpriteEffects.None, 0f);
 
-            SpritebatchDrawer blackStarDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<OrionStarProj>()], Projectile.Center);
+            SpritebatchDrawer blackStarDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<OrionStarProj>()], Projectile.Center);
             blackStarDrawer.VerticalFrame(0, 2);
             blackStarDrawer.CenterOrigin();
             blackStarDrawer.color = Color.Black;

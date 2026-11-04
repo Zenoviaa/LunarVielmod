@@ -23,7 +23,7 @@ public class EditorHudUISystem : ModSystem
         if (player.HeldItem.type == ModContent.ItemType<TileEyeDropper>())
         {
             SpriteBatch sb = Main.spriteBatch;
-            SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+            SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Vector2.Zero);
             drawer2.color = Color.Green * 0.5f * ExtraMath.Osc(0.5f, 1f, speed: 6);
             drawer2.worldPosition = Main.MouseWorld.ToTileCoordinates().ToWorldCoordinates();
             sb.Draw(drawer2);
@@ -43,7 +43,7 @@ public class EditorHudUISystem : ModSystem
         if (_visited == null)
             return;
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Vector2.Zero);
         drawer.color = Color.Green * 0.5f * ExtraMath.Osc(0.5f, 1f, speed: 6);
         foreach (Point p in _visited)
         {

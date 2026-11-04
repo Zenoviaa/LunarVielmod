@@ -607,7 +607,7 @@ public class GrandGoldenLeafTree : ZTile
         Vector2 godrayScale = new Vector2(0.35f, 2f);
 
         float godrayOffset = 150;
-        SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromTextureAsset(godrayTexture, wp + new Vector2(144, -128));
+        SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(godrayTexture, wp + new Vector2(144, -128));
         sbDrawer2.color = Color.White * 0.26f * ExtraMath.Osc(0f, 1f, speed: 1);
         sbDrawer2.color.A = 0;
         sbDrawer2.rotation -= MathHelper.ToRadians(-0);

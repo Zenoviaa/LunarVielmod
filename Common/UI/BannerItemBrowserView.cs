@@ -286,7 +286,7 @@ namespace Stellamod.Common.UI
                     spriteBatch.End();
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
 
-                    SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + iconCenterPos);
+                    SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + iconCenterPos);
                     glowDrawer.color = Color.White * 0.15f * (1f - lerp);
                     glowDrawer.color.A = 0;
                     glowDrawer.scale *= 0.26f;
@@ -341,7 +341,7 @@ namespace Stellamod.Common.UI
             Vector2 tl2 = rectangle.TopLeft();
             tl2.Y -= 16;
             tl2.X -= 64;
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ClothesLineTextureAsset, Main.screenPosition + tl2);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(ClothesLineTextureAsset, Main.screenPosition + tl2);
             drawer.color = Color.White * transitionInterpolant;
             drawer.drawOrigin = Vector2.Zero;
             drawer.sourceRect = new Rectangle(0, 0, 16, drawer.texture.Height);

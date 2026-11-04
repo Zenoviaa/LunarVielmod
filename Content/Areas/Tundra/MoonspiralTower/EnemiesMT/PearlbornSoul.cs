@@ -437,7 +437,7 @@ public class PearlbornSoulRenderer : ModSystem
             foreach (var p in points)
             {
                 var textureAsset = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornSoul.Asset;
-                var drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, p.XY() + new Vector2(8));
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, p.XY() + new Vector2(8));
                 drawer.VerticalFrame(0, 2);
                 drawer.CenterOrigin();
                 drawer.scale *= 0.35f;
@@ -480,7 +480,7 @@ public class PearlbornSoulRenderer : ModSystem
             foreach (var p in points)
             {
                 var textureAsset = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornSoul.Asset;
-                var drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, p.XY() + new Vector2(8));
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, p.XY() + new Vector2(8));
                 drawer.VerticalFrame(0, 2);
                 drawer.CenterOrigin();
                 drawer.scale *= 0.35f;
@@ -522,7 +522,7 @@ public class PearlbornSoulRenderer : ModSystem
             foreach (var p in points)
             {
                 var textureAsset = AssetReferences.Content.Areas.Tundra.MoonspiralTower.EnemiesMT.PearlbornSoul.Asset;
-                var drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, p.XY() + new Vector2(8));
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, p.XY() + new Vector2(8));
                 drawer.VerticalFrame(0, 2);
                 drawer.CenterOrigin();
                 drawer.scale *= 0.35f;

@@ -55,7 +55,7 @@ PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.OverPlayers);
         var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 90f);
 
         var framing = GetParticleFrame(0);
-        var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position);
         drawer.sourceRect = framing.frame;
         drawer.CenterOrigin();
         drawer.color = particle.color;

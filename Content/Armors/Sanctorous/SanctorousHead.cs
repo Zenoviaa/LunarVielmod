@@ -205,7 +205,7 @@ public class SanctorousPlayer : ModPlayer
             Vector2 drawCenter = radians.ToRotationVector2() * 48 + drawInfo.drawPlayer.Center;
 
             Texture2D texture = _featherTextureAsset.Value;
-            SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromTextureAsset(texture, drawCenter);
+            SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, drawCenter);
             //  float rads = MathHelper.ToRadians(3);
 
             swordDrawer.rotation = (drawCenter - drawInfo.drawPlayer.Center).ToRotation() + MathHelper.PiOver2;

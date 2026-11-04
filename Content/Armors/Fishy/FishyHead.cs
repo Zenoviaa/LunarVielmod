@@ -90,7 +90,7 @@ public class BubbledFish : ModProjectile
         Main.spriteBatch.Draw(drawer);
 
         Asset<Texture2D> bubbleTexture = ModContent.Request<Texture2D>(Texture + "_Bubble");
-        SpritebatchDrawer bubbleDrawer = SpritebatchDrawer.FromTextureAsset(bubbleTexture, Projectile.Center);
+        SpritebatchDrawer bubbleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(bubbleTexture, Projectile.Center);
         bubbleDrawer.scale = Projectile.scale * Vector2.Lerp(
             new Vector2(1.1f, 0.9f), 
             new Vector2(0.9f, 1.1f), 

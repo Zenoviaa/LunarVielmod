@@ -173,7 +173,7 @@ public class MiniSun : ModProjectile,
         redSunShader.BloomColor = Color.DarkRed;
         redSunShader.FlameNoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
         Main.spriteBatch.Restart(SpriteSortMode.Immediate, effect: redSunShader.Effect, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointWrap);
-        SpritebatchDrawer redSunDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/WaterTrail"), Projectile.Center);
+        SpritebatchDrawer redSunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/WaterTrail"), Projectile.Center);
         redSunDrawer.scale *= scale * 2;
         redSunDrawer.color = Color.White;
         redSunDrawer.color.A = 0;
@@ -182,13 +182,13 @@ public class MiniSun : ModProjectile,
         Main.spriteBatch.RestartDefaults();
 
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.JumbledGlowCircle.Asset.Value, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.JumbledGlowCircle.Asset.Value, Projectile.Center);
         glowDrawer.color = Color.Red * 0.16f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= scale * 6;
         Main.spriteBatch.Draw(glowDrawer);
 
-        SpritebatchDrawer glowDrawerCircle = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawerCircle = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawerCircle.scale *= scale * 1.2f;
         glowDrawerCircle.color = Color.Red;
         glowDrawerCircle.color.A = 0;

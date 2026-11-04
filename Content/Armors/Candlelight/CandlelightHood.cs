@@ -144,7 +144,7 @@ public class CandlelightPlayer : ModPlayer
         Vector2 drawCenter = drawInfo.Center;
         drawCenter.Y -= 80;
         drawCenter.Y += ExtraMath.Osc(0f, 16, speed: 2);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_goldenTextureAsset, drawCenter);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_goldenTextureAsset, drawCenter);
         float scale = MathHelper.Lerp(1f, 0f, MathHelper.Clamp(takenHits / 5f, 0f, 1f));
 
         drawer.scale = Vector2.One * scale;

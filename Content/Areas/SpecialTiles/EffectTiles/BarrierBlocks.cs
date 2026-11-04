@@ -179,7 +179,7 @@ public class BarrierFog : ModSystem
                 //Draw the darkest possible color as a backdrop
                 spriteBatch.Begin(blackParams);
 
-                SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, Vector2.Zero);
+                SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.Clouds.Asset, Vector2.Zero);
                 foreach (Point fogTilePoint in WhiteFogPoints)
                 {
                     Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
@@ -199,7 +199,7 @@ public class BarrierFog : ModSystem
                 foreach (Point fogTilePoint in WhiteFogPoints)
                 {
                     Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
-                    SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
+                    SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
                     fogDrawer.color = Color.White;
                     float a = ExtraMath.Osc(0f, 1f, speed: 0, offset: fogTilePoint.X * fogTilePoint.Y);
                     fogDrawer.color *= a;
@@ -209,7 +209,7 @@ public class BarrierFog : ModSystem
                 foreach (Point fogTilePoint in RedFogPoints)
                 {
                     Vector2 worldPos = fogTilePoint.ToWorldCoordinates();
-                    SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
+                    SpritebatchDrawer fogDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.Clouds.Asset, worldPos);
                     fogDrawer.color = Color.Red;
                     float a = ExtraMath.Osc(0f, 1f, speed: 0, offset: fogTilePoint.X * fogTilePoint.Y);
                     fogDrawer.color *= a;

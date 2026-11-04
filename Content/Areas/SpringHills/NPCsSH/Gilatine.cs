@@ -223,7 +223,7 @@ public class Gilatine : VeilTownNPC
     {
         //BACK WING
 
-        SpritebatchDrawer backWingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAssets[1], _bodySegments[0].a);
+        SpritebatchDrawer backWingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAssets[1], _bodySegments[0].a);
         backWingDrawer.drawOrigin = new Vector2(85, 116);
         backWingDrawer.rotation = _bodySegments[0].totalAngle - MathHelper.Pi;
         float wingAngle2 = MathHelper.WrapAngle(backWingDrawer.rotation + MathHelper.PiOver2);
@@ -238,7 +238,7 @@ public class Gilatine : VeilTownNPC
         spriteBatch.Draw(backWingDrawer);
 
         //BACK LEG BACK
-        SpritebatchDrawer backLegDrawerBack = SpritebatchDrawer.FromTextureAsset(_backLegTextureAssets[1], _bodySegments[2].a);
+        SpritebatchDrawer backLegDrawerBack = SpritebatchDrawer.FromTextureGetLightingColor(_backLegTextureAssets[1], _bodySegments[2].a);
         backLegDrawerBack.rotation = _bodySegments[2].totalAngle - MathHelper.Pi;
         backLegDrawerBack.drawOrigin = Vector2.Zero;
 
@@ -253,7 +253,7 @@ public class Gilatine : VeilTownNPC
         spriteBatch.Draw(backLegDrawerBack);
 
         //BACK LEG FRONT
-        SpritebatchDrawer frontLegDrawerBack = SpritebatchDrawer.FromTextureAsset(_frontLegTextureAssets[1], _bodySegments[0].a);
+        SpritebatchDrawer frontLegDrawerBack = SpritebatchDrawer.FromTextureGetLightingColor(_frontLegTextureAssets[1], _bodySegments[0].a);
         frontLegDrawerBack.drawOrigin = Vector2.Zero;
         frontLegDrawerBack.rotation = _bodySegments[0].totalAngle - MathHelper.Pi;
         float frontLegAngle = MathHelper.WrapAngle(frontLegDrawerBack.rotation + MathHelper.PiOver2);
@@ -269,7 +269,7 @@ public class Gilatine : VeilTownNPC
         //BODY
         for (int i = _bodyTextureAssets.Length - 1; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_bodyTextureAssets[i], _bodySegments[i].a);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_bodyTextureAssets[i], _bodySegments[i].a);
             float bodyAngle = _bodySegments[i].totalAngle;
             drawer.rotation = bodyAngle;
             float dir = 1;
@@ -297,7 +297,7 @@ public class Gilatine : VeilTownNPC
 
 
         //HEAD
-        SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(_headTextureAsset, _headSegment.b);
+        SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_headTextureAsset, _headSegment.b);
         float drawAngle = MathHelper.Pi + _headSegment.angle;
 
         drawAngle = MathHelper.WrapAngle(drawAngle);
@@ -335,7 +335,7 @@ public class Gilatine : VeilTownNPC
         spriteBatch.Draw(headDrawer);
 
         //BACK LEG
-        SpritebatchDrawer backLegDrawerFront = SpritebatchDrawer.FromTextureAsset(_backLegTextureAssets[0], _bodySegments[2].a);
+        SpritebatchDrawer backLegDrawerFront = SpritebatchDrawer.FromTextureGetLightingColor(_backLegTextureAssets[0], _bodySegments[2].a);
         backLegDrawerFront.drawOrigin = Vector2.Zero;
         backLegDrawerFront.rotation = _bodySegments[2].totalAngle - MathHelper.Pi + MathHelper.PiOver2;
         backLegDrawerFront.rotation -= MathHelper.ToRadians(25);
@@ -352,7 +352,7 @@ public class Gilatine : VeilTownNPC
         spriteBatch.Draw(backLegDrawerFront);
 
         //FRONT LEG
-        SpritebatchDrawer frontLegDrawerFront = SpritebatchDrawer.FromTextureAsset(_frontLegTextureAssets[0], _bodySegments[0].a);
+        SpritebatchDrawer frontLegDrawerFront = SpritebatchDrawer.FromTextureGetLightingColor(_frontLegTextureAssets[0], _bodySegments[0].a);
         frontLegDrawerFront.drawOrigin = Vector2.Zero;
         frontLegDrawerFront.rotation = _bodySegments[0].totalAngle - MathHelper.Pi + MathHelper.PiOver2;
         float frontDLegAngle = MathHelper.WrapAngle(_bodySegments[0].totalAngle - MathHelper.Pi + MathHelper.PiOver2);
@@ -367,7 +367,7 @@ public class Gilatine : VeilTownNPC
         spriteBatch.Draw(frontLegDrawerFront);
 
         //FRONT WING
-        SpritebatchDrawer frontWingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAssets[0], _bodySegments[0].a);
+        SpritebatchDrawer frontWingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAssets[0], _bodySegments[0].a);
         frontWingDrawer.drawOrigin = new Vector2(114, 84);
         frontWingDrawer.rotation = _bodySegments[0].totalAngle - MathHelper.Pi;
         frontWingDrawer.scale = Breathe(5);

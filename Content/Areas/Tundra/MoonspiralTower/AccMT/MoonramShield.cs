@@ -348,7 +348,7 @@ public class MoonramMoon : ModProjectile
         SpritebatchDrawer moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
         _scrollingMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_ScrollingMoon");
         moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.3f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.7f;
@@ -356,7 +356,7 @@ public class MoonramMoon : ModProjectile
         Main.spriteBatch.Draw(glowDrawer);
 
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.2f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.X *= 1.2f;
@@ -391,7 +391,7 @@ public class MoonramMoon : ModProjectile
         Vector2 worldPosition = tile.ToWorldCoordinates();
 
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarRing, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
@@ -409,13 +409,13 @@ public class MoonramMoon : ModProjectile
 
 
         _shadowMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Shadow");
-        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
+        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_shadowMoonTextureAsset, Projectile.Center);
         shadowDrawer.color *= 0.58f;
         shadowDrawer.scale *=  _targetScale;
         Main.spriteBatch.Draw(shadowDrawer);
 
 
-        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineMoonTextureAsset, Projectile.Center);
+        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineMoonTextureAsset, Projectile.Center);
         outlineDrawer.color = Color.Green * ExtraMath.Osc(0.6f, 1f, speed: 16);
         outlineDrawer.scale *= _targetScale;
         Main.spriteBatch.Draw(outlineDrawer);

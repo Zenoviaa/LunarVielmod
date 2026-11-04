@@ -94,7 +94,7 @@ public class DevToolHotbarButton : UIPanel
         BorderColor = Color.Transparent;
         this.QuickMouseInteraction();
         var rect = GetDimensions().ToRectangle();
-        var drawer = SpritebatchDrawer.FromTextureAsset(ButtonIconTexture, Vector2.Zero);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(ButtonIconTexture, Vector2.Zero);
         drawer.color = Color.White;
         if (GetDrawColorFunction != null)
             drawer.color = GetDrawColorFunction();

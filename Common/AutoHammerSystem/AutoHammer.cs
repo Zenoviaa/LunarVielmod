@@ -72,13 +72,13 @@ public class AutoHammer : ModItem
         SpritebatchDrawer drawer;
         if (!halfBlock)
         {
-            drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, Main.screenPosition + position);
+            drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, Main.screenPosition + position);
             drawer.VerticalFrame((int)slope, 6);
        
         }
         else
         {
-            drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, Main.screenPosition + position);
+            drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, Main.screenPosition + position);
             drawer.VerticalFrame(5, 6);
 
         }

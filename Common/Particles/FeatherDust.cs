@@ -59,7 +59,7 @@ public class FeatherDust : ParticleUpdater<FeatherDustData>
         float interpolant = EasingFunction.OutSine(lerpValue);
 
         (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
         drawer.color = Color.Lerp(Color.Transparent, Color.White, interpolant);

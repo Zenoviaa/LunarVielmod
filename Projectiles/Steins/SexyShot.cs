@@ -84,7 +84,7 @@ public class SexyShot : ModProjectile
     private void DrawPixelatedFlash(SpriteBatch sb, Vector2 sp)
     {
         Asset<Texture2D> flashTexture = AssetManager.GlowMask.StarFlare1;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(flashTexture, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(flashTexture, Projectile.Center);
         drawer.scale *= 0.06f;
         drawer.color.A = 0;
         sb.Draw(drawer);

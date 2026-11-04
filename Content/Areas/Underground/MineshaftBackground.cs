@@ -55,7 +55,7 @@ public class MineshaftBackground : CustomBG
         Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         for (int i = numBackgrounds; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_backgroundTextureAsset, Main.screenPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_backgroundTextureAsset, Main.screenPosition);
             drawer.drawOrigin = Vector2.Zero;
             drawer.scale = Vector2.One * 2;
             drawer.color = drawColor;

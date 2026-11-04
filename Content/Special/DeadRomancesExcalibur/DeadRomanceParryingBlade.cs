@@ -372,7 +372,7 @@ public class DeadRomanceParryingBlade : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         Asset<Texture2D> projTexture = TextureAssets.Item[Owner.HeldItem.ModItem.Type];
-        SpritebatchDrawer parryDrawer = SpritebatchDrawer.FromTextureAsset(projTexture, Projectile.Center);
+        SpritebatchDrawer parryDrawer = SpritebatchDrawer.FromTextureGetLightingColor(projTexture, Projectile.Center);
         parryDrawer.rotation = MathHelper.ToRadians(90);
         parryDrawer.spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None; ;
         if (Projectile.spriteDirection == -1)

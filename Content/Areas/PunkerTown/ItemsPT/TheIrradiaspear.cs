@@ -279,7 +279,7 @@ public class IrradiaspearBoom : ModProjectile,
         shearShader.Time = outRatio * 1.4f;
 
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio)) * 0.3f;
         waveDrawer.color = Color.Green;
@@ -289,7 +289,7 @@ public class IrradiaspearBoom : ModProjectile,
         Main.spriteBatch.Restart(effect: shearShader.Effect);
         Main.spriteBatch.Draw(waveDrawer);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkGreen * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 1f;
@@ -894,7 +894,7 @@ public class TheIrradiaspearSparkProj : ModProjectile,
 
     private void DrawSprite(SpriteBatch sb, Vector2 screenpos)
     {
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         sbDrawer.color = Color.Green;
         sbDrawer.color.A = 0;
         sbDrawer.scale *= 0.1f * ExtraMath.Osc(0.8f, 1f, speed: 6, Projectile.whoAmI) * Projectile.scale;

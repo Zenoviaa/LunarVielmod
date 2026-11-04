@@ -96,7 +96,7 @@ public class LilFirefly : ModNPC
         }
         NPC.DrawAnimator(spriteBatch, drawColor);
         var glow = AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset;
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(glow, NPC.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(glow, NPC.Center);
         glowDrawer.color = Color.Gold;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.2f;

@@ -87,7 +87,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             panelPass.Apply();
             using (spriteBatch.Ctx(SB.InWorldUnscaled with { effect = panelPass.Shader }))
             {
-                var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.StarSmoke.Asset, Vector2.Zero);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.StarSmoke.Asset, Vector2.Zero);
                 var rect2 = new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2);
                 if (mini)
                     rect.Width /= 2;
@@ -204,7 +204,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             panelPass.Apply();
             using (spriteBatch.Ctx(SB.InWorldUnscaled with { effect = panelPass.Shader }))
             {
-                var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.StarSmoke.Asset, Vector2.Zero);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.StarSmoke.Asset, Vector2.Zero);
                 var rect2 = new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2);
                 if (mini)
                     rect.Width /= 2;

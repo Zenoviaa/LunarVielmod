@@ -221,7 +221,7 @@ public class StaffWaveHold : ModProjectile
     {
         float qb = EasingFunction.QuadraticBump(Timer / SwingTime);
         Vector2 pos = Owner.MountedCenter + _holdDirection * 64 * MathHelper.Lerp(0.75f, 1f, qb);
-        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
+        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, pos);
         bloomDrawer.color = Color.Lerp(Color.Black, Color.Violet, qb) * 0.6f;
         bloomDrawer.color.A = 0;
         bloomDrawer.scale *= 0.3f;
@@ -234,7 +234,7 @@ public class StaffWaveHold : ModProjectile
     {
         float qb = EasingFunction.QuadraticBump(Timer / SwingTime);
         Vector2 pos = Owner.MountedCenter + _holdDirection * 64 * MathHelper.Lerp(0.75f, 1f, qb);
-        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
+        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, pos);
         bloomDrawer.color = Color.Lerp(Color.Black, Color.Red, qb) * 0.6f;
         bloomDrawer.color.A = 0;
         bloomDrawer.scale *= 0.3f;
@@ -247,7 +247,7 @@ public class StaffWaveHold : ModProjectile
     {
         if (Timer < 2)
             return false;
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[Owner.HeldItem.type], Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Item[Owner.HeldItem.type], Projectile.Center);
         sbDrawer.rotation = Projectile.rotation;
         sbDrawer.worldPosition += _thrustOffset;
         sbDrawer.scale = Vector2.One * Projectile.scale;

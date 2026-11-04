@@ -537,7 +537,7 @@ public class FlyingSpewer : ModNPC,
 
         var dist = Vector2.Distance(NPC.Center, GunPosition);
         var chainTex = AssetReferences.Assets.Textures.NPC.FlyingSpewerChain.Asset;
-        var chainDrawer = SpritebatchDrawer.FromTextureAsset(chainTex, NPC.Center);
+        var chainDrawer = SpritebatchDrawer.FromTextureGetLightingColor(chainTex, NPC.Center);
         var chainLength = chainTex.Value.Width;
         var chainSteps = dist / chainLength;
         chainSteps *= 2;
@@ -548,7 +548,7 @@ public class FlyingSpewer : ModNPC,
             spriteBatch.Draw(chainDrawer);
         }
 
-        var gunDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.NPC.FlyingSpewerGun.Asset, GunPosition);
+        var gunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.NPC.FlyingSpewerGun.Asset, GunPosition);
         gunDrawer.VerticalFrame(0, 2);
         gunDrawer.drawOrigin = new Vector2(28, 16);
         gunDrawer.rotation = SightLineRot;
@@ -646,7 +646,7 @@ public class FlyingSpewer : ModNPC,
     {
         void DrawGunOutline(SpriteBatch sb)
         {
-            var gunDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.NPC.FlyingSpewerGun.Asset, GunPosition);
+            var gunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.NPC.FlyingSpewerGun.Asset, GunPosition);
             gunDrawer.VerticalFrame(0, 2);
             gunDrawer.drawOrigin = new Vector2(28, 16);
             gunDrawer.rotation = SightLineRot;

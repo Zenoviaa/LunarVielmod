@@ -371,7 +371,7 @@ public class BouncingRazorSuns : ModProjectile,
         LoadTextures();
         SpriteBatch spriteBatch = Main.spriteBatch;
         Asset<Texture2D> textureAsset = _auraTexture;
-        SpritebatchDrawer discDrawer = SpritebatchDrawer.FromTextureAsset(textureAsset, Projectile.Center);
+        SpritebatchDrawer discDrawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, Projectile.Center);
         Rectangle frame = textureAsset.Value.GetFrame(_auraAnimationFrame.frame, horizontalFrameCount: 5, verticalFrameCount: 18);
         discDrawer.sourceRect = frame;
         discDrawer.color = GetDiscAuraColor() * ExtraMath.Osc(0.3f, 1f, speed: 24) * (1f - _deadAlpha); ;
@@ -387,7 +387,7 @@ public class BouncingRazorSuns : ModProjectile,
         LoadTextures();
         SpriteBatch spriteBatch = Main.spriteBatch;
         Asset<Texture2D> textureAsset = GetDiscTextureAsset();
-        SpritebatchDrawer discDrawer = SpritebatchDrawer.FromTextureAsset(textureAsset, Projectile.Center);
+        SpritebatchDrawer discDrawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, Projectile.Center);
         Rectangle frame = textureAsset.Value.GetFrame(_discAnimationFrame.frame, horizontalFrameCount: 5, verticalFrameCount: 12);
         discDrawer.sourceRect = frame;
         discDrawer.scale = DrawScale;
@@ -396,7 +396,7 @@ public class BouncingRazorSuns : ModProjectile,
 
         if (overrideColor == null)
         {
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             glowDrawer.color = GetDiscAuraColor() * 0.5f;
             glowDrawer.color.A = 0;
             glowDrawer.scale *= 1.5f;
@@ -620,14 +620,14 @@ public class RazorFireBoom : ModProjectile,
 
         sb.Restart(effect: boomShader.Effect);
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
         drawer.color = Color.White;
         drawer.color.A = 0;
         drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 1.5f;
         sb.Draw(drawer);
 
 
-        drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.FlamethrowerNoise, Projectile.Center);
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.FlamethrowerNoise, Projectile.Center);
         drawer.color = Color.White;
         drawer.color.A = 0;
         drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 12;

@@ -105,7 +105,7 @@ public class Starbomb : ModProjectile
     public override void PostDraw(Color lightColor)
     {
         base.PostDraw(lightColor);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         float heat = EasingFunction.InOutSine(Timer / 60f);
         glowDrawer.scale *= 0.5f;
         glowDrawer.scale *= MathHelper.Lerp(0.75f, 1f, EasingFunction.InOutSine(Timer / 60f));

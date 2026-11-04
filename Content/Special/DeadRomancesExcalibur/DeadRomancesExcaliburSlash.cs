@@ -344,7 +344,7 @@ public class DeadRomancesExcaliburSlash : BaseSwingProjectileV2
             ratio = 1f - ratio;
             float ease = EasingFunction.OutExpo(ratio);
             SpriteBatch spriteBatch = Main.spriteBatch;
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             glowDrawer.color = Color.Goldenrod;
             glowDrawer.color = Color.Lerp(glowDrawer.color, Color.Black, ease);
             glowDrawer.color.A = 0;

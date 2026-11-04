@@ -321,7 +321,7 @@ public class GoldenLeafTileOverlayData : TileOverlayType
     {
         var goldenLeafAsset = AssetReferences.Content.Areas.Tundra.Abyss.TilesAB.GoldenLeafOverlay.Asset;
         Rectangle frame = goldenLeafAsset.Value.GetFrame(drawData.Data.overlayFrame, 20, 1);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(goldenLeafAsset, drawData.WorldPosition + new Vector2(8, -16));
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(goldenLeafAsset, drawData.WorldPosition + new Vector2(8, -16));
         drawer.worldPosition += new Vector2(0, 24);
         drawer.sourceRect = frame;
         drawer.TopCenterOrigin();
@@ -485,7 +485,7 @@ public class TileOverlayRenderer : ModSystem
             foreach (TileOverlayDrawData drawData in DrawData)
             {
                 Vector2 pos = drawData.WorldPosition;
-                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Core.TileOverlaySystem.GrafittiBox.Asset, pos);
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Core.TileOverlaySystem.GrafittiBox.Asset, pos);
                 drawer.color = Color.Red * ExtraMath.Osc(0.6f, 0.8f, 6);
                 spriteBatch.Draw(drawer);
             }

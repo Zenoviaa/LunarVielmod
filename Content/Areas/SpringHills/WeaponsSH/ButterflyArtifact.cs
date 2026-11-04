@@ -221,7 +221,7 @@ public class MagicalButterfly : ModProjectile
         whiteDrawer.color = Color.Lerp(Color.White, Color.Transparent, EasingFunction.InExpo(Timer / 30f));
         Main.spriteBatch.Draw(whiteDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.LightPink, Color.DarkViolet, ExtraMath.Osc(0f, 1f, speed: 6, Projectile.whoAmI)) * 0.2f;
         glowDrawer.scale *= 0.25f;
         glowDrawer.color.A = 0;

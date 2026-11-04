@@ -115,7 +115,7 @@ public class CinderEmberDust : ParticleUpdater<CinderEmberDustData>
         Vector2 stretchScale = new Vector2(particle.velocity.Length() * 0.15f, 0f);
 
         (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
         drawer.scale = (particle.startScale + stretchScale) * outScaler;

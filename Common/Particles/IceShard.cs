@@ -64,7 +64,7 @@ public class IceShard : ParticleUpdater<IceShard.Data>
         float inAlpha = EasingFunction.InOutSine((120 - particle.timeLeft) / 30f);
 
         (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frame);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
         drawer.color *= inAlpha * outAlpha;

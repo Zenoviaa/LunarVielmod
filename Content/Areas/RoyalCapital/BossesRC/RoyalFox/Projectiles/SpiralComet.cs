@@ -102,7 +102,7 @@ public class SpiralComet : ModProjectile,
 
     private void DrawCometHead(SpriteBatch sb, Vector2 screenPos)
     {
-        SpritebatchDrawer cometDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, Projectile.Center);
+        SpritebatchDrawer cometDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, Projectile.Center);
         cometDrawer.color = Color.White * 0.4f;
         cometDrawer.color.A = 0;
         cometDrawer.scale = Vector2.Lerp(Vector2.One, Vector2.One * 0.48f, ExtraMath.Osc(0f, 1f, speed: 16, Projectile.whoAmI)) * 0.2f;
@@ -114,7 +114,7 @@ public class SpiralComet : ModProjectile,
         cometDrawer.scale = Vector2.Lerp(Vector2.One, Vector2.One * 0.48f, ExtraMath.Osc(0f, 1f, speed: 16, Projectile.whoAmI)) * 1.5f;
         sb.Draw(cometDrawer);
 
-        cometDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, Projectile.Center);
+        cometDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, Projectile.Center);
         cometDrawer.color = Color.White * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 64, Projectile.whoAmI);
         cometDrawer.color.A = 0;
         cometDrawer.scale = Vector2.Lerp(Vector2.One, Vector2.One * 0.48f, ExtraMath.Osc(0f, 1f, speed: 16, Projectile.whoAmI)) * 0.4f;

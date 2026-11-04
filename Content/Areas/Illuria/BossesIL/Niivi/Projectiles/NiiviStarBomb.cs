@@ -698,7 +698,7 @@ public class NiiviSillyStar : ModProjectile
     }
     void PixelGlow(SpriteBatch sb, Vector2 sp)
     {
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         glowDrawer.color = GlowColor * 0.6F;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.24f;
@@ -745,7 +745,7 @@ public class NiiviSillyStar : ModProjectile
 
         if (_starWalker)
         {
-            var walkerDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.StarWalker.Asset, Projectile.Center);
+            var walkerDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.StarWalker.Asset, Projectile.Center);
             walkerDrawer.VerticalFrame(_starWalkerFrameIndex, StarWalkerFrameCount);
             walkerDrawer.TopCenterOrigin();
             walkerDrawer.scale *= Scale;
@@ -1044,13 +1044,13 @@ public class NiiviStarBomb : ModProjectile
     void DrawPixelated(SpriteBatch sb, Vector2 sp)
     {
         var lerp = _sizeDown * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(_globalTimer / 60f));;
-        var glow = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        var glow = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         glow.color = Main.DiscoColor * 0.2f * lerp;
         glow.color.A = 0;
         glow.scale *= 2f;
         Main.spriteBatch.Draw(glow);
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.FivePointedStar.Asset, InterpolatePentagonPattern(_globalTimer));
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.FivePointedStar.Asset, InterpolatePentagonPattern(_globalTimer));
         drawer.color = Color.White;
         drawer.color.A = 0;
         drawer.scale *= 0.15f * lerp; 

@@ -191,7 +191,7 @@ public class GoldenScarab : ModProjectile,
     public override bool PreDraw(ref Color lightColor)
     {
         _goldenAuraTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Aura");
-        SpritebatchDrawer auraDrawer = SpritebatchDrawer.FromTextureAsset(_goldenAuraTextureAsset, Projectile.Center);
+        SpritebatchDrawer auraDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_goldenAuraTextureAsset, Projectile.Center);
         auraDrawer.color = Color.Goldenrod * ExtraMath.Osc(0.2f, 0.5f, speed: 3) * Projectile.scale;
         auraDrawer.color.A = 0;
         auraDrawer.scale *= 0.8f;

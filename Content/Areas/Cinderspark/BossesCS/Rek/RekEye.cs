@@ -873,14 +873,14 @@ public class RekEye : ModNPC
         redSunShader.BloomColor = Color.DarkRed;
         redSunShader.FlameNoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
         Main.spriteBatch.Restart(SpriteSortMode.Immediate, effect: redSunShader.Effect, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointWrap);
-        SpritebatchDrawer redSunDrawer = SpritebatchDrawer.FromTextureAsset(AssetRegistry.NoiseTextures.WaterTrail.Asset, NPC.Center);
+        SpritebatchDrawer redSunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetRegistry.NoiseTextures.WaterTrail.Asset, NPC.Center);
         redSunDrawer.scale *= NPC.scale * 0.6f;
         redSunDrawer.color = Color.White;
         redSunDrawer.color.A = 0;
         Main.spriteBatch.Draw(redSunDrawer);
         Main.spriteBatch.RestartDefaults();
         Main.spriteBatch.Draw(drawer);
-        SpritebatchDrawer glow = SpritebatchDrawer.FromTextureAsset(AssetRegistry.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        SpritebatchDrawer glow = SpritebatchDrawer.FromTextureGetLightingColor(AssetRegistry.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
         glow.scale *= NPC.scale * 0.6f;
         glow.color = Color.Red * ExtraMath.Osc(0.6f, 1f, speed: 3);
         glow.color.A = 0;
@@ -889,13 +889,13 @@ public class RekEye : ModNPC
 
 
 
-        SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureAsset(EyeTextureAsset, NPC.Center + _eyeOffset);
+        SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(EyeTextureAsset, NPC.Center + _eyeOffset);
         eyeDrawer.color = _eyeColor;
 
         Main.spriteBatch.Draw(eyeDrawer);
         for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
         {
-            var glowEyeDrawer = SpritebatchDrawer.FromTextureAsset(EyeTextureAsset, NPC.Center + _eyeOffset);
+            var glowEyeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(EyeTextureAsset, NPC.Center + _eyeOffset);
             glowEyeDrawer.worldPosition += (f + Main.GlobalTimeWrappedHourly * 4).ToRotationVector2() * 4;
             glowEyeDrawer.color = Color.Goldenrod * 0.4f;
             glowEyeDrawer.color.A = 0;
@@ -904,7 +904,7 @@ public class RekEye : ModNPC
         Vector2 scale = Vector2.Lerp(Vector2.One, Vector2.Zero, _eyeFlash);
         float rot = MathHelper.Lerp(MathHelper.ToRadians(55), 0, _eyeFlash);
 
-        SpritebatchDrawer sparkleDrawer = SpritebatchDrawer.FromTextureAsset(AssetRegistry.GlowMasks.Star2.Value, NPC.Center);
+        SpritebatchDrawer sparkleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetRegistry.GlowMasks.Star2.Value, NPC.Center);
         sparkleDrawer.color = Color.White * 1f * _eyeFlash;
         sparkleDrawer.color.A = 0;
         sparkleDrawer.rotation = rot;

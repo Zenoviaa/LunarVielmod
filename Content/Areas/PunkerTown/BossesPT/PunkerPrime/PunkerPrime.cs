@@ -1343,7 +1343,7 @@ public class PunkerPrime : ScarletBoss,
             Vector2 startPos = NPC.Center + new Vector2(-250, height);
             Vector2 endPos = NPC.Center;
             float rotat = (endPos - startPos).ToRotation();
-            SpritebatchDrawer spotlightDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Spotlight, startPos);
+            SpritebatchDrawer spotlightDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.Spotlight, startPos);
             spotlightDrawer.LeftCenterOrigin();
             spotlightDrawer.rotation = rotat;
             spotlightDrawer.color = _spotlightColor;
@@ -1353,7 +1353,7 @@ public class PunkerPrime : ScarletBoss,
 
             startPos = NPC.Center + new Vector2(250, height);
             rotat = (endPos - startPos).ToRotation();
-            spotlightDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Spotlight, startPos);
+            spotlightDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.Spotlight, startPos);
             spotlightDrawer.LeftCenterOrigin();
             spotlightDrawer.rotation = rotat;
             spotlightDrawer.color = _spotlightColor;

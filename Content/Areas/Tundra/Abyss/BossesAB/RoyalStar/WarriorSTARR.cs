@@ -516,7 +516,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     private void DrawPixelatedSTARR(SpriteBatch spriteBatch, Vector2 sp)
     {
         var starAsset = AssetReferences.Assets.GlowMasks.FivePointedStar.Asset;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(starAsset, NPC.Center);
         drawer.color = Color.Lerp(Color.Transparent, Color.Goldenrod, _bigStarAlpha) * 0.45f;
         drawer.rotation = MathHelper.Lerp(3.14f, 0f, _bigStarAlpha) + _starRot;
         spriteBatch.Draw(drawer);
@@ -529,7 +529,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
     {
         {
             var starAsset = AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.WarriorStarMedal.Asset;
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(starAsset, NPC.Center);
             drawer.color = Color.DarkOrange * _medalAlpha * 0.4f;
             drawer.color.A = 0;
             drawer.scale = Vector2.One * _medalScale;
@@ -544,7 +544,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         }
         {
             var starAsset = AssetReferences.Assets.GlowMasks.FivePointedStar.Asset;
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(starAsset, NPC.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(starAsset, NPC.Center);
             drawer.color = Color.DarkOrange * _medalAlpha;
             drawer.color.A = 0;
             drawer.scale = Vector2.One * _medalScale * 2f;

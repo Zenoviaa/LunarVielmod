@@ -87,7 +87,7 @@ public partial class RoyalFox
         float endPoint = _swingTrailEndRatio;
         Vector2 point = _startDashPoint + CalculateSwingOffset(_swingVelocity, endPoint);
         point += _swingVelocity.SafeNormalize(Vector2.Zero) * 200;
-        SpritebatchDrawer glowSword = SpritebatchDrawer.FromTextureAsset(
+        SpritebatchDrawer glowSword = SpritebatchDrawer.FromTextureGetLightingColor(
             ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Sword"), point);
         glowSword.rotation = (point - _startDashPoint).ToRotation() + MathHelper.PiOver4 / 2f;
         Color startColor = Color.White;
@@ -108,7 +108,7 @@ public partial class RoyalFox
         Vector2 scale = Vector2.One * 0.2f;
         var scrollingMoonTextureAsset = ModContent.Request<Texture2D>(Texture + "_ScrollingMoon");
         var maskTextureAsset = ModContent.Request<Texture2D>(Texture + "_Moon");
-        SpritebatchDrawer moonSprite = SpritebatchDrawer.FromTextureAsset(maskTextureAsset, _moonPosition);
+        SpritebatchDrawer moonSprite = SpritebatchDrawer.FromTextureGetLightingColor(maskTextureAsset, _moonPosition);
 
         ScrollingMoonShader scrollingMoonShader = ScrollingMoonShader.Instance;
         scrollingMoonShader.ScrollingTexture = scrollingMoonTextureAsset.Value;
@@ -129,7 +129,7 @@ public partial class RoyalFox
         sb.RestartDefaults();
 
         var shadowMoonTextureAsset = ModContent.Request<Texture2D>(Texture + "_Shadow");
-        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(shadowMoonTextureAsset, _moonPosition);
+        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(shadowMoonTextureAsset, _moonPosition);
 
         shadowDrawer.color *= alpha;
         shadowDrawer.scale *= scale * 1.05f;
@@ -168,7 +168,7 @@ public partial class RoyalFox
 
     private void DrawTelegraphLine(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
             ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), _startDashPoint);
         sbDrawer.LeftCenterOrigin();
         sbDrawer.color = Color.White * _telegraphLineAlpha * ExtraMath.Osc(0.6f, 1f, speed: 14);
@@ -181,7 +181,7 @@ public partial class RoyalFox
 
     private void DrawEyeFlash(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer eyeFlashDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, _eyeFlashPosition);
+        SpritebatchDrawer eyeFlashDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, _eyeFlashPosition);
         eyeFlashDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.OutSine(_eyeFlashAlpha)) * 1.3f;
         eyeFlashDrawer.color = Color.White;
         eyeFlashDrawer.color.A = 0;
@@ -194,7 +194,7 @@ public partial class RoyalFox
     {
         if (_teleportAlpha < 0.01f)
             return;
-        SpritebatchDrawer flare = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, _teleportTelegraphPosition);
+        SpritebatchDrawer flare = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, _teleportTelegraphPosition);
         Color startColor = Color.White;
         Color glowColor = Color.Lerp(Color.Blue, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 3));
         Color mixColor = Color.Lerp(startColor, glowColor, ExtraMath.Osc(0f, 1f, speed: 6));
@@ -204,7 +204,7 @@ public partial class RoyalFox
         flare.rotation = Main.GlobalTimeWrappedHourly * 4;
         sb.Draw(flare);
 
-        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, _teleportTelegraphPosition);
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, _teleportTelegraphPosition);
         circleDrawer.color = glowColor * _teleportAlpha * 0.2f;
         circleDrawer.color.A = 0;
         circleDrawer.scale = Vector2.One * MathHelper.Lerp(0f, 1f, _teleportAlpha) * 3;
@@ -220,7 +220,7 @@ public partial class RoyalFox
         gravityFieldShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
         sb.Restart(effect: gravityFieldShader.Effect);
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_gravityFieldTextureAsset, Rig.bodyParts[2].worldPosition);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_gravityFieldTextureAsset, Rig.bodyParts[2].worldPosition);
         drawer.color = Color.Lerp(Color.Blue, Color.DarkViolet, ExtraMath.Osc(0f, 1f, speed: 3)) * _gravityFieldAlpha;
         drawer.scale *= 2;
         sb.Draw(drawer);
@@ -337,13 +337,13 @@ public partial class RoyalFox
 
         float rot = RegularRotation + MathHelper.PiOver4;
         drawPos += (rot - MathHelper.PiOver2).ToRotationVector2() * 45;
-        SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(_sigilTextureAsset, drawPos);
+        SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_sigilTextureAsset, drawPos);
         headDrawer.rotation = rot - MathHelper.PiOver4; ;
         headDrawer.color *= _invisibleAlpha;
         // headDrawer.scale *= 5;
         spriteBatch.Draw(headDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
         glowDrawer.color = Color.White * 0.3f * ExtraMath.Osc(0.5f, 1f, speed: 3) * _invisibleAlpha;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.25f;
@@ -355,7 +355,7 @@ public partial class RoyalFox
 
         if (_roaringCircleAlpha > 0)
         {
-            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, HeadPosition);
+            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, HeadPosition);
             circleDrawer.color = _roaringCircleColor * _roaringCircleAlpha * 0.3f;
             circleDrawer.color.A = 0;
             circleDrawer.scale = Vector2.One * _roaringCircleScale;
@@ -387,7 +387,7 @@ public partial class RoyalFox
 
         Vector2 endPoint = CalculateLaserSpawnPoint(1);
         Vector2 vel = CalculateLaserSpawnVelocity();
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, endPoint + vel * 92);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, endPoint + vel * 92);
         glowDrawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, speed: 12);
         glowDrawer.color.A = 0;
         glowDrawer.scale.X *= 0.5f;

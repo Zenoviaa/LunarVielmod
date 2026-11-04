@@ -158,7 +158,7 @@ public class FlameSwirl : ModProjectile,
         {
             float easeIn = EasingFunction.InOutSine(timestep / 60f);
             float easeOuth = EasingFunction.InOutSine((float)Projectile.timeLeft / 120f);
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
             Vector2 size = drawer.texture.Size();
             float pct = CalculateRadius(timestep) / size.X;
             drawer.scale = Vector2.One * pct * 2;

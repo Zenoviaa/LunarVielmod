@@ -73,7 +73,7 @@ public class BigMoltenPlatform : AbstractPlatformNPC
     {
         _glowMaskTexture ??= ModContent.Request<Texture2D>($"{Texture}_Glow");
         _decorationTexture ??= ModContent.Request<Texture2D>($"{Texture}_Decoration");
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_decorationTexture, NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_decorationTexture, NPC.Center);
         drawer.texture = _decorationTexture.Value;
         drawer.worldPosition += new Vector2(0, -218);
         drawer.sourceRect = null;

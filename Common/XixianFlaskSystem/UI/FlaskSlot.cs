@@ -177,7 +177,7 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
                 glowColor.A = 0;
                 ItemSlot.DrawItemIcon(_item, _context, spriteBatch, centerPos, _scale, 32, glowColor);
             
-                SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + pos);
+                SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + pos);
                 glowDrawer.scale *= 0.18f;
                 glowDrawer.color = glowColor * 0.25f;
                 glowDrawer.color.A = 0;

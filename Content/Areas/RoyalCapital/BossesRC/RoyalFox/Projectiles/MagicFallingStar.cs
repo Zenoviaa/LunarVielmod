@@ -171,7 +171,7 @@ public class MagicFallingStar : ModProjectile,
 
     public override bool PreDraw(ref Color lightColor)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         drawer.scale *= 0.2f;
 
         if(State != 2)
@@ -227,7 +227,7 @@ public class MagicFallingStar : ModProjectile,
         //    Main.spriteBatch.Draw(drawer);
 
 
-        drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         drawer.color = Color.White * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 3, Projectile.whoAmI);
         if (State != 2)
         {
@@ -250,7 +250,7 @@ public class MagicFallingStar : ModProjectile,
 
         float alpha = MathHelper.Lerp(0f, 1f, _flashTimer / 30f);
         var ta = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4");
-        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(ta, Projectile.Center) ;
+        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ta, Projectile.Center) ;
         lineDrawer.color = Color.Lerp(Color.Black, Color.White, alpha);
         lineDrawer.color.A = 0;
         lineDrawer.rotation = (_targetPosition - Projectile.Center).ToRotation();

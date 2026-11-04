@@ -125,7 +125,7 @@ public class RuneSmasherSwing : BaseSwingProjectileV2
         spriteBatch.Draw(texture, position,
              srcRect, drawColor, rotation, origin, drawScale, spriteEffect, 0);
 
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         sbDrawer.color = drawColor * 0.3f;
         sbDrawer.scale *= 0.5f;
         spriteBatch.Draw(sbDrawer);
@@ -405,7 +405,7 @@ public class RuneSmasherCharge : BaseSwingProjectileV2
         spriteBatch.Draw(texture, position,
              srcRect, drawColor, rotation, origin, drawScale, spriteEffect, 0);
 
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         sbDrawer.color = drawColor * 0.3f;
         sbDrawer.scale *= 0.5f;
         spriteBatch.Draw(sbDrawer);

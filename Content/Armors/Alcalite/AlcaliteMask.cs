@@ -152,7 +152,7 @@ public class AlcalitePlayer : ModPlayer
             radians += Main.GlobalTimeWrappedHourly * 0.5f;
             Vector2 drawCenter = drawInfo.drawPlayer.Center;
             Texture2D texture = _cocoonTextureAsset.Value;
-            SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromTextureAsset(texture, drawCenter);
+            SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, drawCenter);
             swordDrawer.color = Color.White * alphaTimer * 0.6f * ExtraMath.Osc(0f, 1f, speed: 2);
             sb.Draw(swordDrawer);
         }

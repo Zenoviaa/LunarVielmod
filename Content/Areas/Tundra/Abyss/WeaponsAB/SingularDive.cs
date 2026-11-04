@@ -130,7 +130,7 @@ public class SingularDiveBoom : ModProjectile
         drawer.color.A = 0;
         drawer.scale *= 2;
         Main.spriteBatch.Draw(drawer);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Bottom);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Bottom);
         glowDrawer.color = Color.SkyBlue;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= new Vector2(1f, 0.2f);

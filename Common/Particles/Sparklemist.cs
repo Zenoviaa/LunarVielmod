@@ -74,7 +74,7 @@ public class Sparklemist : ParticleUpdater<Sparklemist.Data>
                 {
                     ref var particle = ref _particles[i];
                     var frameData = GetParticleFrame(particle.frame);
-                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(frameData.texture, particle.position);
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(frameData.texture, particle.position);
                     float t = EasingFunction.QuadraticBump(particle.timeLeft / 60f);
                     drawer.color = Color.Lerp(Color.Transparent, particle.color, t) * 0.5f;
                     drawer.rotation = Main.GlobalTimeWrappedHourly * 0.3f + particle.timeLeft * 0.02f;

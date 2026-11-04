@@ -168,7 +168,7 @@ public class Steamroller : ScarletBoss,
         {
             steamrollerGlowSegmentTextureAsset ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "SteamrollerBody_Glow");
             steamrollerSegmentTextureAsset ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "SteamrollerBody");
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(steamrollerSegmentTextureAsset, segmentPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(steamrollerSegmentTextureAsset, segmentPosition);
             float rotation = (segmentPosition - nextSegmentPosition).ToRotation();
             rotation += MathHelper.PiOver2;
 

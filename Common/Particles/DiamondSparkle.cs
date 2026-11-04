@@ -71,7 +71,7 @@ public class DiamondSparkle : ParticleUpdater<DiamondSparkle.Data>
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         var framing = GetParticleFrame(0);
-        var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, Vector2.Zero);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, Vector2.Zero);
         for(var i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];

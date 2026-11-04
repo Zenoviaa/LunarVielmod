@@ -904,7 +904,7 @@ public static class DrawUtilities
 
     public static SpritebatchDrawer GetDrawer(this Asset<Texture2D> textureAsset, Vector2 worldPosition)
     {
-        return SpritebatchDrawer.FromTextureAsset(textureAsset, worldPosition);
+        return SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, worldPosition);
     }
 
     public static void Draw(this SpriteBatch spriteBatch, SpritebatchDrawer drawer)
@@ -919,7 +919,7 @@ public static class DrawUtilities
 
     public static void DrawBasicGlow(SpriteBatch spriteBatch, Vector2 position, float scale, Color color)
     {
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, position);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, position);
         glowDrawer.color = color;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= scale;
@@ -1316,7 +1316,7 @@ public struct SpritebatchDrawer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromZTileDraw(Asset<Texture2D> textureAsset, ZTileDrawData drawData)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, drawData.drawPosition + Main.screenPosition);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, drawData.drawPosition + Main.screenPosition);
         drawer.sourceRect = drawData.frame;
         drawer.color = drawData.drawColor;
         drawer.rotation = drawData.drawRotation;
@@ -1327,7 +1327,7 @@ public struct SpritebatchDrawer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static SpritebatchDrawer FromTextureAsset(Asset<Texture2D> textureAsset, Vector2 worldPosition)
+    public static SpritebatchDrawer FromTextureGetLightingColor(Asset<Texture2D> textureAsset, Vector2 worldPosition)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
         spritebatchDrawer.texture = textureAsset.Value;
@@ -1342,9 +1342,9 @@ public struct SpritebatchDrawer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static SpritebatchDrawer FromTextureAsset(Texture2D textureAsset, Vector2 worldPosition)
+    public static SpritebatchDrawer FromTextureGetLightingColor(Texture2D textureAsset, Vector2 worldPosition)
     {
-        SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
+        var spritebatchDrawer = new SpritebatchDrawer();
         spritebatchDrawer.texture = textureAsset;
         spritebatchDrawer.worldPosition = worldPosition;
         spritebatchDrawer.sourceRect = null;
@@ -1356,6 +1356,19 @@ public struct SpritebatchDrawer
         return spritebatchDrawer;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SpritebatchDrawer FromTextureWhite(Texture2D textureAsset)
+    {
+        var spritebatchDrawer = new SpritebatchDrawer();
+        spritebatchDrawer.texture = textureAsset;
+        spritebatchDrawer.sourceRect = null;
+        spritebatchDrawer.color = Color.White;
+        spritebatchDrawer.rotation = 0;
+        spritebatchDrawer.drawOrigin = textureAsset.Size() * 0.5f;
+        spritebatchDrawer.spriteEffects = SpriteEffects.None;
+        spritebatchDrawer.scale = Vector2.One;
+        return spritebatchDrawer;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromProjectile(Projectile projectile)

@@ -2602,7 +2602,7 @@ public class LeviathanEel : ScarletBoss
         Vector2 next = Chain.points[index - 1];
         float rotation = (next - root).ToRotation();
         Asset<Texture2D> segmentTextureAsset = _segmentTextureAssets[segmentIndex];
-        SpritebatchDrawer segmentDrawer = SpritebatchDrawer.FromTextureAsset(segmentTextureAsset, root);
+        SpritebatchDrawer segmentDrawer = SpritebatchDrawer.FromTextureGetLightingColor(segmentTextureAsset, root);
         segmentDrawer.rotation = rotation;
 
         float ratio = index / (float)(Chain.points.Length - 2);
@@ -2634,7 +2634,7 @@ public class LeviathanEel : ScarletBoss
            // Main.NewText(segmentDrawer.color);
             Main.spriteBatch.Draw(segmentDrawer);
 
-            SpritebatchDrawer glowingDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, root);
+            SpritebatchDrawer glowingDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, root);
             glowingDrawer2.color = Color.Lerp(Color.Black, lightningColor, levelOfCharge) * ExtraMath.Osc(0.5f, 1f, speed: 12, offset: index) * 0.2f
                 * _invisibleAlpha;
             glowingDrawer2.color.A = 0;
@@ -2672,7 +2672,7 @@ public class LeviathanEel : ScarletBoss
 
     private void DrawBlacks(SpriteBatch sb, Vector2 screenPos)
     {
-        SpritebatchDrawer bloomLineTelegraphDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_48"), NPC.Center);
+        SpritebatchDrawer bloomLineTelegraphDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_48"), NPC.Center);
         bloomLineTelegraphDrawer.rotation = _bloomLineRot - MathHelper.PiOver2;
         bloomLineTelegraphDrawer.color = _bloomLineColor;
         bloomLineTelegraphDrawer.color.A = 0;
@@ -2683,7 +2683,7 @@ public class LeviathanEel : ScarletBoss
             return;
 
         Vector2 targetDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-        SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+        SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Vector2.Zero);
         blackDrawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         blackDrawer.color = Color.Black * _blackAlpha;
         blackDrawer.drawOrigin = Vector2.Zero;
@@ -2695,7 +2695,7 @@ public class LeviathanEel : ScarletBoss
             if (!_inPhase2)
                 continue;
 
-            SpritebatchDrawer pupilDrawer = SpritebatchDrawer.FromTextureAsset(_pupilTextureAsset, floatingEyeball.position);
+            SpritebatchDrawer pupilDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_pupilTextureAsset, floatingEyeball.position);
             pupilDrawer.drawOrigin -= targetDirection * 10;
             pupilDrawer.color *= _invisibleAlpha * ExtraMath.Osc(0.5f, 1f, speed: 12, offset: i) * _blackAlpha;
             sb.Draw(pupilDrawer);
@@ -2722,7 +2722,7 @@ public class LeviathanEel : ScarletBoss
             Vector2 offset = -Vector2.UnitY * 800 * ExtraMath.Osc(0.75f, 1f, speed: 1, offset: i);
             offset = offset.RotatedBy(radians);
             Vector2 pos = lightningCircleCenter + offset;
-            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(fishTextureAsset, pos);
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(fishTextureAsset, pos);
             float rotation = radians;// - MathHelper.PiOver2;
             sbDrawer.color *= _lightningCircleAlpha;
             sbDrawer.rotation = rotation;
@@ -2738,7 +2738,7 @@ public class LeviathanEel : ScarletBoss
             Vector2 offset = -Vector2.UnitY * 700 * ExtraMath.Osc(0.75f, 1f, speed: 1, offset: i);
             offset = offset.RotatedBy(-radians);
             Vector2 pos = lightningCircleCenter + offset;
-            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(fishTextureAsset, pos);
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(fishTextureAsset, pos);
             float rotation = -radians;// - MathHelper.PiOver2;
             sbDrawer.spriteEffects = SpriteEffects.FlipHorizontally;
             sbDrawer.color *= _lightningCircleAlpha;
@@ -2797,7 +2797,7 @@ public class LeviathanEel : ScarletBoss
                 continue;
 
             Asset<Texture2D> eyeTextureAsset = _eyeTextureAssets[i];
-            SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureAsset(eyeTextureAsset, NPC.Center);
+            SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(eyeTextureAsset, NPC.Center);
             eyeDrawer.spriteEffects = segmentDrawer.spriteEffects;
             eyeDrawer.rotation = segmentDrawer.rotation;
             eyeDrawer.scale = Vector2.One * NPC.scale;
@@ -2811,7 +2811,7 @@ public class LeviathanEel : ScarletBoss
             spriteBatch.Draw(eyeDrawer);
         }
 
-        SpritebatchDrawer bulbDrawer = SpritebatchDrawer.FromTextureAsset(_bulbGlowTextureAsset, NPC.Center);
+        SpritebatchDrawer bulbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_bulbGlowTextureAsset, NPC.Center);
         bulbDrawer.spriteEffects = segmentDrawer.spriteEffects;
         bulbDrawer.rotation = segmentDrawer.rotation;
         bulbDrawer.scale = Vector2.One * NPC.scale;
@@ -2821,7 +2821,7 @@ public class LeviathanEel : ScarletBoss
         bulbDrawer.color.A = 0;
         spriteBatch.Draw(bulbDrawer);
 
-        SpritebatchDrawer eyebrowDrawer = SpritebatchDrawer.FromTextureAsset(_eyebrowTextureAsset, NPC.Center);
+        SpritebatchDrawer eyebrowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_eyebrowTextureAsset, NPC.Center);
         eyebrowDrawer.rotation = segmentDrawer.rotation;
         eyebrowDrawer.spriteEffects = segmentDrawer.spriteEffects;
         eyebrowDrawer.scale = Vector2.One * NPC.scale;
@@ -2835,11 +2835,11 @@ public class LeviathanEel : ScarletBoss
             if (!_inPhase2)
                 continue;
 
-            SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureAsset(_eyeballTextureAsset, floatingEyeball.position);
+            SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_eyeballTextureAsset, floatingEyeball.position);
             eyeDrawer.color *= _invisibleAlpha;
             spriteBatch.Draw(eyeDrawer);
 
-            SpritebatchDrawer pupilDrawer = SpritebatchDrawer.FromTextureAsset(_pupilTextureAsset, floatingEyeball.position);
+            SpritebatchDrawer pupilDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_pupilTextureAsset, floatingEyeball.position);
             pupilDrawer.drawOrigin -= targetDirection * 10;
             pupilDrawer.color *= _invisibleAlpha;
             spriteBatch.Draw(pupilDrawer);
@@ -2859,7 +2859,7 @@ public class LeviathanEel : ScarletBoss
             for (int i = 0; i < Chain.points.Length; i++)
             {
                 Vector2 pos = Chain.points[i];
-                SpritebatchDrawer superChargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
+                SpritebatchDrawer superChargeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, pos);
                 superChargeDrawer.color = Main.DiscoColor;
                 superChargeDrawer.color *= _superCharge * ExtraMath.Osc(0.9f, 1f, speed: 10) * _invisibleAlpha;
                 superChargeDrawer.color.A = 0;
@@ -2872,7 +2872,7 @@ public class LeviathanEel : ScarletBoss
         }
 
 
-        SpritebatchDrawer chargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, BulbPosition);
+        SpritebatchDrawer chargeDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, BulbPosition);
         chargeDrawer.color = Color.LightSkyBlue;
         chargeDrawer.color *= _bulbCharge * ExtraMath.Osc(0.9f, 1f, speed: 10);
         chargeDrawer.color.A = 0;
@@ -2891,7 +2891,7 @@ public class LeviathanEel : ScarletBoss
         Main.spriteBatch.Draw(lampGlow);
 
 
-        SpritebatchDrawer eyeFlashDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, EyeFlashPosition);
+        SpritebatchDrawer eyeFlashDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, EyeFlashPosition);
         eyeFlashDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.OutSine(_eyeFlashAlpha)) * 1.3f;
         eyeFlashDrawer.color = Color.White;
         eyeFlashDrawer.color.A = 0;

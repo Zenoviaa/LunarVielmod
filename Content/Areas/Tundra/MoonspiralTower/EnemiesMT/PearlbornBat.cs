@@ -457,7 +457,7 @@ public class PearlbornBat : ModNPC,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        var glowDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        var glowDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
         glowDrawer2.color = Color.SkyBlue * 0.6f;
         glowDrawer2.color.A = 0;
         glowDrawer2.scale *= 0.45f;

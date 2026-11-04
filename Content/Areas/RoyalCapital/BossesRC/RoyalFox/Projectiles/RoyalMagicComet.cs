@@ -83,7 +83,7 @@ public class RoyalMagicCometStarsRenderer : ModSystem
 
     private void DrawMaskParticles(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(_royalSmokeMaskTextureAsset, Vector2.Zero);
+        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_royalSmokeMaskTextureAsset, Vector2.Zero);
         for (int i = 0; i < _particles.Length; i++)
         {
             ref float timeLeft = ref _particles.timeleft[i];
@@ -304,7 +304,7 @@ public class RoyalMagicComet : ModProjectile,
     {
 
         float alpha = Alpha;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         drawer.scale *= 0.4f;
 
         for (int i = 0; i < Projectile.oldPos.Length; i++)
@@ -335,7 +335,7 @@ public class RoyalMagicComet : ModProjectile,
         //    Main.spriteBatch.Draw(drawer);
 
 
-        drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         drawer.color = Color.White * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 9, Projectile.whoAmI) * alpha;
         drawer.color.A = 0;
         drawer.scale *= 0.4f * Size;

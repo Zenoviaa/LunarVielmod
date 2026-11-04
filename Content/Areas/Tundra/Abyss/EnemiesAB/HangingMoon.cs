@@ -258,7 +258,7 @@ public class MiniWhiteMoth : ModNPC
 
 
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, NPC.Center);
         drawer.color = Color.White * Glow * 0.2f * _alpha;
         drawer.color.A = 0;
         drawer.scale *= 0.25f;
@@ -470,7 +470,7 @@ public class HangingMoon : ModNPC
         spriteBatch.Draw(head);
 
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, NPC.Center);
         drawer.color = Color.White * Glow * 0.2f * _alpha;
         drawer.color.A = 0;
         drawer.scale *= 0.5f;

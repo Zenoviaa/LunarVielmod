@@ -83,7 +83,7 @@ public class CoolTeleport : ModProjectile,
         sb.Draw(drawer);
         sb.RestartDefaults();
 
-        SpritebatchDrawer flashDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, Projectile.Center);
+        SpritebatchDrawer flashDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, Projectile.Center);
         flashDrawer.color = Color.White;
         flashDrawer.color.A = 0;
         flashDrawer.scale = Vector2.Lerp(Vector2.One * 1.5f, Vector2.Zero, EasingFunction.OutExpo(Timer / Time));
@@ -92,8 +92,8 @@ public class CoolTeleport : ModProjectile,
         if(Style == 1)
         {
 
-            SpritebatchDrawer glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
-            glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+            SpritebatchDrawer glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+            glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
             glowBall.color = Color.White * 0.92f;
             glowBall.color.A = 0;
             glowBall.scale *= 2 * MathHelper.Lerp(10, 0f, EasingFunction.OutExpo(Timer / Time));

@@ -208,7 +208,7 @@ public class BurningScarfFlame : ModProjectile
     {
         base.PostDraw(lightColor);
        
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         drawer.color = new Color(85, 45, 15);
         drawer.color.A = 0;
         drawer.scale *= VectorHelper.Osc(0.75f, 1f, speed: 32, offset: Projectile.whoAmI);

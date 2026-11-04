@@ -341,7 +341,7 @@ public class ReksGreatFireBreath : ModProjectile,
 
     private void DrawImpactGlow()
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, ImpactPoint);
         drawer.color = Color.OrangeRed * 0.5f;
         drawer.color.A = 0;
         drawer.scale *= 0.9f * EasingInOut;
@@ -406,7 +406,7 @@ public class ReksGreatFireBreath : ModProjectile,
         float y = MathHelper.Lerp(1.5f, 0.2f, Projectile.velocity.Length() / 80);
         using (new SpritebatchContext(spriteBatch, sbParams))
         {
-            SpritebatchDrawer impactDrawer = SpritebatchDrawer.FromTextureAsset(BeamTextureAsset, ImpactPoint);
+            SpritebatchDrawer impactDrawer = SpritebatchDrawer.FromTextureGetLightingColor(BeamTextureAsset, ImpactPoint);
             impactDrawer.color = Color.White;
             impactDrawer.worldPosition -= Projectile.velocity.SafeNormalize(Vector2.Zero) * 144;
             impactDrawer.scale *= 1.2f * EasingInOut;
@@ -424,28 +424,28 @@ public class ReksGreatFireBreath : ModProjectile,
         float divisor = 888;
         Vector2 _bounceOffset = Vector2.Lerp(Projectile.velocity.SafeNormalize(Vector2.Zero) * 444, Vector2.Zero, EasingFunction.OutSine(Timer / 60f));
         float _scale = MathHelper.SmoothStep(3f, 1f, Timer / 60f);
-        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center + _bounceOffset);
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, Projectile.Center + _bounceOffset);
         Color color = Color.Lerp(Color.OrangeRed, Color.Red, Timer / 30);
         circleDrawer.color = color * 0.75f * MathHelper.Lerp(1f, 0f, EasingFunction.Clamp(Timer / 30)) * EasingOut;
         circleDrawer.color.A = 0;
         circleDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * 12, Timer / 30f);
         Main.spriteBatch.Draw(circleDrawer);
 
-        SpritebatchDrawer glowBall2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
+        SpritebatchDrawer glowBall2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
         glowBall2.color = Color.White * 0.9f * ExtraMath.Osc(0.5f, 1f, speed: 6) * EasingOut;
         glowBall2.color.A = 0;
         glowBall2.scale *= 2 * _scale;
         glowBall2.scale.Y *= 1.3f;
         sb.Draw(glowBall2);
 
-        SpritebatchDrawer glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        SpritebatchDrawer glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
         glowBall.color = Color.Lerp(Color.Blue, Color.Magenta, ExtraMath.Osc(0f, 1f, speed: 3)) * 0.1f;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale;
         sb.Draw(glowBall);
 
 
-        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
         glowBall.color = Color.DarkRed * 0.75f * (_bounceOffset.Length() / 115f) * EasingOut;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale;
@@ -453,21 +453,21 @@ public class ReksGreatFireBreath : ModProjectile,
 
 
 
-        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
+        glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center + _bounceOffset);
         glowBall.color = Color.White * 0.75f * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo((_bounceOffset.Length() / divisor))) * EasingOut;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale;
         sb.Draw(glowBall);
 
 
-        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center + _bounceOffset);
+        glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarRing, Projectile.Center + _bounceOffset);
         glowBall.color = Color.Lerp(Color.Orange, Color.Red, ExtraMath.Osc(0f, 1f, speed: 3)) * 0.08f * EasingOut;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale * MathHelper.Lerp(0f, 2f, EasingFunction.InExpo((_bounceOffset.Length() / divisor)));
         sb.Draw(glowBall);
 
 
-        glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
+        glowBall = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
         glowBall.color = Color.White * 0.92f * EasingOut;
         glowBall.color.A = 0;
         glowBall.scale *= 2 * _scale * MathHelper.Lerp(0, 6.4f, EasingFunction.InExpo((_bounceOffset.Length() / divisor)));
@@ -531,7 +531,7 @@ public class ReksGreatFireBreath : ModProjectile,
         {
 
             //Draw detailing and texturing within the beam
-            SpritebatchDrawer flamethrowerDrawer = SpritebatchDrawer.FromTextureAsset(TrailRegistry.DirnTrail,
+            SpritebatchDrawer flamethrowerDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TrailRegistry.DirnTrail,
                 Projectile.Center);
             flamethrowerDrawer.LeftCenterOrigin();
             flamethrowerDrawer.color = Color.Yellow * EasingInOut * 0.85f;
@@ -552,7 +552,7 @@ public class ReksGreatFireBreath : ModProjectile,
         using (new SpritebatchContext(spriteBatch, flamethrowerBeanParams))
         {
 
-            var flamethrowerDrawer = SpritebatchDrawer.FromTextureAsset(_ringsTextureAsset,
+            var flamethrowerDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_ringsTextureAsset,
                 Projectile.Center);
             flamethrowerDrawer.LeftCenterOrigin();
             flamethrowerDrawer.color = Color.LightGoldenrodYellow * EasingInOut * 0.85f;
@@ -565,7 +565,7 @@ public class ReksGreatFireBreath : ModProjectile,
         }
 
 
-        SpritebatchDrawer glowCircle = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowCircle = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowCircle.color = Color.White;
         glowCircle.color.A = 0;
         glowCircle.scale *= 0.24f * EasingInOut;

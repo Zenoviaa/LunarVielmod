@@ -373,7 +373,7 @@ public class OrganDragon : ModNPC
         //BACK WING
 
         
-        SpritebatchDrawer backWingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAssets[0], _bodySegments[0].a);
+        SpritebatchDrawer backWingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAssets[0], _bodySegments[0].a);
         backWingDrawer.drawOrigin = new Vector2(150, 72);
         backWingDrawer.rotation = _bodySegments[0].totalAngle - MathHelper.Pi;
         backWingDrawer.sourceRect = _wingTextureAssets[0].Value.GetFrame(_framer.frame, 10, 12);
@@ -408,7 +408,7 @@ public class OrganDragon : ModNPC
         */
 
         //BACK LEG FRONT
-        SpritebatchDrawer frontLegDrawerBack = SpritebatchDrawer.FromTextureAsset(_frontLegTextureAssets[1], _bodySegments[0].a);
+        SpritebatchDrawer frontLegDrawerBack = SpritebatchDrawer.FromTextureGetLightingColor(_frontLegTextureAssets[1], _bodySegments[0].a);
         frontLegDrawerBack.drawOrigin = Vector2.Zero;
         frontLegDrawerBack.rotation = _bodySegments[0].totalAngle - MathHelper.Pi;
         float frontLegAngle = MathHelper.WrapAngle(frontLegDrawerBack.rotation + MathHelper.PiOver2);
@@ -424,7 +424,7 @@ public class OrganDragon : ModNPC
         //BODY
         for (int i = _bodyTextureAssets.Length - 1; i >= 0; i--)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_bodyTextureAssets[i], _bodySegments[i].a);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_bodyTextureAssets[i], _bodySegments[i].a);
             float bodyAngle = _bodySegments[i].totalAngle;
             drawer.rotation = bodyAngle;
             float dir = 1;
@@ -452,7 +452,7 @@ public class OrganDragon : ModNPC
 
 
         //HEAD
-        SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(_headTextureAsset, _headSegment.b);
+        SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_headTextureAsset, _headSegment.b);
         float drawAngle = MathHelper.Pi + _headSegment.angle;
 
         drawAngle = MathHelper.WrapAngle(drawAngle);
@@ -492,7 +492,7 @@ public class OrganDragon : ModNPC
 
         
         //BACK LEG
-        SpritebatchDrawer backLegDrawerFront = SpritebatchDrawer.FromTextureAsset(_frontLegTextureAssets[0], _bodySegments[2].a);
+        SpritebatchDrawer backLegDrawerFront = SpritebatchDrawer.FromTextureGetLightingColor(_frontLegTextureAssets[0], _bodySegments[2].a);
         backLegDrawerFront.drawOrigin = Vector2.Zero;
         backLegDrawerFront.rotation = _bodySegments[2].totalAngle - MathHelper.Pi + MathHelper.PiOver2;
         backLegDrawerFront.rotation -= MathHelper.ToRadians(25);
@@ -509,7 +509,7 @@ public class OrganDragon : ModNPC
         spriteBatch.Draw(backLegDrawerFront);
         
         //FRONT LEG
-        SpritebatchDrawer frontLegDrawerFront = SpritebatchDrawer.FromTextureAsset(_frontLegTextureAssets[0], _bodySegments[0].a);
+        SpritebatchDrawer frontLegDrawerFront = SpritebatchDrawer.FromTextureGetLightingColor(_frontLegTextureAssets[0], _bodySegments[0].a);
         frontLegDrawerFront.drawOrigin = Vector2.Zero;
         frontLegDrawerFront.rotation = _bodySegments[0].totalAngle - MathHelper.Pi + MathHelper.PiOver2;
         float frontDLegAngle = MathHelper.WrapAngle(_bodySegments[0].totalAngle - MathHelper.Pi + MathHelper.PiOver2);
@@ -525,7 +525,7 @@ public class OrganDragon : ModNPC
 
 
         //FRONT WING
-        SpritebatchDrawer frontWingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAssets[0], _bodySegments[2].a);
+        SpritebatchDrawer frontWingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAssets[0], _bodySegments[2].a);
         frontWingDrawer.drawOrigin = new Vector2(150, 72);
         frontWingDrawer.rotation = _bodySegments[2].totalAngle - MathHelper.Pi;
         frontWingDrawer.scale = Breathe(5) * 2;
@@ -617,7 +617,7 @@ public class OrganWave : ModProjectile
 
         float scale = MathHelper.Lerp(1.8f, 0f, EasingFunction.OutExpo(outRatio));
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio)) * scale;
         waveDrawer.color = Color.Orange;
@@ -627,7 +627,7 @@ public class OrganWave : ModProjectile
         Main.spriteBatch.Restart(effect: shearShader.Effect);
         //   Main.spriteBatch.Draw(waveDrawer);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkOrange * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * scale;
@@ -638,7 +638,7 @@ public class OrganWave : ModProjectile
         Main.spriteBatch.Draw(waveDrawer);
         Main.spriteBatch.RestartDefaults();
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MuzzleFlash"), Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MuzzleFlash"), Projectile.Center);
         drawer.scale = new Vector2(3, 10);
         float timer = Timer - 60f;
 

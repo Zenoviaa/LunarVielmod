@@ -62,7 +62,7 @@ public class GooberDialogueSystem : ModSystem
                 continue;
             Vector2 pos = _squareQuad.vertices[0].Position.XY() + bubble.speaker.bubblePosition + new Vector2(-64, -112);
             pos += new Vector2(16, -4);
-            var portraitDrawer = SpritebatchDrawer.FromTextureAsset(bubble.speaker.profile.portraitTextureAsset, pos);
+            var portraitDrawer = SpritebatchDrawer.FromTextureGetLightingColor(bubble.speaker.profile.portraitTextureAsset, pos);
             portraitDrawer.color = Color.White;
             portraitDrawer.scale = Vector2.One * bubble.Scale;
             portraitDrawer.rotation = MathHelper.ToRadians(-7);
@@ -97,7 +97,7 @@ public class GooberDialogueSystem : ModSystem
                 using (new SpritebatchContext(spriteBatch, SB.InWorldUnscaled))
                 {
 
-                    var nameTagDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.NameTag.Asset, Vector2.Zero);
+                    var nameTagDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.GooberPortraits.NameTag.Asset, Vector2.Zero);
                     var gradientPass = AssetReferences.Effects.CrystalShaders.SimpleGradient.CreatePixelPass();
                     gradientPass.Parameters.startGradientColor = bubble.speaker.profile.startGradientColor.ToVector4();
                     gradientPass.Parameters.endGradientColor = bubble.speaker.profile.endGradientColor.ToVector4();
@@ -161,7 +161,7 @@ public class GooberDialogueSystem : ModSystem
                 spriteBatch.Draw(boxRenderTargetSwap, Vector2.Zero, Color.White);
             }
 
-            SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.DialogueArrow.Asset, Vector2.Zero);
+            SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.GooberPortraits.DialogueArrow.Asset, Vector2.Zero);
             SpritebatchParams worldParams = SB.InWorldUnscaled;
             spriteBatch.Begin(worldParams);
 
@@ -387,7 +387,7 @@ public class GooberDialogueSystem : ModSystem
             spriteBatch.Begin(SB.InWorldUnscaled);
             Vector3 bottomLeftVertex = _squareQuad.vertices[2].Position;
             Vector2 bottomLeft = new Vector2(bottomLeftVertex.X, bottomLeftVertex.Y);
-            SpritebatchDrawer tailDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.Tail.Asset,
+            SpritebatchDrawer tailDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.GooberPortraits.Tail.Asset,
                 Main.screenPosition + offset + new Vector2(0, 64 + ExtraMath.Osc(-8, 8, speed: 1)));
             tailDrawer.color = speechBubble.speaker.profile.startGradientColor;
             spriteBatch.Draw(tailDrawer);

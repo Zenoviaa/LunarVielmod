@@ -246,7 +246,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             Vector2 firePos = NPC.Center;
             firePos.Y -= 24;
             firePos = firePos.RotatedBy(NPC.rotation, NPC.Center);
-            SpritebatchDrawer fireDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, firePos);
+            SpritebatchDrawer fireDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, firePos);
             fireDrawer.color = Color.Red * 0.2f;
             fireDrawer.scale *= 0.25f * ExtraMath.Osc(0.95f, 1f, speed: 12);
             fireDrawer.color.A = 0;

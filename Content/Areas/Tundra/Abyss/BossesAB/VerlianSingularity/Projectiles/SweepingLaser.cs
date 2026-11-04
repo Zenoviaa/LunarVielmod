@@ -253,7 +253,7 @@ public class SweepingLaser : VSProjectile
         spriteBatch.Draw(_sparkTexture.Value, drawPosition, null, color * 0.25f, sparkyRot + 0.2f, lightDrawOrigin, drawScale * 8 * scaleOsc2, SpriteEffects.None, 0);
    
 
-        SpritebatchDrawer muzzleDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, _laserPoints[0]);
+        SpritebatchDrawer muzzleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, _laserPoints[0]);
         muzzleDrawer.color = Color.White * EasingFunction.InOutSine(Projectile.timeLeft / 45f);
         muzzleDrawer.color.A = 0;
         spriteBatch.Draw(muzzleDrawer);

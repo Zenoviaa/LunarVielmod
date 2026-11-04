@@ -99,7 +99,7 @@ public class WinterbornBat : ModNPC,
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
         glowDrawer.color = Color.SkyBlue;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.2f;

@@ -45,7 +45,7 @@ public sealed class MoonArrowRenderer : BatchedRenderer<MoonArrowRenderer.Data>
                 foreach (OldPosition oldPos in new OldPositionEnum(draw.oldPos))
                 {
                     var asset = AssetReferences.Assets.NoiseTextures.CloudNoise3.Asset;
-                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(asset, oldPos.position);
+                    SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(asset, oldPos.position);
                     drawer.color = Color.Lerp(Color.LightCyan, Color.DarkViolet, oldPos.progress) * 0.9f;
                     drawer.color.A = (byte)((oldPos.index + 12) % 255);
                     drawer.scale *= 0.3f;
@@ -57,7 +57,7 @@ public sealed class MoonArrowRenderer : BatchedRenderer<MoonArrowRenderer.Data>
 
         //omg guys look im using the funny texture
         var bestVfx = TextureAssets.Extra[ExtrasID.SharpTears];
-        SpritebatchDrawer drawer3 = SpritebatchDrawer.FromTextureAsset(bestVfx, Vector2.Zero);
+        SpritebatchDrawer drawer3 = SpritebatchDrawer.FromTextureGetLightingColor(bestVfx, Vector2.Zero);
         drawer3.scale *= 1.3f;
         drawer3.color = Color.White;
         foreach (var draw in _draws)
@@ -68,7 +68,7 @@ public sealed class MoonArrowRenderer : BatchedRenderer<MoonArrowRenderer.Data>
         }
 
         var p = AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset;
-        var drawer2 = SpritebatchDrawer.FromTextureAsset(p, Vector2.Zero);
+        var drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(p, Vector2.Zero);
         drawer2.color = Color.White * 0.5f;
         drawer2.color.A = 0;
         drawer2.scale *= 0.15f;

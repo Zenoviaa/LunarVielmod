@@ -61,14 +61,14 @@ public class ScrollAbilityPlayer : ModPlayer
         SpriteBatch spriteBatch = Main.spriteBatch;
         if (_angerTimer > 0)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_angerSymbol, drawInfo.drawPlayer.Center + new Vector2(18, -36));
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_angerSymbol, drawInfo.drawPlayer.Center + new Vector2(18, -36));
             drawer.color = Color.Red * EasingFunction.InOutSine(_angerTimer / 60f) * ExtraMath.Osc(0.5f, 1f, speed: 12);
             drawer.color.A = 0;
             Main.spriteBatch.Draw(drawer);
         }
         if (_enduranceTimer > 0)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_shield, drawInfo.drawPlayer.Center + new Vector2(0, -80));
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_shield, drawInfo.drawPlayer.Center + new Vector2(0, -80));
             drawer.color = Color.SkyBlue * EasingFunction.InOutSine(_enduranceTimer / 60f) * ExtraMath.Osc(0.5f, 1f, speed: 12);
             drawer.scale *= 0.5f;
             drawer.color.A = 0;
@@ -77,7 +77,7 @@ public class ScrollAbilityPlayer : ModPlayer
 
         if(_flameTimer > 0)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawInfo.drawPlayer.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, drawInfo.drawPlayer.Center);
             drawer.color = Color.OrangeRed * EasingFunction.InOutSine(_flameTimer / 60f) * ExtraMath.Osc(0.5f, 1f, speed: 12) * 0.5f;
             drawer.scale *= 0.5f;
             drawer.color.A = 0;
@@ -86,7 +86,7 @@ public class ScrollAbilityPlayer : ModPlayer
 
         if(_poisonTimer > 0)
         {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawInfo.drawPlayer.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, drawInfo.drawPlayer.Center);
             drawer.color = Color.Green * EasingFunction.InOutSine(_poisonTimer / 60f) * ExtraMath.Osc(0.5f, 1f, speed: 12) * 0.5f;
             drawer.scale *= 0.5f;
             drawer.color.A = 0;

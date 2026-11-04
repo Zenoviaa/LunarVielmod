@@ -63,7 +63,7 @@ public class FlyingZ : ParticleUpdater<FlyingZ.Data>
             ref var particle = ref _particles[i];
             float lerpValue = Utils.GetLerpValue(0, 240, particle.timeLeft, clamped: true);
             float interpolant = EasingFunction.OutSine(lerpValue);
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position);
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
             //drawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, lerpValue);

@@ -197,7 +197,7 @@ public class VixylParryingBlade : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         Asset<Texture2D> projTexture = TextureAssets.Item[Owner.HeldItem.ModItem.Type];
-        SpritebatchDrawer parryDrawer = SpritebatchDrawer.FromTextureAsset(projTexture, Projectile.Center);
+        SpritebatchDrawer parryDrawer = SpritebatchDrawer.FromTextureGetLightingColor(projTexture, Projectile.Center);
         parryDrawer.rotation = MathHelper.ToRadians(90);
         parryDrawer.spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None; ;
         if (Projectile.spriteDirection == -1)
@@ -592,7 +592,7 @@ public class VixylSlashProj : ModProjectile
     public override bool PreDraw(ref Color lightColor)
     {
         var ratio = Timer / 36f;
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.MoonSlashHold.Asset, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles.MoonSlashHold.Asset, Projectile.Center);
         sbDrawer.VerticalFrame(Projectile.frame, Main.projFrames[Type]);
         sbDrawer.CenterOrigin();
         sbDrawer.color = Color.White;

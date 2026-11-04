@@ -234,7 +234,7 @@ public class EreshkigalCrack : ModProjectile
         RoyalShockwaveCircleShader shockwaevShader = RoyalShockwaveCircleShader.Instance;
         shockwaevShader.Time = -Timer * 0.02f + 0.8f;
         sb.Restart(effect: shockwaevShader.Effect);
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         sbDrawer.CenterOrigin();
         sbDrawer.scale.X *= MathHelper.Lerp(0f, 1.7f, EasingFunction.OutExpo(Timer / t));
         sbDrawer.scale.Y += MathHelper.Lerp(2f, 0f, EasingFunction.InOutExpo(Timer / t));
@@ -266,7 +266,7 @@ public class EreshkigalCrack : ModProjectile
         shearShader.Time = outRatio * 1.4f;
 
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio)) * 1.5f;
         waveDrawer.color = Color.Gold;
@@ -276,7 +276,7 @@ public class EreshkigalCrack : ModProjectile
         Main.spriteBatch.Restart(effect: shearShader.Effect);
         Main.spriteBatch.Draw(waveDrawer);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.JumbledGlowCircle.Asset, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.JumbledGlowCircle.Asset, Projectile.Center);
         backGlowDrawwer.color = Color.DarkTurquoise * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 2f;
@@ -293,7 +293,7 @@ public class EreshkigalCrack : ModProjectile
         shearShader.Time = MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(Timer / 120f));
         Main.spriteBatch.Restart(effect: shearShader.Effect);
 
-        SpritebatchDrawer crackDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Visual/Particles/BigCrackParticle"), Projectile.Center);
+        SpritebatchDrawer crackDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Visual/Particles/BigCrackParticle"), Projectile.Center);
         crackDrawer.color = Color.Lerp(Color.White, Color.Gold, EasingFunction.InExpo(Timer / 60f));
         crackDrawer.color.A = 0;
         crackDrawer.scale = Vector2.One * 2f;
@@ -546,7 +546,7 @@ public class EreshkigalsFinisherLaser : ModProjectile,
             Vector2 pos = Projectile.Center + offse2t + _initialVelocity.SafeNormalize(Vector2.Zero) * between * i;
 
             float scale = MathHelper.Lerp(1f, 0.2f, i / 4f);
-            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[Type], pos);
+            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[Type], pos);
             float yScale = MathHelper.Lerp(0.2f, 2.3f, EasingFunction.OutExpo(Timer / time)) * scale * 0.7f;
             circleDrawer.scale.Y *= yScale;
             circleDrawer.scale *= 0.75f;
@@ -1024,7 +1024,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
         float brighteningOsc = ExtraMath.Osc(0.55f, 1f, speed: 14);
         Vector2 normalVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
         Vector2 pos = Projectile.Center + _shakeOffset;
-        SpritebatchDrawer backDrawer = SpritebatchDrawer.FromTextureAsset(_partsTextureAsset, pos);
+        SpritebatchDrawer backDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_partsTextureAsset, pos);
 
         backDrawer.VerticalFrame(2, 3);
         backDrawer.CenterOrigin();
@@ -1067,7 +1067,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
         Vector2 offset = new Vector2(-14, -14 * dir).RotatedBy(Projectile.rotation);
         position += offset;
 
-        SpritebatchDrawer clockHand1 = SpritebatchDrawer.FromTextureAsset(_clockHandleTextureAsset, position);
+        SpritebatchDrawer clockHand1 = SpritebatchDrawer.FromTextureGetLightingColor(_clockHandleTextureAsset, position);
         clockHand1.VerticalFrame(1, 2);
         clockHand1.LeftCenterOrigin();
         float radians = MathHelper.TwoPi * 6;
@@ -1178,7 +1178,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
             float size = MathHelper.Lerp(256, 128, i / 3f);
             size *= MathHelper.Lerp(4f, 1f, ratio);
 
-            SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
+            SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, pos);
             bloomDrawer.color = Color.Lerp(Color.Black, Color.Lerp(Color.Gold, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 12)), ratio) * 0.6f;
             bloomDrawer.color.A = 0;
             bloomDrawer.scale *= 0.3f * MathHelper.Lerp(1f, 0f, (float)(i - 1) / 3f);
@@ -1213,7 +1213,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
     private void DrawGlowOrb(SpriteBatch sb, Vector2 screenPos)
     {
         float easing = EasingFunction.InOutExpo(Charge);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ParticleChargePoint);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, ParticleChargePoint);
         Color flickerColor = Color.Lerp(Color.Gold, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 16));
         glowDrawer.color = Color.Lerp(Color.Transparent, Color.Gold, easing);
         glowDrawer.color = Color.Lerp(glowDrawer.color, flickerColor, easing);
@@ -1286,7 +1286,7 @@ public class EreshkigalsFinisherCannonHold : ModProjectile,
         float inEasing = EasingFunction.InOutSine(Timer / 30f);
         float alpha = MathHelper.Lerp(0f, 1f, inEasing);
         Color glowColor = Color.Lerp(Color.Gold, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 8));
-        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, ParticleChargePoint);
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, ParticleChargePoint);
         circleDrawer.color = glowColor * 0.16f * alpha;
         circleDrawer.color.A = 0;
         circleDrawer.scale = Vector2.Lerp(Vector2.One * 3f, Vector2.Zero, Charge);

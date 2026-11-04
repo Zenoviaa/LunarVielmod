@@ -72,7 +72,7 @@ public class TornadoDustParticles : ParticleUpdater<TornadoDustParticles.Data>
     }
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.Particles.TornadoDust.Asset, Vector2.Zero);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Common.Particles.TornadoDust.Asset, Vector2.Zero);
         for (var i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];

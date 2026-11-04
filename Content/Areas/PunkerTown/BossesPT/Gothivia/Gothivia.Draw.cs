@@ -267,7 +267,7 @@ public partial class Gothivia :
         Asset<Texture2D> bloomLineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/BloomLine");
         void DrawLineInner(Vector2 direction)
         {
-            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(bloomLineTextureAsset, NPC.Center);
+            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(bloomLineTextureAsset, NPC.Center);
             lineDrawer.rotation = direction.ToRotation() - MathHelper.PiOver2;
             lineDrawer.color = Color.White * _telegraphLineAlpha * ExtraMath.Osc(0.4f, 1f, speed: 32);
             lineDrawer.color.A = 0;
@@ -327,7 +327,7 @@ public partial class Gothivia :
 
     private void DrawInCircle(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, NPC.Center);
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, NPC.Center);
         Color color = Color.Lerp(Color.Orange, Color.Aquamarine, ExtraMath.Osc(0f, 1f, speed: 16));
         circleDrawer.color = color * 0.75f * _inCircleAlpha;
         circleDrawer.color.A = 0;
@@ -353,7 +353,7 @@ public partial class Gothivia :
         bowholdPosition += _aimingVelocity * 100;
         bowholdPosition += Vector2.Lerp(_aimingVelocity * 700, Vector2.Zero, EasingFunction.OutExpo(_bowDissipateAlpha));
         spriteBatch.Restart(effect: flamebowShader.Effect);
-        SpritebatchDrawer bowDrawer = SpritebatchDrawer.FromTextureAsset(_bowTextureAsset, bowholdPosition);
+        SpritebatchDrawer bowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_bowTextureAsset, bowholdPosition);
         bowDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 18) * _telegraphLineAlpha;
         bowDrawer.color.A = 0;
         bowDrawer.rotation = _aimingVelocity.ToRotation();
@@ -391,7 +391,7 @@ public partial class Gothivia :
         SpritebatchParams flameBowShaderParams = SpritebatchParams.InWorldAndZoomed() with { effect = flamebowShader };
         using (SpritebatchStarter.Begin(spriteBatch, flameBowShaderParams))
         {
-            SpritebatchDrawer fingerDrawer = SpritebatchDrawer.FromTextureAsset(_fingerTextureAsset, bowholdPosition);
+            SpritebatchDrawer fingerDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_fingerTextureAsset, bowholdPosition);
             fingerDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 18) * _telegraphLineAlpha;
             fingerDrawer.color.A = 0;
             fingerDrawer.rotation = _aimingVelocity.ToRotation();
@@ -412,7 +412,7 @@ public partial class Gothivia :
             fingerDrawer.worldPosition -= _aimingVelocity * 32;
             spriteBatch.Draw(fingerDrawer);
 
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, bowholdPosition);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, bowholdPosition);
             glowDrawer.color = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 6)) * 0.6f;
             glowDrawer.color.A = 0;
             glowDrawer.rotation = fingerDrawer.rotation;
@@ -421,7 +421,7 @@ public partial class Gothivia :
             spriteBatch.Draw(glowDrawer);
         }
 
-        SpritebatchDrawer whiteGlowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, bowholdPosition);
+        SpritebatchDrawer whiteGlowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, bowholdPosition);
         whiteGlowDrawer.color = Color.White;
         whiteGlowDrawer.color.A = 0;
         whiteGlowDrawer.rotation = _aimingVelocity.ToRotation();
@@ -442,7 +442,7 @@ public partial class Gothivia :
     {
         Asset<Texture2D> wings = GetWingsTextureAsset();
         Rectangle srcRec = wings.Value.GetFrame(_wingAnimationFrame.frame, _wingAnimationFrame.maxFrame);
-        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(wings, NPC.Center);
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(wings, NPC.Center);
         wingDrawer.sourceRect = srcRec;
         wingDrawer.scale *= 2;
         wingDrawer.CenterOrigin();
@@ -461,7 +461,7 @@ public partial class Gothivia :
         waveShader.XStrength = 6;
         waveShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
         sb.Restart(effect: waveShader.Effect);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(waveTexture, NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(waveTexture, NPC.Center);
         drawer.rotation = NPC.rotation;
         drawer.BottomCenterOrigin();
         drawer.color = Color.OrangeRed * fade * ExtraMath.Osc(0.6f, 1f, speed: 32, offset: NPC.whoAmI);
@@ -479,7 +479,7 @@ public partial class Gothivia :
         sb.RestartDefaults();
 
         Asset<Texture2D> bloomLine = AssetManager.GlowMask.SimpleGlowCircle;
-        SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(bloomLine, NPC.Center + new Vector2(0f, 12));
+        SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(bloomLine, NPC.Center + new Vector2(0f, 12));
         //      drawer2.BottomCenterOrigin();
         drawer2.scale *= new Vector2(0.55f, 0.55f) * ExtraMath.Osc(0.8f, 1f, speed: 3) * inScale;
         drawer2.color = Color.Yellow * fade * 0.5f; ;
@@ -497,7 +497,7 @@ public partial class Gothivia :
         drawer2.color.A = 0;
         sb.Draw(drawer2);
 
-        SpritebatchDrawer blastPillar = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, NPC.Center + new Vector2(0f, 12));
+        SpritebatchDrawer blastPillar = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, NPC.Center + new Vector2(0f, 12));
         blastPillar.BottomCenterOrigin();
         blastPillar.color = Color.Red * 0.5f * ExtraMath.Osc(0.6f, 1f, speed: 32, offset: NPC.whoAmI) * fade;
         blastPillar.color.A = 0;
@@ -552,7 +552,7 @@ public partial class Gothivia :
 
         Asset<Texture2D> wings = GetWingsTextureAsset();
         Rectangle srcRec = wings.Value.GetFrame(_wingAnimationFrame.frame, _wingAnimationFrame.maxFrame);
-        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(wings, NPC.Center);
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(wings, NPC.Center);
         wingDrawer.sourceRect = srcRec;
         wingDrawer.scale *= 2;
         wingDrawer.color = _outliner.outlineColor;

@@ -364,7 +364,7 @@ public class MagicMoonblade : ModProjectile
 
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrail, DrawLayer.OverNPCsWithOutline);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkBlue * 0.5f;
         backGlowDrawwer.color *= _alpha;
         backGlowDrawwer.color.A = 0;
@@ -372,7 +372,7 @@ public class MagicMoonblade : ModProjectile
         Main.spriteBatch.Draw(backGlowDrawwer);
 
 
-        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         spiralDrawer.color = Color.SkyBlue * 0.15f;
         spiralDrawer.color *= _alpha;
         spiralDrawer.color.A = 0;
@@ -380,7 +380,7 @@ public class MagicMoonblade : ModProjectile
         spiralDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         Main.spriteBatch.Draw(spiralDrawer);
 
-        SpritebatchDrawer aura2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Owner.Center);
+        SpritebatchDrawer aura2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Owner.Center);
         aura2.color = Color.DarkBlue * 0.15f;
         aura2.color *= _alpha;
         aura2.color.A = 0;
@@ -389,7 +389,7 @@ public class MagicMoonblade : ModProjectile
         Main.spriteBatch.Draw(aura2);
 
 
-        SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MagicSwordCircle, Owner.Center);
+        SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.MagicSwordCircle, Owner.Center);
         magicCircleDrawer.color = Color.SkyBlue * 0.15f;
         magicCircleDrawer.color *= _alpha;
         magicCircleDrawer.color.A = 0;
@@ -400,7 +400,7 @@ public class MagicMoonblade : ModProjectile
 
         Asset<Texture2D> textureAsset = TextureAssets.Item[ModContent.ItemType<MagicMoonbladeArtifact>()];
 
-        SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(textureAsset, Projectile.Center);
+        SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, Projectile.Center);
         for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
             Vector2 pos = Projectile.oldPos[i];
@@ -414,7 +414,7 @@ public class MagicMoonblade : ModProjectile
             Main.spriteBatch.Draw(drawer2);
         }
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, Projectile.Center);
 
         drawer.rotation = Projectile.rotation;
         drawer.scale = _scale * Vector2.One;

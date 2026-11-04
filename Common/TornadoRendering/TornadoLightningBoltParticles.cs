@@ -52,7 +52,7 @@ public class TornadoLightningBoltParticles : ParticleUpdater<TornadoLightningBol
             for (var i = 0; i < _length; i++)
             {
                 ref var particle = ref _particles[i];
-                var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.LaserTextures.Lightning.Asset, Vector2.Zero);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.LaserTextures.Lightning.Asset, Vector2.Zero);
                 drawer.worldPosition = particle.position;
                 drawer.rotation = particle.rotation;
                 drawer.scale *= 0.66f;

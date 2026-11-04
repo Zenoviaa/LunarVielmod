@@ -89,7 +89,7 @@ public class ScrollMagicCircle : ModProjectile,
         shearShader.Time = outRatio * 1.4f;
 
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio));
         waveDrawer.color = Color.White;
@@ -97,7 +97,7 @@ public class ScrollMagicCircle : ModProjectile,
         waveDrawer.color.A = 0;
 
         Main.spriteBatch.Restart(effect: shearShader.Effect);
-        SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureAsset(GetMagicCircleTextureAsset(), Projectile.Center);
+        SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(GetMagicCircleTextureAsset(), Projectile.Center);
         magicCircleDrawer.color = hintColor * alpha * ExtraMath.Osc(0.45f, 1f, speed: 24);
         magicCircleDrawer.color.A = 0;
         magicCircleDrawer.rotation = Main.GlobalTimeWrappedHourly * 1 ;

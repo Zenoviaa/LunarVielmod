@@ -64,7 +64,7 @@ public class WaterfallCrashDust : ParticleUpdater<WaterfallCrashDustData>
     public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture,Vector2.Zero);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture,Vector2.Zero);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
         for (int i = 0; i < _length; i++)

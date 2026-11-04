@@ -82,25 +82,25 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower.TilesMT
             Vector2 mediumOffset = -Vector2.UnitY * 212;
             mediumOffset = mediumOffset.RotatedBy(-Main.GlobalTimeWrappedHourly * 0.5f);
             Vector2 pos = rotationOrigin + mediumOffset;
-            SpritebatchDrawer mediumSBDrawer = SpritebatchDrawer.FromTextureAsset(_mediumTextureAsset, pos);
+            SpritebatchDrawer mediumSBDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_mediumTextureAsset, pos);
             mediumSBDrawer.rotation = Main.GlobalTimeWrappedHourly * 0.5f;
             mediumSBDrawer.color.A = 0;
             spriteBatch.Draw(mediumSBDrawer);
 
-            SpritebatchDrawer mediumOutlienDrawer = SpritebatchDrawer.FromTextureAsset(_mediumOutlineTextureAsset, pos);
+            SpritebatchDrawer mediumOutlienDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_mediumOutlineTextureAsset, pos);
            // spriteBatch.Draw(mediumOutlienDrawer);
 
             Vector2 smallRotationOrigin = pos;
             Vector2 smallOffset = -Vector2.UnitY * 64;
             smallOffset = smallOffset.RotatedBy(Main.GlobalTimeWrappedHourly * 1f);
             Vector2 pos2 = smallRotationOrigin + smallOffset;
-            SpritebatchDrawer smallSBDrawer = SpritebatchDrawer.FromTextureAsset(
+            SpritebatchDrawer smallSBDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
                 _smallTextureAsset, pos2);
             smallSBDrawer.rotation = Main.GlobalTimeWrappedHourly * 1f;
             smallSBDrawer.color.A = 0;
             spriteBatch.Draw(smallSBDrawer);
 
-            SpritebatchDrawer smallOutlineDrawer = SpritebatchDrawer.FromTextureAsset(_smallOutlineTextureAsset, pos2);
+            SpritebatchDrawer smallOutlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_smallOutlineTextureAsset, pos2);
           //  spriteBatch.Draw(smallOutlineDrawer);
 
        //     spriteBatch.Draw(_outlineTextureAsset.Value, drawPosition, null, Color.White, Main.GlobalTimeWrappedHourly * rotateSpeed * 24, tileTextureAsset.Size() * 0.5f, drawParams.tileData.scale, SpriteEffects.None, 0);

@@ -33,7 +33,7 @@ public class AbyssalKelp : ModTile,
     private void DrawKelpGlow(int i, int j, SpriteBatch spriteBatch)
     {
         Tile tile = Main.tile[i, j];
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Tile[Type],
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Tile[Type],
             TileUtilities.ToWorldCoordinatesFromTileRendering(i, j));
         drawer.color = Color.Aqua * 0.5f;
         drawer.color.A = 0;
@@ -46,7 +46,7 @@ public class AbyssalKelp : ModTile,
     private void DrawKelp(int i, int j, SpriteBatch spriteBatch)
     {
         Tile tile = Main.tile[i, j];
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Tile[Type],
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Tile[Type],
             TileUtilities.ToWorldCoordinatesFromTileRendering(i, j));
         drawer.color = Color.White.MultiplyRGB(Lighting.GetColor(i, j));
         drawer.rotation = GetLeafSway(i + j, 0.07f, 0.05f);
@@ -90,7 +90,7 @@ public class AbyssalKelp : ModTile,
     public void DrawWaterSilhouette(int i, int j, SpriteBatch sb)
     {
         Tile tile = Main.tile[i, j];
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Tile[Type],
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Tile[Type],
             new Point(i, j).ToWorldCoordinates());
         drawer.color = Color.DarkBlue * 0.25f;
         drawer.rotation = GetLeafSway(i + j, 0.07f, 0.05f);

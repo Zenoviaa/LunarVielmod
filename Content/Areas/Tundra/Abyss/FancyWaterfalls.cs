@@ -94,7 +94,7 @@ public class FancyWaterfalls : ModSystem
             Vector2 drawPos = worldPos - Main.screenPosition;
             if (drawPos.X < 0 || drawPos.Y < 0 || drawPos.X > Main.screenWidth || drawPos.Y > Main.screenHeight)
                 continue;
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Main.screenPosition + drawPos);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Main.screenPosition + drawPos);
             drawer.color = Color.Red * ExtraMath.Osc(0.5f, 0.8f, speed: 3);
             Main.spriteBatch.Draw(drawer);
         }

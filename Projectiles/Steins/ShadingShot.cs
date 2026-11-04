@@ -82,7 +82,7 @@ public class ShadingShot : ModProjectile
     private void DrawPixelatedFlash(SpriteBatch sb, Vector2 sp)
     {
         Asset<Texture2D> flashTexture = AssetManager.GlowMask.StarFlare1;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(flashTexture, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(flashTexture, Projectile.Center);
         drawer.scale = new Vector2(1f, 0.06f) * 0.25f * ExtraMath.Osc(0.5f, 1f, speed: 4f, offset: Projectile.whoAmI);
         drawer.color = Color.Lerp(Color.LightSkyBlue * 0.5f, Color.LightSkyBlue, ExtraMath.Osc(0f, 1f, speed: 3));
         drawer.color.A = 0;

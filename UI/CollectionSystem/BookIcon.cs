@@ -47,7 +47,7 @@ public class BookIcon : UIElement
         var rect = new Rectangle(point.X, point.Y, ElementWidth, ElementHeight);
         rect.Location += new Point(0, (int)VectorHelper.Osc(-8f, 8f, 1f));
 
-        var bookDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.UI.CollectionSystem.BookIcon.Asset, Main.screenPosition);
+        var bookDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.UI.CollectionSystem.BookIcon.Asset, Main.screenPosition);
         bookDrawer.worldPosition += rect.Location.ToVector2();
         bookDrawer.color = Color.White;
         bookDrawer.VerticalFrame(0, 2);

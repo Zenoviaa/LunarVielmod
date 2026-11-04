@@ -102,7 +102,7 @@ public class PericarditisProj : ModProjectile
 
     private void DrawPixelatedAura(SpriteBatch sb, Vector2 screenPos)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         drawer.color = Color.Red;
         drawer.color.A = 0;
         drawer.rotation = Main.GlobalTimeWrappedHourly * 9;

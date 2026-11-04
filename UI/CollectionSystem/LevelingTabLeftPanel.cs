@@ -154,7 +154,7 @@ public class LevelTabStatsPanel : UIPanel
 
 
          
-            SpritebatchDrawer statIconDrawer = SpritebatchDrawer.FromTextureAsset(_statIconTextureAsset, Main.screenPosition + iconPosition);
+            SpritebatchDrawer statIconDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_statIconTextureAsset, Main.screenPosition + iconPosition);
             statIconDrawer.VerticalFrame(i, 7);
             statIconDrawer.CenterOrigin();
             statIconDrawer.scale *= 1.2f;
@@ -172,7 +172,7 @@ public class LevelTabStatsPanel : UIPanel
                 Vector2 drawPosition = Main.screenPosition + uiPosition;
                 drawPosition.X = MathF.Floor(drawPosition.X);
                 drawPosition.Y = MathF.Floor(drawPosition.Y);
-                SpritebatchDrawer bipDrawer = SpritebatchDrawer.FromTextureAsset(_statPointTextureAsset, drawPosition);
+                SpritebatchDrawer bipDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_statPointTextureAsset, drawPosition);
        
                 bipDrawer.VerticalFrame(2, 3);
                 bipDrawer.color = Color.White;
@@ -193,7 +193,7 @@ public class LevelTabStatsPanel : UIPanel
                 Vector2 drawPosition = Main.screenPosition + uiPosition;
                 drawPosition.X = MathF.Floor(drawPosition.X);
                 drawPosition.Y = MathF.Floor(drawPosition.Y);
-                SpritebatchDrawer bipDrawer = SpritebatchDrawer.FromTextureAsset(_statPointTextureAsset, drawPosition);
+                SpritebatchDrawer bipDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_statPointTextureAsset, drawPosition);
                 bipDrawer.scale *= scale;
                 if (appliedPoints > 0)
                 {
@@ -449,7 +449,7 @@ public class LevelingConfirmButton : UIPanel
         this.QuickMouseInteraction();
         Vector2 uiPosition = GetDimensions().ToRectangle().Center();
         Vector2 drawPosition = Main.screenPosition + uiPosition;
-        SpritebatchDrawer medalDrawer = SpritebatchDrawer.FromTextureAsset(_btnTextureAsset, drawPosition);
+        SpritebatchDrawer medalDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_btnTextureAsset, drawPosition);
       
    //     bool isMouseHovering = GetDimensions().ToRectangle().Contains(Main.MouseScreen.ToPoint());
         int frame = IsMouseHovering ? 1 : 0;
@@ -626,17 +626,17 @@ public class LevelingTabLeftPanel : UIPanel
         }
         _whiteFlash = MathHelper.Lerp(_whiteFlash, 0f, 0.1f);
         //   Main.NewText(DownedBossTracker.DownedBossCount);
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(_medalBackgroundTextureAsset, Main.screenPosition + GetDimensions().ToRectangle().Center());
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_medalBackgroundTextureAsset, Main.screenPosition + GetDimensions().ToRectangle().Center());
         sbDrawer.scale *= 1.2f;
         sbDrawer.color = Color.White;
         spriteBatch.Draw(sbDrawer);
 
-        SpritebatchDrawer titleBackgroundDrawer = SpritebatchDrawer.FromTextureAsset(_titleBackgroundTextureAsset, Main.screenPosition + GetDimensions().ToRectangle().Center() + new Vector2(0, -170));
+        SpritebatchDrawer titleBackgroundDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_titleBackgroundTextureAsset, Main.screenPosition + GetDimensions().ToRectangle().Center() + new Vector2(0, -170));
         titleBackgroundDrawer.color = Color.White;
         titleBackgroundDrawer.scale *= 1.2f;
         spriteBatch.Draw(titleBackgroundDrawer);
 
-        SpritebatchDrawer bgDrawer = SpritebatchDrawer.FromTextureAsset(_countBackgroundTextureAsset, Main.screenPosition + GetDimensions().ToRectangle().Center() + new Vector2(-120, 152));
+        SpritebatchDrawer bgDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_countBackgroundTextureAsset, Main.screenPosition + GetDimensions().ToRectangle().Center() + new Vector2(-120, 152));
         bgDrawer.color = Color.White;
         bgDrawer.LeftCenterOrigin();
         bgDrawer.drawOrigin.X += 24;
@@ -646,7 +646,7 @@ public class LevelingTabLeftPanel : UIPanel
 
         Vector2 shardUiPosition = GetDimensions().ToRectangle().Center() + new Vector2(-120, 152);
         Vector2 shardPos = Main.screenPosition + shardUiPosition;
-        SpritebatchDrawer shardDrawer = SpritebatchDrawer.FromTextureAsset(_shardTextureAsset, shardPos);
+        SpritebatchDrawer shardDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_shardTextureAsset, shardPos);
         shardDrawer.color = Color.White;
         spriteBatch.Draw(shardDrawer);
 
@@ -693,7 +693,7 @@ public class LevelingTabLeftPanel : UIPanel
              //   Main.LocalPlayer.mouseInterface = true;
             }
 
-            SpritebatchDrawer medalDrawer = SpritebatchDrawer.FromTextureAsset(_medalTextureAsset, drawPosition);
+            SpritebatchDrawer medalDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_medalTextureAsset, drawPosition);
             medalDrawer.VerticalFrame(i, 14);
             medalDrawer.CenterOrigin();
             medalDrawer.color = Color.White;

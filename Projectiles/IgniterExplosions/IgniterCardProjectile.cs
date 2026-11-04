@@ -303,7 +303,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             {
                 if (IgniterPlayer.reverie)
                 {
-                    SpritebatchDrawer goldenAuraDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+                    SpritebatchDrawer goldenAuraDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
                     goldenAuraDrawer.color = Color.Gold * ExtraMath.Osc(0.5f, 0.7f, speed: 9) * 0.4f;
                     goldenAuraDrawer.color.A = 0;
                     goldenAuraDrawer.scale *= 0.26f * ExtraMath.Osc(0.8f, 1f, speed: 6);

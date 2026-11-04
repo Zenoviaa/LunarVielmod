@@ -174,7 +174,7 @@ public class PearlbornCrystal : ModNPC
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
         glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.9f, 1f, speed: 2) * 0.45f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= ExtraMath.Osc(0.9f, 1f, speed: 3) * 0.25f;

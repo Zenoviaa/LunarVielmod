@@ -202,7 +202,7 @@ public class AbyssEffectsRenderer : ModSystem
         pass.Apply();
 
         SpriteBatch spriteBatch = Main.spriteBatch;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset, Vector2.Zero);
         drawer.drawOrigin = Vector2.Zero;
 
         using (new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with

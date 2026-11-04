@@ -229,7 +229,7 @@ public class BellSpike : ModProjectile
 
     private void DrawBackTentacle(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(Assets.AssetManager.LaserTextures.Aura, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(Assets.AssetManager.LaserTextures.Aura, Projectile.Center);
         drawer.rotation = Projectile.velocity.ToRotation();
         drawer.LeftCenterOrigin();
         drawer.scale.Y *= 0.45f * _scalar;
@@ -244,7 +244,7 @@ public class BellSpike : ModProjectile
     }
     private void DrawFrontTentacle(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(Assets.AssetManager.LaserTextures.TexturedLaser2, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(Assets.AssetManager.LaserTextures.TexturedLaser2, Projectile.Center);
         drawer.rotation = Projectile.velocity.ToRotation();
         drawer.LeftCenterOrigin();
         drawer.scale.Y *= 0.2f * _scalar;

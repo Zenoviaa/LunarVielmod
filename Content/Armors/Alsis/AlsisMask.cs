@@ -294,7 +294,7 @@ public class AlsisPlayer : ModPlayer
         _masteryMagicTextureAsset ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "MasteryofMagic");
         int frameCount = 55;
         SpriteBatch sb = Main.spriteBatch;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_masteryMagicTextureAsset, drawInfo.drawPlayer.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_masteryMagicTextureAsset, drawInfo.drawPlayer.Center);
         Rectangle frame = _masteryMagicTextureAsset.Value.GetFrame(_frame, frameCount);
         drawer.worldPosition.Y += drawInfo.drawPlayer.gfxOffY;
         drawer.color *= alphaTimer;

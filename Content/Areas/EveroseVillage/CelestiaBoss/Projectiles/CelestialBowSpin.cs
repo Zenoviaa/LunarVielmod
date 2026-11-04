@@ -158,18 +158,18 @@ public class CelestialBowSpin : ModProjectile,
 
         float come = EasingFunction.QuadraticBump(Timer / 60f);
 
-        SpritebatchDrawer backGlowDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), Projectile.Center); ;
+        SpritebatchDrawer backGlowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), Projectile.Center); ;
         backGlowDrawer.scale *= pullScale * 2;
         backGlowDrawer.color = Color.Black * 0.5f * alpha;
         Main.spriteBatch.Draw(backGlowDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center); ;
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center); ;
         glowDrawer.scale *= pullScale * 0.5f;
         glowDrawer.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI)) * 0.2f * alpha;
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);
 
-        SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center); ;
+        SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center); ;
         spiralVortexDrawer.scale *= pullScale * 0.5f;
         spiralVortexDrawer.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI)) * 0.1f * alpha;
         spiralVortexDrawer.color.A = 0;
@@ -194,7 +194,7 @@ public class CelestialBowSpin : ModProjectile,
         float lineOut = Timer / 60f;
         lineOut = EasingFunction.InOutSine(lineOut);
         float lineOutAlpha = MathHelper.Lerp(1f, 0f, lineOut);
-        SpritebatchDrawer bloomlineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Parent.Center);
+        SpritebatchDrawer bloomlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Parent.Center);
         bloomlineDrawer.color = Color.LightGreen * alpha * lineOutAlpha;
         bloomlineDrawer.color.A = 0;
 

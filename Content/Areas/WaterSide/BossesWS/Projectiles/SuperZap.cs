@@ -240,7 +240,7 @@ public class SuperZap : ModProjectile
         if (Timer >= 60)
             return;
 
-        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Spotlight, Projectile.Center);
+        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.Spotlight, Projectile.Center);
         Vector2 aimingPoint = EndPoint;
         float rot = (aimingPoint - Projectile.Center).ToRotation();
         lineDrawer.rotation = rot;

@@ -270,7 +270,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             SpritebatchDrawer flameDrawer = SpritebatchDrawer.FromProjectile(Projectile);
             Main.spriteBatch.Draw(flameDrawer);
 
-            SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
+            SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
             glintDrawer.color = Color.Lerp(Color.Yellow, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16));
             glintDrawer.color.A = 0;
             glintDrawer.rotation = MathHelper.Lerp(1.54f, 0f, EasingFunction.InOutCirc(Timer / 30f));

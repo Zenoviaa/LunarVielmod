@@ -514,7 +514,7 @@ public class MegaDrill : ModNPC,
         pass.Apply();
         using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.RocketFlame.Asset, FireRenderPoint);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.RocketFlame.Asset, FireRenderPoint);
             drawer.rotation = FireRenderDirection;
             drawer.RightCenterOrigin();
             drawer.color = Color.OrangeRed * _alpha ;

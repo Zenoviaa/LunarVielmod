@@ -47,7 +47,7 @@ public class InDonutDust : ParticleUpdater<InDonutData>
         float alpha = particle.timeLeft / 24f;
         alpha = MathHelper.Clamp(alpha, 0f, 1f);
         alpha = 1f - alpha;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Common.Particles.InDonutDust.Asset, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Common.Particles.InDonutDust.Asset, particle.position);
         drawer.color = Color.White * MathHelper.Lerp(1f, 0f, alpha);
         drawer.scale = Vector2.Lerp(Vector2.One * 0.5f, Vector2.One * 2, alpha);
         spriteBatch.Draw(drawer);

@@ -55,7 +55,7 @@ public struct ZuiDialogueStyle : IBoxStyle
        // rect.Y += 2;
     //    rect = rect.CenterPad(-4);
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.JaggedWaves.Asset, topRight);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.JaggedWaves.Asset, topRight);
         drawer.worldPosition = topRight;
        // drawer.worldPosition.X += 242;
         drawer.worldPosition += new Vector2(-1, 1).SafeNormalize(Vector2.Zero) * 96;
@@ -137,7 +137,7 @@ public struct ZuiDialogueStyle : IBoxStyle
                 SpritebatchParams.InWorldAndZoomed() with {
                     matrix = Matrix.identity, effect = sunpass.Shader }))
             {
-                var sunDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunSwirl.Asset, Vector2.Zero);
+                var sunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunSwirl.Asset, Vector2.Zero);
                 sunDrawer.worldPosition = drawer.worldPosition;
                 sunDrawer.color = Color.White;
                 sunDrawer.scale *= ExtraMath.Osc(0.9f, 1.1f) * 0.9f;
@@ -181,7 +181,7 @@ public struct ZuiDialogueStyle : IBoxStyle
             using (new SpritebatchContext(spriteBatch, 
                 SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
             {
-                var sunDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunSwirl.Asset, Vector2.Zero);
+                var sunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunSwirl.Asset, Vector2.Zero);
                 sunDrawer.worldPosition = drawer.worldPosition;
                 sunDrawer.color = Color.White;
 
@@ -218,7 +218,7 @@ public struct ZuiDialogueStyle : IBoxStyle
             {
                 foreach (PositionVelocity posVel in new CircleOrientation(drawer.worldPosition, 420, 10))
                 {
-                    var swirl = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineShort.Asset, Vector2.Zero);
+                    var swirl = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineShort.Asset, Vector2.Zero);
                     var rotatedPos = posVel.position.RotatedBy(Main.GlobalTimeWrappedHourly * 0.25f + 0.28f, drawer.worldPosition);
                     swirl.worldPosition = rotatedPos;
                     swirl.color = SunLineColor;
@@ -228,7 +228,7 @@ public struct ZuiDialogueStyle : IBoxStyle
                 }
                 foreach (PositionVelocity posVel in new CircleOrientation(drawer.worldPosition, 217, 10))
                 {
-                    var swirl = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineLong.Asset, Vector2.Zero);
+                    var swirl = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineLong.Asset, Vector2.Zero);
                     var rotatedPos = posVel.position.RotatedBy(Main.GlobalTimeWrappedHourly * 0.25f, drawer.worldPosition);
                     swirl.worldPosition = rotatedPos;
                     swirl.color = SunLineColor;
@@ -280,7 +280,7 @@ public struct ZuiDialogueStyle : IBoxStyle
         var bottomRight = quad.vertices[3].Position.XY();
         var rect = ExtraMath.CreateRectangle(topLeft, bottomRight);
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.JaggedWaves.Asset, quad.vertices[1].Position.XY());
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.JaggedWaves.Asset, quad.vertices[1].Position.XY());
         drawer.worldPosition = topRight;
         drawer.worldPosition += Main.screenPosition;
         drawer.VerticalFrame(0, 2);
@@ -360,7 +360,7 @@ public struct ZuiDialogueStyle : IBoxStyle
                     effect = sunpass.Shader
                 }))
             {
-                var sunDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunSwirl.Asset, Vector2.Zero);
+                var sunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunSwirl.Asset, Vector2.Zero);
                 sunDrawer.worldPosition = drawer.worldPosition;
                 sunDrawer.color = Color.White;
                 sunDrawer.scale *= ExtraMath.Osc(0.9f, 1.1f) * 0.9f;
@@ -405,7 +405,7 @@ public struct ZuiDialogueStyle : IBoxStyle
             using (new SpritebatchContext(spriteBatch,
                 SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.identity }))
             {
-                var sunDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunSwirl.Asset, Vector2.Zero);
+                var sunDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunSwirl.Asset, Vector2.Zero);
                 sunDrawer.worldPosition = drawer.worldPosition;
                 sunDrawer.color = Color.White;
             }
@@ -437,7 +437,7 @@ public struct ZuiDialogueStyle : IBoxStyle
             {
                 foreach (PositionVelocity posVel in new CircleOrientation(drawer.worldPosition, 420, 10))
                 {
-                    var swirl = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineShort.Asset, Vector2.Zero);
+                    var swirl = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineShort.Asset, Vector2.Zero);
                     var rotatedPos = posVel.position.RotatedBy(Main.GlobalTimeWrappedHourly * 0.25f + 0.28f, drawer.worldPosition);
                     swirl.worldPosition = rotatedPos;
                     swirl.color = SunLineColor;
@@ -447,7 +447,7 @@ public struct ZuiDialogueStyle : IBoxStyle
                 }
                 foreach (PositionVelocity posVel in new CircleOrientation(drawer.worldPosition, 217, 10))
                 {
-                    var swirl = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineLong.Asset, Vector2.Zero);
+                    var swirl = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.Dialogue.ZuiSunLineLong.Asset, Vector2.Zero);
                     var rotatedPos = posVel.position.RotatedBy(Main.GlobalTimeWrappedHourly * 0.25f, drawer.worldPosition);
                     swirl.worldPosition = rotatedPos;
                     swirl.color = SunLineColor;

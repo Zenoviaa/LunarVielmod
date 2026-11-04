@@ -73,7 +73,7 @@ namespace Stellamod.Content.Areas.Terror.AccTR
 
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             glowDrawer.color = Color.Red * 0.2f;
             glowDrawer.color.A = 0;
             glowDrawer.scale = Vector2.One * scale * 0.5f;

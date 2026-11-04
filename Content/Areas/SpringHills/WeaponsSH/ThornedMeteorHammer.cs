@@ -460,7 +460,7 @@ public class ThornedMeteorHammerBall : ModProjectile
     {
         if(Projectile.HammerState != MeteorHammerState.Hold)
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSlashTrail);
-        var chainDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.SpringHills.Items.ThornedMeteorHammerChain.Asset, Projectile.Center);
+        var chainDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.SpringHills.Items.ThornedMeteorHammerChain.Asset, Projectile.Center);
         chainDrawer.scale *= Scale;
         var points = Chain.points;//DrawUtilities.CalculateMeteorHammerChainPositions(Projectile.PlayerOwner.Center, Projectile.Center, chainDrawer.Height);
         DrawUtilities.DrawChain(Main.spriteBatch, ref points, chainDrawer);

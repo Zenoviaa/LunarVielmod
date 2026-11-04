@@ -277,7 +277,7 @@ public class WintershardWave : ModProjectile
         shearShader.Time = outRatio * 1.4f;
 
         Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
-        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+        SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(magicCircle, Projectile.Center);
         waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio));
         waveDrawer.color = Color.SkyBlue;
@@ -287,7 +287,7 @@ public class WintershardWave : ModProjectile
         Main.spriteBatch.Restart(effect: shearShader.Effect);
         Main.spriteBatch.Draw(waveDrawer);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkBlue * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 1f;
@@ -715,7 +715,7 @@ public class WintershardClump : ModProjectile
         Vector2 auraPos = Owner.Center + auraOffset;
         _magicCircleRenderer.DrawRing(auraPos, Projectile.velocity, 0, 1, Color.Lerp(Color.Transparent, Color.SkyBlue * 0.75f, GlobalTimer / 60f), Main.GlobalTimeWrappedHourly);
 
-        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, auraPos);
+        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, auraPos);
         flareDrawer.color = Color.DarkBlue;
         flareDrawer.color.A = 0;
         flareDrawer.rotation = Projectile.velocity.ToRotation();
@@ -728,7 +728,7 @@ public class WintershardClump : ModProjectile
         drawer.worldPosition.Y += yOsc;
 
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkBlue * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 0.4f;
@@ -736,7 +736,7 @@ public class WintershardClump : ModProjectile
         Main.spriteBatch.Draw(backGlowDrawwer);
 
 
-        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         spiralDrawer.color = Color.SkyBlue * 0.15f;
         spiralDrawer.color.A = 0;
         spiralDrawer.scale = Vector2.One * 0.4f * EasingFunction.OutExpo(GlobalTimer / 30f);
@@ -744,7 +744,7 @@ public class WintershardClump : ModProjectile
         spiralDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
         Main.spriteBatch.Draw(spiralDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.5f;
         glowDrawer.color.A = 0;
         glowDrawer.scale = Vector2.Lerp(new Vector2(0.1f, 0.05f), new Vector2(0.05f, 0.1f), ExtraMath.Osc(0f, 1f, speed: 3));
@@ -777,7 +777,7 @@ public class WintershardClump : ModProjectile
             drawer.color.A = 0;
             Main.spriteBatch.Draw(drawer);
         }
-        SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+        SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
         glowDrawer2.color = Color.SkyBlue * 0.25f * ExtraMath.Osc(0.5f, 1f, speed: 3);
         glowDrawer2.color.A = 0;
         glowDrawer2.scale = Vector2.One * 0.4f;
@@ -1058,14 +1058,14 @@ public class WintershardGlass : ModProjectile
     }
     private void DrawPixelated(SpriteBatch sb, Vector2 screenPos)
     {
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkBlue * 0.35f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 0.15f;
         Main.spriteBatch.Draw(backGlowDrawwer);
 
 
-        SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+        SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
         glowDrawer2.color = Color.SkyBlue * 0.25f * ExtraMath.Osc(0.5f, 1f, speed: 3);
         glowDrawer2.color.A = 0;
         glowDrawer2.scale = Vector2.One * 0.2f;

@@ -37,7 +37,7 @@ public class STARTELEPORT : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.WarriorStarMedal.Asset, Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.Tundra.Abyss.BossesAB.RoyalStar.WarriorStarMedal.Asset, Projectile.Center);
         drawer.scale = Vector2.One * Scale;
         drawer.color = Color.Lerp(Color.Gold, Color.Transparent, EasingFunction.OutExpo(Timer / 60f));
         drawer.color.A = 0;

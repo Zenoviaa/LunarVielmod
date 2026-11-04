@@ -427,7 +427,7 @@ public class MorrowSalfacePotionHeld : ModProjectile
     {
         var holdPos = Owner.MountedCenter + new Vector2(0, -18);
         var asset = LittleBomb;
-        var drawer = SpritebatchDrawer.FromTextureAsset(asset, holdPos);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(asset, holdPos);
         drawer.VerticalFrame(0, Main.projFrames[Type]);
         drawer.scale *= _actualScale;
         drawer.scale *= ExtraMath.Osc(0.95f, 1f, speed: 3, Projectile.identity);

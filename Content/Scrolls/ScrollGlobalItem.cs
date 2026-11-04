@@ -221,7 +221,7 @@ public class SimpleWhiteHomingBolt : ModProjectile,
     {
         float scale = EasingFunction.InOutSine(Timer / 30f);
         scale *= ExtraMath.Osc(0.3f, 1f, 0, Projectile.identity);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, Projectile.Center);
         for(int i =1; i < Projectile.oldPos.Length; i++)
         {
             float ratio = (float)i / (float)Projectile.oldPos.Length;
@@ -241,7 +241,7 @@ public class SimpleWhiteHomingBolt : ModProjectile,
         sb.Draw(glowDrawer);
 
         Asset<Texture2D> innerTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow");
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(innerTexture, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(innerTexture, Projectile.Center);
         glowDrawer.color = Color.Black * 0.3f;
         glowDrawer.scale *= 0.24f * scale;
         sb.Draw(glowDrawer);
@@ -297,7 +297,7 @@ public class ScrollGlobalItem : GlobalItem
         base.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         if (ScrollAbilities.IsEnchanting() && ScrollAbilities.IsApplicable(item))
         {
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + position);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + position);
             glowDrawer.color = Color.Green * ExtraMath.Osc(0.5f, 1f, speed: 10) * ScrollAbilities.Alpha;
             glowDrawer.color.A = 0;
             glowDrawer.scale *= 0.2f;

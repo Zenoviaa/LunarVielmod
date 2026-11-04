@@ -102,7 +102,7 @@ public class AmmoToolBrowserMenu : UIPanel
     {
         base.DrawSelf(spriteBatch);
         Rectangle r = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-        SpritebatchDrawer d = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile.Value, Vector2.Zero);
+        SpritebatchDrawer d = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile.Value, Vector2.Zero);
         d.dstRect = r;
         d.drawOrigin = Vector2.Zero;
         d.color = Color.Black * textAlpha * 0.8f;

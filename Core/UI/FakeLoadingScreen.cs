@@ -193,12 +193,12 @@ public class FakeLoadingScreen : ModSystem
         //sb.Draw(_loadingScreenSplashTextureAsset.Value, centerScreen, null, Color.White * _alpha, 0, _loadingScreenSplashTextureAsset.Value.Size() * 0.5f, 0.9f, SpriteEffects.None, 0);
         
         Vector2 middleOffset = new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f;
-        SpritebatchDrawer splashArtDrawer = SpritebatchDrawer.FromTextureAsset(
+        SpritebatchDrawer splashArtDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
             _loadingScreenSplashTextureAsset, Main.screenPosition + centerScreen);
         splashArtDrawer.color = Color.White * _alpha;
         splashArtDrawer.scale = Vector2.One * 0.925f * 0.39f;
 
-        SpritebatchDrawer overlayDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Main.screenPosition + centerScreen);
+        SpritebatchDrawer overlayDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Main.screenPosition + centerScreen);
         Rectangle screenRect = new Rectangle(0, 0, width, height);
         overlayDrawer.color = Color.Black * _alpha;
         overlayDrawer.dstRect = screenRect;
@@ -222,25 +222,25 @@ public class FakeLoadingScreen : ModSystem
             Rectangle fillRect = new Rectangle((int)xOffset - 16, height - 64, w, 8);
             Rectangle fillRect2 = new Rectangle((int)xOffset - 16, height - 64, (int)maxWidth, 8);
 
-            SpritebatchDrawer blackBarDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Main.screenPosition + centerScreen);
+            SpritebatchDrawer blackBarDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Main.screenPosition + centerScreen);
             blackBarDrawer.dstRect = fillRect2;
             blackBarDrawer.drawOrigin = Vector2.Zero;
             blackBarDrawer.color = Color.Black * 0.6f * _alpha;
             sb.Draw(blackBarDrawer);
 
-            SpritebatchDrawer whiteBarDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Main.screenPosition + centerScreen);
+            SpritebatchDrawer whiteBarDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Main.screenPosition + centerScreen);
             whiteBarDrawer.dstRect = fillRect;
             whiteBarDrawer.drawOrigin = Vector2.Zero;
             whiteBarDrawer.color *= _alpha;
             sb.Draw(whiteBarDrawer);
 
 
-            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Main.screenPosition + fillRect.TopRight() + new Vector2(0, 4));
+            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Main.screenPosition + fillRect.TopRight() + new Vector2(0, 4));
             lineDrawer.scale = new Vector2(0.25f, 2f);
             lineDrawer.color *= _alpha;
             sb.Draw(lineDrawer);
 
-            SpritebatchDrawer whiteZui = SpritebatchDrawer.FromTextureAsset(_runningWhiteZuiTextureAsset, Main.screenPosition + fillRect2.TopRight() + new Vector2(64, 0));
+            SpritebatchDrawer whiteZui = SpritebatchDrawer.FromTextureGetLightingColor(_runningWhiteZuiTextureAsset, Main.screenPosition + fillRect2.TopRight() + new Vector2(64, 0));
             whiteZui.sourceRect = _runningWhiteZuiTextureAsset.Value.GetFrame(_framer.frame, 9);
             whiteZui.BottomCenterOrigin();
             whiteZui.color *= _alpha;
@@ -257,7 +257,7 @@ public class FakeLoadingScreen : ModSystem
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer,
                 ShaderContent.GetInstance<SpriteFadeShader>().Effect);
 
-            SpritebatchDrawer backBoxDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+            SpritebatchDrawer backBoxDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Vector2.Zero);
             backBoxDrawer.drawOrigin = Vector2.Zero;
             Rectangle blackBoxDrawRect = new Rectangle((int)tipPosition.X - 252, (int)tipPosition.Y - 128, 1024, 384);
             backBoxDrawer.dstRect = blackBoxDrawRect;

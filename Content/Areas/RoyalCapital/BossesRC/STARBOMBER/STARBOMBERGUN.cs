@@ -91,7 +91,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float primeProgress = _primeTimer / 45f;
             drawPosition += Main.rand.NextVector2Circular(4, 4) * primeProgress;
 
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, 
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, 
                 drawPosition + direction * 56);
             glowDrawer.color = Color.Blue * 0.3f;
             glowDrawer.color.A = 0;
@@ -112,7 +112,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
   
             }
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAsset, drawPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAsset, drawPosition);
             drawer.color = finalColor;
             drawer.rotation = rotation;
             drawer.scale = finalScale;
@@ -193,7 +193,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             }
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAsset, drawPosition);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAsset, drawPosition);
             drawer.color = finalColor;
             drawer.rotation = rotation;
             drawer.scale = finalScale;

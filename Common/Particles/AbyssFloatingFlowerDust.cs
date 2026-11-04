@@ -66,7 +66,7 @@ public class AbyssFloatingFlowerDust : ParticleUpdater<AbyssFloatingFlowerDustDa
         float interpolant = EasingFunction.QuadraticBump(lerpValue);
 
         (Texture2D texture, Rectangle frame) = GetParticleFrame(particle.frameIndex);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
         drawer.sourceRect = frame;
         drawer.CenterOrigin();
         drawer.color = Color.White * interpolant;

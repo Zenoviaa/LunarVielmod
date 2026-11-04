@@ -1,12 +1,6 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
-using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -16,6 +10,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
 
 public class NiiviLightningStrike : ModProjectile
 {
+    public struct LightningStrikeData
+    {
+        public float randWidth;
+        public float randRotation;
+        public float randHue;
+    }
     enum AIState
     {
         Telegraph,
@@ -32,6 +32,24 @@ public class NiiviLightningStrike : ModProjectile
         }
     }
     int NumStrikes => 16;
+    LightningStrikeData[] StrikeData
+    {
+        get
+        {
+            if(field == null)
+            {
+                field = new LightningStrikeData[NumStrikes];
+                for(var i = 0; i < NumStrikes; i++)
+                {
+                    ref var data = ref field[i];
+                    data.randWidth = Main.rand.NextFloat(0.6f, 1f);
+                    data.randRotation = Main.rand.NextFloat(-0.05f, 0.05f);
+                    data.randHue = Main.rand.NextFloat(0f, 1f);
+                }
+            }
+            return field;
+        }
+    }
     float[] StrikeTimers => field ??= new float[NumStrikes];
     AIState[] StrikeStates => field ??= new AIState[NumStrikes];
 
@@ -76,7 +94,7 @@ public class NiiviLightningStrike : ModProjectile
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        for(var i = 0; i < NumStrikes; i++)
+        for (var i = 0; i < NumStrikes; i++)
         {
             ref var state = ref StrikeStates[i];
             if (_randIndex == i)
@@ -89,8 +107,8 @@ public class NiiviLightningStrike : ModProjectile
             ref var timer = ref StrikeTimers[i];
             if (timer >= StrikeTime * 0.3f)
                 continue;
-      
-            var ratio = (float)i / (float)NumStrikes;
+
+            var ratio = i / (float)NumStrikes;
             var startPOsition = Vector2.Lerp(TopLeft, TopRight, ratio);
             var endPosition = startPOsition;
             endPosition.Y = Y;
@@ -108,7 +126,7 @@ public class NiiviLightningStrike : ModProjectile
 
     bool NoStrikesLeft()
     {
-        for(var k = 0; k < StrikeStates.Length; k++)
+        for (var k = 0; k < StrikeStates.Length; k++)
         {
             ref var state = ref StrikeStates[k];
             ref var timer = ref StrikeTimers[k];
@@ -128,7 +146,7 @@ public class NiiviLightningStrike : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-            for(var k = 0; k < StrikeStates.Length; k++)
+            for (var k = 0; k < StrikeStates.Length; k++)
             {
                 ref var state = ref StrikeStates[k];
                 ref var timer = ref StrikeTimers[k];
@@ -160,13 +178,13 @@ public class NiiviLightningStrike : ModProjectile
                     {
                         if (_randIndex == k)
                             continue;
-                        if(timer == 1)
+                        if (timer == 1)
                         {
-                 
+
                             var zap = AssetReferences.Assets.Sounds.StormDragon_LightingZap.Asset with { PitchVariance = 0.4f };
                             SoundEngine.PlaySound(zap);
 
-                            var ratio = (float)k / (float)NumStrikes;
+                            var ratio = k / (float)NumStrikes;
                             var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
                             var endPosition = startPosition + new Vector2(0, StrikeHeight);
                             var vel = (endPosition - startPosition).SafeNormalize(Vector2.Zero) * 4;
@@ -174,17 +192,16 @@ public class NiiviLightningStrike : ModProjectile
 
                             void Blast()
                             {
-   
                                 var currentPosition = Projectile.Center;
                                 var fx = FXUtil.GlowCircleBoom(endPosition, DrawUtilities.Prismatic, DrawUtilities.Prismatic, Color.Black, 24);
-                                fx.Scale *= 2;
+                                fx.Scale *= 2.2F;
 
                                 var fx2 = FXUtil.GlowCircleBoom(endPosition, Color.White, DrawUtilities.Prismatic, Color.Black, 24);
                                 fx2.Scale *= 1.5f;
 
                                 var pos = Main.rand.NextVector2Circular(7, 7) + endPosition;
                                 var color = DrawUtilities.Prismatic.ToVector4();
-                                for (var i = 0; i < 12; i++)
+                                for (var i = 0; i < 10; i++)
                                 {
                                     Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                                     {
@@ -197,17 +214,67 @@ public class NiiviLightningStrike : ModProjectile
                                     });
                                 }
 
-
                                 Particles.DiamondSparkle.Spawn(new()
                                 {
                                     position = endPosition + Main.rand.NextVector2Circular(7, 7),
                                     timeLeft = 30,
                                     color = DrawUtilities.Prismatic
                                 });
+
+                                foreach (PositionVelocity posVel in new CircleOrientation(endPosition, 32, 8))
+                                {
+                                    Particles.GlowDust.Spawn(new()
+                                    {
+                                        position = posVel.position,
+                                        velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
+                                        color = DrawUtilities.Prismatic,
+                                        timeLeft = Main.rand.Next(45, 120),
+                                        scale = Main.rand.NextFloat(0.15f, 0.25f) * 2
+                                    });
+                                }
+
+                                for(var i = 0; i < 3; i++)
+                                {
+                                    var vel = -Vector2.UnitY.RotatedByRandom(1f) * 8;
+                                    var fxs = FXUtil.GlowStretch(endPosition, vel);
+                                    fxs.InnerColor = Color.White;
+                                    fxs.OuterGlowColor = Color.Black;
+                                    fxs.GlowColor = Color.DarkGray;
+                                    fxs.VectorScale.X *= 0.5F;
+                                }
+
+                                Particles.NiiviLightningImpact.Spawn(new()
+                                {
+                                    position = endPosition,
+                                    timeLeft = 30,
+                                    color = Color.Lerp(Color.White, DrawUtilities.Prismatic, 0.3f),
+                                    scale = new Vector2(Main.rand.NextFloat(0.86f, 1f), 1f)
+                                });
+                            }
+
+                            if(timer == 15)
+                            {
+                                var soundStyle = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap3.Asset;
+                                var randIndex = Main.rand.Next(2);
+                                switch (randIndex)
+                                {
+                                    case 1:
+                                        {
+                                            soundStyle = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap4.Asset;
+                                        }
+                                        break;
+                                }
+
+                                soundStyle = soundStyle with { PitchVariance = 0.5F, MaxInstances = 3, Volume = 0.5F };
+                                SoundEngine.PlaySound(soundStyle, endPosition);
+                                var fx = FXUtil.GlowCircleBoom(endPosition, DrawUtilities.Prismatic * 0.6F, DrawUtilities.Prismatic * 0.6F, Color.Black, 24);
+                                fx.Scale *= 1f;
+
+
                             }
 
                             Blast();
-                            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+                            FXUtil.ShakeCamera(Projectile.Center, 1024, 10);
                             for (var j = 0; j < 24; j++)
                             {
                                 var pos = Vector2.Lerp(startPosition, endPosition, Main.rand.NextFloat(0f, 1f));
@@ -231,7 +298,7 @@ public class NiiviLightningStrike : ModProjectile
     void DrawPixelatedTelegraph(SpriteBatch sb, Vector2 sp)
     {
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.HappyBrick.Asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.HappyBrick.Asset, Projectile.Center);
         drawer.scale *= 0.75F;
         //drawer.scale.Y *= 2f;
         drawer.BottomCenterOrigin();
@@ -248,9 +315,13 @@ public class NiiviLightningStrike : ModProjectile
                 ref var state = ref StrikeStates[i];
                 if (state == AIState.Strike)
                     continue;
-                var ratio = (float)i / (float)NumStrikes;
+                ref var strikeData = ref StrikeData[i];
+                var ratio = i / (float)NumStrikes;
                 var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
-                startPosition.Y =Y;
+                startPosition.Y = Y;
+
+
+
                 var scrollingColor = Color.Red;
                 scrollingColor.ScrollHue(i * 24 + timer);
 
@@ -267,7 +338,7 @@ public class NiiviLightningStrike : ModProjectile
                 drawer.worldPosition = startPosition;
                 sb.Draw(drawer);
 
-                var lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.BlastPillar.Asset, startPosition);
+                var lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.BlastPillar.Asset, startPosition);
                 lineDrawer.BottomCenterOrigin();
                 lineDrawer.worldPosition.Y -= 52;
                 lineDrawer.color = scrollingColor * a * osc3 * 0.85F;
@@ -277,14 +348,12 @@ public class NiiviLightningStrike : ModProjectile
 
             }
         }
-    
+
     }
 
     void DrawPixelatedStrike(SpriteBatch sb, Vector2 sp)
     {
-
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SingleLightningStrike.Asset, Projectile.Center);
-        //drawer.scale.Y *= 2f;
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SingleLightningStrike.Asset, Projectile.Center);
         drawer.LeftCenterOrigin();
 
         var halfTime = TelegraphTime * 0.5f;
@@ -302,27 +371,35 @@ public class NiiviLightningStrike : ModProjectile
                 if (state == AIState.Telegraph)
                     continue;
 
-                var ratio = (float)i / (float)NumStrikes;
+                var ratio = i / (float)NumStrikes;
                 var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
                 var scrollingColor = Color.White;
-             
+
+                ref var strikeData = ref StrikeData[i];
+       
+                var hueOffset = ((float)i * 24F + timer + strikeData.randHue * 6F);
+                hueOffset /= 360F;
+                hueOffset %= 1.0F;
+
                 var osc = ExtraMath.Osc(0.92f, 1f, speed: 32);
                 var osc2 = ExtraMath.Osc(0.7f, 2f, speed: 6, offset: i);
                 var osc3 = osc * osc2;
-                scrollingColor *= osc3;
-                drawer.color = scrollingColor * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(timer / StrikeTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16);
 
                 var telegraphRatio = timer / halfTime;
                 var a = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(telegraphRatio)) * 2f;
-                drawer.color *= a;
-                //   drawer.color.A = 0;
+                var alpha = a *  osc3 * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(timer / TelegraphTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16);
+                var strikeColor = new Color(1.0f, 1.0f, hueOffset, alpha);
+                drawer.color = strikeColor;
                 drawer.worldPosition = startPosition + new Vector2(16, 0);
-                drawer.scale.X = StrikeHeight / (float)drawer.Width;
+                drawer.scale.X = StrikeHeight / drawer.Width;
+                drawer.scale.X *= strikeData.randWidth;
+                
                 drawer.scale.X *= MathHelper.Lerp(1.06f, 1f, EasingFunction.OutExpo(timer / StrikeTime));
                 drawer.scale.Y = MathHelper.Lerp(2f, 1f, EasingFunction.OutSine(timer / StrikeTime));
 
                 drawer.rotation = Vector2.UnitY.ToRotation();
-                if(i % 2== 0)
+                drawer.rotation += strikeData.randRotation;
+                if (i % 2 == 0)
                 {
                     drawer.spriteEffects = SpriteEffects.FlipVertically;
                 }
@@ -330,15 +407,12 @@ public class NiiviLightningStrike : ModProjectile
                 {
                     drawer.spriteEffects = SpriteEffects.None;
                 }
+
                 var bloomDrawer = drawer;
                 bloomDrawer.scale.Y *= 1.5f;
-                bloomDrawer.color *= 0.6F;
+                bloomDrawer.color.A -= 50;
                 sb.Draw(bloomDrawer);
                 sb.Draw(drawer);
-
-                var flickerDrawer = drawer;
-                drawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InExpo(timer / StrikeTime));
-                sb.Draw(flickerDrawer);
             }
         }
     }

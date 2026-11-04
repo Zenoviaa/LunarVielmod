@@ -548,7 +548,7 @@ public class SwingalingCharge : ModProjectile
         sbDrawer.color = Color.Lerp(Color.Transparent, Color.Lerp(Color.Cyan, Color.White, ExtraMath.Osc(0f, 1f, speed: 8)), _charge);
         Main.spriteBatch.Draw(sbDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.Black, Color.Lerp(Color.Cyan, Color.White, ExtraMath.Osc(0f, 1f, speed: 8)), _charge) * 0.24f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.35f;

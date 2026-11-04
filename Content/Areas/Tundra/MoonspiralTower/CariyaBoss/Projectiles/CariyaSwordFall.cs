@@ -96,7 +96,7 @@ public class CariyaSwordFall : ModProjectile
 
         Main.spriteBatch.Restart(effect: shearShader.Effect);
 
-        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         backGlowDrawwer.color = Color.DarkTurquoise * 0.5f;
         backGlowDrawwer.color.A = 0;
         backGlowDrawwer.scale = Vector2.One * 2f;
@@ -111,7 +111,7 @@ public class CariyaSwordFall : ModProjectile
 
         SpriteBatch sb = Main.spriteBatch;
         sb.Restart(effect: shockwaevShader.Effect);
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, Projectile.Center);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, Projectile.Center);
         sbDrawer.BottomCenterOrigin();
         sbDrawer.scale.X *= MathHelper.Lerp(0f, 5f, EasingFunction.OutExpo(Timer / Time));
         sbDrawer.scale.Y += MathHelper.Lerp(1f, 0f, EasingFunction.InOutExpo(Timer / Time));
@@ -124,7 +124,7 @@ public class CariyaSwordFall : ModProjectile
         Main.spriteBatch.Draw(sbDrawer);
 
 
-        sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, Projectile.Center);
+        sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, Projectile.Center);
         sbDrawer.BottomCenterOrigin();
         sbDrawer.scale.X *= MathHelper.Lerp(0f, 3f, EasingFunction.OutExpo(Timer / Time));
         sbDrawer.scale.Y += MathHelper.Lerp(1f, 0f, EasingFunction.InOutExpo(Timer / Time));
@@ -139,7 +139,7 @@ public class CariyaSwordFall : ModProjectile
         sb.RestartDefaults();
 
 
-        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowLineDrawer.worldPosition.Y += height;
         glowLineDrawer.scale.X *= MathHelper.Lerp(1f, 4f, EasingFunction.OutExpo(Timer / Time));
         glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.2f;

@@ -32,7 +32,7 @@ public class StarSmokeDust : ParticleUpdater<StarSmokeDust.Data>
         float interpolant = EasingFunction.QuadraticBump(lerpValue);
 
         (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
         drawer.worldPosition += Main.screenPosition;
         drawer.sourceRect = frame;
         drawer.CenterOrigin();

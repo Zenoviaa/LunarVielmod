@@ -112,7 +112,7 @@ public class FlameHurricane : ModProjectile,
         {
             float easeIn = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 180f));
             float easeOuth = EasingFunction.InOutSine((float)Projectile.timeLeft / 120f);
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
             Vector2 size = drawer.texture.Size();
          
             drawer.scale = Vector2.One * 1.5f;
@@ -147,7 +147,7 @@ public class FlameHurricane : ModProjectile,
             float easeIn = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 180f));
             float easeOuth = EasingFunction.InOutSine((float)Projectile.timeLeft / 120f);
             int max = (int)MathF.Max(Main.screenWidth * 2, Main.screenHeight * 2);
-            SpritebatchDrawer d = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
+            SpritebatchDrawer d = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
             Rectangle dstRectangle = new Rectangle(0, 0, max, max);
             dstRectangle.X = (int)Projectile.Center.X - dstRectangle.Width / 2;
             dstRectangle.Y = (int)Projectile.Center.Y - dstRectangle.Height / 2;

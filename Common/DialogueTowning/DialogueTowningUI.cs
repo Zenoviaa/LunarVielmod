@@ -181,7 +181,7 @@ public class DialogueTowningUI : UIPanel
         });
 
         spriteBatch.Begin(oldParameters);
-        var drawer = SpritebatchDrawer.FromTextureAsset(box, Main.screenPosition);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(box, Main.screenPosition);
         drawer.drawOrigin = Vector2.Zero;
         drawer.worldPosition -= new Vector2(64);
         drawer.worldPosition += DrawPos;

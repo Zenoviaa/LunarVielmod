@@ -1445,7 +1445,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
             if (_chargeAlpha <= 0)
                 return;
-            SpritebatchDrawer circle = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, NPC.Center);
+            SpritebatchDrawer circle = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.WhiteCircle, NPC.Center);
             circle.color = Color.Lerp(Color.Blue, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 16)) * 0.1f;
             circle.color *= _chargeAlpha;
             circle.color.A = 0;

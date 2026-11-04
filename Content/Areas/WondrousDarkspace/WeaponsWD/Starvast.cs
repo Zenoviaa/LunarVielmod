@@ -382,7 +382,7 @@ public class StarvastStarProj : ModProjectile,
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         Main.spriteBatch.Draw(sbDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Goldenrod * 0.3f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.15f;

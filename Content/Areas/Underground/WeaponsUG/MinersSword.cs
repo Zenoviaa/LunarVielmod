@@ -297,7 +297,7 @@ public class ThrowRock : ModProjectile
         Main.spriteBatch.Draw(hammerDrawer);
 
         _outlineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Outline");
-        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
+        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineTextureAsset, Projectile.Center);
         outlineDrawer.color = lightColor;
         outlineDrawer.rotation = Projectile.rotation;
         outlineDrawer.scale *= scale;

@@ -1481,7 +1481,7 @@ public class Celestia : ScarletBoss
 
 
         Asset<Texture2D> horseTextureAsset = ModContent.Request<Texture2D>(Texture + "_Horse");
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(horseTextureAsset, NPC.Bottom);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(horseTextureAsset, NPC.Bottom);
         drawer.spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         Rectangle frame = horseTextureAsset.Value.GetFrame(_horseFrame, 14);
         drawer.sourceRect = frame;
@@ -1498,7 +1498,7 @@ public class Celestia : ScarletBoss
 
     private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        SpritebatchDrawer backGlowDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), NPC.Center); ;
+        SpritebatchDrawer backGlowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), NPC.Center); ;
         backGlowDrawer.color = Color.Black * 0.5f * _ghostAlpha;
         Main.spriteBatch.Draw(backGlowDrawer);
 
@@ -1526,7 +1526,7 @@ public class Celestia : ScarletBoss
 
     private void DrawPixelatedSprites(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, NPC.Bottom);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, NPC.Bottom);
         sbDrawer.scale *= 0.12f * ExtraMath.Osc(0.9f, 1f, speed: 24);
         sbDrawer.color = Color.Turquoise * _slideTrailAlpha * _ghostAlpha;
         sbDrawer.color.A = 0;

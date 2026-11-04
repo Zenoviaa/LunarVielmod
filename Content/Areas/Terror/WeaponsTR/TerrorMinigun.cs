@@ -210,7 +210,7 @@ public class TerrorMinigunShot : ModProjectile,
 
     private void DrawRed(SpriteBatch sb, Vector2 sp)
     {
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Red * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.X *= 1.6f;

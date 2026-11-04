@@ -44,7 +44,7 @@ public static class DialogueTownRenderer
             pass.Apply();
 
             spriteBatch.Begin(SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity, effect = pass.Shader });
-            var squareDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.UI.DialogueBox.Asset, Vector2.Zero);
+            var squareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.UI.DialogueBox.Asset, Vector2.Zero);
             squareDrawer.color = Color.White;
             squareDrawer.dstRect = dstRect;
             squareDrawer.drawOrigin = Vector2.Zero;

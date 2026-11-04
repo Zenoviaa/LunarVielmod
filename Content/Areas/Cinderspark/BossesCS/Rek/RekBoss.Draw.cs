@@ -327,7 +327,7 @@ public partial class RekBoss : IWaterSilhouette
     {
         ref RekSegment segment = ref Segments[index];
         Asset<Texture2D> textureAsset = BodySegmentsTextures[segment.bodyFrame];
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, segment.position);
         drawer.rotation = segment.rotation;
         switch (segment.bodyFrame)
         {
@@ -385,7 +385,7 @@ public partial class RekBoss : IWaterSilhouette
             return;
 
         Asset<Texture2D> textureAsset = SawTextureAsset;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, segment.position);
 
         drawer.rotation = segment.rotation;
         drawer.scale = Vector2.One * segment.sawBladeAlpha;
@@ -423,7 +423,7 @@ public partial class RekBoss : IWaterSilhouette
             return;
 
         Asset<Texture2D> textureAsset = AssetRegistry.GlowMasks.SimpleGlowCircle;
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, segment.position);
         drawer.BottomCenterOrigin();
         drawer.drawOrigin.Y -= 80;
         drawer.scale = Vector2.One * segment.sawBladeAlpha * 0.5f;
@@ -451,7 +451,7 @@ public partial class RekBoss : IWaterSilhouette
         }
         for (int i = 0; i < _spearAlphas.Length; i++)
         {
-            SpritebatchDrawer sprite = SpritebatchDrawer.FromTextureAsset(SpearTextureAsset, NPC.Center);
+            SpritebatchDrawer sprite = SpritebatchDrawer.FromTextureGetLightingColor(SpearTextureAsset, NPC.Center);
             sprite.rotation = NPC.rotation;
             sprite.VerticalFrame(i, _spearAlphas.Length);
             sprite.LeftCenterOrigin();
@@ -484,7 +484,7 @@ public partial class RekBoss : IWaterSilhouette
         }
         for (int i = 0; i < _spearAlphas.Length; i++)
         {
-            SpritebatchDrawer sprite = SpritebatchDrawer.FromTextureAsset(SpearTextureAsset, NPC.Center);
+            SpritebatchDrawer sprite = SpritebatchDrawer.FromTextureGetLightingColor(SpearTextureAsset, NPC.Center);
             sprite.rotation = NPC.rotation;
             sprite.VerticalFrame(i, _spearAlphas.Length);
             sprite.LeftCenterOrigin();
@@ -504,7 +504,7 @@ public partial class RekBoss : IWaterSilhouette
     {
         ref RekSegment segment = ref Segments[index];
         Asset<Texture2D> textureAsset = BodySegmentsTextures[segment.bodyFrame];
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, segment.position);
         drawer.rotation = segment.rotation;
         drawer.spriteEffects = GetSegmentSpriteEffects(index);
         drawer.color = Color.Lerp(drawer.color, Color.Black, _huskAlpha);
@@ -550,7 +550,7 @@ public partial class RekBoss : IWaterSilhouette
     {
         ref RekSegment segment = ref Segments[index];
         Asset<Texture2D> textureAsset = BodySegmentsTextures[segment.bodyFrame];
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, segment.position);
         drawer.rotation = segment.rotation;
         drawer.spriteEffects = GetSegmentSpriteEffects(index);
         drawer.color = Color.Lerp(drawer.color, Color.Black, _huskAlpha);
@@ -598,7 +598,7 @@ public partial class RekBoss : IWaterSilhouette
         if (segment.isBurningNoWarning)
             return;
         Asset<Texture2D> textureAsset = BodySegmentsTextures[segment.bodyFrame];
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(textureAsset, segment.position);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(textureAsset, segment.position);
         drawer.rotation = segment.rotation;
         drawer.spriteEffects = GetSegmentSpriteEffects(index);
         switch (segment.bodyFrame)
@@ -624,7 +624,7 @@ public partial class RekBoss : IWaterSilhouette
         if (!segment.isBurningNoWarning)
             return;
         var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, segment.position);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, segment.position);
         glowDrawer.scale *= 0.48f;
         glowDrawer.color = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12)) * ExtraMath.Osc(0.5f, 0.75f, speed: 8) * segment.burnAlpha * 0.2f;
         glowDrawer.color.A = 0;
@@ -635,7 +635,7 @@ public partial class RekBoss : IWaterSilhouette
     {
         ref RekSegment segment = ref Segments[index];
         var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, segment.position);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, segment.position);
         glowDrawer.scale *= 0.38f * MathHelper.Lerp(1f, 0.2f, index / (float)Segments.Length);
         glowDrawer.color = Color.White * 0.33f;
         glowDrawer.color = Color.Lerp(glowDrawer.color, Color.Black, _huskAlpha);
@@ -646,7 +646,7 @@ public partial class RekBoss : IWaterSilhouette
 
     private void DrawMouthAura(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer spotLight = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Spotlight, NPC.Center);
+        SpritebatchDrawer spotLight = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.Spotlight, NPC.Center);
         spotLight.color = Color.Red * _mouthAuraAlpha;
         spotLight.color.A = 0;
         spotLight.LeftCenterOrigin();
@@ -663,7 +663,7 @@ public partial class RekBoss : IWaterSilhouette
 
     private void DrawFireballOrb(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer spotLight = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer spotLight = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         spotLight.color = Color.Red * _rekfireballAlpha;
         spotLight.color.A = 0;
         spotLight.LeftCenterOrigin();

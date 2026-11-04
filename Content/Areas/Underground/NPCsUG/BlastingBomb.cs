@@ -78,7 +78,7 @@ public class BlastingBombBoom : ModProjectile
         drawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InQuad(Timer / ExplodeTime));
         Main.spriteBatch.Draw(drawer);
 
-        var flashDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.JumbledGlowCircle.Asset, Projectile.Center);
+        var flashDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.JumbledGlowCircle.Asset, Projectile.Center);
         flashDrawer.color = Color.Lerp(Color.OrangeRed, Color.Transparent, EasingFunction.OutExpo(Timer / ExplodeTime));
         flashDrawer.color.A = 0;
         flashDrawer.scale *= 2;
@@ -266,7 +266,7 @@ public class BlastingBomb : ModNPC,
         NPC.DrawAnimator(spriteBatch, drawColor);
         if(_aboutToBlowColor.A > 3)
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.JumbledGlowCircle.Asset, NPC.Center);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.JumbledGlowCircle.Asset, NPC.Center);
             drawer.color = _aboutToBlowColor * ExtraMath.Osc(0.5f, 1f, speed: 32);
             drawer.color.A = 0;
             drawer.scale = Vector2.Lerp(new Vector2(0.2f), new Vector2(0.4f), ((float)_aboutToBlowColor.A) / 255f);

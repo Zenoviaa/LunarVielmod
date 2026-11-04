@@ -85,7 +85,7 @@ public class PowderUI : UIPanel
         {
             var uiElement = _slots[i];
             Vector2 center = uiElement.GetDimensions().ToRectangle().Center();
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + center);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + center);
             glowDrawer.scale *= 0.25f;
             glowDrawer.color = Color.White * ExtraMath.Osc(0.4f, 0.6f, speed: 6);
             glowDrawer.color.A = 0;

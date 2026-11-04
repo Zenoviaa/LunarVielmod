@@ -211,7 +211,7 @@ public class BurningBlackSkull : ModProjectile
         skullDrawer.color = Color.Lerp(Color.Red * 0.1f, Color.Red * 0.3f, ExtraMath.Osc(0f, 1f, speed: 16, offset: Projectile.whoAmI));
         Main.spriteBatch.Draw(skullDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.Yellow * 0.2f, Color.Yellow * 0.5f, ExtraMath.Osc(0f, 1f, speed: 16, offset: Projectile.whoAmI)) * 0.3f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= .35f;

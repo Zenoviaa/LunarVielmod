@@ -81,7 +81,7 @@ public class TalkingOptionButtonUI : UIPanel
         rect.Y += 8;
 
         //Daraw the background for the button
-        var nameTagDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.GooberPortraits.ChatButton.Asset, Vector2.Zero);
+        var nameTagDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.GooberPortraits.ChatButton.Asset, Vector2.Zero);
 
         nameTagDrawer.worldPosition = Main.screenPosition + rect.Center();
 

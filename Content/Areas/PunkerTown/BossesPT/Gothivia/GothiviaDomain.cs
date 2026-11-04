@@ -35,7 +35,7 @@ public class GothiviaDomain : ModSystem
         var shader = ShaderContent.GetInstance<FlameWindsShader>();
         shader.Time = Main.GlobalTimeWrappedHourly * 10;
         spriteBatch.Restart(effect: shader);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.BlurryPerlinNoise.Asset, Vector2.Zero);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.BlurryPerlinNoise.Asset, Vector2.Zero);
         drawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         drawer.color = Color.White * 0.4f;
         drawer.drawOrigin = Vector2.Zero;
@@ -123,7 +123,7 @@ public class GothiviaDomain : ModSystem
             spriteBatch.Draw(domainRT, new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2), drawColor2);
             spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * (0.5f + _darkenAlpha));
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar.Value, Vector2.Zero);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar.Value, Vector2.Zero);
             Rectangle rect = new Rectangle(-Main.screenWidth / 2, 384, Main.screenWidth * 2, Main.screenHeight);
             drawer.dstRect = rect;
             drawer.drawOrigin = Vector2.Zero;
@@ -140,14 +140,14 @@ public class GothiviaDomain : ModSystem
             if (singularityFallSystem.hoveringPlatform)
             {
                 Vector2 drawPosition = new Vector2(Main.LocalPlayer.Center.X, singularityFallSystem.hoverPlatformY);
-                SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+                SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.BlackTile, Vector2.Zero);
                 blackDrawer.dstRect = new Rectangle(0, (int)(drawPosition.Y - Main.screenPosition.Y) + 48, Main.screenWidth, Main.screenHeight);
                 blackDrawer.drawOrigin = Vector2.Zero;
                 blackDrawer.color = Color.White * 0.15f;
                 var bloomLine = AssetReferences.Assets.NoiseTextures.BloomLine.Asset;
                 //drawPosition -= Main.screenPosition;
                 drawPosition.Y += 48;
-                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bloomLine, drawPosition);
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(bloomLine, drawPosition);
                 drawer.rotation += MathHelper.PiOver2;
                 drawer.color = Color.White * ExtraMath.Osc(0.8f, 1f, speed: 12);
                 drawer.color.A = 0;

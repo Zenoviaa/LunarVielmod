@@ -239,7 +239,7 @@ public class BombThrowerHeld : ModProjectile
     {
         var holdPos = Owner.MountedCenter + new Vector2(0, -18);
         var asset = AttackCycle == 0 ? LittleBomb : BigBomb;
-        var drawer = SpritebatchDrawer.FromTextureAsset(asset, holdPos);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(asset, holdPos);
         drawer.VerticalFrame(0, Main.projFrames[Type]);
         drawer.scale *= _actualScale;
         drawer.scale *= ExtraMath.Osc(0.95f, 1f, speed: 3, Projectile.identity);
@@ -430,7 +430,7 @@ public class ThrowingBomb : ModProjectile
         glowDrawer.color = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.OutExpo(FlashTime / 10f));
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);
-        var flashDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, StringPosition);
+        var flashDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, StringPosition);
         flashDrawer.color = Color.Orange;
         flashDrawer.color.A = 0;
         flashDrawer.scale *= 0.12f;

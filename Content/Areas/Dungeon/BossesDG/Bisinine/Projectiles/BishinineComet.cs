@@ -428,13 +428,13 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             }
             spriteBatch.Draw(starTexture, drawPosition, null, cometColor * 0.4f, Projectile.rotation, drawOrigin, Projectile.scale * Size * 2, SpriteEffects.None, 0);
             spriteBatch.Draw(starTexture, drawPosition, null, cometColor, Projectile.rotation, drawOrigin, Projectile.scale * Size, SpriteEffects.None, 0);
-            SpritebatchDrawer predictionDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, _predictionPosition);
+            SpritebatchDrawer predictionDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, _predictionPosition);
             predictionDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.5f, 1f, speed: 6, Projectile.whoAmI) * 0.3f * MathHelper.Lerp(0f, 1f, Timer / _predictionSteps);
             predictionDrawer.color.A = 0;
             predictionDrawer.scale = new Vector2(0.5f, 0.2f);
             spriteBatch.Draw(predictionDrawer);
 
-            predictionDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, _predictionPosition);
+            predictionDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, _predictionPosition);
             predictionDrawer.BottomCenterOrigin();
             predictionDrawer.color = Color.SkyBlue * 0.9f * MathHelper.Lerp(0f, 1f, Timer / _predictionSteps);
             predictionDrawer.color.A = 0;

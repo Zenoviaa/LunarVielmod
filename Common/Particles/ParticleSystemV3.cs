@@ -72,6 +72,7 @@ public sealed class Particles : ModSystem
     public static readonly DiamondSparkle DiamondSparkle = new();
     public static readonly NiiviIceSpike IceSpike = new();
     public static readonly NiiviIceCrack IceCrack = new();
+    public static readonly NiiviLightningImpact NiiviLightningImpact = new();
     public override void Load()
     {
         base.Load();
@@ -123,7 +124,8 @@ public sealed class Particles : ModSystem
             CeramicPot,
             DiamondSparkle,
             IceSpike,
-            IceCrack
+            IceCrack,
+            NiiviLightningImpact
         };
 
         if (Main.netMode == NetmodeID.Server)

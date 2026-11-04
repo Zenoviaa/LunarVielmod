@@ -1151,7 +1151,7 @@ public class Cariya : ScarletBoss
     }
     private void DrawDirectionLine(SpriteBatch spriteBatch, Vector2 drawOffset, Color drawColor)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47"), NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47"), NPC.Center);
         //drawer.sourceRect = NPC.frame;
         drawer.TopCenterOrigin();
         drawer.rotation -= MathHelper.PiOver2;
@@ -1254,7 +1254,7 @@ public class Cariya : ScarletBoss
 
     private void DrawWing(SpriteBatch spriteBatch)
     {
-        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_wingTextureAsset, NPC.Center);
         wingDrawer.RightCenterOrigin();
         wingDrawer.drawOrigin.X += 16;
         wingDrawer.drawOrigin.Y += 32;
@@ -1309,7 +1309,7 @@ public class Cariya : ScarletBoss
     }
     private void DrawSpellCircle(SpriteBatch sb)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MagicCircle2, NPC.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.MagicCircle2, NPC.Center);
         drawer.color = Color.Lerp(Color.LightBlue, Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 4)) * _magicCircleAlpha;
         drawer.color.A = 0;
         drawer.rotation = Main.GlobalTimeWrappedHourly;
@@ -1324,7 +1324,7 @@ public class Cariya : ScarletBoss
         _wingTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Wing");
         PixelationManager.QueuePrimitivesDrawAction(DrawTrail);
         PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
-        SpritebatchDrawer auraDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer auraDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         auraDrawer.scale *= 0.2f;
         auraDrawer.color = Color.Blue * ExtraMath.Osc(0.5f, 1f) * _ghostAlpha;
         auraDrawer.color.A = 0;

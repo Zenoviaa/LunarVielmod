@@ -640,7 +640,7 @@ public class MagicalAxeThrow : ModProjectile
     }
     void DrawPixelated(SpriteBatch sb, Vector2 sp)
     {
-        var swirlDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, Projectile.Center);
+        var swirlDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, Projectile.Center);
         swirlDrawer.color = Color.SkyBlue;
         swirlDrawer.color.A = 0;
         swirlDrawer.scale *= 0.4f;
@@ -651,7 +651,7 @@ public class MagicalAxeThrow : ModProjectile
         swirlDrawer.scale *= 2f;
         swirlDrawer.rotation *= -1;
         Main.spriteBatch.Draw(swirlDrawer);
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         glowDrawer.color = Color.SkyBlue * 0.4f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.66f;

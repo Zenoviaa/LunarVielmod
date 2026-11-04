@@ -220,7 +220,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
 
         sb.RestartDefaults();
 
-        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowLineDrawer.worldPosition.Y += height;
         glowLineDrawer.scale.X *= MathHelper.Lerp(1f, 8f, EasingFunction.OutExpo(Timer / Time));
         glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.2f;
@@ -233,7 +233,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
 
         if (Style == 2)
         {
-            glowLineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            glowLineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             glowLineDrawer.worldPosition.Y += height;
             glowLineDrawer.scale.X *= MathHelper.Lerp(6, 8f, EasingFunction.OutExpo(Timer / Time)) * 1.15f;
             glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.2f;
@@ -244,7 +244,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
             Main.spriteBatch.Draw(glowLineDrawer);
 
 
-            glowLineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            glowLineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             glowLineDrawer.worldPosition.Y += height;
             glowLineDrawer.scale.X *= MathHelper.Lerp(6, 8f, EasingFunction.OutExpo(Timer / Time)) * 0.8f;
             glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.5f;
@@ -260,7 +260,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
             float outRatio = Timer / Time;
 
 
-            SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.VerlianSigil.Asset, Projectile.Center);
+            SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.VerlianSigil.Asset, Projectile.Center);
             waveDrawer.rotation = 0;
             waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 2f, EasingFunction.InOutSine(outRatio));
             waveDrawer.scale *= Strength;

@@ -145,7 +145,7 @@ public abstract class BaseCollectibleTile : ModTile
                 rot += Main.GlobalTimeWrappedHourly;
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(12, 16);
 
-                SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Tile[Type], drawPos + offset);
+                SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Tile[Type], drawPos + offset);
                 glowDrawer.color = Color.Red * 0.3f;
                 glowDrawer.color.A = 0;
                 glowDrawer.VerticalFrame(1, 3);
@@ -155,7 +155,7 @@ public abstract class BaseCollectibleTile : ModTile
             }
 
             //Draw Outkline
-            SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Tile[Type], drawPos);
+            SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Tile[Type], drawPos);
             outlineDrawer.color = drawColor * ExtraMath.Osc(0f, 1f, speed: 3);
             outlineDrawer.VerticalFrame(2, 3);
             outlineDrawer.CenterOrigin();
@@ -164,7 +164,7 @@ public abstract class BaseCollectibleTile : ModTile
 
         }
 
-        SpritebatchDrawer mainDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Tile[Type], drawPos);
+        SpritebatchDrawer mainDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Tile[Type], drawPos);
         mainDrawer.color = drawColor;
         mainDrawer.VerticalFrame(0, 3);
         mainDrawer.CenterOrigin();

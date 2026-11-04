@@ -240,7 +240,7 @@ public class EdgeofTheMoonRenderer : ModSystem
         {
 
             //First we draw the mask texture that the clouds are going to be scrolling over
-            SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6"), Main.screenPosition);
+            SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6"), Main.screenPosition);
             maskDrawer.color = Color.White;
             maskDrawer.color.A = 0;
             maskDrawer.CenterOrigin();
@@ -283,7 +283,7 @@ public class EdgeofTheMoonRenderer : ModSystem
                 mixShader.Effect);
 
 
-            SpritebatchDrawer cloudDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.Clouds, Main.screenPosition);
+            SpritebatchDrawer cloudDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.Noise.Clouds, Main.screenPosition);
             cloudDrawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             cloudDrawer.drawOrigin = Vector2.Zero;
             cloudDrawer.color = Color.Lerp(Color.White, Color.Black, 0f) * 0.9f;
@@ -306,7 +306,7 @@ public class EdgeofTheMoonRenderer : ModSystem
 
             spriteBatch.Begin();
 
-            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine"), moonPosition);
+            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine"), moonPosition);
             lineDrawer.color = Color.White * 0.05f * ExtraMath.Osc(0.5f, 1f, speed: 1f);
             lineDrawer.color.A = 0;
             lineDrawer.BottomCenterOrigin();
@@ -331,7 +331,7 @@ public class EdgeofTheMoonRenderer : ModSystem
                 crystalShader.Effect);
 
             Asset<Texture2D> moonTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Crystals");
-            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(moonTextureAsset, moonPosition);
+            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(moonTextureAsset, moonPosition);
             circleDrawer.color = Color.White;
             // circleDrawer.color.A = 0;
             //circleDrawer.scale *= 3;
@@ -341,7 +341,7 @@ public class EdgeofTheMoonRenderer : ModSystem
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
         null);
             ;
-            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, moonPosition);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, moonPosition);
             glowDrawer.color = Color.White * 0.3f;
             glowDrawer.color.A = 0;
             // circleDrawer.color.A = 0;
@@ -380,7 +380,7 @@ public class EdgeofTheMoonRenderer : ModSystem
                 darkShader.Effect);
 
 
-            var cloudDrawer = SpritebatchDrawer.FromTextureAsset(frontClouds, Main.screenPosition);
+            var cloudDrawer = SpritebatchDrawer.FromTextureGetLightingColor(frontClouds, Main.screenPosition);
 
             cloudDrawer.dstRect = new Rectangle(0, Main.screenHeight / 2 + 120, Main.screenWidth, height);
             cloudDrawer.drawOrigin = Vector2.Zero;
@@ -392,7 +392,7 @@ public class EdgeofTheMoonRenderer : ModSystem
 
             spriteBatch.Begin();
 
-            circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, moonPosition);
+            circleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, moonPosition);
             circleDrawer.color = Color.White * 0.6f;
             circleDrawer.color.A = 0;
             circleDrawer.scale *= 3;

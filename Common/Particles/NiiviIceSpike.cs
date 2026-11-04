@@ -62,7 +62,7 @@ public class NiiviIceSpike : ParticleUpdater<NiiviIceSpike.Data>
         for (int i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviImpactIceSpike.Asset, particle.position);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviImpactIceSpike.Asset, particle.position);
             drawer.rotation = particle.rotation;
             drawer.color = Color.White * 0.4f;
             drawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InSine(particle.timer / particle.timediv));

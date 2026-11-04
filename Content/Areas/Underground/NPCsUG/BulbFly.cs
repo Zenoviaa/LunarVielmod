@@ -86,7 +86,7 @@ public class BulbFly : ModNPC
         spriteBatch.Draw(glowFlyDrawer);
 
         Asset<Texture2D> glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
-        SpritebatchDrawer glowCircleDrawer = SpritebatchDrawer.FromTextureAsset(glowCircle, NPC.Center);
+        SpritebatchDrawer glowCircleDrawer = SpritebatchDrawer.FromTextureGetLightingColor(glowCircle, NPC.Center);
         glowCircleDrawer.color = Color.Red * 0.4f;
         glowCircleDrawer.color.A = 0;
         glowCircleDrawer.scale *= 0.33f * ExtraMath.Osc(0.9f, 1f, speed: 2, offset: NPC.whoAmI);

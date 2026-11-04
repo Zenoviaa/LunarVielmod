@@ -514,7 +514,7 @@ public abstract class AbstractZTileChain : ZTile
             chainPoint.Y += i * frame.Height;
             chainPoint = chainPoint.RotatedBy(drawRotation, worldCoordinates);
 
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(chainTextureAsset, chainPoint);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(chainTextureAsset, chainPoint);
             drawer.sourceRect = frame;
             drawer.TopCenterOrigin();
             drawer.rotation = drawRotation;

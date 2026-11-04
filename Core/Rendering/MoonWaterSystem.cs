@@ -528,7 +528,7 @@ public class MoonWaterSystem : ModSystem
         }
 
         spriteBatch.Begin();
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
             AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Vector2.Zero);
         glowDrawer.scale *= 0.2f;
         glowDrawer.color = Color.White * 0.13f;

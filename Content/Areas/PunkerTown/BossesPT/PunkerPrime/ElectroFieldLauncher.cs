@@ -118,7 +118,7 @@ public class ElectroField : ModProjectile,
         Vector2 glowScale = Vector2.One * 0.25f;
         float rotation = Main.GlobalTimeWrappedHourly * 4;
         float outScale = EasingFunction.InOutSine(Projectile.timeLeft / 30f);
-        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         bloomDrawer.color = Color.Red;
         bloomDrawer.color.A = 0;
         bloomDrawer.color *= 0.1f;
@@ -140,7 +140,7 @@ public class ElectroField : ModProjectile,
             spriteBatch.Draw(bloomDrawer);
         }
 
-        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
 
         Color spiralGlowColor = Color.Lerp(Color.White, Color.Red, 0.6f);
         spiralGlowColor.A = 0;

@@ -614,7 +614,7 @@ public class TheWhisperer : ModNPC,
         pass.Apply();
         using(new SpritebatchContext(spriteBatch, SpritebatchParams.InWorldAndZoomed() with {  effect = pass.Shader, samplerState = SamplerState.AnisotropicClamp }))
         {
-            SpritebatchDrawer vortex = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, NPC.Center);
+            SpritebatchDrawer vortex = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, NPC.Center);
             vortex.rotation = Main.GlobalTimeWrappedHourly;
             vortex.color = Color.White * 0.3f* OscAlpha * _alpha; 
             vortex.color.A = 0;
@@ -796,7 +796,7 @@ public class TheWhisperer : ModNPC,
                 if (whisperingPlayer.suckingAlpha < 0.005f)
                     continue;
 
-                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.LaserTextures.SpectralSoulSuck.Asset.Value, player.Center);
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.LaserTextures.SpectralSoulSuck.Asset.Value, player.Center);
                 drawer.LeftCenterOrigin();
                 drawer.rotation = (NPC.Center - player.Center).ToRotation();
                 float dist = Vector2.Distance(NPC.Center, player.Center) / (float)AssetReferences.Assets.LaserTextures.SpectralSoulSuck.Asset.Value.Width;

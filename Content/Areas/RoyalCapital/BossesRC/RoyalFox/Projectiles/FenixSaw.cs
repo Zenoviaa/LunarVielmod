@@ -129,7 +129,7 @@ public class FenixSaw : ModProjectile,
     private void DrawSwordSlash(SpriteBatch sb, Vector2 sp)
     {
         Vector2 point = Parent.Center + CalculateSwingOffset(1f);
-        SpritebatchDrawer glowSword = SpritebatchDrawer.FromTextureAsset(
+        SpritebatchDrawer glowSword = SpritebatchDrawer.FromTextureGetLightingColor(
             ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Sword"), point);
         glowSword.rotation = (point - Parent.Center).ToRotation() + MathHelper.PiOver2;
         Color startColor = Color.White;

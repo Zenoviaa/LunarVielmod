@@ -30,7 +30,7 @@ public class BossRewardRarity : SpecialRarity
 
         //Draw Backglow
         var texture = AssetRegistry.GlowMasks.SimpleGlowCircle;
-        var drawer = SpritebatchDrawer.FromTextureAsset(texture.Asset, Main.screenPosition + glowPosition);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture.Asset, Main.screenPosition + glowPosition);
         drawer.color = Color.SkyBlue * 0.2f;
         drawer.color.A = 0;
         drawer.scale = new Vector2(1.7f, 0.3f) * 0.25f;
@@ -67,7 +67,7 @@ public class MysticItemRarity : SpecialRarity
 
         //Draw Backglow
         var texture = AssetRegistry.GlowMasks.SimpleGlowCircle;
-        var drawer = SpritebatchDrawer.FromTextureAsset(texture.Asset, Main.screenPosition + glowPosition);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture.Asset, Main.screenPosition + glowPosition);
         drawer.color = Color.GhostWhite * 0.2f;
         drawer.color.A = 0;
         drawer.scale = new Vector2(1.7f, 0.3f) * 0.25f;
@@ -76,7 +76,7 @@ public class MysticItemRarity : SpecialRarity
         //Draw Star
         Vector2 startPosition = textPosition + new Vector2(textSize.X, textSize.Y * 0.5f);
         var starTexture = BossBanner.RequestStarTexture();
-        drawer = SpritebatchDrawer.FromTextureAsset(starTexture, Main.screenPosition + startPosition + new Vector2(14, -3));
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(starTexture, Main.screenPosition + startPosition + new Vector2(14, -3));
         drawer.color = Color.Lerp(Color.White, Color.DarkGray, ExtraMath.Osc(0f, 0.6f, speed: 3));
         spriteBatch.Draw(drawer);
 
@@ -111,7 +111,7 @@ public class NoHitRarity : SpecialRarity
         
         //Draw Backglow
         var texture = AssetRegistry.GlowMasks.SimpleGlowCircle;
-        var drawer = SpritebatchDrawer.FromTextureAsset(texture.Asset, Main.screenPosition + glowPosition);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture.Asset, Main.screenPosition + glowPosition);
         drawer.color = Color.Gold * 0.2f;
         drawer.color.A = 0;
         drawer.scale = new Vector2(1.7f, 0.3f) * 0.25f;
@@ -120,7 +120,7 @@ public class NoHitRarity : SpecialRarity
         //Draw Star
         Vector2 startPosition = textPosition + new Vector2(textSize.X, textSize.Y * 0.5f);
         var starTexture = BossBanner.RequestStarTexture();
-        drawer = SpritebatchDrawer.FromTextureAsset(starTexture, Main.screenPosition + startPosition + new Vector2(14, -3));
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(starTexture, Main.screenPosition + startPosition + new Vector2(14, -3));
         drawer.color = Color.Lerp(Color.White, Color.DarkGray, ExtraMath.Osc(0f, 0.6f, speed: 3));
         spriteBatch.Draw(drawer);
 

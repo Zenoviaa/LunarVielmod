@@ -107,14 +107,14 @@ public class WillOWisp : ModProjectile,
         flameDrawer.color = Color.White * ExtraMath.Osc(0.7f, 1f, speed: 3, Projectile.identity);
         Main.spriteBatch.Draw(flameDrawer);
 
-        SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
+        SpritebatchDrawer glintDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
         glintDrawer.color = Color.Lerp(Color.Yellow, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16));
         glintDrawer.color.A = 0;
         glintDrawer.rotation = MathHelper.Lerp(1.54f, 0f, EasingFunction.InOutCirc(Timer / 30f));
         glintDrawer.scale *= MathHelper.Lerp(6, 0f, EasingFunction.InOutSine(Timer / 60f));
         Main.spriteBatch.Draw(glintDrawer);
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Red * 0.4f * ExtraMath.Osc(0.8f, 1f, speed: 12);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.25f;

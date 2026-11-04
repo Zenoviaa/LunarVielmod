@@ -93,7 +93,7 @@ public class GoldenLeaf : ParticleUpdater<GoldenLeaf.Data>
             ref var particle = ref _particles[i];
             float lerpValue = Utils.GetLerpValue(0, 240, particle.timeLeft, clamped: true);
             float interpolant = EasingFunction.OutSine(lerpValue);
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
             drawer.sourceRect = frame;
             drawer.VerticalFrame(particle.frame, 6);
             drawer.CenterOrigin();

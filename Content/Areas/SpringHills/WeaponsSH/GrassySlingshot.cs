@@ -200,7 +200,7 @@ public class GrassySlingshotHeld : ModProjectile
         drawer.worldPosition.Y += Owner.gfxOffY;
         Main.spriteBatch.Draw(drawer);
 
-        var drawr2 = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.MagicCastSparkle.Asset, Projectile.Center);
+        var drawr2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.MagicCastSparkle.Asset, Projectile.Center);
         drawr2.worldPosition += Vector2.Lerp(Projectile.velocity.SafeNormalize(Vector2.Zero) * 32, Vector2.Zero, EasingFunction.InSine(Timer / 60f));
         drawr2.color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuickOutSlowIn(Timer / 60f)) * 0.4f;
         drawr2.color.A = 0;

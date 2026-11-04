@@ -71,7 +71,7 @@ public class NiiviIceArenaRenderer : ModSystem
                 pos.Y += MathF.Sin(x * 9) * 16;
                 pos.X += randOffsets[j];
                 pos.Y -= PreGeneratedNoise.SampleRand((int)(pos.X * 0.1f), (int)(pos.Y * 0.1f)) * 16;
-                var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviIceSpike.Asset, pos);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.Textures.Illuria.NPCs.NiiviIceSpike.Asset, pos);
                 drawer.color = Color.White * ExtraMath.Osc(0.8f, 1f, speed: 2, offset: x * 0.25f + y);
                 drawer.rotation = randValues[j];// ExtraMath.Osc(-0.5f, 0.5F, 0, PreGeneratedNoise.SampleRand((int)(pos.X * 0.1f), (int)(pos.Y * 0.1f)));
                 drawer.scale = Vector2.One * randScales[j];
@@ -95,7 +95,7 @@ public class NiiviIceArenaRenderer : ModSystem
         var bloomLine = AssetReferences.Assets.NoiseTextures.BloomLine.Asset;
         //drawPosition -= Main.screenPosition;
         drawPosition.Y += 48;
-        SpritebatchDrawer pdrawer = SpritebatchDrawer.FromTextureAsset(bloomLine, drawPosition);
+        SpritebatchDrawer pdrawer = SpritebatchDrawer.FromTextureGetLightingColor(bloomLine, drawPosition);
         pdrawer.rotation += MathHelper.PiOver2;
         pdrawer.color = Color.White * ExtraMath.Osc(0.8f, 1f, speed: 12) * 0.2F;
         pdrawer.color.A = 0;

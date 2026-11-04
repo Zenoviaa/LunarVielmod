@@ -417,14 +417,14 @@ public class PearlbornSlime : ModNPC,
             drawer2.color.A = 0;
             spriteBatch.Draw(drawer2);
         }
-        var aura = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, NPC.Center);
+        var aura = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, NPC.Center);
         aura.scale *= 0.35f;
         aura.rotation = Main.GlobalTimeWrappedHourly * 3;
         aura.color = Color.SkyBlue * 0.4f;
         aura.color.A = 0;
         Main.spriteBatch.Draw(aura);
 
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
         glowDrawer.scale *= 0.35f;
         glowDrawer.rotation = Main.GlobalTimeWrappedHourly * 3;
         glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.6f, 1f) * 0.4f;

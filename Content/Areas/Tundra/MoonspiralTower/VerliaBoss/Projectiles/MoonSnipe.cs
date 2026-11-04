@@ -97,21 +97,21 @@ public class MoonSnipe : ModProjectile
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawTrails);
         float globalScale = 0.4f * _inScale;
-        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        SpritebatchDrawer flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         flareDrawer.color = Color.Blue;
         flareDrawer.color.A = 0;
         flareDrawer.scale *= globalScale;
         flareDrawer.rotation = Main.GlobalTimeWrappedHourly;
         Main.spriteBatch.Draw(flareDrawer);
 
-        flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, Projectile.Center);
+        flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare2, Projectile.Center);
         flareDrawer.color = Color.LightSkyBlue;
         flareDrawer.color.A = 0;
         flareDrawer.scale *= globalScale * 0.8f;
         flareDrawer.rotation = -Main.GlobalTimeWrappedHourly;
         Main.spriteBatch.Draw(flareDrawer);
 
-        flareDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+        flareDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare3, Projectile.Center);
         flareDrawer.color = Color.White;
         flareDrawer.color.A = 0;
         flareDrawer.scale *= globalScale;

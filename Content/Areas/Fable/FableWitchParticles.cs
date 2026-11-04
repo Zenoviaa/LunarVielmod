@@ -91,7 +91,7 @@ public class FlyingWitchMiniParticles : ParticleUpdater<FlyingWitchMiniParticles
             var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
             var inAlpha = EasingFunction.InOutSine((400 - particle.timeLeft) / 30f);
             var framing = GetParticleFrame(particle.frame);
-            var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position + Main.screenPosition);
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
             drawer.color = particle.color * inAlpha * outAlpha * 0.75F;
@@ -157,7 +157,7 @@ public class FlyingWitchParticles : ParticleUpdater<FlyingWitchParticles.Data>
             var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
             var inAlpha = EasingFunction.InOutSine((400 - particle.timeLeft) / 30f);
             var framing = GetParticleFrame(particle.frame);
-            var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position + Main.screenPosition);
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
             drawer.color = particle.color * inAlpha * outAlpha;
@@ -240,7 +240,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
             var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
             var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
             var framing = GetParticleFrame(particle.frame);
-            var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position + Main.screenPosition);
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
             drawer.color = particle.color * inAlpha * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i);
@@ -260,7 +260,7 @@ public class FlyingLanterns : ParticleUpdater<FlyingLanterns.Data>
                 var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
                 var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
 
-                var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position + Main.screenPosition);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position + Main.screenPosition);
                 drawer.CenterOrigin();
                 drawer.color = Color.DarkOrange * inAlpha * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i) * 0.3f;
                 drawer.color.A = 0;
@@ -356,7 +356,7 @@ public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
             var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
             var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
             var framing = GetParticleFrame(particle.frame);
-            var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position + Main.screenPosition);
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
             drawer.color = particle.color * inAlpha * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i);
@@ -376,7 +376,7 @@ public class FlyingLanternsBig : ParticleUpdater<FlyingLanterns.Data>
                 var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
                 var inAlpha = EasingFunction.InOutSine((1600F - particle.timeLeft) / 30f);
 
-                var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position + Main.screenPosition);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, particle.position + Main.screenPosition);
                 drawer.CenterOrigin();
                 drawer.color = Color.DarkOrange * inAlpha * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i) * 0.3f;
                 drawer.color.A = 0;
@@ -439,7 +439,7 @@ public class NyoomSparkle : ParticleUpdater<NyoomSparkle.Data>
 
             var outAlpha = EasingFunction.InOutSine(particle.timeLeft / 30f);
             var framing = GetParticleFrame(0);
-            var drawer = SpritebatchDrawer.FromTextureAsset(framing.texture, particle.position + Main.screenPosition);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position + Main.screenPosition);
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
             drawer.color = particle.color * outAlpha * ExtraMath.Osc(0.6f, 1f, speed: 3, offset: i);

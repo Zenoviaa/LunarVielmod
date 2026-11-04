@@ -54,7 +54,7 @@ public class DungeonFogSystem : ModSystem
         }))
         {
             
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Clouds.Asset, Vector2.Zero);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.Clouds.Asset, Vector2.Zero);
             drawer.drawOrigin = Vector2.Zero;
 
             foreach (var fog in FogRectangles)

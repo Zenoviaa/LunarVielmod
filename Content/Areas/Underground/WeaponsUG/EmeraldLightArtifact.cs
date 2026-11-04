@@ -521,7 +521,7 @@ public class EmeraldLightBlast : ModProjectile
     {
         Projectile.rotation = Projectile.velocity.ToRotation();
         var drawData = GetBlastTextureAsset();
-        var drawer = SpritebatchDrawer.FromTextureAsset(drawData.asset, Projectile.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(drawData.asset, Projectile.Center);
         drawer.VerticalFrame(Projectile.frame, drawData.frameCount);
         if(Style == 2)
         {
@@ -536,7 +536,7 @@ public class EmeraldLightBlast : ModProjectile
             drawer.scale *= 0.75f;
         Main.spriteBatch.Draw(drawer);
 
-        var glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.MuzzleFlash.Asset, Projectile.Center);
+        var glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.MuzzleFlash.Asset, Projectile.Center);
         glowDrawer.BottomCenterOrigin();
         glowDrawer.drawOrigin += new Vector2(0, -16);
         glowDrawer.color = Color.Lerp(Color.LightGreen, Color.Transparent, EasingFunction.OutCubic(Timer / Time)) * 1.5F;

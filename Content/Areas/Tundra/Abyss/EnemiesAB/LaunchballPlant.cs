@@ -209,7 +209,7 @@ public class Launchball : ModProjectile,
         projDrawer.color *= 0.1f;
         projDrawer.color.A = 0;
         Main.spriteBatch.Draw(projDrawer);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         glowDrawer.color = Color.White * 0.05f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.4f;

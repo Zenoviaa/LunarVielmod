@@ -68,7 +68,7 @@ public class SplatDust : ParticleUpdater<SplatDust.Data>
             var beginer = SpritebatchParams.InWorldAndZoomed() with { matrix = Matrix.Identity, blendState = BlendState.Additive };
             spriteBatch.Begin(beginer);
             (Texture2D texture, Rectangle frame) = GetParticleFrame(0);
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(texture, Vector2.Zero);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, Vector2.Zero);
             drawer.sourceRect = frame;
             drawer.CenterOrigin();
 

@@ -451,7 +451,7 @@ public class BunnyStormCrystal : ModNPC,
         float ease = EasingFunction.InOutSine(ratio);
         Color color = Color.Lerp(Color.Blue * 0.5f, Color.Blue, ease);
         Vector2 scale = Vector2.Lerp(Vector2.Zero, Vector2.One, ease);
-        SpritebatchDrawer dw = SpritebatchDrawer.FromTextureAsset(glowBallAsset, NPC.Center);
+        SpritebatchDrawer dw = SpritebatchDrawer.FromTextureGetLightingColor(glowBallAsset, NPC.Center);
         dw.color = color;
         dw.color.A = 0;
         dw.scale = scale;
@@ -508,7 +508,7 @@ public class BunnyStormCrystal : ModNPC,
         }
         NPC.spriteDirection = 1;
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.5f, 1f, speed: 3);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.65f;
@@ -1457,7 +1457,7 @@ public class BunnyStorm : ScarletBoss
     private void DrawMask(SpriteBatch sb, int frameOffset)
     {
         _bunnyMaskTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Hand");
-        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(_bunnyMaskTextureAsset, NPC.Center);
+        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_bunnyMaskTextureAsset, NPC.Center);
         maskDrawer.VerticalFrame(_stormFrame + frameOffset, 12);
         maskDrawer.CenterOrigin();
         maskDrawer.scale = _stormScale * ExtraMath.Osc(0.85f, 1.1f, speed: 3);
@@ -1478,7 +1478,7 @@ public class BunnyStorm : ScarletBoss
         flamebowShader.DistortionStrength = 0.1f;
 
         sb.Restart(effect: flamebowShader.Effect, samplerState: SamplerState.AnisotropicClamp);
-        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(_bunnyMaskTextureAsset, NPC.Center);
+        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_bunnyMaskTextureAsset, NPC.Center);
         maskDrawer.VerticalFrame(_stormFrame + frameOffset, 4);
         maskDrawer.CenterOrigin();
         maskDrawer.scale = _stormScale * ExtraMath.Osc(0.85f, 1.1f, speed: 3) * 1.1f;
@@ -1549,7 +1549,7 @@ public class BunnyStorm : ScarletBoss
         if (_vortexPS == null)
             return;
 
-        SpritebatchDrawer bunnyDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BunnyStormBunny>()], NPC.Center);
+        SpritebatchDrawer bunnyDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<BunnyStormBunny>()], NPC.Center);
         bunnyDrawer.VerticalFrame(0, 6);
         bunnyDrawer.CenterOrigin();
         bunnyDrawer.color = _outliner.outlineColor;
@@ -1565,7 +1565,7 @@ public class BunnyStorm : ScarletBoss
     {
         if (_vortexPS == null)
             return;
-        SpritebatchDrawer bunnyDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BunnyStormBunny>()], NPC.Center);
+        SpritebatchDrawer bunnyDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<BunnyStormBunny>()], NPC.Center);
         bunnyDrawer.VerticalFrame(0, 6);
         bunnyDrawer.CenterOrigin();
 
@@ -1586,7 +1586,7 @@ public class BunnyStorm : ScarletBoss
         _earTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Ear");
         _whiskersTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Whiskers");
 
-        SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, NPC.Center);
+        SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, NPC.Center);
         spiralVortexDrawer.rotation = Main.GlobalTimeWrappedHourly * 8;
         spiralVortexDrawer.color = Color.White * 0.12f;
         spiralVortexDrawer.color.A = 0;
@@ -1595,7 +1595,7 @@ public class BunnyStorm : ScarletBoss
         {
             Vector2 pos = NPC.oldPos[i];
 
-            SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(_bunnyMaskTextureAsset, pos + NPC.Size * 0.5f);
+            SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_bunnyMaskTextureAsset, pos + NPC.Size * 0.5f);
             maskDrawer.VerticalFrame(_stormFrame, 4);
             maskDrawer.CenterOrigin();
             maskDrawer.scale = _stormScale * ExtraMath.Osc(0.85f, 1.1f, speed: 3);
@@ -1609,7 +1609,7 @@ public class BunnyStorm : ScarletBoss
 
 
         float offset = 32;
-        SpritebatchDrawer earDrawer = SpritebatchDrawer.FromTextureAsset(_earTextureAsset, NPC.Center);
+        SpritebatchDrawer earDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_earTextureAsset, NPC.Center);
         earDrawer.BottomLeftOrigin();
         earDrawer.drawOrigin.X += 32;
         earDrawer.drawOrigin.Y -= 16;
@@ -1632,13 +1632,13 @@ public class BunnyStorm : ScarletBoss
         RenderBunnyParticles(spriteBatch, screenPos, drawColor);
 
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         glowDrawer.scale *= 0.3f;
         glowDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.2f, 0.6f, speed: 3);
         glowDrawer.color.A = 0;
         spriteBatch.Draw(glowDrawer);
 
-        SpritebatchDrawer whiskersDrawer = SpritebatchDrawer.FromTextureAsset(_whiskersTextureAsset, NPC.Center);
+        SpritebatchDrawer whiskersDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_whiskersTextureAsset, NPC.Center);
         whiskersDrawer.CenterOrigin();
         whiskersDrawer.rotation = NPC.velocity.X * 0.05f + ExtraMath.Osc(-0.3f, 0.3f);
         whiskersDrawer.scale *= _stormScale;

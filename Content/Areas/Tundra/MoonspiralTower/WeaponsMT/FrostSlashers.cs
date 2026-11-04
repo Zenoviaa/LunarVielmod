@@ -181,7 +181,7 @@ public class FrostSlashersSwing : BaseSwingProjectileV2
         if (ComboIndex != 0)
             return;
 
-        var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.NoiseTextures.Spiin.Asset, Owner.Center);
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.NoiseTextures.Spiin.Asset, Owner.Center);
         drawer.color = Color.White * 0.3f;
         drawer.color *= EasingFunction.QuadraticBump(Interpolant);
         drawer.color.A = 0;

@@ -83,7 +83,7 @@ public class LightningSpark : ParticleUpdater<LightningSpark.Data>
                 ref var particle = ref _particles[i];
                 (var texture, var frame) = GetParticleFrame(particle.frame);
                 var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
-                var drawer = SpritebatchDrawer.FromTextureAsset(texture, particle.position);
+                var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
                 drawer.color = particle.color;
                 drawer.color = Color.Lerp(drawer.color, Color.DarkOrange, 1f - fade);
                 drawer.sourceRect = frame;

@@ -167,7 +167,7 @@ public class HeadlessSingularity : ModNPC
         Vector2 drawScale = NPC.scale * Vector2.One;
         drawScale *= ExtraMath.Osc(0.9f, 1f, speed: 18f);
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SpiralVortex.Asset, center);
         drawer.color = Color.DarkRed * 0.6f;
         drawer.color.A = 0;
         drawer.rotation = Main.GlobalTimeWrappedHourly * 16;

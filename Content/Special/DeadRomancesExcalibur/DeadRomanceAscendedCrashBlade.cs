@@ -601,7 +601,7 @@ public class DeadRomanceAscendedCrashBlade : ModProjectile
 
     private void DrawPixelatedBlade(SpriteBatch spriteBatch, Vector2 screenPos)
     {
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(
             AssetManager.GlowMask.RomanceGlowSword, Projectile.Center);
         drawer.scale *= Projectile.scale * 0.75f; ;
         for (int i = 0; i < Projectile.oldPos.Length; i++)

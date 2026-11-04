@@ -91,7 +91,7 @@ public class FrozenWatchSystem : ModSystem
                         Vector2 drawPos = new Vector2(48, Main.screenHeight * 0.2f);
                         SpriteBatch spriteBatch = Main.spriteBatch;
                         Asset<Texture2D> watchTextureAsset = TextureAssets.Item[ModContent.ItemType<FrozenWatch>()];
-                        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(watchTextureAsset, drawPos + Main.screenPosition);
+                        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(watchTextureAsset, drawPos + Main.screenPosition);
                         drawer.color = Color.Lerp(Color.Transparent, Color.White, ease);
                         drawer.scale = Vector2.Lerp(Vector2.One * 1.5f, Vector2.One, ease);
                         spriteBatch.Draw(drawer);

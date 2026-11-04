@@ -130,14 +130,14 @@ public class SuperStaffConjureLightning : ModProjectile
                 drawScale * VectorHelper.Osc(0.5f, 1f, speed: 12, offset: i), SpriteEffects.None, 0);
         }
 
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.Goldenrod * 0.5f, Color.Goldenrod * 0.75f, ExtraMath.Osc(0f, 1f, speed: 6)) * 0.4f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.6f * drawScale * 0.5f;
 
         Main.spriteBatch.Draw(glowDrawer);
 
-        SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+        SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
         vortexDrawer.color = Color.Lerp(Color.Goldenrod * 0.5f, Color.Goldenrod * 0.75f,
             ExtraMath.Osc(0f, 1f, speed: 6)) * 0.8f;
         vortexDrawer.color.A = 0;

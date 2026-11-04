@@ -287,7 +287,7 @@ public class BellPhone : ModNPC
         goldenPulsePass.Apply();
         using(spriteBatch.Ctx(spriteBatch.Parameters with { effect = goldenPulsePass.Shader, blendState = BlendState.Additive }))
         {
-            var drawer = SpritebatchDrawer.FromTextureAsset(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, NPC.Center);
             drawer.color = Color.Lerp(Color.Transparent, Color.DarkOrange, EasingFunction.QuickOutSlowIn(PulseInterp));
             drawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.OutSine(PulseInterp));
             Main.spriteBatch.Draw(drawer);
@@ -299,7 +299,7 @@ public class BellPhone : ModNPC
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         var blackCircle = AssetReferences.Assets.GlowMasks.WhiteCircle.Asset;
-        var blackDrawer = SpritebatchDrawer.FromTextureAsset(blackCircle, NPC.Center);
+        var blackDrawer = SpritebatchDrawer.FromTextureGetLightingColor(blackCircle, NPC.Center);
         blackDrawer.color = Color.Black;
         blackDrawer.scale *= 1f;
         spriteBatch.Draw(blackDrawer);
@@ -331,7 +331,7 @@ public class BellPhone : ModNPC
 
         if (IsActive())
         {
-            SpritebatchDrawer beamDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, NPC.Bottom);
+            SpritebatchDrawer beamDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.BlastPillar, NPC.Bottom);
             beamDrawer.color = Color.Goldenrod * ExtraMath.Osc(0.5f, 1f, speed: 3) * PulseTime;
             beamDrawer.color.A = 0;
             beamDrawer.BottomCenterOrigin();
@@ -351,7 +351,7 @@ public class BellPhone : ModNPC
         Vector2 godrayScale = new Vector2(0.35f, 2f);
 
         float godrayOffset = 150;
-        var sbDrawer2 = SpritebatchDrawer.FromTextureAsset(godrayTexture, NPC.Center);
+        var sbDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(godrayTexture, NPC.Center);
         sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1);
         sbDrawer2.color.A = 0;
         sbDrawer2.scale *= godrayScale;

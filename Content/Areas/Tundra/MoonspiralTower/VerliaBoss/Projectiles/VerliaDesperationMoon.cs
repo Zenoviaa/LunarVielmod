@@ -281,7 +281,7 @@ public class VerliaDesperationMoon : ModProjectile
     {
         Vector2 scale = Vector2.One * _scale;
 
-        SpritebatchDrawer circleSprite = SpritebatchDrawer.FromTextureAsset(_magicCircleTextureAsset, Projectile.Center);
+        SpritebatchDrawer circleSprite = SpritebatchDrawer.FromTextureGetLightingColor(_magicCircleTextureAsset, Projectile.Center);
         circleSprite.color = Color.Lerp(Color.Black, Color.White, _flashAlpha + ShootFlash);// * ExtraMath.Osc(0.5f, 1f, speed: 6);
         circleSprite.color.A = 0;
         circleSprite.rotation = Main.GlobalTimeWrappedHourly;
@@ -295,7 +295,7 @@ public class VerliaDesperationMoon : ModProjectile
 
         _scrollingMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_ScrollingMoon");
         moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.color = Color.Lerp(Color.Blue, Color.White, _flashAlpha + ShootFlash) * 0.8f * ExtraMath.Osc(0.5f, 1f, speed: 6);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 1.8f;
@@ -305,7 +305,7 @@ public class VerliaDesperationMoon : ModProjectile
 
 
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         glowDrawer.color = Color.White * 0.2f;
         glowDrawer.color.A = 0;
         glowDrawer.scale.X *= 1.2f;
@@ -336,7 +336,7 @@ public class VerliaDesperationMoon : ModProjectile
         sb.RestartDefaults();
 
 
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center);
+        glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SolarRing, Projectile.Center);
         glowDrawer.color = Color.White * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
@@ -353,7 +353,7 @@ public class VerliaDesperationMoon : ModProjectile
         _shadowMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Shadow");
         _magicCircleTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Sigil");
 
-        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
+        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_shadowMoonTextureAsset, Projectile.Center);
 
         Color flashColor = Color.White;
         Color darkColor = Color.Lerp(Color.Blue, Color.Black, 0.8f) * 0.5f;
@@ -362,7 +362,7 @@ public class VerliaDesperationMoon : ModProjectile
         shadowDrawer.worldPosition += MoonHover;
         Main.spriteBatch.Draw(shadowDrawer);
 
-        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
+        SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureGetLightingColor(_outlineTextureAsset, Projectile.Center);
         outlineDrawer.color = Color.Red;
         outlineDrawer.scale *= scale;
         //   Main.spriteBatch.Draw(outlineDrawer);

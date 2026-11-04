@@ -225,14 +225,14 @@ public class LightningCrawl : ModProjectile
 
     private void DrawPixelatedImpact(SpriteBatch sb, Vector2 screenPos)
     {
-        SpritebatchDrawer flashDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, _hitPoint);
+        SpritebatchDrawer flashDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, _hitPoint);
         flashDrawer.color = Color.Lerp(Color.SkyBlue, Color.White, ExtraMath.Osc(0f, 1f, speed: 32));
         flashDrawer.color.A = 0;
         flashDrawer.scale *= 0.66f * ExtraMath.Osc(0.97f, 1f, speed: 2);
         flashDrawer.rotation = Main.GlobalTimeWrappedHourly * 2;
         sb.Draw(flashDrawer);
 
-        SpritebatchDrawer flashDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, _hitPoint);
+        SpritebatchDrawer flashDrawer2 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, _hitPoint);
         flashDrawer2.color = Color.Lerp(Color.LightSkyBlue, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 32));
         flashDrawer2.color.A = 0;
         flashDrawer2.scale *= 0.66f;
@@ -240,19 +240,19 @@ public class LightningCrawl : ModProjectile
 
         for(int i =0; i < 2; i++)
         {
-            SpritebatchDrawer flashDrawer3 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            SpritebatchDrawer flashDrawer3 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
             flashDrawer3.color = Color.Lerp(Color.LightSkyBlue, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 32));
             flashDrawer3.color.A = 0;
             flashDrawer3.scale *= 0.4f;
             sb.Draw(flashDrawer3);
         }
-        SpritebatchDrawer flashDrawer4 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer flashDrawer4 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         flashDrawer4.color = Color.Lerp(Color.LightSkyBlue, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 32));
         flashDrawer4.color.A = 0;
         flashDrawer4.scale *= 2f;
         sb.Draw(flashDrawer4);
 
-        SpritebatchDrawer flashDrawer5 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer flashDrawer5 = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         flashDrawer5.color = Color.Lerp(Color.LightSkyBlue, Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 32)) * 0.3f;
         flashDrawer5.color.A = 0;
         flashDrawer5.scale *= 4f;

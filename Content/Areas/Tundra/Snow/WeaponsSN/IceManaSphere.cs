@@ -359,7 +359,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
 
         private void DrawPixelatedFrozenOrb(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            SpritebatchDrawer orbTexture = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            SpritebatchDrawer orbTexture = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
 
             orbTexture.color = Color.Cyan;
             orbTexture.color *= 0.5f;
@@ -368,7 +368,7 @@ namespace Stellamod.Content.Areas.Tundra.Snow.WeaponsSN
             orbTexture.scale = Vector2.One * 0.35f;
             spriteBatch.Draw(orbTexture);
 
-            SpritebatchDrawer spiralVortexTexture = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+            SpritebatchDrawer spiralVortexTexture = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
    
             spiralVortexTexture.color = Color.SkyBlue;
             spiralVortexTexture.color.A = 0;

@@ -262,7 +262,7 @@ public class PerfectionProj : ModProjectile
 
         }
 
-        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         bloomDrawer.color = Color.Turquoise;
         if(Style == 1)
         {

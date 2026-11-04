@@ -118,7 +118,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private void DrawHead(SpriteBatch sb, Vector2 screenpos)
         {
             float s = ExtraMath.Osc(0.85f, 1f, speed: 32);
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.StarFlare1, Projectile.Center);
             drawer.color = Color.Red;
             drawer.color.A = 0;
             drawer.scale *= 0.25f * s;

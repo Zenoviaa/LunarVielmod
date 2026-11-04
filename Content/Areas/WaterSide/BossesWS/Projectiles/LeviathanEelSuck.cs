@@ -124,7 +124,7 @@ public class LeviathanRock : ModProjectile
         SpritebatchDrawer projDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         if (Frame == 4)
         {
-            projDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
+            projDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
             projDrawer.rotation = Projectile.rotation;
 
         }
@@ -147,7 +147,7 @@ public class LeviathanRock : ModProjectile
         SpritebatchDrawer projDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         if (Frame == 4)
         {
-            projDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
+            projDrawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
             projDrawer.rotation = Projectile.rotation;
       
         }

@@ -105,7 +105,7 @@ public class PieceOfArtRenderer : ModSystem
     private void DrawDusts(SpriteBatch spriteBatch)
     {
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_blobTextureAsset, Vector2.Zero);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(_blobTextureAsset, Vector2.Zero);
         for (int i = 0; i < _length; i++)
         {
             ref Vector2 position = ref _particles.position[i];
@@ -539,7 +539,7 @@ public class PieceOfArtRainbow : ModProjectile
         _magicCircleRenderer.DrawRing(Owner.Center + velocity * 32, velocity, 0, 1, fadeColor, Main.GlobalTimeWrappedHourly * 4);
 
 
-        SpritebatchDrawer castDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Owner.Center + velocity * 32);
+        SpritebatchDrawer castDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Owner.Center + velocity * 32);
         castDrawer.scale *= 0.5f * outScale;
         castDrawer.scale.Y *= 1;
         castDrawer.scale.X *= 0.25f;
@@ -555,7 +555,7 @@ public class PieceOfArtRainbow : ModProjectile
 
 
  
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         glowDrawer.scale *= 0.12f * outScale;
         glowDrawer.worldPosition -= rot.ToRotationVector2() * 48;
         glowDrawer.scale.Y *= 2;
@@ -569,7 +569,7 @@ public class PieceOfArtRainbow : ModProjectile
         glowDrawer.color = Color.White;
         glowDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowDrawer);
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[ModContent.GetInstance<PieceOfArtArtifact>().Type], Projectile.Center);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Item[ModContent.GetInstance<PieceOfArtArtifact>().Type], Projectile.Center);
 
         drawer.scale *= outScale;
         drawer.rotation = rot + MathHelper.PiOver4;
