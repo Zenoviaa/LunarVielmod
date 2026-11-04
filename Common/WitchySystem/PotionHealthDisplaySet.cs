@@ -144,7 +144,9 @@ public class PotionHealthDisplaySet : ModResourceDisplaySet
     {
         base.DrawLife(spriteBatch);
 
-     
+        if (Main.gameMenu)
+            return;
+
 
         void DrawInner()
         {
