@@ -325,7 +325,7 @@ public class VirulentHelm : ModItem
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.rangedGunAmmoAmountPct += 1;
+        stats.rangedGunAmmoAmountPct += 0.5F;
         stats.defenseBonus += 5;
         stats.accessorySlots++;
     }
