@@ -1355,6 +1355,20 @@ public struct SpritebatchDrawer
         spritebatchDrawer.scale = Vector2.One;
         return spritebatchDrawer;
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SpritebatchDrawer FromTextureWhite(Asset<Texture2D> textureAsset)
+    {
+        var spritebatchDrawer = new SpritebatchDrawer();
+        spritebatchDrawer.texture = textureAsset.Value;
+        spritebatchDrawer.sourceRect = null;
+        spritebatchDrawer.color = Color.White;
+        spritebatchDrawer.rotation = 0;
+        spritebatchDrawer.drawOrigin = textureAsset.Size() * 0.5f;
+        spritebatchDrawer.spriteEffects = SpriteEffects.None;
+        spritebatchDrawer.scale = Vector2.One;
+        return spritebatchDrawer;
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SpritebatchDrawer FromTextureWhite(Texture2D textureAsset)

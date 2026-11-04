@@ -278,6 +278,31 @@ public class NiiviLightningStrike : ModProjectile
                                     color = Color.Lerp(Color.White, DrawUtilities.Prismatic, 0.3f),
                                     scale = new Vector2(Main.rand.NextFloat(0.86f, 1f), 1f)
                                 });
+
+                                for(var i = 0; i < 3; i++)
+                                {
+                                    var vel = -Vector2.UnitY.RotatedByRandom(1f) * 8;
+                                    Particles.NiiviIceRockGore.Spawn(new()
+                                    {
+                                        position = endPosition,
+                                        velocity = vel,
+                                        timeLeft = 60,
+                                        scale = new Vector2(Main.rand.NextFloat(0.6f, 1f)),
+                                      
+                                    });
+                                }
+
+                                for(var i = 0; i < 2; i++)
+                                {
+                                    Particles.RoughSmoke.Spawn(new()
+                                    {
+                                        position = endPosition + Main.rand.NextVector2Circular(32, 32),
+                                        timeLeft = 45,
+                                        scale = Main.rand.NextFloat(0.5f, 1f),
+                                        rotation = Main.rand.NextFloat(4f),
+                                        color = Color.DarkBlue
+                                    });
+                                }
                             }
 
                             if(timer == 15)

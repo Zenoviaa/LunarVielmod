@@ -73,6 +73,7 @@ public sealed class Particles : ModSystem
     public static readonly NiiviIceSpike IceSpike = new();
     public static readonly NiiviIceCrack IceCrack = new();
     public static readonly NiiviLightningImpact NiiviLightningImpact = new();
+    public static readonly NiiviIceRockGore NiiviIceRockGore = new();
     public override void Load()
     {
         base.Load();
@@ -125,7 +126,8 @@ public sealed class Particles : ModSystem
             DiamondSparkle,
             IceSpike,
             IceCrack,
-            NiiviLightningImpact
+            NiiviLightningImpact,
+            NiiviIceRockGore
         };
 
         if (Main.netMode == NetmodeID.Server)
