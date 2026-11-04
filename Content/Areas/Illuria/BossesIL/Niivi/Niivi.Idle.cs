@@ -56,6 +56,9 @@ public partial class Niivi
         positionAboutPlayToMoveTo.Y -= Idle_HoverAboveDistance;
         positionAboutPlayToMoveTo.X += inverseXDirection * Idle_HoverAwayDistance;
         var sqrDistToTarget = Vector2.DistanceSquared(NPC.Center, positionAboutPlayToMoveTo);
+
+        //This is what will control the flipping, she needs to flip in 3D btw.
+        NPC.direction = (positionAboutPlayToMoveTo.X < NPC.Center.X) ? -1 : 1;
         switch (AttackCycle)
         {
             case 0:
@@ -70,6 +73,7 @@ public partial class Niivi
                     var lookRotation = (MyTarget.Center - NPC.Center).ToRotation();
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, lookRotation, 0.1f);
 
+                    FK_ArcBody(-0.2f, 0.1f);
                     if (sqrDistToTarget > Idle_HoverTowardSpeedUpDistance)
                     {
                         AttackCycle = 1;

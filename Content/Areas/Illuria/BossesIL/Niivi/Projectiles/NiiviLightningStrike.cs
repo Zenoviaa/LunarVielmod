@@ -22,7 +22,6 @@ public class NiiviLightningStrike : ModProjectile
         Strike
     }
     public override string Texture => ModType.NoTexture;
-    float _telegraphAlpha;
     float _randIndex;
     float Y
     {
@@ -229,93 +228,6 @@ public class NiiviLightningStrike : ModProjectile
             }
         }
     }
-
-    void SwitchState(AIState state)
-    {
-        if (this.OwnedByLocalClient())
-        {
-            Timer = 0;
-            State = state;
-            Projectile.netUpdate = true;
-        }
-    }
-    void AI_Telegraph()
-    {
-
-        _telegraphAlpha = Timer / TelegraphTime;
-        if (Timer >= TelegraphTime)
-        {
-            SwitchState(AIState.Strike);
-        }
-    }
-
-    void AI_Strike()
-    {     
-
-     
-        Timer++;
-        if(Timer == 1)
-        {
-            var zap = AssetReferences.Assets.Sounds.StormDragon_LightingZap.Asset with { PitchVariance = 0.4f };
-            SoundEngine.PlaySound(zap);
-
-            for (var i = 0; i < NumStrikes; i++)
-            {
-                if (_randIndex == i)
-                    continue;
-                var ratio = (float)i / (float)NumStrikes;
-                var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
-                var endPosition = startPosition + new Vector2(0, StrikeHeight);
-                var vel = (endPosition - startPosition).SafeNormalize(Vector2.Zero) * 4;
-
-                for (var j = 0; j < 24; j++)
-                {
-                    var pos = Vector2.Lerp(startPosition, endPosition, Main.rand.NextFloat(0f, 1f));
-                    pos += Main.rand.NextVector2Circular(32, 32);
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
-                    {
-                        position = pos,
-                        velocity = vel.RotatedByRandom(1.5F) * 6,
-                        timeLeft = 60,
-                        innerColor = DrawUtilities.Prismatic.ToVector4(),
-                        outerColor = DrawUtilities.Prismatic.ToVector4(),
-                        scale = new Vector2(Main.rand.NextFloat(0.3f, 0.5F)),
-                    });
-                }
-
-            }
-
-        }
-        _telegraphAlpha = MathHelper.Lerp(1f, 0f, Timer / StrikeTime);
-        if (Timer >= StrikeTime)
-        {
-            Projectile.Kill();
-        }
-    }
-
-    float GetTrailWidth(float ratio)
-    {
-        return MathHelper.Lerp(MathHelper.Lerp(0, 154, EasingFunction.OutQuad(ratio)), 0, EasingFunction.OutSine(Timer / StrikeTime));
-    }
-
-    float GetTrailWidth2(float ratio)
-    {
-        return GetTrailWidth(ratio) * 1.3f;
-    }
-
-    Color GetTrailColor(float ratio)
-    {
-        return Color.White;
-    }
-
-    Color GetTrailColor2(float ratio)
-    {
-        Color prismatic = Color.Red;
-        prismatic.ScrollHue(Timer * 24 + ratio * 255);
-        prismatic = Color.Lerp(prismatic, Color.White, 0.9F);
-        return prismatic * 0.4f;
-    }
-
     void DrawPixelatedTelegraph(SpriteBatch sb, Vector2 sp)
     {
 
@@ -429,94 +341,12 @@ public class NiiviLightningStrike : ModProjectile
                 sb.Draw(flickerDrawer);
             }
         }
-
-    }
-
-    void DrawPixelatedBeam(GraphicsDevice gDevice)
-    {
-        int beamIndex = 0;
-
-        float GetTrailWidth(float ratio)
-        {
-            var timer = StrikeTimers[beamIndex];
-            return MathHelper.Lerp(MathHelper.Lerp(0, 154, EasingFunction.OutQuad(ratio)), 0, EasingFunction.OutSine(timer / StrikeTime));
-        }
-
-        float GetTrailWidth2(float ratio)
-        {
-            return GetTrailWidth(ratio) * 1.3f;
-        }
-
-        Color GetTrailColor(float ratio)
-        {
-            return Color.White;
-        }
-
-        Color GetTrailColor2(float ratio)
-        {
-            var timer = StrikeTimers[beamIndex];
-            Color prismatic = Color.Red;
-            prismatic.ScrollHue(Timer * 24 + ratio * 255);
-            prismatic = Color.Lerp(prismatic, Color.White, 0.9F);
-            return prismatic * 0.4f;
-        }
-
-        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
-        bloomTrailShader.InnerColor = Main.DiscoColor;
-        bloomTrailShader.OuterColor = Main.DiscoColor;
-
-        var offset = 24;
-        TrailDrawer.ClearPrimitives();
-        for (var i = 0; i < NumStrikes; i++)
-        {
-            ref var state = ref StrikeStates[i];
-            if (state == AIState.Telegraph)
-                continue;
-            if (_randIndex == i)
-                continue;
-            beamIndex = i;
-            var ratio = (float)i / (float)NumStrikes;
-            var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
-            var endPosition = startPosition;
-            endPosition.Y = Y + offset;
-            var points = DrawUtilities.InterpolateBetweenPoints(startPosition, endPosition, 32);
-            TrailDrawer.PreparePrimitives(points, GetTrailColor2, GetTrailWidth2);
-        }
-
-        TrailDrawer.DrawCached(bloomTrailShader);
-
-        var pass = AssetReferences.Effects.Niivi.PrismaticBreath.CreatePrimitivesPass();
-        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
-        pass.Parameters.time = Main.GlobalTimeWrappedHourly;
-        pass.Parameters.distortionStrength = 0.03f;
-        pass.Apply();
-        gDevice.Register(0, AssetReferences.Assets.LaserTextures.Lightning2.Asset.Value, SamplerState.LinearWrap);
-        gDevice.Register(1, AssetReferences.Assets.Noise.PerlinBlurred.Asset.Value, SamplerState.LinearWrap);
-
-        TrailDrawer.ClearPrimitives();
-        for (var i = 0; i < NumStrikes; i++)
-        {
-            ref var state = ref StrikeStates[i];
-            if (state == AIState.Telegraph)
-                continue;
-            if (_randIndex == i)
-                continue;
-            beamIndex = i;
-            var ratio = (float)i / (float)NumStrikes;
-            var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
-            var endPosition = startPosition;
-            endPosition.Y = Y + offset;
-            var points = DrawUtilities.InterpolateBetweenPoints(startPosition, endPosition, 32);
-            TrailDrawer.PreparePrimitives(points, GetTrailColor, GetTrailWidth);
-        }
-        TrailDrawer.DrawCached(pass.Shader);
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedTelegraph);
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedStrike);
-        //     PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedBeam);
         return false;
     }
 }
