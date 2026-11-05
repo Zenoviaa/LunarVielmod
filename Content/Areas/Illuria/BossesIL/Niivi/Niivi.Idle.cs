@@ -73,6 +73,7 @@ public partial class Niivi
                     var lookRotation = (MyTarget.Center - NPC.Center).ToRotation();
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, lookRotation, 0.1f);
 
+                    _useFK = true;
                     FK_ArcBody(-0.2f, 0.1f);
                     if (sqrDistToTarget > Idle_HoverTowardSpeedUpDistance)
                     {

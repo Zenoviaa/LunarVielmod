@@ -20,7 +20,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     spriteColor *= 1.8;
     spriteColor += 1.0 * coords.y * spriteColor.r;
     spriteColor = pow(spriteColor, 0.8);
-    return (spriteColor + originalColor * 0.6) * alpha;
+    return (spriteColor + originalColor * 0.6) * alpha * alpha;
 }
 
 technique Technique1

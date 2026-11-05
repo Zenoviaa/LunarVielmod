@@ -51,7 +51,7 @@ public class NiiviLightningStrike : ModProjectile
                 for(var i = 0; i < NumStrikes; i++)
                 {
                     ref var data = ref field[i];
-                    data.randWidth = Main.rand.NextFloat(0.6f, 1f);
+                    data.randWidth = Main.rand.NextFloat(0.33f, 2f);
                     data.randRotation = Main.rand.NextFloat(-0.05f, 0.05f);
                     data.randHue = Main.rand.NextFloat(0f, 1f);
                 }
@@ -69,9 +69,9 @@ public class NiiviLightningStrike : ModProjectile
                 for(var i = 0; i < NumStrikes; i++)
                 {
                     ref var data = ref field[i];
-                    data.randProgress = Main.rand.NextFloat(0f, 1f);
+                    data.randProgress = Main.rand.NextFloat(0f, 0.5f);
                     data.randScale = new Vector2(Main.rand.NextFloat(0.6f, 1f), Main.rand.NextFloat(0.8f, 1f)) * Main.rand.NextFloat(0.2f, 0.3f);
-                    data.randRotation = Main.rand.NextFloat(-0.2f, 0.2f);
+                    data.randRotation = Main.rand.NextFloat(-0.8f, 0.8f);
                     data.index = Main.rand.Next(NumStrikes);
                 }
             }
@@ -87,7 +87,7 @@ public class NiiviLightningStrike : ModProjectile
     Vector2 TopRight => Top + new Vector2(StrikeRadius, 0);
     float StrikeHeight => 1444;
     float StrikeRadius => 1024;
-    float StrikeTime => 30;
+    float StrikeTime => 24;
     ref float TelegraphTime => ref Projectile.ai[2];
     AIState State
     {
@@ -206,15 +206,20 @@ public class NiiviLightningStrike : ModProjectile
                     {
                         if (_randIndex == k)
                             continue;
+                        var ratio = k / (float)NumStrikes;
+                        var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
+                        var endPosition = startPosition + new Vector2(0, StrikeHeight);
                         if (timer == 1)
                         {
 
-                            var zap = AssetReferences.Assets.Sounds.StormDragon_LightingZap.Asset with { PitchVariance = 0.4f };
-                            SoundEngine.PlaySound(zap);
+                            if(k % 2 == 0)
+                            {
+                                var zap = AssetReferences.Assets.Sounds.StormDragon_LightingZap.Asset with { PitchVariance = 0.4f };
+                                SoundEngine.PlaySound(zap);
 
-                            var ratio = k / (float)NumStrikes;
-                            var startPosition = Vector2.Lerp(TopLeft, TopRight, ratio);
-                            var endPosition = startPosition + new Vector2(0, StrikeHeight);
+
+                            }
+
                             var vel = (endPosition - startPosition).SafeNormalize(Vector2.Zero) * 4;
 
 
@@ -222,14 +227,14 @@ public class NiiviLightningStrike : ModProjectile
                             {
                                 var currentPosition = Projectile.Center;
                                 var fx = FXUtil.GlowCircleBoom(endPosition, DrawUtilities.Prismatic, DrawUtilities.Prismatic, Color.Black, 24);
-                                fx.Scale *= 2.2F;
+                                fx.Scale *= 3F;
 
                                 var fx2 = FXUtil.GlowCircleBoom(endPosition, Color.White, DrawUtilities.Prismatic, Color.Black, 24);
-                                fx2.Scale *= 1.5f;
+                                fx2.Scale *= 2f;
 
                                 var pos = Main.rand.NextVector2Circular(7, 7) + endPosition;
                                 var color = DrawUtilities.Prismatic.ToVector4();
-                                for (var i = 0; i < 10; i++)
+                                for (var i = 0; i < 16; i++)
                                 {
                                     Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                                     {
@@ -255,9 +260,9 @@ public class NiiviLightningStrike : ModProjectile
                                     {
                                         position = posVel.position,
                                         velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
-                                        color = DrawUtilities.Prismatic,
+                                        color = DrawUtilities.Prismatic with { A = 0},
                                         timeLeft = Main.rand.Next(45, 120),
-                                        scale = Main.rand.NextFloat(0.15f, 0.25f) * 2
+                                        scale = Main.rand.NextFloat(0.15f, 0.25f)
                                     });
                                 }
 
@@ -273,21 +278,23 @@ public class NiiviLightningStrike : ModProjectile
 
                                 Particles.NiiviLightningImpact.Spawn(new()
                                 {
-                                    position = endPosition,
+                                    position = endPosition + new Vector2(0, 64),
+                                    velocity = Vector2.UnitY,
                                     timeLeft = 30,
                                     color = Color.Lerp(Color.White, DrawUtilities.Prismatic, 0.3f),
-                                    scale = new Vector2(Main.rand.NextFloat(0.86f, 1f), 1f)
+                                    scale = new Vector2(Main.rand.NextFloat(0.86f, 1f), 0.2F)
                                 });
 
                                 for(var i = 0; i < 3; i++)
                                 {
-                                    var vel = -Vector2.UnitY.RotatedByRandom(1f) * 8;
+                                    var vel = -Vector2.UnitY.RotatedByRandom(1f) * 8 * Main.rand.NextFloat(0.6F, 1F);
                                     Particles.NiiviIceRockGore.Spawn(new()
                                     {
-                                        position = endPosition,
+                                        position = endPosition + Main.rand.NextVector2Circular(36, 36),
                                         velocity = vel,
-                                        timeLeft = 60,
+                                        timeLeft = 120,
                                         scale = new Vector2(Main.rand.NextFloat(0.6f, 1f)),
+                                        color = Color.White
                                       
                                     });
                                 }
@@ -303,31 +310,18 @@ public class NiiviLightningStrike : ModProjectile
                                         color = Color.DarkBlue
                                     });
                                 }
-                            }
-
-                            if(timer == 15)
-                            {
-                                var soundStyle = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap3.Asset;
-                                var randIndex = Main.rand.Next(2);
-                                switch (randIndex)
+                                for(var i =0; i < 7; i++)
                                 {
-                                    case 1:
-                                        {
-                                            soundStyle = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap4.Asset;
-                                        }
-                                        break;
+                                    Niivi.CreateLightningSparks(endPosition + Main.rand.NextVector2Circular(32, 32));
                                 }
 
-                                soundStyle = soundStyle with { PitchVariance = 0.5F, MaxInstances = 3, Volume = 0.5F };
-                                SoundEngine.PlaySound(soundStyle, endPosition);
-                                var fx = FXUtil.GlowCircleBoom(endPosition, DrawUtilities.Prismatic * 0.6F, DrawUtilities.Prismatic * 0.6F, Color.Black, 24);
-                                fx.Scale *= 1f;
-
-
+                               
                             }
 
+
                             Blast();
-                            FXUtil.ShakeCamera(Projectile.Center, 1024, 10);
+                            FXUtil.ShakeCamera(Projectile.Center, 1024, 12);
+                            FXUtil.ApplyContrastBrightness(MathHelper.Lerp(1.16F, 1F, EasingFunction.InSine(timer / 30F)), 0f);
                             for (var j = 0; j < 24; j++)
                             {
                                 var pos = Vector2.Lerp(startPosition, endPosition, Main.rand.NextFloat(0f, 1f));
@@ -342,6 +336,27 @@ public class NiiviLightningStrike : ModProjectile
                                     scale = new Vector2(Main.rand.NextFloat(0.3f, 1f)),
                                 });
                             }
+                        }
+                        if ((int)timer == (int)14)
+                        {
+
+                            var soundStyle = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap3.Asset;
+                            var randIndex = Main.rand.Next(2);
+                            switch (randIndex)
+                            {
+                                case 1:
+                                    {
+                                        soundStyle = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap4.Asset;
+                                    }
+                                    break;
+                            }
+
+                            soundStyle = soundStyle with { PitchVariance = 0.5F, MaxInstances = 3, Volume = 0.5F };
+                            SoundEngine.PlaySound(soundStyle, endPosition);
+                            var fx = FXUtil.GlowCircleBoom(endPosition, DrawUtilities.Prismatic * 0.6F, DrawUtilities.Prismatic * 0.6F, Color.Black, 24);
+                            fx.Scale *= 1f;
+
+
                         }
                     }
                     break;
@@ -504,10 +519,10 @@ public class NiiviLightningStrike : ModProjectile
                 drawer.color = strikeColor;
                 drawer.worldPosition = startPosition + new Vector2(16, 0);
                 drawer.scale.X = StrikeHeight / drawer.Width;
-                drawer.scale.X *= strikeData.randWidth;
-                
+          
                 drawer.scale.X *= MathHelper.Lerp(1.06f, 1f, EasingFunction.OutExpo(timer / StrikeTime));
                 drawer.scale.Y = MathHelper.Lerp(2f, 1f, EasingFunction.OutSine(timer / StrikeTime));
+                drawer.scale.Y = strikeData.randWidth;
 
                 drawer.rotation = Vector2.UnitY.ToRotation();
                 drawer.rotation += strikeData.randRotation;
@@ -522,7 +537,7 @@ public class NiiviLightningStrike : ModProjectile
 
                 var bloomDrawer = drawer;
                 bloomDrawer.scale.Y *= 1.5f;
-                bloomDrawer.color.A -= 50;
+                bloomDrawer.color *= 0.6F;
                 sb.Draw(bloomDrawer);
                 sb.Draw(drawer);
             }

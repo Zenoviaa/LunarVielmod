@@ -59,7 +59,7 @@ public class NiiviLightningImpact : ParticleUpdater<NiiviLightningImpact.Data>
         var pass = AssetReferences.Effects.Electric.SparkImpact.CreatePixelPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
         pass.Apply();
-        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader }))
+        using (spriteBatch.Ctx(spriteBatch.Parameters with { effect = pass.Shader, blendState = BlendState.Additive }))
         {
             for (var i = 0; i < _length; i++)
             {
@@ -69,7 +69,7 @@ public class NiiviLightningImpact : ParticleUpdater<NiiviLightningImpact.Data>
                 var drawer = SpritebatchDrawer.FromTextureWhite(texture);
                 drawer.worldPosition = particle.position;
                 drawer.color = particle.color;
-                drawer.color.A = (byte)(fade * 255);
+                drawer.color.A = (byte)(fade * 255 * 3);
                 drawer.sourceRect = frame;
                 drawer.rotation = particle.velocity.ToRotation();
                 drawer.scale *= particle.scale;

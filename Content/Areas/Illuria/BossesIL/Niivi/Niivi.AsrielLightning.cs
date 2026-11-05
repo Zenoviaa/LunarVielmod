@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
+using Stellamod.Core.Camera;
 using System;
 using Terraria;
 
@@ -8,9 +9,9 @@ public partial class Niivi
 {
     float AsrielLightning_OutTime => 60;
     float AsrielLightning_StrikeTime => MathHelper.Lerp(130, 100, AttackCount / AsrielLightning_StrikeCount);
-    float AsrielLightning_StrikeCount => 7;
+    float AsrielLightning_StrikeCount => 5;
     float AsrielLightning_SwoopOutTime => 60;
-    float AsrielLightning_ChargeUpTime => 70;
+    float AsrielLightning_ChargeUpTime => 170;
     float AsrielLightning_TeleportInTime => 60;
     int AsrielLightning_Damage => 67;
     void AI_AsrielLightning()
@@ -54,9 +55,21 @@ public partial class Niivi
                     _outliner.warning = true;
                     _crystalRotationRadians += 0.05F;
                     _crystalCharge = 1f;
-                    _simpleChainRendering = true;
+                  
                     _invisAlpha = MathHelper.Lerp(0f, 1f, Timer / AsrielLightning_ChargeUpTime);
-                    LimpIKTarget();
+
+
+                    if(NPC.velocity.Y < 0)
+                    {
+                        _simpleChainRendering = true;
+                        LimpIKTarget();
+
+                    }
+                    else
+                    {
+                        _useFK = true;
+                        FK_ArcBody(-0.2f * ExtraMath.Osc(0.5f, 1.2f), 0.1f);
+                    }
 
                     if (Main.rand.NextBool(8))
                     {
@@ -70,7 +83,7 @@ public partial class Niivi
                     }
 
                     NPC.velocity.X *= 0.96F;
-                    NPC.velocity.Y -= 0.05F;
+                    NPC.velocity.Y -= 0.35F;
                     if(Timer >= AsrielLightning_ChargeUpTime)
                     {
                         Timer = 0;
@@ -81,6 +94,7 @@ public partial class Niivi
 
             case 2:
                 {
+                    OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -128);
                     _invisAlpha = 1f;
                     _outliner.attacking = true;
                     _isBLACK = true;
@@ -102,7 +116,7 @@ public partial class Niivi
                             firer.New();
                         }
                     }
-                    if (Timer >= AsrielLightning_StrikeTime - 5)
+                    if (Timer >= AsrielLightning_StrikeTime * 1.1f)
                     {
                         Timer = 0;
                         AttackCount++;

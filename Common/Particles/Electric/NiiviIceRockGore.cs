@@ -38,7 +38,7 @@ public class NiiviIceRockGore : ParticleUpdater<NiiviIceRockGore.Data>
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
             particle.velocity.X *= 0.97F;
-            particle.velocity.Y += 0.06F;
+            particle.velocity.Y += 0.18F;
             particle.rotation += MathF.Sign(particle.velocity.X) * 0.05F;
             particle.timeLeft--;
         }
@@ -68,7 +68,7 @@ public class NiiviIceRockGore : ParticleUpdater<NiiviIceRockGore.Data>
             (var texture, var frame) = GetParticleFrame(particle.frame); 
             var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
             var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
-            drawer.color = particle.color * fade;
+            drawer.color *= fade;
             drawer.sourceRect = frame;
             drawer.rotation = particle.rotation;
             drawer.scale *= particle.scale;
