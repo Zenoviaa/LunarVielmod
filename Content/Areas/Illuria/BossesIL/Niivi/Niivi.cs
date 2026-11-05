@@ -460,7 +460,7 @@ public partial class Niivi : ScarletBoss,
                 AI_PrismaticBomb();
                 break;
             case AIState.StarBomb:
-                AI_StarBomb();
+                AI_RainbowRoad();
                 break;
             case AIState.BlastBreath:
                 AI_BlastBreath();

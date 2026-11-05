@@ -89,130 +89,7 @@ public class NiiviSillyStarBombBoom : ModProjectile
         //return base.PreDraw(ref lightColor);
     }
 }
-public class NiiviSillyStarMaker : ModProjectile
-{
-    float _numAttacksDone = 0;
-    ref float Timer => ref Projectile.ai[0];
-    ref float AttackCount => ref Projectile.ai[1];
-    ref float GlobalTimer => ref Projectile.ai[2];
-    Player TargetPlayer
-    {
-        get
-        {
-            Player player = null; 
-            if (player == null || !player.active)
-            {
-                player = PlayerHelper.FindClosestPlayer(Projectile.Center, 4096);
-            }
-            if(player == null)
-            {
-                player = Main.LocalPlayer;
-            }
-            return player;
-        }
-    }
 
-    public override string Texture => ModType.NoTexture;
-    public override void SendExtraAI(BinaryWriter writer)
-    {
-        base.SendExtraAI(writer);
-        writer.Write(_numAttacksDone);
-    }
-    public override void ReceiveExtraAI(BinaryReader reader)
-    {
-        base.ReceiveExtraAI(reader);
-        _numAttacksDone = reader.ReadSingle();
-    }
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 120000;
-    }
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-        Projectile.penetrate = -1;
-        Projectile.timeLeft = 1200;
-        Projectile.ignoreWater = true;
-        Projectile.WidthAndHeight = 60;
-        Projectile.tileCollide = false;
-    }
-
-    public override void AI()
-    {
-        base.AI();
-        OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
-        Timer++;
-        GlobalTimer++;
-        if(Timer >= 86)
-        {
-            if (this.OwnedByLocalClient())
-            {
-                var rand = Main.rand.Next(3);
-                var firer = ProjFirer.From<NiiviSillyStar>(Projectile);
-                firer.ai0 = rand;
-                firer.ai1 = TargetPlayer.whoAmI;
-                firer.position = TargetPlayer.Center + new Vector2(Main.rand.NextFloat(-666, 666), -1000);
-                firer.New();
-            }
-            _numAttacksDone++;
-            if(_numAttacksDone >= AttackCount)
-            {
-                Projectile.Kill();
-            }
-            Timer = 0;
-        }
-    }
-    public override bool ShouldUpdatePosition()
-    {
-        return false;
-    }
-    public override void OnHitPlayer(Player target, Player.HurtInfo info)
-    {
-        base.OnHitPlayer(target, info);
-    }
-
-    void DrawGradient(SpriteBatch sb, Vector2 sp)
-    {
-        var startColor = Color.Red;
-        startColor.ScrollHue(Main.GlobalTimeWrappedHourly * 25);
-        startColor = Color.Lerp(startColor, Color.White, 0.5F);
-        var endColor = startColor;
-        endColor.ScrollHue(45);
-        var pass = AssetReferences.Effects.CrystalShaders.BetterYGradient.CreatePixelPass();
-        pass.Parameters.startColor = startColor.ToVector3();
-
-
-        pass.Parameters.endColor = endColor.ToVector3();
-        pass.Apply();
-        var fade = EasingFunction.InOutSine(GlobalTimer / 30f) * EasingFunction.InOutSine((float)Projectile.timeLeft / 30F);
-        using (sb.Ctx(sb.Parameters with { effect = pass.Shader, blendState = BlendState.Additive }))
-        {
-            var c = Color.White * fade * 1f;
-            c.A = 0;
-            sb.Draw(
-                AssetReferences.Assets.GlowMasks.VerticalGradient.Asset.Value,
-                new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
-               c);
-        }
-    }
-
-
-    public override bool PreDraw(ref Color lightColor)
-    {
-        PixelationManager.QueueSpritebatchDrawAction(DrawGradient, DrawLayer.OverPlayers);
-        // PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrails, DrawLayer.OverNPCs);
-        AuroraEffectRenderer.effectTimer = 30;
-        StarDancersRenderer.starsTimer = 30;
-
-        return false;
-    }
-    public override void OnKill(int timeLeft)
-    {
-        base.OnKill(timeLeft);
-    }
-
-}
 public class NiiviSillyStar : ModProjectile
 {
     bool _jumped;
@@ -233,10 +110,7 @@ public class NiiviSillyStar : ModProjectile
         RunningStar,
         SpiralStar
     }
-    StarType Style
-    {
-        get => (StarType)Projectile.ai[0];
-    }
+
     Color GlowColor
     {
         get
@@ -255,6 +129,10 @@ public class NiiviSillyStar : ModProjectile
     }
     float SquishTime => 30F;
     Vector2 Scale => Vector2.One  *Vector2.Lerp(Vector2.One, new Vector2(1.1f, 0.9f), EasingFunction.OutSine(_squishTimer / SquishTime));
+    StarType Style
+    {
+        get => (StarType)Projectile.ai[0];
+    }
     Player TargetPlayer => Main.player[(int)Projectile.ai[1]];
     ref float Timer => ref Projectile.ai[2];
     float StarWalkerFrameSpeed => 4f;
@@ -644,7 +522,7 @@ public class NiiviSillyStar : ModProjectile
 
     public override bool ShouldUpdatePosition()
     {
-        return base.ShouldUpdatePosition();
+        return false;
     }
     
     public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -777,20 +655,29 @@ public class NiiviSillyStar : ModProjectile
     }
 }
 
-public class NiiviStarBomb : ModProjectile
+public class NiiviBoostRing : ModProjectile
 {
-    float _sizeDown;
+    enum AIState
+    {
+        Idle,
+        Boost
+    }
+    float _boostOut;
     float _globalTimer;
     float _speed;
     int _oldIndex;
     float KaboomTime => 60;
     ref float Timer => ref Projectile.ai[0];
-    ref float ChargeLevel => ref Projectile.ai[1];
-    ref float ChargeTime => ref Projectile.ai[2];
-    float MaxChargeLevel => 64;
-    float Size => MathHelper.Lerp(24, 128 + _globalTimer * 0.1f, EasingFunction.OutExpo(_globalTimer / 360F)) * ExtraMath.Osc(0.88f, 1f, speed: 6) * _sizeDown;
+    NPC Parent => Main.npc[(int)Projectile.ai[1]];
+    AIState State
+    {
+        get => (AIState)Projectile.ai[2];
+        set => Projectile.ai[2] = (float)value;
+    }
+    float Size => MathHelper.Lerp(24, 128 + _globalTimer * 0.1f, EasingFunction.OutExpo(_globalTimer / 360F)) * ExtraMath.Osc(0.88f, 1f, speed: 6) * MathHelper.Lerp(1f, 1.5F, _boostOut);
     float DistanceBetweenSteps => 1f;
     float DistanceBetweenCircleSteps => 7;
+    float PerspectiveAngle => 1.5F;
     int[] PentagonPattern => field ??= [3, 0, 2, 4, 1];
     Vector2[] PentagonPoints
     {
@@ -810,7 +697,7 @@ public class NiiviStarBomb : ModProjectile
             return field;
         }
     }
-
+    Matrix PerspectiveRotationMatrix => Matrix.CreateFromQuaternion(Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), PerspectiveAngle));
     int GetIndex(float time)
     {
         float t = time * 0.02f;
@@ -820,9 +707,16 @@ public class NiiviStarBomb : ModProjectile
         return currentIndex;
     }
 
+
     Vector2 InterpolateRingPattern(float time, float size)
     {
-        return Projectile.Center + -Vector2.UnitY.RotatedBy(time * 0.02f) * size;
+        var pos = Projectile.Center + -Vector2.UnitY.RotatedBy(time * 0.02f) * size;
+        var pos3 = new Vector3(pos.X, pos.Y, 0);
+       
+        pos3 = Vector3.Transform(pos3, PerspectiveRotationMatrix);
+        pos.X = pos3.X;
+        pos.Y = pos3.Y;
+        return pos;
     }
     Vector2 InterpolatePentagonPattern(float time)
     {
@@ -836,7 +730,13 @@ public class NiiviStarBomb : ModProjectile
         float bottom = currentIndex * stepSize;
         float ratio = (t - bottom) / stepSize;
 
-        return Vector2.Lerp(PentagonPoints[PentagonPattern[currentIndex]], PentagonPoints[PentagonPattern[nextIndex]], ratio);
+        var pos = Vector2.Lerp(PentagonPoints[PentagonPattern[currentIndex]], PentagonPoints[PentagonPattern[nextIndex]], ratio);
+        var pos3 = new Vector3(pos.X, pos.Y, 0);
+ 
+        pos3 = Vector3.Transform(pos3, PerspectiveRotationMatrix);
+        pos.X = pos3.X;
+        pos.Y = pos3.Y;
+        return pos;
     }
 
     public override string Texture => ModType.NoTexture;
@@ -851,58 +751,48 @@ public class NiiviStarBomb : ModProjectile
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
     }
-    void AmbientSuckingParticles()
+
+    void SwitchState(AIState state)
     {
-        //The thing zemmie likes is when there's just a otn of these
-        //Let's mix the bit dust and with the stretch particles and a few swirly particles, that should make it look very dynamic.
-
-        //First stretch particles
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        Vector2 GetStretchSpawnPoint()
+        Timer = 0;
+        State = state;
+    }
+    void AI_Boost()
+    {
+        Timer++;
+        
+        _boostOut = EasingFunction.InSine(Timer / KaboomTime);
+        if (Timer >= KaboomTime)
         {
-            var edge = Main.rand.NextFloat(444, 666);
-            return Projectile.Center + Main.rand.NextVector2CircularEdge(edge, edge);
+            Projectile.Kill();
+        }
+    }
+    void AI_Idle()
+    {
+        Timer++;
+        if (Parent.Center.X < Projectile.Center.X)
+        {
+            SwitchState(AIState.Boost);
+
         }
 
-        if (Timer % 3 == 0)
-        {
-            var pos = GetStretchSpawnPoint();
-            var vel = Projectile.Center - pos;
-            vel *= 0.06f;
-            var fx = FXUtil.GlowStretch(pos, vel);
-            fx.OuterGlowColor = DrawUtilities.Prismatic;
-            fx.InnerColor = DrawUtilities.Prismatic;
-            fx.GlowColor = DrawUtilities.Prismatic;
-            fx.Scale *= 2 * Main.rand.NextFloat(1f, 2f);
-        }
     }
     public override void AI()
     {
         base.AI();
         _speed += 0.003f;
         _globalTimer += _speed;
-     
-        if (ChargeLevel < MaxChargeLevel)
-        {
-            _sizeDown = 1f;
-            Timer++;
-            if (Timer >= ChargeTime)
-            {
-                Timer = 0;
-                ChargeTime *= 0.94f;
-                ChargeLevel++;
-            }
-        }
-        else
-        {
 
-            _sizeDown = MathHelper.Lerp(1f, 0f, EasingFunction.InSine(Timer / KaboomTime));
-            Timer++;
-            if (Timer >= KaboomTime)
-            {
-                Projectile.Kill();
-            }
+        switch (State)
+        {
+            case AIState.Idle:
+                AI_Idle();
+                break;
+            case AIState.Boost:
+                AI_Boost();
+                break;
         }
+
         var currentPosition = InterpolatePentagonPattern(_globalTimer);
         var currentIndex = GetIndex(_globalTimer);
         if(_oldIndex != currentIndex)
@@ -931,8 +821,7 @@ public class NiiviStarBomb : ModProjectile
                 color = DrawUtilities.Prismatic
             });
         }
-        AmbientSuckingParticles();
-        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.5F));
+        
         for(var i = 0; i < 3; i++)
         {
             var pos = Main.rand.NextVector2Circular(7, 7) + currentPosition;
@@ -977,7 +866,7 @@ public class NiiviStarBomb : ModProjectile
     {
         var points = new List<Vector2>();
         points.Add(InterpolatePentagonPattern(_globalTimer));
-        for (var i = 1; i < ChargeLevel * 2; i++)
+        for (var i = 1; i < 32; i++)
         {
             points.Add(InterpolatePentagonPattern(_globalTimer - i * DistanceBetweenSteps));
 
@@ -998,7 +887,7 @@ public class NiiviStarBomb : ModProjectile
                 var size = 128F + j * 80F;
                 var t = EasingFunction.InOutExpo((_globalTimer - (j + 1) * 60F) / 60F);
                 size *= t;
-                size *= _sizeDown;
+                size *= MathHelper.Lerp(1f, 1.4F, _boostOut);
                 points.Add(InterpolateRingPattern(_globalTimer * (4 + j) - i * DistanceBetweenCircleSteps + j * 4, size));
             }
             TrailDrawer.PreparePrimitives(points.ToArray(), GetTrailColorFaint, GetTrailWidth2);
@@ -1027,7 +916,7 @@ public class NiiviStarBomb : ModProjectile
                 var size = 128F + j * 80F;
                 var t = EasingFunction.InOutExpo((_globalTimer - (j+1) * 60F) / 60F);
                 size *= t;
-                size *= _sizeDown;
+                size *= _boostOut;
                 points.Add(InterpolateRingPattern(_globalTimer * (4 + j) - i * DistanceBetweenCircleSteps + j * 4, size));
             }
             TrailDrawer.PreparePrimitives(points.ToArray(), GetTrailColor, GetTrailWidth);
@@ -1043,7 +932,7 @@ public class NiiviStarBomb : ModProjectile
 
     void DrawPixelated(SpriteBatch sb, Vector2 sp)
     {
-        var lerp = _sizeDown * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(_globalTimer / 60f));;
+        var lerp = _boostOut * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(_globalTimer / 60f));;
         var glow = SpritebatchDrawer.FromTextureGetLightingColor(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset, Projectile.Center);
         glow.color = Main.DiscoColor * 0.2f * lerp;
         glow.color.A = 0;
@@ -1066,14 +955,5 @@ public class NiiviStarBomb : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        if (this.OwnedByLocalClient())
-        {
-            var firer = ProjFirer.From<NiiviSillyStarBombBoom>(Projectile);
-            firer.New();
-
-            var firer2 = ProjFirer.From<NiiviSillyStarMaker>(Projectile);
-            firer2.ai1 = 16;
-            firer2.New();
-        }
     }
 }

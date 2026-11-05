@@ -5,7 +5,7 @@ using System;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi;
-
+/*
 public partial class Niivi
 {
     float StarBomb_BigFlyDistance => 512 * ExtraMath.Osc(0.7f, 1f, speed: 3);
@@ -37,7 +37,7 @@ public partial class Niivi
                         InitialVelocity = NPC.velocity;
                         if (MultiplayerHelper.IsHost)
                         {
-                            var firer = ProjFirer.From<NiiviStarBomb>(NPC);
+                            var firer = ProjFirer.From<NiiviBoostRing>(NPC);
                             firer.damage = StarBomb_Damage;
                             firer.position = MyTarget.Center;
                             firer.ai2 = 19;
@@ -222,3 +222,4 @@ public partial class Niivi
         }
     }
 }
+*/
