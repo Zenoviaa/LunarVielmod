@@ -479,8 +479,6 @@ public partial class Niivi : ScarletBoss,
 
     void ChooseAttack()
     {
-        return;
-
         if(_pattern >= 3)
         {
             _pattern = 0;
