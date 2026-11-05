@@ -846,7 +846,7 @@ public class NiiviStarBomb : ModProjectile
         Projectile.width = 64;
         Projectile.height = 64;
         Projectile.timeLeft = 900;
-        Projectile.hostile = true;
+        Projectile.hostile = false;
         Projectile.light = 2f;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;

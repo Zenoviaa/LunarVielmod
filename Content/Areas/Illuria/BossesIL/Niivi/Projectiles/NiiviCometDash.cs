@@ -2,6 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
@@ -15,6 +16,7 @@ public class NiiviCometDash : ModProjectile,
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
+        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 4800;
         Projectile.SetTrailCacheLength(64);
     }
 
@@ -22,7 +24,7 @@ public class NiiviCometDash : ModProjectile,
     {
         base.SetDefaults();
         Projectile.hostile = true;
-        Projectile.timeLeft = 180;
+        Projectile.timeLeft = 480;
         Projectile.tileCollide = false;
         Projectile.light = 0.4f;
         Projectile.penetrate = -1;
@@ -32,7 +34,7 @@ public class NiiviCometDash : ModProjectile,
 
     public override bool CanHitPlayer(Player target)
     {
-        if (Timer >= 60)
+        if (Timer >= 170)
             return false;
         return base.CanHitPlayer(target);
     }
@@ -51,10 +53,11 @@ public class NiiviCometDash : ModProjectile,
     {
         base.AI();
         Timer++;
-        if (Timer < 60)
+
+        if (Timer < 180)
         {
             Projectile.velocity = -Parent.velocity;
-            Projectile.Center = Parent.Center;
+            Projectile.Center = Parent.Center + Parent.velocity.SafeNormalize(Vector2.Zero) * 128;
         }
     }
 
@@ -62,11 +65,11 @@ public class NiiviCometDash : ModProjectile,
     {
         float GetTrailWidth(float ratio)
         {
-            return MathHelper.SmoothStep(256, 0, ratio)  * MathHelper.Lerp(1f, 0f, EasingFunction.InQuad(Timer / 120F));
+            return MathHelper.SmoothStep(256, 128, ratio)  * MathHelper.Lerp(1f, 0f, EasingFunction.InQuad(Timer / 240F));
         }
         Color GetTrailColor(float ratio)
         {
-            return Color.Lerp(Color.White, Color.Transparent, ratio);
+            return  Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(ratio)) with { A = 0 };
         }
 
         var pass = AssetReferences.Effects.Niivi.NiiviCometDash.CreatePrimitivesPass();
@@ -76,13 +79,27 @@ public class NiiviCometDash : ModProjectile,
             Texture = AssetReferences.Assets.Noise.StarCometNoise.Asset.Value,
             Sampler = SamplerState.LinearWrap
         };
+        pass.Parameters.spriteSampler = new()
+        {
+            Texture = AssetReferences.Assets.LaserTextures.TexturedLaser.Asset.Value,
+            Sampler = SamplerState.LinearWrap
+        };
+        pass.Parameters.transformMatrix = TrailDrawer.WorldViewPoint2;
         pass.Apply();
-        gDevice.Register(0, AssetReferences.Assets.LaserTextures.TexturedLaser.Asset.Value, SamplerState.LinearWrap);
-        TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth, pass.Shader, Projectile.Size * 0.5F);
+
+        TrailDrawer.ClearPrimitives();
+        TrailDrawer.PreparePrimitives(Projectile.oldPos, GetTrailColor, GetTrailWidth, Projectile.Size * 0.5F);
+        TrailDrawer.DrawCached(pass.Shader);
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedCometTrail, DrawLayer.OverNPCs);
+        return false;
     }
 
     public void DrawToRenderTargets()
     {
-        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedCometTrail);
+      //  
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 
@@ -14,9 +15,9 @@ public partial class Niivi
     float StarBomb_FlyDownTime => 240;
     int StarBomb_Damage => 55;
     int StarBomb_CometDamage => 85;
-    int StarBomb_DashCount => 7;
+    int StarBomb_DashCount => 5;
     float StarBombPrepTime => 60;
-    float StarBomb_CometDashTime => 60;
+    float StarBomb_CometDashTime => 300;
 
     void AI_StarBomb()
     {
@@ -39,7 +40,7 @@ public partial class Niivi
                             var firer = ProjFirer.From<NiiviStarBomb>(NPC);
                             firer.damage = StarBomb_Damage;
                             firer.position = MyTarget.Center;
-                            firer.ai2 = 12;
+                            firer.ai2 = 19;
                             firer.New();
                         }
                     }
@@ -61,51 +62,6 @@ public partial class Niivi
                     }
                 }
                 break;
-            /*
-            case 0:
-                {
-                    if (Timer == 1)
-                    {
-                        _ikTarget = Segments[Segments.Length - 1].position;
-                        StartPosition = NPC.Center;
-                        EndPosition = NPC.Center + new Vector2(0, -128);
-                        if (MultiplayerHelper.IsHost)
-                        {
-                            var firer = ProjFirer.From<NiiviStarBomb>(NPC);
-                            firer.damage = StarBomb_Damage;
-                            firer.position = EndPosition;
-                            firer.ai2 = 24;
-                            firer.New();
-                        }
-                        InitialVelocity = NPC.velocity;
-                    }
-
-                    _outliner.warning = true;
-                    Vector2 GetFlyPosition(Vector2 endPosition, float radians)
-                    {
-                        var posToFlyTo = endPosition + (-Vector2.UnitY * StarBomb_FlyDistance).RotatedBy(radians);
-                        return posToFlyTo;
-                    }
-
-                    float t = Timer * 0.052F;
-                    var targetPos = Vector2.Lerp(StartPosition, GetFlyPosition(EndPosition, t), EasingFunction.InOutSine(Timer / 170));
-                    var targetVel = (targetPos - NPC.Center);
-
-                    NPC.velocity = Vector2.Lerp(InitialVelocity, targetVel, EasingFunction.InOutSine(Timer / 170));
-                    NPC.rotation = (NPC.Center - EndPosition).ToRotation() + MathHelper.PiOver2;
-
-                    var newTarget = Vector2.Lerp(GetFlyPosition(EndPosition, t - 1.45F), EndPosition, 0.1F);
-         
-                    _ikTarget = Vector2.Lerp(_ikTarget, newTarget, 0.4f * EasingFunction.InOutSine(Timer / 170));
-                    //_ikInitialDirection = -NPC.rotation.ToRotationVector2();
-                    if (Timer >= StarBomb_ChargeTime)
-                    {
-                        Timer = 0;
-                        AttackCycle++;
-                    } 
-                }
-                break;
-                */
             case 1:
                 {
                     if(Timer == 1)
@@ -128,7 +84,7 @@ public partial class Niivi
                     LimpIKTarget();
                     if (Timer >= StarBomb_FlyDownTime)
                     {
-                        Timer = 0;
+                        Timer = 3;
                         AttackCycle ++;
                     }
                 }
@@ -138,7 +94,7 @@ public partial class Niivi
                 {
                     if(Timer == 1)
                     {
-                        Teleport(MyTarget.Center + new Vector2(0, -512));
+                        Teleport(StartPosition);
                         if (MultiplayerHelper.IsHost)
                         {
                             var firer = ProjFirer.From<NiiviCometDash>(NPC);
@@ -155,10 +111,60 @@ public partial class Niivi
                     _crystalRotationRadians += 0.05f;
                     _simpleChainRendering = true;
                     LimpIKTarget();
-
-                    if (Main.rand.NextBool(3))
+                    var s = MyTarget.Center + new Vector2(0, -1444);
+                    if (Timer <= StarBomb_CometDashTime * 0.5F && Timer > 4)
                     {
-                        MakeRainbowLightningSpark(RandomPositionOnBody);
+                   
+                        StartPosition.Y = s.Y;
+                        StartPosition.X = MathHelper.Lerp(StartPosition.X, s.X, 0.4f);
+                 
+           
+                        
+                    }
+                    StartPosition.X = MathHelper.Lerp(StartPosition.X, s.X, 0.01f);
+
+                    if (Timer >= StarBomb_CometDashTime * 0.5F)
+                    {
+                        if (Main.rand.NextBool(4))
+                        {
+                            var pos = StartPosition;
+                            pos.X += Main.rand.NextFloat(-24, 24);
+                            pos.Y += Main.rand.NextFloat(764, 2048f);
+                            var fx = FXUtil.GlowStretch(pos, Vector2.UnitY * 25);
+                            fx.VectorScale.X *= 2F;
+                            fx.VectorScale.Y *= 0.5F;
+                            fx.InnerColor = Color.White;
+                            fx.OuterGlowColor = DrawUtilities.Prismatic;
+                        }
+                        for (var k = 0; k < 6; k++)
+                        {
+                            var pos = StartPosition;
+                            pos.X += Main.rand.NextFloat(-24, 24);
+                            pos.Y += Main.rand.NextFloat(764, 2048f);
+                            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                            {
+                                position = pos,
+                                velocity = Vector2.UnitY.RotatedByRandom(0.9F) * Main.rand.NextFloat(1, 3),
+                                innerColor = Color.White.ToVector4(),
+                                outerColor = DrawUtilities.Prismatic.ToVector4(),
+                                timeLeft = 15,
+                                scale = new Vector2(Main.rand.NextFloat(0.5f, 1f))
+                            });
+                        }
+                    }
+
+                    for (var i = 0; i < 3; i++)
+                    {
+                        CreateLightningSparks(RandomPositionOnBody);
+                    }
+                   
+                    if (Main.rand.NextBool(8))
+                    {
+                        var sp = SparkleParticle.Spawn(RandomPositionOnBody, -NPC.velocity.SafeNormalize(Vector2.Zero));
+                        sp.innerColor = DrawUtilities.Prismatic;
+                        sp.outerColor = Color.Lerp(sp.innerColor, Color.Black, 0.4f);
+                        sp.gravity = 0;
+                        sp.Scale *= 0.8F;
                     }
 
                     if (Main.rand.NextBool(2))
@@ -175,7 +181,7 @@ public partial class Niivi
                     }
 
                     NPC.velocity.X = 0;
-                    NPC.velocity.Y = 25;
+                    NPC.velocity.Y = 45;
                     NPC.rotation = Angle.Down;
                     if(Timer >= StarBomb_CometDashTime)
                     {
