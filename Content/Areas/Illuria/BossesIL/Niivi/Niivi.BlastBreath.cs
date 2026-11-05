@@ -26,7 +26,7 @@ public partial class Niivi
     float BlastBreath_ShootTime => 60;
     float BlastBreath_SwoopOutTime => 140;
     float BlastBreath_ShootCount => 3;
-    int BlastBreath_Damage => 80;
+    int BlastBreath_Damage => 100;
 
     void AI_BlastBreath()
     {
@@ -74,18 +74,18 @@ public partial class Niivi
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
                     if(AttackCount == 0)
                     {
-                        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f * EasingFunction.InOutSine(ratio)));
+                        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.4f * EasingFunction.InOutSine(ratio)));
                     }
                     else
                     {
-                        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
+                        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.4f));
                     }
           
                     var origin = StartPosition;
                     FK_ArcBody(-0.2f * ExtraMath.Osc(0.5f, 1.2f), 0.1f);
 
                     //    ResetSegments();
-                    var vel = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero) * -5;
+                    var vel = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero) * -3;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, vel, 0.03f );
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, (MyTarget.Center - NPC.Center).ToRotation(), 0.42f);
                     _useFK = true;
@@ -110,7 +110,7 @@ public partial class Niivi
                     _isBLACK = true;
 
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
-                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.4f));
                     var originPoint = StartPosition;
 
                     _crystalCharge = 1f;

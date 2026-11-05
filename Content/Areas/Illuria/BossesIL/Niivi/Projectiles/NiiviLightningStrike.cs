@@ -52,7 +52,7 @@ public class NiiviLightningStrike : ModProjectile
                 {
                     ref var data = ref field[i];
                     data.randWidth = Main.rand.NextFloat(0.33f, 2f);
-                    data.randRotation = Main.rand.NextFloat(-0.05f, 0.05f);
+                    data.randRotation = Main.rand.NextFloat(-0f, 0f);
                     data.randHue = Main.rand.NextFloat(0f, 1f);
                 }
             }
@@ -422,7 +422,7 @@ public class NiiviLightningStrike : ModProjectile
     void DrawPixelatedStrike(SpriteBatch sb, Vector2 sp)
     {
         var drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SingleLightningStrike.Asset);
-        drawer.LeftCenterOrigin();
+        drawer.drawOrigin = new Vector2(0, 63);
 
         var halfTime = TelegraphTime * 0.5f;
         var pass = AssetReferences.Effects.Niivi.PrismLightningStrike.CreatePixelPass();
@@ -451,12 +451,9 @@ public class NiiviLightningStrike : ModProjectile
                 hueOffset %= 1.0F;
 
                 var osc = ExtraMath.Osc(0.92f, 1f, speed: 32);
-                var osc2 = ExtraMath.Osc(0.7f, 2f, speed: 6, offset: i);
-                var osc3 = osc * osc2;
-
                 var telegraphRatio = timer / halfTime;
-                var a = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(telegraphRatio)) * 2f;
-                var alpha = a * osc3 * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(timer / TelegraphTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16);
+                var a = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(telegraphRatio)) ;
+                var alpha = a * osc * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(timer / TelegraphTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16);
                 var strikeColor = new Color(1.0f, 1.0f, hueOffset, alpha);
                 drawer.color = strikeColor;
                 drawer.worldPosition = startPosition + new Vector2(16, 0);
@@ -509,11 +506,11 @@ public class NiiviLightningStrike : ModProjectile
                 hueOffset %= 1.0F;
 
                 var osc = ExtraMath.Osc(0.92f, 1f, speed: 32);
-                var osc2 = ExtraMath.Osc(0.7f, 2f, speed: 6, offset: i);
+                var osc2 = ExtraMath.Osc(0.7f, 1f, speed: 6, offset: i);
                 var osc3 = osc * osc2;
 
                 var telegraphRatio = timer / halfTime;
-                var a = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(telegraphRatio)) * 2f;
+                var a = MathHelper.Lerp(1f, 0, EasingFunction.InSine(telegraphRatio)) ;
                 var alpha = a *  osc3 * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(timer / TelegraphTime)) * ExtraMath.Osc(0.6f, 1f, speed: 16);
                 var strikeColor = new Color(1.0f, 1.0f, hueOffset, alpha);
                 drawer.color = strikeColor;

@@ -10,7 +10,7 @@ public partial class Niivi
 {
     float StarBomb_BigFlyDistance => 512 * ExtraMath.Osc(0.7f, 1f, speed: 3);
     float StarBomb_FlyDistance => 353 * ExtraMath.Osc(0.7f, 1f, speed: 6);
-    float StarBomb_ChargeTime => 120;
+    float StarBomb_ChargeTime => 240;
     float StarBomb_WaitTime => 750;
     float StarBomb_FlyDownTime => 240;
     int StarBomb_Damage => 55;
@@ -51,7 +51,7 @@ public partial class Niivi
                     LimpIKTarget();
 
                     var offset = -Vector2.UnitY * 256;
-                    var positionToCircle = StartPosition + offset.RotatedBy(Timer / StarBomb_ChargeTime * 11f);
+                    var positionToCircle = StartPosition + offset.RotatedBy(Timer / StarBomb_ChargeTime * 4.5F);
                     var velToCircle = positionToCircle - NPC.Center;
                     NPC.velocity = Vector2.Lerp(InitialVelocity, velToCircle, EasingFunction.InOutSine(Timer / (StarBomb_ChargeTime * 0.5F)));
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.2f);
@@ -123,7 +123,7 @@ public partial class Niivi
                     }
                     StartPosition.X = MathHelper.Lerp(StartPosition.X, s.X, 0.01f);
 
-                    if (Timer >= StarBomb_CometDashTime * 0.5F)
+                    if (Timer >= StarBomb_CometDashTime * 0.5F && AttackCount < StarBomb_DashCount - 1)
                     {
                         if (Main.rand.NextBool(4))
                         {

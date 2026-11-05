@@ -13,7 +13,7 @@ public partial class Niivi
     float AsrielLightning_SwoopOutTime => 60;
     float AsrielLightning_ChargeUpTime => 170;
     float AsrielLightning_TeleportInTime => 60;
-    int AsrielLightning_Damage => 67;
+    int AsrielLightning_Damage => 76;
     void AI_AsrielLightning()
     {
         Timer++;
@@ -59,17 +59,8 @@ public partial class Niivi
                     _invisAlpha = MathHelper.Lerp(0f, 1f, Timer / AsrielLightning_ChargeUpTime);
 
 
-                    if(NPC.velocity.Y < 0)
-                    {
-                        _simpleChainRendering = true;
-                        LimpIKTarget();
-
-                    }
-                    else
-                    {
-                        _useFK = true;
-                        FK_ArcBody(-0.2f * ExtraMath.Osc(0.5f, 1.2f), 0.1f);
-                    }
+                    _simpleChainRendering = true;
+                    LimpIKTarget();
 
                     if (Main.rand.NextBool(8))
                     {

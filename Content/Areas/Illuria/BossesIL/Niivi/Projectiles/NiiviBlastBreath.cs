@@ -26,7 +26,7 @@ public class NiiviFlyingStar : ModProjectile
         Projectile.height = 32;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
-        Projectile.hostile = true;
+        Projectile.hostile = false;
         Projectile.light = 0.7F;
         Projectile.extraUpdates = 1;
         Projectile.timeLeft = 1200;
@@ -59,22 +59,22 @@ public class NiiviFlyingStar : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer < 100)
+        if(Timer < 70)
         {
             if (Projectile.velocity.Length() > 0.5f)
                 Projectile.velocity *= 0.98f;
         } else if (Timer < 150)
         {
+            Projectile.hostile = true;
             if(Timer == 101)
             {
-                Projectile.velocity = Vector2.One;
                 Flicker();
             }
             Projectile.tileCollide = true;
             var player = PlayerHelper.FindClosestPlayer(Projectile.Center, 2048);
             if(player != null)
             {
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 4);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 5);
             }
 
             if (Projectile.velocity.Length() < 15)
@@ -226,7 +226,10 @@ public class NiiviBlastBreath : ModProjectile
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 32);
+        var hitbox = DrawUtilities.CenterRectangle(_hitPoint, 128, 128);
+        bool col = CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 32) || MoonUtils.CircularHitbox(hitbox, targetHitbox, 256).Value;
+
+        return col;
     }
 
     public override bool ShouldUpdatePosition()

@@ -12,7 +12,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
     float4 originalColor = spriteColor;
     float4 prismaticColor = float4(1.0, 0.0, 0.0, 1.0);
     prismaticColor.rgb = ApplyHue(prismaticColor.rgb, time * -12.0 + coords.x * 12.0 * spriteColor.r * 0.35 + hueOffset * 10.0);
-    float osc = sin(time * 36.0) * 0.5 + 1.0;
+    float osc = sin(time * 36.0) * 0.5 + 1.4;
     
     spriteColor *= osc;
     spriteColor *= prismaticColor;

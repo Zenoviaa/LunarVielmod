@@ -24,6 +24,7 @@ public partial class Niivi
                 {
                     if (Timer == 1)
                     {
+                        _didBreath = false;
                         NPC.TargetClosest();
                         var xDir = (MyTarget.Center.X < NPC.Center.X) ? 1 : -1;
                         NPC.velocity.X = xDir * 3;
