@@ -1205,6 +1205,12 @@ public struct SpritebatchDrawer
     {
         sourceRect = texture.GetFrame(frameIndex, framesX, framesY);
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void FlipVertically()
+    {
+        drawOrigin.Y = Size.Y - drawOrigin.Y;
+        spriteEffects = SpriteEffects.FlipVertically;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void VerticalFrame(int frameIndex, int frameCount)

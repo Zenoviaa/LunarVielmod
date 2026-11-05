@@ -143,6 +143,8 @@ public partial class Niivi : ScarletBoss,
     int SegmentCount => 12;
     Vector2 _ikTarget;
     Vector2 _ikInitialDirection;
+    float[] WantedAngles => field ??= new float[SegmentCount];
+    float[] CurrentAngles => field ??= new float[SegmentCount];
     float[] Sizes
     {
         get
@@ -477,7 +479,8 @@ public partial class Niivi : ScarletBoss,
 
     void ChooseAttack()
     {
-        
+        return;
+
         if(_pattern >= 3)
         {
             _pattern = 0;
@@ -533,7 +536,8 @@ public partial class Niivi : ScarletBoss,
                 ref var pos = ref SegmentPositions[i];
                 pos = ForwardKinematicsRig.segments[i].position;
             }
-        } else if (_simpleChainRendering)
+        } 
+        else if (_simpleChainRendering)
         {
             for (var i = 0; i < SegmentPositions.Length; i++)
             {
@@ -549,6 +553,27 @@ public partial class Niivi : ScarletBoss,
                 pos = Segments[i].position;
             }
         }
+        //After setting the position, calculate the angles between
+        for(var i = 1; i < SegmentPositions.Length; i++)
+        {
+            WantedAngles[i] = (SegmentPositions[i] - SegmentPositions[i - 1]).ToRotation();
+        }
+        for (var i = 1; i < CurrentAngles.Length; i++)
+        {
+            ref var currentAngle = ref CurrentAngles[i];
+            ref var wantedAngle = ref WantedAngles[i];
+            if(NPC.direction == -1 && _useFK)
+                wantedAngle = MathHelper.Pi  - wantedAngle;
+            currentAngle = Utils.AngleLerp(currentAngle, wantedAngle, 0.1f);
+        }
+
+        Vector2 current = NPC.Center;
+        for(var i = 1; i < CurrentAngles.Length; i++)
+        {
+            current += CurrentAngles[i].ToRotationVector2() * ForwardKinematicsRig.segments[i].length;
+            SegmentPositions[i] = current;
+        }
+
         _wingFrameCounter++;
         if(_wingFrameCounter >= 4)
         {

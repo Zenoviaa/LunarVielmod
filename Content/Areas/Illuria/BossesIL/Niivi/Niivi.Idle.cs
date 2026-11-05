@@ -13,7 +13,8 @@ public partial class Niivi
 {
     float Idle_SwoopOutTime => 180;
     float IdleTime => 240;
-    float Idle_HoverTowardSpeedUpDistance => 256 * 256;
+    float Idle_HoverTowardSpeedDownDistance => 232 * 232;
+    float Idle_HoverTowardSpeedUpDistance => 768 * 768;
     float Idle_HoverAboveDistance => 256;
     float Idle_HoverAwayDistance => 128;
     float Idle_MaxChaseSpeed => 27;
@@ -31,6 +32,10 @@ public partial class Niivi
             AttackCycle++;
             //ChooseAttack();
         }
+    }
+    void FlipAround()
+    {
+
     }
     void AI_Idle()
     {
@@ -58,7 +63,8 @@ public partial class Niivi
         var sqrDistToTarget = Vector2.DistanceSquared(NPC.Center, positionAboutPlayToMoveTo);
 
         //This is what will control the flipping, she needs to flip in 3D btw.
-        NPC.direction = (positionAboutPlayToMoveTo.X < NPC.Center.X) ? -1 : 1;
+
+        NPC.direction = (MyTarget.Center.X < NPC.Center.X) ? -1 : 1;
         switch (AttackCycle)
         {
             case 0:
@@ -67,8 +73,8 @@ public partial class Niivi
                     var oscillatedPositionToMoveTo = positionAboutPlayToMoveTo;
                     oscillatedPositionToMoveTo.Y += MathF.Sin(Timer * 0.04f) * 32;
                     var velToTarget = (oscillatedPositionToMoveTo - NPC.Center).SafeNormalize(Vector2.Zero);
-                    var chaseVelocity = velToTarget * Idle_HoverTowardSpeed;
-                    NPC.velocity = NPC.velocity.MoveTowards(chaseVelocity, 0.2f);
+                    var chaseVelocity = velToTarget * MathHelper.Lerp(Idle_HoverTowardSpeed, Idle_HoverTowardSpeed *2, Vector2.Distance(NPC.Center, MyTarget.Center) / 256F);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, chaseVelocity, 0.045f);
 
                     var lookRotation = (MyTarget.Center - NPC.Center).ToRotation();
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, lookRotation, 0.1f);
@@ -106,7 +112,7 @@ public partial class Niivi
 
                     //Once close go back to hovering
                     //We have padding here to prevent flickering
-                    if(sqrDistToTarget < (Idle_HoverTowardSpeedUpDistance - 144))
+                    if(sqrDistToTarget < (Idle_HoverTowardSpeedDownDistance))
                     {
                         AttackCycle = 0;
                     }
