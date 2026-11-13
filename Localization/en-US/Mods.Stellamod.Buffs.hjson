@@ -1287,3 +1287,8 @@ BarbedWireInsourceBuff: {
 	DisplayName: I'M THORNY!
 	Description: Don't touch me...
 }
+
+NiiviSnatched: {
+	DisplayName: Niivi Snatched
+	Description: Mods.Stellamod.Buffs.NiiviSnatched.Description
+}

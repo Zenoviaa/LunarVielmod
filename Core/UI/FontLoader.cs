@@ -1,7 +1,5 @@
 ﻿using ReLogic.Content;
 using ReLogic.Graphics;
-using System;
-using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
@@ -10,54 +8,27 @@ namespace Stellamod.Core.UI;
 [Autoload(Side = ModSide.Client)]
 public class FontLoader : ModSystem
 {
-    private bool _canReplace;
-    private bool _replacedFonts;
-    private Asset<DynamicSpriteFont> _deathText;
-    private Asset<DynamicSpriteFont> _mouseText;
-    private string FontName => "KleeOne";
+    private static bool _replacedFonts;
+    public static Asset<DynamicSpriteFont> DeathText;
+    public static Asset<DynamicSpriteFont> MouseText;
+    private static string FontName => "KleeOne";
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
 
     }
-    public override void PostAddRecipes()
-    {
-        base.PostAddRecipes();
-        _canReplace = true;
-    }
+
     public override void OnModLoad()
     {
         base.OnModLoad();
-        _canReplace = false;
-        _deathText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}DeathText");
-        _mouseText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}MouseText");
-        On_Main.Update += CheckForFontReplacement;
+        DeathText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}DeathText", AssetRequestMode.ImmediateLoad);
+        MouseText = ModContent.Request<DynamicSpriteFont>($"Stellamod/Assets/Fonts/{FontName}MouseText", AssetRequestMode.ImmediateLoad);
+        HandleFontActionBasedOnConfig();
     }
-
-    private void CheckForFontReplacement(On_Main.orig_Update orig, Main self, GameTime gameTime)
+    public override void PostSetupContent()
     {
-        orig(self, gameTime);
-        if (!_canReplace)
-            return;
-
-        var config = ModContent.GetInstance<LunarVeilClientConfig>();
-        if (config.fontReplace)
-        {
-            if (!_replacedFonts)
-            {
-                FontAssets.DeathText = _deathText;
-                FontAssets.MouseText = _mouseText;
-                _replacedFonts = true;
-            }
-        }
-        else
-        {
-            if (_replacedFonts)
-            {
-                UnloadFonts();
-                _replacedFonts = false;
-            }
-        }
+        base.PostSetupContent();
+ 
     }
 
     public override void Unload()
@@ -66,21 +37,37 @@ public class FontLoader : ModSystem
         UnloadFonts();
     }
 
-    private void UnloadFonts()
+    public static void HandleFontActionBasedOnConfig()
     {
+        if (LunarVeilClientConfig.Instance.fontReplace && !_replacedFonts)
+        {
+            ReplaceFonts();
+        }
+        else if (!LunarVeilClientConfig.Instance.fontReplace && _replacedFonts)
+        {
+            UnloadFonts();
+        }
+    }
+
+    private static void ReplaceFonts()
+    {
+        if (!LunarVeilClientConfig.Instance.fontReplace)
+            return;
+        if (DeathText == null || MouseText == null)
+            return;
+
+        FontAssets.DeathText = DeathText;
+        FontAssets.MouseText = MouseText;
+        _replacedFonts = true;
+    }
+
+    private static void UnloadFonts()
+    {
+        if (!_replacedFonts)
+            return;
+
         FontAssets.DeathText = ModContent.Request<DynamicSpriteFont>("Terraria/Fonts/Death_Text");
         FontAssets.MouseText = ModContent.Request<DynamicSpriteFont>("Terraria/Fonts/Mouse_Text");
-    }
-
-    public override void UpdateUI(GameTime gameTime)
-    {
-        base.UpdateUI(gameTime);
-
-    }
-    public override void PostUpdateEverything()
-    {
-        base.PostUpdateEverything();
-
-
+        _replacedFonts = false;
     }
 }

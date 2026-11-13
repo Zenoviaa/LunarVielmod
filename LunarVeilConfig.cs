@@ -1,4 +1,5 @@
 ﻿using Stellamod.Core.LunarLightingSystem;
+using Stellamod.Core.UI;
 using System;
 using System.ComponentModel;
 using Terraria;
@@ -33,7 +34,9 @@ public class DisableBossNameHover : GlobalNPC
 
 public class LunarVeilClientConfig : ModConfig
 {
+
     public override ConfigScope Mode => ConfigScope.ClientSide;
+    public static LunarVeilClientConfig Instance { get; private set; }
 
     [Header("Lighting")]
     [DefaultValue(1)]
@@ -142,4 +145,18 @@ public class LunarVeilClientConfig : ModConfig
     [DefaultValue(25)]
     [Range(0f, 100f)]
     public float AmmoBarY = 50;
+
+
+    public override void OnChanged()
+    {
+        base.OnChanged();
+        Instance = this;
+        FontLoader.HandleFontActionBasedOnConfig();
+    }
+ 
+    public override void OnLoaded()
+    {
+        base.OnLoaded();
+        Instance = this;
+    }
 }

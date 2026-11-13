@@ -52,6 +52,11 @@ public partial class Niivi
     float SqrSnatchDistance => 100 * 100;
     void AI_RainbowRoad()
     {
+        void SnatchPlayers()
+        {
+
+        }
+        SnatchPlayers();
         Timer++;
         switch (AttackCycle)
         {
@@ -105,7 +110,7 @@ public partial class Niivi
                             var sqrDistToThisPlayer = Vector2.DistanceSquared(player.Center, NPC.Center);
                             if(sqrDistToThisPlayer < SqrSnatchDistance)
                             {
-                                player.AddBuff(ModContent.BuffType<NiiviSnatched>(), RainbowRoad_Time);
+                                player.AddBuff(ModContent.BuffType<NiiviSnatched>(), (int)RainbowRoad_Time);
                             }
                         }
                     }

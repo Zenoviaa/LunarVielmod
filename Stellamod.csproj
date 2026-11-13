@@ -9,6 +9,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>AnyCPU;x64;x86</Platforms>
 		<RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
+		<TmlBuildBootstrapFeatures>tomat.enablemod;lolxd87.splashskip;tomat.assethotreloading</TmlBuildBootstrapFeatures>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <NoWarn>8981</NoWarn>

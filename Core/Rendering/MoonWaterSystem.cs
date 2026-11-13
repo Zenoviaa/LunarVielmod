@@ -652,21 +652,13 @@ public class MoonWaterSystem : ModSystem
 
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.Begin();
-        try
-        {
-            WaterHelpers.DrawWaters(Main.instance, isBackground: false);
-            //Anything else that wants to draw to the water target, such as particles
-            //Which will create some nice visuals, fake metaballs basically
-
-            //DrawWaterMask?.Invoke(spriteBatch);
-        }
-        catch
-        {
-        }
+        WaterHelpers.DrawWaters(Main.instance, isBackground: false);
+  
         Main.sceneWaterPos.X = Main.screenPosition.X - Main.offScreenRange;
         Main.sceneWaterPos.Y = Main.screenPosition.Y - Main.offScreenRange;
 
         spriteBatch.End();
+
         graphicsDevice.SetRenderTarget(null);
 
         RenderIntoEdgeShadeMap();
@@ -937,7 +929,6 @@ public class MoonWaterSystem : ModSystem
         // 
         DrawPosterization(spriteBatch);
     }
-
     private void CalculateHeightsToDraw()
     {
         TileDrawing tilesRenderer = Main.instance.TilesRenderer;
@@ -1032,6 +1023,7 @@ public class MoonWaterSystem : ModSystem
 
         var sb = Main.spriteBatch;
         sb.Begin();
+
         sb.Draw(mask, new Vector2(Main.offScreenRange), Color.White);
         sb.End();
 
@@ -1075,6 +1067,7 @@ public class MoonWaterSystem : ModSystem
 
             spriteBatch.Draw(heightTile, drawPosition + new Vector2(Main.offScreenRange), drawColor);
         }
+
         spriteBatch.End();
         graphicsDevice.SetRenderTarget(null);
     }
