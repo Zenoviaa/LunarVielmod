@@ -216,6 +216,17 @@ HeightPixelShaderOutput HeightPS(VertexShaderOutput input)
     output.Light = float4(color.r, color.g, color.b, 1.0);
     return output;
 }
+HeightPixelShaderOutput ParticleHeightPS(VertexShaderOutput input)
+{
+    float2 coords = input.TextureCoordinates;
+    float4 color = input.Color;
+    
+
+    HeightPixelShaderOutput output;
+    output.Height = 0.77;
+    output.Light = float4(color.r, color.g, color.b, 1.0);
+    return output;
+}
 
 
 float4 ReflectPS(VertexShaderOutput input) : COLOR
@@ -373,9 +384,6 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
     //Combine Water Target, Water Shader, and Height Map
     //For now let's test the height map
     float2 coords = input.TextureCoordinates;
-    float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);
-       
-    float3 gradient = lerp(endGradient, startGradient, heightMapColor.a);
     
     //First let's calculate the gradient
 
@@ -474,6 +482,13 @@ technique HeightDrawing
     pass P2
     {
         PixelShader = compile PS_SHADERMODEL HeightPS();
+    }
+};
+technique ParticleHeightDrawing
+{
+    pass P20
+    {
+        PixelShader = compile PS_SHADERMODEL ParticleHeightPS();
     }
 };
 technique ReflectionDrawing

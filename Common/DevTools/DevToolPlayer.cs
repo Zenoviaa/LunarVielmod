@@ -84,7 +84,7 @@ public class DevToolPlayer : ModPlayer
     }
     public override void PreUpdate()
     {
-        if (DevTools.godMode == GodMode.NoDeath)
+        if (DevTools.godMode == GodMode.NoHit)
         {
             Player.statLife = Player.statLifeMax2;
         }

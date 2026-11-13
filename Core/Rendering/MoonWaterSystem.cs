@@ -271,14 +271,7 @@ public class MoonWaterSystem : ModSystem
     private LazyRenderTargetProvider _waterTextureRTOutput = new(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 1));
     private LazyRenderTargetProvider _waterLightMapRT = new(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 1));
 
-    private LazyRenderTargetProvider _waterHeightMapRT = new(() =>
-    {
-        RenderTargetParameters p = RenderTargetParameters.DefaultScreenTarget;
-        p.Width = GetWaterTargetSize().X;
-        p.Height = GetWaterTargetSize().Y;
-        p.SurfaceFormat = SurfaceFormat.Alpha8;
-        return p;
-    });
+    private LazyRenderTargetProvider _waterHeightMapRT = new(RenderTargetParameters.DownsizedFunc(GetWaterTargetSize, 1));
 
     private LazyRenderTargetProvider _waterEdgeShadingRT = new(() =>
     {
@@ -1069,6 +1062,19 @@ public class MoonWaterSystem : ModSystem
         }
 
         spriteBatch.End();
+
+        /*
+        _waterEffect.CurrentTechnique = _waterEffect.Techniques["ParticleHeightDrawing"];
+        spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Max,
+            SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+
+        var rawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset);
+        rawer.worldPosition = Main.LocalPlayer.Center;
+        rawer.scale *= 6;
+
+        spriteBatch.Draw(rawer);
+        spriteBatch.End();*/
+
         graphicsDevice.SetRenderTarget(null);
     }
 
