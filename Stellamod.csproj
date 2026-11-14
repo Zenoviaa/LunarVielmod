@@ -502,9 +502,6 @@
     <None Remove="Tiles\ShrineBreakers\Underground\ShrineBridgetC.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="Projectiles\Hostile\" />
