@@ -117,7 +117,7 @@ public class BurningAngelBubbleBurst : ModProjectile
             ShockCircles.CreateSmallerQuickWhiteFlash(Projectile.Center);
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 32, 12))
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.3f, 0.6f) * 0.4f,
@@ -183,7 +183,7 @@ public class BurningAngelBubble : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(48, 48);
             var vel = Main.rand.NextVector2Circular(2, 2);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

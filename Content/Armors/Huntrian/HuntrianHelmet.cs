@@ -40,7 +40,7 @@ namespace Stellamod.Content.Armors.Huntrian
             if (Main.rand.NextBool(6))
             {
                 var pos = npc.Center + Main.rand.NextVector2Circular(32, 32);
-                Particles.RoughSmoke.Spawn(new()
+                PS.RoughSmoke.Spawn(new()
                 {
                     position = pos,
                     timeLeft = 52,

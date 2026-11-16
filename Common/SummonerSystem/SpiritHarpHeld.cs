@@ -45,7 +45,7 @@ public class SpiritHarpHeld : ModProjectile
             pos += Main.rand.NextVector2Circular(64, 64);
             var vel = Main.rand.NextVector2Circular(3, 3);
             vel.Y -= 5;
-            Particles.Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            Particles.PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -61,7 +61,7 @@ public class SpiritHarpHeld : ModProjectile
             pos.X += Main.rand.Next(-64, 64);
             pos.Y += Main.rand.NextFloat(-8f, 8f);
             var vel = -Vector2.UnitY * 3;
-            Particles.Particles.MusicNote.Spawn(new()
+            Particles.PS.MusicNote.Spawn(new()
             {
                 position = pos,
                 velocity = vel,

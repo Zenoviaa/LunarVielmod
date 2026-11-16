@@ -88,6 +88,7 @@ float2 tiling;
 float2 screenOffset;
 float foamLava;
 
+float2 reflectionFixingOffset;
 float reflectionDistance;
 float2 reflectionTexelSize;
 float reflectionPower;
@@ -251,7 +252,7 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
     
     //Step 3. Sample the new coordinates, that's our pixel
     //With how this works, it should also flip the sprite I think
-    float2 reflectedCoords = coords + reflectionOffset;
+    float2 reflectedCoords = coords + reflectionOffset + reflectionFixingOffset;
     
     //Step 4. Distortion
     float d = tex2D(NoiseTextureSampler, coords + float2(time * -0.02, time * -0.04) + screenOffset).r;

@@ -40,7 +40,7 @@ public class LaunchballBoom : ModProjectile
         {
             for (int i = 0; i < 24; i++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = Projectile.Center,
                     timeLeft = Main.rand.Next(60, 120),
@@ -132,7 +132,7 @@ public class Launchball : ModProjectile,
 
         if (Main.rand.NextBool(32))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center,
                 timeLeft = Main.rand.Next(60, 120),
@@ -171,7 +171,7 @@ public class Launchball : ModProjectile,
     {
         for (int i = 0; i < 4; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center,
                 timeLeft = Main.rand.Next(60, 120),

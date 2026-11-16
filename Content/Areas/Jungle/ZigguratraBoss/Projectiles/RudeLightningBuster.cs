@@ -23,7 +23,7 @@ public class RudeLightningBuster : ModProjectile
         vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
 
         var color = Color.Orange;
-        Particles.LightningSpikeySpark.Spawn(new()
+        PS.LightningSpikeySpark.Spawn(new()
         {
             position = pos,
             velocity = vel,
@@ -76,7 +76,7 @@ public class RudeLightningBuster : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(3, 3);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 innerColor = Color.LightGoldenrodYellow.ToVector4(),
                 outerColor = Color.DarkOrange.ToVector4(),

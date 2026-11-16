@@ -84,6 +84,17 @@ public class MetaballShader : CrystalShader<MetaballShader>
         }
     }
 }
+public class MetaballSimpleShader : CrystalShader<MetaballShader>
+{
+    public Vector3[] Particles
+    {
+        set
+        {
+            Effect.Parameters["particles"].SetValue(value);
+            Effect.Parameters["texelSize"].SetValue(Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight));
+        }
+    }
+}
 public class BishinineTentacleShader : CrystalShader<BishinineTentacleShader>
 {
     public float Time

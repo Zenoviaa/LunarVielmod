@@ -177,7 +177,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
+            PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
         }
         if (Main.rand.NextBool(6))
         {
@@ -185,7 +185,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
+            PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
         }
         if (Main.rand.NextBool(2))
         {
@@ -193,7 +193,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
+            PS.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
         }
         if (Main.rand.NextBool(5))
         {
@@ -201,7 +201,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
+            PS.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
         }
         if (Main.rand.NextBool(2))
         {
@@ -209,7 +209,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.CinderEmberDustBackground.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f });
+            PS.CinderEmberDustBackground.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f });
         }
     }
     private void FlameParticles()
@@ -249,7 +249,7 @@ public class BiomePlayer : ModPlayer
 
         if (Player.ZoneAbyss && Main.rand.NextBool(8))
         {
-            Particles.AbyssFloatingFlowerDust.Spawn(AbyssFloatingFlowerDustData.Default with
+            PS.AbyssFloatingFlowerDust.Spawn(AbyssFloatingFlowerDustData.Default with
             {
                 position = DrawUtilities.RandomScreenPositionForForegroundParticles(),
                 parallax = Main.rand.NextFloat(0.2f, 1f),

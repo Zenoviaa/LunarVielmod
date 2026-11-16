@@ -174,7 +174,7 @@ public class GothinsteinBarrage : ModProjectile
                 pos += Main.rand.NextVector2Circular(32, 32);
                 Vector2 vel = Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(8, 32);
                 Color color = Color.Lerp(Color.White, Color.Aqua, Main.rand.NextFloat(0f, 1f));
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = pos,
                     velocity = vel,
@@ -192,7 +192,7 @@ public class GothinsteinBarrage : ModProjectile
             Vector2 pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(16, 16);
             Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = pos,
                 velocity = -Projectile.velocity * 0.47f,
@@ -411,7 +411,7 @@ public class GothinsteinFlameWave : ModProjectile, IDrawToRenderTarget
             Vector2 pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(16, 16);
             Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = pos,
                 velocity =Main.rand.NextVector2Circular(12, 12),
@@ -527,7 +527,7 @@ public class GothinsteinImpact : ModProjectile,
                 pos += Main.rand.NextVector2Circular(32, 32);
                 Vector2 vel = Main.rand.NextVector2Circular(32, 32);
                 Color color = Color.Lerp(Color.White, Color.Yellow, Main.rand.NextFloat(0f, 1f));
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = pos,
                     velocity = vel,
@@ -662,7 +662,7 @@ public class GothFist : ModProjectile
                 pos += Main.rand.NextVector2Circular(32, 32);
                 Vector2 vel = Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(8, 32);
                 Color color = Color.Lerp(Color.White, Color.Aqua, Main.rand.NextFloat(0f, 1f));
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = pos,
                     velocity = vel,

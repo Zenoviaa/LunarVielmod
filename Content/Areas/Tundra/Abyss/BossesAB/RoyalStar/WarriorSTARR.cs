@@ -324,7 +324,7 @@ public partial class WarriorSTARR : ScarletBoss, IDrawToRenderTarget
         {
             if (Timer % 2 == 0)
             {
-                Particles.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { root = NPC, rootOffset = new Vector2(0, Main.rand.Next(-128, 128)), timeLeft = 150 });
+                PS.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { root = NPC, rootOffset = new Vector2(0, Main.rand.Next(-128, 128)), timeLeft = 150 });
             }
             FXUtil.SetZoomTarget(1.7f);
             this.AseAnimator.PlayAnimation(ANIM_HUH, AnimationParams.Default);

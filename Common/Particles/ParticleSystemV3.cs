@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Particles.Electric;
+﻿using Stellamod.Common.Metaballs;
+using Stellamod.Common.Particles.Electric;
 using Stellamod.Content.Ambient;
 using Stellamod.Content.Areas.Fable;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Common.Particles;
 
 //Helper methods for spawning particles
-public sealed class Particles : ModSystem
+public sealed class PS : ModSystem
 {
     private List<IParticleUpdater> _particleUpdaters;
 
@@ -74,6 +75,7 @@ public sealed class Particles : ModSystem
     public static readonly NiiviIceCrack IceCrack = new();
     public static readonly NiiviLightningImpact NiiviLightningImpact = new();
     public static readonly NiiviIceRockGore NiiviIceRockGore = new();
+    public static readonly MetaballParticles LavaMetaballs = new();
     public override void Load()
     {
         base.Load();
@@ -127,7 +129,8 @@ public sealed class Particles : ModSystem
             IceSpike,
             IceCrack,
             NiiviLightningImpact,
-            NiiviIceRockGore
+            NiiviIceRockGore,
+            LavaMetaballs
         };
 
         if (Main.netMode == NetmodeID.Server)

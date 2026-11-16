@@ -69,7 +69,7 @@ public class OceanShieldPlayer : ModPlayer
                 var pos = Player.Center;
                 pos += Main.rand.NextVector2Circular(24, 24);
                 var vel = Main.rand.NextVector2Circular(8, 8);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,

@@ -94,7 +94,7 @@ public class BigVulcanFireball : ModProjectile
         {
             Vector2 pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(24, 24);
-            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.Black * 0.45F, timeleft = 180 });
+            PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.Black * 0.45F, timeleft = 180 });
         }
         if (Timer % 16 == 0 && Scale > 0.5f)
         {
@@ -113,7 +113,7 @@ public class BigVulcanFireball : ModProjectile
                 Vector2 pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(16, 16);
                 Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = pos,
                     velocity = -Projectile.velocity * 0.47f,

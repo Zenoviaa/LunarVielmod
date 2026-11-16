@@ -109,7 +109,7 @@ public class StoneFurnace : ZTile
         Lighting.AddLight(worldPosition + new Vector2(0, -16), Color.OrangeRed.ToVector3() * 4);
         if (Main.GameUpdateCount % 2 == 0)
         {
-            Particles.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = worldPosition, timeleft = 70 });
+            PS.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = worldPosition, timeleft = 70 });
 
         }
     }

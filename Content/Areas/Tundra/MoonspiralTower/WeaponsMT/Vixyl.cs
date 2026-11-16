@@ -374,7 +374,7 @@ public class ViyxlSwordSlash : BaseSwingProjectileV2
             Vector2 spawnPos = swingTrailCache.InterpolateArrayClamped(Interpolant);
             if (Main.rand.NextBool(6))
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = spawnPos,
                     innerColor = Color.SkyBlue.ToVector4(),
@@ -487,7 +487,7 @@ public class VixylFlyingSlash : ModProjectile,
         {
             for(var f = 0; f < 10; f++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = Projectile.Center,
                     innerColor = Color.SkyBlue.ToVector4(),

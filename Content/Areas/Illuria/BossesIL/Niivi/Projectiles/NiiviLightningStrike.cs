@@ -236,7 +236,7 @@ public class NiiviLightningStrike : ModProjectile
                                 var color = DrawUtilities.Prismatic.ToVector4();
                                 for (var i = 0; i < 16; i++)
                                 {
-                                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                                    PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                                     {
                                         position = pos,
                                         velocity = -Vector2.UnitY.RotatedByRandom(3.4f) * Main.rand.NextFloat(20, 35),
@@ -247,7 +247,7 @@ public class NiiviLightningStrike : ModProjectile
                                     });
                                 }
 
-                                Particles.DiamondSparkle.Spawn(new()
+                                PS.DiamondSparkle.Spawn(new()
                                 {
                                     position = endPosition + Main.rand.NextVector2Circular(7, 7),
                                     timeLeft = 30,
@@ -256,7 +256,7 @@ public class NiiviLightningStrike : ModProjectile
 
                                 foreach (PositionVelocity posVel in new CircleOrientation(endPosition, 32, 8))
                                 {
-                                    Particles.GlowDust.Spawn(new()
+                                    PS.GlowDust.Spawn(new()
                                     {
                                         position = posVel.position,
                                         velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
@@ -276,7 +276,7 @@ public class NiiviLightningStrike : ModProjectile
                                     fxs.VectorScale.X *= 0.5F;
                                 }
 
-                                Particles.NiiviLightningImpact.Spawn(new()
+                                PS.NiiviLightningImpact.Spawn(new()
                                 {
                                     position = endPosition + new Vector2(0, 64),
                                     velocity = Vector2.UnitY,
@@ -288,7 +288,7 @@ public class NiiviLightningStrike : ModProjectile
                                 for(var i = 0; i < 3; i++)
                                 {
                                     var vel = -Vector2.UnitY.RotatedByRandom(1f) * 8 * Main.rand.NextFloat(0.6F, 1F);
-                                    Particles.NiiviIceRockGore.Spawn(new()
+                                    PS.NiiviIceRockGore.Spawn(new()
                                     {
                                         position = endPosition + Main.rand.NextVector2Circular(36, 36),
                                         velocity = vel,
@@ -301,7 +301,7 @@ public class NiiviLightningStrike : ModProjectile
 
                                 for(var i = 0; i < 2; i++)
                                 {
-                                    Particles.RoughSmoke.Spawn(new()
+                                    PS.RoughSmoke.Spawn(new()
                                     {
                                         position = endPosition + Main.rand.NextVector2Circular(32, 32),
                                         timeLeft = 45,
@@ -326,7 +326,7 @@ public class NiiviLightningStrike : ModProjectile
                             {
                                 var pos = Vector2.Lerp(startPosition, endPosition, Main.rand.NextFloat(0f, 1f));
                                 pos += Main.rand.NextVector2Circular(32, 32);
-                                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                                 {
                                     position = pos,
                                     velocity = vel.RotatedByRandom(1.5F) * 6,

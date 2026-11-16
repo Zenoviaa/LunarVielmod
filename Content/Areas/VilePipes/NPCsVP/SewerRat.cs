@@ -159,7 +159,7 @@ public class SewerRat : ModNPC,
         {
             var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = (pos - NPC.Center).Resize(Main.rand.NextFloat(1, 3));
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
@@ -173,7 +173,7 @@ public class SewerRat : ModNPC,
             var color = Color.Lerp(Color.Green, Color.Black, 0.75f);
             var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = (pos - NPC.Center).Resize(Main.rand.NextFloat(1, 3));
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = pos,
                 velocity = vel,

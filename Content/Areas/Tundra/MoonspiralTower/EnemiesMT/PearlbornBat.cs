@@ -147,7 +147,7 @@ public class PearlbornClone : ModProjectile,
     {
         var pos = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
         var vel = Main.rand.NextVector2Circular(8, 8);
-        Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+        PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
         {
             position = pos,
             velocity = vel,
@@ -164,7 +164,7 @@ public class PearlbornClone : ModProjectile,
             var pos = Projectile.Center + Main.rand.NextVector2Circular(24, 24);
             var vel = (pos - Projectile.Center);
             vel = vel.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 10);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

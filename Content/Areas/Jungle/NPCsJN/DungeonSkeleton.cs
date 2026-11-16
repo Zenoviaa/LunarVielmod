@@ -464,7 +464,7 @@ public class DungeonSkeleton : ModNPC,
         var color = Color.Lerp(Color.White, Color.Black, 0.75f);
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 7))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.2f,

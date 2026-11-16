@@ -141,7 +141,7 @@ public partial class RekBoss
                             Vector2 vel = NPC.Center - pos;
                             vel *= 0.1f;
                             Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-                            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                             {
                                 position = pos,
                                 velocity = vel,

@@ -129,7 +129,7 @@ public class Ivynslicer : ModProjectile
             vel = vel.RotatedByRandom(0.3f);
             vel *= Main.rand.NextFloat(5, 15f);
             var pos = target.Center;
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

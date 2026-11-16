@@ -348,7 +348,7 @@ public class StormingTornadoV2 : ModProjectile
         
         for(var i = 0; i < 3; i++)
         {
-            Particles.Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            Particles.PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = ground + new Vector2(0, 24) + new Vector2(Main.rand.NextFloat(-32, 32), 0),
                 velocity = -Vector2.UnitY.RotatedByRandom(1.2f) * Main.rand.NextFloat(5, 25),
@@ -461,7 +461,7 @@ public class StormingTornadoV2 : ModProjectile
                 color = Color.Lerp(color, Color.White, 0.6f);
 
 
-                Common.Particles.Particles.LightningSpark.Spawn(new()
+                Common.Particles.PS.LightningSpark.Spawn(new()
                 {
                     position = pos,
                     velocity = vel,
@@ -484,7 +484,7 @@ public class StormingTornadoV2 : ModProjectile
                 color = Color.Lerp(color, Color.White, 0.6f);
 
 
-                Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
+                Common.Particles.PS.LightningSpikeySpark.Spawn(new()
                 {
                     position = pos,
                     velocity = vel,
@@ -517,7 +517,7 @@ public class StormingTornadoV2 : ModProjectile
 
                 for(var i = 0; i < 3; i++)
                 {
-                    Common.Particles.Particles.LightningSpikeySpark.Spawn(new()
+                    Common.Particles.PS.LightningSpikeySpark.Spawn(new()
                     {
                         position = pos + Main.rand.NextVector2Circular(97, 98),
                         velocity = vel.RotatedByRandom(0.5f),

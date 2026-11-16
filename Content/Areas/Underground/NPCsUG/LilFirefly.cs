@@ -73,7 +73,7 @@ public class LilFirefly : ModNPC
         }
         if(Timer % 16 == 0)
         {
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = NPC.Center,
                 velocity = Main.rand.NextVector2Circular(8, 8) * Main.rand.NextFloat(0.5f, 1f) * 0.2f,
@@ -110,7 +110,7 @@ public class LilFirefly : ModNPC
         FXUtil.GlowCircleBoom(NPC.Center, Color.Gold, Color.DarkOrange, Color.Black, duration: 25, baseSize: 0.18f);
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 16))
         {
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.2f,

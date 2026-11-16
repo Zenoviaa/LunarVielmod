@@ -170,7 +170,7 @@ public class EmeraldLightArtifactHeld : ModProjectile
         {
             var pos = Tip + Main.rand.NextVector2Circular(256, 256);
             var vel = (Tip - pos).Resize(7);
-            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -200,7 +200,7 @@ public class EmeraldLightArtifactHeld : ModProjectile
         {
             var pos = Tip + Main.rand.NextVector2Circular(32, 32);
             var vel = Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(1.5f) * Main.rand.NextFloat(5, 12);
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
@@ -472,7 +472,7 @@ public class EmeraldLightBlast : ModProjectile
             {
                 var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
                 var vel = Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(1.5f) * Main.rand.NextFloat(5, 12);
-                Particles.GlowDust.Spawn(new()
+                PS.GlowDust.Spawn(new()
                 {
                     position = pos,
                     velocity = vel,

@@ -356,7 +356,7 @@ public class BlastingBlossomBeam : ModProjectile
                 }
                 if (Main.rand.NextBool(8))
                 {
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                     {
                         position = beamPoint,
                         timeLeft = Main.rand.Next(60, 120),

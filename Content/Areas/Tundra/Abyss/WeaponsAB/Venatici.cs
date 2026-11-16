@@ -52,7 +52,7 @@ public class VenaticiBoom : ModProjectile
             {
                 Vector2 pos = Projectile.Center;
                 Vector2 vel = Main.rand.NextVector2Circular(16, 16);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,
@@ -106,7 +106,7 @@ public class VenaticiStarShot : ModProjectile
         Timer++;
         if(Timer % 8 == 0)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center,
                 velocity =-Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.2f, 0.8f),
@@ -232,7 +232,7 @@ public class VenaticiStar : ModProjectile
             Projectile.penetrate = 1;
             if (Timer % 8 == 0)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = Projectile.Center,
                     velocity = -Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.2f, 0.8f),
@@ -251,7 +251,7 @@ public class VenaticiStar : ModProjectile
         if(Timer % 6 == 0)
         {
             Vector2 spawnPos = Main.rand.NextVector2CircularEdge(164, 164) + Projectile.Center;
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = spawnPos,
                 velocity = (Projectile.Center - spawnPos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 25),
@@ -272,7 +272,7 @@ public class VenaticiStar : ModProjectile
         PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.Pink, 32, 64);
         for(float f = 0; f < 12; f++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center,
                 velocity = Main.rand.NextVector2Circular(12, 12),
@@ -371,7 +371,7 @@ public class Venatici : BaseGun
             vel = vel.RotatedByRandom(1.5f);
             vel *= Main.rand.NextFloat(0.6f, 15f);
 
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = posToShootFrom,
                 velocity = vel,

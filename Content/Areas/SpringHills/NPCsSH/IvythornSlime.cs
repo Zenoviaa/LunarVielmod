@@ -361,7 +361,7 @@ public class IvythornSlime : ModNPC,
         {
             var pos = NPC.Bottom + Main.rand.NextVector2Circular(32, 32);
             var vel = (pos - NPC.Bottom).Resize(Main.rand.NextFloat(10f, 15f));
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,

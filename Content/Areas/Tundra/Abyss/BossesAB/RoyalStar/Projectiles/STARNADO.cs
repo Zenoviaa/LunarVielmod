@@ -88,14 +88,14 @@ public class STARNADO : ModProjectile,
 
         if (Timer % 1 == 0 && Timer < 50)
         {
-            Particles.GoldenLeafTornado.Spawn(GoldenLeaf.Data.Default with {
+            PS.GoldenLeafTornado.Spawn(GoldenLeaf.Data.Default with {
                 root = Projectile, 
                 rootOffset = new Vector2(0, Main.rand.NextFloat(-128, 128)),
                 timeLeft = 150,
                 xRange = 64, 
                 yRange = 27 });
         }
-        Particles.GoldenLeafTornado.noDecrement = true;
+        PS.GoldenLeafTornado.noDecrement = true;
        
     }
     private Color GetTrailColor(float completionRatio)

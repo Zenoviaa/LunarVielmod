@@ -146,7 +146,7 @@ public class FabledWitchsBroomMount : ModMount
         MountData.inAirFrameStart = 0;
         if (Main.rand.NextBool(4))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = player.MountedCenter + Main.rand.NextVector2Circular(32, 32) + new Vector2(player.direction * 20, 4),
                 innerColor = Color.Orange.ToVector4(),

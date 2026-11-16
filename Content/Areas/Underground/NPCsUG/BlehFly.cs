@@ -57,7 +57,7 @@ public class BlehFlySpit : ModProjectile,
                 var pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(32, 32);
                 var vel = Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f);
-                Particles.GlowDust.Spawn(new()
+                PS.GlowDust.Spawn(new()
                 {
                     position = pos,
                     velocity = vel,
@@ -70,7 +70,7 @@ public class BlehFlySpit : ModProjectile,
 
         if (Timer % 16 == 0)
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = Projectile.Center,
                 velocity = Main.rand.NextVector2Circular(2, 2) * 0.3f,
@@ -93,7 +93,7 @@ public class BlehFlySpit : ModProjectile,
             var pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(32, 32);
             var vel = Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f);
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
@@ -417,7 +417,7 @@ public class BlehFly : ModNPC,
                 velocity.Y -= 4;
                 velocity = velocity.RotatedByRandom(0.5f);
                 velocity *= Main.rand.NextFloat(0.6f, 1f);
-                Particles.ToxicBubbleDust.Spawn(new()
+                PS.ToxicBubbleDust.Spawn(new()
                 {
                     position = NPC.Center,
                     velocity = velocity,
@@ -487,7 +487,7 @@ public class BlehFly : ModNPC,
 
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 16))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,

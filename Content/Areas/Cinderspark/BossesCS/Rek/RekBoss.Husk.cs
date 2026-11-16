@@ -97,7 +97,7 @@ public partial class RekBoss
                     {
                         if (Timer % 10 == 0)
                         {
-                            Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
+                            PS.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
                         }
                     }
             

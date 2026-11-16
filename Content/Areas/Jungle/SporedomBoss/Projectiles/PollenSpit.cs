@@ -61,7 +61,7 @@ public class PollenSpit : ModProjectile,
 
         if (Main.rand.NextBool(8))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(24, 24),
                 velocity = -Projectile.velocity.RotatedByRandom(0.4f) * Main.rand.NextFloat(0.5f, 1f),
@@ -107,7 +107,7 @@ public class PollenSpit : ModProjectile,
         SoundEngine.PlaySound(hitSound, Projectile.position);
         for (var f = 0; f < 4; f++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(24, 24),
                 velocity = -Projectile.velocity.RotatedByRandom(0.4f) * Main.rand.NextFloat(0.5f, 1f),

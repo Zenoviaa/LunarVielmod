@@ -206,7 +206,7 @@ public class RekEye : ModNPC
         }
         if (Main.rand.NextBool(8))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = NPC.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 25f),

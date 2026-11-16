@@ -12,7 +12,7 @@ public static class MothMoonMagicParticleUtilities
         {
             Vector2 pos = position;
             pos += Main.rand.NextVector2Circular(32, 32);
-            Particles.CometMagicDust.Spawn(CometMagicDustData.Default with
+            PS.CometMagicDust.Spawn(CometMagicDustData.Default with
             {
                 position = pos,
                 velocity = -velocity.SafeNormalize(Vector2.Zero) * 3,
@@ -25,7 +25,7 @@ public static class MothMoonMagicParticleUtilities
         {
             Vector2 pos = position;
             pos += Main.rand.NextVector2Circular(32, 32);
-            Particles.CometMagicDust.Spawn(CometMagicDustData.Default with
+            PS.CometMagicDust.Spawn(CometMagicDustData.Default with
             {
                 position = pos,
                 velocity = -velocity.SafeNormalize(Vector2.Zero) * 3,
@@ -55,7 +55,7 @@ public static class MothMoonMagicParticleUtilities
 
         if (Main.rand.NextBool(6))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = position + Main.rand.NextVector2Circular(32, 32),
                 velocity = Main.rand.NextVector2Circular(8, 8) - velocity,

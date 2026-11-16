@@ -90,7 +90,7 @@ public partial class RekBoss
                     {
                         if (Timer % 10 == 0)
                         {
-                            Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center });
+                            PS.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center });
                         }
                         ShakeScreenPosition.Shake = 8;
 

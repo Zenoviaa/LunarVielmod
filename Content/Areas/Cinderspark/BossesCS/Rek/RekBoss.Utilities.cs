@@ -73,7 +73,7 @@ public partial class RekBoss
             Vector2 pos = segment.position;
             pos += Main.rand.NextVector2Circular(16, 16);
             Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = pos,
                 velocity = Main.rand.NextVector2Circular(18, 18),
@@ -157,7 +157,7 @@ public partial class RekBoss
         var d = DustParticle.Spawn(spawnPos, spawnVelocity, DustParticleSpawnParams.Default);
         d.Scale *= 0.8f;
         d.gravity = 0;*/
-        Particles.BitDust.Spawn(BitDustFactory.Default with { position = spawnPos, velocity = spawnVelocity, timeLeft = 24 });
+        PS.BitDust.Spawn(BitDustFactory.Default with { position = spawnPos, velocity = spawnVelocity, timeLeft = 24 });
         if (Main.rand.NextBool(2))
         {
             spawnPos = position + Main.rand.NextVector2CircularEdge(384, 384);

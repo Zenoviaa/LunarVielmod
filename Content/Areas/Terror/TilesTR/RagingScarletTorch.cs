@@ -171,7 +171,7 @@ public class RagingScarletTorchTile : ModTile
         {
             Vector2 pos = new Point(i, j).ToWorldCoordinates();
             pos.Y -= 12;
-            Particles.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = pos, timeleft = 70 });
+            PS.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = pos, timeleft = 70 });
 
             if (Main.rand.NextBool(2))
             {
@@ -182,7 +182,7 @@ public class RagingScarletTorchTile : ModTile
                 factory.innerColor = Color.LightPink.ToVector4();
                 factory.velocity = Main.rand.NextVector2Circular(1, 1) + new Vector2(0, -3);
                 factory.scale = new Vector2(1.2f);
-                Particles.BitDust.Spawn(factory);
+                PS.BitDust.Spawn(factory);
             }
             if (Main.rand.NextBool(32))
             {
@@ -192,7 +192,7 @@ public class RagingScarletTorchTile : ModTile
                 factory.innerColor = Color.LightPink.ToVector4();
                 factory.velocity = Main.rand.NextVector2Circular(1, 1)  * 8 + new Vector2(0, -3);
                 factory.scale = new Vector2(0.8f);
-                Particles.BitDust.Spawn(factory);
+                PS.BitDust.Spawn(factory);
             }
 
         }

@@ -115,7 +115,7 @@ public class HolyManaKnife : ModProjectile
         base.OnKill(timeLeft);
         for(int i = 0; i < 3; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with { position = Projectile.Center, velocity = Main.rand.NextVector2Circular(6, 6),
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with { position = Projectile.Center, velocity = Main.rand.NextVector2Circular(6, 6),
                 outerColor = Color.Gold.ToVector4(), innerColor = Color.Yellow.ToVector4(), timeLeft = Main.rand.Next(20, 50), scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f)) });
         }
     }

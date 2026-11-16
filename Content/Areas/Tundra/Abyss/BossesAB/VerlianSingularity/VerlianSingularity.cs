@@ -529,7 +529,7 @@ namespace Stellamod.Content.Areas.Tundra.Abyss.BossesAB.VerlianSingularity
                     Vector2 vel = NPC.Center - posAimingFrom;
                     vel = vel.SafeNormalize(Vector2.Zero);
                     vel *= Main.rand.NextFloat(5f, 45);
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                     {
                         position = NPC.Center + Main.rand.NextVector2Circular(64, 64) -vel * 4,
                         velocity = -vel,

@@ -584,7 +584,7 @@ public partial class RekBoss : ScarletBoss
                     Vector2 upVec = upRotation.ToRotationVector2();
                     upVec *= Main.rand.NextFloat(5f, 15f);
                     upVec = upVec.RotatedByRandom(0.4f);
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                    PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                     {
                         position = segment.position,
                         velocity = upVec,

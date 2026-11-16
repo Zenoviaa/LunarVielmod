@@ -22,7 +22,7 @@ public static class WinterbornCommon
         {
             var pos = centerPos + Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(10, 10);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

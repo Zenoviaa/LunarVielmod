@@ -247,7 +247,7 @@ public class StabingBush : ModNPC,
         {
             if(Timer % 2 == 0)
             {
-                Particles.IvynLeaf.Spawn(new()
+                PS.IvynLeaf.Spawn(new()
                 {
                     position = NPC.Center + Main.rand.NextVector2Circular(32, 32),
                     velocity = Main.rand.NextVector2Circular(3, 3),
@@ -293,7 +293,7 @@ public class StabingBush : ModNPC,
 
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 1))
         {
-            Particles.IvynLeaf.Spawn(new()
+            PS.IvynLeaf.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.4f, 1f) * 0.3f,
@@ -310,7 +310,7 @@ public class StabingBush : ModNPC,
         SoundEngine.PlaySound(suond, NPC.position);
         foreach(PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 48))
         {
-            Particles.SwirlingFlameDust.Spawn(new()
+            PS.SwirlingFlameDust.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.4f, 1f) * 0.3f,
@@ -322,7 +322,7 @@ public class StabingBush : ModNPC,
         }
         foreach(PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 48))
         {
-            Particles.IvynLeaf.Spawn(new()
+            PS.IvynLeaf.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.4f, 1f) * 0.3f,

@@ -372,7 +372,7 @@ public class AbyssEffectsRenderer : ModSystem
             Vector2 crashParticlePoint = crashPoint;
             float updateCount = gameUpdateCount + wf.waterfallRect.X;
             crashParticlePoint.X += rand.Next(-128, 128);
-            Particles.WaterfallCrashDust.Spawn(WaterfallCrashDustData.Default with
+            PS.WaterfallCrashDust.Spawn(WaterfallCrashDustData.Default with
             {
                 position = crashParticlePoint,
                 velocity = Main.rand.NextVector2Circular(8, 4),

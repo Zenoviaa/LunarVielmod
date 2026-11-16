@@ -156,7 +156,7 @@ public class ReksGreatFireBreath : ModProjectile,
             flashParticle.Scale *= Main.rand.NextFloat(0.2f, 0.4f) * 4;
 
         }
-        Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+        PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
         {
             position = ImpactPoint + Main.rand.NextVector2Circular(32, 32),
             velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 25f),
@@ -199,7 +199,7 @@ public class ReksGreatFireBreath : ModProjectile,
 
             for (int i = 0; i < 64; i++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = Projectile.Center + Main.rand.NextVector2Circular(64, 64),
                     velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 45),
@@ -210,7 +210,7 @@ public class ReksGreatFireBreath : ModProjectile,
             }
             for (int i = 0; i < 32; i++)
             {
-                Particles.BitDust.Spawn(BitDustFactory.Default with
+                PS.BitDust.Spawn(BitDustFactory.Default with
                 {
                     position = Projectile.Center + Main.rand.NextVector2Circular(64, 64),
                     velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 45),
@@ -257,7 +257,7 @@ public class ReksGreatFireBreath : ModProjectile,
                 Vector2 pos = particle.localPosition.RotatedBy(Projectile.rotation) + Projectile.Center;
                 pos += Main.rand.NextVector2Circular(32, 32);
                 Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = pos,
                     velocity = -particle.localVelocity * 0.47f,
@@ -286,7 +286,7 @@ public class ReksGreatFireBreath : ModProjectile,
 
         if (Main.rand.NextBool(4))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = ImpactPoint + Main.rand.NextVector2Circular(32, 32),
                 velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 25f),

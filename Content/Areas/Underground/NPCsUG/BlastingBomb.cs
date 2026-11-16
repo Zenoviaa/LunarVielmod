@@ -45,7 +45,7 @@ public class BlastingBombBoom : ModProjectile
             fx.Scale *= 2.7f;
             foreach(PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 40))
             {
-                Particles.GlowDust.Spawn(new()
+                PS.GlowDust.Spawn(new()
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 1f) * 0.3f,
@@ -58,7 +58,7 @@ public class BlastingBombBoom : ModProjectile
             var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 48))
             {
-                Particles.BackCloud.Spawn(new()
+                PS.BackCloud.Spawn(new()
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,

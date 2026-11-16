@@ -76,11 +76,11 @@ public partial class RekBoss
             fx.VectorScale *= 7;
             foreach (PositionVelocity posVel in new RandomCircleOrientation(point, 64, 32))
             {
-                Particles.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
+                PS.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
             }
             foreach (PositionVelocity posVel in new RandomCircleOrientation(point, 450, 24))
             {
-                Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
+                PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
             }
             FXUtil.CreateRipple(point);
 
@@ -232,11 +232,11 @@ public partial class RekBoss
                         fx.VectorScale *= 6f;
                         foreach (PositionVelocity posVel in new RandomCircleOrientation(_centerPoint, 64, 64))
                         {
-                            Particles.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
+                            PS.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
                         }
                         foreach (PositionVelocity posVel in new RandomCircleOrientation(_centerPoint, 450, 44))
                         {
-                            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
+                            PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
                         }
                         FXUtil.ShakeCamera(NPC.Center, 1024, 16);
                         for (int k = 0; k < 4; k++)

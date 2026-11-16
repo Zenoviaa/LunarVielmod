@@ -63,7 +63,7 @@ public class BurningFlaskOil : ModProjectile
             Vector2 pos = Projectile.Bottom;
             pos.X += Main.rand.NextFloat(-Projectile.width / 2, Projectile.width / 2);
             pos.Y += Main.rand.NextFloat(-3f, 3f);
-            Particles.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = pos, timeleft = 70, style = 2 });
+            PS.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = pos, timeleft = 70, style = 2 });
         }
         Projectile.velocity.X *= 0.98f;
         Projectile.velocity.Y += 0.25f;

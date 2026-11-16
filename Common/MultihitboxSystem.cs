@@ -106,6 +106,10 @@ public class MultihitboxSystem : ModSystem
                         MoveType.After, 
                         i => i.MatchStloc(23)))
                     {
+                        if(c.TryGotoPrev(MoveType.Before, i => i.MatchLdarg0()))
+                        {
+                            c.RemoveRange(8);
+                        }
                         //Right after the normal hitbox call we call this
                         //Remove the rectangle thingies
                         c.EmitLdarg0();

@@ -277,7 +277,7 @@ public class LightSpandStar : ModProjectile
         {
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 8, 8))
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * 0.4F,
@@ -290,7 +290,7 @@ public class LightSpandStar : ModProjectile
         }
         foreach(PositionVelocity posVel in new CircleOrientation(Projectile.Center, 16, 8))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = posVel.position,
                 velocity = posVel.velocity * 0.66F,

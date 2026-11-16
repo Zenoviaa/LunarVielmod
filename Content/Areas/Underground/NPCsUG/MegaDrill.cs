@@ -161,7 +161,7 @@ public class MegaDrill : ModNPC,
         SoilFX();
         if (Main.rand.NextBool(4))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = NPC.Center,
                 velocity = Main.rand.NextVector2Circular(2, 2) * 0.3f,
@@ -202,7 +202,7 @@ public class MegaDrill : ModNPC,
     void MakeRocketFireFX()
     {
         var rootPos = NPC.Center + -NPC.velocity.SafeNormalize(Vector2.Zero) * 64;
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with { innerColor = Color.Yellow.ToVector4(), outerColor = Color.OrangeRed.ToVector4(), 
+        PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with { innerColor = Color.Yellow.ToVector4(), outerColor = Color.OrangeRed.ToVector4(), 
             position = rootPos + Main.rand.NextVector2Circular(36, 36), velocity = -NPC.velocity });
         /*
         var colo = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(), Color.Gold, Color.DarkOrange);
@@ -368,7 +368,7 @@ public class MegaDrill : ModNPC,
         var dir = _crashPoint - _crashOutpoint;
         dir = dir.SafeNormalize(Vector2.Zero);
         var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
-        Particles.BackCloud.Spawn(new()
+        PS.BackCloud.Spawn(new()
         {
             position = _crashOutpoint + Main.rand.NextVector2Circular(48, 48),
             velocity = dir * Main.rand.NextFloat(10, 20f),
@@ -470,7 +470,7 @@ public class MegaDrill : ModNPC,
         fx.Scale *= 1.5f;
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 16))
         {
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 1f) * 0.3f,
@@ -483,7 +483,7 @@ public class MegaDrill : ModNPC,
         var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 16))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,

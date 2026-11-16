@@ -163,7 +163,7 @@ public class LittleBee : ModProjectile
                     }
                     if (Main.rand.NextBool(32))
                     {
-                        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                        PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                         {
                             position = Projectile.Center + Main.rand.NextVector2Circular(32, 32),
                             innerColor = Color.Gold.ToVector4(),

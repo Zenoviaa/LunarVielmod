@@ -127,7 +127,7 @@ public class CleanestCleaverSlash : BaseSwingProjectileV2
 
         for (var i = 0; i < 2; i++)
         {
-            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = target.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = Projectile.velocity.RotatedByRandom(0.5f).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 15),
@@ -313,7 +313,7 @@ public class CleanestCleaverProg : ModProjectile
         }
         for (var i = 0; i < 32; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = Projectile.velocity.RotatedByRandom(0.5f).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 25),
@@ -350,7 +350,7 @@ public class CleanestCleaverProg : ModProjectile
 
         for (var i = 0; i < 6; i++)
         {
-            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = target.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = Projectile.velocity.RotatedByRandom(0.5f).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 25),
