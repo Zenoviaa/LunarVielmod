@@ -364,7 +364,7 @@ public class MoonWaterSystem : ModSystem
         using (RT.Clear(screenTargetTwo, Color.Transparent))
         {
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-            sb.Draw(_reflectionRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+            sb.Draw(_reflectionRT, new Vector2(-Main.offScreenRange), null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
             sb.End();
 
         }
@@ -452,7 +452,7 @@ public class MoonWaterSystem : ModSystem
                 reflectionCombineEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
                 reflectionCombineEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
                 reflectionCombineEffect.Parameters["reflectionPower"].SetValue(4);
-                reflectionCombineEffect.Parameters["HeightMapTexture"].SetValue(_reflectionRT);
+                reflectionCombineEffect.Parameters["HeightMapTexture"].SetValue(reflectionGradientRT);
 
                 sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, reflectionCombineEffect);
                 sb.Draw(screenTargetTwo, Vector2.Zero, Color.White);
