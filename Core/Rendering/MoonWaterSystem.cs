@@ -479,7 +479,6 @@ public class MoonWaterSystem : ModSystem
 
         sb.Begin(oldParameters);
         sb.Draw(screenTargetTwo, Vector2.Zero, null, Color.White * 1f);
-
     }
 
     private void RenderCoolWaters(On_Main.orig_RenderWater orig, Main self)
