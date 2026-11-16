@@ -58,9 +58,29 @@ sampler2D EdgeTextureSampler = sampler_state
     AddressV = clamp;
 };
 
-sampler brightenNoiseSampler : register(s1);
-sampler causticsNoiseSampler : register(s2);
-sampler foamNoiseSampler : register(s3);
+
+Texture2D brightenNoiseTexture;
+sampler2D brightenNoiseSampler = sampler_state
+{
+    Texture = <brightenNoiseTexture>;
+    AddressU = wrap;
+    AddressV = wrap;
+};
+
+Texture2D causticsNoiseTexture;
+sampler2D causticsNoiseSampler = sampler_state
+{
+    Texture = <causticsNoiseTexture>;
+    AddressU = wrap;
+    AddressV = wrap;
+};
+Texture2D foamNoiseTexture;
+sampler2D foamNoiseSampler = sampler_state
+{
+    Texture = <foamNoiseTexture>;
+    AddressU = wrap;
+    AddressV = wrap;
+};
 struct VertexShaderOutput
 {
     float4 Position : SV_POSITION;

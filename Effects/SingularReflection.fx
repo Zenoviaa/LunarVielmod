@@ -43,6 +43,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     //Step 1. Sample the current height map at this point
     float2 coords = input.TextureCoordinates;
     float heightSample = tex2D(HeightMapTextureSampler, coords).r;
+    heightSample = saturate(heightSample);
     
     //Cubing the height gradient so it's not so long
     //For some reason this is faster than using pow
@@ -59,9 +60,10 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     //With how this works, it should also flip the sprite I think
     float2 reflectedCoords = coords + reflectionOffset;
     float4 color = tex2D(SpriteTextureSampler, reflectedCoords);
+    float4 maskColor = tex2D(SpriteTextureSampler, coords).a;
     
     //Step 4. blend the reflection with the height gradient so there's no reflection deep in the water
-    float4 fadedColor = color * heightGradient * heightGradient;
+    float4 fadedColor = color * heightGradient * heightGradient * maskColor;
     float4 finalColor = fadedColor * input.Color;
     return finalColor;
 }

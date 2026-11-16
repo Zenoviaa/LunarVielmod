@@ -98,6 +98,34 @@ namespace Stellamod.Common.Shaders
                 return world * view * projection;
             }
         }
+        public static Matrix SpritebatchTransformMatrix(SpriteBatch spriteBatch, Matrix baseMatrix)
+        {
+            var transformMatrix = baseMatrix;
+            Viewport viewport = spriteBatch.GraphicsDevice.Viewport;
+            float num = (float)(2.0 / (double)viewport.Width);
+            float num2 = (float)(-2.0 / (double)viewport.Height);
+            Matrix newMatrix = Matrix.Identity;
+            newMatrix.M11 = num * transformMatrix.M11 - transformMatrix.M14;
+            newMatrix.M21 = num * transformMatrix.M21 - transformMatrix.M24;
+            newMatrix.M31 = num * transformMatrix.M31 - transformMatrix.M34;
+            newMatrix.M41 = num * transformMatrix.M41 - transformMatrix.M44;
+
+            newMatrix.M12 = num2 * transformMatrix.M12 + transformMatrix.M14;
+            newMatrix.M22 = num2 * transformMatrix.M22 + transformMatrix.M24;
+            newMatrix.M32 = num2 * transformMatrix.M32 + transformMatrix.M34;
+            newMatrix.M42 = num2 * transformMatrix.M42 + transformMatrix.M44;
+            
+            newMatrix.M13 = transformMatrix.M13;
+            newMatrix.M23 = transformMatrix.M23;
+            newMatrix.M33 = transformMatrix.M33;
+            newMatrix.M43 = transformMatrix.M43;
+            
+            newMatrix.M14 = transformMatrix.M14;
+            newMatrix.M24 = transformMatrix.M24;
+            newMatrix.M34 = transformMatrix.M34;
+            newMatrix.M44 = transformMatrix.M44;
+            return newMatrix;
+        }
         public static Matrix UnscaledWorldViewPoint
         {
             get
@@ -105,6 +133,18 @@ namespace Stellamod.Common.Shaders
                 Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
                 Matrix world = Matrix.CreateTranslation(-screenPosition);
                 Matrix view = Matrix.Identity;
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+                return world * view * projection;
+            }
+        }
+        public static Matrix WaterGradientPoint
+        {
+            get
+            {
+                Vector2 pos = - Main.screenPosition + new Vector2(Main.offScreenRange);
+                Vector3 screenPosition = new Vector3(pos.X, pos.Y, 0);
+                Matrix world = Matrix.CreateTranslation(screenPosition);
+                Matrix view = Main.GameViewMatrix.TransformationMatrix;
                 Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
                 return world * view * projection;
             }

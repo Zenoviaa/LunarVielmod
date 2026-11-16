@@ -454,7 +454,7 @@ public class AbyssEffectsRenderer : ModSystem
     {
 
         orig(self);
-     
+
         //     Main.NewText(AbyssWaterfallPoints.Count);
         if (AbyssWaterfallPoints.Count > 0)
         {

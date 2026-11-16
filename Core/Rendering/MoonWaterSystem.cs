@@ -223,6 +223,7 @@ public class PixelWater
         noReflection = false;
         reflectionAlpha = 1f;
         maxHeight = 32;
+        levels = 10;
     }
 
     private Asset<Texture2D> LoadTexture(string fileName)
@@ -244,6 +245,7 @@ public class PixelWater
     public bool noReflection;
     public float reflectionAlpha;
     public int maxHeight;
+    public int levels;
 }
 
 public class PixelWaterStyleComparer : IComparer<PixelWaterStyle>
@@ -344,7 +346,7 @@ public class MoonWaterSystem : ModSystem
 
     void NewDraw()
     {
-  
+
         if (!LunarVeilClientConfig.Instance.LiquidsToggle)
             return;
         if (_waterEffect == null)
@@ -361,17 +363,19 @@ public class MoonWaterSystem : ModSystem
         using var reflectionGradientRT = RT.Context(RenderTargets.ScreenTarget);
         using (RT.Clear(screenTargetTwo, Color.Transparent))
         {
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
-            sb.Draw(_reflectionRT, Vector2.Zero - new Vector2(Main.offScreenRange), null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            sb.Draw(_reflectionRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
             sb.End();
 
         }
         using (RT.Clear(reflectionGradientRT, Color.Transparent))
         {
+            var maskCombine = AssetReferences.Effects.CrystalShaders.MaskCombine.CreatePixelPass();
+            maskCombine.Parameters.mixTexture = _waterHeightMapRT;
+            maskCombine.Apply();
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
             sb.Draw(_waterHeightMapRT, Main.sceneWaterPos - Main.screenPosition, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             sb.End();
-
         }
 
 
@@ -443,14 +447,14 @@ public class MoonWaterSystem : ModSystem
                 Effect reflectionCombineEffect = GameShaders.Misc["LunarVeil:SingularReflection"].Shader;
                 float mipBias = 1;
                 float reflectionDistance = 256;
-                Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2(screenTargetTwo.Width, screenTargetTwo.Height);
+                Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2(_reflectionRT.Width, _reflectionRT.Height);
 
                 reflectionCombineEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
                 reflectionCombineEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
                 reflectionCombineEffect.Parameters["reflectionPower"].SetValue(4);
-                reflectionCombineEffect.Parameters["HeightMapTexture"].SetValue(reflectionGradientRT);
+                reflectionCombineEffect.Parameters["HeightMapTexture"].SetValue(_reflectionRT);
 
-                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, reflectionCombineEffect);
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, reflectionCombineEffect);
                 sb.Draw(screenTargetTwo, Vector2.Zero, Color.White);
                 sb.End();
             }
@@ -463,7 +467,7 @@ public class MoonWaterSystem : ModSystem
             _drawLocation = new Rectangle(0, 0, _waterHeightMapRT.Width, _waterHeightMapRT.Height);
 
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["PosterizeDrawing"];
-            _waterEffect.Parameters["levels"].SetValue(10);
+            _waterEffect.Parameters["levels"].SetValue(_pixelWater.levels);
             sb.Begin(oldParameters with { effect = _waterEffect });
             sb.Draw(screenTargetOne, Vector2.Zero, null, Color.White * 1f);
             sb.End();
@@ -485,8 +489,9 @@ public class MoonWaterSystem : ModSystem
     private void RenderCoolWaters(On_Main.orig_RenderWater orig, Main self)
     {
         orig(self);
+
         RenderFancyWaters();
-    //    RenderIntoEdgeShadeMap();
+        RenderIntoEdgeShadeMap();
     }
 
     public override void Unload()
@@ -590,14 +595,17 @@ public class MoonWaterSystem : ModSystem
 
     private void RenderIntoEdgeShadeMap()
     {
+        _renderEdgeCountdown--;
+        if (_renderEdgeCountdown <= 0)
+        {
+            CalculateEdgePoints();
+            _renderEdgeCountdown = 5;
+        }
+
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_waterEdgeShadingRT);
         graphicsDevice.Clear(Color.Transparent);
-        if (Main.GameUpdateCount % 30 == 0)
-        {
-            CalculateEdgePoints();
-        }
 
         spriteBatch.Begin();
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
@@ -663,6 +671,7 @@ public class MoonWaterSystem : ModSystem
     }
 
     int _renderCountdown;
+    int _renderEdgeCountdown;
     void RenderFancyWaters()
     {
         if (!LunarVeilClientConfig.Instance.LiquidsToggle)
@@ -802,21 +811,14 @@ public class MoonWaterSystem : ModSystem
         _waterEffect.Parameters["causticsColor"].SetValue(_pixelWater.CausticsColor.ToVector4());
         _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
 
-
+        _waterEffect.Parameters["brightenNoiseTexture"].SetValue(_pixelWater.NoiseTexture.Value);
+        _waterEffect.Parameters["causticsNoiseTexture"].SetValue(_pixelWater.CausticsTexture.Value);
+        _waterEffect.Parameters["foamNoiseTexture"].SetValue(_perlinNoise);
         _waterEffect.Parameters["foamLava"].SetValue(_pixelWater.affectsLava ? 0 : 1);
         ApplyScreenOffset(scale: 2);
         Vector2 stretchScale = new Vector2(1, 0.5f);
         using(RT.Clear(_waterTextureRTSwap, Color.LightSeaGreen))
         {
-            Main.graphics.GraphicsDevice.Textures[1] = _pixelWater.NoiseTexture.Value;
-            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-
-            Main.graphics.GraphicsDevice.Textures[2] = _pixelWater.CausticsTexture.Value;
-            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-
-            Main.graphics.GraphicsDevice.Textures[3] = _perlinNoise;
-            Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.PointWrap;
-
             //Draw the base texture
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
@@ -1035,27 +1037,28 @@ public class MoonWaterSystem : ModSystem
         //I'll look again at this later since it feels like an unnecessary render target use, wait,
         //Make we could just translate it after it projects?
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        using var mask = RT.Context(RenderTargets.ScreenTarget);
-        using (RT.Clear(mask, Color.Transparent))
+
+        RenderTargetBinding[] binding = new RenderTargetBinding[]
         {
+            new RenderTargetBinding(_waterHeightMapRT),
+            new RenderTargetBinding(_waterLightMapRT)
+        };
+
+        using (RT.Clear(binding, Color.Transparent))
+        {
+
             var waterlightPass = AssetReferences.Effects.Generic.WaterLight.CreatePixelPass();
-            waterlightPass.Parameters.transformMatrix = TrailDrawer.UnscaledWorldViewPoint;
+            Vector2 pos = -Main.screenPosition;
+            pos += new Vector2(Main.offScreenRange);
+            Vector3 offset = new Vector3(pos,0);
+            waterlightPass.Parameters.transformMatrix = TrailDrawer.SpritebatchTransformMatrix(Main.spriteBatch, Matrix.CreateTranslation(offset));
             waterlightPass.Apply();
+
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.SamplerStates[0] = SamplerState.AnisotropicClamp;
             graphicsDevice.BlendState = CustomBlendStates.Max;
             graphicsDevice.DepthStencilState = DepthStencilState.None;
             _waterSurfacePointLightMap.Draw(graphicsDevice);
-        }
-
-        using(RT.Clear(_waterHeightMapRT, Color.Transparent))
-        {
-
-            var sb = Main.spriteBatch;
-            sb.Begin();
-
-            sb.Draw(mask, new Vector2(Main.offScreenRange), Color.White);
-            sb.End();
 
         }
 
