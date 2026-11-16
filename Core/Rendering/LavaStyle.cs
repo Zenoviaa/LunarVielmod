@@ -39,6 +39,6 @@ public class LavaStyle : PixelWaterStyle
         pixelWater.ignoreSkyColor = true;
         pixelWater.TilingMultiplier = new Vector2(1.5f, 2f);
    //     pixelWater.TilingMultiplier = new Vector2(
-     //  pixelWater.noLighting = true;
+       pixelWater.noLighting = true;
     }
 }
