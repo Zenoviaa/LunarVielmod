@@ -358,6 +358,8 @@ public class MoonWaterSystem : ModSystem
 
 
         //TODO: reduce render target switching where possible.
+        //TODO: render out a linear gradient for reflections, using the other gradient is bleh. Since we're gonna have to do this, we should make a super optimized way to do it
+        //The best way to render out that gradient is to draw a single quad for each pillar. Currently we're drawing multiple lol
 
         using var screenTargetOne = RT.Context(RenderTargets.ScreenTarget);
         using var reflectionHeightTarget = RT.Context(RenderTargets.ScreenTarget);
