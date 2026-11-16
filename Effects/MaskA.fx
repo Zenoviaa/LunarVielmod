@@ -13,8 +13,9 @@ sampler2D maskTex = sampler_state
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
     float4 mask = tex2D(maskTex, coords);
+    float a = mask.a > 0.0;
     float4 color = tex2D(spriteToDraw, coords);
-    return color * mask.a;
+    return color * a;
 }
 
 technique Technique1
