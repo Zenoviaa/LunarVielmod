@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets.ContentReader.Aseprite;
+using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Core;
 using Stellamod.Core.NPCHelpers;
@@ -356,6 +357,7 @@ public partial class RekBoss : ScarletBoss
         NPCID.Sets.TrailCacheLength[Type] = 32;
         NPCID.Sets.MPAllowedEnemies[Type] = true;
         NPCID.Sets.MustAlwaysDraw[Type] = true;
+        NPCID.Sets.UsesMultiHitbox[Type] = true;
         NPCSets.UseAseprite[Type] = true;
     }
 

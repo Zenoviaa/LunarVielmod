@@ -534,25 +534,9 @@ public static class PixelPrimitiveCircleFactory
             lerp1 = Color.Lerp(lerp1, Color.Black, EasingFunction.InExpo(interpolant.progressInCircle));
             return lerp1;
         }
-        void RenderBloom(TrailCircleDraw draw)
-        {
-            var bloomTrail = BloomTrailShader.Instance;
-            bloomTrail.InnerColor = Color.White;
-            bloomTrail.OuterColor = Color.DarkRed;
-            DrawUtilities.DrawUserIndexedPrimitivesWithEffect(draw.vertices, draw.indices, bloomTrail);
-        }
-        void RenderFire(TrailCircleDraw draw)
-        {
-            var shader = BlackFireShader.Instance;
-            shader.InnerColor = Color.White;
-            shader.OuterColor = Color.Gold;
-            shader.BackColor = Color.DarkRed;
-            shader.PrimaryTexture2 = AssetManager.LaserTextures.Lightning2;
-            DrawUtilities.DrawUserIndexedPrimitivesWithEffect(draw.vertices, draw.indices, shader);
-        }
 
-        PixelCircleUpdater.Create(RenderBloom, position, GetTrailWidthFunction, GetTrailColorFunction, minRadius: 400, maxRadius: 0, 24);
-        PixelCircleUpdater.Create(RenderFire, position, GetTrailWidthFunction, GetTrailColorFunction, minRadius: 400, maxRadius: 0, 24);
+        CreateDefaultFireBloomCircle(position, GetTrailWidthFunction, GetTrailColorFunction, 
+            new(Color.White, Color.LightGoldenrodYellow, Color.DarkGoldenrod, Color.Goldenrod, Color.DarkGoldenrod), 400, 0, 24);
     }
 
     public static void CreateGothInwardBoom(Vector2 position)
