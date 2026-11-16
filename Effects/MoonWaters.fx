@@ -258,6 +258,8 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
     //Step 1. Sample the current height map at this point
     float2 coords = input.TextureCoordinates;
     float heightSample = tex2D(HeightMapTextureSampler, coords).a;
+
+    heightSample = saturate(heightSample);
     
     //Cubing the height gradient so it's not so long
     //For some reason this is faster than using pow

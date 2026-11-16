@@ -375,7 +375,10 @@ public class MoonWaterSystem : ModSystem
 
         using (RT.Clear(reflectionHeightTarget, Color.Transparent))
         {
-            sb.Begin();
+            var pass = AssetReferences.Effects.MaskA.CreatePixelPass();
+            pass.Parameters.maskTexture = Main.waterTarget;
+            pass.Apply();
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, pass.Shader);
             sb.Draw(_waterHeightMapRT, Main.sceneWaterPos - Main.screenPosition, Color.White);
             sb.End();
         }
@@ -394,6 +397,7 @@ public class MoonWaterSystem : ModSystem
         using (RT.Clear(coolAssWaterTarget, Color.Transparent))
         {
             UpscaleCoolAssTarget(_waterTextureRTSwap, sb);
+    
         }
 
         using (RT.Clear(screenTargetOne, Color.Transparent))
@@ -706,7 +710,7 @@ public class MoonWaterSystem : ModSystem
         //V2 Gradientizing
         if (Main.LocalPlayer.ZoneAbyss)
         {
-            V1HeightGradient();
+            V2HeightGradient();
         }
         else
             V1HeightGradient();
@@ -852,60 +856,7 @@ public class MoonWaterSystem : ModSystem
         spriteBatch.Draw(reflectionRT, Vector2.Zero, Color.White);
         spriteBatch.End();
     }
-    private void DrawReflection(SpriteBatch spriteBatch, RenderTarget2D heightMapRT)
-    {
-        float mipBias = 1;
-        float reflectionDistance = 128;
-        Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2(_reflectionRT.Width, _reflectionRT.Height);
 
-
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["ReflectionDrawing"];
-        _waterEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
-        _waterEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
-        _waterEffect.Parameters["reflectionPower"].SetValue(3.5f);
-        _waterEffect.Parameters["HeightMapTexture"].SetValue(heightMapRT);
-
-
-        _waterEffect.Parameters["time"].SetValue(_time * 2);
-        _waterEffect.Parameters["distortion"].SetValue(0.005f);
-        _waterEffect.Parameters["NoiseTexture"].SetValue(_pixelWater.CausticsTexture.Value);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_reflectionRT, Vector2.Zero, null, Color.White * _pixelWater.reflectionAlpha, 0, Vector2.Zero, new Vector2(2f, 2f), SpriteEffects.None, 0);
-        spriteBatch.End();
-    }
-    private void DrawReflection(SpriteBatch spriteBatch)
-    {
-        float mipBias = 1;
-        float reflectionDistance = 128;
-        Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2(_reflectionRT.Width, _reflectionRT.Height);
-
-
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["ReflectionDrawing"];
-        _waterEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
-        _waterEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
-        _waterEffect.Parameters["reflectionPower"].SetValue(3.5f);
-        _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
-
-
-        _waterEffect.Parameters["time"].SetValue(_time * 2);
-        _waterEffect.Parameters["distortion"].SetValue(0.005f);
-        _waterEffect.Parameters["NoiseTexture"].SetValue(_pixelWater.CausticsTexture.Value);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_reflectionRT, Vector2.Zero, null, Color.White * _pixelWater.reflectionAlpha, 0, Vector2.Zero, new Vector2(2f, 2f), SpriteEffects.None, 0);
-        spriteBatch.End();
-    }
-    private void MultiplyLightMap(RenderTarget2D target, SpriteBatch spriteBatch)
-    {
-        _drawLocation = new Rectangle(0, 0, _waterHeightMapRT.Width, _waterHeightMapRT.Height);
-
-        if (!_pixelWater.noLighting)
-        {
-            _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
-            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-            spriteBatch.Draw(_waterLightMapRT, _drawLocation, null, Color.White * 1);
-            spriteBatch.End();
-        }
-    }
     private void UpscaleCoolAssTarget(RenderTarget2D target, SpriteBatch spriteBatch)
     {
         _drawLocation = new Rectangle(0, 0, _waterHeightMapRT.Width, _waterHeightMapRT.Height);
