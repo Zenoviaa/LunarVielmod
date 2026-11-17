@@ -103,7 +103,7 @@ public partial class RekBoss
         var currentTile = Main.tile[NPC.Center.ToTileCoordinates()];
         if (!_splashedYoAss && currentTile.LiquidAmount <= 0)
         {
-            LavaEruption(NPC, Coil_Dash_Damage, NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 35, 16, 0.02F);
+            LavaEruption(NPC, Coil_Dash_Damage, NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 35, 12, 0.01F);
             _splashedYoAss = true;
         }
     }
@@ -111,7 +111,7 @@ public partial class RekBoss
     {
         if (!_splashedYoAss)
         {
-            LavaEruption(NPC, Coil_Dash_Damage, NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 35, 16, 0.02F);
+            LavaEruption(NPC, Coil_Dash_Damage, NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 35, 12, 0.01F);
             _splashedYoAss = true;
         }
     }

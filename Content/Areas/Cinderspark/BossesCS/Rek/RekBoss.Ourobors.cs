@@ -394,6 +394,15 @@ public partial class RekBoss
                             ballFirer.position += new Vector2(0, 128);
                             ballFirer.New();
                         }
+
+                        var currentTile = Main.tile[NPC.Center.ToTileCoordinates()];
+                        if(currentTile.LiquidAmount > 0)
+                        {
+                            if(Timer % 4 == 0)
+                            {
+                                LavaEruption(NPC, Coil_Dash_Damage, NPC.Center, movementDirection * 15 + new Vector2(0, -15), 5, 0.03f);
+                            }
+                        }
                     }
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, currentPoint, 0.1f));
                     SpinAround(currentPoint, _spinRot);

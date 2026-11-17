@@ -60,6 +60,8 @@ public class MeteorBoom : ModProjectile
         Timer++;
         if(Timer == 1)
         {
+            RekBoss.LavaEruption(Projectile, Projectile.Center, Projectile.velocity.Resize(24), 2, 0.12f);
+
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             screenShaderSystem.TintScreen(Color.Red, 0.08f, 5);
             var sound = new SoundStyle("Stellamod/Assets/Sounds/RekFireballShoot") with { PitchVariance = 0.3f };

@@ -129,7 +129,7 @@ public partial class RekBoss
                         i++;
                     }
 
-                    OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -252);
+                    OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -212);
                     SegmentsMeteorFloat();
                     if (Timer % TimeBetweenMeteors == 0)
                     {

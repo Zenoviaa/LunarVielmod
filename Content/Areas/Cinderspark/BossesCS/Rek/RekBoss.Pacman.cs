@@ -105,7 +105,7 @@ public partial class RekBoss
       
                     SegmentsMeteorFloatAlways();
 
-                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
                     Vector2 targetPoint = GetPointOnPath(-0.1f);
                     float headRatio = Timer / Pac_Delay_Time;
                     float headEase = EasingFunction.InOutExpo(headRatio);
@@ -159,7 +159,7 @@ public partial class RekBoss
                     SegmentsMeteorFloatAlways();
                     Vector2 lastPoint = GetPointOnPath(1f);
                     Vector2 dir = (lastPoint - NPC.Center).SafeNormalize(Vector2.Zero);
-                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.2f));
                     var seg = GetNextSegmentToEat2();
                     if(seg != null)
                     {

@@ -87,7 +87,7 @@ public partial class RekBoss
             var pos = position;
             pos += Main.rand.NextVector2Circular(24, 24);
             var vel = velocity;
-            vel = vel.RotatedByRandom(0.35F);
+            vel = vel.RotatedByRandom(0.25F);
             vel *= Main.rand.NextFloat(0.5f, 1f);
 
             if (MultiplayerHelper.IsHost)
