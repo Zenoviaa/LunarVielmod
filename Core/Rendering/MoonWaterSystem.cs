@@ -265,7 +265,6 @@ null, Main.Transform);
 
         sb.Begin(oldParameters);
         sb.Draw(screenTargetTwo, Vector2.Zero, null, Color.White * 1f);
-
     }
 
     private void RenderCoolWaters(On_Main.orig_RenderWater orig, Main self)
@@ -457,18 +456,34 @@ null, Main.Transform);
             return;
         if (Main.gameMenu)
             return;
-        if (!LightingHelper.CanRenderPostProcessingEffects)
-            return;
+
+
 
 
         SpriteBatch spriteBatch = Main.spriteBatch;
-        using(RT.Clear(_reflectionRT.GetTarget(), Color.Black))
-        {
-            spriteBatch.Begin();
-            spriteBatch.Draw(Main.screenTarget, Vector2.Zero + new Vector2(Main.offScreenRange) / 2f, null, Color.White, 0, Vector2.Zero, 1f / DownSamples, SpriteEffects.None, 0f);
-            spriteBatch.End();
-        }
 
+        //Copy the current screen target for reflections
+        //If we do this after the water renders we get an infinite reflection loops lmao that's bad.
+        GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+        graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
+        graphicsDevice.Clear(Color.Black);
+        spriteBatch.Begin();
+        spriteBatch.Draw(Main.screenTarget, Vector2.Zero, null, Color.White);
+        spriteBatch.End();
+
+        graphicsDevice.SetRenderTarget(_reflectionRT);
+        graphicsDevice.Clear(Color.Black);
+
+        spriteBatch.Begin();
+        spriteBatch.Draw(Main.screenTarget, Vector2.Zero + new Vector2(Main.offScreenRange) / 2f, null, Color.White, 0, Vector2.Zero, 1f / DownSamples, SpriteEffects.None, 0f);
+        spriteBatch.End();
+
+        //Draw the current render back so no data is loss
+        graphicsDevice.SetRenderTarget(Main.screenTarget);
+        graphicsDevice.Clear(Color.Black);
+        spriteBatch.Begin();
+        spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+        spriteBatch.End();
     }
 
 
