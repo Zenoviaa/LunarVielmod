@@ -72,21 +72,22 @@ public class LavaArenaCommand : ConsoleCommand
 
         Vector2 left = center.ToWorldCoordinates() + new Vector2(-width * 16, 0) * new Vector2(0.5f, 0f);
         Vector2 right = center.ToWorldCoordinates() + new Vector2(width * 16, 0) * new Vector2(0.5f, 0f);
-        void MakeSmallerPlatform(float p)
+        void MakeSmallerPlatform(float p, int index)
         {
             Vector2 pos = Vector2.Lerp(left, right, p);
 
             NPC.NewNPC(Main.LocalPlayer.GetSource_FromThis(), 
                 (int)pos.X, 
                 (int)pos.Y, 
-                ModContent.NPCType<SmallMoltenPlatform>());
+                ModContent.NPCType<SmallMoltenPlatform>(),
+                ai0: index);
 
         }
 
-        MakeSmallerPlatform(0.1f);
-        MakeSmallerPlatform(0.2f);
-        MakeSmallerPlatform(0.8f);
-        MakeSmallerPlatform(0.9f);
+        MakeSmallerPlatform(0.1f, 0);
+        MakeSmallerPlatform(0.2f, 1);
+        MakeSmallerPlatform(0.8f, 2);
+        MakeSmallerPlatform(0.9f, 3);
         return true;
     }
 }

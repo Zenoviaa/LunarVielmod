@@ -300,6 +300,28 @@ public class ReksGreatFireBreath : ModProjectile,
             ShouldDie = 1;
         }
 
+        Vector2 startPos = Projectile.Center;
+        for(var i =0; i < 100; i++)
+        {
+            startPos += Projectile.velocity.SafeNormalize(Vector2.Zero);
+            var tile = Main.tile[startPos.ToTileCoordinates()];
+            if (tile.LiquidAmount > 0)
+                break;
+        }
+
+        if(Timer % 4 == 0)
+        {
+            var pos = startPos + Main.rand.NextVector2Circular(16, 16);
+            var vel = -Projectile.velocity.SafeNormalize(Vector2.Zero) * 15;
+            PS.LavaMetaballs.Spawn(new()
+            {
+                position = pos + Main.rand.NextVector2Circular(32, 32),
+                velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.4f, 1f),
+                radius = 0.045f,
+                timeLeft = Main.rand.Next(25, 90)
+            });
+        }
+
         float length = ProjectileHelper.PerformBeamHitscan(Projectile, 2400);
         Projectile.Center = Parent.Center;
         Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * length;

@@ -344,7 +344,7 @@ public partial class RekBoss : ScarletBoss
             return Vector2.Dot(-Vector2.UnitX, NPC.rotation.ToRotationVector2()) > 0;
         }
     }
-    private AIState TestAttack =>default;
+    private AIState TestAttack => AIState.Death;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
@@ -422,6 +422,13 @@ public partial class RekBoss : ScarletBoss
         {
             _arenaCenter = TileUtilities.GuessArenaCenter(NPC.Center);
             _lavaArenaRectangle = ArenaRectangleUpToLava();
+        }
+
+        SmallMoltenPlatform.RisingPlatformPositions ??= new float[4];
+        for(var i = 0; i < SmallMoltenPlatform.RisingPlatformPositions.Length; i++)
+        {
+            ref var x = ref SmallMoltenPlatform.RisingPlatformPositions[i];
+            x = MathHelper.Lerp(_lavaArenaRectangle.Left, _lavaArenaRectangle.Right, (float)i / (float)SmallMoltenPlatform.RisingPlatformPositions.Length);
         }
 
         if (Main.netMode != NetmodeID.Server)

@@ -39,6 +39,8 @@ public abstract class AbstractPlatformNPC : ModNPC
     }
     public abstract Point GetPlatformSize();
     public virtual Point GetPlatformOffset() => Point.Zero;
+
+    public virtual float GetWaterRisingPlatformX() => -1;
     public virtual bool RiseInLiquids() => true;
     public override void AI()
     {
@@ -72,6 +74,11 @@ public abstract class AbstractPlatformNPC : ModNPC
    
 
             Vector2 pointToMoveTo = tilePoint.ToWorldCoordinates();
+            var x = GetWaterRisingPlatformX();
+            if(x != -1)
+            {
+                pointToMoveTo.X = x;
+            }
             Vector2 normalVel = pointToMoveTo - NPC.Center;
             normalVel = normalVel.SafeNormalize(Vector2.Zero);
             float dist = Vector2.Distance(NPC.Center, pointToMoveTo);

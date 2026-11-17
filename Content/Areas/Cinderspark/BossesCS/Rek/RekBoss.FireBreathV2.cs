@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets;
+﻿using MonoMod.Cil;
+using Stellamod.Assets;
 using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
@@ -74,6 +75,7 @@ public partial class RekBoss
                     NPC.velocity = targetVel;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
 
+                    _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / moveTime));
                     Animator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
             
                     if (Timer >= moveTime)
