@@ -30,7 +30,7 @@ public class AuroraEffectRenderer : ModSystem
             return;
         }
 
-        RenderLayers targetLayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower ? RenderLayers.ForegroundWater : RenderLayers.Background;
+        RenderLayers targetLayer = Main.LocalPlayer.ZoneMoonspiralTower ? RenderLayers.ForegroundWater : RenderLayers.Background;
         if (layer == RenderLayers.Background)
         {
             if (!Main.gameMenu && _activeTimer > 0)
@@ -89,8 +89,8 @@ public class AuroraEffectRenderer : ModSystem
         base.PostUpdateEverything();
 
         bool isActive = Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight;
-        isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
-        isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower;
+        isActive |= Main.LocalPlayer.ZoneHarmonicCoralways;
+        isActive |= Main.LocalPlayer.ZoneMoonspiralTower;
         isActive |= Main.LocalPlayer.ZoneAbyss;
         isActive |= effectTimer > 0;
         if (effectTimer > 0)

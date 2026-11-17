@@ -27,7 +27,7 @@ public class MagicalFish : ForegroundLayer
     public override bool IsActive()
     {
         return
-            Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower;
+            Main.LocalPlayer.ZoneMoonspiralTower;
     }
 
     public override void SetLayering(ref float zLayer, ref Vector2 parallax)

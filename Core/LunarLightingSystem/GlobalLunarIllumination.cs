@@ -7,15 +7,13 @@ namespace Stellamod.Core.LunarLightingSystem
 {
     public class GlobalLumSystem : ModSystem
     {
-
         public static float GlobalLightStrength;
         public static float GlobalLum = 0.3f;
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
             GlobalLum = 0.15f;
-            BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
-            if (biomePlayer.ZoneHarmonicCoralways)
+            if (Main.LocalPlayer.ZoneHarmonicCoralways)
             {
                 GlobalLum = 0.3f;
             }
@@ -24,18 +22,15 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 GlobalLum = 0.1f;
             }
-            if (biomePlayer.ZoneMoonspiralTower)
+            if (Main.LocalPlayer.ZoneMoonspiralTower)
             {
                 GlobalLum = 0.5f;
             }
-
-
-            if (Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneDrakonic || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder)
+            if (Main.LocalPlayer.ZoneDrakonic || Main.LocalPlayer.ZoneCinder)
             {
                 GlobalLum = 0.65f;
             }
             GlobalLightStrength = MathHelper.Lerp(GlobalLightStrength, GlobalLum, 0.1f);
-
         }
     }
 

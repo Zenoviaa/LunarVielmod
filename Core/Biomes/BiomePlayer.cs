@@ -16,6 +16,17 @@ public static class BiomeExtensions
 {
     extension(Player player)
     {
+        public bool ZoneMoonspiralTower
+        {
+            get
+            {
+                return player.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower;
+            }
+            set
+            {
+                player.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower = value;
+            }
+        }
         public bool InDomain
         {
             get => ModContent.GetInstance<DomainExpansionManager>().noRender;
@@ -267,7 +278,7 @@ public class BiomePlayer : ModPlayer
                 depthGradient.gradientColor = Color.Red.ToVector3();
             }
 
-            if (Player.GetModPlayer<MyPlayer>().ZoneCinder)
+            if (Player.ZoneCinder)
             {
                 FlameParticles2();
                 return;

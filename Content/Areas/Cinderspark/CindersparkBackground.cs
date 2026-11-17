@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Backgrounds;
 using Terraria;
 using Terraria.ModLoader;
@@ -42,6 +43,6 @@ public class CindersparkBackground : CustomBG
 
     public override bool IsActive()
     {
-        return Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder;
+        return Main.LocalPlayer.ZoneCinder;
     }
 }
