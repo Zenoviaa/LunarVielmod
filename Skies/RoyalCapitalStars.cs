@@ -105,6 +105,7 @@ namespace Stellamod.Skies
             orig(self);
             if (Opacity != 0)
             {
+
                 var starsTexture = TextureRegistry.StarNoise2;
                 var noiseTexture = TextureRegistry.BlurryPerlinNoise2;
                 MiscShaderData eff = GameShaders.Misc["LunarVeil:RoyalCapitalStars"];
@@ -129,12 +130,17 @@ namespace Stellamod.Skies
                     eff.Shader, 
                     Main.BackgroundViewMatrix.TransformationMatrix);
 
-                Vector2 drawOrigin = starsTexture.Value.Size() * 0.5f;
-                BackgroundDrawParameters draw = DrawUtilities.CalculateScaledBackgroundDraw(starsTexture.Value.Size());
+           //     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
                 spriteBatch.Draw(starsTexture.Value,
-                   draw.DrawOffset,
-                    draw.SourceRectangle, Color.White * 0.3f, 0, drawOrigin, 4, SpriteEffects.None, 0);
+                   new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
+                    null, Color.White * 0.3f);
 
+
+                /*
+                spriteBatch.Draw(starsTexture.Value, 
+                    new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), 
+                    new Rectangle((int)-_parallax.X, (int)-_parallax.Y, Main.screenWidth, Main.screenHeight), Color.White * 0.3f);
+                */
                 spriteBatch.End();
             }
         }
