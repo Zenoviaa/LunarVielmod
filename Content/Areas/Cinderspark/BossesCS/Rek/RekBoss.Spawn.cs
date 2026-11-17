@@ -55,6 +55,7 @@ public partial class RekBoss
                         Teleport(eruptionLeft);
                     }
 
+                    _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60F));
                     if (Timer >= moveTime)
                     {
                         Timer = 0;
