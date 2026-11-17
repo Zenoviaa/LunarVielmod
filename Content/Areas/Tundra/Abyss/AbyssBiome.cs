@@ -52,7 +52,7 @@ public class AbyssBiome : BaseUrdveilBiome,
     public override void OnEnter(Player player)
     {
         base.OnEnter(player);
-        player.GetModPlayer<MyPlayer>().ZoneAbyss = true;
+        player.ZoneAbyss = true;
         player.GetModPlayer<BiomePlayer>().justEnteredAbyss = true;
         if (Main.netMode == NetmodeID.Server)
             return;
@@ -62,7 +62,7 @@ public class AbyssBiome : BaseUrdveilBiome,
     public override void OnLeave(Player player)
     {
         base.OnLeave(player);
-        player.GetModPlayer<MyPlayer>().ZoneAbyss = false;
+        player.ZoneAbyss = false;
         if (Main.netMode == NetmodeID.Server)
             return;
 

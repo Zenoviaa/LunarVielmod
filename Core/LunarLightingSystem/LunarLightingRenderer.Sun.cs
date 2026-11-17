@@ -223,12 +223,12 @@ public partial class LunarLightingRenderer
         {
 
         }
-        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAbyss)
+        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell || Main.LocalPlayer.ZoneAbyss)
         {
             interpolatedColor = SmoothedBackLightColor;
         }
            
-        if (ModContent.GetInstance<DomainExpansionManager>().noLighting)
+        if (ModContent.GetInstance<DomainExpansionManager>().noRender)
             interpolatedColor = Color.White;
         return interpolatedColor;
     }

@@ -88,11 +88,9 @@ namespace Stellamod
         public bool CorsageRune;
         public float CorsageTime;
 
-
         public bool GIBomb = false;
         public bool RadiantBomb = false;
         public int RadiantBombCooldown = 0;
-        public bool SpiritPendent = false;
         public int Bridget = 0;
         public bool HasAlcaliteSet;
         public bool Waterwhisps;
@@ -260,7 +258,7 @@ namespace Stellamod
             Daedstruck = false;
 
             HasAlcaliteSet = false;
-            SpiritPendent = false;
+
 
             CorsageRune = false;
             StealthRune = false;
@@ -1047,12 +1045,6 @@ namespace Stellamod
                 Player.GetDamage(DamageClass.Generic) += damageIncrease;
             }
 
-            if (SpiritPendent && ZoneAbyss)
-            {
-                Player.GetDamage(DamageClass.Generic) += 250 / 1500f;
-            }
-
-
             if (GovheilC && GovheilBCooldown > 300)
             {
                 Player.GetDamage(DamageClass.Ranged) *= 1.5f;
@@ -1071,15 +1063,6 @@ namespace Stellamod
             {
                 Player.GetDamage(DamageClass.Magic) *= 1.2f;
                 Player.GetDamage(DamageClass.Ranged) *= 1.2f;
-            }
-
-            if (SpiritPendent && ZoneAbyss)
-            {
-                Player.GetDamage(DamageClass.Magic) += 250 / 150f;
-                Player.GetDamage(DamageClass.Summon) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
             }
         }
 

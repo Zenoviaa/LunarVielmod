@@ -55,7 +55,7 @@ namespace Stellamod.Content.Quests.DelgrimQuest
 
         public override bool CheckCompletion(Player player)
         {
-            return player.GetModPlayer<MyPlayer>().ZoneAbyss;
+            return player.ZoneAbyss;
         }
     }
     public class MysteriousPlacesIII : DelgrimQuest

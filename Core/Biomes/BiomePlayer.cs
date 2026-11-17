@@ -21,6 +21,17 @@ public static class BiomeExtensions
             get => ModContent.GetInstance<DomainExpansionManager>().noRender;
          
         }
+        public bool ZoneFable
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneFable;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneFable = value;
+            }
+        }
         public bool ZoneHeatedDepths
         {
             get
@@ -170,14 +181,11 @@ public static class BiomeExtensions
             set => player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell = value;
         }
     }
-
-    public static bool ZoneFable(this Player player) => player.InModBiome<FableBiome>();
     public static bool ZoneXixianVillage(this Player player) => player.InModBiome<XixVillageBiome>();
 }
 public class BiomePlayer : ModPlayer
 {
     private float _windCounter;
-    public bool justEnteredAbyss;
     public bool ZoneIshtar;
     public bool ZoneSacredUnknowns;
     public bool ZoneEveroseVillage;
