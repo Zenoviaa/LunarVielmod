@@ -30,7 +30,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     float4 outlineColor = float4(1.0, 1.0, 1.0, 1.0);
     float2 outlineTexelSize = float2(1.0, 1.0) / (float2(width, height) * 2.0);
-    outlineTexelSize *= 3.0;
+    outlineTexelSize *= 4.0;
     float4 mask = tex2D(maskTex, uv);
     if (mask.a <= 0.0)
     {

@@ -355,43 +355,6 @@ null, Main.Transform);
 
         void DrawLavaParticles()
         {
-            /*
-            SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
-            lavaShader.ScreenOffset = CalculateScreenOffset(scale: 2f);
-            lavaShader.Tiling = Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier;
-            lavaShader.Time = Main.GlobalTimeWrappedHourly * 1.5f;
-            lavaShader.Quantize = 9;
-            lavaShader.Distortion = 0.05f;
-            lavaShader.StartGradient = _pixelWater.StartGradientColor;
-            lavaShader.EndGradient = _pixelWater.EndGradientColor;
-            lavaShader.NormalDistortionStrength = 0.25f;
-            lavaShader.NormalNoiseTexture = _pixelWater.NoiseTexture.Value;
-            lavaShader.InnerColor = Color.Lerp(Color.Yellow, Color.Red, 0.5f);
-            lavaShader.BloomColor = Color.Red;
-            lavaShader.RockTexture = AssetManager.LoadBackground("LavaRocks").Value;
-            lavaShader.GlowMap = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6").Value;
-            lavaShader.HeightMap = _waterHeightMapRT;
-            lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["SpriteDrawing"];
-            using (RT.Clear(_waterTextureRTSwap, Color.DarkGoldenrod))
-            {
-
-                //Draw the base texture
-                spriteBatch.Begin(SpriteSortMode.Deferred,
-                    BlendState.AlphaBlend,
-                    SamplerState.AnisotropicClamp,
-                    DepthStencilState.None,
-                    RasterizerState.CullNone,
-                    lavaShader.Effect);
-
-                Color drawColor = _pixelWater.BackgroundColor * 0.8f;
-                if (!_pixelWater.ignoreSkyColor)
-                {
-                    drawColor = drawColor.MultiplyRGB(Main.ColorOfTheSkies);
-                }
-                spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, drawColor);
-                spriteBatch.End();
-            }
-            */
             var pass = AssetReferences.Effects.SuperLavaParticles.CreateP0();
             Vector2 texelSize = waterParticleTarget.GetTexelSize();
             Vector2 screenoffset = Main.screenPosition * texelSize;

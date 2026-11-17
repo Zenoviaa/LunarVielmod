@@ -11,17 +11,17 @@ float DistanceSquared(float2 a, float2 b)
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
 {
     float2 uv = coords;
-    float2 fixer = float2(texelSize.x / texelSize.y, 1.0);
+    float2 fixer = float2(texelSize.y / texelSize.x, 1.0);
     uv *= fixer;
 
     //Max number of metaballs we're sampling
     float totalContribution = 0.0;
-    float metaballStrength = 0.004;
+    float metaballStrength = 0.005;
     //Going to try drawing this in screenspace, single pass on a render target
     for (int i = 0; i < 100; i++)
     {
         float3 mb = particles[i];
-        float distSquared = DistanceSquared(coords, mb.xy);
+        float distSquared = DistanceSquared(uv, mb.xy * fixer);
       
         float influence = (mb.z / distSquared) * metaballStrength;
         totalContribution += influence;

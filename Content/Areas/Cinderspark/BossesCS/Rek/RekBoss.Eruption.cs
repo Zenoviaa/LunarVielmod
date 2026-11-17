@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using System;
 using Terraria;
@@ -34,6 +35,7 @@ public partial class RekBoss
                     }
 
                     this.GetAnimator().PlayAnimation(ANIM_IDLE, AnimationParams.Default with { IsLooping = true });
+
                     if (Timer >= Eruption_GraceTime)
                     {
                         if (Timer % 24 == 0)
@@ -43,6 +45,10 @@ public partial class RekBoss
                                 //The sound will be on the projectile
                                 ProjFirer firer = ProjFirer.From<VulcanEruption>(NPC);
                                 int segmentIndex = Main.rand.Next(0, Segments.Length);
+                                if(Timer < 300)
+                                {
+                                    segmentIndex = Main.rand.Next(0, Segments.Length / 4);
+                                }
                                 ref var segment = ref Segments[segmentIndex];
                                 firer.damage = Eruption_Damage;
                                 firer.position = segment.position;

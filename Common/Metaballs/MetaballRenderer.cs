@@ -47,7 +47,7 @@ public class MetaballParticles : ParticleUpdater<MetaballParticles.Data>
         {
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
-            particle.velocity.Y += 0.06f;
+            particle.velocity.Y += 0.25f;
             particle.timeLeft--;
         }
     }
@@ -126,6 +126,10 @@ public static class MetaballRenderer
             while (metaballIndex < metaballs.Count && count < _buffer.Length)
             {
                 _buffer[count++] = metaballs[metaballIndex++];
+            } 
+            while (count < _buffer.Length)
+            {
+                _buffer[count++] = Vector3.Zero;
             }
         }
 

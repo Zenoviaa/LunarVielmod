@@ -78,24 +78,24 @@ public partial class RekBoss
         for(var i = 0; i < numBalls; i++)
         {
             var pos = position;
-            pos += Main.rand.NextVector2Circular(48, 48);
+            pos += Main.rand.NextVector2Circular(24, 24);
             var vel = velocity;
-            vel = vel.RotatedByRandom(1.5F);
+            vel = vel.RotatedByRandom(0.35F);
             vel *= Main.rand.NextFloat(0.5f, 1f);
             
             firer.position = pos;
             firer.velocity = vel;
             firer.ai1 = radius;
             firer.New();
-            continue;
-            for(var j =0; j < 4; j++)
+
+            for(var j =0; j < 5; j++)
             {
                 PS.LavaMetaballs.Spawn(new()
                 {
                     position = pos + Main.rand.NextVector2Circular(32, 32),
-                    velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.85f, 1f),
-                    radius = 0.015f,
-                    timeLeft = 120
+                    velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.4f, 1f),
+                    radius = 0.045f,
+                    timeLeft = Main.rand.Next(25, 90)
                 });
             }
         }

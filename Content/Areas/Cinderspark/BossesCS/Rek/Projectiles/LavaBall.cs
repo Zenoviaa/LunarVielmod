@@ -21,13 +21,14 @@ public class LavaBall : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 64;
-        Projectile.height = 64;
+        Projectile.width = 54;
+        Projectile.height = 54;
         Projectile.timeLeft = 120;
         Projectile.tileCollide = true;
         Projectile.penetrate = -1;
         Projectile.light = 0.6f;
         Projectile.hostile = true;
+
     }
     public override void AI()
     {
@@ -35,7 +36,9 @@ public class LavaBall : ModProjectile
         Timer++;
         Projectile.velocity.X *= 0.98f;
         if(Projectile.velocity.Y < 15)
-            Projectile.velocity.Y += 0.25f;
+            Projectile.velocity.Y += 0.3f;
+        if (Timer >= 90)
+            Projectile.hostile = false;
 
         var ratio = EasingFunction.InOutSine((float)Projectile.timeLeft / 60F);
         var metaball = new Vector3(DrawUtilities.WorldToScreenCoordinates(Projectile.Center), Radius * ratio);
