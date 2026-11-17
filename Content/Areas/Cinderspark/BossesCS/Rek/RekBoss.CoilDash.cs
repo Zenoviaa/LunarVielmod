@@ -47,6 +47,14 @@ public partial class RekBoss
             segment.inLava = false;
         }
     }
+    private void ResetSegmentsEntirely()
+    {
+        foreach (var segment in Segments)
+        {
+            segment.inLava = false;
+            segment.noWorm = false;
+        }
+    }
 
     private void MakeSegmentsFallIntoLavaAndFloat()
     {
@@ -90,6 +98,23 @@ public partial class RekBoss
 
         }
     }
+    void CheckForJumpEruption()
+    {
+        var currentTile = Main.tile[NPC.Center.ToTileCoordinates()];
+        if (!_splashedYoAss && currentTile.LiquidAmount <= 0)
+        {
+            LavaEruption(NPC, Coil_Dash_Damage, NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 35, 16, 0.02F);
+            _splashedYoAss = true;
+        }
+    }
+    void DoSplashEruptionAnyway()
+    {
+        if (!_splashedYoAss)
+        {
+            LavaEruption(NPC, Coil_Dash_Damage, NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 35, 16, 0.02F);
+            _splashedYoAss = true;
+        }
+    }
     private void AI_CoilDash()
     {
      
@@ -109,7 +134,9 @@ public partial class RekBoss
                     if(Timer == 1)
                     {
                         _firebreathSide = Main.rand.NextBool(2) ? -1 : 1;
+                        _splashedYoAss = false;
                     }
+
 
                     Vector2 eruptionLeft = FindEruptionLeft();
                     Vector2 eruptionRight = FindEruptionRight();
@@ -122,6 +149,8 @@ public partial class RekBoss
                     Vector2 midPoint = Vector2.Lerp(eruptionLeft, eruptionRight, GetSide());
 
                     float moveTime = 180;
+
+                    _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60F));
                     float xRadius = 512;
                     float yRadius = 384;
                     float ratio = Timer / moveTime;
@@ -129,7 +158,7 @@ public partial class RekBoss
                     float x = MathF.Sin(ease * MathHelper.Pi) * xRadius;
                     float y = MathF.Cos(ease * MathHelper.Pi) * yRadius;
 
-                    Vector2 moveToPoint = midPoint + new Vector2(-x, y);
+                    Vector2 moveToPoint = midPoint + new Vector2(-x * -_firebreathSide, y);
                     Vector2 targetVel = moveToPoint - NPC.Center;
                     NPC.velocity = targetVel;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
@@ -155,7 +184,7 @@ public partial class RekBoss
                     if (Timer == 1)
                     {
 
-
+                        _splashedYoAss = false;
                         NPC.TargetClosest();
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HavocCharge"), MyTarget.position);
 
@@ -198,13 +227,13 @@ public partial class RekBoss
 
                         float ratio = Timer / Coil_Coil_Time;
                         float ease = EasingFunction.InOutSine(ratio);
-                        float radius = MathHelper.SmoothStep(392, 192, ease);
+                        float radius = MathHelper.SmoothStep(252, 128, ease);
                         float x = MathF.Sin(ratio * MathHelper.TwoPi * 2) * radius;
                         float y = MathF.Cos(ratio * MathHelper.TwoPi * 2) * radius;
-                        Vector2 pos = _centerPoint + new Vector2(x, y);
+                        Vector2 pos = _centerPoint + new Vector2(x * _firebreathSide, y);
                         Vector2 vel = pos - NPC.Center;
 
-                        float ease2 = EasingFunction.InOutQuad(ratio);
+                        float ease2 = EasingFunction.InOutQuad(ratio / 0.5F);
                         Vector2 easedVeclotiy = Vector2.Lerp(_initialVelocity, vel, ease2);
                         NPC.velocity = easedVeclotiy;
                         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.8f);
@@ -267,6 +296,7 @@ public partial class RekBoss
                         screenShaderSystem.TintScreen(Color.Red, 0.3f, 17);
                         FXUtil.ShakeCamera(NPC.Center, 1024, 32);
                     }
+                    CheckForJumpEruption();
                     for (int i = 0; i < 2; i++)
                     {
                         Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(32, 32);
@@ -290,6 +320,7 @@ public partial class RekBoss
                     _outliner.attacking = true;
                     if (Timer >= Coil_Dash_Time)
                     {
+                        DoSplashEruptionAnyway();
                         Timer = 0;
                         AttackCycle++;
                     }

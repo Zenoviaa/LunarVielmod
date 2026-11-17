@@ -36,7 +36,7 @@ public partial class RekBoss : ScarletBoss
     private bool _showAfterImages;
     private bool _destroyArena;
     float _globalAlpha;
-
+    bool _splashedYoAss;
     public class RekSegment
     {
         public RekSegment(Vector2 _position, Vector2 _size, float _scale, int _bodyFrame)
@@ -344,7 +344,7 @@ public partial class RekBoss : ScarletBoss
             return Vector2.Dot(-Vector2.UnitX, NPC.rotation.ToRotationVector2()) > 0;
         }
     }
-    private AIState TestAttack => AIState.Eruption;
+    private AIState TestAttack => AIState.CoilDash;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
@@ -676,6 +676,7 @@ public partial class RekBoss : ScarletBoss
     {
         if (TestAttack != default)
         {
+            ResetSegmentsEntirely();
             SwitchState(TestAttack);
             return;
         }

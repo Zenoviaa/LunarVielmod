@@ -46,10 +46,6 @@ public partial class RekBoss
 
     public static void LavaEruption(NPC source, int damage, Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
     {
-        if (!MultiplayerHelper.IsHost)
-        {
-            return;
-        }
 
         var firer = ProjFirer.From<LavaBall>(source);
         for (var i = 0; i < numBalls; i++)
@@ -57,22 +53,33 @@ public partial class RekBoss
             var pos = position;
             pos += Main.rand.NextVector2Circular(48, 48);
             var vel = velocity;
-            vel = vel.RotatedByRandom(1.5F);
+            vel = vel.RotatedByRandom(0.6F);
             vel *= Main.rand.NextFloat(0.5f, 1f);
-            firer.damage = damage;
-            firer.position = pos;
-            firer.velocity = vel;
-            firer.ai1 = radius;
-            firer.New();
+            if (MultiplayerHelper.IsHost)
+            {
+
+                firer.damage = damage;
+                firer.position = pos;
+                firer.velocity = vel;
+                firer.ai1 = radius;
+                firer.New();
+            }
+            for (var j = 0; j < 5; j++)
+            {
+                PS.LavaMetaballs.Spawn(new()
+                {
+                    position = pos + Main.rand.NextVector2Circular(32, 32),
+                    velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.4f, 1f),
+                    radius = 0.045f,
+                    timeLeft = Main.rand.Next(25, 90)
+                });
+            }
         }
     }
 
     public static void LavaEruption(Projectile source, Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
     {
-        if (!MultiplayerHelper.IsHost)
-        {
-            return;
-        }
+
 
         var firer = ProjFirer.From<LavaBall>(source);
         for(var i = 0; i < numBalls; i++)
@@ -82,12 +89,15 @@ public partial class RekBoss
             var vel = velocity;
             vel = vel.RotatedByRandom(0.35F);
             vel *= Main.rand.NextFloat(0.5f, 1f);
-            
-            firer.position = pos;
-            firer.velocity = vel;
-            firer.ai1 = radius;
-            firer.New();
 
+            if (MultiplayerHelper.IsHost)
+            {
+
+                firer.position = pos;
+                firer.velocity = vel;
+                firer.ai1 = radius;
+                firer.New();
+            }
             for(var j =0; j < 5; j++)
             {
                 PS.LavaMetaballs.Spawn(new()
