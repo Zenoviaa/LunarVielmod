@@ -115,6 +115,9 @@ public class MoonWaterSystem : ModSystem
 
     void DrawLavaParticles(SpriteBatch sb, Vector2 sp)
     {
+        if (LavaMetaballRenderer.metaballs.Count <= 0)
+            return;
+
         sb.EndOut(out var oldParameters);
 
         using var particleTarget = RT.Context(RenderTargets.ScreenTarget);
