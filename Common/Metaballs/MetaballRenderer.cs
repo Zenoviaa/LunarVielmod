@@ -28,7 +28,8 @@ public class MetaballParticles : ParticleUpdater<MetaballParticles.Data>
         for (var i = 0; i < _length; i++)
         {
             ref var particle = ref _particles[i];
-            metaballs.Add(new Vector3(DrawUtilities.WorldToScreenCoordinates(particle.position), particle.radius));
+            var ratio = EasingFunction.InOutSine((float)particle.timeLeft / 60F);
+            metaballs.Add(new Vector3(DrawUtilities.WorldToScreenCoordinates(particle.position), particle.radius * ratio));
         }
     }
 
@@ -85,15 +86,16 @@ public class LavaMetaballRenderer : ModSystem
     public override void PreUpdateProjectiles()
     {
         base.PreUpdateProjectiles();
-        Particles.PS.LavaMetaballs.Spawn(new()
+        /*
+        PS.LavaMetaballs.Spawn(new()
         {
             position = Main.LocalPlayer.Center + Main.rand.NextVector2Circular(32, 32),
             velocity = Main.rand.NextVector2Circular(3, 3),
             radius = 0.015f,
             timeLeft = 120
-        });
+        });*/
         metaballs.Clear();
-        Particles.PS.LavaMetaballs.AddMetaballData(ref metaballs);
+        PS.LavaMetaballs.AddMetaballData(ref metaballs);
     }
    
 

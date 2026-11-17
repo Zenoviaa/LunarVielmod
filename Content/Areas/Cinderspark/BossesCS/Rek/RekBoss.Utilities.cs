@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -43,6 +44,62 @@ public partial class RekBoss
         }
     }
 
+    public static void LavaEruption(NPC source, int damage, Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
+    {
+        if (!MultiplayerHelper.IsHost)
+        {
+            return;
+        }
+
+        var firer = ProjFirer.From<LavaBall>(source);
+        for (var i = 0; i < numBalls; i++)
+        {
+            var pos = position;
+            pos += Main.rand.NextVector2Circular(48, 48);
+            var vel = velocity;
+            vel = vel.RotatedByRandom(1.5F);
+            vel *= Main.rand.NextFloat(0.5f, 1f);
+            firer.damage = damage;
+            firer.position = pos;
+            firer.velocity = vel;
+            firer.ai1 = radius;
+            firer.New();
+        }
+    }
+
+    public static void LavaEruption(Projectile source, Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
+    {
+        if (!MultiplayerHelper.IsHost)
+        {
+            return;
+        }
+
+        var firer = ProjFirer.From<LavaBall>(source);
+        for(var i = 0; i < numBalls; i++)
+        {
+            var pos = position;
+            pos += Main.rand.NextVector2Circular(48, 48);
+            var vel = velocity;
+            vel = vel.RotatedByRandom(1.5F);
+            vel *= Main.rand.NextFloat(0.5f, 1f);
+            
+            firer.position = pos;
+            firer.velocity = vel;
+            firer.ai1 = radius;
+            firer.New();
+            continue;
+            for(var j =0; j < 4; j++)
+            {
+                PS.LavaMetaballs.Spawn(new()
+                {
+                    position = pos + Main.rand.NextVector2Circular(32, 32),
+                    velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.85f, 1f),
+                    radius = 0.015f,
+                    timeLeft = 120
+                });
+            }
+        }
+    }
     public void CreateArena()
     {
         int width = 145;

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
 using MonoMod.Cil;
-using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Assets.ContentReader.Pal;
 using Stellamod.Common;
 using Stellamod.Common.Metaballs;
 using Stellamod.Common.Particles;
@@ -15,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
@@ -26,235 +23,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Rendering;
-
-public class SuperLavaShader : CrystalShader<SuperLavaShader>
-{
-    public Texture2D RockTexture
-    {
-        set
-        {
-            Effect.Parameters["RockTexture"].SetValue(value);
-        }
-    }
-    public Texture2D GlowMap
-    {
-        set
-        {
-            Main.graphics.GraphicsDevice.Textures[3] = value;
-            Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.AnisotropicClamp;
-        }
-    }
-    public Texture2D HeightMap
-    {
-        set
-        {
-            Main.graphics.GraphicsDevice.Textures[2] = value;
-            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.AnisotropicClamp;
-        }
-    }
-    public Texture2D WaterTexture
-    {
-        set
-        {
-            Effect.Parameters["WaterTexture"].SetValue(value);
-        }
-    }
-    public float Time
-    {
-        set
-        {
-            Effect.Parameters["Time"].SetValue(value);
-        }
-    }
-    public float Distortion
-    {
-        set
-        {
-            Effect.Parameters["Distortion"].SetValue(value);
-        }
-    }
-    public Vector2 ScreenOffset
-    {
-        set
-        {
-            Effect.Parameters["ScreenOffset"].SetValue(value);
-        }
-    }
-    public Vector2 Tiling
-    {
-        set
-        {
-            Effect.Parameters["Tiling"].SetValue(value);
-        }
-    }
-    public Color InnerColor
-    {
-        set
-        {
-            Effect.Parameters["InnerColor"].SetValue(value.ToVector3());
-        }
-    }
-
-    public Color BloomColor
-    {
-        set
-        {
-            Effect.Parameters["BloomColor"].SetValue(value.ToVector3());
-        }
-    }
-    public Color StartGradient
-    {
-        set
-        {
-            Effect.Parameters["StartGradient"].SetValue(value.ToVector3());
-        }
-    }
-
-    public Color EndGradient
-    {
-        set
-        {
-            Effect.Parameters["EndGradient"].SetValue(value.ToVector3());
-        }
-    }
-
-    public float Quantize
-    {
-        set
-        {
-            Effect.Parameters["Quantize"].SetValue(value);
-        }
-    }
-
-    public float NormalDistortionStrength
-    {
-        set
-        {
-            Effect.Parameters["NormalDistortionStrength"].SetValue(value);
-        }
-    }
-
-    public Texture2D NormalNoiseTexture
-    {
-        set
-        {
-            Main.graphics.GraphicsDevice.Textures[1] = value;
-            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-        }
-    }
-
-    public Texture2D OutlineTexelSize
-    {
-        set
-        {
-            Effect.Parameters["outlineTexelSize"].SetValue(value.GetTexelSize() * 2);
-        }
-    }
-
-    public Color OutlineColor
-    {
-        set
-        {
-            Effect.Parameters["outlineColor"].SetValue(value.ToVector4());
-        }
-    }
-}
-
-public static class WaterHelpers
-{
-    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "DrawWaters")]
-    public static extern void DrawWaters(Main instance, bool isBackground);
-
-
-    //GetScreenDrawArea(unscaledPosition, vector + (Main.Camera.UnscaledPosition - Main.Camera.ScaledPosition), out var firstTileX, out var lastTileX, out var firstTileY, out var lastTileY);
-    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "GetScreenDrawArea")]
-    public static extern void GetScreenDrawArea(TileDrawing tileDrawing, Vector2 unscaledPosition, Vector2 offset, out int firstTileX, out int lastTileX, out int firstTileY, out int lastTileY);
-
-
-}
-public abstract class PixelWaterStyle : ModType
-{
-    /// <summary>
-    /// If multiple waters are active, this determines which one gets used
-    /// </summary>
-    public int priority;
-    protected sealed override void Register()
-    {
-        ModTypeLookup<PixelWaterStyle>.Register(this);
-    }
-    public sealed override void SetupContent()
-    {
-        base.SetupContent();
-        SetStaticDefaults();
-    }
-
-    public virtual bool IsActive(Player player)
-    {
-        return true;
-    }
-    public virtual void ModifyPixelWater(ref PixelWater pixelWater)
-    {
-
-    }
-}
-
-
-public class PixelWater
-{
-    public PixelWater()
-    {
-
-    }
-
-    public void SetDefaults()
-    {
-        StartGradientColor = Color.Aqua;
-        EndGradientColor = Color.Lerp(Color.SeaGreen, Color.Black, 0.75f);
-        BackgroundColor = Color.CornflowerBlue;
-        CausticsColor = Color.SeaGreen * 0.75f;
-        CausticsTexture = LoadTexture("WaterCaustics");
-        NoiseTexture = LoadTexture("WaterNoise2");
-        Palette = null;
-        TilingMultiplier = Vector2.One;
-        affectsLava = false;
-        noLighting = false;
-        vibrant = false;
-        ignoreSkyColor = false;
-        noReflection = false;
-        reflectionAlpha = 1f;
-        maxHeight = 32;
-        levels = 10;
-    }
-
-    private Asset<Texture2D> LoadTexture(string fileName)
-    {
-        return ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/{fileName}");
-    }
-    public Color StartGradientColor;
-    public Color EndGradientColor;
-    public Color BackgroundColor;
-    public Color CausticsColor;
-    public Vector2 TilingMultiplier;
-    public Asset<Texture2D> NoiseTexture;
-    public Asset<Texture2D> CausticsTexture;
-    public Palette Palette;
-    public bool noLighting;
-    public bool vibrant;
-    public bool ignoreSkyColor;
-    public bool affectsLava;
-    public bool noReflection;
-    public float reflectionAlpha;
-    public int maxHeight;
-    public int levels;
-}
-
-public class PixelWaterStyleComparer : IComparer<PixelWaterStyle>
-{
-    public int Compare(PixelWaterStyle x, PixelWaterStyle y)
-    {
-        return y.priority.CompareTo(x.priority);
-    }
-}
 
 [Autoload(Side = ModSide.Client)]
 public class MoonWaterSystem : ModSystem
@@ -366,7 +134,10 @@ public class MoonWaterSystem : ModSystem
         using var screenTargetTwo = RT.Context(RenderTargets.ScreenTarget);
         using var coolAssWaterTarget = RT.Context(RenderTargets.WaterTarget);
 
-    //    using var o = RT.Context(RenderTargets.ScreenTarget);
+        using var particleTarget = RT.Context(RenderTargets.ScreenTarget);
+        RenderWaterParticles(sb, particleTarget.Target);
+
+        //    using var o = RT.Context(RenderTargets.ScreenTarget);
         using (RT.Clear(screenTargetOne, Color.Transparent))
         {
             sb.Begin();
@@ -404,7 +175,6 @@ public class MoonWaterSystem : ModSystem
 
         using (RT.Clear(screenTargetOne, Color.Transparent))
         {
-
 
             if (_pixelWater.affectsLava)
             {
@@ -453,6 +223,7 @@ public class MoonWaterSystem : ModSystem
 
             }
 
+
             if (!_pixelWater.noReflection)
             {
 
@@ -481,24 +252,34 @@ public class MoonWaterSystem : ModSystem
                 sb.Draw(_waterLightMapRT, Main.sceneWaterPos - Main.screenPosition, null, Color.White * 1);
                 sb.End();
             }
+
         }
+
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+null, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.End();
+
 
         sb.Begin(oldParameters);
         sb.Draw(screenTargetTwo, Vector2.Zero, null, Color.White * 1f);
+
     }
 
     private void RenderCoolWaters(On_Main.orig_RenderWater orig, Main self)
     {
         orig(self);
-
         RenderFancyWaters();
+        if (!Main.LocalPlayer.ZoneAbyss)
+            return;
         RenderIntoEdgeShadeMap();
     }
 
     public override void Unload()
     {
         base.Unload();
-
         _pixelWaterStyles = null;
         _heightsToDraw.Clear();
         _gradientRects.Clear();
@@ -509,6 +290,174 @@ public class MoonWaterSystem : ModSystem
         _waterSurfacePointLightMap = new(252, 8, Main.maxTilesX, Main.maxTilesY);
     }
 
+
+    public void RenderWaterParticles(SpriteBatch sb, RenderTarget2D waterParticleTarget)
+    {
+        void DrawBlueWaterParticles()
+        {
+            var pass = AssetReferences.Effects.MoonWaterParticles.CreateP0();
+            Vector2 texelSize = waterParticleTarget.GetTexelSize();
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            screenoffset *= (1f / 1f);
+            pass.Parameters.screenOffset = screenoffset;
+            pass.Parameters.tiling = Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier;
+            pass.Parameters.time = _time;
+            pass.Parameters.levels = 18;
+            pass.Parameters.distortion = 0.025f;
+            pass.Parameters.startGradient = _pixelWater.StartGradientColor.ToVector3();
+            pass.Parameters.endGradient = _pixelWater.EndGradientColor.ToVector3();
+            pass.Parameters.causticsColor = _pixelWater.CausticsColor.ToVector4();
+            pass.Parameters.HeightMapTexture = _waterHeightMapRT;
+            pass.Parameters.brightenNoiseTexture = _pixelWater.NoiseTexture.Value;
+            pass.Parameters.causticsNoiseTexture = _pixelWater.CausticsTexture.Value;
+            pass.Parameters.foamNoiseTexture = _perlinNoise;
+            pass.Parameters.foamLava = _pixelWater.affectsLava ? 0 : 1;
+            pass.Apply();
+
+            using var backWaterTarget = RT.Context(RenderTargets.ScreenTarget);
+            using var metaballs = RT.Context(RenderTargets.ScreenTarget);
+            MetaballRenderer.PrepareMetaballContent(metaballs, LavaMetaballRenderer.metaballs);
+
+            using (RT.Clear(backWaterTarget, Color.LightSeaGreen))
+            {
+                //Draw the base texture
+                sb.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    pass.Shader);
+
+                Color baseColor = _pixelWater.BackgroundColor * 0.75f;
+                if (!_pixelWater.ignoreSkyColor)
+                {
+                    baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
+                }
+                sb.Draw(_waterNoise1, new Rectangle(0, 0, waterParticleTarget.Width, waterParticleTarget.Height), null, baseColor);
+                sb.End();
+            }
+            using (RT.Clear(waterParticleTarget, Color.Transparent))
+            {
+                var maskCombine = AssetReferences.Effects.MaskA.CreatePixelPass();
+                maskCombine.Parameters.maskTexture = metaballs;
+                maskCombine.Apply();
+                sb.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    maskCombine.Shader);
+
+                sb.Draw(backWaterTarget, Vector2.Zero, Color.Aqua * 0.75F);
+                sb.End();
+            }
+        }
+
+        void DrawLavaParticles()
+        {
+            /*
+            SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
+            lavaShader.ScreenOffset = CalculateScreenOffset(scale: 2f);
+            lavaShader.Tiling = Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier;
+            lavaShader.Time = Main.GlobalTimeWrappedHourly * 1.5f;
+            lavaShader.Quantize = 9;
+            lavaShader.Distortion = 0.05f;
+            lavaShader.StartGradient = _pixelWater.StartGradientColor;
+            lavaShader.EndGradient = _pixelWater.EndGradientColor;
+            lavaShader.NormalDistortionStrength = 0.25f;
+            lavaShader.NormalNoiseTexture = _pixelWater.NoiseTexture.Value;
+            lavaShader.InnerColor = Color.Lerp(Color.Yellow, Color.Red, 0.5f);
+            lavaShader.BloomColor = Color.Red;
+            lavaShader.RockTexture = AssetManager.LoadBackground("LavaRocks").Value;
+            lavaShader.GlowMap = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6").Value;
+            lavaShader.HeightMap = _waterHeightMapRT;
+            lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["SpriteDrawing"];
+            using (RT.Clear(_waterTextureRTSwap, Color.DarkGoldenrod))
+            {
+
+                //Draw the base texture
+                spriteBatch.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    lavaShader.Effect);
+
+                Color drawColor = _pixelWater.BackgroundColor * 0.8f;
+                if (!_pixelWater.ignoreSkyColor)
+                {
+                    drawColor = drawColor.MultiplyRGB(Main.ColorOfTheSkies);
+                }
+                spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, drawColor);
+                spriteBatch.End();
+            }
+            */
+            var pass = AssetReferences.Effects.SuperLavaParticles.CreateP0();
+            Vector2 texelSize = waterParticleTarget.GetTexelSize();
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            screenoffset *= (1f / 1f);
+            pass.Parameters.ScreenOffset = screenoffset;
+            pass.Parameters.Tiling = Vector2.One;
+            pass.Parameters.Time = Main.GlobalTimeWrappedHourly * 3.5f;
+            pass.Parameters.Distortion = 0.0125f;
+            pass.Parameters.StartGradient = _pixelWater.StartGradientColor.ToVector3();
+            pass.Parameters.EndGradient = _pixelWater.EndGradientColor.ToVector3();
+            pass.Parameters.HeightMapTexture = _waterHeightMapRT;
+            pass.Parameters.Quantize = 9;
+            pass.Parameters.RockTexture = AssetManager.LoadBackground("LavaRocks").Value;
+           // pass.Parameters.GlowMap = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6").Value;
+
+            pass.Parameters.NormalDistortionStrength = 0.25f;
+            pass.Parameters.NormalNoiseTexture = _pixelWater.NoiseTexture.Value;
+            pass.Parameters.InnerColor = Color.Lerp(Color.Yellow, Color.Red, 0.5f).ToVector3();
+            pass.Parameters.BloomColor = Color.Red.ToVector3();
+            pass.Apply();
+
+            using var backWaterTarget = RT.Context(RenderTargets.ScreenTarget);
+            using var metaballs = RT.Context(RenderTargets.ScreenTarget);
+            MetaballRenderer.PrepareMetaballContent(metaballs, LavaMetaballRenderer.metaballs);
+
+            using (RT.Clear(backWaterTarget, Color.DarkGoldenrod))
+            {
+                //Draw the base texture
+                sb.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    pass.Shader);
+
+                Color drawColor = _pixelWater.BackgroundColor * 1f;
+                if (!_pixelWater.ignoreSkyColor)
+                {
+                    drawColor = drawColor.MultiplyRGB(Main.ColorOfTheSkies);
+                }
+                sb.Draw(_pixelWater.CausticsTexture.Value, new Rectangle(0, 0, waterParticleTarget.Width, waterParticleTarget.Height), null, drawColor);
+                sb.End();
+            }
+            using (RT.Clear(waterParticleTarget, Color.Transparent))
+            {
+                var maskCombine = AssetReferences.Effects.LavaParticleMerge.CreateP0();
+                maskCombine.Parameters.maskTexture = metaballs;
+                maskCombine.Parameters.width = backWaterTarget.Width / 2;
+                maskCombine.Parameters.height = backWaterTarget.Height / 2;
+                maskCombine.Apply();
+                sb.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    maskCombine.Shader);
+
+                sb.Draw(backWaterTarget, Vector2.Zero, Color.White );
+                sb.End();
+            }
+
+
+        }
+        DrawLavaParticles();
+    //    DrawBlueWaterParticles();
+    }
 
     public override void OnModLoad()
     {
@@ -767,7 +716,7 @@ public class MoonWaterSystem : ModSystem
             SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
             lavaShader.ScreenOffset = CalculateScreenOffset(scale: 2f);
             lavaShader.Tiling = Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier;
-            lavaShader.Time = Main.GlobalTimeWrappedHourly * 1.5f;
+            lavaShader.Time = Main.GlobalTimeWrappedHourly * 0.8f;
             lavaShader.Quantize = 9;
             lavaShader.Distortion = 0.05f;
             lavaShader.StartGradient = _pixelWater.StartGradientColor;

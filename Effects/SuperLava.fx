@@ -90,7 +90,7 @@ float4 SampleSpriteNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
     
     float2 normalOffset = normalVec.xy;
     float2 distortionOffset = normalOffset * NormalDistortionStrength;
-    coords *= Tiling;
+
     coords += distortionOffset;
 
     float2 offset = float2(Time * -0.05, 0.0);
@@ -100,8 +100,8 @@ float4 SampleSpriteNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
     
     float sample1 = tex2D(SpriteTextureSampler, frac(coords + offset)).r;
     float sample2 = tex2D(SpriteTextureSampler, frac(coords + offset2)).r;
-    float sample3 = tex2D(SpriteTextureSampler, frac((coords + offset3) * 2.5)).r;
-    float sample4 = tex2D(GlowSampler, frac((coords + offset4) * 1.5)).r;
+    float sample3 = tex2D(SpriteTextureSampler, frac((coords + offset3) )).r;
+    float sample4 = tex2D(GlowSampler, frac((coords + offset4) )).r;
     
     
  //   float combinedSample = (sample1 + sample2) / 2.0;
@@ -132,7 +132,7 @@ float4 SampleRocks(in VertexShaderOutput input, sampler2D SpriteSampler)
     
     float2 normalOffset = normalVec.xy;
     float2 distortionOffset = normalOffset * NormalDistortionStrength;
-    coords *= Tiling * 2.0 * float2(0.5, 1.0);
+   // coords *= Tiling * 2.0 * float2(0.5, 1.0);
     coords += distortionOffset;
 
     float2 offset = float2(Time * -0.015, 0.0);
@@ -144,7 +144,8 @@ float4 SampleRocks(in VertexShaderOutput input, sampler2D SpriteSampler)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float2 coords = input.TextureCoordinates;
-    input.TextureCoordinates += ScreenOffset;
+    input.TextureCoordinates *= Tiling;
+    input.TextureCoordinates += ScreenOffset * Tiling;
     input.TextureCoordinates = frac(input.TextureCoordinates);
     
     float4 baseColor = SampleSpriteNoise(input, SpriteTextureSampler);

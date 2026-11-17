@@ -10,12 +10,12 @@ sampler2D maskTex = sampler_state
     AddressV = wrap;
 };
 
-float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
+float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
 {
     float4 mask = tex2D(maskTex, coords);
     float a = mask.a > 0.0;
     float4 color = tex2D(spriteToDraw, coords);
-    return color * a;
+    return color * a * tintColor;
 }
 
 technique Technique1
