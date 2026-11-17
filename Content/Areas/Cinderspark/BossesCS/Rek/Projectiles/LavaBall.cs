@@ -27,7 +27,7 @@ public class LavaBall : ModProjectile
         Projectile.tileCollide = true;
         Projectile.penetrate = -1;
         Projectile.light = 0.6f;
-        Projectile.hostile = true;
+        Projectile.hostile = false;
 
     }
     public override void AI()

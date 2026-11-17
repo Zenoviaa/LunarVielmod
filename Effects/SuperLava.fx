@@ -117,7 +117,8 @@ float4 SampleSpriteNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
     float osc = sin(sample4 * 6.28 + Time * -0.05) * 0.5 + 0.5;
     finalColor += lerp(-0.3, 0.6, osc) * 0.7;
 
-    return finalColor;
+    float4 col = float4(0.2, 0.2, 0.2, 0.2) * finalColor.a;
+    return finalColor ;
 }
 
 

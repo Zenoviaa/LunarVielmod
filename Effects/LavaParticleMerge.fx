@@ -27,11 +27,13 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     uv.x = round(uv.x * width) / width;
     uv.y = round(uv.y * height) / height;
     
-    
+   
+
     float4 outlineColor = float4(1.0, 1.0, 1.0, 1.0);
     float2 outlineTexelSize = float2(1.0, 1.0) / (float2(width, height) * 2.0);
     outlineTexelSize *= 4.0;
     float4 mask = tex2D(maskTex, uv);
+        /*
     if (mask.a <= 0.0)
     {
         float2 leftCoords = uv + float2(-outlineTexelSize.x, 0.0);
@@ -53,7 +55,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
         return down.a * outlineColor;
     }
     
-    
+    */
     float a = mask.a > 0.0;
     float4 liquid = tex2D(spriteSampler, uv) * input.Color;
     return liquid * a;

@@ -7,6 +7,7 @@ using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.LunarLightingSystem;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering.RTs;
 using Stellamod.WorldG;
 using System;
@@ -112,6 +113,33 @@ public class MoonWaterSystem : ModSystem
         }
     }
 
+    void DrawLavaParticles(SpriteBatch sb, Vector2 sp)
+    {
+        sb.EndOut(out var oldParameters);
+
+        using var particleTarget = RT.Context(RenderTargets.ScreenTarget);
+        RenderWaterParticles(sb, particleTarget.Target);
+
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+null, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.End();
+
+        var outliner = AssetReferences.Effects.Generic.OutlineOnly.CreatePixelPass();
+        outliner.Parameters.texelSize = particleTarget.Target.GetTexelSize();
+        outliner.Apply();
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+outliner.Shader, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.DarkRed);
+        //sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.End();
+
+        sb.Begin(oldParameters);
+
+    }
     void NewDraw()
     {
 
@@ -134,9 +162,7 @@ public class MoonWaterSystem : ModSystem
         using var screenTargetTwo = RT.Context(RenderTargets.ScreenTarget);
         using var coolAssWaterTarget = RT.Context(RenderTargets.WaterTarget);
 
-        using var particleTarget = RT.Context(RenderTargets.ScreenTarget);
-        RenderWaterParticles(sb, particleTarget.Target);
-
+        PixelationManager.QueueSpritebatchDrawAction(DrawLavaParticles, DrawLayer.BehindTiles);
         //    using var o = RT.Context(RenderTargets.ScreenTarget);
         using (RT.Clear(screenTargetOne, Color.Transparent))
         {
@@ -183,7 +209,7 @@ public class MoonWaterSystem : ModSystem
                 SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
                 lavaShader.NormalNoiseTexture = coolAssWaterTarget;
                 lavaShader.HeightMap = _waterHeightMapRT;
-                lavaShader.OutlineColor = Color.Lerp(Color.White, Color.Goldenrod, 0.3f);
+                lavaShader.OutlineColor = Color.DarkRed;
                 lavaShader.OutlineTexelSize = Main.waterTarget;
                 lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["Combine"];
                 sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
@@ -255,12 +281,6 @@ public class MoonWaterSystem : ModSystem
 
         }
 
-
-        sb.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-null, Main.Transform);
-        sb.Draw(particleTarget, Vector2.Zero, Color.White);
-        sb.Draw(particleTarget, Vector2.Zero, Color.White);
-        sb.End();
 
 
         sb.Begin(oldParameters);

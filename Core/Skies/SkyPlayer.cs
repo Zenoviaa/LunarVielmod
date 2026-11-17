@@ -15,9 +15,10 @@ namespace Stellamod.Core.Skies
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-
+            var inUnderworld = Player.ZoneUnderworldHeight;
+            inUnderworld |= Player.GetModPlayer<MyPlayer>().ZoneCinder;
             if (!SkyManager.Instance["CrystalMoon:CloudySky"].IsActive()
-                && Player.ZoneOverworldHeight || Player.ZoneSkyHeight || Player.ZoneUnderworldHeight)
+                && Player.ZoneOverworldHeight || Player.ZoneSkyHeight || inUnderworld)
             {
                 Vector2 targetCenter = Player.Center;
                 SkyManager.Instance.Activate("CrystalMoon:CloudySky", targetCenter);
