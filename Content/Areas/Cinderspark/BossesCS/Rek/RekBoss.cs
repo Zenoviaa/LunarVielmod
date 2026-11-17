@@ -175,85 +175,76 @@ public partial class RekBoss : ScarletBoss
     private AIState GetNextAttack(int phase)
     {
         int pattern = _patternIndex;
-        if (_patternIndex == 0)
+        PhaseShift();
+
+
+        void Skip()
         {
-            PhaseShift();
+            _patternIndex++;
+            _patternIndex %= 10;
         }
-        _patternIndex++;
-        switch (phase)
+        Skip();
+        switch (pattern)
         {
             case 0:
+                if(_phase < 2)
                 {
-                    _patternIndex %= 6;
-                    switch (pattern)
-                    {
-                        case 0:
-                            return AIState.Eruption;
-                        case 1:
-                            return AIState.CoilDash;
-                        case 2:
-                            return AIState.VolcanicMeteor;
-                        case 3:
-                            return AIState.Pacman;
-                        case 4:
-                            return AIState.FireBreath;
-                        case 5:
-                            return AIState.Ouroboros;
-                    }
-
-
+                    Skip();
+                    pattern++;
                 }
                 break;
             case 1:
-                {
-                    _patternIndex %= 7;
-                    switch (pattern)
-                    {
-                        case 0:
-                            return AIState.Eruption;
-                        case 1:
-                            return AIState.FireBreathV2;
-                        case 2:
-                            return AIState.CoilDash;
-                        case 3:
-                            return AIState.VolcanicMeteor;
-                        case 4:
-                            return AIState.Pacman;
-                        case 5:
-                            return AIState.FireBreath;
-                        case 6:
-                            return AIState.Ouroboros;
-                    }
-                }
                 break;
             case 2:
+                if(_phase < 1)
                 {
-                    _patternIndex %= 10;
-                    switch (pattern)
-                    {
-                        case 0:
-                            return AIState.VolcanicSpear;
-                        case 1:
-                            return AIState.Eruption;
-                        case 2:
-                            return AIState.FireBreathV2;
-                        case 3:
-                            return AIState.CoilDash;
-                        case 4:
-                            return AIState.VolcanicMeteor;
-                        case 5:
-                            return AIState.Pacman;
-                        case 6:
-                            return AIState.FireBreath;
-                        case 7:
-                            return AIState.Ouroboros;
-                        case 8:
-                            return AIState.Husk;
-                        case 9:
-                            return AIState.FireBreath;
-                    }
+                    Skip();
+                    pattern++;
                 }
                 break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                if (_phase < 2)
+                {
+                    Skip();
+                    pattern++;
+                }
+                break;
+            case 9:
+                break;
+        }
+
+        switch (pattern)
+        {
+            case 0:
+                return AIState.VolcanicSpear;
+            case 1:
+                return AIState.Eruption;
+            case 2:
+                return AIState.FireBreathV2;
+            case 3:
+                return AIState.CoilDash;
+            case 4:
+                return AIState.VolcanicMeteor;
+            case 5:
+                return AIState.Pacman;
+            case 6:
+                return AIState.FireBreath;
+            case 7:
+                return AIState.Ouroboros;
+            case 8:
+                return AIState.Husk;
+            case 9:
+                return AIState.FireBreath;
         }
 
         return AIState.Idle;
@@ -369,7 +360,7 @@ public partial class RekBoss : ScarletBoss
         NPC.height = 64;
         NPC.damage = 80;
         NPC.defense = 90;
-        NPC.lifeMax = 232_000;
+        NPC.lifeMax = 272_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
@@ -439,7 +430,7 @@ public partial class RekBoss : ScarletBoss
         if (!NPC.HasValidTarget)
         {
             NPC.TargetClosest();
-            if (!NPC.HasValidTarget)
+            if (!NPC.HasValidTarget && State != AIState.Despawn)
             {
                 SwitchState(AIState.Despawn);
             }
