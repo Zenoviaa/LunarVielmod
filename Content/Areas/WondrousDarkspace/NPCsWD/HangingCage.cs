@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Particles;
@@ -266,7 +267,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (!spawnInfo.Player.GetModPlayer<MyPlayer>().ZoneWonder)
+            if (!spawnInfo.Player.ZoneWonder)
                 return 0;
             return ScarletSpawnChance.Wondrous_Spawn_Rate;
         }

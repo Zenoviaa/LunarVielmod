@@ -600,9 +600,9 @@ outliner.Shader, Main.Transform);
         base.PostUpdateTime();
         _time += 0.0025f;
         float targetWaterAlpha = 1f;
-        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways)
+        if (Main.LocalPlayer.ZoneDeepBelowCoralways)
             targetWaterAlpha = 0.1f;
-        if (Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder)
+        if (Main.LocalPlayer.ZoneWonder)
             targetWaterAlpha = 0.95f;
         waterAlpha = MathHelper.Lerp(waterAlpha, targetWaterAlpha, 0.1f);
     }

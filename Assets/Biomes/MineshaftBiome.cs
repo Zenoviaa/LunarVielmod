@@ -15,7 +15,7 @@ namespace Stellamod.Assets.Biomes
 
 
         public override bool IsBiomeActive(Player player) => (player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight) && BiomeTileCounts.InMineshaft;
-        public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneMineshaft = true;
-        public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneMineshaft = false;
+        public override void OnEnter(Player player) => player.ZoneMineshaft = true;
+        public override void OnLeave(Player player) => player.ZoneMineshaft = false;
     }
 }

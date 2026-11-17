@@ -27,11 +27,11 @@ public class HeatedDepthsBiome : BaseUrdveilBiome
     public override void OnEnter(Player player)
     {
         base.OnEnter(player);
-        player.GetModPlayer<BiomePlayer>().ZoneHeatedDepths = true;
+        player.ZoneHeatedDepths = true;
     }
     public override void OnLeave(Player player)
     {
         base.OnLeave(player);
-        player.GetModPlayer<BiomePlayer>().ZoneHeatedDepths = false;
+        player.ZoneHeatedDepths = false;
     }
 }

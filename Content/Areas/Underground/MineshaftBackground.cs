@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Backgrounds;
 using Stellamod.Helpers;
 using Terraria;
@@ -49,7 +50,6 @@ public class MineshaftBackground : CustomBG
             backgroundShader.Effect);
 
         Color baseColor = Color.Lerp(Color.White, Color.Black, 0.75f);
-      //  baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
         Color drawColor = baseColor * Alpha;
 
         Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
@@ -69,6 +69,6 @@ public class MineshaftBackground : CustomBG
 
     public override bool IsActive()
     {
-        return Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneMineshaft;
+        return Main.LocalPlayer.ZoneMineshaft;
     }
 }

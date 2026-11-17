@@ -18,175 +18,154 @@ using System;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod
+namespace Stellamod;
+
+public class BiomeTileCounts : ModSystem
 {
-    public class BiomeTileCounts : ModSystem
+    public static int[] TileCounts = new int[64];
+    public static ref int AbyssCount => ref TileCounts[0];
+    public static bool InAbyss => AbyssCount > 80;
+
+    public static ref int AurelusCount => ref TileCounts[1];
+    
+    public static bool InAurelus => AurelusCount > 70;
+
+    public static ref int GovheilCount => ref TileCounts[2];
+    public static bool InGovheil => GovheilCount > 30;
+
+    public static ref int RoyalCapitalCount => ref TileCounts[3];
+    public static bool InRoyalCapital => RoyalCapitalCount > 10;
+
+    public static ref int FableCount => ref TileCounts[4];
+    public static bool InFable => FableCount > 20;
+
+    public static ref int XixCount => ref TileCounts[5];
+    public static bool InXixVillage => XixCount > 10;
+
+    public static ref int CinderCount => ref TileCounts[6];
+    public static bool InCinder => CinderCount > 10;
+
+    public static ref int ManorCount => ref TileCounts[7];
+    public static bool InManor => ManorCount > 10;
+
+    public static ref int MechCount => ref TileCounts[8];
+    public static bool InMech => MechCount > 5;
+
+    public static ref int IlluriaCount => ref TileCounts[9];
+    public static bool InIlluria => IlluriaCount > 5;
+
+    public static ref int IshtarCount => ref TileCounts[10];
+    public static bool InIshtar => IshtarCount > 5;
+
+    public static ref int ColosseumCount => ref TileCounts[11];
+    public static bool InColosseum => ColosseumCount > 5;
+
+    public static ref int BloodCathedralCount => ref TileCounts[12];
+    public static bool InBloodCathedral => BloodCathedralCount > 250;
+
+    public static ref int AshotiTempleCount => ref TileCounts[13];
+    public static bool InAshotiTemple => AshotiTempleCount > 100;
+
+    public static ref int MineshaftTileCount => ref TileCounts[14];
+    public static bool InMineshaft => MineshaftTileCount > 5;
+
+    public static ref int MothlightCount => ref TileCounts[15];
+    public static bool InMothlight => MothlightCount > 5;
+
+    public static ref int DarkspaceCount => ref TileCounts[16];
+    public static bool InDarkspace => DarkspaceCount > 10;
+
+    public static ref int SpringGrassCount => ref TileCounts[17];
+    public static bool InSpringHills => SpringGrassCount > 80;
+
+    public static ref int MistyDungeonCount => ref TileCounts[18];
+    public static bool InMistyDungeon => MistyDungeonCount > 80;
+
+    public static ref int DesertTownCount => ref TileCounts[19];
+    public static bool InDesertTown => DesertTownCount > 15;
+
+    public static ref int MarshCount => ref TileCounts[20];
+    public static bool InMarsh => MarshCount > 50;
+
+    public static ref int WorldsEndCount => ref TileCounts[21];
+    public static bool InWorldsEnd => WorldsEndCount >= 50;
+
+    public static ref int MoonspiralTowerCount => ref TileCounts[22];
+    public static bool InMoonspiralTower => MoonspiralTowerCount >= 50;
+
+    public static ref int SacredUnknownsCount => ref TileCounts[23];
+    public static bool InSacredUnknowns => SacredUnknownsCount >= 10;
+
+    public static ref int AegislavCount => ref TileCounts[24];
+    public static bool InAegislav => AegislavCount >= 50;
+
+    public static ref int CrimsonBridewellCount => ref TileCounts[25];
+    public static bool InCrimsonBridewell => CrimsonBridewellCount >= 50;
+
+    public static ref int ForestCount => ref TileCounts[26];
+    public static bool InForest => ForestCount >= 25 || InSpringHills;
+
+    public static ref int JunkyardCount => ref TileCounts[27];
+    public static bool InJunkyard => JunkyardCount >= 25;
+
+    public static ref int EveroseCount => ref TileCounts[28];
+    public static bool InEveroseVillage => EveroseCount >= 80;
+
+    public static ref int HeatedDepthsCount => ref TileCounts[29];
+    public static bool InHeatedDepths => HeatedDepthsCount >= 50;
+    public static DomainExpansionManager Domain => ModContent.GetInstance<DomainExpansionManager>();
+    public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
     {
-        public int AbyssCount;
-        public static bool InAbyss => ModContent.GetInstance<BiomeTileCounts>().AbyssCount > 80;
 
-
-        public int AcidCount;
-        public static bool InAcid => ModContent.GetInstance<BiomeTileCounts>().AcidCount > 80;
-
-        public int AurelusCount;
-        public static bool InAurelus => ModContent.GetInstance<BiomeTileCounts>().AurelusCount > 70;
-
-        public int GovheilCount;
-        public static bool InGovheil => ModContent.GetInstance<BiomeTileCounts>().GovheilCount > 30;
-
-        public int StarbloomCount;
-        public static bool InStarbloom => ModContent.GetInstance<BiomeTileCounts>().StarbloomCount > 20;
-
-        public int NaxtrinCount;
-        public static bool InNaxtrin => ModContent.GetInstance<BiomeTileCounts>().NaxtrinCount > 10;
-
-        public int RoyalCapitalCount;
-        public static bool InRoyalCapital => ModContent.GetInstance<BiomeTileCounts>().RoyalCapitalCount > 10;
-
-        public int VeriCount;
-        public static bool InVeri => ModContent.GetInstance<BiomeTileCounts>().VeriCount > 20;
-
-        public int FableCount;
-        public static bool InFable => ModContent.GetInstance<BiomeTileCounts>().FableCount > 20;
-
-        public int SeaCount;
-        public static bool InSeaTemple => ModContent.GetInstance<BiomeTileCounts>().SeaCount > 20;
-
-        public int FireCount;
-        public static bool InCatafire => ModContent.GetInstance<BiomeTileCounts>().FireCount > 20;
-
-        public int TrapCount;
-        public static bool InCatatrap => ModContent.GetInstance<BiomeTileCounts>().TrapCount > 20;
-
-        public int WaterCount;
-        public static bool InCatawater => ModContent.GetInstance<BiomeTileCounts>().WaterCount > 20;
-
-        public int XixCount;
-        public static bool InXixVillage => ModContent.GetInstance<BiomeTileCounts>().XixCount > 10;
-
-
-        public int CinderCount;
-        public static bool InCinder => ModContent.GetInstance<BiomeTileCounts>().CinderCount > 10;
-
-        public int ManorCount;
-        public static bool InManor => ModContent.GetInstance<BiomeTileCounts>().ManorCount > 10;
-
-        public int MechCount;
-        public static bool InMech => ModContent.GetInstance<BiomeTileCounts>().MechCount > 5;
-
-        public int LabCount;
-        public static bool InLab => ModContent.GetInstance<BiomeTileCounts>().LabCount > 5;
-
-        public int IlluriaCount;
-        public static bool InIlluria => ModContent.GetInstance<BiomeTileCounts>().IlluriaCount > 5;
-
-        public int VeilCount;
-        public static bool InVeil => ModContent.GetInstance<BiomeTileCounts>().VeilCount > 5;
-
-        public int IshtarCount;
-        public static bool InIshtar => ModContent.GetInstance<BiomeTileCounts>().IshtarCount > 5;
-
-        public int ColosseumCount;
-        public static bool InColosseum => ModContent.GetInstance<BiomeTileCounts>().ColosseumCount > 5;
-
-
-
-        public int BloodCathedralCount;
-        public static bool InBloodCathedral => ModContent.GetInstance<BiomeTileCounts>().BloodCathedralCount > 250;
-
-        public int AshotiTempleCount;
-        public static bool InAshotiTemple => ModContent.GetInstance<BiomeTileCounts>().AshotiTempleCount > 100;
-
-        public int MineshaftTileCount;
-        public static bool InMineshaft => ModContent.GetInstance<BiomeTileCounts>().MineshaftTileCount > 5;
-        public int MothlightCount;
-        public static bool InMothlight => ModContent.GetInstance<BiomeTileCounts>().MothlightCount > 5;
-
-        public int DarkspaceCount;
-        public static bool InDarkspace => ModContent.GetInstance<BiomeTileCounts>().DarkspaceCount > 10;
-
-        public int SpringGrassCount;
-        public static bool InSpringHills => ModContent.GetInstance<BiomeTileCounts>().SpringGrassCount > 80;
-        public int MistyDungeonCount;
-        public static bool InMistyDungeon => ModContent.GetInstance<BiomeTileCounts>().MistyDungeonCount > 80;
-
-        public int DesertTownCount;
-        public static bool InDesertTown => ModContent.GetInstance<BiomeTileCounts>().DesertTownCount > 15;
-
-
-        public int MarshCount;
-        public static bool InMarsh => ModContent.GetInstance<BiomeTileCounts>().MarshCount > 50;
-
-        public int CathedralCount;
-        public int MorrowCount;
-
-        public int WorldsEndCount;
-        public static bool InWorldsEnd => ModContent.GetInstance<BiomeTileCounts>().WorldsEndCount >= 50;
-
-        public int MoonspiralTowerCount;
-        public static bool InMoonspiralTower => ModContent.GetInstance<BiomeTileCounts>().MoonspiralTowerCount >= 50;
-
-        public int SacredUnknownsCount;
-        public static bool InSacredUnknowns => ModContent.GetInstance<BiomeTileCounts>().SacredUnknownsCount >= 10;
-
-        public int AegislavCount;
-        public static bool InAegislav => ModContent.GetInstance<BiomeTileCounts>().AegislavCount >= 50;
-
-
-
-        public int CrimsonBridewellCount;
-        public static bool InCrimsonBridewell => ModContent.GetInstance<BiomeTileCounts>().CrimsonBridewellCount >= 50;
-        public int ForestCount;
-        public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25 || InSpringHills;
-
-        public int JunkyardCount;
-        public static bool InJunkyard => ModContent.GetInstance<BiomeTileCounts>().JunkyardCount >= 25;
-
-        public int EveroseCount;
-        public static bool InEveroseVillage => ModContent.GetInstance<BiomeTileCounts>().EveroseCount >= 80;
-
-        public int HeatedDepthsCount;
-        public static bool InHeatedDepths => ModContent.GetInstance<BiomeTileCounts>().HeatedDepthsCount >= 50;
-
-
-        public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
+        //THis should prevent other biomes triggering during a domain
+        if (Domain.noRender)
         {
-            CrimsonBridewellCount = tileCounts[ModContent.TileType<BridewellTile>()];
-            HeatedDepthsCount = tileCounts[ModContent.TileType<CharredStone>()];
-            AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
-            SacredUnknownsCount = tileCounts[ModContent.TileType<MimicTileBlock>()];
-            JunkyardCount = tileCounts[ModContent.TileType<JunkyTile>()];
-            ForestCount = tileCounts[TileID.Grass];
-            MoonspiralTowerCount = tileCounts[ModContent.TileType<CathediteTile>()];
-            WorldsEndCount = tileCounts[ModContent.TileType<WhiteGrass>()];
-            MarshCount = tileCounts[ModContent.TileType<RainforestGrass>()];
-            MorrowCount = tileCounts[ModContent.TileType<OvermorrowdirtTile>()];
-            MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
-            SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
-            AbyssCount = tileCounts[ModContent.TileType<AbyssalDirt>()];
-            AurelusCount = tileCounts[ModContent.TileType<AurelusTempleBlock>()];
-            GovheilCount = tileCounts[ModContent.TileType<GovheilCastleTile>()];
-            StarbloomCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
-            NaxtrinCount = tileCounts[ModContent.TileType<NoxianBlock>()];
-            RoyalCapitalCount = tileCounts[ModContent.TileType<AlcazBlock>()];
-            VeriCount = tileCounts[ModContent.TileType<VeriplantDirt>()];
-            FableCount = tileCounts[ModContent.TileType<WitchCarvedStone>()];
-            SeaCount = tileCounts[ModContent.TileType<SeavathanBrick>()];
-            XixCount = tileCounts[ModContent.TileType<HuntiacTile>()];
-            EveroseCount = tileCounts[ModContent.TileType<VeriplantGrass>()];
-            CinderCount = tileCounts[ModContent.TileType<CindersparkDirt>()];
-            ManorCount = tileCounts[ModContent.TileType<ManorBlock>()];
-            MechCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
-            IlluriaCount = tileCounts[ModContent.TileType<IlluriaGrass>()];
-            VeilCount = tileCounts[ModContent.TileType<CatagrassBlock>()];
-            IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()] + tileCounts[ModContent.TileType<IshtarTempleBlock>()];
-            BloodCathedralCount = tileCounts[ModContent.TileType<RobedSandstoneBlock>()];
-            AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
-            MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];
-            ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
-            DarkspaceCount = tileCounts[TileID.Granite];
-            DesertTownCount = tileCounts[TileID.SmoothSandstone];
+            for(var i = 0; i < TileCounts.Length; i++)
+            {
+                TileCounts[i] = 0;
+            }
+            return;
+        }
+
+        CrimsonBridewellCount = tileCounts[ModContent.TileType<BridewellTile>()];
+
+        AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
+        SacredUnknownsCount = tileCounts[ModContent.TileType<MimicTileBlock>()];
+        JunkyardCount = tileCounts[ModContent.TileType<JunkyTile>()];
+        ForestCount = tileCounts[TileID.Grass];
+        MoonspiralTowerCount = tileCounts[ModContent.TileType<CathediteTile>()];
+        WorldsEndCount = tileCounts[ModContent.TileType<WhiteGrass>()];
+        MarshCount = tileCounts[ModContent.TileType<RainforestGrass>()];
+
+        MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
+        SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
+        AbyssCount = tileCounts[ModContent.TileType<AbyssalDirt>()];
+        AurelusCount = tileCounts[ModContent.TileType<AurelusTempleBlock>()];
+        GovheilCount = tileCounts[ModContent.TileType<GovheilCastleTile>()];
+        RoyalCapitalCount = tileCounts[ModContent.TileType<AlcazBlock>()];
+        FableCount = tileCounts[ModContent.TileType<WitchCarvedStone>()];
+  
+        XixCount = tileCounts[ModContent.TileType<HuntiacTile>()];
+        EveroseCount = tileCounts[ModContent.TileType<VeriplantGrass>()];
+        CinderCount = tileCounts[ModContent.TileType<CindersparkDirt>()];
+        ManorCount = tileCounts[ModContent.TileType<ManorBlock>()];
+        MechCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
+        IlluriaCount = tileCounts[ModContent.TileType<IlluriaGrass>()];
+
+        IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()] + tileCounts[ModContent.TileType<IshtarTempleBlock>()];
+        BloodCathedralCount = tileCounts[ModContent.TileType<RobedSandstoneBlock>()];
+        AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
+        MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];
+        ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
+        DarkspaceCount = tileCounts[TileID.Granite];
+        DesertTownCount = tileCounts[TileID.SmoothSandstone];
+
+
+       
+        HeatedDepthsCount = tileCounts[ModContent.TileType<CharredStone>()];
+        if (InCinder || InDarkspace)
+        {
+            HeatedDepthsCount = 0;
         }
     }
 }

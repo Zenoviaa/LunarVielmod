@@ -21,11 +21,9 @@ namespace Stellamod
     {
         public bool TAuraSpawn;
         public bool Dice;
-        public int increasedLifeRegen;
         public int TAuraCooldown = 600;
         public bool ArcaneM;
         public int ArcaneMCooldown = 0;
-        public bool ZoneMorrow = false;
         public int Timer = 0;
         public bool NotiaB;
         public int NotiaBCooldown = 0;
@@ -40,8 +38,6 @@ namespace Stellamod
         public bool GovheilB;
         public bool GovheilC;
         public int GovheilBCooldown = 0;
-        public bool DucanB;
-        public int DucanBCooldown = 0;
         public bool Daedstruck;
         public int DaedstruckBCooldown = 1;
 
@@ -52,8 +48,6 @@ namespace Stellamod
         public bool Onion2 = false;
         public bool Onion3 = false;
         public bool Onion4 = false;
-
-
 
         //---------------------------------------------------- Igniter effects and uh accessory stuff
 
@@ -78,19 +72,14 @@ namespace Stellamod
         public bool shouldFocus;
         public bool ZoneAbyss;
         public bool ZoneAurelus;
-        public bool ZoneStarbloom;
-        public bool ZoneAcid;
         public bool ZoneGovheil;
         public bool ZoneAlcadzia;
         public bool ZoneVillage;
         public bool ZoneCinder;
         public bool ZoneDrakonic;
         public bool ZoneMechanics;
-        public bool ZoneLab;
         public bool ZoneIlluria;
         public bool ZoneIshtar;
-        public bool ZoneVeil;
-        public bool ZoneGreenSun;
         public bool ZoneBloodCathedral;
         public bool ZoneAshotiTemple;
         public bool ZoneMineshaft;
@@ -100,37 +89,27 @@ namespace Stellamod
 
         public bool StealthRune;
         public bool SingularityFragment;
-        public bool NiiviFight;
         public float StealthTime;
 
         public bool CorsageRune;
         public float CorsageTime;
 
-        public bool DetonationRune;
+
         public bool GIBomb = false;
         public bool RadiantBomb = false;
         public int RadiantBombCooldown = 0;
-
         public bool SpiritPendent = false;
-
-
         public int Bridget = 0;
-
-
         public bool HasAlcaliteSet;
         public bool Waterwhisps;
 
-
-
         public void ShakeAtPosition(Vector2 position, float distance, float strength)
         {
-            LunarVeilClientConfig config = ModContent.GetInstance<LunarVeilClientConfig>();
+            LunarVeilClientConfig config = LunarVeilClientConfig.Instance;
             if (!config.ShakeToggle)
                 return;
             shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
         }
-
-
 
         public override void ModifyScreenPosition()
         {
@@ -306,6 +285,7 @@ namespace Stellamod
 
         public override void ResetEffects()
         {
+
             // Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
             TAuraSpawn = false;
             ArcaneM = false;
@@ -315,14 +295,13 @@ namespace Stellamod
             Lovestruck = false;
             ADisease = false;
             GovheilB = false;
-            DucanB = false;
+ 
             GovheilC = false;
             Daedstruck = false;
 
             HasAlcaliteSet = false;
             SpiritPendent = false;
 
-            DetonationRune = false;
             CorsageRune = false;
             StealthRune = false;
 
@@ -369,8 +348,6 @@ namespace Stellamod
                 return;
 
             Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
-            //   Player.ManageSpecialBiomeVisuals("Stellamod:AuroreanStars", ZoneAlcadzia);
-            //     Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", false);
         }
 
 
@@ -390,9 +367,6 @@ namespace Stellamod
 
         public override void PostUpdate()
         {
-
-
-
             if (Aurorean >= 0.5f)
             {
                 AuroreanBool = true;
@@ -430,7 +404,7 @@ namespace Stellamod
                 SingularityFragment = false;
             }
 
-            if (SingularityFragment || NiiviFight)
+            if (SingularityFragment)
             {
                 if (Main.shimmerAlpha <= 1)
                 {
@@ -494,25 +468,6 @@ namespace Stellamod
 
 
 
-
-            if (ZoneAcid || ZoneLab)
-            {
-                if (player.wet)
-                {
-                    player.AddBuff(ModContent.BuffType<Irradiation>(), 30);
-                }
-
-
-                //Create Gores
-                float goreScale = Main.rand.NextFloat(0.5f, 0.9f);
-                int x = (int)(Main.windSpeedCurrent > 0 ? Main.screenPosition.X - 100 : Main.screenPosition.X + Main.screenWidth + 100);
-                int y = (int)Main.screenPosition.Y + Main.rand.Next(-100, Main.screenHeight);
-                int a = Gore.NewGore(Player.GetSource_FromThis(), new Vector2(x, y), Vector2.Zero, GoreID.TreeLeaf_Jungle, goreScale);
-
-                Main.gore[a].rotation = 0f;
-                Main.gore[a].velocity.Y = Main.rand.NextFloat(1f, 3f);
-            }
-
             if (CorsageTime >= 1)
             {
                 var entitySource = Player.GetSource_FromThis();
@@ -558,14 +513,6 @@ namespace Stellamod
             }
 
 
-
-
-            if (DucanB && DucanBCooldown == 520)
-            {
-                DucanBCooldown = 0;
-
-
-            }
 
             if (GovheilC && GovheilBCooldown == 520)
             {
@@ -990,10 +937,6 @@ namespace Stellamod
         }
 
 
-
-
-        public int Shake = 0;
-
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
         {
             if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
@@ -1164,13 +1107,6 @@ namespace Stellamod
 
             }
 
-            if (DucanB && DucanBCooldown > 350)
-            {
-                Player.GetDamage(DamageClass.Melee) *= 1.1f;
-
-
-            }
-
             if (NotiaB && NotiaBCooldown > 300)
             {
                 Player.GetDamage(DamageClass.Magic) *= 1.2f;
@@ -1203,12 +1139,7 @@ namespace Stellamod
                     SwordCombo = 0;
                 }
             }
-
-
-
-
             return true;
         }
-
     }
 }

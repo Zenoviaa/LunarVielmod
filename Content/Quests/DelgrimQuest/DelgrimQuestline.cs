@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.QuestSystem;
+using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.Melee.Greatswords;
@@ -35,7 +36,7 @@ namespace Stellamod.Content.Quests.DelgrimQuest
 
         public override bool CheckCompletion(Player player)
         {
-            return player.GetModPlayer<MyPlayer>().ZoneColloseum;
+            return player.ZoneColloseum;
         }
     }
     public class MysteriousPlacesII : DelgrimQuest
@@ -172,7 +173,7 @@ namespace Stellamod.Content.Quests.DelgrimQuest
 
         public override bool CheckCompletion(Player player)
         {
-            return player.GetModPlayer<MyPlayer>().ZoneMothlight;
+            return player.ZoneMothlight;
         }
     }
 }

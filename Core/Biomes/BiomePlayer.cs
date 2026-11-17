@@ -11,10 +11,107 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Biomes;
 
+
 public static class BiomeExtensions
 {
     extension(Player player)
     {
+        public bool ZoneHeatedDepths
+        {
+            get
+            {
+                return player.GetModPlayer<BiomePlayer>().ZoneHeatedDepths;
+            }
+            set
+            {
+                player.GetModPlayer<BiomePlayer>().ZoneHeatedDepths = value;
+            }
+        }
+        public bool ZoneColloseum
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneColloseum;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneColloseum = value;
+            }
+        }
+        public bool ZoneMothlight
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneMothlight;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneMothlight = value;
+            }
+        }
+        public bool ZoneMineshaft
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneMineshaft;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneMineshaft = value;
+            }
+        }
+        public bool ZoneDeepBelowCoralways
+        {
+            get
+            {
+                return player.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways;
+            }
+        }
+        public bool ZoneCinder
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneCinder;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneCinder = value;
+            }
+        }
+        public bool ZoneDrakonic
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneDrakonic;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneDrakonic = value;
+            }
+        }
+        public bool ZoneWonder
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneWonder;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneWonder = value;
+            }
+        }
+        public bool ZoneRoyalCapital
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneAlcadzia;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneAlcadzia = value;
+            }
+        }
+
         public bool ZoneWitchesFable
         {
             get
@@ -138,7 +235,7 @@ public class BiomePlayer : ModPlayer
             Player.ManageSpecialBiomeVisuals("Stellamod:HeatedDepths", ZoneHeatedDepths);
 
 
-            if ((Player.GetModPlayer<MyPlayer>().ZoneCinder || ZoneHeatedDepths || Player.ZoneUnderworldHeight) && !Player.GetModPlayer<MyPlayer>().ZoneWonder)
+            if ((Player.ZoneCinder || ZoneHeatedDepths || Player.ZoneUnderworldHeight) && !Player.ZoneWonder)
             {
                 WorldDepthGradient depthGradient = ScreenShader.GetInstance<WorldDepthGradient>();
                 depthGradient.alpha = 1;
@@ -309,9 +406,8 @@ public class BiomePlayer : ModPlayer
             {
                 ForegroundParticleRenderer.NewParticle<AegislavStrike>();
             }
-
-
         }
+
         SpringHillsForegroundBackground();
     }
 
