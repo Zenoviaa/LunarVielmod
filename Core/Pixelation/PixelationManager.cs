@@ -205,7 +205,7 @@ public class PixelTarget
                 spriteBatch.End();
             }
         }
-        DrawPixelated();
+        DrawPixelated2();
       //  Main.NewText("Old");
 
         /*
