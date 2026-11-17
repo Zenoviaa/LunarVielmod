@@ -341,16 +341,29 @@ public partial class RekBoss : IWaterSilhouette
                 break;
         }
         Color color = Color.White;
-        drawer.color = color;
+        drawer.color = color ;
         Main.spriteBatch.Draw(drawer);
     }
     private void DrawWetWhite(SpriteBatch spriteBatch)
     {
-        NPC.DrawAnimator(spriteBatch, Color.Red);
-        for (int i = 1; i < Segments.Length; i++)
+        spriteBatch.EndOut(out var oldParameters);
+        using var rekRT = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(rekRT, Color.Transparent))
         {
-            DrawSegmentWetWhite(i);
+            spriteBatch.Begin(oldParameters);
+            NPC.DrawAnimator(spriteBatch, Color.Red);
+            for (int i = 1; i < Segments.Length; i++)
+            {
+                DrawSegmentWetWhite(i);
+            }
+            spriteBatch.End();
         }
+
+        spriteBatch.Begin(oldParameters with { matrix = Matrix.Identity });
+        spriteBatch.Draw(rekRT, Vector2.Zero, Color.White * _globalAlpha);
+        spriteBatch.End();
+        spriteBatch.Begin(oldParameters);
+
         for (int i = 1; i < Segments.Length; i++)
         {
 
@@ -615,7 +628,7 @@ public partial class RekBoss : IWaterSilhouette
         Color color = Color.Yellow * segment.burnAlpha;
         if (segment.deadly)
             color = Color.Red * segment.burnAlpha;
-        drawer.color = color;
+        drawer.color = color ;
         Main.spriteBatch.Draw(drawer);
     }
     private void DrawSegmentHeat(int index)
@@ -702,78 +715,89 @@ public partial class RekBoss : IWaterSilhouette
             PixelationManager.QueuePrimitivesDrawAction(DrawSlashEffect, DrawLayer.OverNPCsAdditive);
             PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
         }
-
-        for (int i = 1; i < Segments.Length; i++)
+        spriteBatch.EndOut(out var oldParameters);
+        using var rekRT = RT.Context(RenderTargets.ScreenTarget);
+        using(RT.Clear(rekRT, Color.Transparent ))
         {
-            DrawSaw(i);
-        }
-        for (int i = 1; i < Segments.Length; i++)
-        {
-            DrawSawGlow(i);
-        }
-        //Ok, so we draw everything here yah?
-        for (int i = 1; i < Segments.Length; i++)
-        {
-            DrawSegment(i);
-        }
-        for (int i = 1; i < Segments.Length; i++)
-        {
-            DrawSegmentHeat(i);
-        }
-
-        RekAuraShader torchShader = ShaderContent.GetInstance<RekAuraShader>();
-        torchShader.Time = Main.GlobalTimeWrappedHourly * 4;
-        torchShader.Strength = 0.5f;
-        torchShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
-        torchShader.InnerColor = Color.Lerp(Color.Yellow, Color.OrangeRed, 0.35f);
-        torchShader.BloomColor = Color.Red;
-        torchShader.DitherTexture = AssetManager.Dithering.Dither8x8Double;
-        torchShader.SpriteSize = AssetManager.GlowMask.SimpleGlowCircle.Size();
-        SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = torchShader.Effect };
-        using (new SpritebatchContext(spriteBatch, @params))
-        {
+            spriteBatch.Begin(oldParameters);
             for (int i = 1; i < Segments.Length; i++)
             {
-                DrawSegmentAura(i);
+                DrawSaw(i);
             }
-        }
-
-
-        DrawAfterImages(spriteBatch, screenPos, drawColor);
-        drawColor = Color.Lerp(drawColor, Color.Black, _huskAlpha);
-        NPC.DrawAnimator(spriteBatch, drawColor);
-        if (_mouthAuraAlpha > 0)
-        {
-            DrawMouthAura(spriteBatch);
-        }
-        if (_rekfireballAlpha > 0)
-        {
-            DrawFireballOrb(spriteBatch);
-        }
-
-        if (_spearAlphas[0] > 0)
-        {
-            FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
-            flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
-            flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
-            flamebowShader.InsideColor = Color.Yellow;
-            flamebowShader.BloomColor = Color.Red;
-            flamebowShader.DissipateThreshold = MathHelper.Lerp(1f, 0f, 1f);
-            flamebowShader.DistortionStrength = 0.6f;
-
-            SpritebatchParams spearParams = SpritebatchParams.InWorldAndZoomed() with { effect = flamebowShader.Effect };
-            using (new SpritebatchContext(spriteBatch, spearParams))
+            for (int i = 1; i < Segments.Length; i++)
             {
-                DrawSpear();
+                DrawSawGlow(i);
+            }
+            //Ok, so we draw everything here yah?
+            for (int i = 1; i < Segments.Length; i++)
+            {
+                DrawSegment(i);
+            }
+            for (int i = 1; i < Segments.Length; i++)
+            {
+                DrawSegmentHeat(i);
             }
 
-            flamebowShader.InsideColor = Color.Lerp(Color.Yellow, Color.OrangeRed, ExtraMath.Osc(0f, 1f, 24));
-            flamebowShader.BloomColor = Color.DarkBlue;
-            using (new SpritebatchContext(spriteBatch, spearParams))
+            RekAuraShader torchShader = ShaderContent.GetInstance<RekAuraShader>();
+            torchShader.Time = Main.GlobalTimeWrappedHourly * 4;
+            torchShader.Strength = 0.5f;
+            torchShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
+            torchShader.InnerColor = Color.Lerp(Color.Yellow, Color.OrangeRed, 0.35f);
+            torchShader.BloomColor = Color.Red;
+            torchShader.DitherTexture = AssetManager.Dithering.Dither8x8Double;
+            torchShader.SpriteSize = AssetManager.GlowMask.SimpleGlowCircle.Size();
+            SpritebatchParams @params = SpritebatchParams.InWorldAndZoomed() with { effect = torchShader.Effect };
+            using (new SpritebatchContext(spriteBatch, @params))
             {
-                DrawSpearBright();
+                for (int i = 1; i < Segments.Length; i++)
+                {
+                    DrawSegmentAura(i);
+                }
             }
+
+
+            DrawAfterImages(spriteBatch, screenPos, drawColor);
+            drawColor = Color.Lerp(drawColor, Color.Black, _huskAlpha);
+            NPC.DrawAnimator(spriteBatch, drawColor);
+            if (_mouthAuraAlpha > 0)
+            {
+                DrawMouthAura(spriteBatch);
+            }
+            if (_rekfireballAlpha > 0)
+            {
+                DrawFireballOrb(spriteBatch);
+            }
+
+            if (_spearAlphas[0] > 0)
+            {
+                FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
+                flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
+                flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
+                flamebowShader.InsideColor = Color.Yellow;
+                flamebowShader.BloomColor = Color.Red;
+                flamebowShader.DissipateThreshold = MathHelper.Lerp(1f, 0f, 1f);
+                flamebowShader.DistortionStrength = 0.6f;
+
+                SpritebatchParams spearParams = SpritebatchParams.InWorldAndZoomed() with { effect = flamebowShader.Effect };
+                using (new SpritebatchContext(spriteBatch, spearParams))
+                {
+                    DrawSpear();
+                }
+
+                flamebowShader.InsideColor = Color.Lerp(Color.Yellow, Color.OrangeRed, ExtraMath.Osc(0f, 1f, 24));
+                flamebowShader.BloomColor = Color.DarkBlue;
+                using (new SpritebatchContext(spriteBatch, spearParams))
+                {
+                    DrawSpearBright();
+                }
+            }
+            spriteBatch.End();
         }
+        spriteBatch.Begin(oldParameters with { matrix = Matrix.Identity });
+        spriteBatch.Draw(rekRT, Vector2.Zero, Color.White * _globalAlpha);
+        spriteBatch.End();
+        spriteBatch.Begin(oldParameters);
+
         OutlineRenderer.Queue(DrawWhite);
         return false;
     }

@@ -35,6 +35,7 @@ public partial class RekBoss : ScarletBoss
     private bool _showMouthAura;
     private bool _showAfterImages;
     private bool _destroyArena;
+    float _globalAlpha;
 
     public class RekSegment
     {
@@ -438,7 +439,6 @@ public partial class RekBoss : ScarletBoss
         }
         if (_teleportPosition != Vector2.Zero)
         {
-            Vector2 diff = _teleportPosition - NPC.Center;
             for (int i = 0; i < Chain.points.Length; i++)
             {
                 Chain.points[i] = _teleportPosition;
@@ -465,6 +465,7 @@ public partial class RekBoss : ScarletBoss
         _saw = false;
         _rekfireballAlpha = 0;
         _huskAlpha = 0f;
+        _globalAlpha = 1f;
         switch (State)
         {
             case AIState.Despawn:
