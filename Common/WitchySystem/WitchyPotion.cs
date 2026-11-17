@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Rendering.RTs;
+using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.ResourceSets;
@@ -64,7 +65,7 @@ public class WitchyPotion : ModResourceDisplaySet
     int BarOffsetTowardsLeft => 111;
     int BarOffsetTowardsBottom => 18;
     int BarOffset2TowardsBottom => 32;
-    int Steps => (_snapShot.LifeMax - 200) / 20;
+    int Steps => ((int)MathF.Min(400, _snapShot.LifeMax) - 200) / 20;
     float HealthInBar
     {
         get
@@ -85,7 +86,7 @@ public class WitchyPotion : ModResourceDisplaySet
         if (Main.gameMenu)
             return;
 
-
+        var lfieMax = MathF.Min(_snapShot.LifeMax, 400);
         void DrawInner()
         {
             void DrawMask()
@@ -104,7 +105,7 @@ public class WitchyPotion : ModResourceDisplaySet
                 spriteBatch.Draw(barDrawer);
 
 
-                var steps = (_snapShot.LifeMax - 200) / 20;
+                var steps = (lfieMax - 200) / 20;
                 var x = barDrawer.worldPosition.X;
                 barDrawer.VerticalFrame(3, 4);
                 barDrawer.color = Color.White;
@@ -136,7 +137,7 @@ public class WitchyPotion : ModResourceDisplaySet
                 barEdgeDrawer.sourceRect = PotionBarGlowMaskRect;
 
                 //            barEdgeDrawer.worldPosition = new Vector2(Main.screenWidth - 227, 40) + Main.screenPosition;
-                var steps = (_snapShot.LifeMax - (int)HealthInBar) / 20;
+                var steps = (lfieMax - (int)HealthInBar) / 20;
                 var x = barEdgeDrawer.worldPosition.X;
                 barEdgeDrawer.worldPosition.X = x - 32;
                 spriteBatch.Draw(barEdgeDrawer);
@@ -156,9 +157,9 @@ public class WitchyPotion : ModResourceDisplaySet
             barDrawer.worldPosition.Y += TowardsBottom + BarOffsetTowardsBottom + BarOffset2TowardsBottom;
             barDrawer.VerticalFrame(1, 4);
             barDrawer.color = Color.White;
+    
 
-
-            var steps = (_snapShot.LifeMax - (int)HealthInBar) / 20;
+            var steps = (lfieMax - (int)HealthInBar) / 20;
             var x = barDrawer.worldPosition.X;
             barDrawer.worldPosition.X = x;
             spriteBatch.Draw(barDrawer);
@@ -196,7 +197,7 @@ public class WitchyPotion : ModResourceDisplaySet
             var index = 0;
             var remaining = _snapShot.Life - HealthInBar;
             var remainingMax = _snapShot.LifeMax - HealthInBar;
-            var lifeRatio = remaining / (float)remainingMax;
+            var lifeRatio = MathHelper.Clamp(remaining / (float)remainingMax, 0, 1);
             lifeRatio = 1f - lifeRatio;
 
             var lifeRatio2 = (float)MathHelper.Clamp(_snapShot.Life / HealthInBar, 0f, 1f);

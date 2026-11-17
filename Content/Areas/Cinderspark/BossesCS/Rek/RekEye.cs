@@ -188,7 +188,15 @@ public class RekEye : ModNPC
         }
 
         NPC.realLife = Parent.whoAmI;
-        if(NPC.velocity.Length() > 5)
+        if (NPC.life <= 0)
+        {
+            NPC.life = 1;
+        }
+        if (Parent.life <= 0)
+        {
+            Parent.life = 1;
+        }
+        if (NPC.velocity.Length() > 5)
         {
             _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 1f, 0.1f);
         }
@@ -855,6 +863,10 @@ public class RekEye : ModNPC
         if (NPC.life <= 0)
         {
             NPC.life = 1;
+        }
+        if (Parent.life <= 0)
+        {
+            Parent.life = 1;
         }
     }
 

@@ -360,7 +360,7 @@ public partial class RekBoss : ScarletBoss
         NPC.height = 64;
         NPC.damage = 80;
         NPC.defense = 90;
-        NPC.lifeMax = 272_000;
+        NPC.lifeMax = 252_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
