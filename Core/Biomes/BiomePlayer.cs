@@ -16,6 +16,11 @@ public static class BiomeExtensions
 {
     extension(Player player)
     {
+        public bool InDomain
+        {
+            get => ModContent.GetInstance<DomainExpansionManager>().noRender;
+         
+        }
         public bool ZoneHeatedDepths
         {
             get

@@ -64,12 +64,6 @@ namespace Stellamod
         //---------------------------------------------------------------------------------------------------------------
 
         private float shakeDrama;
-        public Vector2 startPoint;
-
-        public Vector2 focusPoint;
-        public float focusTransition;
-        public float focusLength;
-        public bool shouldFocus;
         public bool ZoneAbyss;
         public bool ZoneAurelus;
         public bool ZoneGovheil;
@@ -113,45 +107,11 @@ namespace Stellamod
 
         public override void ModifyScreenPosition()
         {
-            if (shouldFocus)
-            {
-                if (focusLength > 0f)
-                {
-                    if (focusTransition <= 1f)
-                    {
-                        Main.screenPosition = Vector2.SmoothStep(startPoint, focusPoint, focusTransition += 0.05f);
-                    }
-                    else
-                    {
-                        Main.screenPosition = focusPoint;
-                    }
-                    focusLength -= 0.05f;
-                }
-                else if (focusTransition >= 0f)
-                {
-                    Main.screenPosition = Vector2.SmoothStep(base.Player.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), focusPoint, focusTransition -= 0.05f);
-                }
-                else
-                {
-                    shouldFocus = false;
-                }
-            }
             if (shakeDrama > 0.5f)
             {
                 shakeDrama *= 0.92f;
                 Vector2 shake = new Vector2(Main.rand.NextFloat(shakeDrama), Main.rand.NextFloat(shakeDrama));
                 Main.screenPosition += shake;
-            }
-        }
-        public void FocusOn(Vector2 pos, float length)
-        {
-            if (base.Player.Center.Distance(pos) < 2000f)
-            {
-                focusPoint = pos - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
-                focusTransition = 0f;
-                startPoint = Main.screenPosition;
-                focusLength = length;
-                shouldFocus = true;
             }
         }
 

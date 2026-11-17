@@ -161,6 +161,7 @@ namespace Stellamod.Core.PaletteShadingSystem
 
 
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
+
             if (myPlayer.ZoneAshotiTemple)
                 return true;
             if (player.ZoneColloseum)
