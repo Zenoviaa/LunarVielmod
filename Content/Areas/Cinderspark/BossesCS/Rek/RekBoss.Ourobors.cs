@@ -456,7 +456,7 @@ public partial class RekBoss
 
                     if (Vector2.Dot(_ouroborosVelocity, movementDirection) < 0.9f && Timer > 15)
                     {
-
+                        PlayBumpSound();
                         SlamWall(currentPoint);
                         AttackCount++;
                         if(AttackCount >= Ouroboros_Wall_Slam_Count)

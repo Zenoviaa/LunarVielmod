@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
+using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering.RTs;
 using Stellamod.Effects.GothinFlames;
@@ -714,6 +715,31 @@ public partial class RekBoss : IWaterSilhouette
         spriteBatch.Draw(spotLight);
     }
 
+    void DrawFlameHalo(SpriteBatch spriteBatch)
+    {
+        var drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Content.Areas.Cinderspark.BossesCS.Rek.RekBossHalo.Asset);
+        drawer.worldPosition = NPC.Center;
+        drawer.rotation = NPC.rotation;
+        drawer.color = Color.Lerp(drawer.color, Color.Transparent, ExtraMath.Osc(0.65f, 0.8F));
+        drawer.color.A = 0;
+        drawer.spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        drawer.spriteEffects |= Animator.spriteEffects;
+        drawer.VerticalFrame(Animator.Frame, Animator.FrameCount);
+        drawer.CenterOrigin();
+        drawer.scale *= 2;
+        spriteBatch.Draw(drawer);
+
+        Vector2 pos = drawer.worldPosition;
+        for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
+        {
+            spriteBatch.Draw(drawer with { worldPosition = pos + (f + Main.GlobalTimeWrappedHourly * 2).ToRotationVector2() * ExtraMath.Osc(4f, 8f, speed: 2) });
+        }
+        for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
+        {
+            spriteBatch.Draw(drawer with { worldPosition = pos + (f + Main.GlobalTimeWrappedHourly * 2).ToRotationVector2() * ExtraMath.Osc(4f, 8f, speed: 2) * 0.3f });
+        }
+    }
+
     private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         for (int i = 0; i < NPC.oldPos.Length; i++)
@@ -782,6 +808,7 @@ public partial class RekBoss : IWaterSilhouette
             DrawAfterImages(spriteBatch, screenPos, drawColor);
             drawColor = Color.Lerp(drawColor, Color.Black, _huskAlpha);
             NPC.DrawAnimator(spriteBatch, drawColor);
+            DrawFlameHalo(spriteBatch);
             if (_mouthAuraAlpha > 0)
             {
                 DrawMouthAura(spriteBatch);

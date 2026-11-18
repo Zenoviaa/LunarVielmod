@@ -305,7 +305,7 @@ public record struct DrawEffects(Vector2? DrawOrigin, Vector2? Scale)
 public class AseAnimator
 {
     private float _frameCounter;
-    private int _frameIndex;
+ 
     public AseAnimator()
     {
 
@@ -325,6 +325,8 @@ public class AseAnimator
         set => drawEffects.DrawOrigin = value;
         get => drawEffects.DrawOrigin;
     }
+    public int Frame;
+    public int FrameCount => Sprite.Value.frames.Count;
 
     public void SetSpriteAsset(Asset<AseSprite> sprite)
     {
@@ -334,7 +336,7 @@ public class AseAnimator
 
     public SpritebatchDrawer GetSprite(Vector2 worldPosition)
     {
-        var sprite = Sprite.Value.GetSprite(_frameIndex, worldPosition);
+        var sprite = Sprite.Value.GetSprite(Frame, worldPosition);
         sprite.drawOrigin = drawEffects.DrawOrigin.HasValue ? drawEffects.DrawOrigin.Value : sprite.drawOrigin;
         sprite.scale = drawEffects.Scale.HasValue ? drawEffects.Scale.Value : sprite.scale;
         sprite.spriteEffects = spriteEffects;
@@ -354,7 +356,7 @@ public class AseAnimator
             return;
         playingTag = Sprite.Value.tags.Find(x => x.name == name);
         _frameCounter = 0;
-        _frameIndex = playingTag.from;
+        Frame = playingTag.from;
         this.isLooping = animationParams.Value.IsLooping;
     }
 
@@ -369,24 +371,24 @@ public class AseAnimator
 
         //rn just increasing by 1 / 60 since that's the game's tick rate
         _frameCounter += 1f / 60f;
-        float ft = Sprite.Value.frames[_frameIndex].frameTime;
+        float ft = Sprite.Value.frames[Frame].frameTime;
         while (_frameCounter >= ft)
         {
             _frameCounter -= ft;
-            _frameIndex++;
+            Frame++;
             if (isLooping)
             {
                 //0 is infinite, so repeat the animation
-                if (_frameIndex > playingTag.to)
+                if (Frame > playingTag.to)
                 {
-                    _frameIndex = playingTag.from;
+                    Frame = playingTag.from;
                 }
             }
             else
             {
-                if (_frameIndex > playingTag.to)
+                if (Frame > playingTag.to)
                 {
-                    _frameIndex = playingTag.to;
+                    Frame = playingTag.to;
                 }
             }
         }

@@ -45,6 +45,12 @@ public partial class RekBoss
         }
     }
     SlotId? _sawSlot;
+    public void PlayBumpSound()
+    {
+        var e = AssetReferences.Assets.Sounds.Rek.RekBump.Asset with { PitchVariance = 0.9F };
+        SoundEngine.PlaySound(e);
+    }
+
     public void PlayLavaSplashSound()
     {
         var e = AssetReferences.Assets.Sounds.Rek.LavaSplash.Asset;

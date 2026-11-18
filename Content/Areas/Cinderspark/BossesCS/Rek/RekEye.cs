@@ -419,7 +419,7 @@ public class RekEye : ModNPC
                     {
                         NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.85f;
                     }
-
+                    _eyeFlash = Timer / 25F;
 
                     if (Timer >= 45)
                     {
@@ -484,6 +484,9 @@ public class RekEye : ModNPC
         _eyeColor = Color.Red;
         var sound = AssetRegistry.Sounds.RekFireballShoot with { PitchVariance = 0.3f };
         SoundEngine.PlaySound(sound, position);
+
+        var sound2 = AssetReferences.Assets.Sounds.Rek.EyeFireball.Asset with { PitchVariance = 0.8F };
+        SoundEngine.PlaySound(sound2, position);
 
         FXUtil.ShakeCamera(position, 1024, 8);
         for (float f = 0; f <8; f++)
@@ -673,6 +676,9 @@ public class RekEye : ModNPC
                     //Give some initial velocity
                     if (Timer == 1)
                     {
+                        var lavaSound = AssetReferences.Assets.Sounds.Rek.EyeReadyfall.Asset;
+                        SoundEngine.PlaySound(lavaSound);
+                        PixelPrimitiveCircleFactory.CreateFlamingCircleBig(NPC.Center);
                         NPC.velocity.Y = -8;
                     }
 
@@ -775,7 +781,8 @@ public class RekEye : ModNPC
                 {
                     if(Timer == 1)
                     {
-
+                        var lavaSound = AssetReferences.Assets.Sounds.Rek.EyeInTheLava.Asset with { PitchVariance = 0.5f };
+                        SoundEngine.PlaySound(lavaSound);
                         RekBoss.LavaEruption(NPC.Center, -NPC.velocity, 16, 0.08F);
                         if (MultiplayerHelper.IsHost)
                         {

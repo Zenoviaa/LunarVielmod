@@ -14,6 +14,45 @@ namespace Stellamod.Core.Utilities;
 
 public static class PixelPrimitiveCircleFactory
 {
+    public static void CreateFlamingCircleBig(Vector2 position)
+    {
+        Color StripColors(TrailCircleStep progressOnStrip)
+        {
+            //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            return Color.Lerp(Color.White, Color.Transparent, EasingFunction.InOutSine(progressOnStrip.progressInCircle));
+        }
+
+        float StripWidth(TrailCircleStep progressOnStrip)
+        {
+            float baseWidth = 64;
+            return MathHelper.SmoothStep(baseWidth, baseWidth, progressOnStrip.progressInTrail) * MathHelper.Lerp(1f, 0.5f, EasingFunction.InOutSine(progressOnStrip.progressInCircle));
+        }
+        float StripWidth2(TrailCircleStep progressOnStrip)
+        {
+            return StripWidth(progressOnStrip) * 2f;
+        }
+
+        void RenderBloom(TrailCircleDraw draw)
+        {
+            BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
+            bloomTrailShader.InnerColor = Color.OrangeRed;
+            bloomTrailShader.OuterColor = Color.Red;
+            DrawUtilities.DrawUserIndexedPrimitivesWithEffect(draw.vertices, draw.indices, bloomTrailShader);
+        }
+        void RenderFire(TrailCircleDraw draw)
+        {
+
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.SetDefaults();
+            blackFireShader.InnerEmitColor = Color.Yellow * 0.2f;
+            blackFireShader.OuterEmiteColor = Color.Red;
+            DrawUtilities.DrawUserIndexedPrimitivesWithEffect(draw.vertices, draw.indices, blackFireShader);
+        }
+
+
+        PixelCircleUpdater.Create(RenderBloom, position, StripWidth2, StripColors, minRadius: 8, maxRadius: 512, 24);
+        PixelCircleUpdater.Create(RenderFire, position, StripWidth, StripColors, minRadius: 8, maxRadius: 512, 24);
+    }
     public static void CreateFlamingCircle(Vector2 position)
     {
         Color StripColors(TrailCircleStep progressOnStrip)
