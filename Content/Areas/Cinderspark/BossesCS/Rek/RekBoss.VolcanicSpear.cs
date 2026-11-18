@@ -52,8 +52,7 @@ public partial class RekBoss
                         _destroyArena = NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>());
                     }
 
-                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.25f);
-                    CameraTargetSystem.AddTarget(panning);
+
                     NPC.velocity.X -= 0.11f;
                     NPC.velocity.Y -= 0.15f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
@@ -124,10 +123,6 @@ public partial class RekBoss
                         }
 
                     }
-
-
-                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f);
-                    CameraTargetSystem.AddTarget(panning);
 
                     if (Timer >= Volcanic_Spear_Crash_Time * 0.5f)
                         Animator.PlayAnimation(ANIM_SPEAR_READY, AnimationParams.NoLooping);

@@ -91,7 +91,7 @@ public partial class RekBoss
         {
             var pos = _centerPoint;
             pos.X += Main.rand.NextFloat(-144, 144);
-            LavaEruption(pos, -Vector2.UnitY * 35, 7, 0.07F);
+            LavaEruption(pos, -Vector2.UnitY * 15, 7, 0.07F);
         }
 
         void SawsOn()

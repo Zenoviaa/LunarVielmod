@@ -46,7 +46,10 @@ public partial class RekBoss
 
     public static void LavaEruption(Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
     {
- 
+
+        numBalls *= 2;
+        radius *= 0.5F;
+        var halfRadius = radius * 0.5F;
         for (var i = 0; i < numBalls; i++)
         {
             var pos = position;
@@ -54,12 +57,14 @@ public partial class RekBoss
             var vel = velocity;
             vel = vel.RotatedByRandom(0.2f);
             vel *= Main.rand.NextFloat(0.2f, 1f);
+            var shouldSplit = radius > halfRadius && Main.rand.NextBool(8);
             PS.LavaMetaballs.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
-                radius = radius * Main.rand.NextFloat(0.9f, 1F),
-                timeLeft = Main.rand.Next(45, 125)
+                radius = radius * Main.rand.NextFloat(0.5f, 1F),
+                needsSplit = shouldSplit,
+                timeLeft = Main.rand.Next(45, 140)
             });
         }
 
@@ -70,11 +75,13 @@ public partial class RekBoss
             var vel = velocity;
             vel = vel.RotatedByRandom(0.2f);
             vel *= Main.rand.NextFloat(0.2f, 1f);
+            var shouldSplit = radius > halfRadius && Main.rand.NextBool(8);
             PS.LavaMetaballsFront.Spawn(new()
             {
                 position = pos ,
                 velocity = vel,
                 radius = radius * 0.7F,
+                needsSplit = shouldSplit,
                 timeLeft = Main.rand.Next(25, 90)
             });
         }

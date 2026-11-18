@@ -31,7 +31,6 @@ public partial class RekBoss
                     Vector2 eruptionLeft = FindEruptionLeft();
                     Vector2 eruptionRight = FindEruptionRight();
 
-                    CameraTargetSystem.AddTarget(NPC.Center);
 
                     eruptionRight.Y -= 384;
                     eruptionLeft.Y -= 384;
@@ -67,7 +66,7 @@ public partial class RekBoss
             case 1:
                 {
                     var timeBetween = 7;
-                    CameraTargetSystem.AddTarget(NPC.Center);
+
 
                     float ratio = Timer / 64;
                     float ease = EasingFunction.InOutSine(ratio);
@@ -77,7 +76,7 @@ public partial class RekBoss
                     {
                         Segments[i].isBurningNoWarning = true;
                     }
-
+                //    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, ease * 0.5F));
                     var animator = this.GetAnimator();
                     if (Timer < 18)
                     {

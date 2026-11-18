@@ -11308,7 +11308,7 @@ SpeedflameBoots: {
 
 BallNChain: {
 	DisplayName: Ball N' Chain
-	Tooltip: A macelike ball is following you around, gives you 25% boss endurance, but makes you take 50% more damage from enemies, enemies can deal critical strikes to you at a 10% chance
+	Tooltip: A macelike ball is following you around, gives you 12% boss endurance, but makes you take 50% more damage from enemies, enemies can deal critical strikes to you at a 10% chance
 }
 
 HeatGoggles: {

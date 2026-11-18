@@ -17,6 +17,8 @@ public class MetaballParticles : ParticleUpdater<MetaballParticles.Data>
         public Vector2 position;
         public Vector2 velocity;
         public float radius;
+        public bool needsSplit;
+        public float splitTimer;
         public float timeLeft;
         public bool IsActive => timeLeft > 0;
     }
@@ -48,7 +50,19 @@ public class MetaballParticles : ParticleUpdater<MetaballParticles.Data>
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
             particle.velocity.Y += 0.25f;
-
+            particle.splitTimer++;
+            if (particle.needsSplit && particle.splitTimer > 24)
+            {
+                Spawn(new()
+                {
+                    position = particle.position + Main.rand.NextVector2Circular(32, 32),
+                    velocity = particle.velocity.RotatedByRandom(0.4f),
+                    radius = particle.radius * 0.5f,
+                    timeLeft = 60 + Main.rand.Next(0, 75)
+                });
+                particle.timeLeft = 0;
+                particle.needsSplit = false;
+            }
             particle.timeLeft--;
         }
     }

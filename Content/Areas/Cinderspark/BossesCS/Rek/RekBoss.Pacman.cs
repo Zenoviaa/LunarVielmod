@@ -218,9 +218,9 @@ public partial class RekBoss
                     NPC.velocity.X -= 0.1f;
          
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.03f);
-                    if (Timer >= 120)
+                    if (Timer >= 30)
                     {
-                        SwitchState(AIState.Idle);
+                        NextState();
                     }
              
                 }

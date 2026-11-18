@@ -207,6 +207,11 @@ public partial class RekBoss : ScarletBoss
                 }
                 break;
             case 3:
+                if (_phase < 1)
+                {
+                    Skip();
+                    pattern++;
+                }
                 break;
             case 4:
                 break;
@@ -217,16 +222,16 @@ public partial class RekBoss : ScarletBoss
             case 7:
                 break;
             case 8:
-                if (_phase < 2)
-                {
-                    Skip();
-                    pattern++;
-                }
                 break;
             case 9:
                 break;
         }
 
+        if (NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>()) && _phase >= 2 && (pattern != 4 && pattern != 5))
+        {
+            _patternIndex = 1;
+            pattern = 0;
+        }
         switch (pattern)
         {
             case 0:
@@ -236,17 +241,17 @@ public partial class RekBoss : ScarletBoss
             case 2:
                 return AIState.FireBreathV2;
             case 3:
-                return AIState.CoilDash;
-            case 4:
-                return AIState.VolcanicMeteor;
-            case 5:
-                return AIState.Pacman;
-            case 6:
-                return AIState.FireBreath;
-            case 7:
-                return AIState.Ouroboros;
-            case 8:
                 return AIState.Husk;
+            case 4:
+                return AIState.CoilDash;
+            case 5:
+                return AIState.VolcanicMeteor;
+            case 6:
+                return AIState.Pacman;
+            case 7:
+                return AIState.FireBreath;
+            case 8:
+                return AIState.Ouroboros;
             case 9:
                 return AIState.FireBreath;
         }
