@@ -1,6 +1,7 @@
 ﻿using Stellamod.Buffs;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
+using Stellamod.Content.Biomes;
 using Stellamod.Content.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
@@ -19,18 +20,14 @@ namespace Stellamod
 
     public class MyPlayer : ModPlayer
     {
-        public bool TAuraSpawn;
+
         public bool Dice;
-        public int TAuraCooldown = 600;
+
         public bool ArcaneM;
         public int ArcaneMCooldown = 0;
         public int Timer = 0;
-        public bool NotiaB;
-        public int NotiaBCooldown = 0;
         public int SwordCombo;
-        public int SwordComboSlash;
         public int SwordComboR;
-        public int lastSelectedI;
         public bool Lovestruck;
         public int LovestruckBCooldown = 0;
         public bool ADisease;
@@ -52,11 +49,6 @@ namespace Stellamod
         //---------------------------------------------------- Igniter effects and uh accessory stuff
 
         public float IgniterVelocity = 1f;
-        public int IgniterDamage = 0;
-        public int IgniterStrike = 0;
-        public bool LuckyW = false;
-        public bool FlamedTomeDusts = false;
-        public bool MagicTomeDusts = false;
 
         //---------------------------------------------------------------------------------------------------------------
 
@@ -100,7 +92,9 @@ namespace Stellamod
             LunarVeilClientConfig config = LunarVeilClientConfig.Instance;
             if (!config.ShakeToggle)
                 return;
-            shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
+
+            var dq = distance * distance;
+            shakeDrama = strength * (1f - Player.Center.DistanceSQ(position) / dq) * 0.5f;
         }
 
         public override void ModifyScreenPosition()
@@ -245,11 +239,11 @@ namespace Stellamod
         {
 
             // Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
-            TAuraSpawn = false;
+
             ArcaneM = false;
             Waterwhisps = false;
             Dice = false;
-            NotiaB = false;
+
             Lovestruck = false;
             ADisease = false;
             GovheilB = false;
@@ -287,11 +281,6 @@ namespace Stellamod
 
 
             IgniterVelocity = 1f;
-            IgniterDamage = 0;
-            IgniterStrike = 0;
-            LuckyW = false;
-            FlamedTomeDusts = false;
-            MagicTomeDusts = false;
             if (ZoneColloseum)
                 Player.ZoneDesert = true;
         }
@@ -325,6 +314,7 @@ namespace Stellamod
 
         public override void PostUpdate()
         {
+
             if (Aurorean >= 0.5f)
             {
                 AuroreanBool = true;
@@ -419,11 +409,6 @@ namespace Stellamod
 
 
 
-            if (SwordComboSlash > 5)
-            {
-                SwordComboSlash = 0;
-            }
-
 
 
             if (CorsageTime >= 1)
@@ -444,17 +429,6 @@ namespace Stellamod
                 }
             }
 
-            if (NotiaB && NotiaBCooldown == 301)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-            }
-
-            if (NotiaB && NotiaBCooldown == 420)
-            {
-                NotiaBCooldown = 0;
-
-
-            }
 
             if (Daedstruck && DaedstruckBCooldown == 0)
             {
@@ -897,14 +871,7 @@ namespace Stellamod
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
         {
-            if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
-            {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -4, ProjectileID.SpikyBall, 30, 1f, Player.whoAmI);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 4, ProjectileID.SpikyBall, 20, 1f, Player.whoAmI);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ProjectileID.SpikyBall, 50, 1f, Player.whoAmI);
-                TAuraCooldown = 600;
 
-            }
 
             if (Lovestruck)
             {
@@ -925,14 +892,6 @@ namespace Stellamod
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
                 LovestruckBCooldown = 30;
 
-            }
-
-            if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
-            {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -4, ProjectileID.SpikyBall, 30, 1f, Player.whoAmI);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 4, ProjectileID.SpikyBall, 20, 1f, Player.whoAmI);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ProjectileID.SpikyBall, 50, 1f, Player.whoAmI);
-                TAuraCooldown = 600;
             }
         }
 
@@ -1059,30 +1018,6 @@ namespace Stellamod
 
             }
 
-            if (NotiaB && NotiaBCooldown > 300)
-            {
-                Player.GetDamage(DamageClass.Magic) *= 1.2f;
-                Player.GetDamage(DamageClass.Ranged) *= 1.2f;
-            }
-        }
-
-        public override bool PreItemCheck()
-        {
-            if (Player.selectedItem != lastSelectedI)
-            {
-                SwordComboR = 0;
-                SwordCombo = 0;
-                lastSelectedI = Player.selectedItem;
-            }
-            if (SwordComboR > 0)
-            {
-                SwordComboR--;
-                if (SwordComboR == 0)
-                {
-                    SwordCombo = 0;
-                }
-            }
-            return true;
         }
     }
 }

@@ -53,7 +53,6 @@ public class AbyssBiome : BaseUrdveilBiome,
     {
         base.OnEnter(player);
         player.ZoneAbyss = true;
-        player.GetModPlayer<BiomePlayer>().justEnteredAbyss = true;
         if (Main.netMode == NetmodeID.Server)
             return;
 

@@ -13,6 +13,7 @@ public class LavaStyle : PixelWaterStyle
     }
     public override bool IsActive(Player player)
     {
+
         if (player.ZoneHeatedDepths && !player.ZoneWonder)
             return true;
 

@@ -286,7 +286,7 @@ public partial class LunarLightingRenderer : ModSystem,
             BackLightColor = finalColor * 0.8f;
         }
 
-        Main.LocalPlayer.ZoneUnderworldHeight = true;
+
         BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
         MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
 
