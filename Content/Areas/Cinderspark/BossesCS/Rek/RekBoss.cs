@@ -371,7 +371,7 @@ public partial class RekBoss : ScarletBoss
         NPC.height = 64;
         NPC.damage = 80;
         NPC.defense = 97;
-        NPC.lifeMax = 212_000;
+        NPC.lifeMax = 242_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
@@ -476,6 +476,8 @@ public partial class RekBoss : ScarletBoss
         _rekfireballAlpha = 0;
         _huskAlpha = 0f;
         _globalAlpha = 1f;
+
+        NPC.dontTakeDamage = false;
         switch (State)
         {
             case AIState.Despawn:

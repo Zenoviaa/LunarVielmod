@@ -869,6 +869,11 @@ public class RekEye : ModNPC
         TrailDrawer.Draw(NPC.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, NPC.Size * 0.5f);
         TrailDrawer.Draw(NPC.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, NPC.Size * 0.5f);
     }
+    public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyIncomingHit(ref modifiers);
+        modifiers.FinalDamage *= 0.75F;
+    }
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);

@@ -28,7 +28,7 @@ public class SpearBoom : ModProjectile
         base.SetDefaults();
         Projectile.width = 16;
         Projectile.height = 16;
-        Projectile.hostile = false;
+        Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.timeLeft = (int)AttackTime;
         Projectile.light = 0.78f;
@@ -66,6 +66,10 @@ public class SpearBoom : ModProjectile
         base.AI();
 
         Timer++;
+        if(Timer >= 31)
+        {
+            Projectile.hostile = false;
+        }
         if (Timer == 1)
         {
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();

@@ -24,7 +24,7 @@ public class FlameWheel : ModProjectile
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        float collisionRadius = 212;
+        float collisionRadius = 168;
         Vector2 centerPoint = targetHitbox.Center();
         Vector2 myPoint = projHitbox.Center();
         return Vector2.Distance(myPoint, centerPoint) <= collisionRadius;

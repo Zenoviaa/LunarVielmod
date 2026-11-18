@@ -100,7 +100,8 @@ public partial class RekBoss
                             PS.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
                         }
                     }
-            
+
+                    NPC.dontTakeDamage = true;
                     _huskAlpha = MathHelper.Lerp(0f, 0.5f, EasingFunction.InOutSine(Timer / 180));
                     Animator.PlayAnimation("EyelessHusk", AnimationParams.Default with { IsLooping = true });
                     NPC.velocity *= 0.97f;
