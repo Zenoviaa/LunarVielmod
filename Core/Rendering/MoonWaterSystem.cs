@@ -115,13 +115,36 @@ public class MoonWaterSystem : ModSystem
 
     void DrawLavaParticles(SpriteBatch sb, Vector2 sp)
     {
-        if (LavaMetaballRenderer.metaballs.Count <= 0)
-            return;
-
         sb.EndOut(out var oldParameters);
 
         using var particleTarget = RT.Context(RenderTargets.ScreenTarget);
-        RenderWaterParticles(sb, particleTarget.Target);
+        RenderWaterParticles(sb, particleTarget.Target, LavaMetaballRenderer.metaballs);
+
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+            null, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.End();
+
+        var outliner = AssetReferences.Effects.Generic.OutlineOnly.CreatePixelPass();
+        outliner.Parameters.texelSize = particleTarget.Target.GetTexelSize();
+        outliner.Apply();
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+        outliner.Shader, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.DarkRed);
+        sb.End();
+
+        sb.Begin(oldParameters);
+    }
+
+    void DrawLavaParticlesFront(SpriteBatch sb, Vector2 sp)
+    {
+        sb.EndOut(out var oldParameters);
+
+        using var particleTarget = RT.Context(RenderTargets.ScreenTarget);
+        RenderWaterParticles(sb, particleTarget.Target, LavaMetaballRenderer.metaballsFront);
 
 
         sb.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
@@ -137,15 +160,13 @@ null, Main.Transform);
         sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
 outliner.Shader, Main.Transform);
         sb.Draw(particleTarget, Vector2.Zero, Color.DarkRed);
-        //sb.Draw(particleTarget, Vector2.Zero, Color.White);
         sb.End();
 
         sb.Begin(oldParameters);
-
     }
+
     void NewDraw()
     {
-
         if (!LunarVeilClientConfig.Instance.LiquidsToggle)
             return;
         if (_waterEffect == null)
@@ -164,8 +185,15 @@ outliner.Shader, Main.Transform);
         using var reflectionHeightTarget = RT.Context(RenderTargets.ScreenTarget);
         using var screenTargetTwo = RT.Context(RenderTargets.ScreenTarget);
         using var coolAssWaterTarget = RT.Context(RenderTargets.WaterTarget);
+        if (LavaMetaballRenderer.metaballs.Count > 0)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawLavaParticles, DrawLayer.BehindTiles);
+        }
+        if (LavaMetaballRenderer.metaballsFront.Count > 0)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawLavaParticlesFront, DrawLayer.OverNPCs);
+        }
 
-        PixelationManager.QueueSpritebatchDrawAction(DrawLavaParticles, DrawLayer.BehindTiles);
         //    using var o = RT.Context(RenderTargets.ScreenTarget);
         using (RT.Clear(screenTargetOne, Color.Transparent))
         {
@@ -313,7 +341,7 @@ outliner.Shader, Main.Transform);
     }
 
 
-    public void RenderWaterParticles(SpriteBatch sb, RenderTarget2D waterParticleTarget)
+    public void RenderWaterParticles(SpriteBatch sb, RenderTarget2D waterParticleTarget, IList<Vector3> metaballList)
     {
         void DrawBlueWaterParticles()
         {
@@ -400,7 +428,7 @@ outliner.Shader, Main.Transform);
 
             using var backWaterTarget = RT.Context(RenderTargets.ScreenTarget);
             using var metaballs = RT.Context(RenderTargets.ScreenTarget);
-            MetaballRenderer.PrepareMetaballContent(metaballs, LavaMetaballRenderer.metaballs);
+            MetaballRenderer.PrepareMetaballContent(metaballs, metaballList);
 
             using (RT.Clear(backWaterTarget, Color.DarkGoldenrod))
             {

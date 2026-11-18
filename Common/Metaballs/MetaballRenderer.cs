@@ -67,51 +67,19 @@ public class MetaballParticles : ParticleUpdater<MetaballParticles.Data>
 public class LavaMetaballRenderer : ModSystem
 {
     public static List<Vector3> metaballs = new();
-    public override void Load()
-    {
-        base.Load();
-        On_Main.CheckMonoliths += PrepareDraws;
-    }
-
-    private void PrepareDraws(On_Main.orig_CheckMonoliths orig)
-    {
-        orig();
-        if (Main.gameMenu)
-            return;
-
-        PixelationManager.QueueSpritebatchDrawAction(TestDraw);
-     //   throw new NotImplementedException();
-    }
+    public static List<Vector3> metaballsFront = new();
 
     public override void PreUpdateProjectiles()
     {
         base.PreUpdateProjectiles();
-        /*
-        PS.LavaMetaballs.Spawn(new()
-        {
-            position = Main.LocalPlayer.Center + Main.rand.NextVector2Circular(32, 32),
-            velocity = Main.rand.NextVector2Circular(3, 3),
-            radius = 0.015f,
-            timeLeft = 120
-        });*/
+     
         metaballs.Clear();
+        metaballsFront.Clear();
         PS.LavaMetaballs.AddMetaballData(ref metaballs);
+        PS.LavaMetaballsFront.AddMetaballData(ref metaballsFront);
     }
    
 
-
-    void TestDraw(SpriteBatch sb, Vector2 sp)
-    {
-        /*
-        sb.EndOut(out var oldParameters);
-
-        using var metaballTarget = RT.Context(RenderTargets.ScreenTarget);
-        MetaballRenderer.PrepareMetaballContent(metaballTarget, metaballs);
-
-        sb.Begin(oldParameters);
-        sb.Draw(metaballTarget, Vector2.Zero, Color.White);
-        */
-    }
 }
 
 public static class MetaballRenderer

@@ -76,6 +76,7 @@ public sealed class PS : ModSystem
     public static readonly NiiviLightningImpact NiiviLightningImpact = new();
     public static readonly NiiviIceRockGore NiiviIceRockGore = new();
     public static readonly MetaballParticles LavaMetaballs = new();
+    public static readonly MetaballParticles LavaMetaballsFront = new();
     public override void Load()
     {
         base.Load();
@@ -130,7 +131,8 @@ public sealed class PS : ModSystem
             IceCrack,
             NiiviLightningImpact,
             NiiviIceRockGore,
-            LavaMetaballs
+            LavaMetaballs,
+            LavaMetaballsFront
         };
 
         if (Main.netMode == NetmodeID.Server)
