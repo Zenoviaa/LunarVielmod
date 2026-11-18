@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -70,7 +71,7 @@ public class MiracleSilkRenderer : ModSystem
     {
         orig(self);
         renderSilk--;
-        if (renderSilk > 0 || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder) 
+        if (renderSilk > 0 || Main.LocalPlayer.ZoneWonder) 
         {
             PixelationManager.QueueSpritebatchDrawAction(DrawSilkStrands, DrawLayer.OverPlayers);
         }

@@ -56,7 +56,7 @@ public class RagingBeast : ModBuff
             var pos = player.Center;
             var scaleRange = new Vector2(0.5f, 1.5f);
             pos += Main.rand.NextVector2Circular(16, 16);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

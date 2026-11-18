@@ -1,8 +1,7 @@
 ﻿using ReLogic.Content;
-using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common;
 using Stellamod.Common.Particles;
-using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
 using System;
 using System.Collections.Generic;
@@ -35,7 +34,11 @@ public partial class RekBoss : ScarletBoss
     private bool _showMouthAura;
     private bool _showAfterImages;
     private bool _destroyArena;
-
+    float _globalAlpha;
+    bool _splashedYoAss;
+    bool _oldInLava;
+    float _sawbladeRotation;
+    float _sawbladeAlpha;
     public class RekSegment
     {
         public RekSegment(Vector2 _position, Vector2 _size, float _scale, int _bodyFrame)
@@ -80,7 +83,7 @@ public partial class RekBoss : ScarletBoss
                 _chain = new(NPC.Center, 80, 39);
                 for (int i = 0; i < _chain.lengths.Length; i++)
                 {
-                    _chain.lengths[i] = MathHelper.Lerp(63, 16, (float)i / _chain.lengths.Length);
+                    _chain.lengths[i] = MathHelper.Lerp(63, 18, (float)i / _chain.lengths.Length);
                 }
             }
             return _chain;
@@ -152,13 +155,15 @@ public partial class RekBoss : ScarletBoss
     {
         get
         {
-            if(_phase == 2)
+            if (_phase == 2)
             {
                 return 0.75f;
             }
             return 1f;
         }
     }
+
+    float IdleTime => 90;
 
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -174,85 +179,83 @@ public partial class RekBoss : ScarletBoss
     private AIState GetNextAttack(int phase)
     {
         int pattern = _patternIndex;
-        if (_patternIndex == 0)
+        PhaseShift();
+
+
+        void Skip()
         {
-            PhaseShift();
+            _patternIndex++;
+            _patternIndex %= 10;
         }
-        _patternIndex++;
-        switch (phase)
+        Skip();
+        switch (pattern)
         {
             case 0:
+                if (_phase < 2 || !NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>()))
                 {
-                    _patternIndex %= 6;
-                    switch (pattern)
-                    {
-                        case 0:
-                            return AIState.Eruption;
-                        case 1:
-                            return AIState.CoilDash;
-                        case 2:
-                            return AIState.VolcanicMeteor;
-                        case 3:
-                            return AIState.Pacman;
-                        case 4:
-                            return AIState.FireBreath;
-                        case 5:
-                            return AIState.Ouroboros;
-                    }
-
-
+                    Skip();
+                    pattern++;
                 }
                 break;
             case 1:
-                {
-                    _patternIndex %= 7;
-                    switch (pattern)
-                    {
-                        case 0:
-                            return AIState.Eruption;
-                        case 1:
-                            return AIState.FireBreathV2;
-                        case 2:
-                            return AIState.CoilDash;
-                        case 3:
-                            return AIState.VolcanicMeteor;
-                        case 4:
-                            return AIState.Pacman;
-                        case 5:
-                            return AIState.FireBreath;
-                        case 6:
-                            return AIState.Ouroboros;
-                    }
-                }
                 break;
             case 2:
+                if (_phase < 2)
                 {
-                    _patternIndex %= 10;
-                    switch (pattern)
-                    {
-                        case 0:
-                            return AIState.VolcanicSpear;
-                        case 1:
-                            return AIState.Eruption;
-                        case 2:
-                            return AIState.FireBreathV2;
-                        case 3:
-                            return AIState.CoilDash;
-                        case 4:
-                            return AIState.VolcanicMeteor;
-                        case 5:
-                            return AIState.Pacman;
-                        case 6:
-                            return AIState.FireBreath;
-                        case 7:
-                            return AIState.Ouroboros;
-                        case 8:
-                            return AIState.Husk;
-                        case 9:
-                            return AIState.FireBreath;
-                    }
+                    Skip();
+                    Skip();
+                    pattern++;
+                    pattern++;
                 }
                 break;
+            case 3:
+                if (_phase < 2)
+                {
+                    Skip();
+                    pattern++;
+                }
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+        }
+
+        if (NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>()) && _phase >= 2 && (pattern != 4 && pattern != 5))
+        {
+            _patternIndex = 1;
+            pattern = 0;
+        }
+        switch (pattern)
+        {
+            case 0:
+                return AIState.VolcanicSpear;
+            case 1:
+                return AIState.Eruption;
+            case 2:
+                return AIState.FireBreathV2;
+            case 3:
+                return AIState.Husk;
+            case 4:
+                return AIState.CoilDash;
+            case 5:
+                return AIState.VolcanicMeteor;
+            case 6:
+                return AIState.Pacman;
+            case 7:
+                return AIState.FireBreath;
+            case 8:
+                return AIState.Ouroboros;
+            case 9:
+                return AIState.FireBreath;
         }
 
         return AIState.Idle;
@@ -367,8 +370,8 @@ public partial class RekBoss : ScarletBoss
         NPC.width = 64;
         NPC.height = 64;
         NPC.damage = 80;
-        NPC.defense = 90;
-        NPC.lifeMax = 232_000;
+        NPC.defense = 97;
+        NPC.lifeMax = 242_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
@@ -390,7 +393,7 @@ public partial class RekBoss : ScarletBoss
         {
             _phase = 1;
         }
-        if (NPC.life < NPC.lifeMax * 0.5f)
+        if (NPC.life < NPC.lifeMax * 0.65f)
         {
             _phase = 2;
         }
@@ -423,6 +426,14 @@ public partial class RekBoss : ScarletBoss
             _lavaArenaRectangle = ArenaRectangleUpToLava();
         }
 
+        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, _arenaCenter, 0.2f));
+        SmallMoltenPlatform.RisingPlatformPositions ??= new float[4];
+        for (var i = 0; i < SmallMoltenPlatform.RisingPlatformPositions.Length; i++)
+        {
+            ref var x = ref SmallMoltenPlatform.RisingPlatformPositions[i];
+            x = MathHelper.Lerp(_lavaArenaRectangle.Left + 200, _lavaArenaRectangle.Right - 200, (float)(i / (float)(SmallMoltenPlatform.RisingPlatformPositions.Length - 1)));
+        }
+
         if (Main.netMode != NetmodeID.Server)
         {
             ProduceWaterRipples();
@@ -431,14 +442,13 @@ public partial class RekBoss : ScarletBoss
         if (!NPC.HasValidTarget)
         {
             NPC.TargetClosest();
-            if (!NPC.HasValidTarget)
+            if (!NPC.HasValidTarget && State != AIState.Despawn)
             {
                 SwitchState(AIState.Despawn);
             }
         }
         if (_teleportPosition != Vector2.Zero)
         {
-            Vector2 diff = _teleportPosition - NPC.Center;
             for (int i = 0; i < Chain.points.Length; i++)
             {
                 Chain.points[i] = _teleportPosition;
@@ -465,6 +475,9 @@ public partial class RekBoss : ScarletBoss
         _saw = false;
         _rekfireballAlpha = 0;
         _huskAlpha = 0f;
+        _globalAlpha = 1f;
+
+        NPC.dontTakeDamage = false;
         switch (State)
         {
             case AIState.Despawn:
@@ -526,7 +539,20 @@ public partial class RekBoss : ScarletBoss
                 AI_Death();
                 break;
         }
+        if(State != AIState.Ouroboros)
+        {
+            StopSawbladeSound();
+        }
 
+        var tile = Framing.GetTileSafely(NPC.Center.ToTileCoordinates());
+        var newInLava = tile.LiquidAmount > 0;
+        if ((_oldInLava && !newInLava) || (!_oldInLava && newInLava))
+        {
+            //
+            LavaEruption(NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 12, 18, radius: 0.1f);
+            LavaEruption(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 6, 18, radius: 0.1f);
+        }
+        _oldInLava = newInLava;
         float targetOuroAlpha = _ouroborosTrail ? 1f : 0f;
         _ouroborosAlpha = MathHelper.Lerp(_ouroborosAlpha, targetOuroAlpha, 0.1f);
         if (_showAfterImages)
@@ -584,7 +610,7 @@ public partial class RekBoss : ScarletBoss
                     Vector2 upVec = upRotation.ToRotationVector2();
                     upVec *= Main.rand.NextFloat(5f, 15f);
                     upVec = upVec.RotatedByRandom(0.4f);
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                    PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                     {
                         position = segment.position,
                         velocity = upVec,
@@ -675,16 +701,17 @@ public partial class RekBoss : ScarletBoss
     {
         if (TestAttack != default)
         {
+            ResetSegmentsEntirely();
             SwitchState(TestAttack);
             return;
         }
         if (MultiplayerHelper.IsHost)
         {
             AIState state = GetNextAttack(_phase);
-
+        //    Main.NewText($"Do {state}");
             SwitchState(state);
 
-            if(NPC.life <= 1)
+            if (NPC.life <= 1)
             {
                 SwitchState(AIState.Death);
             }
@@ -696,7 +723,7 @@ public partial class RekBoss : ScarletBoss
     {
         ResetLavaSegments();
         Timer++;
-        if (Timer >= 20)
+        if (Timer >= IdleTime)
         {
             NextState();
         }
@@ -710,7 +737,7 @@ public partial class RekBoss : ScarletBoss
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
-        if(NPC.life <= 0)
+        if (NPC.life <= 0)
         {
             NPC.life = 1;
         }
@@ -718,6 +745,7 @@ public partial class RekBoss : ScarletBoss
     public override void OnKill()
     {
         base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.Rek);
     }
 
 }

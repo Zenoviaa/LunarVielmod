@@ -398,7 +398,7 @@ public class SuperStaffHold : ModProjectile
         {
             var pos = ChargeCenter + Main.rand.NextVector2Circular(36, 36);
             var vel = Main.rand.NextVector2Circular(1, 1);
-            Particles.LightningSpikeySpark.Spawn(new()
+            PS.LightningSpikeySpark.Spawn(new()
             {
                 position = pos,
                 velocity = vel,

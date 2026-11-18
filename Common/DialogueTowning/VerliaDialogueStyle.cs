@@ -22,7 +22,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             {
                 if (Main.rand.NextBool(32))
                 {
-                    Particles.Particles.StarDonut.Spawn(new()
+                    Particles.PS.StarDonut.Spawn(new()
                     {
                         position = new Vector2(Main.rand.Next(rect.Left, rect.Right), Main.rand.Next(rect.Top, rect.Bottom)),
                         scale = 2f,
@@ -34,7 +34,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             }
             else
             {
-                Particles.Particles.StarDonut.Spawn(new()
+                Particles.PS.StarDonut.Spawn(new()
                 {
                     position = new Vector2(Main.rand.Next(0, 1920), Main.rand.Next(0, 1080)),
                     scale = 1f,
@@ -50,7 +50,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             if (mini)
             {
                 color *= 1;
-                Particles.Particles.StarSmoke.Spawn(new()
+                Particles.PS.StarSmoke.Spawn(new()
                 {
                     position = new Vector2(Main.rand.Next(rect.Left, rect.Right), Main.rand.Next(rect.Top, rect.Bottom)),
                     scale = 1f,
@@ -60,7 +60,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             }
             else
             {
-                Particles.Particles.StarSmoke.Spawn(new()
+                Particles.PS.StarSmoke.Spawn(new()
                 {
                     position = new Vector2(Main.rand.Next(0, 1920), Main.rand.Next(0, 1080)),
                     scale = 1,
@@ -101,13 +101,13 @@ public struct VerliaDialogueStyle : IBoxStyle
 
             using (spriteBatch.Ctx(SB.InWorldUnscaled with { blendState = BlendState.Additive }))
             {
-                Particles.Particles.StarSmoke.Draw(spriteBatch, Main.screenPosition);
+                Particles.PS.StarSmoke.Draw(spriteBatch, Main.screenPosition);
 
             }
 
             using (spriteBatch.Ctx(SB.InWorldUnscaled))
             {
-                Particles.Particles.StarDonut.Draw(spriteBatch, Main.screenPosition);
+                Particles.PS.StarDonut.Draw(spriteBatch, Main.screenPosition);
             }
             if (!mini)
             {
@@ -135,7 +135,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             {
                 if (Main.rand.NextBool(32))
                 {
-                    Particles.Particles.StarDonut.Spawn(new()
+                    Particles.PS.StarDonut.Spawn(new()
                     {
                         position = new Vector2(Main.rand.Next(rect.Left, rect.Right), Main.rand.Next(rect.Top, rect.Bottom)),
                         scale = 2f,
@@ -147,7 +147,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             }
             else
             {
-                Particles.Particles.StarDonut.Spawn(new()
+                Particles.PS.StarDonut.Spawn(new()
                 {
                     position = new Vector2(Main.rand.Next(0, 1920), Main.rand.Next(0, 1080)),
                     scale = 1f,
@@ -163,7 +163,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             if (mini)
             {
                 color *= 1;
-                Particles.Particles.StarSmoke.Spawn(new()
+                Particles.PS.StarSmoke.Spawn(new()
                 {
                     position = new Vector2(Main.rand.Next(rect.Left, rect.Right), Main.rand.Next(rect.Top, rect.Bottom)),
                     scale = 1f,
@@ -173,7 +173,7 @@ public struct VerliaDialogueStyle : IBoxStyle
             }
             else
             {
-                Particles.Particles.StarSmoke.Spawn(new()
+                Particles.PS.StarSmoke.Spawn(new()
                 {
                     position = new Vector2(Main.rand.Next(0, 1920), Main.rand.Next(0, 1080)),
                     scale = 1,
@@ -218,13 +218,13 @@ public struct VerliaDialogueStyle : IBoxStyle
 
             using (spriteBatch.Ctx(SB.InWorldUnscaled with { blendState = BlendState.Additive }))
             {
-                Particles.Particles.StarSmoke.Draw(spriteBatch, Main.screenPosition);
+                Particles.PS.StarSmoke.Draw(spriteBatch, Main.screenPosition);
             
             }
 
             using(spriteBatch.Ctx(SB.InWorldUnscaled))
             {
-                Particles.Particles.StarDonut.Draw(spriteBatch, Main.screenPosition);
+                Particles.PS.StarDonut.Draw(spriteBatch, Main.screenPosition);
             }
             if (!mini)
             {

@@ -192,7 +192,7 @@ public class BallNChain : ModItem
         base.UpdateAccessory(player, hideVisual);
         player.GetModPlayer<BallNChainPlayer>().hasBallNChain = true;
         var stats = player.GetStats();
-        stats.bossEndurance += 0.25f;
+        stats.bossEndurance += 0.12f;
         stats.enemyEndurance -= 0.5f;
     }
 }

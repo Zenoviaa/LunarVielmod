@@ -75,7 +75,7 @@ public class Sparklemist : ModProjectile
         if (Main.rand.NextBool(3))
         {
             Color randomColor = DrawUtilities.InterpolateColorArray(Main.rand.NextFloat(0f, 1f), Color.SkyBlue, Color.DarkBlue, Color.Violet, Color.White);
-            Particles.Sparklemist.Spawn(Common.Particles.Sparklemist.Data.Default with
+            PS.Sparklemist.Spawn(Common.Particles.Sparklemist.Data.Default with
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(64, 64),
                 velocity = Main.rand.NextVector2Circular(3, 3),

@@ -45,7 +45,7 @@ public class ExplodingFlyBoom : ModProjectile
             fx.Scale *= 3f;
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 48))
             {
-                Particles.GlowDust.Spawn(new()
+                PS.GlowDust.Spawn(new()
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
@@ -58,7 +58,7 @@ public class ExplodingFlyBoom : ModProjectile
             var color = Color.Lerp(Color.Green, Color.Black, 0.75f);
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 32))
             {
-                Particles.BackCloud.Spawn(new()
+                PS.BackCloud.Spawn(new()
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
@@ -69,7 +69,7 @@ public class ExplodingFlyBoom : ModProjectile
             }
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 32))
             {
-                Particles.ToxicBubbleDust.Spawn(new()
+                PS.ToxicBubbleDust.Spawn(new()
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 1f) * 0.15f,
@@ -218,7 +218,7 @@ public class ExplodingFly : ModNPC,
         {
             var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = (pos - NPC.Center).Resize(Main.rand.NextFloat(10f, 15f));
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
@@ -319,7 +319,7 @@ public class ExplodingFly : ModNPC,
     {
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 16))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),

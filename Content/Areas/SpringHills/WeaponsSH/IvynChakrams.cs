@@ -199,7 +199,7 @@ public class IvynChakramsStaminaSlash : BaseSwingProjectileV2
     void MakeLeaf(Vector2 pos)
     {
         var vel = Main.rand.NextVector2Circular(6, 6);
-        Particles.IvynLeaf.Spawn(new()
+        PS.IvynLeaf.Spawn(new()
         {
             position = pos,
             velocity = vel,
@@ -288,7 +288,7 @@ public class IvynChakramsSlash : BaseSwingProjectileV2
     {
 
         var vel = Main.rand.NextVector2Circular(6, 6);
-        Particles.IvynLeaf.Spawn(new()
+        PS.IvynLeaf.Spawn(new()
         {
             position = pos,
             velocity = vel,

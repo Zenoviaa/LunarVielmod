@@ -78,7 +78,7 @@ public class MagicalAxeGravity : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(24, 24);
             var vel = Main.rand.NextVector2Circular(6, 6);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -99,7 +99,7 @@ public class MagicalAxeGravity : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(24, 24);
             var vel = Main.rand.NextVector2Circular(24, 24);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -264,7 +264,7 @@ public class MagicalAxeSlamSwing : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(4, 4);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 innerColor = Color.SkyBlue.ToVector4(),
                 outerColor = Color.DarkBlue.ToVector4(),
@@ -440,7 +440,7 @@ public class MagicalAxeGravityHold : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(4, 4);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 innerColor = Color.SkyBlue.ToVector4(),
                 outerColor = Color.DarkBlue.ToVector4(),
@@ -624,7 +624,7 @@ public class MagicalAxeThrow : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
             var vel = Main.rand.NextVector2Circular(2, 2);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -745,10 +745,10 @@ public class MagicalAxeSlam : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-            Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, timeLeft = 200, color = Color.DarkOrange });
-            Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
-            Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
-            Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
+            PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, timeLeft = 200, color = Color.DarkOrange });
+            PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
+            PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
+            PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
             ShockCircles.CreateQuickWhiteFlash(Projectile.Center);
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
             for(var i = 0; i < 64; i++)
@@ -772,7 +772,7 @@ public class MagicalAxeSlam : ModProjectile
             {
                 var pos = Projectile.Center + Main.rand.NextVector2Circular(40, 40);
                 var vel = Main.rand.NextVector2Circular(48, 48);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,
@@ -969,7 +969,7 @@ public class MagicalAxeSwing : BaseSwingProjectileV2
                 var pos = target.Center + Main.rand.NextVector2Circular(32, 32);
                 var vel = -Vector2.UnitY * Main.rand.NextFloat(5f, 10f);
                 vel = vel.RotatedByRandom(1.54f);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,

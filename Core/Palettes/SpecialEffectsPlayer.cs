@@ -1,7 +1,4 @@
-﻿using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
-using Stellamod.Content.Biomes;
-using System.Diagnostics;
-using Terraria;
+﻿using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -20,8 +17,6 @@ public class SpecialEffectsPlayer : ModPlayer
 
     private float _blackWhiteLerp;
 
-    private MyPlayer MyPlayer => Player.GetModPlayer<MyPlayer>();
-
     private FilterManager FilterManager => Filters.Scene;
 
     private string DarknessVignette => "LunarVeil:DarknessVignette";
@@ -39,11 +34,6 @@ public class SpecialEffectsPlayer : ModPlayer
     public float blackWhiteStrength;
     public float blackWhiteThreshold;
 
-
-    //Progress Variables
-    public float darknessCurveProgress = 1f;
-    public float[] paletteUseProgress = new float[16];
-
     public override void ResetEffects()
     {
         base.ResetEffects();
@@ -54,11 +44,6 @@ public class SpecialEffectsPlayer : ModPlayer
         if (darknessCurve < 0.05f)
             darknessCurve = 0f;
 
-        //Curve based
-        /*
-        float progress = (float)(Player.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;
-        progress = MathHelper.Clamp(progress, 0, 1);
-        darknessCurve = MathHelper.Lerp(0f, darknessCurve, progress * darknessCurveProgress);*/
         whiteCurve = 0f;
         blackCurve = 1f;
 
@@ -94,91 +79,14 @@ public class SpecialEffectsPlayer : ModPlayer
         if (Main.myPlayer != Player.whoAmI)
             return;
 
-        LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+        LunarVeilClientConfig clientConfig = LunarVeilClientConfig.Instance;
         ScreenShaderData screenShaderData;
-        bool abyssPaletteActive = (MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus) && clientConfig.PaletteShadersToggle;
-
-
-        //        bool rustyPaletteActive = (MyPlayer.ZoneGovheil || MyPlayer.ZoneAcid) && clientConfig.PaletteShadersToggle;
-        bool hellPaletteActive = ((clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneUnderworldHeight) || (MyPlayer.ZoneCinder || MyPlayer.ZoneDrakonic) && clientConfig.PaletteShadersToggle);
-
-        if (Player.GetModPlayer<MyPlayer>().ZoneWonder)
-            hellPaletteActive = false;
-
-        bool royalCapitalPaletteActive = MyPlayer.ZoneAlcadzia && clientConfig.PaletteShadersToggle;
-
-        bool dungeonPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneDungeon;
-        bool desertPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle
-           && (Player.ZoneDesert || Player.GetModPlayer<MyPlayer>().ZoneAshotiTemple)
-           && !(Player.ZoneCrimson || Player.ZoneCorrupt)
-           && Player.ZoneUndergroundDesert;
-
-        bool desertTopPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle
-       && (Player.ZoneDesert || Player.GetModPlayer<MyPlayer>().ZoneAshotiTemple || Player.GetModPlayer<MyPlayer>().ZoneColloseum)
-       && !(Player.ZoneCrimson || Player.ZoneCorrupt)
-       && !Player.ZoneUndergroundDesert;
-
-
-        bool fablePaletteActive = Player.GetModPlayer<MyPlayer>().ZoneFable && clientConfig.PaletteShadersToggle;
-        bool mistyPaletteActive = Player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon && clientConfig.PaletteShadersToggle;
-        bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime && clientConfig.PaletteShadersToggle;
-        //  bloodPaletteActive |= NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
-        //   bloodPaletteActive = true;
-        bool sanguinePaletteActive = NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
-        //   Filters.Scene["Stellamod:Aegislav"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.6f, 0f, 0f).UseOpacity(0.25f), EffectPriority.Medium);
-
-        if (abyssPaletteActive)
-        {
-            //  darkness += 2;
-        }
-
-        if (hellPaletteActive)
-        {
-            darkness += 1;
-        }
-        //     UsePaletteShader("RoyalCapital.pal", royalCapitalPaletteActive, ref paletteUseProgress[3]);
-
-        /*
-
-
-        UsePaletteShader("Abyss.pal", abyssPaletteActive, ref paletteUseProgress[0]);
-        UsePaletteShader("VilepipesNGarden.pal", rustyPaletteActive, ref paletteUseProgress[1]);
-        UsePaletteShader("Hell.pal", hellPaletteActive, ref paletteUseProgress[2]);
-    
-        UsePaletteShader("Dungeon.pal", dungeonPaletteActive, ref paletteUseProgress[4]);
-        UsePaletteShader("Desert.pal", desertPaletteActive, ref paletteUseProgress[5]);
-        UsePaletteShader("DesertTop.pal", desertTopPaletteActive, ref paletteUseProgress[6]);
-        UsePaletteShader("Fable.pal", fablePaletteActive, ref paletteUseProgress[7]);
-        UsePaletteShader("IllurianMistyDungeon.pal", mistyPaletteActive, ref paletteUseProgress[8]);
-        UsePaletteShader("BloodHound.pal", bloodPaletteActive, ref paletteUseProgress[9]);
-        UsePaletteShader("SanguineSingularity.pal", sanguinePaletteActive, ref paletteUseProgress[10]);
-
-
-        */
-        CalculateDarkness();
-
-        //    ToggleScreenShader("LunarVeil:DarknessVignette", darkness != 0);
-
-        //  Main.ColorOfTheSkies = Color.Black;
-
-
 
         screenShaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
         screenShaderData.UseProgress(darknessCurve);
         screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
         screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
         ToggleScreenShader("LunarVeil:DarknessCurve", darknessCurve != 0);
-        //      Main.NewText(darknessCurve);
-        //     Main.NewText(darknessCurve);
-        if (hellPaletteActive || desertPaletteActive || desertTopPaletteActive)
-        {
-            darknessCurveProgress -= 0.1f;
-        }
-        else
-        {
-            darknessCurveProgress += 0.1f;
-        }
-        darknessCurveProgress = MathHelper.Clamp(darknessCurveProgress, 0f, 1f);
 
         blurStrength -= 0.05f;
         if (blurStrength <= 0f)
@@ -198,7 +106,6 @@ public class SpecialEffectsPlayer : ModPlayer
         screenShaderData = FilterManager["LunarVeil:Blur"].GetShader();
         screenShaderData.UseProgress(blurStrength * _blurLerp);
         ToggleScreenShader("LunarVeil:Blur", blurActive);
-
 
         bool blackWhiteActive = blackWhiteStrength != 0;
         if (blackWhiteActive)
@@ -231,25 +138,6 @@ public class SpecialEffectsPlayer : ModPlayer
         ToggleScreenShader("LunarVeil:BlackWhite", _blackWhiteLerp != 0);
     }
 
-    private void CalculateDarkness()
-    {
-        if (hasSpiritPendant)
-        {
-            darkness -= 0.5f;
-        }
-        if (hasSunGlyph)
-        {
-            darkness -= 0.5f;
-        }
-        if (darkness <= 0)
-        {
-            darkness = 0;
-        }
-        if (Player.GetModPlayer<MyPlayer>().ZoneCinder || Player.GetModPlayer<MyPlayer>().ZoneWonder || Player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon)
-            darkness = 0;
-
-        _targetVignetteStrength = darkness;
-    }
 
     public override void PostUpdate()
     {
@@ -260,7 +148,6 @@ public class SpecialEffectsPlayer : ModPlayer
 
     private void UpdateVignette()
     {
-
         if (Main.netMode == NetmodeID.Server)
             return;
         if (Main.myPlayer != Player.whoAmI)

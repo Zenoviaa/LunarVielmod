@@ -1,5 +1,7 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Utilities;
+using Stellamod.Assets;
 using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -42,6 +44,110 @@ public partial class RekBoss
             return _arenaRectangleToLava;
         }
     }
+    SlotId? _sawSlot;
+    public void PlayBumpSound()
+    {
+        var e = AssetReferences.Assets.Sounds.Rek.RekBump.Asset with { PitchVariance = 0.9F };
+        SoundEngine.PlaySound(e);
+    }
+
+    public void PlayLavaSplashSound()
+    {
+        var e = AssetReferences.Assets.Sounds.Rek.LavaSplash.Asset;
+        e.PitchVariance = 1F;
+        e.Volume = 1f;
+        SoundEngine.PlaySound(e);
+
+    }
+    public void PlayLavaSinkSound()
+    {
+        var e = AssetReferences.Assets.Sounds.Rek.GoingDark.Asset;
+        e.PitchVariance = 1F;
+        e.Volume = 0.4F;
+        SoundEngine.PlaySound(e);
+
+    }
+    public void PlayStartupSound()
+    {
+        SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.intothelava.Asset);
+    }
+
+    public void StopSawbladeSound()
+    {
+        if (_sawSlot == null)
+            return;
+        if (SoundEngine.TryGetActiveSound(_sawSlot.Value, out var result) && result.Style.SoundPath == AssetReferences.Assets.Sounds.Rek.SawAmbient.KEY)
+        {
+            result.Volume *= 0.9F;
+            if(result.Volume <= 0.05F)
+            {
+                result.Stop();
+                _sawSlot = null;
+            }
+        
+        }
+    }
+    public void ManageSawbladeSound()
+    {
+        if (_sawSlot == null)
+        {
+            _sawSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.SawAmbient.Asset);
+        }
+
+        if(SoundEngine.TryGetActiveSound(_sawSlot.Value, out var result) && result.Style.SoundPath == AssetReferences.Assets.Sounds.Rek.SawAmbient.KEY)
+        {
+            result.Volume = 1f - (Vector2.Distance(NPC.Center, Main.LocalPlayer.Center) / 512F);
+        }
+        else
+        {
+            _sawSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.SawAmbient.Asset);
+        }
+
+    }
+
+    public static void LavaEruption(Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
+    {
+
+        numBalls *= 2;
+        radius *= 0.5F;
+        var halfRadius = radius * 0.5F;
+        for (var i = 0; i < numBalls; i++)
+        {
+            var pos = position;
+            pos += Main.rand.NextVector2Circular(64, 64);
+            var vel = velocity;
+            vel = vel.RotatedByRandom(0.2f);
+            vel *= Main.rand.NextFloat(0.2f, 1f);
+            var shouldSplit = radius > halfRadius && Main.rand.NextBool(8);
+            PS.LavaMetaballs.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                radius = radius * Main.rand.NextFloat(0.5f, 1F),
+                needsSplit = shouldSplit,
+                timeLeft = Main.rand.Next(45, 140)
+            });
+        }
+
+        for (var i = 0; i < numBalls / 3; i++)
+        {
+            var pos = position;
+            pos += Main.rand.NextVector2Circular(64, 64);
+            var vel = velocity;
+            vel = vel.RotatedByRandom(0.2f);
+            vel *= Main.rand.NextFloat(0.2f, 1f);
+            var shouldSplit = radius > halfRadius && Main.rand.NextBool(8);
+            PS.LavaMetaballsFront.Spawn(new()
+            {
+                position = pos ,
+                velocity = vel,
+                radius = radius * 0.7F,
+                needsSplit = shouldSplit,
+                timeLeft = Main.rand.Next(25, 90)
+            });
+        }
+    }
+
 
     public void CreateArena()
     {
@@ -73,7 +179,7 @@ public partial class RekBoss
             Vector2 pos = segment.position;
             pos += Main.rand.NextVector2Circular(16, 16);
             Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = pos,
                 velocity = Main.rand.NextVector2Circular(18, 18),
@@ -157,7 +263,7 @@ public partial class RekBoss
         var d = DustParticle.Spawn(spawnPos, spawnVelocity, DustParticleSpawnParams.Default);
         d.Scale *= 0.8f;
         d.gravity = 0;*/
-        Particles.BitDust.Spawn(BitDustFactory.Default with { position = spawnPos, velocity = spawnVelocity, timeLeft = 24 });
+        PS.BitDust.Spawn(BitDustFactory.Default with { position = spawnPos, velocity = spawnVelocity, timeLeft = 24 });
         if (Main.rand.NextBool(2))
         {
             spawnPos = position + Main.rand.NextVector2CircularEdge(384, 384);

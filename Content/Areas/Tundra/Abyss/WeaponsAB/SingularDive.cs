@@ -73,7 +73,7 @@ public class SingularDiveBoom : ModProjectile
                 Vector2 vel = -Vector2.UnitY;
                 vel *= Main.rand.NextFloat(4f, 35);
                 vel = vel.RotatedByRandom(0.6f);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,
@@ -215,7 +215,7 @@ public class SingularDiveDive : ModProjectile
             pos += Main.rand.NextVector2Circular(36, 36);
 
             Vector2 vel = Main.rand.NextVector2Circular(9, 9);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -334,7 +334,7 @@ public class SingularDiveSlash : BaseSwingProjectileV2
             Vector2 spawnPos = swingTrailCache.InterpolateArrayClamped(Interpolant);
             if (Main.rand.NextBool(6))
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = spawnPos,
                     innerColor = Color.White.ToVector4(),
@@ -369,7 +369,7 @@ public class SingularDiveSlash : BaseSwingProjectileV2
             FXUtil.GlowCircleBoom(target.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 30, baseSize: 0.2f);
             for (float f = 0; f < 3; f++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     innerColor = Color.SkyBlue.ToVector4(),
                     outerColor = Color.DarkBlue.ToVector4(),

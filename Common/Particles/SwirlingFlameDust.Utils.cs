@@ -27,7 +27,7 @@ public static partial class ParticleUtils
             vel *= Main.rand.NextFloat(factory.speedRange.X, factory.speedRange.Y);
             var pos = factory.start;
             pos += Main.rand.NextVector2Circular(16, 16);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -49,7 +49,7 @@ public static partial class ParticleUtils
             vel *= Main.rand.NextFloat(factory.speedRange.X, factory.speedRange.Y);
             var pos = factory.start;
             pos += Main.rand.NextVector2Circular(16, 16);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -72,7 +72,7 @@ public static partial class ParticleUtils
             vel *= Main.rand.NextFloat(factory.speedRange.X, factory.speedRange.Y);
             var pos = factory.start;
             pos += Main.rand.NextVector2Circular(32, 32);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

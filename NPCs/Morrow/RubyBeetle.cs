@@ -59,7 +59,7 @@ namespace Stellamod.NPCs.Morrow
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             //Multiply by overworld chance so it doesn't spawn during vanilla events and such
-            float spawnChance = SpawnCondition.Overworld.Chance * (spawnInfo.Player.ZoneFable() ? 1.6f : 0f);
+            float spawnChance = SpawnCondition.Overworld.Chance * (spawnInfo.Player.ZoneFable ? 1.6f : 0f);
             return spawnChance;
         }
 

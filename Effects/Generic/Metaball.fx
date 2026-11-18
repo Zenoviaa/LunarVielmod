@@ -1,11 +1,6 @@
 sampler spriteSampler : register(s0);
 float3 particles[100];
 float2 texelSize;
-float InExpo(float t)
-{
-    const float p = 10.0;
-    return t == 0 ? 0 : pow(2, p * t - p);
-}
 
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
@@ -16,8 +11,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0)
 
     //Max number of metaballs we're sampling
     float totalContribution = 0.0;
-    float radius = 0.06;
-    
+
     //Going to try drawing this in screenspace, single pass on a render target
     for (int i = 0; i < 100; i++)
     {

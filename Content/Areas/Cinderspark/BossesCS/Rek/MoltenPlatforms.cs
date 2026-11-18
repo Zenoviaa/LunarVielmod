@@ -109,12 +109,30 @@ public class BigMoltenPlatform : AbstractPlatformNPC
 
 public class SmallMoltenPlatform : AbstractPlatformNPC
 {
+    public static float[] RisingPlatformPositions;
+    int PlatformIndex => (int)NPC.ai[0];
     private Asset<Texture2D> _glowMaskTexture;
     public override bool CheckActive()
     {
         if (NPC.AnyNPCs(ModContent.NPCType<RekBoss>()))
             return false;
         return base.CheckActive();
+    }
+    public override bool PreAI()
+    {
+        return base.PreAI();
+    }
+    public override void AI()
+    {
+        base.AI();
+
+
+    }
+    public override float GetWaterRisingPlatformX()
+    {
+        if(NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>()) || RisingPlatformPositions == null || RisingPlatformPositions.Length <= 0)
+            return base.GetWaterRisingPlatformX();
+        return RisingPlatformPositions[PlatformIndex];
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {

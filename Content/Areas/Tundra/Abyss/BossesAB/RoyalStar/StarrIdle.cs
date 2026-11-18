@@ -76,7 +76,7 @@ public class StarrIdle : VeilTownNPC,
         NPC.PlayAnimationLooped(ANIM_SLEEPING);
         if(Timer % 100 == 0)
         {
-            Particles.FlyingZee.Spawn(new()
+            PS.FlyingZee.Spawn(new()
             {
                 position = NPC.TopRight,
                 velocity = Vector2.Zero,

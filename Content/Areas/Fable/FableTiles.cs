@@ -266,7 +266,7 @@ public class FableCandle : ZTile
         Vector2 pos = new Point(i, j).ToWorldCoordinates();
         pos.Y -= 12;
         pos.X += 6;
-        Particles.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = pos, timeleft = 70, style = 2 });
+        PS.RagingFlameDust.Spawn(RagingFlameDustData.Default with { position = pos, timeleft = 70, style = 2 });
         Lighting.AddLight(pos , new Vector3(1f, 0.3f, 0.3f));
 
     }

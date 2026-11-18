@@ -522,7 +522,7 @@ file static class GoldenLeafTreeUtility
             {
                 Vector2 leafSpawnPoint = worldCoordinates + Main.rand.NextVector2Circular(164, 64);
                 leafSpawnPoint.Y -= 256;
-                Particles.FallingBigGoldenLeaf.Spawn(new()
+                PS.FallingBigGoldenLeaf.Spawn(new()
                 {
                     position = leafSpawnPoint,
                     timeLeft = 600

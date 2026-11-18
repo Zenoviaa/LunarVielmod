@@ -58,9 +58,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
-
-            BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
-            return myPlayer.ZoneMoonspiralTower;
+            return player.ZoneMoonspiralTower;
         }
     }
     public class AbyssPaletteEffect : PaletteEffect
@@ -87,9 +85,6 @@ namespace Stellamod.Core.PaletteShadingSystem
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneGovheil)
                 return true;
-            if (myPlayer.ZoneAcid)
-                return true;
-
             return false;
         }
     }
@@ -164,9 +159,10 @@ namespace Stellamod.Core.PaletteShadingSystem
 
 
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
+
             if (myPlayer.ZoneAshotiTemple)
                 return true;
-            if (player.GetModPlayer<MyPlayer>().ZoneColloseum)
+            if (player.ZoneColloseum)
                 return true;
             if (player.ZoneUndergroundDesert)
                 return false;
@@ -184,9 +180,8 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-     
-            MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
-            if (myPlayer.ZoneFable)
+    
+            if (player.ZoneFable)
                 return true;
             return false;
         }

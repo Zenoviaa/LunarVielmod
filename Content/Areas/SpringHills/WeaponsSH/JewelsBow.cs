@@ -120,7 +120,7 @@ public class JewelShot : ModProjectile
         fx.Scale *= 0.6f;
         for (int i = 0; i < 8; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = Main.rand.NextVector2Circular(14, 14),

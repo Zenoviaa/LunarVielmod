@@ -55,6 +55,7 @@ public partial class RekBoss
                         Teleport(eruptionLeft);
                     }
 
+                    _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60F));
                     if (Timer >= moveTime)
                     {
                         Timer = 0;
@@ -98,7 +99,7 @@ public partial class RekBoss
                         }
                         if (Timer % 10 == 0)
                         {
-                            Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
+                            PS.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
                         }
                         ShakeScreenPosition.Shake = 8;
 

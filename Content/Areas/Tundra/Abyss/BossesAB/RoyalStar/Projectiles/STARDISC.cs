@@ -57,7 +57,7 @@ public class STARDISC : ModProjectile
         Projectile.frame = 0;
         if(Timer % 12 == 0)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center,
                 velocity = Main.rand.NextVector2Circular(5, 5),
@@ -146,7 +146,7 @@ public class STARDISC : ModProjectile
         {
             Vector2 pos = Projectile.Center;
             Vector2 vel = Main.rand.NextVector2Circular(8, 8);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

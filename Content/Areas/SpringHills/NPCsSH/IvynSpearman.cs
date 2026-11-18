@@ -253,7 +253,7 @@ public class IvynSpearman : ModNPC,
 
             if (Timer % 2 == 0)
             {
-                Particles.IvynLeaf.Spawn(new()
+                PS.IvynLeaf.Spawn(new()
                 {
                     position = NPC.Center + Main.rand.NextVector2Circular(32, 32),
                     velocity = Main.rand.NextVector2Circular(3, 3),
@@ -301,7 +301,7 @@ public class IvynSpearman : ModNPC,
                 NPC.noGravity = true;
                 if (Timer % 4 == 0 && NPC.velocity.Y > 0)
                 {
-                    Particles.StabTriangle.Spawn(new()
+                    PS.StabTriangle.Spawn(new()
                     {
                         position = NPC.Bottom + NPC.velocity * 3,
                         velocity = -NPC.velocity * 0.5f,

@@ -46,7 +46,7 @@ public class CeramicPot : ABreakableNPC
                 var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
                 var vel = (pos - NPC.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(3f, 7);
                 vel.Y -= 5;
-                Particles.CeramicPot.Spawn(new()
+                PS.CeramicPot.Spawn(new()
                 {
                     position = pos,
                     velocity = vel,

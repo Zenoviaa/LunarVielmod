@@ -103,10 +103,10 @@ public class GOTYOU : ModProjectile,
             FXUtil.MakeSoilParticle(Projectile.Center + Main.rand.NextVector2Circular(48, 32), -Projectile.velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.6f, 1f));
         }
 
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, timeLeft = 200, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, timeLeft = 200, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = Projectile.Center, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
     }
 
     public override bool OnTileCollide(Vector2 oldVelocity)

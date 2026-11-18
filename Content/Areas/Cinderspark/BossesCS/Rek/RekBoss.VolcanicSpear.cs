@@ -10,7 +10,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
-    private int Volcanic_Spear_Damage => 50;
+    private int Volcanic_Spear_Damage => 100;
     private float Volcanic_Spear_Come_Up_Time => 80;
     private float Volcanic_Spear_Go_Down_Time => 130;
     private float Volcanic_Spear_Crash_Time => 210;
@@ -52,8 +52,7 @@ public partial class RekBoss
                         _destroyArena = NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>());
                     }
 
-                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.25f);
-                    CameraTargetSystem.AddTarget(panning);
+
                     NPC.velocity.X -= 0.11f;
                     NPC.velocity.Y -= 0.15f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
@@ -124,10 +123,6 @@ public partial class RekBoss
                         }
 
                     }
-
-
-                    Vector2 panning = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f);
-                    CameraTargetSystem.AddTarget(panning);
 
                     if (Timer >= Volcanic_Spear_Crash_Time * 0.5f)
                         Animator.PlayAnimation(ANIM_SPEAR_READY, AnimationParams.NoLooping);
@@ -206,7 +201,7 @@ public partial class RekBoss
                         {
                             int seg = Main.rand.Next(0, Segments.Length);
                             var segment = Segments[seg];
-                            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                             {
                                 position = segment.position + Main.rand.NextVector2Circular(32, 32),
                                 velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 25f),

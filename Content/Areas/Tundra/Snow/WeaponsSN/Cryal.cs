@@ -67,7 +67,7 @@ public class CryalIceSpike : ModProjectile
         }
         if (Main.rand.NextBool(8))
         {
-            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 innerColor = Color.White.ToVector4(),
                 outerColor = Color.Cyan.ToVector4(),

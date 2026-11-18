@@ -136,7 +136,7 @@ public class PearlbornSlime : ModNPC,
         _outliner.Update();
         if (Main.rand.NextBool(4))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = NPC.Center + Main.rand.NextVector2Circular(24, 24),
                 velocity = Main.rand.NextVector2Circular(6, 6),
@@ -287,7 +287,7 @@ public class PearlbornSlime : ModNPC,
                 var vel = (pos - NPC.Center);
                 vel = vel.SafeNormalize(Vector2.Zero);
                 vel *= Main.rand.NextFloat(4, 9);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,
@@ -346,7 +346,7 @@ public class PearlbornSlime : ModNPC,
             var pos = NPC.Center;
             pos += Main.rand.NextVector2Circular(128, 128);
             var vel = (NPC.Center - pos) * 0.05f;
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

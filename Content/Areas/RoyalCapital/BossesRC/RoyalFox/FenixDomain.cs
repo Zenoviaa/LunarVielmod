@@ -95,7 +95,7 @@ public class FenixDomain : ModSystem
 
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             spriteBatch.Draw(domainTargetSwap, Vector2.Zero, drawColor2);
-            spriteBatch.Draw(domainTargetSwap, Vector2.Zero, null, Color.White * 0.2f, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0);
+            spriteBatch.Draw(domainTargetSwap, Vector2.Zero, null, Color.White * 0.27f, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0);
         }
 
         if (ShouldRenderPlatforms())

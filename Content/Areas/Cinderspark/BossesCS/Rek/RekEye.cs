@@ -188,7 +188,15 @@ public class RekEye : ModNPC
         }
 
         NPC.realLife = Parent.whoAmI;
-        if(NPC.velocity.Length() > 5)
+        if (NPC.life <= 0)
+        {
+            NPC.life = 1;
+        }
+        if (Parent.life <= 0)
+        {
+            Parent.life = 1;
+        }
+        if (NPC.velocity.Length() > 5)
         {
             _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 1f, 0.1f);
         }
@@ -206,7 +214,7 @@ public class RekEye : ModNPC
         }
         if (Main.rand.NextBool(8))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = NPC.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 25f),
@@ -215,7 +223,7 @@ public class RekEye : ModNPC
                 outerColor = Color.Red.ToVector4()
             });
         }
-        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.1f));
+        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.13f));
         _contactDamage = false;
         switch (State)
         {
@@ -295,7 +303,7 @@ public class RekEye : ModNPC
         if(Timer == 1)
         {
             CreateSpawnEffect();
-            _myRemainingLifeTime = 1800;
+            _myRemainingLifeTime = 2500;
         }
 
         if(Timer >= 60)
@@ -332,18 +340,18 @@ public class RekEye : ModNPC
                         var sound = AssetRegistry.Sounds.Rek.SmallFlameBlast with { PitchVariance = 0.3f };
                         SoundEngine.PlaySound(sound, NPC.position);
                         NPC.TargetClosest();
-                        _pointToMoveToward = MyTarget.Center + new Vector2(0, -128);
+                        _pointToMoveToward = Parent.Center + new Vector2(-164, 0);
                         _startPosition = NPC.Center;
                         _initialVelocity = NPC.velocity;
                     }
                     LookAtPlayer();
-                    _pointToMoveToward = _pointToMoveToward.RotatedBy(0.08f, MyTarget.Center);
+              //      _pointToMoveToward = _pointToMoveToward.RotatedBy(0.03f, MyTarget.Center);
                     float ratio = Timer / Fireball_Prep_Time;
                     float ease = EasingFunction.InOutQuad(ratio);
                     float ease2 = Timer / (Fireball_Prep_Time * 0.5f);
                     ease2 = EasingFunction.InOutSine(ease2);
                     Vector2 posToMoveTo = Vector2.Lerp(_startPosition, _pointToMoveToward, ease);
-                    posToMoveTo = Vector2.Lerp(posToMoveTo, MyTarget.Center, ease * 0.5f);
+                   // posToMoveTo = Vector2.Lerp(posToMoveTo, MyTarget.Center, ease * 0.75f);
                     Vector2 vel = posToMoveTo - NPC.Center;
                     Vector2 easedVelocity = Vector2.Lerp(_initialVelocity, vel, ease2);
                     NPC.velocity = easedVelocity;
@@ -359,14 +367,15 @@ public class RekEye : ModNPC
                 {
                     LookAtPlayer();
                     _outliner.warning = true;
-                    float dist = Vector2.Distance(NPC.Center, MyTarget.Center);
+                    var pos2 = MyTarget.Center - new Vector2(0, 100);
+                    float dist = Vector2.Distance(NPC.Center, pos2);
                     if (dist < 256)
                     {
-                        NPC.velocity -= (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                        NPC.velocity -= (pos2 - NPC.Center).SafeNormalize(Vector2.Zero) * 0.5f;
                     }
                     else
                     {
-                        NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                        NPC.velocity += (pos2 - NPC.Center).SafeNormalize(Vector2.Zero) * 0.5f;
                     }
 
                     if (Main.rand.NextBool(2))
@@ -402,16 +411,17 @@ public class RekEye : ModNPC
                     NPC.velocity *= 0.91f;
 
                     float dist = Vector2.Distance(NPC.Center, MyTarget.Center);
-                    if(dist < 256)
+                    if(Timer < 25)
                     {
-                        NPC.velocity -= (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                        NPC.velocity -= (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.85F;
                     }
                     else
                     {
-                        NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.7f;
+                        NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.85f;
                     }
+                    _eyeFlash = Timer / 25F;
 
-                    if (Timer >= 38)
+                    if (Timer >= 45)
                     {
                         CreateFireShoot(NPC.Center);
                         NPC.velocity = (MyTarget.Center - NPC.Center);
@@ -474,6 +484,9 @@ public class RekEye : ModNPC
         _eyeColor = Color.Red;
         var sound = AssetRegistry.Sounds.RekFireballShoot with { PitchVariance = 0.3f };
         SoundEngine.PlaySound(sound, position);
+
+        var sound2 = AssetReferences.Assets.Sounds.Rek.EyeFireball.Asset with { PitchVariance = 0.8F };
+        SoundEngine.PlaySound(sound2, position);
 
         FXUtil.ShakeCamera(position, 1024, 8);
         for (float f = 0; f <8; f++)
@@ -648,7 +661,9 @@ public class RekEye : ModNPC
                     LookAtPlayer();
                     _outliner.warning = true;
                     NPC.velocity *= 0.94f;
-                    if(Timer >= 30)
+                    _eyeFlash = Timer / 30F;
+                    NPC.velocity.Y -= MathHelper.Lerp(0, 1, _eyeFlash);
+                    if (Timer >= 30)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -661,7 +676,10 @@ public class RekEye : ModNPC
                     //Give some initial velocity
                     if (Timer == 1)
                     {
-                        NPC.velocity.Y = -6;
+                        var lavaSound = AssetReferences.Assets.Sounds.Rek.EyeReadyfall.Asset;
+                        SoundEngine.PlaySound(lavaSound);
+                        PixelPrimitiveCircleFactory.CreateFlamingCircleBig(NPC.Center);
+                        NPC.velocity.Y = -8;
                     }
 
                     //Calculate Stomp Velocity
@@ -763,7 +781,9 @@ public class RekEye : ModNPC
                 {
                     if(Timer == 1)
                     {
-       
+                        var lavaSound = AssetReferences.Assets.Sounds.Rek.EyeInTheLava.Asset with { PitchVariance = 0.5f };
+                        SoundEngine.PlaySound(lavaSound);
+                        RekBoss.LavaEruption(NPC.Center, -NPC.velocity, 16, 0.08F);
                         if (MultiplayerHelper.IsHost)
                         {
                             ProjFirer firer = ProjFirer.From<MeteorBoom>(NPC);
@@ -849,7 +869,23 @@ public class RekEye : ModNPC
         TrailDrawer.Draw(NPC.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, NPC.Size * 0.5f);
         TrailDrawer.Draw(NPC.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, NPC.Size * 0.5f);
     }
-
+    public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyIncomingHit(ref modifiers);
+        modifiers.FinalDamage *= 0.5F;
+    }
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+        if (NPC.life <= 0)
+        {
+            NPC.life = 1;
+        }
+        if (Parent.life <= 0)
+        {
+            Parent.life = 1;
+        }
+    }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {

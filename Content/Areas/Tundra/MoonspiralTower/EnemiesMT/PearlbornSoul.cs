@@ -273,7 +273,7 @@ public class PearlbornSoul : ModNPC,
                 var vel = (pos - NPC.Center);
                 vel = vel.SafeNormalize(Vector2.Zero);
                 vel *= Main.rand.NextFloat(9, 15f);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,

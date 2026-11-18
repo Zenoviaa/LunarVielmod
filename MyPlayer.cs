@@ -1,6 +1,7 @@
 ﻿using Stellamod.Buffs;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
+using Stellamod.Content.Biomes;
 using Stellamod.Content.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
@@ -19,20 +20,14 @@ namespace Stellamod
 
     public class MyPlayer : ModPlayer
     {
-        public bool TAuraSpawn;
+
         public bool Dice;
-        public int increasedLifeRegen;
-        public int TAuraCooldown = 600;
+
         public bool ArcaneM;
         public int ArcaneMCooldown = 0;
-        public bool ZoneMorrow = false;
         public int Timer = 0;
-        public bool NotiaB;
-        public int NotiaBCooldown = 0;
         public int SwordCombo;
-        public int SwordComboSlash;
         public int SwordComboR;
-        public int lastSelectedI;
         public bool Lovestruck;
         public int LovestruckBCooldown = 0;
         public bool ADisease;
@@ -40,8 +35,6 @@ namespace Stellamod
         public bool GovheilB;
         public bool GovheilC;
         public int GovheilBCooldown = 0;
-        public bool DucanB;
-        public int DucanBCooldown = 0;
         public bool Daedstruck;
         public int DaedstruckBCooldown = 1;
 
@@ -53,16 +46,9 @@ namespace Stellamod
         public bool Onion3 = false;
         public bool Onion4 = false;
 
-
-
         //---------------------------------------------------- Igniter effects and uh accessory stuff
 
         public float IgniterVelocity = 1f;
-        public int IgniterDamage = 0;
-        public int IgniterStrike = 0;
-        public bool LuckyW = false;
-        public bool FlamedTomeDusts = false;
-        public bool MagicTomeDusts = false;
 
         //---------------------------------------------------------------------------------------------------------------
 
@@ -70,27 +56,16 @@ namespace Stellamod
         //---------------------------------------------------------------------------------------------------------------
 
         private float shakeDrama;
-        public Vector2 startPoint;
-
-        public Vector2 focusPoint;
-        public float focusTransition;
-        public float focusLength;
-        public bool shouldFocus;
         public bool ZoneAbyss;
         public bool ZoneAurelus;
-        public bool ZoneStarbloom;
-        public bool ZoneAcid;
         public bool ZoneGovheil;
         public bool ZoneAlcadzia;
         public bool ZoneVillage;
         public bool ZoneCinder;
         public bool ZoneDrakonic;
         public bool ZoneMechanics;
-        public bool ZoneLab;
         public bool ZoneIlluria;
         public bool ZoneIshtar;
-        public bool ZoneVeil;
-        public bool ZoneGreenSun;
         public bool ZoneBloodCathedral;
         public bool ZoneAshotiTemple;
         public bool ZoneMineshaft;
@@ -100,79 +75,35 @@ namespace Stellamod
 
         public bool StealthRune;
         public bool SingularityFragment;
-        public bool NiiviFight;
         public float StealthTime;
 
         public bool CorsageRune;
         public float CorsageTime;
 
-        public bool DetonationRune;
         public bool GIBomb = false;
         public bool RadiantBomb = false;
         public int RadiantBombCooldown = 0;
-
-        public bool SpiritPendent = false;
-
-
         public int Bridget = 0;
-
-
         public bool HasAlcaliteSet;
         public bool Waterwhisps;
 
-
-
         public void ShakeAtPosition(Vector2 position, float distance, float strength)
         {
-            LunarVeilClientConfig config = ModContent.GetInstance<LunarVeilClientConfig>();
+            LunarVeilClientConfig config = LunarVeilClientConfig.Instance;
             if (!config.ShakeToggle)
                 return;
-            shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
+
+            var dq = distance * distance;
+            shakeDrama = strength * (1f - Player.Center.DistanceSQ(position) / dq) * 0.5f;
         }
-
-
 
         public override void ModifyScreenPosition()
         {
-            if (shouldFocus)
-            {
-                if (focusLength > 0f)
-                {
-                    if (focusTransition <= 1f)
-                    {
-                        Main.screenPosition = Vector2.SmoothStep(startPoint, focusPoint, focusTransition += 0.05f);
-                    }
-                    else
-                    {
-                        Main.screenPosition = focusPoint;
-                    }
-                    focusLength -= 0.05f;
-                }
-                else if (focusTransition >= 0f)
-                {
-                    Main.screenPosition = Vector2.SmoothStep(base.Player.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), focusPoint, focusTransition -= 0.05f);
-                }
-                else
-                {
-                    shouldFocus = false;
-                }
-            }
             if (shakeDrama > 0.5f)
             {
                 shakeDrama *= 0.92f;
                 Vector2 shake = new Vector2(Main.rand.NextFloat(shakeDrama), Main.rand.NextFloat(shakeDrama));
                 Main.screenPosition += shake;
-            }
-        }
-        public void FocusOn(Vector2 pos, float length)
-        {
-            if (base.Player.Center.Distance(pos) < 2000f)
-            {
-                focusPoint = pos - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
-                focusTransition = 0f;
-                startPoint = Main.screenPosition;
-                focusLength = length;
-                shouldFocus = true;
             }
         }
 
@@ -306,23 +237,23 @@ namespace Stellamod
 
         public override void ResetEffects()
         {
+
             // Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
-            TAuraSpawn = false;
+
             ArcaneM = false;
             Waterwhisps = false;
             Dice = false;
-            NotiaB = false;
+
             Lovestruck = false;
             ADisease = false;
             GovheilB = false;
-            DucanB = false;
+ 
             GovheilC = false;
             Daedstruck = false;
 
             HasAlcaliteSet = false;
-            SpiritPendent = false;
 
-            DetonationRune = false;
+
             CorsageRune = false;
             StealthRune = false;
 
@@ -350,11 +281,6 @@ namespace Stellamod
 
 
             IgniterVelocity = 1f;
-            IgniterDamage = 0;
-            IgniterStrike = 0;
-            LuckyW = false;
-            FlamedTomeDusts = false;
-            MagicTomeDusts = false;
             if (ZoneColloseum)
                 Player.ZoneDesert = true;
         }
@@ -369,8 +295,6 @@ namespace Stellamod
                 return;
 
             Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
-            //   Player.ManageSpecialBiomeVisuals("Stellamod:AuroreanStars", ZoneAlcadzia);
-            //     Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", false);
         }
 
 
@@ -390,8 +314,6 @@ namespace Stellamod
 
         public override void PostUpdate()
         {
-
-
 
             if (Aurorean >= 0.5f)
             {
@@ -430,7 +352,7 @@ namespace Stellamod
                 SingularityFragment = false;
             }
 
-            if (SingularityFragment || NiiviFight)
+            if (SingularityFragment)
             {
                 if (Main.shimmerAlpha <= 1)
                 {
@@ -487,31 +409,7 @@ namespace Stellamod
 
 
 
-            if (SwordComboSlash > 5)
-            {
-                SwordComboSlash = 0;
-            }
 
-
-
-
-            if (ZoneAcid || ZoneLab)
-            {
-                if (player.wet)
-                {
-                    player.AddBuff(ModContent.BuffType<Irradiation>(), 30);
-                }
-
-
-                //Create Gores
-                float goreScale = Main.rand.NextFloat(0.5f, 0.9f);
-                int x = (int)(Main.windSpeedCurrent > 0 ? Main.screenPosition.X - 100 : Main.screenPosition.X + Main.screenWidth + 100);
-                int y = (int)Main.screenPosition.Y + Main.rand.Next(-100, Main.screenHeight);
-                int a = Gore.NewGore(Player.GetSource_FromThis(), new Vector2(x, y), Vector2.Zero, GoreID.TreeLeaf_Jungle, goreScale);
-
-                Main.gore[a].rotation = 0f;
-                Main.gore[a].velocity.Y = Main.rand.NextFloat(1f, 3f);
-            }
 
             if (CorsageTime >= 1)
             {
@@ -531,17 +429,6 @@ namespace Stellamod
                 }
             }
 
-            if (NotiaB && NotiaBCooldown == 301)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-            }
-
-            if (NotiaB && NotiaBCooldown == 420)
-            {
-                NotiaBCooldown = 0;
-
-
-            }
 
             if (Daedstruck && DaedstruckBCooldown == 0)
             {
@@ -558,14 +445,6 @@ namespace Stellamod
             }
 
 
-
-
-            if (DucanB && DucanBCooldown == 520)
-            {
-                DucanBCooldown = 0;
-
-
-            }
 
             if (GovheilC && GovheilBCooldown == 520)
             {
@@ -990,20 +869,9 @@ namespace Stellamod
         }
 
 
-
-
-        public int Shake = 0;
-
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
         {
-            if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
-            {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -4, ProjectileID.SpikyBall, 30, 1f, Player.whoAmI);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 4, ProjectileID.SpikyBall, 20, 1f, Player.whoAmI);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ProjectileID.SpikyBall, 50, 1f, Player.whoAmI);
-                TAuraCooldown = 600;
 
-            }
 
             if (Lovestruck)
             {
@@ -1024,14 +892,6 @@ namespace Stellamod
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
                 LovestruckBCooldown = 30;
 
-            }
-
-            if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
-            {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -4, ProjectileID.SpikyBall, 30, 1f, Player.whoAmI);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 4, ProjectileID.SpikyBall, 20, 1f, Player.whoAmI);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ProjectileID.SpikyBall, 50, 1f, Player.whoAmI);
-                TAuraCooldown = 600;
             }
         }
 
@@ -1144,12 +1004,6 @@ namespace Stellamod
                 Player.GetDamage(DamageClass.Generic) += damageIncrease;
             }
 
-            if (SpiritPendent && ZoneAbyss)
-            {
-                Player.GetDamage(DamageClass.Generic) += 250 / 1500f;
-            }
-
-
             if (GovheilC && GovheilBCooldown > 300)
             {
                 Player.GetDamage(DamageClass.Ranged) *= 1.5f;
@@ -1164,51 +1018,6 @@ namespace Stellamod
 
             }
 
-            if (DucanB && DucanBCooldown > 350)
-            {
-                Player.GetDamage(DamageClass.Melee) *= 1.1f;
-
-
-            }
-
-            if (NotiaB && NotiaBCooldown > 300)
-            {
-                Player.GetDamage(DamageClass.Magic) *= 1.2f;
-                Player.GetDamage(DamageClass.Ranged) *= 1.2f;
-            }
-
-            if (SpiritPendent && ZoneAbyss)
-            {
-                Player.GetDamage(DamageClass.Magic) += 250 / 150f;
-                Player.GetDamage(DamageClass.Summon) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
-            }
         }
-
-        public override bool PreItemCheck()
-        {
-            if (Player.selectedItem != lastSelectedI)
-            {
-                SwordComboR = 0;
-                SwordCombo = 0;
-                lastSelectedI = Player.selectedItem;
-            }
-            if (SwordComboR > 0)
-            {
-                SwordComboR--;
-                if (SwordComboR == 0)
-                {
-                    SwordCombo = 0;
-                }
-            }
-
-
-
-
-            return true;
-        }
-
     }
 }

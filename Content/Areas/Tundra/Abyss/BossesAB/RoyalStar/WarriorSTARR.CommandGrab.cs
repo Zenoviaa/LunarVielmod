@@ -189,7 +189,7 @@ public partial class WarriorSTARR
 
                     if (Timer % 2 == 0)
                     {
-                        Particles.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { root = NPC, rootOffset = new Vector2(0, Main.rand.NextFloat(-128, 128)), timeLeft = 150 });
+                        PS.GoldenLeaf.Spawn(GoldenLeaf.Data.Default with { root = NPC, rootOffset = new Vector2(0, Main.rand.NextFloat(-128, 128)), timeLeft = 150 });
                     }
 
                     this.AseAnimator.PlayAnimation(ANIM_GRAB_TRY, AnimationParams.NoLooping);

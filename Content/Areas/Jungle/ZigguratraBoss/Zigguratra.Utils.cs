@@ -112,7 +112,7 @@ public partial class Zigguratra
 
         var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.6f);
-        Particles.LightningBolt.Spawn(new()
+        PS.LightningBolt.Spawn(new()
         {
             position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
             velocity = vel,
@@ -125,7 +125,7 @@ public partial class Zigguratra
         FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.Black, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos + Main.rand.NextVector2Circular(32, 32),
                 velocity = Main.rand.NextVector2Circular(16, 16),
@@ -189,7 +189,7 @@ public partial class Zigguratra
 
         var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.6f);
-        Particles.LightningSpark.Spawn(new()
+        PS.LightningSpark.Spawn(new()
         {
             position = pos,
             velocity = vel,
@@ -218,7 +218,7 @@ public partial class Zigguratra
             var spawnPos = centerPosition + offset;
             var startVelocity = (spawnPos - centerPosition).SafeNormalize(Vector2.Zero) * 6;
             startVelocity = startVelocity.RotatedBy(MathHelper.PiOver2);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = spawnPos,
                 innerColor = LightGoldenColor.ToVector4(),

@@ -60,7 +60,7 @@ public class NiiviSillyStarBombBoom : ModProjectile
             {
                 var pos = Projectile.Center + Main.rand.NextVector2Circular(128, 128);
                 var vel = Main.rand.NextVector2Circular(8, 8);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,
@@ -74,7 +74,7 @@ public class NiiviSillyStarBombBoom : ModProjectile
             for (var i = 0; i < 16; i++)
             {
                 var pos = Projectile.Center + ((float)i / 16F * MathHelper.TwoPi).ToRotationVector2() * 64;
-                Particles.DiamondSparkle.Spawn(new()
+                PS.DiamondSparkle.Spawn(new()
                 {
                     position = pos,
                     timeLeft = 30,
@@ -211,7 +211,7 @@ public class NiiviSillyStar : ModProjectile
     {
         var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
         var vel = Main.rand.NextVector2Circular(1, 1);
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
         {
             position = pos,
             velocity = vel,
@@ -223,7 +223,7 @@ public class NiiviSillyStar : ModProjectile
 
         pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
         vel = Main.rand.NextVector2Circular(1, 1);
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
         {
             position = pos,
             velocity = vel,
@@ -238,7 +238,7 @@ public class NiiviSillyStar : ModProjectile
             pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             vel = Main.rand.NextVector2Circular(1, 1);
             //    var sp = SparkleParticle.Spawn(pos, vel)
-            Particles.DiamondSparkle.Spawn(new()
+            PS.DiamondSparkle.Spawn(new()
             {
                 position = pos,
                 color = GlowColor,
@@ -262,7 +262,7 @@ public class NiiviSillyStar : ModProjectile
         {
             pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             vel = Main.rand.NextVector2Circular(1, 1);
-            Particles.FaintSmokeDust.Spawn(new()
+            PS.FaintSmokeDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
@@ -329,7 +329,7 @@ public class NiiviSillyStar : ModProjectile
         var color = DrawUtilities.Prismatic.ToVector4();
         for (var i = 0; i < 8; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = Main.rand.NextVector2Circular(25, 25),
@@ -352,7 +352,7 @@ public class NiiviSillyStar : ModProjectile
         var color = DrawUtilities.Prismatic.ToVector4();
         for (var i = 0; i < 12; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = Main.rand.NextVector2Circular(15, 15),
@@ -363,7 +363,7 @@ public class NiiviSillyStar : ModProjectile
             });
         }
 
-        Particles.DiamondSparkle.Spawn(new()
+        PS.DiamondSparkle.Spawn(new()
         {
             position = currentPosition + Main.rand.NextVector2Circular(7, 7),
             timeLeft = 30,
@@ -804,7 +804,7 @@ public class NiiviBoostRing : ModProjectile
             for (var i =0; i < 12; i++)
             {
         
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = Main.rand.NextVector2Circular(15, 15),
@@ -814,7 +814,7 @@ public class NiiviBoostRing : ModProjectile
                     scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f))
                 });
             }
-            Particles.DiamondSparkle.Spawn(new()
+            PS.DiamondSparkle.Spawn(new()
             {
                 position = currentPosition + Main.rand.NextVector2Circular(7, 7),
                 timeLeft = 30,
@@ -825,7 +825,7 @@ public class NiiviBoostRing : ModProjectile
         for(var i = 0; i < 3; i++)
         {
             var pos = Main.rand.NextVector2Circular(7, 7) + currentPosition;
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = Main.rand.NextVector2Circular(3, 3),

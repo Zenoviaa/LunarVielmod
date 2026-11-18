@@ -112,6 +112,6 @@ public class DarkspaceBG : CustomBG
     public override bool IsActive()
     {
         DrawOffset = new Vector2(0, 64);
-        return Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder;
+        return Main.LocalPlayer.ZoneWonder;
     }
 }

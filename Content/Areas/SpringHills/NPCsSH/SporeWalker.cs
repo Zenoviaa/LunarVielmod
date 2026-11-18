@@ -40,7 +40,7 @@ public class SporeShroomClouds : ModProjectile
         if(Timer % 6 == 0)
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-            Particles.RoughSmoke.Spawn(new()
+            PS.RoughSmoke.Spawn(new()
             {
                 position = pos,
                 timeLeft = 52,
@@ -274,7 +274,7 @@ public class SporeWalker : ModNPC,
             for (var i = 0; i < 18; i++)
             {
                 var pos = NPC.Center + Main.rand.NextVector2Circular(48, 48);
-                Particles.RoughSmoke.Spawn(new()
+                PS.RoughSmoke.Spawn(new()
                 {
                     position = pos,
                     timeLeft = 35,

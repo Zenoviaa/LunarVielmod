@@ -11,10 +11,134 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Biomes;
 
+
 public static class BiomeExtensions
 {
     extension(Player player)
     {
+        public bool ZoneMoonspiralTower
+        {
+            get
+            {
+                return player.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower;
+            }
+            set
+            {
+                player.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower = value;
+            }
+        }
+        public bool InDomain
+        {
+            get => ModContent.GetInstance<DomainExpansionManager>().noRender;
+         
+        }
+        public bool ZoneFable
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneFable;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneFable = value;
+            }
+        }
+        public bool ZoneHeatedDepths
+        {
+            get
+            {
+                return player.GetModPlayer<BiomePlayer>().ZoneHeatedDepths;
+            }
+            set
+            {
+                player.GetModPlayer<BiomePlayer>().ZoneHeatedDepths = value;
+            }
+        }
+        public bool ZoneColloseum
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneColloseum;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneColloseum = value;
+            }
+        }
+        public bool ZoneMothlight
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneMothlight;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneMothlight = value;
+            }
+        }
+        public bool ZoneMineshaft
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneMineshaft;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneMineshaft = value;
+            }
+        }
+        public bool ZoneDeepBelowCoralways
+        {
+            get
+            {
+                return player.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways;
+            }
+        }
+        public bool ZoneCinder
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneCinder;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneCinder = value;
+            }
+        }
+        public bool ZoneDrakonic
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneDrakonic;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneDrakonic = value;
+            }
+        }
+        public bool ZoneWonder
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneWonder;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneWonder = value;
+            }
+        }
+        public bool ZoneRoyalCapital
+        {
+            get
+            {
+                return player.GetModPlayer<MyPlayer>().ZoneAlcadzia;
+            }
+            set
+            {
+                player.GetModPlayer<MyPlayer>().ZoneAlcadzia = value;
+            }
+        }
+
         public bool ZoneWitchesFable
         {
             get
@@ -68,14 +192,11 @@ public static class BiomeExtensions
             set => player.GetModPlayer<BiomePlayer>().ZoneCrimsonBridewell = value;
         }
     }
-
-    public static bool ZoneFable(this Player player) => player.InModBiome<FableBiome>();
     public static bool ZoneXixianVillage(this Player player) => player.InModBiome<XixVillageBiome>();
 }
 public class BiomePlayer : ModPlayer
 {
     private float _windCounter;
-    public bool justEnteredAbyss;
     public bool ZoneIshtar;
     public bool ZoneSacredUnknowns;
     public bool ZoneEveroseVillage;
@@ -138,7 +259,7 @@ public class BiomePlayer : ModPlayer
             Player.ManageSpecialBiomeVisuals("Stellamod:HeatedDepths", ZoneHeatedDepths);
 
 
-            if ((Player.GetModPlayer<MyPlayer>().ZoneCinder || ZoneHeatedDepths || Player.ZoneUnderworldHeight) && !Player.GetModPlayer<MyPlayer>().ZoneWonder)
+            if ((Player.ZoneCinder || ZoneHeatedDepths || Player.ZoneUnderworldHeight) && !Player.ZoneWonder)
             {
                 WorldDepthGradient depthGradient = ScreenShader.GetInstance<WorldDepthGradient>();
                 depthGradient.alpha = 1;
@@ -157,7 +278,7 @@ public class BiomePlayer : ModPlayer
                 depthGradient.gradientColor = Color.Red.ToVector3();
             }
 
-            if (Player.GetModPlayer<MyPlayer>().ZoneCinder)
+            if (Player.ZoneCinder)
             {
                 FlameParticles2();
                 return;
@@ -177,7 +298,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
+            PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
         }
         if (Main.rand.NextBool(6))
         {
@@ -185,7 +306,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
+            PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.White * 0.15F, timeleft = 180 });
         }
         if (Main.rand.NextBool(2))
         {
@@ -193,7 +314,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
+            PS.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
         }
         if (Main.rand.NextBool(5))
         {
@@ -201,7 +322,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
+            PS.CinderEmberDust.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, parallaxStrength = Main.rand.NextFloat(0.3f, 0.75f) });
         }
         if (Main.rand.NextBool(2))
         {
@@ -209,7 +330,7 @@ public class BiomePlayer : ModPlayer
             pos.X = Main.rand.Next(0, Main.screenWidth * 2);
             pos.Y = Main.rand.Next(0, Main.screenHeight);
             pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            Particles.CinderEmberDustBackground.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f });
+            PS.CinderEmberDustBackground.Spawn(CinderEmberDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f });
         }
     }
     private void FlameParticles()
@@ -249,7 +370,7 @@ public class BiomePlayer : ModPlayer
 
         if (Player.ZoneAbyss && Main.rand.NextBool(8))
         {
-            Particles.AbyssFloatingFlowerDust.Spawn(AbyssFloatingFlowerDustData.Default with
+            PS.AbyssFloatingFlowerDust.Spawn(AbyssFloatingFlowerDustData.Default with
             {
                 position = DrawUtilities.RandomScreenPositionForForegroundParticles(),
                 parallax = Main.rand.NextFloat(0.2f, 1f),
@@ -309,9 +430,8 @@ public class BiomePlayer : ModPlayer
             {
                 ForegroundParticleRenderer.NewParticle<AegislavStrike>();
             }
-
-
         }
+
         SpringHillsForegroundBackground();
     }
 

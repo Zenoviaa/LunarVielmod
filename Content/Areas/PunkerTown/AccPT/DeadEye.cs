@@ -43,7 +43,7 @@ public class DeadEyeProj : ModProjectile
         for (int i = 0; i < 16; i++)
         {
             Color color = (Main.rand.NextBool(2) ? Color.Red : Color.Green);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = target.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = Main.rand.NextVector2Circular(8, 8),
@@ -113,7 +113,7 @@ public class DeadEye : AbstractDashItem
         for (int i = 0; i < 3; i++)
         {
             Color color = (Main.rand.NextBool(2) ? Color.Red : Color.Green);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = player.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = Main.rand.NextVector2Circular(8, 8),

@@ -14,9 +14,9 @@ public class CoralwaysWaterStyle : PixelWaterStyle
 
     public override bool IsActive(Player player)
     {
-        if (player.GetModPlayer<MyPlayer>().ZoneCinder)
+        if (player.ZoneCinder)
             return false;
-        return player.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways || player.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways;
+        return player.ZoneHarmonicCoralways || player.ZoneDeepBelowCoralways;
     }
     public override void ModifyPixelWater(ref PixelWater pixelWater)
     {

@@ -60,7 +60,7 @@ public partial class Niivi
             var pos = GetStretchSpawnPoint();
             var vel = suckPosition - pos;
             vel *= 0.1f;
-            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -74,7 +74,7 @@ public partial class Niivi
         {
             var pos = suckPosition;
             var vel = Main.rand.NextVector2CircularEdge(25, 25);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -194,7 +194,7 @@ public partial class Niivi
         var darkPrismaticColor = lightPrismaticColor.Darken(0.5F);
         var color = Color.Lerp(lightPrismaticColor, darkPrismaticColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.6f);
-        Particles.LightningBolt.Spawn(new()
+        PS.LightningBolt.Spawn(new()
         {
             position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
             velocity = vel,
@@ -207,7 +207,7 @@ public partial class Niivi
         FXUtil.GlowCircleBoom(pos, lightPrismaticColor, darkPrismaticColor, Color.Black, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos + Main.rand.NextVector2Circular(32, 32),
                 velocity = Main.rand.NextVector2Circular(16, 16),
@@ -228,7 +228,7 @@ public partial class Niivi
 
         var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.6f);
-        Particles.LightningSpark.Spawn(new()
+        PS.LightningSpark.Spawn(new()
         {
             position = pos,
             velocity = vel,

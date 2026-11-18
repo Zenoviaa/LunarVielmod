@@ -12,7 +12,7 @@ public partial class RekBoss
 {
 
     private float TimeBetweenMeteors => 12;
-    private int Volcanic_Meteor_Damage => 60;
+    private int Volcanic_Meteor_Damage => 80;
 
     private void SegmentsMeteorFloat()
     {
@@ -129,7 +129,8 @@ public partial class RekBoss
                         i++;
                     }
 
-                    OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -252);
+                    //OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -512);
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, _lavaArenaRectangle.Top(), 0.35F));
                     SegmentsMeteorFloat();
                     if (Timer % TimeBetweenMeteors == 0)
                     {
@@ -140,7 +141,7 @@ public partial class RekBoss
                             firer.position.Y -= 1024;
                             firer.position.X += Main.rand.NextFloat(-1400, 1400);
                             firer.damage = Volcanic_Meteor_Damage;
-                            firer.velocity = Vector2.UnitY * 18;
+                            firer.velocity = Vector2.UnitY * 8;
                             firer.velocity = firer.velocity.RotatedByRandom(0.3f);
                             firer.ai0 = NPC.whoAmI;
                             firer.ai1 = AttackCount;

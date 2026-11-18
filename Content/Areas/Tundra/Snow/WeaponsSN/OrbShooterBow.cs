@@ -47,7 +47,7 @@ public class OrbShooterBowOrbBoom : ModProjectile
             fx.Scale *= 2f * Strength / 3f;
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 48))
             {
-                Particles.GlowDust.Spawn(new()
+                PS.GlowDust.Spawn(new()
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
@@ -60,7 +60,7 @@ public class OrbShooterBowOrbBoom : ModProjectile
             var color = Color.Lerp(Color.DarkBlue, Color.Black, 0.75f);
             foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 64, 32))
             {
-                Particles.BackCloud.Spawn(new()
+                PS.BackCloud.Spawn(new()
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,
@@ -203,7 +203,7 @@ public class OrbShooterBowOrb : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(2, 2);
-            Particles.LightningSpikeySpark.Spawn(new()
+            PS.LightningSpikeySpark.Spawn(new()
             {
                 position = pos,
                 velocity = vel,

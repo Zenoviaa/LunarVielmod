@@ -49,7 +49,7 @@ namespace Stellamod.Common.SummonerSystem
                 pos += Main.rand.NextVector2Circular(47, 12);
                 var vel = Main.rand.NextVector2Circular(3, 3);
                 vel.Y -= 5;
-                Particles.Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                Particles.PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,

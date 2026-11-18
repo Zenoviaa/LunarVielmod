@@ -108,7 +108,7 @@ public class FlyingSpewerBullet : ModProjectile,
         }
         if (Main.rand.NextBool(32))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = Projectile.Center,
                 velocity = Main.rand.NextVector2Circular(2, 2) * 0.3f,
@@ -131,7 +131,7 @@ public class FlyingSpewerBullet : ModProjectile,
             var pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(32, 32);
             var vel = Projectile.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f);
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
@@ -300,7 +300,7 @@ public class FlyingSpewer : ModNPC,
 
         if (Main.rand.NextBool(6))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = NPC.Center,
                 velocity = Main.rand.NextVector2Circular(2, 2) * 0.3f,
@@ -573,7 +573,7 @@ public class FlyingSpewer : ModNPC,
         fx.Scale *= 1.5f;
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 16))
         {
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 1f) * 0.3f,
@@ -586,7 +586,7 @@ public class FlyingSpewer : ModNPC,
         var color = Color.Lerp(Color.OrangeRed, Color.Black, 0.75f);
         foreach (PositionVelocity posVel in new CircleOrientation(NPC.Center, 64, 16))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f) * 0.3f,

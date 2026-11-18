@@ -62,7 +62,7 @@ public class BiggestBeeSting : ModProjectile,
         var pos = Projectile.Center + Main.rand.NextVector2Circular(16, 16);
         var vel = (pos - Projectile.Center).Resize(Main.rand.NextFloat(1, 2));
 
-        Particles.GlowDust.Spawn(new()
+        PS.GlowDust.Spawn(new()
         {
             position = pos,
             velocity = vel,
@@ -74,7 +74,7 @@ public class BiggestBeeSting : ModProjectile,
 
     void MakePollenCloud()
     {
-        Particles.BackCloud.Spawn(new()
+        PS.BackCloud.Spawn(new()
         {
             position = Projectile.Center,
             velocity = Main.rand.NextVector2Circular(1, 1),
@@ -118,7 +118,7 @@ public class BiggestBeeSting : ModProjectile,
         BounceScale = 1f;
         foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 16, 8))
         {
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.2f, 0.4f),
@@ -178,7 +178,7 @@ public class BiggestBeeSting : ModProjectile,
         }
         foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 16, 16))
         {
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.15f, 0.3f),
@@ -189,7 +189,7 @@ public class BiggestBeeSting : ModProjectile,
         }
         foreach (PositionVelocity posVel in new CircleOrientation(Projectile.Center, 32, 16))
         {
-            Particles.BackCloud.Spawn(new()
+            PS.BackCloud.Spawn(new()
             {
                 position = posVel.position,
                 velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),
@@ -304,7 +304,7 @@ public class BiggestBee : ModNPC,
 
     void MakePollenSmoke()
     {
-        Particles.BackCloud.Spawn(new()
+        PS.BackCloud.Spawn(new()
         {
             position = NPC.Center,
             velocity = Main.rand.NextVector2Circular(1, 1),

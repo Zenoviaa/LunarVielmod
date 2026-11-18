@@ -157,7 +157,7 @@ public class IceCubeMakerProj : ModProjectile
                 {
                     var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
                     var vel = Main.rand.NextVector2Circular(4, 4);
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                     {
                         position = pos,
                         velocity = vel,

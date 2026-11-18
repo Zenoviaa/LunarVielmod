@@ -82,7 +82,7 @@ public class WinterBornSlimeSlime : ModProjectile
         if(Timer % 15 == 0)
         {
             var pos = Projectile.Center;
-            Particles.SplatDust.Spawn(new()
+            PS.SplatDust.Spawn(new()
             {
                 position = pos,
                 timeLeft = 180,

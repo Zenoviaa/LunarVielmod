@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Trails;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,29 +8,6 @@ namespace Stellamod.Items.Accessories
 {
     public class GIBomb : ModProjectile
     {
-        /*
-		 
-		//This is a lot of unused variables!!!!
-	
-		private int ProjectileSpawnedCount = 0;
-		private int ProjectileSpawnedMax = 20;
-		private bool MouseRightBool = false;
-		private bool Morrowflames = false;
-		private bool MouseLeftBool = true;
-		private object player;
-		NPC target;
-
-		int afterImgCancelDrawCount2 = 0;
-		Vector2 endPoint;
-		Vector2 controlPoint1;
-		Vector2 controlPoint2;
-		Vector2 initialPos;
-		Vector2 wantedEndPoint;
-		bool initialization = false;
-		float AoERadiusSquared = 36000;//it's squared for less expensive calculations
-		public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
-		*/
-
         int afterImgCancelDrawCount = 0;
         float ta = 0;
         float TimerR = 0;
@@ -108,7 +79,7 @@ namespace Stellamod.Items.Accessories
         {
             return Color.White;
         }
-     
+
         public override bool PreDraw(ref Color lightColor)
         {
 

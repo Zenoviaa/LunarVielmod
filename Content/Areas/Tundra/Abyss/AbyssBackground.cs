@@ -1,4 +1,4 @@
-﻿using Stellamod.Core;
+﻿using Stellamod.Content.Biomes;
 using Stellamod.Core.Backgrounds;
 using Stellamod.WorldG;
 using Terraria;
@@ -40,6 +40,6 @@ public class AbyssBackground : CustomBG
 
     public override bool IsActive()
     {
-        return Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAbyss && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAurelus;
+        return Main.LocalPlayer.ZoneAbyss && !Main.LocalPlayer.ZoneAurelus;
     }
 }

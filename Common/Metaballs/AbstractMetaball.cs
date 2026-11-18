@@ -138,7 +138,7 @@ public class RekFireMetaball : AbstractMetaball<RekFireMetaballData>
                     Vector2 pos = particle.position;
                     pos += Main.rand.NextVector2Circular(16, 16);
                     Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-                    Particles.Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                    Particles.PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                     {
                         position = pos,
                         velocity = -particle.velocity * 0.47f,

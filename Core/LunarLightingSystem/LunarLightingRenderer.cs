@@ -272,12 +272,12 @@ public partial class LunarLightingRenderer : ModSystem,
     {
         AmbientLight = Color.White.ToVector3();
         BackLightColor = Color.Black;
-        if (Main.LocalPlayer.ZoneUnderworldHeight)
+        if (Main.LocalPlayer.ZoneUnderworldHeight || Main.LocalPlayer.ZoneCinder)
         {
             BackLightColor = Color.White * 0.8f;
         }
         if ((Main.LocalPlayer.ZoneSnow ||
-            Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower)
+            Main.LocalPlayer.ZoneMoonspiralTower)
             && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
         {
             Color color1 = Color.Lerp(Color.LightGreen, Color.LightPink, ExtraMath.Osc(0f, 1f, speed: 0.4f));
@@ -299,7 +299,7 @@ public partial class LunarLightingRenderer : ModSystem,
         _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
         SmoothedBackLightColor = _backLightColor;
 
-        bool nosunShadows = Main.LocalPlayer.ZoneRockLayerHeight || Main.LocalPlayer.ZoneUnderworldHeight;
+        bool nosunShadows = Main.LocalPlayer.ZoneRockLayerHeight || Main.LocalPlayer.ZoneUnderworldHeight || Main.LocalPlayer.ZoneCinder;
         if (nosunShadows)
         {
             sunShadowAlpha = MathHelper.Lerp(sunShadowAlpha, 0f, 0.1f);

@@ -165,7 +165,7 @@ public class FrostSlashersSwing : BaseSwingProjectileV2
         spearHit.Volume = 0.2f;
         SoundEngine.PlaySound(spearHit, Projectile.position);
 
-        Particles.IceShard.Spawn(new()
+        PS.IceShard.Spawn(new()
         {
             position = target.position + Main.rand.NextVector2Circular(32, 32),
             velocity = Main.rand.NextVector2Circular(4, 4),
@@ -260,7 +260,7 @@ public class FrostSlashersBoom : ModProjectile
                 var vel = (pos - Projectile.Center);
                 vel = vel.Resize(12);
                 vel *= Main.rand.NextFloat(0.75f, 1.2f);
-                Particles.IceShard.Spawn(new()
+                PS.IceShard.Spawn(new()
                 {
                     position = pos,
                     velocity = vel,

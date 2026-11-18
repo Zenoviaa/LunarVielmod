@@ -127,44 +127,102 @@ public class PixelTarget
     }
     private void DrawToScreenShaderPixelate()
     {
-        using var screenTarget = _mipMap ? RT.Context(RenderTargets.ScreenTargetMipMapped) : RT.Context(RenderTargets.ScreenTarget);
-        PrepareContent(screenTarget);
-        if (outlineColor.HasValue)
+        void DrawPixelated()
         {
-            var pixelattePass = AssetReferences.Effects.CrystalShaders.PixelateWithOutline.CreatePixelPass();
-            pixelattePass.Parameters.width = screenTarget.Width / _downSamples;
-            pixelattePass.Parameters.height = screenTarget.Height / _downSamples;
-            pixelattePass.Parameters.texelSize = screenTarget.Target.GetTexelSize() * 2;
-            pixelattePass.Apply();
+            using var screenTarget = RT.Context(RenderTargets.ScreenTarget);
+            using var halfScreenTarget = RT.Context(RenderTargets.HalfScreenTarget);
             var spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                _blendState,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                Main.Rasterizer,
-                pixelattePass.Shader);
-            spriteBatch.Draw(screenTarget, Vector2.Zero, null, outlineColor.Value, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.End();
+            PreparePixelatedContent(screenTarget, halfScreenTarget);
+            if (outlineColor.HasValue)
+            {
+                //Dunno why we weren't outlining with a shader before but here we go
+                var outlinePass = AssetReferences.Effects.Generic.Outliner.CreatePixelPass();
+                outlinePass.Parameters.texelSize = halfScreenTarget.Target.GetTexelSize();
+                outlinePass.Apply();
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    _blendState,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    Main.Rasterizer,
+                    outlinePass.Shader);
+                spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, outlineColor.Value, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
+            else
+            {
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    _blendState,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    Main.Rasterizer,
+                    null);
+                spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
+
+
+        } 
+
+        void DrawPixelated2()
+        {
+            using var screenTarget = _mipMap ? RT.Context(RenderTargets.ScreenTargetMipMapped) : RT.Context(RenderTargets.ScreenTarget);
+            PrepareContent(screenTarget);
+            if (outlineColor.HasValue)
+            {
+                var pixelattePass = AssetReferences.Effects.CrystalShaders.PixelateWithOutline.CreatePixelPass();
+                pixelattePass.Parameters.width = screenTarget.Width / _downSamples;
+                pixelattePass.Parameters.height = screenTarget.Height / _downSamples;
+                pixelattePass.Parameters.texelSize = screenTarget.Target.GetTexelSize() * 2;
+                pixelattePass.Apply();
+                var spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    _blendState,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    Main.Rasterizer,
+                    pixelattePass.Shader);
+                spriteBatch.Draw(screenTarget, Vector2.Zero, null, outlineColor.Value, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
+            else
+            {
+                var pixelattePass = AssetReferences.Effects.CrystalShaders.Pixelate.CreatePixelPass();
+                pixelattePass.Parameters.width = screenTarget.Width / _downSamples;
+                pixelattePass.Parameters.height = screenTarget.Height / _downSamples;
+                pixelattePass.Apply();
+                var spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    _blendState,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    Main.Rasterizer,
+                    pixelattePass.Shader);
+                spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
+        }
+        DrawPixelated2();
+      //  Main.NewText("Old");
+
+        /*
+        if (Main.mouseLeft)
+        {
+            DrawPixelated2();
+            Main.NewText("New");
         }
         else
         {
-            var pixelattePass = AssetReferences.Effects.CrystalShaders.Pixelate.CreatePixelPass();
-            pixelattePass.Parameters.width = screenTarget.Width / _downSamples;
-            pixelattePass.Parameters.height = screenTarget.Height / _downSamples;
-            pixelattePass.Apply();
-            var spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                _blendState,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                Main.Rasterizer,
-                pixelattePass.Shader);
-            spriteBatch.Draw(screenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.End();
+            DrawPixelated();
+            Main.NewText("Old");
         }
+ */
+        /*
 
+        */
 
     }
     public void DrawToScreen()
@@ -192,7 +250,7 @@ public class PixelTarget
         PreparePixelatedContent(screenTarget, halfScreenTarget);
         spriteBatch.Begin(oldParaemeters);
         spriteBatch.Draw(halfScreenTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-        //     Main.spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+       
     }
 
 }

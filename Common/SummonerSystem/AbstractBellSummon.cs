@@ -146,7 +146,7 @@ public abstract class AbstractBellSummon : ModProjectile,
             pos.Y += 4;
             pos.X += Main.rand.Next(-Projectile.width / 2, Projectile.width / 2);
             var vel = -Vector2.UnitY * Main.rand.NextFloat(3, 6);
-            Particles.Particles.SwirlingFlameDust.Spawn(Particles.BitDustFactory.SlowingOverTime with
+            Particles.PS.SwirlingFlameDust.Spawn(Particles.BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

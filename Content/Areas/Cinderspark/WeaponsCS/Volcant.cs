@@ -186,7 +186,7 @@ public class VolcantStaminaSlash : BaseSwingProjectileV2
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(15, 15);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -276,7 +276,7 @@ public class VolcantMeteor : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(24, 24);
             var vel = Main.rand.NextVector2Circular(16, 16);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -312,8 +312,8 @@ public class VolcantEruption : ModProjectile
     }
     public void CrackVFX(Vector2 position)
     {
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
     }
     public override bool ShouldUpdatePosition()
     {
@@ -367,7 +367,7 @@ public class VolcantEruption : ModProjectile
                 pos.Y += Main.rand.NextFloat(-16f, 16f);
                 var vel = baseDir * Main.rand.NextFloat(10f, 30);
                 vel = vel.RotatedByRandom(0.5f);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,
@@ -503,7 +503,7 @@ public class VolcantThrow : ModProjectile
     {
         pos += Main.rand.NextVector2Circular(32, 32);
         var vel = Main.rand.NextVector2Circular(12, 12);
-        Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+        PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
         {
             position = pos,
             velocity = vel,
@@ -618,7 +618,7 @@ public class VolcantThrow : ModProjectile
         {
             var pos = target.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero).RotatedByRandom(4.5f) * Main.rand.NextFloat(5f, 25);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -842,7 +842,7 @@ public class VolcantSlash : BaseSwingProjectileV2
         {
             var pos = target.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero).RotatedByRandom(4.5f) * Main.rand.NextFloat(5f, 25);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

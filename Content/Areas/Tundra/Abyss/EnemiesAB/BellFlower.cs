@@ -456,7 +456,7 @@ public class BellFlower : ModNPC
         Vector2 mothVelocity = bellPos - NPC.Center;
         mothVelocity = mothVelocity.SafeNormalize(Vector2.Zero);
         mothVelocity *= Main.rand.NextFloat(1, 6);
-        Particles.TinyWhiteMothDust.Spawn(new TinyWhiteMothDustData
+        PS.TinyWhiteMothDust.Spawn(new TinyWhiteMothDustData
         {
             position = bellPos,
             velocity = mothVelocity,
@@ -499,7 +499,7 @@ public class BellFlower : ModNPC
                 Vector2 mothVelocity = bellPos - NPC.Center;
                 mothVelocity = mothVelocity.SafeNormalize(Vector2.Zero);
                 mothVelocity *= Main.rand.NextFloat(8, 16);
-                Particles.TinyWhiteMothDust.Spawn(new TinyWhiteMothDustData
+                PS.TinyWhiteMothDust.Spawn(new TinyWhiteMothDustData
                 {
                     position = bellPos,
                     velocity = mothVelocity,
@@ -525,7 +525,7 @@ public class BellFlower : ModNPC
         }
         if (Timer % 10 == 0)
         {
-            Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
+            PS.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
         }
 
         float range = MathHelper.Lerp(0.25f, 0f, Timer / 60f);

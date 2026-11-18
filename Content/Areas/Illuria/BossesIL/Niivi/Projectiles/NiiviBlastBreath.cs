@@ -43,7 +43,7 @@ public class NiiviFlyingStar : ModProjectile
         var color = DrawUtilities.Prismatic.ToVector4();
         for (var i = 0; i < 8; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = Main.rand.NextVector2Circular(25, 25),
@@ -102,7 +102,7 @@ public class NiiviFlyingStar : ModProjectile
         var color = DrawUtilities.Prismatic.ToVector4();
         for (var i = 0; i < 12; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = Main.rand.NextVector2Circular(15, 15),
@@ -113,7 +113,7 @@ public class NiiviFlyingStar : ModProjectile
             });
         }
 
-        Particles.DiamondSparkle.Spawn(new()
+        PS.DiamondSparkle.Spawn(new()
         {
             position = currentPosition + Main.rand.NextVector2Circular(7, 7),
             timeLeft = 30,
@@ -145,7 +145,7 @@ public class NiiviFlyingStar : ModProjectile
     {
         var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
         var vel = Main.rand.NextVector2Circular(1, 1);
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
         {
             position = pos,
             velocity = vel,
@@ -160,7 +160,7 @@ public class NiiviFlyingStar : ModProjectile
             pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             vel = Main.rand.NextVector2Circular(1, 1);
             //    var sp = SparkleParticle.Spawn(pos, vel)
-            Particles.DiamondSparkle.Spawn(new()
+            PS.DiamondSparkle.Spawn(new()
             {
                 position = pos,
                 color = DrawUtilities.Prismatic,
@@ -183,7 +183,7 @@ public class NiiviFlyingStar : ModProjectile
         {
             pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             vel = Main.rand.NextVector2Circular(1, 1);
-            Particles.FaintSmokeDust.Spawn(new()
+            PS.FaintSmokeDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
@@ -291,7 +291,7 @@ public class NiiviBlastBreath : ModProjectile
             {
                 var pos = Vector2.Lerp(Projectile.Center, _hitPoint, Main.rand.NextFloat(0f, 1f));
                 pos += Main.rand.NextVector2Circular(32, 32);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(1.5F) * 16,
@@ -305,7 +305,7 @@ public class NiiviBlastBreath : ModProjectile
             for (var i = 0; i < 128; i++)
             {
                 var pos = Vector2.Lerp(Projectile.Center, _hitPoint, Main.rand.NextFloat(0f, 1f));
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4,
@@ -348,7 +348,7 @@ public class NiiviBlastBreath : ModProjectile
             {
                 var pos2 = _hitPoint;
                 pos2 += Main.rand.NextVector2Circular(32, 32);
-                Particles.IceSpike.Spawn(new()
+                PS.IceSpike.Spawn(new()
                 {
                     position = pos2,
                     rotation = (pos2 - _hitPoint).ToRotation(),
@@ -361,7 +361,7 @@ public class NiiviBlastBreath : ModProjectile
             {
                 var pos2 = _hitPoint;
                 pos2 += Main.rand.NextVector2Circular(32, 32);
-                Particles.IceSpike.Spawn(new()
+                PS.IceSpike.Spawn(new()
                 {
                     position = pos2,
                     rotation = (pos2 - _hitPoint).ToRotation(),
@@ -374,7 +374,7 @@ public class NiiviBlastBreath : ModProjectile
             {
                 var pos2 = _hitPoint;
                 pos2.X += Main.rand.NextFloat(-100, 100);
-                Particles.FaintSmokeDust.Spawn(new()
+                PS.FaintSmokeDust.Spawn(new()
                 {
                     position = pos2,
                     velocity = Vector2.Zero,

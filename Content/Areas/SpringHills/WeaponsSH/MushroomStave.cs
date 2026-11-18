@@ -152,7 +152,7 @@ public class MushroomStaveMinionProj : AbstractBellSummon,
             for (var i = 0; i < 4; i++)
             {
                 var pos = Projectile.Center + Main.rand.NextVector2Circular(48, 48);
-                Particles.RoughSmoke.Spawn(new()
+                PS.RoughSmoke.Spawn(new()
                 {
                     position = pos,
                     timeLeft = 25,

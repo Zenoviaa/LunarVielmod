@@ -341,7 +341,7 @@ public class ThornedMeteorHammerBall : ModProjectile
         if (Main.rand.NextBool(4))
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-            Particles.IvynLeaf.Spawn(new()
+            PS.IvynLeaf.Spawn(new()
             {
                 position = pos,
                 velocity = (pos - Projectile.Center).Resize(8) * Main.rand.NextFloat(0.5f, 1f),
@@ -384,7 +384,7 @@ public class ThornedMeteorHammerBall : ModProjectile
             for(var i = 0; i < 8; i++)
             {
                 var pos = target.Center + Main.rand.NextVector2Circular(32, 32);
-                Particles.IvynLeaf.Spawn(new()
+                PS.IvynLeaf.Spawn(new()
                 {
                     position = pos,
                     velocity = (pos - target.Center).Resize(8) * Main.rand.NextFloat(0.5f, 1f),
@@ -399,7 +399,7 @@ public class ThornedMeteorHammerBall : ModProjectile
             for (var i = 0; i < 3; i++)
             {
                 var pos = target.Center + Main.rand.NextVector2Circular(32, 32);
-                Particles.IvynLeaf.Spawn(new()
+                PS.IvynLeaf.Spawn(new()
                 {
                     position = pos,
                     velocity = (pos - target.Center).Resize(8) * Main.rand.NextFloat(0.5f, 1f),

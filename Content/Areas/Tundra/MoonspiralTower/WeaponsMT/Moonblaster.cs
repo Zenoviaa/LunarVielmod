@@ -377,7 +377,7 @@ public class Moonblaster : BaseGun
             Vector2 vel = velocity;
             vel = vel.RotatedByRandom(1.5f);
             vel *= Main.rand.NextFloat(0.6f, 1.2f);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = position,
                 velocity = vel,

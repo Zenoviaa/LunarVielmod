@@ -1,252 +1,29 @@
-﻿using ReLogic.Content;
+﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
+using MonoMod.Cil;
 using Stellamod.Assets;
-using Stellamod.Assets.ContentReader.Pal;
+using Stellamod.Common;
+using Stellamod.Common.Metaballs;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.LunarLightingSystem;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering.RTs;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.GameContent.Liquid;
 using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Rendering;
-
-public class SuperLavaShader : CrystalShader<SuperLavaShader>
-{
-    public Texture2D RockTexture
-    {
-        set
-        {
-            Effect.Parameters["RockTexture"].SetValue(value);
-        }
-    }
-    public Texture2D GlowMap
-    {
-        set
-        {
-            Main.graphics.GraphicsDevice.Textures[3] = value;
-            Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.AnisotropicClamp;
-        }
-    }
-    public Texture2D HeightMap
-    {
-        set
-        {
-            Main.graphics.GraphicsDevice.Textures[2] = value;
-            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.AnisotropicClamp;
-        }
-    }
-    public Texture2D WaterTexture
-    {
-        set
-        {
-            Effect.Parameters["WaterTexture"].SetValue(value);
-        }
-    }
-    public float Time
-    {
-        set
-        {
-            Effect.Parameters["Time"].SetValue(value);
-        }
-    }
-    public float Distortion
-    {
-        set
-        {
-            Effect.Parameters["Distortion"].SetValue(value);
-        }
-    }
-    public Vector2 ScreenOffset
-    {
-        set
-        {
-            Effect.Parameters["ScreenOffset"].SetValue(value);
-        }
-    }
-    public Vector2 Tiling
-    {
-        set
-        {
-            Effect.Parameters["Tiling"].SetValue(value);
-        }
-    }
-    public Color InnerColor
-    {
-        set
-        {
-            Effect.Parameters["InnerColor"].SetValue(value.ToVector3());
-        }
-    }
-
-    public Color BloomColor
-    {
-        set
-        {
-            Effect.Parameters["BloomColor"].SetValue(value.ToVector3());
-        }
-    }
-    public Color StartGradient
-    {
-        set
-        {
-            Effect.Parameters["StartGradient"].SetValue(value.ToVector3());
-        }
-    }
-
-    public Color EndGradient
-    {
-        set
-        {
-            Effect.Parameters["EndGradient"].SetValue(value.ToVector3());
-        }
-    }
-
-    public float Quantize
-    {
-        set
-        {
-            Effect.Parameters["Quantize"].SetValue(value);
-        }
-    }
-
-    public float NormalDistortionStrength
-    {
-        set
-        {
-            Effect.Parameters["NormalDistortionStrength"].SetValue(value);
-        }
-    }
-
-    public Texture2D NormalNoiseTexture
-    {
-        set
-        {
-            Main.graphics.GraphicsDevice.Textures[1] = value;
-            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-        }
-    }
-
-    public Texture2D OutlineTexelSize
-    {
-        set
-        {
-            Effect.Parameters["outlineTexelSize"].SetValue(value.GetTexelSize() * 2);
-        }
-    }
-
-    public Color OutlineColor
-    {
-        set
-        {
-            Effect.Parameters["outlineColor"].SetValue(value.ToVector4());
-        }
-    }
-}
-
-public static class WaterHelpers
-{
-    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "DrawWaters")]
-    public static extern void DrawWaters(Main instance, bool isBackground);
-
-
-    //GetScreenDrawArea(unscaledPosition, vector + (Main.Camera.UnscaledPosition - Main.Camera.ScaledPosition), out var firstTileX, out var lastTileX, out var firstTileY, out var lastTileY);
-    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "GetScreenDrawArea")]
-    public static extern void GetScreenDrawArea(TileDrawing tileDrawing, Vector2 unscaledPosition, Vector2 offset, out int firstTileX, out int lastTileX, out int firstTileY, out int lastTileY);
-
-
-}
-public abstract class PixelWaterStyle : ModType
-{
-    /// <summary>
-    /// If multiple waters are active, this determines which one gets used
-    /// </summary>
-    public int priority;
-    protected sealed override void Register()
-    {
-        ModTypeLookup<PixelWaterStyle>.Register(this);
-    }
-    public sealed override void SetupContent()
-    {
-        base.SetupContent();
-        SetStaticDefaults();
-    }
-
-    public virtual bool IsActive(Player player)
-    {
-        return true;
-    }
-    public virtual void ModifyPixelWater(ref PixelWater pixelWater)
-    {
-
-    }
-}
-
-
-public class PixelWater
-{
-    public PixelWater()
-    {
-
-    }
-
-    public void SetDefaults()
-    {
-        StartGradientColor = Color.Aqua;
-        EndGradientColor = Color.Lerp(Color.SeaGreen, Color.Black, 0.75f);
-        BackgroundColor = Color.CornflowerBlue;
-        CausticsColor = Color.SeaGreen * 0.75f;
-        CausticsTexture = LoadTexture("WaterCaustics");
-        NoiseTexture = LoadTexture("WaterNoise2");
-        Palette = null;
-        TilingMultiplier = Vector2.One;
-        affectsLava = false;
-        noLighting = false;
-        vibrant = false;
-        ignoreSkyColor = false;
-        noReflection = false;
-        reflectionAlpha = 1f;
-        maxHeight = 32;
-    }
-
-    private Asset<Texture2D> LoadTexture(string fileName)
-    {
-        return ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/{fileName}");
-    }
-    public Color StartGradientColor;
-    public Color EndGradientColor;
-    public Color BackgroundColor;
-    public Color CausticsColor;
-    public Vector2 TilingMultiplier;
-    public Asset<Texture2D> NoiseTexture;
-    public Asset<Texture2D> CausticsTexture;
-    public Palette Palette;
-    public bool noLighting;
-    public bool vibrant;
-    public bool ignoreSkyColor;
-    public bool affectsLava;
-    public bool noReflection;
-    public float reflectionAlpha;
-    public int maxHeight;
-}
-
-public class PixelWaterStyleComparer : IComparer<PixelWaterStyle>
-{
-    public int Compare(PixelWaterStyle x, PixelWaterStyle y)
-    {
-        return y.priority.CompareTo(x.priority);
-    }
-}
 
 [Autoload(Side = ModSide.Client)]
 public class MoonWaterSystem : ModSystem
@@ -302,16 +79,257 @@ public class MoonWaterSystem : ModSystem
     public static event Action<SpriteBatch> DrawWaterMask;
     public override void Load()
     {
-        On_Main.CheckMonoliths += RenderHook;
+        IL_Main.DoDraw += DrawOverWaterTarget;
         On_Main.DrawDust += CopyScreenTarget;
-        On_OverlayManager.Draw += ApplyWaterShader;
+        On_Main.RenderWater += RenderCoolWaters;
     }
 
+    private void DrawOverWaterTarget(ILContext il)
+    {
+        try
+        {
+
+            ILCursor c = new ILCursor(il);
+
+            if (c.TryGotoNext(
+                MoveType.After,
+                i => i.MatchCall<Main>($"{nameof(Main.DrawWires)}")
+            ))
+            {
+                if (c.TryGotoNext(
+                    MoveType.After,
+                    i => i.MatchCallvirt<SpriteBatch>($"{nameof(SpriteBatch.Draw)}")
+                ))
+                {
+                    c.EmitDelegate(NewDraw);
+                }
+            }
+
+
+        }
+        catch (Exception)
+        {
+            MonoModHooks.DumpIL(ModContent.GetInstance<Stellamod>(), il);
+        }
+    }
+
+    void DrawLavaParticles(SpriteBatch sb, Vector2 sp)
+    {
+        sb.EndOut(out var oldParameters);
+
+        using var particleTarget = RT.Context(RenderTargets.ScreenTarget);
+        RenderWaterParticles(sb, particleTarget.Target, LavaMetaballRenderer.metaballs);
+
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+            null, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.End();
+
+        var outliner = AssetReferences.Effects.Generic.OutlineOnly.CreatePixelPass();
+        outliner.Parameters.texelSize = particleTarget.Target.GetTexelSize();
+        outliner.Apply();
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+        outliner.Shader, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.DarkRed);
+        sb.End();
+
+        sb.Begin(oldParameters);
+    }
+
+    void DrawLavaParticlesFront(SpriteBatch sb, Vector2 sp)
+    {
+        sb.EndOut(out var oldParameters);
+
+        using var particleTarget = RT.Context(RenderTargets.ScreenTarget);
+        RenderWaterParticles(sb, particleTarget.Target, LavaMetaballRenderer.metaballsFront);
+
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+null, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.Draw(particleTarget, Vector2.Zero, Color.White);
+        sb.End();
+
+        var outliner = AssetReferences.Effects.Generic.OutlineOnly.CreatePixelPass();
+        outliner.Parameters.texelSize = particleTarget.Target.GetTexelSize();
+        outliner.Apply();
+
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+outliner.Shader, Main.Transform);
+        sb.Draw(particleTarget, Vector2.Zero, Color.DarkRed);
+        sb.End();
+
+        sb.Begin(oldParameters);
+    }
+
+    void NewDraw()
+    {
+        if (!LunarVeilClientConfig.Instance.LiquidsToggle)
+            return;
+        if (_waterEffect == null)
+            return;
+
+        var sb = Main.spriteBatch;
+        Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
+        sb.EndOut(out var oldParameters);
+
+
+        //TODO: reduce render target switching where possible.
+        //TODO: render out a linear gradient for reflections, using the other gradient is bleh. Since we're gonna have to do this, we should make a super optimized way to do it
+        //The best way to render out that gradient is to draw a single quad for each pillar. Currently we're drawing multiple lol
+
+        using var screenTargetOne = RT.Context(RenderTargets.ScreenTarget);
+        using var reflectionHeightTarget = RT.Context(RenderTargets.ScreenTarget);
+        using var screenTargetTwo = RT.Context(RenderTargets.ScreenTarget);
+        using var coolAssWaterTarget = RT.Context(RenderTargets.WaterTarget);
+        if (LavaMetaballRenderer.metaballs.Count > 0)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawLavaParticles, DrawLayer.BehindTiles);
+        }
+        if (LavaMetaballRenderer.metaballsFront.Count > 0)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawLavaParticlesFront, DrawLayer.OverNPCs);
+        }
+
+        //    using var o = RT.Context(RenderTargets.ScreenTarget);
+        using (RT.Clear(screenTargetOne, Color.Transparent))
+        {
+            sb.Begin();
+            sb.Draw(_reflectionRT, -new Vector2(Main.offScreenRange), null, Color.White * _pixelWater.reflectionAlpha, 0, Vector2.Zero, new Vector2(2f, 2f), SpriteEffects.None, 0);
+            sb.End();
+        }
+
+
+        using (RT.Clear(reflectionHeightTarget, Color.Transparent))
+        {
+            var pass = AssetReferences.Effects.MaskA.CreatePixelPass();
+            pass.Parameters.maskTexture = Main.waterTarget;
+            pass.Apply();
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, pass.Shader);
+            sb.Draw(_waterHeightMapRT, Main.sceneWaterPos - Main.screenPosition, Color.White);
+            sb.End();
+        }
+
+        using (RT.Clear(screenTargetTwo, Color.Transparent))
+        {
+            DrawReflection(sb, screenTargetOne.Target, reflectionHeightTarget.Target);
+
+        }
+
+        _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
+
+        //Posterization needs to happen after the reflection gets drawn.
+        //It should be the last thing that happens
+
+        using (RT.Clear(coolAssWaterTarget, Color.Transparent))
+        {
+            UpscaleCoolAssTarget(_waterTextureRTSwap, sb);
+    
+        }
+
+        using (RT.Clear(screenTargetOne, Color.Transparent))
+        {
+
+            if (_pixelWater.affectsLava)
+            {
+                //      Main.NewText("yuh");
+
+                SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
+                lavaShader.NormalNoiseTexture = coolAssWaterTarget;
+                lavaShader.HeightMap = _waterHeightMapRT;
+                lavaShader.OutlineColor = Color.DarkRed;
+                lavaShader.OutlineTexelSize = Main.waterTarget;
+                lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["Combine"];
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                    lavaShader.Effect);
+
+                sb.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
+
+
+                Color c = Color.White * 0.3f;
+                c.A = 0;
+                sb.Draw(Main.waterTarget, pos, c * waterAlpha);
+                sb.End();
+            }
+            else
+            {
+                if (_pixelWater.Palette != null)
+                {
+                    _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombinePaletteRTDrawing"];
+                    _waterEffect.Parameters["ColorSpectrumTexture"].SetValue(_pixelWater.Palette.ColorAtlas);
+                    _waterEffect.Parameters["EdgeTexture"].SetValue(_waterEdgeShadingRT);
+                }
+                else
+                {
+                    _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTDrawing"];
+                }
+
+                _waterEffect.Parameters["WaterTexture"].SetValue(coolAssWaterTarget);
+
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                    _waterEffect);
+                sb.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
+
+                Color c = Color.White * 0.43f;
+                c.A = 0;
+                sb.Draw(Main.waterTarget, pos, c * waterAlpha);
+                sb.End();
+
+            }
+
+
+            if (!_pixelWater.noReflection)
+            {
+
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+                sb.Draw(screenTargetTwo, Vector2.Zero, Color.White);
+                sb.End();
+            }
+
+        }
+
+        using (RT.Clear(screenTargetTwo, Color.Transparent))
+        {
+            //Finally draw to the screen posterized
+            _drawLocation = new Rectangle(0, 0, _waterHeightMapRT.Width, _waterHeightMapRT.Height);
+
+            _waterEffect.CurrentTechnique = _waterEffect.Techniques["PosterizeDrawing"];
+            _waterEffect.Parameters["levels"].SetValue(_pixelWater.levels);
+            sb.Begin(oldParameters with { effect = _waterEffect, matrix = Matrix.Identity });
+            sb.Draw(screenTargetOne, Vector2.Zero, null, Color.White * 1f);
+            sb.End();
+
+            if (!_pixelWater.noLighting)
+            {
+                _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
+                sb.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+                sb.Draw(_waterLightMapRT, Main.sceneWaterPos - Main.screenPosition, null, Color.White * 1);
+                sb.End();
+            }
+
+        }
+
+
+
+        sb.Begin(oldParameters);
+        sb.Draw(screenTargetTwo, Vector2.Zero, null, Color.White * 1f);
+    }
+
+    private void RenderCoolWaters(On_Main.orig_RenderWater orig, Main self)
+    {
+        orig(self);
+        RenderFancyWaters();
+        if (!Main.LocalPlayer.ZoneAbyss)
+            return;
+        RenderIntoEdgeShadeMap();
+    }
 
     public override void Unload()
     {
         base.Unload();
-
         _pixelWaterStyles = null;
         _heightsToDraw.Clear();
         _gradientRects.Clear();
@@ -322,6 +340,137 @@ public class MoonWaterSystem : ModSystem
         _waterSurfacePointLightMap = new(252, 8, Main.maxTilesX, Main.maxTilesY);
     }
 
+
+    public void RenderWaterParticles(SpriteBatch sb, RenderTarget2D waterParticleTarget, IList<Vector3> metaballList)
+    {
+        void DrawBlueWaterParticles()
+        {
+            var pass = AssetReferences.Effects.MoonWaterParticles.CreateP0();
+            Vector2 texelSize = waterParticleTarget.GetTexelSize();
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            screenoffset *= (1f / 1f);
+            pass.Parameters.screenOffset = screenoffset;
+            pass.Parameters.tiling = Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier;
+            pass.Parameters.time = _time;
+            pass.Parameters.levels = 18;
+            pass.Parameters.distortion = 0.025f;
+            pass.Parameters.startGradient = _pixelWater.StartGradientColor.ToVector3();
+            pass.Parameters.endGradient = _pixelWater.EndGradientColor.ToVector3();
+            pass.Parameters.causticsColor = _pixelWater.CausticsColor.ToVector4();
+            pass.Parameters.HeightMapTexture = _waterHeightMapRT;
+            pass.Parameters.brightenNoiseTexture = _pixelWater.NoiseTexture.Value;
+            pass.Parameters.causticsNoiseTexture = _pixelWater.CausticsTexture.Value;
+            pass.Parameters.foamNoiseTexture = _perlinNoise;
+            pass.Parameters.foamLava = _pixelWater.affectsLava ? 0 : 1;
+            pass.Apply();
+
+            using var backWaterTarget = RT.Context(RenderTargets.ScreenTarget);
+            using var metaballs = RT.Context(RenderTargets.ScreenTarget);
+            MetaballRenderer.PrepareMetaballContent(metaballs, LavaMetaballRenderer.metaballs);
+
+            using (RT.Clear(backWaterTarget, Color.LightSeaGreen))
+            {
+                //Draw the base texture
+                sb.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    pass.Shader);
+
+                Color baseColor = _pixelWater.BackgroundColor * 0.75f;
+                if (!_pixelWater.ignoreSkyColor)
+                {
+                    baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
+                }
+                sb.Draw(_waterNoise1, new Rectangle(0, 0, waterParticleTarget.Width, waterParticleTarget.Height), null, baseColor);
+                sb.End();
+            }
+            using (RT.Clear(waterParticleTarget, Color.Transparent))
+            {
+                var maskCombine = AssetReferences.Effects.MaskA.CreatePixelPass();
+                maskCombine.Parameters.maskTexture = metaballs;
+                maskCombine.Apply();
+                sb.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    maskCombine.Shader);
+
+                sb.Draw(backWaterTarget, Vector2.Zero, Color.Aqua * 0.75F);
+                sb.End();
+            }
+        }
+
+        void DrawLavaParticles()
+        {
+            var pass = AssetReferences.Effects.SuperLavaParticles.CreateP0();
+            Vector2 texelSize = waterParticleTarget.GetTexelSize();
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            screenoffset *= (1f / 1f);
+            pass.Parameters.ScreenOffset = screenoffset;
+            pass.Parameters.Tiling = Vector2.One;
+            pass.Parameters.Time = Main.GlobalTimeWrappedHourly * 3.5f;
+            pass.Parameters.Distortion = 0.0125f;
+            pass.Parameters.StartGradient = _pixelWater.StartGradientColor.ToVector3();
+            pass.Parameters.EndGradient = _pixelWater.EndGradientColor.ToVector3();
+            pass.Parameters.HeightMapTexture = _waterHeightMapRT;
+            pass.Parameters.Quantize = 9;
+            pass.Parameters.RockTexture = AssetManager.LoadBackground("LavaRocks").Value;
+           // pass.Parameters.GlowMap = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6").Value;
+
+            pass.Parameters.NormalDistortionStrength = 0.25f;
+            pass.Parameters.NormalNoiseTexture = _pixelWater.NoiseTexture.Value;
+            pass.Parameters.InnerColor = Color.Lerp(Color.Yellow, Color.Red, 0.5f).ToVector3();
+            pass.Parameters.BloomColor = Color.Red.ToVector3();
+            pass.Apply();
+
+            using var backWaterTarget = RT.Context(RenderTargets.ScreenTarget);
+            using var metaballs = RT.Context(RenderTargets.ScreenTarget);
+            MetaballRenderer.PrepareMetaballContent(metaballs, metaballList);
+
+            using (RT.Clear(backWaterTarget, Color.DarkGoldenrod))
+            {
+                //Draw the base texture
+                sb.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    pass.Shader);
+
+                Color drawColor = _pixelWater.BackgroundColor * 1f;
+                if (!_pixelWater.ignoreSkyColor)
+                {
+                    drawColor = drawColor.MultiplyRGB(Main.ColorOfTheSkies);
+                }
+                sb.Draw(_pixelWater.CausticsTexture.Value, new Rectangle(0, 0, waterParticleTarget.Width, waterParticleTarget.Height), null, drawColor);
+                sb.End();
+            }
+            using (RT.Clear(waterParticleTarget, Color.Transparent))
+            {
+                var maskCombine = AssetReferences.Effects.LavaParticleMerge.CreateP0();
+                maskCombine.Parameters.maskTexture = metaballs;
+                maskCombine.Parameters.width = backWaterTarget.Width / 2;
+                maskCombine.Parameters.height = backWaterTarget.Height / 2;
+                maskCombine.Apply();
+                sb.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    maskCombine.Shader);
+
+                sb.Draw(backWaterTarget, Vector2.Zero, Color.White );
+                sb.End();
+            }
+
+
+        }
+        DrawLavaParticles();
+    //    DrawBlueWaterParticles();
+    }
 
     public override void OnModLoad()
     {
@@ -358,8 +507,8 @@ public class MoonWaterSystem : ModSystem
             return;
         if (Main.gameMenu)
             return;
-        if (!LightingHelper.CanRenderPostProcessingEffects)
-            return;
+
+
 
 
         SpriteBatch spriteBatch = Main.spriteBatch;
@@ -386,92 +535,6 @@ public class MoonWaterSystem : ModSystem
         spriteBatch.Begin();
         spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
         spriteBatch.End();
-    }
-
-    private void ApplyWaterShader(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
-    {
-        orig(self, spriteBatch, layer, beginSpriteBatch);
-        var config = ModContent.GetInstance<LunarVeilClientConfig>();
-
-        if (!config.LiquidsToggle)
-            return;
-        if (Main.gameMenu)
-            return;
-        if (_waterEffect == null)
-            return;
-        if (!LightingHelper.CanRenderPostProcessingEffects)
-        {
-            return;
-        }
-
-        if (layer == RenderLayers.ForegroundWater)
-        {
-            //This is called right before the front water gets drawn
-            //We can apply our shader here.
-            //It should work, I think
-            if (_waterEffect == null)
-                return;
-
-            spriteBatch.End();
-            CopyScreenTargetToSwap();
-            CopyWaterTarget();
-            CopySwapToScreenTarget();
-            Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
-            if (_pixelWater.affectsLava)
-            {
-                //      Main.NewText("yuh");
-
-                SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
-                lavaShader.NormalNoiseTexture = _waterTextureRTOutput;
-                lavaShader.HeightMap = _waterHeightMapRT;
-                lavaShader.OutlineColor = Color.Lerp(Color.White, Color.Goldenrod, 0.3f);
-                lavaShader.OutlineTexelSize = Main.waterTarget;
-                lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["Combine"];
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                    lavaShader.Effect, Main.Transform);
-
-                spriteBatch.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
-
-
-                Color c = Color.White * 0.3f;
-                c.A = 0;
-                spriteBatch.Draw(Main.waterTarget, pos, c * waterAlpha);
-                spriteBatch.End();
-
-
-
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-            }
-            else
-            {
-
-                if (_pixelWater.Palette != null)
-                {
-                    _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombinePaletteRTDrawing"];
-                    _waterEffect.Parameters["ColorSpectrumTexture"].SetValue(_pixelWater.Palette.ColorAtlas);
-                    _waterEffect.Parameters["EdgeTexture"].SetValue(_waterEdgeShadingRT);
-                }
-                else
-                {
-                    _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTDrawing"];
-                }
-
-                _waterEffect.Parameters["WaterTexture"].SetValue(_waterTextureRTOutput);
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                    _waterEffect, Main.Transform);
-
-
-                spriteBatch.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
-
-                Color c = Color.White * 0.43f;
-                c.A = 0;
-                spriteBatch.Draw(Main.waterTarget, pos, c * waterAlpha);
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-            }
-            //   spriteBatch.Draw(_waterEdgeShadingRT, pos, Color.White);
-            //DrawWaterBaseToScreen();
-        }
     }
 
 
@@ -511,14 +574,17 @@ public class MoonWaterSystem : ModSystem
 
     private void RenderIntoEdgeShadeMap()
     {
+        _renderEdgeCountdown--;
+        if (_renderEdgeCountdown <= 0)
+        {
+            CalculateEdgePoints();
+            _renderEdgeCountdown = 5;
+        }
+
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_waterEdgeShadingRT);
         graphicsDevice.Clear(Color.Transparent);
-        if (Main.GameUpdateCount % 30 == 0)
-        {
-            CalculateEdgePoints();
-        }
 
         spriteBatch.Begin();
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureGetLightingColor(
@@ -562,9 +628,9 @@ public class MoonWaterSystem : ModSystem
         base.PostUpdateTime();
         _time += 0.0025f;
         float targetWaterAlpha = 1f;
-        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways)
+        if (Main.LocalPlayer.ZoneDeepBelowCoralways)
             targetWaterAlpha = 0.1f;
-        if (Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder)
+        if (Main.LocalPlayer.ZoneWonder)
             targetWaterAlpha = 0.95f;
         waterAlpha = MathHelper.Lerp(waterAlpha, targetWaterAlpha, 0.1f);
     }
@@ -583,52 +649,49 @@ public class MoonWaterSystem : ModSystem
         _perlinNoise = LoadTexture("PerlinNoise");
     }
 
-
-    private void RenderHook(On_Main.orig_CheckMonoliths orig)
+    int _renderCountdown;
+    int _renderEdgeCountdown;
+    void RenderFancyWaters()
     {
-
-        orig();
-        var config = ModContent.GetInstance<LunarVeilClientConfig>();
-        if (!config.LiquidsToggle)
+        if (!LunarVeilClientConfig.Instance.LiquidsToggle)
             return;
         if (Main.gameMenu)
             return;
-
         _waterEffect = ModContent.Request<Effect>("Stellamod/Effects/MoonWaters").Value;
         if (_waterEffect == null)
             return;
-
         if (!Lighting.UsingNewLighting)
             return;
-
-
+        _renderCountdown--;
         //V1 Gradientizing
         void V1HeightGradient()
         {
-            if (Main.GameUpdateCount % 15 == 0)
+            if (_renderCountdown <= 0)
             {
                 CalculateHeightsToDraw();
-
+                _renderCountdown = 3;
             }
             RenderIntoHeightMapTarget();
         }
 
-
         void V2HeightGradient()
         {
             //_waterSurfacePointLightMap = new();
-            if (Main.GameUpdateCount % 15 == 0)
+            if (_renderCountdown <= 0)
             {
                 WaterSurfaceScanner.Scan(TileUtilities.CameraTileRectangle(384), ref _surfaceLiquidPointsBuffer, ref _surfaceLiquidPointsLength);
                 _waterSurfacePointLightMap.ApplyWaterSurfacePoints(_surfaceLiquidPointsBuffer, _surfaceLiquidPointsLength);
+                _renderCountdown = 3;
             }
 
             RenderIntoHeightMapTargetV2();
         }
 
         //V2 Gradientizing
-        if(Main.LocalPlayer.ZoneAbyss)
+        if (Main.LocalPlayer.ZoneAbyss)
+        {
             V2HeightGradient();
+        }
         else
             V1HeightGradient();
         RenderIntoWaterTextureTarget();
@@ -646,15 +709,14 @@ public class MoonWaterSystem : ModSystem
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.Begin();
         WaterHelpers.DrawWaters(Main.instance, isBackground: false);
-  
+
         Main.sceneWaterPos.X = Main.screenPosition.X - Main.offScreenRange;
         Main.sceneWaterPos.Y = Main.screenPosition.Y - Main.offScreenRange;
 
         spriteBatch.End();
-
         graphicsDevice.SetRenderTarget(null);
 
-        RenderIntoEdgeShadeMap();
+  
     }
 
 
@@ -683,7 +745,7 @@ public class MoonWaterSystem : ModSystem
             SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
             lavaShader.ScreenOffset = CalculateScreenOffset(scale: 2f);
             lavaShader.Tiling = Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier;
-            lavaShader.Time = Main.GlobalTimeWrappedHourly * 1.5f;
+            lavaShader.Time = Main.GlobalTimeWrappedHourly * 0.8f;
             lavaShader.Quantize = 9;
             lavaShader.Distortion = 0.05f;
             lavaShader.StartGradient = _pixelWater.StartGradientColor;
@@ -696,25 +758,25 @@ public class MoonWaterSystem : ModSystem
             lavaShader.GlowMap = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6").Value;
             lavaShader.HeightMap = _waterHeightMapRT;
             lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["SpriteDrawing"];
-
-            graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
-            graphicsDevice.Clear(Color.DarkGoldenrod);
-
-            //Draw the base texture
-            spriteBatch.Begin(SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
-                SamplerState.AnisotropicClamp,
-                DepthStencilState.None,
-                RasterizerState.CullNone,
-                lavaShader.Effect);
-
-            Color drawColor = _pixelWater.BackgroundColor * 0.8f;
-            if (!_pixelWater.ignoreSkyColor)
+            using (RT.Clear(_waterTextureRTSwap, Color.DarkGoldenrod))
             {
-                drawColor = drawColor.MultiplyRGB(Main.ColorOfTheSkies);
+
+                //Draw the base texture
+                spriteBatch.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    lavaShader.Effect);
+
+                Color drawColor = _pixelWater.BackgroundColor * 0.8f;
+                if (!_pixelWater.ignoreSkyColor)
+                {
+                    drawColor = drawColor.MultiplyRGB(Main.ColorOfTheSkies);
+                }
+                spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, drawColor);
+                spriteBatch.End();
             }
-            spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, drawColor);
-            spriteBatch.End();
             return;
         }
 
@@ -726,159 +788,95 @@ public class MoonWaterSystem : ModSystem
         _waterEffect.Parameters["startGradient"].SetValue(_pixelWater.StartGradientColor.ToVector3());
         _waterEffect.Parameters["endGradient"].SetValue(_pixelWater.EndGradientColor.ToVector3());
         _waterEffect.Parameters["causticsColor"].SetValue(_pixelWater.CausticsColor.ToVector4());
+        _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
+
+        _waterEffect.Parameters["brightenNoiseTexture"].SetValue(_pixelWater.NoiseTexture.Value);
+        _waterEffect.Parameters["causticsNoiseTexture"].SetValue(_pixelWater.CausticsTexture.Value);
+        _waterEffect.Parameters["foamNoiseTexture"].SetValue(_perlinNoise);
         _waterEffect.Parameters["foamLava"].SetValue(_pixelWater.affectsLava ? 0 : 1);
         ApplyScreenOffset(scale: 2);
         Vector2 stretchScale = new Vector2(1, 0.5f);
-
-        graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
-        graphicsDevice.Clear(Color.LightSeaGreen);
-
-        Main.graphics.GraphicsDevice.Textures[1] = _pixelWater.NoiseTexture.Value;
-        Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-
-        Main.graphics.GraphicsDevice.Textures[2] = _pixelWater.CausticsTexture.Value;
-        Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-
-        Main.graphics.GraphicsDevice.Textures[3] = _perlinNoise;
-        Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.PointWrap;
-
-        //Draw the base texture
-        spriteBatch.Begin(SpriteSortMode.Deferred,
-            BlendState.AlphaBlend,
-            SamplerState.AnisotropicClamp,
-            DepthStencilState.None,
-            RasterizerState.CullNone,
-            _waterEffect);
-
-        Color baseColor = _pixelWater.BackgroundColor * 0.75f;
-        if (!_pixelWater.ignoreSkyColor)
+        using(RT.Clear(_waterTextureRTSwap, Color.LightSeaGreen))
         {
-            baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
+            //Draw the base texture
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.AnisotropicClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone,
+                _waterEffect);
+
+            Color baseColor = _pixelWater.BackgroundColor * 0.75f;
+            if (!_pixelWater.ignoreSkyColor)
+            {
+                baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
+            }
+            spriteBatch.Draw(_waterNoise1, _drawLocation, null, baseColor);
+            spriteBatch.End();
         }
-        spriteBatch.Draw(_waterNoise1, _drawLocation, null, baseColor);
-        spriteBatch.End();
+
     }
-
-    #region Legacy Water Code
-
-    private void DrawWaterGradient(SpriteBatch spriteBatch)
+    private void DrawReflection(SpriteBatch spriteBatch, RenderTarget2D reflectionRT, RenderTarget2D heightMapRT)
     {
-        //gradient gonna have to be added later
-
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        //Set gradient effect values
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["GradientDrawing"];
-
-        //  ApplyScreenOffset();
-        //Draw gradient
-        graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
-        graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_waterTextureRT, _drawLocation, null, Color.White);
-        spriteBatch.End();
-    }
-
-    private void DrawWaterCaustics(SpriteBatch spriteBatch)
-    {
-        //Draw Caustics
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["CausticsDrawing"];
-        _waterEffect.Parameters["time"].SetValue(_time * 2);
-        _waterEffect.Parameters["distortion"].SetValue(0.05f);
-        _waterEffect.Parameters["tiling"].SetValue(Vector2.One * 6 * Tiling * _pixelWater.TilingMultiplier);
-
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_waterTextureRT);
-        graphicsDevice.Clear(Color.Transparent);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, _pixelWater.CausticsColor);
-        spriteBatch.End();
-
-        graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
-
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["WrapDrawing"];
-        ApplyScreenOffset(scale: 2);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-            _waterEffect);
-        spriteBatch.Draw(_waterTextureRT, _drawLocation, null, Color.White);
-        spriteBatch.End();
-    }
-
-    private void DrawWaterSparkle(SpriteBatch spriteBatch)
-    {
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["SparklingCausticsDrawing"];
-        _waterEffect.Parameters["time"].SetValue(_time * 2);
-        _waterEffect.Parameters["distortion"].SetValue(0.05f);
-        _waterEffect.Parameters["tiling"].SetValue(Vector2.One * 8 * Tiling * _pixelWater.TilingMultiplier);
-        _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
-
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_waterTextureRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, Color.White * 0.5f);
-        spriteBatch.End();
-
-
-        graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["WrapDrawing"];
-        ApplyScreenOffset(scale: 2);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-            _waterEffect);
-        spriteBatch.Draw(_waterTextureRT, _drawLocation, null, Color.White);
-        spriteBatch.End();
-    }
-
-    private void DrawWaterFoam(SpriteBatch spriteBatch)
-    {
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["FoamDrawing"];
-        _waterEffect.Parameters["time"].SetValue(_time * 2);
-        _waterEffect.Parameters["distortion"].SetValue(0.05f);
-        _waterEffect.Parameters["tiling"].SetValue(Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier);
-        _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
-        ApplyScreenOffset(scale: 1f);
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_perlinNoise, _drawLocation, null, Color.White);
-        spriteBatch.End();
-    }
-    #endregion
-
-
-    private void DrawReflection(SpriteBatch spriteBatch)
-    {
-        _drawLocation = new Rectangle(0, 0, _waterTextureRT.Width, _waterTextureRT.Height);
-
-        float mipBias = 1;
-        float reflectionDistance = 128;
-        Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2(_reflectionRT.Width, _reflectionRT.Height);
+        float reflectionDistance = 256;
+        Vector2 reflectionTexelSize = reflectionRT.GetTexelSize();
 
 
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["ReflectionDrawing"];
         _waterEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
         _waterEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
         _waterEffect.Parameters["reflectionPower"].SetValue(3.5f);
-        _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
+        _waterEffect.Parameters["HeightMapTexture"].SetValue(heightMapRT);
 
 
         _waterEffect.Parameters["time"].SetValue(_time * 2);
         _waterEffect.Parameters["distortion"].SetValue(0.005f);
         _waterEffect.Parameters["NoiseTexture"].SetValue(_pixelWater.CausticsTexture.Value);
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        spriteBatch.Draw(_reflectionRT, Vector2.Zero, null, Color.White * _pixelWater.reflectionAlpha, 0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
+        spriteBatch.Draw(reflectionRT, Vector2.Zero, Color.White);
         spriteBatch.End();
+    }
+
+    private void UpscaleCoolAssTarget(RenderTarget2D target, SpriteBatch spriteBatch)
+    {
+        _drawLocation = new Rectangle(0, 0, _waterHeightMapRT.Width, _waterHeightMapRT.Height);
+        
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null);
+        spriteBatch.Draw(target, _drawLocation, null, Color.White * 1f);
+        spriteBatch.End();
+    }
+
+    private void DrawPosterizationNoUpscale(RenderTarget2D target, SpriteBatch spriteBatch)
+    {
+     
+    }
+
+    private void DrawPosterization(RenderTarget2D target, SpriteBatch spriteBatch)
+    {
+        _drawLocation = new Rectangle(0, 0, _waterHeightMapRT.Width, _waterHeightMapRT.Height);
+        
+        _waterEffect.CurrentTechnique = _waterEffect.Techniques["PosterizeDrawing"];
+        _waterEffect.Parameters["levels"].SetValue(10);
+
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+        spriteBatch.Draw(target, _drawLocation, null, Color.White * 1f);
+        spriteBatch.End();
+
+        if (!_pixelWater.noLighting)
+        {
+            _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
+            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+            spriteBatch.Draw(_waterLightMapRT, _drawLocation, null, Color.White * 1);
+            spriteBatch.End();
+        }
     }
 
     private void DrawPosterization(SpriteBatch spriteBatch)
     {
-        _drawLocation = new Rectangle(0, 0, _waterTextureRTOutput.Width, _waterTextureRTOutput.Height);
+        _drawLocation = new Rectangle(0, 0, _waterHeightMapRT.Width, _waterHeightMapRT.Height);
+
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["PosterizeDrawing"];
         _waterEffect.Parameters["levels"].SetValue(10);
-
-
-
-        GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-        graphicsDevice.SetRenderTarget(_waterTextureRTOutput);
-        graphicsDevice.Clear(Color.DeepSkyBlue);
 
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
         spriteBatch.Draw(_waterTextureRTSwap, _drawLocation, null, Color.White * 1f);
@@ -891,8 +889,6 @@ public class MoonWaterSystem : ModSystem
             spriteBatch.Draw(_waterLightMapRT, _drawLocation, null, Color.White * 1);
             spriteBatch.End();
         }
-
-        graphicsDevice.SetRenderTarget(null);
     }
 
     private void UpdatePixelWater()
@@ -910,18 +906,18 @@ public class MoonWaterSystem : ModSystem
     private void RenderIntoWaterTextureTarget()
     {
         LoadAssets();
-
-
         _drawLocation = new Rectangle(0, 0, _waterTextureRTSwap.Width, _waterTextureRTSwap.Height);
         SpriteBatch spriteBatch = Main.spriteBatch;
 
         UpdatePixelWater();
         DrawWaterBase(spriteBatch);
+
+        /*
         if (!_pixelWater.noReflection)
             DrawReflection(spriteBatch);
-        // 
-        DrawPosterization(spriteBatch);
+        DrawPosterization(spriteBatch);*/
     }
+
     private void CalculateHeightsToDraw()
     {
         TileDrawing tilesRenderer = Main.instance.TilesRenderer;
@@ -944,7 +940,7 @@ public class MoonWaterSystem : ModSystem
                 {
                     height++;
                 }
-       
+
                 if (tile.LiquidAmount > 0 || firstAboveTile.LiquidAmount > 0)
                 {
 
@@ -965,7 +961,7 @@ public class MoonWaterSystem : ModSystem
                     else
                     {
                         Point waterSurface = VeilGen.FindSurfaceOfWater(new Point(j, i), 16);
-       
+
                         while (height < maxGradientHeight)
                         {
                             Tile aboveTile = Main.tile[j, i - height];
@@ -989,6 +985,14 @@ public class MoonWaterSystem : ModSystem
             }
         }
     }
+    void DrawLavaballs(SpriteBatch spriteBatch)
+    {
+        using var rt = RT.Context(RenderTargets.ScreenTarget);
+        MetaballRenderer.PrepareMetaballContent(rt, LavaMetaballRenderer.metaballs);
+        spriteBatch.Begin();
+        spriteBatch.Draw(rt, Vector2.Zero, Color.White * 0.4F);
+        spriteBatch.End();
+    }
 
     private void RenderIntoHeightMapTargetV2()
     {
@@ -997,30 +1001,31 @@ public class MoonWaterSystem : ModSystem
         //I'll look again at this later since it feels like an unnecessary render target use, wait,
         //Make we could just translate it after it projects?
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-        using var mask = RT.Context(RenderTargets.ScreenTarget);
-        using(RT.Clear(mask, Color.Transparent))
+
+        RenderTargetBinding[] binding = new RenderTargetBinding[]
         {
+            new RenderTargetBinding(_waterHeightMapRT),
+            new RenderTargetBinding(_waterLightMapRT)
+        };
+
+        using (RT.Clear(binding, Color.Transparent))
+        {
+
             var waterlightPass = AssetReferences.Effects.Generic.WaterLight.CreatePixelPass();
-            waterlightPass.Parameters.transformMatrix = TrailDrawer.UnscaledWorldViewPoint;
+            Vector2 pos = -Main.screenPosition;
+            pos += new Vector2(Main.offScreenRange);
+            Vector3 offset = new Vector3(pos,0);
+            waterlightPass.Parameters.transformMatrix = TrailDrawer.SpritebatchTransformMatrix(Main.spriteBatch, Matrix.CreateTranslation(offset));
             waterlightPass.Apply();
+
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.SamplerStates[0] = SamplerState.AnisotropicClamp;
             graphicsDevice.BlendState = CustomBlendStates.Max;
             graphicsDevice.DepthStencilState = DepthStencilState.None;
             _waterSurfacePointLightMap.Draw(graphicsDevice);
+
         }
 
-        graphicsDevice.SetRenderTarget(_waterHeightMapRT);
-        graphicsDevice.Clear(Color.Transparent);
-
-
-        var sb = Main.spriteBatch;
-        sb.Begin();
-
-        sb.Draw(mask, new Vector2(Main.offScreenRange), Color.White);
-        sb.End();
-
-        graphicsDevice.SetRenderTarget(null);
 
 
     }
@@ -1038,44 +1043,32 @@ public class MoonWaterSystem : ModSystem
             new RenderTargetBinding(_waterHeightMapRT),
             new RenderTargetBinding(_waterLightMapRT)
         };
-        graphicsDevice.SetRenderTargets(binding);
-        graphicsDevice.Clear(Color.Transparent);
-        Texture2D heightTile = TextureAssets.BlackTile.Value;
-
-
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["HeightDrawing"];
-        _waterEffect.Parameters["maxDepth"].SetValue(_pixelWater.maxHeight);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
-            SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-        foreach (HeightDraw heightDraw in _heightsToDraw)
+        using(RT.Clear(binding, Color.Transparent))
         {
-            Point lightTilePoint = heightDraw.tilePoint.ToTileCoordinates();
-            Vector2 drawPosition = heightDraw.tilePoint - Main.screenPosition;
+            Texture2D heightTile = TextureAssets.BlackTile.Value;
 
 
-            Vector3 lightColor = Lighting.GetColor(lightTilePoint).ToVector3();
-            if (_pixelWater.noLighting)
-                lightColor = Vector3.One;
-            Color drawColor = new Color(lightColor.X, lightColor.Y, lightColor.Z, heightDraw.height);
+            _waterEffect.CurrentTechnique = _waterEffect.Techniques["HeightDrawing"];
+            _waterEffect.Parameters["maxDepth"].SetValue(_pixelWater.maxHeight);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+                SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+            foreach (HeightDraw heightDraw in _heightsToDraw)
+            {
+                Point lightTilePoint = heightDraw.tilePoint.ToTileCoordinates();
+                Vector2 drawPosition = heightDraw.tilePoint - Main.screenPosition;
 
-            spriteBatch.Draw(heightTile, drawPosition + new Vector2(Main.offScreenRange), drawColor);
+
+                Vector3 lightColor = Lighting.GetColor(lightTilePoint).ToVector3();
+                if (_pixelWater.noLighting)
+                    lightColor = Vector3.One;
+                Color drawColor = new Color(lightColor.X, lightColor.Y, lightColor.Z, heightDraw.height);
+
+                spriteBatch.Draw(heightTile, drawPosition + new Vector2(Main.offScreenRange), drawColor);
+            }
+
+            spriteBatch.End();
+
         }
-
-        spriteBatch.End();
-
-        /*
-        _waterEffect.CurrentTechnique = _waterEffect.Techniques["ParticleHeightDrawing"];
-        spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Max,
-            SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-
-        var rawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset);
-        rawer.worldPosition = Main.LocalPlayer.Center;
-        rawer.scale *= 6;
-
-        spriteBatch.Draw(rawer);
-        spriteBatch.End();*/
-
-        graphicsDevice.SetRenderTarget(null);
     }
 
 }

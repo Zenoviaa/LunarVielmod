@@ -214,7 +214,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                         (int)DialogueType.Start_Irradia).Send(-1);
                 }
 
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 25f);
+
                 NPC.netUpdate = true;
             }
 

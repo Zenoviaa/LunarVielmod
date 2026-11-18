@@ -594,7 +594,7 @@ public class IceFissureHammerSlash : ModProjectile
             {
                 var pos = Projectile.Center + Main.rand.NextVector2Circular(256, 256);
                 var vel = (Projectile.Center - pos).Resize(7);
-                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,

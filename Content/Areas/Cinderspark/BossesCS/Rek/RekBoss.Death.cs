@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
@@ -23,11 +25,12 @@ public partial class RekBoss
         {
             case 0:
                 {
+                    _roar = false;
 
+                    _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60F));
                     Vector2 eruptionLeft = FindEruptionLeft();
                     Vector2 eruptionRight = FindEruptionRight();
 
-                    CameraTargetSystem.AddTarget(NPC.Center);
 
                     eruptionRight.Y -= 384;
                     eruptionLeft.Y -= 384;
@@ -62,7 +65,8 @@ public partial class RekBoss
                 break;
             case 1:
                 {
-                    CameraTargetSystem.AddTarget(NPC.Center);
+                    var timeBetween = 7;
+
 
                     float ratio = Timer / 64;
                     float ease = EasingFunction.InOutSine(ratio);
@@ -72,7 +76,7 @@ public partial class RekBoss
                     {
                         Segments[i].isBurningNoWarning = true;
                     }
-
+                //    CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, ease * 0.5F));
                     var animator = this.GetAnimator();
                     if (Timer < 18)
                     {
@@ -90,7 +94,7 @@ public partial class RekBoss
                     {
                         if (Timer % 10 == 0)
                         {
-                            Particles.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center });
+                            PS.RoarDust.Spawn(RoarDustData.Default with { position = NPC.Center });
                         }
                         ShakeScreenPosition.Shake = 8;
 
@@ -103,6 +107,7 @@ public partial class RekBoss
 
                         if (!_roar)
                         {
+            
                             var sound = AssetRegistry.Sounds.Rek.RekBigroar;
                             SoundEngine.PlaySound(sound);
 
@@ -117,16 +122,53 @@ public partial class RekBoss
                     }
 
                     //Segments should pop one at a time
+                    var localI = 0;
                     for(int i = Segments.Length - 1; i >= 0; i--)
                     {
                         var segment = Segments[i];
-                        segment.noWorm = true;
-                        if (!segment.killed)
+                        localI++;
+                        if(Timer >= localI * timeBetween)
                         {
-                            segment.killed = true;
-                            segment.velocity = -Vector2.UnitY * 15;
-                            segment.velocity.X *= 0.94f;
+                            segment.noWorm = true;
+                            if (!segment.killed)
+                            {
+                                segment.killed = true;
+                                segment.velocity = -Vector2.UnitY * 15;
+                                segment.velocity.X *= 0.94f;
+                                var fx = FXUtil.GlowCircleBoom(segment.position, Color.Yellow, Color.Orange, Color.OrangeRed, 25);
+                                fx.Scale *= 2F;
+                                for (float f = 0; f < 12; f++)
+                                {
+                                    Vector2 pos = segment.position;
+                                    pos += Main.rand.NextVector2Circular(16, 16);
+                                    Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
+                                    PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                                    {
+                                        position = pos,
+                                        velocity = Main.rand.NextVector2Circular(18, 18),
+                                        timeLeft = 100,
+                                        innerColor = color.ToVector4(),
+                                        outerColor = Color.Red.ToVector4(),
+                                        scale = new Vector2(Main.rand.NextFloat(1f, 2f))
+                                    });
+                                }
+                                for (int j = 0; j < 7; j++)
+                                {
+                                    Vector2 pos = segment.position + Main.rand.NextVector2Circular(64, 64);
+                                    Vector2 vel = Main.rand.NextVector2Circular(10, 10);
+                                    var smokeParitcle = SmokeParticle.SpawnInAlphaLayer(pos, vel);
+                                    smokeParitcle.dampening = 0.09f;
+                                    smokeParitcle.fadeToColor = Color.Black * 0.5f;
+                                    smokeParitcle.initialColor = Color.DarkRed * 0.5f;
+                                    smokeParitcle.Scale *= 2f;
+                                    smokeParitcle.behindLayer = true;
+                                }
+
+
+                                SoundEngine.PlaySound(SoundID.Item74 with { PitchVariance = 0.6f }, segment.position);
+                            }
                         }
+  
                     }
 
                     foreach(var segment in Segments)
@@ -134,13 +176,26 @@ public partial class RekBoss
                         segment.position += segment.velocity;
                         segment.velocity.X *= 0.95f;
                         segment.velocity.Y += 0.8f;
-                        segment.rotation += 0.2f;
+                        segment.rotation += 0.1f;
                     }
 
-                    NPC.velocity *= 0.96f;
-                    if (Timer >= 180)
+                    if(Timer == 167)
                     {
-                        
+                        var deathSound = AssetReferences.Assets.Sounds.Rek.RekDeathHeadExplode.Asset;
+                        SoundEngine.PlaySound(deathSound);
+                    }
+                    NPC.velocity *= 0.96f;
+                    if (Timer >= Segments.Length * timeBetween)
+                    {
+   
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            ProjFirer firer = ProjFirer.From<SpearBoom>(NPC);
+                            firer.damage = Volcanic_Spear_Damage;
+                            firer.position = NPC.Center;
+                            firer.velocity = -Vector2.UnitY * 1024;
+                            firer.New();
+                        }
                         NPC.Kill();
                     }
                 }

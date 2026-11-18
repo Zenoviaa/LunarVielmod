@@ -232,7 +232,7 @@ public class CurlistineSwing : BaseSwingProjectileV2
             var pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(12, 12);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -276,7 +276,7 @@ public class CurlistineSwing : BaseSwingProjectileV2
                 var pos = target.Center + Main.rand.NextVector2Circular(32, 32);
                 var vel = -Vector2.UnitY * Main.rand.NextFloat(2f, 6f);
                 vel = vel.RotatedByRandom(4.44f);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,
@@ -365,7 +365,7 @@ public class CurlistineStaminaSwing : BaseSwingProjectileV2
             var pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(12, 12);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -425,7 +425,7 @@ public class CurlistineStaminaSwing : BaseSwingProjectileV2
                 var pos = target.Center + Main.rand.NextVector2Circular(32, 32);
                 var vel = -Vector2.UnitY * Main.rand.NextFloat(2f, 6f);
                 vel = vel.RotatedByRandom(4.44f);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,

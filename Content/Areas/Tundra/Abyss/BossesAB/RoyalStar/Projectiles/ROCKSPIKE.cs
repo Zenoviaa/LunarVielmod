@@ -126,7 +126,7 @@ public class ROCKSPIKE : ModNPC,
     }
     public void CrackVFX(Vector2 position)
     {
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200 });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200 });
     }
 
 

@@ -41,7 +41,7 @@ public partial class Zigguratra
                         vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
 
                         var color = Color.Orange;
-                        Particles.LightningSpikeySpark.Spawn(new()
+                        PS.LightningSpikeySpark.Spawn(new()
                         {
                             position = pos,
                             velocity = vel,

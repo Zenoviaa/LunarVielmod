@@ -66,6 +66,10 @@ public class SpearBoom : ModProjectile
         base.AI();
 
         Timer++;
+        if(Timer >= 31)
+        {
+            Projectile.hostile = false;
+        }
         if (Timer == 1)
         {
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();

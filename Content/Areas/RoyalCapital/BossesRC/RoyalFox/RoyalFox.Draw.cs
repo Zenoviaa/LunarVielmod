@@ -362,7 +362,40 @@ public partial class RoyalFox
             spriteBatch.Draw(circleDrawer);
         }
         DrawGravityField(spriteBatch);
-   
+
+        void DrawHitboxes()
+        {
+            void Before()
+            {
+                var square = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset);
+                var rect = NPC.getRect();
+                rect.X -= (int)(Main.screenPosition.X);
+                rect.Y -= (int)(Main.screenPosition.Y);
+                square.color = Color.Red * 0.5F;
+                square.dstRect = rect;
+                square.drawOrigin = Vector2.Zero;
+                Main.spriteBatch.Draw(square);
+            }
+
+
+            void After()
+            {
+                var square = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.WhiteSquare.Asset);
+                var rect = CorrectedHitbox;
+                rect.X -= (int)(Main.screenPosition.X);
+                rect.Y -= (int)(Main.screenPosition.Y);
+
+                square.dstRect = rect;
+                square.drawOrigin = Vector2.Zero;
+                square.color = Color.White * 0.7F;
+
+                Main.spriteBatch.Draw(square);
+            }
+
+            Before();
+            After();
+        }
+      //  DrawHitboxes();
     }
     private void DrawMoonTeleport(SpriteBatch spriteBatch, Vector2 screenPos)
     {
@@ -409,6 +442,9 @@ public partial class RoyalFox
         DrawFox(Main.spriteBatch, Main.screenPosition, Color.White);
         DrawSlashEffect(Main.graphics.GraphicsDevice);
         DrawSwordSlash(Main.spriteBatch, Main.screenPosition);
+
+
+
     }
     public void DrawToRenderTargets()
     {

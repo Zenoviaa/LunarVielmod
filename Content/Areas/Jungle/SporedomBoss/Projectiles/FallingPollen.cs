@@ -56,7 +56,7 @@ public class FallingPollen : ModProjectile
         }
         if(Main.rand.NextBool(8))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(24, 24),
                 velocity = -Projectile.velocity.RotatedByRandom(0.4f) * Main.rand.NextFloat(0.5f, 1f),

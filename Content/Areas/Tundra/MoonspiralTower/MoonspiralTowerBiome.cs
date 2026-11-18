@@ -38,7 +38,7 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower
         public override void OnEnter(Player player)
         {
             base.OnEnter(player);
-            player.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower = true;
+            player.ZoneMoonspiralTower = true;
             if (Main.netMode == NetmodeID.Server)
                 return;
 
@@ -47,7 +47,7 @@ namespace Stellamod.Content.Areas.Tundra.MoonspiralTower
         public override void OnLeave(Player player)
         {
             base.OnLeave(player);
-            player.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower = false;
+            player.ZoneMoonspiralTower = false;
             if (Main.netMode == NetmodeID.Server)
                 return;
 

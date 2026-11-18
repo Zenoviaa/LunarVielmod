@@ -264,7 +264,7 @@ public class NiiviPrismaticBomb : ModProjectile
 
         if (Main.rand.NextBool(1))
         {
-            Particles.DiamondSparkle.Spawn(new()
+            PS.DiamondSparkle.Spawn(new()
             {
                 position = Projectile.Center + Main.rand.NextVector2Circular(300, 300),
                 velocity = Main.rand.NextVector2Circular(3, 3),
@@ -277,7 +277,7 @@ public class NiiviPrismaticBomb : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(192, 192);
             var vel = Main.rand.NextVector2Circular(6, 6);
-            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -294,7 +294,7 @@ public class NiiviPrismaticBomb : ModProjectile
         {
             var pos2 = Projectile.Center + Main.rand.NextVector2Circular(384, 384);
             var vel2 = -Projectile.velocity.RotatedBy(Projectile.rotation);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos2,
                 velocity = vel2,
@@ -352,11 +352,11 @@ public class NiiviPrismaticBomb : ModProjectile
                 fac.scale = new Vector2(Main.rand.NextFloat(0.3f, 0.8f)) * 3;
                 fac.timeLeft = 120;
                 fac.velocityPerTickMult = 1;
-                Particles.BitDust.Spawn(fac);
+                PS.BitDust.Spawn(fac);
 
                 if (Main.rand.NextBool(4))
                 {
-                    Particles.DiamondSparkle.Spawn(new()
+                    PS.DiamondSparkle.Spawn(new()
                     {
                         position = pos,
                         velocity = vel,
@@ -371,7 +371,7 @@ public class NiiviPrismaticBomb : ModProjectile
             var pos = GetStretchSpawnPoint();
             var vel = Projectile.Center - pos;
             vel *= 0.13f;
-            Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -385,7 +385,7 @@ public class NiiviPrismaticBomb : ModProjectile
         {
             var pos = Projectile.Center;
             var vel = Main.rand.NextVector2CircularEdge(25, 25);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -426,7 +426,7 @@ public class NiiviPrismaticBomb : ModProjectile
         //Create a burst of particles
         for(var i = 0; i < 120; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = Projectile.Center,
                 velocity = Main.rand.NextVector2Circular(65, 65),
@@ -598,7 +598,7 @@ public class NiiviPrismaticBomb : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
             var vel = Main.rand.NextVector2Circular(128, 128);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -666,7 +666,7 @@ public class NiiviPrismaticBomb : ModProjectile
                 var dir = Projectile.rotation.ToRotationVector2();
                 var pos = Projectile.Center + dir * 256 + Main.rand.NextVector2Circular(64, 64);
                 var vel = -dir.RotatedBy(1.54F * (Main.rand.NextBool(2) ? -1 : 1)) * Main.rand.NextFloat(5, 15);
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel,
@@ -1053,7 +1053,7 @@ public class PrismaticBombWave : ModProjectile
                 {
                     var t = origin;
                     t.Y += Main.rand.NextFloat(-512, 5);
-                    Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                    PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                     {
                         position = t,
                         velocity = Vector2.Zero,
@@ -1070,7 +1070,7 @@ public class PrismaticBombWave : ModProjectile
                 var randPos = waveOrigin + Main.rand.NextVector2Circular(64, 64);
                 var randVelocity = -Vector2.UnitY * 16;
                 randVelocity = randVelocity.RotatedByRandom(0.25f);
-                Particles.DiamondSparkle.Spawn(new()
+                PS.DiamondSparkle.Spawn(new()
                 {
                     color = DrawUtilities.Prismatic,
                     position = randPos,
@@ -1083,7 +1083,7 @@ public class PrismaticBombWave : ModProjectile
                 randPos = inverseWaveOrigin + Main.rand.NextVector2Circular(64, 64);
                 randVelocity = -Vector2.UnitY * 16;
                 randVelocity = randVelocity.RotatedByRandom(0.25f);
-                Particles.DiamondSparkle.Spawn(new()
+                PS.DiamondSparkle.Spawn(new()
                 {
                     color = DrawUtilities.Prismatic,
                     position = randPos,
@@ -1304,7 +1304,7 @@ public class NiiviPrismaticBrick : ModProjectile
         }
         var pos = Main.rand.NextVector2Circular(80, 80) + Projectile.Center;
         var vel = Main.rand.NextVector2Circular(4, 4);
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+        PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
         {
             position = pos,
             velocity = vel,
@@ -1374,7 +1374,7 @@ public class NiiviPrismaticBrick : ModProjectile
         for(var i = 0; i < 4; i++)
         {
             var pos = Projectile.Center + new Vector2(Main.rand.Next(-64, 64), -80 * i);
-            Particles.DiamondSparkle.Spawn(new()
+            PS.DiamondSparkle.Spawn(new()
             {
                 position = pos,
                 velocity = -Vector2.UnitY * 6,
@@ -1387,7 +1387,7 @@ public class NiiviPrismaticBrick : ModProjectile
             var pos = Projectile.Center + Main.rand.NextVector2Circular(128, 16);
             var vel = -Vector2.UnitY * Main.rand.NextFloat(8, 25);
             vel = vel.RotatedByRandom(0.5f);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -1429,7 +1429,7 @@ public class NiiviPrismaticBombBoom : ModProjectile
             ParticleUtils.CreateSwirlingDustCircle(fac);
             for(var i = 0; i < 128; i++)
             {
-                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = Projectile.Center + Main.rand.NextVector2Circular(64, 64),
                     velocity = Main.rand.NextVector2Circular(45, 45),

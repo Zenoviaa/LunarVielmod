@@ -130,7 +130,7 @@ public partial class Niivi
                         {
                             
                             var randPos = Vector2.Lerp(pos, endPos, Main.rand.NextFloat(0f, 1f));
-                            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                             {
                                 position = randPos,
                                 velocity = NPC.rotation.ToRotationVector2(),

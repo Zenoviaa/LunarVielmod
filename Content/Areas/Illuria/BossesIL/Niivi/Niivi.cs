@@ -490,7 +490,7 @@ public partial class Niivi : ScarletBoss,
             _pattern++;
         }
 
-        SwitchState(AIState.StarBomb);
+        SwitchState(AIState.PrismBomb);
     }
 
     void ResetSegments()

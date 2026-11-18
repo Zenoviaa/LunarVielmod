@@ -11,6 +11,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    Vector2 _oroPoint;
     private float _ouroborosAlpha;
     private bool _ouroborosTrail;
     private float _windUpTimer;
@@ -70,21 +71,30 @@ public partial class RekBoss
 
         void SlamWall(Vector2 point)
         {
+            PlayBumpSound();
             var iminShock = new SoundStyle("Stellamod/Assets/Sounds/RekShockwave");
             SoundEngine.PlaySound(iminShock, point);
             var fx = FXUtil.GlowCircleBoom(point, Color.White, Color.OrangeRed, Color.Red);
             fx.VectorScale *= 7;
             foreach (PositionVelocity posVel in new RandomCircleOrientation(point, 64, 32))
             {
-                Particles.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
+                PS.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
             }
             foreach (PositionVelocity posVel in new RandomCircleOrientation(point, 450, 24))
             {
-                Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
+                PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
             }
             FXUtil.CreateRipple(point);
 
         }
+
+        void EruptUpwardsAroundCenter()
+        {
+            var pos = _centerPoint;
+            pos.X += Main.rand.NextFloat(-144, 144);
+            LavaEruption(pos, -Vector2.UnitY * 15, 7, 0.07F);
+        }
+
         void SawsOn()
         {
 
@@ -232,11 +242,11 @@ public partial class RekBoss
                         fx.VectorScale *= 6f;
                         foreach (PositionVelocity posVel in new RandomCircleOrientation(_centerPoint, 64, 64))
                         {
-                            Particles.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
+                            PS.BitDust.Spawn(BitDustFactory.Default with { position = posVel.position, velocity = posVel.velocity * Main.rand.NextFloat(5, 15), timeLeft = 120 });
                         }
                         foreach (PositionVelocity posVel in new RandomCircleOrientation(_centerPoint, 450, 44))
                         {
-                            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
+                            PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = posVel.position, color = Color.White * 0.2f });
                         }
                         FXUtil.ShakeCamera(NPC.Center, 1024, 16);
                         for (int k = 0; k < 4; k++)
@@ -283,7 +293,25 @@ public partial class RekBoss
                     {
                         _initialVelocity.Y += 0.5f;
                     }
+
+                    for (int i = 0; i < Segments.Length; i++)
+                    {
+                        ref var segment = ref Segments[i];
+                        segment.sawBladeAlpha = MathHelper.Lerp(1f, 0f, Timer / 180f);
+                        var tile = Framing.GetTileSafely(segment.position.ToTileCoordinates());
+                        if (tile.LiquidAmount > 0 && Main.rand.NextBool(9))
+                        {
+                            LavaEruption(segment.position, -Vector2.UnitY * 18, 3, 0.05f);
+                        }
+                    }
+                    if (Timer == 45)
+                    {
+                        PlayStartupSound();
+                    }
+                    _sawbladeAlpha = 0f;
+                    _ouroborosOrigin = _centerPoint;
                     SpinAround(_centerPoint, _spinRot);
+
                     if (Timer >= Ouroboros_Wait_Time)
                     {
                         Timer = 0;
@@ -294,6 +322,7 @@ public partial class RekBoss
             case 3:
                 {
                 
+
                     _outliner.warning = true;
                     foreach (var seg in Segments)
                     {
@@ -301,8 +330,16 @@ public partial class RekBoss
                     }
                     _saw = true;
                     _spinRot += rotationSpeed + rotationSpeed * 2 * EasingFunction.OutExpo(Timer / Ouroboros_Spinup_Time);
+                    _sawbladeRotation += rotationSpeed + rotationSpeed * 2 * EasingFunction.OutExpo(Timer / Ouroboros_Spinup_Time);
+                    _sawbladeAlpha = Timer / Ouroboros_Spinup_Time;
                     _initialVelocity *= 0.98f;
                     _centerPoint += _initialVelocity;
+                    _ouroborosOrigin = _centerPoint;
+                    if (Timer % 4 == 0)
+                    {
+                        EruptUpwardsAroundCenter();
+                    }
+
                     SpinAround(_centerPoint, _spinRot);
                     SawsOn();
                     if (Timer >= Ouroboros_Spinup_Time)
@@ -324,12 +361,22 @@ public partial class RekBoss
                     Vector2 bottomLeft = rect.BottomLeft();
                     _saw = true;
                     Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled, _initialVelocity, bottomLeft);
+                    _ouroborosOrigin = currentPoint;
                     _distanceTraveled += 4 + 28 * EasingFunction.InOutExpo(Timer / 120f);
                     _spinRot += rotationSpeed * 3;
+                    _sawbladeRotation += rotationSpeed * 3;
+                    _sawbladeAlpha = 1f;
                     SpinAround(currentPoint, _spinRot);
+
+                    if (Timer % 4 == 0)
+                    {
+                        EruptUpwardsAroundCenter();
+                    }
+
                     SawsOn();
                     if (_distanceTraveled >= Vector2.Distance(_initialVelocity, bottomLeft))
                     {
+                        SlamWall(bottomLeft);
                         _distanceTraveled = 0;
                         Timer = 0;
                         AttackCycle++;
@@ -350,7 +397,7 @@ public partial class RekBoss
                     _saw = true;
                     Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled, bottomLeft, topLeft, topRifght, bottomRight, bottomLeft);
                     _ouroborosOrigin = currentPoint;
-
+                    ManageSawbladeSound();
                     if (Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)
@@ -394,6 +441,11 @@ public partial class RekBoss
                             ballFirer.position += new Vector2(0, 128);
                             ballFirer.New();
                         }
+
+                        if (Timer % 2 == 0)
+                        {
+                            LavaEruption(NPC.Center + new Vector2(0, 128), movementDirection * 25 + new Vector2(0, -15), 7, 0.06f);
+                        }
                     }
                     CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, currentPoint, 0.1f));
                     SpinAround(currentPoint, _spinRot);
@@ -406,7 +458,7 @@ public partial class RekBoss
 
                     if (Vector2.Dot(_ouroborosVelocity, movementDirection) < 0.9f && Timer > 15)
                     {
-
+            
                         SlamWall(currentPoint);
                         AttackCount++;
                         if(AttackCount >= Ouroboros_Wall_Slam_Count)
@@ -445,6 +497,8 @@ public partial class RekBoss
                     _distanceTraveled += 32 * pctIncrease;
                     _distanceTraveled += ((speedUp) * EasingFunction.InOutBack(_windUpTimer / 35) + 12) * EasingFunction.InOutExpo(Timer / 120f);
                     _spinRot += rotationSpeed * 3f;
+                    _sawbladeRotation += rotationSpeed * 3f;
+                    _sawbladeAlpha = 1f;
                 }
                 break;
             case 6:
@@ -455,10 +509,19 @@ public partial class RekBoss
                     {
                         ref var segment = ref Segments[i];
                         segment.sawBladeAlpha = MathHelper.Lerp(1f, 0f, Timer / 180f);
+                        var tile = Framing.GetTileSafely(segment.position.ToTileCoordinates());
+                        if(tile.LiquidAmount > 0 && Main.rand.NextBool(9))
+                        {
+                            LavaEruption(segment.position, -Vector2.UnitY * 25, 3, 0.05f);
+                        }
                     }
 
                     _spinRot += rotationSpeed * 3f;
+                    _spinRot += rotationSpeed * 3f;
+                    _sawbladeAlpha = MathHelper.Lerp(1f, 0f, Timer / 180f);
+                    _sawbladeRotation += rotationSpeed * 3f;
                     _centerPoint += _initialVelocity;
+                    _ouroborosOrigin = _centerPoint;
                     _initialVelocity.X *= 0.97f;
                     _initialVelocity.Y += 0.5f;
                     if(Timer >= 180)

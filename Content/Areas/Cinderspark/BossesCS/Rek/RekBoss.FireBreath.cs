@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets.ContentReader.Aseprite;
+﻿using MonoMod.Cil;
+using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using System;
@@ -8,10 +9,20 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
-    private float Fire_Breath_Arc_Jump_Count => 3;
+    bool _splashSound;
+    private float Fire_Breath_Arc_Jump_Count
+    {
+        get
+        {
+            if (_phase >= 2)
+                return 6;
+            return 3;
+        }
+    }
+
     private float Fire_Breath_Arc_Jump_Delay => 24;
     private float Fire_Breath_Arc_Jump_Time => MathF.Floor(90 * AttackSpeedMultiplier);
-    private int Fire_Breath_Damage => 40;
+    private int Fire_Breath_Damage => 67;
     private void AI_FireBreath()
     {
         Timer++;
@@ -26,7 +37,7 @@ public partial class RekBoss
             Vector2 end = eruptionRight;
 
 
-            if(AttackCount % 2 == 0)
+            if(_firebreathSide == 1)
             {
                 start = eruptionRight;
                 end = eruptionLeft;
@@ -40,13 +51,76 @@ public partial class RekBoss
         {
             case 0:
                 {
+                    Vector2 eruptionLeft2 = Vector2.Lerp(EruptionLeft, EruptionRight, 0.2f);
+                    Vector2 eruptionRight2 = Vector2.Lerp(EruptionLeft, EruptionRight, 0.8f);
+                    eruptionLeft2.Y -= 192;
+                    eruptionLeft2.Y -= 192;
+                    if (Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            _firebreathSide = Main.rand.NextBool(2) ? -1 : 1;
+
+                            Vector2 teleportPoint = _firebreathSide < 0 ? eruptionLeft : eruptionRight;
+                            Teleport(teleportPoint);
+                        }
+
+                    }
+
+                    Timer = 0;
+                    AttackCycle++;
+                    NPC.netUpdate = true;
+                }
+                break;
+            case 1:
+                {
+                    Vector2 eruptionLeft2 = EruptionLeft;
+                    Vector2 eruptionRight2 = EruptionRight;
+
+                    eruptionLeft2.Y -= 384;
+                    eruptionRight2.Y -= 384;
+
+                    float sideAlpha = _firebreathSide < 0 ? 0.25f : 0.75f;
+                    Vector2 midPoint = Vector2.Lerp(eruptionLeft, eruptionRight, sideAlpha);
+
+                    float moveTime = Fire_Breath_V2_Come_In_Time;
+                    float xRadius = Fire_Breath_V2_X_Radius;
+                    float yRadius = Fire_Breath_V2_Y_Radius;
+                    float ratio = Timer / moveTime;
+                    float ease = EasingFunction.InOutSine(ratio);
+                    float x = MathF.Sin(ease * MathHelper.Pi) * xRadius;
+                    float y = MathF.Cos(ease * MathHelper.Pi) * yRadius;
+
+                    Vector2 moveToPoint = midPoint + new Vector2(x * _firebreathSide, y);
+                    Vector2 targetVel = moveToPoint - NPC.Center;
+                    NPC.velocity = targetVel;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+
+                    _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / moveTime));
+                    Animator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
+
+                    if (Timer >= moveTime * 1.2f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+
+                    }
+                }
+                break;
+            case 2:
+                {
                     //Vector2 moveToPoint = Vector2.Lerp(eruptionLeft, eruptionRight, 0.7f);
                     if (Timer == 1)
                     {
-                        Vector2 pointToUse = AttackCount % 2 == 0 ? eruptionLeft : eruptionRight;
+                        _splashSound = false;
+                        _splashedYoAss = false;
+                        Vector2 pointToUse = _firebreathSide == 1 ? eruptionLeft : eruptionRight;
                         Teleport(pointToUse);
                     }
-
+                    if (AttackCount == 0)
+                        _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutSine(Timer / 30F));
+                    else
+                        _globalAlpha = 1f;
                     Vector2 cameraLerp = Vector2.Lerp(Main.LocalPlayer.Center, NPC.Center, 0.5f);
                     float ratio = Timer / Fire_Breath_Arc_Jump_Time;
                     Vector2 point = GetArcPoint(ratio);
@@ -68,16 +142,8 @@ public partial class RekBoss
                     {
                         Vector2 vel = (nextPoint - point).SafeNormalize(Vector2.Zero);
                         vel *= 1024;
-                        for(int i = 0; i < 32; i++)
-                        {
-                            Particles.WaterDust.Spawn(WaterDustData.Default with
-                            { 
-                                position = point, 
-                                velocity = vel * Main.rand.NextFloat(0.02f, 0.05f), 
-                                scale = Main.rand.NextFloat(0.5f, 1.5f), 
-                                timeLeft = Main.rand.Next(90, 120)  
-                            });
-                        }
+                        LavaEruption(NPC.Center, vel.Resize(35), 64, 0.08F);
+                        PlayLavaSplashSound();
                         if (MultiplayerHelper.IsHost)
                         {
                             ProjFirer firer = ProjFirer.From<MeteorBoom>(NPC);
@@ -120,10 +186,15 @@ public partial class RekBoss
                             }
                         }
                     }
-
+                    if (_oldInLava && !_splashSound && Timer > 45)
+                    {
+                        PlayLavaSinkSound();
+                        _splashSound = true;
+                    }
 
                     if (Timer >= Fire_Breath_Arc_Jump_Time)
                     {
+                        _firebreathSide *= -1;
                         Timer = 0;
                         AttackCycle++;
                         AttackCount++;
@@ -131,9 +202,14 @@ public partial class RekBoss
 
                 }
                 break;
-            case 1:
+            case 3:
                 {
                     NPC.velocity.Y += 0.5f;
+                    if(_oldInLava && !_splashSound)
+                    {
+                        PlayLavaSinkSound();
+                        _splashSound = true;
+                    }
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= Fire_Breath_Arc_Jump_Delay)
                     {
@@ -149,9 +225,9 @@ public partial class RekBoss
                     }
                 }
                 break;
-            case 2:
+            case 4:
                 {
-                    NextState();
+                    SwitchState(AIState.Idle);
                 }
                 break;
         }

@@ -20,6 +20,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
 public class BigVulcanFireball : ModProjectile
 {
+    bool _oldInLava;
     private Asset<Texture2D> _maskTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
     private ref float Scale => ref Projectile.ai[1];
@@ -53,6 +54,17 @@ public class BigVulcanFireball : ModProjectile
     {
 
         base.AI();
+
+        var tile = Framing.GetTileSafely(Projectile.Center.ToTileCoordinates());
+        var newInLava = tile.LiquidAmount > 0;
+        if ((_oldInLava && !newInLava) || (!_oldInLava && newInLava))
+        {
+            //
+            RekBoss.LavaEruption(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 12, 9, radius: 0.1f);
+            RekBoss.LavaEruption(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 6, 9, radius: 0.1f);
+        }
+        _oldInLava = newInLava;
+
         Timer++;
         if(Timer == 1)
         {
@@ -94,7 +106,7 @@ public class BigVulcanFireball : ModProjectile
         {
             Vector2 pos = Projectile.Center;
             pos += Main.rand.NextVector2Circular(24, 24);
-            Particles.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.Black * 0.45F, timeleft = 180 });
+            PS.FaintSmokeDust.Spawn(FaintSmokeDustData.Default with { position = pos, velocity = -Vector2.UnitY * 0.1f, color = Color.Black * 0.45F, timeleft = 180 });
         }
         if (Timer % 16 == 0 && Scale > 0.5f)
         {
@@ -113,7 +125,7 @@ public class BigVulcanFireball : ModProjectile
                 Vector2 pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(16, 16);
                 Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = pos,
                     velocity = -Projectile.velocity * 0.47f,

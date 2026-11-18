@@ -31,7 +31,7 @@ public class WorldGenCommand : ConsoleCommand
         {
             case "abyss":
                 VeilGen.GenerateAbyss();
-                Main.LocalPlayer.GetModPlayer<BiomePlayer>().justEnteredAbyss = true;
+
                 return true;
             case "square":
                 Point center = Main.LocalPlayer.Center.ToTileCoordinates();

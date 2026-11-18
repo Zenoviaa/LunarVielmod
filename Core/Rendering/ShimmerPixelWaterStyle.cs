@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Content.Biomes;
 using Terraria;
 
 namespace Stellamod.Core.Rendering;
@@ -10,7 +11,7 @@ public class ShimmerPixelWaterStyle : PixelWaterStyle
 {
     public override bool IsActive(Player player)
     {
-        return (player.ZoneShimmer || player.GetModPlayer<MyPlayer>().ZoneWonder);
+        return (player.ZoneShimmer || player.ZoneWonder);
     }
 
     public override void ModifyPixelWater(ref PixelWater pixelWater)

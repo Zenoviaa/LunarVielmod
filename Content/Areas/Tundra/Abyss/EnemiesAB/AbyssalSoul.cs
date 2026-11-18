@@ -135,7 +135,7 @@ public class AbyssalSoul : ModNPC, IWaterSilhouette
         {
             for(int i = 0; i < 8; i++)
             {
-                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                 { 
                     position = NPC.Center,
                     velocity = Main.rand.NextVector2Circular(24, 24),

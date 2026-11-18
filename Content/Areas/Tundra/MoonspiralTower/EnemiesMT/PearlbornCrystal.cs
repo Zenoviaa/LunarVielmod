@@ -103,7 +103,7 @@ public class PearlbornCrystal : ModNPC
     {
         var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
         var vel = Main.rand.NextVector2Circular(1, 3);
-        Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+        PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
         {
             position = pos,
             velocity = vel,
@@ -154,7 +154,7 @@ public class PearlbornCrystal : ModNPC
         {
             var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = Main.rand.NextVector2Circular(12, 12);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

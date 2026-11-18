@@ -65,7 +65,7 @@ public class WoodenCrate : ABreakableNPC
                 var pos = NPC.Center + Main.rand.NextVector2Circular(32, 32);
                 var vel = (pos - NPC.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(3f, 7);
                 vel.Y -= 5;
-                Particles.WoodenCrate.Spawn(new()
+                PS.WoodenCrate.Spawn(new()
                 {
                     position = pos,
                     velocity = vel,
@@ -75,7 +75,7 @@ public class WoodenCrate : ABreakableNPC
 
             foreach(PositionVelocity posVel in new CircleOrientation(NPC.Center, 32, 4))
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = posVel.position,
                     velocity = posVel.velocity * Main.rand.NextFloat(0.5f, 1f),

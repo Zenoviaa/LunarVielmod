@@ -81,7 +81,7 @@ public class STARPUNCH : ModProjectile
             ShakeScreenPosition.Shake = 12;
             for(float f = 0; f < 32; f++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = Projectile.Center,
                     velocity = Main.rand.NextVector2Circular(32, 32),

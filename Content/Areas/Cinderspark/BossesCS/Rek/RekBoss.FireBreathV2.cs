@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets;
+﻿using MonoMod.Cil;
+using Stellamod.Assets;
 using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
@@ -16,7 +17,7 @@ public partial class RekBoss
     private float _soundTimer;
     private float _startRotation;
     private float _firebreathSide;
-    private int Fire_Breath_V2_Damage => 50;
+    private int Fire_Breath_V2_Damage => 90;
     private float Fire_Breath_V2_Blast_Time => 90;
     private float Fire_Breath_V2_Come_In_Time => 180;
     private float Fire_Breath_V2_X_Radius => 512;
@@ -37,7 +38,14 @@ public partial class RekBoss
                     {
                         if (MultiplayerHelper.IsHost)
                         {
-                            _firebreathSide = Main.rand.NextBool(2) ? -1 : 1;
+                            if(_firebreathSide == 0 || _firebreathSide == 1)
+                            {
+                                _firebreathSide = -1;
+                            }
+                            else
+                            {
+                                _firebreathSide = 1;
+                            }
                             Vector2 teleportPoint = _firebreathSide < 0 ? eruptionLeft : eruptionRight;
                             Teleport(teleportPoint);
                         }
@@ -74,6 +82,7 @@ public partial class RekBoss
                     NPC.velocity = targetVel;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
 
+                    _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / moveTime));
                     Animator.PlayAnimation(ANIM_IDLE, AnimationParams.NoLooping);
             
                     if (Timer >= moveTime)
@@ -141,7 +150,7 @@ public partial class RekBoss
                             Vector2 vel = NPC.Center - pos;
                             vel *= 0.1f;
                             Color color = Color.Lerp(Color.Yellow, Color.Red, Main.rand.NextFloat(0f, 1f));
-                            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                             {
                                 position = pos,
                                 velocity = vel,
@@ -235,12 +244,24 @@ public partial class RekBoss
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.NoLooping);
                     if(Timer >= 45)
                     {
+         
                         NPC.velocity.X += -0.2f * _firebreathSide;
                         NPC.velocity.Y += 0.5f;
                         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+                        _globalAlpha = MathHelper.Lerp(1f, 0f, (Timer - 90) / 60F);
                         if (Timer >= 135)
                         {
-                            NextState();
+                            AttackCount++;
+                            if(AttackCount >= 3)
+                            {
+                                NextState();
+                            }
+                            else
+                            {
+                                Timer = 0;
+                                AttackCycle = 0;
+                            }
+                            
                         }
                     }
          

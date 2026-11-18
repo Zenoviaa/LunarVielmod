@@ -58,7 +58,7 @@ public class MorrowSalfaceClouds : ModProjectile
         if (Timer % 6 == 0)
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-            Particles.RoughSmoke.Spawn(new()
+            PS.RoughSmoke.Spawn(new()
             {
                 position = pos,
                 timeLeft = 52,
@@ -126,7 +126,7 @@ public class MorrowSalfaceBigPotion : ModProjectile
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
             var vel = Main.rand.NextVector2Circular(2, 2);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -198,7 +198,7 @@ public class MorrowSalfacePotion : ModProjectile
         {
             var pos = posVel.position;
             var vel = posVel.velocity * Main.rand.NextFloat(0.5f, 1f);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -336,7 +336,7 @@ public class MorrowSalfacePotionHeld : ModProjectile
             return;
         var pos = Projectile.Center + Main.rand.NextVector2CircularEdge(128, 128);
         var vel = (Projectile.Center - pos) * 0.09f;
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with { position = pos, velocity = vel, innerColor = Color.White.ToVector4(), outerColor = Color.SkyBlue.ToVector4(), timeLeft = 15, scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f)) * 0.4f });
+        PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with { position = pos, velocity = vel, innerColor = Color.White.ToVector4(), outerColor = Color.SkyBlue.ToVector4(), timeLeft = 15, scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f)) * 0.4f });
     }
 
     void MakeSuckingParticleLittle()
@@ -345,7 +345,7 @@ public class MorrowSalfacePotionHeld : ModProjectile
             return;
         var pos = Projectile.Center + Main.rand.NextVector2CircularEdge(128, 128);
         var vel = (Projectile.Center - pos) * 0.09f;
-        Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with { position = pos, velocity = vel, innerColor = Color.White.ToVector4(), outerColor = Color.SkyBlue.ToVector4(), timeLeft = 15, scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f) * 0.15f) });
+        PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with { position = pos, velocity = vel, innerColor = Color.White.ToVector4(), outerColor = Color.SkyBlue.ToVector4(), timeLeft = 15, scale = new Vector2(Main.rand.NextFloat(0.5f, 1.2f) * 0.15f) });
     }
 
     public override bool ShouldUpdatePosition()

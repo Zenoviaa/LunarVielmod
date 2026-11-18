@@ -108,7 +108,7 @@ public class LaserBeamBomb : ModProjectile,
         {
             for (int i = 0; i < 3; i++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = ImpactPoint + Main.rand.NextVector2Circular(32, 32),
                     velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 25f),
@@ -303,6 +303,7 @@ public class LaserBeamBombBoom : ModProjectile
                 ProjFirer firer = ProjFirer.From<MeteorBoom>(Projectile);
                 firer.position = Projectile.Center;
                 firer.ai1 = -0.25f;
+                firer.ai2 = 1;
                 firer.velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * 1524;
                 firer.New();
 

@@ -119,7 +119,7 @@ public class GhostShot : ModProjectile
         {
             Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             Vector2 vel = Main.rand.NextVector2Circular(12, 12);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
             {
                 position = pos,
                 velocity = vel,
@@ -185,7 +185,7 @@ public class GhostshotgunLantern : BaseGun
             vel = vel.RotatedByRandom(1.5f);
             vel *= Main.rand.NextFloat(0.6f, 1.2f);
   
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = position,
                 velocity = vel,

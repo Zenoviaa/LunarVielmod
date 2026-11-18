@@ -44,8 +44,8 @@ public class MoonspiralTowerMaskedWallBackground : MaskedWallBackground
         {
             Color = Color.Lerp(Color, Color.White, 0.1f);
         }
-        BiomePlayer biomePlayer = player.GetModPlayer<BiomePlayer>();
-        return biomePlayer.ZoneMoonspiralTower;
+
+        return player.ZoneMoonspiralTower;
     }
 
     public override void SetupDrawLayers()

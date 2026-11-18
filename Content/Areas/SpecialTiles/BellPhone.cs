@@ -204,7 +204,7 @@ public class BellPhone : ModNPC
 
         if (Main.GameUpdateCount % 32 == 0 && IsActive())
         {
-            Particles.MusicNote.Spawn(new()
+            PS.MusicNote.Spawn(new()
             {
                 position = NPC.Center + Main.rand.NextVector2Circular(32, 32),
                 velocity = -Vector2.UnitY * Main.rand.NextFloat(1f, 2f),

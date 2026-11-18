@@ -90,7 +90,7 @@ public class NiiviFrostSpike : ModProjectile,
             var pos = Projectile.Bottom + Main.rand.NextVector2Circular(64, 64);
             pos.Y -= 128;
 
-            Particles.FaintSmokeDust.Spawn(new()
+            PS.FaintSmokeDust.Spawn(new()
             {
                 position = pos,
                 velocity = Vector2.Zero,
@@ -122,7 +122,7 @@ public class NiiviFrostSpike : ModProjectile,
             pos += Main.rand.NextVector2Circular(32, 128);
             var vel = -Vector2.UnitY * 6;
             vel = vel.RotatedByRandom(1.5F);
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,
@@ -203,7 +203,7 @@ public class NiiviFrostBreath : ModProjectile
     }
     public void CrackVFX(Vector2 position)
     {
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 45, color = Color.White });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 45, color = Color.White });
     }
 
     public override void AI()
@@ -264,7 +264,7 @@ public class NiiviFrostBreath : ModProjectile
                     var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
                     var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
                     pos2 += vel2 * 64;
-                    Particles.IceSpike.Spawn(new()
+                    PS.IceSpike.Spawn(new()
                     {
                         position = pos2 + vel2 * 46,
                         rotation = Main.rand.NextFloat(-0.3f, 0.3f),
@@ -277,7 +277,7 @@ public class NiiviFrostBreath : ModProjectile
                     var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
                     var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
                     pos2 += vel2 * 64;
-                    Particles.IceSpike.Spawn(new()
+                    PS.IceSpike.Spawn(new()
                     {
                         position = pos2 + vel2 * 46,
                         rotation = Main.rand.NextFloat(-0.3f, 0.3f),
@@ -290,7 +290,7 @@ public class NiiviFrostBreath : ModProjectile
                     var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
                     var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
                     pos2 += vel2 * 64;
-                    Particles.IceCrack.Spawn(new()
+                    PS.IceCrack.Spawn(new()
                     {
                         position = pos2 + vel2 * 46,
                         rotation = vel2.ToRotation() + Main.rand.NextFloat(-0.3f, 0.3f),
@@ -304,7 +304,7 @@ public class NiiviFrostBreath : ModProjectile
                     var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
                     var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
                     pos2 += vel2 * 64;
-                    Particles.IceCrack.Spawn(new()
+                    PS.IceCrack.Spawn(new()
                     {
                         position = pos2 + vel2 * 46,
                         rotation = vel2.ToRotation() + Main.rand.NextFloat(-0.3f, 0.3f),
@@ -329,7 +329,7 @@ public class NiiviFrostBreath : ModProjectile
                         var pos2 = Vector2.Lerp(_leftImpactPoint, _rightImpactPoint, ratio);
                         var vel2 = Vector2.Lerp(leftVelocity, rightVelocity, ratio);
 
-                        Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                        PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                         {
                             position = pos2 + vel2 * 46,
                             velocity = -Vector2.UnitY * 7,
@@ -343,7 +343,7 @@ public class NiiviFrostBreath : ModProjectile
 
                 pos -= vel * 128;
 
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = pos,
                     velocity = vel * 25 * Main.rand.NextFloat(0.85f, 1f),
@@ -357,7 +357,7 @@ public class NiiviFrostBreath : ModProjectile
                 if (Main.rand.NextBool(2))
                 {
                     pos += vel * 212;
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                     {
                         position = pos,
                         velocity = -vel * 12 * Main.rand.NextFloat(0.85f, 1f),
@@ -370,7 +370,7 @@ public class NiiviFrostBreath : ModProjectile
                 if (Main.rand.NextBool(2))
                 {
 
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                    PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                     {
                         position = pos,
                         velocity = -vel * 12 * Main.rand.NextFloat(0.85f, 1f),
@@ -403,7 +403,7 @@ public class NiiviFrostBreath : ModProjectile
             for (var i = 0; i < 4; i++)
             {
 
-                Particles.FaintSmokeDust.Spawn(new()
+                PS.FaintSmokeDust.Spawn(new()
                 {
                     position = RandLaserPoint(),
                     velocity = Vector2.Zero,
@@ -414,7 +414,7 @@ public class NiiviFrostBreath : ModProjectile
             for (var i = 0; i < 4; i++)
             {
 
-                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = RandLaserPoint(),
                     timeLeft = 40,

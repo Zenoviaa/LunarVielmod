@@ -68,7 +68,7 @@ public abstract class AGongBeetleGong : ModProjectile,
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = (pos - Projectile.Center).Resize(Main.rand.NextFloat(10f, 15f));
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,
@@ -102,7 +102,7 @@ public abstract class AGongBeetleGong : ModProjectile,
         {
             var pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var vel = (pos - Projectile.Center).Resize(Main.rand.NextFloat(10f, 15f));
-            Particles.GlowDust.Spawn(new()
+            PS.GlowDust.Spawn(new()
             {
                 position = pos,
                 velocity = vel,

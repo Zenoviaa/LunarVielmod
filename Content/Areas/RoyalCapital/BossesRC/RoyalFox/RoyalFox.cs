@@ -2,6 +2,7 @@
 using ReLogic.Content;
 using Steamworks;
 using Stellamod.Assets;
+using Stellamod.Common;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
 using Stellamod.Content.Areas.Tundra.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core;
@@ -381,6 +382,7 @@ public partial class RoyalFox : ScarletBoss,
         NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         NPCID.Sets.BossBestiaryPriority.Add(Type);
         NPCID.Sets.MustAlwaysDraw[Type] = true;
+        NPCID.Sets.UsesMultiHitbox[Type] = true;
     }
 
     public override void SetDefaults()
@@ -406,7 +408,14 @@ public partial class RoyalFox : ScarletBoss,
         NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
     }
-
+    Rectangle CorrectedHitbox
+    {
+        get
+        {
+           var npcHitbox = DrawUtilities.CenterRectangle(Rig.bodyParts[2].worldPosition, 154, 154);
+            return npcHitbox;
+        }
+    }
 
     private void Teleport(Vector2 position)
     {

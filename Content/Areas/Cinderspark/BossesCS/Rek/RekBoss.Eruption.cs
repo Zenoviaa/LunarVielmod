@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.ContentReader.Aseprite;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using System;
 using Terraria;
@@ -14,7 +15,7 @@ public partial class RekBoss
     private float Eruption_SinHeight => 64;
     private float Eruption_SinFrequency => 0.04f;
 
-    private int Eruption_Damage => 50;
+    private int Eruption_Damage => 70;
     private void AI_Eruption()
     {
         Timer++;
@@ -24,16 +25,30 @@ public partial class RekBoss
                 {
                     if (Timer == 1)
                     {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            AttackCount = Main.rand.NextBool(2) ? -1 : 1;
+                        }
+
                         var sound = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
                         SoundEngine.PlaySound(sound, NPC.position);
                         ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                         //    screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, scrollSpeed: new Vector2(0.0005f), timer: Eruption_SinTime, blend: 0.02f );
                         screenShaderSystem.TintScreen(Color.Red, 0.05f, timer: Eruption_SinTime);
 
-                        Teleport(_lavaArenaRectangle.BottomLeft());
+                        var pos = _lavaArenaRectangle.BottomLeft();
+                        pos.X -= 384;
+                        if(AttackCount == 1)
+                        {
+                            pos = _lavaArenaRectangle.BottomRight();
+                            pos.X += 384;
+                        }
+                        Teleport(pos);
                     }
 
+                    _globalAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InSine(Timer / 90F));
                     this.GetAnimator().PlayAnimation(ANIM_IDLE, AnimationParams.Default with { IsLooping = true });
+
                     if (Timer >= Eruption_GraceTime)
                     {
                         if (Timer % 24 == 0)
@@ -43,6 +58,10 @@ public partial class RekBoss
                                 //The sound will be on the projectile
                                 ProjFirer firer = ProjFirer.From<VulcanEruption>(NPC);
                                 int segmentIndex = Main.rand.Next(0, Segments.Length);
+                                if(Timer < 300)
+                                {
+                                    segmentIndex = Main.rand.Next(0, Segments.Length / 4);
+                                }
                                 ref var segment = ref Segments[segmentIndex];
                                 firer.damage = Eruption_Damage;
                                 firer.position = segment.position;
@@ -64,7 +83,10 @@ public partial class RekBoss
 
                     start.Y += 64;
                     end.Y += 64;
-                    Vector2 pointToMoveTo = Vector2.Lerp(start, end, Timer / Eruption_SinTime);
+                    var ratio = Timer / Eruption_SinTime;
+                    if (AttackCount == 1)
+                        ratio = 1f - ratio;
+                    Vector2 pointToMoveTo = Vector2.Lerp(start, end, ratio);
                     pointToMoveTo.Y += MathF.Sin(Timer * Eruption_SinFrequency) * Eruption_SinHeight;
                     Vector2 targetVelocity = pointToMoveTo - NPC.Center;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.4f);
@@ -78,7 +100,8 @@ public partial class RekBoss
                 break;
             case 1:
                 {
-                    this.GetAnimator().PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.Default with { IsLooping = false });
+                    _globalAlpha = MathHelper.Lerp(1f, 0F, EasingFunction.InSine(Timer / Eruption_PrepTime));
+                    this.GetAnimator().PlayAnimation(ANIM_IDLE, AnimationParams.Default with { IsLooping = true });
                     NPC.velocity.X += NPC.direction;
                     NPC.velocity.Y += 0.05f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);

@@ -44,8 +44,10 @@ public static class MultihitboxHelper
     public static Rectangle[] extraHitboxes;
     public static ExtraHitboxKey[] npcExtraHitboxRange;
 
-    public static bool IsProjectileCollidingWithNPC(this Projectile projectile, NPC npc)
+    public static bool IsProjectileCollidingWithNPC(Projectile projectile, NPC npc, bool isAlreadyColliding)
     {
+        if (isAlreadyColliding)
+            return isAlreadyColliding;
         if (NPCID.Sets.UsesMultiHitbox[npc.type])
         {
             var isColliding = false;
@@ -61,18 +63,9 @@ public static class MultihitboxHelper
                     break;
                 }
             }
-
-            /*
-            if (isColliding)
-            {
-                Main.NewText($"{projectile.Name} hit {npc.FullName}");
-            }*/
             return isColliding;
         }
-        else
-        {
-            return projectile.Colliding(projectile.getRect(), npc.getRect());
-        }
+        return false;
     }
 
 }
@@ -106,13 +99,27 @@ public class MultihitboxSystem : ModSystem
                         MoveType.After, 
                         i => i.MatchStloc(23)))
                     {
+                        /*
+                        if(c.TryGotoPrev(MoveType.Before, i => i.MatchLdarg0()))
+                        {
+                            c.RemoveRange(8);
+                        }*/
                         //Right after the normal hitbox call we call this
                         //Remove the rectangle thingies
+                        //projectile parameter
                         c.EmitLdarg0();
+
+                        //index into npc array
                         c.EmitDelegate(() => Main.npc);
                         c.EmitLdloc(15);
                         c.EmitLdelemRef();
+
+                        //flag11 which is the original collision check
+                        //so we skip code if it's alr colliding
+                        c.EmitLdloc(23);
                         c.EmitDelegate(MultihitboxHelper.IsProjectileCollidingWithNPC);
+                        
+                        //set it back
                         c.EmitStloc(23);
                     }
 

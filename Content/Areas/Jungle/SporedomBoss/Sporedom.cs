@@ -321,7 +321,7 @@ public class Sporedom : ScarletBoss,
         FXUtil.GlowCircleBoom(NPC.Center, Color.Gold, Color.Gold, Color.DarkOrange, duration: 0.23f, baseSize: 0.20f);
         for (var f = 0; f < 16; f++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = NPC.Center + Main.rand.NextVector2Circular(24, 24),
                 velocity = Main.rand.NextVector2Circular(16, 16) * Main.rand.NextFloat(0.5f, 1f),

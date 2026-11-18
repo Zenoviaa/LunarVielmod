@@ -38,7 +38,7 @@ public class MushroomGreatbow : BaseCrossbowItem
         {
             var pos = player.Center + Main.rand.NextVector2Circular(48, 48);
             pos += shootParams.fireVelocity * 7f;
-            Particles.RoughSmoke.Spawn(new()
+            PS.RoughSmoke.Spawn(new()
             {
                 position = pos,
                 timeLeft = 35,

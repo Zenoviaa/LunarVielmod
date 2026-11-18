@@ -95,7 +95,7 @@ public partial class WarriorSTARR
             sp.Scale *= 0.5f;
             sp.gravity = 0;
         }
-        Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+        PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
         {
             position = position + Main.rand.NextVector2Circular(32, 32),
             velocity = Main.rand.NextVector2Circular(8, 8) - velocity,
@@ -197,10 +197,10 @@ public partial class WarriorSTARR
     }
     public void CrackVFX(Vector2 position)
     {
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 200, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
     }
 
     public void StarBitDust()
@@ -254,7 +254,7 @@ public partial class WarriorSTARR
         //Rock impact sound
         SoundStyle rockHitSound = AssetReferences.Assets.Sounds.STARR.RockSmash.Asset with { PitchVariance = 0.3f };
         SoundEngine.PlaySound(rockHitSound, position);
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 45, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = position, timeLeft = 45, color = Color.DarkOrange });
     }
 
     public void StarBitVFX(Vector2 position, Vector2 velocity)
@@ -370,7 +370,7 @@ public partial class WarriorSTARR
         fx.Scale *= 1.5f;
         for(float f = 0; f < 16; f++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = position,
                 innerColor = Color.Gold.ToVector4(),

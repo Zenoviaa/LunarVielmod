@@ -55,7 +55,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
         {
             for (float f = 0; f < 16; f++)
             {
-                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = position,
                     innerColor = Color.White.ToVector4(),
@@ -67,7 +67,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 
             for (float f = 0; f < 16; f++)
             {
-                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = position,
                     innerColor = Color.Pink.ToVector4(),
@@ -79,7 +79,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 
             for (float f = 0; f < 16; f++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = position,
                     innerColor = Color.LightBlue.ToVector4(),
@@ -95,7 +95,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
         {
             for (float f = 0; f < 12; f++)
             {
-                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = position,
                     innerColor = Color.White.ToVector4(),
@@ -107,7 +107,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 
             for (float f = 0; f < 12; f++)
             {
-                Particles.BitDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.BitDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = position,
                     innerColor = Color.Pink.ToVector4(),
@@ -119,7 +119,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 
             for (float f = 0; f < 32; f++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                 {
                     position = position,
                     innerColor = Color.LightBlue.ToVector4(),

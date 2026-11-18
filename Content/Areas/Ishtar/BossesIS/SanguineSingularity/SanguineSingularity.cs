@@ -105,7 +105,7 @@ public class HeadlessSingularity : ModNPC
             fx.Scale *= 1.8f;
             for (int i = 0; i < 16; i++)
             {
-                Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+                PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
                 {
                     position = NPC.Center,
                     timeLeft = Main.rand.Next(60, 120),
@@ -125,7 +125,7 @@ public class HeadlessSingularity : ModNPC
         }
         if (Main.rand.NextBool(12))
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = NPC.Center,
                 timeLeft = Main.rand.Next(60, 120),
@@ -1270,10 +1270,10 @@ public partial class SanguineSingularity : ScarletBoss,
     
     private void CreateRoar()
     {
-        Particles.BloodyMurderDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
+        PS.BloodyMurderDust.Spawn(RoarDustData.Default with { position = NPC.Center, timeLeft = 24 });
         for(int i = 0; i < 4; i++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with {
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with {
                 position = NPC.Center,
                 timeLeft = Main.rand.Next(60, 120),
                 velocity = Main.rand.NextVector2Circular(64, 64),

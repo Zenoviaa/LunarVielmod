@@ -58,9 +58,29 @@ sampler2D EdgeTextureSampler = sampler_state
     AddressV = clamp;
 };
 
-sampler brightenNoiseSampler : register(s1);
-sampler causticsNoiseSampler : register(s2);
-sampler foamNoiseSampler : register(s3);
+
+Texture2D brightenNoiseTexture;
+sampler2D brightenNoiseSampler = sampler_state
+{
+    Texture = <brightenNoiseTexture>;
+    AddressU = wrap;
+    AddressV = wrap;
+};
+
+Texture2D causticsNoiseTexture;
+sampler2D causticsNoiseSampler = sampler_state
+{
+    Texture = <causticsNoiseTexture>;
+    AddressU = wrap;
+    AddressV = wrap;
+};
+Texture2D foamNoiseTexture;
+sampler2D foamNoiseSampler = sampler_state
+{
+    Texture = <foamNoiseTexture>;
+    AddressU = wrap;
+    AddressV = wrap;
+};
 struct VertexShaderOutput
 {
     float4 Position : SV_POSITION;
@@ -88,6 +108,7 @@ float2 tiling;
 float2 screenOffset;
 float foamLava;
 
+float2 reflectionFixingOffset;
 float reflectionDistance;
 float2 reflectionTexelSize;
 float reflectionPower;
@@ -237,6 +258,8 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
     //Step 1. Sample the current height map at this point
     float2 coords = input.TextureCoordinates;
     float heightSample = tex2D(HeightMapTextureSampler, coords).a;
+
+    heightSample = saturate(heightSample);
     
     //Cubing the height gradient so it's not so long
     //For some reason this is faster than using pow
@@ -251,7 +274,7 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
     
     //Step 3. Sample the new coordinates, that's our pixel
     //With how this works, it should also flip the sprite I think
-    float2 reflectedCoords = coords + reflectionOffset;
+    float2 reflectedCoords = coords + reflectionOffset + reflectionFixingOffset;
     
     //Step 4. Distortion
     float d = tex2D(NoiseTextureSampler, coords + float2(time * -0.02, time * -0.04) + screenOffset).r;

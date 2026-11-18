@@ -41,7 +41,7 @@ public class ToxicBubbleDust : ParticleUpdater<ToxicBubbleDust.Data>
                     var pos = particle.position;
                     pos += Main.rand.NextVector2Circular(32, 32);
                     var vel = particle.velocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f);
-                    Particles.GlowDust.Spawn(new()
+                    PS.GlowDust.Spawn(new()
                     {
                         position = pos,
                         velocity = vel * 0.5f,

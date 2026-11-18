@@ -36,7 +36,7 @@ public class RudeLightningCrash : ModProjectile
         vel = vel.RotatedBy(Main.rand.NextFloat(0, 6.28f));
 
         var color = Color.Orange;
-        Particles.LightningSpikeySpark.Spawn(new()
+        PS.LightningSpikeySpark.Spawn(new()
         {
             position = pos,
             velocity = vel,
@@ -49,10 +49,10 @@ public class RudeLightningCrash : ModProjectile
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     void MakeCracks(Vector2 pos)
     {
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, timeLeft = 200, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
-        Particles.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, timeLeft = 200, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 2f, timeLeft = 120, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 3f, timeLeft = 45, color = Color.DarkOrange });
+        PS.CrackDust.Spawn(CrackImpactDust.Data.Default with { position = pos, scale = 5f, timeLeft = 25, color = Color.DarkOrange });
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -65,7 +65,7 @@ public class RudeLightningCrash : ModProjectile
 
         var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.6f);
-        Particles.LightningBoltBig.Spawn(new()
+        PS.LightningBoltBig.Spawn(new()
         {
             position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
             velocity = vel,
@@ -78,7 +78,7 @@ public class RudeLightningCrash : ModProjectile
         FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos + Main.rand.NextVector2Circular(32, 32),
                 velocity = Main.rand.NextVector2Circular(16, 16),
@@ -99,7 +99,7 @@ public class RudeLightningCrash : ModProjectile
 
         var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.6f);
-        Particles.LightningBolt.Spawn(new()
+        PS.LightningBolt.Spawn(new()
         {
             position = pos - vel.SafeNormalize(Vector2.Zero) * 24,
             velocity = vel,
@@ -112,7 +112,7 @@ public class RudeLightningCrash : ModProjectile
         FXUtil.GlowCircleBoom(pos, Color.Gold, Color.DarkGoldenrod, Color.DarkOrange, 25, baseSize: 0.16f);
         for (var f = 0; f < 16; f++)
         {
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos + Main.rand.NextVector2Circular(32, 32),
                 velocity = Main.rand.NextVector2Circular(16, 16),
@@ -134,7 +134,7 @@ public class RudeLightningCrash : ModProjectile
 
         var color = Color.Lerp(LightGoldenColor, DarkGoldenColor, Main.rand.NextFloat(0f, 1f));
         color = Color.Lerp(color, Color.White, 0.9f);
-        Particles.LightningSpark.Spawn(new()
+        PS.LightningSpark.Spawn(new()
         {
             position = pos,
             velocity = vel,
@@ -176,7 +176,7 @@ public class RudeLightningCrash : ModProjectile
                 vel *= Main.rand.NextFloat(6f, 45);
                 if (i % 2 == 0)
                 {
-                    Particles.SwirlingFlameDust.Spawn(BitDustFactory.Default with
+                    PS.SwirlingFlameDust.Spawn(BitDustFactory.Default with
                     {
                         innerColor = Color.LightGoldenrodYellow.ToVector4(),
                         outerColor = Color.DarkOrange.ToVector4(),
@@ -189,7 +189,7 @@ public class RudeLightningCrash : ModProjectile
                 }
                 else
                 {
-                    Particles.BitDust.Spawn(BitDustFactory.Default with
+                    PS.BitDust.Spawn(BitDustFactory.Default with
                     {
                         innerColor = Color.LightGoldenrodYellow.ToVector4(),
                         outerColor = Color.DarkOrange.ToVector4(),
@@ -217,7 +217,7 @@ public class RudeLightningCrash : ModProjectile
                 var pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(32, 32);
                 var vel = Main.rand.NextVector2Circular(8, 8);
-                Particles.LightningBolt.Spawn(new()
+                PS.LightningBolt.Spawn(new()
                 {
                     position = pos,
                     velocity = vel,
@@ -227,7 +227,7 @@ public class RudeLightningCrash : ModProjectile
             }
 
             //Lightning crash vfx
-            Particles.LightningImpact.Spawn(new()
+            PS.LightningImpact.Spawn(new()
             {
                 position = Projectile.Center,
                 timeLeft = 30,

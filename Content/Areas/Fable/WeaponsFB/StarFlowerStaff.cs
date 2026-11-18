@@ -35,7 +35,7 @@ public class StarFlowerMana : ModBuff
             pos.Y += Main.rand.Next(0, player.height);
             Vector2 vel = Main.rand.NextVector2Circular(8, 8);
             vel.Y -= 4;
-            Particles.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
             {
                 position = pos,
                 velocity = vel,

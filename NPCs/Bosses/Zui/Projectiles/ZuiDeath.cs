@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                 //3. Start it
                 dialogueSystem.StartDialogue(exampleDialogue);
                      */
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 4f);
+
                 CombatText.NewText(NPC.getRect(), Color.Gold, LangText.Misc("ZuiDeath.1"), true, false);
             }
 
