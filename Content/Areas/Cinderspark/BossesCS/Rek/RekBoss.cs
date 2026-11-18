@@ -745,6 +745,7 @@ public partial class RekBoss : ScarletBoss
     public override void OnKill()
     {
         base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.Rek);
     }
 
 }
