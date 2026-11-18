@@ -303,6 +303,7 @@ public class LaserBeamBombBoom : ModProjectile
                 ProjFirer firer = ProjFirer.From<MeteorBoom>(Projectile);
                 firer.position = Projectile.Center;
                 firer.ai1 = -0.25f;
+                firer.ai2 = 1;
                 firer.velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * 1524;
                 firer.New();
 

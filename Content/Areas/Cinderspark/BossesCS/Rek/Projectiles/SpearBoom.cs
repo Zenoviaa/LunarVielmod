@@ -28,7 +28,7 @@ public class SpearBoom : ModProjectile
         base.SetDefaults();
         Projectile.width = 16;
         Projectile.height = 16;
-        Projectile.hostile = true;
+        Projectile.hostile = false;
         Projectile.tileCollide = false;
         Projectile.timeLeft = (int)AttackTime;
         Projectile.light = 0.78f;

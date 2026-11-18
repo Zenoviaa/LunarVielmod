@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Utilities;
+using Stellamod.Assets;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 using Stellamod.Visual.Particles;
@@ -42,6 +43,55 @@ public partial class RekBoss
                 _arenaRectangleToLava = ArenaRectangleUpToLava();
             return _arenaRectangleToLava;
         }
+    }
+    SlotId? _sawSlot;
+    public void PlayLavaSplashSound()
+    {
+        var e = AssetReferences.Assets.Sounds.Rek.LavaSplash.Asset;
+        e.PitchVariance = 1F;
+        e.Volume = 1f;
+        SoundEngine.PlaySound(e);
+
+    }
+    public void PlayLavaSinkSound()
+    {
+        var e = AssetReferences.Assets.Sounds.Rek.GoingDark.Asset;
+        e.PitchVariance = 1F;
+        e.Volume = 0.4F;
+        SoundEngine.PlaySound(e);
+
+    }
+    public void PlayStartupSound()
+    {
+        SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.intothelava.Asset);
+    }
+
+    public void StopSawbladeSound()
+    {
+        if (_sawSlot == null)
+            return;
+        if (SoundEngine.TryGetActiveSound(_sawSlot.Value, out var result) && result.Style.SoundPath == AssetReferences.Assets.Sounds.Rek.SawAmbient.KEY)
+        {
+            result.Stop();
+            _sawSlot = null;
+        }
+    }
+    public void ManageSawbladeSound()
+    {
+        if (_sawSlot == null)
+        {
+            _sawSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.SawAmbient.Asset, _ouroborosOrigin);
+        }
+
+        if(SoundEngine.TryGetActiveSound(_sawSlot.Value, out var result) && result.Style.SoundPath == AssetReferences.Assets.Sounds.Rek.SawAmbient.KEY)
+        {
+            result.Position = _ouroborosOrigin;
+        }
+        else
+        {
+            _sawSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.SawAmbient.Asset, _ouroborosOrigin);
+        }
+
     }
 
     public static void LavaEruption(Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)

@@ -9,6 +9,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
+    bool _splashSound;
     private float Fire_Breath_Arc_Jump_Count => 3;
     private float Fire_Breath_Arc_Jump_Delay => 24;
     private float Fire_Breath_Arc_Jump_Time => MathF.Floor(90 * AttackSpeedMultiplier);
@@ -102,6 +103,8 @@ public partial class RekBoss
                     //Vector2 moveToPoint = Vector2.Lerp(eruptionLeft, eruptionRight, 0.7f);
                     if (Timer == 1)
                     {
+                        _splashSound = false;
+                        _splashedYoAss = false;
                         Vector2 pointToUse = _firebreathSide == 1 ? eruptionLeft : eruptionRight;
                         Teleport(pointToUse);
                     }
@@ -131,6 +134,7 @@ public partial class RekBoss
                         Vector2 vel = (nextPoint - point).SafeNormalize(Vector2.Zero);
                         vel *= 1024;
                         LavaEruption(NPC.Center, vel.Resize(35), 64, 0.08F);
+                        PlayLavaSplashSound();
                         if (MultiplayerHelper.IsHost)
                         {
                             ProjFirer firer = ProjFirer.From<MeteorBoom>(NPC);
@@ -173,7 +177,11 @@ public partial class RekBoss
                             }
                         }
                     }
-
+                    if (_oldInLava && !_splashSound && Timer > 45)
+                    {
+                        PlayLavaSinkSound();
+                        _splashSound = true;
+                    }
 
                     if (Timer >= Fire_Breath_Arc_Jump_Time)
                     {
@@ -188,6 +196,11 @@ public partial class RekBoss
             case 3:
                 {
                     NPC.velocity.Y += 0.5f;
+                    if(_oldInLava && !_splashSound)
+                    {
+                        PlayLavaSinkSound();
+                        _splashSound = true;
+                    }
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     if (Timer >= Fire_Breath_Arc_Jump_Delay)
                     {

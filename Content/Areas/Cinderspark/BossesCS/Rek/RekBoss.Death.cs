@@ -107,8 +107,10 @@ public partial class RekBoss
 
                         if (!_roar)
                         {
-                            var sound = AssetRegistry.Sounds.Rek.RekBigroar;
-                            SoundEngine.PlaySound(sound);
+                            var deathSound = AssetReferences.Assets.Sounds.Rek.RekDeathHeadExplode.Asset;
+                            SoundEngine.PlaySound(deathSound);
+                            //var sound = AssetRegistry.Sounds.Rek.RekBigroar;
+                            //SoundEngine.PlaySound(sound);
 
                             var sound2 = new SoundStyle("Stellamod/Assets/Sounds/RekSummon");
                             SoundEngine.PlaySound(sound2);
@@ -181,6 +183,7 @@ public partial class RekBoss
                     NPC.velocity *= 0.96f;
                     if (Timer >= Segments.Length * timeBetween)
                     {
+   
                         if (MultiplayerHelper.IsHost)
                         {
                             ProjFirer firer = ProjFirer.From<SpearBoom>(NPC);

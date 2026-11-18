@@ -303,6 +303,10 @@ public partial class RekBoss
                             LavaEruption(segment.position, -Vector2.UnitY * 18, 3, 0.05f);
                         }
                     }
+                    if (Timer == 35)
+                    {
+                        PlayStartupSound();
+                    }
                     _sawbladeAlpha = 0f;
                     _ouroborosOrigin = _centerPoint;
                     SpinAround(_centerPoint, _spinRot);
@@ -317,6 +321,7 @@ public partial class RekBoss
             case 3:
                 {
                 
+
                     _outliner.warning = true;
                     foreach (var seg in Segments)
                     {
@@ -390,7 +395,7 @@ public partial class RekBoss
                     _saw = true;
                     Vector2 currentPoint = VectorHelper.MoveBetweenPointsWrapped(_distanceTraveled, bottomLeft, topLeft, topRifght, bottomRight, bottomLeft);
                     _ouroborosOrigin = currentPoint;
-
+                    ManageSawbladeSound();
                     if (Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)

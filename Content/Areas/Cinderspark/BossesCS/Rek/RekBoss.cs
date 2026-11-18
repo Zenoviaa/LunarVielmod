@@ -191,7 +191,7 @@ public partial class RekBoss : ScarletBoss
         switch (pattern)
         {
             case 0:
-                if (_phase < 2)
+                if (_phase < 2 || !NPC.AnyNPCs(ModContent.NPCType<BigMoltenPlatform>()))
                 {
                     Skip();
                     pattern++;
@@ -368,8 +368,8 @@ public partial class RekBoss : ScarletBoss
         NPC.width = 64;
         NPC.height = 64;
         NPC.damage = 80;
-        NPC.defense = 100;
-        NPC.lifeMax = 262_000;
+        NPC.defense = 97;
+        NPC.lifeMax = 258_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
@@ -534,6 +534,10 @@ public partial class RekBoss : ScarletBoss
             case AIState.Death:
                 AI_Death();
                 break;
+        }
+        if(State != AIState.Ouroboros)
+        {
+            StopSawbladeSound();
         }
 
         var tile = Framing.GetTileSafely(NPC.Center.ToTileCoordinates());
