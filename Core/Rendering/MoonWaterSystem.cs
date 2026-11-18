@@ -244,7 +244,7 @@ outliner.Shader, Main.Transform);
                 lavaShader.OutlineTexelSize = Main.waterTarget;
                 lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["Combine"];
                 sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                    lavaShader.Effect, Main.Transform);
+                    lavaShader.Effect);
 
                 sb.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
 
@@ -270,7 +270,7 @@ outliner.Shader, Main.Transform);
                 _waterEffect.Parameters["WaterTexture"].SetValue(coolAssWaterTarget);
 
                 sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                    _waterEffect, Main.Transform);
+                    _waterEffect);
                 sb.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
 
                 Color c = Color.White * 0.43f;
@@ -298,7 +298,7 @@ outliner.Shader, Main.Transform);
 
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["PosterizeDrawing"];
             _waterEffect.Parameters["levels"].SetValue(_pixelWater.levels);
-            sb.Begin(oldParameters with { effect = _waterEffect });
+            sb.Begin(oldParameters with { effect = _waterEffect, matrix = Matrix.Identity });
             sb.Draw(screenTargetOne, Vector2.Zero, null, Color.White * 1f);
             sb.End();
 

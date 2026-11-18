@@ -363,8 +363,8 @@ public partial class RekBoss : ScarletBoss
         NPC.width = 64;
         NPC.height = 64;
         NPC.damage = 80;
-        NPC.defense = 90;
-        NPC.lifeMax = 252_000;
+        NPC.defense = 100;
+        NPC.lifeMax = 262_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
@@ -695,7 +695,7 @@ public partial class RekBoss : ScarletBoss
         if (MultiplayerHelper.IsHost)
         {
             AIState state = GetNextAttack(_phase);
-
+        //    Main.NewText($"Do {state}");
             SwitchState(state);
 
             if (NPC.life <= 1)

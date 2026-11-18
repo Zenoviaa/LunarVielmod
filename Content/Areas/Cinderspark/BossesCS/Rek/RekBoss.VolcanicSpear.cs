@@ -10,7 +10,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
-    private int Volcanic_Spear_Damage => 50;
+    private int Volcanic_Spear_Damage => 100;
     private float Volcanic_Spear_Come_Up_Time => 80;
     private float Volcanic_Spear_Go_Down_Time => 130;
     private float Volcanic_Spear_Crash_Time => 210;

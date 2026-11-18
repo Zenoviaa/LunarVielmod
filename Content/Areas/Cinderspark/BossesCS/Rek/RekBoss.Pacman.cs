@@ -220,7 +220,7 @@ public partial class RekBoss
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.03f);
                     if (Timer >= 120)
                     {
-                        SwitchState(AIState.FireBreath);
+                        SwitchState(AIState.Idle);
                     }
              
                 }

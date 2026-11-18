@@ -12,7 +12,7 @@ public partial class RekBoss
     private float Fire_Breath_Arc_Jump_Count => 3;
     private float Fire_Breath_Arc_Jump_Delay => 24;
     private float Fire_Breath_Arc_Jump_Time => MathF.Floor(90 * AttackSpeedMultiplier);
-    private int Fire_Breath_Damage => 40;
+    private int Fire_Breath_Damage => 67;
     private void AI_FireBreath()
     {
         Timer++;
@@ -205,7 +205,7 @@ public partial class RekBoss
                 break;
             case 4:
                 {
-                    NextState();
+                    SwitchState(AIState.Idle);
                 }
                 break;
         }

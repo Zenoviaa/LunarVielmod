@@ -17,7 +17,7 @@ public partial class RekBoss
     private float _soundTimer;
     private float _startRotation;
     private float _firebreathSide;
-    private int Fire_Breath_V2_Damage => 50;
+    private int Fire_Breath_V2_Damage => 90;
     private float Fire_Breath_V2_Blast_Time => 90;
     private float Fire_Breath_V2_Come_In_Time => 180;
     private float Fire_Breath_V2_X_Radius => 512;

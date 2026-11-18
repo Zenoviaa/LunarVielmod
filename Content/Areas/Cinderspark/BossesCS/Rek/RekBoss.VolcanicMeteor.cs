@@ -12,7 +12,7 @@ public partial class RekBoss
 {
 
     private float TimeBetweenMeteors => 12;
-    private int Volcanic_Meteor_Damage => 60;
+    private int Volcanic_Meteor_Damage => 80;
 
     private void SegmentsMeteorFloat()
     {
