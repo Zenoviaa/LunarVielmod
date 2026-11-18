@@ -872,7 +872,7 @@ public class RekEye : ModNPC
     public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
     {
         base.ModifyIncomingHit(ref modifiers);
-        modifiers.FinalDamage *= 0.75F;
+        modifiers.FinalDamage *= 0.5F;
     }
     public override void HitEffect(NPC.HitInfo hit)
     {

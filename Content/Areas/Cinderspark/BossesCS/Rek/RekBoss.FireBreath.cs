@@ -10,7 +10,16 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 public partial class RekBoss
 {
     bool _splashSound;
-    private float Fire_Breath_Arc_Jump_Count => 3;
+    private float Fire_Breath_Arc_Jump_Count
+    {
+        get
+        {
+            if (_phase >= 2)
+                return 6;
+            return 3;
+        }
+    }
+
     private float Fire_Breath_Arc_Jump_Delay => 24;
     private float Fire_Breath_Arc_Jump_Time => MathF.Floor(90 * AttackSpeedMultiplier);
     private int Fire_Breath_Damage => 67;

@@ -393,7 +393,7 @@ public partial class RekBoss : ScarletBoss
         {
             _phase = 1;
         }
-        if (NPC.life < NPC.lifeMax * 0.5f)
+        if (NPC.life < NPC.lifeMax * 0.65f)
         {
             _phase = 2;
         }
