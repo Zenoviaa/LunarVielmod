@@ -107,10 +107,9 @@ public partial class RekBoss
 
                         if (!_roar)
                         {
-                            var deathSound = AssetReferences.Assets.Sounds.Rek.RekDeathHeadExplode.Asset;
-                            SoundEngine.PlaySound(deathSound);
-                            //var sound = AssetRegistry.Sounds.Rek.RekBigroar;
-                            //SoundEngine.PlaySound(sound);
+            
+                            var sound = AssetRegistry.Sounds.Rek.RekBigroar;
+                            SoundEngine.PlaySound(sound);
 
                             var sound2 = new SoundStyle("Stellamod/Assets/Sounds/RekSummon");
                             SoundEngine.PlaySound(sound2);
@@ -180,6 +179,11 @@ public partial class RekBoss
                         segment.rotation += 0.1f;
                     }
 
+                    if(Timer == 167)
+                    {
+                        var deathSound = AssetReferences.Assets.Sounds.Rek.RekDeathHeadExplode.Asset;
+                        SoundEngine.PlaySound(deathSound);
+                    }
                     NPC.velocity *= 0.96f;
                     if (Timer >= Segments.Length * timeBetween)
                     {

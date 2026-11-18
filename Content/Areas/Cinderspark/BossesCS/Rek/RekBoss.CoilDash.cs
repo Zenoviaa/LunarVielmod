@@ -103,6 +103,7 @@ public partial class RekBoss
         var currentTile = Main.tile[NPC.Center.ToTileCoordinates()];
         if (!_splashedYoAss && currentTile.LiquidAmount <= 0)
         {
+            PlayLavaSplashSound();
             LavaEruption(NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 35, 76, 0.05F);
             _splashedYoAss = true;
         }
@@ -111,6 +112,7 @@ public partial class RekBoss
     {
         if (!_splashedYoAss)
         {
+            PlayLavaSplashSound();
             LavaEruption(NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 35, 76, 0.05F);
             _splashedYoAss = true;
         }
@@ -279,6 +281,7 @@ public partial class RekBoss
                     }
                     if (Timer == 1)
                     {
+                        _splashSound = false;
                         if (_firebreathSide == -1)
                             _firebreathSide = 1;
                         else
@@ -333,8 +336,12 @@ public partial class RekBoss
                     NPC.velocity.Y += MathHelper.Lerp(3f, 1f, Timer / 60f);
                     NPC.rotation = NPC.velocity.ToRotation();
                     float dy = NPC.Center.Y;
-
-                    if(AttackCount >= 2)
+                    if (_oldInLava && !_splashSound && Timer > 45)
+                    {
+                        PlayLavaSinkSound();
+                        _splashSound = true;
+                    }
+                    if (AttackCount >= 2)
                     {
                         if(Timer >= 15)
                         {

@@ -346,7 +346,7 @@ public partial class RekBoss : ScarletBoss
             return Vector2.Dot(-Vector2.UnitX, NPC.rotation.ToRotationVector2()) > 0;
         }
     }
-    private AIState TestAttack => default;
+    private AIState TestAttack => AIState.Death;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
@@ -371,7 +371,7 @@ public partial class RekBoss : ScarletBoss
         NPC.height = 64;
         NPC.damage = 80;
         NPC.defense = 97;
-        NPC.lifeMax = 258_000;
+        NPC.lifeMax = 212_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;

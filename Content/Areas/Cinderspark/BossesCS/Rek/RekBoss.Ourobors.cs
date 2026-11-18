@@ -71,6 +71,7 @@ public partial class RekBoss
 
         void SlamWall(Vector2 point)
         {
+            PlayBumpSound();
             var iminShock = new SoundStyle("Stellamod/Assets/Sounds/RekShockwave");
             SoundEngine.PlaySound(iminShock, point);
             var fx = FXUtil.GlowCircleBoom(point, Color.White, Color.OrangeRed, Color.Red);
@@ -303,7 +304,7 @@ public partial class RekBoss
                             LavaEruption(segment.position, -Vector2.UnitY * 18, 3, 0.05f);
                         }
                     }
-                    if (Timer == 35)
+                    if (Timer == 45)
                     {
                         PlayStartupSound();
                     }
@@ -375,6 +376,7 @@ public partial class RekBoss
                     SawsOn();
                     if (_distanceTraveled >= Vector2.Distance(_initialVelocity, bottomLeft))
                     {
+                        SlamWall(bottomLeft);
                         _distanceTraveled = 0;
                         Timer = 0;
                         AttackCycle++;
@@ -456,7 +458,7 @@ public partial class RekBoss
 
                     if (Vector2.Dot(_ouroborosVelocity, movementDirection) < 0.9f && Timer > 15)
                     {
-                        PlayBumpSound();
+            
                         SlamWall(currentPoint);
                         AttackCount++;
                         if(AttackCount >= Ouroboros_Wall_Slam_Count)

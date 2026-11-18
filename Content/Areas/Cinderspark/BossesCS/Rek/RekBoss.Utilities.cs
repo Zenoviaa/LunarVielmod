@@ -78,24 +78,29 @@ public partial class RekBoss
             return;
         if (SoundEngine.TryGetActiveSound(_sawSlot.Value, out var result) && result.Style.SoundPath == AssetReferences.Assets.Sounds.Rek.SawAmbient.KEY)
         {
-            result.Stop();
-            _sawSlot = null;
+            result.Volume *= 0.9F;
+            if(result.Volume <= 0.05F)
+            {
+                result.Stop();
+                _sawSlot = null;
+            }
+        
         }
     }
     public void ManageSawbladeSound()
     {
         if (_sawSlot == null)
         {
-            _sawSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.SawAmbient.Asset, _ouroborosOrigin);
+            _sawSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.SawAmbient.Asset);
         }
 
         if(SoundEngine.TryGetActiveSound(_sawSlot.Value, out var result) && result.Style.SoundPath == AssetReferences.Assets.Sounds.Rek.SawAmbient.KEY)
         {
-            result.Position = _ouroborosOrigin;
+            result.Volume = 1f - (Vector2.Distance(NPC.Center, Main.LocalPlayer.Center) / 512F);
         }
         else
         {
-            _sawSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.SawAmbient.Asset, _ouroborosOrigin);
+            _sawSlot = SoundEngine.PlaySound(AssetReferences.Assets.Sounds.Rek.SawAmbient.Asset);
         }
 
     }

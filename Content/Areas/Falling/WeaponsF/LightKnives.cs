@@ -355,7 +355,7 @@ public class LightKnivesDash : ModProjectile
         }
         if (Timer % 4 == 0)
         {
-            ThrustParticle thrustParticle = ThrustParticle.Spawn(Projectile.Center, Projectile.velocity * 2, Color.White, Scale: 1f);
+            ThrustParticle thrustParticle = ThrustParticle.Spawn(Projectile.Center, Projectile.velocity.Resize(12), Color.White, Scale: 1f);
             thrustParticle.bloomColor = Color.Goldenrod;
         }
         if (Timer % 8 == 0)
@@ -363,7 +363,7 @@ public class LightKnivesDash : ModProjectile
             DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
             spawnParams.outerColor = Color.Gold;
             spawnParams.scaleRange *= 0.5f;
-            Vector2 velocity = -Projectile.velocity ;
+            Vector2 velocity = -Projectile.velocity;
             DustParticle dp = DustParticle.Spawn(Projectile.Center, velocity, spawnParams);
             dp.gravity = 0;
         }
