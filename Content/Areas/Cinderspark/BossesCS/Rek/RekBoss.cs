@@ -200,14 +200,16 @@ public partial class RekBoss : ScarletBoss
             case 1:
                 break;
             case 2:
-                if (_phase < 1)
+                if (_phase < 2)
                 {
                     Skip();
+                    Skip();
+                    pattern++;
                     pattern++;
                 }
                 break;
             case 3:
-                if (_phase < 1)
+                if (_phase < 2)
                 {
                     Skip();
                     pattern++;
