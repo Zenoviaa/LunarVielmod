@@ -16,6 +16,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public class VolcanicMeteor : ModProjectile
 {
+    Vector2 _landPoint;
     private float _scale;
     private float _timer;
     private float _glowAlpha;
@@ -23,6 +24,7 @@ public class VolcanicMeteor : ModProjectile
     private int SegmentIndex => (int)Projectile.ai[1];
     private ref float SurfaceLava => ref Projectile.ai[2];
     public override string Texture => TextureRegistry.EmptyTexture;
+
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -86,6 +88,18 @@ public class VolcanicMeteor : ModProjectile
             }
         }
 
+        if(_landPoint == default)
+        {
+            var pos = Projectile.Center;
+            var move = Projectile.velocity.Resize(32);
+            for(var i = 0; i < 900; i++)
+            {
+                pos += move;
+                if (pos.Y - 64 > SurfaceLava)
+                    break;
+            }
+            _landPoint = pos;
+        }
         Projectile.velocity += Projectile.velocity.SafeNormalize(Vector2.Zero) * 0.25f;
         if(Projectile.Center.Y - 64 > SurfaceLava)
         {
@@ -98,7 +112,7 @@ public class VolcanicMeteor : ModProjectile
     {
         float GetTrailWidth(float ratio)
         {
-            return MathHelper.SmoothStep(96, 16, ratio) * _scale;
+            return MathHelper.SmoothStep(48, 16, ratio) * _scale;
         }
         Color GetTrailColor(float ratio)
         {
@@ -116,9 +130,24 @@ public class VolcanicMeteor : ModProjectile
         TrailDrawer.Draw(Projectile.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, Projectile.Size * 0.5f);
     }
 
+    void DrawFlamePillar(SpriteBatch sb, Vector2 sp)
+    {
+        var glowCircle = AssetManager.GlowMask.SimpleGlowCircle;
+        var point = _landPoint;
+        var drawer = SpritebatchDrawer.FromTextureWhite(glowCircle);
+        drawer.scale.X *= 0.35F;
+        drawer.worldPosition = point;
+        drawer.scale.Y *= 3f;
+        drawer.color = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12)) * ExtraMath.Osc(0.5f, 0.75f, speed: 8) * _glowAlpha;
+        drawer.color.A = 0;
+
+        sb.Draw(drawer);
+    }
+
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
+        PixelationManager.QueueSpritebatchDrawAction(DrawFlamePillar, DrawLayer.OverNPCs);
         return false;
     }
     public override void PostDraw(Color lightColor)
@@ -130,7 +159,10 @@ public class VolcanicMeteor : ModProjectile
         glowDrawer.scale *= 0.48f * _scale;
         glowDrawer.color = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12)) * ExtraMath.Osc(0.5f, 0.75f, speed: 8) * _glowAlpha;
         glowDrawer.color.A = 0;
+
         Main.spriteBatch.Draw(glowDrawer);
+
+
     }
 
     public override void OnKill(int timeLeft)

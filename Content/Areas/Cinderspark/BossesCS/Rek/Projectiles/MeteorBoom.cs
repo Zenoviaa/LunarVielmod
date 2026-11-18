@@ -60,7 +60,7 @@ public class MeteorBoom : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            RekBoss.LavaEruption(Projectile, Projectile.Center, Projectile.velocity.Resize(24), 2, 0.12f);
+            RekBoss.LavaEruption(Projectile.Center, Projectile.velocity.Resize(24), 18, 0.12f);
 
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             screenShaderSystem.TintScreen(Color.Red, 0.08f, 5);

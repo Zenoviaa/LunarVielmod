@@ -1,8 +1,7 @@
 ﻿using ReLogic.Content;
-using Stellamod.Assets.ContentReader.Aseprite;
 using Stellamod.Common;
 using Stellamod.Common.Particles;
-using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.NPCHelpers;
 using System;
 using System.Collections.Generic;
@@ -37,6 +36,9 @@ public partial class RekBoss : ScarletBoss
     private bool _destroyArena;
     float _globalAlpha;
     bool _splashedYoAss;
+    bool _oldInLava;
+    float _sawbladeRotation;
+    float _sawbladeAlpha;
     public class RekSegment
     {
         public RekSegment(Vector2 _position, Vector2 _size, float _scale, int _bodyFrame)
@@ -81,7 +83,7 @@ public partial class RekBoss : ScarletBoss
                 _chain = new(NPC.Center, 80, 39);
                 for (int i = 0; i < _chain.lengths.Length; i++)
                 {
-                    _chain.lengths[i] = MathHelper.Lerp(63, 16, (float)i / _chain.lengths.Length);
+                    _chain.lengths[i] = MathHelper.Lerp(63, 18, (float)i / _chain.lengths.Length);
                 }
             }
             return _chain;
@@ -153,13 +155,15 @@ public partial class RekBoss : ScarletBoss
     {
         get
         {
-            if(_phase == 2)
+            if (_phase == 2)
             {
                 return 0.75f;
             }
             return 1f;
         }
     }
+
+    float IdleTime => 90;
 
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -187,7 +191,7 @@ public partial class RekBoss : ScarletBoss
         switch (pattern)
         {
             case 0:
-                if(_phase < 2)
+                if (_phase < 2)
                 {
                     Skip();
                     pattern++;
@@ -196,7 +200,7 @@ public partial class RekBoss : ScarletBoss
             case 1:
                 break;
             case 2:
-                if(_phase < 1)
+                if (_phase < 1)
                 {
                     Skip();
                     pattern++;
@@ -335,7 +339,7 @@ public partial class RekBoss : ScarletBoss
             return Vector2.Dot(-Vector2.UnitX, NPC.rotation.ToRotationVector2()) > 0;
         }
     }
-    private AIState TestAttack => default;
+    private AIState TestAttack => AIState.FireBreath;
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
@@ -415,11 +419,12 @@ public partial class RekBoss : ScarletBoss
             _lavaArenaRectangle = ArenaRectangleUpToLava();
         }
 
+        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, _arenaCenter, 0.2f));
         SmallMoltenPlatform.RisingPlatformPositions ??= new float[4];
-        for(var i = 0; i < SmallMoltenPlatform.RisingPlatformPositions.Length; i++)
+        for (var i = 0; i < SmallMoltenPlatform.RisingPlatformPositions.Length; i++)
         {
             ref var x = ref SmallMoltenPlatform.RisingPlatformPositions[i];
-            x = MathHelper.Lerp(_lavaArenaRectangle.Left + 200, _lavaArenaRectangle.Right - 200, (float)(i / (float)(SmallMoltenPlatform.RisingPlatformPositions.Length-1)));
+            x = MathHelper.Lerp(_lavaArenaRectangle.Left + 200, _lavaArenaRectangle.Right - 200, (float)(i / (float)(SmallMoltenPlatform.RisingPlatformPositions.Length - 1)));
         }
 
         if (Main.netMode != NetmodeID.Server)
@@ -526,6 +531,15 @@ public partial class RekBoss : ScarletBoss
                 break;
         }
 
+        var tile = Framing.GetTileSafely(NPC.Center.ToTileCoordinates());
+        var newInLava = tile.LiquidAmount > 0;
+        if ((_oldInLava && !newInLava) || (!_oldInLava && newInLava))
+        {
+            //
+            LavaEruption(NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 12, 18, radius: 0.1f);
+            LavaEruption(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 6, 18, radius: 0.1f);
+        }
+        _oldInLava = newInLava;
         float targetOuroAlpha = _ouroborosTrail ? 1f : 0f;
         _ouroborosAlpha = MathHelper.Lerp(_ouroborosAlpha, targetOuroAlpha, 0.1f);
         if (_showAfterImages)
@@ -684,7 +698,7 @@ public partial class RekBoss : ScarletBoss
 
             SwitchState(state);
 
-            if(NPC.life <= 1)
+            if (NPC.life <= 1)
             {
                 SwitchState(AIState.Death);
             }
@@ -696,7 +710,7 @@ public partial class RekBoss : ScarletBoss
     {
         ResetLavaSegments();
         Timer++;
-        if (Timer >= 20)
+        if (Timer >= IdleTime)
         {
             NextState();
         }
@@ -710,7 +724,7 @@ public partial class RekBoss : ScarletBoss
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
-        if(NPC.life <= 0)
+        if (NPC.life <= 0)
         {
             NPC.life = 1;
         }

@@ -20,6 +20,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
 public class BigVulcanFireball : ModProjectile
 {
+    bool _oldInLava;
     private Asset<Texture2D> _maskTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
     private ref float Scale => ref Projectile.ai[1];
@@ -53,6 +54,17 @@ public class BigVulcanFireball : ModProjectile
     {
 
         base.AI();
+
+        var tile = Framing.GetTileSafely(Projectile.Center.ToTileCoordinates());
+        var newInLava = tile.LiquidAmount > 0;
+        if ((_oldInLava && !newInLava) || (!_oldInLava && newInLava))
+        {
+            //
+            RekBoss.LavaEruption(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 12, 9, radius: 0.1f);
+            RekBoss.LavaEruption(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 6, 9, radius: 0.1f);
+        }
+        _oldInLava = newInLava;
+
         Timer++;
         if(Timer == 1)
         {

@@ -44,72 +44,43 @@ public partial class RekBoss
         }
     }
 
-    public static void LavaEruption(NPC source, int damage, Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
+    public static void LavaEruption(Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
     {
-
-        var firer = ProjFirer.From<LavaBall>(source);
+ 
         for (var i = 0; i < numBalls; i++)
         {
             var pos = position;
-            pos += Main.rand.NextVector2Circular(48, 48);
+            pos += Main.rand.NextVector2Circular(64, 64);
             var vel = velocity;
-            vel = vel.RotatedByRandom(0.6F);
-            vel *= Main.rand.NextFloat(0.5f, 1f);
-            if (MultiplayerHelper.IsHost)
+            vel = vel.RotatedByRandom(0.2f);
+            vel *= Main.rand.NextFloat(0.2f, 1f);
+            PS.LavaMetaballs.Spawn(new()
             {
-
-                firer.damage = damage;
-                firer.position = pos;
-                firer.velocity = vel;
-                firer.ai1 = radius;
-                firer.New();
-            }
-            for (var j = 0; j < 5; j++)
-            {
-                PS.LavaMetaballs.Spawn(new()
-                {
-                    position = pos + Main.rand.NextVector2Circular(32, 32),
-                    velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.4f, 1f),
-                    radius = 0.045f,
-                    timeLeft = Main.rand.Next(25, 90)
-                });
-            }
+                position = pos,
+                velocity = vel,
+                radius = radius * Main.rand.NextFloat(0.9f, 1F),
+                timeLeft = Main.rand.Next(45, 125)
+            });
         }
-    }
 
-    public static void LavaEruption(Projectile source, Vector2 position, Vector2 velocity, int numBalls, float radius = 0.015F)
-    {
-
-
-        var firer = ProjFirer.From<LavaBall>(source);
-        for(var i = 0; i < numBalls; i++)
+        for (var i = 0; i < numBalls / 3; i++)
         {
             var pos = position;
-            pos += Main.rand.NextVector2Circular(24, 24);
+            pos += Main.rand.NextVector2Circular(64, 64);
             var vel = velocity;
-            vel = vel.RotatedByRandom(0.25F);
-            vel *= Main.rand.NextFloat(0.5f, 1f);
-
-            if (MultiplayerHelper.IsHost)
+            vel = vel.RotatedByRandom(0.2f);
+            vel *= Main.rand.NextFloat(0.2f, 1f);
+            PS.LavaMetaballsFront.Spawn(new()
             {
-
-                firer.position = pos;
-                firer.velocity = vel;
-                firer.ai1 = radius;
-                firer.New();
-            }
-            for(var j =0; j < 5; j++)
-            {
-                PS.LavaMetaballs.Spawn(new()
-                {
-                    position = pos + Main.rand.NextVector2Circular(32, 32),
-                    velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.4f, 1f),
-                    radius = 0.045f,
-                    timeLeft = Main.rand.Next(25, 90)
-                });
-            }
+                position = pos ,
+                velocity = vel,
+                radius = radius * 0.7F,
+                timeLeft = Main.rand.Next(25, 90)
+            });
         }
     }
+
+
     public void CreateArena()
     {
         int width = 145;

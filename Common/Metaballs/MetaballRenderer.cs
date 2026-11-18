@@ -48,6 +48,7 @@ public class MetaballParticles : ParticleUpdater<MetaballParticles.Data>
             ref var particle = ref _particles[i];
             particle.position += particle.velocity;
             particle.velocity.Y += 0.25f;
+
             particle.timeLeft--;
         }
     }
@@ -115,7 +116,6 @@ public static class MetaballRenderer
             using (new SpritebatchContext(sb, defaultParams))
             {
                 sb.DrawScreenRectangle();
-                //    sb.Draw(flameThrowerMask, Vector2.Zero, Color.Transparent);
             }
 
             count = 0;

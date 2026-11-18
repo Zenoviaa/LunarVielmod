@@ -38,7 +38,14 @@ public partial class RekBoss
                     {
                         if (MultiplayerHelper.IsHost)
                         {
-                            _firebreathSide = Main.rand.NextBool(2) ? -1 : 1;
+                            if(_firebreathSide == 0 || _firebreathSide == 1)
+                            {
+                                _firebreathSide = -1;
+                            }
+                            else
+                            {
+                                _firebreathSide = 1;
+                            }
                             Vector2 teleportPoint = _firebreathSide < 0 ? eruptionLeft : eruptionRight;
                             Teleport(teleportPoint);
                         }
@@ -237,12 +244,24 @@ public partial class RekBoss
                     Animator.PlayAnimation(ANIM_MOUTH_BITE, AnimationParams.NoLooping);
                     if(Timer >= 45)
                     {
+         
                         NPC.velocity.X += -0.2f * _firebreathSide;
                         NPC.velocity.Y += 0.5f;
                         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+                        _globalAlpha = MathHelper.Lerp(1f, 0f, (Timer - 90) / 60F);
                         if (Timer >= 135)
                         {
-                            NextState();
+                            AttackCount++;
+                            if(AttackCount >= 3)
+                            {
+                                NextState();
+                            }
+                            else
+                            {
+                                Timer = 0;
+                                AttackCycle = 0;
+                            }
+                            
                         }
                     }
          

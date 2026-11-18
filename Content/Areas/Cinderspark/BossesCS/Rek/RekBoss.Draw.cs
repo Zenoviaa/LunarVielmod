@@ -674,6 +674,24 @@ public partial class RekBoss : IWaterSilhouette
         spriteBatch.Draw(spotLight);
     }
 
+    void DrawSawEffect(SpriteBatch spriteBatch, Vector2 sp)
+    {
+        var sawBlade = AssetReferences.Assets.GlowMasks.SuperSaw.Asset;
+        var drawer = SpritebatchDrawer.FromTextureWhite(sawBlade);
+        drawer.worldPosition = _ouroborosOrigin;
+        drawer.rotation = _sawbladeRotation * 0.5F;
+        drawer.scale *= ExtraMath.Osc(0.96F, 1f, speed: 6) * 1.2f;
+        drawer.color = Color.Lerp(Color.DarkOrange, Color.Red, ExtraMath.Osc(0f, 1f, speed: 24)) * _sawbladeAlpha  * 0.45F;
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
+
+        drawer.color = Color.Lerp(Color.DarkOrange, Color.Gold, ExtraMath.Osc(0f, 1f, speed: 24, 5.5F)) * _sawbladeAlpha * 0.45F;
+        drawer.color.A = 0;
+        drawer.rotation = _sawbladeRotation * 0.25F;
+        spriteBatch.Draw(drawer);
+     
+    }
+
     private void DrawFireballOrb(SpriteBatch spriteBatch)
     {
         SpritebatchDrawer spotLight = SpritebatchDrawer.FromTextureGetLightingColor(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
@@ -714,6 +732,11 @@ public partial class RekBoss : IWaterSilhouette
         {
             PixelationManager.QueuePrimitivesDrawAction(DrawSlashEffect, DrawLayer.OverNPCsAdditive);
             PixelationManager.QueuePrimitivesDrawAction(DrawFlameTrail, DrawLayer.OverNPCsAdditive);
+
+        }
+        if(_sawbladeAlpha > 0)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawSawEffect, DrawLayer.OverPlayers);
         }
         spriteBatch.EndOut(out var oldParameters);
         using var rekRT = RT.Context(RenderTargets.ScreenTarget);

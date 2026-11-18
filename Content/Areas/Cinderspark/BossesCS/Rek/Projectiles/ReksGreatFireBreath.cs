@@ -324,7 +324,7 @@ public class ReksGreatFireBreath : ModProjectile,
 
         if (Timer % 1 == 0 && hitLava)
         {
-            for(var i =0;i < 3; i++)
+            for(var i = 0;i < 4; i++)
             {
 
                 var pos = startPos + Main.rand.NextVector2Circular(16, 16);
@@ -333,11 +333,22 @@ public class ReksGreatFireBreath : ModProjectile,
                 {
                     position = pos + Main.rand.NextVector2Circular(32, 32),
                     velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.4f, 1f),
-                    radius = 0.045f,
+                    radius = 0.06f,
                     timeLeft = Main.rand.Next(25, 90)
                 });
             }
- 
+            {
+                var pos = startPos + Main.rand.NextVector2Circular(16, 16);
+                var vel = -Projectile.velocity.SafeNormalize(Vector2.Zero) * 15;
+                PS.LavaMetaballsFront.Spawn(new()
+                {
+                    position = pos + Main.rand.NextVector2Circular(32, 32),
+                    velocity = vel.RotatedByRandom(0.6f) * Main.rand.NextFloat(0.4f, 1f),
+                    radius = 0.06f,
+                    timeLeft = Main.rand.Next(25, 90)
+                });
+            }
+
         }
 
         Projectile.velocity = Parent.rotation.ToRotationVector2() * Projectile.velocity.Length();

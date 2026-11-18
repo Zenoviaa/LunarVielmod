@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek.Projectiles;
 
 public class VulcanFireball : ModProjectile
 {
+    bool _oldInLava;
     private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
@@ -39,6 +40,17 @@ public class VulcanFireball : ModProjectile
     public override void AI()
     {
         base.AI();
+
+        var tile = Framing.GetTileSafely(Projectile.Center.ToTileCoordinates());
+        var newInLava = tile.LiquidAmount > 0;
+        if ((_oldInLava && !newInLava) || (!_oldInLava && newInLava))
+        {
+            //
+            RekBoss.LavaEruption(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 12, 9, radius: 0.1f);
+            RekBoss.LavaEruption(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 6, 9, radius: 0.1f);
+        }
+        _oldInLava = newInLava;
+
         Timer++;
         if(Timer == 1)
         {
