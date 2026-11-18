@@ -15,7 +15,7 @@ public partial class RekBoss
     private float Eruption_SinHeight => 64;
     private float Eruption_SinFrequency => 0.04f;
 
-    private int Eruption_Damage => 50;
+    private int Eruption_Damage => 70;
     private void AI_Eruption()
     {
         Timer++;
