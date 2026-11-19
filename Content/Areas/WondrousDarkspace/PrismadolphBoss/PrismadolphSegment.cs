@@ -1,17 +1,141 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Particles;
+using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss.Projectiles;
+using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Map;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss;
 
+public class PrismadolphMapLayer : ModMapLayer
+{
+    // Here you can define where to put this layer in the vanilla map layer order.
+    // In this case we go before the pings layer since all other vanilla map layers are ordered before pings,
+    public override Position GetDefaultPosition() => new Before(IMapLayer.Pings);
+
+    // In the Draw method, we draw everything. Consulting vanilla examples in the source code is a good resource for properly using this Draw method.
+    public override void Draw(ref MapOverlayDrawContext context, ref string text)
+    {
+        // Here we define the scale that we wish to draw the icon when hovered and not hovered.
+        const float scaleIfNotSelected = 1f;
+        const float scaleIfSelected = scaleIfNotSelected * 2f;
+
+
+        // Here we retrieve the texture of the Skeletron boss head so that we can draw it. Remember that not all textures are loaded by default, so you might need to do something like `Main.instance.LoadItem(ItemID.BoneKey);` in your code to ensure the texture is loaded.
+        var prismadolphIcon = AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossIcon.Asset;
+        if (context.Draw(prismadolphIcon.Value, PrismadolphRoamingSystem.RoamingPosition.ToTileCoordinates().ToVector2(), Color.White,
+               new SpriteFrame(1, 1, 0, 0), scaleIfNotSelected, scaleIfSelected, Alignment.Center).IsMouseOver)
+        {
+            // When the icon is being hovered by the users mouse, we set the mouse text to the localized text for "The Dungeon"
+            text = LangText.Common("BellFlower");
+        }
+    }
+}
+public class PrismadolphRoamingSystem : ModSystem
+{
+    float _roamingTimer;
+    public static Vector2 StartPoint
+    {
+        get
+        {
+            Vector2 pos = new();
+            pos.X = ((float)Main.maxTilesX * 16) * 0.5F;
+            pos.Y = (SavedGenerationParameters.DarkspaceTop * 16) + 500;
+            return pos;
+        }
+    }
+    public static float SpawnRadiusSquared => 2048F * 2048F;
+    public static int PrismadolphType { get; private set; }
+    public static Vector2 RoamingDirection { get; set; }
+    public static Vector2 RoamingPosition { get; set; }
+    public override void OnModLoad()
+    {
+        base.OnModLoad();
+        PrismadolphType = ModContent.NPCType<Prismadolph>();
+    }
+
+    public override void NetSend(BinaryWriter writer)
+    {
+        base.NetSend(writer);
+        writer.WriteVector2(RoamingPosition);
+        writer.WriteVector2(RoamingDirection);
+    }
+    public override void NetReceive(BinaryReader reader)
+    {
+        base.NetReceive(reader);
+        RoamingPosition = reader.ReadVector2();
+        RoamingDirection = reader.ReadVector2();
+    }
+    public override void PostUpdateEverything()
+    {
+        base.PostUpdateEverything();
+        _roamingTimer++;
+        if (ShouldChangeRoamingDirection())
+        {
+            _roamingTimer = 0;
+            RoamingDirection = Main.rand.NextBool() ? -Vector2.UnitX : Vector2.UnitX;
+        }
+        if (ShouldResetRoamingPosition())
+        {
+            RoamingPosition = StartPoint;
+        }
+
+        var roamingVelocity = RoamingDirection * 2;
+        var samplePoint = RoamingPosition;
+        samplePoint.X *= 0.2F;
+        samplePoint.Y *= 0.2F;
+        roamingVelocity.Y += MathF.Sin(PreGeneratedNoise.SampleRand((int)samplePoint.X, (int)samplePoint.Y)) * 0.03F;
+        RoamingPosition += roamingVelocity;
+
+        if (!MultiplayerHelper.IsHost)
+            return;
+        if (DownedBossTracker.IsDowned(DownedBossFlag.Prismadolph))
+            return;
+        if(Main.GameUpdateCount % 15 == 0)
+        {
+            if (!NPC.AnyNPCs(PrismadolphType))
+            {
+                foreach (var player in Main.ActivePlayers)
+                {
+                    var dsq = Vector2.DistanceSquared(RoamingPosition, player.Center);
+                    if(dsq < SpawnRadiusSquared)
+                    {
+                        NPC.NewNPC(new EntitySource_Misc("ctx"), (int)RoamingPosition.X, (int)RoamingPosition.Y, PrismadolphType);
+                    }
+                }
+            }
+        }
+
+    }
+    bool ShouldChangeRoamingDirection()
+    {
+        if (RoamingDirection == default)
+            return true;
+        if (_roamingTimer >= 2400)
+            return true;
+        return false;
+    }
+    bool ShouldResetRoamingPosition()
+    {
+        if (RoamingPosition == default)
+            return true;
+        var xDist = (RoamingPosition.X - StartPoint.X);
+        xDist = MathF.Abs(xDist);
+        if (xDist >= 10000)
+            return true;
+        return false;
+    }
+}
 public class Prismadolph : ScarletBoss
 {
     public const int FRAME_HEAD = 0;
@@ -46,12 +170,14 @@ public class Prismadolph : ScarletBoss
     }
 
     float RotOffset => -MathHelper.PiOver2;
+    bool InPhase2 => NPC.life < NPC.lifeMax * 0.8F;
     ref float Timer => ref NPC.ai[0];
     AIState State
     {
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+    float CircleOffset => 252;
     public override string Texture => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph.KEY;
     public override Asset<Texture2D> BossIconTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossIcon.Asset;
     public override Asset<Texture2D> BossBarTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossBar.Asset;
@@ -162,18 +288,60 @@ public class Prismadolph : ScarletBoss
     }
     void AI_Lurk()
     {
+        Timer++;
+        NPC.TargetClosest();
         //Since bro is in the darkspace gonna make this work interestingly
-
+        Vector2 posToMoveTo = PrismadolphRoamingSystem.RoamingPosition;
+        Vector2 velToMoveTo = (posToMoveTo - NPC.Center).Resize(2);
+        NPC.velocity = Vector2.Lerp(NPC.velocity, velToMoveTo, 0.2f);
+        if (InPhase2)
+        {
+            SwitchState(AIState.Circle);
+        }
     }
+
     void AI_Circle()
     {
+        Timer++;
         //Find a player target, closest to them I guess.
         //From that player target get a point around them that's a circ
+        var target = NPC.PlayerImTargeting;
+        if (!NPC.HasValidTarget)
+        {
+            NPC.TargetClosest();
+            SwitchState(AIState.WanderOff);
+        }
+
+        Vector2 offset = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero);
+        offset = offset.RotatedBy(0.05F);
+        Vector2 posToMoveTo = MyTarget.Center + offset * CircleOffset;
+        Vector2 velToMoveTo = (posToMoveTo - NPC.Center).Resize(2);
+        NPC.velocity = Vector2.Lerp(NPC.velocity, velToMoveTo, 0.2f);
     }
 
     void AI_WanderOff()
     {
+        Timer++;
+        //Since bro is in the darkspace gonna make this work interestingly
+        Vector2 posToMoveTo = PrismadolphRoamingSystem.RoamingPosition;
+        Vector2 velToMoveTo = (posToMoveTo - NPC.Center).Resize(2);
+        NPC.velocity = Vector2.Lerp(NPC.velocity, velToMoveTo, 0.2f);
 
+
+        if(Timer >= 180)
+        {
+            bool farEnough = true;
+            foreach (var player in Main.ActivePlayers)
+            {
+                var sqd = Vector2.DistanceSquared(NPC.Center, player.Center);
+                if (sqd < 2048 * 2048)
+                    farEnough = false;
+            }
+            if (farEnough)
+                NPC.active = false;
+            else
+                SwitchState(AIState.Lurk);
+        }
     }
 
 

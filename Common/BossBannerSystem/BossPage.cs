@@ -240,7 +240,7 @@ namespace Stellamod.Common.BossBannerSystem
         {
             if(bossNPC is ScarletBoss boss)
             {
-                return ModContent.Request<Texture2D>(boss.Texture_BossIcon);
+                return boss.BossIconTextureAsset;
             }
             return ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
         }
