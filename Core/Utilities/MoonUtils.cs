@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Terraria;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 
@@ -67,23 +68,25 @@ public static class MoonUtils
         in Vector2 start, 
         in Vector2 end, 
         in float steps, 
-        in float degreesOfRotation)
+        in float degreesOfRotation,
+        UnifiedRandom rand)
     {
         Vector2 pos = start;
         Vector2 direction = (end - start).SafeNormalize(Vector2.Zero);
         Vector2 initialDirection = direction;
-        var maxStepSize = (end.LengthSquared() - start.LengthSquared()) / steps;
+        var maxStepSize = Vector2.Distance(start, end) / steps;
         var minStepSize = maxStepSize * 0.5F;
         var halfDegrees = degreesOfRotation * 0.5F;
         for (var i = 0; i < steps; i++)
         {
-            var stepSize = Main.rand.NextFloat(minStepSize, maxStepSize);
-            var rot = Main.rand.NextFloat(-halfDegrees, halfDegrees);
+            var stepSize = rand.NextFloat(minStepSize, maxStepSize);
+            var rot = rand.NextFloat(-halfDegrees, halfDegrees);
             direction = initialDirection.RotatedByRandom(rot);
             points[i] = pos;
             pos += direction * stepSize;
         }
         points[0] = start;
+        points[points.Length - 2] = end;
         points[points.Length - 1] = end;
     }
 

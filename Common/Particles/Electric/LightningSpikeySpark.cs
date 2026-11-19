@@ -13,9 +13,15 @@ public class LightningSpikeySpark : ParticleUpdater<LightningSpikeySpark.Data>
         {
             timeLeft = 120,
             color = Color.Gold,
+            fadeToColor = Color.DarkOrange
         };
 
+        public Data()
+        {
+            fadeToColor = Color.DarkOrange;
+        }
         public Color color;
+        public Color fadeToColor;
         public Vector2 position;
         public Vector2 velocity;
         public float scale;
@@ -82,7 +88,7 @@ public class LightningSpikeySpark : ParticleUpdater<LightningSpikeySpark.Data>
                 var fade = EasingFunction.InOutSine(particle.timeLeft / 60f);
                 var drawer = SpritebatchDrawer.FromTextureGetLightingColor(texture, particle.position);
                 drawer.color = particle.color;
-                drawer.color = Color.Lerp(drawer.color, Color.DarkOrange, 1f - fade);
+                drawer.color = Color.Lerp(drawer.color, particle.fadeToColor, 1f - fade);
                 drawer.color *= fade;
                 drawer.color *= 2;
                 drawer.color *= 0.6f;

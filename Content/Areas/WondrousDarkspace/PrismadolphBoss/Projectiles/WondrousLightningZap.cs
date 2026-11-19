@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss.Projectiles;
 
@@ -20,6 +21,8 @@ public class WondrousLightningZap : ModProjectile,
     }
     short[] _indices;
     Branch[] _branches;
+    int _seed;
+    UnifiedRandom Random => field ??= new();
     enum AIState : byte
     {
         Telegraph,
@@ -38,7 +41,7 @@ public class WondrousLightningZap : ModProjectile,
     ref float TelegraphTime => ref Projectile.ai[2];
 
     bool IsBig => State == AIState.BigTelegraph || State == AIState.BigStrike;
-    float StrikeTime => 60;
+    float StrikeTime => IsBig ? 120 : 55;
     float StrikeProgress => (_timer / StrikeTime);
     Vector2 StrikeStart => Projectile.Center;
     Vector2 StrikeEndPoint => Projectile.Center + Projectile.velocity;
@@ -91,6 +94,9 @@ public class WondrousLightningZap : ModProjectile,
     public override void AI()
     {
         base.AI();
+        if (_seed == 0)
+            _seed = Main.rand.Next(1, 10000);
+    //    Main.NewText(IsBig);
         switch (State)
         {
             case AIState.BigTelegraph:
@@ -124,15 +130,17 @@ public class WondrousLightningZap : ModProjectile,
         ConstantlyCreateFaintAmbientLightningParticlesBetweenStartAndEnd();
         if (_timer >= TelegraphTime)
         {
-            SwitchState(AIState.Strike);
+            if (IsBig)
+                SwitchState(AIState.BigStrike);
+            else
+                SwitchState(AIState.Strike);
         }
     }
 
-
-    bool CanRender() => _branches != null;
     void CreateBranches()
     {
-        _branches = new Branch[Main.rand.Next(1, 3)];
+        Random.SetSeed(_seed);
+        _branches = new Branch[Random.Next(4, 7)];
         for(var i = 0; i < _branches.Length; i++)
         {
             _branches[i].points = new Vector2[16];
@@ -145,12 +153,12 @@ public class WondrousLightningZap : ModProjectile,
             }
             else
             {
-                var ratio = Main.rand.NextFloat(0f, 0.7F);
-                start = Vector2.Lerp(StrikeStart, StrikeEndPoint, ratio);
-                end = start + Projectile.velocity.Resize(Main.rand.NextFloat(100, 512));
+                var ratio = Random.NextFloat(0f, 0.4F);
+                start = _branches[0].points[Random.Next(0, 7)];
+                end = start + Projectile.velocity.Resize(Random.NextFloat(100, 512)).RotatedByRandom(1.6F);
             }
 
-            MoonUtils.CreateLightningBoltBranch(ref _branches[i].points, start, end, _branches[i].points.Length, 0.5F);
+            MoonUtils.CreateLightningBoltBranch(ref _branches[i].points, start, end, _branches[i].points.Length, 3.5F, Random);
         }
     }
     
@@ -178,16 +186,16 @@ public class WondrousLightningZap : ModProjectile,
         switch (Main.rand.Next(3))
         {
             default:
-                sound = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap2.Asset;
+                sound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain1.Asset;
                 break;
             case 1:
-                sound = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap3.Asset;
+                sound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain2.Asset;
                 break;
             case 2:
-                sound = AssetReferences.Assets.Sounds.LeviathanEel.LeviZap2.Asset;
+                sound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain3.Asset;
                 break;
         }
-        sound.PitchVariance = 0.7F;
+        sound.PitchVariance = 1F;
         return sound;
     }
 
@@ -204,7 +212,8 @@ public class WondrousLightningZap : ModProjectile,
                 velocity = vel,
                 timeLeft = Main.rand.Next(25, 50),
                 scale = Main.rand.NextFloat(0.25f, 0.5f),
-                color = NextRandomDustColor()
+                color = NextRandomDustColor() with { A = 0 },
+                fadeToColor = Color.DarkBlue
             });
         }
 
@@ -254,12 +263,13 @@ public class WondrousLightningZap : ModProjectile,
                 velocity = vel,
                 timeLeft = Main.rand.Next(25, 50),
                 scale = Main.rand.NextFloat(0.5f, 1f),
-                color = NextRandomDustColor()
+                color = NextRandomDustColor() with { A = 0},
+                fadeToColor = Color.DarkBlue
             });
         }
 
         //I love this little dust
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 16; i++)
         {
             var ratio = Main.rand.NextFloat();
             var pos = Vector2.Lerp(StrikeStart, StrikeEndPoint, ratio);
@@ -268,9 +278,9 @@ public class WondrousLightningZap : ModProjectile,
             {
                 position = pos,
                 velocity = vel,
-                color = NextRandomDustColor(),
+                color = NextRandomDustColor() with { A = 0 },
                 timeLeft = Main.rand.Next(60, 120),
-                scale = Main.rand.NextFloat(0.6f, 1f),
+                scale = Main.rand.NextFloat(0.6f, 1f) * 0.2f,
             });
         }
     }
@@ -298,34 +308,53 @@ public class WondrousLightningZap : ModProjectile,
 
     float GetTrailWidth(float ratio)
     {
-        return MathHelper.SmoothStep(36, 0, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress);
+        var w = 24 * MathHelper.SmoothStep(1f, 0.4f, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress) * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
+        if (IsBig)
+            w *= 2.5F;
+        return w;
     }
 
     Color GetTrailColor(float ratio)
     {
-        Color glowColor = Color.Red;
-        glowColor.ScrollHue(360 * ratio);
+
+        Color glowColor = Color.DarkBlue;
+       // glowColor.ScrollHue(360 * ratio);
 
         //I wanna make it flicker violenty for a few frames and go back to it's like bloom color
         glowColor = Color.Lerp(glowColor, Color.White, ExtraMath.Osc(0f, 1f, speed: 40) * MathHelper.SmoothStep(1f, 0f, StrikeProgress));
         return glowColor;
     }
+    Color GetTrailColorTelegraph(float ratio)
+    {
 
+        Color glowColor = Color.DarkBlue;
+        // glowColor.ScrollHue(360 * ratio);
+
+        //I wanna make it flicker violenty for a few frames and go back to it's like bloom color
+        glowColor = Color.Lerp(glowColor, Color.White, ExtraMath.Osc(0f, 1f, speed: 40) * MathHelper.SmoothStep(1f, 0f, StrikeProgress));
+        glowColor *= 0.5F;
+        return glowColor;
+    }
     void DrawLightningBolt(GraphicsDevice gDevice)
     {
-        if (!CanRender())
-        {
-            CreateBranches();
-        }
-
+        CreateBranches();
         //Draw all branches
         List<VertexPositionColorTexture> batch = new();
         for(var i = 0; i < _branches.Length; i++)
         {
             ref var branch = ref _branches[i];
-            batch.AddRange(DrawUtilities.PrepareSimpleTrailingNoSmoothing(branch.points, GetTrailColor, GetTrailWidth));
-        }
 
+            if(State == AIState.Telegraph || State == AIState.BigTelegraph)
+            {
+                batch.AddRange(DrawUtilities.PrepareSimpleTrailingNoSmoothing(branch.points, GetTrailColorTelegraph, GetTrailWidth));
+            }
+            else
+            {
+                batch.AddRange(DrawUtilities.PrepareSimpleTrailingNoSmoothing(branch.points, GetTrailColor, GetTrailWidth));
+            }
+        
+        }
+        //Main.NewText(_branches.Length);
         _indices ??= DrawUtilities.PrepareIndicesForDrawing(batch.Count / 4);  
         var pass = AssetReferences.Effects.Darkspace.WondrousLightningStrike.CreatePrimitivesPass();
         pass.Parameters.time = Main.GlobalTimeWrappedHourly;
@@ -335,10 +364,12 @@ public class WondrousLightningZap : ModProjectile,
         pass.Parameters.noiseTexture = AssetReferences.Assets.Noise.PainterlyNoise.Asset.Value;
         pass.Apply();
         DrawUtilities.DrawUserIndexedPrimitivesWithEffect(batch.ToArray(), _indices, pass.Shader);
+    
+      //  TrailDrawer.Draw(, GetTrailColor, GetTrailWidth, pass.Shader);
     }
 
     public void DrawToRenderTargets()
     {
-        PixelationManager.QueuePrimitivesDrawAction(DrawLightningBolt, DrawLayer.OverNPCs);
+        PixelationManager.QueuePrimitivesDrawAction(DrawLightningBolt, DrawLayer.OverPlayers);
     }
 }

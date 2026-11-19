@@ -52,6 +52,7 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
+
     //first calculate some coords and oise
     float2 coords = input.TextureCoordinates.xy;
 
@@ -64,33 +65,20 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float4 outColor = float4(1.0, 0.0, 0.0, 1.0);
     outColor.rgb = ApplyHue(outColor.rgb, time * -8.0 + coords.x * 4.0);
-    if (laserColor.r > 0.5)
-    {
 
-        laserColor *= 0.0;
-    }
   
-    if (laserColor.r > 0.2 && laserColor.r < 0.3)
-    {
-   //     outColor.rgb = ApplyHue(outColor.rgb, time * 16.0 + coords.y * 4.0 + coords.x * 4.0);
-        laserColor *= 3.0;
-        laserColor += 5.5;
-    }
-    else
-    {
-        laserColor += tex2D(spriteSampler, offsetCoords + float2(-time, -time * 0.2));
-        //outColor.rgb = float3(1.0, 1.0, 1.0);
-        //laserColor *= 3.0;
-        //laserColor += 5.5;
-    }
+
     laserColor += QuadraticBump(coords.y) * 0.2;
-    laserColor *= input.Color;
+
     laserColor *= outColor;
     laserColor *= lerp(1.0, 3.0, coords.x);
 
     laserColor = floor(laserColor * 8.0) / 8.0;
     laserColor *= 1.0 - coords.x;
     laserColor *= QuadraticBump(coords.y);
+    laserColor += pow(QuadraticBump(offsetCoords.y), 16.0);
+    laserColor *= 2.0;
+    laserColor *= input.Color;
     laserColor.a = 0.0;
     return laserColor * input.Color;
 }
