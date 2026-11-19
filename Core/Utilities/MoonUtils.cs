@@ -53,6 +53,40 @@ public static class MoonUtils
 {
     const float SUMMON_SEARCH_DISTANCE = 512;
     const float REPATH_DISTANCE = 32 * 32;
+
+    /// <summary>
+    /// Creates a randomized set of points from a start to end point, meant to similate like a lightning bolt in a mesh
+    /// </summary>
+    /// <param name="points"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="steps"></param>
+    /// <param name="degreesOfRotation"></param>
+    public static void CreateLightningBoltBranch(
+        ref Vector2[] points, 
+        in Vector2 start, 
+        in Vector2 end, 
+        in float steps, 
+        in float degreesOfRotation)
+    {
+        Vector2 pos = start;
+        Vector2 direction = (end - start).SafeNormalize(Vector2.Zero);
+        Vector2 initialDirection = direction;
+        var maxStepSize = (end.LengthSquared() - start.LengthSquared()) / steps;
+        var minStepSize = maxStepSize * 0.5F;
+        var halfDegrees = degreesOfRotation * 0.5F;
+        for (var i = 0; i < steps; i++)
+        {
+            var stepSize = Main.rand.NextFloat(minStepSize, maxStepSize);
+            var rot = Main.rand.NextFloat(-halfDegrees, halfDegrees);
+            direction = initialDirection.RotatedByRandom(rot);
+            points[i] = pos;
+            pos += direction * stepSize;
+        }
+        points[0] = start;
+        points[points.Length - 1] = end;
+    }
+
     public static Vector2 MeteorHammer_SimulateChainn( Chain chain, Player owner)
     {
         Vector2 root = owner.Center;

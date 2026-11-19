@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.HealthbarSystem;
+﻿using ReLogic.Content;
+using Stellamod.Common.HealthbarSystem;
 using Stellamod.Content.Areas.SpecialTiles.EffectTiles;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.TitleSystem;
@@ -155,8 +156,22 @@ public abstract class ScarletBoss : ModNPC
     public float FacingDirectionToTarget => MyTarget.Center.X < NPC.Center.X ? -1 : 1;
     public int TargetDirection => (int)FacingDirectionToTarget;
     public IEntitySource SourceFromThis => NPC.GetSource_FromThis();
-    public string Texture_BossIcon => base.Texture + "_BossIcon";
-    public string Texture_BossBar => base.Texture + "_BossBar";
+    public virtual Asset<Texture2D> BossIconTextureAsset
+    {
+        get
+        {
+            field ??= ModContent.Request<Texture2D>(base.Texture + "_BossIcon");
+            return field;
+        }
+    }
+    public virtual Asset<Texture2D> BossBarTextureAsset
+    {
+        get
+        {
+            field ??= ModContent.Request<Texture2D>(base.Texture + "_BossBar");
+            return field;
+        }
+    }
 
     void UpdateHealthbar()
     {

@@ -41,7 +41,8 @@ namespace Stellamod.Helpers
         TheWhisperer=28,
         RoyalSTARR=29,
         Sporedom=30,
-        Rek=31
+        Rek=31,
+        Prismadolph = 32
     }
 
     public class Flawless : ModBuff

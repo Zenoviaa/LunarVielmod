@@ -10,6 +10,7 @@ using System.IO;
 using Terraria;
 using Terraria.GameContent.Shaders;
 using Terraria.Graphics.Effects;
+using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -389,6 +390,7 @@ public partial class RekBoss : ScarletBoss
 
     private void PhaseShift()
     {
+
         if (NPC.life < NPC.lifeMax * 0.7f)
         {
             _phase = 1;

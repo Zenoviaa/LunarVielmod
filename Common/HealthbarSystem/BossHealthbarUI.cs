@@ -1,18 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Assets;
+﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
-using Stellamod.Core;
-using Stellamod.Core.Effects;
-using Stellamod.Helpers;
-using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Common.HealthbarSystem
 {
@@ -50,7 +42,7 @@ namespace Stellamod.Common.HealthbarSystem
 
             string barMoonPath = directory + "/HealthbarSigil_";
             BarMoonTextureAsset = new Asset<Texture2D>[3];
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 BarMoonTextureAsset[i] = ModContent.Request<Texture2D>($"{barMoonPath}{i}", ReLogic.Content.AssetRequestMode.ImmediateLoad);
             }
@@ -166,12 +158,13 @@ namespace Stellamod.Common.HealthbarSystem
                 pos.X += 64;
                 pos.Y -= 6;
 
-                var textColor =  Color.Lerp(Color.Transparent, Color.White, _easeInAlpha);
+                var textColor = Color.Lerp(Color.Transparent, Color.White, _easeInAlpha);
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.DeathText.Value, GetBossTitle(), pos, textColor, 0, Vector2.Zero, Vector2.One * 0.5f);
-              
-                Asset<Texture2D> bossIconTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossIcon);
-                Asset<Texture2D> bossFillTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossBar);
-  
+
+                Asset<Texture2D> bossIconTexture = TrackingNpc.BossIconTextureAsset;
+                Asset<Texture2D> bossFillTexture = TrackingNpc.BossBarTextureAsset;
+
+
                 var shader = BossHealthbarShader.Instance;
                 shader.InnerColor = Color.Transparent;
                 shader.OuterColor = Color.White;
@@ -183,7 +176,7 @@ namespace Stellamod.Common.HealthbarSystem
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, default, default, default, shader.Effect, Main.UIScaleMatrix);
 
-        
+
                 spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White * _easeInAlpha, 0f, default, _barFillScale, SpriteEffects.None, 0f);
                 spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White * _easeInAlpha, 0f, default, _barFillScale, SpriteEffects.None, 0f);
 
@@ -193,7 +186,7 @@ namespace Stellamod.Common.HealthbarSystem
                 Vector2 offset = new Vector2(_barFillScale.X * 2, 0);
                 Vector2 edgeDrawPos = fillTopLeft + offset;
                 spriteBatch.Draw(EdgeTextureAsset.Value, edgeDrawPos, null, Color.White * _easeInAlpha, 0f, default, _easeInAlpha, SpriteEffects.None, 0f);
-                for(float f = 0; f < 1f; f += 0.1f)
+                for (float f = 0; f < 1f; f += 0.1f)
                 {
                     Vector2 o = Vector2.UnitY.RotatedBy(f * MathHelper.TwoPi);
                     o *= ExtraMath.Osc(1, 2);
@@ -207,7 +200,7 @@ namespace Stellamod.Common.HealthbarSystem
 
 
             Vector2 moonDrawOrigin = sigilTextuerAsset.Size() / 2f;
-            spriteBatch.Draw(sigilTextuerAsset.Value, topLeft + moonDrawOrigin, null, Color.White * _easeInAlpha , 0f, moonDrawOrigin, _easeInAlpha, SpriteEffects.None, 0f);
+            spriteBatch.Draw(sigilTextuerAsset.Value, topLeft + moonDrawOrigin, null, Color.White * _easeInAlpha, 0f, moonDrawOrigin, _easeInAlpha, SpriteEffects.None, 0f);
         }
 
         public void ResetEaseTimer()
