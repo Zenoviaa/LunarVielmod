@@ -330,7 +330,7 @@ public class ElectricTridentBoom : ModProjectile
                 particle.Rotation = rot + MathHelper.ToRadians(45);
             }
         }
-        if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
+        if (LunarVeilClientConfig.Instance.DramaticEffects)
         {
             SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
             effectsPlayer.darknessCurve = MathHelper.Lerp(0.25f, 0f, EasingFunction.InOutExpo(Timer / 60));

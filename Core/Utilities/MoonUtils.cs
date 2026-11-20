@@ -81,7 +81,7 @@ public static class MoonUtils
         {
             var stepSize = rand.NextFloat(minStepSize, maxStepSize);
             var rot = rand.NextFloat(-halfDegrees, halfDegrees);
-            direction = initialDirection.RotatedByRandom(rot);
+            direction = initialDirection.RotatedBy(rot);
             points[i] = pos;
             pos += direction * stepSize;
         }

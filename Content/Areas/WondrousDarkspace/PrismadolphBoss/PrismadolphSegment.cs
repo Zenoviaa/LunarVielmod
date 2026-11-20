@@ -1,7 +1,12 @@
-﻿using ReLogic.Content;
+﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
+using ReLogic.Content;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss.Projectiles;
+using Stellamod.Core.Camera;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
@@ -55,6 +60,7 @@ public class PrismadolphRoamingSystem : ModSystem
             return pos;
         }
     }
+    public static bool CanDoJumpscare { get; set; } = true;
     public static float SpawnRadiusSquared => 2048F * 2048F;
     public static int PrismadolphType { get; private set; }
     public static Vector2 RoamingDirection { get; set; }
@@ -118,10 +124,13 @@ public class PrismadolphRoamingSystem : ModSystem
                 foreach (var player in Main.ActivePlayers)
                 {
                     var dsq = Vector2.DistanceSquared(RoamingPosition, player.Center);
-                    if(dsq < SpawnRadiusSquared)
+                    var spos = player.Center;
+                    spos.X -= RoamingDirection.X * 1444;
+                    if (dsq < SpawnRadiusSquared)
                     {
-                        NPC.NewNPC(new EntitySource_Misc("ctx"), (int)RoamingPosition.X, (int)RoamingPosition.Y, PrismadolphType);
+                        NPC.NewNPC(new EntitySource_Misc("ctx"), (int)spos.X, (int)spos.Y, PrismadolphType);
                     }
+
                 }
             }
         }
@@ -159,11 +168,12 @@ public class Prismadolph : ScarletBoss
     public const int FRAME_CORE_WHITE = 8;
     enum AIState : byte
     {
-
-        Lurk,
         ForegroundLurk,
+        Lurk,
+
         Circle,
-        WanderOff
+        WanderOff,
+        Death
     }
     List<PrismadolphSegment> Segments => field ??= new();
     bool _spawnSegments;
@@ -173,7 +183,7 @@ public class Prismadolph : ScarletBoss
         {
             if (field == null)
             {
-                field = new(NPC.Center, 80, 15);
+                field = new(NPC.Center, 80, 16);
             }
             return field;
         }
@@ -187,7 +197,9 @@ public class Prismadolph : ScarletBoss
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
-    float CircleOffset => 512;
+    public float deathProgress;
+    float DeathTime => 180F;
+    public float alpha;
     public override string Texture => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph.KEY;
     public override Asset<Texture2D> BossIconTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossIcon.Asset;
     public override Asset<Texture2D> BossBarTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossBar.Asset;
@@ -271,7 +283,8 @@ public class Prismadolph : ScarletBoss
             _spawnSegments = true;
         }
 
-
+        if (NPC.life >= NPC.lifeMax)
+            NPC.life = NPC.lifeMax;
         Segments.Clear();
         foreach (var npc in Main.ActiveNPCs)
         {
@@ -280,9 +293,14 @@ public class Prismadolph : ScarletBoss
                 Segments.Add(segment);
             }
         }
+        if (NPC.life <= 1 && State != AIState.Death)
+            SwitchState(AIState.Death);
 
         switch (State)
         {
+            case AIState.ForegroundLurk:
+                AI_ForegroundLurk();
+                break;
             case AIState.Lurk:
                 AI_Lurk();
                 break;
@@ -291,6 +309,9 @@ public class Prismadolph : ScarletBoss
                 break;
             case AIState.WanderOff:
                 AI_WanderOff();
+                break;
+            case AIState.Death:
+                AI_Death();
                 break;
         }
     }
@@ -306,17 +327,73 @@ public class Prismadolph : ScarletBoss
             Chain.ResolveBackToRoot();
         }
     }
+    void AI_Death()
+    {
+        Timer++;
+        CameraTargetSystem.AddTarget(NPC.Center);
+        if(NPC.velocity.Length() > 0.03f)
+            NPC.velocity *= 0.98F;
+        deathProgress = Timer / DeathTime;
+        if(Timer >= DeathTime)
+        {
+            var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 25, 0.18F);
+            fx.Scale *= 1.7F;
+
+            PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.White, 60, 2048);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.White, 45, 1024);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.White, 35, 512);
+
+            //I love this little dust
+            for (var i = 0; i < 64; i++)
+            {
+                var ratio = Main.rand.NextFloat();
+                var pos = NPC.Center;
+                var vel = Main.rand.NextVector2Circular(24, 24);
+                PS.GlowDust.Spawn(new()
+                {
+                    position = pos,
+                    velocity = vel,
+                    color = NextRandomDustColor() with { A = 0 },
+                    timeLeft = Main.rand.Next(60, 120),
+                    scale = Main.rand.NextFloat(0.6f, 1f) * 0.2f,
+                });
+            }
+            NPC.Kill();
+        }
+    }
+    Color NextRandomDustColor()
+    {
+        Color dustColor = Color.DeepSkyBlue;
+        dustColor.ScrollHue(Main.rand.NextFloat(-24f, 24f));
+        return dustColor;
+    }
+
     void CheckDspawn()
     {
         bool farEnough = true;
         foreach (var player in Main.ActivePlayers)
         {
             var sqd = Vector2.DistanceSquared(NPC.Center, player.Center);
-            if (sqd < 2048 * 2048)
+            if (sqd < 3600 * 3600)
                 farEnough = false;
         }
         if (farEnough)
             SwitchState(AIState.WanderOff);
+    }
+
+    void AI_ForegroundLurk()
+    {
+        Timer++;
+        alpha = MathHelper.Lerp(0f, 1f, Timer / 30F);
+        NPC.TargetClosest();
+        NPC.velocity = PrismadolphRoamingSystem.RoamingDirection * 55;
+        NPC.velocity.Y += MathF.Sin(Timer * 0.05f) * 1;
+        if (Vector2.DistanceSquared(NPC.PlayerImTargeting.Center, NPC.Center) > 2700 * 2700) 
+        {
+            
+            SwitchState(AIState.Lurk);
+            
+        }
     }
     void AI_Lurk()
     {
@@ -380,7 +457,10 @@ public class Prismadolph : ScarletBoss
                     farEnough = false;
             }
             if (farEnough)
+            {
                 NPC.active = false;
+                PrismadolphRoamingSystem.CanDoJumpscare = true;
+            }
             else
                 SwitchState(AIState.Lurk);
         }
@@ -449,12 +529,57 @@ public class Prismadolph : ScarletBoss
         }
     }
 
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    void DrawEntireSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         DrawUnderbody(spriteBatch, screenPos, drawColor);
         DrawArmor(spriteBatch, screenPos, drawColor);
+
+    }
+    void DrawForegroundScare(SpriteBatch spriteBatch, Vector2 sp)
+    {
+
+    }
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        if(State == AIState.ForegroundLurk)
+        {
+            DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch sb) =>
+            {
+                sb.EndOut(out var oldParameters);
+                using var st = RT.Context(RenderTargets.ScreenTarget);
+
+             
+                using (RT.Clear(st, Color.Transparent))
+                {
+                    sb.Begin(oldParameters with { matrix = Matrix.Identity });
+                    DrawEntireSprite(sb, screenPos, drawColor);
+                    sb.End();
+                }
+              
+
+                sb.Begin(oldParameters);
+                sb.Draw(st, Vector2.Zero - st.Size() * 0.5F,null, Color.Black * alpha, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+            });
+            //Make black, bigger
+        }
+        else
+        {
+            using var st = RT.Context(RenderTargets.ScreenTarget);
+            spriteBatch.EndOut(out var oldParameters);
+            spriteBatch.Begin(oldParameters with { matrix = Matrix.Identity });
+            using (RT.Clear(st, Color.Transparent))
+            {
+           DrawEntireSprite(spriteBatch, screenPos, drawColor);
+            }
+            spriteBatch.End();
+
+            spriteBatch.Begin(oldParameters);
+            spriteBatch.Draw(st, Vector2.Zero,  Color.White * alpha);
+
+        }
         return false;
     }
+
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
@@ -514,6 +639,7 @@ public class PrismadolphSegment : ModNPC
 
     public override string Texture => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph.KEY;
     int SegmentIndex => (int)NPC.ai[2];
+    public float ChargeAttackProgress;
     Vector2 SegmentPosition
     {
         get => Parent.Chain.points[SegmentIndex];
@@ -636,6 +762,14 @@ public class PrismadolphSegment : ModNPC
             NPC.active = false;
             return;
         }
+
+        var segmentRatio = (float)(SegmentIndex + 1) / (float)Parent.Chain.points.Length;
+        var killMyselfPart = 1f - segmentRatio;
+        if(Parent.deathProgress > killMyselfPart)
+        {
+            DeathEffect();
+            NPC.Kill();
+        }
         if(_chargeTimer > 0)
         {
             _chargeTimer--;
@@ -645,7 +779,7 @@ public class PrismadolphSegment : ModNPC
         {
             MakeImmune();
         }
-
+        ChargeAttackProgress = MathHelper.Lerp(ChargeAttackProgress, 0, 0.03f);
         var targetArmorOn = _chargeTimer > 0 ? 1 : 0;
         _armorProgress = MathHelper.Lerp(_armorProgress, targetArmorOn, 0.05F);
         _aggression-=2;
@@ -680,6 +814,25 @@ public class PrismadolphSegment : ModNPC
         Lighting.AddLight(NPC.Center, new Vector3(0.6F));
     }
 
+    void DeathEffect()
+    {
+        switch (SegmentType)
+        {
+            case Segment.Tail:
+                Parent.NPC.ModNPC.MakeGore("_Gore_Tail", NPC.position, NPC.velocity);
+                break;
+            case Segment.Body:
+                Parent.NPC.ModNPC.MakeGore("_Gore_Body", NPC.position, NPC.velocity);
+                break;
+            case Segment.Head:
+                Parent.NPC.ModNPC.MakeGore("_Gore_Head", NPC.position, NPC.velocity);
+                break;
+        }
+        var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 25, 0.18F);
+        fx.Scale *= 1.7F;
+
+        PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.White, 35, 512);
+    }
     void SwitchState(AIState state)
     {
         if (MultiplayerHelper.IsHost)
@@ -696,6 +849,12 @@ public class PrismadolphSegment : ModNPC
         {
             SwitchState(AIState.Aggressive);
         }
+        if (Main.rand.NextBool(32))
+        {
+            var pos = NPC.Center + Main.rand.NextVector2CircularEdge(100, 100);
+            var vel =  Vector2.Zero;
+            Dust.NewDustPerfect(pos, DustID.Electric, vel, Scale: 0.3F);
+        }
     }
     void AI_Aggressive()
     {
@@ -707,7 +866,7 @@ public class PrismadolphSegment : ModNPC
         NPC.TargetClosest();
 
         _chargeTimer = 15;
-        if (Main.rand.NextBool(2))
+        if (Main.rand.NextBool(4))
         {
             var pos = NPC.Center + Main.rand.NextVector2CircularEdge(100, 100);
             var vel = (NPC.Center - pos) * 0.04F;
@@ -759,8 +918,8 @@ public class PrismadolphSegment : ModNPC
         if (_timer == 1 && MultiplayerHelper.IsHost)
         {
             var target = NPC.PlayerImTargeting;
-            var vel = (target.Center - NPC.Center);
-            vel *= 4f;
+            var vel = (target.Center - NPC.Center).Resize(2048);
+            //vel *= 4f;
 
             var firer = ProjFirer.From<WondrousLightningZap>(NPC);
             firer.damage = BigDamage;
@@ -769,6 +928,15 @@ public class PrismadolphSegment : ModNPC
             firer.ai1 = 2;
             firer.ai2 = 60;
             firer.New();
+        }
+        if (Main.rand.NextBool(2))
+        {
+            var pos = NPC.Center + Main.rand.NextVector2CircularEdge(384, 384);
+            var vel = (NPC.Center - pos) * 0.08F;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.InnerColor = Color.Pink;
+            fx.GlowColor = Color.Violet;
+            fx.OuterGlowColor = Color.DarkViolet;
         }
 
         if (_timer >= 100)
@@ -806,6 +974,12 @@ public class PrismadolphSegment : ModNPC
         drawer.color = Color.Lerp(Color.Transparent, Color.White, ExtraMath.Osc(0f, 0.2f, speed: 0.2f));
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
+
+
+        drawer.color = Color.Lerp(Color.Transparent, Color.Lerp(Color.SkyBlue, Color.White, ExtraMath.Osc(0f, 1f, speed: 16)), ChargeAttackProgress);
+        drawer.color.A = 0;
+        spriteBatch.Draw(drawer);
+
 
         drawer.color = Color.Lerp(Color.Transparent, Color.Purple, (float)_aggression / 1500F);
         drawer.color.A = 0;
@@ -939,6 +1113,8 @@ public class PrismadolphSegment : ModNPC
             _aggression += 90;
         _jiggle = 30;
         Parent.NPC.life -= hit.Damage;
+        if (Parent.NPC.life <= 0)
+            Parent.NPC.life = 1;
     }
 
 }

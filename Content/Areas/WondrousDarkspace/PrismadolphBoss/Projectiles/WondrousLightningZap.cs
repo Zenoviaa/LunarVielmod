@@ -1,7 +1,9 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -127,6 +129,10 @@ public class WondrousLightningZap : ModProjectile,
     void AI_Telegraph()
     {
         _timer++;
+        if(Parent.ModNPC is PrismadolphSegment seg)
+        {
+            seg.ChargeAttackProgress = MathF.Max(seg.ChargeAttackProgress, _timer / TelegraphTime);
+        }
         ConstantlyCreateFaintAmbientLightningParticlesBetweenStartAndEnd();
         if (_timer >= TelegraphTime)
         {
@@ -153,9 +159,9 @@ public class WondrousLightningZap : ModProjectile,
             }
             else
             {
-                var ratio = Random.NextFloat(0f, 0.4F);
+                var ratio = Random.NextFloat(0.2f, 0.7F);
                 start = _branches[0].points[Random.Next(0, 7)];
-                end = start + Projectile.velocity.Resize(Random.NextFloat(100, 512)).RotatedByRandom(1.6F);
+                end = start + Projectile.velocity.Resize(Random.NextFloat(100, 512)).RotatedBy(Random.NextFloat(-0.5F, 0.5F));
             }
 
             MoonUtils.CreateLightningBoltBranch(ref _branches[i].points, start, end, _branches[i].points.Length, 3.5F, Random);
@@ -228,7 +234,7 @@ public class WondrousLightningZap : ModProjectile,
     void CreateLightningDustParticlesBetweenStartAndEnd()
     {
         //Initial big flash
-        FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+        FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
 
         var glowColor = NextRandomDustColor();
         var dimColor = Color.Lerp(glowColor, Color.Black, 0.4f);
@@ -290,11 +296,27 @@ public class WondrousLightningZap : ModProjectile,
         _timer++;
         if (_timer == 1)
         {
+
             var zapSound = NextRandomZapSound();
             SoundEngine.PlaySound(zapSound, Projectile.position);
             CreateLightningDustParticlesBetweenStartAndEnd();
         }
+        if (IsBig)
+        {
+            if(_timer == 1)
+            {
+                CreateLightningDustParticlesBetweenStartAndEnd();
 
+                var sound = AssetReferences.Assets.Sounds.Lighting2.Asset;
+                sound.PitchVariance = 0.7F;
+                SoundEngine.PlaySound(sound, Projectile.position);
+            }
+            if (LunarVeilClientConfig.Instance.DramaticEffects)
+            {
+                SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+                effectsPlayer.darknessCurve = MathHelper.Lerp(0.25f, 0f, EasingFunction.InOutExpo(_timer / StrikeTime));
+            }
+        }
         if (_timer >= StrikeTime)
         {
             Projectile.Kill();
@@ -312,6 +334,16 @@ public class WondrousLightningZap : ModProjectile,
         if (IsBig)
             w *= 2.5F;
         return w;
+    }
+    float GetTrailWidth2(float ratio)
+    {
+        var w = 24 * MathHelper.SmoothStep(1f, 0.4f, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress) * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
+        w *= 7;
+        return w;
+    }
+    float GetTrailWidth3(float ratio)
+    {
+        return GetTrailWidth2(ratio) * 1.2f;
     }
 
     Color GetTrailColor(float ratio)
@@ -332,7 +364,7 @@ public class WondrousLightningZap : ModProjectile,
 
         //I wanna make it flicker violenty for a few frames and go back to it's like bloom color
         glowColor = Color.Lerp(glowColor, Color.White, ExtraMath.Osc(0f, 1f, speed: 40) * MathHelper.SmoothStep(1f, 0f, StrikeProgress));
-        glowColor *= 0.5F;
+        glowColor *= 0.25F;
         return glowColor;
     }
     void DrawLightningBolt(GraphicsDevice gDevice)
@@ -365,6 +397,22 @@ public class WondrousLightningZap : ModProjectile,
         pass.Apply();
         DrawUtilities.DrawUserIndexedPrimitivesWithEffect(batch.ToArray(), _indices, pass.Shader);
     
+        if(State == AIState.BigStrike)
+        {
+            var p = Color.Pink;
+            p.ScrollHue(Main.GlobalTimeWrappedHourly * 54);
+            var shader = FixedRichLaserShader.Instance;
+            shader.LaserColor = Color.IndianRed;
+            shader.InnerColor = p;
+            shader.OuterColor = Color.Violet;
+            var poss = DrawUtilities.InterpolateBetweenPoints(StrikeStart, StrikeEndPoint, 64);
+            TrailDrawer.Draw(Main.spriteBatch, poss, GetTrailColor, GetTrailWidth2, shader);
+
+            BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
+            bloomTrailShader.InnerColor = Color.SkyBlue;
+            bloomTrailShader.OuterColor =p;
+            TrailDrawer.Draw(Main.spriteBatch, poss, GetTrailColor, GetTrailWidth3, bloomTrailShader);
+        }
       //  TrailDrawer.Draw(, GetTrailColor, GetTrailWidth, pass.Shader);
     }
 
