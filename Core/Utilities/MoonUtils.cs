@@ -74,8 +74,9 @@ public static class MoonUtils
         Vector2 pos = start;
         Vector2 direction = (end - start).SafeNormalize(Vector2.Zero);
         Vector2 initialDirection = direction;
-        var maxStepSize = Vector2.Distance(start, end) / steps;
-        var minStepSize = maxStepSize * 0.5F;
+    
+        var minStepSize = Vector2.Distance(start, end) / steps;
+        var maxStepSize = minStepSize * 2;
         var halfDegrees = degreesOfRotation * 0.5F;
         for (var i = 0; i < steps; i++)
         {

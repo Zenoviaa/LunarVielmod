@@ -111,7 +111,7 @@ public class WondrousLightningZap : ModProjectile,
                 break;
         
         }
-        Projectile.Center = Parent.Center;
+      
         Projectile.rotation = Projectile.velocity.ToRotation();
     }
 
@@ -128,6 +128,7 @@ public class WondrousLightningZap : ModProjectile,
 
     void AI_Telegraph()
     {
+        Projectile.Center = Parent.Center;
         _timer++;
         if(Parent.ModNPC is PrismadolphSegment seg)
         {
@@ -149,7 +150,7 @@ public class WondrousLightningZap : ModProjectile,
         _branches = new Branch[Random.Next(4, 7)];
         for(var i = 0; i < _branches.Length; i++)
         {
-            _branches[i].points = new Vector2[16];
+            _branches[i].points = new Vector2[32];
             Vector2 start;
             Vector2 end;
             if(i == 0)
@@ -164,7 +165,7 @@ public class WondrousLightningZap : ModProjectile,
                 end = start + Projectile.velocity.Resize(Random.NextFloat(100, 512)).RotatedBy(Random.NextFloat(-0.5F, 0.5F));
             }
 
-            MoonUtils.CreateLightningBoltBranch(ref _branches[i].points, start, end, _branches[i].points.Length, 3.5F, Random);
+            MoonUtils.CreateLightningBoltBranch(ref _branches[i].points, start, end, _branches[i].points.Length, 1.5F, Random);
         }
     }
     
@@ -301,6 +302,8 @@ public class WondrousLightningZap : ModProjectile,
             SoundEngine.PlaySound(zapSound, Projectile.position);
             CreateLightningDustParticlesBetweenStartAndEnd();
         }
+        if(State == AIState.BigStrike)
+            Projectile.Center = Parent.Center;
         if (IsBig)
         {
             if(_timer == 1)

@@ -4,6 +4,7 @@ using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss.Projectiles;
 using Stellamod.Core.Camera;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering;
 using Stellamod.Core.Rendering.RTs;
@@ -210,6 +211,7 @@ public class Prismadolph : ScarletBoss
         NPCID.Sets.TrailCacheLength[Type] = 32;
         NPCID.Sets.MPAllowedEnemies[Type] = true;
         NPCID.Sets.MustAlwaysDraw[Type] = true;
+        NPCSets.Heavy[Type] = true;
     }
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
@@ -322,7 +324,7 @@ public class Prismadolph : ScarletBoss
         NPC.rotation = NPC.velocity.ToRotation();
         Chain.points[0] = NPC.Center;
         Chain.pinned[0] = true;
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 16; i++)
         {
             Chain.ResolveBackToRoot();
         }
@@ -555,26 +557,39 @@ public class Prismadolph : ScarletBoss
                     DrawEntireSprite(sb, screenPos, drawColor);
                     sb.End();
                 }
-              
 
-                sb.Begin(oldParameters);
+
+
+                var gaussianPass = AssetReferences.Effects.CrystalShaders.SimpleBlur.CreatePixelPass();
+                gaussianPass.Parameters.texelSize = st.Target.GetTexelSize();
+                gaussianPass.Apply();
+
+                sb.Begin(oldParameters with { effect = gaussianPass.Shader });
                 sb.Draw(st, Vector2.Zero - st.Size() * 0.5F,null, Color.Black * alpha, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+                sb.End();
+                sb.Begin(oldParameters);
             });
             //Make black, bigger
         }
         else
         {
-            using var st = RT.Context(RenderTargets.ScreenTarget);
-            spriteBatch.EndOut(out var oldParameters);
-            spriteBatch.Begin(oldParameters with { matrix = Matrix.Identity });
-            using (RT.Clear(st, Color.Transparent))
+            DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch sb) =>
             {
-           DrawEntireSprite(spriteBatch, screenPos, drawColor);
-            }
-            spriteBatch.End();
+                sb.EndOut(out var oldParameters);
+                using var st = RT.Context(RenderTargets.ScreenTarget);
 
-            spriteBatch.Begin(oldParameters);
-            spriteBatch.Draw(st, Vector2.Zero,  Color.White * alpha);
+
+                using (RT.Clear(st, Color.Transparent))
+                {
+                    sb.Begin(oldParameters with { matrix = Matrix.Identity });
+                    DrawEntireSprite(sb, screenPos, drawColor);
+                    sb.End();
+                }
+
+
+                sb.Begin(oldParameters);
+                sb.Draw(st, Vector2.Zero, null, Color.White * alpha, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            });
 
         }
         return false;

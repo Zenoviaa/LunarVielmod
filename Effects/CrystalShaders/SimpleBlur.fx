@@ -31,7 +31,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     float4 sum = tex2D(uImage0, left) + tex2D(uImage0, right) + tex2D(uImage0, up) + tex2D(uImage0, down);
     float4 avgColor = sum / 4.0;
-    return avgColor;
+    return avgColor * sampleColor;
 }
 
 technique SpriteDrawing
