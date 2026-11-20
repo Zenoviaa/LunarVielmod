@@ -607,7 +607,8 @@ public class Prismadolph : ScarletBoss
     }
 }
 
-public class PrismadolphSegment : ModNPC
+public class PrismadolphSegment : ModNPC,
+    IDrawToRenderTarget
 {
     float _aggression;
     float _jiggle;
@@ -646,6 +647,7 @@ public class PrismadolphSegment : ModNPC
     float _chargeTimer;
     float _healTimer;
     Vector2 _shakeOffset;
+    Outliner _outliner;
     AIState State
     {
         get => (AIState)NPC.ai[1];
@@ -813,6 +815,7 @@ public class PrismadolphSegment : ModNPC
         }
         NPC.life = NPC.lifeMax;
         NPC.Center = Parent.Chain.points[SegmentIndex];
+        _outliner.SetDefaults();
         switch (State)
         {
             case AIState.Passive:
@@ -825,6 +828,7 @@ public class PrismadolphSegment : ModNPC
                 AI_SuperAggressive();
                 break;
         }
+        _outliner.Update();
         ManageHealingEffectsDecreaseTimer();
         Lighting.AddLight(NPC.Center, new Vector3(0.6F));
     }
@@ -879,7 +883,7 @@ public class PrismadolphSegment : ModNPC
             SwitchState(AIState.Passive);
         }
         NPC.TargetClosest();
-
+        _outliner.warning = true;
         _chargeTimer = 15;
         if (Main.rand.NextBool(4))
         {
@@ -944,6 +948,7 @@ public class PrismadolphSegment : ModNPC
             firer.ai2 = 60;
             firer.New();
         }
+        _outliner.attacking = true;
         if (Main.rand.NextBool(2))
         {
             var pos = NPC.Center + Main.rand.NextVector2CircularEdge(384, 384);
@@ -968,9 +973,10 @@ public class PrismadolphSegment : ModNPC
     {
         _chargeTimer = 15;
     }
-
+    float _rot;
     public void DrawJigglyCore(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor, float rot)
     {
+        _rot = rot;
         if (SegmentType == Segment.Tail)
             return;
         if (SegmentType == Segment.Head)
@@ -1132,4 +1138,23 @@ public class PrismadolphSegment : ModNPC
             Parent.NPC.life = 1;
     }
 
+    public void DrawToRenderTargets()
+    {
+        if (!_outliner.VisibleEnough)
+            return;
+        void DrawOutline(SpriteBatch sb)
+        {
+
+            var tex = TextureAssets.Npc[Type].Value;
+            var pos = NPC.Center;
+            pos += _shakeOffset * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo((float)_aggression / 1500F));
+            var drawer = SpritebatchDrawer.FromTextureGetLightingColor(tex, pos);
+            drawer.VerticalFrame(Prismadolph.FRAME_CORE, Main.npcFrameCount[Type]);
+            drawer.color = _outliner.outlineColor;
+            drawer.CenterOrigin();
+            drawer.rotation = _rot + JiggleRotOffset;
+            sb.Draw(drawer);
+        }
+        OutlineRenderer.Queue(DrawOutline);
+    }
 }
