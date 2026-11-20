@@ -61,7 +61,7 @@ public class WondrousLightningZap : ModProjectile,
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, StrikeEndPoint, 24);
+        return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, StrikeEndPoint, 12);
         //return base.Colliding(projHitbox, targetHitbox);
     }
     public override bool CanHitPlayer(Player target)
@@ -304,6 +304,9 @@ public class WondrousLightningZap : ModProjectile,
         }
         if(State == AIState.BigStrike)
             Projectile.Center = Parent.Center;
+        if (_timer >= 30)
+            Projectile.hostile = false;
+
         if (IsBig)
         {
             if(_timer == 1)
