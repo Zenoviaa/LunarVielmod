@@ -1,643 +1,15 @@
-﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
-using ReLogic.Content;
-using Stellamod.Common.Particles;
-using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
+﻿using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss.Projectiles;
-using Stellamod.Core.Camera;
-using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Rendering;
-using Stellamod.Core.Rendering.RTs;
-using Stellamod.WorldG;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Map;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss;
-
-public class PrismadolphMapLayer : ModMapLayer
-{
-    // Here you can define where to put this layer in the vanilla map layer order.
-    // In this case we go before the pings layer since all other vanilla map layers are ordered before pings,
-    public override Position GetDefaultPosition() => new Before(IMapLayer.Pings);
-
-    // In the Draw method, we draw everything. Consulting vanilla examples in the source code is a good resource for properly using this Draw method.
-    public override void Draw(ref MapOverlayDrawContext context, ref string text)
-    {
-        // Here we define the scale that we wish to draw the icon when hovered and not hovered.
-        const float scaleIfNotSelected = 1f;
-        const float scaleIfSelected = scaleIfNotSelected * 2f;
-
-
-        // Here we retrieve the texture of the Skeletron boss head so that we can draw it. Remember that not all textures are loaded by default, so you might need to do something like `Main.instance.LoadItem(ItemID.BoneKey);` in your code to ensure the texture is loaded.
-        var prismadolphIcon = AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossIcon.Asset;
-        if (context.Draw(prismadolphIcon.Value, PrismadolphRoamingSystem.RoamingPosition.ToTileCoordinates().ToVector2(), Color.White,
-               new SpriteFrame(1, 1, 0, 0), scaleIfNotSelected, scaleIfSelected, Alignment.Center).IsMouseOver)
-        {
-            // When the icon is being hovered by the users mouse, we set the mouse text to the localized text for "The Dungeon"
-            text = LangText.Common("BellFlower");
-        }
-    }
-}
-public class PrismadolphRoamingSystem : ModSystem
-{
-    float _roamingTimer;
-    public static Vector2 StartPoint
-    {
-        get
-        {
-            Vector2 pos = new();
-            pos.X = ((float)Main.maxTilesX * 16) * 0.5F;
-            pos.Y = (SavedGenerationParameters.DarkspaceTop * 16) + 400;
-            return pos;
-        }
-    }
-    public static bool CanDoJumpscare { get; set; } = true;
-    public static float SpawnRadiusSquared => 2048F * 2048F;
-    public static int PrismadolphType { get; private set; }
-    public static Vector2 RoamingDirection { get; set; }
-    public static Vector2 RoamingPosition { get; set; }
-    FastNoiseLite _fnl;
-    public override void OnModLoad()
-    {
-        base.OnModLoad();
-        PrismadolphType = ModContent.NPCType<Prismadolph>();
-    }
-
-    public override void NetSend(BinaryWriter writer)
-    {
-        base.NetSend(writer);
-        writer.WriteVector2(RoamingPosition);
-        writer.WriteVector2(RoamingDirection);
-    }
-    public override void NetReceive(BinaryReader reader)
-    {
-        base.NetReceive(reader);
-        RoamingPosition = reader.ReadVector2();
-        RoamingDirection = reader.ReadVector2();
-    }
-    public override void PostUpdateEverything()
-    {
-        base.PostUpdateEverything();
-        _roamingTimer++;
-        if (ShouldChangeRoamingDirection())
-        {
-            _roamingTimer = 0;
-            RoamingDirection = Main.rand.NextBool() ? -Vector2.UnitX : Vector2.UnitX;
-        }
-        if (ShouldResetRoamingPosition())
-        {
-            RoamingPosition = StartPoint;
-        }
-
-        var roamingVelocity = RoamingDirection * 1;
-        roamingVelocity.Y += MathF.Sin(Main.GameUpdateCount * 0.001f);
-        //  roamingVelocity.Y += 
-        RoamingPosition += roamingVelocity;
-
-
-        //RoamingPosition += new Vector2(0, y);
-        if (!MultiplayerHelper.IsHost)
-            return;
-        if (DownedBossTracker.IsDowned(DownedBossFlag.Prismadolph))
-            return;
-        if(Main.GameUpdateCount % 15 == 0)
-        {
-            if (!NPC.AnyNPCs(PrismadolphType))
-            {
-                foreach (var player in Main.ActivePlayers)
-                {
-                    var dsq = Vector2.DistanceSquared(RoamingPosition, player.Center);
-                    var spos = player.Center;
-                    spos.X -= RoamingDirection.X * 1444;
-                    if (dsq < SpawnRadiusSquared)
-                    {
-                        NPC.NewNPC(new EntitySource_Misc("ctx"), (int)spos.X, (int)spos.Y, PrismadolphType);
-                    }
-
-                }
-            }
-        }
-
-    }
-    bool ShouldChangeRoamingDirection()
-    {
-        if (RoamingDirection == default)
-            return true;
-        if (_roamingTimer >= 2400)
-            return true;
-        return false;
-    }
-    bool ShouldResetRoamingPosition()
-    {
-        if (RoamingPosition == default)
-            return true;
-        var xDist = (RoamingPosition.X - StartPoint.X);
-        xDist = MathF.Abs(xDist);
-        if (xDist >= 14000)
-            return true;
-        return false;
-    }
-}
-public class Prismadolph : ScarletBoss
-{
-    public const int FRAME_HEAD = 0;
-    public const int FRAME_HEAD_GLOW = 1;
-    public const int FRAME_HEAD_WHITE = 2;
-    public const int FRAME_ARMOR = 3;
-    public const int FRAME_TAIL = 4;
-    public const int FRAME_TAIL_GLOW = 5;
-    public const int FRAME_TAIL_WHITE = 6;
-    public const int FRAME_CORE = 7;
-    public const int FRAME_CORE_WHITE = 8;
-    enum AIState : byte
-    {
-        ForegroundLurk,
-        Lurk,
-
-        Circle,
-        WanderOff,
-        Death
-    }
-    List<PrismadolphSegment> Segments => field ??= new();
-    bool _spawnSegments;
-    public ChainWithLengths Chain
-    {
-        get
-        {
-            if (field == null)
-            {
-                field = new(NPC.Center, 80, 48);
-            }
-            return field;
-        }
-    }
-
-    Vector2 _lurkDirection;
-    float RotOffset => -MathHelper.PiOver2;
-    bool InPhase2 => NPC.life < NPC.lifeMax * 0.5F;
-    ref float Timer => ref NPC.ai[0];
-    AIState State
-    {
-        get => (AIState)NPC.ai[1];
-        set => NPC.ai[1] = (float)value;
-    }
-    ref float MovementCycle => ref NPC.ai[2];
-    public float deathProgress;
-    float DeathTime => 360F;
-
-    public float alpha;
-    public override string Texture => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph.KEY;
-    public override Asset<Texture2D> BossIconTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossIcon.Asset;
-    public override Asset<Texture2D> BossBarTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossBar.Asset;
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        NPCID.Sets.TrailingMode[Type] = 3;
-        NPCID.Sets.TrailCacheLength[Type] = 32;
-        NPCID.Sets.MPAllowedEnemies[Type] = true;
-        NPCID.Sets.MustAlwaysDraw[Type] = true;
-        NPCSets.Heavy[Type] = true;
-    }
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
-    {
-        return false;
-    }
-    public override bool CanHitNPC(NPC target)
-    {
-        return false;
-    }
-
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-        NPC.width = 64;
-        NPC.height = 64;
-        NPC.damage = 80;
-        NPC.defense = 97;
-        NPC.lifeMax = 12_000;
-        NPC.HitSound = SoundID.NPCHit16;
-        NPC.value = Item.buyPrice(silver: 50);
-        NPC.knockBackResist = 0f;
-        NPC.dontTakeDamage = true;
-        NPC.noGravity = true;
-        NPC.noTileCollide = true;
-        NPC.boss = false;
-        NPC.npcSlots = 10f;
-
-
-        //Setup the music and boss bar
-        if (!Main.dedServ)
-            Music = AssetReferences.Assets.Music.NostalgicFoe.Slot;
-        NPC.aiStyle = -1;
-    }
-
-    public override bool AllowNameplateToBeShown()
-    {
-        return base.AllowNameplateToBeShown() && NPC.boss;
-    }
-    void SwitchState(AIState state)
-    {
-        if (MultiplayerHelper.IsHost)
-        {
-            Timer = 0;
-            State = state;
-            NPC.netUpdate = true;
-        }
-    }
-    public override void AI()
-    {
-        base.AI();
-
-        //Spawn 
-        if (MultiplayerHelper.IsHost && !_spawnSegments)
-        {
-            var type = ModContent.NPCType<PrismadolphSegment>();
-
-            for (var i = 0; i < Chain.points.Length; i++)
-            {
-                ref var point = ref Chain.points[i];
-                var frame = 0;
-
-                if (i == 0)
-                    frame = 0;
-                else if (i == Chain.points.Length - 1)
-                    frame = 2;
-                else
-                    frame = 1;
-                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, type, ai0: NPC.whoAmI, ai2: i, ai3: frame);
-            }
-
-            _spawnSegments = true;
-        }
-
-        if (NPC.life >= NPC.lifeMax)
-            NPC.life = NPC.lifeMax;
-        Segments.Clear();
-        foreach (var npc in Main.ActiveNPCs)
-        {
-            if (npc.ModNPC is PrismadolphSegment segment && npc.ai[0] == NPC.whoAmI)
-            {
-                Segments.Add(segment);
-            }
-        }
-        if (NPC.life <= 1 && State != AIState.Death)
-            SwitchState(AIState.Death);
-
-        switch (State)
-        {
-            case AIState.ForegroundLurk:
-                AI_ForegroundLurk();
-                break;
-            case AIState.Lurk:
-                AI_Lurk();
-                break;
-            case AIState.Circle:
-                AI_Circle();
-                break;
-            case AIState.WanderOff:
-                AI_WanderOff();
-                break;
-            case AIState.Death:
-                AI_Death();
-                break;
-        }
-    }
-
-    public override void PostAI()
-    {
-        base.PostAI();
-        NPC.rotation = NPC.velocity.ToRotation();
-        Chain.points[0] = NPC.Center;
-        Chain.pinned[0] = true;
-        for (int i = 0; i < 45; i++)
-        {
-            Chain.ResolveBackToRoot();
-        }
-    }
-    void AI_Death()
-    {
-        Timer++;
-
-        if(NPC.velocity.Length() > 0.03f)
-            NPC.velocity *= 0.98F;
-        deathProgress = Timer / DeathTime;
-        if(Timer >= DeathTime)
-        {
-            var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 25, 0.18F);
-            fx.Scale *= 1.7F;
-
-            PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.White, 60, 2048);
-            PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.White, 45, 1024);
-            PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.White, 35, 512);
-
-            //I love this little dust
-            for (var i = 0; i < 64; i++)
-            {
-                var ratio = Main.rand.NextFloat();
-                var pos = NPC.Center;
-                var vel = Main.rand.NextVector2Circular(24, 24);
-                PS.GlowDust.Spawn(new()
-                {
-                    position = pos,
-                    velocity = vel,
-                    color = NextRandomDustColor() with { A = 0 },
-                    timeLeft = Main.rand.Next(60, 120),
-                    scale = Main.rand.NextFloat(0.6f, 1f) * 0.2f,
-                });
-            }
-            NPC.Kill();
-        }
-    }
-    Color NextRandomDustColor()
-    {
-        Color dustColor = Color.DeepSkyBlue;
-        dustColor.ScrollHue(Main.rand.NextFloat(-24f, 24f));
-        return dustColor;
-    }
-
-    void CheckDspawn()
-    {
-        bool farEnough = true;
-        foreach (var player in Main.ActivePlayers)
-        {
-            var sqd = Vector2.DistanceSquared(NPC.Center, player.Center);
-            if (sqd < 8000 * 8000)
-                farEnough = false;
-        }
-        if (farEnough)
-            SwitchState(AIState.WanderOff);
-    }
-
-    void AI_ForegroundLurk()
-    {
-        Timer++;
-        alpha = MathHelper.Lerp(0f, 1f, Timer / 30F);
-        NPC.TargetClosest();
-        NPC.velocity = PrismadolphRoamingSystem.RoamingDirection * 55;
-        NPC.velocity.Y += MathF.Sin(Timer * 0.05f) * 1;
-        if (Vector2.DistanceSquared(NPC.PlayerImTargeting.Center, NPC.Center) > 5000 * 5000) 
-        {
-            
-            SwitchState(AIState.Lurk);
-            
-        }
-    }
-    void AI_Lurk()
-    {
-        if (_lurkDirection == default)
-            _lurkDirection = PrismadolphRoamingSystem.RoamingDirection;
-        Timer += 0.003f;
-        NPC.TargetClosest();
-        Vector2 targetVelocity = Vector2.Zero;
-
-        //Move up and down in a waving pattern
-        switch (MovementCycle)
-        {
-            case 0:
-                {
-                    targetVelocity = _lurkDirection * 2;
-                    targetVelocity.Y = MathF.Sin(Timer) * 3f;
-
-                    if (MultiplayerHelper.IsHost)
-                    {
-                        if (Main.rand.NextBool(500))
-                        {
-                            MovementCycle = 1;
-                            NPC.netUpdate = true;
-                        }
-                    }
- 
-                }
-                break;
-            case 1:
-                {
-                    targetVelocity = _lurkDirection * 1;
-                    targetVelocity.Y = MathF.Sin(Timer * 2) * 3f;
-    
-                    if (MultiplayerHelper.IsHost)
-                    {
-                        if (Main.rand.NextBool(500))
-                        {
-                            MovementCycle = 0;
-                            NPC.netUpdate = true;
-                        }
-                    }
-                }
-                break;
-            case 2:
-                {
-
-                }
-                break;
-        }
-        var goBack = (PrismadolphRoamingSystem.StartPoint.Y - NPC.Center.Y) / 1250F;
-        targetVelocity.Y += goBack;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.02f);
-
-        CheckDspawn();
-    }
-
-    void AI_Circle()
-    {
-        Timer++;
-        //Find a player target, closest to them I guess.
-        //From that player target get a point around them that's a circ
-        var target = NPC.PlayerImTargeting;
-        if (!NPC.HasValidTarget)
-        {
-            NPC.TargetClosest();
-            if(!NPC.HasValidTarget)
-                SwitchState(AIState.WanderOff);
-        }
-        var osc = MathHelper.Lerp(3, 12, MathF.Sin(Timer * 0.04f) * 0.5F + 0.5F);
-        Vector2 posToMoveTo = MyTarget.Center;
-        Vector2 velToMoveTo = ProjectileHelper.SimpleHomingVelocity(NPC.Center, posToMoveTo, NPC.velocity.Resize(9), osc);
-        NPC.velocity = Vector2.Lerp(NPC.velocity, velToMoveTo, 0.2f);
-        /*
-        Vector2 offset = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero);
-        offset = offset.RotatedBy(0.05F);
-        Vector2 posToMoveTo = MyTarget.Center + offset * CircleOffset;
-        Vector2 velToMoveTo = (posToMoveTo - NPC.Center).Resize(6);
-        NPC.velocity = Vector2.Lerp(NPC.velocity, velToMoveTo, 0.2f);*/
-        CheckDspawn();
-    }
-
-    void AI_WanderOff()
-    {
-        Timer++;
-        //Since bro is in the darkspace gonna make this work interestingly
-        Vector2 posToMoveTo = PrismadolphRoamingSystem.RoamingPosition;
-        Vector2 velToMoveTo = (posToMoveTo - NPC.Center).Resize(2);
-        NPC.velocity = Vector2.Lerp(NPC.velocity, velToMoveTo, 0.2f);
-
-
-        if(Timer >= 180)
-        {
-            bool farEnough = true;
-            foreach (var player in Main.ActivePlayers)
-            {
-                var sqd = Vector2.DistanceSquared(NPC.Center, player.Center);
-                if (sqd < 2048 * 2048)
-                    farEnough = false;
-            }
-            if (farEnough)
-            {
-                NPC.active = false;
-                PrismadolphRoamingSystem.CanDoJumpscare = true;
-            }
-            else
-                SwitchState(AIState.Lurk);
-        }
-    }
-
-
-    void DrawUnderbody(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        //loop over all the segments and everything that's underneath
-        for (var i = 0; i < Segments.Count; i++)
-        {
-            var segment = Segments[i];
-            var pos = Chain.points[i];
-            float rot = 0F;
-            if (i < Segments.Count - 1)
-            {
-                var nextPos = Chain.points[i + 1];
-                rot = (nextPos - pos).ToRotation();
-            }
-            else if(i > 0)
-            {
-                var nextPos = Chain.points[i - 1];
-                rot = (nextPos - pos).ToRotation();
-            }
-            rot += RotOffset;
-            segment.DrawJigglyCore(spriteBatch, screenPos, drawColor, rot);
-        }
-        for (var i = 0; i < Segments.Count; i++)
-        {
-            var segment = Segments[i];
-            var pos = Chain.points[i];
-            float rot = 0F;
-            if (i < Segments.Count - 1)
-            {
-                var nextPos = Chain.points[i + 1];
-                rot = (pos - nextPos).ToRotation();
-            }
-            else if(i > 0)
-            {
-                var nextPos = Chain.points[i - 1];
-                rot = (nextPos - pos).ToRotation();
-            }
-            rot += RotOffset;
-            segment.DrawJigglyCoreBloom(spriteBatch, screenPos, drawColor, rot);
-        }
-    }
-    void DrawArmor(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        for (var i = 0; i < Segments.Count; i++)
-        {
-            var segment = Segments[i];
-            var pos = Chain.points[i];
-            float rot = 0F;
-            if (i < Segments.Count - 1)
-            {
-                var nextPos = Chain.points[i + 1];
-                rot = (pos - nextPos).ToRotation();
-            }
-            else if(i > 0)
-            {
-                var nextPos = Chain.points[i - 1];
-                rot = (nextPos - pos).ToRotation();
-            }
-            rot += RotOffset;
-            segment.DrawArmor(spriteBatch, screenPos, drawColor, rot);
-        }
-    }
-
-    void DrawEntireSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        DrawUnderbody(spriteBatch, screenPos, drawColor);
-        DrawArmor(spriteBatch, screenPos, drawColor);
-
-    }
-    void DrawForegroundScare(SpriteBatch spriteBatch, Vector2 sp)
-    {
-
-    }
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        if(State == AIState.ForegroundLurk)
-        {
-            DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch sb) =>
-            {
-                sb.EndOut(out var oldParameters);
-                using var st = RT.Context(RenderTargets.ScreenTarget);
-
-             
-                using (RT.Clear(st, Color.Transparent))
-                {
-                    sb.Begin(oldParameters with { matrix = Matrix.Identity });
-                    DrawEntireSprite(sb, screenPos, drawColor);
-                    sb.End();
-                }
-
-
-
-                var gaussianPass = AssetReferences.Effects.CrystalShaders.SimpleBlur.CreatePixelPass();
-                gaussianPass.Parameters.texelSize = st.Target.GetTexelSize();
-                gaussianPass.Apply();
-
-                sb.Begin(oldParameters with { effect = gaussianPass.Shader });
-                sb.Draw(st, Vector2.Zero - st.Size() * 0.5F,null, Color.Black * alpha, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
-                sb.End();
-                sb.Begin(oldParameters);
-            });
-            //Make black, bigger
-        }
-        else
-        {
-            DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch sb) =>
-            {
-                sb.EndOut(out var oldParameters);
-                using var st = RT.Context(RenderTargets.ScreenTarget);
-
-
-                using (RT.Clear(st, Color.Transparent))
-                {
-                    sb.Begin(oldParameters with { matrix = Matrix.Identity });
-                    DrawEntireSprite(sb, screenPos, drawColor);
-                    sb.End();
-                }
-
-
-                sb.Begin(oldParameters);
-                sb.Draw(st, Vector2.Zero, null, Color.White * alpha, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-            });
-
-        }
-        return false;
-    }
-
-    public override void HitEffect(NPC.HitInfo hit)
-    {
-        base.HitEffect(hit);
-    }
-
-    public override void OnKill()
-    {
-        base.OnKill();
-        DownedBossTracker.ClearFlag(DownedBossFlag.Prismadolph);
-    }
-}
 
 public class PrismadolphSegment : ModNPC,
     IDrawToRenderTarget
@@ -703,8 +75,18 @@ public class PrismadolphSegment : ModNPC,
         get => (Segment)NPC.ai[3];
         set => NPC.ai[3] = (float)value;
     }
-    float MiniAggression => 500;
-    float MegaAggression => 3000;
+    float MiniAggression => 25;
+    float MegaAggression => 100;
+    float MegaAggressionLerp => (_aggression - 75) / (MegaAggression - 75);
+    float AttackChargeLerp
+    {
+        get
+        {
+            if(State == AIState.Aggressive)
+                return EasingFunction.InExpo(_timer / 300F); ;
+            return 0;
+        }
+    }
     int Damage => 35;
     int BigDamage => 65;
     float JiggleRotOffset => MathF.Sin(_jiggle * 0.3f) * 0.2f * MathHelper.Lerp(0f, 1f, _jiggle / 30F);
@@ -770,7 +152,7 @@ public class PrismadolphSegment : ModNPC,
 
     void Heal()
     {
-        var hp = (float)Parent.NPC.lifeMax * 0.1F;
+        var hp = Parent.NPC.lifeMax * 0.1F;
         Parent.NPC.life += (int)(hp);
         _healTimer = 120;
         PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.SkyBlue, 60, 256);
@@ -814,14 +196,14 @@ public class PrismadolphSegment : ModNPC,
             return;
         }
 
-        var segmentRatio = (float)(SegmentIndex + 1) / (float)Parent.Chain.points.Length;
+        var segmentRatio = (SegmentIndex + 1) / (float)Parent.Chain.points.Length;
         var killMyselfPart = 1f - segmentRatio;
-        if(Parent.deathProgress > killMyselfPart)
+        if (Parent.deathProgress > killMyselfPart)
         {
             DeathEffect();
             NPC.Kill();
         }
-        if(_chargeTimer > 0)
+        if (_chargeTimer > 0)
         {
             _chargeTimer--;
         }
@@ -833,17 +215,12 @@ public class PrismadolphSegment : ModNPC,
         ChargeAttackProgress = MathHelper.Lerp(ChargeAttackProgress, 0, 0.03f);
         var targetArmorOn = _chargeTimer > 0 ? 1 : 0;
         _armorProgress = MathHelper.Lerp(_armorProgress, targetArmorOn, 0.05F);
-        _aggression-=2;
-        if (_aggression < 0)
-        {
-            _aggression = 0;
-        }
         if (_jiggle > 0)
         {
             _jiggle--;
         }
 
-        if(_timer % 4 == 0)
+        if (_timer % 4 == 0)
         {
             _shakeOffset = Main.rand.NextVector2Circular(8, 8);
         }
@@ -945,17 +322,14 @@ public class PrismadolphSegment : ModNPC,
         if (Main.rand.NextBool(32))
         {
             var pos = NPC.Center + Main.rand.NextVector2CircularEdge(100, 100);
-            var vel =  Vector2.Zero;
+            var vel = Vector2.Zero;
             Dust.NewDustPerfect(pos, DustID.Electric, vel, Scale: 0.3F);
         }
     }
     void AI_Aggressive()
     {
         _timer++;
-        if (_aggression <= 100)
-        {
-            SwitchState(AIState.Passive);
-        }
+
         NPC.TargetClosest();
         _outliner.warning = true;
         _chargeTimer = 15;
@@ -982,8 +356,9 @@ public class PrismadolphSegment : ModNPC,
         }
 
 
-        if(_timer >= 100)
+        if (_timer >= 300)
         {
+            _aggression -= 5;
             if (MultiplayerHelper.IsHost)
             {
                 var target = NPC.PlayerImTargeting;
@@ -1000,12 +375,16 @@ public class PrismadolphSegment : ModNPC,
 
             _timer = 0;
         }
-
+        if (_aggression <= 5)
+        {
+            SwitchState(AIState.Passive);
+        }
         if (_aggression >= MegaAggression)
         {
             SwitchState(AIState.SuperAggressive);
         }
     }
+
     void AI_SuperAggressive()
     {
         _chargeTimer = 30;
@@ -1060,7 +439,7 @@ public class PrismadolphSegment : ModNPC,
 
         var tex = TextureAssets.Npc[Type].Value;
         var pos = NPC.Center;
-        pos += _shakeOffset * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo((float)_aggression / 1500F));
+        pos += _shakeOffset * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(MegaAggressionLerp));
         var drawer = SpritebatchDrawer.FromTextureGetLightingColor(tex, pos);
         drawer.VerticalFrame(Prismadolph.FRAME_CORE, Main.npcFrameCount[Type]);
         drawer.CenterOrigin();
@@ -1078,7 +457,7 @@ public class PrismadolphSegment : ModNPC,
         spriteBatch.Draw(drawer);
 
 
-        drawer.color = Color.Lerp(Color.Transparent, Color.Purple, (float)_aggression / MegaAggression);
+        drawer.color = Color.Lerp(Color.Transparent, Color.Purple, MegaAggressionLerp);
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
         // throw new NotImplementedException();
@@ -1090,7 +469,7 @@ public class PrismadolphSegment : ModNPC,
         drawer.CenterOrigin();
         drawer.worldPosition = NPC.Center;
         drawer.color = Color.Lerp(Color.Lerp(Color.DarkBlue, Color.Aqua, 0.4F), Color.Aqua, ExtraMath.Osc(0f, 1f, speed: 4f, offset: SegmentIndex));
-        drawer.color *= MathHelper.Lerp(1f, 0f, (float)_aggression / MegaAggression);
+        drawer.color *= MathHelper.Lerp(1f, 0f, MegaAggressionLerp);
         drawer.color *= 0.35F;
         drawer.color.A = 0;
         drawer.scale *= 0.8F;
@@ -1099,9 +478,20 @@ public class PrismadolphSegment : ModNPC,
         drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset);
         drawer.CenterOrigin();
         drawer.worldPosition = NPC.Center;
-  
-        drawer.color = Color.Lerp(Color.Transparent, Color.Purple, (float)_aggression / MegaAggression);
-      //  drawer.color *= 0.35F * MathHelper.Lerp(1f, 3f, (float)_aggression / 1500F);
+
+        drawer.color = Color.Lerp(Color.Transparent, Color.SkyBlue * ExtraMath.Osc(0f, 1f, speed: 24), AttackChargeLerp);
+        //  drawer.color *= 0.35F * MathHelper.Lerp(1f, 3f, (float)_aggression / 1500F);
+        drawer.color.A = 0;
+        drawer.scale *= 0.8F;
+        spriteBatch.Draw(drawer);
+
+
+        drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset);
+        drawer.CenterOrigin();
+        drawer.worldPosition = NPC.Center;
+
+        drawer.color = Color.Lerp(Color.Transparent, Color.Purple, MegaAggressionLerp);
+        //  drawer.color *= 0.35F * MathHelper.Lerp(1f, 3f, (float)_aggression / 1500F);
         drawer.color.A = 0;
         drawer.scale *= 0.8F;
         spriteBatch.Draw(drawer);
@@ -1171,7 +561,7 @@ public class PrismadolphSegment : ModNPC,
         var col = drawer.color;
         var pos = drawer.worldPosition;
 
-        foreach(var offset in Vector2.CardinalOffsets)
+        foreach (var offset in Vector2.CardinalOffsets)
         {
             var o = offset.RotatedBy(Main.GlobalTimeWrappedHourly * 2);
             drawer.color = col * 0.2f;
@@ -1198,20 +588,22 @@ public class PrismadolphSegment : ModNPC,
         base.ModifyIncomingHit(ref modifiers);
 
         if (State == AIState.Passive || State == AIState.SuperAggressive)
-            modifiers.FinalDamage *= 0.1F;
+            modifiers.FinalDamage *= 0.01F;
     }
 
 
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
-        _aggression += 90;
+        _aggression++;
         if (State == AIState.Aggressive)
-            _aggression += 90;
+            _aggression += 2;
+        _timer+= 5;
         _jiggle = 30;
         Parent.NPC.life -= hit.Damage;
         if (Parent.NPC.life <= 0)
             Parent.NPC.life = 1;
+        Parent.aggression++;
     }
 
     public void DrawToRenderTargets()
@@ -1223,7 +615,7 @@ public class PrismadolphSegment : ModNPC,
 
             var tex = TextureAssets.Npc[Type].Value;
             var pos = NPC.Center;
-            pos += _shakeOffset * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo((float)_aggression / 1500F));
+            pos += _shakeOffset * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(_aggression / 1500F));
             var drawer = SpritebatchDrawer.FromTextureGetLightingColor(tex, pos);
             drawer.VerticalFrame(Prismadolph.FRAME_CORE, Main.npcFrameCount[Type]);
             drawer.color = _outliner.outlineColor;
