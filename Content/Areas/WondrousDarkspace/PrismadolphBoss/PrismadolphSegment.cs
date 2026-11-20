@@ -99,20 +99,12 @@ public class PrismadolphRoamingSystem : ModSystem
             RoamingPosition = StartPoint;
         }
 
-        var roamingVelocity = RoamingDirection * 4;
-        var samplePoint = RoamingPosition;
-        samplePoint.Y = StartPoint.Y;
-        samplePoint.X *= 0.1F;
-        samplePoint.Y *= 0;
-      //  roamingVelocity.Y += 
+        var roamingVelocity = RoamingDirection * 1;
+        roamingVelocity.Y += MathF.Sin(Main.GameUpdateCount * 0.001f);
+        //  roamingVelocity.Y += 
         RoamingPosition += roamingVelocity;
 
-        _fnl ??= new(1337);
-        var n = _fnl.GetNoise(samplePoint.X, samplePoint.Y);
-        var y = StartPoint.Y + n * 128;
-        var pos = RoamingPosition;
-        pos.Y = y;
-        RoamingPosition = pos;
+
         //RoamingPosition += new Vector2(0, y);
         if (!MultiplayerHelper.IsHost)
             return;
@@ -184,12 +176,13 @@ public class Prismadolph : ScarletBoss
         {
             if (field == null)
             {
-                field = new(NPC.Center, 80, 16);
+                field = new(NPC.Center, 80, 48);
             }
             return field;
         }
     }
 
+    Vector2 _lurkDirection;
     float RotOffset => -MathHelper.PiOver2;
     bool InPhase2 => NPC.life < NPC.lifeMax * 0.5F;
     ref float Timer => ref NPC.ai[0];
@@ -198,8 +191,10 @@ public class Prismadolph : ScarletBoss
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+    ref float MovementCycle => ref NPC.ai[2];
     public float deathProgress;
-    float DeathTime => 180F;
+    float DeathTime => 360F;
+
     public float alpha;
     public override string Texture => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph.KEY;
     public override Asset<Texture2D> BossIconTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossIcon.Asset;
@@ -324,7 +319,7 @@ public class Prismadolph : ScarletBoss
         NPC.rotation = NPC.velocity.ToRotation();
         Chain.points[0] = NPC.Center;
         Chain.pinned[0] = true;
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 45; i++)
         {
             Chain.ResolveBackToRoot();
         }
@@ -336,7 +331,7 @@ public class Prismadolph : ScarletBoss
         if(NPC.velocity.Length() > 0.03f)
             NPC.velocity *= 0.98F;
         deathProgress = Timer / DeathTime;
-        if(Timer >= DeathTime * 1.1f)
+        if(Timer >= DeathTime)
         {
             var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 25, 0.18F);
             fx.Scale *= 1.7F;
@@ -376,7 +371,7 @@ public class Prismadolph : ScarletBoss
         foreach (var player in Main.ActivePlayers)
         {
             var sqd = Vector2.DistanceSquared(NPC.Center, player.Center);
-            if (sqd < 3600 * 3600)
+            if (sqd < 8000 * 8000)
                 farEnough = false;
         }
         if (farEnough)
@@ -390,7 +385,7 @@ public class Prismadolph : ScarletBoss
         NPC.TargetClosest();
         NPC.velocity = PrismadolphRoamingSystem.RoamingDirection * 55;
         NPC.velocity.Y += MathF.Sin(Timer * 0.05f) * 1;
-        if (Vector2.DistanceSquared(NPC.PlayerImTargeting.Center, NPC.Center) > 2700 * 2700) 
+        if (Vector2.DistanceSquared(NPC.PlayerImTargeting.Center, NPC.Center) > 5000 * 5000) 
         {
             
             SwitchState(AIState.Lurk);
@@ -399,19 +394,56 @@ public class Prismadolph : ScarletBoss
     }
     void AI_Lurk()
     {
-        Timer++;
+        if (_lurkDirection == default)
+            _lurkDirection = PrismadolphRoamingSystem.RoamingDirection;
+        Timer += 0.003f;
         NPC.TargetClosest();
-        if (NPC.velocity == Vector2.Zero)
-            NPC.velocity = PrismadolphRoamingSystem.RoamingDirection * 4;
+        Vector2 targetVelocity = Vector2.Zero;
 
-        //Since bro is in the darkspace gonna make this work interestingly
-        Vector2 posToMoveTo = PrismadolphRoamingSystem.RoamingPosition;
-        Vector2 velToMoveTo = ProjectileHelper.SimpleHomingVelocity(NPC.Center, posToMoveTo, NPC.velocity.Resize(2));
-        NPC.velocity = Vector2.Lerp(NPC.velocity, velToMoveTo, 0.2f);
-        if (InPhase2)
+        //Move up and down in a waving pattern
+        switch (MovementCycle)
         {
-            SwitchState(AIState.Circle);
+            case 0:
+                {
+                    targetVelocity = _lurkDirection * 2;
+                    targetVelocity.Y = MathF.Sin(Timer) * 3f;
+
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        if (Main.rand.NextBool(500))
+                        {
+                            MovementCycle = 1;
+                            NPC.netUpdate = true;
+                        }
+                    }
+ 
+                }
+                break;
+            case 1:
+                {
+                    targetVelocity = _lurkDirection * 1;
+                    targetVelocity.Y = MathF.Sin(Timer * 2) * 3f;
+    
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        if (Main.rand.NextBool(500))
+                        {
+                            MovementCycle = 0;
+                            NPC.netUpdate = true;
+                        }
+                    }
+                }
+                break;
+            case 2:
+                {
+
+                }
+                break;
         }
+        var goBack = (PrismadolphRoamingSystem.StartPoint.Y - NPC.Center.Y) / 1250F;
+        targetVelocity.Y += goBack;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.02f);
+
         CheckDspawn();
     }
 
@@ -482,7 +514,7 @@ public class Prismadolph : ScarletBoss
                 var nextPos = Chain.points[i + 1];
                 rot = (nextPos - pos).ToRotation();
             }
-            else
+            else if(i > 0)
             {
                 var nextPos = Chain.points[i - 1];
                 rot = (nextPos - pos).ToRotation();
@@ -500,7 +532,7 @@ public class Prismadolph : ScarletBoss
                 var nextPos = Chain.points[i + 1];
                 rot = (pos - nextPos).ToRotation();
             }
-            else
+            else if(i > 0)
             {
                 var nextPos = Chain.points[i - 1];
                 rot = (nextPos - pos).ToRotation();
@@ -521,7 +553,7 @@ public class Prismadolph : ScarletBoss
                 var nextPos = Chain.points[i + 1];
                 rot = (pos - nextPos).ToRotation();
             }
-            else
+            else if(i > 0)
             {
                 var nextPos = Chain.points[i - 1];
                 rot = (nextPos - pos).ToRotation();
@@ -671,6 +703,8 @@ public class PrismadolphSegment : ModNPC,
         get => (Segment)NPC.ai[3];
         set => NPC.ai[3] = (float)value;
     }
+    float MiniAggression => 500;
+    float MegaAggression => 3000;
     int Damage => 35;
     int BigDamage => 65;
     float JiggleRotOffset => MathF.Sin(_jiggle * 0.3f) * 0.2f * MathHelper.Lerp(0f, 1f, _jiggle / 30F);
@@ -832,9 +866,49 @@ public class PrismadolphSegment : ModNPC,
         ManageHealingEffectsDecreaseTimer();
         Lighting.AddLight(NPC.Center, new Vector3(0.6F));
     }
+    SoundStyle NextRandomZapSound()
+    {
+        SoundStyle sound;
+        switch (Main.rand.Next(3))
+        {
+            default:
+                sound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain1.Asset;
+                break;
+            case 1:
+                sound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain2.Asset;
+                break;
+            case 2:
+                sound = AssetReferences.Assets.Sounds.Dreadmire_LightingRain3.Asset;
+                break;
+        }
+        sound.PitchVariance = 1F;
+        return sound;
+    }
 
+    Color NextRandomDustColor()
+    {
+        Color dustColor = Color.DeepSkyBlue;
+        dustColor.ScrollHue(Main.rand.NextFloat(-24f, 24f));
+        return dustColor;
+    }
     void DeathEffect()
     {
+        for (var i = 0; i < 16; i++)
+        {
+            var ratio = Main.rand.NextFloat();
+            var pos = NPC.Center;
+            var vel = Main.rand.NextVector2Circular(16, 16);
+            PS.GlowDust.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                color = NextRandomDustColor() with { A = 0 },
+                timeLeft = Main.rand.Next(60, 120),
+                scale = Main.rand.NextFloat(0.6f, 1f) * 0.2f,
+            });
+        }
+
+        SoundEngine.PlaySound(NextRandomZapSound(), NPC.position);
         switch (SegmentType)
         {
             case Segment.Tail:
@@ -850,7 +924,7 @@ public class PrismadolphSegment : ModNPC,
         var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 25, 0.18F);
         fx.Scale *= 1.7F;
 
-        PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.White, 35, 512);
+        PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.SkyBlue, 35, 256);
     }
     void SwitchState(AIState state)
     {
@@ -864,7 +938,7 @@ public class PrismadolphSegment : ModNPC,
     void AI_Passive()
     {
         _timer++;
-        if (_aggression >= 150)
+        if (_aggression >= MiniAggression)
         {
             SwitchState(AIState.Aggressive);
         }
@@ -878,7 +952,7 @@ public class PrismadolphSegment : ModNPC,
     void AI_Aggressive()
     {
         _timer++;
-        if (_aggression <= 20)
+        if (_aggression <= 100)
         {
             SwitchState(AIState.Passive);
         }
@@ -904,28 +978,30 @@ public class PrismadolphSegment : ModNPC,
         {
             var pos = NPC.Center + Main.rand.NextVector2CircularEdge(100, 100);
             var vel = (NPC.Center - pos) * 0.04F;
-            Dust.NewDustPerfect(pos, DustID.Electric, vel, Scale: 0.3F);
+            Dust.NewDustPerfect(pos, DustID.Electric, vel, Scale: 0.7F);
         }
 
-        if (_timer == 1 && MultiplayerHelper.IsHost)
-        {
-            var target = NPC.PlayerImTargeting;
-            var vel = (target.Center - NPC.Center);
-            vel *= 2f;
 
-            var firer = ProjFirer.From<WondrousLightningZap>(NPC);
-            firer.damage = Damage;
-            firer.velocity = vel;
-            firer.ai0 = NPC.whoAmI;
-            firer.ai2 = 60;
-            firer.New();
-        }
-        if (_timer >= 100)
+        if(_timer >= 100)
         {
+            if (MultiplayerHelper.IsHost)
+            {
+                var target = NPC.PlayerImTargeting;
+                var vel = (target.Center - NPC.Center);
+                vel *= 2f;
+
+                var firer = ProjFirer.From<WondrousLightningZap>(NPC);
+                firer.damage = Damage;
+                firer.velocity = vel;
+                firer.ai0 = NPC.whoAmI;
+                firer.ai2 = 60;
+                firer.New();
+            }
+
             _timer = 0;
         }
 
-        if (_aggression >= 1500)
+        if (_aggression >= MegaAggression)
         {
             SwitchState(AIState.SuperAggressive);
         }
@@ -1002,7 +1078,7 @@ public class PrismadolphSegment : ModNPC,
         spriteBatch.Draw(drawer);
 
 
-        drawer.color = Color.Lerp(Color.Transparent, Color.Purple, (float)_aggression / 1500F);
+        drawer.color = Color.Lerp(Color.Transparent, Color.Purple, (float)_aggression / MegaAggression);
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
         // throw new NotImplementedException();
@@ -1014,7 +1090,7 @@ public class PrismadolphSegment : ModNPC,
         drawer.CenterOrigin();
         drawer.worldPosition = NPC.Center;
         drawer.color = Color.Lerp(Color.Lerp(Color.DarkBlue, Color.Aqua, 0.4F), Color.Aqua, ExtraMath.Osc(0f, 1f, speed: 4f, offset: SegmentIndex));
-        drawer.color *= MathHelper.Lerp(1f, 0f, (float)_aggression / 1500F);
+        drawer.color *= MathHelper.Lerp(1f, 0f, (float)_aggression / MegaAggression);
         drawer.color *= 0.35F;
         drawer.color.A = 0;
         drawer.scale *= 0.8F;
@@ -1024,7 +1100,7 @@ public class PrismadolphSegment : ModNPC,
         drawer.CenterOrigin();
         drawer.worldPosition = NPC.Center;
   
-        drawer.color = Color.Lerp(Color.Transparent, Color.Purple, (float)_aggression / 1500F);
+        drawer.color = Color.Lerp(Color.Transparent, Color.Purple, (float)_aggression / MegaAggression);
       //  drawer.color *= 0.35F * MathHelper.Lerp(1f, 3f, (float)_aggression / 1500F);
         drawer.color.A = 0;
         drawer.scale *= 0.8F;
