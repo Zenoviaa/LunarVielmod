@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Particles;
+using Stellamod.Core.Backgrounds;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Rendering;
 using Stellamod.Core.Rendering.RTs;
@@ -24,6 +25,7 @@ public class Prismadolph : ScarletBoss
     public const int FRAME_TAIL_WHITE = 6;
     public const int FRAME_CORE = 7;
     public const int FRAME_CORE_WHITE = 8;
+    public const int FRAME_CORE_PURPLE = 9;
     enum AIState : byte
     {
         ForegroundLurk,
@@ -49,7 +51,6 @@ public class Prismadolph : ScarletBoss
 
     Vector2 _lurkDirection;
     float RotOffset => -MathHelper.PiOver2;
-    bool InPhase2 => NPC.life < NPC.lifeMax * 0.5F;
     ref float Timer => ref NPC.ai[0];
     AIState State
     {
@@ -260,7 +261,21 @@ public class Prismadolph : ScarletBoss
 
     void AI_ForegroundLurk()
     {
+        ShakeScreenPosition.Shake = 4;
         Timer++;
+        if(Timer % 4 == 0)
+        {
+            var pos = Main.LocalPlayer.Center;
+            pos.Y -= 512;
+            pos.X += Main.rand.NextFloat(-1000, 1000);
+            var vel = new Vector2(Main.rand.NextFloat(-5F, 5F), 12);
+            PS.DarkspaceRock.Spawn(new()
+            {
+                position = pos,
+                velocity = vel,
+                timeLeft = 180
+            });
+        }
         alpha = MathHelper.Lerp(0f, 1f, Timer / 30F);
         NPC.TargetClosest();
         NPC.velocity = PrismadolphRoamingSystem.RoamingDirection * 55;
@@ -477,24 +492,21 @@ public class Prismadolph : ScarletBoss
             DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch sb) =>
             {
                 sb.EndOut(out var oldParameters);
-                using var st = RT.Context(RenderTargets.ScreenTarget);
+                using var src = RT.Context(RenderTargets.ScreenTarget);
+                using var dst = RT.Context(RenderTargets.ScreenTarget);
 
-             
-                using (RT.Clear(st, Color.Transparent))
+                using (RT.Clear(src, Color.Transparent))
                 {
                     sb.Begin(oldParameters with { matrix = Matrix.Identity });
                     DrawEntireSprite(sb, screenPos, drawColor);
                     sb.End();
                 }
 
+                GaussianBlurHelper.ScreenBlur(src, dst, 8);
 
-
-                var gaussianPass = AssetReferences.Effects.CrystalShaders.SimpleBlur.CreatePixelPass();
-                gaussianPass.Parameters.texelSize = st.Target.GetTexelSize();
-                gaussianPass.Apply();
-
-                sb.Begin(oldParameters with { effect = gaussianPass.Shader });
-                sb.Draw(st, Vector2.Zero - st.Size() * 0.5F,null, Color.Black * alpha, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+  
+                sb.Begin(oldParameters);
+                sb.Draw(dst, Vector2.Zero - dst.Size() * 0.5F,null, Color.Black * alpha, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
                 sb.End();
                 sb.Begin(oldParameters);
             });

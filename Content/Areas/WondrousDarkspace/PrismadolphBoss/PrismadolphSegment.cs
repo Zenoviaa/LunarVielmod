@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss.Projectiles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering.RTs;
 using System;
 using System.IO;
 using Terraria;
@@ -112,7 +113,7 @@ public class PrismadolphSegment : ModNPC,
         NPCID.Sets.TrailingMode[Type] = 0;
         NPCID.Sets.ImmuneToAllBuffs[Type] = true;
         NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
-        Main.npcFrameCount[Type] = 9;
+        Main.npcFrameCount[Type] = 10;
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -452,7 +453,7 @@ public class PrismadolphSegment : ModNPC,
         spriteBatch.Draw(drawer);
 
 
-        drawer.color = Color.Lerp(Color.Transparent, Color.Lerp(Color.SkyBlue, Color.White, ExtraMath.Osc(0f, 1f, speed: 16)), ChargeAttackProgress);
+        drawer.color = Color.Lerp(Color.Transparent, Color.Lerp(Color.SkyBlue, Color.White, ExtraMath.Osc(0f, 1f, speed: 16)) * 0.4f, ChargeAttackProgress);
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
 
@@ -460,14 +461,23 @@ public class PrismadolphSegment : ModNPC,
         drawer.color = Color.Lerp(Color.Transparent, Color.Purple, MegaAggressionLerp);
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
+
+
+        drawer.VerticalFrame(Prismadolph.FRAME_CORE_PURPLE, Main.npcFrameCount[Type]);
+        drawer.CenterOrigin();
+        drawer.rotation = rot + JiggleRotOffset;
+        drawer.color *= MegaAggressionLerp;
+        spriteBatch.Draw(drawer);
         // throw new NotImplementedException();
     }
 
     public void DrawJigglyCoreBloom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor, float rot)
     {
+        var pos = NPC.Center;
+        pos += _shakeOffset * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(MegaAggressionLerp));
         var drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset);
         drawer.CenterOrigin();
-        drawer.worldPosition = NPC.Center;
+        drawer.worldPosition = pos;
         drawer.color = Color.Lerp(Color.Lerp(Color.DarkBlue, Color.Aqua, 0.4F), Color.Aqua, ExtraMath.Osc(0f, 1f, speed: 4f, offset: SegmentIndex));
         drawer.color *= MathHelper.Lerp(1f, 0f, MegaAggressionLerp);
         drawer.color *= 0.35F;
@@ -477,7 +487,7 @@ public class PrismadolphSegment : ModNPC,
 
         drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset);
         drawer.CenterOrigin();
-        drawer.worldPosition = NPC.Center;
+        drawer.worldPosition = pos;
 
         drawer.color = Color.Lerp(Color.Transparent, Color.SkyBlue * ExtraMath.Osc(0f, 1f, speed: 24), AttackChargeLerp);
         //  drawer.color *= 0.35F * MathHelper.Lerp(1f, 3f, (float)_aggression / 1500F);
@@ -488,7 +498,7 @@ public class PrismadolphSegment : ModNPC,
 
         drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset);
         drawer.CenterOrigin();
-        drawer.worldPosition = NPC.Center;
+        drawer.worldPosition = pos;
 
         drawer.color = Color.Lerp(Color.Transparent, Color.Purple, MegaAggressionLerp);
         //  drawer.color *= 0.35F * MathHelper.Lerp(1f, 3f, (float)_aggression / 1500F);
@@ -496,8 +506,27 @@ public class PrismadolphSegment : ModNPC,
         drawer.scale *= 0.8F;
         spriteBatch.Draw(drawer);
         spriteBatch.Draw(drawer);
+        DrawPurple(spriteBatch, screenPos, drawColor, rot);
     }
 
+    void DrawPurple(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor, float rot)
+    {
+
+        var tex = TextureAssets.Npc[Type].Value;
+        var pos = NPC.Center;
+        pos += _shakeOffset * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(MegaAggressionLerp));
+        var drawer = SpritebatchDrawer.FromTextureGetLightingColor(tex, pos);
+        drawer.VerticalFrame(Prismadolph.FRAME_CORE, Main.npcFrameCount[Type]);
+        drawer.CenterOrigin();
+        drawer.rotation = rot + JiggleRotOffset;
+
+        drawer.VerticalFrame(Prismadolph.FRAME_CORE_PURPLE, Main.npcFrameCount[Type]);
+        drawer.CenterOrigin();
+        drawer.FlipVertically();
+        drawer.rotation = rot + JiggleRotOffset;
+        drawer.color *= MegaAggressionLerp;
+        spriteBatch.Draw(drawer);
+    }
     public void DrawArmor(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor, float rot)
     {
         if (SegmentType == Segment.Head)
@@ -615,7 +644,7 @@ public class PrismadolphSegment : ModNPC,
 
             var tex = TextureAssets.Npc[Type].Value;
             var pos = NPC.Center;
-            pos += _shakeOffset * MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(_aggression / 1500F));
+            pos += _shakeOffset * MegaAggressionLerp;
             var drawer = SpritebatchDrawer.FromTextureGetLightingColor(tex, pos);
             drawer.VerticalFrame(Prismadolph.FRAME_CORE, Main.npcFrameCount[Type]);
             drawer.color = _outliner.outlineColor;

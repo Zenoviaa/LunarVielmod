@@ -16,10 +16,10 @@ float gaussian(float2 i)
     return 1.0 / (2.0 * pi * pow2(sigma)) * exp(-((pow2(i.x) + pow2(i.y)) / (2.0 * pow2(sigma))));
 }
 
-float3 blur(sampler2D sp, float2 uv, float2 scale)
+float4 blur(sampler2D sp, float2 uv, float2 scale)
 {
     const int maxSamples = 4;
-    float3 col = float3(0.0, 0.0, 0.0);
+    float4 col = float4(0.0, 0.0, 0.0, 0.0);
     float accum = 0.0;
     float weight;
     float2 offset;
@@ -30,7 +30,7 @@ float3 blur(sampler2D sp, float2 uv, float2 scale)
         {
             offset = float2(x, y);
             weight = gaussian(offset);
-            col += tex2D(sp, uv + scale * offset).rgb * weight;
+            col += tex2D(sp, uv + scale * offset) * weight;
             accum += weight;
         }
     }
@@ -40,9 +40,10 @@ float3 blur(sampler2D sp, float2 uv, float2 scale)
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 tintColor : COLOR0) : COLOR0
 {
-    float4 color;
-    color.rgb = blur(spriteSampler, coords, texelSize);
-    color.a = 1.0;
+    
+    
+    float4 color = blur(spriteSampler, coords, texelSize);
+ 
     return color;
 }
 

@@ -68,6 +68,137 @@ public class GaussianBlurHelper : ModSystem
             _blurredTextureLookup.Add(tex, new(tex.Width, tex.Height, false));
         }
     }
+    public static void ScreenBlur(Texture2D originalTexture, RenderTargetHandle output, int samples = 2)
+    {
+        //Now we blur it
+        var gaussianPass = AssetReferences.Effects.Generic.GaussianBlur.CreatePixelPass();
+        gaussianPass.Parameters.texelSize = originalTexture.GetTexelSize();
+        gaussianPass.Apply();
+        using var srcT = RT.Context(RenderTargets.ScreenTarget);
+        using var dstT = RT.Context(RenderTargets.ScreenTarget);
+
+        var src = srcT.Target;
+        var dst = dstT.Target;
+        using (RT.Clear(src, Color.Transparent))
+        {
+            var sb = Main.spriteBatch;
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, gaussianPass.Shader);
+            sb.Draw(originalTexture, Vector2.Zero, Color.White);
+            sb.End();
+        }
+
+        for (var i = 1; i < samples; i++)
+        {
+            using (RT.Clear(dst, Color.Transparent))
+            {
+                var sb = Main.spriteBatch;
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, gaussianPass.Shader);
+                sb.Draw(src, Vector2.Zero, Color.White);
+                sb.End();
+            }
+
+            var temp = src;
+            src = dst;
+            dst = temp;
+        }
+        using (RT.Clear(output, Color.Transparent))
+        {
+            var sb = Main.spriteBatch;
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone);
+            sb.Draw(src, Vector2.Zero, Color.White);
+            sb.End();
+        }
+    }
+
+    public static void UncachedBlur(RenderTargetHandle src, RenderTargetHandle dst, int samples = 2)
+    {
+        //Now we blur it
+        var gaussianPass = AssetReferences.Effects.Generic.GaussianBlur.CreatePixelPass();
+        gaussianPass.Parameters.texelSize = src.Target.GetTexelSize();
+        gaussianPass.Apply();
+
+        using (RT.Clear(src, Color.Transparent))
+        {
+            var sb = Main.spriteBatch;
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, gaussianPass.Shader);
+            sb.Draw(src, Vector2.Zero, Color.White);
+            sb.End();
+        }
+
+        for (var i = 1; i < samples; i++)
+        {
+            using (RT.Clear(dst, Color.Transparent))
+            {
+                var sb = Main.spriteBatch;
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, gaussianPass.Shader);
+                sb.Draw(src, Vector2.Zero, Color.White);
+                sb.End();
+            }
+
+            var temp = src;
+            src = dst;
+            dst = temp;
+        }
+
+        if (samples % 2 == 0)
+        {
+
+            using (RT.Clear(dst, Color.Transparent))
+            {
+                var sb = Main.spriteBatch;
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone);
+                sb.Draw(src, Vector2.Zero, Color.White);
+                sb.End();
+            }
+        }
+
+
+    }
+
+    public static void UncachedBlur(RenderTargetHandle src, RenderTargetHandle dst)
+    {
+        //Now we blur it
+        var gaussianPass = AssetReferences.Effects.Generic.GaussianBlur.CreatePixelPass();
+        gaussianPass.Parameters.texelSize = src.Target.GetTexelSize();
+        gaussianPass.Apply();
+
+        using (RT.Clear(src, Color.Transparent))
+        {
+            var sb = Main.spriteBatch;
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, gaussianPass.Shader);
+            sb.Draw(src, Vector2.Zero, Color.White);
+            sb.End();
+        }
+
+        for (var i = 1; i < _newBlurSamples; i++)
+        {
+            using (RT.Clear(dst, Color.Transparent))
+            {
+                var sb = Main.spriteBatch;
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, gaussianPass.Shader);
+                sb.Draw(src, Vector2.Zero, Color.White);
+                sb.End();
+            }
+
+            var temp = src;
+            src = dst;
+            dst = temp;
+        }
+
+        if (_newBlurSamples % 2 == 0)
+        {
+
+            using (RT.Clear(dst, Color.Transparent))
+            {
+                var sb = Main.spriteBatch;
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone);
+                sb.Draw(src, Vector2.Zero, Color.White);
+                sb.End();
+            }
+        }
+
+
+    }
 
     /// <summary>
     /// Blurs a texure according to the blur samples in the client config
