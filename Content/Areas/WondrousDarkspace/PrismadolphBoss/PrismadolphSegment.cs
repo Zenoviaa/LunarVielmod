@@ -336,7 +336,7 @@ public class Prismadolph : ScarletBoss
         if(NPC.velocity.Length() > 0.03f)
             NPC.velocity *= 0.98F;
         deathProgress = Timer / DeathTime;
-        if(Timer >= DeathTime)
+        if(Timer >= DeathTime * 1.1f)
         {
             var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 25, 0.18F);
             fx.Scale *= 1.7F;
