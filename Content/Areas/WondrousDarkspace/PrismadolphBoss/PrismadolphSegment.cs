@@ -332,7 +332,7 @@ public class Prismadolph : ScarletBoss
     void AI_Death()
     {
         Timer++;
-        CameraTargetSystem.AddTarget(NPC.Center);
+
         if(NPC.velocity.Length() > 0.03f)
             NPC.velocity *= 0.98F;
         deathProgress = Timer / DeathTime;
