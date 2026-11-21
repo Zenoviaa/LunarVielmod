@@ -14,6 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss;
 
+
 public class Prismadolph : ScarletBoss
 {
     public const int FRAME_HEAD = 0;
@@ -28,8 +29,9 @@ public class Prismadolph : ScarletBoss
     public const int FRAME_CORE_PURPLE = 9;
     enum AIState : byte
     {
-        ForegroundLurk,
         Lurk,
+        ForegroundLurk,
+
 
         Circle,
         WanderOff,
@@ -113,11 +115,6 @@ public class Prismadolph : ScarletBoss
         NPC.noTileCollide = true;
         NPC.boss = false;
         NPC.npcSlots = 10f;
-
-
-        //Setup the music and boss bar
-        if (!Main.dedServ)
-            Music = AssetReferences.Assets.Music.NostalgicFoe.Slot;
         NPC.aiStyle = -1;
     }
 
@@ -158,6 +155,24 @@ public class Prismadolph : ScarletBoss
             }
 
             _spawnSegments = true;
+        }
+
+        if(Main.netMode != NetmodeID.Server)
+        {
+            var p = Main.LocalPlayer.GetModPlayer<PrismadolphCrawlPlayer>();
+            var v = new Vector2(999999);
+            var d = 9999999f;
+            for(var i = 0; i < Chain.points.Length; i++)
+            {
+                ref var pos = ref Chain.points[i];
+                var d2 = Vector2.DistanceSquared(pos, p.Player.Center);
+                if(d2 < d)
+                {
+                    v = pos;
+                    d = d2;
+                }
+            }
+            p.closestToPlayer = v;
         }
         PrismadolphRoamingSystem.RoamingPosition = NPC.Center;
 
@@ -300,6 +315,7 @@ public class Prismadolph : ScarletBoss
     }
     void AI_Lurk()
     {
+        alpha = EasingFunction.InOutSine(MovementTimer / 60F);
         if (_lurkDirection == default)
             _lurkDirection = PrismadolphRoamingSystem.RoamingDirection;
         Timer += 0.003f;
@@ -481,58 +497,26 @@ public class Prismadolph : ScarletBoss
         DrawArmor(spriteBatch, screenPos, drawColor);
 
     }
-    void DrawForegroundScare(SpriteBatch spriteBatch, Vector2 sp)
-    {
 
-    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        if(State == AIState.ForegroundLurk)
+        DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch sb) =>
         {
-            DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch sb) =>
+            sb.EndOut(out var oldParameters);
+            using var st = RT.Context(RenderTargets.ScreenTarget);
+
+
+            using (RT.Clear(st, Color.Transparent))
             {
-                sb.EndOut(out var oldParameters);
-                using var src = RT.Context(RenderTargets.ScreenTarget);
-                using var dst = RT.Context(RenderTargets.ScreenTarget);
-
-                using (RT.Clear(src, Color.Transparent))
-                {
-                    sb.Begin(oldParameters with { matrix = Matrix.Identity });
-                    DrawEntireSprite(sb, screenPos, drawColor);
-                    sb.End();
-                }
-
-                GaussianBlurHelper.ScreenBlur(src, dst, 8);
-
-  
-                sb.Begin(oldParameters);
-                sb.Draw(dst, Vector2.Zero - dst.Size() * 0.5F,null, Color.Black * alpha, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+                sb.Begin(oldParameters with { matrix = Matrix.Identity });
+                DrawEntireSprite(sb, screenPos, drawColor);
                 sb.End();
-                sb.Begin(oldParameters);
-            });
-            //Make black, bigger
-        }
-        else
-        {
-            DrawLayerHooks.OverWaterDrawActions.Enqueue((SpriteBatch sb) =>
-            {
-                sb.EndOut(out var oldParameters);
-                using var st = RT.Context(RenderTargets.ScreenTarget);
+            }
 
 
-                using (RT.Clear(st, Color.Transparent))
-                {
-                    sb.Begin(oldParameters with { matrix = Matrix.Identity });
-                    DrawEntireSprite(sb, screenPos, drawColor);
-                    sb.End();
-                }
-
-
-                sb.Begin(oldParameters);
-                sb.Draw(st, Vector2.Zero, null, Color.White * alpha, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-            });
-
-        }
+            sb.Begin(oldParameters);
+            sb.Draw(st, Vector2.Zero, null, Color.White * alpha, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+        });
         return false;
     }
 

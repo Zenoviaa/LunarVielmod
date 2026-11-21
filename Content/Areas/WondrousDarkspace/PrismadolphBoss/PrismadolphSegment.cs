@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Particles;
 using Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss.Projectiles;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering.RTs;
 using System;
@@ -48,6 +49,7 @@ public class PrismadolphSegment : ModNPC,
         }
     }
 
+    float _attackAlpha;
     float _armorProgress;
     float _chargeTimer;
     float _healTimer;
@@ -84,8 +86,8 @@ public class PrismadolphSegment : ModNPC,
         get
         {
             if(State == AIState.Aggressive)
-                return EasingFunction.InExpo(_timer / 300F); ;
-            return 0;
+                return EasingFunction.InExpo(_timer / 300F) + ChargeAttackProgress; ;
+            return ChargeAttackProgress;
         }
     }
     int Damage => 35;
@@ -113,6 +115,7 @@ public class PrismadolphSegment : ModNPC,
         NPCID.Sets.TrailingMode[Type] = 0;
         NPCID.Sets.ImmuneToAllBuffs[Type] = true;
         NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
+        NPCSets.Heavy[Type] = true;
         Main.npcFrameCount[Type] = 10;
     }
 
@@ -197,6 +200,7 @@ public class PrismadolphSegment : ModNPC,
             return;
         }
 
+        _attackAlpha = MathHelper.Lerp(_attackAlpha, AttackChargeLerp, 0.1f);
         var segmentRatio = (SegmentIndex + 1) / (float)Parent.Chain.points.Length;
         var killMyselfPart = 1f - segmentRatio;
         if (Parent.deathProgress > killMyselfPart)
@@ -448,7 +452,7 @@ public class PrismadolphSegment : ModNPC,
         spriteBatch.Draw(drawer);
 
         drawer.VerticalFrame(Prismadolph.FRAME_CORE_WHITE, Main.npcFrameCount[Type]);
-        drawer.color = Color.Lerp(Color.Transparent, Color.White, ExtraMath.Osc(0f, 0.2f, speed: 0.2f));
+        drawer.color = Color.Lerp(Color.Transparent, Color.White, _attackAlpha);
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
 

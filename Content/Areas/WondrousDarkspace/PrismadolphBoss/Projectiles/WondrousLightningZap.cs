@@ -132,7 +132,7 @@ public class WondrousLightningZap : ModProjectile,
         _timer++;
         if(Parent.ModNPC is PrismadolphSegment seg)
         {
-            seg.ChargeAttackProgress = MathF.Max(seg.ChargeAttackProgress, _timer / TelegraphTime);
+            seg.ChargeAttackProgress = 1f;
         }
         ConstantlyCreateFaintAmbientLightningParticlesBetweenStartAndEnd();
         if (_timer >= TelegraphTime)

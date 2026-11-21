@@ -1,8 +1,11 @@
-﻿using Stellamod.WorldG;
+﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
+using Stellamod.Core.InverseKinematics;
+using Stellamod.WorldG;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Animations;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss;
@@ -103,13 +106,15 @@ public class PrismadolphRoamingSystem : ModSystem
     }
     bool ShouldResetRoamingPosition()
     {
+        if (NPC.AnyNPCs(PrismadolphType))
+            return false;
         if (RoamingPosition == default)
             return true;
         if (RoamingPosition.Y < StartPoint.Y - 1000)
             return true;
         var xDist = (RoamingPosition.X - StartPoint.X);
         xDist = MathF.Abs(xDist);
-        if (xDist >= 14000)
+        if (xDist >= 20000)
             return true;
         return false;
     }
