@@ -247,3 +247,8 @@ CrimsonBridewellBiome: {
 	DisplayName: Crimson Bridewell Biome
 	TownNPCDialogueName: the Crimson Bridewell Biome
 }
+
+NoMusicBiome: {
+	DisplayName: No Music Biome
+	TownNPCDialogueName: the No Music Biome
+}

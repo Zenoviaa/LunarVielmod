@@ -32,6 +32,7 @@ public class PrismadolphCrawlingSystem : ModSystem
         base.PostAddRecipes();
         PrismadolphSegmentType = ModContent.NPCType<PrismadolphSegment>();
     }
+
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();

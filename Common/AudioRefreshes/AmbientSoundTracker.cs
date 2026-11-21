@@ -47,6 +47,10 @@ public class AmbientSoundTracker : ModSystem
         RegisterAmbientSound(new(
             AssetReferences.Assets.Sounds.RefreshNAmbience.WorldsEndAmbience.Asset, 
             () => Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneWorldsEnd));
+        
+        RegisterAmbientSound(new(
+            AssetReferences.Assets.Sounds.RefreshNAmbience.PrismaInMyEar.Asset,
+            () => Main.LocalPlayer.ShakingNCrying));
 
         _ambientSounds = _ambientSoundsToAdd.ToArray();
         _oneShotSounds = _oneShotSoundsToAdd.ToArray();

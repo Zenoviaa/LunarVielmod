@@ -106,7 +106,7 @@ public class Prismadolph : ScarletBoss
         NPC.height = 64;
         NPC.damage = 80;
         NPC.defense = 97;
-        NPC.lifeMax = 24_000;
+        NPC.lifeMax = 48_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
@@ -116,6 +116,8 @@ public class Prismadolph : ScarletBoss
         NPC.boss = false;
         NPC.npcSlots = 10f;
         NPC.aiStyle = -1;
+        if (!Main.dedServ)
+            Music = AssetReferences.Assets.Music.DeadlyFoe.Slot;
     }
 
     public override bool AllowNameplateToBeShown()
@@ -278,21 +280,7 @@ public class Prismadolph : ScarletBoss
 
     void AI_ForegroundLurk()
     {
-        ShakeScreenPosition.Shake = 4;
-        Timer++;
-        if(Timer % 4 == 0)
-        {
-            var pos = Main.LocalPlayer.Center;
-            pos.Y -= 512;
-            pos.X += Main.rand.NextFloat(-1000, 1000);
-            var vel = new Vector2(Main.rand.NextFloat(-5F, 5F), 12);
-            PS.DarkspaceRock.Spawn(new()
-            {
-                position = pos,
-                velocity = vel,
-                timeLeft = 180
-            });
-        }
+
         alpha = MathHelper.Lerp(0f, 1f, Timer / 30F);
         NPC.TargetClosest();
         NPC.velocity = PrismadolphRoamingSystem.RoamingDirection * 55;

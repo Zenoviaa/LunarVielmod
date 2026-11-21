@@ -9,6 +9,12 @@ public class StylishPlayer : ModPlayer
     public Vector2? thrustVelocity;
     public float spin;
     public float spinSpeed;
+    public bool shakingNCrying;
+    public override void ResetEffects()
+    {
+        base.ResetEffects();
+        shakingNCrying = false;
+    }
     public override void PreUpdateMovement()
     {
         base.PreUpdateMovement();
@@ -43,6 +49,14 @@ public static class StylishPlayerExtensions
 {
     extension(Player stylishPlayer)
     {
+        /// <summary>
+        /// Plays a rumbling sound over the entire screen
+        /// </summary>
+        public bool ShakingNCrying
+        {
+            get => stylishPlayer.GetModPlayer<StylishPlayer>().shakingNCrying;
+            set => stylishPlayer.GetModPlayer<StylishPlayer>().shakingNCrying = value;
+        }
         public Vector2? moveToPosition
         {
             get => stylishPlayer.GetModPlayer<StylishPlayer>().moveToPosition;
