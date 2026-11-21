@@ -427,7 +427,7 @@ public partial class RekBoss : ScarletBoss
             _arenaCenter = TileUtilities.GuessArenaCenter(NPC.Center);
             _lavaArenaRectangle = ArenaRectangleUpToLava();
         }
-        _phase = 2;
+     
         CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, _arenaCenter, 0.2f));
         SmallMoltenPlatform.RisingPlatformPositions ??= new float[4];
         for (var i = 0; i < SmallMoltenPlatform.RisingPlatformPositions.Length; i++)
