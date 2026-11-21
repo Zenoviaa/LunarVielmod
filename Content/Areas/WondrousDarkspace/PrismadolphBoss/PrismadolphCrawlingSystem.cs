@@ -53,6 +53,7 @@ public class PrismadolphCrawlingSystem : ModSystem
 
         var sp = p.closestToPlayer - Main.screenPosition;
         var rect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        rect = rect.CenterPad(1524);
         if (rect.Contains(sp.ToPoint()))
         {
             alpha = MathHelper.Lerp(alpha, 0f, 0.1f);
