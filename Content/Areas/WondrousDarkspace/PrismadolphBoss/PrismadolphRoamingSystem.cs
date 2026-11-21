@@ -84,8 +84,8 @@ public class PrismadolphRoamingSystem : ModSystem
                 foreach (var player in Main.ActivePlayers)
                 {
                     var dsq = Vector2.DistanceSquared(RoamingPosition, player.Center);
-                    var spos = player.Center;
-                    spos.X -= RoamingDirection.X * 1444;
+                    var spos = RoamingPosition;
+
                     if (dsq < SpawnRadiusSquared)
                     {
                         NPC.NewNPC(new EntitySource_Misc("ctx"), (int)spos.X, (int)spos.Y, PrismadolphType);
