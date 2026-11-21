@@ -90,8 +90,9 @@ public class PrismadolphSegment : ModNPC,
         }
     }
     float MiniAggression => 25;
-    float MegaAggression => 100;
-    float MegaAggressionLerp => (_aggression - 75) / (MegaAggression - 75);
+    float MegaAggression => 75;
+    float Diff => MegaAggression - MiniAggression;
+    float MegaAggressionLerp => (_aggression - Diff) / (MegaAggression - Diff);
     float AttackChargeLerp
     {
         get
@@ -102,7 +103,7 @@ public class PrismadolphSegment : ModNPC,
         }
     }
     int Damage => 35;
-    int BigDamage => 65;
+    int BigDamage => 90;
     float JiggleRotOffset => MathF.Sin(_jiggle * 0.3f) * 0.2f * MathHelper.Lerp(0f, 1f, _jiggle / 30F);
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -383,7 +384,7 @@ public class PrismadolphSegment : ModNPC,
 
         if (_timer >= ChargeAttackTime)
         {
-            _aggression -= 5;
+            _aggression -= 20;
             if (MultiplayerHelper.IsHost)
             {
                 var target = NPC.PlayerImTargeting;
@@ -400,7 +401,7 @@ public class PrismadolphSegment : ModNPC,
 
             _timer = 0;
         }
-        if (_aggression <= 5)
+        if (_aggression <= 15)
         {
             SwitchState(AIState.Passive);
         }

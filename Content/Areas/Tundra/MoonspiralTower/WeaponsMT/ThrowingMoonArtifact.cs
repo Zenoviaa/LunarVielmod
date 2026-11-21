@@ -337,7 +337,7 @@ public class ThrowingMoonArtifact : ModItem
         Item.DefaultToArtifact();
         Item.shoot = ModContent.ProjectileType<ThrowingMoon>();
         Item.mana = 75;
-        Item.damage = 200;
+        Item.damage = 44;
         Item.knockBack = 1;
         Item.useTime = Item.useAnimation = 60;
         Item.useStyle = ItemUseStyleID.HoldUp;

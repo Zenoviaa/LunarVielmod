@@ -137,10 +137,20 @@ public class DeepGreatBlade : ModProjectile
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
+        ShakeScreenPosition.Shake = 4;
+
+        for(var i = 0; i < 4; i++)
+        {
+            var fx2 = FXUtil.GlowStretch(target.Center + Main.rand.NextVector2Circular(64, 64), (target.Center - Projectile.Center).Resize(12).RotatedByRandom(1.5F));
+            fx2.VectorScale.Y *= 0.5f;
+            fx2.VectorScale.X *= 1.5f;
+        }
         var fx=  FXUtil.GlowCircleBoom(target.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 25);
-        fx.Scale *= 1.5f;
+        fx.Scale *= 1.8f;
 
         var fac = ParticleUtils.ParticleFactory.FromSmallBurst(target.Center, target.Center + Projectile.velocity, TriColorPalette.Moonly, new Vector2(5, 15));
+        fac.particleCount *= 3;
+        fac.scaleRange *= 2;
         ParticleUtils.CreateSwirlingDustBurst(fac);
     }
 
@@ -498,7 +508,7 @@ public class DeepswordArtifact : ModItem
         Item.DefaultToArtifact();
         Item.shoot = ModContent.ProjectileType<DeepGreatBlade>();
         Item.mana = 50;
-        Item.damage = 200;
+        Item.damage = 40;
         Item.knockBack = 1;
         Item.useTime = Item.useAnimation = 30;
         Item.useStyle = ItemUseStyleID.HoldUp;
@@ -513,6 +523,7 @@ public class DeepswordArtifact : ModItem
     public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
     {
         base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+        damage *= 20;
     }
 
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

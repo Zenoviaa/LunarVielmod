@@ -24,7 +24,7 @@ public class VerliaBouncingMoonBoomFriendly : VerliaBouncingMoonBoom
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
     {
         base.ModifyHitNPC(target, ref modifiers);
-        modifiers.FinalDamage *= MathHelper.Lerp(0.1f, 5f, Projectile.ai[1]);
+        modifiers.FinalDamage *= MathHelper.Lerp(0.1f, 32, Projectile.ai[1]);
     }
 }
 

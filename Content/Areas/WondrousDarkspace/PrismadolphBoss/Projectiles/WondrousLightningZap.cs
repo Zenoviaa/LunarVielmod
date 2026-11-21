@@ -65,17 +65,22 @@ public class WondrousLightningZap : ModProjectile,
     {
         if (_branches == null)
             return false;
+        bool isHitting = false;
         for(var i = 0; i < _branches.Length; i++)
         {
             ref var p = ref _branches[i];
-            return ProjectileHelper.OldPosColliding(p.points, projHitbox, targetHitbox, 8);
+            
+            if(ProjectileHelper.OldPosColliding(p.points, projHitbox, targetHitbox, 8).Value)
+            {
+                return true;
+            }
         }
 
         if(State == AIState.BigStrike)
         {
-            return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 16);
+           return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 128);
         }
-        return false;
+        return isHitting;
         //return base.Colliding(projHitbox, targetHitbox);
     }
     public override bool CanHitPlayer(Player target)
@@ -95,7 +100,7 @@ public class WondrousLightningZap : ModProjectile,
         base.SetDefaults();
         Projectile.width = 16;
         Projectile.height = 16;
-        Projectile.hostile = true;
+        Projectile.hostile = false;
         Projectile.timeLeft = 360;
         Projectile.light = 0.6F;
         Projectile.tileCollide = false;
@@ -162,7 +167,7 @@ public class WondrousLightningZap : ModProjectile,
             {
                 var targetVelocity = (closestPlayer.Center - Projectile.Center);
                 targetVelocity = targetVelocity.Resize(2048);
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.1f);
+                Projectile.velocity = targetVelocity;
             }
         }
 
@@ -365,9 +370,13 @@ public class WondrousLightningZap : ModProjectile,
         }
         if(State == AIState.BigStrike)
             Projectile.Center = Parent.Center;
-        if (_timer >= 30 && State != AIState.BigStrike)
+        if (_timer <= 30)
+            Projectile.hostile = true;
+        else
             Projectile.hostile = false;
 
+        if (State == AIState.BigStrike && _timer <= 60)
+            Projectile.hostile = true;
         if (IsBig)
         {
             if(_timer == 1)
