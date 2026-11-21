@@ -3,6 +3,8 @@ using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Rendering;
+using Stellamod.Core.Rendering.RTs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -145,7 +147,7 @@ public class WondrousLightningZap : ModProjectile,
         if(_timer == 1 && State == AIState.BigTelegraph)
         {
             var chargeSound = AssetReferences.Assets.Sounds.PrismadolphBigLaserCharge.Asset;
-            SoundEngine.PlaySound(chargeSound, Projectile.position);
+            SoundEngine.PlaySound(chargeSound);
         
         }
 
@@ -350,7 +352,7 @@ public class WondrousLightningZap : ModProjectile,
         if (_timer == 1)
         {
             var zapSound = NextRandomZapSound();
-            SoundEngine.PlaySound(zapSound, Projectile.position);
+            SoundEngine.PlaySound(zapSound);
             CreateLightningDustParticlesBetweenStartAndEnd();
             if (State == AIState.BigStrike)
             {
@@ -516,9 +518,33 @@ public class WondrousLightningZap : ModProjectile,
         }
         //  TrailDrawer.Draw(, GetTrailColor, GetTrailWidth, pass.Shader);
     }
+
+    void DrawPixelated(SpriteBatch sb)
+    {
+        using var rt = RT.Context(RenderTargets.ScreenTarget);
+        using var halfSizeRT = RT.Context(RenderTargets.HalfScreenTarget);
+        sb.EndOut(out var oldParameters);
+        using(RT.Clear(rt, Color.Transparent))
+        {
+            sb.Begin(oldParameters with { matrix = Matrix.Identity });
+            DrawLightningBoltEndPoint(sb, Main.screenPosition);
+            sb.End();
+            sb.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+            DrawLightningBolt(sb.GraphicsDevice);
+        }
+        
+        using(RT.Clear(halfSizeRT, Color.Transparent))
+        {
+            sb.Begin(oldParameters with { matrix = Matrix.Identity });
+            sb.Draw(rt, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            sb.End();
+        }
+
+        sb.Begin(oldParameters);
+        sb.Draw(halfSizeRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+    }
     public void DrawToRenderTargets()
     {
-        PixelationManager.QueueSpritebatchDrawAction(DrawLightningBoltEndPoint, DrawLayer.OverPlayers);
-        PixelationManager.QueuePrimitivesDrawAction(DrawLightningBolt, DrawLayer.OverPlayers);
+        DrawLayerHooks.OverWaterDrawActions2.Enqueue(DrawPixelated);
     }
 }

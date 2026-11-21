@@ -116,10 +116,14 @@ public class Prismadolph : ScarletBoss
         NPC.boss = false;
         NPC.npcSlots = 10f;
         NPC.aiStyle = -1;
+        NPC.behindTiles = true;
         if (!Main.dedServ)
             Music = AssetReferences.Assets.Music.DeadlyFoe.Slot;
     }
-
+    public override void DrawBehind(int index)
+    {
+        Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
+    }
     public override bool AllowNameplateToBeShown()
     {
         return base.AllowNameplateToBeShown() && NPC.boss;
@@ -507,6 +511,7 @@ public class Prismadolph : ScarletBoss
             sb.Begin(oldParameters);
             sb.Draw(st, Vector2.Zero, null, Color.White * alpha, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
         });
+
         return false;
     }
 

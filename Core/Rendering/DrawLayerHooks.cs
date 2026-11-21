@@ -15,6 +15,7 @@ public class DrawLayerHooks : ModSystem
     /// Draws over water, the sprite batch does not need to be restarted.
     /// </summary>
     public static readonly Queue<Action<SpriteBatch>> OverWaterDrawActions = new();
+    public static readonly Queue<Action<SpriteBatch>> OverWaterDrawActions2 = new();
     public override void Load()
     {
         base.Load();
@@ -30,6 +31,14 @@ public class DrawLayerHooks : ModSystem
             while(OverWaterDrawActions.Count > 0)
             {
                 OverWaterDrawActions.Dequeue().Invoke(spriteBatch);
+            }
+        }
+        if (OverWaterDrawActions2.Count > 0)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            while (OverWaterDrawActions2.Count > 0)
+            {
+                OverWaterDrawActions2.Dequeue().Invoke(spriteBatch);
             }
         }
     }

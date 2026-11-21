@@ -158,6 +158,11 @@ public class PrismadolphSegment : ModNPC,
         NPC.lavaImmune = true;
         NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
         NPC.DeathSound = SoundID.DD2_CrystalCartImpact;
+        NPC.ShowNameOnHover = false;
+    }
+    public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+    {
+        return false;
     }
 
     void MakeImmune()
@@ -199,6 +204,8 @@ public class PrismadolphSegment : ModNPC,
             _healTimer--;
         }
     }
+
+
     public override bool CheckActive()
     {
         return false;
@@ -502,7 +509,7 @@ public class PrismadolphSegment : ModNPC,
         var drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset);
         drawer.CenterOrigin();
         drawer.worldPosition = pos;
-        drawer.color = Color.Lerp(Color.Lerp(Color.DarkBlue, Color.Aqua, 0.4F), Color.Aqua, ExtraMath.Osc(0f, 1f, speed: 4f, offset: SegmentIndex));
+        drawer.color = Color.Lerp(Color.Lerp(Color.DarkBlue, Color.Aqua, 0.15F), Color.Aqua, ExtraMath.Osc(0f, 1f, speed: 4f, offset: SegmentIndex));
         drawer.color *= MathHelper.Lerp(1f, 0f, MegaAggressionLerp);
         drawer.color *= 0.35F;
         drawer.color.A = 0;
@@ -657,6 +664,7 @@ public class PrismadolphSegment : ModNPC,
         if (Parent.NPC.life <= 0)
             Parent.NPC.life = 1;
         Parent.aggression++;
+        NPC.life = NPC.lifeMax;
     }
 
     public void DrawToRenderTargets()
