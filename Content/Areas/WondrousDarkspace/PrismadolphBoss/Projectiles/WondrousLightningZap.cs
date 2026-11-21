@@ -78,7 +78,7 @@ public class WondrousLightningZap : ModProjectile,
 
         if(State == AIState.BigStrike)
         {
-           return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 128);
+           return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 144);
         }
         return isHitting;
         //return base.Colliding(projHitbox, targetHitbox);
