@@ -94,7 +94,7 @@ public class VulcanEruption : ModProjectile
         Segment.isBurning = true;
         if(Timer == TelegraphTime)
         {
-            RekBoss.LavaEruption(Projectile.Center, Projectile.velocity.Resize(24), 42, 0.045f);
+            RekBoss.LavaEruption(Projectile.Center, Projectile.velocity.Resize(17), 42, 0.075f);
 
             var sound = new SoundStyle("Stellamod/Assets/Sounds/RekFireballShoot") with { PitchVariance = 0.3f };
             SoundEngine.PlaySound(sound, Projectile.position);

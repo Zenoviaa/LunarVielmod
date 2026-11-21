@@ -112,10 +112,9 @@ float4 SampleSpriteNoise(in VertexShaderOutput input, sampler2D SpriteSampler)
     color /= 2.0;
 
     float4 finalColor = float4(color, 1.0) * input.Color;
-    finalColor -= sample3 * 0.8;
+    finalColor -= sample3 * 0.6;
+    finalColor -= 0.03;
     
-    float osc = sin(sample4 * 6.28 + Time * -0.05) * 0.5 + 0.5;
-    finalColor += lerp(-0.3, 0.6, osc) * 0.7;
 
     float4 col = float4(0.2, 0.2, 0.2, 0.2) * finalColor.a;
     return finalColor ;
@@ -152,12 +151,13 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 baseColor = SampleSpriteNoise(input, SpriteTextureSampler);
     float4 gradientColor = baseColor;
     float4 heightMapColor = tex2D(HeightMapSampler, coords);
-    float3 gradient = lerp(EndGradient, StartGradient, heightMapColor.a);
-    float4 rocksColor = SampleRocks(input, RockTextureSampler);
-    float rockAlpha = 1.0 - heightMapColor.a;
-    rocksColor *= rockAlpha;
-    rocksColor.rgb = lerp(rocksColor.rgb, gradientColor.rgb, 0.5);
+    
+    float a = heightMapColor.a;
+    a = pow(a, 2.0);
+    float3 gradient = lerp(EndGradient, StartGradient, a);
+
     float4 finalColor = gradientColor  + float4(gradient, 1.0);
+
     return finalColor;
 }
 
@@ -210,23 +210,13 @@ float4 CombineALLPS(VertexShaderOutput input) : COLOR
             //sample outline
     if (baseWaterColor.a <= 0.0)
     {
-        float2 leftCoords = coords + float2(-outlineTexelSize.x, 0.0);
-        float2 rightCoords = coords + float2(outlineTexelSize.x, 0.0);
-        float2 upCoords = coords + float2(0.0, -outlineTexelSize.y);
+
         float2 downCoords = coords + float2(0.0, outlineTexelSize.y);
-   
-        float4 left = tex2D(SpriteTextureSampler, leftCoords);
-        float4 right = tex2D(SpriteTextureSampler, rightCoords);
-        float4 up = tex2D(SpriteTextureSampler, upCoords);
+
         float4 down = tex2D(SpriteTextureSampler, downCoords);
     
-        
-        if (left.a > 0)
-            return left.a * outlineColor;
-        if (right.a > 0)
-            return right.a * outlineColor;
-        if (up.a > 0)
-            return up.a * outlineColor;
+
+
         return down.a * outlineColor;
     }
 

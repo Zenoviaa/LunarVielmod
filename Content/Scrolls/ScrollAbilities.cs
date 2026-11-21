@@ -23,19 +23,28 @@ public class ScrollBuffPlayer : ModPlayer
     public override void PostUpdateBuffs()
     {
         base.PostUpdateBuffs();
-        if (!Player.HasBuff<Endurance>())
+        if(enduranceStacks > 0)
         {
-            enduranceStacks = 0;
-        }
-        
-        if (!Player.HasBuff<Enrager>())
-        {
-            enrageStacks = 0;
+            if (!Player.HasBuff<Endurance>())
+            {
+                enduranceStacks = 0;
+            }
         }
 
-        if (!Player.HasBuff<Anger>())
+        if(enrageStacks > 0)
         {
-            angerStacks = 0;
+            if (!Player.HasBuff<Enrager>())
+            {
+                enrageStacks = 0;
+            }
+        }
+
+        if(angerStacks > 0)
+        {
+            if (!Player.HasBuff<Anger>())
+            {
+                angerStacks = 0;
+            }
         }
     }
 }

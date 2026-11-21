@@ -49,6 +49,11 @@ public class WaterSurfacePointLightMap
     const float MAX_STEPS = LIGHT_RADIUS / 16;
     const float STEP_SIZE = 16;
     const int RECT_SIZE = (int)(LIGHT_RADIUS / 16);
+
+    float _lightRadius;
+    float _maxSteps;
+    float _stepSize;
+    int _rectSize;
     WaterSurfaceState[,] _waterSurfacePoints;
     ulong[] _bitMask;
 
@@ -103,6 +108,13 @@ public class WaterSurfacePointLightMap
         }
     }
 
+    public void SetCastSize(float lightRadius)
+    {
+        _lightRadius = lightRadius;
+        _stepSize = 16;
+        _maxSteps = _lightRadius / _stepSize;
+        _rectSize = (int)(_lightRadius / _stepSize);
+    }
     public WaterSurfacePointLightMap(int lightCount, int sideCount, int width, int height)
     {
         VertexCountPerLight = 1 + sideCount * 2;
@@ -167,6 +179,11 @@ public class WaterSurfacePointLightMap
         foreach (var t in toRemove)
             _activeSurfactLightVertexPoints.Remove(t);
 
+        float lightRadius = _lightRadius;
+        float stepSize = _stepSize;
+        float maxSteps = _maxSteps;
+        int rectSize = _rectSize;
+
         //Remove every active water surface light that's off screen
         //For each point, check if the light is initialized, if it's not, we get what from the pool and calculate vertices
 
@@ -190,7 +207,7 @@ public class WaterSurfacePointLightMap
 
             //Repeating the same action multiple times is a lot faster than doing it on the fly
             //This also makes it so we don't repeat any work, as some tiles may have their mask calculated multiple times
-            var rect = TileUtilities.CenterTileRectangle(centerPosition.ToTileCoordinates(), RECT_SIZE, RECT_SIZE);
+            var rect = TileUtilities.CenterTileRectangle(centerPosition.ToTileCoordinates(), rectSize, rectSize);
             SetTileSolidMask(rect);
 
             for (var i = 1; i < VertexCountPerLight; i++)
@@ -200,17 +217,17 @@ public class WaterSurfacePointLightMap
                 var pos = centerPosition;
 
                 var traveledDistance = 0F;
-                for (var j = 0; j < MAX_STEPS; j++)
+                for (var j = 0; j < maxSteps; j++)
                 {
-                    pos += offset * STEP_SIZE;
-                    traveledDistance += STEP_SIZE;
+                    pos += offset * stepSize;
+                    traveledDistance += stepSize;
                     var tileCoords = pos.ToTileCoordinates();
                     var indices = GetBitMaskIndices(tileCoords.X, tileCoords.Y);
                     if (GetBitMask(indices.chunkIndex, indices.bitIndex))
                         break;
                 }
                 vertex.Position = new Vector3(pos, 0);
-                var dist = traveledDistance / LIGHT_RADIUS;
+                var dist = traveledDistance / lightRadius;
 
                 //Z coordinate in this case is how far this vertex is from the center point
                 //We'll use the number so the gradient is always the same no matter where it is

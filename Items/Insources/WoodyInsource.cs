@@ -11,6 +11,11 @@ namespace Stellamod.Items.Insources
         public override void PostUpdateEquips()
         {
             base.PostUpdateEquips();
+            //If your stacks are zero there's no need to check for the buff
+            //Avoid the check
+            if (stacks <= 0)
+                return;
+
             if (!Player.HasBuff<WoodyInsourceBuff>())
             {
                 stacks = 0;

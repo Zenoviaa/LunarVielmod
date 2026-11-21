@@ -29,6 +29,7 @@ public class PixelWater
         reflectionAlpha = 1f;
         maxHeight = 32;
         levels = 10;
+        lightRadius = 212;
     }
 
     private Asset<Texture2D> LoadTexture(string fileName)
@@ -51,4 +52,5 @@ public class PixelWater
     public float reflectionAlpha;
     public int maxHeight;
     public int levels;
+    public float lightRadius;
 }

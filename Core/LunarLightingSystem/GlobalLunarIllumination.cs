@@ -36,14 +36,12 @@ namespace Stellamod.Core.LunarLightingSystem
 
     public class GlobalLunarIllumination : GlobalWall
     {
-
         public override void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
         {
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            if (!config.BeamingLights)
+            //We should not be calling the ModContent.Get methods as much as possible, cache them.
+            //var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (!LunarVeilClientConfig.Instance.BeamingLights)
                 return;
-
-
             Tile tile = Main.tile[i, j];
             if (tile.HasTile)
                 return;
@@ -58,8 +56,6 @@ namespace Stellamod.Core.LunarLightingSystem
                 g = MathHelper.Clamp(g + lightStrength, 0, 1);
                 b = MathHelper.Clamp(b + lightStrength, 0, 1);
             }
-
-
         }
     }
 }

@@ -113,6 +113,7 @@ public class MoonWaterSystem : ModSystem
         }
     }
 
+    Color YellowOutline => new Color(255, 169, 23).Darken(0.1f);
     void DrawLavaParticles(SpriteBatch sb, Vector2 sp)
     {
         sb.EndOut(out var oldParameters);
@@ -133,7 +134,7 @@ public class MoonWaterSystem : ModSystem
 
         sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
         outliner.Shader, Main.Transform);
-        sb.Draw(particleTarget, Vector2.Zero, Color.DarkRed);
+        sb.Draw(particleTarget, Vector2.Zero, YellowOutline);
         sb.End();
 
         sb.Begin(oldParameters);
@@ -159,7 +160,7 @@ null, Main.Transform);
 
         sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
 outliner.Shader, Main.Transform);
-        sb.Draw(particleTarget, Vector2.Zero, Color.DarkRed);
+        sb.Draw(particleTarget, Vector2.Zero, YellowOutline);
         sb.End();
 
         sb.Begin(oldParameters);
@@ -240,18 +241,14 @@ outliner.Shader, Main.Transform);
                 SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();
                 lavaShader.NormalNoiseTexture = coolAssWaterTarget;
                 lavaShader.HeightMap = _waterHeightMapRT;
-                lavaShader.OutlineColor = Color.DarkRed;
+                lavaShader.OutlineColor = new Color(255, 169, 23);
                 lavaShader.OutlineTexelSize = Main.waterTarget;
                 lavaShader.Effect.CurrentTechnique = lavaShader.Effect.Techniques["Combine"];
                 sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     lavaShader.Effect);
 
-                sb.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
-
-
-                Color c = Color.White * 0.3f;
-                c.A = 0;
-                sb.Draw(Main.waterTarget, pos, c * waterAlpha);
+                var drawColor = Color.White.Darken(0f);
+                sb.Draw(Main.waterTarget, pos, drawColor * waterAlpha);
                 sb.End();
             }
             else
@@ -679,7 +676,9 @@ outliner.Shader, Main.Transform);
             //_waterSurfacePointLightMap = new();
             if (_renderCountdown <= 0)
             {
+
                 WaterSurfaceScanner.Scan(TileUtilities.CameraTileRectangle(384), ref _surfaceLiquidPointsBuffer, ref _surfaceLiquidPointsLength);
+                _waterSurfacePointLightMap.SetCastSize(_pixelWater.lightRadius);
                 _waterSurfacePointLightMap.ApplyWaterSurfacePoints(_surfaceLiquidPointsBuffer, _surfaceLiquidPointsLength);
                 _renderCountdown = 3;
             }
@@ -688,7 +687,7 @@ outliner.Shader, Main.Transform);
         }
 
         //V2 Gradientizing
-        if (Main.LocalPlayer.ZoneAbyss)
+        if (Main.LocalPlayer.ZoneAbyss || _pixelWater.affectsLava)
         {
             V2HeightGradient();
         }
