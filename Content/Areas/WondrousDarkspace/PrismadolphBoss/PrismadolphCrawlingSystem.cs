@@ -65,8 +65,9 @@ public class PrismadolphCrawlingSystem : ModSystem
             alpha = MathHelper.Lerp(alpha, 1f, 0.1f);
         }
 
+
         var diff = Main.screenPosition - Main.screenLastPosition;
-        diff *= -0.1f;
+        diff *= -0.3f;
         p.crawlStartScreenPosition += new Vector2(diff.X, 0);
         p.crawlTargetScreenPosition += new Vector2(diff.X, 0);
 

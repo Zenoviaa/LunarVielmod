@@ -19,6 +19,7 @@ public class PrismadolphCrawlPlayer : ModPlayer
     public float crawlTime;
     public bool isCrawling;
 
+    public float ScareRadius => 10000 * 10000;
     public float fade;
     /// <summary>
     /// Starts a crawl from the start position to the target position
@@ -42,7 +43,7 @@ public class PrismadolphCrawlPlayer : ModPlayer
             return;
 
         var range = Vector2.DistanceSquared(Player.Center, PrismadolphRoamingSystem.RoamingPosition);
-        if (range > 5096 * 5096)
+        if (range > ScareRadius)
             return;
      
         var sp = closestToPlayer - Main.screenPosition;
@@ -50,7 +51,7 @@ public class PrismadolphCrawlPlayer : ModPlayer
         rect = rect.CenterPad(1524);
         if (!rect.Contains(sp.ToPoint()))
         {
-            Player.DisableMusic = true;
+            NoMusicSystem.disableMusic = true;
 
             if (isCrawling)
             {
@@ -59,7 +60,7 @@ public class PrismadolphCrawlPlayer : ModPlayer
                 if (Main.GameUpdateCount % 4 == 0)
                 {
                     var pos = Player.Center;
-                    pos.Y -= 512;
+                    pos.Y -= 900;
                     pos.X += Main.rand.NextFloat(-1000, 1000);
                     var vel = new Vector2(Main.rand.NextFloat(-5F, 5F), 12);
                     PS.DarkspaceRock.Spawn(new()
@@ -77,6 +78,8 @@ public class PrismadolphCrawlPlayer : ModPlayer
     public override void PostUpdate()
     {
         base.PostUpdate();
+
+
         if (Main.netMode == NetmodeID.Server)
             return;
         if (DownedBossTracker.IsDowned(DownedBossFlag.Prismadolph))
@@ -86,14 +89,15 @@ public class PrismadolphCrawlPlayer : ModPlayer
             return;
 
         var range = Vector2.DistanceSquared(Player.Center, PrismadolphRoamingSystem.RoamingPosition);
-        if (range > 5096 * 5096)
+        if (range > ScareRadius)
             return;
-
+   
         if (Main.rand.NextBool(256))
         {
             Vector2 startPos;
             Vector2 endPos;
-            if (Main.rand.NextBool(2))
+            var dir = PrismadolphRoamingSystem.RoamingPosition.X > Player.Center.X ? 1 : -1;
+            if (dir == -1)
             {
                 startPos = new Vector2(Main.rand.NextFloat(0f, Main.screenWidth / 2), -200);
                 endPos = new Vector2(Main.screenWidth - startPos.X, Main.screenHeight + 4300);
