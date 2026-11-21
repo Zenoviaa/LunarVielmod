@@ -106,7 +106,7 @@ public class Prismadolph : ScarletBoss
         NPC.height = 64;
         NPC.damage = 80;
         NPC.defense = 97;
-        NPC.lifeMax = 44_000;
+        NPC.lifeMax = 42_000;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
@@ -317,7 +317,10 @@ public class Prismadolph : ScarletBoss
         NPC.TargetClosest();
         Vector2 targetVelocity = Vector2.Zero;
 
-        if(aggression >= 300)
+        float div = 300;
+        if (NPC.life < NPC.lifeMax * 0.5f)
+            div = 30;
+        if(aggression >= div)
         {
             MovementTimer = 0;
             aggression = 0;

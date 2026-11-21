@@ -90,7 +90,7 @@ public class PrismadolphSegment : ModNPC,
         }
     }
     float MiniAggression => 25;
-    float MegaAggression => 75;
+    float MegaAggression => 65;
     float Diff => MegaAggression - MiniAggression;
     float MegaAggressionLerp => (_aggression - Diff) / (MegaAggression - Diff);
     float AttackChargeLerp
@@ -175,7 +175,7 @@ public class PrismadolphSegment : ModNPC,
 
     void Heal()
     {
-        var hp = Parent.NPC.lifeMax * 0.1F;
+        var hp = Parent.NPC.lifeMax * 0.05F;
         Parent.NPC.life += (int)(hp);
         _healTimer = 120;
         PixelPrimitiveCircleFactory.CreateGenericBoom(NPC.Center, Color.White, Color.SkyBlue, 60, 256);
