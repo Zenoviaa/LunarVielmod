@@ -5,6 +5,7 @@ using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss;
 
@@ -233,8 +234,7 @@ public class PrismadolphCrawlingSystem : ModSystem
             DrawEntireSprite(sb, Main.screenPosition, Color.White);
             sb.End();
         }
-
-        GaussianBlurHelper.ScreenBlur(src, dst, 8);
+         GaussianBlurHelper.ScreenBlur(src, dst, 8);
 
 
         sb.Begin(oldParameters);

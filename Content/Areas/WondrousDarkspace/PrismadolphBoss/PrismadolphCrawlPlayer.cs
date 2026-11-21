@@ -1,6 +1,8 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss;
 
@@ -31,6 +33,9 @@ public class PrismadolphCrawlPlayer : ModPlayer
     public override void PostUpdate()
     {
         base.PostUpdate();
+
+  
+     
         if (Main.netMode == NetmodeID.Server)
             return;
         if (isCrawling)

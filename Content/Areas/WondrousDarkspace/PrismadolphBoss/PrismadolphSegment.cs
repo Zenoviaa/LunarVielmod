@@ -49,6 +49,7 @@ public class PrismadolphSegment : ModNPC,
         }
     }
 
+    bool _didLaser;
     float _attackAlpha;
     float _armorProgress;
     float _chargeTimer;
@@ -78,7 +79,16 @@ public class PrismadolphSegment : ModNPC,
         get => (Segment)NPC.ai[3];
         set => NPC.ai[3] = (float)value;
     }
-    float ChargeAttackTime => 500;
+
+    float ChargeAttackTime
+    {
+        get
+        {
+            if (State == AIState.SuperAggressive)
+                return 100;
+            return 500;
+        }
+    }
     float MiniAggression => 25;
     float MegaAggression => 100;
     float MegaAggressionLerp => (_aggression - 75) / (MegaAggression - 75);
@@ -100,6 +110,7 @@ public class PrismadolphSegment : ModNPC,
         writer.Write(_aggression);
         writer.Write(_timer);
         writer.Write(_armorProgress);
+        writer.Write(_didLaser);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -107,6 +118,7 @@ public class PrismadolphSegment : ModNPC,
         _aggression = reader.ReadSingle();
         _timer = reader.ReadSingle();
         _armorProgress = reader.ReadSingle();
+        _didLaser = reader.ReadBoolean();
     }
 
     public override void SetStaticDefaults()
@@ -387,6 +399,7 @@ public class PrismadolphSegment : ModNPC,
         }
         if (_aggression >= MegaAggression)
         {
+            _didLaser = false;
             SwitchState(AIState.SuperAggressive);
         }
     }
@@ -395,22 +408,35 @@ public class PrismadolphSegment : ModNPC,
     {
         _chargeTimer = 30;
         _timer++;
-        if (_timer == 1 && MultiplayerHelper.IsHost)
+        if (_timer >= ChargeAttackTime - 180 && !_didLaser)
         {
-            var target = NPC.PlayerImTargeting;
-            var vel = (target.Center - NPC.Center).Resize(2048);
-            //vel *= 4f;
+            _didLaser = true;
+            if (MultiplayerHelper.IsHost)
+            {
+                var target = NPC.PlayerImTargeting;
+                var vel = (target.Center - NPC.Center);
+                vel *= 2f;
 
-            var firer = ProjFirer.From<WondrousLightningZap>(NPC);
-            firer.damage = BigDamage;
-            firer.velocity = vel;
-            firer.ai0 = NPC.whoAmI;
-            firer.ai1 = 2;
-            firer.ai2 = 60;
-            firer.New();
+                var firer = ProjFirer.From<WondrousLightningZap>(NPC);
+                firer.damage = BigDamage;
+                firer.velocity = vel;
+                firer.ai0 = NPC.whoAmI;
+                firer.ai1 = 2;
+                firer.ai2 = 180;
+                firer.New();
+            }
+
+        }
+        if(_timer >= ChargeAttackTime)
+        {
+
+            Heal();
+            _aggression = 0;
+            _timer = 0;
+            SwitchState(AIState.Passive);
         }
         _outliner.attacking = true;
-        if (Main.rand.NextBool(2))
+
         {
             var pos = NPC.Center + Main.rand.NextVector2CircularEdge(384, 384);
             var vel = (NPC.Center - pos) * 0.08F;
@@ -420,13 +446,6 @@ public class PrismadolphSegment : ModNPC,
             fx.OuterGlowColor = Color.DarkViolet;
         }
 
-        if (_timer >= 100)
-        {
-            Heal();
-            _aggression = 0;
-            _timer = 0;
-            SwitchState(AIState.Passive);
-        }
     }
 
 

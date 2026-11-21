@@ -69,6 +69,10 @@ public class WondrousLightningZap : ModProjectile,
             return ProjectileHelper.OldPosColliding(p.points, projHitbox, targetHitbox, 8);
         }
 
+        if(State == AIState.BigStrike)
+        {
+            return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, Projectile.Center + Projectile.velocity, 16);
+        }
         return false;
         //return base.Colliding(projHitbox, targetHitbox);
     }
@@ -138,6 +142,28 @@ public class WondrousLightningZap : ModProjectile,
     {
         Projectile.Center = Parent.Center;
         _timer++;
+        if(_timer == 1 && State == AIState.BigTelegraph)
+        {
+            var chargeSound = AssetReferences.Assets.Sounds.PrismadolphBigLaserCharge.Asset;
+            SoundEngine.PlaySound(chargeSound, Projectile.position);
+        
+        }
+
+        if(State == AIState.BigTelegraph)
+        {
+            if(_timer % 12 == 0)
+            {
+                PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.Violet, Color.Pink, 24, 384);
+            }
+            var closestPlayer = PlayerHelper.FindClosestPlayer(Projectile.Center, 2048);
+            if(closestPlayer != null)
+            {
+                var targetVelocity = (closestPlayer.Center - Projectile.Center);
+                targetVelocity = targetVelocity.Resize(2048);
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.1f);
+            }
+        }
+
         if(Parent.ModNPC is PrismadolphSegment seg)
         {
             seg.ChargeAttackProgress = 1f;
@@ -298,6 +324,24 @@ public class WondrousLightningZap : ModProjectile,
                 scale = Main.rand.NextFloat(0.6f, 1f) * 0.2f,
             });
         }
+
+        if(State == AIState.BigStrike)
+        {
+            for (var i = 0; i < 64; i++)
+            {
+                var ratio = Main.rand.NextFloat();
+                var pos = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity, ratio);
+                var vel = Projectile.velocity.RotatedByRandom(0.5f).Resize(Main.rand.NextFloat(6F, 45));
+                PS.GlowDust.Spawn(new()
+                {
+                    position = pos,
+                    velocity = vel,
+                    color = NextRandomDustColor() with { A = 0 },
+                    timeLeft = Main.rand.Next(60, 120),
+                    scale = Main.rand.NextFloat(0.6f, 1f) * 0.4f,
+                });
+            }
+        }
     }
 
     void AI_Strike()
@@ -305,14 +349,21 @@ public class WondrousLightningZap : ModProjectile,
         _timer++;
         if (_timer == 1)
         {
-
             var zapSound = NextRandomZapSound();
             SoundEngine.PlaySound(zapSound, Projectile.position);
             CreateLightningDustParticlesBetweenStartAndEnd();
+            if (State == AIState.BigStrike)
+            {
+                for(var i = 0; i < 3; i++)
+                {
+                    FXUtil.CreateRipple(Projectile.Center);
+                }
+            }
+ 
         }
         if(State == AIState.BigStrike)
             Projectile.Center = Parent.Center;
-        if (_timer >= 30)
+        if (_timer >= 30 && State != AIState.BigStrike)
             Projectile.hostile = false;
 
         if (IsBig)
@@ -321,14 +372,15 @@ public class WondrousLightningZap : ModProjectile,
             {
                 CreateLightningDustParticlesBetweenStartAndEnd();
 
-                var sound = AssetReferences.Assets.Sounds.Lighting2.Asset;
-                sound.PitchVariance = 0.7F;
+                var sound = AssetReferences.Assets.Sounds.PrismadolphBigLasershot.Asset;
+                sound.PitchVariance = 0.2F;
                 SoundEngine.PlaySound(sound, Projectile.position);
             }
+
             if (LunarVeilClientConfig.Instance.DramaticEffects)
             {
                 SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
-                effectsPlayer.darknessCurve = MathHelper.Lerp(0.25f, 0f, EasingFunction.InOutExpo(_timer / StrikeTime));
+                effectsPlayer.darknessCurve = MathHelper.Lerp(1f, 0f, EasingFunction.InOutExpo(_timer / StrikeTime));
             }
         }
         if (_timer >= StrikeTime)
@@ -352,14 +404,19 @@ public class WondrousLightningZap : ModProjectile,
     float GetTrailWidth2(float ratio)
     {
         var w = 36 * MathHelper.SmoothStep(1f, 0.4f, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress) * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
-        w *= 7;
+        w *= 10;
         return w;
     }
     float GetTrailWidth3(float ratio)
     {
         return GetTrailWidth2(ratio) * 1.2f;
     }
-
+    float GetTrailWidth4(float ratio)
+    {
+        var w = 36 * MathHelper.SmoothStep(1f, 0.4f, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress) * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
+        w *= 7;
+        return w;
+    }
     Color GetTrailColor(float ratio)
     {
 
@@ -422,10 +479,15 @@ public class WondrousLightningZap : ModProjectile,
             var poss = DrawUtilities.InterpolateBetweenPoints(StrikeStart, StrikeEndPoint, 64);
             TrailDrawer.Draw(Main.spriteBatch, poss, GetTrailColor, GetTrailWidth2, shader);
 
+
             BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
             bloomTrailShader.InnerColor = Color.SkyBlue;
             bloomTrailShader.OuterColor =p;
             TrailDrawer.Draw(Main.spriteBatch, poss, GetTrailColor, GetTrailWidth3, bloomTrailShader);
+            shader.LaserColor = Color.White;
+            shader.InnerColor = p;
+            shader.OuterColor = Color.Violet;
+            TrailDrawer.Draw(Main.spriteBatch, poss, GetTrailColor, GetTrailWidth4, shader);
         }
       //  TrailDrawer.Draw(, GetTrailColor, GetTrailWidth, pass.Shader);
     }
