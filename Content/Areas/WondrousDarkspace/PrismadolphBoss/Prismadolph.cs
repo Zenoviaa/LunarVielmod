@@ -143,6 +143,8 @@ public class Prismadolph : ScarletBoss
             for (var i = 0; i < Chain.points.Length; i++)
             {
                 ref var point = ref Chain.points[i];
+                var ratio = (float)i / (float)Chain.points.Length;
+                point -= PrismadolphRoamingSystem.RoamingDirection * ratio * 3096;
                 var frame = 0;
 
                 if (i == 0)
@@ -151,7 +153,7 @@ public class Prismadolph : ScarletBoss
                     frame = 2;
                 else
                     frame = 1;
-                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, type, ai0: NPC.whoAmI, ai2: i, ai3: frame);
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)point.X, (int)point.Y, type, ai0: NPC.whoAmI, ai2: i, ai3: frame);
             }
 
             _spawnSegments = true;
@@ -315,7 +317,7 @@ public class Prismadolph : ScarletBoss
     }
     void AI_Lurk()
     {
-        alpha = EasingFunction.InOutSine(MovementTimer / 60F);
+        alpha = MathHelper.Lerp(alpha, 1f, 0.1f);
         if (_lurkDirection == default)
             _lurkDirection = PrismadolphRoamingSystem.RoamingDirection;
         Timer += 0.003f;

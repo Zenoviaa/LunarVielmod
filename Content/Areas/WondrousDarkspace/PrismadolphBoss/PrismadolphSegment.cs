@@ -78,6 +78,7 @@ public class PrismadolphSegment : ModNPC,
         get => (Segment)NPC.ai[3];
         set => NPC.ai[3] = (float)value;
     }
+    float ChargeAttackTime => 500;
     float MiniAggression => 25;
     float MegaAggression => 100;
     float MegaAggressionLerp => (_aggression - 75) / (MegaAggression - 75);
@@ -86,7 +87,7 @@ public class PrismadolphSegment : ModNPC,
         get
         {
             if(State == AIState.Aggressive)
-                return EasingFunction.InExpo(_timer / 300F) + ChargeAttackProgress; ;
+                return EasingFunction.InExpo(_timer / ChargeAttackTime) + ChargeAttackProgress; ;
             return ChargeAttackProgress;
         }
     }
@@ -361,7 +362,7 @@ public class PrismadolphSegment : ModNPC,
         }
 
 
-        if (_timer >= 300)
+        if (_timer >= ChargeAttackTime)
         {
             _aggression -= 5;
             if (MultiplayerHelper.IsHost)

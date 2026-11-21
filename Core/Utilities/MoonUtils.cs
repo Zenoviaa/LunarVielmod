@@ -80,7 +80,7 @@ public static class MoonUtils
         var halfDegrees = degreesOfRotation * 0.5F;
         for (var i = 0; i < steps; i++)
         {
-            var stepSize = rand.NextFloat(minStepSize, maxStepSize);
+            var stepSize = minStepSize;
             var rot = rand.NextFloat(-halfDegrees, halfDegrees);
             direction = initialDirection.RotatedBy(rot);
             points[i] = pos;

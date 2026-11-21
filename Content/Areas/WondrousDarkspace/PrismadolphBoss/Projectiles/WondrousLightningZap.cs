@@ -61,7 +61,15 @@ public class WondrousLightningZap : ModProjectile,
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        return CollisionHelper.LaserCollision(projHitbox, targetHitbox, Projectile.Center, StrikeEndPoint, 12);
+        if (_branches == null)
+            return false;
+        for(var i = 0; i < _branches.Length; i++)
+        {
+            ref var p = ref _branches[i];
+            return ProjectileHelper.OldPosColliding(p.points, projHitbox, targetHitbox, 8);
+        }
+
+        return false;
         //return base.Colliding(projHitbox, targetHitbox);
     }
     public override bool CanHitPlayer(Player target)
@@ -336,14 +344,14 @@ public class WondrousLightningZap : ModProjectile,
 
     float GetTrailWidth(float ratio)
     {
-        var w = 24 * MathHelper.SmoothStep(1f, 0.4f, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress) * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
+        var w = 36 * MathHelper.SmoothStep(1f, 0.4f, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress) * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
         if (IsBig)
             w *= 2.5F;
         return w;
     }
     float GetTrailWidth2(float ratio)
     {
-        var w = 24 * MathHelper.SmoothStep(1f, 0.4f, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress) * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
+        var w = 36 * MathHelper.SmoothStep(1f, 0.4f, ratio) * MathHelper.SmoothStep(1f, 0f, StrikeProgress) * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
         w *= 7;
         return w;
     }
@@ -421,9 +429,34 @@ public class WondrousLightningZap : ModProjectile,
         }
       //  TrailDrawer.Draw(, GetTrailColor, GetTrailWidth, pass.Shader);
     }
+    void DrawLightningBoltEndPoint(SpriteBatch sb,  Vector2 sp)
+    {
+        if (_branches == null)
+            return;
+        if (State == AIState.Telegraph || State == AIState.BigTelegraph)
+            return;
 
+        for(var i = 0; i < _branches.Length; i++)
+        {
+            ref var branch = ref _branches[i];
+            var pos = branch.points[branch.points.Length - 1];
+            var glowDrawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset);
+            glowDrawer.worldPosition = pos;
+            glowDrawer.scale *= MathHelper.Lerp(0.15F, 0f, StrikeProgress);
+            glowDrawer.color = Color.Lerp(Color.BlueViolet, Color.Transparent, StrikeProgress);
+            glowDrawer.color.A = 0;
+            sb.Draw(glowDrawer);
+
+            glowDrawer.scale *= 0.5F;
+            glowDrawer.color = Color.Lerp(Color.White, Color.Transparent, StrikeProgress);
+            glowDrawer.color.A = 0;
+            sb.Draw(glowDrawer);
+        }
+        //  TrailDrawer.Draw(, GetTrailColor, GetTrailWidth, pass.Shader);
+    }
     public void DrawToRenderTargets()
     {
+        PixelationManager.QueueSpritebatchDrawAction(DrawLightningBoltEndPoint, DrawLayer.OverPlayers);
         PixelationManager.QueuePrimitivesDrawAction(DrawLightningBolt, DrawLayer.OverPlayers);
     }
 }

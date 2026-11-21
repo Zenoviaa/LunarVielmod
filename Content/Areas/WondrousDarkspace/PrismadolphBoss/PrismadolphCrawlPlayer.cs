@@ -40,7 +40,7 @@ public class PrismadolphCrawlPlayer : ModPlayer
         var range = Vector2.DistanceSquared(Player.Center, PrismadolphRoamingSystem.RoamingPosition);
         if (range > 5096 * 5096)
             return;
-        
+  
         if (Main.rand.NextBool(256))
         {
             Vector2 startPos;
