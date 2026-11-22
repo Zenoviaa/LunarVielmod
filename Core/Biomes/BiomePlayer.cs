@@ -371,39 +371,62 @@ public class BiomePlayer : ModPlayer
             }
         }
 
-        if (Player.ZoneWonder && Main.GameUpdateCount % 1 == 0)
+        if (Player.ZoneWonder)
         {
-            /*
-            List<Point> validPoints = new();
-            var rect = TileUtilities.CenterTileRectangle(Player.Center.ToTileCoordinates16(), 50, 50);
-            for(var x = rect.Left; x < rect.Right; x++)
+
             {
-                for(var y= rect.Top; y < rect.Bottom;y++)
+                if(Main.netMode != NetmodeID.Server)
                 {
-                    var tile = Main.tile[x, y];
-                    if (tile.LiquidAmount <= 0)
-                        continue;
-                    validPoints.Add(new(x, y));
+                    //Spawn Foreground particles
+                    if(Main.GameUpdateCount % 2 == 0)
+                    {
+                        float a = Main.rand.NextFloat(0.3f, 0.5F);
+                        float r = Main.rand.NextFloat();
+                        var color = Color.Violet.Towards(Color.Pink, r);
+                        color.ScrollHue(MathHelper.Lerp(-100, 100, r));
+                        DarkspaceOrbParticles.ForegroundOrbs.Spawn(new()
+                        {
+                            position = DrawUtilities.RandomPositionForParticlesAroundPlayerWide(),
+                            parallax = -Main.rand.NextFloat(0.5f, 1f),
+                            timeLeft = 300,
+                            color = color  * a
+                        });
+                    }
+
+                    if (Main.GameUpdateCount % 2 == 0)
+                    {
+                        float r = Main.rand.NextFloat();
+                        float a = Main.rand.NextFloat(0.3f, 0.5F);
+                        var color = Color.Violet.Towards(Color.Pink, r);
+                        color.ScrollHue(MathHelper.Lerp(-100, 100, r));
+                        DarkspaceOrbParticles.BackgroundOrbs.Spawn(new()
+                        {
+                            position = DrawUtilities.RandomPositionForParticlesAroundPlayerWide(),
+                            parallax = -Main.rand.NextFloat(0.1f, 0.2f),
+                            timeLeft = 300,
+                            color = color * a
+                        });
+                    }
                 }
             }
-            if(validPoints.Count > 0)
-            { 
-            }*/
 
 
-            float r = Main.rand.NextFloat();
-            float r2 = Main.rand.NextFloat();
-            float r3 = MathF.Min(r, r2);
-            var color = Color.DarkBlue.Towards(Color.LightBlue, Main.rand.NextFloat());
-            color.ScrollHue(MathHelper.Lerp(-25, 25, r3));
-          
-            PS.StarryShimmerRiverStars.Spawn(new()
             {
-                position = DrawUtilities.TryFindRandomWetPositionAroundPlayer(16),
-                timeLeft = 120,
-                color = color * r3,
-                velocity = Main.rand.NextVector2Circular(0.3f, 0.3f) + new Vector2(-0.25F + Main.rand.NextFloat(-0.3f, 0f), 0)
-            });
+                float r = Main.rand.NextFloat();
+                float r2 = Main.rand.NextFloat();
+                float r3 = MathF.Min(r, r2);
+                var color = Color.DarkBlue.Towards(Color.LightBlue, Main.rand.NextFloat());
+                color.ScrollHue(MathHelper.Lerp(-25, 25, r3));
+
+                PS.StarryShimmerRiverStars.Spawn(new()
+                {
+                    position = DrawUtilities.TryFindRandomWetPositionAroundPlayer(16),
+                    timeLeft = 120,
+                    color = color * r3,
+                    velocity = Main.rand.NextVector2Circular(0.3f, 0.3f) + new Vector2(-0.25F + Main.rand.NextFloat(-0.3f, 0f), 0)
+                });
+            }
+
         }
 
         if (Player.ZoneAbyss && Main.rand.NextBool(8))

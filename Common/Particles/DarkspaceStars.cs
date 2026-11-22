@@ -1,5 +1,6 @@
 ﻿using Stellamod.Core.Pixelation;
 using Stellamod.Core.Rendering.RTs;
+using System;
 using Terraria;
 using Terraria.Graphics.Shaders;
 

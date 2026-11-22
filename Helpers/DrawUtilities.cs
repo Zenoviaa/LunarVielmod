@@ -493,6 +493,15 @@ public static class DrawUtilities
         Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
         return pos;
     }
+    public static Vector2 RandomPositionForParticlesAroundPlayerWide()
+    {
+        float wRange = Main.screenWidth ;
+        float hRange = Main.screenHeight ;
+        float xPosition = Main.rand.NextFloat(-wRange, wRange);
+        float yPosition = Main.rand.NextFloat(-hRange, hRange);
+        Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
+        return pos;
+    }
 
     public static Vector2 TryFindRandomWetPositionAroundPlayer(int maxAttempts)
     {
