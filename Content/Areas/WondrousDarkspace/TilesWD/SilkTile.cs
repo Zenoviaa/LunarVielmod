@@ -11,6 +11,7 @@ using Stellamod.Effects.Darkspace;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using Terraria;
 using Terraria.DataStructures;
@@ -60,6 +61,7 @@ public class SilkTile : ModTile
 [Autoload(Side = ModSide.Client)]
 public class MiracleSilkRenderer : ModSystem
 {
+    MiracleSilkTile _silkTile;
     public static float renderSilk;
     public override void Load()
     {
@@ -76,18 +78,24 @@ public class MiracleSilkRenderer : ModSystem
             PixelationManager.QueueSpritebatchDrawAction(DrawSilkStrands, DrawLayer.OverPlayers);
         }
     }
-
+   
     private void DrawSilkStrands(SpriteBatch sb, Vector2 screenPos)
     {
         (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(2048);
-        MiracleSilkTile miracleSilkTile = ModContent.GetInstance<MiracleSilkTile>();
+        _silkTile ??= ModContent.GetInstance<MiracleSilkTile>();
         Color rgbColor = Color.Lerp(Color.DarkViolet, Color.Pink, MathUtil.Osc(0.5f, 1f, speed: 1));
-        SilkStrandShader strandShader = SilkStrandShader.Instance;
-        strandShader.Time = Main.GlobalTimeWrappedHourly * 1.3f;
-        strandShader.BloomColor = rgbColor * 1f;
-        strandShader.SilkTexture = TrailRegistry.BeamTrail.Value;
+        var pass = AssetReferences.Effects.Darkspace.SilkStrand.CreateBlackPass();   
+        pass.Parameters.time = Main.GlobalTimeWrappedHourly * 1.3f;
+        pass.Parameters.bloomColor = rgbColor.ToVector3();
+        pass.Parameters.noiseSampler = new()
+        {
+            Texture = AssetReferences.Assets.NoiseTextures.BeamTrail.Asset.Value,
+            Sampler = SamplerState.PointWrap
+        };
+        pass.Apply();
+
         var start = SpritebatchParams.InWorldAndZoomed();
-        start.effect = strandShader.Effect;
+        start.effect = pass.Shader;
         start.samplerState = SamplerState.AnisotropicClamp;
         sb.End();
         sb.Begin(start);
@@ -96,21 +104,20 @@ public class MiracleSilkRenderer : ModSystem
             for (int y = topLeft.Y; y < bottomRight.Y; y++)
             {
                 Tile tile = Main.tile[x, y];
-                if (tile.TileType != miracleSilkTile.Type)
+                if (tile.TileType != _silkTile.Type)
                     continue;
-                miracleSilkTile.DrawString(x, y, Main.spriteBatch);
-                //  miracleSilkTile.MakeDust(x, y);
+                _silkTile.DrawString(x, y, Main.spriteBatch, AssetReferences.Assets.NoiseTextures.SilkTrail.Asset);
             }
         }
+
         for (int x = topLeft.X; x < bottomRight.X; x++)
         {
             for (int y = topLeft.Y; y < bottomRight.Y; y++)
             {
                 Tile tile = Main.tile[x, y];
-                if (tile.TileType != miracleSilkTile.Type)
+                if (tile.TileType != _silkTile.Type)
                     continue;
-                miracleSilkTile.DrawStringBig(x, y, Main.spriteBatch);
-                //  miracleSilkTile.MakeDust(x, y);
+                _silkTile.DrawStringBig(x, y, Main.spriteBatch, AssetReferences.Assets.NoiseTextures.BeamTrail.Asset);
             }
         }
         sb.End();
@@ -120,21 +127,15 @@ public class MiracleSilkRenderer : ModSystem
 public class MiracleSilkTile : ModTile
 {
     public override void SetStaticDefaults()
-    {
-      
+    {    
         Main.tileSolid[Type] = true;
         Main.tileMergeDirt[Type] = true;
         Main.tileBlockLight[Type] = true;
         RegisterItemDrop(ModContent.ItemType<SilkTileBlock>());
-        // DustType = Main.rand.Next(110, 113);
 
         MineResist = 1f;
         MinPick = 50;
-
         AddMapEntry(Color.LightGray);
-
-        // TODO: implement
-        // SetModTree(new Trees.ExampleTree());
     }
 
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
@@ -142,6 +143,7 @@ public class MiracleSilkTile : ModTile
         MiracleSilkRenderer.renderSilk = 30;
         return base.PreDraw(i, j, spriteBatch);
     }
+
     public override void NumDust(int i, int j, bool fail, ref int num)
     {
         num = fail ? 1 : 3;
@@ -165,52 +167,7 @@ public class MiracleSilkTile : ModTile
         }
     }
 
-    private Vector2[] GetTrail(Point tile1, Point tile2)
-    {
-        Vector2 drawPos1 = tile1.ToWorldCoordinates();
-        Vector2 drawPos2 = tile2.ToWorldCoordinates();
-        Vector2[] trailPoints = new Vector2[2];
-        trailPoints[0] = drawPos1;
-        trailPoints[1] = drawPos2;
-        MathUtil.LerpTrailPoints(trailPoints, out Vector2[] trailingPoints, smoothFactor: 128);
-        return trailingPoints;
-    }
-
-    public float GetWidth(float completionRatio)
-    {
-        float width = 2f;
-        float startWidth = width * 64;
-        float midWidth = width * 16;
-        float ease = EasingFunction.QuadraticBump(completionRatio);
-        return MathHelper.Lerp(startWidth, midWidth, ease);
-    }
-
-    public float GetBloomWidth(float completionRatio)
-    {
-        return GetWidth(completionRatio) * 1.3f;
-    }
-    public Color GetColor(float completionRatio)
-    {
-        return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio));
-    }
-
-    public void MakeDust(int i, int j)
-    {
-        Point start = new Point(i, j);
-        Point end = GetConnectedTile(i, j);
-
-        Vector2 tile1 = start.ToWorldCoordinates();
-        Vector2 tile2 = end.ToWorldCoordinates();
-        Vector2 dustTile = Vector2.Lerp(tile1, tile2, Main.rand.NextFloat(0f, 1f));
-        if (!Main.rand.NextBool(16))
-            return;
-
-        var sp = SparkleParticle.Spawn(dustTile, Vector2.Zero, Scale: 0.6f);
-        sp.innerColor = Color.White;
-        sp.outerColor = Main.DiscoColor;
-    }
-
-    public void DrawString(int i, int j, SpriteBatch spriteBatch)
+    public void DrawString(int i, int j, SpriteBatch spriteBatch, Asset<Texture2D> trail)
     {
         Point start = new Point(i, j);
         Point end = GetConnectedTile(i, j);
@@ -223,11 +180,11 @@ public class MiracleSilkTile : ModTile
         center *= 0.5f;
         float rot = (endWorld - startWorld).ToRotation();
 
-
-        var trail = AssetManager.LaserTextures.SilkStrand;
+        float w = trail.Width();
+        float scaleX = Vector2.DistanceSquared(endWorld, startWorld) / (w * w);
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(trail, center);
         drawer.rotation = rot;
-        drawer.scale.X = Vector2.Distance(endWorld, startWorld) / (float)trail.Width();
+        drawer.scale.X = scaleX;
         drawer.scale.Y *= 0.25f;
         drawer.color = Color.White * 0.5f;
         drawer.color.A = 0;
@@ -238,12 +195,12 @@ public class MiracleSilkTile : ModTile
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
     }
-    public void DrawStringBig(int i, int j, SpriteBatch spriteBatch)
+
+    public void DrawStringBig(int i, int j, SpriteBatch spriteBatch, Asset<Texture2D> trail)
     {
         Point start = new Point(i, j);
         Point end = GetConnectedTile(i, j);
         Color lightColor = Lighting.GetColor(start.X, end.Y);
-
 
         Vector2 startWorld = start.ToWorldCoordinates();
         Vector2 endWorld = end.ToWorldCoordinates();
@@ -251,11 +208,11 @@ public class MiracleSilkTile : ModTile
         center *= 0.5f;
         float rot = (endWorld - startWorld).ToRotation();
 
-
-        var trail = TrailRegistry.BeamTrail;
+        float w = trail.Width();
+        float scaleX = Vector2.DistanceSquared(endWorld, startWorld) / (w * w);
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureGetLightingColor(trail, center);
         drawer.rotation = rot;
-        drawer.scale.X = Vector2.Distance(endWorld, startWorld) / (float)trail.Width();
+        drawer.scale.X = scaleX;
         drawer.scale.Y *= 0.1f;
         drawer.color = Color.White * 0.5f;
         drawer.color.A = 0;

@@ -484,6 +484,31 @@ public static class DrawUtilities
         return pos;
     }
 
+    public static Vector2 RandomPositionForParticlesAroundPlayer()
+    {
+        float wRange = Main.screenWidth * 0.5F;
+        float hRange = Main.screenHeight * 0.5F;
+        float xPosition = Main.rand.NextFloat(-wRange, wRange);
+        float yPosition = Main.rand.NextFloat(-hRange, hRange);
+        Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
+        return pos;
+    }
+
+    public static Vector2 TryFindRandomWetPositionAroundPlayer(int maxAttempts)
+    {
+        for(var x = 0; x < maxAttempts; x++)
+        {
+            var pos = RandomPositionForParticlesAroundPlayer();
+            var tc = pos.ToTileCoordinates();
+            tc = TileUtilities.Clamp(tc);
+            var tile = Main.tile[tc];
+            if (tile.LiquidAmount > 0)
+                return pos;
+        }
+        return new Vector2(9999);
+    }
+
+
     public static Vector2 CalculateScreenOffset(Rectangle drawLocation, float scale = 1f)
     {
         Vector2 texelSize = Vector2.One / new Vector2(drawLocation.Width, drawLocation.Height);

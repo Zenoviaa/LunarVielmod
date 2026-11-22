@@ -288,7 +288,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("RoyalCapitalTerrain", WorldGenCapitalTerrain));
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
         passWriter.NextPass(new PassLegacy("Cinderspark Caves", CindersparkCavesPass));
-        passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
+     //   passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
 
 
         passWriter.SetInsertionIndex("Shimmer");
@@ -333,11 +333,11 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
         passWriter.NextPass(new PassLegacy("Charred Stones", HardRocksPass));
-        passWriter.NextPass(new PassLegacy("Ravine Caves", RavinesPass));
-        passWriter.NextPass(new PassLegacy("Deep Caves", DeepCavesPass));
-        passWriter.NextPass(new PassLegacy("Cavernous Caves", MineshaftsPass));
-        passWriter.NextPass(new PassLegacy("Vanilla Caves", ExtraCavesPass));
-        passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
+     //   passWriter.NextPass(new PassLegacy("Ravine Caves", RavinesPass));
+   //     passWriter.NextPass(new PassLegacy("Deep Caves", DeepCavesPass));
+ //       passWriter.NextPass(new PassLegacy("Cavernous Caves", MineshaftsPass));
+       // passWriter.NextPass(new PassLegacy("Vanilla Caves", ExtraCavesPass));
+     //   passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
         passWriter.NextPass(new PassLegacy("Black Stones", WorldGenDarkstone));
 
         //Set desert location
@@ -1915,7 +1915,8 @@ public partial class StellaWorld : ModSystem
         WriteLine($"{shimmerBlotchCount} Darkspace Shimmer Blotches Placed");
         progress.Set(0.66D);
 
-        //Here we're placing walls and silk tiles, this is a bit slow, so maybe optimize it a bit later.
+        ushort silkTileType = (ushort)ModContent.TileType<MiracleSilkTile>();
+        TileID.Sets.CanBeClearedDuringOreRunner[TileID.Granite] = true;
         for (int x = padding; x < Main.maxTilesX - padding; x++)
         {
             for (int y = yMin - 100; y < yMax + 100; y++)
@@ -1924,31 +1925,47 @@ public partial class StellaWorld : ModSystem
                 if (!tile.HasTile)
                     continue;
 
-                bool hasRight = (x + 1 < Main.maxTilesX) && !WorldGen.SolidOrSlopedTile(x + 1, y);
-                bool hasLeft = (x - 1 > 0) && !WorldGen.SolidOrSlopedTile(x - 1, y);
-                bool hasTop = (y + 1 < Main.maxTilesY) && !WorldGen.SolidOrSlopedTile(x, y + 1);
-                bool hasBottom = (y - 1 > 0) && !WorldGen.SolidOrSlopedTile(x, y - 1);
+                //tile type is more likely to fail than being exposed to the air, and is a cheaper check
+                if (tile.TileType != TileID.Granite)
+                    continue;
+
+                //no need to do a bounds check here the darkspace can't possibly be that close to the edge.
+                //WorldGen solid or slope checks if it's not a platform, we don't care if it is a platform or not
+                //Removing that for a speed up, moonutils purely checks tilesolid.
+                bool hasRight = !MoonUtils.QuickSolid(x + 1, y);
+                bool hasLeft = !MoonUtils.QuickSolid(x - 1, y);
+                bool hasTop =  !MoonUtils.QuickSolid(x, y + 1);
+                bool hasBottom = !MoonUtils.QuickSolid(x, y - 1);
                 bool hasAny = hasRight || hasLeft || hasTop || hasBottom;
 
-                if (WorldGen.TileIsExposedToAir(x, y) && tile.TileType == TileID.Granite)
+                
+                if (WorldGen.TileIsExposedToAir(x, y))
                 {
-
-                    if (genRand.NextBool(50))
+                    float proximity = MoonUtils.ProximityTo(x, Main.maxTilesX / 2, 2000);
+                    int denom = (int)MathHelper.Lerp(500, 50, proximity);
+                    if (genRand.NextBool(denom))
                     {
                         float strength = genRand.Next(7, 11);
                         int steps = genRand.Next(12, 20);
                         ushort tileType = (ushort)ModContent.TileType<SilkTile>();
 
-                        TileID.Sets.CanBeClearedDuringOreRunner[TileID.Granite] = true;
+            
                         WorldGen.OreRunner(x, y,
                            strength,
                             steps, tileType);
-                        TileID.Sets.CanBeClearedDuringOreRunner[TileID.Granite] = false;
-                        WorldGen.PlaceTile(x, y, ModContent.TileType<MiracleSilkTile>(), mute: true, forced: true);
-                        //     SilkManager.GrowSilk(x, y, genRand);
+  
+
+                        //We can get away with place tile here since we're only calling it once
+                        //But maybe we should replace it anyway
+                        //WorldGen.PlaceTile(x, y, ModContent.TileType<MiracleSilkTile>(), mute: true, forced: true);
+                        tile.TileType = silkTileType;
+                        tile.HasTile = true;
+                        tile.TileFrameX = -1;
+                        tile.TileFrameY = -1;
                     }
                 }
-                if (hasAny && (tile.TileType == TileID.Granite))
+
+                if (hasAny)
                 {
                     //WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
                     Point point = new Point(x, y);
@@ -1970,6 +1987,7 @@ public partial class StellaWorld : ModSystem
                 }
             }
         }
+        TileID.Sets.CanBeClearedDuringOreRunner[TileID.Granite] = false;
 
         //Create curves at the edges of the darkspace so it smooths out 
         int right = Main.maxTilesX - padding;
@@ -3286,6 +3304,10 @@ public partial class StellaWorld : ModSystem
     private void ReplaceLavaWithShimmerPass(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Stay Shimmering";
+
+        //We don't want aetherium blocks to naturally be in this  biome it looks ugly/  
+        //So force settle liquids and replace all water/that block with shimmer it should look at lot better
+        VeilGen.SettleLiquids();
         Rectangle rec = new Rectangle(0, DarkspaceStart, Main.maxTilesX, DarkspaceEnd - DarkspaceStart);
         for (int x = rec.Left + 1800; x < rec.Right - 1800; x++)
         {
@@ -3293,10 +3315,15 @@ public partial class StellaWorld : ModSystem
             {
                 Tile tile = Main.tile[x, y];
                 bool isAethirumBlock = (tile.HasTile && tile.TileType == TileID.ShimmerBlock);
-                if (tile.LiquidType == LiquidID.Lava || tile.LiquidType == LiquidID.Water)
+                if (tile.LiquidType == LiquidID.Lava || tile.LiquidType == LiquidID.Water )
                 {
                     tile.LiquidType = LiquidID.Shimmer;
                     // tile.LiquidAmount = (byte)WorldGen.genRand.Next(125, 255);
+                }
+                if (isAethirumBlock)
+                {
+                    tile.LiquidType = LiquidID.Shimmer;
+                    tile.LiquidAmount = 255;
                 }
             }
         }

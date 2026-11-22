@@ -5,6 +5,8 @@ using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.Foreground;
 using Stellamod.Visual.Particles;
 using Stellamod.WorldG;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,6 +18,7 @@ public static class BiomeExtensions
 {
     extension(Player player)
     {
+
         public bool ZoneMoonspiralTower
         {
             get
@@ -366,6 +369,41 @@ public class BiomePlayer : ModPlayer
             {
                 ForegroundParticleRenderer.NewParticle<Snowstrike>();
             }
+        }
+
+        if (Player.ZoneWonder && Main.GameUpdateCount % 1 == 0)
+        {
+            /*
+            List<Point> validPoints = new();
+            var rect = TileUtilities.CenterTileRectangle(Player.Center.ToTileCoordinates16(), 50, 50);
+            for(var x = rect.Left; x < rect.Right; x++)
+            {
+                for(var y= rect.Top; y < rect.Bottom;y++)
+                {
+                    var tile = Main.tile[x, y];
+                    if (tile.LiquidAmount <= 0)
+                        continue;
+                    validPoints.Add(new(x, y));
+                }
+            }
+            if(validPoints.Count > 0)
+            { 
+            }*/
+
+
+            float r = Main.rand.NextFloat();
+            float r2 = Main.rand.NextFloat();
+            float r3 = MathF.Min(r, r2);
+            var color = Color.DarkBlue.Towards(Color.LightBlue, Main.rand.NextFloat());
+            color.ScrollHue(MathHelper.Lerp(-25, 25, r3));
+          
+            PS.StarryShimmerRiverStars.Spawn(new()
+            {
+                position = DrawUtilities.TryFindRandomWetPositionAroundPlayer(16),
+                timeLeft = 120,
+                color = color * r3,
+                velocity = Main.rand.NextVector2Circular(0.3f, 0.3f) + new Vector2(-0.25F + Main.rand.NextFloat(-0.3f, 0f), 0)
+            });
         }
 
         if (Player.ZoneAbyss && Main.rand.NextBool(8))

@@ -233,8 +233,34 @@ outliner.Shader, Main.Transform);
 
         using (RT.Clear(screenTargetOne, Color.Transparent))
         {
+            if (_pixelWater.starryShimmer)
+            {
+                //      Main.NewText("yuh");
 
-            if (_pixelWater.affectsLava)
+                var pass = AssetReferences.Effects.StarryShimmerCombine.CreateP0();
+                pass.Parameters.NormalNoiseSampler = new HlslSampler2D()
+                {
+                    Texture = coolAssWaterTarget,
+                    Sampler = SamplerState.LinearWrap
+                };
+                pass.Parameters.HeightMapSampler = new HlslSampler2D()
+                {
+                    Texture = _waterHeightMapRT,
+                    Sampler = SamplerState.LinearWrap
+                };
+                pass.Parameters.Time = Main.GlobalTimeWrappedHourly;
+                pass.Parameters.outlineColor = new Color(255, 0, 0).ToVector4();
+                pass.Parameters.outlineTexelSize = Main.waterTarget.GetTexelSize() * 2;
+                pass.Apply();
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                    pass.Shader);
+
+                var drawColor = Color.White;
+                sb.Draw(Main.waterTarget, pos, drawColor * waterAlpha);
+
+                sb.End();
+            }
+            else if (_pixelWater.affectsLava)
             {
                 //      Main.NewText("yuh");
 
@@ -247,7 +273,7 @@ outliner.Shader, Main.Transform);
                 sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     lavaShader.Effect);
 
-                var drawColor = Color.White.Darken(0f);
+                var drawColor = Color.White;
                 sb.Draw(Main.waterTarget, pos, drawColor * waterAlpha);
                 sb.End();
             }
@@ -687,7 +713,7 @@ outliner.Shader, Main.Transform);
         }
 
         //V2 Gradientizing
-        if (Main.LocalPlayer.ZoneAbyss || _pixelWater.affectsLava)
+        if (Main.LocalPlayer.ZoneAbyss || _pixelWater.affectsLava || _pixelWater.starryShimmer)
         {
             V2HeightGradient();
         }
@@ -739,6 +765,67 @@ outliner.Shader, Main.Transform);
     private void DrawWaterBase(SpriteBatch spriteBatch)
     {
         GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
+        if (_pixelWater.starryShimmer)
+        {
+            var pass = AssetReferences.Effects.StarryShimmer.CreateP0();
+            pass.Parameters.ScreenOffset = CalculateScreenOffset(scale: 2f);
+            pass.Parameters.Tiling = Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier;
+            pass.Parameters.Time = Main.GlobalTimeWrappedHourly * 0.8f;
+            pass.Parameters.Quantize = 9;
+            pass.Parameters.Distortion = 0.05f;
+            pass.Parameters.StartGradient = _pixelWater.StartGradientColor.ToVector3();
+            pass.Parameters.EndGradient = _pixelWater.EndGradientColor.ToVector3();
+            pass.Parameters.NormalDistortionStrength = 0.25f;
+            pass.Parameters.NormalNoiseSampler = new HlslSampler2D()
+            {
+                Texture = _pixelWater.NoiseTexture.Value,
+                Sampler = SamplerState.LinearWrap
+            };
+            pass.Parameters.NoiseTextureSampler = new HlslSampler2D()
+            {
+                Texture =  AssetReferences.Assets.NoiseTextures.StarNoise2.Asset.Value,
+                Sampler = SamplerState.LinearWrap
+            };
+            pass.Parameters.InnerColor = Color.Pink.ToVector3();
+            pass.Parameters.BloomColor = Color.DarkBlue.ToVector3();
+            pass.Parameters.HeightMapSampler = new HlslSampler2D()
+            {
+                Texture = _waterHeightMapRT,
+                Sampler = SamplerState.LinearWrap
+            };
+            pass.Apply();
+
+            using (RT.Clear(_waterTextureRTSwap, Color.DarkViolet))
+            {
+
+                //Draw the base texture
+                spriteBatch.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    pass.Shader);
+
+                Color drawColor = _pixelWater.BackgroundColor * 0.8f;
+                if (!_pixelWater.ignoreSkyColor)
+                {
+                    drawColor = drawColor.MultiplyRGB(Main.ColorOfTheSkies);
+                }
+                spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, drawColor);
+                spriteBatch.End();
+
+                spriteBatch.Begin(SpriteSortMode.Deferred,
+                    BlendState.Additive,
+                    SamplerState.AnisotropicClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullNone,
+                    null);
+
+                PS.StarryShimmerRiverStars.Draw(spriteBatch, Main.screenPosition);
+                spriteBatch.End();
+            }
+            return;
+        }
         if (_pixelWater.affectsLava)
         {
             SuperLavaShader lavaShader = ShaderContent.GetInstance<SuperLavaShader>();

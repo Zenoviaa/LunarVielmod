@@ -26,6 +26,7 @@ public class PixelWater
         vibrant = false;
         ignoreSkyColor = false;
         noReflection = false;
+        starryShimmer = false;
         reflectionAlpha = 1f;
         maxHeight = 32;
         levels = 10;
@@ -53,4 +54,5 @@ public class PixelWater
     public int maxHeight;
     public int levels;
     public float lightRadius;
+    public bool starryShimmer;
 }

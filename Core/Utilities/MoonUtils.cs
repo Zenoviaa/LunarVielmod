@@ -55,6 +55,26 @@ public static class MoonUtils
     const float SUMMON_SEARCH_DISTANCE = 512;
     const float REPATH_DISTANCE = 32 * 32;
 
+    public static readonly Random Rand = new Random(1337);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool QuickSolid(int x, int y)
+    {
+        return Main.tileSolid[Main.tile[x, y].TileType];
+    }
+
+    public static float ProximityTo(float point, float pointImGettingCloseTo, float size)
+    {
+        //get the distance bbetween the two points
+        float t = MathF.Abs(point - pointImGettingCloseTo);
+
+        //Divide by what we're checking against
+        float lerp = t / size;
+
+        //invert it cause we wan
+        return 1f - MathHelper.Clamp(lerp, 0f, 1f);
+    }
+
     /// <summary>
     /// Creates a randomized set of points from a start to end point, meant to similate like a lightning bolt in a mesh
     /// </summary>
