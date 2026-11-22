@@ -59,6 +59,7 @@ namespace Stellamod.Visual.Particles
 
         public override void Update()
         {
+
             if (isLong)
             {
                 color *= 0.99f;

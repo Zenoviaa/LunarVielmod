@@ -9,12 +9,6 @@ namespace Stellamod.Content.Areas.WondrousDarkspace;
 
 public class WonderousDarkspaceBackground : CustomBG
 {
-    private Asset<Texture2D> _backgroundTextureAsset;
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        _backgroundTextureAsset = AssetManager.LoadBackground("Darkspace");
-    }
 
     public override bool UseCustomDrawing()
     {
@@ -23,13 +17,14 @@ public class WonderousDarkspaceBackground : CustomBG
     public override void Draw(SpriteBatch spriteBatch)
     {
         base.Draw(spriteBatch);
+
         Color fadeToColor = Color.White;
         fadeToColor.A = 0;
-        BackgroundHelper.DrawSimpleAtlassedBackground(spriteBatch, BackgroundHelper.AtlassedBackgroundDraw.Default with
+        BackgroundHelper.DrawSimpleAtlassedBackgroundStretchedToScreen(spriteBatch, BackgroundHelper.AtlassedBackgroundDraw.Default with
         {
             cameraMovement = CameraMovement,
-            bg = _backgroundTextureAsset,
-            numBackgrounds = 6,
+            bg = AssetReferences.Assets.Textures.Backgrounds.Darkspace.Asset,
+            numBackgrounds = 4,
             fadeToColor = fadeToColor,
             alpha = Alpha,
             parallax = new Vector2(0.01f, 0f),
@@ -39,7 +34,7 @@ public class WonderousDarkspaceBackground : CustomBG
 
     public override bool IsActive()
     {
-        return false;
+        return Main.LocalPlayer.ZoneWonder;
     }
 }
 
@@ -112,6 +107,6 @@ public class DarkspaceBG : CustomBG
     public override bool IsActive()
     {
         DrawOffset = new Vector2(0, 64);
-        return Main.LocalPlayer.ZoneWonder;
+        return false;
     }
 }

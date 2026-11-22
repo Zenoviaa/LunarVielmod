@@ -152,10 +152,12 @@ namespace Stellamod.Core.Particles
         }
         public void DrawAlphaPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
         {
+  
             DrawBlackParticles(spriteBatch);
         }
         public void DrawPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
         {
+         
             DrawParticles(spriteBatch);
         }
 

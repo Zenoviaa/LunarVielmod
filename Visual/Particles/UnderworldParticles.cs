@@ -24,6 +24,7 @@ public class UnderworldFlameParticle : Particle<UnderworldFlameParticle>
 
     public override void Update()
     {
+
         fadeIn++;
         if (fadeIn > 180)
             active = false;

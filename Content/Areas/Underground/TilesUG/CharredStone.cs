@@ -57,15 +57,18 @@ public class CharredStone : ModTile
     public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
     {
         base.PostDraw(i, j, spriteBatch);
+
         Vector2 pos = (new Vector2(i, j)) * 16;
         pos += new Vector2(Main.offScreenRange);
         Color color = Lighting.GetColor(i, j);
 
-        Tile tile = Framing.GetTileSafely(i, j);
 
+
+        Tile tile = Framing.GetTileSafely(i, j);
+        var hash = new Point(i, j).GetHashCode();
         Rectangle frame = new Rectangle(tile.TileFrameX + 288, tile.TileFrameY, 16, 16);
         Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f)) * Lighting.Brightness(i, j) * ExtraMath.Osc(0f, 1f, speed: 2,
-            offset: PreGeneratedNoise.SampleRand(i, j) * 8);
+            offset: hash);
         glowColor.A = 0;
         spriteBatch.Draw(TextureAssets.Tile[Type].Value, pos - Main.screenPosition, frame, glowColor, 0, Vector2.Zero, 1, 0, 1);
     }

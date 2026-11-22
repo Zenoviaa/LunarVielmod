@@ -44,7 +44,9 @@ public class DragonpieceOre : ModTile
     public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
     {
         base.ModifyLight(i, j, ref r, ref g, ref b);
-        r = MathF.Max(r, ExtraMath.Osc(0.25f, 0.75f, speed: 2, PreGeneratedNoise.SampleSimplexNoise(i, j) * 8));
+
+        var hash = i ^ j;
+        r = MathF.Max(r, ExtraMath.Osc(0.25f, 0.75f, speed: 2, hash));
 
     }
 

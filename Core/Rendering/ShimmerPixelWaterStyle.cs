@@ -27,7 +27,7 @@ public class ShimmerPixelWaterStyle : PixelWaterStyle
         pixelWater.ignoreSkyColor = true;
         pixelWater.starryShimmer = true;
         pixelWater.lightRadius = 180;
-    
+    //pixelWater.noReflection=true;
     //   pixelWater.Palette = PaletteAssets.FromPaletteFile(PaletteAssets.ROYALCAPITAL).Value;
     }
 }

@@ -134,6 +134,7 @@ namespace Stellamod.Core.Particles
         }
         private void DrawAlphaPixelParticlesBehind(SpriteBatch spriteBatch, Vector2 screenPos)
         {
+            
             _drawBehind = true;
             RenderAlphaParticles(spriteBatch);
             _drawBehind = false;
@@ -146,6 +147,7 @@ namespace Stellamod.Core.Particles
 
         private void DrawPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
         {
+      
             RenderAdditiveParticles(spriteBatch);
         }
 
