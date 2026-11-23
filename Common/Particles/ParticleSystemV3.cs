@@ -80,6 +80,8 @@ public sealed class PS : ModSystem
     public static readonly DarkspaceRock DarkspaceRock = new();
     public static readonly DarkspaceStars StarryShimmerRiverStars = new();
     public static readonly FallingDarkspaceStar FallingDarkspaceStar = new();
+    public static readonly SmokeImpact SmokeImpact = new();
+    public static readonly SmokeBoom SmokeBoom = new();
     public override void Load()
     {
         base.Load();
@@ -138,7 +140,9 @@ public sealed class PS : ModSystem
             LavaMetaballsFront,
             DarkspaceRock,
             StarryShimmerRiverStars,
-            FallingDarkspaceStar
+            FallingDarkspaceStar,
+            SmokeImpact,
+            SmokeBoom
         };
 
         if (Main.netMode == NetmodeID.Server)

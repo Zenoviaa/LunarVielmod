@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Particles;
+﻿using ReLogic.Content;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.NPCHelpers;
@@ -53,13 +54,36 @@ public class HangingCageExplosionProjectile : ModProjectile
             var fac = ParticleUtils.ParticleFactory.FromSmallBurst(Projectile.Center, TriColorPalette.Moonly, new Vector2(5, 35));
             fac.particleCount *= 3;
             ParticleUtils.CreateSwirlingDustCircle(fac);
-            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.Pink, 60, 100);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.Pink, 16, 200);
             for (var x = 0; x < 6; x++)
             {
                 var pos = Projectile.Center + MoonUtils.Rand.NextVector2CircularEdge(128, 128);
                 var vel = (pos - Projectile.Center) * 0.04f;
                 var fx2 = FXUtil.GlowStretch(pos, vel);
                 fx2.VectorScale.Y *= 0.3F;
+            }
+            {
+                var pos = Projectile.Center;
+                var vel = (pos - Projectile.Center) * 0.05f;
+                PS.SmokeBoom.Spawn(new()
+                {
+                    position = pos,
+                    velocity = vel,
+                    rot = MoonUtils.Rand.NextFloat(0, 6),
+                    color = Color.White
+                });
+            }
+
+            for (var x = 0; x < 8; x++)
+            {
+                var vel = MoonUtils.Rand.NextVector2CircularEdge(8, 8);
+                PS.SmokeImpact.Spawn(new()
+                {
+                    position = Projectile.Center + vel * 2,
+                    velocity = vel,
+                    rot = vel.ToRotation(),
+                    color = Color.White
+                });
             }
         }
     }
@@ -146,6 +170,9 @@ public class FreeMoth : ModNPC
 public class HangingCage : ModNPC,
     IDrawToRenderTarget
 {
+    Asset<Texture2D> _smallTextureAsset;
+    Asset<Texture2D> _chainTextureAsset;
+    Asset<Texture2D> _mothTextureAsset;
     private int _mothFrame;
     private ref float Timer => ref NPC.ai[0];
     private enum AIState
@@ -215,37 +242,43 @@ public class HangingCage : ModNPC,
         return false;
     }
 
+
+
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        _chainTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Chain");
+        string texturePath = IsSmall ? Texture + "_Small" : Texture;
+        _smallTextureAsset ??= ModContent.Request<Texture2D>(texturePath);
+        _mothTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Moth");
+        Texture2D mothTexture = _mothTextureAsset.Value;
         Vector2 drawPos = NPC.position - screenPos + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-        Texture2D chainTexture = ModContent.Request<Texture2D>(Texture + "_Chain").Value;
+
+
         float length = HangingDistance;
         int index = 0;
         while (length > 0f)
         {
-            Vector2 chainDrawOrigin = chainTexture.Size() / 2;
-            Vector2 offset = -Vector2.UnitY * chainTexture.Height * index;
+            Vector2 chainDrawOrigin = _chainTextureAsset.Size() / 2;
+            Vector2 offset = -Vector2.UnitY * _chainTextureAsset.Height() * index;
             Vector2 vel = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
-            spriteBatch.Draw(chainTexture, drawPos + offset - vel * NPC.frame.Height / 2, null, Color.White.MultiplyRGB(drawColor),
+            spriteBatch.Draw(_chainTextureAsset.Value, drawPos + offset - vel * NPC.frame.Height / 2, null, Color.White.MultiplyRGB(drawColor),
                 NPC.rotation, chainDrawOrigin, _scale, SpriteEffects.None, 0);
 
-            length -= chainTexture.Height;
+            length -= _chainTextureAsset.Height();
             index++;
         }
 
         Vector2 drawOrigin = NPC.frame.Size() / 2;
 
         SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        string texturePath = IsSmall ? Texture + "_Small" : Texture;
-        Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
 
 
         this.DrawOutline(OutlineColor, yOffset: 0, _scale, texturePath, null);
-        Texture2D mothTexture = ModContent.Request<Texture2D>(Texture + "_Moth").Value;
+
         Rectangle mothFrame = mothTexture.GetFrame(_mothFrame, 4);
         Vector2 hoverOffset = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 8, ExtraMath.Osc(0f, 1f, speed: 4, offset: NPC.whoAmI));
         spriteBatch.Draw(mothTexture, drawPos + new Vector2(0, 8) + hoverOffset, mothFrame, Color.White.MultiplyRGB(drawColor), NPC.rotation, mothFrame.Size() / 2f, _scale, spriteEffects, 0);
-        spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(drawColor), NPC.rotation, texture.Size() / 2f, _scale, spriteEffects, 0);
+        spriteBatch.Draw(_smallTextureAsset.Value, drawPos, null, Color.White.MultiplyRGB(drawColor), NPC.rotation, _smallTextureAsset.Size() / 2f, _scale, spriteEffects, 0);
 
         Texture2D texture2D4 = AssetReferences.Assets.NoiseTextures.DimLight.Asset.Value;
         Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color(255, 128, 125, 0), NPC.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);

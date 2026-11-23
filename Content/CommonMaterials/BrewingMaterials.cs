@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Common.Particles;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Terraria;
 using Terraria.DataStructures;
@@ -387,11 +388,7 @@ public class HypnotizedSoul : ModItem
 
     public override void SetDefaults()
     {
-        Item.width = 34;
-        Item.height = 40;
         Item.maxStack = Item.CommonMaxStack;
-        Item.value = Item.sellPrice(0, 0, 20, 0);
-        Item.rare = ItemRarityID.Green;
         Item.useTime = 10;
         Item.useAnimation = 10;
         Item.useStyle = ItemUseStyleID.Swing;
@@ -400,8 +397,26 @@ public class HypnotizedSoul : ModItem
 
     public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
     {
-        Lighting.AddLight(new Vector2(Item.Center.X, Item.Center.Y), 81 * 0.001f, 194 * 0.001f, 58 * 0.001f);
+        Lighting.AddLight(Item.Center, new Vector3(1));
         return true;
+    }
+
+    public override void Update(ref float gravity, ref float maxFallSpeed)
+    {
+        base.Update(ref gravity, ref maxFallSpeed);
+        if (MoonUtils.Rand.NextBool(24))
+        {
+            PS.SwirlingFlameDust.Spawn(BitDustFactory.SlowingOverTime with
+            {
+                position = Item.Center,
+                velocity = MoonUtils.Rand.NextVector2CircularEdge(2, 2) + new Vector2(0, -0.5F),
+                timeLeft = 30,
+                innerColor = Color.White.ToVector4(),
+                outerColor = Color.SkyBlue.ToVector4(),
+                scale = new Vector2(0.5F),
+                color = Color.White.ToVector4(),
+            });
+        }
     }
 }
 
