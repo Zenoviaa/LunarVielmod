@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.Particles;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.CommonMaterials;
 
@@ -21,12 +22,18 @@ namespace Stellamod.Items.Insources
                 player.statMana += 1;
             }
 
-            if (Main.rand.NextBool(10))
+            if (MoonUtils.Rand.NextBool(10))
             {
-                Vector2 position = player.Center + Main.rand.NextVector2CircularEdge(64, 64);
+                Vector2 position = player.Center + MoonUtils.Rand.NextVector2CircularEdge(64, 64);
                 Vector2 velocity = player.Center - position;
                 velocity *= 0.05f;
-                LegacyParticle.NewParticle<StarParticle>(position, velocity, Color.LightBlue, 0.3f);
+                PS.FallingDarkspaceStar.Spawn(new()
+                {
+                    position = position,
+                    velocity = velocity,
+                    color = Color.LightBlue,
+                    timeLeft=180
+                });
             }
         }
     }

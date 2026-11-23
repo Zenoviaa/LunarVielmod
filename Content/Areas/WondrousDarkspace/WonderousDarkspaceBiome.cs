@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Biomes;
 using Stellamod.Core.LunarLightingSystem;
@@ -32,18 +33,22 @@ public class WonderousPlayer : ModPlayer
     public override void PostUpdateMiscEffects()
     {
         base.PostUpdateMiscEffects();
+        if (Main.netMode == NetmodeID.Server)
+            return;
         if (Main.gameMenu)
             return;
         if (!Main.LocalPlayer.ZoneWonder)
             return;
-    
-
-        //TODO: deprecate legacy particle system
-        if (Main.rand.NextBool(5))
+        if (MoonUtils.Rand.NextBool(5))
         {
-            float xRand = Main.rand.NextFloat(-1000, 1000);
-            float yRand = Main.rand.NextFloat(-1000, 1000);
-            LegacyParticle.NewParticle<StarParticle>(Main.LocalPlayer.Center + new Vector2(xRand, yRand), Vector2.Zero);
+            float xRand = MoonUtils.Rand.NextFloat(-1000, 1000);
+            float yRand = MoonUtils.Rand.NextFloat(-1000, 1000);
+            PS.FallingDarkspaceStar.Spawn(new()
+            {
+                position = Main.LocalPlayer.Center + new Vector2(xRand, yRand),
+                color = Color.White,
+                timeLeft = 180
+            });
         }
     }
 

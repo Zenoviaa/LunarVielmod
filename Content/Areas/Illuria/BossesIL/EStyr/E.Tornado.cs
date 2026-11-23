@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Dusts;
 using Stellamod.Content.Gores;
@@ -111,8 +112,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (Timer % 10 == 0)
             {
-                var p = LegacyParticle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 0.4f);
-                p.fast = true;
+                PS.FallingDarkspaceStar.Spawn(new()
+                {
+                    position = Projectile.Center,
+                    color = Color.White,
+                    timeLeft = 180,
+                    fast=true
+                });
+
                 var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(16, 16), DustID.Dirt, Vector2.Zero,
                     newColor: Color.White,
                     Scale: 1);
@@ -393,8 +400,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (Timer % 10 == 0)
             {
-                var p = LegacyParticle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 0.4f);
-                p.fast = true;
+                PS.FallingDarkspaceStar.Spawn(new()
+                {
+                    position = Projectile.Center,
+                    timeLeft = 180,
+                    color = Color.White,
+                    fast=true
+                });
+
                 var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(16, 16), DustID.Dirt, Vector2.Zero,
                     newColor: Color.White,
                     Scale: 1);

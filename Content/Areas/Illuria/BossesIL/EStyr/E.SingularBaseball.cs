@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Dusts;
@@ -58,8 +59,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             DrawHelper.UpdateFrame(ref _vortexFrame, 0.8f, 1, 90);
             if(Timer % 5  == 0)
             {
-                var p = LegacyParticle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, 0.5f);
-                p.fast = true;
+                PS.FallingDarkspaceStar.Spawn(new()
+                {
+                    position = Projectile.Center,
+                    color = Color.White,
+                    timeLeft = 180,
+                    fast = true
+                });
             }
 
             switch (State)

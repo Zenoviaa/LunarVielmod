@@ -57,6 +57,25 @@ public static class MoonUtils
 
     public static readonly Random Rand = new Random(1337);
 
+    extension(Random rand)
+    {
+        public Vector2 NextVector2CircularEdge(float halfWidth, float halfHeight)
+        {
+            var rot = rand.NextSingle() * MathHelper.TwoPi;
+            return rot.ToRotationVector2() * new Vector2(halfWidth, halfHeight);
+        }
+
+        public bool NextBool(int consequent)
+        {
+            return rand.Next(consequent) == 0;
+        }
+
+        public float NextFloat(float min, float max)
+        {
+            float r = rand.NextSingle();
+            return (r * (max - min) + min);
+        }
+    }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool QuickSolid(int x, int y)
     {

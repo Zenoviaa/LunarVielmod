@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Common.Particles;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Rendering.RTs;
@@ -101,17 +102,22 @@ public class AuroraEffectRenderer : ModSystem
             _activeTimer++;
             if (!Main.LocalPlayer.ZoneAbyss)
             {
-                if (Main.rand.NextBool(5))
+                if (MoonUtils.Rand.NextBool(5))
                 {
-                    float xRand = Main.rand.NextFloat(-1000, 1000);
-                    float yRand = Main.rand.NextFloat(-1000, 1000);
-                    LegacyParticle.NewParticle<StarParticle>(Main.LocalPlayer.Center + new Vector2(xRand, yRand), Vector2.Zero);
+                    float xRand = MoonUtils.Rand.NextFloat(-1000, 1000);
+                    float yRand = MoonUtils.Rand.NextFloat(-1000, 1000);
+                    PS.FallingDarkspaceStar.Spawn(new()
+                    {
+                        position = Main.LocalPlayer.Center + new Vector2(xRand, yRand),
+                        color = Color.White,
+                        timeLeft = 180
+                    });
                 }
-                if (Main.rand.NextBool(9))
+                if (MoonUtils.Rand.NextBool(9))
                 {
                     Vector2 startPosition = Main.LocalPlayer.Top;
                     startPosition.Y -= 1000;
-                    startPosition.X += Main.rand.NextFloat(-1000, 1000);
+                    startPosition.X += MoonUtils.Rand.NextFloat(-1000, 1000);
                     Point tilePosition = startPosition.ToTileCoordinates();
                     for (int i = 0; i < 200; i++)
                     {
@@ -127,7 +133,7 @@ public class AuroraEffectRenderer : ModSystem
                     }
 
                     Vector2 spawnPoint = tilePosition.ToWorldCoordinates();
-                    float scale = Main.rand.NextFloat(0.2f, 0.3f);
+                    float scale = MoonUtils.Rand.NextFloat(0.2f, 0.3f);
                     Vector2 spawnVelocity = -Vector2.UnitY * 1;
                     SparkleParticle sp = SparkleParticle.Spawn(spawnPoint, spawnVelocity, Color.White, Scale: scale);
                     sp.innerColor = Color.White;

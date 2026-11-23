@@ -79,6 +79,7 @@ public sealed class PS : ModSystem
     public static readonly MetaballParticles LavaMetaballsFront = new();
     public static readonly DarkspaceRock DarkspaceRock = new();
     public static readonly DarkspaceStars StarryShimmerRiverStars = new();
+    public static readonly FallingDarkspaceStar FallingDarkspaceStar = new();
     public override void Load()
     {
         base.Load();
@@ -136,7 +137,8 @@ public sealed class PS : ModSystem
             LavaMetaballs,
             LavaMetaballsFront,
             DarkspaceRock,
-            StarryShimmerRiverStars
+            StarryShimmerRiverStars,
+            FallingDarkspaceStar
         };
 
         if (Main.netMode == NetmodeID.Server)
