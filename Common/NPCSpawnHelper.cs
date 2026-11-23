@@ -8,6 +8,7 @@ using Stellamod.Content.Areas.Tundra.Abyss.EnemiesAB;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB.Aurelus;
 using Stellamod.Content.Areas.Underground;
 using Stellamod.Content.Areas.WaterSide;
+using Stellamod.Content.Areas.WondrousDarkspace;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Items.Placeable.Cathedral;
 using Stellamod.TilesNew.MothlightTiles;
@@ -40,6 +41,7 @@ public class SpawnSets : ModSystem
         VilePipesEnemy = new();
         StarrTempleEnemy = new();
         HiveKingdomEnemy = new();
+        DarkspaceEnemy = new();
         base.SetupContent();
 
     }
@@ -50,6 +52,7 @@ public class SpawnSets : ModSystem
         ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
         TryNotToSpawnOnWater = NPCID.Sets.Factory.CreateBoolSet();
     }
+    public static List<int> DarkspaceEnemy;
     public static List<int> VilePipesEnemy;
     public static List<int> UndergroundEnemy;
     public static List<int> SpringEnemy;
@@ -98,6 +101,10 @@ public static class NPCSpawnExtensions
     public static void AddToSpringHills(this ModNPC npc)
     {
         SpawnSets.SpringEnemy.Add(npc.Type);
+    }
+    public static void AddToDarkspace(this ModNPC npc)
+    {
+        SpawnSets.DarkspaceEnemy.Add(npc.Type);
     }
     public static void AddToHiveKingdom(this ModNPC npc)
     {
@@ -276,9 +283,9 @@ public class NPCSpawnHelper : GlobalNPC
             }
 
         }
-        if (spawnInfo.Player.InModBiome<MistyDungeonBiome>())
+        if (spawnInfo.Player.InModBiome<WonderousDarkspaceBiome>())
         {
-
+            AddEnemiesFromSpawnSet(SpawnSets.DarkspaceEnemy, pool, spawnInfo);
         }
 
         //No enemies can spawn on this tile

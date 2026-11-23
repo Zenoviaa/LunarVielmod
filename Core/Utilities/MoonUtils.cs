@@ -69,6 +69,11 @@ public static class MoonUtils
         {
             return rand.Next(consequent) == 0;
         }
+        public float NextFloat(float max)
+        {
+            float r = rand.NextSingle();
+            return (r * max);
+        }
 
         public float NextFloat(float min, float max)
         {

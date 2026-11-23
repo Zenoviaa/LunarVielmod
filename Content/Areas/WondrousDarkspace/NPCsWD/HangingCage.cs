@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
@@ -205,6 +206,12 @@ public class HangingCage : ModNPC,
         }
     }
 
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        NPCSets.Heavy[Type] = true;
+        this.AddToDarkspace();
+    }
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -223,7 +230,7 @@ public class HangingCage : ModNPC,
     public override void AI()
     {
         base.AI();
-        NPCSets.Heavy[Type] = true;
+ 
         NPC.rotation = MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f, offset: NPC.whoAmI));
         Lighting.AddLight(NPC.Center, Color.White.ToVector3() * 0.6f);
         switch (State)
@@ -250,21 +257,23 @@ public class HangingCage : ModNPC,
         string texturePath = IsSmall ? Texture + "_Small" : Texture;
         _smallTextureAsset ??= ModContent.Request<Texture2D>(texturePath);
         _mothTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Moth");
+
         Texture2D mothTexture = _mothTextureAsset.Value;
         Vector2 drawPos = NPC.position - screenPos + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
 
-
+        var height = 30F;
         float length = HangingDistance;
         int index = 0;
+
+        var vel = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
         while (length > 0f)
         {
-            Vector2 chainDrawOrigin = _chainTextureAsset.Size() / 2;
-            Vector2 offset = -Vector2.UnitY * _chainTextureAsset.Height() * index;
-            Vector2 vel = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
-            spriteBatch.Draw(_chainTextureAsset.Value, drawPos + offset - vel * NPC.frame.Height / 2, null, Color.White.MultiplyRGB(drawColor),
+            Vector2 chainDrawOrigin = new Vector2(4, 15);
+            Vector2 offset = -Vector2.UnitY * height * index;
+            spriteBatch.Draw(_chainTextureAsset.Value, drawPos + offset - vel * 15F, null, drawColor,
                 NPC.rotation, chainDrawOrigin, _scale, SpriteEffects.None, 0);
 
-            length -= _chainTextureAsset.Height();
+            length -= height;
             index++;
         }
 
@@ -277,17 +286,23 @@ public class HangingCage : ModNPC,
 
         Rectangle mothFrame = mothTexture.GetFrame(_mothFrame, 4);
         Vector2 hoverOffset = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 8, ExtraMath.Osc(0f, 1f, speed: 4, offset: NPC.whoAmI));
-        spriteBatch.Draw(mothTexture, drawPos + new Vector2(0, 8) + hoverOffset, mothFrame, Color.White.MultiplyRGB(drawColor), NPC.rotation, mothFrame.Size() / 2f, _scale, spriteEffects, 0);
-        spriteBatch.Draw(_smallTextureAsset.Value, drawPos, null, Color.White.MultiplyRGB(drawColor), NPC.rotation, _smallTextureAsset.Size() / 2f, _scale, spriteEffects, 0);
+        spriteBatch.Draw(mothTexture, drawPos + new Vector2(0, 8) + hoverOffset, mothFrame, drawColor, NPC.rotation, mothFrame.Size() / 2f, _scale, spriteEffects, 0);
+        spriteBatch.Draw(_smallTextureAsset.Value, drawPos, null, drawColor, NPC.rotation, _smallTextureAsset.Size() / 2f, _scale, spriteEffects, 0);
 
-        Texture2D texture2D4 = AssetReferences.Assets.NoiseTextures.DimLight.Asset.Value;
-        Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color(255, 128, 125, 0), NPC.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+
+        var glowDrawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset);
+        glowDrawer.color = new Color(255, 128, 125, 0) * 0.15f;
+        //glowDrawer.color.A = 0;
+        glowDrawer.worldPosition = NPC.Center;
+        glowDrawer.scale *= 0.45F;
+        spriteBatch.Draw(glowDrawer);
+        //Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color(255, 128, 125, 0), NPC.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
         return false;
     }
     private void AI_Idle()
     {
         Timer++;
-        if (MoonUtils.Rand.NextBool(25))
+        if (MoonUtils.Rand.NextBool(52))
         {
             float xRand = MoonUtils.Rand.NextFloat(-32, 32);
             float yRand = MoonUtils.Rand.NextFloat(-32, 32);
@@ -390,12 +405,6 @@ public class HangingCage : ModNPC,
         npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HypnotizedSoul>(), minimumDropped: 2, maximumDropped: 4));
     }
 
-    public override float SpawnChance(NPCSpawnInfo spawnInfo)
-    {
-        if (!spawnInfo.Player.ZoneWonder)
-            return 0;
-        return ScarletSpawnChance.Wondrous_Spawn_Rate;
-    }
 
     public override void HitEffect(NPC.HitInfo hit)
     {

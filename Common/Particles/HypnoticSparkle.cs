@@ -64,10 +64,12 @@ public class HypnoticSparkle : ParticleUpdater<HypnoticSparkle.Data>
             ref var particle = ref _particles[k];
             var framing = GetParticleFrame(particle.frame);
             var drawer = SpritebatchDrawer.FromTextureGetLightingColor(framing.texture, particle.position);
+            drawer.color = Color.White;
+            drawer.color.A = 0;
             drawer.sourceRect = framing.frame;
             drawer.CenterOrigin();
             drawer.rotation = particle.rot;
-            drawer.scale = new Vector2(particle.scale);
+            drawer.scale = new Vector2(particle.scale) * EasingFunction.InOutSine(particle.timeLeft / 30F);
             spriteBatch.Draw(drawer);
         }
     }

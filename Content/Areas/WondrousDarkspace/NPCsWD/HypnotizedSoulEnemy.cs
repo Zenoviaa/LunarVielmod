@@ -1,10 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
+using Stellamod.Common;
+using Stellamod.Common.ClassReworkSystem;
+using Stellamod.Common.Particles;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Dusts;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
@@ -12,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,8 +46,10 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             }
         }
     }
-    public class HypnotizedSoulEnemy : ModNPC
+    public class HypnotizedSoulEnemy : ModNPC,
+        IDrawToRenderTarget
     {
+        Outliner _outliner;
         private int _frame;
         private ITrailer _trailer;
         private ref float Timer => ref NPC.ai[0];
@@ -57,6 +66,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             get => (AIState)NPC.ai[1];
             set => NPC.ai[1] = (float)value;
         }
+        float _trailingAlpha;
         private ref float WanderAngle => ref NPC.ai[2];
         private ref float TargetWanderAngle => ref NPC.ai[3];
 
@@ -89,6 +99,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             Main.npcFrameCount[Type] = 12;
             NPCID.Sets.TrailCacheLength[Type] = 64;
             NPCID.Sets.TrailingMode[Type] = 1;
+            this.AddToDarkspace();
         }
 
         public override void SetDefaults()
@@ -166,6 +177,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
         public override void AI()
         {
             base.AI();
+            _outliner.SetDefaults();
             switch (State)
             {
                 case AIState.Idle:
@@ -181,6 +193,17 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                     AI_Suck();
                     break;
             }
+
+            if(State == AIState.Chase)
+            {
+                _trailingAlpha = MathHelper.Lerp(_trailingAlpha, 1f, 0.1f);
+            }
+            else
+            {
+                _trailingAlpha *= 0.96F;
+            }
+            _outliner.Update();
+            Lighting.AddLight(NPC.Center, Vector3.One);
         }
         private void AI_Idle()
         {
@@ -198,7 +221,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             Timer++;
             if (MultiplayerHelper.IsHost && Timer % 200 == 0)
             {
-                TargetWanderAngle = Main.rand.NextFloat(0f, 1f) * MathHelper.TwoPi;
+                TargetWanderAngle = MoonUtils.Rand.NextFloat(1f) * MathHelper.TwoPi;
                 NPC.netUpdate = true;
             }
 
@@ -226,16 +249,51 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             }
             OutlineColor = Color.Lerp(OutlineColor, Color.Transparent, 0.1f);
         }
+
+        Projectile NearestShield()
+        {
+            Projectile nearest = null;
+            var dist = 99999F;
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if (proj.ModProjectile is not MeleeShield shield)
+                    continue;
+
+                var distTo = Vector2.DistanceSquared(NPC.Center, proj.Center);
+                if (distTo < dist)
+                {
+                    nearest = proj;
+                    dist = distTo;
+                }
+               
+            }
+            return nearest;
+        }
         private void AI_Chase()
         {
             Timer++;
+   
             OutlineColor = Color.Lerp(OutlineColor, Color.Yellow, 0.1f);
-            if (Main.rand.NextBool(8))
+            if (MoonUtils.Rand.NextBool(8))
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<GlowDust>(), Scale: Main.rand.NextFloat(0.2f, 0.4f), newColor: Color.LightCyan);
+                var pos = NPC.Center + Main.rand.NextVector2Circular(48, 48);
+                PS.HypnoticSparkle.Spawn(new()
+                {
+                    position = pos,
+                    timeLeft = 60,
+                    scale = 1,
+                    rot = 0,
+                });
             }
+
             Player target = Main.player[NPC.target];
             Vector2 velocityToTarget = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            if (Timer == 1)
+            {
+                NPC.velocity -= velocityToTarget * 4;
+                NPC.velocity.Y -= 2;
+            }
+
             float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
             float maxSpeed = MathHelper.Clamp(distanceToTarget, 3, 6);
             if (Timer < 60)
@@ -243,10 +301,30 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                 maxSpeed *= 0.2f;
             }
             velocityToTarget *= maxSpeed;
+         
+            var nearest = NearestShield();
+            if(nearest != null)
+            {
+                var shieldsFacingDirection = (nearest.Center - nearest.PlayerOwner.Center).SafeNormalize(Vector2.Zero);
+                var inverseShieldFacingDirection = -shieldsFacingDirection;
+                var myMovementDirection = velocityToTarget.SafeNormalize(Vector2.Zero);
+                var dp = Vector2.Dot(myMovementDirection, inverseShieldFacingDirection);
+                if(dp > 0.5F)
+                {
+                    velocityToTarget = velocityToTarget.RotatedBy(MathHelper.PiOver2);
+                }
+            }
             NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.1f);
+
+
+
             NPC.direction = NPC.velocity.X < 0 ? -1 : 1;
             NPC.spriteDirection = -NPC.direction;
             NPC.rotation = NPC.velocity.X * 0.01f;
+            if (Timer < 60)
+            {
+                NPC.rotation += ExtraMath.Osc(-0.7f, 0.7f, speed: 3) * MathHelper.Lerp(1f, 0f, Timer / 60F);
+            }
             NPC.noTileCollide = true;
             if (!NPC.HasValidTarget)
             {
@@ -281,7 +359,6 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                     Vector2 spawnPoint = hypnotizedSoulModPlayer.targetSuckPosition.Value + Main.rand.NextVector2CircularEdge(128, 128);
                     Vector2 velocity = (hypnotizedSoulModPlayer.targetSuckPosition.Value - spawnPoint) * 0.1f;
                     var p = FXUtil.GlowStretch(spawnPoint, velocity);
-    
                     p.VectorScale *= 0.5f;
                 }
 
@@ -296,19 +373,73 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                     NPC.velocity = Vector2.Lerp(NPC.velocity, -Vector2.UnitY * 1f + Vector2.UnitY * MathF.Sin(Timer * 0.1f), 0.1f);
                 }
 
-                    //  NPC.Center = target.Center + _suckOffset;
-                    NPC.spriteDirection = -NPC.direction;
+                //  NPC.Center = target.Center + _suckOffset;
+                NPC.spriteDirection = -NPC.direction;
             }
+        }
+        private Color GetColorFunction(float completionRatio)
+        {
+            Color trailColor = DrawUtilities.InterpolateColorArray(completionRatio, Color.White, Color.SkyBlue, Color.DarkBlue, Color.DarkViolet);
+            //trailColor.ScrollHue(ExtraMath.Osc())
+            trailColor *= MathHelper.SmoothStep(1f, 0f, completionRatio);
+            return trailColor;
+        }
+
+        private float GetWidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(32, 0, completionRatio) * _trailingAlpha;
+        }
+
+        private float GetWidthFunction2(float completionRatio)
+        {
+            return GetWidthFunction(completionRatio) * 2f;
+        }
+
+
+        void DrawGlowyTrail(GraphicsDevice gDevice)
+        {
+            var drawColor = Color.Cyan * _trailingAlpha;
+            _trailer ??= TrailPresets.HypnotizedSoul;
+            _trailer.DrawTrail(ref drawColor, NPC.oldPos);
+        } 
+        private void DrawTrail(GraphicsDevice gDevice)
+        {
+
+            var shader2 = FixedRichLaserShader.Instance;
+            shader2.LaserColor = Color.DarkBlue;
+            shader2.LaserTexture = AssetReferences.Assets.LaserTextures.TexturedLaser.Asset;
+            shader2.InnerColor = Color.SkyBlue;
+            shader2.OuterColor = Color.White;
+            TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetColorFunction, GetWidthFunction, shader2, NPC.Size * 0.5f);
+
+            var bloom = BloomTrailShader.Instance;
+            bloom.InnerColor = Color.SkyBlue * 0.5f;
+            bloom.OuterColor = Color.DarkViolet;
+            TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetColorFunction, GetWidthFunction2, bloom, NPC.Size * 0.5f);
+        }
+        void DrawWhite(SpriteBatch sb)
+        {
+            Vector2 drawOrigin = NPC.frame.Size() / 2;
+            SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Texture2D texture = TextureAssets.Npc[Type].Value;
+            Vector2 drawPos = NPC.position - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+            sb.Draw(texture, drawPos, NPC.frame,_outliner.outlineColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
+        }
+        public void DrawToRenderTargets()
+        {
+            if (_outliner.VisibleEnough)
+            {
+                OutlineRenderer.Queue(DrawWhite);
+            }
+            if (_trailingAlpha < 0.02f)
+                return;
+            //PixelationManager.QueueSpritebatchDrawAction(DrawStar);
+            PixelationManager.QueuePrimitivesDrawAction(DrawGlowyTrail, DrawLayer.OverNPCsAdditive);
+            PixelationManager.QueuePrimitivesDrawAction(DrawTrail, DrawLayer.BehindNPCsWithOutline);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if (State == AIState.Chase)
-            {
-                _trailer ??= TrailPresets.HypnotizedSoul;
-                _trailer.DrawTrail(ref drawColor, NPC.oldPos);
-            }
-
             if (State == AIState.Suck)
             {
                 Player target = Main.player[NPC.target];
@@ -321,19 +452,16 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
                         suckPositions.Add(Vector2.Lerp(NPC.Center, target.Center, f / num));
                     }
                     Vector2[] suckPos = suckPositions.ToArray();
+                    _trailer ??= TrailPresets.HypnotizedSoul;
                     _trailer.DrawTrail(ref drawColor, suckPos);
                 }
-
             }
 
-            this.DrawOutline(OutlineColor, yOffset: 0, _scale);
             Vector2 drawOrigin = NPC.frame.Size() / 2;
-
             SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
+            Texture2D texture = TextureAssets.Npc[Type].Value;
             Vector2 drawPos = NPC.position - screenPos + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-            spriteBatch.Draw(texture, drawPos, NPC.frame, Color.White.MultiplyRGB(drawColor), NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
             return false;
         }
 
@@ -341,9 +469,15 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
 
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color(255, 128, 125, 0), NPC.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Lighting.AddLight(NPC.Center, Color.White.ToVector3() * 1.0f * Main.essScale);
+            Texture2D texture2D4 = AssetReferences.Assets.GlowMasks.SimpleGlowCircle.Asset.Value;
+            var drawer = SpritebatchDrawer.FromTextureWhite(texture2D4);
+            drawer.worldPosition = NPC.Center;
+            drawer.color = Color.SkyBlue * 0.15f;
+            drawer.color.A = 0;
+            drawer.scale *= 0.6F;
+            spriteBatch.Draw(drawer);
+            //in.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color(255, 128, 125, 0), NPC.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
@@ -351,37 +485,26 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HypnotizedSoul>(), minimumDropped: 2, maximumDropped: 4));
         }
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-            if (!spawnInfo.Player.ZoneWonder)
-                return 0;
-            return ScarletSpawnChance.Wondrous_Spawn_Rate;
-        }
 
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            //float boomSize = Main.rand.NextFloat(0.025f, 0.08f);
+            var fx = FXUtil.GlowCircleBoom(NPC.Center,
+                innerColor: Color.White,
+                glowColor: Color.LightBlue,
+                outerGlowColor: Color.Blue, duration: 25, baseSize: 0.12F);
+            fx.Scale *= 1.4F;
+            var fac = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, TriColorPalette.Moonly, new Vector2(5, 35));
+            fac.particleCount *= 2;
+            ParticleUtils.CreateSwirlingDustCircle(fac);
+        }
         public override void OnKill()
         {
             base.OnKill();
-            float boomSize = Main.rand.NextFloat(0.025f, 0.08f);
-            FXUtil.GlowCircleBoom(NPC.Center,
-                innerColor: Color.White,
-                glowColor: Color.LightBlue,
-                outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
 
-
-            for (float i = 0; i < 4; i++)
-            {
-                float progress = i / 4f;
-                float rot = progress * MathHelper.ToRadians(360);
-                rot += Main.rand.NextFloat(-0.5f, 0.5f);
-                Vector2 offset = rot.ToRotationVector2() * 24;
-                var particle = FXUtil.GlowCircleLongBoom(NPC.Center,
-                    innerColor: Color.White,
-                    glowColor: Color.LightBlue,
-                    outerGlowColor: Color.DarkBlue,
-                    baseSize: Main.rand.NextFloat(0.1f, 0.2f),
-                    duration: Main.rand.NextFloat(15, 25));
-                particle.Rotation = rot + MathHelper.ToRadians(45);
-            }
         }
     }
 }
