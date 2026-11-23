@@ -3,7 +3,6 @@ using System;
 using Terraria;
 
 namespace Stellamod.Common.Particles;
-
 public struct AbyssFloatingFlowerDustData : IParticleData
 {
     public static readonly AbyssFloatingFlowerDustData Default = new AbyssFloatingFlowerDustData { timeLeft = 240 };
