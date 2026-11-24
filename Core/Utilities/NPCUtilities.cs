@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.WorldG;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,6 +19,28 @@ public static class NPCUtilities
     }
     extension(NPC npc)
     {
+        /// <summary>
+        /// Checks if the npc is grounded
+        /// </summary>
+        /// <param name="maxTilesDown"></param>
+        /// <param name="allowPlatforms"></param>
+        /// <returns></returns>
+        public bool IsGrounded(int maxTilesDown, bool allowPlatforms)
+        {
+            var pos = npc.Bottom;
+            for(var i = 0; i < maxTilesDown; i++)
+            {
+                var tilePos = pos.ToTileCoordinates();
+                var tile = Framing.GetTileSafely(tilePos);// Main.tile[tilePos];
+                if (tile.HasTile && (Main.tileSolid[tile.TileType] || (Main.tileSolidTop[tile.TileType] && allowPlatforms)))
+                {
+                    return true;
+                }
+                pos.Y += 16;
+            }
+            return false;
+        }
+
         public NPC ClosestFriend(int type, float sqrSightDistance)
         {
             NPC closestFriend = null;
