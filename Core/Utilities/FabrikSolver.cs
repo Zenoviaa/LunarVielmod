@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Stellamod.Common.DungeonGeneration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.GameContent.Animations;
 
 namespace Stellamod.Core.Utilities;
 
@@ -16,6 +18,21 @@ public struct FabrikSegment
 
 public static class FabrikSolver
 {
+    public static bool IsReachable(ref FabrikSegment[] segments, Vector2 root, Vector2 destination)
+    {
+
+        var distanceStartToEnd = Vector2.Distance(root, destination);
+        var distanceOfRig = 0F;
+        for (var i = 0; i < segments.Length; i++)
+        {
+            ref var inputSegment = ref segments[i];
+            distanceOfRig += inputSegment.length;
+        }
+
+        //forward iteration
+        var isReachable = distanceOfRig >= distanceStartToEnd;
+        return isReachable;
+    }
     public static Vector2 SafeNormalize(Vector2 input)
     {
         if (input == Vector2.Zero)

@@ -56,9 +56,9 @@ namespace Stellamod.Common.Shaders
         private void DrawPlayerOutline(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
         {
 
-           
-            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
-            if(clientConfig.OutlinePlayer || clientConfig.OutlineOtherPlayers)
+
+            LunarVeilClientConfig clientConfig = LunarVeilClientConfig.Instance;
+            if (clientConfig.OutlinePlayer || clientConfig.OutlineOtherPlayers)
             {
                 var sb = Main.spriteBatch;
                 GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -89,7 +89,7 @@ namespace Stellamod.Common.Shaders
                 {
                     var whiteShader = SpriteWhiteShader.Instance;
                     sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
-                        RasterizerState.CullNone, whiteShader.Effect, Main.GameViewMatrix.TransformationMatrix);
+                        RasterizerState.CullNone, whiteShader.Effect);
                     sb.Draw(outlineTarget, Vector2.Zero, Color.White);
                     sb.End();
                 }

@@ -134,6 +134,8 @@ public static class DrawUtilities
             return red;
         }
     }
+
+
     public static short[] PrepareIndicesForDrawingAnchors(int length)
     {
         int connectIndex = 0;

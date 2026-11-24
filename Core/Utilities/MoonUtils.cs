@@ -86,7 +86,19 @@ public static class MoonUtils
     {
         return Main.tileSolid[Main.tile[x, y].TileType];
     }
+    public static (float angle1, float angle2) SolveTwoLimbIK(Vector2 position, float arm1, float arm2, bool elbowUp)
+    {
+        float x = position.X;
+        float y = position.Y;
+        float r2 = x * x + y * y;
+        float c2 = (r2 - arm1 * arm1 - arm2 * arm2) / (2.0f * arm1 * arm2);
+        float s2 = MathF.Sqrt(1.0f - c2 * c2);
+        var theta2 = elbowUp ? MathF.Atan2(s2, c2) : MathF.Atan2(-s2, c2);
+        var theta1 = MathF.Atan2(y, x) - MathF.Atan2(arm2 * MathF.Sin(theta2), arm1 + arm2 * MathF.Cos(theta2));
+        return (theta1, theta2);
+    }
 
+       
     public static float ProximityTo(float point, float pointImGettingCloseTo, float size)
     {
         //get the distance bbetween the two points
