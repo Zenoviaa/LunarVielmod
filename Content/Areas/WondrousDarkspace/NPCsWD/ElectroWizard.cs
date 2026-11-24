@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
@@ -709,7 +711,11 @@ public class ElectroWizard : ModNPC,
             SwitchState(AIState.Fall);
         }
     }
-
+    public override void ModifyNPCLoot(NPCLoot npcLoot)
+    {
+        base.ModifyNPCLoot(npcLoot);
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HypnotizedSoul>(), minimumDropped: 1, maximumDropped: 4));
+    }
     void AI_Fall()
     {
         NPC.PlayAnimationOneShot(ANIM_ATTACKOUT);
@@ -765,8 +771,9 @@ public class ElectroWizard : ModNPC,
             });
         }
 
-        _squishScale.Y = MathHelper.Lerp(1f, 1.2f, MathF.Abs(NPC.velocity.Y / 15F));
-        _squishScale.X = MathHelper.Lerp(1f, 0.9f, MathF.Abs(NPC.velocity.Y / 15F));
+        float a = MathF.Abs(NPC.velocity.Y / 15F);
+        _squishScale.Y = MathHelper.Lerp(1f, 1.2f, a);
+        _squishScale.X = MathHelper.Lerp(1f, 0.9f, a);
         if (NPC.velocity.Y < 15)
             NPC.velocity.Y += 0.5f;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.X * 0.05F, 0.3f);

@@ -49,6 +49,12 @@ public static class ColorExtensions
 /// <param name="DrawOffset"></param>
 public record struct BackgroundDrawParameters(Rectangle SourceRectangle, Vector2 DrawOffset);
 
+public readonly record struct TrailPreparation(
+    Vector2[] Points,
+    Func<float, Color> ColorFunction, 
+    Func<float, float> WidthFunction, 
+    Vector2? Offset = null,
+    bool SkipPruneFar = false);
 public static class Vector2Extensions
 {
     extension(Vector2)
@@ -80,8 +86,11 @@ public static class Vector2Extensions
 /// </summary>
 public static class DrawUtilities
 {
-
-
+    extension(List<VertexPositionColorTexture> vertices)
+    {
+        public int PrimitiveCount2PerVertex => vertices.Count / 2;
+    }
+    public static readonly short[] Indices = PrepareIndicesForDrawing(12288 / 4); 
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
 
@@ -387,6 +396,18 @@ public static class DrawUtilities
         graphicsDevice.DrawUserIndexedPrimitives<VertexType>(
           PrimitiveType.TriangleList, arr, 0, arr.Length, indices, 0, indices.Length / 3);
     }
+    public static void DrawUserIndexedPrimitivesWithEffect<VertexType>(VertexType[] arr, short[] indices, int primitiveCount, Effect effect)
+        where VertexType : struct, IVertexType
+    {
+        GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+        foreach (var pass in effect.CurrentTechnique.Passes)
+        {
+            pass.Apply();
+        }
+        graphicsDevice.RasterizerState = RasterizerState.CullNone;
+        graphicsDevice.DrawUserIndexedPrimitives<VertexType>(
+          PrimitiveType.TriangleList, arr, 0, arr.Length, indices, 0, primitiveCount);
+    }
     public static void DrawUserIndexedPrimitivesWithEffect<VertexType>(VertexType[] arr, int[] indices, Effect effect)
         where VertexType : struct, IVertexType
     {
@@ -431,14 +452,15 @@ public static class DrawUtilities
         Vector2[] oldPos,
         Func<float, Color> colorFunc,
         Func<float, float> widthFunc,
-        Vector2? offset = null)
+        Vector2? offset = null,
+        bool skipPrune = false)
     {
 
 
         Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
         float numPoints = oldPos.Length * 2;
-
-        oldPos = DrawUtilities.PruneFarPoints(oldPos);
+        if(!skipPrune)
+            oldPos = DrawUtilities.PruneFarPoints(oldPos);
 
         if (oldPos.Length <= 2)
             return new VertexPositionColorTexture[4];
@@ -446,6 +468,25 @@ public static class DrawUtilities
 
         //        Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
         return TrailVertexHelper.FillVertexArray(oldPos, colorFunc, widthFunc, trailOffset);
+    }
+    public static VertexPositionColorTexture[] FillTrailVertices(TrailPreparation trailPreparation)
+    {
+        Vector2 trailOffset = trailPreparation.Offset == null ? Vector2.Zero : (Vector2)trailPreparation.Offset;
+        float numPoints = trailPreparation.Points.Length * 2;
+        if (!trailPreparation.SkipPruneFar)
+        {
+            var oldPos = DrawUtilities.PruneFarPoints(trailPreparation.Points);
+
+            if (oldPos.Length <= 2)
+                return new VertexPositionColorTexture[4];
+            return TrailVertexHelper.FillVertexArray(oldPos, trailPreparation.ColorFunction, trailPreparation.WidthFunction, trailOffset);
+        }
+
+
+        if (trailPreparation.Points.Length <= 2)
+            return new VertexPositionColorTexture[4];
+
+        return TrailVertexHelper.FillVertexArray(trailPreparation.Points, trailPreparation.ColorFunction, trailPreparation.WidthFunction, trailOffset);
     }
     public static VertexPositionColorTexture[] PreparedWrappedTrailing(
         Vector2[] oldPos,
