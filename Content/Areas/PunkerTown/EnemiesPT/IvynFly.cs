@@ -176,7 +176,7 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
             {
                 if (Timer % 30 == 0 && NPC.HasValidTarget)
                 {
-                    SearchJob searchJob = new SearchJob(NPC.Center, Target.Center, tileSearchRange: 50, airPadding: 1);
+                    SearchJob searchJob = new SearchJob(SearchJobStyle.Default, NPC.Center, Target.Center, tileSearchRange: 50, airPadding: 1);
                     Path = Astar.Search(searchJob);
                     if (Path != null && Path.Count > 0)
                     {

@@ -10,7 +10,6 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Core.AssetReferences.Assets.NoiseTextures;
 
 namespace Stellamod.Core.SwingSystem
 {
@@ -22,7 +21,9 @@ namespace Stellamod.Core.SwingSystem
     }
     public class StaminaAttackExpandableTooltip : AbstractExpandingTooltip
     {
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         public override string? GetShiftHelpTooltip(Item item)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         {
             if (item.ModItem == null)
                 return null;
@@ -87,8 +88,8 @@ namespace Stellamod.Core.SwingSystem
                     line.OverrideColor = new Color(239, 163, 80);
                     lines.Add(line);
                 }
-           
-            } 
+
+            }
             else if (item.TryGetGlobalItem<CoolSwingGlobalItem>(out var cs) && cs.isMeleeSwingItem)
             {
                 line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + cs.meleeWeaponType.ToString()));

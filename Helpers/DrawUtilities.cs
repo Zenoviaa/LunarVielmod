@@ -160,8 +160,7 @@ public static class DrawUtilities
         Vector2 bottomLeftAnchor, 
         Vector2 bottomRightAnchor)
     {
-        const float coord1 = 0;
-        const float coord2 = 1;
+
 
         int numVertices = (numPoints - 1) * 4;
         int index = 0;
@@ -1287,6 +1286,12 @@ public struct SpritebatchDrawer
     {
         drawOrigin.Y = Size.Y - drawOrigin.Y;
         spriteEffects = SpriteEffects.FlipVertically;
+    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void FlipHorizontally()
+    {
+        drawOrigin.X = Size.X - drawOrigin.X;
+        spriteEffects = SpriteEffects.FlipHorizontally;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

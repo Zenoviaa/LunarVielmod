@@ -11,7 +11,6 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Rek;
 
 public partial class RekBoss
 {
-    Vector2 _oroPoint;
     private float _ouroborosAlpha;
     private bool _ouroborosTrail;
     private float _windUpTimer;

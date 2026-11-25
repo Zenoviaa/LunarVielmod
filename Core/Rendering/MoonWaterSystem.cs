@@ -76,7 +76,6 @@ public class MoonWaterSystem : ModSystem
     public int DownSamples => 2;
     public Vector2 Tiling => new Vector2(1.5f, 1.5f) * 0.75f;
     public float waterAlpha;
-    public static event Action<SpriteBatch> DrawWaterMask;
     public override void Load()
     {
         IL_Main.DoDraw += DrawOverWaterTarget;
@@ -366,6 +365,7 @@ outliner.Shader, Main.Transform);
 
     public void RenderWaterParticles(SpriteBatch sb, RenderTarget2D waterParticleTarget, IList<Vector3> metaballList)
     {
+        /*
         void DrawBlueWaterParticles()
         {
             var pass = AssetReferences.Effects.MoonWaterParticles.CreateP0();
@@ -425,7 +425,7 @@ outliner.Shader, Main.Transform);
                 sb.End();
             }
         }
-
+        */
         void DrawLavaParticles()
         {
             var pass = AssetReferences.Effects.SuperLavaParticles.CreateP0();

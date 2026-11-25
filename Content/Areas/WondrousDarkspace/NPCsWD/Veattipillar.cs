@@ -36,7 +36,6 @@ public class Veattipillar : ModNPC,
         set => NPC.ai[1] = (float)value;
     }
     ref float AttackTimer => ref NPC.ai[2];
-    bool _contactDamage;
     Outliner _outliner;
     const string ANIM_IDLE = "Idle";
     const string ANIM_SCORPIONZAPREADY = "ScorpionZapReady";
@@ -63,7 +62,7 @@ public class Veattipillar : ModNPC,
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
-        return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        return false;
     }
 
 
@@ -349,11 +348,12 @@ public class Veattipillar : ModNPC,
         base.HitEffect(hit);
         if (Main.netMode == NetmodeID.Server)
             return;
+        if (NPC.life > 0)
+            return;
         var particles = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, TriColorPalette.Moonly, new Vector2(5, 35));
         ParticleUtils.CreateSwirlingDustCircle(particles);
 
-        if (NPC.life > 0)
-            return;
+
         this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(0, -1));
         this.MakeGore("_Gore_Butt", NPC.position, NPC.velocity + new Vector2(0, 1));
     }

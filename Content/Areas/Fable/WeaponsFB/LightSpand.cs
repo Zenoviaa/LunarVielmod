@@ -322,7 +322,6 @@ public class LightSpandSlash : BaseSwingProjectileV2
         swingSound3.Volume = 0.5f;
 
 
-        int style = 0;
         SoundStyle s1 = swingSound1;
         SoundStyle s2 = swingSound2;
 
@@ -474,7 +473,6 @@ public class LightSpandSlash : BaseSwingProjectileV2
 public class LightSpandStaminaSlash : BaseSwingProjectileV2
 {
     bool _firedProj;
-    private float _projTimer;
     public override void DefineCombo()
     {
         base.DefineCombo();

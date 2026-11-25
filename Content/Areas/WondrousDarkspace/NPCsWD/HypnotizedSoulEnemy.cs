@@ -64,7 +64,6 @@ public class HypnotizedSoulEnemy : ModNPC,
 
     private Vector2 _scale;
     private Vector2 _suckOffset;
-    private Color OutlineColor;
     private void SwitchState(AIState state)
     {
         if (MultiplayerHelper.IsHost)

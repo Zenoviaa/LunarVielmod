@@ -2,6 +2,7 @@
 using Stellamod.Common.Particles;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Astar;
 using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Pixelation;
@@ -22,6 +23,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD;
 
 public class Dreamwalker : ModNPC
 {
+    Pathfinder _pathfinder;
     #region Frame Data
     public static readonly Rectangle FrameLegPart3 = new Rectangle(44, 30, 18, 68);
     public static readonly Vector2 FrameLegPart3Origin = new Vector2(16, 0);
@@ -57,6 +59,8 @@ public class Dreamwalker : ModNPC
     #endregion
     public class SpiderLeg
     {
+        public readonly record struct StepData(Vector2 StepStart, Vector2 GroundPosition);
+       
         public SpiderLeg()
         {
             segments = new FabrikSegment[2];
@@ -97,11 +101,13 @@ public class Dreamwalker : ModNPC
         //The armature then roots itself on the edge of that points and attempts to IK to the ground position
         //Then we just do some math to make sure the ground position is always reachable
 
+        public Vector2 up;
         public Vector2 leftBoundaryOffset;
         public Vector2 rightBoundaryOffset;
         public Vector2 groundPosition;
         public Vector2 rootPosition;
         public Vector2 endRootEffector;
+        public float rotation;
         public float rootMidAngle;
         public float radiansOfFreedom;
         public float rootLength;
@@ -110,31 +116,38 @@ public class Dreamwalker : ModNPC
 
         public float stepTimer;
         public Vector2 stepStart;
-        public Vector2 stepMidPoint;
         public void Update()
         {
-
             for(var i = 0; i < interpolatingLegAngles.Length; i++)
             {
                 ref var legAngle = ref interpolatingLegAngles[i];
                 legAngle = Utils.AngleLerp(legAngle, legAngles[i], 0.1f);
             }
         }
+
+        public void Step(StepData stepData)
+        {
+            stepStart = stepData.StepStart;
+            stepTimer = 0;
+            groundPosition = stepData.GroundPosition;
+        }
         public void Solve(Vector2 rootPosition, Vector2 targetPosition)
         {
             //200 is about the length of the full length I believe
             //magic number but yeah
             this.rootPosition = rootPosition;
-
             if (stepTimer < 16)
             {
                 stepTimer++;
-             
             }
 
-            targetPosition = Vector2.Lerp(stepStart, targetPosition, stepTimer / 16F) + new Vector2(0, MathHelper.Lerp(0, -64, EasingFunction.QuadraticBump(stepTimer / 16F)));
- 
-            rootAngle = rootMidAngle + MathHelper.Clamp((targetPosition.X - rootPosition.X) / 200F, -1, 1) * radiansOfFreedom * 0.5F;
+            targetPosition = Vector2.Lerp(stepStart, targetPosition, stepTimer / 16F) + Vector2.Lerp(Vector2.Zero, up * 64, EasingFunction.QuadraticBump(stepTimer / 16F));
+
+            var rm = up.ToRotation();
+
+            var diffBetweenRoot = (targetPosition - rootPosition);
+            var signedRootDistance = diffBetweenRoot.Length() * Vector2.Dot(diffBetweenRoot.SafeNormalize(Vector2.Zero), Vector2.UnitX.RotatedBy(rotation));
+            rootAngle = rm + MathHelper.Clamp(signedRootDistance / 200F, -1, 1) * radiansOfFreedom * 0.5F;
             endRootEffector = rootPosition + rootAngle.ToRotationVector2() * rootLength;
 
             //so here's how this works
@@ -184,6 +197,30 @@ public class Dreamwalker : ModNPC
                 {
                     field[i] = new SpiderLeg();
                 }
+
+                field[0].leftBoundaryOffset = new Vector2(-230, 0);
+                field[0].rightBoundaryOffset = new Vector2(-15, 0);
+
+                field[1].leftBoundaryOffset = new Vector2(-215, 0);
+                field[1].rightBoundaryOffset = new Vector2(0, 0);
+
+                field[2].leftBoundaryOffset = new Vector2(25, 0);
+                field[2].rightBoundaryOffset = new Vector2(210, 0);
+
+                field[3].leftBoundaryOffset = new Vector2(25, 0);
+                field[3].rightBoundaryOffset = new Vector2(235, 0);
+
+                field[4].leftBoundaryOffset = new Vector2(-225, 0);
+                field[4].rightBoundaryOffset = new Vector2(-4, 0);
+
+                field[5].leftBoundaryOffset = new Vector2(-205, 0);
+                field[5].rightBoundaryOffset = new Vector2(-8, 0);
+
+                field[6].leftBoundaryOffset = new Vector2(12, 0);
+                field[6].rightBoundaryOffset = new Vector2(205, 0);
+
+                field[7].leftBoundaryOffset = new Vector2(12, 0);
+                field[7].rightBoundaryOffset = new Vector2(225, 0);
             }
             return field;
         }
@@ -204,9 +241,12 @@ public class Dreamwalker : ModNPC
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
-    Vector2 _down = new Vector2(0, 1);
+    Vector2[] _actualLegPositions = new Vector2[3];
     float IdleTime => 20;
     float WalkTime => 240;
+    int WanderTileWidth => 75;
+    int WanderTileHeight => 75;
+    float WanderWalkSpeed => 3;
     public override string Texture => AssetReferences.Assets.Textures.Darkspace.NPCs.Dreamspider.KEY;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
@@ -218,11 +258,13 @@ public class Dreamwalker : ModNPC
     {
         base.ReceiveExtraAI(reader);
         _walkDirection = reader.ReadSingle();
+        _pathfinder.NetReceive(reader);
     }
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.Write(_walkDirection);
+        _pathfinder.NetSend(writer);
     }
     public override void SetStaticDefaults()
     {
@@ -233,20 +275,173 @@ public class Dreamwalker : ModNPC
     public override void SetDefaults()
     {
         base.SetDefaults();
+        _pathfinder = new();
         NPC.damage = 32;
-        NPC.width = 32;
-        NPC.height = 32;
-        NPC.lifeMax = 50;
-        NPC.defense = 10;
-        NPC.HitSound = SoundID.DD2_CrystalCartImpact;
+        NPC.width = 16;
+        NPC.height = 16;
+        NPC.lifeMax = 100;
+        NPC.defense = 12;
+        NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0.25f;
+        NPC.noGravity = true;
     }
+
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        if (NPC.life > 0)
+            return;
+        var particles = ParticleUtils.ParticleFactory.FromSmallBurst(NPC.Center, TriColorPalette.Moonly, new Vector2(5, 35));
+        ParticleUtils.CreateSwirlingDustCircle(particles);
+
+        this.MakeGore("_Gore_Head", NPC.position, NPC.velocity + new Vector2(0, -1));
+        this.MakeGore("_Gore_Body", NPC.position, NPC.velocity + new Vector2(0, 1));
     }
 
+    bool IsNearTile()
+    {
+        Point center = NPC.Center.ToTileCoordinates();
+        var rect = new Rectangle(
+            center.X - 1,
+            center.Y - 1,
+            3,
+            3);
+
+        rect = TileUtilities.Clamp(rect);
+        for (var i = rect.Left; i < rect.Right; i++)
+        {
+            for (var j = rect.Top; j < rect.Bottom; j++)
+            {
+                var tile = Main.tile[i, j];
+                if (tile.HasTile && MoonUtils.QuickSolid(i, j))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Returns a vector that shows which way gravity is, defaulting to down if there's no nearby tiles
+    /// </summary>
+    /// <returns></returns>
+    Vector2 GetDownVector()
+    {
+
+        Vector2 down = Vector2.Zero;
+        foreach(var direction in Vector2.OctagonalOffsets)
+        {
+            var dist = 196;
+            var hitPoint = CollisionHelper.SolidTileRayCast(NPC.Center, direction, dist);
+            var dq = Vector2.DistanceSquared(NPC.Center, hitPoint);
+            down += direction * MathHelper.Lerp(1f, 0f, dq / (dist * dist));
+        }
+        down /= 8F;
+        return down;
+    }
+    List<Vector2> _pointBuffer = new();
+    Vector2 GetNextPointToWanderTo(int tileSearchWidth, int tileSearchHeight)
+    {
+        Point center = NPC.Center.ToTileCoordinates();
+        var rect = new Rectangle(
+            center.X - tileSearchWidth / 2,
+            center.Y - tileSearchHeight / 2,
+            tileSearchWidth,
+            tileSearchHeight);
+
+        rect = TileUtilities.Clamp(rect);
+
+        var list = _pointBuffer;
+        list.Clear();
+        for (var x = rect.Left; x < rect.Right; x++)
+        {
+            for(var y = rect.Top; y < rect.Bottom; y++)
+            {
+                var tile = Main.tile[x, y];
+                if (tile.HasTile)
+                    continue;
+
+                //Check if it is adjacent to a tile
+                var adjacentToTile = false;
+                for (var i = -1; i <= 1; i++)
+                {
+                    for (var j = -1; j <= 1; j++)
+                    {
+                        var otherPoint = new Point(x + i, y + j);
+                        var otherTile = Main.tile[otherPoint];
+                        if (otherTile.HasTile && MoonUtils.QuickSolid(otherPoint.X, otherPoint.Y))
+                        {
+                            adjacentToTile = true;
+                            break;
+                        }
+                    }
+                }
+                if (!adjacentToTile)
+                    continue;
+                list.Add(new Point(x, y).ToWorldCoordinates());
+            }
+
+        }
+        if (list.Count <= 0)
+            return NPC.Center;
+        return list[MoonUtils.Rand.Next(list.Count)];
+
+    }
+
+    /// <summary>
+    /// Tries to find an air tile that is touching a ground tile, so that we can walk over to it
+    /// </summary>
+    /// <param name="tileSearchWidth"></param>
+    /// <param name="tileSearchHeight"></param>
+    /// <param name="maxAttempts"></param>
+    /// <returns></returns>
+    Vector2 GetNextPointToWanderTo(int tileSearchWidth, int tileSearchHeight, int maxAttempts)
+    {
+        Point center = NPC.Center.ToTileCoordinates();
+        var rect = new Rectangle(
+            center.X - tileSearchWidth / 2, 
+            center.Y - tileSearchHeight / 2, 
+            tileSearchWidth, 
+            tileSearchHeight);
+
+        rect = TileUtilities.Clamp(rect);
+
+        for(var a = 0; a < maxAttempts; a++)
+        {
+            var randomPoint = MoonUtils.Rand.NextPointInRectangle(rect);
+            if (Vector2.DistanceSquared(randomPoint.ToWorldCoordinates(), NPC.Center) < 256 * 256)
+                continue;
+
+            var tile = Main.tile[randomPoint];
+            if (tile.HasTile)
+                continue;
+
+            //Check if it is adjacent to a tile
+            var adjacentToTile = false;
+            for (var i = -1; i <= 1; i++)
+            {
+                for (var j = -1; j <= 1; j++)
+                {
+                    var otherPoint = randomPoint + new Point(i, j);
+                    var otherTile = Main.tile[otherPoint];
+                    if (otherTile.HasTile)
+                    {
+                        adjacentToTile = true;
+                    }
+                }
+            }
+
+            if (!adjacentToTile)
+                continue;
+            
+            return randomPoint.ToWorldCoordinates();
+        }
+        return NPC.Center;
+    }
     void MakeIK()
     {
         //So this algorithm is simple
@@ -257,54 +452,35 @@ public class Dreamwalker : ModNPC
         //so we keep track of the end effector point of each leg
         //if the end effector is invalid get a new point
         //this new point should be calculated based off the leg index, but it should go in the direction the spider is moving
-        NPC.TargetClosest();
-
-
-
-        Legs[0].leftBoundaryOffset = new Vector2(-230, 0);
-        Legs[0].rightBoundaryOffset = new Vector2(-15, 0);
-
-        Legs[1].leftBoundaryOffset = new Vector2(-215, 0);
-        Legs[1].rightBoundaryOffset = new Vector2(0, 0);
-
-        Legs[2].leftBoundaryOffset = new Vector2(25, 0);
-        Legs[2].rightBoundaryOffset = new Vector2(210, 0);
-
-
-        Legs[3].leftBoundaryOffset = new Vector2(25, 0);
-        Legs[3].rightBoundaryOffset = new Vector2(235, 0);
-
-
-        for(var i = 0; i < 4; i++)
+        // NPC.rotation = 0;
+        var down = GetDownVector();
+        var facingLeft = Vector2.UnitX.RotatedBy(NPC.rotation);
+        var facingRight = -Vector2.UnitX.RotatedBy(NPC.rotation);
+        for (var i = 0; i < Legs.Length; i++)
         {
             Vector2 rootPosition = NPC.Center;
             var leg = Legs[i];
-            var left = NPC.Center + leg.leftBoundaryOffset;
+            leg.up = -Vector2.UnitY.RotatedBy(NPC.rotation);
+            leg.rotation = NPC.rotation;
+            var left = NPC.Center + leg.leftBoundaryOffset.RotatedBy(NPC.rotation);
        
-            var right = NPC.Center + leg.rightBoundaryOffset;
+            var right = NPC.Center + leg.rightBoundaryOffset.RotatedBy(NPC.rotation);
             var middle = (left + right) * 0.5f;
             var endEffectorPosition = leg.groundPosition;
 
-            var leftDP = Vector2.Dot((left - endEffectorPosition).SafeNormalize(Vector2.Zero), Vector2.UnitX);
-            var rightDP = Vector2.Dot((right - endEffectorPosition).SafeNormalize(Vector2.Zero), -Vector2.UnitX);
+
+            var leftDP = Vector2.Dot((left - endEffectorPosition).SafeNormalize(Vector2.Zero), facingLeft);
+            var rightDP = Vector2.Dot((right - endEffectorPosition).SafeNormalize(Vector2.Zero), facingRight);
             if(leftDP > 0)
             {
-                leg.stepTimer = 0;
-                leg.stepStart = leg.groundPosition;
-                leg.groundPosition = right + new Vector2(-10, 0);
-                leg.groundPosition = TileUtilities.FallToSolidTile(leg.groundPosition);
-                leg.groundPosition.Y += 8;
-            } else if(rightDP > 0)
+                leg.Step(new(leg.groundPosition, CollisionHelper.SolidTileRayCast(right + new Vector2(-10, 0).RotatedBy(NPC.rotation), down, 80)));
+            }
+            else if(rightDP > 0)
             {
-                leg.stepTimer = 0;
-                leg.stepStart = leg.groundPosition;
-                leg.groundPosition = left + new Vector2(10, 0);
-                leg.groundPosition = TileUtilities.FallToSolidTile(leg.groundPosition);
-                leg.groundPosition.Y += 8;
+                leg.Step(new(leg.groundPosition, CollisionHelper.SolidTileRayCast(left + new Vector2(10, 0).RotatedBy(NPC.rotation), down, 80)));
             }
 
-
-            if (i == 0 || i == 1)
+            if (i == 0 || i == 1 || i == 4 || i == 5)
             {
                 leg.overhead = true;
             }
@@ -313,69 +489,12 @@ public class Dreamwalker : ModNPC
                 leg.overhead = false;
             }
        
-
-            leg.Solve(rootPosition, leg.groundPosition);
-            leg.Update();
-        }
-
-        //NOW THE BACK LEGS
-
-
-        Legs[4].leftBoundaryOffset = new Vector2(-225, 0);
-        Legs[4].rightBoundaryOffset = new Vector2(-4, 0);
-
-        Legs[5].leftBoundaryOffset = new Vector2(-205, 0);
-        Legs[5].rightBoundaryOffset = new Vector2(-8, 0);
-
-        Legs[6].leftBoundaryOffset = new Vector2(12, 0);
-        Legs[6].rightBoundaryOffset = new Vector2(205, 0);
-
-
-        Legs[7].leftBoundaryOffset = new Vector2(12, 0);
-        Legs[7].rightBoundaryOffset = new Vector2(225, 0);
-
-        for (var i = 5; i < 8; i++)
-        {
-            Vector2 rootPosition = NPC.Center;
-            var leg = Legs[i];
-            var left = NPC.Center + leg.leftBoundaryOffset;
-            var right = NPC.Center + leg.rightBoundaryOffset;
-            var endEffectorPosition = leg.groundPosition;
-
-            var leftDP = Vector2.Dot((left - endEffectorPosition).SafeNormalize(Vector2.Zero), Vector2.UnitX);
-            var rightDP = Vector2.Dot((right - endEffectorPosition).SafeNormalize(Vector2.Zero), -Vector2.UnitX);
-            if (leftDP > 0)
-            {
-                leg.stepTimer = 0;
-                leg.stepStart = leg.groundPosition;
-                leg.groundPosition = right + new Vector2(-10, 0);
-                leg.groundPosition = TileUtilities.FallToSolidTile(leg.groundPosition);
-                leg.groundPosition.Y += 8;
-            }
-            else if (rightDP > 0)
-            {
-                leg.stepTimer = 0;
-                leg.stepStart = leg.groundPosition;
-                leg.groundPosition = left + new Vector2(10, 0);
-                leg.groundPosition = TileUtilities.FallToSolidTile(leg.groundPosition);
-                leg.groundPosition.Y += 8;
-            }
-
-
-            if (i == 4 || i == 5)
-            {
-                leg.overhead = true;
-            }
-            else
-            {
-                leg.overhead = false;
-            }
-
 
             leg.Solve(rootPosition, leg.groundPosition);
             leg.Update();
         }
     }
+
 
 
     public override void AI()
@@ -393,6 +512,13 @@ public class Dreamwalker : ModNPC
                 AI_Shock();
                 break;
         }
+
+        //Fall down if not near a tile
+        //Spiders have unique gravity lol
+
+        var down = GetDownVector();
+        var right = down.RotatedBy(-MathHelper.PiOver2);
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, right.ToRotation(), 0.1f);
         MakeIK();
     }
 
@@ -406,15 +532,24 @@ public class Dreamwalker : ModNPC
     {
 
     }
+
+
     void AI_Walk()
     {
         Timer++;
+        if(Timer == 1)
+        {
+            var pointToMoveTo = GetNextPointToWanderTo(WanderTileWidth, WanderTileHeight);
+            NPC.TargetClosest();
+            pointToMoveTo = NPC.PlayerImTargeting.Center; 
+            _pathfinder.NewPath(pointToMoveTo, NPC.Center, 75, searchJobStyle: SearchJobStyle.Crawler);
+
+        }
+        MoonUtils.AI_SpiderPathfinding(_pathfinder, NPC, WanderWalkSpeed);
         NPC.TargetClosest();
-        NPC.velocity.X = (NPC.XDirectionToTarget * 3);
-        NPC.rotation = 0;
         NPC.FaceDirectionsToVelocity();
-        NPC.QuickStepUp();
-        if(Timer >= WalkTime)
+
+        if(Timer >= WalkTime || _pathfinder.path.Count <= 0)
         {
             SwitchState(AIState.Idle);
         }
@@ -423,8 +558,8 @@ public class Dreamwalker : ModNPC
     void AI_Idle()
     {
         Timer++;
-        NPC.velocity.X *= 0.96F;
-        NPC.rotation = 0;
+        if(IsNearTile())
+            NPC.velocity *= 0.96F;
         if(Timer >= IdleTime)
         {
             if (MultiplayerHelper.IsHost)
@@ -435,7 +570,8 @@ public class Dreamwalker : ModNPC
             }
         }
     }
-    Vector2[] _actualLegPositions = new Vector2[3];
+
+
     void DrawLeg(SpriteBatch sb, Vector2 screenPos, Color drawColor, int index, bool isBehind = false)
     {
         SpiderLeg leg = Legs[index];
@@ -504,31 +640,52 @@ public class Dreamwalker : ModNPC
         var drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], NPC.Center);
         drawer.sourceRect = FrameButt;
         drawer.drawOrigin = FrameButtOrigin;
+        drawer.rotation = NPC.rotation;
+        if (NPC.spriteDirection == -1)
+            drawer.FlipHorizontally();
         spriteBatch.Draw(drawer);
 
-
+        drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], NPC.Center);
+        drawer.rotation = NPC.rotation;
         drawer.sourceRect = FrameHead;
         drawer.sourceRect = new Rectangle(268, 62, FrameHead.Width, FrameHead.Height);
         drawer.drawOrigin = FrameHeadOrigin;
+        if (NPC.spriteDirection == -1)
+            drawer.FlipHorizontally();
         spriteBatch.Draw(drawer);
         DrawFrontLegs(spriteBatch, screenPos, drawColor);
-        /*
-        Vector2[] offsets = new Vector2[4]
-        {
-            new Vector2(-120, 0),
-            new Vector2(-90, 0),
-            new Vector2(90, 0),
-            new Vector2(120, 0)
-        };
-
-        for (var i = 0; i < 4; i++)
-        {
-            drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.WhiteCircle.Asset);
-            drawer.worldPosition = Legs[i].legPositions[2] + Legs[i].legAngles[2].ToRotationVector2() * 64;
-            drawer.scale *= 0.05f;
-            spriteBatch.Draw(drawer);
-        }*/
-
         return false;
+        /*
+        _pathfinder.DebugDrawPath(spriteBatch, Color.Red);
+        var leg = Legs[0];
+        var left = NPC.Center + leg.leftBoundaryOffset.RotatedBy(NPC.rotation);
+        var upPoint = NPC.Center + leg.up * 64;
+        drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.WhiteCircle.Asset);
+        drawer.worldPosition = left;
+        drawer.scale *= 0.05f;
+        spriteBatch.Draw(drawer);*/
+        /*
+ var down = GetDownVector();
+ drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.WhiteCircle.Asset);
+ drawer.worldPosition = NPC.Center + down * 24;
+ drawer.color = Color.White;
+ drawer.scale *= 0.07F;
+ spriteBatch.Draw(drawer);
+
+ Vector2[] offsets = new Vector2[4]
+ {
+     new Vector2(-120, 0),
+     new Vector2(-90, 0),
+     new Vector2(90, 0),
+     new Vector2(120, 0)
+ };
+
+ for (var i = 0; i < 4; i++)
+ {
+     drawer = SpritebatchDrawer.FromTextureWhite(AssetReferences.Assets.GlowMasks.WhiteCircle.Asset);
+     drawer.worldPosition = Legs[i].legPositions[2] + Legs[i].legAngles[2].ToRotationVector2() * 64;
+     drawer.scale *= 0.05f;
+     spriteBatch.Draw(drawer);
+ }*/
     }
 }

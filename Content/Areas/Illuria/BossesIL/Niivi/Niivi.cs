@@ -142,7 +142,6 @@ public partial class Niivi : ScarletBoss,
     float _arenaY;
     int SegmentCount => 12;
     Vector2 _ikTarget;
-    Vector2 _ikInitialDirection;
     float[] WantedAngles => field ??= new float[SegmentCount];
     float[] CurrentAngles => field ??= new float[SegmentCount];
     float[] Sizes
@@ -194,7 +193,6 @@ public partial class Niivi : ScarletBoss,
 
             if(field == null)
             {
-                var v = 0;
                 field = new int[SegmentCount];
                 field[0] = 0;
                 for (var i = 1; i < 3; i++)
@@ -499,7 +497,7 @@ public partial class Niivi : ScarletBoss,
         for (var i = 0; i < segments.Length; i++)
         {
             ref var segment = ref segments[i];
-            segment.position = NPC.Center + _ikInitialDirection * 32;
+            segment.position = NPC.Center ;
         }
         Segments = segments;
     }

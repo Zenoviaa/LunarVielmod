@@ -475,7 +475,6 @@ public class ElectroWizard : ModNPC,
     }
     ref float HoppingSpeedTimer => ref NPC.ai[2];
     ref float HoppingSound => ref NPC.ai[3];
-    bool _contactDamage;
     Vector2 _squishScale;
     Outliner _outliner;
     const string ANIM_IDLE = "Idle";
@@ -503,7 +502,7 @@ public class ElectroWizard : ModNPC,
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
-        return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        return false;
     }
 
 

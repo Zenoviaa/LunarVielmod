@@ -363,7 +363,7 @@ public partial class RoyalFox
         }
         DrawGravityField(spriteBatch);
 
-        void DrawHitboxes()
+      //  void DrawHitboxes()
         {
             void Before()
             {

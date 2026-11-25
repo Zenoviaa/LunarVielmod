@@ -8,18 +8,13 @@ namespace Stellamod.Core.Palettes;
 
 public class SpecialEffectsPlayer : ModPlayer
 {
-    private float _vignetteOpacity;
-    private float _vignetteStrength;
-
-    private float _targetVignetteStrength;
-    private float _targetVignetteOpacity;
     private float _blurLerp;
 
     private float _blackWhiteLerp;
 
     private FilterManager FilterManager => Filters.Scene;
 
-    private string DarknessVignette => "LunarVeil:DarknessVignette";
+
 
     public bool hasSpiritPendant;
     public bool hasSunGlyph;
@@ -46,8 +41,6 @@ public class SpecialEffectsPlayer : ModPlayer
 
         whiteCurve = 0f;
         blackCurve = 1f;
-
-        _targetVignetteOpacity = 0.5f;
     }
 
     private void ToggleScreenShader(string name, bool isActive)
@@ -143,47 +136,5 @@ public class SpecialEffectsPlayer : ModPlayer
     {
         base.PostUpdate();
         SpecialBiomeEffects();
-        UpdateVignette();
-    }
-
-    private void UpdateVignette()
-    {
-        if (Main.netMode == NetmodeID.Server)
-            return;
-        if (Main.myPlayer != Player.whoAmI)
-            return;
-
-        bool useVignette = darkness != 0;
-        if (useVignette)
-        {
-            if (!FilterManager[DarknessVignette].IsActive())
-            {
-                FilterManager.Activate(DarknessVignette);
-            }
-
-            _vignetteStrength = MathHelper.Lerp(_vignetteStrength, _targetVignetteStrength, 0.1f);
-            _vignetteOpacity = MathHelper.Lerp(_vignetteOpacity, _targetVignetteOpacity, 0.1f);
-            var shaderData = FilterManager[DarknessVignette].GetShader();
-            shaderData.UseProgress(_vignetteStrength);
-            shaderData.UseOpacity(_vignetteOpacity);
-        }
-        else
-        {
-            if (_vignetteStrength != 0)
-            {
-                _vignetteOpacity = MathHelper.Lerp(_targetVignetteOpacity, 0, 0.1f);
-                _vignetteStrength = MathHelper.Lerp(_vignetteStrength, 0, 0.1f);
-                var shaderData = FilterManager[DarknessVignette].GetShader();
-                shaderData.UseProgress(_vignetteStrength);
-                shaderData.UseOpacity(_vignetteOpacity);
-            }
-            else
-            {
-                if (FilterManager[DarknessVignette].IsActive())
-                {
-                    FilterManager.Deactivate(DarknessVignette);
-                }
-            }
-        }
     }
 }

@@ -32,8 +32,8 @@ public class PotionHealthPlayer : ModPlayer
         base.PostUpdateMiscEffects();
         if (hurtTimer > 0)
             hurtTimer--;
-        return;
-
+        //return;
+        /*
         var npc = NPCHelper.FindClosestNPC(Player.Center, 2048);
         if(npc != null)
         {
@@ -51,7 +51,7 @@ public class PotionHealthPlayer : ModPlayer
         {
             aggression = 0;
             Player.Heal((int)maxReserveLife);
-        }
+        }*/
     }
 
     void LoseAggression()

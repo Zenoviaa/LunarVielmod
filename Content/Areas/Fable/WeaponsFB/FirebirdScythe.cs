@@ -349,10 +349,7 @@ public class FirebirdScytheSlash : BaseSwingProjectileV2
     public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
     {
         base.RenderSwingTrail(ref lightColor, points);
-        void DrawTrail(GraphicsDevice gDevice)
-        {
 
-        }
         //PixelationManager.QueuePrimitivesDrawAction(DrawTrail);
         var laserShader = FixedRichLaserShader.Instance;
      //   laserShader.LaserTexture = AssetReferences.Assets.LaserTextures.TexturedLaser.Asset;

@@ -82,7 +82,6 @@ public class OrbShooterBowOrbBoom : ModProjectile
 
 public class OrbShooterBowOrb : ModProjectile
 {
-    bool _bounceDeath;
     float BounceTime => 24;
     float InScale => MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
     float GrowthScale => MathHelper.Lerp(0.5f, 1f, BounceCount / 3f);
@@ -217,11 +216,7 @@ public class OrbShooterBowOrb : ModProjectile
         {
             Projectile.extraUpdates = 1;
             BounceTimer--;
-            if (_bounceDeath)
-            {
-                Projectile.velocity = Projectile.velocity.RotatedBy(0.05f);
-            }
-            if (_bounceDeath && BounceTimer <= 0)
+            if (BounceTimer <= 0)
             {
                 Projectile.Kill();
             }

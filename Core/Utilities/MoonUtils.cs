@@ -59,6 +59,11 @@ public static class MoonUtils
 
     extension(Random rand)
     {
+        public Point NextPointInRectangle(Rectangle rectangle)
+        {
+            return new Point(rand.Next(rectangle.Left, rectangle.Right), rand.Next(rectangle.Top, rectangle.Bottom));
+        }
+
         public Vector2 NextVector2CircularEdge(float halfWidth, float halfHeight)
         {
             var rot = rand.NextSingle() * MathHelper.TwoPi;
@@ -502,7 +507,37 @@ public static class MoonUtils
         range *= dir;
         NPC.rotation = ExtraMath.Osc(-range, range, speed: 0, offset: ratio * 3);
     }
+    public static void AI_SpiderPathfinding(Pathfinder pathfinder, NPC entity, float runSpeed)
+    {
+        var target = pathfinder.currentNode;
 
+        //We can make the assumption that whatever node we're moving too is VERY close to our actor
+        //So here's how it works, we create a 16x16 rectangle around the the point we're moving to
+        //If that rectangle intersects our hitbox rectangle, then the destination has been reached.
+        var targetRectangle = DrawUtilities.CenterRectangle(pathfinder.currentNode, 16, 16);
+        var nextRectangle = DrawUtilities.CenterRectangle(pathfinder.nextNode, 16, 16);
+        var myRectangle = DrawUtilities.CenterRectangle(entity.Center, 32, 32);
+
+        //The rectangle is padded slightly prevent the entity getting stuck if it's hitbox is slightly smaller than the rectangles
+
+        float distanceToCurrentNode = Vector2.Distance(entity.Center, pathfinder.currentNode);
+        float distanceToNextNode = Vector2.Distance(entity.Center, pathfinder.nextNode);
+
+        if (myRectangle.Intersects(targetRectangle) || distanceToNextNode < distanceToCurrentNode ||
+            myRectangle.Intersects(nextRectangle) || myRectangle.Contains(targetRectangle))
+        {
+
+            pathfinder.Pop();
+        }
+
+        var diff = target - entity.Center;
+        diff = diff.SafeNormalize(Vector2.Zero);
+        //var dirX = MathF.Sign(diffX);
+        var targetVelocity = diff * runSpeed;
+        var accel = ExtraMath.Osc(0.05f, 0.1f, speed: 0, offset: entity.whoAmI);
+        entity.velocity = Vector2.Lerp(entity.velocity, targetVelocity, accel);
+        Collision.StepUp(ref entity.position, ref entity.velocity, entity.width, entity.height, ref entity.stepSpeed, ref entity.gfxOffY);
+    }
     public static void AIWalk_SusBush(Pathfinder pathfinder, NPC entity, Vector2 destination, bool isGrounded, float runSpeed, float maxJumpSpeed)
     {
         var target = pathfinder.currentNode;

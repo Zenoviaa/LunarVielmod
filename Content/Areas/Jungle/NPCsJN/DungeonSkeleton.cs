@@ -106,7 +106,6 @@ public class DungeonSkeleton : ModNPC,
     float _squishTimer;
     Pathfinder _pathfinder;
     Outliner _outliner;
-    bool _contactDamage;
     ref float Timer => ref NPC.ai[0];
     AIState State
     {
@@ -154,7 +153,7 @@ public class DungeonSkeleton : ModNPC,
     }
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
-        return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        return false;
     }
 
     public override void SetDefaults()

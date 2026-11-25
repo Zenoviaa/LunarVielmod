@@ -260,7 +260,6 @@ public class BurningAngelStaminaSlash : BaseSwingProjectileV2
     float _t;
     private FireTrailRenderer _fireTrailRenderer;
     private float _hitCount;
-    private bool _hit;
     public override void DefineCombo()
     {
         base.DefineCombo();
@@ -365,14 +364,7 @@ public class BurningAngelStaminaSlash : BaseSwingProjectileV2
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
     {
         base.ModifyHitNPC(target, ref modifiers);
-        if (!_hit)
-        {
-            modifiers.Knockback *= 0.5f;
-        }
-        else
-        {
-            modifiers.Knockback *= 2;
-        }
+        modifiers.Knockback *= 2;
         if (IsFinishingSwing())
         {
             modifiers.FinalDamage += 0.5f;

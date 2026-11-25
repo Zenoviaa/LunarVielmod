@@ -127,6 +127,7 @@ public class PixelTarget
     }
     private void DrawToScreenShaderPixelate()
     {
+        /*
         void DrawPixelated()
         {
             using var screenTarget = RT.Context(RenderTargets.ScreenTarget);
@@ -164,7 +165,7 @@ public class PixelTarget
 
 
         } 
-
+        */
         void DrawPixelated2()
         {
             using var screenTarget = _mipMap ? RT.Context(RenderTargets.ScreenTargetMipMapped) : RT.Context(RenderTargets.ScreenTarget);

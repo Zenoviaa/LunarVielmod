@@ -33,19 +33,6 @@ public class WaterDust : ParticleUpdater<WaterDustData>
     {
         return 250;
     }
-
-    public override void LoadSafe()
-    {
-        base.LoadSafe();
-        MoonWaterSystem.DrawWaterMask += DrawMask;
-    }
-
-    public override void UnloadSafe()
-    {
-        base.UnloadSafe();
-        MoonWaterSystem.DrawWaterMask -= DrawMask;
-    }
-
     private void DrawMask(SpriteBatch batch)
     {
         Draw(batch, Main.screenPosition);

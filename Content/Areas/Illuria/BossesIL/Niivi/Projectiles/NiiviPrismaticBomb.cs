@@ -40,26 +40,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.Niivi.Projectiles;
  */
 public class NiiviPrismaticBomb : ModProjectile
 {
-    Vector2[] InitialMetaballPoints
-    {
-        get
-        {
-            if(field == null)
-            {
-                field = new Vector2[32];
-                for(var i = 0; i < field.Length; i++)
-                {
-                    ref var normalOffset = ref field[i];
-                    normalOffset = Main.rand.NextVector2Circular(1, 1);
-                }
-            }
-            return field;
-        }
-    }
     Vector2[] _metaballs = new Vector2[32];
     bool _die;
-    float _prisAlpha;
-
     float _metaballBursting;
     float _growthAlpha;
     float _flashAlpha;

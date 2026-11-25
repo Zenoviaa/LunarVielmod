@@ -35,13 +35,17 @@ namespace Stellamod.Core.Tooltips
     public interface IExpandableTooltip
     {
         public virtual ExpandableTooltipPriority Priority => ExpandableTooltipPriority.VeryEarly;
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         public virtual string? GetShiftHelpTooltip(Item item) => null;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         void ModifyExpandableTooltips(Item item, List<TooltipLine> lines);
     }
 
     public abstract class AbstractExpandingTooltip : GlobalItem, IExpandableTooltip
     {
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         public virtual string? GetShiftHelpTooltip(Item item) => null;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         public virtual ExpandableTooltipPriority Priority => ExpandableTooltipPriority.VeryEarly;
         public abstract void ModifyExpandableTooltips(Item item, List<TooltipLine> lines);
     }
@@ -112,7 +116,9 @@ namespace Stellamod.Core.Tooltips
             }
         }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         public string? GetShiftTooltip(Item item)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         {
             ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
             var tooltips = renderer.ExpandableTooltips;

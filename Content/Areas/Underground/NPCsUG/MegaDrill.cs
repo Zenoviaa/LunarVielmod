@@ -51,8 +51,6 @@ public class MegaDrill : ModNPC,
     float DrillSpeed => 14;
     Vector2 FireRenderPoint => NPC.Center - _drillDirection * 32;
     float FireRenderDirection => NPC.rotation - MathHelper.PiOver2;
-    int _flameFrameIndex;
-    float _flameFrameTimer;
     float _expansion;
     float _targetExpansion;
     float _alpha;
