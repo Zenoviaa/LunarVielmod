@@ -29,12 +29,12 @@ public class RoughSmoke : ParticleUpdater<RoughSmoke.Data>
             return;
         if (_length <= 0)
             return;
-        PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.OverPlayers);
+        PixelationManager.QueueSpritebatchDrawAction(Draw, DrawLayer.BehindNPCsWithOutline);
     }
 
     public override int GetPoolSize()
     {
-        return 250;
+        return 256;
     }
 
     protected override void UpdateParticles()
