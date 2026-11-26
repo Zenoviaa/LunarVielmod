@@ -89,7 +89,7 @@ public static class MoonUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool QuickSolid(int x, int y)
     {
-        return Main.tileSolid[Main.tile[x, y].TileType];
+        return Main.tile[x,y].HasTile && Main.tileSolid[Main.tile[x, y].TileType];
     }
     public static (float angle1, float angle2) SolveTwoLimbIK(Vector2 position, float arm1, float arm2, bool elbowUp)
     {

@@ -1796,9 +1796,25 @@ public partial class StellaWorld : ModSystem
             WallID.GraniteBlock,
             WallID.Granite
         };
-        int padding = 1800;
+        int padding = 2600;
         DarkspaceStart = yMin;
         DarkspaceEnd = yMax;
+        int darkspaceLeft = 3420;
+        int darkspaceRight = Main.maxTilesX - 1800;
+        int crystalLakeCenter = Main.maxTilesX / 2;
+        int crystalLakeLeft = crystalLakeCenter - 600;
+        int crystalLakeRight = crystalLakeCenter + 1050; 
+        VeilGen.CreateDarkspaceNLake(
+            DarkspaceStart, 
+            DarkspaceEnd, 
+            darkspaceLeft, 
+            darkspaceRight, 
+            crystalLakeLeft, 
+            crystalLakeRight);
+
+        VeilGen.CreateDarkspaceWalls(DarkspaceStart, DarkspaceEnd);
+        /*
+        #region Old Darkspace
         //Create a wavey blotch of granite
         //Instead of using GenActions or PlaceTile we can just set the tile directly, fastest way to do it.
         for (int x = padding; x < Main.maxTilesX - padding; x++)
@@ -2019,7 +2035,8 @@ public partial class StellaWorld : ModSystem
             }
         }
         progress.Set(1D);
-
+        #endregion
+        */
 
     }
     #region Cave Formation

@@ -111,7 +111,7 @@ public class WonderousDarkspaceBiome : BaseUrdveilBiome,
     {
         StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
 
-        return BiomeTileCounts.InDarkspace && !player.ZoneOverworldHeight && !player.ZoneSkyHeight && player.position.ToTileCoordinates().Y > stellaWorld.DarkspaceStart;
+        return BiomeTileCounts.InDarkspace && !player.ZoneOverworldHeight && !player.ZoneSkyHeight;// && player.position.ToTileCoordinates().Y > stellaWorld.DarkspaceStart;
     }
 
     public override string BestiaryIcon => base.BestiaryIcon;
