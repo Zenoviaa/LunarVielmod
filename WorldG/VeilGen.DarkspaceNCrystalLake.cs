@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -401,6 +402,8 @@ public partial class VeilGen
             var tile = Main.tile[x, y];
             tile.LiquidAmount = 255;
             tile.LiquidType = LiquidID.Shimmer;
+            tile.HasTile = false;
+         
             //Tiles[x, y] = 4;
         }
 
@@ -415,47 +418,18 @@ public partial class VeilGen
         var darkspaceRockTopLow = darkspaceTopLow + 100;
         var darkspaceRockTopHigh = darkspaceTopHigh - 100;
 
-        var darkspaceOscRange = 8;
-        var darkspaceOscFrequency = 32;
+        var darkspaceOscRange = 7;
+        var darkspaceOscFrequency = 24;
 
-        var darkspaceOscRangeSmall = 4;
-        var darkspaceOscFrequencySmall = 70;
+        var darkspaceOscRangeSmall = 3;
+        var darkspaceOscFrequencySmall = 57;
 
         var darkspaceOscRangeTiny = 2;
-        var darkspaceOscFrequencyTiny = 150;
+        var darkspaceOscFrequencyTiny = 135;
 
-        var darkspaceTileRunnerSpam = 1000;
         var darkspaceTileRect = new Rectangle(darkspaceLeft, darkspaceTop, darkspaceRight - darkspaceLeft, darkspaceBottom - darkspaceTop);
 
-        for(var n = 0; n < darkspaceTileRunnerSpam; n++)
-        {
-            var side = _random.Next(4);
-            Point tilePoint = new Point(darkspaceLeft, darkspaceTop);
-            switch (side)
-            {
-                default:
-                case 0:
-                    tilePoint = new Point(
-                        _random.Next(darkspaceLeft, darkspaceRight), 
-                        darkspaceTop);
-                    break;
-                case 1:
-                    tilePoint = new Point(
-                        _random.Next(darkspaceLeft, darkspaceRight), 
-                        darkspaceBottom);
-                    break;
-                case 2:
-                    tilePoint = new Point(
-                        darkspaceLeft, 
-                        _random.Next(darkspaceTop, darkspaceBottom));
-                    break;
-                case 3:
-                    tilePoint = new Point(
-                        darkspaceRight, _random.Next(darkspaceTop, darkspaceBottom));
-                    break;
-            }
-            WorldGen.TileRunner(tilePoint.X, tilePoint.Y, 16, 32, darkspaceStone);
-        }
+
 
         var randOffset = _random.NextSingle() * 6;
         var tops = new int[darkspaceRight - darkspaceLeft];
@@ -464,18 +438,6 @@ public partial class VeilGen
         fnl.SetSeed(_random.Next(1337236));
         fnl.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
 
-        for (var x = darkspaceLeft; x < darkspaceRight; x++)
-        {
-            var localX = x - darkspaceLeft;
-            var top = darkspaceRockTopHigh;
-            var bottom = darkspaceRockTopLow + caveHeight;
-            for (var y = top; y < bottom; y++)
-            {
-                SetDarkspaceStone(x, y);
-            }
-        }
-
-        
 
         var off4 = _random.Next(-8, 8);
 
@@ -500,10 +462,55 @@ public partial class VeilGen
                 off4 +
                 off5 +
                 off6;
+
+
         }
+
+        Point GetCenter(int x)
+        {
+            var top = tops[x];
+            var bottom = top + caveHeight;
+            var middle = (top + bottom) / 2;
+            return new Point(darkspaceLeft + x, middle);
+        }
+
+        SavedGenerationParameters.DarkspaceBottomLeftCenter = GetCenter(0);
+        SavedGenerationParameters.DarkspaceTopRightCenter = GetCenter(darkspaceRight - darkspaceLeft - 1);
+
+
+
 
 
         var size = (float)(darkspaceRight - darkspaceLeft);
+        var sprayPaintCountPerTile = 6;
+        var halfCaveHeight = caveHeight / 2;
+        var tileManipulator = VeilGen.RedSetTileManipulator(SetDarkspaceStone);
+        //Fill the cave with the spray paint textures
+        for (var x = darkspaceLeft; x < darkspaceRight; x++)
+        {
+            var localX = x - darkspaceLeft;
+            var top = tops[localX];
+            var bottom = top + caveHeight;
+            var middle = (top + bottom) / 2;
+            VeilGen.SprayPaint(x, middle, tileManipulator);
+            for (var n = 0; n < sprayPaintCountPerTile; n++)
+            {
+                var sprayMiddle = middle + _random.Next(-caveHeight, caveHeight);
+                VeilGen.SprayPaint(x, sprayMiddle, tileManipulator);
+            }
+        }
+
+        //Make the tentacles that randomly go around the biome
+        for (var x = darkspaceLeft; x < darkspaceRight; x++)
+        {
+            var localX = x - darkspaceLeft;
+            var top = tops[localX];
+            var bottom = top + caveHeight;
+            var middle = (top + bottom) / 2;
+            var randVelocity = _random.NextVector2CircularEdge(1, 1);
+            VeilGen.SetTentacle(fnl, SetDarkspaceStone, new Point(x, _random.Next(top, bottom)), randVelocity, 67, 16, 4);
+        }
+
         for (var x = darkspaceLeft; x < darkspaceRight; x++)
         {
             var localX = x - darkspaceLeft;
@@ -515,8 +522,6 @@ public partial class VeilGen
             {
                 ClearTile(x, y);
             }
-
-
         }
 
 
@@ -562,7 +567,7 @@ public partial class VeilGen
         #region Place Shimmer Lakes
         void PlaceShimmerLakes()
         {
-            var numDarkspaceShimmerLakes = 48;
+            var numDarkspaceShimmerLakes = 128;
             var darkspaceShimmerLakeMinWidth = 32;
             var darkspaceShimmerLakeMaxWidth = 64;
             var darkspaceShimmerDepth = 48;
@@ -575,6 +580,7 @@ public partial class VeilGen
                 //get a random point in the darkspace
                 var topIndex = _random.Next(64, tops.Length - 64);
                 var top = tops[topIndex];
+                top += 2;
 
                 var x = darkspaceLeft + topIndex;
 
@@ -602,12 +608,10 @@ public partial class VeilGen
                     {
                         if (dx <= 0 || dx >= Width)
                             continue;
-                        if (IsSolid(dx, dy))
-                            SetShimmer(dx, dy);
+                        SetShimmer(dx, dy);
                     }
                 }
             }
-
         }
 
         #endregion
@@ -649,14 +653,17 @@ public partial class VeilGen
             var crystalLakeShimmerLine = crystalLakeRockBottom - crystalLakeShimmerHeight;
 
             var crystalLakeTops = new int[(int)crystalLakeSize];
-            for (var x = crystalLakeLeft; x < crystalLakeRight; x++)
-            {
-                for (var y = crystalLakeRockTop; y < crystalLakeRockBottom; y++)
-                {
-                    SetCrystalLake(x, y);
-                }
-            }
+            var numBlotches = 500;
 
+            var setCrystalLakeManipulator = VeilGen.RedSetTileManipulator(SetCrystalLake);
+            for(var n = 0; n < numBlotches; n++)
+            {
+                var randPoint = new Point();
+                randPoint.X = _random.Next(crystalLakeLeft, crystalLakeRight);
+                randPoint.Y = _random.Next(crystalLakeTop, crystalLakeBottom);
+                VeilGen.SprayPaint(randPoint.X, randPoint.Y, setCrystalLakeManipulator);
+            }
+            
 
 
             for (var x = crystalLakeLeft; x < crystalLakeRight; x++)
@@ -764,6 +771,6 @@ public partial class VeilGen
         #endregion
 
         CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 7, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
-        AutomataSmoothErase(new Rectangle(0, 0, Width, Height), in @params);
+        AutomataSmoothErase(new Rectangle(darkspaceLeft, darkspaceTop, darkspaceRight - darkspaceLeft, darkspaceBottom - darkspaceTop), in @params);
     }
 }

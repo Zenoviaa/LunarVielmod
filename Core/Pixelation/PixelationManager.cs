@@ -228,6 +228,7 @@ public class PixelTarget
     }
     public void DrawToScreen()
     {
+
         //Prepared Pixelated Content
         _renderCount = 0;
         if (_primitivesActionsQueue.Count <= 0 && _spritebatchActionsQueue.Count <= 0)
@@ -383,8 +384,10 @@ public class PixelationManager : ModSystem
     public override void Load()
     {
         base.Load();
+
         PrepareRenderTargetDrawsSystem.OnFinalTargetsReady += Render;
         On_FilterManager.EndCapture += RenderToPixelRTs;
+
         On_Main.DoDraw_Tiles_NonSolid += RenderBehindTiles2;
         On_Main.DoDraw_DrawNPCsBehindTiles += RenderBehindTiles;
         On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;

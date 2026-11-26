@@ -58,6 +58,34 @@ public static class SavedGenerationParameters
     public static Rectangle AbyssTempleRectangle;
     public static Rectangle StarrHouseRectangle;
     public static Point IlluriaTreeLocation;
+    public static Point DarkspaceBottomLeftCenter;
+    public static Point DarkspaceTopRightCenter;
+    public static Point GetDarkspaceCenterTile(float ratio)
+    {
+        return Vector2.Lerp(DarkspaceBottomLeftCenter.ToVector2(), DarkspaceTopRightCenter.ToVector2(), ratio).ToPoint();
+    }
+    public static float GetXRatio(float x)
+    {
+        var size = DarkspaceTopRightCenter.X * 16 - DarkspaceBottomLeftCenter.X * 16;
+        var left = DarkspaceBottomLeftCenter.ToWorldCoordinates();
+        var localX = x - left.X;
+        var ratio = localX / size;
+        return ratio;
+    }
+    public static Point GetDarkspaceTop(float x)
+    {
+        var ratio = GetXRatio(x);
+        var p =Vector2.Lerp(DarkspaceBottomLeftCenter.ToVector2(), DarkspaceTopRightCenter.ToVector2(), ratio).ToPoint();
+        p.Y -= 75;
+        return p;
+    }
+    public static Point GetDarkspaceBottom(float x)
+    {
+        var ratio = GetXRatio(x);
+        var p = Vector2.Lerp(DarkspaceBottomLeftCenter.ToVector2(), DarkspaceTopRightCenter.ToVector2(), ratio).ToPoint();
+        p.Y += 75;
+        return p;
+    }
 }
 
 public partial class StellaWorld : ModSystem
@@ -96,14 +124,12 @@ public partial class StellaWorld : ModSystem
 
     private DesertDescription ClampHive(On_DesertDescription.orig_CreateFromPlacement orig, Point origin)
     {
+        //I think because of our publicizer this should work now?
         var description = orig(origin);
-
-        //TODO:
-        /*
         Rectangle hiveRect = description.Hive;
         hiveRect.Height = DarkspaceStart - (int)Main.worldSurface;
         hiveRect.Height -= 32;
-        description.Hive = hiveRect;*/
+        description.Hive = hiveRect;
         return description;
     }
 
@@ -6294,6 +6320,13 @@ public partial class StellaWorld : ModSystem
         DarkspaceStart = reader.ReadInt32();
         SavedGenerationParameters.IlluriaTreeLocation.X = reader.ReadInt32();
         SavedGenerationParameters.IlluriaTreeLocation.Y = reader.ReadInt32();
+
+
+        SavedGenerationParameters.DarkspaceBottomLeftCenter.X = reader.ReadInt32();
+        SavedGenerationParameters.DarkspaceBottomLeftCenter.Y = reader.ReadInt32();
+
+        SavedGenerationParameters.DarkspaceTopRightCenter.X = reader.ReadInt32();
+        SavedGenerationParameters.DarkspaceTopRightCenter.Y = reader.ReadInt32();
     }
 
     public override void SaveWorldData(TagCompound tag)
@@ -6316,6 +6349,9 @@ public partial class StellaWorld : ModSystem
         tag["StarrHouse"] = SavedGenerationParameters.StarrHouseRectangle;
         tag["DarkspaceTop"] = SavedGenerationParameters.DarkspaceTop;
         tag["IlluriaTree"] = SavedGenerationParameters.IlluriaTreeLocation;
+
+        tag["DarkspaceBottomLeftCenter"] = SavedGenerationParameters.DarkspaceBottomLeftCenter;
+        tag["DarkspaceTopRightCenter"] = SavedGenerationParameters.DarkspaceTopRightCenter;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -6338,5 +6374,7 @@ public partial class StellaWorld : ModSystem
         SavedGenerationParameters.StarrHouseRectangle = tag.Get<Rectangle>("StarrHouse");
         SavedGenerationParameters.DarkspaceTop = tag.Get<int>("DarkspaceTop");
         SavedGenerationParameters.IlluriaTreeLocation = tag.Get<Point>("IlluriaTree");
+        SavedGenerationParameters.DarkspaceBottomLeftCenter = tag.Get<Point>("DarkspaceBottomLeftCenter");
+        SavedGenerationParameters.DarkspaceTopRightCenter = tag.Get<Point>("DarkspaceTopRightCenter");
     }
 }

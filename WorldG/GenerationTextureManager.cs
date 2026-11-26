@@ -10,15 +10,18 @@ namespace Stellamod.WorldG;
 [Autoload(Side = ModSide.Client)]
 public class GenerationTextureManager : ModSystem
 {
+    public static GenerationTextureManager Instance { get; private set; }
     public Dictionary<string, GenerationPrefab> Prefabs { get; private set; }
     public override void Load()
     {
         base.Load();
+        Instance = this;
         Main.QueueMainThreadAction(LoadPrefabAssets);
     }
     public override void Unload()
     {
         base.Unload();
+        Instance = null;
         Main.QueueMainThreadAction(UnloadPrefabAssets);
     }
 
@@ -38,7 +41,6 @@ public class GenerationTextureManager : ModSystem
                 path = path.Replace(".rawimg", "");
                 Asset<Texture2D> worldGenTexture = ModContent.Request<Texture2D>(path, AssetRequestMode.ImmediateLoad);
                 GenerationPrefab prefab = new GenerationPrefab(Path.GetFileNameWithoutExtension(file), worldGenTexture);
-                Console.WriteLine($"Prefab {prefab.Name}");
                 Prefabs.Add(prefab.Name, prefab);
             }
         }

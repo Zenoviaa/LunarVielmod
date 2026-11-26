@@ -1,11 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Stellamod.Core.InverseKinematics;
-using Stellamod.WorldG;
+﻿using Stellamod.WorldG;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Animations;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.PrismadolphBoss;
@@ -17,10 +14,7 @@ public class PrismadolphRoamingSystem : ModSystem
     {
         get
         {
-            Vector2 pos = new();
-            pos.X = ((float)Main.maxTilesX * 16) * 0.5F;
-            pos.Y = (SavedGenerationParameters.DarkspaceTop * 16) + 400;
-            return pos;
+            return SavedGenerationParameters.GetDarkspaceCenterTile(0.8F).ToWorldCoordinates();
         }
     }
     public static bool CanDoJumpscare { get; set; } = true;
@@ -77,7 +71,7 @@ public class PrismadolphRoamingSystem : ModSystem
             return;
         if (DownedBossTracker.IsDowned(DownedBossFlag.Prismadolph))
             return;
-        if(Main.GameUpdateCount % 15 == 0)
+        if (Main.GameUpdateCount % 15 == 0)
         {
             if (!NPC.AnyNPCs(PrismadolphType))
             {

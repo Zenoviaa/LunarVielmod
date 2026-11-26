@@ -66,8 +66,8 @@ public class Prismadolph : ScarletBoss
 
     public float alpha;
     public float aggression;
-    public float TopPatrolRange => SavedGenerationParameters.DarkspaceTop * 16 - 100;
-    public float BottomPatrolRange => TopPatrolRange + 1200;
+    public float TopPatrolRange => SavedGenerationParameters.GetDarkspaceTop(NPC.Center.X).ToWorldCoordinates().Y;
+    public float BottomPatrolRange => SavedGenerationParameters.GetDarkspaceBottom(NPC.Center.X).ToWorldCoordinates().Y;
     public override string Texture => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph.KEY;
     public override Asset<Texture2D> BossIconTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossIcon.Asset;
     public override Asset<Texture2D> BossBarTextureAsset => AssetReferences.Assets.Textures.Darkspace.NPCs.Prismadolph_BossBar.Asset;
