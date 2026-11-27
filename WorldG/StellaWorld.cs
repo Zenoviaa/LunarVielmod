@@ -126,7 +126,7 @@ public partial class StellaWorld : ModSystem
         var description = orig(origin);
         Rectangle hiveRect = description.Hive;
         hiveRect.Height = DarkspaceStart - (int)Main.worldSurface;
-        hiveRect.Height -= 32;
+        hiveRect.Height -= 64;
         description.Hive = hiveRect;
         return description;
     }

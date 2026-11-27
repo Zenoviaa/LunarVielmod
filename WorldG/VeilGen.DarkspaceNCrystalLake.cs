@@ -495,7 +495,7 @@ public partial class VeilGen
             VeilGen.SprayPaint(x, middle, tileManipulator);
             for (var n = 0; n < sprayPaintCountPerTile; n++)
             {
-                var sprayMiddle = middle + _random.Next(-caveHeight, caveHeight);
+                var sprayMiddle = middle + _random.Next(-caveHeight * 2, caveHeight * 2);
                 VeilGen.SprayPaint(x, sprayMiddle, tileManipulator);
             }
         }
@@ -508,7 +508,7 @@ public partial class VeilGen
             var bottom = top + caveHeight;
             var middle = (top + bottom) / 2;
             var randVelocity = _random.NextVector2CircularEdge(1, 1);
-            VeilGen.SetTentacle(fnl, SetDarkspaceStone, new Point(x, _random.Next(top, bottom)), randVelocity, 67, 16, 4);
+            VeilGen.SetTentacle(fnl, SetDarkspaceStone, new Point(x, _random.Next(top, bottom)), randVelocity, 128, 16, 4);
         }
 
         for (var x = darkspaceLeft; x < darkspaceRight; x++)
@@ -567,7 +567,7 @@ public partial class VeilGen
         #region Place Shimmer Lakes
         void PlaceShimmerLakes()
         {
-            var numDarkspaceShimmerLakes = 128;
+            var numDarkspaceShimmerLakes = 64;
             var darkspaceShimmerLakeMinWidth = 32;
             var darkspaceShimmerLakeMaxWidth = 64;
             var darkspaceShimmerDepth = 48;
@@ -653,14 +653,14 @@ public partial class VeilGen
             var crystalLakeShimmerLine = crystalLakeRockBottom - crystalLakeShimmerHeight;
 
             var crystalLakeTops = new int[(int)crystalLakeSize];
-            var numBlotches = 500;
+            var numBlotches = 1000;
 
             var setCrystalLakeManipulator = VeilGen.RedSetTileManipulator(SetCrystalLake);
             for(var n = 0; n < numBlotches; n++)
             {
                 var randPoint = new Point();
-                randPoint.X = _random.Next(crystalLakeLeft, crystalLakeRight);
-                randPoint.Y = _random.Next(crystalLakeTop, crystalLakeBottom);
+                randPoint.X = _random.Next(crystalLakeLeft - 100, crystalLakeRight + 100);
+                randPoint.Y = _random.Next(crystalLakeTop - 100, crystalLakeBottom + 100);
                 VeilGen.SprayPaint(randPoint.X, randPoint.Y, setCrystalLakeManipulator);
             }
             
