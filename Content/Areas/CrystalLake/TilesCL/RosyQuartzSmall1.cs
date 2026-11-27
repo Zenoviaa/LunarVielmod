@@ -16,6 +16,8 @@ public class RosyQuartzCrystal : ModItem
     public override void SetDefaults()
     {
         base.SetDefaults();
+        Item.maxStack = Item.CommonMaxStack;
+        Item.rare = ItemRarityID.Green;
     }
 }
 

@@ -149,9 +149,9 @@ public class DarkButterfly : ModNPC
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureWhite(glowCircle);
         drawer.worldPosition = NPC.Center;
-        drawer.color = Color.White * Glow * 0.2f * _alpha;
+        drawer.color = Color.SkyBlue * Glow * 0.2f * _alpha;
         drawer.color.A = 0;
-        drawer.scale *= 0.5f;
+        drawer.scale *= 0.25f;
         spriteBatch.Draw(drawer);
     }
 

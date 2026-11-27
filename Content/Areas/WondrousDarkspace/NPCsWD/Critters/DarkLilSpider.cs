@@ -186,9 +186,9 @@ public class DarkLilSpider : ModNPC
         Texture2D glowCircle = AssetManager.GlowMask.SimpleGlowCircle.Value;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureWhite(glowCircle);
         drawer.worldPosition = NPC.Center;
-        drawer.color = Color.White * Glow * 0.2f * _alpha;
+        drawer.color = Color.Blue * Glow * 0.2f * _alpha;
         drawer.color.A = 0;
-        drawer.scale *= 0.5f;
+        drawer.scale *= 0.15f;
         spriteBatch.Draw(drawer);
     }
 
