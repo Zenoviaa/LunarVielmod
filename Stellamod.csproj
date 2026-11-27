@@ -1,5 +1,5 @@
 ﻿
-<Project Sdk="Tomat.Terraria.ModLoader.Sdk/2.1.2">
+<Project Sdk="Tomat.Terraria.ModLoader.Sdk/2.1.3">
   <Import Project="..\tModLoader.targets" />
 	<PropertyGroup>
 		<AssemblyName>Stellamod</AssemblyName>
@@ -9,7 +9,6 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>AnyCPU;x64;x86</Platforms>
 		<RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
-		<TmlBuildBootstrapFeatures>tomat.enablemod;lolxd87.splashskip;tomat.assethotreloading</TmlBuildBootstrapFeatures>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <NoWarn>8981</NoWarn>
