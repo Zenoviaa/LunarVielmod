@@ -40,6 +40,7 @@ public class DarkLilSpiderItem : ModItem
         Item.bait = 20;
     }
 }
+
 public class DarkLilSpider : ModNPC
 {
     enum AIState : byte

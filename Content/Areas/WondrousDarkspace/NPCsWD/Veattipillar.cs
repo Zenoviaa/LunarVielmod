@@ -360,7 +360,7 @@ public class Veattipillar : ModNPC,
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         base.ModifyNPCLoot(npcLoot);
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HypnotizedSoul>(), minimumDropped: 1, maximumDropped: 1));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HypnotizedSoul>(), minimumDropped: 1, maximumDropped: 3));
     }
     public void DrawToRenderTargets()
     {
@@ -415,6 +415,7 @@ public class VeattipillarQuickZap : ModProjectile,
         base.ReceiveExtraAI(reader);
         _timer = reader.ReadSingle();
     }
+
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {

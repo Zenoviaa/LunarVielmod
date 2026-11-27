@@ -76,7 +76,7 @@ public class DarkButterfly : ModNPC
     public override void SetDefaults()
     {
         base.SetDefaults();
-        NPC.width = NPC.height = 32;
+        NPC.width = NPC.height = 16;
         NPC.lifeMax = 32;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
