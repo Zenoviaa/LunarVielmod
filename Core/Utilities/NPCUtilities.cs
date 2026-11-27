@@ -19,6 +19,21 @@ public static class NPCUtilities
     }
     extension(NPC npc)
     {
+
+        public void StaticDefaultToCritter()
+        {
+            var Type = npc.type;
+            Main.npcCatchable[Type] = true; // This is for certain release situations
+
+            // These three are typical critter values
+            NPCID.Sets.CountsAsCritter[Type] = true;
+            NPCID.Sets.TakesDamageFromHostilesWithoutBeingFriendly[Type] = true;
+       //     NPCID.Sets.TownCritter[Type] = true;
+
+            // This is so it appears between the frog and the gold frog
+            NPCID.Sets.NormalGoldCritterBestiaryPriority.Insert(NPCID.Sets.NormalGoldCritterBestiaryPriority.IndexOf(NPCID.Frog) + 1, Type);
+        }
+
         /// <summary>
         /// Checks if the npc is grounded
         /// </summary>

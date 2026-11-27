@@ -83,6 +83,7 @@ public sealed class PS : ModSystem
     public static readonly SmokeImpact SmokeImpact = new();
     public static readonly SmokeBoom SmokeBoom = new();
     public static readonly HypnoticSparkle HypnoticSparkle = new();
+    public static readonly DarkspacePotShard DarkspacePot = new();
     public override void Load()
     {
         base.Load();
@@ -144,7 +145,8 @@ public sealed class PS : ModSystem
             FallingDarkspaceStar,
             SmokeImpact,
             SmokeBoom,
-            HypnoticSparkle
+            HypnoticSparkle,
+            DarkspacePot
         };
 
         if (Main.netMode == NetmodeID.Server)

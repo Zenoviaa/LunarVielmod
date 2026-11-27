@@ -9,7 +9,6 @@ using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Content.Areas.Tundra.Abyss.TilesAB;
 using Stellamod.Content.Areas.Underground.TilesUG;
 using Stellamod.Content.Areas.WaterSide.TilesWS;
-using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.RibbonSystem;
@@ -21,7 +20,6 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
@@ -75,7 +73,7 @@ public static class SavedGenerationParameters
     public static Point GetDarkspaceTop(float x)
     {
         var ratio = GetXRatio(x);
-        var p =Vector2.Lerp(DarkspaceBottomLeftCenter.ToVector2(), DarkspaceTopRightCenter.ToVector2(), ratio).ToPoint();
+        var p = Vector2.Lerp(DarkspaceBottomLeftCenter.ToVector2(), DarkspaceTopRightCenter.ToVector2(), ratio).ToPoint();
         p.Y -= 75;
         return p;
     }
@@ -314,7 +312,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("RoyalCapitalTerrain", WorldGenCapitalTerrain));
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
         passWriter.NextPass(new PassLegacy("Cinderspark Caves", CindersparkCavesPass));
-     //   passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
+        //   passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
 
 
         passWriter.SetInsertionIndex("Shimmer");
@@ -359,11 +357,11 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
         passWriter.NextPass(new PassLegacy("Charred Stones", HardRocksPass));
-     //   passWriter.NextPass(new PassLegacy("Ravine Caves", RavinesPass));
-   //     passWriter.NextPass(new PassLegacy("Deep Caves", DeepCavesPass));
- //       passWriter.NextPass(new PassLegacy("Cavernous Caves", MineshaftsPass));
-       // passWriter.NextPass(new PassLegacy("Vanilla Caves", ExtraCavesPass));
-     //   passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
+        //   passWriter.NextPass(new PassLegacy("Ravine Caves", RavinesPass));
+        //     passWriter.NextPass(new PassLegacy("Deep Caves", DeepCavesPass));
+        //       passWriter.NextPass(new PassLegacy("Cavernous Caves", MineshaftsPass));
+        // passWriter.NextPass(new PassLegacy("Vanilla Caves", ExtraCavesPass));
+        //   passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
         passWriter.NextPass(new PassLegacy("Black Stones", WorldGenDarkstone));
 
         //Set desert location
@@ -1822,20 +1820,19 @@ public partial class StellaWorld : ModSystem
             WallID.GraniteBlock,
             WallID.Granite
         };
-        int padding = 2600;
         DarkspaceStart = yMin;
         DarkspaceEnd = yMax;
         int darkspaceLeft = 3420;
         int darkspaceRight = Main.maxTilesX - 1800;
         int crystalLakeCenter = Main.maxTilesX / 2;
         int crystalLakeLeft = crystalLakeCenter - 600;
-        int crystalLakeRight = crystalLakeCenter + 1050; 
+        int crystalLakeRight = crystalLakeCenter + 1050;
         VeilGen.CreateDarkspaceNLake(
-            DarkspaceStart, 
-            DarkspaceEnd, 
-            darkspaceLeft, 
-            darkspaceRight, 
-            crystalLakeLeft, 
+            DarkspaceStart,
+            DarkspaceEnd,
+            darkspaceLeft,
+            darkspaceRight,
+            crystalLakeLeft,
             crystalLakeRight);
 
         VeilGen.CreateDarkspaceWalls(DarkspaceStart, DarkspaceEnd);
@@ -3358,7 +3355,7 @@ public partial class StellaWorld : ModSystem
             {
                 Tile tile = Main.tile[x, y];
                 bool isAethirumBlock = (tile.HasTile && tile.TileType == TileID.ShimmerBlock);
-                if (tile.LiquidType == LiquidID.Lava || tile.LiquidType == LiquidID.Water )
+                if (tile.LiquidType == LiquidID.Lava || tile.LiquidType == LiquidID.Water)
                 {
                     tile.LiquidType = LiquidID.Shimmer;
                     // tile.LiquidAmount = (byte)WorldGen.genRand.Next(125, 255);

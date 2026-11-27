@@ -77,7 +77,7 @@ public class AbyssLittleMoth : ModNPC,
 
     public override void AI()
     {
-        NPCSets.Heavy[Type] = true;
+
         base.AI();
         if(Style == 0)
         {

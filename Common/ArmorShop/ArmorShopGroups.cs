@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+﻿using Stellamod.Content.Areas.CrystalLake.TilesCL;
+using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Artisan;
 using Stellamod.Content.Armors.Astrasilk;
 using Stellamod.Content.Armors.Candlelight;
@@ -83,7 +84,7 @@ namespace Stellamod.Common.ArmorShop
             SW.AddHead(ModContent.ItemType<ShadeWraithHead>());
             SW.AddBody(ModContent.ItemType<ShadeWraithBody>());
             SW.AddLegs(ModContent.ItemType<ShadeWraithLegs>());
-            SW.SetMaterial(ItemID.GraniteBlock);
+            SW.SetMaterial(ModContent.ItemType<RosyQuartzCrystal>());
             SW.Register();
 
             //lovestruck done

@@ -1,23 +1,13 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.Particles;
-using Stellamod.Common.Shaders;
-using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Astar;
 using Stellamod.Core.InverseKinematics;
-using Stellamod.Core.NPCHelpers;
-using Stellamod.Core.Pixelation;
-using Stellamod.Core.ZTileSystem;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Animations;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD;
 
 
@@ -60,7 +50,7 @@ public class Dreamwalker : ModNPC
     public class SpiderLeg
     {
         public readonly record struct StepData(Vector2 StepStart, Vector2 GroundPosition);
-       
+
         public SpiderLeg()
         {
             segments = new FabrikSegment[2];
@@ -70,7 +60,7 @@ public class Dreamwalker : ModNPC
             legAngles = new float[3];
 
             //hain.lengths[1] =
-            
+
             armature = new ArmatureV2();
             armature.r1 = 62;
             armature.r2 = 62;
@@ -118,7 +108,7 @@ public class Dreamwalker : ModNPC
         public Vector2 stepStart;
         public void Update()
         {
-            for(var i = 0; i < interpolatingLegAngles.Length; i++)
+            for (var i = 0; i < interpolatingLegAngles.Length; i++)
             {
                 ref var legAngle = ref interpolatingLegAngles[i];
                 legAngle = Utils.AngleLerp(legAngle, legAngles[i], 0.1f);
@@ -190,10 +180,10 @@ public class Dreamwalker : ModNPC
     {
         get
         {
-            if(field == null)
+            if (field == null)
             {
                 field = new SpiderLeg[8];
-                for(var i = 0; i < 8; i++)
+                for (var i = 0; i < 8; i++)
                 {
                     field[i] = new SpiderLeg();
                 }
@@ -226,7 +216,7 @@ public class Dreamwalker : ModNPC
         }
     }
 
-   
+
     enum AIState : byte
     {
         Idle,
@@ -242,7 +232,7 @@ public class Dreamwalker : ModNPC
         set => NPC.ai[1] = (float)value;
     }
     Vector2[] _actualLegPositions = new Vector2[3];
-    float IdleTime => 20;
+    float IdleTime => 150;
     float WalkTime => 240;
     int WanderTileWidth => 75;
     int WanderTileHeight => 75;
@@ -333,7 +323,7 @@ public class Dreamwalker : ModNPC
     {
 
         Vector2 down = Vector2.Zero;
-        foreach(var direction in Vector2.OctagonalOffsets)
+        foreach (var direction in Vector2.OctagonalOffsets)
         {
             var dist = 196;
             var hitPoint = CollisionHelper.SolidTileRayCast(NPC.Center, direction, dist);
@@ -359,7 +349,7 @@ public class Dreamwalker : ModNPC
         list.Clear();
         for (var x = rect.Left; x < rect.Right; x++)
         {
-            for(var y = rect.Top; y < rect.Bottom; y++)
+            for (var y = rect.Top; y < rect.Bottom; y++)
             {
                 var tile = Main.tile[x, y];
                 if (tile.HasTile)
@@ -403,14 +393,14 @@ public class Dreamwalker : ModNPC
     {
         Point center = NPC.Center.ToTileCoordinates();
         var rect = new Rectangle(
-            center.X - tileSearchWidth / 2, 
-            center.Y - tileSearchHeight / 2, 
-            tileSearchWidth, 
+            center.X - tileSearchWidth / 2,
+            center.Y - tileSearchHeight / 2,
+            tileSearchWidth,
             tileSearchHeight);
 
         rect = TileUtilities.Clamp(rect);
 
-        for(var a = 0; a < maxAttempts; a++)
+        for (var a = 0; a < maxAttempts; a++)
         {
             var randomPoint = MoonUtils.Rand.NextPointInRectangle(rect);
             if (Vector2.DistanceSquared(randomPoint.ToWorldCoordinates(), NPC.Center) < 256 * 256)
@@ -437,7 +427,7 @@ public class Dreamwalker : ModNPC
 
             if (!adjacentToTile)
                 continue;
-            
+
             return randomPoint.ToWorldCoordinates();
         }
         return NPC.Center;
@@ -463,7 +453,7 @@ public class Dreamwalker : ModNPC
             leg.up = -Vector2.UnitY.RotatedBy(NPC.rotation);
             leg.rotation = NPC.rotation;
             var left = NPC.Center + leg.leftBoundaryOffset.RotatedBy(NPC.rotation);
-       
+
             var right = NPC.Center + leg.rightBoundaryOffset.RotatedBy(NPC.rotation);
             var middle = (left + right) * 0.5f;
             var endEffectorPosition = leg.groundPosition;
@@ -471,11 +461,11 @@ public class Dreamwalker : ModNPC
 
             var leftDP = Vector2.Dot((left - endEffectorPosition).SafeNormalize(Vector2.Zero), facingLeft);
             var rightDP = Vector2.Dot((right - endEffectorPosition).SafeNormalize(Vector2.Zero), facingRight);
-            if(leftDP > 0)
+            if (leftDP > 0)
             {
                 leg.Step(new(leg.groundPosition, CollisionHelper.SolidTileRayCast(right + new Vector2(-10, 0).RotatedBy(NPC.rotation), down, 80)));
             }
-            else if(rightDP > 0)
+            else if (rightDP > 0)
             {
                 leg.Step(new(leg.groundPosition, CollisionHelper.SolidTileRayCast(left + new Vector2(10, 0).RotatedBy(NPC.rotation), down, 80)));
             }
@@ -488,7 +478,7 @@ public class Dreamwalker : ModNPC
             {
                 leg.overhead = false;
             }
-       
+
 
             leg.Solve(rootPosition, leg.groundPosition);
             leg.Update();
@@ -537,19 +527,19 @@ public class Dreamwalker : ModNPC
     void AI_Walk()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             var pointToMoveTo = GetNextPointToWanderTo(WanderTileWidth, WanderTileHeight);
             NPC.TargetClosest();
-            pointToMoveTo = NPC.PlayerImTargeting.Center; 
-            _pathfinder.NewPath(pointToMoveTo, NPC.Center, 75, searchJobStyle: SearchJobStyle.Crawler);
+         //   pointToMoveTo = NPC.PlayerImTargeting.Center;
+            _pathfinder.NewPath(pointToMoveTo, NPC.Bottom, 75, searchJobStyle: SearchJobStyle.Crawler);
 
         }
         MoonUtils.AI_SpiderPathfinding(_pathfinder, NPC, WanderWalkSpeed);
         NPC.TargetClosest();
         NPC.FaceDirectionsToVelocity();
 
-        if(Timer >= WalkTime || _pathfinder.path.Count <= 0)
+        if (Timer >= WalkTime || _pathfinder.path.Count <= 0)
         {
             SwitchState(AIState.Idle);
         }
@@ -558,9 +548,9 @@ public class Dreamwalker : ModNPC
     void AI_Idle()
     {
         Timer++;
-        if(IsNearTile())
+        if (IsNearTile())
             NPC.velocity *= 0.96F;
-        if(Timer >= IdleTime)
+        if (Timer >= IdleTime)
         {
             if (MultiplayerHelper.IsHost)
             {
@@ -578,9 +568,9 @@ public class Dreamwalker : ModNPC
 
         var rootPosition = leg.rootPosition;
         //valuate positions
-        for(var i = 0; i < _actualLegPositions.Length; i++)
+        for (var i = 0; i < _actualLegPositions.Length; i++)
         {
-            if(i == 0)
+            if (i == 0)
             {
                 _actualLegPositions[i] = rootPosition;
             }
@@ -588,13 +578,13 @@ public class Dreamwalker : ModNPC
             {
                 _actualLegPositions[i] = _actualLegPositions[i - 1] + leg.interpolatingLegAngles[i - 1].ToRotationVector2() * leg.legLengths[i - 1];
             }
-       
+
         }
 
         //draw foot
         for (var i = 0; i < leg.legPositions.Length; i++)
         {
-            
+
             var drawer = SpritebatchDrawer.FromTextureGetLightingColor(TextureAssets.Npc[Type], _actualLegPositions[i]);
             drawer.drawOrigin = LegOrigins[i];
             drawer.sourceRect = LegFrames[i];

@@ -9,4 +9,5 @@ public readonly partial record struct TriColorPalette(Color primaryColor, Color 
     public static readonly TriColorPalette Silver = new TriColorPalette(Color.Silver, Color.DarkGray, Color.DarkBlue);
     public static readonly TriColorPalette Foresty = new TriColorPalette(Color.LightGreen, Color.DarkGreen, Color.RosyBrown);
     public static readonly TriColorPalette Moonly = new TriColorPalette(Color.SkyBlue, Color.Aqua, Color.Violet);
+    public static readonly TriColorPalette Rosy = new TriColorPalette(Color.LightPink, Color.Coral, Color.DarkViolet);
 }

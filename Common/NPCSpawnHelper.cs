@@ -42,6 +42,7 @@ public class SpawnSets : ModSystem
         StarrTempleEnemy = new();
         HiveKingdomEnemy = new();
         DarkspaceEnemy = new();
+        DarkspaceCritter = new();
         base.SetupContent();
 
     }
@@ -53,6 +54,7 @@ public class SpawnSets : ModSystem
         TryNotToSpawnOnWater = NPCID.Sets.Factory.CreateBoolSet();
     }
     public static List<int> DarkspaceEnemy;
+    public static List<int> DarkspaceCritter;
     public static List<int> VilePipesEnemy;
     public static List<int> UndergroundEnemy;
     public static List<int> SpringEnemy;
@@ -137,6 +139,10 @@ public static class NPCSpawnExtensions
     public static void AddToAbyssCritter(this ModNPC npc)
     {
         SpawnSets.AbyssCritter.Add(npc.Type);
+    }
+    public static void AddToDarkspaceCritter(this ModNPC npc)
+    {
+        SpawnSets.DarkspaceCritter.Add(npc.Type);
     }
     public static void AddToAbyssTemple(this ModNPC npc)
     {
@@ -286,6 +292,7 @@ public class NPCSpawnHelper : GlobalNPC
         if (spawnInfo.Player.InModBiome<WonderousDarkspaceBiome>())
         {
             AddEnemiesFromSpawnSet(SpawnSets.DarkspaceEnemy, pool, spawnInfo);
+            AddEnemiesFromSpawnSet(SpawnSets.DarkspaceCritter, pool, spawnInfo);
         }
 
         //No enemies can spawn on this tile

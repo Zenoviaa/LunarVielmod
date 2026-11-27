@@ -12429,3 +12429,28 @@ LeviathanHorn: {
 	DisplayName: Leviathan Horn
 	Tooltip: Use this at the bottom of the Harmonic Coralways...
 }
+
+RosyQuartzCrystal: {
+	DisplayName: Rosy Quartz Crystal
+	Tooltip: ""
+}
+
+DarkButterflyItem: {
+	DisplayName: Dark Butterfly
+	Tooltip: ""
+}
+
+DarkCrawlerItem: {
+	DisplayName: Dark Crawler
+	Tooltip: ""
+}
+
+DarkGlowflyItem: {
+	DisplayName: Dark Glowfly
+	Tooltip: ""
+}
+
+DarkLilSpiderItem: {
+	DisplayName: Dark Lil Spider
+	Tooltip: ""
+}
