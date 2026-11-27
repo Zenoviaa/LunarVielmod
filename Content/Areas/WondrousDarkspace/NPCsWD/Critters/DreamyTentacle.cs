@@ -30,7 +30,7 @@ public class DreamyTentacle : ModNPC
                 for (var i = 0; i < field.Length; i++)
                 {
                     ref var segment = ref field[i];
-                    segment.position = new Vector2(0, i * 7);
+                    segment.position = new Vector2(NPC.Center.X, NPC.Center.Y - i * 7);
                     segment.length = 7;
                 }
             }
@@ -42,7 +42,7 @@ public class DreamyTentacle : ModNPC
     }
 
     float SqrDistanceToTarget => Vector2.DistanceSquared(NPC.Center, NPC.PlayerImTargeting.Center);
-    float SqrTouchDistance => 144 * 144;
+    float SqrTouchDistance => 180 * 180;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return false;
@@ -68,20 +68,23 @@ public class DreamyTentacle : ModNPC
     {
         base.AI();
         NPC.TargetClosest();
+        var quickTouch = false;
         if (SqrDistanceToTarget < SqrTouchDistance)
         {
+            quickTouch = true;
             _ikTarget = NPC.PlayerImTargeting.Center;
         }
         else
         {
-            _ikTarget = NPC.Center + new Vector2(0, -SqrTouchDistance);
+            _ikTarget = NPC.Center + new Vector2(ExtraMath.Osc(-16, 16, speed: 0.5F, NPC.whoAmI), -SqrTouchDistance);
         }
         var segments = Segments;
-        FabrikSolver.Solve(ref segments, NPC.Center, _ikTarget, 4);
+        FabrikSolver.Solve(ref segments, NPC.Bottom, _ikTarget, 4);
+        var ratio = quickTouch ? 0.06f : 0.02f;
         for (var i = 0; i < Positions.Length; i++)
         {
             ref var pos = ref Positions[i];
-            pos = Vector2.Lerp(pos, segments[i].position, 0.1f);
+            pos = Vector2.Lerp(pos, segments[i].position, ratio);
         }
         Segments = segments;
     }
