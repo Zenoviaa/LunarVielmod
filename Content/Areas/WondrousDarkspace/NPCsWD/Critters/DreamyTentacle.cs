@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Stellamod.Assets;
+using Stellamod.Common;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -46,6 +47,14 @@ public class DreamyTentacle : ModNPC
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return false;
+    }
+
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        NPC.StaticDefaultToCritter();
+        this.AddToDarkspaceCritter();
+        this.PreferLand();
     }
 
     public override void SetDefaults()

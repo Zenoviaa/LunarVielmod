@@ -67,7 +67,7 @@ public class DarkLilSpider : ModNPC
         base.SetStaticDefaults();
         NPCSets.UseAseprite[Type] = true;
         NPC.StaticDefaultToCritter();
-        this.AddToAbyssCritter();
+        this.AddToDarkspaceCritter();
         this.PreferLand();
     }
 
